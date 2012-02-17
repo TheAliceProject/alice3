@@ -1,7 +1,7 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.LeavesViewEventListener;
+import org.lgna.story.event.ExitViewListener;
 
 public class LeavesViewEventListenerFillIn extends LambdaExpressionFillIn {
 	
@@ -18,7 +18,7 @@ public class LeavesViewEventListenerFillIn extends LambdaExpressionFillIn {
 	}
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(LeavesViewEventListener.class);
+		return AstUtilities.createLambdaExpression(ExitViewListener.class);
 	}
 
 }

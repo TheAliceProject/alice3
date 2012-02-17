@@ -40,13 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.event;
+package org.alice.stageide.apis.story.event;
+
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.virtualmachine.LambdaContext;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.event.EnterProximityEvent;
+import org.lgna.story.event.EnterProximityListener;
 
 /**
  * @author Matt May
  */
-public interface ProximityEventListener {
-	
-	public void whenTheseGetClose(ProximityEvent e);
+public class EnterProximityAdapter extends AbstractAdapter implements EnterProximityListener{
+
+	public EnterProximityAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+		super(context, lambda, userInstance);
+	}
+
+	public void whenTheseGetClose(EnterProximityEvent e) {
+		invokeEntryPoint( e );
+	}
 
 }

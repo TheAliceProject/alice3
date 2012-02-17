@@ -1,7 +1,7 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.ComesIntoViewEventListener;
+import org.lgna.story.event.EnterViewListener;
 
 public class ComesIntoViewEventListenerFillIn extends LambdaExpressionFillIn {
 	
@@ -18,7 +18,7 @@ public class ComesIntoViewEventListenerFillIn extends LambdaExpressionFillIn {
 	}
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(ComesIntoViewEventListener.class);
+		return AstUtilities.createLambdaExpression(EnterViewListener.class);
 	}
 
 }

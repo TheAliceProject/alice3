@@ -15,17 +15,19 @@ import org.lgna.story.event.AbstractKeyPressListener;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.ComesIntoViewEventListener;
+import org.lgna.story.event.ProximityListener;
+import org.lgna.story.event.StartCollisionListener;
+import org.lgna.story.event.EnterViewListener;
 import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.LeavesViewEventListener;
+import org.lgna.story.event.ExitViewListener;
 import org.lgna.story.event.MouseClickListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MoveWithArrows;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.OcclusionEventListener;
-import org.lgna.story.event.ProximityEventListener;
+import org.lgna.story.event.StartOcclusionListener;
+import org.lgna.story.event.EnterProximityListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TransformationListener;
 import org.lgna.story.implementation.SceneImp;
@@ -74,6 +76,7 @@ public class EventManager {
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
+		scene.addSceneActivationListener( timer );
 	}
 
 	public void removeMouseButtonListener( MouseClickListener mouseButtonListener ) {
@@ -133,7 +136,7 @@ public class EventManager {
 	public void addCollisionListener( CollisionListener collisionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
 		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
 	}
-	public void addProximityEventListener( ProximityEventListener proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
+	public void addProximityEventListener( ProximityListener proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
 
@@ -168,14 +171,14 @@ public class EventManager {
 		this.transHandler.addTransformationListener( transformationlistener, shouldListenTo );
 	}
 
-	public void addOcclusionEventListener( OcclusionEventListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
+	public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
 		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
 
-	public void addComesIntoViewEventListener( ComesIntoViewEventListener listener, Entity[] entities ) {
+	public void addComesIntoViewEventListener( EnterViewListener listener, Entity[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
-	public void addLeavesViewEventListener(LeavesViewEventListener listener, Entity[] entities) {
+	public void addLeavesViewEventListener(ExitViewListener listener, Entity[] entities) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
 

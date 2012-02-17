@@ -8,6 +8,7 @@ import org.lgna.croquet.cascade.BlankNode;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.story.AddKeyPressListener;
+import org.lgna.story.AddObjectMoverFor;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.Scene;
 import org.lgna.story.event.ArrowKeyPressListener;
@@ -17,7 +18,7 @@ import org.lgna.story.event.NumberKeyPressListener;
 public class KeyboardEventListenerMenu extends CascadeMenuModel< org.lgna.project.ast.MethodInvocation > {	
 
 	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyPressListener", KeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance( Scene.class, "moveThisWithArrows", MovableTurnable.class );
+	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance( Scene.class, "addObjectMoverFor", MovableTurnable.class, AddObjectMoverFor.Detail[].class );
 	public static final JavaMethod ADD_ARROW_KEY_PRESS_LISTENER = JavaMethod.getInstance( Scene.class, "addArrowKeyPressListener", ArrowKeyPressListener.class, AddKeyPressListener.Detail[].class );
 	public static final JavaMethod ADD_NUNBER_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addNumberKeyPressListener", NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
 

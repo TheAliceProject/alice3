@@ -40,25 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
-
-import edu.cmu.cs.dennisc.matt.ProximityDistance;
+package org.lgna.story.event;
 
 /**
  * @author Matt May
  */
-public class AddProximityEventListener {
-
-
-	public static interface Detail {
-	}
+public interface EnterProximityListener extends ProximityListener {
 	
-	public static Double getDist(Detail[] details){
-		for(Detail detail: details){
-			if(detail instanceof ProximityDistance){
-				return ((ProximityDistance)detail).getDist();
-			}
-		}
-		return 0.0;
-	}
+	public void whenTheseGetClose(EnterProximityEvent e);
+
 }

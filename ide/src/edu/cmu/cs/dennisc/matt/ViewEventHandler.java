@@ -8,9 +8,9 @@ import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.ComesIntoViewEvent;
-import org.lgna.story.event.ComesIntoViewEventListener;
+import org.lgna.story.event.EnterViewListener;
 import org.lgna.story.event.LeavesViewEvent;
-import org.lgna.story.event.LeavesViewEventListener;
+import org.lgna.story.event.ExitViewListener;
 import org.lgna.story.event.ViewEvent;
 import org.lgna.story.event.ViewEventListener;
 import org.lgna.story.implementation.CameraImp;
@@ -38,7 +38,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 			for( Entity entity : map.keySet() ) {
 				for( ViewEventListener listener : map.get( entity ) ) {
 					if ( check( listener, entity ) ) {
-						ViewEvent event = listener instanceof ComesIntoViewEventListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
+						ViewEvent event = listener instanceof EnterViewListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
 						fireEvent( listener, event );
 					}
 				}
@@ -47,7 +47,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 		} else {
 			for( ViewEventListener listener : map.get( changedEntity ) ) {
 				if ( check( listener, changedEntity ) ) {
-					ViewEvent event = listener instanceof ComesIntoViewEventListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
+					ViewEvent event = listener instanceof EnterViewListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
 					fireEvent( listener, event );
 				}
 			}
@@ -58,11 +58,11 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 	private boolean check( ViewEventListener listener, Entity changedEntity ) {
 		boolean rv = false;
 		boolean thisInView = IsInViewDetector.isThisInView( changedEntity, camera );
-		if (listener instanceof ComesIntoViewEventListener) {
+		if (listener instanceof EnterViewListener) {
 			if ( thisInView && !wasInView.get( changedEntity ) ) {
 				rv = true;
 			}
-		} else if (listener instanceof LeavesViewEventListener) {
+		} else if (listener instanceof ExitViewListener) {
 			if ( !thisInView && wasInView.get( changedEntity ) ) {
 				rv = true;
 			}
@@ -72,11 +72,11 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 
 	@Override
 	protected void nameOfFireCall(ViewEventListener listener, ViewEvent event) {
-		if (listener instanceof ComesIntoViewEventListener) {
-			ComesIntoViewEventListener intoViewEL = ( ComesIntoViewEventListener ) listener;
+		if (listener instanceof EnterViewListener) {
+			EnterViewListener intoViewEL = ( EnterViewListener ) listener;
 			intoViewEL.cameIntoView( ( ComesIntoViewEvent ) event );
-		} else if (listener instanceof LeavesViewEventListener) {
-			LeavesViewEventListener outOfViewEL = ( LeavesViewEventListener ) listener;
+		} else if (listener instanceof ExitViewListener) {
+			ExitViewListener outOfViewEL = ( ExitViewListener ) listener;
 			outOfViewEL.leftView( ( LeavesViewEvent ) event );
 		}
 	}

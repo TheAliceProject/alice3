@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.event.SceneActivationEvent;
+import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
 
@@ -12,7 +14,7 @@ import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
 
-public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerEvent> {
+public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerEvent> implements SceneActivationListener {
 
 	private Map<TimeListener, Long> freqMap = Collections.newHashMap();
 	private List<TimeListener> timerList = Collections.newArrayList();
@@ -26,6 +28,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 		}
 	};
 	private boolean isEnabled = false;
+	private boolean isActivated = false;
 
 	public void enable() {
 		isEnabled  = true;
@@ -58,7 +61,9 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 
 	private void trigger( TimeListener listener, TimerEvent timerEvent ) {
 		mostRecentFire.put( listener, currentTime );
-		fireEvent( listener, timerEvent );
+		if(isActivated) {
+			fireEvent( listener, timerEvent );
+		}
 	}
 	private boolean timeToFire(TimeListener listener) {
 		return currentTime - mostRecentFire.get(listener) > freqMap.get(listener);
@@ -70,5 +75,8 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 	@Override
 	protected void nameOfFireCall(TimeListener listener, TimerEvent event) {
 		listener.timeElapsed(event);
+	}
+	public void sceneActivated(SceneActivationEvent e) {
+		this.isActivated  = true;
 	}
 }

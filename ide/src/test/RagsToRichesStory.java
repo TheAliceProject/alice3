@@ -44,18 +44,14 @@ package test;
 
 import java.awt.Component;
 
-import javax.swing.SwingUtilities;
-
 import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
-import org.lgna.story.Entity;
 import org.lgna.story.Ground;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.JointedModel;
-import org.lgna.story.Key;
 import org.lgna.story.Model;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
@@ -66,25 +62,13 @@ import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.event.ArrowKeyEvent;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.ComesIntoViewEvent;
-import org.lgna.story.event.ComesIntoViewEventListener;
-import org.lgna.story.event.KeyEvent;
-import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.LeavesViewEvent;
-import org.lgna.story.event.LeavesViewEventListener;
-import org.lgna.story.event.NumberKeyEvent;
-import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.OcclusionEvent;
-import org.lgna.story.event.OcclusionEventListener;
+import org.lgna.story.event.EndOcclusionListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.event.StartOcclusionEvent;
+import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
-import org.lgna.story.event.TransformationEvent;
-import org.lgna.story.event.TransformationListener;
-import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -94,10 +78,8 @@ import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
-import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -256,18 +238,24 @@ class SnowScene extends Scene{
 		Model[] list = {ogre, susan};
 		Model[] colListOne = {ogre};
 		Model[] colListTwo = {susan};
-//		this.addCollisionListener(new CollisionListener() {
-//			public void whenTheseCollide(CollisionEvent event) {
-//				event.getModels().get(1).move(MoveDirection.UP, 1);
-//				event.getModels().get(1).move(MoveDirection.DOWN, 1);
+//		this.addStartCollisionListener(new StartCollisionListener() {
+//			public void whenTheseCollide( StartCollisionEvent event) {
+//				((Model) event.getModels().get(1)).move(MoveDirection.UP, 1);
+//				((Model) event.getModels().get(1)).move(MoveDirection.DOWN, 1);
 //			}
 //		}, colListOne, colListTwo);
-//		this.addTimerEventListener( new TimeListener() {
-//			public void timeElapsed(TimerEvent e) {
-//				greenCone.move(MoveDirection.UP, 1);
-//				greenCone.move(MoveDirection.DOWN, 1);
+//		this.addEndCollisionListener(new EndCollisionListener() {
+//			public void whenTheseStopColliding( EndCollisionEvent event) {
+//				((Model) event.getModels().get(1)).move(MoveDirection.UP, 1);
+//				((Model) event.getModels().get(1)).move(MoveDirection.DOWN, 1);
 //			}
-//		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
+//		}, colListOne, colListTwo);
+		this.addTimerEventListener( new TimeListener() {
+			public void timeElapsed(TimerEvent e) {
+				greenCone.move(MoveDirection.UP, 1);
+				greenCone.move(MoveDirection.DOWN, 1);
+			}
+		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
 //		this.addLeavesViewEventListener(new LeavesViewEventListener() {
 //			
 //			public void leftView(LeavesViewEvent e) {
@@ -288,7 +276,7 @@ class SnowScene extends Scene{
 //				camera.move(e.getFowardBackwardLeftRightMoveDirection(), 1);
 //			}
 //		}, MultipleEventPolicy.COMBINE );
-		this.moveThisWithArrows( camera );
+		this.addObjectMoverFor( ogre );
 		this.addDefaultModelManipulation();
 //		this.addNumberKeyPressListener(new NumberKeyPressListener() {
 //			
@@ -302,15 +290,21 @@ class SnowScene extends Scene{
 //				ogre.say( "Hi, I have moved!" );
 //			}
 //		}, new Entity[] { blueCone } );
-//		this.addOcclusionEventListener(new OcclusionEventListener() {
+		this.addEndOcclusionListener(new EndOcclusionListener() {
+			
+			public void theseNoLongerOcclude( EndOcclusionEvent e ) {
+				( ( JointedModel ) e.getBackgroundEntity() ).say( "Get behind me!" );
+			}
+		}, colListOne, colListTwo );
+//		this.addStartOcclusionListener(new StartOcclusionListener() {
 //			
-//			public void whenTheseOcclude(OcclusionEvent e) {
+//			public void whenTheseOcclude( StartOcclusionEvent e ) {
 //				( ( JointedModel ) e.getBackgroundEntity() ).say( "Get behind me!" );
 //			}
 //		}, colListOne, colListTwo );
-//		this.addProximityEventListener( new ProximityEventListener() {
+//		this.addExitProximityEventListener( new ExitProximityListener() {
 //
-//			public void whenTheseGetClose( ProximityEvent e ) {
+//			public void whenTheseMoveApart( ExitProximityEvent e ) {
 //				if( e.getModels().get( 1 ) instanceof Model ) {
 //					((Model)e.getModels().get(1)).move(MoveDirection.UP, 1);
 //					((Model)e.getModels().get(1)).move(MoveDirection.DOWN, 1);
@@ -324,17 +318,6 @@ class SnowScene extends Scene{
 //				
 //			}
 //		});
-//		( new MouseClickListener() {
-//			public void mouseClicked(MouseButtonEvent e) {
-//				if(e.getModelAtMouseLocation() != null){
-//					e.getModelAtMouseLocation().move(MoveDirection.RIGHT, 1);
-//					e.getModelAtMouseLocation().move(MoveDirection.LEFT, 1);
-//				}else{
-//					camera.move(MoveDirection.UP, 1);
-//					camera.move(MoveDirection.DOWN, 1);
-//				}
-//			}
-//		}, MultipleEventPolicy.COMBINE);//, AddMouseButtonListener.setOfVisuals(list));
 	}
 
 	public void chillInSkiChalet() {

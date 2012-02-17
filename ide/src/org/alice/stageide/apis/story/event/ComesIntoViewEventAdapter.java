@@ -4,9 +4,9 @@ import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.ComesIntoViewEvent;
-import org.lgna.story.event.ComesIntoViewEventListener;
+import org.lgna.story.event.EnterViewListener;
 
-public class ComesIntoViewEventAdapter extends AbstractAdapter implements ComesIntoViewEventListener {
+public class ComesIntoViewEventAdapter extends AbstractAdapter implements EnterViewListener {
 
 	public ComesIntoViewEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
 		super(context, lambda, userInstance);

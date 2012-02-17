@@ -43,27 +43,27 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.ProximityEventListener;
+import org.lgna.story.event.EnterProximityListener;
 
 /**
  * @author Matt May
  */
-public class ProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn{
+public class EnterProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn{
 	
 	private static class SingletonHolder {
-		private static ProximityEventListenerAdapterFillIn instance = new ProximityEventListenerAdapterFillIn();
+		private static EnterProximityEventListenerAdapterFillIn instance = new EnterProximityEventListenerAdapterFillIn();
 	}
-	public static ProximityEventListenerAdapterFillIn getInstance() {
+	public static EnterProximityEventListenerAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	public ProximityEventListenerAdapterFillIn() {
+	public EnterProximityEventListenerAdapterFillIn() {
 		super( java.util.UUID.fromString( "db25d316-7282-493f-9838-124d272db0ca" ) );
 		this.transientValue = this.createValue();
 	}
 	@Override
 	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(ProximityEventListener.class);
+		return AstUtilities.createLambdaExpression(EnterProximityListener.class);
 	}
 
 }

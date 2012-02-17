@@ -42,12 +42,15 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
-import org.lgna.story.AddProximityEventListener;
+import org.lgna.story.AddEnterProximityEventListener;
+import org.lgna.story.AddExitProximityEventListener;
 
 /**
  * @author Matt May
  */
-public class ProximityDistance implements AddProximityEventListener.Detail{
+public class ProximityDistance implements
+	AddEnterProximityEventListener.Detail,
+	AddExitProximityEventListener.Detail {
 	
 	private Double dist;
 

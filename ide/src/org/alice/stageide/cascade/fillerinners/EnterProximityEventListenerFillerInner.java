@@ -40,25 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.apis.story.event;
-
-import org.lgna.project.ast.Lambda;
-import org.lgna.project.virtualmachine.LambdaContext;
-import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.event.ProximityEvent;
-import org.lgna.story.event.ProximityEventListener;
+package org.alice.stageide.cascade.fillerinners;
 
 /**
  * @author Matt May
  */
-public class ProximityAdapter extends AbstractAdapter implements ProximityEventListener{
-
-	public ProximityAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
-		super(context, lambda, userInstance);
+public class EnterProximityEventListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public EnterProximityEventListenerFillerInner() {
+		super( org.lgna.story.event.EnterProximityListener.class );
 	}
-
-	public void whenTheseGetClose(ProximityEvent e) {
-		invokeEntryPoint( e );
+	@Override
+	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		rv.add( org.alice.stageide.croquet.models.cascade.adapters.EnterProximityEventListenerAdapterFillIn.getInstance() );
+		return rv;
 	}
-
 }

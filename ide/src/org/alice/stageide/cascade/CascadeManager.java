@@ -60,9 +60,12 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.TransformationListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ComesIntoViewEventListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.LeavesViewEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.CollisionListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ProximityEventListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OcclusionEventListenerFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.StartCollisionListenerFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.EndCollisionListenerFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.EnterProximityEventListenerFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ExitProximityEventListenerFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.StartOcclusionEventListenerFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.EndOcclusionEventListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.SceneActivationEventFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.TimerEventListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );

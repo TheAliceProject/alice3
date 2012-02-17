@@ -33,7 +33,8 @@ public class EventRecorder {
 			} else if ( startTime != -1 ) {
 				eventMap.put( System.currentTimeMillis() - startTime, e );
 			} else {
-				System.out.println( "WARNING EVENTS NOT BEING PROPERLY RECORDED " + e.getClass() );
+				System.out.println( "WARNING EVENTS NOT BEING PROPERLY RECORDED " + e.getClass());
+				Thread.dumpStack();
 			}
 		}
 	}

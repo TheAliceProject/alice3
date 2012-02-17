@@ -51,8 +51,13 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionListener;
+import org.lgna.story.event.EndCollisionEvent;
+import org.lgna.story.event.EndCollisionListener;
+import org.lgna.story.event.StartCollisionEvent;
+import org.lgna.story.event.StartCollisionListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Matt May
@@ -70,9 +75,9 @@ public class CollisionHandler extends TransformationChangedHandler < CollisionLi
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-				collisionEventHandler.register( collisionListener, groupOne, groupTwo );
 			}
 		}
+		collisionEventHandler.register( collisionListener, groupOne, groupTwo );
 	}
 
 	@Override
@@ -80,32 +85,61 @@ public class CollisionHandler extends TransformationChangedHandler < CollisionLi
 		collisionEventHandler.check( changedEntity );
 	}
 	@Override
-	protected void nameOfFireCall(CollisionListener listener, CollisionEvent event) {
-		listener.whenTheseCollide( event );
+	protected void nameOfFireCall( CollisionListener listener, CollisionEvent event) {
+		if (listener instanceof StartCollisionListener) {
+			StartCollisionListener startCollisionEvent = (StartCollisionListener) listener;
+			startCollisionEvent.whenTheseCollide( (StartCollisionEvent) event );
+		} else if (listener instanceof EndCollisionListener) {
+			EndCollisionListener endCollisionEvent = (EndCollisionListener) listener;
+			endCollisionEvent.whenTheseStopColliding( (EndCollisionEvent) event );
+		}
 	}
 
 	private class CollisionEventHandler {
 
 		HashMap< Entity, LinkedList< Entity >> checkMap = new HashMap< Entity, LinkedList< Entity >>();
 		HashMap< Entity, HashMap< Entity, LinkedList< CollisionListener >>> eventMap = new HashMap< Entity, HashMap< Entity, LinkedList< CollisionListener >>>();
+		HashMap< Entity, HashMap< Entity, Boolean >> wereTouchingMap = new HashMap<Entity, HashMap<Entity,Boolean>>(); 
 
 		public void check( Entity changedEntity ) {
 			for( Entity m : checkMap.get( changedEntity ) ) {
-				if( AabbCollisionDetector.doTheseCollide( m, changedEntity ) ) {
-					LinkedList< Entity > models = new LinkedList< Entity >();
-					models.add( changedEntity );
-					models.add( m );
-					for( CollisionListener colList : eventMap.get( changedEntity ).get( m ) ) {
-						fireEvent( colList, new CollisionEvent( models ) );
+				LinkedList<CollisionListener> listenerList = eventMap.get( changedEntity ).get( m );
+				if( listenerList == null || listenerList.size() == 0 ) {
+					return;
+				}
+				for( CollisionListener colList : listenerList ) {
+					if( check( colList, m, changedEntity ) ) {
+						LinkedList< Entity > models = new LinkedList< Entity >();
+						models.add( changedEntity );
+						models.add( m );
+						if ( colList instanceof StartCollisionListener ) {
+							fireEvent( colList, new StartCollisionEvent( models ) );
+						} else if (colList instanceof EndCollisionListener ) {
+							fireEvent( colList, new EndCollisionEvent( models ) );
+						}
 					}
 				}
+				boolean doTheseCollide = AabbCollisionDetector.doTheseCollide( m, changedEntity);
+				wereTouchingMap.get( m ).put( changedEntity, doTheseCollide );
+				wereTouchingMap.get( changedEntity ).put( m , doTheseCollide );
 			}
+		}
+
+		private boolean check(CollisionListener colList, Entity m, Entity changedEntity) {
+			if ( colList instanceof StartCollisionListener ) {
+				return !wereTouchingMap.get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity );
+			}else if ( colList instanceof EndCollisionListener ) {
+				return wereTouchingMap.get( m ).get( changedEntity ) && !AabbCollisionDetector.doTheseCollide( m, changedEntity );
+			}
+			Logger.errln( "UNHANDLED CollisionListener TYPE " + colList.getClass() );
+			return false;
 		}
 
 		public void register( CollisionListener collisionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
 			for( Entity m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
 					eventMap.put( m, new HashMap< Entity, LinkedList< CollisionListener >>() );
+					wereTouchingMap.put( m, new HashMap< Entity, Boolean>() );
 					checkMap.put( m, new LinkedList< Entity >() );
 				}
 				for( Entity t : groupTwo ) {
@@ -114,6 +148,7 @@ public class CollisionHandler extends TransformationChangedHandler < CollisionLi
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( collisionListener );
+						wereTouchingMap.get( m ).put( t, false );
 						if(!checkMap.get( m ).contains( t )){
 							checkMap.get( m ).add( t );
 						}
@@ -123,6 +158,7 @@ public class CollisionHandler extends TransformationChangedHandler < CollisionLi
 			for( Entity m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
 					eventMap.put( m, new HashMap< Entity, LinkedList< CollisionListener >>() );
+					wereTouchingMap.put( m, new HashMap< Entity, Boolean>() );
 					checkMap.put( m, new LinkedList< Entity >() );
 				}
 				for( Entity t : groupOne ) {
@@ -131,6 +167,7 @@ public class CollisionHandler extends TransformationChangedHandler < CollisionLi
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( collisionListener );
+						wereTouchingMap.get( m ).put( t, AabbCollisionDetector.doTheseCollide(m, t) );
 						if(!checkMap.get( m ).contains( t )){
 							checkMap.get( m ).add( t );
 						}

@@ -43,6 +43,8 @@
 
 package org.alice.stageide.ast;
 
+import org.lgna.story.AddSceneActivationListener;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -128,7 +130,7 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserLambda sceneActivationListener = org.lgna.project.ast.AstUtilities.createUserLambda( org.lgna.story.event.SceneActivationListener.class );
 		org.lgna.project.ast.LambdaExpression sceneActivationListenerExpression = new org.lgna.project.ast.LambdaExpression( sceneActivationListener );
 
-		org.lgna.project.ast.JavaMethod addSceneActivationListenerMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "addSceneActivationListener", org.lgna.story.event.SceneActivationListener.class );
+		org.lgna.project.ast.JavaMethod addSceneActivationListenerMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "addSceneActivationListener", org.lgna.story.event.SceneActivationListener.class, AddSceneActivationListener.Detail[].class );
 		
 		initializeEventListenersMethod.body.getValue().statements.add(
 				org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(  

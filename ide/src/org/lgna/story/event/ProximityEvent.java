@@ -49,7 +49,7 @@ import org.lgna.story.Entity;
 /**
  * @author Matt May
  */
-public class ProximityEvent extends AbstractEvent{
+public class ProximityEvent extends AbstractEvent {
 	
 	private final List<Entity> entities;
 	

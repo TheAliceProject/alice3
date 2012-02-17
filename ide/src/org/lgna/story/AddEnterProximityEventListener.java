@@ -40,18 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.fillerinners;
+package org.lgna.story;
+
+import edu.cmu.cs.dennisc.matt.ProximityDistance;
 
 /**
  * @author Matt May
  */
-public class ProximityEventListenerFillerInner  extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public ProximityEventListenerFillerInner() {
-		super( org.lgna.story.event.ProximityEventListener.class );
+public class AddEnterProximityEventListener {
+
+
+	public static interface Detail {
 	}
-	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		rv.add( org.alice.stageide.croquet.models.cascade.adapters.ProximityEventListenerAdapterFillIn.getInstance() );
-		return rv;
+	
+	public static Double getDist(Detail[] details){
+		for(Detail detail: details){
+			if(detail instanceof ProximityDistance){
+				return ((ProximityDistance)detail).getDist();
+			}
+		}
+		return 0.0;
 	}
 }
