@@ -92,6 +92,10 @@ public class AstTransactionGeneratorVisitor implements edu.cmu.cs.dennisc.patter
 	public void visit(org.lgna.project.ast.WhileLoop whileLoop) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(whileLoop);
 	}
+	
+	public void visit(org.lgna.project.ast.MethodInvocation methodInvocation) {
+		
+	}
 
 	//	public void visit(Statement statement) {
 	//		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(statement);

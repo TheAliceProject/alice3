@@ -371,7 +371,7 @@ public class TransactionManager {
 	}
 	public static <T> Transaction createSimulatedTransactionForCascade( TransactionHistory transactionHistory, Cascade<T> cascade ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
-		org.lgna.croquet.history.CascadeCompletionStep< T > completionStep = org.lgna.croquet.history.CascadeCompletionStep.createAndAddToTransaction( rv, cascade, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.history.CompletionStep< Cascade<T> > completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( rv, cascade, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		org.lgna.croquet.edits.Edit edit = null; //todo
 		completionStep.setEdit( edit );
 		return rv;
