@@ -41,57 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package edu.cmu.cs.dennisc.math.animation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayAccess extends Expression {
-	public DeclarationProperty< AbstractType<?,?,?> > arrayType = new DeclarationProperty< AbstractType<?,?,?> >( this );
-	public ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			AbstractType<?,?,?> arrayType = ArrayAccess.this.arrayType.getValue();
-			assert arrayType != null;
-			return arrayType;
-		}
-	};
-	public ExpressionProperty index = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			return JavaType.getInstance( Integer.class );
-		}
-	};
-
-	public ArrayAccess() {
-	}
-	public ArrayAccess( AbstractType<?,?,?> arrayType, Expression array, Expression index ){
-		assert arrayType.isArray();
-		this.arrayType.setValue( arrayType );
-		this.array.setValue( array );
-		this.index.setValue( index );
-	}
-	public ArrayAccess( Class<?> arrayCls, Expression array, Expression index ){
-		this( JavaType.getInstance( arrayCls ), array, index );
+public abstract class Dimension3Animation extends Tuple3Animation< edu.cmu.cs.dennisc.math.Dimension3 > {
+	public Dimension3Animation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Dimension3 v0, edu.cmu.cs.dennisc.math.Dimension3 v1 ) {
+		super( duration, style, v0, v1 );
 	}
 	@Override
-	public AbstractType<?,?,?> getType() {
-		AbstractType<?,?,?> arrayType = this.arrayType.getValue();
-		assert arrayType != null;
-		return arrayType.getComponentType();
-	}
-	@Override
-	public boolean isValid() {
-		Expression arrayExpression = this.array.getValue();
-		if( arrayExpression != null ) {
-			AbstractType< ?,?,? > type = arrayExpression.getType();
-			if( type != null ) {
-				return type.isArray();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	protected edu.cmu.cs.dennisc.math.Dimension3 newE( edu.cmu.cs.dennisc.math.Dimension3 other ) {
+		return new edu.cmu.cs.dennisc.math.Dimension3( other );
 	}
 }

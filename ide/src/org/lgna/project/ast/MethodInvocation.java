@@ -103,6 +103,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		return this.method.getValue().getReturnType();
 	}
 	
+	@Override
 	public boolean isValid() {
 		boolean rv;
 		Expression e = expression.getValue();

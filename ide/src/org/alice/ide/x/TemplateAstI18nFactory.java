@@ -55,9 +55,10 @@ public class TemplateAstI18nFactory extends IdeAstI18nFactory {
 	}
 	private TemplateAstI18nFactory() {
 	}
+	
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
+		return org.alice.ide.MetaDeclarationFauxState.getInstance().getType();
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {

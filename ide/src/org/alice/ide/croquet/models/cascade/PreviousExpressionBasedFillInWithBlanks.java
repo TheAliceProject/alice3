@@ -53,6 +53,9 @@ public abstract class PreviousExpressionBasedFillInWithBlanks< F extends org.lgn
 	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 	}
+	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
+		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
+	}
 	private org.lgna.project.ast.Expression cleanExpression;
 	@Override
 	protected void markClean() {
@@ -73,6 +76,6 @@ public abstract class PreviousExpressionBasedFillInWithBlanks< F extends org.lgn
 	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression, B[] expressions);
 	@Override
 	protected final F createValue( B[] expressions ) {
-		return this.createValue( this.getPreviousExpression(), expressions );
+		return this.createValue( this.createCopyOfPreviousExpression(), expressions );
 	}
 }

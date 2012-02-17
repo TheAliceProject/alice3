@@ -380,7 +380,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 	public org.lgna.project.ast.AbstractCode getFocusedCode() {
-		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationState.getInstance().getValue();
+		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationFauxState.getInstance().getValue();
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			return (org.lgna.project.ast.AbstractCode)declaration;
 		} else {

@@ -65,4 +65,19 @@ public class ArrayLength extends Expression {
 		//return TypeDeclaredInJava.INTEGER_PRIMITIVE_TYPE;
 		return JavaType.INTEGER_OBJECT_TYPE;
 	}
+	
+	@Override
+	public boolean isValid() {
+		Expression arrayExpression = this.array.getValue();
+		if( arrayExpression != null ) {
+			AbstractType< ?,?,? > type = arrayExpression.getType();
+			if( type != null ) {
+				return type.isArray();
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 }

@@ -40,26 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.x;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EditableAstI18nFactory extends AstI18nFactory {
-	private static class SingletonHolder {
-		private static EditableAstI18nFactory projectGroupInstance = new EditableAstI18nFactory( org.alice.ide.IDE.PROJECT_GROUP );
-		private static EditableAstI18nFactory inheritGroupInstance = new EditableAstI18nFactory( org.alice.ide.IDE.INHERIT_GROUP );
-	}
-	public static EditableAstI18nFactory getProjectGroupInstance() {
-		return SingletonHolder.projectGroupInstance;
-	}
-	public static EditableAstI18nFactory getInheritGroupInstance() {
-		return SingletonHolder.inheritGroupInstance;
-	}
+public abstract class MutableAstI18nFactory extends AstI18nFactory {
 	private final org.lgna.croquet.Group group;
-	private EditableAstI18nFactory( org.lgna.croquet.Group group ) {
+	public MutableAstI18nFactory( org.lgna.croquet.Group group ) {
 		this.group = group;
+	}
+	
+	@Override
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
+		return null;
 	}
 	
 	@Override
@@ -110,4 +104,5 @@ public class EditableAstI18nFactory extends AstI18nFactory {
 		abstractStatementPane.setPopupPrepModel( org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
 		return abstractStatementPane;
 	}
+
 }

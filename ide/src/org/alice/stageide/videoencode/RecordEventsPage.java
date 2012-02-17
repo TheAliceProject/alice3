@@ -41,57 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.project.ast;
+package org.alice.stageide.videoencode;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayAccess extends Expression {
-	public DeclarationProperty< AbstractType<?,?,?> > arrayType = new DeclarationProperty< AbstractType<?,?,?> >( this );
-	public ExpressionProperty array = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			AbstractType<?,?,?> arrayType = ArrayAccess.this.arrayType.getValue();
-			assert arrayType != null;
-			return arrayType;
-		}
-	};
-	public ExpressionProperty index = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?,?,?> getExpressionType() {
-			return JavaType.getInstance( Integer.class );
-		}
-	};
-
-	public ArrayAccess() {
-	}
-	public ArrayAccess( AbstractType<?,?,?> arrayType, Expression array, Expression index ){
-		assert arrayType.isArray();
-		this.arrayType.setValue( arrayType );
-		this.array.setValue( array );
-		this.index.setValue( index );
-	}
-	public ArrayAccess( Class<?> arrayCls, Expression array, Expression index ){
-		this( JavaType.getInstance( arrayCls ), array, index );
+public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > { 
+	public RecordEventsPage() {
+		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
 	}
 	@Override
-	public AbstractType<?,?,?> getType() {
-		AbstractType<?,?,?> arrayType = this.arrayType.getValue();
-		assert arrayType != null;
-		return arrayType.getComponentType();
+	protected void localize() {
 	}
 	@Override
-	public boolean isValid() {
-		Expression arrayExpression = this.array.getValue();
-		if( arrayExpression != null ) {
-			AbstractType< ?,?,? > type = arrayExpression.getType();
-			if( type != null ) {
-				return type.isArray();
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( new org.lgna.croquet.components.Label( "todo: event recorder" ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+		return rv;
 	}
 }

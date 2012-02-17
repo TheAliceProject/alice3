@@ -46,15 +46,15 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public class MetaDeclarationState {
+public class MetaDeclarationFauxState {
 	public static interface ValueListener {
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue );
 	};
 
 	private static class SingletonHolder {
-		private static MetaDeclarationState instance = new MetaDeclarationState();
+		private static MetaDeclarationFauxState instance = new MetaDeclarationFauxState();
 	}
-	public static MetaDeclarationState getInstance() {
+	public static MetaDeclarationFauxState getInstance() {
 		return SingletonHolder.instance;
 	}
 	
@@ -63,19 +63,19 @@ public class MetaDeclarationState {
 		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
-			MetaDeclarationState.this.handleIsSceneEditorExpandedChanged();
+			MetaDeclarationFauxState.this.handleIsSceneEditorExpandedChanged();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite > declarationTabListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			MetaDeclarationState.this.handleDeclarationTabChanged();
+			MetaDeclarationFauxState.this.handleDeclarationTabChanged();
 		}
 	};
 
 	private org.lgna.project.ast.AbstractDeclaration prevDeclaration;
-	private MetaDeclarationState() {
+	private MetaDeclarationFauxState() {
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().addValueListener( this.perspectiveListener );
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addValueListener( this.declarationTabListener );
 		this.prevDeclaration = this.getValue();
@@ -88,6 +88,23 @@ public class MetaDeclarationState {
 		} else {
 			org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
+		}
+	}
+	public org.lgna.project.ast.AbstractType< ?,?,? > getType() {
+		org.lgna.project.ast.AbstractDeclaration declaration = this.getValue();
+		if( declaration != null ) {
+			if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
+				org.lgna.project.ast.AbstractType< ?,?,? > type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+				return type;
+			} else if( declaration instanceof org.lgna.project.ast.AbstractMember ) { 
+				org.lgna.project.ast.AbstractMember member = (org.lgna.project.ast.AbstractMember)declaration;
+				return member.getDeclaringType();
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( declaration );
+				return null;
+			}
+		} else {
+			return null;
 		}
 	}
 	

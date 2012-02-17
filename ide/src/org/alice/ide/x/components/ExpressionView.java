@@ -46,9 +46,9 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionView extends AbstractExpressionView {
+public class ExpressionView extends AbstractExpressionView<org.lgna.project.ast.Expression> {
 	public ExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
-		super( expression );
+		super( factory, expression );
 		this.addComponent( factory.createComponent( expression ) );
 	}
 }

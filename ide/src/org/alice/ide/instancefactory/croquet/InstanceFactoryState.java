@@ -67,7 +67,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	public static InstanceFactoryState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.alice.ide.MetaDeclarationState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationState.ValueListener() {
+	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
 			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
 		}
@@ -77,7 +77,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	private InstanceFactory value;
 	private InstanceFactoryState() {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
-		org.alice.ide.MetaDeclarationState.getInstance().addValueListener( declarationListener );
+		org.alice.ide.MetaDeclarationFauxState.getInstance().addValueListener( declarationListener );
 	}
 	private void fallBackToDefaultFactory() {
 		this.setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() );
@@ -146,7 +146,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< InstanceFactory > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.MetaDeclarationState.getInstance().getValue() );
+		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
 
 		rv.add( 
 				this.createFillInMenuComboIfNecessary( 

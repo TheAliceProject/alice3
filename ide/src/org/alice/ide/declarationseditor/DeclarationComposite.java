@@ -76,7 +76,7 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 	public D getDeclaration() {
 		return this.declaration;
 	}
-	
+	public abstract org.lgna.project.ast.AbstractType<?,?,?> getType();
 	public abstract boolean isValid();
 	
 	@Override

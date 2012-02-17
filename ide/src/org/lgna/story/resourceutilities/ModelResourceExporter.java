@@ -189,10 +189,10 @@ public class ModelResourceExporter {
 	public void setJointMap(List<Tuple2<String, String>> jointList)
 	{
 		this.jointList = jointList;
-		if (this.classData == null)
-		{
-			this.classData = ModelResourceExporter.getBestClassDataForJointList(jointList);
-		}
+//		if (this.classData == null)
+//		{
+//			this.classData = ModelResourceExporter.getBestClassDataForJointList(jointList);
+//		}
 	}
 	
 	public void addAttribution(String name, String year)
@@ -771,16 +771,28 @@ public class ModelResourceExporter {
 		if (!sourceDirectory.endsWith("/") && !sourceDirectory.endsWith("\\")) {
 			sourceDirectory += File.separator;
         }
-		File javaFile = createJavaCode(sourceDirectory);
-		File sourceDir = javaFile.getParentFile();
-		
-		String[] args = new String[]{javaFile.getAbsolutePath(), "-target", "1.5", "-classpath", System.getProperty("java.class.path")};
-		PrintWriter pw = new PrintWriter(System.out);
-		int status = com.sun.tools.javac.Main.compile(args, pw);
-		
-		if (status != 0)
-		{
-			System.out.println("BOOM!");
+		if (this.classData != null) {
+			File javaFile = createJavaCode(sourceDirectory);
+			File sourceDir = javaFile.getParentFile();
+			
+			String[] args = new String[]{javaFile.getAbsolutePath(), "-target", "1.5", "-classpath", System.getProperty("java.class.path")};
+			PrintWriter pw = new PrintWriter(System.out);
+			int status = com.sun.tools.javac.Main.compile(args, pw);
+			
+			if (status != 0)
+			{
+				System.out.println("BOOM!");
+			}
+			try
+			{
+				System.out.println("Adding "+sourceDir);
+				add(sourceDir, sourceJarStream, sourceDirectory, false);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				return false;
+			}
 		}
 		
 		File xmlFile = createXMLFile(resourceDirectory);
@@ -788,17 +800,15 @@ public class ModelResourceExporter {
 		List<File> thumbnailFiles = createThumbnails(resourceDirectory);
 		try
 		{
-			System.out.println("Adding "+sourceDir);
-			add(sourceDir, sourceJarStream, sourceDirectory, false);
 			System.out.println("Adding "+resourceDir);
 			add(resourceDir, resourceJarStream, resourceDirectory, true);
-			return true;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
+			return false;
 		}
-		return false;
+		return true;
 	}
 	
 	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos)
