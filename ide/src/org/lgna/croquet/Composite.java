@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Composite< V extends org.lgna.croquet.components.View< ?, ? > > extends Element {
+public abstract class Composite< V extends org.lgna.croquet.components.View< ?, ? > > extends AbstractElement {
 	public Composite( java.util.UUID id ) {
 		super( id );
 		Manager.registerComposite( this );

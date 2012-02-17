@@ -70,10 +70,6 @@ public abstract class PlainDialogOperation extends DialogOperation {
 			rv.append( "Press the <strong>Close</strong> button when you are ready." );
 			return rv;
 		}
-		@Override
-		protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
-			return null;
-		}
 		public PlainDialogOperation getPlainDialogOperation() {
 			return this.plainDialogOperation;
 		}
@@ -82,7 +78,8 @@ public abstract class PlainDialogOperation extends DialogOperation {
 			return new InternalCloseOperationResolver( this.plainDialogOperation );
 		}
 		@Override
-		protected void perform( org.lgna.croquet.history.OperationStep step ) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			step.finish();
 		}
 	}
@@ -94,7 +91,7 @@ public abstract class PlainDialogOperation extends DialogOperation {
 	public synchronized InternalCloseOperation getCloseOperation() {
 		return this.closeOperation;
 	}
-	public String getTutorialCloseNoteText( org.lgna.croquet.history.OperationStep step, UserInformation userInformation ) {
+	public String getTutorialCloseNoteText( org.lgna.croquet.history.CompletionStep<?> step, UserInformation userInformation ) {
 		return "When finished press the <strong>Close</strong> button.";
 	}
 	@Override

@@ -46,50 +46,10 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionModel extends Model {
-	private final Group group;
-	private int ignoreCount = 0;
-
-	public CompletionModel( Group group, java.util.UUID id ) {
-		super( id );
-		this.group = group;
-	}
-	public Group getGroup() {
-		return this.group;
-	}
-
-	protected void pushIgnore() {
-		this.ignoreCount++;
-	}
-	protected void popIgnore() {
-		this.ignoreCount--;
-		assert this.ignoreCount >= 0;
-	}
-	protected boolean isAppropriateToComplete() {
-		return Manager.isInTheMidstOfUndoOrRedo()==false && this.ignoreCount == 0;
-	}
-	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step, UserInformation userInformation ) {
-		this.initializeIfNecessary();
-		org.lgna.croquet.edits.Edit< ? > edit = step.getEdit();
-		if( edit != null ) {
-			return edit.getTutorialTransactionTitle( userInformation );
-		} else {
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			return this.getTutorialNoteText( step, trigger != null ? trigger.getNoteText( userInformation.getLocale() ) : "", edit, userInformation );
-		}
-	}
-	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
-	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
-		return null;
-	}
-	public abstract Iterable< ? extends PrepModel > getPotentialRootPrepModels();
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( "[" );
-		rv.append( this.getGroup() );
-		rv.append( "]" );
-		return rv;
-	}
+public interface CompletionModel extends Model {
+	public Group getGroup();
+	public String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step, UserInformation userInformation );
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
+	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter );
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels();
 }

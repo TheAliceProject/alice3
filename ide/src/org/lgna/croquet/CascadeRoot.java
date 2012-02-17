@@ -163,7 +163,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 
 	public abstract CompletionModel getCompletionModel();
 	public abstract Class< T > getComponentType();
-	public abstract CS createCompletionStep( org.lgna.croquet.triggers.Trigger trigger );
+	public abstract CS createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 	protected abstract org.lgna.croquet.edits.Edit createEdit( CS completionStep, T[] values );
 
 	public abstract void prologue();

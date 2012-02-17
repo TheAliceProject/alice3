@@ -56,7 +56,7 @@ public class ShowWarningOperation extends org.alice.ide.operations.Inconsequenti
 		super( java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" ) );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( true );
 		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( warningPane, "Alice3 is currently under development", org.lgna.croquet.MessageType.WARNING ); 
 	}

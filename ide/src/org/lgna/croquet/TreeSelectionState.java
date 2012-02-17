@@ -179,7 +179,7 @@ class TreeNodeCascade<T> extends Cascade< T > {
 		this.node = node;
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, T[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< T >> completionStep, T[] values ) {
 		assert values.length == 1;
 		this.model.setValue( values[ 0 ] );
 		return null;
@@ -220,7 +220,8 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 			this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.history.OperationStep step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			//todo: create edit
 			this.treeSelectionState.setSelectedNode( this.treeNode );
 			step.finish();

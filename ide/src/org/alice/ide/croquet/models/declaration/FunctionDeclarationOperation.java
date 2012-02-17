@@ -71,7 +71,7 @@ public class FunctionDeclarationOperation extends MethodDeclarationOperation {
 	}
 
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return new org.alice.ide.croquet.components.declaration.FunctionDeclarationPanel( this );
 	}
 }

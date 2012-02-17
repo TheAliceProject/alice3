@@ -77,7 +77,7 @@ public abstract class InArrayInsertOperation< S extends org.lgna.project.ast.Sta
 		return this.createStatement();
 	}
 	@Override
-	protected final org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
+	protected final org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, this.createStatement() );
 	}
 }

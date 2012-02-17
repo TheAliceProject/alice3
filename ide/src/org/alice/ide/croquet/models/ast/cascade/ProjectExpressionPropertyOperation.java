@@ -60,7 +60,8 @@ public abstract class ProjectExpressionPropertyOperation extends org.lgna.croque
 	}
 	protected abstract org.lgna.project.ast.Expression createExpression();
 	@Override
-	protected final void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.lgna.project.ast.Expression value = this.createExpression();
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), value ) );
 	}

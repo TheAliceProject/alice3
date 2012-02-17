@@ -63,7 +63,7 @@ public class ForEachInArrayLoopInsertOperation extends InArrayInsertOperation< o
 		super( java.util.UUID.fromString( "20ddf125-dd22-494b-8f06-889b9d68fc40" ), blockStatementIndexPair );
 	}
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return new org.alice.ide.croquet.components.declaration.ForEachInArrayLoopPanel( this );
 	}
 	@Override

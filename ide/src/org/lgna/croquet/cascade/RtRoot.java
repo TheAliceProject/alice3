@@ -637,8 +637,9 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 	}
 
 	public CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
 		CascadeRoot< T, CS > root = this.getElement();
-		CS completionStep = root.createCompletionStep( trigger );
+		CS completionStep = root.createCompletionStep( transaction, trigger );
 		try {
 			T[] values = this.createValues( root.getComponentType() );
 			root.handleCompletion( completionStep, values );

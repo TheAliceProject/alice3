@@ -66,26 +66,30 @@ public class StepNoteFactory {
 			}
 		} else {
 			Class<?> stepCls = step.getClass();
-			String stepClsName = stepCls.getSimpleName();
-			if( stepCls == org.lgna.croquet.history.OperationStep.class ) {
-				org.lgna.croquet.Operation model = (org.lgna.croquet.Operation)step.getModel();
+			String stepClsName;
+			stepClsName = stepCls.getSimpleName();
+			stepClsName = stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";
+			if( stepCls == org.lgna.croquet.history.CompletionStep.class ) {
+				org.lgna.croquet.CompletionModel model = (org.lgna.croquet.CompletionModel)step.getModel();
 				if( model instanceof org.lgna.croquet.ActionOperation ) {
-					stepClsName = "Action" + stepClsName;
+					stepClsName = "ActionOperationNote";
 				} else if( model instanceof org.lgna.croquet.InputDialogOperation ) {
-					stepClsName = "InputDialog" + stepClsName;
+					stepClsName = "InputDialogOperationNote";
 				} else if( model instanceof org.lgna.croquet.PlainDialogOperation ) {
-					stepClsName = "PlainDialog" + stepClsName;
+					stepClsName = "PlainDialogOperationNote";
 				} else if( model instanceof org.lgna.croquet.PlainDialogOperation.InternalCloseOperation ) {
-					stepClsName = "PlainDialogClose" + stepClsName;
+					stepClsName = "PlainDialogCloseOperationNote";
 				} else if( model instanceof org.lgna.croquet.SerialOperation ) {
-					stepClsName = "Serial" + stepClsName;
+					stepClsName = "SerialOperationNote";
 				} else if( model instanceof org.lgna.croquet.WizardDialogOperation ) {
-					stepClsName = "WizardDialog" + stepClsName;
+					stepClsName = "WizardDialogOperationNote";
+				} else if( model instanceof org.lgna.croquet.Cascade ) {
+					stepClsName = "CascadeNote";
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model ); 
 				}
 			}
-			String noteClsName = PACKAGE_NAME + "." + stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";
+			String noteClsName = PACKAGE_NAME + "." + stepClsName;
 			try {
 				Class<? extends Note<?>> noteCls = (Class<? extends Note<?>>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( noteClsName );
 				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( noteCls, new Class<?>[] { stepCls }, step );

@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.ComponentManager;
+
 /*package-private*/class ComboBoxModel<T> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState< T > listSelectionState;
 
@@ -505,7 +507,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item ) {
-		org.lgna.croquet.components.ItemSelectable< ?, T > itemSelectable = this.getFirstComponent( org.lgna.croquet.components.ItemSelectable.class );
+		org.lgna.croquet.components.ItemSelectable< ?, T > itemSelectable = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
 		} else {
@@ -590,7 +592,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		}
 	}
 	
-	public static final class InternalPrepModel<T> extends PrepModel {
+	public static final class InternalPrepModel<T> extends AbstractPrepModel {
 		private final ListSelectionState< T > listSelectionState;
 		private InternalPrepModel( ListSelectionState< T > listSelectionState ) {
 			super( java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
@@ -623,14 +625,6 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		protected InternalPrepModelResolver<T> createResolver() {
 			return new InternalPrepModelResolver<T>( this.listSelectionState );
 		}
-		
-		//todo
-		@Override
-		public org.lgna.croquet.components.JComponent< ? > getFirstComponent() {
-			return this.listSelectionState.getFirstComponent();
-		}
-		
-		
 		public org.lgna.croquet.components.ComboBox< T > createComboBox() {
 			return new org.lgna.croquet.components.ComboBox< T >( this );
 		}
@@ -661,7 +655,8 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.item = item;
 		}
 		@Override
-		protected void perform( org.lgna.croquet.history.OperationStep step ) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			this.listSelectionState.setValueTransactionlessly( this.item );
 			step.finish();
 		}

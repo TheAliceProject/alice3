@@ -63,7 +63,7 @@ public abstract class RenameDeclarationOperation< N extends org.lgna.project.ast
 		return this.getNameText();
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, String nextValue ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<?> step, String nextValue ) {
 		return new org.alice.ide.croquet.edits.ast.rename.RenameDeclarationEdit( step, declaration, this.getNameText(), nextValue );
 	}
 }

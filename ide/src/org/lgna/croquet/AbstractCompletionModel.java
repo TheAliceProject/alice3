@@ -41,22 +41,55 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class OperationStep extends CompletionStep< org.lgna.croquet.Operation >{
-	public static OperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
-		return new OperationStep( parent, model, trigger, transactionHistory );
+public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
+	private final Group group;
+	private int ignoreCount = 0;
+
+	public AbstractCompletionModel( Group group, java.util.UUID id ) {
+		super( id );
+		this.group = group;
 	}
-	public static OperationStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return createAndAddToTransaction( parent, model, trigger, null );
+	public Group getGroup() {
+		return this.group;
 	}
-	private OperationStep( Transaction parent, org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
-		super( parent, model, trigger, transactionHistory );
+
+	protected void pushIgnore() {
+		this.ignoreCount++;
 	}
-	public OperationStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	protected void popIgnore() {
+		this.ignoreCount--;
+		assert this.ignoreCount >= 0;
+	}
+	protected boolean isAppropriateToComplete() {
+		return Manager.isInTheMidstOfUndoOrRedo()==false && this.ignoreCount == 0;
+	}
+	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step, UserInformation userInformation ) {
+		this.initializeIfNecessary();
+		org.lgna.croquet.edits.Edit< ? > edit = step.getEdit();
+		if( edit != null ) {
+			return edit.getTutorialTransactionTitle( userInformation );
+		} else {
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			return this.getTutorialNoteText( step, trigger != null ? trigger.getNoteText( userInformation.getLocale() ) : "", edit, userInformation );
+		}
+	}
+	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
+	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
+		return null;
+	}
+	public abstract Iterable< ? extends PrepModel > getPotentialRootPrepModels();
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( "[" );
+		rv.append( this.getGroup() );
+		rv.append( "]" );
+		return rv;
 	}
 }

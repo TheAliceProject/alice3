@@ -41,19 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.history;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeCompletionStep< T > extends CompletionStep< org.lgna.croquet.Cascade< T > >{
-	public static <T> CascadeCompletionStep<T> createAndAddToTransaction( Transaction parent, org.lgna.croquet.Cascade<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new CascadeCompletionStep<T>( parent, model, trigger );
-	}
-	private CascadeCompletionStep( Transaction parent, org.lgna.croquet.Cascade< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger, new TransactionHistory() );
-	}
-	public CascadeCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
+public interface StatementCompletionModel extends org.lgna.croquet.CompletionModel {
 }

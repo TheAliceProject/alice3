@@ -47,7 +47,7 @@ package org.lgna.cheshire.stencil.stepnotes;
  * @author Dennis Cosgrove
  */
 public class InputDialogOperationNote extends DialogOperationNote {
-	public InputDialogOperationNote( org.lgna.croquet.history.OperationStep step ) {
+	public InputDialogOperationNote( org.lgna.croquet.history.CompletionStep<?> step ) {
 		super( step );
 	}
 }

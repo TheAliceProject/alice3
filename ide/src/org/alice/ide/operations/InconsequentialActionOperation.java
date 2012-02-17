@@ -51,9 +51,10 @@ public abstract class InconsequentialActionOperation extends org.lgna.croquet.Ac
 	public InconsequentialActionOperation( java.util.UUID id ) {
 		super( INCONSEQUENTIAL_GROUP, id );
 	}
-	protected abstract void performInternal( org.lgna.croquet.history.OperationStep step );
+	protected abstract void performInternal( org.lgna.croquet.history.CompletionStep<?> step );
 	@Override
-	protected final void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		this.performInternal(step);
 		step.finish();
 	}

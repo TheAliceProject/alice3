@@ -58,7 +58,8 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		final org.lgna.project.ast.UserMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.UserMethod.class );
 		final int aIndex = this.getIndexA();
 		final int bIndex = aIndex + 1;

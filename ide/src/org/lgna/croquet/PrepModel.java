@@ -45,17 +45,5 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PrepModel extends Model {
-	public PrepModel( java.util.UUID id ) {
-		super( id );
-	}
-	public abstract Iterable< ? extends Model > getChildren();
-	public boolean isChild( Model model ) {
-		for( Model child : this.getChildren() ) {
-			if( child == model ) {
-				return true;
-			}
-		}
-		return false;
-	}
+public interface PrepModel extends Model {
 }

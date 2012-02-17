@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Perspective extends Element {
+public abstract class Perspective extends AbstractElement {
 	private final Composite< ? > composite;
 	private String name;
 	public Perspective( java.util.UUID id, Composite< ? > composite ) {

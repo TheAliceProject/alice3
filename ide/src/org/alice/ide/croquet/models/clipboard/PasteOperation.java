@@ -56,7 +56,7 @@ public class PasteOperation extends org.alice.ide.operations.InconsequentialActi
 		super( java.util.UUID.fromString( "b6c8d189-3529-4244-9530-d71701c6e75f" ) );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String title = "Paste coming soon";
 		String message = "Insertion is not yet implemented.  Paste is limited to dragging statements from the clipboard in the top right corner.";
 		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION ); 

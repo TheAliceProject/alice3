@@ -61,7 +61,7 @@ public class ThrowBogusExceptionOperation extends org.alice.ide.operations.Incon
 		this.setName( "Throw Bogus Exception..." );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		new Thread() {
 			@Override
 			public void run() {

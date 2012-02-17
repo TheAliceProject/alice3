@@ -67,7 +67,8 @@ public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.cls );
 		step.finish();
 	}

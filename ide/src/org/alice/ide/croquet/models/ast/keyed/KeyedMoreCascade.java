@@ -67,7 +67,7 @@ public class KeyedMoreCascade extends org.lgna.croquet.Cascade<org.lgna.project.
 		return this.argumentListProperty;
 	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.JavaKeyedArgument > completionStep, org.lgna.project.ast.JavaKeyedArgument[] values ) {
+	protected org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.JavaKeyedArgument >> completionStep, org.lgna.project.ast.JavaKeyedArgument[] values ) {
 		org.lgna.project.ast.JavaKeyedArgument javaKeyedArgument = values[ 0 ];
 		javaKeyedArgument.parameter.setValue( this.argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter() );
 		return new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, javaKeyedArgument );

@@ -56,7 +56,7 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 		super( java.util.UUID.fromString( "4caee2f0-7d3c-427c-9816-f277bc2fcecb" ) );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String modifierText;
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			modifierText = "<b>Alt</b>";

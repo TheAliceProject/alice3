@@ -85,7 +85,7 @@ public class TransactionHistoryGenerator {
 			operation = org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( declaringType );
 		}
 
-		org.lgna.croquet.history.OperationStep step = org.lgna.croquet.history.OperationStep.createAndAddToTransaction( rv, operation, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( rv, operation, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit edit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( step, declaringType, userMethod );
 		addEdit( step, edit );
 		return rv;
@@ -177,11 +177,11 @@ public class TransactionHistoryGenerator {
 
 	private static org.lgna.croquet.history.Transaction createOpenAndClosePlainDialogOperationTransaction( org.lgna.croquet.history.TransactionHistory parent, org.lgna.croquet.PlainDialogOperation plainDialogOperation ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( parent );
-		org.lgna.croquet.history.OperationStep step = org.lgna.croquet.history.OperationStep.createAndAddToTransaction( rv, plainDialogOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( rv, plainDialogOperation, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		step.finish();
 
 		// TODO: This may not be right. this should probably be step.getParent()
-		org.lgna.croquet.history.OperationStep step2 = org.lgna.croquet.history.OperationStep.createAndAddToTransaction( step.getTransactionHistory().getActiveTransaction(), plainDialogOperation.getCloseOperation(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.history.CompletionStep<?> step2 = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( step.getTransactionHistory().getActiveTransaction(), plainDialogOperation.getCloseOperation(), new org.lgna.croquet.triggers.SimulatedTrigger() );
 		step2.finish();
 		return rv;
 	}

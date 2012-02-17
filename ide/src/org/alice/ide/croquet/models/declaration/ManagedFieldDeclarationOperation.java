@@ -123,14 +123,14 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		return rv;
 	}
 	
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
 		rv.addUndoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false));
 		return rv;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
 		EditCustomization customization = new EditCustomization();
 		this.customize( step, declaringType, field, customization );
 		return new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( step, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );

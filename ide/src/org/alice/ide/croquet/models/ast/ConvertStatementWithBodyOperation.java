@@ -57,7 +57,8 @@ public abstract class ConvertStatementWithBodyOperation extends org.lgna.croquet
 	}
 	protected abstract org.lgna.project.ast.AbstractStatementWithBody createReplacement();
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.ConvertStatementWithBodyEdit( step, this.createReplacement() ) );
 	}
 }

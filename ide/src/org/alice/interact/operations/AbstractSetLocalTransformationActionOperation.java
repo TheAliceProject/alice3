@@ -70,7 +70,8 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 		}
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
 		assert prevLT != null;

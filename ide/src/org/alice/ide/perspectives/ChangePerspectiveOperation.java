@@ -69,7 +69,8 @@ public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation
 		return this.perspective.getClass();
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( this.perspective );
 		step.finish();
 	}

@@ -100,8 +100,9 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 				this.isCompletion = isCompletion;
 			}
 			@Override
-			protected final void perform(org.lgna.croquet.history.OperationStep step) {
-				org.lgna.croquet.history.OperationStep dialogStep = step.getFirstAncestorStepOfEquivalentModel( this.getControlsComposite().getGatedCommitDialogComposite().getOperation(), org.lgna.croquet.history.OperationStep.class );
+			protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+				org.lgna.croquet.history.CompletionStep<?> dialogStep = step.getFirstAncestorStepOfEquivalentModel( this.getControlsComposite().getGatedCommitDialogComposite().getOperation(), org.lgna.croquet.history.CompletionStep.class );
 				org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
 				dialogStep.putEphemeralDataFor( IS_COMPLETED_KEY, this.isCompletion );
 				dialog.setVisible( false );
@@ -293,8 +294,8 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 		return rv;
 	}
 
-	protected abstract String getExplanation( org.lgna.croquet.history.OperationStep step );
-	protected void updateExplanation( org.lgna.croquet.history.OperationStep step ) {
+	protected abstract String getExplanation( org.lgna.croquet.history.CompletionStep<?> step );
+	protected void updateExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String explanation;
 		if( step != null ) {
 			explanation = this.getExplanation( step );
@@ -312,17 +313,17 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 	}
 
 	public void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-		org.lgna.croquet.history.OperationStep s = null;
+		org.lgna.croquet.history.CompletionStep<?> s = null;
 		if( event != null ) {
 			org.lgna.croquet.history.Node< ? > node = event.getNode();
 			if( node != null ) {
-				s = node.getFirstStepOfModelAssignableTo( GatedCommitDialogOperation.class, org.lgna.croquet.history.OperationStep.class );
+				s = node.getFirstStepOfModelAssignableTo( GatedCommitDialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
 			}
 		}
 		this.updateExplanation( s );
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.OperationStep step ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
 		dialog.setDefaultButton( this.getControlsComposite().getCompleteButton() );
 		step.addListener( this.listener );
@@ -330,7 +331,7 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 		super.handlePreShowDialog( step );
 	}
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.OperationStep step ) {
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		step.removeListener( this.listener );
 		super.handlePostHideDialog( step );
 	}

@@ -358,11 +358,11 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 //	}
 
 	@Override
-	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return new CreateTextPane( this ); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.TextModel > createFieldAndInstance( org.lgna.croquet.history.OperationStep step ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.TextModel > createFieldAndInstance( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//"Create Text"
 		CreateTextPane createTextPane = (CreateTextPane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 		org.lgna.story.TextModel text = createTextPane.createText();
@@ -386,7 +386,7 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 	@Override
-	protected final void epilogue(org.lgna.croquet.history.OperationStep step, boolean isOk) {
+	protected final void epilogue(org.lgna.croquet.history.CompletionStep<?> step, boolean isOk) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.TextModel> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
