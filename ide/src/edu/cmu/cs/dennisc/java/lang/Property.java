@@ -40,39 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
+package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddParameterEdit extends ParameterEdit< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
-	private transient int index;
-	public AddParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
-		super( completionStep, parameter );
+public class Property implements Comparable< Property >{
+	private final String key;
+	private final String value;
+	public Property( String key, String value ) {
+		this.key = key;
+		this.value = value;
 	}
-	public AddParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
+	public int compareTo(Property other) {
+		return this.key.compareTo( other.key );
 	}
-
-	@Override
-	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > getParametersProperty() {
-		return this.getModel().getCode().getRequiredParamtersProperty();
+	public String getKey() {
+		return this.key;
 	}
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			this.index = this.getParametersProperty().size();
-		}
-		this.addParameter( this.index );
-	}
-	@Override
-	protected final void undoInternal() {
-		this.removeParameter( this.index );
-	}
-	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
-		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getParameter(), locale);
-		return rv;
+	public String getValue() {
+		return this.value;
 	}
 }
