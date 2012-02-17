@@ -47,8 +47,17 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public class SetUpMethodGenerator {
+	
+	private static final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private static org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+		if (org.alice.stageide.StageIDE.getActiveInstance() != null 
+				&& org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager() != null
+				&& org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator() != null) {
+			return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+		}
+		else {
+			return expressionCreator;
+		}
 	}
 
 	private static org.lgna.project.ast.Expression createInstanceExpression( boolean isThis, org.lgna.project.ast.AbstractField field ) {

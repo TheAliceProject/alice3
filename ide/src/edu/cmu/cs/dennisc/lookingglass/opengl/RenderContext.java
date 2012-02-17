@@ -50,9 +50,9 @@ import static javax.media.opengl.GL.*;
  */
 public class RenderContext extends Context {
 	private final java.util.Map< GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry >, Integer > displayListMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, TextureBinding > textureBindingMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, ForgettableBinding > textureBindingMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.List< Integer > toBeForgottenDisplayLists = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.List< TextureBinding > toBeForgottenTextures = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< ForgettableBinding > toBeForgottenTextures = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private int lastTime_nextLightID = GL_LIGHT0;
 	private int nextLightID;
@@ -211,7 +211,7 @@ public class RenderContext extends Context {
 		if( N > 0 ) {
 			synchronized( this.toBeForgottenTextures ) {
 				//java.nio.IntBuffer ids = java.nio.IntBuffer.allocate( N );
-				for( TextureBinding toBeForgottenTexture : this.toBeForgottenTextures ) {
+				for( ForgettableBinding toBeForgottenTexture : this.toBeForgottenTextures ) {
 					//toBeForgottenTexture.destroy( this.gl );
 					toBeForgottenTexture.forget( this );
 					//ids.put( toBeForgottenTexture );
@@ -401,7 +401,7 @@ public class RenderContext extends Context {
 		forgetGeometryAdapter( geometryAdapter, true );
 	}
 
-	private void forgetTextureBindingID( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, TextureBinding value, boolean removeFromMap ) {
+	private void forgetTextureBindingID( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, ForgettableBinding value, boolean removeFromMap ) {
 		if( value != null ) {
 			this.toBeForgottenTextures.add( value );
 			if( removeFromMap ) {

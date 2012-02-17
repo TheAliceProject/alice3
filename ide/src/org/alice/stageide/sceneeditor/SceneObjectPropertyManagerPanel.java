@@ -64,6 +64,9 @@ import org.alice.stageide.properties.ModelSizeAdapter;
 import org.alice.stageide.properties.MoveableTurnableTranslationAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.alice.stageide.properties.PaintPropertyAdapter;
+import org.alice.stageide.properties.RoomCeilingPaintPropertyAdapter;
+import org.alice.stageide.properties.RoomFloorPaintPropertyAdapter;
+import org.alice.stageide.properties.RoomWallPaintPropertyAdapter;
 import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.alice.stageide.properties.TextFontPropertyAdapter;
 import org.alice.stageide.properties.TextValuePropertyAdapter;
@@ -86,6 +89,7 @@ import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.GroundImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ModelImp;
+import org.lgna.story.implementation.RoomImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.implementation.TextModelImp;
@@ -292,6 +296,27 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				if (entityImp instanceof BillboardImp)
 				{
 					return new BillboardFrontPaintPropertyAdapter((BillboardImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setWallPaint"))
+			{
+				if (entityImp instanceof RoomImp)
+				{
+					return new RoomWallPaintPropertyAdapter((RoomImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setFloorPaint"))
+			{
+				if (entityImp instanceof RoomImp)
+				{
+					return new RoomFloorPaintPropertyAdapter((RoomImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setCeilingPaint"))
+			{
+				if (entityImp instanceof RoomImp)
+				{
+					return new RoomCeilingPaintPropertyAdapter((RoomImp)entityImp, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setFont"))

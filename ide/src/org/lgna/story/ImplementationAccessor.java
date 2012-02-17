@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -122,7 +123,13 @@ public class ImplementationAccessor {
 				mapImagePaintToTexture.put( imagePaint, rv );
 			}
 			return rv;
-		} else {
+		} else if (paint instanceof edu.cmu.cs.dennisc.nebulous.NebulousPaint) {
+			edu.cmu.cs.dennisc.nebulous.NebulousPaint nPaint = (edu.cmu.cs.dennisc.nebulous.NebulousPaint)paint;
+			edu.cmu.cs.dennisc.nebulous.NebulousTexture nTexture = nPaint.getTexture();
+			nTexture.setMipMappingDesired(true);
+			return nTexture;
+		}
+		else {
 			return defaultValue;
 		}
 	}

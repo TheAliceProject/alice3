@@ -65,7 +65,7 @@ class MyOgre extends MyBiped {
 
 class MyArmoire extends Prop {
 	public MyArmoire() {
-		super( org.lgna.story.resources.prop.Helicopter.VEHICLE_HELICOPTER );
+		super( org.lgna.story.resources.prop.BowlingPin.BOWLING_PIN );
 	}
 	public Joint getLeftDoor() {
 		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );

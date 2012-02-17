@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public final class TextureBinding {
+public final class TextureBinding implements ForgettableBinding{
 	//todo: investigate shared drawables
 	private static class Data {
 		private com.sun.opengl.util.texture.Texture texture;
