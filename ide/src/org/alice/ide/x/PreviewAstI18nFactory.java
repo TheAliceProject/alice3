@@ -46,7 +46,7 @@ package org.alice.ide.x;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewAstI18nFactory extends IdeAstI18nFactory {
+public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
 	private static class SingletonHolder {
 		private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
 	}
@@ -56,25 +56,7 @@ public class PreviewAstI18nFactory extends IdeAstI18nFactory {
 	private PreviewAstI18nFactory() {
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return this.createExpressionPane( expressionProperty.getValue() );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
-		return new org.alice.ide.preview.ArgumentListPropertyPane( this, argumentListProperty );
-	}
-	
-	// todo: investigate
-	// this epic hack was inserted to account for menu item icons returning a size of 0,0
-	// dennisc
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
-		return new org.lgna.croquet.components.LineAxisPanel( component );
-	}
-	
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
-		//todo
-		return new org.lgna.croquet.components.Label();
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
+		return null;
 	}
 }

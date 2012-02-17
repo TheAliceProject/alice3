@@ -204,7 +204,8 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 //		button.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 //		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.setSouthWestComponent( new ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance() ) );
-		this.setNorthEastComponent( new SelectedTypeView() );
+		this.setNorthWestComponent( new SelectedTypeView() );
+		this.setNorthEastComponent( org.alice.stageide.croquet.models.run.RunOperation.getInstance().createButton() );
 	}
 	@Override
 	protected javax.swing.JPanel createJPanel() {

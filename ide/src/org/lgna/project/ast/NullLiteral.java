@@ -61,4 +61,8 @@ public class NullLiteral extends AbstractLiteral {
 		}
 		return rv;
 	}
+	@Override
+	public boolean isValid() {
+		return true;
+	}
 }

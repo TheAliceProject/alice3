@@ -64,7 +64,7 @@ public class ThisPane extends AccessiblePane {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.updateBasedOnFocusedDeclaration( org.alice.ide.MetaDeclarationState.getInstance().getValue() );
+		this.updateBasedOnFocusedDeclaration( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueListener( this.codeSelectionObserver );
 	}
 	@Override

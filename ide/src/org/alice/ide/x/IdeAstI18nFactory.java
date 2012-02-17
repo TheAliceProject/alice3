@@ -54,12 +54,16 @@ public abstract class IdeAstI18nFactory extends AstI18nFactory {
 		} else if( ideExpression instanceof org.alice.ide.ast.PreviousValueExpression ) {
 			return new org.alice.ide.common.PreviousValueExpressionPane( this, (org.alice.ide.ast.PreviousValueExpression)ideExpression );
 		} else if( ideExpression instanceof org.alice.ide.ast.CurrentThisExpression ) {
-			return new org.alice.ide.x.components.ThisExpressionLikeView( (org.alice.ide.ast.CurrentThisExpression)ideExpression );
+			return new org.alice.ide.x.components.ThisExpressionLikeView( this, (org.alice.ide.ast.CurrentThisExpression)ideExpression );
 		} else if( ideExpression instanceof org.alice.ide.ast.SelectedInstanceFactoryExpression ) {
 			//rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
 			return new org.alice.ide.common.SelectedInstanceFactoryExpressionPanel( this );
 		} else {
 			throw new RuntimeException( ideExpression.toString() );
 		}
+	}
+	@Override
+	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+		return this.createExpressionPane( expressionProperty.getValue() );
 	}
 }
