@@ -1,7 +1,6 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.project.ast.AstUtilities;
-import org.lgna.story.event.StartCollisionListener;
 import org.lgna.story.event.TransformationListener;
 
 public class TransformationEventAdapterFillIn extends LambdaExpressionFillIn {

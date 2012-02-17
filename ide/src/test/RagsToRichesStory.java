@@ -65,8 +65,6 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.event.EndOcclusionListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.StartOcclusionEvent;
-import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
 import org.lgna.story.resources.BipedResource;

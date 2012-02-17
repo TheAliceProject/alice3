@@ -8,7 +8,6 @@ import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 
 public class IsInViewDetector {
 
