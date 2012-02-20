@@ -72,6 +72,7 @@ public class NebulousTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.n
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
 
+	@Override
 	public ForgettableBinding bindTexture( RenderContext rc ) {
 		this.nebulousBinding.bind(rc, this.m_element);
 		return this.nebulousBinding;

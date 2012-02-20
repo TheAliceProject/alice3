@@ -37,8 +37,9 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData DOG_CLASS_DATA = new ModelClassData(org.lgna.story.resources.DogResource.class, "org.lgna.story.resources.dog", QUADRUPED_BASE_CLASS_DATA);
 	public static final ModelClassData CAMEL_CLASS_DATA = new ModelClassData(org.lgna.story.resources.CamelResource.class, "org.lgna.story.resources.camel", QUADRUPED_BASE_CLASS_DATA);
 	public static final ModelClassData HORSE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.HorseResource.class, "org.lgna.story.resources.horse", QUADRUPED_BASE_CLASS_DATA);
+	public static final ModelClassData ROOM_CLASS_DATA = new ModelClassData(org.lgna.story.resources.RoomResource.class, "org.lgna.story.resources.room", PROP_BASE_CLASS_DATA);
 	
-	public static final ModelClassData TABLE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.TableResource.class, "org.lgna.story.resources.table", PROP_BASE_CLASS_DATA);
+//	public static final ModelClassData TABLE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.TableResource.class, "org.lgna.story.resources.table", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData BED_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BedResource.class, "org.lgna.story.resources.bed", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData ARMOIRE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.ArmoireResource.class, "org.lgna.story.resources.armoire", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData BOOKCASE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BookcaseResource.class, "org.lgna.story.resources.bookcase", PROP_BASE_CLASS_DATA);
