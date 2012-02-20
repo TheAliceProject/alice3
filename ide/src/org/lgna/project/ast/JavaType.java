@@ -66,6 +66,40 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	
 	public static final JavaType OBJECT_TYPE = getInstance( Object.class );
 
+	private static java.util.Map< JavaType, JavaType > mapPrimitiveToWrapper = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();;
+	static {
+		addPrimitiveToWrapper( Void.TYPE, Void.class );
+		addPrimitiveToWrapper( Boolean.TYPE, Boolean.class );
+		addPrimitiveToWrapper( Byte.TYPE, Byte.class );
+		addPrimitiveToWrapper( Character.TYPE, Character.class );
+		addPrimitiveToWrapper( Short.TYPE, Short.class );
+		addPrimitiveToWrapper( Integer.TYPE, Integer.class );
+		addPrimitiveToWrapper( Long.TYPE, Long.class );
+		addPrimitiveToWrapper( Float.TYPE, Float.class );
+		addPrimitiveToWrapper( Double.TYPE, Double.class );
+	}
+	private static void addPrimitiveToWrapper( Class<?> primitiveCls, Class<?> wrapperCls ) {
+		mapPrimitiveToWrapper.put( JavaType.getInstance( primitiveCls ), JavaType.getInstance( wrapperCls ) );
+	}
+	/*package-private*/ static AbstractType< ?,?,? > getWrapperTypeIfNecessary( AbstractType< ?,?,? > type ) {
+		if( type instanceof JavaType ) {
+			JavaType javaType = (JavaType)type;
+			if( javaType.isPrimitive() ) {
+				JavaType wrapperType = mapPrimitiveToWrapper.get( javaType );
+				if( wrapperType != null ) {
+					return wrapperType;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( type );
+					return type;
+				}
+			} else {
+				return type;
+			}
+		} else {
+			return type;
+		}
+	}
+
 	public static JavaType getInstance( ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {
 			JavaType rv = s_mapReflectionProxyToJava.get( classReflectionProxy );
@@ -357,6 +391,12 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		return AccessLevel.get( cls.getModifiers() );
 	}
 
+	@Override
+	public boolean isPrimitive() {
+		Class< ? > cls = this.classReflectionProxy.getReification();
+		assert cls != null;
+		return cls.isPrimitive();
+	}
 	@Override
 	public boolean isInterface() {
 		Class< ? > cls = this.classReflectionProxy.getReification();

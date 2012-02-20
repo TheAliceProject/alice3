@@ -165,6 +165,10 @@ public class UserArrayType extends AbstractType {
 		return m_leafType.getAccessLevel();
 	}
 	@Override
+	public boolean isPrimitive() {
+		return false;
+	}
+	@Override
 	public boolean isInterface() {
 		//todo?
 		return m_leafType.isInterface();

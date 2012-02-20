@@ -43,34 +43,11 @@
 
 package org.lgna.project.ast;
 
-//todo: add generic capability?
+//todo: add generic capability
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractType<C extends AbstractConstructor, M extends AbstractMethod, F extends AbstractField> extends AbstractAccessibleDeclaration {
-	private static java.util.Map< Class<?>, Class<?>> s_mapPrimitiveToWrapper;
-	static {
-		s_mapPrimitiveToWrapper = new java.util.HashMap< Class<?>, Class<?>>();
-		s_mapPrimitiveToWrapper.put( Void.TYPE, Void.class );
-		s_mapPrimitiveToWrapper.put( Boolean.TYPE, Boolean.class );
-		s_mapPrimitiveToWrapper.put( Byte.TYPE, Byte.class );
-		s_mapPrimitiveToWrapper.put( Character.TYPE, Character.class );
-		s_mapPrimitiveToWrapper.put( Short.TYPE, Short.class );
-		s_mapPrimitiveToWrapper.put( Integer.TYPE, Integer.class );
-		s_mapPrimitiveToWrapper.put( Long.TYPE, Long.class );
-		s_mapPrimitiveToWrapper.put( Float.TYPE, Float.class );
-		s_mapPrimitiveToWrapper.put( Double.TYPE, Double.class );
-	}
-	private static Class<?> getClsWrapperIfNecessary( JavaType typeDeclaredInJava ) { 
-		Class<?> rv = typeDeclaredInJava.getClassReflectionProxy().getReification();
-		assert rv != null : typeDeclaredInJava;
-		if( rv.isPrimitive() ) {
-			rv = s_mapPrimitiveToWrapper.get( rv );
-			assert rv != null;
-		}
-		return rv;
-	}
-	
 	public JavaType getFirstEncounteredJavaType() {
 		AbstractType<?,?,?> type = this; 
 		while( type instanceof JavaType == false ) {
@@ -78,26 +55,32 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		}
 		return (JavaType)type;
 	}
-//	public Class<?> getFirstClassEncounteredDeclaredInJava() {
-//		return getFirstTypeEncounteredDeclaredInJava().getCls();
-//	}
-	public boolean isAssignableFrom( AbstractType<?,?,?> other ) {
+	//todo
+	//protected abstract boolean isAssignableFromType( AbstractType<?,?,?> other );
+	protected boolean isAssignableFromType( AbstractType<?,?,?> other ) {
+		JavaType thisTypeDeclaredInJava = this.getFirstEncounteredJavaType();
+		JavaType otherTypeDeclaredInJava = other.getFirstEncounteredJavaType();
+		return thisTypeDeclaredInJava.getClassReflectionProxy().getReification().isAssignableFrom( otherTypeDeclaredInJava.getClassReflectionProxy().getReification() );
+	}
+	
+	public final boolean isAssignableFrom( AbstractType<?,?,?> other ) {
 		if( other != null ) {
-			JavaType thisTypeDeclaredInJava = this.getFirstEncounteredJavaType();
-			JavaType otherTypeDeclaredInJava = other.getFirstEncounteredJavaType();
-			return getClsWrapperIfNecessary( thisTypeDeclaredInJava ).isAssignableFrom( getClsWrapperIfNecessary( otherTypeDeclaredInJava ) );
+			return JavaType.getWrapperTypeIfNecessary( this ).isAssignableFromType( JavaType.getWrapperTypeIfNecessary( other ) );
 		} else {
-			//todo?
 			return false;
 		}
 	}
-	public boolean isAssignableFrom( Class<?> other ) {
+	public final boolean isAssignableFrom( Class<?> other ) {
 		return isAssignableFrom( JavaType.getInstance( other ) );
 	}
-	public boolean isAssignableTo( AbstractType<?,?,?> other ) {
-		return other.isAssignableFrom( this );
+	public final boolean isAssignableTo( AbstractType<?,?,?> other ) {
+		if( other != null ) {
+			return other.isAssignableFrom( this );
+		} else {
+			return false;
+		}
 	}
-	public boolean isAssignableTo( Class<?> other ) {
+	public final boolean isAssignableTo( Class<?> other ) {
 		return isAssignableTo( JavaType.getInstance( other ) );
 	}
 
@@ -111,6 +94,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 	public abstract java.util.ArrayList< M > getDeclaredMethods();
 	public abstract java.util.ArrayList< F > getDeclaredFields();
 
+	public abstract boolean isPrimitive();
 	public abstract boolean isInterface();
 	public abstract boolean isStatic();
 	//cannot be final and abstract
