@@ -1,12 +1,5 @@
 package org.alice.stageide.cascade.fillerinners;
 
-import java.util.List;
-
-import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
-import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.project.annotations.ValueDetails;
-import org.lgna.project.ast.Expression;
-
 public class ExitProximityEventListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	public ExitProximityEventListenerFillerInner() {
 		super( org.lgna.story.event.ExitProximityListener.class );

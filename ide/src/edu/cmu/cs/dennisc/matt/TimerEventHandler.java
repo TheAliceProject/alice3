@@ -8,7 +8,6 @@ import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
-import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileContingencyListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;

@@ -9,7 +9,6 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.story.AddMouseButtonListener;
 import org.lgna.story.Scene;
-import org.lgna.story.event.MouseClickListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 

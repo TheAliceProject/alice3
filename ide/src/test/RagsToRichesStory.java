@@ -44,7 +44,6 @@ package test;
 
 import java.awt.Component;
 
-import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
@@ -60,13 +59,10 @@ import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.event.ComesIntoViewEvent;
-import org.lgna.story.event.EnterViewListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimerEvent;
 import org.lgna.story.event.WhileInViewListener;
-import org.lgna.story.event.WhileOcclusionListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;

@@ -2,8 +2,6 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.util.ArrayList;
 
-import org.lgna.story.AddEnterViewListener;
-import org.lgna.story.AddTimerEventListener;
 import org.lgna.story.Entity;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
