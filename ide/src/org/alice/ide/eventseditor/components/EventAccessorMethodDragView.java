@@ -40,35 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.eventseditor;
+package org.alice.ide.eventseditor.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineAxisPanel {
-	private final org.lgna.project.ast.AbstractCode code;
-	public EventAccessorMethodsPanel( org.lgna.project.ast.AbstractCode code ) {
-		this.code = code;
-
-		
-		for( org.lgna.project.ast.AbstractParameter parameter : this.code.getRequiredParameters() ) {
-			this.addComponentsForParameter( parameter );
-		}
+public class EventAccessorMethodDragView extends org.alice.ide.common.ExpressionLikeSubstance {
+	public EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel dragModel ) {
+		super( dragModel );
+		this.addComponent( new org.lgna.croquet.components.Label( dragModel.getMethod().getName() ) );
 	}
-	
-	private void addComponentsForParameter( org.lgna.project.ast.AbstractParameter parameter ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = parameter.getValueType();
-		this.addComponent( new org.lgna.croquet.components.Label( type.getName() ) );
-		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			if( method.isFunction() ) {
-				this.addComponent( new org.alice.ide.members.components.templates.FunctionInvocationTemplate( method ) );
-				this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
-			}
-//			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-//			label.setText( method.getName() );
-//			label.makeStandOut();
-//			this.addComponent( label );
-		}
+	@Override
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+		org.alice.ide.eventseditor.ParameterAccessorMethodDragModel dragModel = (org.alice.ide.eventseditor.ParameterAccessorMethodDragModel)this.getModel();
+		return dragModel.getType();
 	}
-
 }

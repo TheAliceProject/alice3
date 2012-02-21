@@ -77,7 +77,8 @@ public class EventListenerComponent extends BorderPanel {
 				
 				LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
 						new Label( singleAbstractMethod.getName(), TextWeight.BOLD ), 
-						new org.alice.ide.eventseditor.EventAccessorMethodsPanel( lambda ) 
+						org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+						new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda ) 
 				);
 				BorderPanel codeContainer = new BorderPanel();
 				StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );

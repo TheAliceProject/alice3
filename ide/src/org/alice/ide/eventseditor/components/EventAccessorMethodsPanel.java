@@ -40,23 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.cascade.adapters;
-
-import org.lgna.story.event.TimeListener;
+package org.alice.ide.eventseditor.components;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn{
-	
-	private static class SingletonHolder {
-		private static TimerEventListenerAdapterFillIn instance = new TimerEventListenerAdapterFillIn();
+public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineAxisPanel {
+	public EventAccessorMethodsPanel( org.lgna.project.ast.AbstractCode code ) {
+		for( org.lgna.project.ast.AbstractParameter parameter : code.getRequiredParameters() ) {
+			this.addComponentsForParameter( parameter );
+		}
 	}
-	public static TimerEventListenerAdapterFillIn getInstance() {
-		return SingletonHolder.instance;
+	private void addComponentsForParameter( org.lgna.project.ast.AbstractParameter parameter ) {
+		org.lgna.project.ast.AbstractType<?,?,?> type = parameter.getValueType();
+		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+			if( method.isFunction() ) {
+				this.addComponent( new EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
+				this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+			}
+		}
 	}
 
-	public TimerEventListenerAdapterFillIn() {
-		super( java.util.UUID.fromString( "0c3b6e28-affd-43a6-b646-acf28adf7cbe" ), TimeListener.class );
-	}
 }
