@@ -54,7 +54,37 @@ import edu.cmu.cs.dennisc.nebulous.NebulousTexture;
 
 public class Room extends Entity implements MutableRider, Visual {
 	public static enum WallAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
-		COOL_WALL;
+		BLUE_STRIPE_WITH_WOOD_TRIM,
+		BLUE_STRIPE_WITH_WHITE_TRIM,
+		BLUE_STRIPE_WITH_WOOD_COFFER,
+		BLUE_STRIPE_WITH_WHITE_COFFER,
+		BLUE_STRIPE_WITH_WOOD_BEAD,
+		BLUE_STRIPE_WITH_WHITE_BEAD,
+		STARS,
+		BRICK,
+		GREY_STRIPE,
+		GREY_STRIPE_WITH_COFFER,
+		YELLOW_STRIPE,
+		YELLOW_STRIPE_WITH_COFFER,
+		YELLOW_STRIPE_WITH_BEAD,
+		GOLD_FAN,
+		GOLD_FAN_WITH_COFFER,
+		GREEN_STRIPE,
+		GREEN_STRIPE_WITH_COFFER,
+		GREEN_STRIPE_WITH_BEAD,
+		BUNNIES_YELLOW,
+		BUNNIES_PURPLE,
+		BUNNIES_PINK,
+		TEAL,
+		TEAL_WITH_BEAD,
+		YELLOW,
+		YELLOW_WITH_BEAD,
+		PURPLE,
+		PURPLE_WITH_BEAD,
+		BLUE,
+		BLUE_WITH_BEAD,
+		SALMON,
+		SALMON_WITH_BEAD;
 		
 		private NebulousTexture nebulousTexture;
 		public NebulousTexture getTexture() {
@@ -66,7 +96,26 @@ public class Room extends Entity implements MutableRider, Visual {
 	}
 	
 	public static enum FloorAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
-		COOL_WOOD_FLOOR;
+		BLACK_CHECKER,
+		BLUE_CHECKER,
+		BLUE_SQUARES,
+		BLACK_TILES,
+		WHITE_TILES,
+		PAW_PRINT_CARPET,
+		BLUE_STAR_CARPET,
+		RED_STAR_CARPET,
+		RED_CARPET,
+		BLUE_CARPET,
+		GOLD_CARPET,
+		LEAF_CARPET,
+		GREEN_TILE,
+		RED_TILE,
+		BLUE_TILE,
+		REDWOOD,
+		WOOD_ZIG_ZAG,
+		WOOD_SQUARES,
+		MOROCCAN_TILES,
+		WOOD_DIAMOND;
 		
 		private NebulousTexture nebulousTexture;
 		public NebulousTexture getTexture() {
@@ -78,7 +127,26 @@ public class Room extends Entity implements MutableRider, Visual {
 	}
 	
 	public static enum CeilingAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
-		CHECKERS_CEILING;
+		BLACK_CHECKER,
+		BLUE_CHECKER,
+		BLUE_SQUARES,
+		BLACK_TILES,
+		WHITE_TILES,
+		PAW_PRINT_CARPET,
+		BLUE_STAR_CARPET,
+		RED_STAR_CARPET,
+		RED_CARPET,
+		BLUE_CARPET,
+		GOLD_CARPET,
+		LEAF_CARPET,
+		GREEN_TILE,
+		RED_TILE,
+		BLUE_TILE,
+		REDWOOD,
+		WOOD_ZIG_ZAG,
+		WOOD_SQUARES,
+		MOROCCAN_TILES,
+		WOOD_DIAMOND;
 		
 		private NebulousTexture nebulousTexture;
 		public NebulousTexture getTexture() {
@@ -89,16 +157,7 @@ public class Room extends Entity implements MutableRider, Visual {
 		}
 	}
 
-	private final org.lgna.story.implementation.RoomImp implementation;
-
-	public Room()
-	{
-		this(org.lgna.story.resources.room.Room.DEFAULT);
-	}
-	
-	public Room( org.lgna.story.resources.RoomResource resource ) {
-		this.implementation = resource.createImplementation( this );
-	}
+	private final org.lgna.story.implementation.RoomImp implementation = new org.lgna.story.implementation.RoomImp(this);
 	
 	@Override
 	/*package-private*/org.lgna.story.implementation.RoomImp getImplementation() {

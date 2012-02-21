@@ -60,13 +60,18 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, org.lgna.story.Color.DARK_BLUE, 0.3, org.lgna.story.Color.WHITE, org.lgna.story.Color.CYAN ),
 		DESERT( org.lgna.story.Ground.SurfaceAppearance.SAND ),
 		MARS( org.lgna.story.Ground.SurfaceAppearance.SAND, org.lgna.story.Color.PINK, 0.3 ),
-		DIRT( org.lgna.story.Ground.SurfaceAppearance.DIRT );
+		DIRT( org.lgna.story.Ground.SurfaceAppearance.DIRT ),
+		ROOM( org.lgna.story.Room.FloorAppearance.WOOD_ZIG_ZAG, org.lgna.story.Room.WallAppearance.GREEN_STRIPE_WITH_BEAD, org.lgna.story.Room.CeilingAppearance.WHITE_TILES);
 		private final org.lgna.story.Ground.SurfaceAppearance surfaceAppearance;
+		private final org.lgna.story.Room.FloorAppearance floorAppearance;
+		private final org.lgna.story.Room.WallAppearance wallAppearance;
+		private final org.lgna.story.Room.CeilingAppearance ceilingAppearance;
 		//private final org.lgna.story.Color atmosphereColor;
 		private final org.lgna.story.Color atmosphereColor;
 		private final double fogDensity;
 		private final org.lgna.story.Color aboveLightColor;
 		private final org.lgna.story.Color belowLightColor;
+		private final boolean isRoom;
 		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor) {
 			this.surfaceAppearance = surfaceAppearance;
 			//this.atmosphereColor = atmosphereColor;
@@ -74,6 +79,10 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 			this.fogDensity = fogDensity;
 			this.aboveLightColor = aboveLightColor;
 			this.belowLightColor = belowLightColor;
+			this.isRoom = false;
+			this.floorAppearance = null;
+			this.wallAppearance = null;
+			this.ceilingAppearance = null;
 		}
 		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor ) {
 			this( surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, null );
@@ -87,9 +96,34 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance ) {
 			this( surfaceAppearance, null );
 		}
+		private Template( org.lgna.story.Room.FloorAppearance floorAppearance, org.lgna.story.Room.WallAppearance wallAppearance, org.lgna.story.Room.CeilingAppearance ceilingAppearance ) {
+			this.surfaceAppearance = null;
+			//this.atmosphereColor = atmosphereColor;
+			this.atmosphereColor = null;
+			this.fogDensity = Double.NaN ;
+			this.aboveLightColor = null;
+			this.belowLightColor = null;
+			this.isRoom = true;
+			this.floorAppearance = floorAppearance;
+			this.wallAppearance = wallAppearance;
+			this.ceilingAppearance = ceilingAppearance;
+		}
 		public org.lgna.story.Ground.SurfaceAppearance getSurfaceAppearance() {
 			return this.surfaceAppearance;
 		}
+		public org.lgna.story.Room.FloorAppearance getFloorAppearance() {
+			return this.floorAppearance;
+		}
+		public org.lgna.story.Room.WallAppearance getWallAppearance() {
+			return this.wallAppearance;
+		}
+		public org.lgna.story.Room.CeilingAppearance getCeilingAppearance() {
+			return this.ceilingAppearance;
+		}
+		public boolean isRoom() {
+			return this.isRoom;
+		}
+		
 //		public org.lgna.story.Color getAtmosphereColor() {
 //			return this.atmosphereColor;
 //		}

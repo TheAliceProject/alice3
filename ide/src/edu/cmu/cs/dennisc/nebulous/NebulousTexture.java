@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.nebulous;
 
+import org.lgna.story.resourceutilities.StorytellingResources;
+
 
 /**
  * @author alice
@@ -51,6 +53,7 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 
 	static {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( edu.cmu.cs.dennisc.nebulous.NebulousTexture.class, edu.cmu.cs.dennisc.nebulous.NebulousTextureAdapter.class );
+		StorytellingResources.getInstance().loadSimsBundles();
 	}
 	
 	private final String m_textureKey;
@@ -65,13 +68,11 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 	public NebulousTexture(String textureKey) {
 		m_textureKey = textureKey;
 		this.initialize(m_textureKey);
-		this.addReference();
 	}
 	public NebulousTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		m_textureKey = binaryDecoder.decodeString();
 		this.initialize(m_textureKey);
-		this.addReference();
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		assert m_textureKey != null;
@@ -81,6 +82,11 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 		return m_textureKey;
 	}
 
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+	
 	@Override
 	public boolean isMipMappingDesired() {
 		return m_isMipMappingDesired;

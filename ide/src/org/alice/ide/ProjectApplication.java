@@ -43,6 +43,8 @@
 
 package org.alice.ide;
 
+import org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -169,11 +171,13 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 				}
 			} else {
 				org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );
-//				org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
-				
-				org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Room.FloorAppearance.COOL_WOOD_FLOOR, org.lgna.story.Room.WallAppearance.COOL_WALL, org.lgna.story.Room.CeilingAppearance.CHECKERS_CEILING,template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
-				
-				
+				org.lgna.project.ast.NamedUserType programType;
+				if (template.isRoom()) {
+					programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+				}
+				else {
+					programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+				}
 				project = new org.lgna.project.Project( programType );
 			}
 		}

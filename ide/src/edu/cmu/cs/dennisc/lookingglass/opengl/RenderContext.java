@@ -506,6 +506,7 @@ public class RenderContext extends Context {
 	}
 
 	protected void renderVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
+		gl.glEnable(GL_REPEAT);
 		if( this.currDiffuseColorTextureAdapter != null ) {
 			if( vertex.textureCoordinate0.isNaN() == false ) {
 				float u = this.currDiffuseColorTextureAdapter.mapU( vertex.textureCoordinate0.u );

@@ -59,9 +59,7 @@ public class BillboardImp extends VisualScaleModelImp {
 		}
 	};
 
-	private class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
-		private org.lgna.story.Paint paint;
-		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
+	private class Face extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
 		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
 		private edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
 				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V ),
@@ -73,7 +71,7 @@ public class BillboardImp extends VisualScaleModelImp {
 		
 		public Face( boolean isFront ) {
 			putInstance( this );
-			putInstance( this.sgAppearance );
+			putInstance( this.getAppearance() );
 			putInstance( this.sgGeometry );
 			this.isFront = isFront;
 			float k = this.getK();
@@ -81,9 +79,7 @@ public class BillboardImp extends VisualScaleModelImp {
 				vertex.normal.set( 0, 0, k );
 			}
 			this.updateAspectRatio( 1.0 );
-			this.sgAppearance.setDiffuseColorTextureClamped( true );
 			this.sgGeometry.vertices.setValue( this.sgVertices );
-			this.frontFacingAppearance.setValue( this.sgAppearance );
 			this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgGeometry } );
 		}
 		
@@ -125,33 +121,13 @@ public class BillboardImp extends VisualScaleModelImp {
 				return +1.0f;
 			}
 		}
-		private edu.cmu.cs.dennisc.texture.Texture getTexture() {
-			return this.sgAppearance.diffuseColorTexture.getValue();
-		}
-		private void setTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
-			this.sgAppearance.diffuseColorTexture.setValue( texture );
-			boolean isDiffuseColorTextureAlphaBlended;
-			if( texture != null ) {
-				isDiffuseColorTextureAlphaBlended = texture.isPotentiallyAlphaBlended();
-			} else {
-				isDiffuseColorTextureAlphaBlended = false;
-			}
-			this.sgAppearance.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
-		}
-		public org.lgna.story.Paint getPaint() {
-			return this.paint;
-		}
-		public void setPaint( org.lgna.story.Paint paint ) {
-			this.sgAppearance.setDiffuseColor( org.lgna.story.ImplementationAccessor.getColor4f( paint, edu.cmu.cs.dennisc.color.Color4f.WHITE ) );
-			this.setTexture( org.lgna.story.ImplementationAccessor.getTexture( paint, null ) );
-		}
 	}
 
 	private final Face sgFrontFace = new Face( true );
 	private final Face sgBackFace = new Face( false );
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.sgFrontFace, this.sgBackFace };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.sgAppearance };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.sgAppearance, this.sgBackFace.sgAppearance };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.getAppearance() };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance() };
 
 	private final org.lgna.story.Billboard abstraction;
 	public BillboardImp( org.lgna.story.Billboard abstraction ) {

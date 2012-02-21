@@ -42,69 +42,179 @@
  */
 package org.lgna.story.implementation;
 
-import org.lgna.story.Paint;
-import org.lgna.story.implementation.JointedModelImp.VisualData;
-import org.lgna.story.implementation.sims2.NebulousVisualData;
-
 /**
  * @author alice
  *
  */
-public class RoomImp extends SimpleModelImp {
+public class RoomImp extends VisualScaleModelImp {
 	
 	public final PaintProperty wallPaint = new PaintProperty( RoomImp.this ) {
 		@Override
 		protected void internalSetValue(org.lgna.story.Paint value) {
-			if (visualData instanceof NebulousVisualData<?>){
-				NebulousVisualData<? extends edu.cmu.cs.dennisc.nebulous.Thing> nebData = (NebulousVisualData<? extends edu.cmu.cs.dennisc.nebulous.Thing>)visualData;
-				edu.cmu.cs.dennisc.nebulous.Thing nebModel = nebData.getNebModel();
-				nebModel.setTexture(value.toString());
-			}
+			walls.setPaint(value);
 		}
 	};
 	
 	public final PaintProperty floorPaint = new PaintProperty( RoomImp.this ) {
 		@Override
 		protected void internalSetValue(org.lgna.story.Paint value) {
-			if (visualData instanceof NebulousVisualData<?>){
-				NebulousVisualData<? extends edu.cmu.cs.dennisc.nebulous.Thing> nebData = (NebulousVisualData<? extends edu.cmu.cs.dennisc.nebulous.Thing>)visualData;
-				edu.cmu.cs.dennisc.nebulous.Thing nebModel = nebData.getNebModel();
-				nebModel.setTexture(value.toString());
-			}
+			floor.setPaint(value);
 		}
 	};
 	
 	public final PaintProperty ceilingPaint = new PaintProperty( RoomImp.this ) {
 		@Override
 		protected void internalSetValue(org.lgna.story.Paint value) {
-			if (visualData instanceof NebulousVisualData<?>){
-				NebulousVisualData<? extends edu.cmu.cs.dennisc.nebulous.Thing> nebData = (NebulousVisualData<? extends edu.cmu.cs.dennisc.nebulous.Thing>)visualData;
-				edu.cmu.cs.dennisc.nebulous.Thing nebModel = nebData.getNebModel();
-				nebModel.setTexture(value.toString());
-			}
+			ceiling.setPaint(value);
 		}
 	};
 	
-	public static interface VisualDataFactory< R extends org.lgna.story.resources.RoomResource > {
-		public R getResource();
-		public VisualData createVisualData( org.lgna.story.implementation.RoomImp roomImplementation );
+	public class WallSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
+		private final edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
+		private final edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ),
+		};
+		
+		public WallSurface( float width, float depth, float height, float xTiling, float zTiling) {
+			for (int i=0; i<4; i++) {
+				edu.cmu.cs.dennisc.math.Vector3f normal;
+				switch (i) {
+				case 0 : { normal = new edu.cmu.cs.dennisc.math.Vector3f(1,0,0); break; }
+				case 1 : { normal = new edu.cmu.cs.dennisc.math.Vector3f(0,0,-1); break; }
+				case 2 : { normal = new edu.cmu.cs.dennisc.math.Vector3f(-1,0,0); break; }
+				case 3 : { normal = new edu.cmu.cs.dennisc.math.Vector3f(0,0,1); break; }
+				default : normal = null;
+				}
+				edu.cmu.cs.dennisc.scenegraph.Vertex topLeft = sgVertices[i*4 + 0];
+				topLeft.normal.set(normal);
+				edu.cmu.cs.dennisc.scenegraph.Vertex topRight = sgVertices[i*4 + 1];
+				topRight.normal.set(normal);
+				edu.cmu.cs.dennisc.scenegraph.Vertex bottomRight = sgVertices[i*4 + 2];
+				bottomRight.normal.set(normal);
+				edu.cmu.cs.dennisc.scenegraph.Vertex bottomLeft = sgVertices[i*4 + 3];
+				bottomLeft.normal.set(normal);
+			}
+			this.setTiling( xTiling, zTiling );
+			this.setSize(width, depth, height);
+			this.sgGeometry.vertices.setValue( this.sgVertices );
+			this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgGeometry } );
+		}
+		
+		public WallSurface() {
+			this(1, 1, 1, 1, 1);
+		}
+		
+		public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry()
+		{
+			return this.sgGeometry;
+		}
+		
+		public void setTiling(float xTiling, float zTiling) {
+			if (xTiling == 1 && zTiling == 1) {
+				this.getAppearance().isDiffuseColorTextureClamped.setValue(true);
+			}
+			else {
+				this.getAppearance().isDiffuseColorTextureClamped.setValue(false);
+			}
+			for (int i=0; i<4; i++) {
+				float tiling;
+				if (i == 0 || i == 2) {
+					tiling = zTiling;
+				}
+				else {
+					tiling = xTiling;
+				}
+				edu.cmu.cs.dennisc.scenegraph.Vertex topLeft = sgVertices[i*4 + 0];
+				topLeft.textureCoordinate0.u = 0;
+				topLeft.textureCoordinate0.v = 1;
+				edu.cmu.cs.dennisc.scenegraph.Vertex topRight = sgVertices[i*4 + 1];
+				topRight.textureCoordinate0.u = tiling;
+				topRight.textureCoordinate0.v = 1;
+				edu.cmu.cs.dennisc.scenegraph.Vertex bottomRight = sgVertices[i*4 + 2];
+				bottomRight.textureCoordinate0.u = tiling;
+				bottomRight.textureCoordinate0.v = 0;
+				edu.cmu.cs.dennisc.scenegraph.Vertex bottomLeft = sgVertices[i*4 + 3];
+				bottomLeft.textureCoordinate0.u = 0;
+				bottomLeft.textureCoordinate0.v = 0;
+			}
+		}
+		
+		public void setSize(float width, float depth, float height) {
+			float x = width / 2;
+			float z = depth / 2;
+			float y = height;
+			edu.cmu.cs.dennisc.math.Vector3f leftVals = new edu.cmu.cs.dennisc.math.Vector3f(0,0,0);
+			edu.cmu.cs.dennisc.math.Vector3f rightVals = new edu.cmu.cs.dennisc.math.Vector3f(0,y,0);
+			for (int i=0; i<4; i++) {
+				
+				switch (i) {
+				case 0 : { leftVals.set(-x, 0, -z); rightVals.set(-x, y, z); } break;
+				case 1 : { leftVals.set(-x, 0, z); rightVals.set(x, y, z); } break;
+				case 2 : { leftVals.set(x, 0, z); rightVals.set(x, y, -z); } break;
+				case 3 : { leftVals.set(x, 0, -z); rightVals.set(-x, y, -z); } break;
+				}
+				edu.cmu.cs.dennisc.scenegraph.Vertex topLeft = sgVertices[i*4 + 0];
+				topLeft.position.set(leftVals.x, y, leftVals.z);
+				edu.cmu.cs.dennisc.scenegraph.Vertex topRight = sgVertices[i*4 + 1];
+				topRight.position.set(rightVals.x, y, rightVals.z);
+				edu.cmu.cs.dennisc.scenegraph.Vertex bottomRight = sgVertices[i*4 + 2];
+				bottomRight.position.set(rightVals.x, 0, rightVals.z);
+				edu.cmu.cs.dennisc.scenegraph.Vertex bottomLeft = sgVertices[i*4 + 3];
+				bottomLeft.position.set(leftVals.x, 0, leftVals.z);
+				
+				System.out.println("Wall "+i+": "+topLeft.position+", "+bottomLeft.position+", "+bottomRight.position+", "+topRight.position);
+			}
+		}
 	}
 	
 	
 	private final org.lgna.story.Room abstraction;
-	private final VisualDataFactory<org.lgna.story.resources.RoomResource> factory;
-	private final VisualData visualData;
+
+	private final WallSurface walls = new WallSurface();
+	private final edu.cmu.cs.dennisc.scenegraph.HorizontalSurface floor = new edu.cmu.cs.dennisc.scenegraph.HorizontalSurface(true);
+	private final edu.cmu.cs.dennisc.scenegraph.HorizontalSurface ceiling = new edu.cmu.cs.dennisc.scenegraph.HorizontalSurface(false);
 	
-	public RoomImp( org.lgna.story.Room abstraction, VisualDataFactory< org.lgna.story.resources.RoomResource > factory ) {
-		this.abstraction = abstraction;
-		this.factory = factory;
-		
-		this.visualData = this.factory.createVisualData( this );
-		this.visualData.setSGParent(this.getSgComposite());
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
-			sgVisual.setParent( this.getSgComposite() );
-		}
+	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.walls, this.floor, this.ceiling };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
+	
+	public RoomImp( org.lgna.story.Room abstraction ) {
+		this(abstraction, 10, 3, 10);
 	}
+	
+	public RoomImp( org.lgna.story.Room abstraction, float width, float height, float depth) {
+		this.abstraction = abstraction;
+		this.internalSetSize(width, height, depth);
+		this.walls.setParent(this.getSgComposite());
+		this.walls.setTiling((float)(width/2), (float)(depth/2));
+		this.floor.setParent(this.getSgComposite());
+		this.floor.setTiling(width/2, depth/2);
+		this.ceiling.setParent(this.getSgComposite());
+		this.ceiling.setTiling(width/2, depth/2);
+	}
+	
+	private void internalSetSize(float width, float height, float depth) {
+		this.walls.setSize(width, depth, height);
+		this.ceiling.setSize(width, depth, height);
+		this.floor.setSize(width, depth, 0);
+	}
+	
+	
 	
 	@Override
 	public org.lgna.story.Room getAbstraction() {
@@ -112,7 +222,20 @@ public class RoomImp extends SimpleModelImp {
 	}
 
 	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+		return this.sgVisuals;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
+		return this.sgPaintAppearances;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
+		return this.sgOpacityAppearances;
+	}
+
+	@Override
 	protected double getBoundingSphereRadius() {
-		return Double.POSITIVE_INFINITY;
+		return this.getAxisAlignedMinimumBoundingBox().getDiagonal() * .5;
 	}
 }
