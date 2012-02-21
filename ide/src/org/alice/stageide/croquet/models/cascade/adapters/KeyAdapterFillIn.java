@@ -43,7 +43,6 @@
 
 package org.alice.stageide.croquet.models.cascade.adapters;
 
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.story.event.KeyPressListener;
 
 /**
@@ -58,12 +57,6 @@ public class KeyAdapterFillIn extends LambdaExpressionFillIn {
 	}
 	
 	private KeyAdapterFillIn() {
-		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ) );
-		this.transientValue = this.createValue();
-	}
-	
-	@Override
-	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(KeyPressListener.class);
+		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ), KeyPressListener.class );
 	}
 }

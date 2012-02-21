@@ -1,6 +1,5 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.story.event.StartOcclusionListener;
 
 public class StartOcclusionEventListenerFillIn extends LambdaExpressionFillIn {
@@ -13,12 +12,6 @@ public class StartOcclusionEventListenerFillIn extends LambdaExpressionFillIn {
 	}
 
 	public StartOcclusionEventListenerFillIn() {
-		super( java.util.UUID.fromString( "3e3f4c80-e82f-4d12-9263-959fdbb76735" ) );
-		this.transientValue = this.createValue();
+		super( java.util.UUID.fromString( "3e3f4c80-e82f-4d12-9263-959fdbb76735" ), StartOcclusionListener.class );
 	}
-	@Override
-	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(StartOcclusionListener.class);
-	}
-
 }

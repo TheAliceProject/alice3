@@ -1,6 +1,5 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.story.event.EndCollisionListener;
 
 public class EndCollisionEventAdapterFillIn extends LambdaExpressionFillIn {
@@ -13,12 +12,6 @@ public class EndCollisionEventAdapterFillIn extends LambdaExpressionFillIn {
 	}
 
 	public EndCollisionEventAdapterFillIn() {
-		super( java.util.UUID.fromString( "d683dcd4-2449-4af2-bb0f-bfca21cbcb37" ) );
-		this.transientValue = this.createValue();
+		super( java.util.UUID.fromString( "d683dcd4-2449-4af2-bb0f-bfca21cbcb37" ), EndCollisionListener.class );
 	}
-	@Override
-	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(EndCollisionListener.class);
-	}
-
 }
