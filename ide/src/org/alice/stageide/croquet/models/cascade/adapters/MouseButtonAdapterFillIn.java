@@ -43,7 +43,6 @@
 
 package org.alice.stageide.croquet.models.cascade.adapters;
 
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.story.event.MouseClickListener;
 
 /**
@@ -57,11 +56,6 @@ public class MouseButtonAdapterFillIn extends LambdaExpressionFillIn {
 		return SingletonHolder.instance;
 	}
 	private MouseButtonAdapterFillIn() {
-		super( java.util.UUID.fromString( "3c9038a4-bb71-4e03-a33a-d17434b13f89" ) );
-		this.transientValue = this.createValue();
-	}
-	@Override
-	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(MouseClickListener.class);
+		super( java.util.UUID.fromString( "3c9038a4-bb71-4e03-a33a-d17434b13f89" ), MouseClickListener.class );
 	}
 }

@@ -58,12 +58,6 @@ public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn{
 	}
 
 	public TimerEventListenerAdapterFillIn() {
-		super( java.util.UUID.fromString( "0c3b6e28-affd-43a6-b646-acf28adf7cbe" ) );
-		this.transientValue = this.createValue();
+		super( java.util.UUID.fromString( "0c3b6e28-affd-43a6-b646-acf28adf7cbe" ), TimeListener.class );
 	}
-	@Override
-	protected org.lgna.project.ast.LambdaExpression createValue() {
-		return AstUtilities.createLambdaExpression(TimeListener.class);
-	}
-
 }

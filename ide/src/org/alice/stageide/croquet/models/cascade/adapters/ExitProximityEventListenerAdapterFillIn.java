@@ -1,6 +1,5 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.story.event.EnterProximityListener;
 
 public class ExitProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn{
@@ -13,12 +12,6 @@ public class ExitProximityEventListenerAdapterFillIn extends LambdaExpressionFil
 	}
 
 	public ExitProximityEventListenerAdapterFillIn() {
-		super( java.util.UUID.fromString( "af4e3b57-e586-48ee-a788-d823000f8d43" ) );
-		this.transientValue = this.createValue();
+		super( java.util.UUID.fromString( "af4e3b57-e586-48ee-a788-d823000f8d43" ), EnterProximityListener.class );
 	}
-	@Override
-	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(EnterProximityListener.class);
-	}
-
 }
