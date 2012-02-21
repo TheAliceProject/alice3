@@ -66,4 +66,8 @@ public class KeyEvent extends AbstractEvent {
 		char ch = this.e.getKeyChar();
 		return Character.isDigit( ch );
 	}
+	
+	protected java.awt.event.KeyEvent getJavaEvent(){
+		return e;
+	}
 }

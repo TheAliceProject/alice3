@@ -8,10 +8,12 @@ import org.lgna.story.TurnDirection;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class ArrowKeyEvent  extends AbstractEvent {
+public class ArrowKeyEvent extends KeyEvent {
+	
 	public static final List<Key> ARROWS = Collections.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
 	private KeyEvent e;
 	public ArrowKeyEvent( KeyEvent e ) {
+		super(e.getJavaEvent());
 		boolean isArrow = false;
 		for ( Key k: ARROWS ) {
 			if( e.isKey(k) ){

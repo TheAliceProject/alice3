@@ -6,13 +6,14 @@ import org.lgna.story.Key;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class NumberKeyEvent extends AbstractEvent {
+public class NumberKeyEvent extends KeyEvent {
 	public static final List<Key> NUMBERS = Collections.newArrayList(
 			Key.NUMPAD0, Key.NUMPAD1, Key.NUMPAD2, Key.NUMPAD3, Key.NUMPAD4, Key.NUMPAD5, Key.NUMPAD6, Key.NUMPAD7, Key.NUMPAD8, Key.NUMPAD9,
 			Key.DIGIT_0, Key.DIGIT_1, Key.DIGIT_2, Key.DIGIT_3, Key.DIGIT_4, Key.DIGIT_5, Key.DIGIT_6, Key.DIGIT_7, Key.DIGIT_8, Key.DIGIT_9
 			);
 	private KeyEvent e;
 	public NumberKeyEvent( KeyEvent e ) {
+		super( e.getJavaEvent() );
 		assert e.isDigit();
 		this.e = e;
 	}
