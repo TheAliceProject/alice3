@@ -40,18 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.x.components;
+package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreationView extends AbstractExpressionView<org.lgna.project.ast.InstanceCreation> {
-	public InstanceCreationView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InstanceCreation instanceCreation ) {
-		super( factory, instanceCreation );
-		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
-		if( prefixPane != null ) {
-			this.addComponent( prefixPane );
-		}
-		this.addComponent( factory.createComponent( instanceCreation ) );
+public class Property implements Comparable< Property >{
+	private final String key;
+	private final String value;
+	public Property( String key, String value ) {
+		this.key = key;
+		this.value = value;
+	}
+	public int compareTo(Property other) {
+		return this.key.compareTo( other.key );
+	}
+	public String getKey() {
+		return this.key;
+	}
+	public String getValue() {
+		return this.value;
 	}
 }

@@ -65,6 +65,10 @@ public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 		super( java.util.UUID.fromString( "b8043e06-495b-4f24-9cfb-0e447d97cc7c" ), code, org.lgna.project.ast.AbstractCode.class );
 	}
 	@Override
+	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
+		return this.getDeclaration().getDeclaringType();
+	}
+	@Override
 	public boolean isValid() {
 		return this.getDeclaration().isValid();
 	}

@@ -479,7 +479,6 @@ public class AstUtilities {
 		return createLambdaExpression( JavaType.getInstance( cls ) );
 	}
 	
-	
 	public static boolean isAddEventListenerMethodInvocationStatement( Statement statement ) {
 		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
@@ -495,5 +494,17 @@ public class AstUtilities {
 		}
 		return false;
 	}
-	
+	public static AbstractType< ?,?,? > getKeywordFactoryType( JavaKeyedArgument argument ) {
+		AbstractParameter parameter = argument.parameter.getValue();
+		if( parameter.isKeyworded() ) {
+			AbstractType< ?,?,? > parameterType = parameter.getValueType();
+			if( parameterType != null && parameterType.isArray() ) {
+				AbstractType< ?,?,? > componentType = parameterType.getComponentType();
+				if( componentType != null ) {
+					return componentType.getKeywordFactoryType();
+				}
+			}
+		}
+		return null;
+	}
 }

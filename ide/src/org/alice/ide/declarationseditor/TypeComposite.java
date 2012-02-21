@@ -65,6 +65,10 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.AbstractType.class );
 	}
 	@Override
+	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
+		return this.getDeclaration();
+	}
+	@Override
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
 		super.customizeTitleComponent( booleanState, button );
 		button.scaleFont( 1.6f );

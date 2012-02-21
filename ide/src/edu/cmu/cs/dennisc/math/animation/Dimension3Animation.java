@@ -40,18 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.x.components;
+
+package edu.cmu.cs.dennisc.math.animation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreationView extends AbstractExpressionView<org.lgna.project.ast.InstanceCreation> {
-	public InstanceCreationView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InstanceCreation instanceCreation ) {
-		super( factory, instanceCreation );
-		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
-		if( prefixPane != null ) {
-			this.addComponent( prefixPane );
-		}
-		this.addComponent( factory.createComponent( instanceCreation ) );
+public abstract class Dimension3Animation extends Tuple3Animation< edu.cmu.cs.dennisc.math.Dimension3 > {
+	public Dimension3Animation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Dimension3 v0, edu.cmu.cs.dennisc.math.Dimension3 v1 ) {
+		super( duration, style, v0, v1 );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.math.Dimension3 newE( edu.cmu.cs.dennisc.math.Dimension3 other ) {
+		return new edu.cmu.cs.dennisc.math.Dimension3( other );
 	}
 }

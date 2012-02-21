@@ -124,10 +124,21 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 	public abstract edu.cmu.cs.dennisc.math.Dimension3 getScale();
 	public abstract void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale );
 	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		if( duration > 0  ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( duration );
+		double actualDuration = this.adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, 0.0 ) ) {
+			this.setScale( scale );
+		} else {
+			class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Dimension3Animation {
+				public ScaleAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Dimension3 scale0, edu.cmu.cs.dennisc.math.Dimension3 scale1 ) {
+					super( duration, style, scale0, scale1 );
+				}
+				@Override
+				protected void updateValue( edu.cmu.cs.dennisc.math.Dimension3 v ) {
+					ModelImp.this.setScale( v );
+				}
+			}
+			this.perform( new ScaleAnimation( duration, style, ModelImp.this.getScale(), scale ) );
 		}
-		this.setScale( scale );
 	}
 
 //	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox()
