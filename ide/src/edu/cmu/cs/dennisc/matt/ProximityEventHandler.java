@@ -138,11 +138,6 @@ public class ProximityEventHandler extends TransformationChangedHandler<Proximit
 			for( Entity m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
 					eventMap.put( m, new HashMap< Entity, LinkedList< ProximityListener >>() );
-//					System.out.println("==a==");
-//					System.out.println(wereClose);
-//					System.out.println("----");
-//					System.out.println(wereClose);
-//					System.out.println("==a==");
 					checkMap.put( m, new LinkedList< Entity >() );
 				}
 				wereClose.get( proximityEventListener ).put( m, new HashMap< Entity, Boolean >() );
@@ -152,12 +147,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Proximit
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( proximityEventListener );
-						System.out.println("==b==");
-						System.out.println(wereClose);
-						System.out.println("----");
 						wereClose.get( proximityEventListener ).get( m ).put( t, false );
-						System.out.println(wereClose);
-						System.out.println("==b==");
 						checkMap.get( m ).add( t );
 					}
 				}

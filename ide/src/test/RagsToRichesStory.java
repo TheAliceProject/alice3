@@ -51,22 +51,22 @@ import org.lgna.story.Color;
 import org.lgna.story.Cone;
 import org.lgna.story.Ground;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.JointedModel;
 import org.lgna.story.Model;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
-import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Program;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.event.EndOcclusionListener;
+import org.lgna.story.event.ComesIntoViewEvent;
+import org.lgna.story.event.EnterViewListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
+import org.lgna.story.event.WhileInViewListener;
+import org.lgna.story.event.WhileOcclusionListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -77,7 +77,6 @@ import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -236,86 +235,32 @@ class SnowScene extends Scene{
 		Model[] list = {ogre, susan};
 		Model[] colListOne = {ogre};
 		Model[] colListTwo = {susan};
-//		this.addStartCollisionListener(new StartCollisionListener() {
-//			public void whenTheseCollide( StartCollisionEvent event) {
-//				((Model) event.getModels().get(1)).move(MoveDirection.UP, 1);
-//				((Model) event.getModels().get(1)).move(MoveDirection.DOWN, 1);
+//		this.addWhileCollisionListener(new WhileCollisionListener() {
+//			public void timeElapsed(TimerEvent e) {
+//				susan.move( MoveDirection.UP, 1.0 );
+//				susan.move( MoveDirection.DOWN, 1.0 );
 //			}
-//		}, colListOne, colListTwo);
-//		this.addEndCollisionListener(new EndCollisionListener() {
-//			public void whenTheseStopColliding( EndCollisionEvent event) {
-//				((Model) event.getModels().get(1)).move(MoveDirection.UP, 1);
-//				((Model) event.getModels().get(1)).move(MoveDirection.DOWN, 1);
-//			}
-//		}, colListOne, colListTwo);
-		this.addTimerEventListener( new TimeListener() {
-			public void timeElapsed(TimerEvent e) {
-				greenCone.move(MoveDirection.UP, 1);
-				greenCone.move(MoveDirection.DOWN, 1);
-			}
-		}, AddTimerEventListener.timerFrequency(0.0), MultipleEventPolicy.ENQUEUE );
-//		this.addLeavesViewEventListener(new LeavesViewEventListener() {
-//			
-//			public void leftView(LeavesViewEvent e) {
-//				susan.move( MoveDirection.UP, 5 );
-//				susan.move( MoveDirection.DOWN, 5 );
-//			}
-//		}, colListOne );
-//		this.addKeyPressListener(new KeyPressListener() {
-//			public void keyPressed(KeyEvent e) {
-//				if(e.isKey(Key.A)){
-////					armoire.move(MoveDirection.UP, 1);
-////					armoire.move(MoveDirection.DOWN, 1);
-//				}
-//			}
-//		}, MultipleEventPolicy.COMBINE );
-//		this.addArrowKeyPressListener(new ArrowKeyPressListener() {
-//			public void keyPressed(ArrowKeyEvent e) {
-//				camera.move(e.getFowardBackwardLeftRightMoveDirection(), 1);
-//			}
-//		}, MultipleEventPolicy.COMBINE );
+//		}, colListOne, colListTwo, AddTimerEventListener.timerFrequency(0), MultipleEventPolicy.IGNORE );
 		this.addObjectMoverFor( ogre );
-		this.addDefaultModelManipulation();
-//		this.addNumberKeyPressListener(new NumberKeyPressListener() {
-//			
-//			public void keyPressed(NumberKeyEvent e) {
-//				ogre.move(MoveDirection.UP, e.getNumber());
-//				ogre.move(MoveDirection.DOWN, e.getNumber());
-//		});
-//		this.addTransformationListener(new TransformationListener() {
-//			
-//			public void whenThisMoves(TransformationEvent e) {
-//				ogre.say( "Hi, I have moved!" );
+//		this.addDefaultModelManipulation();
+//		this.addWhileProximityListener(new WhileProximityListener() {
+//			public void timeElapsed(TimerEvent e) {
+//				susan.move( MoveDirection.UP, 1.0 );
+//				susan.move( MoveDirection.DOWN, 1.0 );
 //			}
-//		}, new Entity[] { blueCone } );
-		this.addEndOcclusionListener(new EndOcclusionListener() {
-			
-			public void theseNoLongerOcclude( EndOcclusionEvent e ) {
-				( ( JointedModel ) e.getBackgroundEntity() ).say( "Get behind me!" );
-			}
-		}, colListOne, colListTwo );
-//		this.addStartOcclusionListener(new StartOcclusionListener() {
-//			
-//			public void whenTheseOcclude( StartOcclusionEvent e ) {
-//				( ( JointedModel ) e.getBackgroundEntity() ).say( "Get behind me!" );
+//		}, colListOne, colListTwo, 1.0 );
+//		this.addWhileOcclusionListener(new WhileOcclusionListener() {
+//			public void timeElapsed(TimerEvent e) {
+//				susan.move( MoveDirection.UP, 1.0 );
+//				susan.move( MoveDirection.DOWN, 1.0 );
 //			}
 //		}, colListOne, colListTwo );
-//		this.addExitProximityEventListener( new ExitProximityListener() {
-//
-//			public void whenTheseMoveApart( ExitProximityEvent e ) {
-//				if( e.getModels().get( 1 ) instanceof Model ) {
-//					((Model)e.getModels().get(1)).move(MoveDirection.UP, 1);
-//					((Model)e.getModels().get(1)).move(MoveDirection.DOWN, 1);
-//				}			
-//			}
-//		}, colListOne, colListTwo, new ProximityDistance( 1.0 ) );
-//		this.addMouseClickOnScreenListener(new MouseClickOnScreenListener() {
-//
-//			public void mouseClicked() {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
+		this.addWhileInViewListener( new WhileInViewListener() {
+			public void timeElapsed(TimerEvent e) {
+				susan.move( MoveDirection.UP, 1.0 );
+				susan.move( MoveDirection.DOWN, 1.0 );
+			}
+		}, colListOne );
 	}
 
 	public void chillInSkiChalet() {

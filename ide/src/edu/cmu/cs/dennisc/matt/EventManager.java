@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.GlobalDragAdapter;
-import org.alice.interact.RuntimeDragAdapter;
 import org.lgna.story.Entity;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
@@ -15,27 +13,26 @@ import org.lgna.story.event.AbstractKeyPressListener;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.CollisionListener;
-import org.lgna.story.event.ProximityListener;
-import org.lgna.story.event.StartCollisionListener;
 import org.lgna.story.event.EnterViewListener;
-import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.ExitViewListener;
+import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MoveWithArrows;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.StartOcclusionListener;
-import org.lgna.story.event.EnterProximityListener;
+import org.lgna.story.event.ProximityListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TransformationListener;
+import org.lgna.story.event.WhileCollisionListener;
+import org.lgna.story.event.WhileInViewListener;
+import org.lgna.story.event.WhileOcclusionListener;
+import org.lgna.story.event.WhileProximityListener;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 public class EventManager {
 
@@ -49,6 +46,8 @@ public class EventManager {
 	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
 	private final TimerEventHandler timer = new TimerEventHandler();
 	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
+	
+	private final TimerContingencyManager contingent = new TimerContingencyManager(timer);
 
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
@@ -77,6 +76,7 @@ public class EventManager {
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
 		scene.addSceneActivationListener( timer );
+		contingent.setScene( scene );
 	}
 
 	public void removeMouseButtonListener( MouseClickListener mouseButtonListener ) {
@@ -206,5 +206,18 @@ public class EventManager {
 //				this.putBonusDataFor( transformable );
 //			}
 		}
+	}
+
+	public void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+		contingent.register( listener, groupOne, groupTwo, frequency, policy );
+	}
+	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
+		contingent.register( listener, groupOne, groupTwo, dist, frequency, policy );
+	}
+	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+		contingent.register( listener, groupOne, groupTwo, frequency, policy );
+	}
+	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Entity> group, Long frequency, MultipleEventPolicy policy ) {
+		contingent.register(listener, group, frequency, policy );
 	}
 }

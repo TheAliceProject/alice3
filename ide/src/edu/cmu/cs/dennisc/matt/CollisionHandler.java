@@ -88,7 +88,7 @@ public class CollisionHandler extends TransformationChangedHandler < CollisionLi
 	protected void nameOfFireCall( CollisionListener listener, CollisionEvent event) {
 		if (listener instanceof StartCollisionListener) {
 			StartCollisionListener startCollisionEvent = (StartCollisionListener) listener;
-			startCollisionEvent.whenTheseCollide( (StartCollisionEvent) event );
+			startCollisionEvent.collisionStarted( (StartCollisionEvent) event );
 		} else if (listener instanceof EndCollisionListener) {
 			EndCollisionListener endCollisionEvent = (EndCollisionListener) listener;
 			endCollisionEvent.whenTheseStopColliding( (EndCollisionEvent) event );

@@ -54,7 +54,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 			wasInView.put( changedEntity, IsInViewDetector.isThisInView( changedEntity, camera ) );
 		}
 	}
-	
+
 	private boolean check( ViewEventListener listener, Entity changedEntity ) {
 		boolean rv = false;
 		boolean thisInView = IsInViewDetector.isThisInView( changedEntity, camera );
@@ -92,7 +92,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 					camera = ImplementationAccessor.getImplementation( m ).getScene().findFirstCamera();
 					camera.getSgComposite().addAbsoluteTransformationListener( this );
 				}
-				wasInView.put( m, IsInViewDetector.isThisInView( m, camera) );
+				wasInView.put( m, false );
 			}
 		}
 		for( Entity entity : entities ){

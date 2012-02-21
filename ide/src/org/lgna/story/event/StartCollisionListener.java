@@ -2,6 +2,6 @@
 
 public interface StartCollisionListener extends CollisionListener{
 	
-	public void whenTheseCollide( StartCollisionEvent e );
+	public void collisionStarted( StartCollisionEvent e );
 	
 }

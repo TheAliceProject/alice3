@@ -12,7 +12,7 @@ public class StartCollisionAdapter extends AbstractAdapter implements StartColli
 		super(context, lambda, userInstance);
 	}
 
-	public void whenTheseCollide(StartCollisionEvent e) {
+	public void collisionStarted(StartCollisionEvent e) {
 		invokeEntryPoint( e );
 	}
 

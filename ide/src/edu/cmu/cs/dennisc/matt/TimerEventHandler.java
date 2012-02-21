@@ -8,6 +8,8 @@ import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimerEvent;
+import org.lgna.story.event.WhileCollisionListener;
+import org.lgna.story.event.WhileContingencyListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
@@ -29,6 +31,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 	};
 	private boolean isEnabled = false;
 	private boolean isActivated = false;
+	private Map<TimeListener, Boolean> activationMap = Collections.newHashMap();
 
 	public void enable() {
 		isEnabled  = true;
@@ -40,6 +43,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 	}
 
 	public void addListener(TimeListener timerEventListener, Long frequency, MultipleEventPolicy policy) {
+		activationMap.put(timerEventListener, true);
 		if(!isEnabled){
 			enable();
 		}
@@ -66,7 +70,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 		}
 	}
 	private boolean timeToFire(TimeListener listener) {
-		return currentTime - mostRecentFire.get(listener) > freqMap.get(listener);
+		return (currentTime - mostRecentFire.get(listener) > freqMap.get(listener) && activationMap.get(listener) );
 	}
 
 	private Long secondsToMills(Long frequency) {
@@ -78,5 +82,13 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 	}
 	public void sceneActivated(SceneActivationEvent e) {
 		this.isActivated  = true;
+	}
+	
+	public void deactivate( WhileContingencyListener listener) {
+		activationMap.put(listener, false);
+	}
+
+	public void activate( WhileContingencyListener listener) {
+		activationMap.put(listener, true);
 	}
 }
