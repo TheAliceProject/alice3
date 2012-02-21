@@ -16,9 +16,4 @@ public class ComesIntoViewEventListenerFillIn extends LambdaExpressionFillIn {
 		super( java.util.UUID.fromString( "d3a7b186-8481-4069-b617-aa14f3f84701" ) );
 		this.transientValue = this.createValue();
 	}
-	@Override
-	protected org.lgna.project.ast.LambdaExpression createValue() { 
-		return AstUtilities.createLambdaExpression(EnterViewListener.class);
-	}
-
 }

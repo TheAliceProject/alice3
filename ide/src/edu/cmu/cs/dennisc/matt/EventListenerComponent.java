@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.matt;
 import javax.swing.BorderFactory;
 
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
-import org.alice.ide.codeeditor.ParametersPane;
 import org.alice.ide.x.components.StatementListPropertyView;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.Component;
@@ -74,9 +73,12 @@ public class EventListenerComponent extends BorderPanel {
 			LambdaExpression lambdaExpression = (LambdaExpression) argument0.expression.getValue();
 			if (lambdaExpression.value.getValue() instanceof UserLambda) {
 				UserLambda lambda = (UserLambda) lambdaExpression.value.getValue();
-				ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
+				//ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
+				
 				LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
-						new Label( singleAbstractMethod.getName(), TextWeight.BOLD ), parametersPane );
+						new Label( singleAbstractMethod.getName(), TextWeight.BOLD ), 
+						new org.alice.ide.eventseditor.EventAccessorMethodsPanel( lambda ) 
+				);
 				BorderPanel codeContainer = new BorderPanel();
 				StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
 				codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );

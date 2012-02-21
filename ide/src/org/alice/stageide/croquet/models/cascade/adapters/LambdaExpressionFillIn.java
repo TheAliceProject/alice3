@@ -2,19 +2,14 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import java.util.UUID;
 
-import org.lgna.project.ast.LambdaExpression;
-
-
 public abstract class LambdaExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.LambdaExpression > {
-
-
-	protected org.lgna.project.ast.LambdaExpression transientValue;
-	
-	public LambdaExpressionFillIn(UUID id) {
+	private final Class<?> listenerCls;
+	private final org.lgna.project.ast.LambdaExpression transientValue;
+	public LambdaExpressionFillIn(UUID id, Class<?> listenerCls) {
 		super(id);
-		// TODO Auto-generated constructor stub
+		this.listenerCls = listenerCls;
+		this.transientValue = this.createValue();
 	}
-	
 	@Override
 	public org.lgna.project.ast.LambdaExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super  org.lgna.project.ast.LambdaExpression,Void > step ) {
 		return this.transientValue;
@@ -28,7 +23,7 @@ public abstract class LambdaExpressionFillIn extends org.alice.ide.croquet.model
 	public boolean isAutomaticallySelectedWhenSoleOption() {
 		return true;
 	}
-
-	protected abstract LambdaExpression createValue();
-	
+	private org.lgna.project.ast.LambdaExpression createValue() { 
+		return org.lgna.project.ast.AstUtilities.createLambdaExpression( this.listenerCls );
+	}
 }

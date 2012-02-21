@@ -40,47 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components.templates;
+package org.alice.ide.eventseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionInvocationTemplate extends org.alice.ide.templates.ExpressionTemplate {
-	private org.lgna.project.ast.AbstractMethod method;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserParameter > parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.UserParameter >() {
-		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserParameter > e ) {
-		}
-		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserParameter > e ) {
-			FunctionInvocationTemplate.this.refresh();
-		}
-	};
-	public FunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		super( org.alice.ide.ast.draganddrop.expression.FunctionInvocationDragModel.getInstance( method ) );
-		this.method = method;
-		if( method instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-			this.setPopupPrepModel( new MethodPopupMenuModel( userMethod ).getPopupPrepModel() );
+public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineAxisPanel {
+	private final org.lgna.project.ast.AbstractCode code;
+	public EventAccessorMethodsPanel( org.lgna.project.ast.AbstractCode code ) {
+		this.code = code;
+
+		
+		for( org.lgna.project.ast.AbstractParameter parameter : this.code.getRequiredParameters() ) {
+			this.addComponentsForParameter( parameter );
 		}
 	}
-	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
-	}
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			this.refresh();
-			((org.lgna.project.ast.UserMethod)this.method).requiredParameters.addListPropertyListener( this.parameterAdapter );
+	
+	private void addComponentsForParameter( org.lgna.project.ast.AbstractParameter parameter ) {
+		org.lgna.project.ast.AbstractType<?,?,?> type = parameter.getValueType();
+		this.addComponent( new org.lgna.croquet.components.Label( type.getName() ) );
+		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+			if( method.isFunction() ) {
+				this.addComponent( new org.alice.ide.members.components.templates.FunctionInvocationTemplate( method ) );
+				this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+			}
+//			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+//			label.setText( method.getName() );
+//			label.makeStandOut();
+//			this.addComponent( label );
 		}
 	}
-	@Override
-	protected void handleUndisplayable() {
-		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			((org.lgna.project.ast.UserMethod)this.method).requiredParameters.removeListPropertyListener( this.parameterAdapter );
-		}
-		super.handleUndisplayable();
-	}
+
 }
