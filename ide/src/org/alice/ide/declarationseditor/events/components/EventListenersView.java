@@ -45,11 +45,13 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 //		BorderPanel panel = new BorderPanel();
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-		StickyBottomScrollPanel panel = new StickyBottomScrollPanel();
+		StickyBottomPanel panel = new StickyBottomPanel();
 //		panel.addComponent( new Label("Initialize Events: "), Constraint.PAGE_START );
 		scroll = new ScrollPane( eventsPanel );
 		scroll.setBorder( null );
 		scroll.setBothScrollBarIncrements( 12, 24 );
+//		scroll.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.ALWAYS );
+//		scroll.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
 		panel.addTop( scroll );
 		
 		LineAxisPanel bottom = new LineAxisPanel( button );

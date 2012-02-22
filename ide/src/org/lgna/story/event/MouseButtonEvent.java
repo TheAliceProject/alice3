@@ -56,7 +56,6 @@ public class MouseButtonEvent extends AbstractEvent {
 	protected java.awt.event.MouseEvent e;
 	protected org.lgna.story.Scene scene;
 	private boolean isPickPerformed;
-	private org.lgna.story.Model partAtMouseLocation;
 	private org.lgna.story.Model modelAtMouseLocation;
 	public MouseButtonEvent( java.awt.event.MouseEvent e, org.lgna.story.Scene scene ) {
 		this.e = e;
@@ -78,10 +77,6 @@ public class MouseButtonEvent extends AbstractEvent {
 						if( pickResult != null ) {
 							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 							if( sgVisual != null ) {
-								org.lgna.story.Entity element = EntityImp.getAbstractionFromSgElement( sgVisual );
-								if( element instanceof org.lgna.story.Model ) {
-									this.partAtMouseLocation = (org.lgna.story.Model)element;
-								}
 								edu.cmu.cs.dennisc.scenegraph.Component sgComponent = sgVisual;
 								while( true ) {
 									edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgComponent.getParent();
@@ -104,10 +99,6 @@ public class MouseButtonEvent extends AbstractEvent {
 			}
 			this.isPickPerformed = true;
 		}
-	}
-	public org.lgna.story.Model getPartAtMouseLocation() {
-		this.pickIfNecessary();
-		return this.partAtMouseLocation;
 	}
 	public org.lgna.story.Model getModelAtMouseLocation() {
 		this.pickIfNecessary();

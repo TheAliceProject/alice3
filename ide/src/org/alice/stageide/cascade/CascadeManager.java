@@ -97,48 +97,48 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 			return super.areEnumConstantsDesired( enumType );
 		}
 	}
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode,
-			org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		rv = super.addCustomFillIns( rv, blankNode, type );
-		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression != null ) {
-			if( type.isAssignableFrom( org.lgna.story.Model.class ) ) {
-				org.lgna.project.ast.UserMethod enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
-				if( enclosingMethod != null ) {
-					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.requiredParameters ) {
-						org.lgna.project.ast.JavaType typeMouseButtonEvent = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.MouseButtonEvent.class );
-						if( parameter.getValueType() == typeMouseButtonEvent ) {
-							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
-							for( String methodName : methodNames ) {
-								org.lgna.project.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
-								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
-							}
-						}
-					}
-				}
-			} else if( type.isAssignableFrom( Boolean.class ) ) {
-				org.lgna.project.ast.UserMethod enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
-				if( enclosingMethod != null ) {
-					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.requiredParameters ) {
-						org.lgna.project.ast.JavaType typeKeyEvent = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.KeyEvent.class );
-						if( parameter.getValueType() == typeKeyEvent ) {
-							{
-								org.lgna.project.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.lgna.story.Key.class );
-								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
-							}
-							String[] methodNames = new String[] { "isLetter", "isDigit" };
-							for( String methodName : methodNames ) {
-								org.lgna.project.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodName );
-								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
-							}
-						}
-					}
-				}
-			}
-		}
-		return rv;
-	}
+//	@Override
+//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode,
+//			org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+//		rv = super.addCustomFillIns( rv, blankNode, type );
+//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+//		if( previousExpression != null ) {
+//			if( type.isAssignableFrom( org.lgna.story.Model.class ) ) {
+//				org.lgna.project.ast.UserMethod enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
+//				if( enclosingMethod != null ) {
+//					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.requiredParameters ) {
+//						org.lgna.project.ast.JavaType typeMouseButtonEvent = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.MouseButtonEvent.class );
+//						if( parameter.getValueType() == typeMouseButtonEvent ) {
+//							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
+//							for( String methodName : methodNames ) {
+//								org.lgna.project.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
+//								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
+//							}
+//						}
+//					}
+//				}
+//			} else if( type.isAssignableFrom( Boolean.class ) ) {
+//				org.lgna.project.ast.UserMethod enclosingMethod = previousExpression.getFirstAncestorAssignableTo( org.lgna.project.ast.UserMethod.class );
+//				if( enclosingMethod != null ) {
+//					for( org.lgna.project.ast.UserParameter parameter : enclosingMethod.requiredParameters ) {
+//						org.lgna.project.ast.JavaType typeKeyEvent = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.event.KeyEvent.class );
+//						if( parameter.getValueType() == typeKeyEvent ) {
+//							{
+//								org.lgna.project.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.lgna.story.Key.class );
+//								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
+//							}
+//							String[] methodNames = new String[] { "isLetter", "isDigit" };
+//							for( String methodName : methodNames ) {
+//								org.lgna.project.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodName );
+//								rv.add( org.alice.ide.croquet.models.cascade.ParameterAccessMethodInvocationFillIn.getInstance( parameter, method ) );
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return rv;
+//	}
 	@Override
 	protected void addBonusFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.AbstractType< ?, ?, ? > selectedType, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 //		if( type.isAssignableFrom( org.lgna.story.Joint.class ) ) {

@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.ScrollPane;
 
-public class StickyBottomScrollPanel extends org.lgna.croquet.components.Panel {
+public class StickyBottomPanel extends org.lgna.croquet.components.Panel {
 
 	private final boolean IS_BORDER_PANEL = false;
 
