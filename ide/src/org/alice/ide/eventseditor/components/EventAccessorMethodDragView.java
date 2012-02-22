@@ -45,14 +45,15 @@ package org.alice.ide.eventseditor.components;
 /**
  * @author Dennis Cosgrove
  */
-public class EventAccessorMethodDragView extends org.alice.ide.common.ExpressionLikeSubstance {
+public class EventAccessorMethodDragView extends org.alice.ide.templates.ExpressionTemplate {
 	public EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel dragModel ) {
 		super( dragModel );
 		this.addComponent( new org.lgna.croquet.components.Label( dragModel.getMethod().getName() ) );
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		org.alice.ide.eventseditor.ParameterAccessorMethodDragModel dragModel = (org.alice.ide.eventseditor.ParameterAccessorMethodDragModel)this.getModel();
-		return dragModel.getType();
+		org.lgna.project.ast.ParameterAccess parameterAccess = new org.lgna.project.ast.ParameterAccess( dragModel.getParameter() );
+		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( parameterAccess, dragModel.getMethod() );
 	}
 }

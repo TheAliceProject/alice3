@@ -53,10 +53,17 @@ public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineA
 	}
 	private void addComponentsForParameter( org.lgna.project.ast.AbstractParameter parameter ) {
 		org.lgna.project.ast.AbstractType<?,?,?> type = parameter.getValueType();
-		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			if( method.isFunction() ) {
-				this.addComponent( new EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
-				this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+		while( type != null ) {
+			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+				if( method.isFunction() ) {
+					this.addComponent( new EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel.getInstance( parameter, method ) ) );
+					this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+				}
+			}
+			if( type.isFollowToSuperClassDesired() ) {
+				type = type.getSuperType();
+			} else {
+				break;
 			}
 		}
 	}
