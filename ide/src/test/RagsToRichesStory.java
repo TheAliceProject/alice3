@@ -59,6 +59,9 @@ import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.event.ArrowKeyEvent;
+import org.lgna.story.event.ArrowKeyEvent.MoveDirectionSpec;
+import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimerEvent;
@@ -237,7 +240,12 @@ class SnowScene extends Scene{
 //				susan.move( MoveDirection.DOWN, 1.0 );
 //			}
 //		}, colListOne, colListTwo, AddTimerEventListener.timerFrequency(0), MultipleEventPolicy.IGNORE );
-		this.addObjectMoverFor( ogre );
+//		this.addObjectMoverFor( ogre );
+		this.addArrowKeyPressListener(new ArrowKeyPressListener() {
+			public void keyPressed(ArrowKeyEvent e) {
+				ogre.move( e.getMoveDirection( MoveDirectionSpec.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
+			}
+		});
 //		this.addDefaultModelManipulation();
 //		this.addWhileProximityListener(new WhileProximityListener() {
 //			public void timeElapsed(TimerEvent e) {
@@ -251,12 +259,12 @@ class SnowScene extends Scene{
 //				susan.move( MoveDirection.DOWN, 1.0 );
 //			}
 //		}, colListOne, colListTwo );
-		this.addWhileInViewListener( new WhileInViewListener() {
-			public void timeElapsed(TimerEvent e) {
-				susan.move( MoveDirection.UP, 1.0 );
-				susan.move( MoveDirection.DOWN, 1.0 );
-			}
-		}, colListOne );
+//		this.addWhileInViewListener( new WhileInViewListener() {
+//			public void timeElapsed(TimerEvent e) {
+//				susan.move( MoveDirection.UP, 1.0 );
+//				susan.move( MoveDirection.DOWN, 1.0 );
+//			}
+//		}, colListOne );
 	}
 
 	public void chillInSkiChalet() {

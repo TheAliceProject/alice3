@@ -10,6 +10,11 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class ArrowKeyEvent extends KeyEvent {
 	
+	public enum MoveDirectionSpec {
+		FORWARD_BACKWARD_LEFT_RIGHT,
+		UP_DOWN_LEFT_RIGHT;
+	};
+	
 	public static final List<Key> ARROWS = Collections.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
 	private KeyEvent e;
 	public ArrowKeyEvent( KeyEvent e ) {
@@ -25,6 +30,13 @@ public class ArrowKeyEvent extends KeyEvent {
 		this.e = e;
 	}
 	
+	public MoveDirection getMoveDirection( MoveDirectionSpec spec ) {
+		if ( spec.equals( MoveDirectionSpec.UP_DOWN_LEFT_RIGHT ) ) {
+			return getUpDownLeftRightMoveDirection();
+		}
+		return getFowardBackwardLeftRightMoveDirection();
+	}
+	
 	public TurnDirection getTurnDirection(){
 		if(e.isKey(Key.A) || e.isKey(Key.LEFT) ){
 			return TurnDirection.LEFT;
@@ -38,7 +50,7 @@ public class ArrowKeyEvent extends KeyEvent {
 		return null;
 	}
 	
-	public MoveDirection getFowardBackwardLeftRightMoveDirection(){
+	private MoveDirection getFowardBackwardLeftRightMoveDirection(){
 		if(e.isKey(Key.A) || e.isKey(Key.LEFT) ){
 			return MoveDirection.LEFT;
 		} else if(e.isKey(Key.S) || e.isKey(Key.DOWN) ){
@@ -51,7 +63,7 @@ public class ArrowKeyEvent extends KeyEvent {
 		return null;
 	}
 	
-	public MoveDirection getUpDownLeftRightMoveDirection(){
+	private MoveDirection getUpDownLeftRightMoveDirection(){
 		if(e.isKey(Key.A) || e.isKey(Key.LEFT) ){
 			return MoveDirection.LEFT;
 		} else if(e.isKey(Key.S) || e.isKey(Key.DOWN) ){
