@@ -47,11 +47,16 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 
 		StickyBottomPanel panel = new StickyBottomPanel();
 //		panel.addComponent( new Label("Initialize Events: "), Constraint.PAGE_START );
-		scroll = new ScrollPane( eventsPanel );
+		scroll = new org.lgna.croquet.components.ScrollPane( eventsPanel ) {
+			@Override
+			protected javax.swing.JScrollPane createAwtComponent() {
+				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalAndVerticalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+			}
+		};
+		scroll.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
+		scroll.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.ALWAYS );
 		scroll.setBorder( null );
 		scroll.setBothScrollBarIncrements( 12, 24 );
-//		scroll.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.ALWAYS );
-//		scroll.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
 		panel.addTop( scroll );
 		
 		LineAxisPanel bottom = new LineAxisPanel( button );
@@ -59,7 +64,10 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		panel.addBottom( bottom );
 		
 		this.addComponent( panel, Constraint.CENTER );
-		this.setBackgroundColor( this.eventsPanel.getBackgroundColor() );
+		
+		java.awt.Color color = this.eventsPanel.getBackgroundColor();
+		this.setBackgroundColor( color );
+		scroll.setBackgroundColor( color );
 		this.addComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView(), Constraint.PAGE_END );
 	}
 	

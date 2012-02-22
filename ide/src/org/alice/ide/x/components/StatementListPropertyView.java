@@ -314,9 +314,14 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 				bottom = 0;
 			}
 		}
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, 16 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, this.getRightBorder() ) );
 //		this.revalidateAndRepaint();
 	}
+	
+	protected int getRightBorder() {
+		return 16;
+	}
+	
 	public boolean isFigurativelyEmpty() {
 		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance;
 	}

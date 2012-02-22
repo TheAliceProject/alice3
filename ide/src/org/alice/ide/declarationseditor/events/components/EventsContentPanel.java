@@ -63,6 +63,10 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 			return 0;
 		}
 		@Override
+		protected int getRightBorder() {
+			return 4;
+		}
+		@Override
 		protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.Statement statement ) {
 			if( statement instanceof ExpressionStatement ) {
 				ExpressionStatement expressionStatement = (ExpressionStatement)statement;

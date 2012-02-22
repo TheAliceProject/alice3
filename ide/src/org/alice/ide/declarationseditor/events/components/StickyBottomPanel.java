@@ -124,6 +124,7 @@ public class StickyBottomPanel extends org.lgna.croquet.components.Panel {
 						}else {
 							breakHeight = insets.bottom;
 						}
+						breakHeight += 10;
 						if (this.top != null) {
 							Component c = this.top;
 							c.setSize(right - left, c.getHeight());
