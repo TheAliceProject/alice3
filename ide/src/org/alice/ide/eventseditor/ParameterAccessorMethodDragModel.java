@@ -65,19 +65,17 @@ public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.dragandd
 //		}
 //	}
 
-	private static class InternalDropModel extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
-		private static class SingletonHolder {
-			private static InternalDropModel instance = new InternalDropModel();
-		}
-		public static InternalDropModel getInstance() {
-			return SingletonHolder.instance;
-		}
-		private InternalDropModel() {
-			super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "9645fc2e-6797-438b-9abd-289255b7d027" ), org.lgna.project.ast.Expression.class, new org.lgna.croquet.CascadeBlank[] {} );
+	private static class InternalDropModel extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
+		private final org.lgna.project.ast.AbstractParameter parameter;
+		private final org.lgna.project.ast.AbstractMethod method;
+		private InternalDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+			super( java.util.UUID.fromString( "9645fc2e-6797-438b-9abd-289255b7d027" ), expressionProperty, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
+			this.parameter = parameter;
+			this.method = method;
 		}
 		@Override
-		protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep, org.lgna.project.ast.Expression[] values ) {
-			return null;
+		protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
+			return org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ParameterAccess( this.parameter ), this.method, expressions );
 		}
 	}
 
@@ -96,7 +94,6 @@ public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.dragandd
 //	private final InternalComposite composite = new InternalComposite( this );
 	private final org.lgna.project.ast.AbstractParameter parameter;
 	private final org.lgna.project.ast.AbstractMethod method;
-
 	private ParameterAccessorMethodDragModel( org.lgna.project.ast.AbstractParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "c41ee1e7-aaea-4fa0-80fe-9b969998acb5" ) );
 		this.parameter = parameter;
@@ -115,7 +112,7 @@ public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.dragandd
 	
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return InternalDropModel.getInstance();
+		return new InternalDropModel( expressionProperty, this.parameter, this.method );
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
