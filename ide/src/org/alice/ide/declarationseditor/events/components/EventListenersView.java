@@ -45,16 +45,22 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 //		BorderPanel panel = new BorderPanel();
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-		StickyBottomPanel panel = new StickyBottomPanel();
-//		panel.addComponent( new Label("Initialize Events: "), Constraint.PAGE_START );
-		scroll = new org.lgna.croquet.components.ScrollPane( eventsPanel ) {
-			@Override
-			protected javax.swing.JScrollPane createAwtComponent() {
-				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalAndVerticalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+		final StickyBottomPanel panel = new StickyBottomPanel();
+		scroll = new org.lgna.croquet.components.ScrollPane( eventsPanel );
+		scroll.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				Object src = e.getSource();
+				if( src instanceof java.awt.Component ) {
+					java.awt.Component awtComponent = (java.awt.Component)src;
+					if( awtComponent.isValid() ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( src );
+						panel.revalidateAndRepaint();
+					}
+				}
 			}
-		};
-		scroll.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		scroll.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.ALWAYS );
+		} );
 		scroll.setBorder( null );
 		scroll.setBothScrollBarIncrements( 12, 24 );
 		panel.addTop( scroll );

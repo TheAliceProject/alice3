@@ -56,7 +56,7 @@ public class StickyBottomPanel extends org.lgna.croquet.components.Panel {
 				}
 
 				public Dimension minimumLayoutSize(Container target) {
-//			    	Logger.outln( "minimumLayoutSize" );
+			    	//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "minimumLayoutSize", target );
 					synchronized (target.getTreeLock()) {
 						Dimension dim = new Dimension(0, 0);
 
@@ -80,7 +80,7 @@ public class StickyBottomPanel extends org.lgna.croquet.components.Panel {
 				}
 
 				public Dimension preferredLayoutSize(Container target) {
-//			    	Logger.outln( "preferredLayoutSize" );
+			    	//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "preferredLayoutSize", target );
 					synchronized (target.getTreeLock()) {
 						Dimension dim = new Dimension(0, 0);
 
@@ -104,8 +104,7 @@ public class StickyBottomPanel extends org.lgna.croquet.components.Panel {
 				}
 
 				public void layoutContainer(Container target) {
-//			    	Logger.outln( "layoutContainer" );
-//					Thread.dumpStack();
+			    	//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "layoutContainer", target );
 					synchronized (target.getTreeLock()) {
 						Insets insets = target.getInsets();
 						int top = insets.top;
@@ -143,7 +142,7 @@ public class StickyBottomPanel extends org.lgna.croquet.components.Panel {
 				}
 
 			    public Dimension maximumLayoutSize(Container target) {
-//			    	Logger.outln( "maximumLayoutSize" );
+			    	//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "maximumLayoutSize", target );
 			        return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 			    }
 			    public float getLayoutAlignmentX(Container parent) {
@@ -153,7 +152,7 @@ public class StickyBottomPanel extends org.lgna.croquet.components.Panel {
 			        return 0.5f;
 			    }
 			    public void invalidateLayout(Container target) {
-//			    	Logger.outln( "invalidateLayout" );
+			    	//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "invalidateLayout", target );
 			    }
 			};
 		}

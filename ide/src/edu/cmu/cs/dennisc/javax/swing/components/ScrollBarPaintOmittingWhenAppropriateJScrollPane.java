@@ -60,7 +60,7 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends j
 		@Override
 		public void paint( java.awt.Graphics g ) {
 			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
-			if( isPaintRequiredFor( this ) || isPaintRequiredFor( otherScrollBar ) ) {
+			if( isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && isPaintRequiredFor( otherScrollBar ) ) ) {
 				super.paint( g );
 			} else {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -69,6 +69,9 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends j
 				g2.fill( clip );
 			}
 		}
+	}
+	protected boolean isPaintRequiredIfOtherRequiresIt() {
+		return true;
 	}
 	private javax.swing.JScrollBar getOtherScrollBar( javax.swing.JScrollBar scrollBar ) {
 		if( scrollBar.getOrientation() == javax.swing.JScrollBar.HORIZONTAL ) {
