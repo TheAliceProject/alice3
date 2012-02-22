@@ -52,7 +52,9 @@ public class Ground extends Entity implements MutableRider, Visual {
 	public static enum SurfaceAppearance implements ImagePaint {
 		GRASS("grass"), 
 		DIRT("dirt"), 
-		SAND("sand"), 
+		SAND("sand"),
+		MARS("mars"),
+		DESERT("desert"),
 		SNOW("snow"), 
 		WATER("water"), 
 		OCEAN_FLOOR("underwater"), 

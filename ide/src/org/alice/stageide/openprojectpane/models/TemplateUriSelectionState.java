@@ -59,7 +59,7 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		SEA_FLOOR( org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.3, org.lgna.story.Color.WHITE, org.lgna.story.Color.CYAN ),
 		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, org.lgna.story.Color.DARK_BLUE, 0.3, org.lgna.story.Color.WHITE, org.lgna.story.Color.CYAN ),
 		DESERT( org.lgna.story.Ground.SurfaceAppearance.SAND ),
-		MARS( org.lgna.story.Ground.SurfaceAppearance.SAND, org.lgna.story.Color.PINK, 0.3 ),
+		MARS( org.lgna.story.Ground.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.3 ),
 		DIRT( org.lgna.story.Ground.SurfaceAppearance.DIRT ),
 		ROOM( org.lgna.story.Room.FloorAppearance.WOOD_ZIG_ZAG, org.lgna.story.Room.WallAppearance.GREEN_STRIPE_WITH_BEAD, org.lgna.story.Room.CeilingAppearance.WHITE_TILES);
 		private final org.lgna.story.Ground.SurfaceAppearance surfaceAppearance;
