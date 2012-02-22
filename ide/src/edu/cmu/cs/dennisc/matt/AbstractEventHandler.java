@@ -1,6 +1,7 @@
 ﻿package edu.cmu.cs.dennisc.matt;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.lgna.common.ComponentThread;
@@ -17,6 +18,7 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newHashMap();
 	protected Map<Object, HashMap< Object, Boolean >> isFiringMap = Collections.newHashMap();
 	protected EventRecorder recorder = EventRecorder.getSingleton();
+	private LinkedList<E> queue = new LinkedList<E>();
 
 	protected void fireEvent(final L listener, final E event, final Object o){
 		if(isFiringMap.get(listener) == null){
@@ -30,7 +32,7 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 				public void run() {
 					fire(listener, event);
 					if(policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)){
-						fireDequeue(listener, event);
+						fireDequeue( listener );
 					}
 					isFiringMap.get(listener).put(o, false);
 				}
@@ -42,30 +44,29 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 			}else if(policyMap.get(listener).equals(MultipleEventPolicy.COMBINE)){
 				thread.start();
 			}else if(policyMap.get(listener).equals(MultipleEventPolicy.ENQUEUE)){
-				enqueue();
+				enqueue( event );
 			}
 		}
 	}
-	protected void enqueue() {
-		synchronized (count) {
-			++count;
+	protected void enqueue( E event ) {
+		synchronized ( queue ) {
+			queue.addLast( event );
 		}
 	}
 
-	protected void fireDequeue(L listener, E event) {
-		int subCount;
-		synchronized (count) {
-			if(count == 0){
+	protected void fireDequeue(L listener ) {
+		LinkedList<E> internalQueue;
+		synchronized ( queue ) {
+			if(queue.size() == 0){
 				return;
 			}
-			subCount = count;
-			count = 0;
+			internalQueue = new LinkedList<E>( queue );
+			queue.clear();
 		}
-		while(subCount > 0){
-			fire(listener, event);
-			--subCount;
+		while( internalQueue.size() > 0 ){
+			fire( listener, internalQueue.removeFirst() );
 		}
-		fireDequeue(listener, event);
+		fireDequeue( listener );
 	}
 
 	private void fire(L listener, E event){
