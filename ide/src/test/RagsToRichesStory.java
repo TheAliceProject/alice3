@@ -241,7 +241,7 @@ class SnowScene extends Scene{
 //		this.addObjectMoverFor( ogre );
 		this.addArrowKeyPressListener(new ArrowKeyPressListener() {
 			public void keyPressed(ArrowKeyEvent e) {
-				ogre.move( e.getMoveDirection( MoveDirectionSpec.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
+				ogre.move( e.getMoveDirection( MoveDirectionSpec.UP_DOWN_LEFT_RIGHT ), 1 );
 			}
 		});
 //		this.addDefaultModelManipulation();
