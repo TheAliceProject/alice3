@@ -67,9 +67,9 @@ public class ArrowKeyEvent extends KeyEvent {
 		if(e.isKey(Key.A) || e.isKey(Key.LEFT) ){
 			return MoveDirection.LEFT;
 		} else if(e.isKey(Key.S) || e.isKey(Key.DOWN) ){
-			return MoveDirection.BACKWARD;
+			return MoveDirection.DOWN;
 		} else if(e.isKey(Key.W) || e.isKey(Key.UP) ){
-			return MoveDirection.FORWARD;
+			return MoveDirection.UP;
 		} else if(e.isKey(Key.D) || e.isKey(Key.RIGHT) ){
 			return MoveDirection.RIGHT;
 		}
