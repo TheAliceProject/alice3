@@ -55,7 +55,6 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 					if( awtComponent.isValid() ) {
 						//pass
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( src );
 						panel.revalidateAndRepaint();
 					}
 				}
