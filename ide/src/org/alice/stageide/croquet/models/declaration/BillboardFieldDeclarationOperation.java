@@ -96,12 +96,12 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
 				false, field, 
 				frontState.getSetter(), 
-				frontState.getValue()
+				frontState.getValueOrNullLiteral()
 		) );
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
 				false, field, 
 				backState.getSetter(), 
-				backState.getValue()
+				backState.getValueOrNullLiteral()
 		) );
 		return rv;
 	}
