@@ -279,12 +279,17 @@ public class ProgramImp {
 		}
 	}
 	
+	private void requestFocusInWindow() {
+		this.getOnscreenLookingGlass().getAWTComponent().requestFocusInWindow();
+	}
+	
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				ProgramImp.this.addComponents( frame.getContentPane() );
 				frame.setVisible( true );
 				runnable.run();
+				requestFocusInWindow();
 			}
 		} );
 	}
@@ -292,6 +297,7 @@ public class ProgramImp {
 		assert container.getLayout() instanceof java.awt.BorderLayout;
 		this.addComponents( container );
 		this.startAnimator();
+		this.requestFocusInWindow();
 	}
 	public void initializeInFrame( javax.swing.JFrame frame ) {
 		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
