@@ -64,8 +64,6 @@ import org.lgna.story.event.ArrowKeyEvent.MoveDirectionSpec;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimerEvent;
-import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;

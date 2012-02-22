@@ -315,7 +315,6 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 			}
 		}
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, this.getRightBorder() ) );
-//		this.revalidateAndRepaint();
 	}
 	
 	protected int getRightBorder() {
