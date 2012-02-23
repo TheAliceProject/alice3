@@ -81,4 +81,14 @@ public class PropertyState extends org.alice.ide.croquet.models.StandardExpressi
 	protected org.lgna.project.annotations.ValueDetails< ? > getValueDetails() {
 		return this.getParameter0().getDetails();
 	}
+	
+	public org.lgna.project.ast.Expression getValueOrNullLiteral() {
+		org.lgna.project.ast.Expression rv = this.getValue();
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new org.lgna.project.ast.NullLiteral();
+		}
+		return rv;
+	}
 }

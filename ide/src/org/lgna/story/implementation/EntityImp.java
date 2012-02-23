@@ -85,15 +85,11 @@ public abstract class EntityImp implements ReferenceFrame {
 		return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, this );
 	}
 
-	//todo
-//	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, ReferenceFrame asSeenBy );
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "override", this );
-		return rv;
-	}
+	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans );
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans = this.getTransformation( asSeenBy );
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
-		this.updateCumulativeBound( cumulativeBound, asSeenBy );
+		this.updateCumulativeBound( cumulativeBound, trans );
 		return cumulativeBound.getBoundingBox();
 	}
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {

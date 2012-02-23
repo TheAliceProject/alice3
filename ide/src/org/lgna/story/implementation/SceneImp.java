@@ -323,4 +323,9 @@ public class SceneImp extends EntityImp {
 			} );
 		}
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		//todo
+		return rv;
+	}
 }

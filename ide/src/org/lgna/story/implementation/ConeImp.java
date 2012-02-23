@@ -80,10 +80,4 @@ public class ConeImp extends ShapeImp {
 	public org.lgna.story.Cone getAbstraction() {
 		return this.abstraction;
 	}
-	//todo: produce more tight bound by shifting center of bounding sphere
-	@Override
-	protected double getBoundingSphereRadius() {
-		return Math.max( this.length.getValue(), this.baseRadius.getValue());
-	}
-
 }

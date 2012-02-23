@@ -92,6 +92,11 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 		return fields.getValue();
 	}
 	
+
+	@Override
+	public boolean isPrimitive() {
+		return false;
+	}
 	@Override
 	public final boolean isInterface() {
 		return false;

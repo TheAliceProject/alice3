@@ -46,6 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class SunImp extends TransformableImp {
 	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgSun = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
 	private final org.lgna.story.Sun abstraction;
@@ -59,7 +60,7 @@ public class SunImp extends TransformableImp {
 		return this.abstraction;
 	}
 	@Override
-	protected double getBoundingSphereRadius() {
-		return Double.parseDouble( "6.995E8" );
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		return rv;
 	}
 }

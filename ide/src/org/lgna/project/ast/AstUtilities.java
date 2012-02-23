@@ -478,4 +478,18 @@ public class AstUtilities {
 	public static LambdaExpression createLambdaExpression( Class<?> cls ) {
 		return createLambdaExpression( JavaType.getInstance( cls ) );
 	}
+	
+	public static AbstractType< ?,?,? > getKeywordFactoryType( JavaKeyedArgument argument ) {
+		AbstractParameter parameter = argument.parameter.getValue();
+		if( parameter.isKeyworded() ) {
+			AbstractType< ?,?,? > parameterType = parameter.getValueType();
+			if( parameterType != null && parameterType.isArray() ) {
+				AbstractType< ?,?,? > componentType = parameterType.getComponentType();
+				if( componentType != null ) {
+					return componentType.getKeywordFactoryType();
+				}
+			}
+		}
+		return null;
+	}
 }

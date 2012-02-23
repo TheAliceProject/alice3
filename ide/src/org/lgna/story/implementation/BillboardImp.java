@@ -62,10 +62,10 @@ public class BillboardImp extends VisualScaleModelImp {
 	private class Face extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
 		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
 		private edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V ),
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V ),
 				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MIN_V ),
-				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MIN_U, MAX_V )
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MIN_V ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V )
 		};
 		private boolean isFront;
 		
@@ -198,9 +198,5 @@ public class BillboardImp extends VisualScaleModelImp {
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.sgOpacityAppearances;
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 0;
 	}
 }
