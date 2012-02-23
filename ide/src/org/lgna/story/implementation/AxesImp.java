@@ -66,4 +66,9 @@ public class AxesImp extends AbstractTransformableImp {
 		//todo
 		return 2.0;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+		return rv;
+	}
 }

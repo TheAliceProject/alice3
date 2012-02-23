@@ -213,13 +213,13 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+		edu.cmu.cs.dennisc.math.AbstractMatrix3x3 scale;
 		if( this.sgScale != null ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.sgScale.getLocalTransformation();
-			return new edu.cmu.cs.dennisc.math.Dimension3( m.orientation.right.calculateMagnitude(), m.orientation.up.calculateMagnitude(), m.orientation.backward.calculateMagnitude() );
+			scale = this.sgScale.localTransformation.getValue().orientation;
 		} else {
-			edu.cmu.cs.dennisc.math.Matrix3x3 m = this.visualData.getSgVisuals()[ 0 ].scale.getValue();
-			return new edu.cmu.cs.dennisc.math.Dimension3( m.right.x, m.up.y, m.backward.z );
+			scale = this.visualData.getSgVisuals()[ 0 ].scale.getValue();
 		}
+		return new edu.cmu.cs.dennisc.math.Dimension3( scale.right.x, scale.up.y, scale.backward.z );
 	}
 	@Override
 	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
@@ -228,7 +228,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			m.orientation.right.x = scale.x;
 			m.orientation.up.y = scale.y;
 			m.orientation.backward.z = scale.z;
-			this.sgScale.setLocalTransformation( m );
+			this.sgScale.localTransformation.setValue( m );
 		} else {
 			edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createZero();
 			m.right.x = scale.x;
@@ -466,5 +466,16 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	public void animateStraightenOutJoints() {
 		this.animateStraightenOutJoints( DEFAULT_DURATION );
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
+		if( this.sgScale != null ) {
+			m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createMultiplication( this.sgScale.localTransformation.getValue(), trans );
+		} else {
+			m = trans;
+		}
+		return super.updateCumulativeBound( rv, m );
 	}
 }

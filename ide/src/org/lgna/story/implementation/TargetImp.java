@@ -59,4 +59,8 @@ public class TargetImp extends TransformableImp {
 	protected double getBoundingSphereRadius() {
 		return 0.0;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		return rv;
+	}
 }
