@@ -154,11 +154,11 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 
         
         if( m_isScaleIdentity ) {
-            rc.gl.glDisable( GL_NORMALIZE );
+        	//pass
         } else {
             rc.gl.glPushMatrix();
             rc.gl.glMultMatrixd( m_scaleBuffer );
-            rc.gl.glEnable( GL_NORMALIZE );
+        	rc.pushNormalize();
         }
 
         if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
@@ -186,6 +186,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
         if( m_isScaleIdentity ) {
             //pass
         } else {
+        	rc.popNormalize();
             rc.gl.glPopMatrix();
         }
     }

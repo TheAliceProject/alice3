@@ -56,10 +56,12 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 			super.renderOpaque( rc );
 		} else {
 			rc.gl.glPushMatrix();
+			rc.pushNormalize();
 			try {
 				rc.gl.glScaled( this.x, this.y, this.z );
 				super.renderOpaque( rc );
 			} finally {
+				rc.popNormalize();
 				rc.gl.glPopMatrix();
 			}
 		}
@@ -70,10 +72,12 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 			super.renderGhost( rc, root );
 		} else {
 			rc.gl.glPushMatrix();
+			rc.pushNormalize();
 			try {
 				rc.gl.glScaled( this.x, this.y, this.z );
 				super.renderGhost( rc, root );
 			} finally {
+				rc.popNormalize();
 				rc.gl.glPopMatrix();
 			}
 		}
