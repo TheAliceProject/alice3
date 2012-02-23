@@ -140,7 +140,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		}
 		scaleVector.x += this.initialScale.x;
 		scaleVector.y += this.initialScale.y;
-		scaleVector.z = this.initialScale.z;
+		scaleVector.z += this.initialScale.z;
 		//Now apply the new scale
 		accumulatedScaleVector.set(scaleVector);
 		
