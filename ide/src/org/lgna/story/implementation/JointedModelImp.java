@@ -81,6 +81,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		} else {
 			this.sgScalable = new edu.cmu.cs.dennisc.scenegraph.Scalable();
 			this.sgScalable.setParent( this.getSgComposite() );
+			this.sgScalable.putBonusDataFor( ENTITY_IMP_KEY, this );
 			sgComposite = this.sgScalable;
 
 			for( org.lgna.story.resources.JointId root : rootIds ) {

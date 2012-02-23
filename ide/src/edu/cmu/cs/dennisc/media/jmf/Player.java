@@ -203,7 +203,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 			//pass
 		} else {
 			if( currSeconds > ( this.startTime + CONSIDERED_TO_BE_STARTED_THRESHOLD ) ) {
-				rv = 0.1;
+				rv = 0.0;
 			}
 		}
 		return rv;
