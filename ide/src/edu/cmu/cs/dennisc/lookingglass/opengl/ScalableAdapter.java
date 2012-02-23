@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegraph.Scalable > {
-	private final double[] matrix = { 1,0,0,0,  0,1,0,0,  0,0,1,0,  0,0,0,1 };
-	private final java.nio.DoubleBuffer matrixBuffer = java.nio.DoubleBuffer.wrap( matrix );
+	private double x;
+	private double y;
+	private double z;
 	private boolean isIdentity = true;
 	@Override
 	public void renderOpaque( RenderContext rc ) {
@@ -56,7 +57,7 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 		} else {
 			rc.gl.glPushMatrix();
 			try {
-				rc.gl.glMultMatrixd( matrixBuffer );
+				rc.gl.glScaled( this.x, this.y, this.z );
 				super.renderOpaque( rc );
 			} finally {
 				rc.gl.glPopMatrix();
@@ -70,7 +71,7 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 		} else {
 			rc.gl.glPushMatrix();
 			try {
-				rc.gl.glMultMatrixd( matrixBuffer );
+				rc.gl.glScaled( this.x, this.y, this.z );
 				super.renderGhost( rc, root );
 			} finally {
 				rc.gl.glPopMatrix();
@@ -84,7 +85,7 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 		} else {
 			pc.gl.glPushMatrix();
 			try {
-				pc.gl.glMultMatrixd( matrixBuffer );
+				pc.gl.glScaled( this.x, this.y, this.z );
 				super.pick( pc, pickParameters, conformanceTestResults );
 			} finally {
 				pc.gl.glPopMatrix();
@@ -97,9 +98,9 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 		if( property == m_element.scale ) {
 			edu.cmu.cs.dennisc.math.Dimension3 scale = m_element.scale.getValue();
 			this.isIdentity = scale.x == 1.0 && scale.y == 1.0 && scale.z == 1.0;
-			this.matrix[ 0 ] = scale.x;
-			this.matrix[ 5 ] = scale.y;
-			this.matrix[ 10 ] = scale.z;
+			this.x = scale.x;
+			this.y = scale.y;
+			this.z = scale.z;
 		} else {
 			super.propertyChanged( property );
 		}
