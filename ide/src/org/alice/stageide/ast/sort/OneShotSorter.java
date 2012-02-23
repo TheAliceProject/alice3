@@ -58,25 +58,77 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 			return rv;
 		}
 	};
-	private static java.util.Map< org.lgna.project.ast.JavaMethod, Double > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map< org.lgna.project.ast.JavaMethod, Double > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static final org.lgna.project.ast.JavaMethod TURN_METHOD;
+	public static final org.lgna.project.ast.JavaMethod ROLL_METHOD;
+	public static final org.lgna.project.ast.JavaMethod TURN_TO_FACE_METHOD;
+	public static final org.lgna.project.ast.JavaMethod POINT_AT_METHOD;
+	public static final org.lgna.project.ast.JavaMethod ORIENT_TO_UPRIGHT_METHOD;
+	public static final org.lgna.project.ast.JavaMethod ORIENT_TO_METHOD;
+
+	public static final org.lgna.project.ast.JavaMethod MOVE_METHOD;
+	public static final org.lgna.project.ast.JavaMethod MOVE_TOWARD_METHOD;
+	public static final org.lgna.project.ast.JavaMethod MOVE_AWAY_FROM_METHOD;
+	public static final org.lgna.project.ast.JavaMethod MOVE_TO_METHOD;
+	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_METHOD;
+	public static final org.lgna.project.ast.JavaMethod PLACE_METHOD;
+	
+	public static final org.lgna.project.ast.JavaMethod STRAIGHTEN_OUT_JOINTS_METHOD;
+
 	static {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class );
+		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
+
+		TURN_METHOD = turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class );
+		assert TURN_METHOD != null;
+		ROLL_METHOD = turnableType.getDeclaredMethod( "roll", org.lgna.story.RollDirection.class, Number.class, org.lgna.story.Roll.Detail[].class );
+		assert ROLL_METHOD != null;
+		TURN_TO_FACE_METHOD = turnableType.getDeclaredMethod( "turnToFace", org.lgna.story.Entity.class, org.lgna.story.TurnToFace.Detail[].class );
+		assert TURN_TO_FACE_METHOD != null;
+		POINT_AT_METHOD = turnableType.getDeclaredMethod( "pointAt", org.lgna.story.Entity.class, org.lgna.story.PointAt.Detail[].class );
+		assert POINT_AT_METHOD != null;
+		ORIENT_TO_UPRIGHT_METHOD = turnableType.getDeclaredMethod( "orientToUpright", org.lgna.story.OrientToUpright.Detail[].class );
+		assert ORIENT_TO_UPRIGHT_METHOD != null;
+		ORIENT_TO_METHOD = turnableType.getDeclaredMethod( "orientTo", org.lgna.story.Entity.class, org.lgna.story.OrientTo.Detail[].class );
+		assert ORIENT_TO_METHOD != null;
+
+		MOVE_METHOD = movableTurnableType.getDeclaredMethod( "move", org.lgna.story.MoveDirection.class, Number.class, org.lgna.story.Move.Detail[].class );
+		assert MOVE_METHOD != null;
+		MOVE_TOWARD_METHOD = movableTurnableType.getDeclaredMethod( "moveToward", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveToward.Detail[].class );
+		assert MOVE_TOWARD_METHOD != null;
+		MOVE_AWAY_FROM_METHOD = movableTurnableType.getDeclaredMethod( "moveAwayFrom", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class );
+		assert MOVE_AWAY_FROM_METHOD != null;
+		MOVE_TO_METHOD = movableTurnableType.getDeclaredMethod( "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class );
+		assert MOVE_TO_METHOD != null;
+		MOVE_AND_ORIENT_TO_METHOD = movableTurnableType.getDeclaredMethod( "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class );
+		assert MOVE_AND_ORIENT_TO_METHOD != null;
+		PLACE_METHOD = movableTurnableType.getDeclaredMethod( "place", org.lgna.story.SpatialRelation.class, org.lgna.story.Entity.class, org.lgna.story.Place.Detail[].class );
+		assert PLACE_METHOD != null;
+
+		STRAIGHTEN_OUT_JOINTS_METHOD = jointedModelType.getDeclaredMethod( "straightenOutJoints", org.lgna.story.StraightenOutJoints.Detail[].class );
+		assert STRAIGHTEN_OUT_JOINTS_METHOD != null;
 
 		double value = 1.0;
-		map.put( movableTurnableType.getDeclaredMethod( "move", org.lgna.story.MoveDirection.class, Number.class, org.lgna.story.Move.Detail[].class ), value += 0.01 );
-		map.put( movableTurnableType.getDeclaredMethod( "moveToward", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveToward.Detail[].class ), value += 0.01 );
-		map.put( movableTurnableType.getDeclaredMethod( "moveAwayFrom", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class ), value += 0.01 );
-		map.put( turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class ), value += 0.01 );
-		map.put( turnableType.getDeclaredMethod( "roll", org.lgna.story.RollDirection.class, Number.class, org.lgna.story.Roll.Detail[].class ), value += 0.01 );
+		final double INCREMENT = 0.01;
+		map.put( MOVE_METHOD, value += INCREMENT );
+		map.put( MOVE_TOWARD_METHOD, value += INCREMENT );
+		map.put( MOVE_AWAY_FROM_METHOD, value += INCREMENT );
+		map.put( TURN_METHOD, value += INCREMENT );
+		map.put( ROLL_METHOD, value += INCREMENT );
 		
 		value = 2.0;
-		map.put( turnableType.getDeclaredMethod( "turnToFace", org.lgna.story.Entity.class, org.lgna.story.TurnToFace.Detail[].class ), value += 0.01 );
-		map.put( turnableType.getDeclaredMethod( "pointAt", org.lgna.story.Entity.class, org.lgna.story.PointAt.Detail[].class ), value += 0.01 );
-		map.put( turnableType.getDeclaredMethod( "orientToUpright", org.lgna.story.OrientToUpright.Detail[].class ), value += 0.01 );
-		map.put( turnableType.getDeclaredMethod( "orientTo", org.lgna.story.OrientTo.Detail[].class ), value += 0.01 );
-		map.put( movableTurnableType.getDeclaredMethod( "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class ), value += 0.01 );
-		map.put( movableTurnableType.getDeclaredMethod( "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class ), value += 0.01 );
+		map.put( MOVE_TO_METHOD, value += INCREMENT );
+		map.put( MOVE_AND_ORIENT_TO_METHOD, value += INCREMENT );
+		map.put( PLACE_METHOD, value += INCREMENT );
+		map.put( TURN_TO_FACE_METHOD, value += INCREMENT );
+		map.put( POINT_AT_METHOD, value += INCREMENT );
+		map.put( ORIENT_TO_UPRIGHT_METHOD, value += INCREMENT );
+		map.put( ORIENT_TO_METHOD, value += INCREMENT );
+		
+		value = 3.0;
+		map.put( STRAIGHTEN_OUT_JOINTS_METHOD, value += INCREMENT );
 	}
 	private static double getValue( org.lgna.project.ast.AbstractMember method ) {
 		Double rv = map.get( method );

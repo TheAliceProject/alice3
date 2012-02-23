@@ -56,7 +56,7 @@ public class CustomDoubleInputDialogOperation extends CustomNumberInputDialogOpe
 		super( java.util.UUID.fromString( "0779ccae-00b6-4c8d-b8cf-9830983238a2" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.DoubleChooser prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.choosers.DoubleChooser prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.choosers.DoubleChooser();
 	}
 }

@@ -42,14 +42,14 @@
  */
 package org.alice.interact.manipulator;
 
-import org.alice.interact.InputState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 
 /**
@@ -70,9 +70,9 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	public void setCamera( AbstractCamera camera ) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
 		}
 		if (this.activeManipulator != null && this.activeManipulator instanceof CameraInformedManipulator)
 		{
@@ -175,7 +175,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 	
 	@Override
-	public Transformable getManipulatedTransformable() {
+	public AbstractTransformable getManipulatedTransformable() {
 		if (this.activeManipulator != null)
 		{
 			return this.activeManipulator.getManipulatedTransformable();
@@ -199,6 +199,15 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		{
 			this.activeManipulator.triggerAllDeactivateEvents();
 		}
+	}
+	
+	@Override
+	public org.alice.interact.event.ManipulationEvent getMainManipulationEvent() {
+		if (this.activeManipulator != null)
+		{
+			return this.activeManipulator.getMainManipulationEvent();
+		}
+		return null;
 	}
 
 	protected void setManipulatorStartState(AbstractManipulator manipulator, InputState startState)

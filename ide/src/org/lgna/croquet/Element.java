@@ -54,10 +54,10 @@ public abstract class Element {
 		}
 	}
 	
-	protected static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.RetargetableResolver< D > {
-		private final org.lgna.croquet.resolvers.CodableResolver<I> resolver;
+	protected static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.Resolver< D > {
+		private final org.lgna.croquet.resolvers.Resolver<I> resolver;
 		public IndirectResolver( I indirect ) {
-			this.resolver = indirect.getCodableResolver();
+			this.resolver = indirect.getResolver();
 		}
 		public IndirectResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			this.resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
@@ -70,16 +70,13 @@ public abstract class Element {
 			return this.getDirect( this.resolver.getResolved() );
 		}
 		public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
-			if( this.resolver instanceof org.lgna.croquet.resolvers.RetargetableResolver ) {
-				org.lgna.croquet.resolvers.RetargetableResolver<I> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<I>)this.resolver;
-				retargetableResolver.retarget( retargeter );
-			}
+			this.resolver.retarget( retargeter );
 		}
 	}
 
 	
 	private final java.util.UUID migrationId;
-	private org.lgna.croquet.resolvers.CodableResolver<Element> codableResolver;
+	private org.lgna.croquet.resolvers.Resolver<Element> resolver;
 	public Element( java.util.UUID migrationId ) {
 		this.migrationId = migrationId;
 		if( map != null ) {
@@ -238,17 +235,17 @@ public abstract class Element {
 	
 	protected abstract void localize();
 	
-//	protected abstract <M extends Model> CodableResolver< M > createCodableResolver();
-	protected <M extends Element> org.lgna.croquet.resolvers.CodableResolver< M > createCodableResolver() {
+//	protected abstract <M extends Model> org.lgna.croquet.resolvers.RetargetableResolver< M > createResolver();
+	protected <M extends Element> org.lgna.croquet.resolvers.Resolver< M > createResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver( this );
 	}
-	public <M extends Element> org.lgna.croquet.resolvers.CodableResolver< M > getCodableResolver() {
-		if( this.codableResolver != null ) {
+	public <M extends Element> org.lgna.croquet.resolvers.Resolver< M > getResolver() {
+		if( this.resolver != null ) {
 			//pass
 		} else {
-			this.codableResolver = this.createCodableResolver();
+			this.resolver = this.createResolver();
 		}
-		return (org.lgna.croquet.resolvers.CodableResolver< M >)this.codableResolver;
+		return (org.lgna.croquet.resolvers.Resolver< M >)this.resolver;
 	}
 	
 	protected StringBuilder appendRepr( StringBuilder rv ) {

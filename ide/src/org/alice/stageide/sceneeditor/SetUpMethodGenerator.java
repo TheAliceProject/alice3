@@ -42,10 +42,6 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Paint;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
@@ -168,12 +164,12 @@ public class SetUpMethodGenerator {
 		);
 	}
 	
-	public static org.lgna.project.ast.Statement[] getSetupStatementsForField(boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, AffineMatrix4x4 initialTransform)
+	public static org.lgna.project.ast.Statement[] getSetupStatementsForField(boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform)
 	{
 		return getSetupStatementsForField(isThis, field, sceneInstance, initialVehicle, initialTransform, null);
 	}
 	
-	public static org.lgna.project.ast.Statement[] getSetupStatementsForField(boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, AffineMatrix4x4 initialTransform, Paint initialPaint)
+	public static org.lgna.project.ast.Statement[] getSetupStatementsForField(boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform, org.lgna.story.Paint initialPaint)
 	{
 		java.util.List< org.lgna.project.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
@@ -187,7 +183,7 @@ public class SetUpMethodGenerator {
 			if (javaType.isAssignableTo(org.lgna.story.Turnable.class))
 			{
 				try {
-					statements.add(createOrientationStatement(isThis, field, ImplementationAccessor.createOrientation(initialTransform.orientation)));
+					statements.add(createOrientationStatement(isThis, field, org.lgna.story.ImplementationAccessor.createOrientation(initialTransform.orientation)));
 				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 					throw new RuntimeException( ccee );
 				}
@@ -195,7 +191,7 @@ public class SetUpMethodGenerator {
 			if (javaType.isAssignableTo(org.lgna.story.MovableTurnable.class))
 			{
 				try {
-					statements.add(createPositionStatement(isThis, field, ImplementationAccessor.createPosition(initialTransform.translation)));
+					statements.add(createPositionStatement(isThis, field, org.lgna.story.ImplementationAccessor.createPosition(initialTransform.translation)));
 
 					//todo
 					if( initialTransform.translation.y == 0.0 ) {
@@ -229,6 +225,64 @@ public class SetUpMethodGenerator {
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statements, org.lgna.project.ast.Statement.class );
 	}
 	
+	private static org.lgna.story.JointedModel getJointedModelForJointImp(org.lgna.story.implementation.JointImp jointImp)
+	{
+		if (jointImp.getVehicle() instanceof org.lgna.story.implementation.JointedModelImp<?, ?>)
+		{
+			org.lgna.story.implementation.JointedModelImp<?, ?> parent = (org.lgna.story.implementation.JointedModelImp<?, ?>)jointImp.getVehicle();
+			return parent.getAbstraction();
+		}
+		else if (jointImp.getVehicle() instanceof org.lgna.story.implementation.JointImp)
+		{
+			return getJointedModelForJointImp((org.lgna.story.implementation.JointImp)jointImp.getVehicle());
+		}
+		return null;
+	}
+	
+	private static org.lgna.project.ast.Expression getGetterExpressionForJoint(org.lgna.story.Joint joint, org.lgna.project.virtualmachine.UserInstance sceneInstance)
+	{
+		org.lgna.project.ast.AbstractMethod getJointMethod = getJointGetterForJoint(joint, sceneInstance);
+		org.lgna.story.implementation.JointImp jointImp = org.lgna.story.ImplementationAccessor.getImplementation(joint);
+		org.lgna.story.JointedModel jointedModel =  getJointedModelForJointImp(jointImp);
+		org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(jointedModel);
+		assert getJointMethod != null;
+		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.MethodInvocation(new org.lgna.project.ast.FieldAccess(new org.lgna.project.ast.ThisExpression(), entityField), getJointMethod);
+		return expression;
+	}
+	
+	private static org.lgna.project.ast.AbstractMethod getJointGetterForJoint(org.lgna.story.Joint joint, org.lgna.project.virtualmachine.UserInstance sceneInstance)
+	{
+		org.lgna.story.implementation.JointImp jointImp = org.lgna.story.ImplementationAccessor.getImplementation(joint);
+		org.lgna.story.JointedModel jointedModel =  getJointedModelForJointImp(jointImp);
+		org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(jointedModel);
+		org.lgna.project.ast.AbstractMethod getJointMethod = null;
+		org.lgna.project.ast.AbstractType<?,?,?> fieldType = entityField.getValueType();
+		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( fieldType );
+		//Loop through all the get<joint>() methods and find the one that resolves to the joint we're seeing
+		for (org.alice.stageide.ast.JointedTypeInfo jti : jointedTypeInfos) {
+			for (org.lgna.project.ast.AbstractMethod jointGetter : jti.getJointGetters()) {
+				Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(
+						sceneInstance, 
+						new org.lgna.project.ast.Expression[] { new org.lgna.project.ast.MethodInvocation(new org.lgna.project.ast.FieldAccess(new org.lgna.project.ast.ThisExpression(), entityField), jointGetter) }
+				);
+				for (Object o : values) {
+					if (o instanceof org.lgna.story.Joint) {
+						org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.ImplementationAccessor.getImplementation((org.lgna.story.Joint)o);
+						if (gottenJoint.getJointId() == jointImp.getJointId()) {
+							getJointMethod = jointGetter;
+							break;
+						}
+					}
+				}
+			}
+			if (getJointMethod != null) {
+				break;
+			}
+		}
+		assert getJointMethod != null;
+		return getJointMethod;
+	}
+	
 	public static org.lgna.project.ast.Statement[] getSetupStatementsForInstance(boolean isThis, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance)
 	{
 		java.util.List< org.lgna.project.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -248,8 +302,15 @@ public class SetUpMethodGenerator {
 							if( value instanceof org.lgna.story.Entity ) {
 								org.lgna.story.Entity entity = (org.lgna.story.Entity)value;
 								boolean isEntityScene = (entity instanceof org.lgna.story.Scene);
-								org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
-								expression = SetUpMethodGenerator.createInstanceExpression( isEntityScene, entityField );
+								if (entity instanceof org.lgna.story.Joint) {
+									org.lgna.story.Joint joint = (org.lgna.story.Joint)entity;
+									expression = getGetterExpressionForJoint(joint, sceneInstance);
+								}
+								else 
+								{
+									org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
+									expression = SetUpMethodGenerator.createInstanceExpression( isEntityScene, entityField );
+								}
 							} else {
 								expression = getExpressionCreator().createExpression( value );
 							}
@@ -261,10 +322,10 @@ public class SetUpMethodGenerator {
 									)
 							);
 						} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-							System.err.println( "cannot create expression for: " + value );
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe("cannot create expression for: " + value);
 						}
 					} else {
-						System.err.println( "setter is null for: " + getter );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "setter is null for: " + getter );
 					}
 				}
 				if( instance instanceof org.lgna.story.Turnable ) {
@@ -302,6 +363,46 @@ public class SetUpMethodGenerator {
 						);
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 						throw new RuntimeException( ccee );
+					}
+				}
+				if (instance instanceof org.lgna.story.JointedModel) {
+					org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp = org.lgna.story.ImplementationAccessor.getImplementation((org.lgna.story.JointedModel)instance);
+					java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( field.getValueType() );
+					for (org.alice.stageide.ast.JointedTypeInfo jointInfo : jointedTypeInfos) {
+						for (org.lgna.project.ast.AbstractMethod jointGetter : jointInfo.getJointGetters()) {
+							org.lgna.project.ast.Expression getJointExpression = new org.lgna.project.ast.MethodInvocation(new org.lgna.project.ast.FieldAccess(new org.lgna.project.ast.ThisExpression(), field), jointGetter);
+							Object[] values;
+							try {
+								values = sceneInstance.getVM().ENTRY_POINT_evaluate(
+										sceneInstance, 
+										new org.lgna.project.ast.Expression[] { getJointExpression }
+								);
+							} catch( Throwable t ) {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, jointGetter );
+								values = new Object[ 0 ];
+							}
+							for (Object o : values) {
+								if (o instanceof org.lgna.story.Joint) {
+									org.lgna.story.Joint jointEntity = (org.lgna.story.Joint)o;
+									org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.ImplementationAccessor.getImplementation(jointEntity);
+									edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
+									edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform = gottenJoint.getOriginalTransformation();
+									if (!currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
+										try {
+											org.lgna.story.Orientation orientation = jointEntity.getOrientationRelativeToVehicle();
+											statements.add( 
+												createStatement( 
+														org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", org.lgna.story.Orientation.class, 
+														getJointExpression, getExpressionCreator().createExpression( orientation ) 
+												));
+										} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+											throw new RuntimeException( ccee );
+										}
+									}
+									
+								}
+							}
+						}
 					}
 				}
 			} 

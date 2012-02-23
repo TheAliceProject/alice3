@@ -47,7 +47,7 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 	public IsFrameShowingState( org.lgna.croquet.Group group, java.util.UUID individualId, boolean initialValue ) {
 		super( group, individualId, initialValue );
 		
-		this.addValueObserver( new ValueObserver<Boolean>() {
+		this.addValueListener( new ValueListener<Boolean>() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

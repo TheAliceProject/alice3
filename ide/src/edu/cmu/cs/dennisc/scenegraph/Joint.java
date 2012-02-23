@@ -43,13 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import static javax.media.opengl.GL.*;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.EulerAngles;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.math.property.EulerAnglesProperty;
 import edu.cmu.cs.dennisc.math.property.Vector3fProperty;
 
@@ -73,24 +67,17 @@ public class Joint extends Transformable
     public final Vector3fProperty oMinimumDampStrength = new Vector3fProperty(this, new Vector3f());
     public final Vector3fProperty oMaximumDampStrength = new Vector3fProperty(this, new Vector3f());
     
-    private Composite sgParent = null;
-    
-    public Joint()
-    {
-        super();
-    }
-    
-    public static void printJointHierarchy(Joint s, String indent)
-    {
-        System.out.println(indent+s.getName()+" : "+s.getAbsoluteTransformation().translation.x+", "+s.getAbsoluteTransformation().translation.y+", "+s.getAbsoluteTransformation().translation.z);
-        for (int i=0; i<s.getComponentCount(); i++)
-        {
-            if (s.getComponentAt(i) instanceof Joint)
-            {
-            	printJointHierarchy((Joint)s.getComponentAt(i), indent+"  ");
-            }
-        }
-    }
+//    public static void printJointHierarchy(Joint s, String indent)
+//    {
+//        System.out.println(indent+s.getName()+" : "+s.getAbsoluteTransformation().translation.x+", "+s.getAbsoluteTransformation().translation.y+", "+s.getAbsoluteTransformation().translation.z);
+//        for (int i=0; i<s.getComponentCount(); i++)
+//        {
+//            if (s.getComponentAt(i) instanceof Joint)
+//            {
+//            	printJointHierarchy((Joint)s.getComponentAt(i), indent+"  ");
+//            }
+//        }
+//    }
     
     private Joint getJoint(Composite c, String jointID)
     {
@@ -120,17 +107,17 @@ public class Joint extends Transformable
         }
         return null;
     }
+    public Joint getJoint(String jointID)
+    {
+        return getJoint(this, jointID);
+    }
     
-    public AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform)
+    
+    public AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative)
     {
         if (c == null)
         {
             return null;
-        }
-        
-        if (c instanceof AbstractTransformable)
-        {
-            transform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable)c).accessLocalTransformation());
         }
         if (c instanceof Joint)
         {
@@ -142,215 +129,46 @@ public class Joint extends Transformable
             AxisAlignedBox transformedBBox = new AxisAlignedBox(transformedMin, transformedMax);
             rv.union(transformedBBox);
         }
-        for (int i=0; i<c.getComponentCount(); i++)
+        //Make transform work for children
+        if (c instanceof AbstractTransformable)
         {
-            Component comp = c.getComponentAt(i);
-            if (comp instanceof Composite)
-            {
-                getBoundingBox((Composite)comp, rv, transform);
-            }
+            transform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable)c).accessLocalTransformation());
+        }
+        if (cumulative) {
+	        for (int i=0; i<c.getComponentCount(); i++)
+	        {
+	            Component comp = c.getComponentAt(i);
+	            if (comp instanceof Composite)
+	            {
+	                getBoundingBox((Composite)comp, rv, transform, cumulative);
+	            }
+	        }
         }
         return rv;
     }
-    
-    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, AffineMatrix4x4 transform)
+    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative)
     {
         if (rv == null)
         {
             rv = new AxisAlignedBox();
         }
-        getBoundingBox(this, rv, transform);
+        getBoundingBox(this, rv, transform, cumulative);
         return rv;
     }
     
-    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv)
+    public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, boolean cumulative)
     {
         if (rv == null)
         {
             rv = new AxisAlignedBox();
         }
-        getBoundingBox(this, rv, AffineMatrix4x4.createIdentity());
+        getBoundingBox(this, rv, AffineMatrix4x4.createIdentity(), cumulative);
         return rv;
     }
-    
-    public Joint getJoint(String jointID)
-    {
-        return getJoint(this, jointID);
-    }
-    
-    public void setSgParent( Composite sgParent )
-    {
-        this.sgParent = sgParent;
-    }
-    
     @Override
-    public Composite getParent()
-    {
-        if (super.getParent() == null && this.sgParent != null)
-        {
-            return this.sgParent;
-        }
-        return super.getParent();
-    }
-    
-    @Override
-    protected Composite getVehicle()
-    {
-        if (super.getParent() == null && this.sgParent != null)
-        {
-            return this.sgParent;
-        }
-        return super.getVehicle();
-    }
-    
-    
-    @Override
-    public Composite getRoot()
-    {
-        if (super.getParent() == null && this.sgParent != null)
-        {
-            return this.sgParent.getRoot();
-        }
-        return super.getRoot();
-    }
-    
-    @Override
-    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-        if (super.getParent() == null && this.sgParent != null)
-        {
-        	rv = this.sgParent.getAbsoluteTransformation(rv);
-			rv.setToMultiplication( rv, this.accessLocalTransformation() );
-            return rv;
-        }
-        return super.getAbsoluteTransformation(rv);
-    }
-
-
-    @Override
-    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-        if (super.getParent() == null && this.sgParent != null)
-        {
-            return this.sgParent.getInverseAbsoluteTransformation(rv);
-        }
-        return super.getInverseAbsoluteTransformation(rv);
-    }
-
-    @Override
-    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-        if (super.getParent() == null && this.sgParent != null)
-        {
-            return this.sgParent.getTransformation(rv, asSeenBy);
-        }
-        return super.getTransformation(rv, asSeenBy);
-    }
-    
-   
-    
-    public void renderVisualization(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc)
-    {
-        if ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY))
-        {
-            rc.gl.glPushMatrix();
-            renderSelfVisualization(rc);
-            renderChildrenVisualization(rc);
-            rc.gl.glPopMatrix();
-        }
-    }
-    
-    protected void renderChildrenVisualization(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc)
-    {
-        if ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY))
-        {
-            for (Component child : this.getComponents())
-            {
-                if (child instanceof Joint)
-                {
-                    ((Joint)child).renderVisualization(rc);
-                }
-            }
-        }
-    }
-    
-    private double[] m_local = new double[ 16 ];
-    private java.nio.DoubleBuffer m_localBuffer = java.nio.DoubleBuffer.wrap( m_local );
-    
-    protected void renderSelfVisualization(edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc) 
-    {
-        if (edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY))
-        {
-            final double UNIT_LENGTH = this.getBoundingBox(null).getSize().calculateMagnitude()/2.0;
-            this.localTransformation.getValue().getAsColumnMajorArray16(m_local);
-            rc.gl.glMultMatrixd(m_localBuffer);
-            {
-                rc.gl.glDisable( GL_LIGHTING );
-                rc.gl.glDisable( GL_TEXTURE_2D );
-                rc.gl.glBegin( GL_LINES );
-        
-                rc.gl.glColor3f( 1.0f, 0.0f, 0.0f );
-                rc.gl.glVertex3d( 0, 0, 0 );
-                rc.gl.glVertex3d( UNIT_LENGTH, 0, 0 );
-        
-                rc.gl.glColor3f( 0.0f, 1.0f, 0.0f );
-                rc.gl.glVertex3d( 0, 0, 0 );
-                rc.gl.glVertex3d( 0, UNIT_LENGTH, 0 );
-        
-                rc.gl.glColor3f( 0.0f, 0.0f, 1.0f );
-                rc.gl.glVertex3d( 0, 0, 0 );
-                rc.gl.glVertex3d( 0, 0, UNIT_LENGTH );
-        
-//                rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
-//                rc.gl.glVertex3d( 0, 0, 0 );
-//                rc.gl.glVertex3d( 0, 0, -2*UNIT_LENGTH );
-//                rc.gl.glEnd();
-//                 
-                if (this.boundingBox.getValue() != null)
-                {
-                    rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
-                    Point3 min = this.boundingBox.getValue().getMinimum();
-                    Point3 max = this.boundingBox.getValue().getMaximum();
-                    
-                    //Bottom
-                    rc.gl.glBegin( GL_LINE_LOOP );
-                    rc.gl.glVertex3d( min.x, min.y, min.z );
-                    rc.gl.glVertex3d( min.x, min.y, max.z );
-                    rc.gl.glVertex3d( max.x, min.y, max.z );
-                    rc.gl.glVertex3d( max.x, min.y, min.z );
-                    rc.gl.glEnd();
-                    
-                    //Top
-                    rc.gl.glBegin( GL_LINE_LOOP );
-                    rc.gl.glVertex3d( min.x, max.y, min.z );
-                    rc.gl.glVertex3d( min.x, max.y, max.z );
-                    rc.gl.glVertex3d( max.x, max.y, max.z );
-                    rc.gl.glVertex3d( max.x, max.y, min.z );
-                    rc.gl.glEnd();
-                    
-                    //Sides
-                    rc.gl.glBegin( GL_LINES );
-                    rc.gl.glVertex3d( min.x, min.y, min.z );
-                    rc.gl.glVertex3d( min.x, max.y, min.z );
-                    rc.gl.glEnd();
-                    
-                    rc.gl.glBegin( GL_LINES );
-                    rc.gl.glVertex3d( max.x, min.y, min.z );
-                    rc.gl.glVertex3d( max.x, max.y, min.z );
-                    rc.gl.glEnd();
-                    
-                    rc.gl.glBegin( GL_LINES );
-                    rc.gl.glVertex3d( min.x, min.y, max.z );
-                    rc.gl.glVertex3d( min.x, max.y, max.z );
-                    rc.gl.glEnd();
-                    
-                    rc.gl.glBegin( GL_LINES );
-                    rc.gl.glVertex3d( max.x, min.y, max.z );
-                    rc.gl.glVertex3d( max.x, max.y, max.z );
-                    rc.gl.glEnd();
-                }
-                
-                rc.gl.glEnable( GL_TEXTURE_2D );
-                rc.gl.glEnable( GL_LIGHTING );
-            }
-        }
+    protected void appendRepr(StringBuilder sb) {
+    	super.appendRepr(sb);
+    	sb.append(" jointId="+this.jointID.getValue());
     }
     
 }

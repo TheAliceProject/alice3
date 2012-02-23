@@ -267,6 +267,13 @@ public class AliceResourceUtilties {
 		rv.scale.setValue(scaleCopy);
 		return rv;
 	}
+	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointedModelResource resource, org.lgna.story.resources.JointId jointId ) {
+		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal = getVisual( resource );
+		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( jointId.toString() );
+		return sgJoint.getLocalTransformation();
+	}
+	
 	public static edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointedModelResource resource, org.lgna.story.resources.JointId jointId ) {
 		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal = getVisual( resource );
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
@@ -282,23 +289,19 @@ public class AliceResourceUtilties {
 	private static BufferedImage getThumbnailInternal(Class<?> modelResource, String name)
 	{
 		URL resourceURL = getThumbnailURLInternal(modelResource, name);
-		if (resourceURL != null)
-		{
-			try
-			{
-				BufferedImage image = ImageIO.read(resourceURL);
-				return image;
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+		if (resourceURL == null) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", name);
 		}
-		else
-		{
+		if( resourceURL != null ) {
+			try {
+				return ImageIO.read( resourceURL );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+				return null;
+			}
+		} else {
 			return null;
 		}
-		return null;
 	}
 	
 	public static BufferedImage getThumbnail(Class<?> modelResource, String instanceName)

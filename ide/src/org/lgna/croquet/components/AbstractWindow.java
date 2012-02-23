@@ -212,11 +212,49 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		this.getAwtComponent().pack();
 	}
 
+	private static Button lookupButton( javax.swing.JButton jButton ) {
+		Component< ? > component = Component.lookup( jButton );
+		if( component instanceof Button ) {
+			Button button = (Button)component;
+			return button;
+		} else {
+			return null;
+		}
+	}
+	
 	public Button getDefaultButton() {
-		return (Button)Component.lookup( this.getRootPane().getDefaultButton() );
+		return lookupButton( this.getRootPane().getDefaultButton() );
 	}
 	public void setDefaultButton( Button button ) {
 		this.getRootPane().setDefaultButton( button.getAwtComponent() );
+	}
+	
+	private java.util.Stack< javax.swing.JButton > defaultJButtonStack;
+	public void pushDefaultButton( Button button ) {
+		if( this.defaultJButtonStack != null ) {
+			//pass
+		} else {
+			this.defaultJButtonStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+		}
+		this.defaultJButtonStack.push( this.getRootPane().getDefaultButton() );
+		this.setDefaultButton( button );
+	}
+	public Button popDefaultButton() {
+		Button rv;
+		if( this.defaultJButtonStack != null ) {
+			if( this.defaultJButtonStack.isEmpty() ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.defaultJButtonStack );
+				rv = null;
+			} else {
+				javax.swing.JButton jButton = this.defaultJButtonStack.pop();
+				this.getRootPane().setDefaultButton( jButton );
+				rv = lookupButton( jButton );
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.defaultJButtonStack );
+			rv = null;
+		}
+		return rv;
 	}
 	
 	private MenuBarComposite menuBarModel;

@@ -63,7 +63,7 @@ public class CustomArrayInputDialogOperation extends CustomInputDialogOperation<
 		this.componentType = componentType;
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.ArrayInstanceCreation > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.ArrayInstanceCreation > prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.choosers.ArrayChooser( this.componentType );
 	}
 }

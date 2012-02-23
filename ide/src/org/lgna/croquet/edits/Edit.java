@@ -148,11 +148,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		StringBuilder sb = new StringBuilder();
 		this.updatePresentation( sb, locale );
 		if( sb.length() == 0 ) {
-			Class<?> cls = this.getClass();
-			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( cls ) );
-		}
-		if( sb.length() == 0 ) {
-			sb.append( this.getClass() );
+			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
 		}
 		return sb.toString();
 	}
@@ -178,6 +174,24 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 	public void retarget( Retargeter retargeter ) {
 	}
 	public void addKeyValuePairs( Retargeter retargeter, Edit< ? > edit ) {
+	}
+	
+	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {
+		org.lgna.croquet.history.Step< ? > step = this.getCompletionStep();
+		while( step != null ) {
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+				org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
+				org.lgna.croquet.DropSite dropSite = dropTrigger.getDropSite();
+				if( cls.isAssignableFrom( dropSite.getClass() ) ) {
+					return cls.cast( dropSite );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( dropSite );
+				}
+			}
+			step = step.getPreviousStep();
+		}
+		return null;
 	}
 	
 	@Override

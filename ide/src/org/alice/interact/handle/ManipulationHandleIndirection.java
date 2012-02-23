@@ -53,7 +53,8 @@ import org.alice.interact.manipulator.AbstractManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -109,7 +110,7 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		}
 	}
 	
-	public void setSelectedObject(Transformable manipulatedObject)
+	public void setSelectedObject(AbstractTransformable manipulatedObject)
 	{
 		if (this.currentHandle.getManipulatedObject() != manipulatedObject)
 		{
@@ -205,7 +206,7 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		return this.currentHandle.getHandleStateCopy();
 	}
 
-	public Transformable getManipulatedObject() {
+	public AbstractTransformable getManipulatedObject() {
 		return this.currentHandle.getManipulatedObject();
 	}
 
@@ -271,9 +272,9 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		this.currentHandle.setHandleVisible( visible );
 	}
 	
-	public void setHandleShowing(boolean showing)
+	public void setVisualsShowing(boolean showing)
 	{
-		this.currentHandle.setHandleShowing( showing );
+		this.currentHandle.setVisualsShowing( showing );
 	}
 
 	public PickHint getPickHint() {

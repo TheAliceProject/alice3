@@ -67,11 +67,16 @@ public class Biped extends JointedModel implements Articulable {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
 	
-	public Joint getPelvisForLowerBody() {
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+	public Joint getRoot() {
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.ROOT );
+	}
+
+	public Joint getPelvis() {
 		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY );
 	}
-	public Joint getPelvisForUpperBody() {
-		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.PELVIS_UPPER_BODY );
+	public Joint getSpineBase() {
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.SPINE_BASE );
 	}
 
 	public Joint getSpineMiddle() {

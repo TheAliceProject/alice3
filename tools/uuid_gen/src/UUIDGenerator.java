@@ -14,7 +14,14 @@ public class UUIDGenerator {
 		//String s = "super( java.util.UUID.fromString( \"" + java.util.UUID.randomUUID().toString() + "\" ) );";
 		String s = "java.util.UUID.fromString( \"" + java.util.UUID.randomUUID().toString() + "\" )";
 		setClipboardContents( s );
-		System.out.println( "the text below has been copied to your clipboard:" );
-		System.out.println( s );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "The text below has been copied to your clipboard:\n" );
+		sb.append( s );
+		if( System.getProperty( "os.name" ).toLowerCase().startsWith( "linux" ) ) {
+			sb.append( "\n\n(Paste before pressing OK.)" );
+			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
+		} else {
+			System.out.println( sb.toString() );
+		}
 	}
 }

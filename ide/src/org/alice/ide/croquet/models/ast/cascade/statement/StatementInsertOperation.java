@@ -57,11 +57,11 @@ public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOp
 	}
 	protected abstract org.lgna.project.ast.Statement createStatement();
 	@Override
-	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.CodableResolver< M > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
 	@Override
-	protected final void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.OperationStep step ) {
 		org.lgna.project.ast.Statement statement = this.createStatement();
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement ) );
 	}

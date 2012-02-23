@@ -49,7 +49,7 @@ import org.alice.interact.handle.HandleSet;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator{
 
@@ -65,9 +65,9 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 	public void setCamera(AbstractCamera camera) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
 		}
 	}
 
@@ -79,7 +79,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 	@Override
 	public void doClickManipulator(InputState endInput, InputState previousInput) 
 	{
-		Transformable toLookAt = endInput.getClickPickTransformable();
+		AbstractTransformable toLookAt = endInput.getClickPickTransformable();
 		if (toLookAt != null && this.camera != null)
 		{
 			org.lgna.story.Entity cameraAbstraction  = EntityImp.getInstance(this.camera).getAbstraction();

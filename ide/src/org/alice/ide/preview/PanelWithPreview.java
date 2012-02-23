@@ -50,6 +50,7 @@ public abstract class PanelWithPreview< C extends org.lgna.croquet.components.JC
 	private static final int PAD = 16;
 	public PanelWithPreview() {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
+		this.setMinimumPreferredWidth( 320 );
 	}
 	protected boolean isPreviewDesired() {
 		return true;

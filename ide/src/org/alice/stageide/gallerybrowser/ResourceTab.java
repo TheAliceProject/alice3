@@ -50,30 +50,6 @@ public class ResourceTab extends GalleryTab {
 	public static final javax.swing.Icon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person.png") );
 	public static final javax.swing.Icon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon(GalleryBrowser.class.getResource("images/create_person_24.png") );
 	
-	static class HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
-		private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.info( jScrollBar.getMinimum(), jScrollBar.getValue(), jScrollBar.getMaximum(), jScrollBar.getVisibleAmount() );
-			return jScrollBar.getMinimum() != jScrollBar.getValue() || jScrollBar.getMaximum() != jScrollBar.getVisibleAmount();
-		}
-		@Override
-		public javax.swing.JScrollBar createHorizontalScrollBar() {
-			return new javax.swing.JScrollBar( javax.swing.JScrollBar.HORIZONTAL ) {
-				@Override
-				public void paint( java.awt.Graphics g ) {
-					javax.swing.JScrollBar verticalScrollBar = HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getVerticalScrollBar();
-					if( isPaintRequiredFor( this ) || isPaintRequiredFor( verticalScrollBar ) ) {
-						super.paint( g );
-					} else {
-						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						java.awt.Shape clip = g.getClip();
-						g2.setPaint( HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getBackground() );
-						g2.fill( clip );
-					}
-				}
-			};
-		}
-	}
-
 	private static class SingletonHolder {
 		private static ResourceTab instance = new ResourceTab();
 	}
@@ -90,14 +66,16 @@ public class ResourceTab extends GalleryTab {
 	}
 	@Override
 	protected org.lgna.croquet.components.View< ?, ? > createView() {
+		final int PAD = 4;
 		class ResourceView extends org.lgna.croquet.components.BorderPanel {
 			public ResourceView() {
+				super( PAD, 0 );
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD,PAD,PAD,PAD ) );
 				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
 				topPanel.addComponent( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
-				org.lgna.croquet.components.TextField filterTextField = FilterStringState.getInstance().createTextField();
+				org.lgna.croquet.components.TextField filterTextField = FilterState.getInstance().createTextField();
 				filterTextField.setMinimumPreferredWidth( 320 );
 				filterTextField.setMaximumSizeClampedToPreferredSize( true );
-				filterTextField.getAwtComponent().setTextForBlankCondition( "search entire gallery" );
 				filterTextField.scaleFont( 1.5f );
 
 				topPanel.addComponent( filterTextField, Constraint.LINE_END );
@@ -105,32 +83,40 @@ public class ResourceTab extends GalleryTab {
 				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new GalleryDirectoryViewController() ) {
 					@Override
 					protected javax.swing.JScrollPane createAwtComponent() {
-						return new HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+						return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
 					}
 				};
 				scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
 				scrollPane.setBorder( null );
 		        scrollPane.setBothScrollBarIncrements( 16, 160 );
-
-				this.addComponent( topPanel, Constraint.PAGE_START );
-				this.addComponent( scrollPane, Constraint.CENTER );
-
-//				org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation createTypeFromPersonResourceOperation = org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
-//				org.lgna.croquet.components.Button createPersonButton = createTypeFromPersonResourceOperation.createButton();
-//				createPersonButton.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-//				createPersonButton.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-//
-//				createTypeFromPersonResourceOperation.setSmallIcon( CREATE_PERSON_LARGE_ICON );
-//				
-//				this.addComponent( createPersonButton, Constraint.LINE_START );
 				
-				org.lgna.croquet.components.PageAxisPanel lineEndPanel = new org.lgna.croquet.components.PageAxisPanel();
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton() );
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation.getInstance().createButton() );
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton() );
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation.getInstance().createButton() );
+				org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 0,  2 );
+				
+				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.DiscFieldDeclarationOperation.getInstance().createButton() );
+				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation.getInstance().createButton() );
+				
+				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton() );
+				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton() );
+				
+				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.CylinderFieldDeclarationOperation.getInstance().createButton() );
+				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation.getInstance().createButton() );
+				
+				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation.getInstance().createButton() );
+				gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
+				
+		        org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
+		        lineEndPanel.addComponent( gridPanel, Constraint.PAGE_START );
+
+		        org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel( 0, PAD );
+
+				panel.addComponent( topPanel, Constraint.PAGE_START );
+				panel.addComponent( scrollPane, Constraint.CENTER );
+
+				this.addComponent( panel, Constraint.CENTER );
 				this.addComponent( lineEndPanel, Constraint.LINE_END );
+
 				//todo
+				panel.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 				scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 			}

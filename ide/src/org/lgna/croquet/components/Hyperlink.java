@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends OperationButton< javax.swing.JButton, org.lgna.croquet.Operation<?> > {
-	public Hyperlink( org.lgna.croquet.Operation<?> model ) {
+public class Hyperlink extends OperationButton< javax.swing.JButton, org.lgna.croquet.Operation > {
+	public Hyperlink( org.lgna.croquet.Operation model ) {
 		super( model );
 	}
 	@Override

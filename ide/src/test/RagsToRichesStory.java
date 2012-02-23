@@ -65,7 +65,7 @@ class MyOgre extends MyBiped {
 
 class MyArmoire extends Prop {
 	public MyArmoire() {
-		super( org.lgna.story.resources.armoire.ArmoireCentralAsian.ARMOIRE_CENTRAL_ASIAN_DRAGONDOOR );
+		super( org.lgna.story.resources.prop.Helicopter.VEHICLE_HELICOPTER );
 	}
 	public Joint getLeftDoor() {
 		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
@@ -118,10 +118,10 @@ class DesertScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restoreVehiclesAndVantagePoints();
+				this.restoreStateAndEventListeners();
 			}
 		} else {
-			this.preserveVehiclesAndVantagePoints();
+			this.preserveStateAndEventListeners();
 		}
 	}
 		
@@ -192,10 +192,10 @@ class SnowScene extends Scene {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
 			} else {
-				this.restoreVehiclesAndVantagePoints();
+				this.restoreStateAndEventListeners();
 			}
 		} else {
-			this.preserveVehiclesAndVantagePoints();
+			this.preserveStateAndEventListeners();
 		}
 	}
 
@@ -209,7 +209,7 @@ class SnowScene extends Scene {
 			this.redCone.turn( TurnDirection.FORWARD, 1.0 );
 			this.blueCone.roll( RollDirection.LEFT, 1.0 );
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
-			org.alice.virtualmachine.DoTogether.invokeAndWait( new Runnable() {
+			org.lgna.common.DoTogether.invokeAndWait( new Runnable() {
 				public void run() {
 					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
 				}

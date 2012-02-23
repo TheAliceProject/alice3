@@ -188,7 +188,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		this.sample = new org.lgna.croquet.components.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
-		org.lgna.croquet.ListSelectionState.ValueObserver< String > valueObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< String >() {
+		org.lgna.croquet.ListSelectionState.ValueListener< String > valueObserver = new org.lgna.croquet.ListSelectionState.ValueListener< String >() {
 			public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -200,8 +200,8 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 			}
 		};
 		
-		this.familySelection.addValueObserver( valueObserver );
-		this.styleSelection.addValueObserver( valueObserver );
+		this.familySelection.addValueListener( valueObserver );
+		this.styleSelection.addValueListener( valueObserver );
 //		class ListSelectionAdapter implements javax.swing.event.ListSelectionListener {
 //			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 //				if( e.getValueIsAdjusting() ) {
@@ -231,7 +231,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
 			super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
 			this.setTextForBothTrueAndFalse( "constrain to text" );
-			this.addValueObserver( new ValueObserver<Boolean>() {
+			this.addValueListener( new ValueListener<Boolean>() {
 				public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				}
 				public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -314,15 +314,16 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 //	/*package-private*/ String getInstanceNameText() {
 //		return this.textVC.getText();
 //	}
-	protected org.lgna.story.Text createText() {
-		org.lgna.story.Text rv = new org.lgna.story.Text();
+	protected org.lgna.story.TextModel createText() {
+		org.lgna.story.TextModel rv = new org.lgna.story.TextModel();
 		org.lgna.story.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
 		org.lgna.story.font.WeightAttribute weightAttribute = this.styleSelection.getWeightAttribute();
 		org.lgna.story.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
 
 		rv.setName( this.instanceNameVC.getText() );
 		rv.setValue( this.textVC.getText() );
-		rv.setFont( new org.lgna.story.Font( familyAttribute, weightAttribute, postureAttribute ) );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( familyAttribute, weightAttribute, postureAttribute );
+		//rv.setFont( new org.lgna.story.Font( familyAttribute, weightAttribute, postureAttribute ) );
 		rv.setHeight( Double.parseDouble( this.heightTextField.getText() ) );
 		return rv;
 	}
@@ -357,16 +358,16 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 //	}
 
 	@Override
-	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.InputDialogOperationStep<Void> context ) {
+	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.OperationStep step ) {
 		return new CreateTextPane( this ); 
 	}
 	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.Text > createFieldAndInstance( org.lgna.croquet.history.InputDialogOperationStep<Void> context ) {
+	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.TextModel > createFieldAndInstance( org.lgna.croquet.history.OperationStep step ) {
 		//"Create Text"
-		CreateTextPane createTextPane = (CreateTextPane)context.getMainPanel();
-		org.lgna.story.Text text = createTextPane.createText();
+		CreateTextPane createTextPane = (CreateTextPane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
+		org.lgna.story.TextModel text = createTextPane.createText();
 		if( text != null ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeFor( org.lgna.story.Text.class );
+			org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeFor( org.lgna.story.TextModel.class );
 			org.lgna.project.ast.Expression initializer = org.lgna.project.ast.AstUtilities.createInstanceCreation( type );
 			org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
@@ -385,9 +386,9 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	}
 	
 	@Override
-	protected final void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
+	protected final void epilogue(org.lgna.croquet.history.OperationStep step, boolean isOk) {
 		if( isOk ) {
-			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.Text> tuple = this.createFieldAndInstance( step );
+			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.TextModel> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {
 				org.lgna.project.ast.UserField field = tuple.getA();
 				if( field != null ) {

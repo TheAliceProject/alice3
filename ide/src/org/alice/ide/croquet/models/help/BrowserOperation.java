@@ -57,7 +57,7 @@ public class BrowserOperation extends org.alice.ide.operations.InconsequentialAc
 		super.localize();
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
 		try {
 			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
 		} catch( Exception e ) {

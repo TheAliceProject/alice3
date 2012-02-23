@@ -46,12 +46,12 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DropTrigger extends MouseEventTrigger implements RetargetableTrigger {
-	private final org.lgna.croquet.resolvers.CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
+public class DropTrigger extends MouseEventTrigger {
+	private final org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
 	private org.lgna.croquet.DropSite dropSite;
 	public DropTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		super( viewController, e );
-		this.dropReceptorResolver = dropReceptor.getCodableResolver();
+		this.dropReceptorResolver = dropReceptor.getResolver();
 		this.dropSite = dropSite;
 	}
 	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -71,15 +71,11 @@ public class DropTrigger extends MouseEventTrigger implements RetargetableTrigge
 	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
 	}
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		if( this.dropReceptorResolver instanceof org.lgna.croquet.resolvers.RetargetableResolver<?> ) {
-			org.lgna.croquet.resolvers.RetargetableResolver<?> retargetableResolver = (org.lgna.croquet.resolvers.RetargetableResolver<?>)this.dropReceptorResolver;
-			retargetableResolver.retarget( retargeter );
-		}
-		if( this.dropSite instanceof org.lgna.croquet.RetargetableDropSite ) {
-			org.lgna.croquet.RetargetableDropSite retargetableDropSite = (org.lgna.croquet.RetargetableDropSite)this.dropSite;
-			this.dropSite = retargetableDropSite.createReplacement( retargeter );
-		}
+		super.retarget( retargeter );
+		this.dropReceptorResolver.retarget( retargeter );
+		this.dropSite = this.dropSite.createReplacement( retargeter );
 	}
 	@Override
 	public String getNoteText( java.util.Locale locale ) {

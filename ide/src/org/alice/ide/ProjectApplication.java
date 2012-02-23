@@ -168,8 +168,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 					this.showUnableToOpenFileDialog( file, "It does not exist." );
 				}
 			} else {
-				org.lgna.story.Ground.SurfaceAppearance surfaceAppearance = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );
-				org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( surfaceAppearance );
+				org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );
+				org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
 				project = new org.lgna.project.Project( programType );
 			}
 		}
@@ -178,7 +178,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 			this.uri = uri;
 			try {
 				if( file != null && file.canWrite() ) {
-					org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
+					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
+					org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleOpen( file );
 				}
 			} catch( Throwable throwable ) {
 				throwable.printStackTrace();
@@ -189,7 +190,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		}
 	}
 	
-	private org.lgna.project.Project project = null;
+	//private org.lgna.project.Project project = null;
 	
 	public final edu.cmu.cs.dennisc.history.HistoryManager getProjectHistoryManager() {
 		return edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
@@ -248,33 +249,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	protected void restoreProjectProperties() {
 	}
 
-	public static interface ProjectObserver {
-		public void projectOpening( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject );
-		public void projectOpened( org.lgna.project.Project previousProject, org.lgna.project.Project nextProject );
-	}
-	
-	private java.util.List< ProjectObserver > projectObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
-	public void addProjectObserver( ProjectObserver projectObserver ) {
-		this.projectObservers.add( projectObserver );
-	}
-	public void removeProjectObserver( ProjectObserver projectObserver ) {
-		this.projectObservers.remove( projectObserver );
-	}
-	
-	
 	public org.lgna.project.Project getProject() {
-		return this.project;
+		return org.alice.ide.project.ProjectState.getInstance().getValue();
 	}
 	public void setProject( org.lgna.project.Project project ) {
-		org.lgna.project.Project previousProject = this.project;
-		for( ProjectObserver projectObserver : this.projectObservers ) {
-			projectObserver.projectOpening( previousProject, project );
-		}
-		this.project = project;
-		for( ProjectObserver projectObserver : this.projectObservers ) {
-			projectObserver.projectOpened( previousProject, project );
-		}
+		org.alice.ide.project.ProjectState.getInstance().setValue( project );
 	}
 	
 	public void loadProjectFrom( java.net.URI uri ) {
@@ -297,10 +276,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
 
 	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
-		org.lgna.project.Project project = getProject();
-		this.ensureProjectCodeUpToDate();
+		org.lgna.project.Project project = this.getUpToDateProject();
 		this.preserveProjectProperties();
-
 		edu.cmu.cs.dennisc.zip.DataSource[] dataSources;
 		try {
 			final java.awt.image.BufferedImage thumbnailImage = createThumbnail();
@@ -337,6 +314,12 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		return org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 
+	public final org.lgna.project.Project getUpToDateProject() {
+		org.lgna.project.Project rv = this.getProject();
+		if( rv != null ) {
+			this.ensureProjectCodeUpToDate();
+		}
+		return rv;
+	}
 	public abstract void ensureProjectCodeUpToDate();
-	//public abstract java.io.File getApplicationRootDirectory();
 }

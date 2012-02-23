@@ -51,12 +51,12 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 	}
 	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType();
 	@Override
-	protected final void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected final void performInternal( org.lgna.croquet.history.OperationStep step ) {
 		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
 
 		javax.swing.JFrame window = edu.cmu.cs.dennisc.javax.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-		edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( window, trigger.getViewController().getAwtComponent() );
+		edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( window, trigger.getViewController().getAwtComponent().getRootPane() );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentHidden( java.awt.event.ComponentEvent e ) {

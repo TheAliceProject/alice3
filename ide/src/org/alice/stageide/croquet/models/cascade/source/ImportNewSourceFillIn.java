@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.cascade.source;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImportNewSourceFillIn< E, R extends org.alice.virtualmachine.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
+public abstract class ImportNewSourceFillIn< E, R extends org.lgna.common.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
 	private final org.lgna.project.ast.InstanceCreation transientValue;
 	public ImportNewSourceFillIn( java.util.UUID id ) {
 		super( id );

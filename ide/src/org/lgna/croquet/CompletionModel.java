@@ -74,7 +74,8 @@ public abstract class CompletionModel extends Model {
 		if( edit != null ) {
 			return edit.getTutorialTransactionTitle( userInformation );
 		} else {
-			return null;
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			return this.getTutorialNoteText( step, trigger != null ? trigger.getNoteText( userInformation.getLocale() ) : "", edit, userInformation );
 		}
 	}
 	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
@@ -82,6 +83,7 @@ public abstract class CompletionModel extends Model {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
 		return null;
 	}
+	public abstract Iterable< ? extends PrepModel > getPotentialRootPrepModels();
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {
 		super.appendRepr( rv );

@@ -46,8 +46,21 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Model extends Element implements org.lgna.croquet.resolvers.RuntimeResolver< Model > {
-	public Model( java.util.UUID id ) {
+	private final java.util.List< ContextFactory<?> > contextFactories = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
+	//TODO: contemplate passing context factories on construction
+	public Model( java.util.UUID id/*, ContextFactory<?>... contextFactories*/ ) {
 		super( id );
+	}
+
+	public Iterable< ContextFactory<?> > getContextFactories() {
+		return this.contextFactories;
+	}
+	public void addContextFactory( ContextFactory<?> contextFactory ) {
+		this.contextFactories.add( contextFactory );
+	}
+	public void removeContextFactory( ContextFactory<?> contextFactory ) {
+		this.contextFactories.remove( contextFactory );
 	}
 
 	public final Model getResolved() {
@@ -78,7 +91,7 @@ public abstract class Model extends Element implements org.lgna.croquet.resolver
 		throw new RuntimeException( "todo" );
 	}
 	public void setEnabled( boolean isEnabled ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 	}
 	
 	

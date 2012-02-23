@@ -140,7 +140,12 @@ public abstract class IoUtilities {
 		java.io.InputStream is = zipEntryContainer.getInputStream( PROPERTIES_ENTRY_NAME );
 		if( is != null ) {
 			java.io.BufferedInputStream bis = new java.io.BufferedInputStream( is );
-			rv.readProperties( bis );
+			edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder binaryDecoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bis );
+			String version = binaryDecoder.decodeString();
+			final int N = binaryDecoder.decodeInt();
+			for( int i=0; i<N; i++ ) {
+				org.lgna.project.properties.PropertyKey.decodeIdAndValueAndPut( rv, binaryDecoder, version );
+			}
 		}
 		return rv;
 	}
@@ -155,8 +160,8 @@ public abstract class IoUtilities {
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName );
 		return (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, projectVersion );
 	}
-	private static java.util.Set< org.alice.virtualmachine.Resource > readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
-		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
+	private static java.util.Set< org.lgna.common.Resource > readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+		java.util.Set< org.lgna.common.Resource > rv = new java.util.HashSet< org.lgna.common.Resource >();
 		java.io.InputStream isResources = zipEntryContainer.getInputStream( RESOURCES_ENTRY_NAME );
 		if( isResources != null ) {
 			org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( isResources );
@@ -169,8 +174,8 @@ public abstract class IoUtilities {
 					byte[] data = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( zipEntryContainer.getInputStream( entryName ) );
 					if( data != null ) {
 						try {
-							Class< ? extends org.alice.virtualmachine.Resource > resourceCls = (Class< ? extends org.alice.virtualmachine.Resource >)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
-							org.alice.virtualmachine.Resource resource = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.valueOf( resourceCls, uuidText );
+							Class< ? extends org.lgna.common.Resource > resourceCls = (Class< ? extends org.lgna.common.Resource >)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
+							org.lgna.common.Resource resource = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.valueOf( resourceCls, uuidText );
 							resource.decodeAttributes( xmlElement, data );
 							rv.add( resource );
 						} catch( ClassNotFoundException cnfe ) {
@@ -190,7 +195,7 @@ public abstract class IoUtilities {
 		org.lgna.project.ast.NamedUserType type = readType( zipEntryContainer, PROGRAM_TYPE_ENTRY_NAME );
 		//todo
 		java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = java.util.Collections.emptySet();
-		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipEntryContainer );
+		java.util.Set< org.lgna.common.Resource > resources = readResources( zipEntryContainer );
 		org.lgna.project.Project rv = new org.lgna.project.Project( type, namedUserTypes, resources );
 		readProperties( rv, zipEntryContainer );
 		return rv;
@@ -214,28 +219,28 @@ public abstract class IoUtilities {
 		return readProject( new java.io.File( path ) );
 	}
 
-	private static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( ZipEntryContainer zipEntryContainer ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+	private static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > readType( ZipEntryContainer zipEntryContainer ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		org.lgna.project.ast.AbstractType<?,?,?> type = readType( zipEntryContainer, TYPE_ENTRY_NAME );
-		java.util.Set< org.alice.virtualmachine.Resource > resources = readResources( zipEntryContainer );
+		java.util.Set< org.lgna.common.Resource > resources = readResources( zipEntryContainer );
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( type, resources );
 	}
 
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipInputStream zis ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > readType( java.util.zip.ZipInputStream zis ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new ZipInputStreamEntryContainer( zis ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.io.InputStream is ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > readType( java.io.InputStream is ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new java.util.zip.ZipInputStream( is ) );
 	}
 
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new ZipFileEntryContainer( zipFile ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( java.io.File file ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource >> readType( java.io.File file ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert file != null;
 		assert file.exists();
 		return readType( new java.util.zip.ZipFile( file ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource >> readType( String path ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource >> readType( String path ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new java.io.File( path ) );
 	}
 
@@ -272,7 +277,7 @@ public abstract class IoUtilities {
 		//todo
 		return name;
 	}
-	private static String generateEntryName( org.alice.virtualmachine.Resource resource, java.util.Set< String > usedEntryNames ) {
+	private static String generateEntryName( org.lgna.common.Resource resource, java.util.Set< String > usedEntryNames ) {
 		String validFilename = getValidName( resource.getOriginalFileName() );
 		final String DESIRED_DIRECTORY_NAME = "resources";
 		int i = 1;
@@ -292,7 +297,7 @@ public abstract class IoUtilities {
 			}
 		}
 	}
-	private static void writeResources( java.util.zip.ZipOutputStream zos, java.util.Set< org.alice.virtualmachine.Resource > resources ) throws java.io.IOException {
+	private static void writeResources( java.util.zip.ZipOutputStream zos, java.util.Set< org.lgna.common.Resource > resources ) throws java.io.IOException {
 		if( resources.isEmpty() ) {
 			//pass
 		} else {
@@ -301,7 +306,7 @@ public abstract class IoUtilities {
 			xmlDocument.appendChild( xmlRootElement );
 			synchronized( resources ) {
 				java.util.Set< String > usedEntryNames = new java.util.HashSet< String >();
-				for( org.alice.virtualmachine.Resource resource : resources ) {
+				for( org.lgna.common.Resource resource : resources ) {
 					org.w3c.dom.Element xmlElement = xmlDocument.createElement( XML_RESOURCE_TAG_NAME );
 					resource.encodeAttributes( xmlElement );
 					java.util.UUID uuid = resource.getId();
@@ -319,7 +324,7 @@ public abstract class IoUtilities {
 			writeXML( xmlDocument, zos, RESOURCES_ENTRY_NAME );
 			synchronized( resources ) {
 				java.util.Set< String > usedEntryNames = new java.util.HashSet< String >();
-				for( org.alice.virtualmachine.Resource resource : resources ) {
+				for( org.lgna.common.Resource resource : resources ) {
 					String entryName = generateEntryName( resource, usedEntryNames );
 					usedEntryNames.add( entryName );
 					edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.ByteArrayDataSource( entryName, resource.getData() ) );
@@ -333,7 +338,8 @@ public abstract class IoUtilities {
 		writeVersion( zos );
 		org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
-		if( project.getPropertyKeySet().isEmpty() ) {
+		final java.util.Set< org.lgna.project.properties.PropertyKey<Object> > propertyKeys = project.getPropertyKeys();
+		if( propertyKeys.isEmpty() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
@@ -341,14 +347,19 @@ public abstract class IoUtilities {
 					return PROPERTIES_ENTRY_NAME;
 				}
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
-					assert os instanceof java.io.BufferedOutputStream;
-					project.writeProperties( (java.io.BufferedOutputStream)os );
+					edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder binaryEncoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
+					binaryEncoder.encode( org.lgna.project.Version.getCurrentVersionText() );
+					binaryEncoder.encode( propertyKeys.size() );
+					for( org.lgna.project.properties.PropertyKey<Object> propertyKey : propertyKeys ) {
+						propertyKey.encodeIdAndValue( project, binaryEncoder );
+					}
+					binaryEncoder.flush();
 				}
 			} );
 		}
 		writeDataSources( zos, dataSources );
 
-		java.util.Set< org.alice.virtualmachine.Resource > resources = project.getResources();
+		java.util.Set< org.lgna.common.Resource > resources = project.getResources();
 
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression >( org.lgna.project.ast.ResourceExpression.class ) {
 			@Override
@@ -359,7 +370,7 @@ public abstract class IoUtilities {
 		programType.crawl( crawler, true );
 
 		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
-			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
+			org.lgna.common.Resource resource = resourceExpression.resource.getValue();
 			if( resources.contains( resource ) ) {
 				//pass
 			} else {
@@ -395,7 +406,7 @@ public abstract class IoUtilities {
 			}
 		};
 		type.crawl( crawler, false );
-		java.util.Set< org.alice.virtualmachine.Resource > resources = new java.util.HashSet< org.alice.virtualmachine.Resource >();
+		java.util.Set< org.lgna.common.Resource > resources = new java.util.HashSet< org.lgna.common.Resource >();
 		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
 			resources.add( resourceExpression.resource.getValue() );
 		}

@@ -47,9 +47,9 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< MethodInvocationEditFactory > {
-	private static java.util.Map< org.lgna.project.ast.UserField, MethodInvocationBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, MethodInvocationBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static MethodInvocationBlank getInstance( org.lgna.project.ast.UserField value ) {
+	public static MethodInvocationBlank getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {
 			MethodInvocationBlank rv = map.get( value );
 			if( rv != null ) {
@@ -62,45 +62,49 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 		}
 	}
 
-	private final org.lgna.project.ast.UserField field;
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 
-	private MethodInvocationBlank( org.lgna.project.ast.UserField field ) {
+	private MethodInvocationBlank( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 		super( java.util.UUID.fromString( "3c5f528b-340b-4bcc-8094-3475867d2f6e" ) );
-		this.field = field;
+		this.instanceFactory = instanceFactory;
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class );
-//		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
+		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
 
-		org.lgna.project.ast.AbstractType< ?, ?, ? > fieldValueType = this.field.getValueType();
+		org.lgna.project.ast.AbstractType< ?, ?, ? > instanceFactoryValueType = this.instanceFactory.getValueType();
 		java.util.List< org.lgna.project.ast.AbstractMethod > methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		if( turnableType.isAssignableFrom( fieldValueType ) ) {
-			methods.add( turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class ) );
-			methods.add( turnableType.getDeclaredMethod( "roll", org.lgna.story.RollDirection.class, Number.class, org.lgna.story.Roll.Detail[].class ) );
-			methods.add( turnableType.getDeclaredMethod( "turnToFace", org.lgna.story.Entity.class, org.lgna.story.TurnToFace.Detail[].class ) );
-			methods.add( turnableType.getDeclaredMethod( "pointAt", org.lgna.story.Entity.class, org.lgna.story.PointAt.Detail[].class ) );
-			methods.add( turnableType.getDeclaredMethod( "orientToUpright", org.lgna.story.OrientToUpright.Detail[].class ) );
+		if( turnableType.isAssignableFrom( instanceFactoryValueType ) ) {
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROLL_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_TO_FACE_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.POINT_AT_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ORIENT_TO_UPRIGHT_METHOD );
 		}
-		if( movableTurnableType.isAssignableFrom( fieldValueType ) ) {
-			methods.add( movableTurnableType.getDeclaredMethod( "move", org.lgna.story.MoveDirection.class, Number.class, org.lgna.story.Move.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "moveToward", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveToward.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "moveAwayFrom", org.lgna.story.Entity.class, Number.class, org.lgna.story.MoveAwayFrom.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "moveTo", org.lgna.story.Entity.class, org.lgna.story.MoveTo.Detail[].class ) );
-			methods.add( movableTurnableType.getDeclaredMethod( "moveAndOrientTo", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class ) );
+		if( movableTurnableType.isAssignableFrom( instanceFactoryValueType ) ) {
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_TOWARD_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_AWAY_FROM_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_TO_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.PLACE_METHOD );
 		}
 
-//		if( jointedModelType.isAssignableFrom( fieldValueType ) ) {
-//			//todo: joint tree undo
-//			//rv.add( JointTreeLocalTransformationMethodInvocationFillIn.getInstance( this.field, org.lgna.story.JointedModel.class, "straightenOutJoints", org.lgna.story.StraightenOutJoints.Detail[].class ) );
-//		}
+		if( jointedModelType.isAssignableFrom( instanceFactoryValueType ) ) {
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD );
+		}
 
 		java.util.List< org.lgna.project.ast.AbstractMethod > sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
 		for( org.lgna.project.ast.AbstractMethod method : sortedMethods ) {
 			if( method != null ) {
-				// note: we will need to track the kind of fillIn we need as soon as simple subject local transformation undo won't suffice
-				rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.field, method ) );
+				//todo
+				if( method == org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD ) {
+					rv.add( AllJointLocalTransformationsMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+				} else {
+					rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+				}
 			} else {
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}

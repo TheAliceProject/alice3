@@ -46,17 +46,13 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMethod extends AbstractCode {
-	//public ObjectProperty< Boolean > isEntryPoint = new ObjectProperty< Boolean >( this );
-	public abstract boolean isValid();
-	
+public abstract class AbstractMethod extends AbstractCode implements Method {
 	public abstract boolean isStatic();
 	public abstract boolean isAbstract();
 	public abstract boolean isFinal();
 	public abstract boolean isNative();
 	public abstract boolean isSynchronized();
 	public abstract boolean isStrictFloatingPoint();
-	public abstract AbstractType<?,?,?> getReturnType();
 	
 	public boolean isOverride() {
 		java.util.ArrayList< ? extends AbstractParameter > parameters = this.getRequiredParameters();

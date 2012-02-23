@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleVisualModelImp extends ModelImp {
+public abstract class SingleVisualModelImp extends VisualScaleModelImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
 	public SingleVisualModelImp( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
@@ -65,9 +65,5 @@ public abstract class SingleVisualModelImp extends ModelImp {
 	@Override
 	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.getSgPaintAppearances();
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.getSgVisuals()[ 0 ].getBoundingSphere().radius;
 	}
 }

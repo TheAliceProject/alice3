@@ -64,7 +64,7 @@ public class FieldAssignmentTemplateDragModel extends StatementTemplateDragModel
 		this.field = field;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< FieldAssignmentTemplateDragModel > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldAssignmentTemplateDragModel > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldAssignmentTemplateDragModel >( this, this.field, org.lgna.project.ast.AbstractField.class );
 	}
 	@Override

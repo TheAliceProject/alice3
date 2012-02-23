@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.cascade.source;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewAudioSourceFillIn extends ImportNewSourceFillIn< org.lgna.story.AudioSource, org.alice.virtualmachine.resources.AudioResource > {
+public class ImportNewAudioSourceFillIn extends ImportNewSourceFillIn< org.lgna.story.AudioSource, org.lgna.common.resources.AudioResource > {
 	public ImportNewAudioSourceFillIn() {
 		super( java.util.UUID.fromString( "e0860b35-06fb-4116-be94-b2240def9d55" ) );
 	}
@@ -54,12 +54,12 @@ public class ImportNewAudioSourceFillIn extends ImportNewSourceFillIn< org.lgna.
 		return "Import New Audio Source...";
 	}
 	@Override
-	protected org.alice.ide.resource.prompter.ResourcePrompter<org.alice.virtualmachine.resources.AudioResource> getResourcePrompter() {
+	protected org.alice.ide.resource.prompter.ResourcePrompter<org.lgna.common.resources.AudioResource> getResourcePrompter() {
 		return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton();
 	}
 	@Override
-	protected Class<org.alice.virtualmachine.resources.AudioResource> getResourceClass() {
-		return org.alice.virtualmachine.resources.AudioResource.class;
+	protected Class<org.lgna.common.resources.AudioResource> getResourceClass() {
+		return org.lgna.common.resources.AudioResource.class;
 	}
 	@Override
 	protected Class<org.lgna.story.AudioSource> getSourceClass() {

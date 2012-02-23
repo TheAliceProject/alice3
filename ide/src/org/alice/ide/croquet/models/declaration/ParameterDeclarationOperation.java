@@ -78,7 +78,7 @@ public class ParameterDeclarationOperation extends DeclarationOperation< org.lgn
 		return this.code;
 	}
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.croquet.components.declaration.ParameterDeclarationPanel( this );
 	}
 	@Override
@@ -86,7 +86,7 @@ public class ParameterDeclarationOperation extends DeclarationOperation< org.lgn
 		return new org.lgna.project.ast.UserParameter( this.getDeclarationName(), this.getValueType() );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
 		assert declaringType == null;
 		assert valueType != null;
 		assert declarationName != null;

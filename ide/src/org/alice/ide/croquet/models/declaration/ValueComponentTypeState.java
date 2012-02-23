@@ -77,6 +77,15 @@ public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemS
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > root = org.lgna.project.ProgramTypeUtilities.getNamedUserTypesAsTree( project );
 		updateBlankChildren( rv, programType, root );
+
+		org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
+		if( otherTypesMenuModel.isEmpty() ) {
+			//pass
+		} else {
+			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			rv.add( otherTypesMenuModel );
+		}
+		
 		return rv;
 	}
 }

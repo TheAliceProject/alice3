@@ -121,6 +121,13 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		
 		this.nameValidator = nameValidator;
 	}
+	
+	protected org.lgna.project.ast.UserType< ? > getInitialDeclaringType() {
+		return this.initialDeclaringType;
+	}
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getInitialValueComponentType() {
+		return this.initialValueComponentType;
+	}
 	protected org.alice.ide.croquet.models.ExpressionState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InitializerState( this, initialValue );
 	}
@@ -260,7 +267,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		}
 	}
 	@Override
-	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected String getInternalExplanation( org.lgna.croquet.history.OperationStep step ) {
 		final String valueTypeText;
 		if( this.valueComponentTypeState != null ) {
 			valueTypeText = this.getValueTypeExplanation( this.getValueType() );
@@ -302,7 +309,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 
 	
 	private final java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, org.lgna.project.ast.Expression > mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final org.lgna.croquet.State.ValueObserver< Boolean > isArrayValueTypeListener = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+	private final org.lgna.croquet.State.ValueListener< Boolean > isArrayValueTypeListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
 		public void changing( org.lgna.croquet.State< java.lang.Boolean > state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
 //			assert state.getValue() == prevValue;
 //			assert prevValue != nextValue;
@@ -314,7 +321,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 			DeclarationLikeSubstanceOperation.this.handleValueTypeChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.AbstractType > valueComponentTypeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.AbstractType >() {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.AbstractType > valueComponentTypeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.AbstractType >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.AbstractType> state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceOperation.this.handleValueTypeChanging();
 		}
@@ -338,15 +345,15 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		this.initializerState.setValue( nextInitializer );
 	}
 	
-	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );
-	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step );
+	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );
+	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step );
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.OperationStep step ) {
 		if( this.declaringTypeState != null ) {
 			this.declaringTypeState.setValueTransactionlessly( this.initialDeclaringType );
 		}
 		if( this.valueComponentTypeState != null ) {
-			this.valueComponentTypeState.setValueTransactionlessly( this.initialValueComponentType );
+			this.valueComponentTypeState.setValueTransactionlessly( this.getInitialValueComponentType() );
 		}
 		if( this.isArrayValueTypeState != null ) {
 			this.isArrayValueTypeState.setValueTransactionlessly( this.initialIsArrayValueType );
@@ -361,21 +368,21 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		
 		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
 			if( this.isIsArrayValueTypeEditable ) {
-				this.isArrayValueTypeState.addValueObserver( this.isArrayValueTypeListener );
+				this.isArrayValueTypeState.addValueListener( this.isArrayValueTypeListener );
 			}
-			this.valueComponentTypeState.addValueObserver( this.valueComponentTypeListener );
+			this.valueComponentTypeState.addValueListener( this.valueComponentTypeListener );
 		}
 		
 		this.mapTypeToInitializer.clear();
 		return this.createMainComponent( step );
 	}
 	@Override
-	protected final void epilogue( org.lgna.croquet.history.InputDialogOperationStep step, boolean isCommit ) {
+	protected final void epilogue( org.lgna.croquet.history.OperationStep step, boolean isCommit ) {
 		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
 			if( this.isIsArrayValueTypeEditable ) {
-				this.isArrayValueTypeState.removeValueObserver( this.isArrayValueTypeListener );
+				this.isArrayValueTypeState.removeValueListener( this.isArrayValueTypeListener );
 			}
-			this.valueComponentTypeState.removeValueObserver( this.valueComponentTypeListener );
+			this.valueComponentTypeState.removeValueListener( this.valueComponentTypeListener );
 		}
 		if( isCommit ) {
 			org.lgna.croquet.edits.Edit< ? > edit = this.createEdit( step, this.getDeclaringType(), this.getValueType(), this.getDeclarationName(), this.getInitializer() );

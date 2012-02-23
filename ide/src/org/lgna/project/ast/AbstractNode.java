@@ -45,18 +45,22 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner implements Node, edu.cmu.cs.dennisc.pattern.Crawlable {
+public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.dennisc.pattern.Crawlable {
 	private static final double CURRENT_VERSION = 3.1;
 	private static final double MINIMUM_ACCEPTABLE_VERSION = CURRENT_VERSION;
 
-	private java.util.UUID m_uuid = java.util.UUID.randomUUID();
+	private java.util.UUID id = java.util.UUID.randomUUID();
 	private AbstractNode parent;
-	
-	public java.util.UUID getId() {
-		return m_uuid;
+
+	//todo
+	public boolean isAppropriatelyIdenitifiedById() {
+		return true;
 	}
-	/*package-private*/ void setUUID( java.util.UUID uuid ) {
-		m_uuid = uuid;
+	public final java.util.UUID getId() {
+		return this.id;
+	}
+	/*package-private*/ final void setId( java.util.UUID id ) {
+		this.id = id;
 	}
 	
 	public Node getParent() {
@@ -67,7 +71,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		if( this.parent != parent ) {
 			if( this.parent != null ) {
 				if( parent != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "previous not null", this );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "previous not null", this, this.parent );
 				}
 			}
 			this.parent = parent;
@@ -109,7 +113,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			if( isReference ) {
 				//pass
 			} else {
-				AbstractNode node = nodeProperty.getValue();
+				AbstractNode node = (AbstractNode)nodeProperty.getValue();
 				if( node != null ) {
 					node.setParent( null );
 				}
@@ -130,7 +134,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			if( isReference ) {
 				//pass
 			} else {
-				AbstractNode node = nodeProperty.getValue();
+				AbstractNode node = (AbstractNode)nodeProperty.getValue();
 				if( node != null ) {
 					node.setParent( this );
 				}
@@ -216,11 +220,6 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 		}
 		super.fireAdded( e );
 	}
-	
-	@Override
-	public boolean isComposedOfGetterAndSetterProperties() {
-		return false;
-	}
 
 	private static void acceptIfCrawlable( java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > alreadyVisited, Object value, edu.cmu.cs.dennisc.pattern.Crawler crawler ) {
 		if( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
@@ -303,8 +302,8 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			if( value != null ) {
 				rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
 				String text;
-				if( value instanceof org.alice.virtualmachine.Resource ) {
-					org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
+				if( value instanceof org.lgna.common.Resource ) {
+					org.lgna.common.Resource resource = (org.lgna.common.Resource)value;
 					text = resource.getId().toString();
 				} else {
 					text = value.toString();
@@ -381,7 +380,8 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 				set.add( abstractDeclaration );
 			}
 		}
-		rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, m_uuid.toString() );
+		//todo
+		rv.setAttribute( CodecConstants.ID_ATTRIBUTE, this.id.toString() );
 		rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, getClass().getName() );
 		if( this instanceof JavaType ) {
 			JavaType javaType = (JavaType)this;
@@ -413,7 +413,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			rv.appendChild( xmlType );
 		} else if( this instanceof JavaConstructorParameter ) {
 			JavaConstructorParameter parameterDeclaredInJavaConstructor = (JavaConstructorParameter)this;
-			JavaConstructor constructor = parameterDeclaredInJavaConstructor.getConstructor();
+			JavaConstructor constructor = parameterDeclaredInJavaConstructor.getCode();
 			rv.appendChild( encodeValue( constructor, xmlDocument, set ) );
 
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
@@ -421,7 +421,7 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 			rv.appendChild( xmlIndex );
 		} else if( this instanceof JavaMethodParameter ) {
 			JavaMethodParameter parameterDeclaredInJavaMethod = (JavaMethodParameter)this;
-			JavaMethod method = parameterDeclaredInJavaMethod.getMethod();
+			JavaMethod method = parameterDeclaredInJavaMethod.getCode();
 			rv.appendChild( encodeValue( method, xmlDocument, set ) );
 
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
@@ -550,11 +550,11 @@ public abstract class AbstractNode extends edu.cmu.cs.dennisc.pattern.DefaultIns
 	protected void postDecode() {
 	}
 
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map, boolean isUUIDDecodingDesired ) throws org.lgna.project.VersionNotSupportedException {
+	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map, boolean isIdDecodingDesired ) throws org.lgna.project.VersionNotSupportedException {
 		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
 		double astVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
 		if( astVersion >= MINIMUM_ACCEPTABLE_VERSION ) {
-			Decoder decoder = new Decoder( projectVersion, org.lgna.project.Version.getCurrentVersionText(), isUUIDDecodingDesired );
+			Decoder decoder = new Decoder( projectVersion, org.lgna.project.Version.getCurrentVersionText(), isIdDecodingDesired );
 			return decoder.decode( xmlElement, map );
 		} else {
 			throw new org.lgna.project.VersionNotSupportedException( MINIMUM_ACCEPTABLE_VERSION, astVersion );

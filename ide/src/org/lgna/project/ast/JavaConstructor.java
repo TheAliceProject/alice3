@@ -99,8 +99,11 @@ public class JavaConstructor extends AbstractConstructor {
 	public ConstructorReflectionProxy getConstructorReflectionProxy() {
 		return this.constructorReflectionProxy;
 	}
-	
 	@Override
+	public JavaType getDeclaringType() {
+		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
+	}
+
 	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -112,7 +115,6 @@ public class JavaConstructor extends AbstractConstructor {
 			return null;
 		}
 	}
-	@Override
 	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -124,11 +126,6 @@ public class JavaConstructor extends AbstractConstructor {
 			return null;
 		}
 	}
-	@Override
-	public JavaType getDeclaringType() {
-		return JavaType.getInstance( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
-	}
-	@Override
 	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
 		return this.requiredParameters;
 	}

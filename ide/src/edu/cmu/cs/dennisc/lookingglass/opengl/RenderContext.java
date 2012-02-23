@@ -78,6 +78,23 @@ public class RenderContext extends Context {
 	private final java.util.Stack< Float > globalOpacityStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private float globalOpacity = 1.0f;
 
+	
+	private int normalizeCount = 0;
+	
+	public void pushNormalize() {
+		this.normalizeCount ++;
+		if( this.normalizeCount == 1 ) {
+			this.gl.glEnable( GL_NORMALIZE );
+		}
+		
+	}
+	public void popNormalize() {
+		if( this.normalizeCount == 1 ) {
+			this.gl.glDisable( GL_NORMALIZE );
+		}
+		this.normalizeCount --;
+	}
+	
 	public void pushGlobalOpacity() {
 		this.globalOpacityStack.push( this.globalOpacity );
 	}
@@ -92,6 +109,9 @@ public class RenderContext extends Context {
 		this.clearRect.setBounds( 0, 0, 0, 0 );
 		this.globalOpacity = 1.0f;
 		this.globalOpacityStack.clear();
+
+		this.normalizeCount = 0;
+		this.gl.glDisable( GL_NORMALIZE );
 	}
 	public void renderLetterboxingIfNecessary( int width, int height ) {
 		if( this.clearRect.x == 0 && this.clearRect.y == 0 && this.clearRect.width == width && this.clearRect.height == height ) {

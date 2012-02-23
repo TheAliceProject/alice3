@@ -45,15 +45,11 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstance {
-	private final org.lgna.project.ast.FieldAccess fieldAccess;
+public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast.FieldAccess> {
 	private final org.lgna.croquet.components.JComponent< ? > replacement;
-	
 	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
-		super( null );
-		this.fieldAccess = fieldAccess;
-		
-		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( this.fieldAccess );
+		super( factory, fieldAccess );
+		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}
@@ -63,20 +59,20 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 			this.addComponent( this.replacement );
 		} else {
 			boolean isExpressionDesired;
-			if( this.fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
+			if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
 				isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired();
 			} else {
 				isExpressionDesired = true;
 			}
 			if( isExpressionDesired ) {
-				this.addComponent( factory.createExpressionPropertyPane( this.fieldAccess.expression ) );
+				this.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression ) );
 				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 					//pass
 				} else {
 					this.addComponent( new org.lgna.croquet.components.Label( "." ) );
 				}
 			}
-			org.lgna.project.ast.AbstractField field = this.fieldAccess.field.getValue();
+			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 			org.alice.ide.ast.components.DeclarationNameLabel nodeNameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( field );
 			//nodeNameLabel.scaleFont( 1.2f );
 			//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
@@ -99,18 +95,18 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 				}
 			}
 		}
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.FieldAccess.class ) );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		if( this.replacement != null ) {
 			return true;
 		} else {
-			if( this.fieldAccess != null ) {
-				if( this.fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
+			org.lgna.project.ast.FieldAccess fieldAccess = this.getExpression();
+			if( fieldAccess != null ) {
+				if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
 					return super.isExpressionTypeFeedbackDesired();
 				} else {
-					if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.fieldAccess ) ) {
+					if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( fieldAccess ) ) {
 						return false;
 					} else {
 						return super.isExpressionTypeFeedbackDesired();
@@ -123,8 +119,9 @@ public class FieldAccessView extends org.alice.ide.common.ExpressionLikeSubstanc
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
-		if( this.fieldAccess != null ) {
-			return this.fieldAccess.field.getValue().getValueType();
+		org.lgna.project.ast.FieldAccess fieldAccess = this.getExpression();
+		if( fieldAccess != null ) {
+			return fieldAccess.field.getValue().getValueType();
 		} else {
 			return null;
 		}

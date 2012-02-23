@@ -43,13 +43,14 @@
 
 package org.lgna.project.ast;
 
-//todo: < E extends AbstractMember> for getPreviousInChain and getNextInChain
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMember extends AbstractAccessibleDeclaration {
+public abstract class AbstractMember extends AbstractAccessibleDeclaration implements Member {
 	public abstract org.lgna.project.annotations.Visibility getVisibility();
-	public abstract AbstractType<?,?,?> getDeclaringType();
+	public AbstractType<?,?,?> getDeclaringType() {
+		return this.getFirstAncestorAssignableTo( AbstractType.class );
+	}
 	@Override
 	public boolean isUserAuthored() {
 		AbstractType<?,?,?> declaringType = getDeclaringType();

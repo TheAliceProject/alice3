@@ -81,7 +81,8 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 				if( m_owner != null ) {
 					return m_owner.get( local );
 				} else {
-					throw new RuntimeException( "cannot find local: " + local.toString() );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( local );
+					return null;
 				}
 			}
 		}
@@ -133,7 +134,12 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 		@Override
 		public Object lookup( AbstractParameter parameter ) {
-			return m_mapParameterToValue.get( parameter );
+			if( m_mapParameterToValue.containsKey( parameter ) ) {
+				return m_mapParameterToValue.get( parameter );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( parameter );
+				return null;
+			}
 		}
 	}
 	
@@ -166,6 +172,19 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		protected StringBuilder appendRepr( StringBuilder rv ) {
 			rv.append( this.type.getName() );
 			return rv;
+		}
+	}
+	protected static class LambdaInvocationFrame extends InvocationFrame {
+		public LambdaInvocationFrame( Frame owner, UserInstance instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+			super( owner, instance, mapParameterToValue );
+			assert instance != null;
+		}
+		public LambdaInvocationFrame( Frame owner, LambdaInvocationFrame other ) {
+			super( owner, other );
+		}
+		@Override
+		protected StringBuilder appendRepr( StringBuilder rv ) {
+			return null;
 		}
 	}
 
@@ -269,6 +288,11 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	protected void pushMethodFrame( UserInstance instance, java.util.Map< AbstractParameter, Object > map ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new MethodInvocationFrame( owner, instance, map ) );
+	}
+	@Override
+	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, java.util.Map< org.lgna.project.ast.AbstractParameter, java.lang.Object > map ) {
+		Frame owner = getCurrentFrame();
+		this.pushFrame( new LambdaInvocationFrame( owner, instance, map ) );
 	}
 	@Override
 	protected void pushLocal( org.lgna.project.ast.UserLocal local, Object value ) {

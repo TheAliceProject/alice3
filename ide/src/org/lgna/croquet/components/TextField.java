@@ -43,13 +43,11 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.StringState;
-
 /**
  * @author Dennis Cosgrove
  */
 public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField > {
-	public TextField( StringState model ) {
+	public TextField( org.lgna.croquet.StringState model ) {
 		super( model );
 	}
 	
@@ -69,6 +67,7 @@ public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.com
 				}
 			}
 		};
+		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
 		return rv;
 	}
 }

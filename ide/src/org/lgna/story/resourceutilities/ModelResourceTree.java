@@ -27,8 +27,6 @@ public class ModelResourceTree {
 	{
 		this.galleryTree = this.createClassTree(classes);
 		
-		this.galleryTree.printTree();
-		
 	}
 	
 	public ModelResourceTreeNode getTree()

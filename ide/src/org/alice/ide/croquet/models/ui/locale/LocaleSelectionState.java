@@ -81,7 +81,7 @@ public class LocaleSelectionState extends org.lgna.croquet.preferences.Preferenc
 				new java.util.Locale( "ko" )
 		);
 		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
-		this.addValueObserver( new ValueObserver< java.util.Locale >() {
+		this.addValueListener( new ValueListener< java.util.Locale >() {
 			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {

@@ -47,14 +47,31 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class DiscAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Disc > {
-	private double m_innerRadius;
-	private double m_outerRadius;
 	//todo: add scenegraph hint
-	private int m_slices = 50;
-	private int m_loops = 1;
+	private static final int SLICE_COUNT = 50;
+	private static final int LOOP_COUNT = 1;
 
 	private void glDisc( Context c ) {
-		c.glu.gluDisk( c.getQuadric(), m_innerRadius, m_outerRadius, m_slices, m_loops );
+		double innerRadius = m_element.innerRadius.getValue();
+		double outerRadius = m_element.outerRadius.getValue();
+		c.gl.glPushMatrix();
+		try {
+			edu.cmu.cs.dennisc.scenegraph.Disc.Axis axis = m_element.axis.getValue();
+			if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.X ) {
+				c.gl.glRotated( 90.0, 0.0, 1.0, 0.0 );
+			} else if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.Y ) {
+				c.gl.glRotated( 90.0, 1.0, 0.0, 0.0 );
+			}
+			if( m_element.isFrontFaceVisible.getValue() ) {
+				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
+			}
+			if( m_element.isBackFaceVisible.getValue() ) {
+				c.gl.glRotated( 180.0, 0.0, 1.0, 0.0 );
+				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
+			}
+		} finally {
+			c.gl.glPopMatrix();
+		}
 	}
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
@@ -81,10 +98,12 @@ public class DiscAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Dis
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.innerRadius ) {
-			m_innerRadius = m_element.innerRadius.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.outerRadius ) {
-			m_outerRadius = m_element.outerRadius.getValue();
+			setIsGeometryChanged( true );
+		} else if( property == m_element.isFrontFaceVisible ) {
+			setIsGeometryChanged( true );
+		} else if( property == m_element.isBackFaceVisible ) {
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

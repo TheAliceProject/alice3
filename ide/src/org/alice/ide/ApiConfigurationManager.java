@@ -48,6 +48,18 @@ package org.alice.ide;
  */
 public abstract class ApiConfigurationManager {
 	
+	@Deprecated
+	public static ApiConfigurationManager EPIC_HACK_getActiveInstance() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			return ide.getApiConfigurationManager();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove epic hack" );
+			return org.alice.stageide.StoryApiConfigurationManager.getInstance();
+		}
+	}
+	
+	
 	//override to create user types if desired
 	public org.lgna.project.ast.AbstractType< ?,?,? > getTypeFor( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		return type;
@@ -178,4 +190,7 @@ public abstract class ApiConfigurationManager {
 	public abstract org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
 	public abstract org.alice.ide.ast.ExpressionCreator getExpressionCreator();
 	public abstract org.lgna.project.ast.UserType< ? > augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv );
+
+
+	public abstract boolean isTabClosable( org.lgna.project.ast.AbstractCode code );
 }

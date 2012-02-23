@@ -65,7 +65,16 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		this.field = field;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ThisFieldAccessFactory > createResolver() {
+	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > fieldDeclaringType = this.field.getDeclaringType();
+		if( fieldDeclaringType != null ) {
+			return fieldDeclaringType.isAssignableFrom( type );
+		} else {
+			return false;
+		}
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.Resolver< ThisFieldAccessFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessFactory >( this, this.field, org.lgna.project.ast.UserField.class );
 	}
 	public org.lgna.project.ast.UserField getField() {

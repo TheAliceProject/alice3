@@ -93,7 +93,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 				}
 			};
 		}
-		private org.lgna.croquet.State.ValueObserver< Boolean > valueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+		private org.lgna.croquet.State.ValueListener< Boolean > valueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -111,11 +111,11 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			IsAccessToRecursionAllowedEnabledState.getInstance().addAndInvokeValueObserver( valueObserver );
+			IsAccessToRecursionAllowedEnabledState.getInstance().addAndInvokeValueListener( valueObserver );
 		}
 		@Override
 		protected void handleUndisplayable() {
-			IsAccessToRecursionAllowedEnabledState.getInstance().removeValueObserver( valueObserver );
+			IsAccessToRecursionAllowedEnabledState.getInstance().removeValueListener( valueObserver );
 			super.handleUndisplayable();
 		}
 	}
@@ -164,7 +164,7 @@ public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperat
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ) );
 	}
 	@Override
-	protected RecursionPanel createContentPane(org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {
+	protected RecursionPanel createContentPane(org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog) {
 		String explanationA = "<html>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.<p><p>Recursion is a powerful tool in computer science.  It is not to be feared.  It simply needs to be understood.<p><p>For more information on recursion, please see:</html>";
 		String explanationB = "Hopefully, this button makes sense to you:  ";
 		return new RecursionPanel( explanationA, explanationB );
@@ -191,7 +191,7 @@ public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperat
 //		dialog.setLocation( p );
 //	}
 	@Override
-	protected void releaseContentPane(org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
+	protected void releaseContentPane(org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
 	}
 	@Override
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {

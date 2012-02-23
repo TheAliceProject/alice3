@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation< S extends org.lgna.croquet.history.OperationStep<? extends Operation<?>>> extends CompletionModel {
+public abstract class Operation extends CompletionModel {
 	public class SwingModel {
 		private javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -62,6 +62,16 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+	
+	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		if( this.menuPrepModel != null ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.menuPrepModel );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
 	public SwingModel getSwingModel() {
 		this.initializeIfNecessary();
 		return this.swingModel;
@@ -76,8 +86,6 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
-	public abstract S createAndPushStep( org.lgna.croquet.triggers.Trigger trigger );
-
 //	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
 //		return "Press " + this.getTutorialNoteText( step, userInformation );
 //	}
@@ -120,40 +128,42 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	}
 
 	@Override
-	public final S fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	public final org.lgna.croquet.history.OperationStep fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		if( this.isEnabled() ) {
 			return this.handleFire( trigger );
 		} else {
 			return null;
 		}
 	}
-	public final S fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
+	public final org.lgna.croquet.history.OperationStep fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
 		return this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( viewController, e ) );
 	}
-	public final S fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
+	public final org.lgna.croquet.history.OperationStep fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
 		return this.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, e ) );
 	}
 	@Deprecated
-	public final S fire( java.awt.event.MouseEvent e ) {
+	public final org.lgna.croquet.history.OperationStep fire( java.awt.event.MouseEvent e ) {
 		return fire( e, null );
 	}
 	@Deprecated
-	public final S fire( java.awt.event.ActionEvent e ) {
+	public final org.lgna.croquet.history.OperationStep fire( java.awt.event.ActionEvent e ) {
 		return fire( e, null );
 	}
 	@Deprecated
-	public final S fire() {
+	public final org.lgna.croquet.history.OperationStep fire() {
 		return fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
 	}
 	
-	/*package-private*/ final S handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected abstract org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary();
+	
+	/*package-private*/ final org.lgna.croquet.history.OperationStep handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
 		//todo: move up to Model
 		this.initializeIfNecessary();
-		final S step = this.createAndPushStep( trigger );
+		final org.lgna.croquet.history.OperationStep step = org.lgna.croquet.history.TransactionManager.addOperationStep( this, trigger, this.createTransactionHistoryIfNecessary() );
 		this.perform( step );
 		return step;
 	}
-	protected abstract void perform( S step );
+	protected abstract void perform( org.lgna.croquet.history.OperationStep step );
 
 	public String getName() {
 		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
@@ -197,21 +207,21 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 		return false;
 	}
 
-	public static class InternalMenuPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, Operation< ? > > {
-		private InternalMenuPrepModelResolver( Operation< ? > indirect ) {
+	public static class InternalMenuPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, Operation > {
+		private InternalMenuPrepModelResolver( Operation indirect ) {
 			super( indirect );
 		}
 		public InternalMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 		@Override
-		protected InternalMenuItemPrepModel getDirect( Operation< ? > indirect ) {
+		protected InternalMenuItemPrepModel getDirect( Operation indirect ) {
 			return indirect.getMenuItemPrepModel();
 		}
 	}
 	private final static class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
-		private final Operation<?> operation;
-		private InternalMenuItemPrepModel( Operation<?> operation ) {
+		private final Operation operation;
+		private InternalMenuItemPrepModel( Operation operation ) {
 			super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
 			assert operation != null;
 			this.operation = operation;
@@ -223,7 +233,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 		@Override
 		protected void localize() {
 		}
-		public Operation<?> getOperation() {
+		public Operation getOperation() {
 			return this.operation;
 		}
 		@Override
@@ -235,7 +245,7 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 			this.operation.setEnabled( isEnabled );
 		}
 		@Override
-		protected InternalMenuPrepModelResolver createCodableResolver() {
+		protected InternalMenuPrepModelResolver createResolver() {
 			return new InternalMenuPrepModelResolver( this.operation );
 		}
 		@Override
@@ -276,5 +286,9 @@ public abstract class Operation< S extends org.lgna.croquet.history.OperationSte
 	}
 	public org.lgna.croquet.components.Hyperlink createHyperlink() {
 		return new org.lgna.croquet.components.Hyperlink( this );
+	}
+
+	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade< ? > cascade ) {
+		return new org.lgna.croquet.components.ButtonWithRightClickCascade( this, cascade );
 	}
 }

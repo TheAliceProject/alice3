@@ -151,11 +151,11 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 	}
 	
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< MoveStatementActionOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.MoveStatementActionOperationNewInstanceResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.MoveStatementActionOperationNewInstanceResolver( this );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.OperationStep step) {
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< MoveStatementActionOperation >( step ) );
 	}
 }

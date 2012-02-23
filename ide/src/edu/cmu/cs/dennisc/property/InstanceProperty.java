@@ -93,7 +93,10 @@ public class InstanceProperty<E> implements Property< E > {
 				}
 			}
 		}
-		getOwner().firePropertyChanging( e );
+		PropertyOwner owner = this.getOwner();
+		if( owner != null ) {
+			owner.firePropertyChanging( e );
+		}
 	}
 	private void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		if( m_propertyListeners != null ) {
@@ -103,7 +106,10 @@ public class InstanceProperty<E> implements Property< E > {
 				}
 			}
 		}
-		getOwner().firePropertyChanged( e );
+		PropertyOwner owner = this.getOwner();
+		if( owner != null ) {
+			owner.firePropertyChanged( e );
+		}
 	}
 
 	public PropertyOwner getOwner() {

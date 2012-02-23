@@ -67,28 +67,63 @@ public abstract class JointImp extends AbstractTransformableImp {
 		assert this.abstraction == null : this.abstraction;
 		this.abstraction = abstraction;
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 0;
-	}
 
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
-		edu.cmu.cs.dennisc.scenegraph.Composite rv = super.getSgVehicle();
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.jointedModelImplementation.getSgComposite();
-		}
-		assert rv != null;
-		return rv;
-	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
+//		edu.cmu.cs.dennisc.scenegraph.Composite rv = super.getSgVehicle();
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = this.jointedModelImplementation.getSgComposite();
+//		}
+//		assert rv != null;
+//		return rv;
+//	}
 	public abstract boolean isFreeInX();
 	public abstract boolean isFreeInY();
 	public abstract boolean isFreeInZ();
 	
-	public void setJointAxisVisible(boolean jointAxisVisible) {	
-	}
+	
+//	private edu.cmu.cs.dennisc.scenegraph.Visual sgAxisVisual;
+//	private static edu.cmu.cs.dennisc.scenegraph.Geometry[] sgAxisGeometries = new edu.cmu.cs.dennisc.scenegraph.Geometry[] { null };
+//	
+//	private static edu.cmu.cs.dennisc.scenegraph.Geometry[] getSgAxisGeometries() {
+//		if( sgAxisGeometries[ 0 ] != null ) {
+//			//pass
+//		} else {
+//			edu.cmu.cs.dennisc.scenegraph.LineArray lineArray = new edu.cmu.cs.dennisc.scenegraph.LineArray();
+//			lineArray.vertices.setValue( new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 1,1,1 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,-2, 1,1,1 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 0,0,1 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,1, 0,0,1 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 0,1,0 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,1,0, 0,1,0 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 1,0,0 ),
+//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 1,0,0, 1,0,0 ),
+//			} );
+//			sgAxisGeometries[ 0 ] = lineArray;
+//		}
+//		return sgAxisGeometries;
+//	}
+//	private edu.cmu.cs.dennisc.scenegraph.Visual getSgAxisVisual() {
+//		if( this.sgAxisVisual != null ) {
+//			//pass
+//		} else {
+//			this.sgAxisVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
+//			this.sgAxisVisual.geometries.setValue( getSgAxisGeometries() );
+//		}
+//		return this.sgAxisVisual;
+//	}
+//	public void setJointAxisVisible( boolean isJointAxisVisible ) {
+//		if( isJointAxisVisible ) {
+//			getSgAxisVisual().setParent( this.getSgComposite() );
+//		} else {
+//			if( this.sgAxisVisual != null ) {
+//				this.sgAxisVisual.setParent( null );
+//			}
+//		}
+//	}
 	
 	@Override
 	public void setVehicle(EntityImp vehicle) {
@@ -96,15 +131,19 @@ public abstract class JointImp extends AbstractTransformableImp {
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 	
-	protected edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
+	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
+	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
+		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
 	}
 	
 	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes getPivot() {
 		if( this.axes != null ) {
 			//pass
 		} else {
-			this.axes = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 1.0 );
+			this.axes = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 0.1 );
 			putInstance( this.axes );
 		}
 		return this.axes;
@@ -117,14 +156,18 @@ public abstract class JointImp extends AbstractTransformableImp {
 		}
 	}
 	public void setPivotVisible( boolean isPivotVisible ) {
-		this.getPivot().setParent( this.getSgComposite() );
+		if( isPivotVisible ) {
+			this.getPivot().setParent( this.getSgComposite() );
+		} else {
+			if( this.axes != null ) {
+				this.axes.setParent( null );
+			}
+		}
 	}
 	
-	//Joints don't actually want to be directly hooked into the sg tree, so we have this method as a way to link them in indirectly
-	public abstract void setCustomJointSgParent(edu.cmu.cs.dennisc.scenegraph.Composite sgParent);
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );
-		sb.append( this.getJointId() );
+		sb.append( this.getJointId().toString() );
 	}
 }

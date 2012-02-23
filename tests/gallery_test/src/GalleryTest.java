@@ -50,8 +50,14 @@ public class GalleryTest {
 			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)node;
 			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldGalleryNode.getDeclaration();
 			java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
-			org.lgna.story.JointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( instanceCls, parameterClses, fld.get( null ) );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info("TESTING: "+field.getName());
+			Object resource = fld.get( null );
+			assert parameterClses[ 0 ].isInstance( resource ) : parameterClses[ 0 ] + " " + resource;
+			org.lgna.story.JointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( instanceCls, parameterClses, resource );
 			jointedModel.straightenOutJoints();
+//			if (jointedModel instanceof org.lgna.story.Swimmer) {
+//				jointedModel.straightenOutJoints();
+//			}
 		}
 		final int N = node.getChildCount();
 		for( int i=0; i<N; i++ ) {
@@ -59,12 +65,14 @@ public class GalleryTest {
 		}
 	}
 	public static void main( String[] args ) throws Exception {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
 		org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode rootGalleryNode = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance();
-		//todo
-		test( rootGalleryNode.getChild( 0 ), org.lgna.story.Biped.class, org.lgna.story.resources.BipedResource.class );
-		test( rootGalleryNode.getChild( 1 ), org.lgna.story.Flyer.class, org.lgna.story.resources.FlyerResource.class );
-		test( rootGalleryNode.getChild( 2 ), org.lgna.story.Quadruped.class, org.lgna.story.resources.QuadrupedResource.class );
-		test( rootGalleryNode.getChild( 3 ), org.lgna.story.Swimmer.class, org.lgna.story.resources.SwimmerResource.class );
+		int i = 0;
+		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Biped.class, org.lgna.story.resources.BipedResource.class );
+		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Flyer.class, org.lgna.story.resources.FlyerResource.class );
+		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Prop.class, org.lgna.story.resources.PropResource.class );
+		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Quadruped.class, org.lgna.story.resources.QuadrupedResource.class );
+		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Swimmer.class, org.lgna.story.resources.SwimmerResource.class );
 	}
 }

@@ -44,16 +44,16 @@ package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.story.implementation.TextImp;
+import org.lgna.story.implementation.TextModelImp;
 
 /**
  * @author dculyba
  *
  */
-public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Font, TextImp> {
+public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Font, TextModelImp> {
 
 	
-	public TextFontPropertyAdapter(TextImp instance, StandardExpressionState expressionState) 
+	public TextFontPropertyAdapter(TextModelImp instance, StandardExpressionState expressionState) 
 	{
 		super("Font", instance, expressionState);
 	}

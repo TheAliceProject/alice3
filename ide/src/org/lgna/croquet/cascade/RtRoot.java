@@ -59,6 +59,15 @@ abstract class RtElement<E extends Element> {
 	public E getElement() {
 		return this.element;
 	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() );
+		sb.append( "[" );
+		sb.append( this.element );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }
 
 abstract class RtNode<M extends Element, N extends org.lgna.croquet.history.Node< ? >> extends RtElement< M > {

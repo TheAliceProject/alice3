@@ -48,10 +48,10 @@ package org.alice.ide.common;
 public class ThisPane extends AccessiblePane {
 	private static final org.lgna.project.ast.JavaType TYPE_FOR_NULL = org.lgna.project.ast.JavaType.getInstance( Void.class );
 	private org.lgna.project.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
-	private org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueObserver< org.alice.ide.croquet.models.typeeditor.DeclarationComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.ListSelectionState.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.croquet.models.typeeditor.DeclarationComposite > state, org.alice.ide.croquet.models.typeeditor.DeclarationComposite prevValue, org.alice.ide.croquet.models.typeeditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			ThisPane.this.updateBasedOnFocusedDeclaration( nextValue != null ? nextValue.getDeclaration() : null );
 		}
 	};
@@ -64,12 +64,12 @@ public class ThisPane extends AccessiblePane {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.updateBasedOnFocusedDeclaration( org.alice.ide.MetaDeclarationState.getInstance().getValue() );
-		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().addAndInvokeValueObserver( this.codeSelectionObserver );
+		this.updateBasedOnFocusedDeclaration( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueListener( this.codeSelectionObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.typeeditor.DeclarationTabState.getInstance().removeValueObserver( this.codeSelectionObserver );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().removeValueListener( this.codeSelectionObserver );
 		super.handleUndisplayable();
 	}
 	private void updateBasedOnFocusedDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {

@@ -71,8 +71,12 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 	}
 
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step ) {
 		return new org.alice.ide.croquet.components.declaration.ProcedureDeclarationPanel( this );
 	}
 
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationOperation > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationOperation >( this, this.getInitialDeclaringType(), org.lgna.project.ast.UserType.class );
+	}
 }

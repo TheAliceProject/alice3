@@ -65,7 +65,7 @@ public class NumeralOperation extends NumberPadOperation {
 
 	private short numeral;
 	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver< NumeralOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver< NumeralOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver< NumeralOperation >( this, this.numberModel, this.numeral );
 	}
 	@Override
@@ -74,7 +74,7 @@ public class NumeralOperation extends NumberPadOperation {
 		this.setName( Short.toString( this.numeral ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.OperationStep step ) {
 		this.numberModel.append( this.numeral );
 		step.finish();
 	}

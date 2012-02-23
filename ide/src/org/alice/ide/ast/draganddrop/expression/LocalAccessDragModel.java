@@ -64,7 +64,7 @@ public class LocalAccessDragModel extends AbstractExpressionDragModel {
 		this.local = local;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
 		return this.local.getValueType();
 	}
 	@Override

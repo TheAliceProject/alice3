@@ -55,7 +55,7 @@ public class SystemUtilities {
 	public static boolean isPropertyFalse( String propertyName ) {
 		return "false".equals( System.getProperty( propertyName ) );
 	}
-	
+
 	public static boolean getBooleanProperty( String propertyName, boolean defaultValue ) {
 		String textValue = System.getProperty( propertyName );
 		if( textValue != null ) {
@@ -64,8 +64,7 @@ public class SystemUtilities {
 			return defaultValue;
 		}
 	}
-	
-	
+
 	private static java.io.ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
 		java.util.Properties properties = System.getProperties();
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
@@ -84,6 +83,22 @@ public class SystemUtilities {
 		return getPropertiesAsXMLByteArrayOutputStream().toString();
 	}
 
+	public static java.util.List< Property > getPropertyList() {
+		java.util.List< edu.cmu.cs.dennisc.java.lang.Property > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(); 
+		java.util.Properties systemProperties = System.getProperties();
+		java.util.Enumeration<?> keys = systemProperties.propertyNames();
+		while( keys.hasMoreElements() ) {
+			Object key = keys.nextElement();
+			Object value = systemProperties.get( key );
+			if( key instanceof String && value instanceof String ) {
+				rv.add( new edu.cmu.cs.dennisc.java.lang.Property( (String)key, (String)value ) );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( key, value );
+			}
+		}
+		return rv;
+	}
+	
 	private enum Platform {
 		WINDOWS, OSX, LINUX
 	}
@@ -112,16 +127,16 @@ public class SystemUtilities {
 	public static boolean isWindows() {
 		return SystemUtilities.platform == Platform.WINDOWS;
 	}
-	
+
 	public static boolean areIconsDisplayedInMenus() {
 		//return isWindows();
 		return false;
 	}
-	
-	public static <E> E[] returnArray( Class<E> componentType, E... rv ) {
+
+	public static <E> E[] returnArray( Class< E > componentType, E... rv ) {
 		return rv;
 	}
-	public static <E> E[] createArray( Class<E> componentType, E[]... arrays ) {
+	public static <E> E[] createArray( Class< E > componentType, E[]... arrays ) {
 		int n = 0;
 		for( E[] array : arrays ) {
 			if( array != null ) {
@@ -137,5 +152,20 @@ public class SystemUtilities {
 			}
 		}
 		return rv;
+	}
+
+	private static final String PATH_SEPARATOR = System.getProperty( "path.separator" );;
+
+	private static String[] parsePath( String propertyName ) {
+		String value = System.getProperty( propertyName );
+		assert value != null;
+		return value.split( PATH_SEPARATOR );
+	}
+
+	public static String[] getClassPath() {
+		return parsePath( "java.class.path" );
+	}
+	public static String[] getLibraryPath() {
+		return parsePath( "java.library.path" );
 	}
 }

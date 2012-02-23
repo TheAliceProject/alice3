@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.image;
  * @author Dennis Cosgrove
  */
 public final class ImageFactory {
-	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, java.awt.image.BufferedImage > resourceToBufferedImageMap = new java.util.HashMap< org.alice.virtualmachine.resources.ImageResource, java.awt.image.BufferedImage >();
+	private static java.util.Map< org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage > resourceToBufferedImageMap = new java.util.HashMap< org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage >();
 
-	private static org.alice.virtualmachine.event.ResourceContentListener resourceContentListener = new org.alice.virtualmachine.event.ResourceContentListener() {
-		public void contentChanging( org.alice.virtualmachine.event.ResourceContentEvent e ) {
+	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
-		public void contentChanged( org.alice.virtualmachine.event.ResourceContentEvent e ) {
-			ImageFactory.forget( (org.alice.virtualmachine.resources.ImageResource)e.getTypedSource() );
+		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
+			ImageFactory.forget( (org.lgna.common.resources.ImageResource)e.getTypedSource() );
 		}
 	};
 	
@@ -60,11 +60,11 @@ public final class ImageFactory {
 	}
 
 	
-	public static void forget( org.alice.virtualmachine.resources.ImageResource imageResource ) {
+	public static void forget( org.lgna.common.resources.ImageResource imageResource ) {
 		ImageFactory.resourceToBufferedImageMap.remove( imageResource );
 		imageResource.removeContentListener( ImageFactory.resourceContentListener );
 	}
-	public static java.awt.image.BufferedImage getBufferedImage( org.alice.virtualmachine.resources.ImageResource imageResource ) {
+	public static java.awt.image.BufferedImage getBufferedImage( org.lgna.common.resources.ImageResource imageResource ) {
 		assert imageResource != null;
 		java.awt.image.BufferedImage rv = ImageFactory.resourceToBufferedImageMap.get( imageResource );
 		if( rv != null ) {
@@ -86,10 +86,10 @@ public final class ImageFactory {
 		return rv;
 	}
 
-	public static org.alice.virtualmachine.resources.ImageResource createImageResource( java.io.File file ) throws java.io.IOException {
-		String contentType = org.alice.virtualmachine.resources.ImageResource.getContentType( file );
+	public static org.lgna.common.resources.ImageResource createImageResource( java.io.File file ) throws java.io.IOException {
+		String contentType = org.lgna.common.resources.ImageResource.getContentType( file );
 		if( contentType != null ) {
-			org.alice.virtualmachine.resources.ImageResource rv = new org.alice.virtualmachine.resources.ImageResource( file, contentType );
+			org.lgna.common.resources.ImageResource rv = new org.lgna.common.resources.ImageResource( file, contentType );
 
 			//update width and height details
 			getBufferedImage( rv );

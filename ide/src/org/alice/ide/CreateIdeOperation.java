@@ -63,11 +63,11 @@ public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
 		this.cls = cls;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< CreateIdeOperation > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation > createResolver() {
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.OperationStep step) {
 		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.cls );
 		step.finish();
 	}

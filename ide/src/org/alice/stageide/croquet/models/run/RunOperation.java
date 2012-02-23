@@ -42,68 +42,6 @@
  */
 package org.alice.stageide.croquet.models.run;
 
-class RunIcon implements javax.swing.Icon {
-	//private static final java.awt.Color ENABLED_CIRCLE_COLOR = java.awt.Color.GREEN.darker();
-	//private static final java.awt.Color DISABLED_CIRCLE_COLOR = java.awt.Color.GRAY;
-	
-	private static final java.awt.Color ROLLOVER_COLOR = new java.awt.Color( 191, 255, 191 );
-	private static final java.awt.Color PRESSED_COLOR = new java.awt.Color( 63, 127, 63 );
-	private static final java.awt.Color ENABLED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( ROLLOVER_COLOR, PRESSED_COLOR, 0.5f );
-	private static final java.awt.Color DISABLED_COLOR = java.awt.Color.GRAY;
-	
-	public int getIconHeight() {
-		return 24;
-	}
-	public int getIconWidth() {
-		return 24;
-	}
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		if( c instanceof javax.swing.AbstractButton ) {
-			javax.swing.ButtonModel buttonModel = ((javax.swing.AbstractButton)c).getModel();
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Color prevColor = g2.getColor();
-			Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-			try {
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-				int w = this.getIconWidth();
-				int h = this.getIconHeight();
-				int offset = w / 5;
-				int x0 = x + offset * 2;
-				int x1 = x + w - offset;
-	
-				int y0 = y + offset;
-				int y1 = y + h - offset;
-				int yC = (y0 + y1) / 2;
-	
-				int[] xs = { x0, x1, x0 };
-				int[] ys = { y0, yC, y1 };
-	
-				if( buttonModel.isEnabled() ) {
-					if( buttonModel.isPressed() ) {
-						g2.setColor( PRESSED_COLOR );
-					} else {
-						if( buttonModel.isRollover() || buttonModel.isArmed() ) {
-							g2.setColor( ROLLOVER_COLOR );
-						} else {
-							g2.setColor( ENABLED_COLOR );
-						}
-					}
-				} else {
-					g2.setColor( DISABLED_COLOR );
-				}
-				        
-				g2.fillPolygon( xs, ys, 3 );
-				
-				g2.setColor( java.awt.Color.DARK_GRAY );
-				g2.drawPolygon( xs, ys, 3 );
-			} finally {
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-				g2.setColor( prevColor );
-			}
-		}
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -121,14 +59,14 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		rv.append( "Preview your program." );
+		rv.append( " to preview your program." );
 		return rv;
 	}
 //	@Override
-//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.steps.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
+//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
-	private transient org.lgna.story.implementation.ProgramImp programImp;
+	private transient org.alice.stageide.program.RunProgramContext programContext;
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = new java.awt.Dimension( 640, 480 );
 	@Override
@@ -140,9 +78,31 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		dialog.setSize( this.size );
 	}
 	
+	private class ProgramRunnable implements Runnable { 
+		private final java.awt.Container awtContainer;
+		public ProgramRunnable( java.awt.Container awtContainer ) {
+			this.awtContainer = awtContainer;
+		}
+		public void run() {
+			RunOperation.this.programContext = new org.alice.stageide.program.RunProgramContext();
+			RunOperation.this.programContext.getProgramImp().setRestartAction( RunOperation.this.restartAction );
+			RunOperation.this.programContext.initializeInContainer( this.awtContainer );
+			RunOperation.this.programContext.setActiveScene();
+		}		
+	}
+	private void startProgram( java.awt.Container awtContainer ) {
+		new org.lgna.common.ComponentThread( new ProgramRunnable( awtContainer ), RunOperation.this.getName() ).start();
+	}
+	private java.awt.Container stopProgram() {
+		java.awt.Container rv = this.programContext.getContainer(); 
+		this.programContext.cleanUpProgram();
+		this.programContext = null;
+		return rv;
+	}
 	private class RestartAction extends javax.swing.AbstractAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo" );
+			java.awt.Container awtContainer = RunOperation.this.stopProgram();
+			RunOperation.this.startProgram( awtContainer );
 		}
 	};
 	private final RestartAction restartAction = new RestartAction();
@@ -153,60 +113,29 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
-		final org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		if( ide.getProject() != null ) {
-			ide.ensureProjectCodeUpToDate();
-
-			ide.getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
-
-			new Thread() {
-				@Override
-				public void run() {
-					final org.lgna.project.virtualmachine.VirtualMachine vm = ide.createVirtualMachineForRuntimeProgram();
-					vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
-					vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
-					vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
-					final org.lgna.project.ast.NamedUserType programType = ide.getProgramType();
-					//String[] args = {};
-					final org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
-					org.lgna.story.Program program = programInstance.getJavaInstance( org.lgna.story.Program.class );
-					RunOperation.this.programImp = org.lgna.story.ImplementationAccessor.getImplementation( program );
-					
-					//edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "set restart operation" );
-					//RunOperation.this.programImp.setRestartAction( RestartOperation.getInstance().getSwingModel().getAction() );
-					RunOperation.this.programImp.setRestartAction( RunOperation.this.restartAction );
-					
-					RunOperation.this.programImp.initializeInAwtContainer( rv.getAwtComponent() );
-					org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-						public void run() {
-							vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
-						}
-					} );
-				}
-			}.start();
-			
-			
+			org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+			this.startProgram( rv.getAwtComponent() );
+			return rv;
 		} else {
 			ide.showMessageDialog( "Please open a project first." );
+			return null;
 		}
-		return rv;
 	}
 	@Override
-	protected void releaseContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void releaseContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "releaseContentPane" );
-		RunOperation.this.programImp.shutDown();
-		RunOperation.this.programImp = null;
 		step.finish();
 	}
 	
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
+		this.stopProgram();
 	}
 }

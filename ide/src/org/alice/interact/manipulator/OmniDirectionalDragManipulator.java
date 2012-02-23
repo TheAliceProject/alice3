@@ -68,9 +68,9 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -124,9 +124,9 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	public void setCamera( AbstractCamera camera ) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
 		}
 	}
 	
@@ -158,6 +158,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	@Override
 	protected void initializeEventMessages()
 	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
@@ -392,7 +393,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		this.showCursor();
 	}
 
-	protected Transformable getInitialTransformable( InputState startInput )
+	protected AbstractTransformable getInitialTransformable( InputState startInput )
 	{
 		return startInput.getClickPickTransformable();
 	}
@@ -407,7 +408,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = this.getInitialTransformable(startInput);
+		this.setManipulatedTransformable(this.getInitialTransformable(startInput));
 		this.hidCursor = false;
 		if (this.manipulatedTransformable != null)
 		{

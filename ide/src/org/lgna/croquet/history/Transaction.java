@@ -113,7 +113,56 @@ public class Transaction extends Node< TransactionHistory > {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
 		binaryEncoder.encode( this.completionStep );
 	}
+	@Override
+	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+		for( PrepStep< ? > prepStep : this.prepSteps ) {
+			prepStep.appendContexts( out );
+		}
+		if( this.completionStep != null ) {
+			this.completionStep.appendContexts( out );
+		}
+	}
+	public Iterable< org.lgna.croquet.Context > getAllContexts() {
+		java.util.List< org.lgna.croquet.Context > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.appendContexts( rv );
+		return rv;
+	}
+	public <C extends org.lgna.croquet.Context> C findFirstContext( Step<?> step, Class<C> cls ) {
+		while( step != null ) {
+			for( org.lgna.croquet.Context context : step.getContexts() ) {
+				if( cls.isAssignableFrom( context.getClass() ) ) {
+					return cls.cast( context );
+				}
+			}
+			C context = step.findFirstContext( cls );
+			if( context != null ) {
+				return context;
+			} else {
+				step = step.getPreviousStep();
+			}
+		}
+		CompletionStep< ? > grandparent = this.getFirstAncestorAssignableTo( CompletionStep.class );
+		if( grandparent != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "note: searching outside transaction", cls );
+			return grandparent.findFirstContext( cls );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls );
+			return null;
+		}
+	}
 	
+	public boolean containsPrepStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.PrepModel prepModel, Class<? extends org.lgna.croquet.history.PrepStep> cls ) {
+		Iterable< org.lgna.croquet.history.PrepStep< ? > > prepSteps = transaction.getPrepSteps();
+		for( org.lgna.croquet.history.PrepStep< ? > prepStep : prepSteps ) {
+			if( cls == null || cls.isAssignableFrom( prepStep.getClass() ) ) {
+				if( prepStep.getModel() == prepModel ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public boolean isValid() {
 		if( this.completionStep != null ) {
 			return this.completionStep.isValid();

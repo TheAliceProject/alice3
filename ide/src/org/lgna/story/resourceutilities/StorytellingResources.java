@@ -50,7 +50,7 @@ public class StorytellingResources {
 	} 
 
 	private File findResourcePath( String relativePath ) {
-		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "required/gallery/" + org.lgna.project.Version.getCurrentVersionText() } );
+		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery" } );
 		if( rootGallery != null && rootGallery.exists() ) {
 			File path = new File( rootGallery, relativePath );
 			if( path.exists() ) {
@@ -112,6 +112,7 @@ public class StorytellingResources {
 		else {
 			LinkedList< File > directoryFromSavedPreference = new LinkedList< File >();
 			File resourceDir = getAliceDirFromPref();
+			
 			if( resourceDir != null ) {
 				directoryFromSavedPreference.add( resourceDir );
 			}
@@ -182,13 +183,15 @@ public class StorytellingResources {
 		List<Class<? extends org.lgna.story.resources.ModelResource>> galleryClasses = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
 		for (File modelPath : resourcePaths)
 		{
-			try {
-				File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
-				galleryClasses.addAll( this.loadResourceJarFile(jarFiles) );
-			}
-			catch (Exception e)
-			{
-				System.err.println("Failed to load resources on path: '"+modelPath+"'");
+			if (modelPath.exists()) {
+				try {
+					File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
+					galleryClasses.addAll( this.loadResourceJarFile(jarFiles) );
+				}
+				catch (Exception e)
+				{
+					System.err.println("Failed to load resources on path: '"+modelPath+"'");
+				}
 			}
 		}
 		return galleryClasses;
@@ -201,11 +204,31 @@ public class StorytellingResources {
 		}
 		List< Class< ? extends org.lgna.story.resources.ModelResource >> modelResourceClasses = this.getAndLoadModelResourceClasses( resourcePaths );
 		this.galleryTree = new ModelResourceTree( modelResourceClasses );
-		if( resourcePaths.size() == 0 ) {
-			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
+		if( modelResourceClasses.size() == 0 ) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Cannot find the Alice gallery resources.");
+			if (resourcePaths == null || resourcePaths.size() == 0) {
+				sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
+			} else {
+				sb.append("\nFailed to locate the resources in:");
+				String separator = "\n   ";
+				for (File path : resourcePaths) {
+					sb.append(separator+"'"+path+"'");
+				}
+				String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
+				sb.append("\nVerify that "+phrase+" and verify that Alice is properly installed.");
+			}
+			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
 		}
 		else {
-			setAliceResourceDir( resourcePaths.get( 0 ).getParent() );
+			File galleryFile = resourcePaths.get( 0 );
+			if (galleryFile.isDirectory()) {
+				setAliceResourceDir( galleryFile.getAbsolutePath() );
+			}
+			else
+			{
+				setAliceResourceDir( galleryFile.getParentFile().getAbsolutePath() );
+			}
 		}
 	}
 	
@@ -215,25 +238,51 @@ public class StorytellingResources {
 			resourcePaths = findSimsBundles();
 		}
 		for( File path : resourcePaths ) {
-			for( java.io.File file : path.listFiles() ) {
-				if( !simsPathsLoaded.contains( file ) ) {
-					try {
-						if( file.getName().endsWith( "txt" ) ) {
-							//pass
-						} else {
-							edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
-							simsPathsLoaded.add( file );
+			if (path.exists()) {
+				for( java.io.File file : path.listFiles() ) {
+					if( !simsPathsLoaded.contains( file ) ) {
+						try {
+							if( file.getName().endsWith( "txt" ) ) {
+								//pass
+							} else {
+								edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
+								simsPathsLoaded.add( file );
+							}
+						} catch( Throwable t ) {
+							t.printStackTrace();
 						}
-					} catch( Throwable t ) {
-						t.printStackTrace();
 					}
 				}
 			}
 		}
 		if( simsPathsLoaded.size() == 0 ) {
-			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find The Sims (TM) 2 Art Assets." );
+			StringBuilder sb = new StringBuilder();
+			sb.append("Cannot find The Sims (TM) 2 Art Assets.");
+			if (resourcePaths == null || resourcePaths.size() == 0) {
+				sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
+			} else {
+				sb.append("\nSearched in ");
+				String separator = "";
+				for (File path : resourcePaths) {
+					sb.append(separator+"'"+path+"'");
+					if (separator.length() == 0){
+						separator = ", ";
+					}
+				}
+				String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
+				sb.append("\nVerify that "+phrase+" and verify that Alice is properly installed.");
+			}
+			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
+			
 		} else {
-			setNebulousResourceDir( simsPathsLoaded.get( 0 ).getParent() );
+			File galleryFile = simsPathsLoaded.get( 0 );
+			if (galleryFile.isDirectory()) {
+				setNebulousResourceDir( galleryFile.getAbsolutePath() );
+			}
+			else
+			{
+				setNebulousResourceDir( galleryFile.getParentFile().getAbsolutePath() );
+			}
 		}
 	}
 

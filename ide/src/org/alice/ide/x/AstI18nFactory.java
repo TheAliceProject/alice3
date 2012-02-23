@@ -47,11 +47,14 @@ package org.alice.ide.x;
  * @author Dennis Cosgrove
  */
 public abstract class AstI18nFactory extends I18nFactory {
-	
+	protected abstract org.lgna.project.ast.AbstractType< ?,?,? > getFallBackTypeForThisExpression();
 	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
 		return component;
 	}
 	
+	public java.awt.Paint getInvalidExpressionPaint( java.awt.Paint paint, int x, int y, int width, int height ) {
+		return paint;
+	}
 	public org.lgna.croquet.components.JComponent< ? > createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.Component< ? > prefixPane ) {
 		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
 			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
@@ -77,7 +80,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		if( constructor instanceof org.lgna.project.ast.AnonymousUserConstructor ) {
 			return new org.alice.ide.common.AnonymousConstructorPane( this, (org.lgna.project.ast.AnonymousUserConstructor)constructor );
 		} else {
-			return new org.alice.ide.x.components.ExpressionView( this, instanceCreation );
+			return new org.alice.ide.x.components.InstanceCreationView( this, instanceCreation );
 		}
 	}
 	protected org.lgna.croquet.components.JComponent< ? > createFieldAccessPane( org.lgna.project.ast.FieldAccess fieldAccess ) {
@@ -158,12 +161,29 @@ public abstract class AstI18nFactory extends I18nFactory {
 				rv = this.createFieldAccessPane( (org.lgna.project.ast.FieldAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.TypeExpression ) {
 				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired() ) {
-					
-					rv = new org.lgna.croquet.components.LineAxisPanel(
-							new org.alice.ide.ast.components.DeclarationNameLabel( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() ),
-							new org.lgna.croquet.components.Label( "." )
-					);
-					//rv = TypeComponent.createInstance( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() );
+					org.lgna.project.ast.TypeExpression typeExpression = (org.lgna.project.ast.TypeExpression)expression;
+					org.lgna.project.ast.Node parent = typeExpression.getParent();
+					if( parent instanceof org.lgna.project.ast.MethodInvocation ) {
+						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)parent;
+						org.lgna.project.ast.Node grandparent = methodInvocation.getParent();
+						if( grandparent instanceof org.lgna.project.ast.JavaKeyedArgument ) {
+							org.lgna.project.ast.JavaKeyedArgument javaKeyedArgument = (org.lgna.project.ast.JavaKeyedArgument)grandparent;
+							org.lgna.project.ast.AbstractType< ?,?,? > type = org.lgna.project.ast.AstUtilities.getKeywordFactoryType( javaKeyedArgument );
+							if( type != null ) {
+								rv = new org.lgna.croquet.components.Label( type.getName() + "." );
+								//rv.makeStandOut();
+							}
+						}
+					}
+					if( rv != null ) {
+						//pass
+					} else {
+						org.lgna.project.ast.AbstractType< ?,?,? > type = typeExpression.value.getValue();
+						rv = new org.lgna.croquet.components.LineAxisPanel(
+								new org.alice.ide.ast.components.DeclarationNameLabel( type ),
+								new org.lgna.croquet.components.Label( "." )
+						);
+					}
 				} else {
 					rv = new org.lgna.croquet.components.Label();
 				}

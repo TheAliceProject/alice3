@@ -52,7 +52,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -68,7 +67,6 @@ import org.alice.interact.event.SelectionListener;
 import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
-import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
@@ -76,22 +74,21 @@ import org.alice.interact.manipulator.ClickAdapterManipulator;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.story.Entity;
+import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ObjectMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
-import org.lgna.story.implementation.TransformableImp;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.TraditionalStyle;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
@@ -140,7 +137,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueObserver<org.alice.stageide.sceneeditor.HandleStyle>() {
+	public ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
 		public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
@@ -184,7 +181,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	private boolean hasSetCameraTransformables = false;
 	
 	private boolean isInStageChange = false;
-	private TransformableImp toBeSelected = null;
+	private AbstractTransformableImp toBeSelected = null;
 	private boolean hasObjectToBeSelected = false;
 	
 	private Component currentRolloverComponent = null;
@@ -194,7 +191,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected InteractionGroup currentInteractionState = null;
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
 	
-	private TransformableImp selectedObject = null;
+	private AbstractTransformableImp selectedObject = null;
 	private CameraMarkerImp selectedCameraMarker = null;
 	private ObjectMarkerImp selectedObjectMarker = null;
 
@@ -285,7 +282,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.isInStageChange;
 	}
 	
-	public void setToBeSelected(TransformableImp toBeSelected)
+	public void setToBeSelected(AbstractTransformableImp toBeSelected)
 	{
 		this.toBeSelected = toBeSelected;
 		this.hasObjectToBeSelected = true;
@@ -371,12 +368,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.animator;
 	}
 	
-	public TransformableImp getSelectedImplementation()
+	public AbstractTransformableImp getSelectedImplementation()
 	{
 		return this.selectedObject;
 	}
 	
-	public void setHandleShowingForSelectedImplementation( TransformableImp object, boolean handlesShowing)
+	public void setHandleShowingForSelectedImplementation( AbstractTransformableImp object, boolean handlesShowing)
 	{
 		if (this.selectedObject == object)
 		{
@@ -384,7 +381,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void triggerImplementationSelection(TransformableImp selected)
+	public void triggerImplementationSelection(AbstractTransformableImp selected)
 	{	
 		if (this.selectedObject != selected)
 		{
@@ -392,9 +389,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void triggerSgObjectSelection(Transformable selected)
+	public void triggerSgObjectSelection(AbstractTransformable selected)
 	{	
-		triggerImplementationSelection( EntityImp.getInstance(selected, TransformableImp.class) );
+		triggerImplementationSelection( EntityImp.getInstance(selected, AbstractTransformableImp.class) );
 	}
 	
 	private static double MARKER_SELECTION_DURATION = .25;
@@ -446,12 +443,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void setSelectedSceneObjectImplementation( TransformableImp selected )
+	public void setSelectedSceneObjectImplementation( AbstractTransformableImp selected )
 	{
 		if (this.selectedObject != selected) 
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
-			Transformable sgTransformable = selected != null ? selected.getSgComposite() : null;
+			AbstractTransformable sgTransformable = selected != null ? selected.getSgComposite() : null;
 			if (HandleManager.isSelectable( sgTransformable ))
 			{
 				this.handleManager.setHandlesShowing(true);
@@ -489,7 +486,26 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 //		}
 //	}
 	
-	public void setSelectedImplementation(TransformableImp selected)
+	private void updateHandleSelection(AbstractTransformableImp selected) {
+		PickHint pickHint = PickUtilities.getPickTypeForImp(selected);
+		org.alice.stageide.sceneeditor.HandleStyle currentHandleStyle = org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().getSelectedItem();
+		InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
+		if (selectedState != null) { //Sometimes we don't support handles--like in the create-a-sim editor
+			if (!selectedState.canUseIteractionGroup(pickHint)) {
+				for ( org.alice.stageide.sceneeditor.HandleStyle handleStyle : org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance())
+				{
+					InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
+					if (interactionState.canUseIteractionGroup(pickHint))
+					{
+						org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().setSelectedItem(handleStyle);
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	public void setSelectedImplementation(AbstractTransformableImp selected)
 	{
 		if (this.isInStateChange())
 		{
@@ -511,6 +527,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			{
 				setSelectedSceneObjectImplementation(selected);
 			}
+			updateHandleSelection(selected);
 		}
 		else
 		{
@@ -686,7 +703,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 		if (!this.hasObjectToBeSelected && this.currentInputState.getCurrentlySelectedObject() != this.previousInputState.getCurrentlySelectedObject())
 		{
-			this.triggerImplementationSelection( EntityImp.getInstance( this.currentInputState.getCurrentlySelectedObject(), TransformableImp.class) );
+			this.triggerImplementationSelection( EntityImp.getInstance( this.currentInputState.getCurrentlySelectedObject(), AbstractTransformableImp.class) );
 		}
 		
 		this.previousInputState.copyState(this.currentInputState);
@@ -695,116 +712,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			this.hasObjectToBeSelected = false;
 			this.setSelectedImplementation( this.toBeSelected );
-		}
-	}
-	
-	public static PickHint getPickType( edu.cmu.cs.dennisc.lookingglass.PickResult pickObject )
-	{
-		boolean isNull = pickObject == null || pickObject.getGeometry() == null || pickObject.getVisual() == null;
-		if (isNull)
-		{
-			return PickHint.PickType.NOTHING.pickHint();
-		}
-		else
-		{
-			PickHint pickType = getPickType( pickObject.getVisual() );
-			return pickType;
-		}
-	}
-	
-	private static <E> E getParentOfClass( edu.cmu.cs.dennisc.scenegraph.Component object, Class<E> cls) {
-		if( object != null ) {
-			if( cls.isAssignableFrom( object.getClass() ) ) {
-				return cls.cast( object );
-			}
-			return getParentOfClass(object.getParent(), cls);
-		}
-		return null;
-	}
-	
-	public static PickHint getPickType( edu.cmu.cs.dennisc.scenegraph.Component pickedObject )
-	{
-		List<PickHint.PickType> pickTypes = new LinkedList<PickHint.PickType>();
-		if (pickedObject != null)
-		{
-			edu.cmu.cs.dennisc.scenegraph.Component mainComponent = InputState.getFirstClassFromComponent(pickedObject);
-			EntityImp entityImplementation = EntityImp.getInstance(mainComponent);
-			if (entityImplementation != null)
-			{
-				Entity entity = entityImplementation.getAbstraction();
-				if (entity instanceof org.lgna.story.Turnable)
-				{
-					pickTypes.add(PickHint.PickType.TURNABLE);
-				}
-				if (entity instanceof org.lgna.story.MovableTurnable)
-				{
-					pickTypes.add(PickHint.PickType.MOVEABLE);
-				}
-				if (entity instanceof org.lgna.story.Resizable)
-				{
-					pickTypes.add(PickHint.PickType.RESIZABLE);
-				}
-				if (entity instanceof org.lgna.story.Camera || entity instanceof org.lgna.story.Model || entity instanceof org.lgna.story.Marker)
-				{
-					pickTypes.add(PickHint.PickType.SELECTABLE);
-				}
-				if (entity instanceof org.lgna.story.MovableTurnable)
-				{
-					pickTypes.add(PickHint.PickType.VIEWABLE);
-				}
-				if (entity instanceof org.lgna.story.CameraMarker)
-				{
-					pickTypes.add(PickHint.PickType.CAMERA_MARKER);
-				}
-				if (entity instanceof org.lgna.story.ObjectMarker)
-				{
-					pickTypes.add(PickHint.PickType.OBJECT_MARKER);
-				}
-			}
-			else
-			{
-				//System.out.println("No implementation for "+pickedObject);
-				EntityImp e = EntityImp.getInstance(pickedObject);
-			}
-				
-			if (pickedObject instanceof edu.cmu.cs.dennisc.scenegraph.Composite)
-			{
-				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = null;
-				for(edu.cmu.cs.dennisc.scenegraph.Component c : ((edu.cmu.cs.dennisc.scenegraph.Composite)pickedObject).getComponents())
-				{
-					if (c instanceof edu.cmu.cs.dennisc.scenegraph.AbstractCamera)
-					{
-						camera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)c;
-					}
-				}
-				if (camera != null)
-				{
-					if (camera instanceof SymmetricPerspectiveCamera)
-					{
-						pickTypes.add(PickHint.PickType.PERSPECTIVE_CAMERA);
-					}
-					else if (camera instanceof OrthographicCamera)
-					{
-						pickTypes.add(PickHint.PickType.ORTHOGRAPHIC_CAMERA);
-					}
-				}
-				else
-				{
-					ManipulationHandle3D handle3D = getParentOfClass(pickedObject, ManipulationHandle3D.class);
-					if (handle3D != null)
-					{
-						pickTypes.add(PickHint.PickType.THREE_D_HANDLE);
-					}
-				}
-			}
-		}
-		if (pickTypes.size() == 0)
-		{
-			return PickHint.PickType.NOTHING.pickHint();
-		}
-		else
-		{
-			return new PickHint(pickTypes.toArray(new PickHint.PickType[pickTypes.size()]));
 		}
 	}
 	

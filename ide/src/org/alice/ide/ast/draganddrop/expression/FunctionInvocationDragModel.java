@@ -64,7 +64,7 @@ public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
 		this.method = method;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
 		return this.method.getReturnType();
 	}
 	@Override

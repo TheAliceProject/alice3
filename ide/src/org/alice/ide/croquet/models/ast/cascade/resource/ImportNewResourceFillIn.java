@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachine.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.ResourceExpression > {
+public abstract class ImportNewResourceFillIn< E extends org.lgna.common.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.ResourceExpression > {
 	protected abstract Class< E > getResourceClass();
 	protected abstract org.alice.ide.resource.prompter.ResourcePrompter<E> getResourcePrompter();
 	protected abstract String getMenuText();

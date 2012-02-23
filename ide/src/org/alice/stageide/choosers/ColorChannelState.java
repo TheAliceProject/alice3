@@ -48,6 +48,6 @@ package org.alice.stageide.choosers;
  */
 public abstract class ColorChannelState extends org.lgna.croquet.BoundedDoubleState {
 	public ColorChannelState( java.util.UUID id ) {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, id ).minimum( 0.0 ).maximum( 1.0 ).initialValue( 0.5 ).extent( 0.01 ) );
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, id ).minimum( 0.0 ).maximum( 1.0 ).initialValue( 0.5 ).delta( 0.01 ) );
 	}
 }

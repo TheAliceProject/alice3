@@ -64,7 +64,7 @@ public class LocalArrayAtIndexAssignmentTemplateDragModel extends StatementTempl
 		this.local = local;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< LocalArrayAtIndexAssignmentTemplateDragModel > createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalArrayAtIndexAssignmentTemplateDragModel > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalArrayAtIndexAssignmentTemplateDragModel >( this, this.local, org.lgna.project.ast.UserLocal.class );
 	}
 	@Override

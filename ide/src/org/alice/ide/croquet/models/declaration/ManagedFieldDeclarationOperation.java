@@ -50,7 +50,7 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 	protected static class EditCustomization {
 		private final java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private final java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List< org.alice.virtualmachine.Resource > resources = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
 		public void addDoStatement( org.lgna.project.ast.Statement statement ) {
 			this.doStatements.add( statement );
@@ -64,11 +64,11 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		public org.lgna.project.ast.Statement[] getUndoStatements() {
 			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.undoStatements, org.lgna.project.ast.Statement.class );
 		}
-		public void addResource( org.alice.virtualmachine.Resource resource ) {
+		public void addResource( org.lgna.common.Resource resource ) {
 			this.resources.add( resource );
 		}
-		public org.alice.virtualmachine.Resource[] getResources() {
-			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.resources, org.alice.virtualmachine.Resource.class );
+		public org.lgna.common.Resource[] getResources() {
+			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.resources, org.lgna.common.Resource.class );
 		}
 	}
 
@@ -89,10 +89,18 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		);
 	}
 	
+	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( org.lgna.croquet.Application.INHERIT_GROUP, getter );
+	}
+	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
+		return getStateForGetter( org.lgna.project.ast.JavaMethod.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, name, parameterTypes ) ) );
+	}
+
 	@Override
 	protected InstanceCreationInitializerState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return new InstanceCreationInitializerState( this, initialValue );
 	}
+	
 	@Override
 	protected boolean isFieldFinal() {
 		return true;
@@ -115,14 +123,14 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 		return rv;
 	}
 	
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
 		rv.addUndoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false));
 		return rv;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.InputDialogOperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
+	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
 		EditCustomization customization = new EditCustomization();
 		this.customize( step, declaringType, field, customization );
 		return new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( step, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );

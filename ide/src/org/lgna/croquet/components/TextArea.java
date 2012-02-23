@@ -57,6 +57,7 @@ public class TextArea extends TextComponent< edu.cmu.cs.dennisc.javax.swing.comp
 	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea createAwtComponent() {
 		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea();
 //		rv.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4,4,2,2 ) );
+		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
 		return rv;
 	}
 }

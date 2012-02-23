@@ -99,4 +99,15 @@ public abstract class ReflectionProxy<E> {
 			}
 		}
 	}
+	
+	protected abstract void appendRepr( StringBuilder sb );
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

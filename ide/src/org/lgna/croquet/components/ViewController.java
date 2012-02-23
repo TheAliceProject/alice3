@@ -47,7 +47,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class ViewController< J extends javax.swing.JComponent, M extends org.lgna.croquet.Model > extends JComponent< J > {
-	private M model;
+	private final M model;
 	
 	public ViewController( M model ) {
 		this.model = model;

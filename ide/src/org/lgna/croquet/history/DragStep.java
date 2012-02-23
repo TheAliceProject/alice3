@@ -64,7 +64,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 //	}
 //	public static abstract class DropReceptorEvent extends DragAndDropEvent {
 //		private org.lgna.croquet.DropReceptor dropReceptor;
-//		private CodableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
+//		private org.lgna.croquet.resolvers.RetargetableResolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
 //		public DropReceptorEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 //			super( binaryDecoder );
 //		}

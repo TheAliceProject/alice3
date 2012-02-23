@@ -1,6 +1,6 @@
 package org.lgna.story.implementation.sims2;
 
-import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 
 public class JointImplementation extends org.lgna.story.implementation.JointImp {
 	private final NebulousJoint sgJoint;
@@ -18,10 +18,6 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 		return this.sgJoint;
 	}
 	@Override
-	public void setCustomJointSgParent(Composite sgParent) {
-		sgJoint.setSgParent(sgParent);
-	}
-	@Override
 	public boolean isFreeInX() {
 		//todo
 		return true;
@@ -35,5 +31,22 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	public boolean isFreeInZ() {
 		//todo
 		return true;
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
+		return this.sgJoint.getOriginalLocalTransformation().orientation.createUnitQuaternion();
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
+		return this.sgJoint.getOriginalLocalTransformation();
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getAxisAlignedBoundingBox();
+		rv.addBoundingBox(jointBBox, trans);
+		return rv;
 	}
 }

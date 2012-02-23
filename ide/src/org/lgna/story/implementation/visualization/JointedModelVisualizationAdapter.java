@@ -62,11 +62,11 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			this.context = context;
 			this.asSeenBy = asSeenBy;
 		}
-		
+
 		protected C getContext() {
 			return this.context;
 		}
-		
+
 		protected abstract void preJoint( org.lgna.story.implementation.JointImp joint );
 		protected abstract void preBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child );
 		public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
@@ -81,20 +81,67 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			context.gl.glDisable( GL_LIGHTING );
 			context.gl.glDisable( GL_TEXTURE_2D );
 			context.gl.glBegin( GL_LINES );
-    
+
 			context.gl.glColor3f( 1.0f, 0.0f, 0.0f );
 			context.gl.glVertex3d( 0, 0, 0 );
 			context.gl.glVertex3d( axisLength, 0, 0 );
-    
+
 			context.gl.glColor3f( 0.0f, 1.0f, 0.0f );
 			context.gl.glVertex3d( 0, 0, 0 );
 			context.gl.glVertex3d( 0, axisLength, 0 );
-    
+
 			context.gl.glColor3f( 0.0f, 0.0f, 1.0f );
-            context.gl.glVertex3d( 0, 0, 0 );
-            context.gl.glVertex3d( 0, 0, axisLength );
-            context.gl.glEnd();
-			
+			context.gl.glVertex3d( 0, 0, 0 );
+			context.gl.glVertex3d( 0, 0, axisLength );
+			context.gl.glEnd();
+
+			final boolean IS_BOUNDING_BOX_DESIRED = false;
+			if( IS_BOUNDING_BOX_DESIRED ) {
+				edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = joint.getAxisAlignedMinimumBoundingBox();
+				//              boundingBox = null;
+				if( boundingBox != null ) {
+					context.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+					edu.cmu.cs.dennisc.math.Point3 min = boundingBox.getMinimum();
+					edu.cmu.cs.dennisc.math.Point3 max = boundingBox.getMaximum();
+
+					//Bottom
+					context.gl.glBegin( GL_LINE_LOOP );
+					context.gl.glVertex3d( min.x, min.y, min.z );
+					context.gl.glVertex3d( min.x, min.y, max.z );
+					context.gl.glVertex3d( max.x, min.y, max.z );
+					context.gl.glVertex3d( max.x, min.y, min.z );
+					context.gl.glEnd();
+
+					//Top
+					context.gl.glBegin( GL_LINE_LOOP );
+					context.gl.glVertex3d( min.x, max.y, min.z );
+					context.gl.glVertex3d( min.x, max.y, max.z );
+					context.gl.glVertex3d( max.x, max.y, max.z );
+					context.gl.glVertex3d( max.x, max.y, min.z );
+					context.gl.glEnd();
+
+					//Sides
+					context.gl.glBegin( GL_LINES );
+					context.gl.glVertex3d( min.x, min.y, min.z );
+					context.gl.glVertex3d( min.x, max.y, min.z );
+					context.gl.glEnd();
+
+					context.gl.glBegin( GL_LINES );
+					context.gl.glVertex3d( max.x, min.y, min.z );
+					context.gl.glVertex3d( max.x, max.y, min.z );
+					context.gl.glEnd();
+
+					context.gl.glBegin( GL_LINES );
+					context.gl.glVertex3d( min.x, min.y, max.z );
+					context.gl.glVertex3d( min.x, max.y, max.z );
+					context.gl.glEnd();
+
+					context.gl.glBegin( GL_LINES );
+					context.gl.glVertex3d( max.x, min.y, max.z );
+					context.gl.glVertex3d( max.x, max.y, max.z );
+					context.gl.glEnd();
+				}
+			}
 		}
 		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 			edu.cmu.cs.dennisc.math.Point3 xyz = child.getLocalPosition();
@@ -104,11 +151,12 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			context.gl.glVertex3d( xyz.x, xyz.y, xyz.z );
 			context.gl.glEnd();
 		}
-		public void popJoint(org.lgna.story.implementation.JointImp joint) {
+		public void popJoint( org.lgna.story.implementation.JointImp joint ) {
 			context.gl.glPopMatrix();
 		}
 	}
-	private static class RenderWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext> {
+
+	private static class RenderWalkObserver extends GlWalkObserver< edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext > {
 		public RenderWalkObserver( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
 			super( rc, asSeenBy );
 		}
@@ -121,8 +169,10 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			this.getContext().gl.glColor3f( 1.0f, 0.0f, 0.0f );
 		}
 	}
-	private static class PickWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.lookingglass.opengl.PickContext> {
+
+	private static class PickWalkObserver extends GlWalkObserver< edu.cmu.cs.dennisc.lookingglass.opengl.PickContext > {
 		private final edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters;
+
 		public PickWalkObserver( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, org.lgna.story.implementation.ReferenceFrame asSeenBy, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters ) {
 			super( pc, asSeenBy );
 			this.pickParameters = pickParameters;
@@ -144,9 +194,10 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		protected void preBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 		}
 	}
+
 	private void pushOffset( javax.media.opengl.GL gl ) {
 		gl.glPushMatrix();
-		gl.glTranslated( 1,0,0 );		
+		//		gl.glTranslated( 1,0,0 );		
 	}
 	private void popOffset( javax.media.opengl.GL gl ) {
 		gl.glPopMatrix();

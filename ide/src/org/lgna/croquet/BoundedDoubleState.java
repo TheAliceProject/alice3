@@ -52,7 +52,7 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 		private final java.util.UUID id;
 		private double minimum = 0.0;
 		private double maximum = 1.0;
-		private double extent = 0.01;
+		private double delta = 0.01;
 		private double initialValue = 0.5;
 		public Details( Group group, java.util.UUID id ) {
 			this.group = group;
@@ -66,8 +66,8 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 			this.maximum = maximum;
 			return this;
 		}
-		public Details extent( double extent ) {
-			this.extent = extent;
+		public Details delta( double delta ) {
+			this.delta = delta;
 			return this;
 		}
 		public Details initialValue( double initialValue ) {
@@ -82,9 +82,9 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 			} else {
 				this.boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
 				int min = 0;
-				int max = (int)((this.maximum-this.minimum)/this.extent);
-				int ext = 1;
-				int val = (int)((this.initialValue-this.minimum)/this.extent);
+				int max = (int)((this.maximum-this.minimum)/this.delta);
+				int ext = 0;
+				int val = (int)((this.initialValue-this.minimum)/this.delta);
 				this.boundedRangeModel.setRangeProperties( val, ext, min, max, false );
 			}
 			return this.boundedRangeModel;
@@ -115,9 +115,21 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 		super( details.group, details.id, details.getBoundedRangeModel().getValue()/100.0, details.getBoundedRangeModel(), details.getSpinnerModel() );
 	}
 	@Override
-	protected void commitStateEdit( Double prevValue, Double nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.TransactionManager.handleBoundedDoubleStateChanged( BoundedDoubleState.this, nextValue, isAdjusting, trigger );
+	public Class< Double > getItemClass() {
+		return Double.class;
 	}
+	@Override
+	public Double decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeDouble();
+	}
+	@Override
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Double value ) {
+		binaryEncoder.encode( value );
+	}
+//	@Override
+//	protected void commitStateEdit( Double prevValue, Double nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+//		org.lgna.croquet.history.TransactionManager.handleStateChanged( BoundedDoubleState.this, prevValue, nextValue, isAdjusting, trigger );
+//	}
 	@Override
 	protected Double fromInt( int value ) {
 //		java.math.BigDecimal bigDecimal = new java.math.BigDecimal( value );

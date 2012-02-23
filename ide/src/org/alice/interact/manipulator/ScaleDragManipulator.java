@@ -42,13 +42,14 @@
  */
 package org.alice.interact.manipulator;
 
+import org.alice.interact.InputState;
+import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
+import edu.cmu.cs.dennisc.math.Dimension3;
 
 /**
  * @author David Culyba
@@ -57,11 +58,12 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 
 	public static final double MIN_HANDLE_PULL = .1d;
 
-	private Vector3 accumulatedScaleVector = new Vector3(1.0, 1.0, 1.0);
+	private Dimension3 initialScale;
+	private Dimension3 accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
 
-	protected static Vector3 getInvertedScaleVector( Vector3 scaleVector )
+	protected static Dimension3 getInvertedScaleVector( Dimension3 scaleVector )
 	{
-		Vector3 invertedScale = new Vector3();
+		Dimension3 invertedScale = new Dimension3();
 		if (scaleVector.x != 0)
 		{
 			invertedScale.x = 1.0 / scaleVector.x;
@@ -90,13 +92,38 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	}
 	
 	@Override
+	protected void initializeEventMessages()
+	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Scale, null, this.manipulatedTransformable );
+		this.manipulationEvents.clear();
+		if (this.linearHandle != null) {
+			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Scale, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
+		}
+		
+	}
+
+	@Override
+	public boolean doStartManipulator(InputState startInput) {
+		boolean started = super.doStartManipulator(startInput);
+		
+		if (started) {
+			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
+			if( scalable != null ) {
+				initialScale = scalable.getScale();
+			}
+		}
+		
+		return started;
+	}
+	
+	@Override
 	protected void updateBasedOnHandlePull( double initialPull, double newPull ) 
 	{
-		double pullDif = (newPull) / (initialPull);
+		double pullDif = newPull - initialPull;
 		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-		Vector3 scaleVector;
+		Dimension3 scaleVector;
 		if( scaleHandle.applyAlongAxis() ) {
-			scaleVector = new Vector3( 1.0d, 1.0d, 1.0d );
+			scaleVector = new Dimension3( 0.0d, 0.0d, 0.0d );
 			if( scaleHandle.getDragAxis().x != 0.0d )
 				scaleVector.x = Math.abs( scaleHandle.getDragAxis().x ) * pullDif;
 			if( scaleHandle.getDragAxis().y != 0.0d )
@@ -104,26 +131,29 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			if( scaleHandle.getDragAxis().z != 0.0d )
 				scaleVector.z = Math.abs( scaleHandle.getDragAxis().z ) * pullDif;
 		} else {
-			scaleVector = new Vector3( pullDif, pullDif, pullDif );
+			scaleVector = new Dimension3( pullDif, pullDif, pullDif );
 		}
 
 		//Don't scale if the handles are pulled past their origin
 		if( newPull <= MIN_HANDLE_PULL ) {
-			scaleVector = new Vector3( 1.0d, 1.0d, 1.0d );
+			scaleVector = new Dimension3( 0.0d, 0.0d, 0.0d );
 		}
-		
-		//First remove the old scale
-		Vector3 inverseScale = getInvertedScaleVector(accumulatedScaleVector);
-		ScaleUtilities.applyScale( this.manipulatedTransformable, inverseScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
+		scaleVector.x += this.initialScale.x;
+		scaleVector.y += this.initialScale.y;
+		scaleVector.z += this.initialScale.z;
 		//Now apply the new scale
-		accumulatedScaleVector.set( scaleVector );
-		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION );
+		accumulatedScaleVector.set(scaleVector);
+		
+		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
+		if( scalable != null ) {
+			scalable.setScale( scaleVector );
+		}
 
 	}
 
 	@Override
 	public void undoRedoBeginManipulation() {
-		accumulatedScaleVector = new Vector3(1.0, 1.0, 1.0);
+		accumulatedScaleVector = new Dimension3(this.initialScale);
 	}
 
 	@Override

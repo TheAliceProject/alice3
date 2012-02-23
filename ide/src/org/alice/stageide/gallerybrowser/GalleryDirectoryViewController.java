@@ -64,7 +64,7 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	}
 
 	
-	private final org.lgna.croquet.StringState.ValueObserver< String > filterObserver = new org.lgna.croquet.StringState.ValueObserver< String >() {
+	private final org.lgna.croquet.StringState.ValueListener< String > filterListener = new org.lgna.croquet.StringState.ValueListener< String >() {
 		public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -79,14 +79,17 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	}
 	@Override
 	protected java.util.List< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > getChildren() {
-		String filter = FilterStringState.getInstance().getValue();
+		String filter = FilterState.getInstance().getValue();
 		if( filter != null && filter.length() > 0 ) {
 			org.alice.ide.croquet.models.gallerybrowser.GalleryNode root = org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getTreeModel().getRoot();
 			java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			String lcFilter = filter.toLowerCase();
-			this.update( rv, root, lcFilter, Criterion.STARTS_WITH );
-			if( lcFilter.length() > 1 ) {
-				this.update( rv, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH );
+			
+			for( boolean isTag : new boolean[] { false, true } ) {
+				this.update( rv, root, lcFilter, Criterion.STARTS_WITH, isTag );
+				if( lcFilter.length() > 1 ) {
+					this.update( rv, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH, isTag );
+				}
 			}
 			return rv;
 		} else {
@@ -95,13 +98,28 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 		
 	}
 	
-	private java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > update( java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion ) {
-		String lcName = treeNode.getText().toLowerCase();
+	private java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > update( java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion, boolean isTag, String text ) {
+		String lcName = text.toLowerCase();
 		if( criterion.accept( lcName, lcFilter ) ) {
 			rv.add( treeNode );
 		}
+		return rv;
+	}
+	private java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > update( java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion, boolean isTag ) {
+		if( isTag ) {
+			this.update( rv, treeNode, lcFilter, criterion, isTag, treeNode.getText() );
+		} else {
+			String[] tags = treeNode.getTags();
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( treeNode );
+			if( tags != null ) {
+				for( String tag : tags ) {
+					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "\t" + tag );
+					this.update( rv, treeNode, lcFilter, criterion, isTag, tag );
+				}
+			}
+		}
 		for( org.alice.ide.croquet.models.gallerybrowser.GalleryNode child : treeNode ) {
-			update( rv, child, lcFilter, criterion );
+			update( rv, child, lcFilter, criterion, isTag );
 		}
 		return rv;
 	}
@@ -116,11 +134,11 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		FilterStringState.getInstance().addAndInvokeValueObserver( this.filterObserver );
+		FilterState.getInstance().addAndInvokeValueListener( this.filterListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		FilterStringState.getInstance().removeValueObserver( this.filterObserver );
+		FilterState.getInstance().removeValueListener( this.filterListener );
 		super.handleUndisplayable();
 	}
 	private void handleFilterChanged( String filter ) {
@@ -136,7 +154,7 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 				//pass
 			} else {
 				//todo: does not handle case where user clicks on button hooked up to currently selected path node
-				FilterStringState.getInstance().setValueTransactionlessly( "" );
+				FilterState.getInstance().setValueTransactionlessly( "" );
 				if( nextValue.isLeaf() ) {
 					//note: we need to invoke later or transaction history is ignored due to being in the midst of redo
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {

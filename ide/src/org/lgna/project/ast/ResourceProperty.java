@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceProperty extends edu.cmu.cs.dennisc.property.InstanceProperty< org.alice.virtualmachine.Resource > {
+public class ResourceProperty extends edu.cmu.cs.dennisc.property.InstanceProperty< org.lgna.common.Resource > {
 	public ResourceProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		super( owner, null );
 	}

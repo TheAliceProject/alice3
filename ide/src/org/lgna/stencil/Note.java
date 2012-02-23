@@ -62,7 +62,7 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 	
 
 	protected abstract String getText();
-	protected abstract org.lgna.croquet.Operation< ? > getNextOperation();
+	protected abstract org.lgna.croquet.Operation getNextOperation();
 	public String getLabel() {
 		return this.label;
 	}
@@ -70,7 +70,11 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		this.label = label;
 	}
 	protected void addFeature( Feature feature ) {
-		this.features.add( feature );
+		if( feature != null ) {
+			this.features.add( feature );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
+		}
 	}
 	public java.util.List< Feature > getFeatures() {
 		return this.features;

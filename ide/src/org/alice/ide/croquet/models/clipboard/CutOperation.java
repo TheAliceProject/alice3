@@ -56,7 +56,7 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 		super( java.util.UUID.fromString( "48a0202c-8153-4772-89ca-08fe5a8f28b5" ) );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
 		String title = "Cut coming soon";
 		String message = "Selection is not yet implemented.  Cut is limited to dragging statements to the clipboard in the top right corner.";
 		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION ); 

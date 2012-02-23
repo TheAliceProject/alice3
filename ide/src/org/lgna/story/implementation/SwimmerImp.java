@@ -14,11 +14,11 @@ public final class SwimmerImp extends JointedModelImp< org.lgna.story.Swimmer, o
 	
 	@Override
 	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.SwimmerResource.HEAD));
+		return this.getTopOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.SwimmerResource.HEAD));
 	}
 	
 	@Override
 	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.SwimmerResource.MOUTH));
+		return this.getFrontOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.SwimmerResource.MOUTH));
 	}
 }

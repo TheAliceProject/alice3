@@ -49,14 +49,14 @@ public abstract class MediaFactory {
 	public static final double DEFAULT_VOLUME = 1.0;
 	public static final double DEFAULT_START_TIME = 0.0;
 	public static final double DEFAULT_STOP_TIME = Double.NaN;
-	public abstract Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime, double stopTime );
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime ) {
+	public abstract Player createPlayer( org.lgna.common.resources.AudioResource audioResource, double volume, double startTime, double stopTime );
+	public Player createPlayer( org.lgna.common.resources.AudioResource audioResource, double volume, double startTime ) {
 		return createPlayer( audioResource, volume, startTime, DEFAULT_STOP_TIME );
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume ) {
+	public Player createPlayer( org.lgna.common.resources.AudioResource audioResource, double volume ) {
 		return createPlayer( audioResource, volume, DEFAULT_START_TIME );
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+	public Player createPlayer( org.lgna.common.resources.AudioResource audioResource ) {
 		return createPlayer( audioResource, DEFAULT_VOLUME );
 	}
 }

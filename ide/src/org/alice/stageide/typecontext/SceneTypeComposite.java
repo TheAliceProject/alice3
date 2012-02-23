@@ -46,7 +46,7 @@ package org.alice.stageide.typecontext;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneTypeComposite extends org.lgna.croquet.Composite< org.alice.stageide.typecontext.components.SceneTypeView > {
+public class SceneTypeComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.typecontext.components.SceneTypeView > {
 	private static class SingletonHolder {
 		private static SceneTypeComposite instance = new SceneTypeComposite();
 	}

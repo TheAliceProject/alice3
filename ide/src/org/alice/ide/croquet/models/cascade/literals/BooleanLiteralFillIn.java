@@ -70,7 +70,7 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		return this.transientValue;
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
 	}
 }

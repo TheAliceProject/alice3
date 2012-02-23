@@ -124,6 +124,12 @@ public class Text extends Geometry {
 			m_unalignedBoundingBox.setMinimum( bounds.x, bounds.y, 0 );
 			m_unalignedBoundingBox.setMaximum( bounds.x+bounds.width, bounds.y+bounds.height, depth.getValue() );
 		}
+
+		if( this.m_unalignedBoundingBox.isNaN() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+			this.m_unalignedBoundingBox.setMinimum( 0,0,0 );
+			this.m_unalignedBoundingBox.setMaximum( 0,0,0 );
+		}
 	}
 	
 	//todo: cache result?
@@ -177,10 +183,10 @@ public class Text extends Geometry {
 		updateUnalignedBoundingBoxIfNecessary();
 		
 		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = getAlignmentOffset();
-
 		
 		boundingBox.set( m_unalignedBoundingBox );
 		boundingBox.translate( alignmentOffset );
+
 	}
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {

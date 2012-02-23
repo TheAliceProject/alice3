@@ -108,12 +108,12 @@ public class Decoder {
 
 	private String srcVersion;
 	private String dstVersion;
-	private boolean isUUIDDecodingDesired;
+	private boolean isIdDecodingDesired;
 
-	public Decoder( String srcVersion, String dstVersion, boolean isUUIDDecodingDesired ) {
+	public Decoder( String srcVersion, String dstVersion, boolean isIdDecodingDesired ) {
 		this.srcVersion = srcVersion;
 		this.dstVersion = dstVersion;
-		this.isUUIDDecodingDesired = isUUIDDecodingDesired;
+		this.isIdDecodingDesired = isIdDecodingDesired;
 	}
 
 	private static ClassReflectionProxy createClassReflectionProxy( String clsName ) {
@@ -329,9 +329,9 @@ public class Decoder {
 				map.put( key, (AbstractDeclaration)rv );
 			}
 			rv.decodeNode( this, xmlElement, map );
-			if( xmlElement.hasAttribute( CodecConstants.UUID_ATTRIBUTE ) ) {
-				if( this.isUUIDDecodingDesired ) {
-					rv.setUUID( java.util.UUID.fromString( xmlElement.getAttribute( CodecConstants.UUID_ATTRIBUTE ) ) );
+			if( xmlElement.hasAttribute( CodecConstants.ID_ATTRIBUTE ) ) {
+				if( this.isIdDecodingDesired ) {
+					rv.setId( java.util.UUID.fromString( xmlElement.getAttribute( CodecConstants.ID_ATTRIBUTE ) ) );
 				}
 			}
 		} else {

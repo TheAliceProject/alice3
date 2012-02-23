@@ -68,7 +68,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 	}
 	
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel<?> prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel<?> prologue(org.lgna.croquet.history.OperationStep step) {
 		org.alice.ide.croquet.components.declaration.DeclarationPanel<?> rv = null;
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		java.io.File directory = this.getInitialDirectory();
@@ -97,7 +97,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 				if( zipFile != null ) {
 					org.lgna.project.ast.AbstractType<?,?,?> type;
 					try {
-						edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.alice.virtualmachine.Resource > > tuple = org.lgna.project.io.IoUtilities.readType( zipFile );
+						edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > tuple = org.lgna.project.io.IoUtilities.readType( zipFile );
 						type = tuple.getA();
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 					} catch( org.lgna.project.VersionNotSupportedException vnse ) {

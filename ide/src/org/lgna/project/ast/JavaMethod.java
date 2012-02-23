@@ -95,12 +95,30 @@ public class JavaMethod extends AbstractMethod {
 			this.variableOrKeyedParameter = null;
 		}
 	}
-
+	
 	public MethodReflectionProxy getMethodReflectionProxy() {
 		return this.methodReflectionProxy;
 	}
-
 	@Override
+	public String getName() {
+		return this.methodReflectionProxy.getName();
+	}
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+
+	public JavaType getReturnType() {
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
+		if( mthd != null ) {
+			return JavaType.getInstance( mthd.getReturnType() );
+		} else {
+			return null;
+		}
+	}
+	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
+		return this.requiredParameters;
+	}
 	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -112,7 +130,6 @@ public class JavaMethod extends AbstractMethod {
 			return null;
 		}
 	}
-	@Override
 	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -123,33 +140,6 @@ public class JavaMethod extends AbstractMethod {
 		} else {
 			return null;
 		}
-	}
-
-	@Override
-	public boolean isValid() {
-		return this.methodReflectionProxy.getReification() != null;
-	}
-	@Override
-	public String getName() {
-		return this.methodReflectionProxy.getName();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-
-	@Override
-	public JavaType getReturnType() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		if( mthd != null ) {
-			return JavaType.getInstance( mthd.getReturnType() );
-		} else {
-			return null;
-		}
-	}
-	@Override
-	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
-		return this.requiredParameters;
 	}
 
 	@Override
@@ -202,43 +192,43 @@ public class JavaMethod extends AbstractMethod {
 	@Override
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return AccessLevel.get( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isStatic() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isStatic( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isAbstract() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isAbstract( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isFinal( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isNative() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isNative( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isSynchronized() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isSynchronized( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isStrictFloatingPoint() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
-		assert mthd != null;
+		assert mthd != null : this;
 		return java.lang.reflect.Modifier.isStrict( mthd.getModifiers() );
 	}
 

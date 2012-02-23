@@ -202,7 +202,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		if( state >= javax.media.Controller.Started ) {
 			//pass
 		} else {
-			if( currSeconds > CONSIDERED_TO_BE_STARTED_THRESHOLD ) {
+			if( currSeconds > ( this.startTime + CONSIDERED_TO_BE_STARTED_THRESHOLD ) ) {
 				rv = 0.0;
 			}
 		}

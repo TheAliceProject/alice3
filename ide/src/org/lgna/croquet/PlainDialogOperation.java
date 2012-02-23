@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croquet.history.PlainDialogOperationStep> {
+public abstract class PlainDialogOperation extends DialogOperation {
 	public static final class InternalCloseOperationResolver extends IndirectResolver< InternalCloseOperation, PlainDialogOperation > {
 		private InternalCloseOperationResolver( PlainDialogOperation indirect ) {
 			super( indirect );
@@ -58,7 +58,7 @@ public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croq
 			return indirect.getCloseOperation();
 		}
 	}
-	public static class InternalCloseOperation extends SingleThreadOperation< org.lgna.croquet.history.PlainDialogCloseOperationStep > {
+	public static class InternalCloseOperation extends SingleThreadOperation {
 		private final PlainDialogOperation plainDialogOperation;
 		private InternalCloseOperation( PlainDialogOperation plainDialogOperation ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "2a116435-9536-4590-8294-c4050ea65a4e" ) );
@@ -70,20 +70,19 @@ public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croq
 			rv.append( "Press the <strong>Close</strong> button when you are ready." );
 			return rv;
 		}
-		
+		@Override
+		protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
+			return null;
+		}
 		public PlainDialogOperation getPlainDialogOperation() {
 			return this.plainDialogOperation;
 		}
 		@Override
-		protected InternalCloseOperationResolver createCodableResolver() {
+		protected InternalCloseOperationResolver createResolver() {
 			return new InternalCloseOperationResolver( this.plainDialogOperation );
 		}
 		@Override
-		public org.lgna.croquet.history.PlainDialogCloseOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.TransactionManager.addPlainDialogCloseOperationStep( this, trigger );
-		}
-		@Override
-		protected void perform( org.lgna.croquet.history.PlainDialogCloseOperationStep step ) {
+		protected void perform( org.lgna.croquet.history.OperationStep step ) {
 			step.finish();
 		}
 	}
@@ -95,11 +94,7 @@ public abstract class PlainDialogOperation extends DialogOperation<org.lgna.croq
 	public synchronized InternalCloseOperation getCloseOperation() {
 		return this.closeOperation;
 	}
-	@Override
-	public org.lgna.croquet.history.PlainDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
-		return org.lgna.croquet.history.TransactionManager.addPlainDialogOperationStep( this, trigger );
-	}
-	public String getTutorialCloseNoteText( org.lgna.croquet.history.PlainDialogOperationStep step, UserInformation userInformation ) {
+	public String getTutorialCloseNoteText( org.lgna.croquet.history.OperationStep step, UserInformation userInformation ) {
 		return "When finished press the <strong>Close</strong> button.";
 	}
 	@Override

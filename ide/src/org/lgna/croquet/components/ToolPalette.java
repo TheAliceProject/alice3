@@ -56,7 +56,7 @@ public class ToolPalette extends BorderPanel {
 		this.addComponent( this.title, Constraint.PAGE_START );
 		this.addComponent( this.mainComponent, Constraint.CENTER );
 	}
-	private org.lgna.croquet.State.ValueObserver<Boolean> valueObserver = new org.lgna.croquet.State.ValueObserver< Boolean >() {
+	private org.lgna.croquet.State.ValueListener<Boolean> valueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -74,11 +74,11 @@ public class ToolPalette extends BorderPanel {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.title.getModel().addAndInvokeValueObserver( this.valueObserver );
+		this.title.getModel().addAndInvokeValueListener( this.valueObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		this.title.getModel().removeValueObserver( this.valueObserver );
+		this.title.getModel().removeValueListener( this.valueObserver );
 		super.handleUndisplayable();
 	}
 	

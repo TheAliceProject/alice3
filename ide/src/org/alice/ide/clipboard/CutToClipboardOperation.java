@@ -65,7 +65,7 @@ public class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
 		this.statement = statement;
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void perform( org.lgna.croquet.history.OperationStep step ) {
 		step.commitAndInvokeDo( new org.alice.ide.clipboard.edits.CutToClipboardEdit( step, statement ) );
 	}
 }

@@ -53,13 +53,13 @@ public class RandomPersonUtilities {
 	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
 //		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
 		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT };
-		org.lgna.story.resources.sims2.LifeStage lifeStage = org.alice.random.RandomUtilities.getRandomValueFrom( potentialLifeStages );
+		org.lgna.story.resources.sims2.LifeStage lifeStage = org.lgna.common.RandomUtilities.getRandomValueFrom( potentialLifeStages );
 		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
 		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
 		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
 		org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
-		double obesityLevel = org.alice.random.RandomUtilities.nextDouble();
+		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
 		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
 	}
 }

@@ -58,9 +58,9 @@ public class RealToIntegerCascadeMenu extends org.alice.ide.croquet.models.casca
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.MethodInvocation > context ) {
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toFlooredInteger", Double.class ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toRoundedInteger", Double.class ) );
-		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.alice.integer.IntegerUtilities.class, "toCeilingedInteger", Double.class ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toFlooredInteger", Double.class ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toRoundedInteger", Double.class ) );
+		rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toCeilingedInteger", Double.class ) );
 		return rv;
 	}
 }

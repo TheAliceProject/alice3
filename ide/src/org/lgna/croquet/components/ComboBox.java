@@ -48,16 +48,30 @@ import org.lgna.croquet.ListSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox<E> extends ItemSelectable< javax.swing.JComboBox, E > {
-	public ComboBox( ListSelectionState< E > model ) {
+public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna.croquet.ListSelectionState.InternalPrepModel< E > > {
+	public ComboBox( org.lgna.croquet.ListSelectionState.InternalPrepModel< E > model ) {
 		super( model );
-		this.setSwingComboBoxModel( model.getSwingModel().getComboBoxModel() );
+		this.setSwingComboBoxModel( model.getListSelectionState().getSwingModel().getComboBoxModel() );
 	}
+	
+//	@Override
+//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
+//		super.appendPrepStepsIfNecessary( transaction );
+//		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+//		org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
+//		assert completionModel == this.getModel();
+//		org.lgna.croquet.ListSelectionState.InternalPrepModel< E > prepModel = this.getModel().getPrepModel();
+//		if( transaction.getPrepStepCount() == 1 ) {
+//			org.lgna.croquet.history.PrepStep< ? > prepStep = transaction.getPrepStepAt( 0 );
+//			if( prepStep.getModel() == prepModel ) {
+//				return;
+//			}
+//		}
+//		transaction.removeAllPrepSteps();
+//		org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToTransaction( transaction, prepModel, new org.lgna.croquet.triggers.SimulatedTrigger() );		
+//	}
+	
 
-	@Override
-	public boolean isSingleStageSelectable() {
-		return false;
-	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
 		javax.swing.JComboBox rv = new javax.swing.JComboBox() {
@@ -82,12 +96,12 @@ public class ComboBox<E> extends ItemSelectable< javax.swing.JComboBox, E > {
 
 	private javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
 		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-			org.lgna.croquet.history.TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel().getPrepModel(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
+			org.lgna.croquet.history.TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
 		}
 		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 		}
 		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-			org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( ComboBox.this.getModel(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
+			org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( ComboBox.this.getModel().getListSelectionState(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
 		}
 	};
 
@@ -145,7 +159,7 @@ public class ComboBox<E> extends ItemSelectable< javax.swing.JComboBox, E > {
 			java.awt.Component view = this.getView();
 			if( view != null ) {
 				java.awt.Rectangle rv = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( view.getParent(), view.getBounds(), asSeenBy.getAwtComponent() );
-				ListSelectionState< E > listSelectionState = ComboBox.this.getModel();
+				ListSelectionState< E > listSelectionState = ComboBox.this.getModel().getListSelectionState();
 				final int N = listSelectionState.getItemCount();
 				int index = listSelectionState.indexOf( item );
 				if( index != -1 ) {
@@ -202,7 +216,6 @@ public class ComboBox<E> extends ItemSelectable< javax.swing.JComboBox, E > {
 		}
 	}
 
-	@Override
 	public TrackableShape getTrackableShapeFor( E item ) {
 		return new ItemInPopupTrackableShape( item );
 	}

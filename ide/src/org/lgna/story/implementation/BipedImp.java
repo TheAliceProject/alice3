@@ -60,11 +60,11 @@ public final class BipedImp extends JointedModelImp< org.lgna.story.Biped, org.l
 	
 	@Override
 	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.HEAD));
+		return this.getTopOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.HEAD));
 	}
 	
 	@Override
 	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.MOUTH));
+		return this.getFrontOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.MOUTH));
 	}
 }

@@ -54,7 +54,7 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 		return SingletonHolder.instance;
 	}
 	
-	private final org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueObserver< org.lgna.project.ast.NamedUserType >() {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
@@ -96,11 +96,11 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().addAndInvokeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 	}
 	@Override
 	public void handlePostDectivation() {
-		org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().removeValueObserver( this.typeListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
 		super.handlePostDectivation();
 	}
 }

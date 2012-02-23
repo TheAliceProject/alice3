@@ -47,13 +47,14 @@ package org.alice.stageide;
  * @author Dennis Cosgrove
  */
 public class StoryApiConfigurationManager extends org.alice.ide.ApiConfigurationManager {
+	public static final org.lgna.project.ast.JavaMethod SET_ACTIVE_SCENE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class );
+
 	private static class SingletonHolder {
 		private static StoryApiConfigurationManager instance = new StoryApiConfigurationManager();
 	}
 	public static StoryApiConfigurationManager getInstance() {
 		return SingletonHolder.instance;
 	}
-	
 	@Override
 	protected boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type ) {
 		return type.isAssignableTo( org.lgna.story.Model.class );
@@ -339,6 +340,11 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	
 	@Override
+	public boolean isTabClosable( org.lgna.project.ast.AbstractCode code ) {
+		return "myFirstMethod".equalsIgnoreCase( code.getName() ) == false;
+	}
+	
+	@Override
 	protected java.util.List< ? super org.lgna.project.ast.JavaType > addPrimeTimeJavaTypes( java.util.List< ? super org.lgna.project.ast.JavaType > rv ) {
 		rv = super.addPrimeTimeJavaTypes( rv );
 //		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
@@ -349,34 +355,26 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.JavaType> rv) {
 		super.addSecondaryJavaTypes(rv);
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Axes.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Shape.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Sphere.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cone.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Disc.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Marker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.ObjectMarker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Paint.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MoveDirection.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TurnDirection.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.RollDirection.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Marker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.ObjectMarker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
 		return rv;
 	}
 	
-	private static String convertConstantNameToMethodName( String constantName ) {
-		StringBuilder sb = new StringBuilder();
-		boolean isUpperNext = true;
-		for( char c : constantName.toCharArray() ) {
-			if( c == '_' ) {
-				isUpperNext = true;
-			} else {
-				if( isUpperNext ) {
-					sb.append( c );
-				} else {
-					sb.append( Character.toLowerCase( c ) );
-				}
-				isUpperNext = false;
-			}
-		}
-		return sb.toString();
-	}
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
 	@Override
 	public org.lgna.project.ast.UserType< ? > augmentTypeIfNecessary( org.lgna.project.ast.UserType< ? > rv ) {
@@ -400,7 +398,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 					for( org.lgna.project.ast.AbstractField field : resourceType.getDeclaredFields() ) {
 						if( field.isStatic() ) {
 							if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId.class ) ) {
-								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( "get" + convertConstantNameToMethodName( field.getName() ), org.lgna.story.Joint.class );
+								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" ), org.lgna.story.Joint.class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
 								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( 

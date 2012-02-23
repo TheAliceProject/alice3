@@ -61,7 +61,9 @@ public class PickHint extends BitSet{
 		CAMERA_MARKER,
 		OBJECT_MARKER,
 		ORTHOGRAPHIC_CAMERA,
-		PERSPECTIVE_CAMERA;
+		PERSPECTIVE_CAMERA,
+		JOINT,
+		SUN;
 		
 		private PickHint pickHint;
 		
@@ -118,6 +120,10 @@ public class PickHint extends BitSet{
 	public boolean get( PickType pickType )
 	{
 		return this.get( pickType.ordinal() );
+	}
+	
+	public void addPickType(PickType pickType) {
+		this.set(pickType.ordinal());
 	}
 	
 	@Override

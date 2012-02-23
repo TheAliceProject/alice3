@@ -60,47 +60,73 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
 		public VisualData createVisualData( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation );
 		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId );
+		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId );
 	}
+	
 	private final JointImplementationAndVisualDataFactory<R> factory;
 	private final A abstraction;
 	private final VisualData visualData;
 
+	private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable; 
+	
 	private final java.util.Map< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > mapIdToJoint = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public JointedModelImp( A abstraction, JointImplementationAndVisualDataFactory< R > factory ) {
 		this.abstraction = abstraction;
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData( this );
-		this.visualData.setSGParent(this.getSgComposite());
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
-			sgVisual.setParent( this.getSgComposite() );
-		}
-		for( org.lgna.story.resources.JointId root : this.getRootJointIds() ) {
-			this.createJointTree( root, this );
-		}
-	}
-	
-	private void createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
-		//System.err.println( "createJointTree " + jointId );
-		JointImp joint = this.createJointImplementation( jointId );
-		if (joint == null) {
-			joint = this.createJointImplementation(jointId);
-		}
-		if( joint != null && parent instanceof JointedModelImp ) {
-			joint.setCustomJointSgParent( parent.getSgComposite() );
+
+		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
+		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
+		if( rootIds.length == 0 ) {
+			this.sgScalable = null;
+			sgComposite = this.getSgComposite();
 		} else {
-			if (joint != null && joint.getSgVehicle() == null && parent != null) {
-				joint.setVehicle( parent );
+			this.sgScalable = new edu.cmu.cs.dennisc.scenegraph.Scalable();
+			this.sgScalable.setParent( this.getSgComposite() );
+			this.sgScalable.putBonusDataFor( ENTITY_IMP_KEY, this );
+			sgComposite = this.sgScalable;
+
+			for( org.lgna.story.resources.JointId root : rootIds ) {
+				this.createJointTree( root, this );
 			}
 		}
-		this.mapIdToJoint.put( jointId, joint );
-		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			this.createJointTree( childId, joint );
+		
+		this.visualData.setSGParent( sgComposite );
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
+			sgVisual.setParent( sgComposite );
 		}
 	}
 	
-	public void setJointAxisVisibility(boolean jointAxisIsVisible) {
+	public Iterable< JointImp > getJoints() {
+		final java.util.List< JointImp > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.treeWalk( new TreeWalkObserver() {
+			public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
+				//todo: remove null check?
+				if( joint != null ) {
+					rv.add( joint );
+				}
+			}
+			public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
+			}
+			public void popJoint( org.lgna.story.implementation.JointImp joint ) {
+			}
+		} );
+		return rv;
+	}
+	private JointImp createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
+		JointImp joint = this.createJointImplementation( jointId );
+		joint.setVehicle(parent);
+		this.mapIdToJoint.put( jointId, joint );
+		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
+			JointImp childTree = createJointTree(childId, joint);
+			childTree.setVehicle(joint);
+		}
+		return joint;
+	}
+	
+	public void setAllJointPivotsVisibile(boolean isPivotVisible) {
 		for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
-			jointEntry.getValue().setJointAxisVisible(jointAxisIsVisible);
+			jointEntry.getValue().setPivotVisible( isPivotVisible );
 		}
 	}
 	
@@ -129,37 +155,36 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	public org.lgna.story.implementation.JointImp getJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		return this.mapIdToJoint.get( jointId );
-//		synchronized( this.mapIdToJoint ) {
-//			org.lgna.story.implementation.JointImp rv = this.mapIdToJoint.get( jointId );
-//			if( rv != null || this.mapIdToJoint.containsKey( jointId ) ) {
-//				//pass
-//			} else {
-//				rv = this.createJointImplementation( jointId );
-//				this.mapIdToJoint.put( jointId, rv );
-//				if (rv.getVehicle() == null && jointId.getParent() != null ) {
-//					org.lgna.story.implementation.JointImp parentJoint = getJointImplementation(jointId.getParent());
-//					rv.setVehicle(parentJoint);
-//				}
-//				else if ( jointId.getParent() == null ) {
-//					rv.setCustomJointSgParent(this.getSgComposite());
-//				}
-//			}
-//			return rv;
-//		}
 	}
 	
-	protected edu.cmu.cs.dennisc.math.Vector4 getOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
+	protected edu.cmu.cs.dennisc.math.Vector4 getFrontOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
 		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 jointTransform = jointImp.getTransformation(this);
-		offsetAsSeenBySubject.x = jointTransform.translation.x;
-		offsetAsSeenBySubject.y = jointTransform.translation.y;
-		offsetAsSeenBySubject.z = jointTransform.translation.z;
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = jointImp.getAxisAlignedMinimumBoundingBox(this);
+		edu.cmu.cs.dennisc.math.Point3 point = bbox.getCenterOfFrontFace();
+		offsetAsSeenBySubject.x = point.x;
+		offsetAsSeenBySubject.y = point.y;
+		offsetAsSeenBySubject.z = point.z;
+		offsetAsSeenBySubject.w = 1;
+		return offsetAsSeenBySubject;
+	}
+	
+	protected edu.cmu.cs.dennisc.math.Vector4 getTopOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
+		edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = jointImp.getAxisAlignedMinimumBoundingBox(this);
+		edu.cmu.cs.dennisc.math.Point3 point = bbox.getCenterOfTopFace();
+		offsetAsSeenBySubject.x = point.x;
+		offsetAsSeenBySubject.y = point.y;
+		offsetAsSeenBySubject.z = point.z;
 		offsetAsSeenBySubject.w = 1;
 		return offsetAsSeenBySubject;
 	}
 	
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
 		return this.factory.getOriginalJointOrientation( jointId );
+	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId ) {
+		return this.factory.getOriginalJointTransformation( jointId );
 	}
 	
 	public abstract org.lgna.story.resources.JointId[] getRootJointIds();
@@ -172,14 +197,72 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		return null;
 	}
 	
-	protected final org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.resources.JointId jointId ) {
-		return this.factory.createJointImplementation( this, jointId );
+	@Override
+	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
+		if( this.sgScalable != null ) {
+			this.sgScalable.scale.addPropertyListener( listener );
+		} else {
+			this.visualData.getSgVisuals()[ 0 ].scale.addPropertyListener( listener );
+		}
 	}
 	@Override
-	protected final double getBoundingSphereRadius() {
-		return this.visualData.getBoundingSphereRadius();
+	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
+		if( this.sgScalable != null ) {
+			this.sgScalable.scale.removePropertyListener( listener );
+		} else {
+			this.visualData.getSgVisuals()[ 0 ].scale.removePropertyListener( listener );
+		}
 	}
 	
+	@Override
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+		if( this.sgScalable != null ) {
+			return this.sgScalable.scale.getValue();
+		} else {
+			edu.cmu.cs.dennisc.math.Matrix3x3 scale = this.visualData.getSgVisuals()[ 0 ].scale.getValue();
+			return new edu.cmu.cs.dennisc.math.Dimension3( scale.right.x, scale.up.y, scale.backward.z );
+		}
+	}
+	@Override
+	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
+		if( this.sgScalable != null ) {
+			this.sgScalable.scale.setValue( new edu.cmu.cs.dennisc.math.Dimension3( scale ) );
+		} else {
+			edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createZero();
+			m.right.x = scale.x;
+			m.up.y = scale.y;
+			m.backward.z = scale.z;
+			for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
+				sgVisual.scale.setValue( m );
+			}
+		}
+	}
+	
+//	@Override
+//	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
+//		this.sgScalable.scale.addPropertyListener( listener );
+//	}
+//	@Override
+//	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
+//		this.sgScalable.scale.removePropertyListener( listener );
+//	}
+//	
+//	@Override
+//	protected void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( axis );
+//	}
+//	@Override
+//	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+//		return this.sgScalable.scale.getValue();
+//	}
+//	@Override
+//	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
+//		this.sgScalable.scale.setValue( scale );
+//	}
+	
+	protected final org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.resources.JointId jointId ) {
+		return this.factory.createJointImplementation( this, jointId );
+	}	
 	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;
 	private org.lgna.story.implementation.visualization.JointedModelVisualization getVisualization() {
 		if( this.visualization != null ) {
@@ -393,5 +476,21 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	public void animateStraightenOutJoints() {
 		this.animateStraightenOutJoints( DEFAULT_DURATION );
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
+		if( this.sgScalable != null ) {
+			edu.cmu.cs.dennisc.math.Dimension3 scale = this.sgScalable.scale.getValue();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 s = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+			s.orientation.right.x = scale.x;
+			s.orientation.up.y = scale.y;
+			s.orientation.backward.z = scale.z;
+			m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createMultiplication( trans, s );
+		} else {
+			m = trans;
+		}
+		return super.updateCumulativeBound( rv, m );
 	}
 }

@@ -48,7 +48,6 @@ package org.lgna.croquet;
 public abstract class StringState extends State< String > {
 	public class SwingModel {
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
-
 		private SwingModel() {
 		}
 		public javax.swing.text.Document getDocument() {
@@ -79,6 +78,7 @@ public abstract class StringState extends State< String > {
 		}
 	};
 
+	private String textForBlankCondition;
 	public StringState( Group group, java.util.UUID id, String initialValue ) {
 		super( group, id, initialValue );
 		try {
@@ -87,6 +87,45 @@ public abstract class StringState extends State< String > {
 			throw new RuntimeException( ble );
 		}
 		this.swingModel.document.addDocumentListener( this.documentListener );
+	}
+
+	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+
+	@Override
+	public StringBuilder appendRepresentation( StringBuilder rv, String value, java.util.Locale locale ) {
+		rv.append( value );
+		return rv;
+	}
+
+	@Override
+	public Class< String > getItemClass() {
+		return String.class;
+	}
+	@Override
+	public String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeString();
+	}
+	@Override
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
+		binaryEncoder.encode( value );
+	}
+
+	private boolean isEnabled = true;
+	@Override
+	public boolean isEnabled() {
+		return this.isEnabled;
+	}
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		if( this.isEnabled != isEnabled ) {
+			this.isEnabled = isEnabled;
+			for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
+				component.getAwtComponent().setEnabled( this.isEnabled );
+			}
+		}
 	}
 
 	public SwingModel getSwingModel() {
@@ -108,12 +147,17 @@ public abstract class StringState extends State< String > {
 
 	@Override
 	protected void localize() {
+		this.textForBlankCondition = this.getLocalizedText( "textForBlankCondition" );
+	}
+	
+	public String getTextForBlankCondition() {
+		return this.textForBlankCondition;
 	}
 
-	@Override
-	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
-	}
+//	@Override
+//	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+//		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
+//	}
 	@Override
 	protected String getActualValue() {
 		try {
@@ -123,21 +167,11 @@ public abstract class StringState extends State< String > {
 		}
 	}
 
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		if( edit instanceof org.lgna.croquet.edits.StringStateEdit ) {
-			org.lgna.croquet.edits.StringStateEdit stringStateEdit = (org.lgna.croquet.edits.StringStateEdit)edit;
-			rv.append( " <strong>" );
-			rv.append( stringStateEdit.getNextValue() );
-			rv.append( "</strong>" );
-		} else {
-			rv.append( "UNKNOWN EDIT" );
-		}
-		return rv;
-	}
-
 	public org.lgna.croquet.components.TextField createTextField() {
 		return new org.lgna.croquet.components.TextField( this );
+	}
+	public org.lgna.croquet.components.PasswordField createPasswordField() {
+		return new org.lgna.croquet.components.PasswordField( this );
 	}
 	public org.lgna.croquet.components.TextArea createTextArea() {
 		return new org.lgna.croquet.components.TextArea( this );

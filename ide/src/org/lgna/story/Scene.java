@@ -55,44 +55,22 @@ public abstract class Scene extends Entity {
 		return this.implementation;
 	}
 
-	private void changeActiveStatus( Program program, boolean isActive, int activeCount ) {
-		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
-		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
-		this.handleActiveChanged( isActive, activeCount );
-		if( isActive ) {
-			this.implementation.addCamerasTo( program.getImplementation() );
-		} else {
-			this.implementation.removeCamerasFrom( program.getImplementation() );
-		}
-		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
+	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.implementation.addSceneActivationListener( sceneActivationListener );
 	}
-
-	private int activeCount;
-	private int deactiveCount;
-
-	/*package-private*/void activate( Program program ) {
-		assert deactiveCount == activeCount;
-		activeCount++;
-		this.implementation.setProgram( program.getImplementation() );
-		this.implementation.setGlobalBrightness( 0.0f );
-		this.changeActiveStatus( program, true, activeCount );
-		this.implementation.animateGlobalBrightness( 1.0f, 0.5, AnimationStyle.BEGIN_AND_END_GENTLY.getInternal() );
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
+		this.implementation.removeSceneActivationListener( sceneActivationListener );
 	}
-	/*package-private*/void deactivate( Program program ) {
-		deactiveCount++;
-		assert deactiveCount == activeCount;
-		this.implementation.animateGlobalBrightness( 0.0f, 0.25, AnimationStyle.BEGIN_AND_END_GENTLY.getInternal() );
-		this.changeActiveStatus( program, false, activeCount );
-		this.implementation.setProgram( null );
-	}
+	
+	protected abstract void handleActiveChanged( Boolean isActive, Integer activationCount );
 
-	protected abstract void handleActiveChanged( Boolean isActive, Integer activeCount );
-
-	protected void preserveVehiclesAndVantagePoints() {
-		this.implementation.preserveVehiclesAndVantagePoints();
+	protected void preserveStateAndEventListeners() {
+		this.implementation.preserveStateAndEventListeners();
 	}
-	protected void restoreVehiclesAndVantagePoints() {
-		this.implementation.restoreVehiclesAndVantagePoints();
+	protected void restoreStateAndEventListeners() {
+		this.implementation.restoreStateAndEventListeners();
 	}
 
 	@GetterTemplate(isPersistent = true)
@@ -104,14 +82,36 @@ public abstract class Scene extends Entity {
 	public void setAtmosphereColor( Color color, SetAtmosphereColor.Detail... details ) {
 		this.implementation.atmosphereColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
+	@GetterTemplate(isPersistent = false)
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	@Deprecated
+	public Color getAmbientLightColor() {
+		return this.implementation.fromAboveLightColor.getValue();
+	}
+	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	@Deprecated
+	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
+		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate()
-	public Color getAmbientLightColor() {
-		return this.implementation.ambientLightColor.getValue();
+	public Color getFromAboveLightColor() {
+		return this.implementation.fromAboveLightColor.getValue();
 	}
 	@MethodTemplate()
-	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
-		this.implementation.ambientLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void setFromAboveLightColor( Color color, SetFromAboveLightColor.Detail... details ) {
+		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+
+	@GetterTemplate(isPersistent = true)
+	@MethodTemplate()
+	public Color getFromBelowLightColor() {
+		return this.implementation.fromBelowLightColor.getValue();
+	}
+	@MethodTemplate()
+	public void setFromBelowLightColor( Color color, SetFromBelowLightColor.Detail... details ) {
+		this.implementation.fromBelowLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
 	@MethodTemplate()

@@ -42,15 +42,19 @@
  */
 package org.alice.interact.handle;
 
+import java.awt.Color;
+
 import org.alice.interact.MovementDirection;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -81,6 +85,11 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	protected static final Color4f MUTED_COLOR = new Color4f(0.5f, 0.5f, 0.4f, 1.0f);
 	protected static final Color4f BASE_COLOR = new Color4f(0.7f, 0.7f, 0.3f, 1.0f);
 	
+	protected Color4f activeColor = ACTIVE_COLOR;
+	protected Color4f baseColor = BASE_COLOR;
+	protected Color4f rolloverColor = ROLLOVER_COLOR;
+	protected Color4f mutedColor = MUTED_COLOR;
+	
 	protected Torus sgTorus = new Torus();
 	protected Sphere sgSphere = new Sphere();
 	protected Transformable sphereTransformable = new Transformable();
@@ -106,9 +115,31 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		this( rotationAxisDirection, HandlePosition.ORIGIN);
 	}
 	
+	public RotationRingHandle( MovementDirection rotationAxisDirection, Color4f color )
+	{
+		this( rotationAxisDirection, HandlePosition.ORIGIN, color);
+	}
+	
 	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
 	{
+		this(rotationAxisDirection, handlePosition, BASE_COLOR, ACTIVE_COLOR, ROLLOVER_COLOR, MUTED_COLOR);
+	}
+	
+	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f color )
+	{
 		super();
+		this.init(rotationAxisDirection, handlePosition);
+		this.initColor(color);
+	}
+	public RotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor )
+	{
+		super();
+		this.init(rotationAxisDirection, handlePosition);
+		this.initColors(baseColor, activeColor, rolloverColor, mutedColor);
+	}
+	
+	private void init(MovementDirection rotationAxisDirection, HandlePosition handlePosition)
+	{
 		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		this.sgSphereVisual.setParent( this.sphereTransformable );
 		this.sphereTransformable.setParent( this );
@@ -128,9 +159,30 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	
 	public RotationRingHandle( RotationRingHandle handle )
 	{
-		this(handle.rotationAxisDirection, handle.handlePosition);
+		this(handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor);
 		this.initFromHandle( handle );
+		this.baseColor = handle.baseColor;
+		this.activeColor = handle.activeColor;
+		this.rolloverColor = handle.rolloverColor;
+		this.mutedColor = handle.mutedColor;
 		this.handleOffset.set( handle.handleOffset );
+	}
+	
+	protected void initColor(Color4f color) {
+		this.baseColor = color;
+		Color colorColor = new Color(this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue);
+		this.activeColor = new Color4f(ColorUtilities.shiftHSB( colorColor, 0.0d, 0.0d, .1d ));
+		this.mutedColor = new Color4f(ColorUtilities.shiftHSB( colorColor, 0.0d,  -.6d, -.5d  ));
+		this.rolloverColor = new Color4f(ColorUtilities.shiftHSB( colorColor, 0.0d, -.4d, -.3d ));
+		setCurrentColorInternal();
+	}
+	
+	protected void initColors(Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor) {
+		this.baseColor = baseColor;
+		this.activeColor = activeColor;
+		this.rolloverColor = rolloverColor;
+		this.mutedColor = mutedColor;
+		this.setCurrentColorInternal();
 	}
 	
 	@Override
@@ -198,9 +250,9 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	}
 	
 	@Override
-	public void setManipulatedObject( Transformable manipulatedObject ) {
+	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
 		super.setManipulatedObject( manipulatedObject );
-		this.setPositionRelativeToObjectSize( );
+//		this.setPositionRelativeToObjectSize( );
 	}
 	
 	public void setSphereVisibility( boolean showSphere )
@@ -280,27 +332,56 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	protected void updateVisibleState(HandleRenderState renderState)
 	{
 		super.updateVisibleState(renderState);
-		double endRadius = this.isRenderable() ? this.getMajorAxisRadius() : 0.0d;
-//		if (endRadius == 0 && this.opacityAnimationTarget != 0)
-//		{
-//			double targetOpacity = this.isRenderable() ? this.getDesiredOpacity(renderState) : 0.0;
-//			PrintUtilities.println("Huh?");
-//		}
+		double endRadius;
+		if (this.isRenderable()) {
+			endRadius = this.getMajorAxisRadius();
+		}
+		else {
+			endRadius = 0.0d;
+		}
 		animateHandleToRadius(endRadius);
 	}
 	
+	@Override
+	protected Color4f getBaseColor() {
+		if (this.baseColor == null) {
+			return BASE_COLOR;
+		}
+		return this.baseColor;
+	}
+	
+	protected Color4f getMutedColor() {
+		if (this.mutedColor == null) {
+			return MUTED_COLOR;
+		}
+		return this.mutedColor;
+	}
+	
+	protected Color4f getActiveColor() {
+		if (this.activeColor == null) {
+			return ACTIVE_COLOR;
+		}
+		return this.activeColor;
+	}
+	
+	protected Color4f getRolloverColor() {
+		if (this.rolloverColor == null) {
+			return ROLLOVER_COLOR;
+		}
+		return this.rolloverColor;
+	}
 	
 	@Override
 	protected Color4f getDesiredColor(HandleRenderState renderState)
 	{
 		switch (renderState)
 		{
-		case NOT_VISIBLE : return BASE_COLOR;
-		case VISIBLE_BUT_SIBLING_IS_ACTIVE : return MUTED_COLOR;
-		case VISIBLE_AND_ACTIVE : return ACTIVE_COLOR;
-		case VISIBLE_AND_ROLLOVER : return ROLLOVER_COLOR;
-		case JUST_VISIBLE : return BASE_COLOR;
-		default : return BASE_COLOR;
+		case NOT_VISIBLE : return this.getBaseColor();
+		case VISIBLE_BUT_SIBLING_IS_ACTIVE : return this.getMutedColor();
+		case VISIBLE_AND_ACTIVE : return this.getActiveColor();
+		case VISIBLE_AND_ROLLOVER : return this.getRolloverColor();
+		case JUST_VISIBLE : return this.getBaseColor();
+		default : return this.getBaseColor();
 		}
 	}
 	
@@ -315,7 +396,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		return RotationRingHandle.this.sgTorus.majorRadius.getValue();
 	}
 	
-	private double getMajorAxisRadius( )
+	protected double getMajorAxisRadius( )
 	{
 		if (this.getParentTransformable() != null)
 		{
@@ -375,8 +456,8 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	}
 	
 	@Override
-	public void setHandleShowing(boolean showing) {
-		super.setHandleShowing(showing);
+	public void setVisualsShowing(boolean showing) {
+		super.setVisualsShowing(showing);
 	}
 
 }

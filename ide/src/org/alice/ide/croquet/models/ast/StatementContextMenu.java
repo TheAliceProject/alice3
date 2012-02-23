@@ -80,10 +80,12 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 				if( method instanceof org.lgna.project.ast.UserMethod ) {
-					rv.add( org.alice.ide.operations.ast.FocusCodeOperation.getInstance( method ).getMenuItemPrepModel() );
+					rv.add( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( method ).getMenuItemPrepModel() );
 				}
 			}
 		}
+		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
+		rv.add( org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement ).getMenuItemPrepModel() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( org.alice.ide.croquet.models.ast.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
 		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
@@ -114,7 +116,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep context ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updatePopupOperations( models, this.statement );

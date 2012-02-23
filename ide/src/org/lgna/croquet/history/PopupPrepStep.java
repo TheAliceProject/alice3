@@ -46,9 +46,12 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupPrepStep< M extends org.lgna.croquet.PopupPrepModel > extends PrepStep< M > {
+public final class PopupPrepStep extends PrepStep< org.lgna.croquet.PopupPrepModel > {
 	private transient org.lgna.croquet.components.PopupMenu popupMenu;
-	public PopupPrepStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static PopupPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PopupPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new PopupPrepStep( parent, model, trigger );
+	}
+	private PopupPrepStep( Transaction parent, org.lgna.croquet.PopupPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public PopupPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

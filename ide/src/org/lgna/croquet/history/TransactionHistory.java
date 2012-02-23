@@ -67,6 +67,12 @@ public class TransactionHistory extends Node< CompletionStep<?> > implements Ite
 		this.transactions.clear();
 	}
 	
+	@Override
+	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+		for( Transaction transaction : this.transactions ) {
+			transaction.appendContexts( out );
+		}
+	}
 	
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		for( Transaction transaction : this.transactions ) {

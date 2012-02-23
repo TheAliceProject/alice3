@@ -45,12 +45,12 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageResourceFillerInner extends ResourceFillerInner< org.alice.virtualmachine.resources.ImageResource > {
+public class ImageResourceFillerInner extends ResourceFillerInner< org.lgna.common.resources.ImageResource > {
 	public ImageResourceFillerInner() {
-		super( org.alice.virtualmachine.resources.ImageResource.class );
+		super( org.lgna.common.resources.ImageResource.class );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.ast.cascade.resource.ImageResourceExpressionFillIn getResourceExpressionFillIn( org.alice.virtualmachine.resources.ImageResource resource ) {
+	protected org.alice.ide.croquet.models.ast.cascade.resource.ImageResourceExpressionFillIn getResourceExpressionFillIn( org.lgna.common.resources.ImageResource resource ) {
 		return org.alice.ide.croquet.models.ast.cascade.resource.ImageResourceExpressionFillIn.getInstance( resource );
 	}
 	@Override

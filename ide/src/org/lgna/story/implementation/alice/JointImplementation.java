@@ -43,7 +43,7 @@
 
 package org.lgna.story.implementation.alice;
 
-import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 
 /**
  * @author Dennis Cosgrove
@@ -81,7 +81,9 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	}
 	
 	@Override
-	public void setCustomJointSgParent(Composite sgParent) {
-		sgJoint.setSgParent(sgParent);
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox(null, false);
+		rv.addBoundingBox(jointBBox, trans);
+		return rv;
 	}
 }

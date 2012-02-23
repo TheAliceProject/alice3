@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceDropDown< R extends org.alice.virtualmachine.Resource, M extends org.lgna.croquet.CustomItemState< R > > extends org.lgna.croquet.components.ItemDropDown< R, M > {
+public class ResourceDropDown< R extends org.lgna.common.Resource, M extends org.lgna.croquet.CustomItemState< R > > extends org.lgna.croquet.components.ItemDropDown< R, M > {
 	public ResourceDropDown( M model ) {
 		super( model );
 		this.update( model.getValue() );

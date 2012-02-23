@@ -81,12 +81,6 @@ public abstract class CascadeManager {
 		this.expressionFillerInners.add( expressionFillerInner );
 	}
 
-	//todo: remove this
-	@Deprecated
-	protected org.lgna.project.ast.AbstractType<?,?,?> getActualTypeForDesiredParameterType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		return type;
-	}
-
 	private java.util.LinkedList< org.lgna.project.ast.UserLocal > updateAccessibleLocalsForBlockStatementAndIndex( java.util.LinkedList< org.lgna.project.ast.UserLocal > rv, org.lgna.project.ast.BlockStatement blockStatement, int index ) {
 		while( index >= 1 ) {
 			index--;
@@ -157,6 +151,8 @@ public abstract class CascadeManager {
 //		return rv;
 //	}
 
+	protected abstract void addBonusFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.AbstractType<?,?,?> selectedType, org.lgna.project.ast.AbstractType<?,?,?> type );
+	
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addExpressionBonusFillInsForType( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
 		if( codeInFocus != null ) {
@@ -168,13 +164,13 @@ public abstract class CascadeManager {
 				arrayLengthFillIns = null;
 			}
 			
-			//todo: fix
-			type = this.getActualTypeForDesiredParameterType( type );
-
-			org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();
+			org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 			if( type.isAssignableFrom( selectedType ) ) {
 				this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.ThisExpression(), selectedType, type );
 			}
+			
+			this.addBonusFillIns( rv, selectedType, type );
+			
 			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
 				org.lgna.project.ast.AbstractType<?,?,?> fieldType = field.getValueType();
 				if( type.isAssignableFrom( fieldType ) ) {

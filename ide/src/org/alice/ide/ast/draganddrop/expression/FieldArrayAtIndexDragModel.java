@@ -64,7 +64,7 @@ public class FieldArrayAtIndexDragModel extends AbstractExpressionDragModel {
 		this.field = field;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
 		return this.field.getValueType().getComponentType();
 	}
 	@Override

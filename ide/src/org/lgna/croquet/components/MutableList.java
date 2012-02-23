@@ -159,7 +159,7 @@ public abstract class MutableList<E, LC extends JComponent< ? >,MC extends JComp
 			this.internalAddComponent( addPrepModel.createPopupButton(), java.awt.BorderLayout.PAGE_END );
 		}
 	}
-	public MutableList( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Operation< ? > addOperation ) {
+	public MutableList( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Operation addOperation ) {
 		this( model );
 		if( addOperation != null ) {
 			this.internalAddComponent( addOperation.createButton(), java.awt.BorderLayout.PAGE_END );

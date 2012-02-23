@@ -49,6 +49,8 @@ package org.alice.ide.croquet.components.declaration;
 public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
 //	private java.awt.Dimension isNotArraySize = null;
 //	private java.awt.Dimension isArraySize = null;
+	
+	private org.lgna.croquet.components.TextField nameTextField;
 	public DeclarationPanel( M model ) {
 		super( model );
 		final int INSET = 16;
@@ -66,6 +68,9 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 	protected boolean isValueTypeRowDesired() {
 		return true;
 	}
+	protected boolean isInitializerRowDesired() {
+		return true;
+	}
 	
 	@Override
 	protected void handleDisplayable() {
@@ -80,6 +85,62 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 		super.handleUndisplayable();
 	}
 
+	
+	protected org.lgna.project.ast.InstanceCreation getInstanceCreationFromInitializer() {
+		org.alice.ide.croquet.models.ExpressionState initializerState = this.getModel().getInitializerState();
+		if( initializerState != null ) {
+			org.lgna.project.ast.Expression expression = initializerState.getValue();
+			if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+				return (org.lgna.project.ast.InstanceCreation)expression;
+			}
+		}
+		return null;
+	}
+	protected java.lang.reflect.Field getFldFromInstanceCreationInitializer( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		if( instanceCreation != null ) {
+			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
+			if( argumentField != null ) {
+				java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
+				return fld;
+			}
+		}
+		return null;
+	}
+	
+	private String generateNameFromInitializer() {
+		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
+		if( instanceCreation != null ) {
+			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
+			if( fld != null ) {
+				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
+			} else {
+				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				org.lgna.project.ast.AbstractType< ?,?,? > abstractType = constructor.getDeclaringType();
+				String typeName = abstractType.getName();
+				if( typeName != null ) {
+					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
+				} else {
+					return "";
+				}
+			}
+		} else {
+			return "";
+		}
+	}
+	protected void updateNameTextField() {
+		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
+			javax.swing.JTextField jTextField = this.nameTextField.getAwtComponent();
+			if( jTextField.getSelectionStart() == 0 && jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) {
+				M model = this.getModel();
+				String name = generateNameFromInitializer();
+				model.getNameState().setValue( name );
+				this.nameTextField.requestFocus();
+				this.nameTextField.selectAll();
+				this.nameTextField.repaint();
+			}
+		}
+	}
+	
 	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, M model ) {
 		if( this.isValueTypeRowDesired() ) {
 			if( model.getComponentValueTypeState() != null ) {
@@ -101,19 +162,23 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 			}
 		}
 		if( model.getNameState() != null ) {
-			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
+			this.nameTextField = model.getNameState().createTextField();
+			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", this.nameTextField ) );
+			this.updateNameTextField();
 		}
-		if( model.getInitializerState() != null ) {
-			org.lgna.croquet.components.Component< ? > component;
-			if( model.isInitializerEditable() ) {
-				component = new org.lgna.croquet.components.LineAxisPanel( 
-						model.getInitializerState().createEditor( this.getFactory() ),
-						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-				);
-			} else {
-				component = model.getInitializerState().createView(  this.getFactory() );
+		if( this.isInitializerRowDesired() ) {
+			if( model.getInitializerState() != null ) {
+				org.lgna.croquet.components.Component< ? > component;
+				if( model.isInitializerEditable() ) {
+					component = new org.lgna.croquet.components.LineAxisPanel( 
+							model.getInitializerState().createEditor( this.getFactory() ),
+							org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
+					);
+				} else {
+					component = model.getInitializerState().createView(  this.getFactory() );
+				}
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
 			}
-			rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getInitializerLabelText() + ":", component ) );
 		}
 		org.lgna.croquet.components.Component< ? >[] warningRow = this.createWarningRow();
 		if( warningRow != null ) {

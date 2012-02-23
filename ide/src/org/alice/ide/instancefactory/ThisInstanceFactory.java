@@ -56,7 +56,11 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	private ThisInstanceFactory() {
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ThisInstanceFactory > createResolver() {
+	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+		return type != null;
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.Resolver< ThisInstanceFactory > createResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver< ThisInstanceFactory >( this );
 	}
 	public org.lgna.project.ast.Expression createTransientExpression() {
@@ -66,7 +70,7 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 		return createThisExpression();
 	}
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
-		return org.alice.ide.croquet.models.typeeditor.TypeState.getInstance().getValue();
+		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 	}
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();

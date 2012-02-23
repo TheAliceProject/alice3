@@ -105,14 +105,15 @@ public class BootstrapUtilties {
 		return org.lgna.project.ast.AstUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 	
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance ) {
-		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
+	public static String GET_MY_SCENE_METHOD_NAME = "getMyScene";
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
+//		org.lgna.project.ast.UserField sunField = createPrivateFinalField( org.lgna.story.Sun.class, "sun" );
 		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
 		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
 
 		cameraField.isDeletionAllowed.setValue( false );
 
-		sunField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
+//		sunField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		groundField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		cameraField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
@@ -122,16 +123,28 @@ public class BootstrapUtilties {
 		performGeneratedSetupMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 		org.lgna.project.ast.BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 		
-		for( org.lgna.project.ast.UserField field : new org.lgna.project.ast.UserField[] { cameraField, sunField, groundField } ) {
-//			java.lang.reflect.Method mthd;
-//			try {
-//				mthd = ((org.lgna.project.ast.JavaType)field.getValueType()).getClassReflectionProxy().getReification().getMethod( "setVehicle", org.lgna.story.Entity.class );
-//			} catch( NoSuchMethodException nsme ) {
-//				throw new RuntimeException( nsme );
-//			}
-			//org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.JavaMethod.getInstance( mthd );
-			org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lgna.story.Entity.class );
+		org.lgna.project.ast.UserMethod initializeEventListenersMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 
+		org.lgna.project.ast.UserLambda sceneActivationListener = org.lgna.project.ast.AstUtilities.createUserLambda( org.lgna.story.event.SceneActivationListener.class );
+		org.lgna.project.ast.LambdaExpression sceneActivationListenerExpression = new org.lgna.project.ast.LambdaExpression( sceneActivationListener );
+
+		org.lgna.project.ast.JavaMethod addSceneActivationListenerMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "addSceneActivationListener", org.lgna.story.event.SceneActivationListener.class );
+		
+		initializeEventListenersMethod.body.getValue().statements.add(
+				org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(  
+						new org.lgna.project.ast.ThisExpression(), 
+						addSceneActivationListenerMethod, 
+						sceneActivationListenerExpression 
+				)
+		);
+		
+		org.lgna.project.ast.UserField[] fields = {
+			cameraField,
+			//sunField,
+			groundField
+		};
+		for( org.lgna.project.ast.UserField field : fields ) {
+			org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lgna.story.Entity.class );
 			performGeneratedSetupBody.statements.add( 
 					createMethodInvocationStatement( 
 							createThisFieldAccess( field ), 
@@ -161,22 +174,48 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
 		
-		if( appearance == org.lgna.story.Ground.SurfaceAppearance.MOON ) {
+		if( atmosphereColor != null ) {
 			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, "BLACK" ) ) );
+			try {
+				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(atmosphereColor);
+				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, colorExpression ) );
+			}
+			catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) { 
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("This exception should not occure: "+e); 
+			}
 		}
-		else if ( appearance == org.lgna.story.Ground.SurfaceAppearance.SAND ) {
-			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( org.lgna.story.Color.class, "DARK_BLUE" ) ) );
+		if( Double.isNaN( fogDensity) ) {
+			//pass
+		} else {
 			org.lgna.project.ast.JavaMethod setFogDensityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFogDensity", Number.class, org.lgna.story.SetFogDensity.Detail[].class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setFogDensityMethod, new org.lgna.project.ast.DoubleLiteral( .4 ) ));
+			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setFogDensityMethod, new org.lgna.project.ast.DoubleLiteral( fogDensity ) ));
+		}
+		if (aboveLightColor != null) {
+			org.lgna.project.ast.JavaMethod setAboveLightColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFromAboveLightColor", org.lgna.story.Color.class, org.lgna.story.SetFromAboveLightColor.Detail[].class );
+			try {
+				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(aboveLightColor);
+				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAboveLightColorMethod, colorExpression ) );
+			}
+			catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) { 
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("This exception should not occure: "+e); 
+			}
+		}
+		if ( belowLightColor != null) {
+			org.lgna.project.ast.JavaMethod setBelowLightColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFromBelowLightColor", org.lgna.story.Color.class, org.lgna.story.SetFromBelowLightColor.Detail[].class );
+			try {
+				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(belowLightColor);
+				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setBelowLightColorMethod, colorExpression ) );
+			}
+			catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) { 
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("This exception should not occure: "+e); 
+			}
 		}
 
 		org.lgna.project.ast.UserMethod performCustomSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, "performCustomSetup" );
 
 		org.lgna.project.ast.UserMethod handleActiveChangedMethod = createMethod( org.lgna.project.ast.AccessLevel.PROTECTED, Void.TYPE, "handleActiveChanged" );
 		org.lgna.project.ast.UserParameter isActiveParameter = new org.lgna.project.ast.UserParameter( "isActive", Boolean.class );
-		org.lgna.project.ast.UserParameter activeCountParameter = new org.lgna.project.ast.UserParameter( "activeCount", Integer.class );
+		org.lgna.project.ast.UserParameter activeCountParameter = new org.lgna.project.ast.UserParameter( "activationCount", Integer.class );
 		handleActiveChangedMethod.requiredParameters.add( isActiveParameter );
 		handleActiveChangedMethod.requiredParameters.add( activeCountParameter );
 		handleActiveChangedMethod.isSignatureLocked.setValue( true );
@@ -205,45 +244,49 @@ public class BootstrapUtilties {
 
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performGeneratedSetupMethod ) );
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performCustomSetupMethod ) );
+		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), initializeEventListenersMethod ) );
 
 		Class< ? > sceneCls = org.lgna.story.Scene.class;
 		
-		org.lgna.project.ast.JavaMethod preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "preserveVehiclesAndVantagePoints" );
-		org.lgna.project.ast.JavaMethod restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "restoreVehiclesAndVantagePoints" );
+		org.lgna.project.ast.JavaMethod preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "preserveStateAndEventListeners" );
+		org.lgna.project.ast.JavaMethod restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "restoreStateAndEventListeners" );
 		ifInnerFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), restoreVehiclesAndVantagePointsMethod ) );
 		ifOuterFalseBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), preserveVehiclesAndVantagePointsMethod ) );
 
 		handleActiveChangedBody.statements.add( ifOuter );
 		
 		org.lgna.project.ast.NamedUserType sceneType = createType( "MyScene", org.lgna.story.Scene.class );
-		sceneType.fields.add( sunField );
+		//sceneType.fields.add( sunField );
 		sceneType.fields.add( groundField );
 		sceneType.fields.add( cameraField );
 		sceneType.methods.add( performCustomSetupMethod );
 		sceneType.methods.add( performGeneratedSetupMethod );
+		sceneType.methods.add( initializeEventListenersMethod );
 		sceneType.methods.add( handleActiveChangedMethod );
 		sceneType.methods.add( myFirstMethod );
 
 		org.lgna.project.ast.UserField sceneField = createPrivateFinalField( sceneType, "myScene" );
-		org.lgna.project.ast.UserMethod playOutStoryMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "playOutStory" );
-		org.lgna.project.ast.BlockStatement playOutStoryBody = playOutStoryMethod.body.getValue();
-		playOutStoryBody.statements.add( 
+		sceneActivationListener.body.getValue().statements.add( 
 				createMethodInvocationStatement( 
-						new org.lgna.project.ast.ThisExpression(), 
-						org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class ),
-						createThisFieldAccess( sceneField )
-				)
-		);
-		playOutStoryBody.statements.add( 
-				createMethodInvocationStatement( 
-						createThisFieldAccess( sceneField ),
+						new org.lgna.project.ast.ThisExpression(),
 						myFirstMethod
 				)
 		);
 		
+		org.lgna.project.ast.UserMethod getSceneMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, sceneType, GET_MY_SCENE_METHOD_NAME );
+		getSceneMethod.body.getValue().statements.add(
+				new org.lgna.project.ast.ReturnStatement( 
+						sceneType, 
+						new org.lgna.project.ast.FieldAccess(
+								new org.lgna.project.ast.ThisExpression(),
+								sceneField
+						) 
+				)
+		);
+
 		org.lgna.project.ast.NamedUserType rv = createType( "MyProgram", org.lgna.story.Program.class );
 		rv.fields.add( sceneField );
-		rv.methods.add( playOutStoryMethod );
+		rv.methods.add( getSceneMethod );
 
 		
 		
@@ -258,8 +301,24 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = createLocalDeclarationStatementInitializedByInstanceCreation( "story", rv, true );
 		org.lgna.project.ast.UserLocal storyLocal = localDeclarationStatement.local.getValue();
 		mainBody.statements.add( localDeclarationStatement );
-		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), rv.findMethod( "initializeInFrame", String[].class ), new org.lgna.project.ast.ParameterAccess( argsParameter ) ) );
-		mainBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.LocalAccess( storyLocal ), playOutStoryMethod ) );
+		mainBody.statements.add( 
+				createMethodInvocationStatement( 
+						new org.lgna.project.ast.LocalAccess( storyLocal ), 
+						rv.findMethod( "initializeInFrame", String[].class ), 
+						new org.lgna.project.ast.ParameterAccess( argsParameter ) 
+				) 
+		);
+		mainBody.statements.add( 
+				createMethodInvocationStatement( 
+						new org.lgna.project.ast.LocalAccess( storyLocal ), 
+						org.alice.stageide.StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD,
+						new org.lgna.project.ast.MethodInvocation(
+								new org.lgna.project.ast.LocalAccess( storyLocal ),
+								getSceneMethod
+						)
+				)
+		);
+		
 		rv.methods.add( mainMethod );
 		
 		return rv;

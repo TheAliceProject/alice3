@@ -47,30 +47,34 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserField, OneShotMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, OneShotMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static OneShotMenuModel getInstance( org.lgna.project.ast.UserField field ) {
+	public static OneShotMenuModel getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 		synchronized( map ) {
-			OneShotMenuModel rv = map.get( field );
+			OneShotMenuModel rv = map.get( instanceFactory );
 			if( rv != null ) {
 				//pass
 			} else {
 				java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				models.add( FieldLabelSeparatorModel.getInstance( field ) );
-				models.add( ProceduresCascade.getInstance( field ).getMenuModel() );
-				models.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-				if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) || field.getValueType().isAssignableTo( org.lgna.story.Scene.class ) )  {
-					//pass
-				} else {
-					models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
+				models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
+				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+					org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
+					models.add( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+					if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) || field.getValueType().isAssignableTo( org.lgna.story.Scene.class ) )  {
+						//pass
+					} else {
+						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+					}
 				}
-				rv = new OneShotMenuModel( field, models );
-				map.put( field, rv );
+				rv = new OneShotMenuModel( instanceFactory, models );
+				map.put( instanceFactory, rv );
 			}
 			return rv;
 		}
 	}
-	private OneShotMenuModel( org.lgna.project.ast.UserField field, java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models ) {
+	private OneShotMenuModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory, java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models ) {
 		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
 	}
 }

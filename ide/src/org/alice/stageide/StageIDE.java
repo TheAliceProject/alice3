@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -44,6 +44,7 @@ package org.alice.stageide;
 
 public class StageIDE extends org.alice.ide.IDE {
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
 
 	public static StageIDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(  org.alice.ide.IDE.getActiveInstance(), StageIDE.class );
@@ -75,6 +76,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected void registerAdapters(org.lgna.project.virtualmachine.VirtualMachine vm) {
 		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
+		vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
 	}
 	@Override
 	public org.alice.ide.cascade.CascadeManager getCascadeManager() {
@@ -102,6 +104,9 @@ public class StageIDE extends org.alice.ide.IDE {
 	private java.util.Map< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon > mapFieldToIcon = new java.util.HashMap< org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon >();
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
+		if (field == null) {
+			return null;
+		}
 		org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
 		org.lgna.project.ast.AbstractType< ?,?,? > valueType = field.getValueType();
 		if( declaringType != null && valueType != null ) {
@@ -126,7 +131,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				if( thumbnail != null ) {
 					return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 20, 20 );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( resourceClass, field.getName() );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( resourceClass, field.getName() );
 					return null;
 				}
 			} else {
@@ -161,6 +166,21 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
+	@Override
+	public org.lgna.croquet.components.Component< ? > getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+		if( constructor != null ) {
+			org.lgna.project.ast.AbstractType< ?,?,? > type = constructor.getDeclaringType();
+			if( COLOR_TYPE.isAssignableFrom( type ) ) {
+				org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
+				org.lgna.story.Color color = this.getSceneEditor().getInstanceInJavaVMForExpression( instanceCreation, org.lgna.story.Color.class );
+				java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor();
+				rv.setIcon( new org.alice.ide.swing.icons.ColorIcon( awtColor ) );
+				return rv;
+			}
+		}
+		return super.getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
+	}
 
 	@Override
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
@@ -174,6 +194,8 @@ public class StageIDE extends org.alice.ide.IDE {
 							return false;
 						}
 					}
+				} else if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
+					return false;
 				} else {
 					org.lgna.project.ast.Node parent = expression.getParent();
 					if( parent instanceof org.lgna.project.ast.FieldAccess ) {
@@ -186,6 +208,17 @@ public class StageIDE extends org.alice.ide.IDE {
 								return false;
 							}
 						}
+					} else if( parent instanceof org.lgna.project.ast.AbstractArgument ) {
+						org.lgna.project.ast.AbstractArgument argument = (org.lgna.project.ast.AbstractArgument)parent;
+						org.lgna.project.ast.Node grandparent = argument.getParent();
+						if( grandparent instanceof org.lgna.project.ast.InstanceCreation ) {
+							org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)grandparent;
+							org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+							if( constructor != null ) {
+								org.lgna.project.ast.AbstractType< ?,?,? > type = constructor.getDeclaringType();
+								return COLOR_TYPE.isAssignableFrom( type ) == false;
+							}
+						}
 					}
 				}
 			}
@@ -195,15 +228,15 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public org.lgna.croquet.Operation<?> getRunOperation() {
+	public org.lgna.croquet.Operation getRunOperation() {
 		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 	}
 	@Override
-	public org.lgna.croquet.Operation< ? > getRestartOperation() {
+	public org.lgna.croquet.Operation getRestartOperation() {
 		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();
 	}
 	@Override
-	public org.lgna.croquet.Operation<?> createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+	public org.lgna.croquet.Operation createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		return new org.alice.stageide.croquet.models.run.PreviewMethodOperation( procedureInvocationTemplate );
 	}
 
@@ -239,7 +272,7 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 
 	@Override
-	public org.lgna.croquet.Operation< ? > getAboutOperation() {
+	public org.lgna.croquet.Operation getAboutOperation() {
 		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
 	}
 	@Override
@@ -257,26 +290,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	public boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType ) {
 		org.lgna.project.ast.JavaType javaType = userType.getFirstEncounteredJavaType();
 		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( javaType.getClassReflectionProxy().getReification(), org.lgna.story.Scene.class, org.lgna.story.Camera.class );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgramForMovieEncoding( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.NamedUserType programType, int frameRate ) {
-		throw new RuntimeException( "todo" );
-//		return new MoveAndTurnRuntimeProgram( sceneType, vm ) {
-//			@Override
-//			protected java.awt.Component createSpeedMultiplierControlPanel() {
-//				return null;
-//			}
-//			@Override
-//			protected edu.cmu.cs.dennisc.animation.Animator createAnimator() {
-//				return new edu.cmu.cs.dennisc.animation.FrameBasedAnimator( frameRate );
-//			}
-//
-//			@Override
-//			protected void postRun() {
-//				super.postRun();
-//				this.setMovieEncoder( null );
-//			}
-//		};
 	}
 
 	private static final int THUMBNAIL_WIDTH = 160;

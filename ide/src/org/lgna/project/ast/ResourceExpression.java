@@ -50,11 +50,11 @@ public class ResourceExpression extends Expression {
 	public org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
 	public ResourceExpression() {
 	}
-	public ResourceExpression( AbstractType<?,?,?> type, org.alice.virtualmachine.Resource resource ) {
+	public ResourceExpression( AbstractType<?,?,?> type, org.lgna.common.Resource resource ) {
 		this.type.setValue( type );
 		this.resource.setValue( resource );
 	}
-	public <T extends org.alice.virtualmachine.Resource> ResourceExpression( Class<T> cls, T resource ) {
+	public <T extends org.lgna.common.Resource> ResourceExpression( Class<T> cls, T resource ) {
 		this( JavaType.getInstance( cls ), resource );
 	}
 	@Override

@@ -63,6 +63,8 @@ public class TypeTab extends GalleryTab {
 		MyTypesView myTypesView = new MyTypesView();
 		
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
+		scrollPane.setBorder( null );
+        scrollPane.setBothScrollBarIncrements( 16, 160 );
 		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
 		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();

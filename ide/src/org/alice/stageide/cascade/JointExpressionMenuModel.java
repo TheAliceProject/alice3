@@ -46,29 +46,34 @@ package org.alice.stageide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
+public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel< org.lgna.project.ast.Expression > {
 	private final org.lgna.project.ast.Expression expression;
-	private final org.lgna.project.ast.AbstractType type;
-	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType type ) {
+	private final java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos;
+	private final int index;
+
+	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression, java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos, int index ) {
 		super( java.util.UUID.fromString( "c70ca3a5-b1e0-4ed9-8648-14acd52a4091" ) );
 		this.expression = expression;
-		this.type = type;
+		this.jointedTypeInfos = jointedTypeInfos;
+		this.index = index;
 	}
 	@Override
 	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
-		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( this.type );
-		if( jointedTypeInfos != null && jointedTypeInfos.size() > 0 ) {
-			//org.alice.stageide.ast.JointedModelUtilities.JointedTypeInfo info = jointedTypes.get( 0 );
-			for( org.alice.stageide.ast.JointedTypeInfo info : jointedTypeInfos ) {
-				rv.add( org.alice.stageide.ast.JointedModelTypeSeparator.getInstance( info.getType() ) );
-				for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
-					JointExpressionFillIn fillIn = JointExpressionFillIn.getInstance( expression, method );
-					if( fillIn != null ) {
-						rv.add( fillIn );
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
-					}
-				}
+		org.alice.stageide.ast.JointedTypeInfo info = jointedTypeInfos.get( this.index );
+		JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance( info.getType() ); 
+		org.lgna.croquet.CascadeBlankChild child;
+		if( jointedTypeInfos.size() > this.index+1 ) {
+			child = new org.lgna.croquet.CascadeItemMenuCombo( separator, new JointExpressionMenuModel( this.expression, this.jointedTypeInfos, this.index+1 ) );
+		} else {
+			child = separator;
+		}
+		rv.add( child );
+		for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
+			JointExpressionFillIn fillIn = JointExpressionFillIn.getInstance( expression, method );
+			if( fillIn != null ) {
+				rv.add( fillIn );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
 			}
 		}
 		return rv;

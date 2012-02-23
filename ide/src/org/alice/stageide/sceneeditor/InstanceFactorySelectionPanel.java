@@ -128,14 +128,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		}
 		
 		protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
-			if( this.instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-				org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.instanceFactory;
-				org.lgna.project.ast.AbstractField field = thisFieldAccessFactory.getField();
-				if( field instanceof org.lgna.project.ast.UserField ) {
-					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-					org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( userField ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.MouseEventTrigger( null, e ) );
-				}
-			}
+			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.MouseEventTrigger( null, e ) );
 		}
 		@Override
 		protected void handleDisplayable() {
@@ -203,7 +196,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		}
 	}
 	
-	private final org.lgna.croquet.State.ValueObserver< org.alice.ide.instancefactory.InstanceFactory > instanceFactoryListener = new org.lgna.croquet.State.ValueObserver< org.alice.ide.instancefactory.InstanceFactory >() {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.instancefactory.InstanceFactory > instanceFactoryListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.instancefactory.InstanceFactory >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
@@ -241,11 +234,11 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.getModel().addValueObserver( this.instanceFactoryListener );
+		this.getModel().addValueListener( this.instanceFactoryListener );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().removeValueObserver( this.instanceFactoryListener );
+		this.getModel().removeValueListener( this.instanceFactoryListener );
 		super.handleUndisplayable();
 	}
 }

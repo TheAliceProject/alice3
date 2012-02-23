@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.story.AudioSource;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,21 +71,25 @@ public abstract class EntityImp implements ReferenceFrame {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getAbstractionFromSgElement( sgElement ), cls );
 	}
 	
+	private String name;
+	public String getName() {
+		return this.name;
+	}
+	public void setName( String name ) {
+		this.name = name;
+		this.getSgComposite().setName( name + ".sgComposite" );
+	}
 	public Property<?> getPropertyForAbstractionGetter( java.lang.reflect.Method getterMthd ) {
 		String propertyName = edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( getterMthd );
 		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( this.getClass(), propertyName );
 		return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, this );
 	}
 
-	//todo
-//	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, ReferenceFrame asSeenBy );
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "override", this );
-		return rv;
-	}
+	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans );
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans = this.getTransformation( asSeenBy );
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
-		this.updateCumulativeBound( cumulativeBound, asSeenBy );
+		this.updateCumulativeBound( cumulativeBound, trans );
 		return cumulativeBound.getBoundingBox();
 	}
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
@@ -134,6 +140,18 @@ public abstract class EntityImp implements ReferenceFrame {
 	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
 		this.getSgComposite().setParent( sgVehicle );
 	}
+	
+	//HACK
+	private EntityImp getEntityImpForSgObject(edu.cmu.cs.dennisc.scenegraph.Composite sgObject) {
+		EntityImp rv = getInstance( sgObject );
+		if( rv != null ) {
+			return rv;
+		} else if (sgObject.getParent() != null){
+			return getEntityImpForSgObject(sgObject.getParent());
+		}
+		return null;
+	}
+	
 	public final EntityImp getVehicle() {
 		edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle = this.getSgVehicle();
 		if( sgVehicle != null ) {
@@ -146,7 +164,13 @@ public abstract class EntityImp implements ReferenceFrame {
 				//ROOT won't be the child of any joint. however it could be the child of something else in the scene. 
 				//Therefore I realize that this is not a good fix in a generic EntityImp class. 
 				//However I don't know what is. Therefore this is what I do for now. 
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "This is a known issue. One reason is because ROOT bone needs a scenegraph counterpart.", this, sgVehicle );
+				rv = getEntityImpForSgObject(sgVehicle);
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "This is a known issue. One reason is because ROOT bone needs a scenegraph counterpart.", this, sgVehicle, rv );
+				if (rv != null) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, sgVehicle );
+				}
 			}
 			return rv;
 		} else {
@@ -180,6 +204,10 @@ public abstract class EntityImp implements ReferenceFrame {
 		SceneImp scene = this.getScene();
 		return scene != null ? scene.getProgram() : null;
 	}
+	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		ProgramImp program = this.getProgram();
+		return program != null ? program.getOnscreenLookingGlass() : null;
+	}
 	
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
 		return this.getSgComposite().getAbsoluteTransformation();
@@ -199,6 +227,10 @@ public abstract class EntityImp implements ReferenceFrame {
 		m.translation.set( x, y, z );
 		rv.setLocalTransformation( m );
 		return rv;
+	}
+	
+	public java.awt.Point transformToAwt( edu.cmu.cs.dennisc.math.Point3 xyz, CameraImp< ? > camera ) {
+		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenLookingGlass(), camera.getSgCamera() );
 	}
 	
 	protected static final double RIGHT_NOW = 0.0;
@@ -251,6 +283,12 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.alreadyAdjustedDelay( this.adjustDurationIfNecessary( duration ) );
 	}
 		
+	public void playAudio( AudioSource audioSource ) {
+		edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
+		edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
+		this.perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );		
+	}
+
 	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		ProgramImp programImplementation = this.getProgram();
 		if( programImplementation != null ) {

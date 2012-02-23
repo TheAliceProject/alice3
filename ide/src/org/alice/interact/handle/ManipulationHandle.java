@@ -49,7 +49,8 @@ import org.alice.interact.manipulator.AbstractManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -74,9 +75,9 @@ public interface ManipulationHandle extends Cloneable {
 	
 	public boolean isMemberOf( HandleSet.HandleGroup group );
 	
-	public Transformable getManipulatedObject();
+	public AbstractTransformable getManipulatedObject();
 
-	public void setSelectedObject( Transformable manipulatedObject );
+	public void setSelectedObject( AbstractTransformable manipulatedObject );
 	
 	public void setAnimator( Animator animator );
 	
@@ -88,7 +89,7 @@ public interface ManipulationHandle extends Cloneable {
 	
 	public void setHandleActive(boolean active);
 	
-	public void setHandleShowing(boolean showing);
+	public void setVisualsShowing(boolean showing);
 	
 	public boolean isRenderable();
 	

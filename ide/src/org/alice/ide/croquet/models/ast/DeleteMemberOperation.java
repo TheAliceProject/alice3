@@ -61,7 +61,7 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	}
 	protected abstract Class<N> getNodeParameterType();
 	@Override
-	protected org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N> createCodableResolver() {
+	protected org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N> createResolver() {
 		return new org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N>( this );
 	}
 	
@@ -139,7 +139,7 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	}
 	
 	@Override
-	protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+	protected final void perform(org.lgna.croquet.history.OperationStep step) {
 		if( this.isClearToDelete( this.member ) ) {
 			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< DeleteMemberOperation< N > >( step ) );
 		} else {

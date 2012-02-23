@@ -47,4 +47,6 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTrigger implements Trigger {
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+	}
 }

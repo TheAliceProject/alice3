@@ -70,7 +70,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			return this.root;
 		}
 		@Override
-		protected InternalPopupPrepModelResolver<T> createCodableResolver() {
+		protected InternalPopupPrepModelResolver<T> createResolver() {
 			return new InternalPopupPrepModelResolver<T>( this.root );
 		}
 		@Override
@@ -96,7 +96,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 				rv = rtRoot.complete( new org.lgna.croquet.triggers.AutomaticCompletionTrigger( trigger ) );
 				this.handleFinally();
 			} else {
-				final org.lgna.croquet.history.CascadePopupPrepStep< T > prepStep = org.lgna.croquet.history.TransactionManager.addCascadePopupPrepStep( this, trigger );			
+				final org.lgna.croquet.history.PopupPrepStep prepStep = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );			
 				final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this );
 				popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
 					public void componentShown( java.awt.event.ComponentEvent e ) {
@@ -116,15 +116,15 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			return rv;
 		}
 	}
-	private final InternalPopupPrepModel< T > popupPrepModel;
+	private final InternalPopupPrepModel< T > popupPrepModel = new InternalPopupPrepModel< T >( this );
 
 	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
-		this.popupPrepModel = new InternalPopupPrepModel< T >( this );
-		assert blanks != null;
-		for( int i = 0; i < blanks.length; i++ ) {
-			assert blanks[ i ] != null : this;
-			this.addBlank( blanks[ i ] );
+		if( blanks != null ) {
+			for( int i = 0; i < blanks.length; i++ ) {
+				assert blanks[ i ] != null : this;
+				this.addBlank( blanks[ i ] );
+			}
 		}
 	}
 	public InternalPopupPrepModel< T > getPopupPrepModel() {

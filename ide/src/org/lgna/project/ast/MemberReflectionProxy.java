@@ -69,4 +69,9 @@ public abstract class MemberReflectionProxy< E > extends ReflectionProxy< E > {
 	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
 		return this.declaringClassReflectionProxy;
 	}
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		sb.append( "declaringClassName=" );
+		sb.append( this.declaringClassReflectionProxy.getName() );
+	}
 }

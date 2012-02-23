@@ -47,10 +47,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCode extends AbstractMember {
-	public abstract java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters();
-	public abstract AbstractParameter getVariableLengthParameter();
-	public abstract AbstractParameter getKeyedParameter();
+public abstract class AbstractCode extends AbstractMember implements Code {
 	public AbstractCode getShortestInChain() {
 		AbstractCode next = this.getNextShorterInChain();
 		if( next != null ) {
@@ -66,6 +63,9 @@ public abstract class AbstractCode extends AbstractMember {
 		} else {
 			return this;
 		}
+	}
+	public final boolean isValid() {
+		return this.getDeclaringType() != null;
 	}
 	public abstract AbstractCode getNextLongerInChain();
 	public abstract AbstractCode getNextShorterInChain();

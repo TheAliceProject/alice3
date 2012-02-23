@@ -98,7 +98,7 @@ public class ExpressionBasedPropertyController<P> extends BorderPanel implements
 		this.removeAllComponents();
 		if (propertyAdapter != null)
 		{
-			this.addComponent(this.propertyAdapter.getExpressionState().createEditor(org.alice.ide.x.EditableAstI18Factory.getInheritGroupInstance()), Constraint.CENTER);
+			this.addComponent(this.propertyAdapter.getExpressionState().createEditor(org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance()), Constraint.CENTER);
 		}
 	}
 	

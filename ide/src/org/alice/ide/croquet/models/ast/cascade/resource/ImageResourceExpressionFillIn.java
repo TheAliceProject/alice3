@@ -46,10 +46,10 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn< org.alice.virtualmachine.resources.ImageResource > {
-	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, ImageResourceExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn< org.lgna.common.resources.ImageResource > {
+	private static java.util.Map< org.lgna.common.resources.ImageResource, ImageResourceExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized ImageResourceExpressionFillIn getInstance( org.alice.virtualmachine.resources.ImageResource resource ) {
+	public static synchronized ImageResourceExpressionFillIn getInstance( org.lgna.common.resources.ImageResource resource ) {
 		assert resource != null;
 		ImageResourceExpressionFillIn rv = map.get( resource );
 		if( rv != null ) {
@@ -60,7 +60,7 @@ public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn< org
 		}
 		return rv;
 	}
-	private ImageResourceExpressionFillIn( org.alice.virtualmachine.resources.ImageResource resource ) {
-		super( java.util.UUID.fromString( "4ffd82b6-f6bd-4ff6-8270-cbbe0b02741a" ), org.alice.virtualmachine.resources.ImageResource.class, resource );
+	private ImageResourceExpressionFillIn( org.lgna.common.resources.ImageResource resource ) {
+		super( java.util.UUID.fromString( "4ffd82b6-f6bd-4ff6-8270-cbbe0b02741a" ), org.lgna.common.resources.ImageResource.class, resource );
 	}
 }

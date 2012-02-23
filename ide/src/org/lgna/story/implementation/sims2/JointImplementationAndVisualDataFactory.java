@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.sims2;
 
+import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -88,7 +90,11 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	}
 	
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( jointId );
-		return null;
+		return this.getOriginalJointTransformation( jointId ).orientation.createUnitQuaternion();
+	}
+	
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getOriginalJointTransformation not supported from nebulous factory" );
+		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 	}
 }

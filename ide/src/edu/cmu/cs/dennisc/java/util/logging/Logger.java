@@ -54,13 +54,13 @@ public class Logger {
 //	public static java.util.logging.Logger getInstance() {
 //		return InstanceHolder.instance;
 //	}
-	private static java.util.logging.Logger getInstance() {
+	public static java.util.logging.Logger getInstance() {
 		return java.util.logging.Logger.global;
 	}
 	private static final String LEVEL_KEY = Logger.class.getName() + ".Level";
 
 	private static final java.util.logging.Level THROWABLE = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {};
-	private static final java.util.logging.Level TESTING = new java.util.logging.Level( "TESTING", java.util.logging.Level.SEVERE.intValue() - 1 ) {};
+//	private static final java.util.logging.Level TESTING = new java.util.logging.Level( "TESTING", java.util.logging.Level.SEVERE.intValue() - 1 ) {};
 	private static final java.util.logging.Level TODO = new java.util.logging.Level( "TODO", java.util.logging.Level.WARNING.intValue() - 1 ) {};
 	
 	static {
@@ -71,7 +71,11 @@ public class Logger {
 		String levelText = System.getProperty( LEVEL_KEY, "SEVERE" );
 		
 		java.util.logging.Level level = null;
-		for( java.util.logging.Level customLevel : new java.util.logging.Level[] { THROWABLE, TODO, TESTING } ) {
+		for( java.util.logging.Level customLevel : new java.util.logging.Level[] { 
+				THROWABLE, 
+				TODO, 
+				//TESTING 
+		} ) {
 			if( levelText.equalsIgnoreCase( customLevel.getName() ) ) {
 				level = customLevel;
 				break;
@@ -87,7 +91,7 @@ public class Logger {
 				level = java.util.logging.Level.SEVERE;
 			}
 		}
-		getInstance().setLevel( level );
+		setLevel( level );
 		SegregatingConsoleHandler consoleHandler = new SegregatingConsoleHandler();
 		consoleHandler.setFormatter( new ConsoleFormatter() );
 		getInstance().addHandler( consoleHandler );
@@ -97,6 +101,12 @@ public class Logger {
 		throw new AssertionError();
 	}
 	
+	public static java.util.logging.Level getLevel() {
+		return getInstance().getLevel();
+	}
+	public static void setLevel( java.util.logging.Level level ) {
+		getInstance().setLevel( level );
+	}
 	private static String buildMessage( Object object ) {
 		return object != null ? object.toString() : null;
 	}
@@ -142,6 +152,19 @@ public class Logger {
 		log( level, objects, null );
 	}
 	
+	public static void outln( Object object ) {
+		System.out.println( buildMessage( object ) );
+	}
+	public static void outln( Object... objects ) {
+		System.out.println( buildMessage( objects ) );
+	}
+	public static void errln( Object object ) {
+		System.err.println( buildMessage( object ) );
+	}
+	public static void errln( Object... objects ) {
+		System.err.println( buildMessage( objects ) );
+	}
+	
 	public static void throwable( Throwable t, Object object ) {
 		log( THROWABLE, object );
 	}
@@ -156,12 +179,12 @@ public class Logger {
 		log( TODO, objects );
 	}
 
-	public static void testing( Object object ) {
-		log( TESTING, object );
-	}
-	public static void testing( Object... objects ) {
-		log( TESTING, objects );
-	}
+//	public static void testing( Object object ) {
+//		log( TESTING, object );
+//	}
+//	public static void testing( Object... objects ) {
+//		log( TESTING, objects );
+//	}
 
 	public static void severe( Object object ) {
 		log( java.util.logging.Level.SEVERE, object );

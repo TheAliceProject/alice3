@@ -105,6 +105,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					//pass
 				} else {
 					this.setBackgroundColor( java.awt.Color.RED );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( methodInvocation );
 				}
 				
 //				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();

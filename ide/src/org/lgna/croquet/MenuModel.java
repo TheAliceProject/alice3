@@ -105,14 +105,14 @@ public abstract class MenuModel extends AbstractMenuModel {
 //		}
 		
 		@Override
-		protected org.lgna.croquet.resolvers.CodableResolver< InternalPopupPrepModel > createCodableResolver() {
+		protected InternalPopupPrepModelResolver createResolver() {
 			return new InternalPopupPrepModelResolver( this.menuModel );
 		}
 		
 		
 		@Override
-		protected org.lgna.croquet.history.StandardPopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger ) {
-			final org.lgna.croquet.history.StandardPopupPrepStep step = org.lgna.croquet.history.TransactionManager.addStandardPopupOperationStep( this, trigger );
+		protected org.lgna.croquet.history.PopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger ) {
+			final org.lgna.croquet.history.PopupPrepStep step = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );
 
 			final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
 				@Override

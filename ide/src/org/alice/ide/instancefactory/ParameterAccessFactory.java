@@ -65,7 +65,15 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 		this.parameter = parameter;
 	}
 	@Override
-	protected org.lgna.croquet.resolvers.CodableResolver< ParameterAccessFactory > createResolver() {
+	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+		if( code != null ) {
+			return this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code;
+		} else {
+			return false;
+		}
+	}
+	@Override
+	protected org.lgna.croquet.resolvers.Resolver< ParameterAccessFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterAccessFactory >( this, this.parameter, org.lgna.project.ast.UserParameter.class );
 	}
 	public org.lgna.project.ast.UserParameter getParameter() {

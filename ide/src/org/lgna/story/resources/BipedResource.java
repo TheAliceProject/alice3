@@ -49,8 +49,9 @@ package org.lgna.story.resources;
  */
 @org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Biped.class )
 public interface BipedResource extends JointedModelResource {
-	
-	public static final JointId PELVIS_LOWER_BODY = new JointId( null, BipedResource.class );
+	public static final JointId ROOT = new JointId( null, BipedResource.class );
+
+	public static final JointId PELVIS_LOWER_BODY = new JointId( ROOT, BipedResource.class );
 	
 	public static final JointId LEFT_HIP = new JointId( PELVIS_LOWER_BODY, BipedResource.class );
 	public static final JointId LEFT_KNEE = new JointId( LEFT_HIP, BipedResource.class );
@@ -60,9 +61,9 @@ public interface BipedResource extends JointedModelResource {
 	public static final JointId RIGHT_KNEE = new JointId( RIGHT_HIP, BipedResource.class );
 	public static final JointId RIGHT_ANKLE = new JointId( RIGHT_KNEE, BipedResource.class );
 	
-	public static final JointId PELVIS_UPPER_BODY = new JointId( null, BipedResource.class );
+	public static final JointId SPINE_BASE = new JointId( ROOT, BipedResource.class );
 	
-	public static final JointId SPINE_MIDDLE = new JointId( PELVIS_UPPER_BODY, BipedResource.class );
+	public static final JointId SPINE_MIDDLE = new JointId( SPINE_BASE, BipedResource.class );
 	public static final JointId SPINE_UPPER = new JointId( SPINE_MIDDLE, BipedResource.class );
 	
 	public static final JointId NECK = new JointId( SPINE_UPPER, BipedResource.class );
@@ -81,7 +82,7 @@ public interface BipedResource extends JointedModelResource {
 	public static final JointId LEFT_ELBOW = new JointId( LEFT_SHOULDER, BipedResource.class );
 	public static final JointId LEFT_WRIST = new JointId( LEFT_ELBOW, BipedResource.class );
 	
-	public static final JointId[] JOINT_ID_ROOTS = { PELVIS_LOWER_BODY, PELVIS_UPPER_BODY };
+	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction );
 }

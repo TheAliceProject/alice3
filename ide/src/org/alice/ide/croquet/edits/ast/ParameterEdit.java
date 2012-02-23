@@ -49,8 +49,6 @@ package org.alice.ide.croquet.edits.ast;
 public abstract class ParameterEdit< M extends org.lgna.croquet.CompletionModel > extends org.lgna.croquet.edits.Edit< M > {
 	private final org.lgna.project.ast.UserParameter parameter;
 	private transient java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private transient int index;
-
 	public ParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
 		super( completionStep );
 		this.parameter = parameter;
@@ -69,19 +67,18 @@ public abstract class ParameterEdit< M extends org.lgna.croquet.CompletionModel 
 		return this.parameter;
 	}
 	protected abstract org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > getParametersProperty();
-	protected void addParameter() {
+	protected void addParameter( int index ) {
 		org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty = this.getParametersProperty();
 		//todo
 		org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)parametersProperty.getOwner();
-		this.index = parametersProperty.size();
-		org.lgna.project.ast.AstUtilities.addParameter( this.map, parametersProperty, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
+		org.lgna.project.ast.AstUtilities.addParameter( this.map, parametersProperty, this.parameter, index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
-	protected void removeParameter() {
+	protected void removeParameter( int index ) {
 		org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty = this.getParametersProperty();
 		//todo
 		org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)parametersProperty.getOwner();
-		org.lgna.project.ast.AstUtilities.removeParameter( this.map, parametersProperty, this.parameter, this.index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
+		org.lgna.project.ast.AstUtilities.removeParameter( this.map, parametersProperty, this.parameter, index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override

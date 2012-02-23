@@ -49,6 +49,8 @@ import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 
@@ -97,9 +99,9 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	public void setCamera( AbstractCamera camera ) 
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if (this.camera != null && this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)
 		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+			this.setManipulatedTransformable((edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent());
 		}
 	}
 	
@@ -151,9 +153,19 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	}
 	
 	@Override
+	protected void initializeEventMessages()
+	{
+		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable );
+		this.manipulationEvents.clear();
+		if (this.rotateAxisDirection != null) {
+			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription(this.rotateAxisDirection, org.alice.interact.MovementType.STOOD_UP), this.manipulatedTransformable ) );
+		}
+	}
+	
+	@Override
 	public boolean doStartManipulator( InputState startInput ) 
 	{
-		this.manipulatedTransformable = startInput.getClickPickTransformable();
+		this.setManipulatedTransformable(startInput.getClickPickTransformable());
 		if (this.manipulatedTransformable != null)
 		{
 			this.initManipulator( startInput );

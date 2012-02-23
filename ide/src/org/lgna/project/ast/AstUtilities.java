@@ -50,12 +50,27 @@ public class AstUtilities {
 	private AstUtilities() {
 		throw new AssertionError();
 	}
-	public static boolean isKeywordExpression( org.lgna.project.ast.Expression expression ) {
+	
+	public static <N extends org.lgna.project.ast.AbstractNode> N createCopy( N original, org.lgna.project.ast.NamedUserType root ) {
+		java.util.Set< org.lgna.project.ast.AbstractDeclaration > abstractDeclarations = root.createDeclarationSet();
+		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
+		java.util.Map< Integer, org.lgna.project.ast.AbstractDeclaration > map = org.lgna.project.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
+		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
+		try {
+			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.Version.getCurrentVersionText(), map, false );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
+			return (N)dst;
+		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+			throw new AssertionError( vnse );
+		}
+	}
+	
+	public static boolean isKeywordExpression( Expression expression ) {
 		if( expression != null ) {
-//			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-//			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+//			if( expression instanceof MethodInvocation ) {
+//			MethodInvocation methodInvocation = (MethodInvocation)expression;
 //			if( methodInvocation.method.getValue().isStatic() ) {
-				return expression.getParent() instanceof org.lgna.project.ast.JavaKeyedArgument;
+				return expression.getParent() instanceof JavaKeyedArgument;
 //			}
 //		}
 		} else {
@@ -63,7 +78,7 @@ public class AstUtilities {
 		}
 	}
 
-	private static boolean isValidMethod( java.lang.reflect.Method mthd, org.lgna.project.ast.AbstractType< ?,?,? > valueType ) {
+	private static boolean isValidMethod( java.lang.reflect.Method mthd, AbstractType< ?,?,? > valueType ) {
 		int modifiers = mthd.getModifiers();
 		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers )  ) {
 			return valueType.isAssignableFrom( mthd.getReturnType() ); 
@@ -71,28 +86,28 @@ public class AstUtilities {
 			return false;
 		}
 	}
-	public static Iterable< org.lgna.project.ast.JavaMethod > getKeyMethods( org.lgna.project.ast.AbstractParameter parameter ) {
-		java.util.List< org.lgna.project.ast.JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.lgna.project.ast.AbstractType< ?,?,? > valueType = parameter.getValueType().getComponentType();
-		org.lgna.project.ast.AbstractType< ?,?,? > keywordFactoryType = valueType.getKeywordFactoryType();
+	public static Iterable< JavaMethod > getKeyMethods( AbstractParameter parameter ) {
+		java.util.List< JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		AbstractType< ?,?,? > valueType = parameter.getValueType().getComponentType();
+		AbstractType< ?,?,? > keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {
-			Class<?> cls = ((org.lgna.project.ast.JavaType)keywordFactoryType).getClassReflectionProxy().getReification();
+			Class<?> cls = ((JavaType)keywordFactoryType).getClassReflectionProxy().getReification();
 			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
 				if( isValidMethod( mthd, valueType ) ) {
-					org.lgna.project.ast.JavaMethod keyMethod = org.lgna.project.ast.JavaMethod.getInstance( mthd );
+					JavaMethod keyMethod = JavaMethod.getInstance( mthd );
 					rv.add( keyMethod );
 				}
 			}
 		}
 		return rv;
 	}
-	public static Iterable< org.lgna.project.ast.JavaMethod > getKeyMethods( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+	public static Iterable< JavaMethod > getKeyMethods( ArgumentListProperty< JavaKeyedArgument > argumentListProperty ) {
 		return getKeyMethods( argumentListProperty.getOwner().getParameterOwnerProperty().getValue().getKeyedParameter() );
 	}
-	public static boolean isKeyedArgumentListPropertyComplete( org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
-		for( org.lgna.project.ast.JavaMethod method : getKeyMethods( argumentListProperty ) ) {
+	public static boolean isKeyedArgumentListPropertyComplete( ArgumentListProperty< JavaKeyedArgument > argumentListProperty ) {
+		for( JavaMethod method : getKeyMethods( argumentListProperty ) ) {
 			boolean isFound = false;
-			for( org.lgna.project.ast.JavaKeyedArgument argument : argumentListProperty ) {
+			for( JavaKeyedArgument argument : argumentListProperty ) {
 				if( argument.getKeyMethod() == method ) {
 					isFound = true;
 					break;
@@ -107,8 +122,8 @@ public class AstUtilities {
 		return true;
 	}
 	
-	private static java.util.List< org.lgna.project.ast.JavaMethod > updatePersistentPropertyGetters( java.util.List< org.lgna.project.ast.JavaMethod > rv, org.lgna.project.ast.JavaType javaType ) {
-		for( org.lgna.project.ast.JavaMethod method : javaType.getDeclaredMethods() ) { 
+	private static java.util.List< JavaMethod > updatePersistentPropertyGetters( java.util.List< JavaMethod > rv, JavaType javaType ) {
+		for( JavaMethod method : javaType.getDeclaredMethods() ) { 
 			java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
 			if( mthd != null ) {
 				if( mthd.isAnnotationPresent( org.lgna.project.annotations.GetterTemplate.class ) ) {
@@ -121,14 +136,14 @@ public class AstUtilities {
 		}
 		return rv;
 	}
-	public static Iterable< org.lgna.project.ast.JavaMethod > getDeclaredPersistentPropertyGetters( org.lgna.project.ast.JavaType javaType ) {
-		java.util.List< org.lgna.project.ast.JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public static Iterable< JavaMethod > getDeclaredPersistentPropertyGetters( JavaType javaType ) {
+		java.util.List< JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		updatePersistentPropertyGetters( rv, javaType );
 		return rv;
 	}
-	public static Iterable< org.lgna.project.ast.JavaMethod > getPersistentPropertyGetters( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		java.util.List< org.lgna.project.ast.JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+	public static Iterable< JavaMethod > getPersistentPropertyGetters( AbstractType< ?,?,? > type ) {
+		java.util.List< JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		JavaType javaType = type.getFirstEncounteredJavaType();
 		while( true ) {
 			updatePersistentPropertyGetters( rv, javaType );
 			if( javaType.isFollowToSuperClassDesired() ) {
@@ -140,145 +155,142 @@ public class AstUtilities {
 		}
 		return rv;
 	}
-	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter, org.lgna.project.ast.JavaType type ) {
+	public static JavaMethod getSetterForGetter( JavaMethod getter, JavaType type ) {
 		java.lang.reflect.Method gttr = getter.getMethodReflectionProxy().getReification();
 		java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( gttr, type.getClassReflectionProxy().getReification() );
 		if( sttr != null ) {
-			return org.lgna.project.ast.JavaMethod.getInstance( sttr );
+			return JavaMethod.getInstance( sttr );
 		} else {
 			return null;
 		}
 	}
-	public static org.lgna.project.ast.JavaMethod getSetterForGetter( org.lgna.project.ast.JavaMethod getter ) {
+	public static JavaMethod getSetterForGetter( JavaMethod getter ) {
 		return getSetterForGetter( getter, getter.getDeclaringType() );
 	}	
 	
-	public static org.lgna.project.ast.UserMethod createMethod( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
-		return new org.lgna.project.ast.UserMethod( name, returnType, new org.lgna.project.ast.UserParameter[] {}, new org.lgna.project.ast.BlockStatement() );
+	public static UserMethod createMethod( String name, AbstractType<?,?,?> returnType ) {
+		return new UserMethod( name, returnType, new UserParameter[] {}, new BlockStatement() );
 	}
-	public static org.lgna.project.ast.UserMethod createFunction( String name, org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+	public static UserMethod createFunction( String name, AbstractType<?,?,?> returnType ) {
 		return createMethod( name, returnType );
 	}
-	public static org.lgna.project.ast.UserMethod createFunction( String name, Class<?> returnCls ) {
+	public static UserMethod createFunction( String name, Class<?> returnCls ) {
 		return createMethod( name, JavaType.getInstance( returnCls ) );
 	}
-	public static org.lgna.project.ast.UserMethod createProcedure( String name ) {
-		return createMethod( name, org.lgna.project.ast.JavaType.VOID_TYPE );
+	public static UserMethod createProcedure( String name ) {
+		return createMethod( name, JavaType.VOID_TYPE );
 	}
 	
-	public static org.lgna.project.ast.NamedUserType createType( String name, org.lgna.project.ast.AbstractType<?,?,?> superType ) {
-		org.lgna.project.ast.NamedUserConstructor constructor = new org.lgna.project.ast.NamedUserConstructor();
-		constructor.body.setValue( new org.lgna.project.ast.ConstructorBlockStatement() );
-		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
+	public static NamedUserType createType( String name, AbstractType<?,?,?> superType ) {
+		NamedUserConstructor constructor = new NamedUserConstructor();
+		constructor.body.setValue( new ConstructorBlockStatement() );
+		NamedUserType rv = new NamedUserType();
 		rv.name.setValue( name );
 		rv.superType.setValue( superType );
 		rv.constructors.add( constructor );
 		return rv;
 	}
-	public static org.lgna.project.ast.DoInOrder createDoInOrder() {
-		return new org.lgna.project.ast.DoInOrder( new org.lgna.project.ast.BlockStatement() );
+	public static DoInOrder createDoInOrder() {
+		return new DoInOrder( new BlockStatement() );
 	}
-	public static org.lgna.project.ast.DoTogether createDoTogether() {
-		return new org.lgna.project.ast.DoTogether( new org.lgna.project.ast.BlockStatement() );
+	public static DoTogether createDoTogether() {
+		return new DoTogether( new BlockStatement() );
 	}
-	public static org.lgna.project.ast.DoInThread createDoInThread() {
-		return new org.lgna.project.ast.DoInThread( new org.lgna.project.ast.BlockStatement() );
-	}
-	public static org.lgna.project.ast.Comment createComment() {
-		return new org.lgna.project.ast.Comment();
+	public static Comment createComment() {
+		return new Comment();
 	}
 	
-	public static org.lgna.project.ast.LocalDeclarationStatement createLocalDeclarationStatement( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression initializerExpression ) {
-		return new org.lgna.project.ast.LocalDeclarationStatement(
+	public static LocalDeclarationStatement createLocalDeclarationStatement( UserLocal local, Expression initializerExpression ) {
+		return new LocalDeclarationStatement(
 				local,
 				initializerExpression 
 		);
 	}
-	public static org.lgna.project.ast.CountLoop createCountLoop( org.lgna.project.ast.Expression count ) {
-		return new org.lgna.project.ast.CountLoop(
-				new org.lgna.project.ast.UserLocal( null, org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, false ),
-				new org.lgna.project.ast.UserLocal( null, org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, true ),
+	public static CountLoop createCountLoop( Expression count ) {
+		return new CountLoop(
+				new UserLocal( null, JavaType.INTEGER_OBJECT_TYPE, false ),
+				new UserLocal( null, JavaType.INTEGER_OBJECT_TYPE, true ),
 				count, 
-				new org.lgna.project.ast.BlockStatement() 
+				new BlockStatement() 
 		);
 	}
-	public static org.lgna.project.ast.WhileLoop createWhileLoop( org.lgna.project.ast.Expression conditional ) {
-		return new org.lgna.project.ast.WhileLoop(
+	public static WhileLoop createWhileLoop( Expression conditional ) {
+		return new WhileLoop(
 				conditional, 
-				new org.lgna.project.ast.BlockStatement() 
+				new BlockStatement() 
 		);
 	}
-	public static org.lgna.project.ast.ConditionalStatement createConditionalStatement( org.lgna.project.ast.Expression conditional ) {
-		return new org.lgna.project.ast.ConditionalStatement(
-				new org.lgna.project.ast.BooleanExpressionBodyPair[] {
-						new org.lgna.project.ast.BooleanExpressionBodyPair( 
+	public static ConditionalStatement createConditionalStatement( Expression conditional ) {
+		return new ConditionalStatement(
+				new BooleanExpressionBodyPair[] {
+						new BooleanExpressionBodyPair( 
 								conditional, 
-								new org.lgna.project.ast.BlockStatement()
+								new BlockStatement()
 						)
 				}, 
-				new org.lgna.project.ast.BlockStatement() 
+				new BlockStatement() 
 		);
 	}
-	public static org.lgna.project.ast.ForEachInArrayLoop createForEachInArrayLoop( org.lgna.project.ast.Expression arrayExpression ) {
-		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( null, arrayExpression.getType().getComponentType(), true );
-		return new org.lgna.project.ast.ForEachInArrayLoop(
+	public static ForEachInArrayLoop createForEachInArrayLoop( Expression arrayExpression ) {
+		UserLocal item = new UserLocal( null, arrayExpression.getType().getComponentType(), true );
+		return new ForEachInArrayLoop(
 				item,
 				arrayExpression, 
-				new org.lgna.project.ast.BlockStatement() 
+				new BlockStatement() 
 		);
 	}
 
-	public static org.lgna.project.ast.EachInArrayTogether createEachInArrayTogether( org.lgna.project.ast.Expression arrayExpression ) {
-		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( null, arrayExpression.getType().getComponentType(), true );
-		return new org.lgna.project.ast.EachInArrayTogether(
+	public static EachInArrayTogether createEachInArrayTogether( Expression arrayExpression ) {
+		UserLocal item = new UserLocal( null, arrayExpression.getType().getComponentType(), true );
+		return new EachInArrayTogether(
 				item,
 				arrayExpression, 
-				new org.lgna.project.ast.BlockStatement() 
+				new BlockStatement() 
 		);
 	}
-	public static org.lgna.project.ast.MethodInvocation createStaticMethodInvocation( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return AstUtilities.createMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method, argumentExpressions );
+	public static MethodInvocation createStaticMethodInvocation( AbstractMethod method, Expression... argumentExpressions ) {
+		return AstUtilities.createMethodInvocation( new TypeExpression( method.getDeclaringType() ), method, argumentExpressions );
 	}
-	public static org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
-		org.lgna.project.ast.FieldAccess rv = new org.lgna.project.ast.FieldAccess();
+	public static FieldAccess createFieldAccess( Expression expression, AbstractField field ) {
+		FieldAccess rv = new FieldAccess();
 		rv.expression.setValue( expression );
 		rv.field.setValue( field );
 		return rv;
 	}
-	public static org.lgna.project.ast.FieldAccess createStaticFieldAccess( org.lgna.project.ast.AbstractField field ) {
+	public static FieldAccess createStaticFieldAccess( AbstractField field ) {
 		assert field.isStatic();
-		return createFieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field );
+		return createFieldAccess( new TypeExpression( field.getDeclaringType() ), field );
 	}
-	public static org.lgna.project.ast.FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
+	public static FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
 		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName );
-		org.lgna.project.ast.JavaField field = org.lgna.project.ast.JavaField.getInstance( fld );
+		JavaField field = JavaField.getInstance( fld );
 		return createStaticFieldAccess( field );
 	}
 	
-	public static org.lgna.project.ast.MethodInvocation createNextMethodInvocation( org.lgna.project.ast.MethodInvocation prevMethodInvocation, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod nextMethod ) {
-		org.lgna.project.ast.MethodInvocation rv = new org.lgna.project.ast.MethodInvocation();
+	public static MethodInvocation createNextMethodInvocation( MethodInvocation prevMethodInvocation, Expression expression, AbstractMethod nextMethod ) {
+		MethodInvocation rv = new MethodInvocation();
 		rv.expression.setValue( prevMethodInvocation.expression.getValue() );
 		rv.method.setValue( nextMethod );
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getRequiredParameters();
+		java.util.ArrayList< ? extends AbstractParameter > parameters = nextMethod.getRequiredParameters();
 		final int N = parameters.size();
 		for( int i=0; i<N-1; i++ ) {
-			org.lgna.project.ast.AbstractArgument argument = prevMethodInvocation.requiredArguments.get( i );
-			if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
-				rv.requiredArguments.add( new org.lgna.project.ast.SimpleArgument( parameters.get( i ), ((org.lgna.project.ast.SimpleArgument)argument).expression.getValue() ) );
+			AbstractArgument argument = prevMethodInvocation.requiredArguments.get( i );
+			if( argument instanceof SimpleArgument ) {
+				rv.requiredArguments.add( new SimpleArgument( parameters.get( i ), ((SimpleArgument)argument).expression.getValue() ) );
 			} else {
 				throw new RuntimeException();
 			}
 		}
-		rv.requiredArguments.add( new org.lgna.project.ast.SimpleArgument( parameters.get( N-1 ), expression ) );
+		rv.requiredArguments.add( new SimpleArgument( parameters.get( N-1 ), expression ) );
 		return rv;
 	}
 
-	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
+	public static MethodInvocation completeMethodInvocation( MethodInvocation rv, Expression instanceExpression, Expression... argumentExpressions ) {
 		rv.expression.setValue( instanceExpression );
 		int i = 0;
-		for( org.lgna.project.ast.AbstractArgument argument : rv.requiredArguments ) {
-			if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
-				((org.lgna.project.ast.SimpleArgument)argument).expression.setValue( argumentExpressions[ i ] );
+		for( AbstractArgument argument : rv.requiredArguments ) {
+			if( argument instanceof SimpleArgument ) {
+				((SimpleArgument)argument).expression.setValue( argumentExpressions[ i ] );
 			} else {
 				throw new RuntimeException();
 			}
@@ -287,145 +299,197 @@ public class AstUtilities {
 		return rv;
 	}
 	
-	public static org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
-		org.lgna.project.ast.MethodInvocation rv = new org.lgna.project.ast.MethodInvocation();
+	public static MethodInvocation createMethodInvocation( Expression instanceExpression, AbstractMethod method, Expression... argumentExpressions ) {
+		MethodInvocation rv = new MethodInvocation();
 		rv.expression.setValue( instanceExpression );
 		rv.method.setValue( method );
 		int i = 0;
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
-			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, argumentExpressions[ i ] );
+		for( AbstractParameter parameter : method.getRequiredParameters() ) {
+			SimpleArgument argument = new SimpleArgument( parameter, argumentExpressions[ i ] );
 			rv.requiredArguments.add( argument );
 			i++;
 		}
 		return rv;
 	}
-	public static org.lgna.project.ast.ExpressionStatement createMethodInvocationStatement( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return new org.lgna.project.ast.ExpressionStatement( createMethodInvocation( instanceExpression, method, argumentExpressions ) );
+	public static ExpressionStatement createMethodInvocationStatement( Expression instanceExpression, AbstractMethod method, Expression... argumentExpressions ) {
+		return new ExpressionStatement( createMethodInvocation( instanceExpression, method, argumentExpressions ) );
 	}
-	public static org.lgna.project.ast.TypeExpression createTypeExpression( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		return new org.lgna.project.ast.TypeExpression( type );
+	public static TypeExpression createTypeExpression( AbstractType<?,?,?> type ) {
+		return new TypeExpression( type );
 	}
-	public static org.lgna.project.ast.TypeExpression createTypeExpression( Class<?> cls ) {
-		return createTypeExpression( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	public static TypeExpression createTypeExpression( Class<?> cls ) {
+		return createTypeExpression( JavaType.getInstance( cls ) );
 	}
 	
-	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.Expression... argumentExpressions ) {
-		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
+	public static InstanceCreation createInstanceCreation( AbstractConstructor constructor, Expression... argumentExpressions ) {
+		InstanceCreation rv = new InstanceCreation( constructor );
 		int i = 0;
-		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
-			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, argumentExpressions[ i ] );
+		for( AbstractParameter parameter : constructor.getRequiredParameters() ) {
+			SimpleArgument argument = new SimpleArgument( parameter, argumentExpressions[ i ] );
 			rv.requiredArguments.add( argument );
 			i++;
 		}
 		return rv;
 	}
-	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public static InstanceCreation createInstanceCreation( AbstractType<?,?,?> type ) {
 		return createInstanceCreation( type.getDeclaredConstructor() );
 	}
-	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( Class<?> cls, Class<?>[] parameterClses, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return createInstanceCreation( org.lgna.project.ast.JavaConstructor.getInstance( cls, parameterClses ), argumentExpressions );
+	public static InstanceCreation createInstanceCreation( Class<?> cls, Class<?>[] parameterClses, Expression... argumentExpressions ) {
+		return createInstanceCreation( JavaConstructor.getInstance( cls, parameterClses ), argumentExpressions );
 	}
-	public static org.lgna.project.ast.InstanceCreation createInstanceCreation( Class<?> cls ) {
-		return createInstanceCreation( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	public static InstanceCreation createInstanceCreation( Class<?> cls ) {
+		return createInstanceCreation( JavaType.getInstance( cls ) );
 	}
 	
 	
-	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> arrayType, org.lgna.project.ast.Expression... expressions ) {
+	public static ArrayInstanceCreation createArrayInstanceCreation( AbstractType<?,?,?> arrayType, Expression... expressions ) {
 		Integer[] lengths = { expressions.length };
-		return new org.lgna.project.ast.ArrayInstanceCreation( arrayType, lengths, expressions );
+		return new ArrayInstanceCreation( arrayType, lengths, expressions );
 	}
-	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, org.lgna.project.ast.Expression... expressions ) {
-		return createArrayInstanceCreation( org.lgna.project.ast.JavaType.getInstance( arrayCls ), expressions );
+	public static ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, Expression... expressions ) {
+		return createArrayInstanceCreation( JavaType.getInstance( arrayCls ), expressions );
 	}
-	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( org.lgna.project.ast.AbstractType<?,?,?> arrayType, java.util.Collection< org.lgna.project.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
+	public static ArrayInstanceCreation createArrayInstanceCreation( AbstractType<?,?,?> arrayType, java.util.Collection< Expression > expressions ) {
+		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressions, Expression.class ) );
 	}
-	public static org.lgna.project.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection< org.lgna.project.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( org.lgna.project.ast.JavaType.getInstance( arrayCls ), edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressions, org.lgna.project.ast.Expression.class ) );
+	public static ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection< Expression > expressions ) {
+		return createArrayInstanceCreation( JavaType.getInstance( arrayCls ), edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressions, Expression.class ) );
 	}
 
-	public static org.lgna.project.ast.JavaMethod lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
-		return org.lgna.project.ast.JavaMethod.getInstance( cls, methodName, parameterTypes );
+	public static JavaMethod lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
+		return JavaMethod.getInstance( cls, methodName, parameterTypes );
 	}
 
 	
-	public static org.lgna.project.ast.ReturnStatement createReturnStatement( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.Expression expression ) {
-		return new org.lgna.project.ast.ReturnStatement( type, expression );
+	public static ReturnStatement createReturnStatement( AbstractType<?,?,?> type, Expression expression ) {
+		return new ReturnStatement( type, expression );
 	}
-	public static org.lgna.project.ast.ReturnStatement createReturnStatement( Class<?> cls, org.lgna.project.ast.Expression expression ) {
+	public static ReturnStatement createReturnStatement( Class<?> cls, Expression expression ) {
 		return createReturnStatement( JavaType.getInstance( cls ), expression );
 	}
 	
-	public static org.lgna.project.ast.Expression createLocalAssignment( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression valueExpression ) {
+	public static Expression createLocalAssignment( UserLocal local, Expression valueExpression ) {
 		assert local.isFinal.getValue() == false;
-		org.lgna.project.ast.Expression localAccess = new org.lgna.project.ast.LocalAccess( local ); 
-		return new org.lgna.project.ast.AssignmentExpression( local.valueType.getValue(), localAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+		Expression localAccess = new LocalAccess( local ); 
+		return new AssignmentExpression( local.valueType.getValue(), localAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 	}
-	public static org.lgna.project.ast.ExpressionStatement createLocalAssignmentStatement( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression valueExpression ) {
-		return new org.lgna.project.ast.ExpressionStatement( createLocalAssignment( local, valueExpression) );
+	public static ExpressionStatement createLocalAssignmentStatement( UserLocal local, Expression valueExpression ) {
+		return new ExpressionStatement( createLocalAssignment( local, valueExpression) );
 	}
 
-	public static org.lgna.project.ast.ExpressionStatement createLocalArrayAssignmentStatement( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
-		org.lgna.project.ast.Expression localAccess = new org.lgna.project.ast.LocalAccess( local ); 
-		org.lgna.project.ast.ArrayAccess arrayAccess = new org.lgna.project.ast.ArrayAccess( local.valueType.getValue(), localAccess, indexExpression ); 
-		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.AssignmentExpression( local.valueType.getValue().getComponentType(), arrayAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
-		return new org.lgna.project.ast.ExpressionStatement( expression );
+	public static ExpressionStatement createLocalArrayAssignmentStatement( UserLocal local, Expression indexExpression, Expression valueExpression ) {
+		Expression localAccess = new LocalAccess( local ); 
+		ArrayAccess arrayAccess = new ArrayAccess( local.valueType.getValue(), localAccess, indexExpression ); 
+		Expression expression = new AssignmentExpression( local.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+		return new ExpressionStatement( expression );
 	}
-	public static org.lgna.project.ast.ExpressionStatement createParameterArrayAssignmentStatement( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.Expression indexExpression, org.lgna.project.ast.Expression valueExpression ) {
-		org.lgna.project.ast.Expression parameterAccess = new org.lgna.project.ast.ParameterAccess( parameter ); 
-		org.lgna.project.ast.ArrayAccess arrayAccess = new org.lgna.project.ast.ArrayAccess( parameter.valueType.getValue(), parameterAccess, indexExpression ); 
-		org.lgna.project.ast.Expression expression = new org.lgna.project.ast.AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
-		return new org.lgna.project.ast.ExpressionStatement( expression );
+	public static ExpressionStatement createParameterArrayAssignmentStatement( UserParameter parameter, Expression indexExpression, Expression valueExpression ) {
+		Expression parameterAccess = new ParameterAccess( parameter ); 
+		ArrayAccess arrayAccess = new ArrayAccess( parameter.valueType.getValue(), parameterAccess, indexExpression ); 
+		Expression expression = new AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+		return new ExpressionStatement( expression );
 	}
 
 	
-	public static org.lgna.project.ast.StringConcatenation createStringConcatenation( org.lgna.project.ast.Expression left, org.lgna.project.ast.Expression right ) {
-		return new org.lgna.project.ast.StringConcatenation( left, right );
+	public static StringConcatenation createStringConcatenation( Expression left, Expression right ) {
+		return new StringConcatenation( left, right );
 	}
 
-//	public static org.lgna.project.ast.AbstractParameter getNextParameter( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-//		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-//		final org.lgna.project.ast.AbstractMethod nextLongerMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
+//	public static AbstractParameter getNextParameter( MethodInvocation methodInvocation ) {
+//		AbstractMethod method = methodInvocation.method.getValue();
+//		final AbstractMethod nextLongerMethod = (AbstractMethod)method.getNextLongerInChain();
 //		
-//		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
+//		java.util.ArrayList< ? extends AbstractParameter > parameters = nextLongerMethod.getParameters();
 //		return parameters.get( parameters.size()-1 );
 //	}
 	
-	public static java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > removeParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > rv,  NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter userParameter, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
+	public static java.util.Map< SimpleArgumentListProperty, SimpleArgument > removeParameter( java.util.Map< SimpleArgumentListProperty, SimpleArgument > rv,  NodeListProperty< UserParameter > parametersProperty, UserParameter userParameter, int index, java.util.List< SimpleArgumentListProperty > argumentListProperties ) {
 		assert rv != null;
 		assert parametersProperty.get( index ) == userParameter;
 		rv.clear();
 		parametersProperty.remove( index );
-		for( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
-			org.lgna.project.ast.SimpleArgument argument = argumentListProperty.remove( index );
+		for( SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
+			SimpleArgument argument = argumentListProperty.remove( index );
 			if( argument != null ) {
 				rv.put( argumentListProperty, argument );
 			}
 		}
 		return rv;
 	}
-	public static void addParameter( java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map, NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter userParameter, int index, java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentListProperties ) {
+	public static void addParameter( java.util.Map< SimpleArgumentListProperty, SimpleArgument > map, NodeListProperty< UserParameter > parametersProperty, UserParameter userParameter, int index, java.util.List< SimpleArgumentListProperty > argumentListProperties ) {
 		parametersProperty.add( index, userParameter );
-		for( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
-			org.lgna.project.ast.SimpleArgument argument = map.get( argumentListProperty );
+		for( SimpleArgumentListProperty argumentListProperty : argumentListProperties ) {
+			SimpleArgument argument = map.get( argumentListProperty );
 			if( argument != null ) {
 				//pass
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "argument == null" );
-				argument = new org.lgna.project.ast.SimpleArgument( userParameter, new org.lgna.project.ast.NullLiteral() );
+				argument = new SimpleArgument( userParameter, new NullLiteral() );
 			}
 			argumentListProperty.add( index, argument );
 		}
 	}
 	
-	public static org.lgna.project.ast.AbstractType<?,?,?>[] getParameterValueTypes( org.lgna.project.ast.AbstractMethod method ) {
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getRequiredParameters();
-		org.lgna.project.ast.AbstractType<?,?,?>[] rv = new org.lgna.project.ast.AbstractType[ parameters.size() ];
+	public static AbstractType<?,?,?>[] getParameterValueTypes( AbstractMethod method ) {
+		java.util.ArrayList< ? extends AbstractParameter > parameters = method.getRequiredParameters();
+		AbstractType<?,?,?>[] rv = new AbstractType[ parameters.size() ];
 		int i = 0;
-		for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
+		for( AbstractParameter parameter : parameters ) {
 			rv[ i ] = parameter.getValueType();
 			i++;
 		}
 		return rv;
+	}
+	
+	public static UserLambda createUserLambda( AbstractType< ?,?,? > type ) {
+		java.util.ArrayList< ? extends AbstractMethod > methods = type.getDeclaredMethods();
+		assert methods.size() == 1;
+		AbstractMethod singleAbstractMethod = methods.get( 0 );
+		assert singleAbstractMethod.isAbstract() : singleAbstractMethod;
+		java.util.ArrayList< ? extends AbstractParameter > srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
+		UserParameter[] dstRequiredParameters = new UserParameter[ srcRequiredParameters.size() ];
+		for( int i=0; i<dstRequiredParameters.length; i++ ) {
+			AbstractParameter srcRequiredParameter = srcRequiredParameters.get( i );
+			String name = srcRequiredParameter.getName();
+			if( name != null && name.length() > 0 ) {
+				//pass
+			} else {
+				name = "p" + i;
+			}
+			dstRequiredParameters[ i ] = new UserParameter( name, srcRequiredParameter.getValueType() );
+		}
+		UserLambda rv = new UserLambda( 
+				singleAbstractMethod.getReturnType(), 
+				dstRequiredParameters,
+				new BlockStatement()
+		);
+		rv.isSignatureLocked.setValue( true );
+		return rv;
+	}
+
+	public static UserLambda createUserLambda( Class<?> cls ) {
+		return createUserLambda( JavaType.getInstance( cls ) );
+	}
+	public static LambdaExpression createLambdaExpression( AbstractType< ?,?,? > type ) {
+		return new LambdaExpression(
+				createUserLambda( type )
+		);
+	}
+	public static LambdaExpression createLambdaExpression( Class<?> cls ) {
+		return createLambdaExpression( JavaType.getInstance( cls ) );
+	}
+	
+	public static AbstractType< ?,?,? > getKeywordFactoryType( JavaKeyedArgument argument ) {
+		AbstractParameter parameter = argument.parameter.getValue();
+		if( parameter.isKeyworded() ) {
+			AbstractType< ?,?,? > parameterType = parameter.getValueType();
+			if( parameterType != null && parameterType.isArray() ) {
+				AbstractType< ?,?,? > componentType = parameterType.getComponentType();
+				if( componentType != null ) {
+					return componentType.getKeywordFactoryType();
+				}
+			}
+		}
+		return null;
 	}
 }

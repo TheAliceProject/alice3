@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModelImp extends TransformableImp {
+public abstract class ModelImp extends TransformableImp implements org.alice.interact.manipulator.Scalable {
 	public final PaintProperty paint = new PaintProperty( ModelImp.this ) {
 		@Override
 		protected void internalSetValue(org.lgna.story.Paint value) {
@@ -82,14 +82,26 @@ public abstract class ModelImp extends TransformableImp {
 		}
 	};
 	
+	public ModelImp() {
+		this.getSgComposite().putBonusDataFor( org.alice.interact.manipulator.Scalable.KEY, this );
+	}
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances();
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+	public void setName( java.lang.String name ) {
+		super.setName( name );
+		int i = 0;
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
-			rv.add( sgVisual, this.getTransformation( asSeenBy ) );
+			sgVisual.setName( name + ".sgVisual" + i );
+			i += 1;
+		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			rv.add( sgVisual, trans );
 		}
 		return rv;
 	}
@@ -102,85 +114,26 @@ public abstract class ModelImp extends TransformableImp {
 //			}
 //		}
 //	}
-	
-	public void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener){
-		this.getSgVisuals()[0].scale.addPropertyListener(listener);
-	}
-	
-	public void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener){
-		this.getSgVisuals()[0].scale.removePropertyListener(listener);
-	}
-	
-	private edu.cmu.cs.dennisc.math.Matrix3x3 getSgVisualsScale() {
-		return this.getSgVisuals()[0].scale.getValue();
-	}
-	private void setSgVisualsScale( edu.cmu.cs.dennisc.math.Matrix3x3 m ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
-			sgVisual.scale.setValue( m );
-		}
-	}
-	
-	private void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
-		if( isScootDesired ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
-			m.translation.multiply( axis );
-			this.getSgComposite().localTransformation.setValue( m );
-		}
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
-			edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgVisual.scale.getValue();
-			edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
-			sgVisual.scale.setValue( scale );
-		}
-	}
-	private void animateApplyScale( edu.cmu.cs.dennisc.math.Vector3 axis, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
-			private final edu.cmu.cs.dennisc.math.Vector3 vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
-			private final edu.cmu.cs.dennisc.math.Vector3 vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
 
-			private final ModelImp subject;
-			private final ModelImp[] scoots;
-			public ScaleAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Vector3 axis, ModelImp subject, ModelImp[] scoots ) {
-				super( duration, style, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), axis );
-				this.subject = subject;
-				this.scoots = scoots;
-			}
-			@Override
-			protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
-				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToDivision( this.vBuffer, v, this.vPrev );
-				this.subject.applyScale( this.vBuffer, false );
-				for( ModelImp model : this.scoots ) {
-					model.applyScale( this.vBuffer, true );
-				}
-				this.vPrev.set( v );
-			}
-		}
-
-		double actualDuration = adjustDurationIfNecessary( duration );
-		ModelImp[] scoots = {};
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
-			this.applyScale( axis, false );
-			for( ModelImp model : scoots ) {
-				model.applyScale( axis, true );
-			}
-		} else {
-			this.perform( new ScaleAnimation( actualDuration, style, axis, this, scoots ) );
-		}
-	}
-	
-	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.math.Matrix3x3 scale = this.getSgVisualsScale();
-		return new edu.cmu.cs.dennisc.math.Dimension3( scale.right.x, scale.up.y, scale.backward.z );
-	}
-	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
-		edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity();
-		m.right.x = scale.x;
-		m.up.y = scale.y;
-		m.backward.z = scale.z;
-		this.setSgVisualsScale( m );
-	}
+	public abstract void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
+	public abstract void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
+	public abstract edu.cmu.cs.dennisc.math.Dimension3 getScale();
+	public abstract void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale );
 	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		if( duration > 0  ) {
-			
+		double actualDuration = this.adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, 0.0 ) ) {
+			this.setScale( scale );
+		} else {
+			class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Dimension3Animation {
+				public ScaleAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Dimension3 scale0, edu.cmu.cs.dennisc.math.Dimension3 scale1 ) {
+					super( duration, style, scale0, scale1 );
+				}
+				@Override
+				protected void updateValue( edu.cmu.cs.dennisc.math.Dimension3 v ) {
+					ModelImp.this.setScale( v );
+				}
+			}
+			this.perform( new ScaleAnimation( duration, style, ModelImp.this.getScale(), scale ) );
 		}
 	}
 
@@ -224,14 +177,17 @@ public abstract class ModelImp extends TransformableImp {
 			return nextSize/prevSize;
 		}
 	}
+
 	public void animateSetSize( edu.cmu.cs.dennisc.math.Dimension3 size, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		edu.cmu.cs.dennisc.math.Dimension3 prevSize = this.getSize();
-		edu.cmu.cs.dennisc.math.Vector3 scale = new edu.cmu.cs.dennisc.math.Vector3(
-				getScale( prevSize.x, size.x ),
-				getScale( prevSize.y, size.y ),
-				getScale( prevSize.z, size.z )
+		edu.cmu.cs.dennisc.math.Dimension3 prevScale = this.getScale();
+		
+		edu.cmu.cs.dennisc.math.Dimension3 scale = new edu.cmu.cs.dennisc.math.Dimension3(
+				size.x / (prevSize.x / prevScale.x),
+				size.y / (prevSize.y / prevScale.y),
+				size.z / (prevSize.z / prevScale.z)
 		);
-		this.animateApplyScale( scale, duration, style );
+		this.animateSetScale( scale, duration, style );
 	}
 
 	public void animateSetWidth( double width, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
@@ -305,7 +261,7 @@ public abstract class ModelImp extends TransformableImp {
 			assert this.isXScaled ^ this.isYScaled ^ this.isZScaled;
 		}
 		
-		public edu.cmu.cs.dennisc.math.Vector3 getResizeAxis( edu.cmu.cs.dennisc.math.Vector3 rv, double amount, boolean isVolumePreserved ) {
+		public edu.cmu.cs.dennisc.math.Dimension3 getResizeAxis( edu.cmu.cs.dennisc.math.Dimension3 rv, double amount, boolean isVolumePreserved ) {
 			//todo: center around 0 as opposed to 1?
 			assert amount > 0;
 			
@@ -348,23 +304,23 @@ public abstract class ModelImp extends TransformableImp {
 			rv.set( x, y, z );
 			return rv;
 		}
-		public edu.cmu.cs.dennisc.math.Vector3 getResizeAxis( double amount, boolean isVolumePreserved ) {
-			return getResizeAxis( edu.cmu.cs.dennisc.math.Vector3.createNaN(), amount, isVolumePreserved );
+		public edu.cmu.cs.dennisc.math.Dimension3 getResizeAxis( double amount, boolean isVolumePreserved ) {
+			return getResizeAxis( edu.cmu.cs.dennisc.math.Dimension3.createNaN(), amount, isVolumePreserved );
 		}
 	}
 
 	public void animateResize( double factor, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateApplyScale( new edu.cmu.cs.dennisc.math.Vector3( factor, factor, factor ), duration, style );
+		this.animateSetScale( new edu.cmu.cs.dennisc.math.Dimension3( factor, factor, factor ), duration, style );
 	}
 	
 	public void animateResizeWidth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateApplyScale( Dimension.LEFT_TO_RIGHT.getResizeAxis( factor, isVolumePreserved ), duration, style );
+		this.animateSetScale( Dimension.LEFT_TO_RIGHT.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	public void animateResizeHeight( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateApplyScale( Dimension.TOP_TO_BOTTOM.getResizeAxis( factor, isVolumePreserved ), duration, style );
+		this.animateSetScale( Dimension.TOP_TO_BOTTOM.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	public void animateResizeDepth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateApplyScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
+		this.animateSetScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 	
 	public void displayBubble(edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Number duration) {
@@ -378,7 +334,7 @@ public abstract class ModelImp extends TransformableImp {
 	
 	public void sayText(String textToSay, org.alice.flite.VoiceType voice, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble) {		
 		final boolean showSpeechBubble = bubble != null;
-		final org.alice.virtualmachine.resources.TextToSpeechResource tts = org.alice.virtualmachine.resources.TextToSpeechResource.valueOf(textToSay, voice.getVoiceString());
+		final org.lgna.common.resources.TextToSpeechResource tts = org.lgna.common.resources.TextToSpeechResource.valueOf(textToSay, voice.getVoiceString());
 		final edu.cmu.cs.dennisc.animation.AudioLimitedBubbleAnimation bubbleAnimation = (showSpeechBubble)? new edu.cmu.cs.dennisc.animation.AudioLimitedBubbleAnimation(this, .3, .3, bubble) : null;
 		
 		Runnable textToSpeech =  new Runnable() { 
@@ -405,7 +361,7 @@ public abstract class ModelImp extends TransformableImp {
 				}
 			};
 			runnables[ 1 ] = textToSpeech;
-			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+			org.lgna.common.DoTogether.invokeAndWait( runnables );
 		}
 		else
 		{

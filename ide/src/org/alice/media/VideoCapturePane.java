@@ -77,8 +77,8 @@ import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.jdesktop.swingworker.SwingWorker;
 import org.lgna.project.Project;
+import org.lgna.story.Program;
 
-import edu.cmu.cs.dennisc.animation.Program;
 import edu.cmu.cs.dennisc.inputpane.FileSelectionPane;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
@@ -224,7 +224,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	public VideoCapturePane(Project project, int frameRate) {
 		this.project = project;
 		this.frameRate = frameRate;
-		this.rtProgram = this.createProgram( this.project );
+		this.rtProgram = null;
 		
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
 		Frame frame = null;
@@ -728,8 +728,6 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		//this.recordButton.getAction().setEnabled( false );
 	}
 
-	abstract protected Program createProgram(Project project);
-	
 	abstract protected void onClose();
 	
 	private void record() {
@@ -763,7 +761,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 				{
 					VideoCapturePane.this.isRestart = true;
 				}
-				VideoCapturePane.this.rtProgram.setMovieEncoder( VideoCapturePane.this.encoder );
+//				VideoCapturePane.this.rtProgram.setMovieEncoder( VideoCapturePane.this.encoder );
 				VideoCapturePane.this.runWorld();
 				return Boolean.TRUE;
 			}
@@ -832,10 +830,10 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	
 	protected void showWorldInContainer(java.awt.Container awtContainer)
 	{
-		this.rtProgram.setArgs(  new String[] {} );
-		this.rtProgram.init();
+//		this.rtProgram.setArgs(  new String[] {} );
+//		this.rtProgram.init();
 		awtContainer.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		awtContainer.add( this.rtProgram );
+//		awtContainer.add( this.rtProgram );
 		if( awtContainer instanceof javax.swing.JComponent ) {
 			((javax.swing.JComponent)awtContainer).revalidate();
 		}
@@ -846,10 +844,10 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	{
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				java.awt.Container contentPane = VideoCapturePane.this.rtProgram.getContentPane();
-				contentPane.repaint();
+//				java.awt.Container contentPane = VideoCapturePane.this.rtProgram.getContentPane();
+//				contentPane.repaint();
 				VideoCapturePane.this.onWorldStart();
-				VideoCapturePane.this.rtProgram.start();
+//				VideoCapturePane.this.rtProgram.start();
 			}
 		} );
 	}
@@ -857,7 +855,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	private void restartWorld()
 	{
 		this.worldPane.removeAll();
-		this.rtProgram = this.createProgram( this.project );
+		this.rtProgram = null;
 		showWorldInContainer(VideoCapturePane.this.worldPane);
 	}
 	
@@ -882,7 +880,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	}
 	
 	private void stop() {
-		this.rtProgram.shutDownCleanly();
+//		this.rtProgram.shutDownCleanly();
 	}
 
 	private void uploadToYouTube()
