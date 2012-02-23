@@ -234,8 +234,4 @@ public class RoomImp extends VisualScaleModelImp {
 		return this.sgOpacityAppearances;
 	}
 
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.getAxisAlignedMinimumBoundingBox().getDiagonal() * .5;
-	}
 }
