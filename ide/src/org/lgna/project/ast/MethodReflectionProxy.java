@@ -86,7 +86,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 		Class< ? > cls = this.getDeclaringClassReflectionProxy().getReification();
 		if( cls != null ) {
 			try {
-				return cls.getMethod( name, ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies ) );
+				return cls.getDeclaredMethod( name, ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies ) );
 			} catch( NoSuchMethodException nsme ) {
 				return null;
 			}
