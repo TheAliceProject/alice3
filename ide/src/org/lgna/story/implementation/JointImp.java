@@ -67,10 +67,6 @@ public abstract class JointImp extends AbstractTransformableImp {
 		assert this.abstraction == null : this.abstraction;
 		this.abstraction = abstraction;
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 0;
-	}
 
 //	@Override
 //	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {

@@ -78,10 +78,4 @@ public class CylinderImp extends ShapeImp {
 	public org.lgna.story.Cylinder getAbstraction() {
 		return this.abstraction;
 	}
-	//todo: produce more tight bound by shifting center of bounding sphere
-	@Override
-	protected double getBoundingSphereRadius() {
-		return Math.max( this.length.getValue(), this.radius.getValue());
-	}
-
 }

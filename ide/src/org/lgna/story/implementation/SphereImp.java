@@ -67,8 +67,4 @@ public class SphereImp extends ShapeImp {
 	public org.lgna.story.Sphere getAbstraction() {
 		return this.abstraction;
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.radius.getValue();
-	}
 }
