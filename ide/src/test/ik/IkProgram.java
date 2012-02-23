@@ -45,9 +45,19 @@ package test.ik;
 
 import java.util.Map;
 
-import org.lgna.ik.Bone;
 import org.lgna.ik.Bone.Axis;
-import org.lgna.story.*;
+import org.lgna.story.Biped;
+import org.lgna.story.Camera;
+import org.lgna.story.Color;
+import org.lgna.story.Cone;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Model;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.Position;
+import org.lgna.story.Program;
+import org.lgna.story.Sphere;
+import org.lgna.story.Turn;
+import org.lgna.story.TurnDirection;
 import org.lgna.story.implementation.JointImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
