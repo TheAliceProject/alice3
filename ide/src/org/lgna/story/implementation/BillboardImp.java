@@ -223,8 +223,4 @@ public class BillboardImp extends VisualScaleModelImp {
 	protected edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.sgOpacityAppearances;
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 0;
-	}
 }

@@ -60,10 +60,6 @@ public class SunImp extends TransformableImp {
 		return this.abstraction;
 	}
 	@Override
-	protected double getBoundingSphereRadius() {
-		return Double.parseDouble( "6.995E8" );
-	}
-	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		return rv;
 	}

@@ -66,8 +66,4 @@ public abstract class SingleVisualModelImp extends VisualScaleModelImp {
 	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.getSgPaintAppearances();
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.getSgVisuals()[ 0 ].getBoundingSphere().radius;
-	}
 }

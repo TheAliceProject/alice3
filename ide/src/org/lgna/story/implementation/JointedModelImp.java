@@ -264,12 +264,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	protected final org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		return this.factory.createJointImplementation( this, jointId );
-	}
-	@Override
-	protected final double getBoundingSphereRadius() {
-		return this.visualData.getBoundingSphereRadius();
-	}
-	
+	}	
 	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;
 	private org.lgna.story.implementation.visualization.JointedModelVisualization getVisualization() {
 		if( this.visualization != null ) {
