@@ -43,8 +43,6 @@
 
 package org.alice.ide;
 
-import org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template;
-
 /**
  * @author Dennis Cosgrove
  */

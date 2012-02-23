@@ -44,7 +44,6 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * @author alice
- *
  */
 public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
 	private final edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
@@ -72,6 +71,7 @@ public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVis
 		this(faceUp, 1, 1, 1);
 	}
 	
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry()
 	{
 		return this.sgGeometry;
