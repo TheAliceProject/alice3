@@ -130,9 +130,12 @@ public class Joint extends Transformable
             Point3 localMax = j.boundingBox.getValue().getMaximum();
             Point3 transformedMin = transform.createTransformed(localMin);
             Point3 transformedMax = transform.createTransformed(localMax);
-//            AxisAlignedBox transformedBBox = new AxisAlignedBox(transformedMin, transformedMax);
-            rv.union(transformedMin);
-            rv.union(transformedMax);
+            if (!transformedMin.isNaN()) {
+            	rv.union(transformedMin);
+            }
+            if (!transformedMax.isNaN()) {
+            	rv.union(transformedMax);
+            }
         }
         if (cumulative) {
 	        for (int i=0; i<c.getComponentCount(); i++)

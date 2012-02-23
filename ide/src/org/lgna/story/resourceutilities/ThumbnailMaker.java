@@ -222,6 +222,7 @@ public class ThumbnailMaker {
 		Point3 cameraLocation = cameraRay.getPointAlong(minVal);
 		OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide(cameraDir, Vector3.accessPositiveYAxis());
 		AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation);
+		assert !rv.isNaN() : "Failed to make a useful camera orientation from "+bbox;
 		return rv;
 	}
 	
