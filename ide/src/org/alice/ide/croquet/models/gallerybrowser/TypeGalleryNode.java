@@ -95,6 +95,10 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 	}
 
 	@Override
+	public String[] getTags() {
+		return null;
+	}
+	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		String name = this.getDeclaration().getName();
 		sb.append( "My" );

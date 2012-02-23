@@ -111,4 +111,8 @@ public class RootGalleryNode extends GalleryNode {
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return null;
 	}
+	@Override
+	public String[] getTags() {
+		return null;
+	}
 }
