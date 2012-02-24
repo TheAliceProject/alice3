@@ -63,7 +63,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 							if( parameterType != null ) {
 								if( parameterType.isInterface() ) {
 									//assume it is going to be a lambda
-									return parameterType.getDeclaredMethods().size() == 1;
+									return parameterType.getDeclaredMethods().size() != 1;
 								}
 							}
 						}
