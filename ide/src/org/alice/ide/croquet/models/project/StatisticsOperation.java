@@ -43,16 +43,17 @@
 package org.alice.ide.croquet.models.project;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.alice.ide.declarationseditor.DeclarationTabState;
-import org.lgna.croquet.Application;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.StringState;
-import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.Hyperlink;
-import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
+import org.lgna.croquet.components.Tree;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
@@ -64,11 +65,12 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class StatisticsOperation extends org.lgna.croquet.InformationDialogOperation {
 
-	private Map< UserMethod, LinkedList< MethodInvocation > > methodParentMap = Collections.newHashMap();
-	
+	private Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap = Collections.newHashMap();
+
 	private static class SingletonHolder {
 		private static StatisticsOperation instance = new StatisticsOperation();
 	}
+
 	public static StatisticsOperation getInstance() {
 		return SingletonHolder.instance;
 	}
@@ -76,26 +78,26 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog) {
+	protected org.lgna.croquet.components.Container<?> createContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog ) {
 		methodParentMap.clear();
-		
+
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 		if( programType != null ) {
 			class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-				private java.util.Map< Class<? extends org.lgna.project.ast.Statement>, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-				
-				public void visit(edu.cmu.cs.dennisc.pattern.Crawlable crawlable) {
+				private java.util.Map<Class<? extends org.lgna.project.ast.Statement>,Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 					if( crawlable instanceof org.lgna.project.ast.Statement ) {
 						org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
 						Class<? extends org.lgna.project.ast.Statement> cls = statement.getClass();
 						if( cls.equals( org.lgna.project.ast.ExpressionStatement.class ) ) {
-							ExpressionStatement expressionStatement = ( ExpressionStatement ) statement;
-							if ( expressionStatement.expression.getValue() instanceof MethodInvocation ) {
-								MethodInvocation methodInvocation = ( MethodInvocation ) expressionStatement.expression.getValue();
+							ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+							if( expressionStatement.expression.getValue() instanceof MethodInvocation ) {
+								MethodInvocation methodInvocation = (MethodInvocation)expressionStatement.expression.getValue();
 								UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
 								if( methodParentMap.get( method ) == null ) {
-									methodParentMap.put( method, new LinkedList< MethodInvocation >() );
+									methodParentMap.put( method, new LinkedList<MethodInvocation>() );
 								}
 								methodParentMap.get( method ).add( methodInvocation );
 							}
@@ -119,65 +121,54 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 				}
 			}
 			StatementCountCrawler crawler = new StatementCountCrawler();
-			programType.crawl(crawler, true);
-			
-			Class[] clses = { 
-				org.lgna.project.ast.DoInOrder.class,
-				org.lgna.project.ast.CountLoop.class,
-				org.lgna.project.ast.WhileLoop.class,
-				org.lgna.project.ast.ForEachInArrayLoop.class,
-				org.lgna.project.ast.ConditionalStatement.class,
-				org.lgna.project.ast.DoTogether.class,
-				org.lgna.project.ast.EachInArrayTogether.class,
-				org.lgna.project.ast.Comment.class,
-				org.lgna.project.ast.LocalDeclarationStatement.class,
-				org.lgna.project.ast.ExpressionStatement.class
-			};
-			
+			programType.crawl( crawler, true );
+
+			Class[] clses = { org.lgna.project.ast.DoInOrder.class, org.lgna.project.ast.CountLoop.class, org.lgna.project.ast.WhileLoop.class, org.lgna.project.ast.ForEachInArrayLoop.class, org.lgna.project.ast.ConditionalStatement.class,
+					org.lgna.project.ast.DoTogether.class, org.lgna.project.ast.EachInArrayTogether.class, org.lgna.project.ast.Comment.class, org.lgna.project.ast.LocalDeclarationStatement.class, org.lgna.project.ast.ExpressionStatement.class };
+
+			final BorderPanel rv = new BorderPanel();
 			SearchDialogManager manager = new SearchDialogManager();
-			final GridPanel rv = GridPanel.createSingleColumnGridPane();
-			
+			TextField textField = new TextField( manager.getStringState() );
+			rv.addComponent( textField, Constraint.PAGE_START );
+			Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+			tree.expandAllRows();
+			rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
+
 			for( Class cls : clses ) {
 				int count = crawler.getCount( cls );
 				if( count > 0 ) {
-//					String str = "";
-//					str += cls.getSimpleName();
-//					str += ": ";
-//					str += count;
-//					rv.addComponent(new Label( str ) );
-					if( cls.equals(org.lgna.project.ast.ExpressionStatement.class) ){
-						for( UserMethod method: methodParentMap.keySet() ){
-							String text = "<html>edit <strong><u>" + method.getName() + "<u></strong></html>";
+					//					String str = "";
+					//					str += cls.getSimpleName();
+					//					str += ": ";
+					//					str += count;
+					//					rv.addComponent(new Label( str ) );
+					if( cls.equals( org.lgna.project.ast.ExpressionStatement.class ) ) {
+						for( UserMethod method : methodParentMap.keySet() ) {
+							String text = "<html><strong>" + method.getName() + "</strong></html>";
 							Operation operation = DeclarationTabState.getInstance().getItemSelectionOperation( method );
 							operation.setName( text );
 
 							Hyperlink hyperlink = operation.createHyperlink();
-							rv.addComponent( hyperlink );
-							LinkedList<Label> list = Collections.newLinkedList();
+							SearchTreeNode parent = manager.addNode( null, text );
+							List<SearchTreeNode> list = Collections.newLinkedList();
 							for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
-								Label label = new Label( "+   " + methodInvocation.method.getValue().getName() );
-								list.add( label );
-								rv.addComponent( label );
+								SearchTreeNode child = manager.addNode( parent, methodInvocation.method.getValue().getName() );
+								list.add( child );
 
-//								Operation childOperation = DeclarationTabState.getInstance().getItemSelectionOperation( methodInvocation.method.getValue() );
-//								String str = "+   " + methodInvocation.method.getValue().getName();
-//								System.out.println(str);
-//								childOperation.setName( str );
-//								Hyperlink childHyperlink = childOperation.createHyperlink();
-//								rv.addComponent( childHyperlink );
+								//								Operation childOperation = DeclarationTabState.getInstance().getItemSelectionOperation( methodInvocation.method.getValue() );
+								//								String str = "+   " + methodInvocation.method.getValue().getName();
+								//								System.out.println(str);
+								//								childOperation.setName( str );
+								//								Hyperlink childHyperlink = childOperation.createHyperlink();
+								//								rv.addComponent( childHyperlink );
 							}
-							manager.addParentWithChildren( hyperlink, list );
+							manager.addParentWithChildren( parent, list );
 						}
 					}
 				}
 			}
-			rv.setMinimumPreferredHeight(10 * rv.getComponentCount() );
-			StringState searchState = new StringState( Application.INFORMATION_GROUP, java.util.UUID.fromString( "7012f7cd-c25b-4e9f-bba2-f4d172a0590b" ), "search" ) {
-				
-			};
-			searchState.addValueListener( manager );
-			rv.addComponent( new TextField( searchState ) );
-			searchState.addPanel( rv );
+			tree.expandAllRows();
+			//			searchState.addPanel( rv );
 			return rv;
 		} else {
 			//todo
@@ -185,6 +176,6 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 		}
 	}
 	@Override
-	protected void releaseContentPane(org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
+	protected void releaseContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
 	}
 }

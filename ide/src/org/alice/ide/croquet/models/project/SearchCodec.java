@@ -40,67 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.project;
 
-package org.lgna.croquet;
+import java.util.Locale;
+
+import org.lgna.croquet.ItemCodec;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> {
-	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel<T>() {
-		public int getChildCount( Object parent ) {
-			return CustomTreeSelectionState.this.getChildCount( (T)parent );
-		}
-		public T getChild( Object parent, int index ) {
-			return CustomTreeSelectionState.this.getChild( (T)parent, index );
-		}
-		public int getIndexOfChild( Object parent, Object child ) {
-			return CustomTreeSelectionState.this.getIndexOfChild( (T)parent, (T)child );
-		}
-		public T getRoot() {
-			return CustomTreeSelectionState.this.getRoot();
-		}
-		public boolean isLeaf( Object node ) {
-			return CustomTreeSelectionState.this.isLeaf( (T)node );
-		}
-		private Object[] getPathToRoot( T node ) {
-			java.util.List<T> collection = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			T n = node;
-			if( n != null ) {
-				T root = this.getRoot();
-				while( n != root ) {
-					T parent = CustomTreeSelectionState.this.getParent( n );
-					if( parent != null ) {
-						collection.add( 0, n );
-						n = parent;
-					} else {
-						break;
-					}
-				}
-				collection.add( 0, root );
-			}
-			return collection.toArray();
-		}
-		public javax.swing.tree.TreePath getTreePath( Object node ) {
-			Object[] nodes = this.getPathToRoot( (T)node );
-			javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
-			return path;
-		}
-	};
+public class SearchCodec implements ItemCodec<SearchTreeNode> {
 
-	public CustomTreeSelectionState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialSelection ) {
-		super( group, id, itemCodec );
-		this.setValueTransactionlessly( initialSelection );
+	private static SearchCodec instance = new SearchCodec();
+
+	public static SearchCodec getSingleton() {
+		return instance;
 	}
-	protected abstract int getChildCount( T parent );
-	protected abstract T getChild( T parent, int index );
-	protected abstract int getIndexOfChild( T parent, T child );
-	protected abstract T getRoot();
-	protected abstract T getParent( T node );
-	@Override
-	public abstract boolean isLeaf( T node );
-	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
-		return this.treeModel;
+
+	public Class<SearchTreeNode> getValueClass() {
+		System.out.println( "getValueClass" );
+		return null;
 	}
+
+	public SearchTreeNode decodeValue( BinaryDecoder binaryDecoder ) {
+		System.out.println( "decodeValue" );
+		return null;
+	}
+
+	public void encodeValue( BinaryEncoder binaryEncoder, SearchTreeNode value ) {
+		System.out.println( "encodeValue" );
+	}
+
+	public StringBuilder appendRepresentation( StringBuilder rv, SearchTreeNode value, Locale locale ) {
+		System.out.println( "appendRepresentation" );
+		return null;
+	}
+
 }
