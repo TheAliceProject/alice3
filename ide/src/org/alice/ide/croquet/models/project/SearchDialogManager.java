@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.Hyperlink;
 import org.lgna.croquet.components.Label;
 
