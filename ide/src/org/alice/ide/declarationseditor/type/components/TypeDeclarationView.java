@@ -106,8 +106,14 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 		
 		org.alice.ide.ast.declaration.components.TypeHeader typeHeader = new org.alice.ide.ast.declaration.components.TypeHeader( type );
+		
+		org.lgna.croquet.components.LineAxisPanel header = new org.lgna.croquet.components.LineAxisPanel( 
+				typeHeader,
+				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+				org.alice.ide.croquet.models.ast.ExportTypeOperation.getInstance( type ).createButton()
+		);
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		this.addComponent( typeHeader, Constraint.PAGE_START );
+		this.addComponent( header, Constraint.PAGE_START );
 		this.addComponent( scrollPane, Constraint.CENTER );
 
 		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( typeHeader.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {

@@ -40,51 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.gallerybrowser;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTab extends GalleryTab {
-	private static class SingletonHolder {
-		private static TypeTab instance = new TypeTab();
+
+public abstract class ValueProducer<T> extends CompletionModel { //todo: PrepModel?  w/ transaction history?
+	private static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueProducer.VALUE_KEY" );
+
+	public ValueProducer( Group group, java.util.UUID id ) {
+		super( group, id );
 	}
-	public static TypeTab getInstance() {
-		return SingletonHolder.instance;
+	
+	protected abstract org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary();
+	protected abstract T internalGetValue( org.lgna.croquet.history.ValueProducerStep<T> step ) throws CancelException;
+
+	@Override
+	public org.lgna.croquet.history.ValueProducerStep<T> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.ValueProducerStep<T> step = org.lgna.croquet.history.TransactionManager.addValueProducerStep( this, trigger, this.createTransactionHistoryIfNecessary() );
+		T value = this.internalGetValue( step );
+		step.putEphemeralDataFor( VALUE_KEY, value );
+		return step;
 	}
-	private TypeTab() {
-		super( java.util.UUID.fromString( "86ebb5e5-8cae-4f3b-ae46-35f3a7f4a00c" ) );
+	public T getValue( org.lgna.croquet.history.ValueProducerStep<T> step ) {
+		if( step.containsEphemeralDataFor( VALUE_KEY ) ) {
+			return (T)step.getEphemeralDataFor( VALUE_KEY );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			return null;
+		}
+	}
+	
+	@Override
+	protected void localize() {
 	}
 	@Override
-	protected org.lgna.croquet.components.View<?,?> createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-
-		MyTypesView myTypesView = new MyTypesView();
-		
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
-		scrollPane.setBorder( null );
-        scrollPane.setBothScrollBarIncrements( 16, 160 );
-		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
-		rv.addComponent( lineEndPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
-		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, UserInformation userInformation ) {
 		return rv;
-	}
-	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
-		super.customizeTitleComponent( booleanState, button );
-		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.BOOKMARK_ICON_SMALL );
-		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
 	}
 }

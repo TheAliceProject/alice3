@@ -40,51 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.gallerybrowser;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTab extends GalleryTab {
-	private static class SingletonHolder {
-		private static TypeTab instance = new TypeTab();
+public class IterationTrigger extends AbstractTrigger {
+	public IterationTrigger() {
 	}
-	public static TypeTab getInstance() {
-		return SingletonHolder.instance;
+	public IterationTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
-	private TypeTab() {
-		super( java.util.UUID.fromString( "86ebb5e5-8cae-4f3b-ae46-35f3a7f4a00c" ) );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
-	@Override
-	protected org.lgna.croquet.components.View<?,?> createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-
-		MyTypesView myTypesView = new MyTypesView();
-		
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
-		scrollPane.setBorder( null );
-        scrollPane.setBothScrollBarIncrements( 16, 160 );
-		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
-		rv.addComponent( lineEndPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
-		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		return rv;
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return null;
 	}
-	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
-		super.customizeTitleComponent( booleanState, button );
-		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.BOOKMARK_ICON_SMALL );
-		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
 	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
+	public String getNoteText( java.util.Locale locale ) {
+		return "iteration";
 	}
 }

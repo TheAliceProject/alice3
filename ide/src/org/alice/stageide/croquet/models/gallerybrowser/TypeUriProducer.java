@@ -40,51 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTab extends GalleryTab {
+public class TypeUriProducer extends UriProducer {
 	private static class SingletonHolder {
-		private static TypeTab instance = new TypeTab();
+		private static TypeUriProducer instance = new TypeUriProducer();
 	}
-	public static TypeTab getInstance() {
+	public static TypeUriProducer getInstance() {
 		return SingletonHolder.instance;
 	}
-	private TypeTab() {
-		super( java.util.UUID.fromString( "86ebb5e5-8cae-4f3b-ae46-35f3a7f4a00c" ) );
+	private TypeUriProducer() {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4ab159a0-7fee-4c0f-8b71-25591fda2b0d" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.View<?,?> createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-
-		MyTypesView myTypesView = new MyTypesView();
-		
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
-		scrollPane.setBorder( null );
-        scrollPane.setBothScrollBarIncrements( 16, 160 );
-		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
-		rv.addComponent( lineEndPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
-		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		return rv;
+	protected String getExtension() {
+		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
 	}
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
-		super.customizeTitleComponent( booleanState, button );
-		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.BOOKMARK_ICON_SMALL );
-		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
+	protected java.io.File getInitialDirectory() {
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 }

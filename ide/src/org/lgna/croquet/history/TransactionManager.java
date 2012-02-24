@@ -228,6 +228,14 @@ public class TransactionManager {
 	public static OperationStep addOperationStep( org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return addOperationStep( model, trigger, null ); 
 	}
+	public static <T> ValueProducerStep<T> addValueProducerStep( org.lgna.croquet.ValueProducer<T> model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
+		Transaction transaction = getActiveTransaction();
+		return ValueProducerStep.createAndAddToTransaction( transaction, model, trigger, transactionHistory ); 
+	}
+	public static <T> ValueProducerStep<T> addValueProducerStep( org.lgna.croquet.ValueProducer<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return addValueProducerStep( model, trigger, null ); 
+	}
+
 	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
 		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );
 	}

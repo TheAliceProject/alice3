@@ -40,57 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
-
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, TypeSaveAsOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized TypeSaveAsOperation getInstance( org.lgna.project.ast.NamedUserType type ) {
-		TypeSaveAsOperation rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TypeSaveAsOperation( type );
-			map.put( type, rv );
+public abstract class IteratingOperation extends Operation {
+	public IteratingOperation( Group group, java.util.UUID id ) {
+		super( group, id );
+	}
+	@Override
+	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
+		return new org.lgna.croquet.history.TransactionHistory();
+	}
+	protected abstract boolean hasNext( org.lgna.croquet.history.OperationStep step );
+	protected abstract Model getNext( org.lgna.croquet.history.OperationStep step );
+	@Override
+	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+		while( this.hasNext( step ) ) {
+			Model model = this.getNext( step );
+			if( model != null ) {
+				model.fire( new org.lgna.croquet.triggers.IterationTrigger() );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+				//throw new CancelException();
+			}
 		}
-		return rv;
-	}
-
-	private org.lgna.project.ast.NamedUserType type;
-	private TypeSaveAsOperation( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( type );
-		this.type = type;
-		this.setName( "<html>Save <strong>" + this.type.getName() + "</strong> As...</html>" );
-		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
-	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation >( this, this.type, org.lgna.project.ast.NamedUserType.class );
-	}
-
-	@Override
-	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
-	}
-	@Override
-	protected String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
-	}
-	@Override
-	protected String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
-	}
-	@Override
-	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
-		org.lgna.project.io.IoUtilities.writeType( file, this.type );
-	}
-	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
-		return true;
 	}
 }

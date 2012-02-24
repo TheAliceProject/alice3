@@ -40,51 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.gallerybrowser;
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTab extends GalleryTab {
-	private static class SingletonHolder {
-		private static TypeTab instance = new TypeTab();
-	}
-	public static TypeTab getInstance() {
-		return SingletonHolder.instance;
-	}
-	private TypeTab() {
-		super( java.util.UUID.fromString( "86ebb5e5-8cae-4f3b-ae46-35f3a7f4a00c" ) );
-	}
-	@Override
-	protected org.lgna.croquet.components.View<?,?> createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+public class ExportTypeOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
 
-		MyTypesView myTypesView = new MyTypesView();
-		
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
-		scrollPane.setBorder( null );
-        scrollPane.setBothScrollBarIncrements( 16, 160 );
-		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
-		rv.addComponent( lineEndPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
-		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, ExportTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ExportTypeOperation getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ExportTypeOperation rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ExportTypeOperation( type );
+			map.put( type, rv );
+		}
 		return rv;
 	}
+
+	private org.lgna.project.ast.NamedUserType type;
+	private ExportTypeOperation( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( type );
+		this.type = type;
+		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
+	}
+
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
-		super.customizeTitleComponent( booleanState, button );
-		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.BOOKMARK_ICON_SMALL );
-		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ExportTypeOperation > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ExportTypeOperation >( this, this.type, org.lgna.project.ast.NamedUserType.class );
+	}
+
+	@Override
+	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
+		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
+	protected String getExtension() {
+		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
+	}
+	@Override
+	protected String getInitialFilename() {
+		return this.type.name.getValue() + "." + this.getExtension();
+	}
+	@Override
+	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
+		org.lgna.project.io.IoUtilities.writeType( file, this.type );
+	}
+	@Override
+	protected boolean isPromptNecessary( java.io.File file ) {
+		return true;
 	}
 }
