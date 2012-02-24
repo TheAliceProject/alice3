@@ -46,21 +46,6 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.IteratingOperation {
-	private static void showMessageDialog( java.io.File file, boolean isValidZip ) {
-		String applicationName = org.alice.ide.IDE.getActiveInstance().getApplicationName();
-		StringBuffer sb = new StringBuffer();
-		sb.append( "Unable to create instance from file " );
-		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
-		sb.append( ".\n\n" );
-		sb.append( applicationName );
-		sb.append( " is able to create instances from class files saved by " );
-		sb.append( applicationName );
-		sb.append( ".\n\nLook for files with an " );
-		sb.append( org.lgna.project.io.IoUtilities.TYPE_EXTENSION );
-		sb.append( " extension." );
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
-	}
-
 	private static final org.lgna.croquet.history.Step.Key< Stage > STAGE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DeclareFieldFromImportedTypeOperation.STAGE_KEY" );
 	private static enum Stage {
 		REQUESTING_URI {
@@ -70,7 +55,7 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 			}
 			@Override
 			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.OperationStep step ) {
-				return TypeUriProducer.getInstance();
+				return TypeFromUriProducer.getInstance();
 			}
 		},
 		DECLARING_FIELD {
@@ -80,69 +65,24 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 			}
 			@Override
 			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.OperationStep step ) {
-				org.lgna.croquet.history.ValueProducerStep<java.net.URI> valueProducerStep = step.getFirstStepOfEquivalentModel( REQUESTING_URI.getModel( step ), org.lgna.croquet.history.ValueProducerStep.class );
-				java.net.URI uri = valueProducerStep.getModel().getValue( valueProducerStep );
-				if( uri != null ) {
-					java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-					String lcName = file.getName().toLowerCase();
-					if( lcName.endsWith( ".a2c" ) ) {
-						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( 
-								"Alice3 does not load Alice2 characters", 
-								"Incorrect File Type", 
-								org.lgna.croquet.MessageType.ERROR 
-						);
-					} else if( lcName.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
-						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( 
-								file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.TYPE_EXTENSION + " extension.",
-								"Incorrect File Type", 
-								org.lgna.croquet.MessageType.INFORMATION 
-						);
+				org.lgna.croquet.history.TransactionHistory transactionHistory = step.getTransactionHistory();
+				org.lgna.croquet.history.Transaction transaction = transactionHistory.getTransactionAt( 0 );
+				org.lgna.croquet.history.ValueProducerStep<org.lgna.project.ast.NamedUserType> valueProducerStep = (org.lgna.croquet.history.ValueProducerStep<org.lgna.project.ast.NamedUserType>)transaction.getCompletionStep();
+				org.lgna.project.ast.NamedUserType type = valueProducerStep.getModel().getValue( valueProducerStep );
+				if( type != null ) {
+					org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
+					java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor.getRequiredParameters();
+					org.lgna.croquet.DropSite dropSite = null;
+					if( requiredParameters.size() > 0 ) {
+						org.lgna.project.ast.AbstractType< ?,?,? > parameterType = requiredParameters.get( 0 ).getValueType();
+						return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType, dropSite );
 					} else {
-						boolean isWorthyOfException = lcName.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() );
-						java.util.zip.ZipFile zipFile;
-						try {
-							zipFile = new java.util.zip.ZipFile( file );
-						} catch( java.io.IOException ioe ) {
-							if( isWorthyOfException ) {
-								throw new RuntimeException( file.getAbsolutePath(), ioe );
-							} else {
-								showMessageDialog( file, false );
-								zipFile = null;
-							}
-						}
-						if( zipFile != null ) {
-							org.lgna.project.ast.AbstractType<?,?,?> type;
-							try {
-								edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > tuple = org.lgna.project.io.IoUtilities.readType( zipFile );
-								type = tuple.getA();
-								edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
-							} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-								type = null;
-								org.alice.ide.IDE.getActiveInstance().handleVersionNotSupported( file, vnse );
-							} catch( java.io.IOException ioe ) {
-								if( isWorthyOfException ) {
-									throw new RuntimeException( file.getAbsolutePath(), ioe );
-								} else {
-									showMessageDialog( file, true );
-									type = null;
-								}
-							}
-							if( type != null ) {
-								org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-								java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor.getRequiredParameters();
-								org.lgna.croquet.DropSite dropSite = null;
-								if( requiredParameters.size() > 0 ) {
-									org.lgna.project.ast.AbstractType< ?,?,? > parameterType = requiredParameters.get( 0 ).getValueType();
-									return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType, dropSite );
-								} else {
-									org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( constructor );
-									return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, dropSite );
-								}
-							}
-						}
+						org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( constructor );
+						return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, dropSite );
 					}
+				} else {
+					return null;
 				}
-				return null;
 			}
 		};
 		public abstract Stage getNextStage();

@@ -106,6 +106,7 @@ public class ResourceTab extends GalleryTab {
 				
 		        org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
 		        lineEndPanel.addComponent( gridPanel, Constraint.PAGE_START );
+				lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
 
 		        org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel( 0, PAD );
 

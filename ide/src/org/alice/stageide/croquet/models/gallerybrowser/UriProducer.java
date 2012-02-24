@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriProducer extends org.lgna.croquet.ValueProducer< java.net.URI > {
+public abstract class UriProducer<T> extends org.lgna.croquet.ValueProducer<T> {
 	public UriProducer( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
@@ -55,16 +55,18 @@ public abstract class UriProducer extends org.lgna.croquet.ValueProducer< java.n
 	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
 		return new org.lgna.croquet.history.TransactionHistory();
 	}
+	protected abstract T internalGetValueFrom( java.io.File file );
 	@Override
-	protected java.net.URI internalGetValue( org.lgna.croquet.history.ValueProducerStep<java.net.URI> step ) throws org.lgna.croquet.CancelException {
+	protected T internalGetValue( org.lgna.croquet.history.ValueProducerStep<T> step ) throws org.lgna.croquet.CancelException {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		java.io.File directory = this.getInitialDirectory();
 		String extension = this.getExtension();
 		java.io.File file = application.showOpenFileDialog( directory, null, extension, true );
 		if( file != null ) {
-			return file.toURI();
+			return this.internalGetValueFrom( file );
 		} else {
-			throw new org.lgna.croquet.CancelException();
+			//throw new org.lgna.croquet.CancelException();
+			return null;
 		}
 	}
 }

@@ -45,22 +45,21 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeUriProducer extends UriProducer {
+public class ImportTypeOperation extends org.lgna.croquet.ActionOperation { //todo: ValueOperation?
 	private static class SingletonHolder {
-		private static TypeUriProducer instance = new TypeUriProducer();
+		private static ImportTypeOperation instance = new ImportTypeOperation();
 	}
-	public static TypeUriProducer getInstance() {
+	public static ImportTypeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private TypeUriProducer() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4ab159a0-7fee-4c0f-8b71-25591fda2b0d" ) );
+	private ImportTypeOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7f07e40b-8ec6-4273-a79b-bffb28a013a5" ) );
 	}
 	@Override
-	protected String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
-	}
-	@Override
-	protected java.io.File getInitialDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+		org.lgna.croquet.history.ValueProducerStep<org.lgna.project.ast.NamedUserType> valueStep = TypeFromUriProducer.getInstance().fire( new org.lgna.croquet.triggers.IterationTrigger() );
+		org.lgna.project.ast.NamedUserType userType = valueStep.getModel().getValue( valueStep );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userType );
+		step.finish();
 	}
 }
