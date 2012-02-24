@@ -54,7 +54,6 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ArrowKeyListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.NumberKeyListenerFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.MouseButtonListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.MouseClickedOnScreenFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.MouseClickOnObjectFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.TransformationListenerFillerInner() );

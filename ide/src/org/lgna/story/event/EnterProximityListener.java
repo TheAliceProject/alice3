@@ -45,7 +45,7 @@ package org.lgna.story.event;
 /**
  * @author Matt May
  */
-public interface EnterProximityListener extends ProximityListener {
+public interface EnterProximityListener {
 	
 	public void whenTheseGetClose(EnterProximityEvent e);
 

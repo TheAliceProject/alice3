@@ -42,7 +42,20 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.util.LinkedList;
 import java.util.Map;
+
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.Hyperlink;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.TextField;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -50,8 +63,8 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  * @author Dennis Cosgrove
  */
 public class StatisticsOperation extends org.lgna.croquet.InformationDialogOperation {
-	
-	private Map<String, Integer> expressionStatementMap = Collections.newHashMap();
+
+	private Map< UserMethod, LinkedList< MethodInvocation > > methodParentMap = Collections.newHashMap();
 	
 	private static class SingletonHolder {
 		private static StatisticsOperation instance = new StatisticsOperation();
@@ -64,6 +77,8 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 	}
 	@Override
 	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog) {
+		methodParentMap.clear();
+		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 		if( programType != null ) {
@@ -74,15 +89,17 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 					if( crawlable instanceof org.lgna.project.ast.Statement ) {
 						org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
 						Class<? extends org.lgna.project.ast.Statement> cls = statement.getClass();
-//						if(cls.equals(org.lgna.project.ast.ExpressionStatement.class)){
-//							String statementName = ((ExpressionStatement) statement).getName();
-//							
-//							if(expressionStatementMap.get(statementName) != null) {
-//								System.out.println(statementName);
-//								expressionStatementMap.put(statementName, expressionStatementMap.get(statementName) + 1);
-//							}
-//							expressionStatementMap.put(statementName, 1);
-//						}
+						if( cls.equals( org.lgna.project.ast.ExpressionStatement.class ) ) {
+							ExpressionStatement expressionStatement = ( ExpressionStatement ) statement;
+							if ( expressionStatement.expression.getValue() instanceof MethodInvocation ) {
+								MethodInvocation methodInvocation = ( MethodInvocation ) expressionStatement.expression.getValue();
+								UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
+								if( methodParentMap.get( method ) == null ) {
+									methodParentMap.put( method, new LinkedList< MethodInvocation >() );
+								}
+								methodParentMap.get( method ).add( methodInvocation );
+							}
+						}
 						Integer count = this.map.get( cls );
 						if( count != null ) {
 							count += 1;
@@ -117,27 +134,51 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 				org.lgna.project.ast.ExpressionStatement.class
 			};
 			
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>" );
-			sb.append( "<em>todo: improve this dialog dramatically</em><br><br>" );
+			SearchDialogManager manager = new SearchDialogManager();
+			final GridPanel rv = GridPanel.createSingleColumnGridPane();
+			
 			for( Class cls : clses ) {
 				int count = crawler.getCount( cls );
 				if( count > 0 ) {
-					sb.append( cls.getSimpleName() );
-					sb.append( ": " );
-					sb.append( count );
-					sb.append( "<br>" );
+//					String str = "";
+//					str += cls.getSimpleName();
+//					str += ": ";
+//					str += count;
+//					rv.addComponent(new Label( str ) );
 					if( cls.equals(org.lgna.project.ast.ExpressionStatement.class) ){
-						for(String str: expressionStatementMap.keySet()){
-							sb.append(str);
-							sb.append( ": ");
-							sb.append( expressionStatementMap.get(str));
+						for( UserMethod method: methodParentMap.keySet() ){
+							String text = "<html>edit <strong><u>" + method.getName() + "<u></strong></html>";
+							Operation operation = DeclarationTabState.getInstance().getItemSelectionOperation( method );
+							operation.setName( text );
+
+							Hyperlink hyperlink = operation.createHyperlink();
+							rv.addComponent( hyperlink );
+							LinkedList<Label> list = Collections.newLinkedList();
+							for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
+								Label label = new Label( "+   " + methodInvocation.method.getValue().getName() );
+								list.add( label );
+								rv.addComponent( label );
+
+//								Operation childOperation = DeclarationTabState.getInstance().getItemSelectionOperation( methodInvocation.method.getValue() );
+//								String str = "+   " + methodInvocation.method.getValue().getName();
+//								System.out.println(str);
+//								childOperation.setName( str );
+//								Hyperlink childHyperlink = childOperation.createHyperlink();
+//								rv.addComponent( childHyperlink );
+							}
+							manager.addParentWithChildren( hyperlink, list );
 						}
 					}
 				}
 			}
-			sb.append( "</html>" );
-			return new org.lgna.croquet.components.Label( sb.toString() );
+			rv.setMinimumPreferredHeight(10 * rv.getComponentCount() );
+			StringState searchState = new StringState( Application.INFORMATION_GROUP, java.util.UUID.fromString( "7012f7cd-c25b-4e9f-bba2-f4d172a0590b" ), "search" ) {
+				
+			};
+			searchState.addValueListener( manager );
+			rv.addComponent( new TextField( searchState ) );
+			searchState.addPanel( rv );
+			return rv;
 		} else {
 			//todo
 			return new org.lgna.croquet.components.Label( "open a project first" );

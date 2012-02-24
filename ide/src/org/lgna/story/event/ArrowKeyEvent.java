@@ -18,7 +18,7 @@ public class ArrowKeyEvent extends KeyEvent {
 	public static final List<Key> ARROWS = Collections.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
 	private KeyEvent e;
 	public ArrowKeyEvent( KeyEvent e ) {
-		super(e.getJavaEvent());
+		super( e.getJavaEvent() );
 		boolean isArrow = false;
 		for ( Key k: ARROWS ) {
 			if( e.isKey(k) ){
@@ -37,40 +37,40 @@ public class ArrowKeyEvent extends KeyEvent {
 		return getFowardBackwardLeftRightMoveDirection();
 	}
 	
-	public TurnDirection getTurnDirection(){
-		if(e.isKey(Key.A) || e.isKey(Key.LEFT) ){
+	public TurnDirection getTurnDirection() {
+		if( e.isKey( Key.A ) || e.isKey( Key.LEFT ) ) {
 			return TurnDirection.LEFT;
-		} else if(e.isKey(Key.S) || e.isKey(Key.DOWN) ){
+		} else if ( e.isKey( Key.S ) || e.isKey( Key.DOWN ) ) {
 			return TurnDirection.BACKWARD;
-		} else if(e.isKey(Key.W) || e.isKey(Key.UP) ){
+		} else if ( e.isKey( Key.W ) || e.isKey( Key.UP ) ) {
 			return TurnDirection.FORWARD;
-		} else if(e.isKey(Key.D) || e.isKey(Key.RIGHT) ){
+		} else if ( e.isKey( Key.D ) || e.isKey( Key.RIGHT ) ) {
 			return TurnDirection.RIGHT;
 		}
 		return null;
 	}
 	
-	private MoveDirection getFowardBackwardLeftRightMoveDirection(){
-		if(e.isKey(Key.A) || e.isKey(Key.LEFT) ){
+	private MoveDirection getFowardBackwardLeftRightMoveDirection() {
+		if( e.isKey( Key.A ) || e.isKey( Key.LEFT ) ) {
 			return MoveDirection.LEFT;
-		} else if(e.isKey(Key.S) || e.isKey(Key.DOWN) ){
+		} else if ( e.isKey( Key.S ) || e.isKey( Key.DOWN ) ) {
 			return MoveDirection.BACKWARD;
-		} else if(e.isKey(Key.W) || e.isKey(Key.UP) ){
+		} else if ( e.isKey( Key.W ) || e.isKey( Key.UP ) ) {
 			return MoveDirection.FORWARD;
-		} else if(e.isKey(Key.D) || e.isKey(Key.RIGHT) ){
+		} else if ( e.isKey( Key.D ) || e.isKey( Key.RIGHT ) ) {
 			return MoveDirection.RIGHT;
 		}
 		return null;
 	}
 	
-	private MoveDirection getUpDownLeftRightMoveDirection(){
-		if(e.isKey(Key.A) || e.isKey(Key.LEFT) ){
+	private MoveDirection getUpDownLeftRightMoveDirection() {
+		if( e.isKey( Key.A ) || e.isKey( Key.LEFT ) ) {
 			return MoveDirection.LEFT;
-		} else if(e.isKey(Key.S) || e.isKey(Key.DOWN) ){
+		} else if ( e.isKey( Key.S ) || e.isKey( Key.DOWN ) ) {
 			return MoveDirection.DOWN;
-		} else if(e.isKey(Key.W) || e.isKey(Key.UP) ){
+		} else if ( e.isKey( Key.W ) || e.isKey( Key.UP ) ) {
 			return MoveDirection.UP;
-		} else if(e.isKey(Key.D) || e.isKey(Key.RIGHT) ){
+		} else if ( e.isKey( Key.D ) || e.isKey( Key.RIGHT ) ) {
 			return MoveDirection.RIGHT;
 		}
 		return null;

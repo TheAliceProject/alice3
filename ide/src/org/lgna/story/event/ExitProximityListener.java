@@ -1,6 +1,6 @@
 package org.lgna.story.event;
 
-public interface ExitProximityListener extends ProximityListener {
+public interface ExitProximityListener {
 
 	public void whenTheseMoveApart( ExitProximityEvent e );
 	

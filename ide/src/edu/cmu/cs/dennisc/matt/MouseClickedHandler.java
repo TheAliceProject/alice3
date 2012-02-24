@@ -7,16 +7,15 @@ import org.lgna.story.Model;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
 import org.lgna.story.Visual;
-import org.lgna.story.event.AbstractMouseClickListener;
 import org.lgna.story.event.MouseButtonEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MouseClickedOnObjectEvent;
 
 
-public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClickListener, MouseButtonEvent > {
+public class MouseClickedHandler extends AbstractEventHandler< Object, MouseButtonEvent > {
 
-	HashMap<Object, LinkedList<AbstractMouseClickListener>> map = new HashMap<Object, LinkedList<AbstractMouseClickListener>>();
+	HashMap<Object, LinkedList<Object>> map = new HashMap<Object, LinkedList<Object>>();
 	Object empty = new Object();
 
 	private boolean isMouseButtonListenerInExistence() {
@@ -37,7 +36,7 @@ public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClic
 	}
 	
 	@Override
-	protected void nameOfFireCall(AbstractMouseClickListener listener, MouseButtonEvent event) {
+	protected void nameOfFireCall(Object listener, MouseButtonEvent event) {
 		if (listener instanceof MouseClickOnObjectListener) {
 			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
 			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
@@ -51,7 +50,7 @@ public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClic
 	}
 	
 	public MouseClickedHandler() {
-		map.put(empty, new LinkedList<AbstractMouseClickListener>());
+		map.put(empty, new LinkedList<Object>());
 	}
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, Scene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
@@ -93,7 +92,7 @@ public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClic
 	public void fireAllTargeted(org.lgna.story.event.MouseButtonEvent event) {
 		if(shouldFire){
 			if(event != null){
-				LinkedList<AbstractMouseClickListener> listeners = new LinkedList<AbstractMouseClickListener>();
+				LinkedList<Object> listeners = new LinkedList<Object>();
 				listeners.addAll(map.get(empty));
 				Model modelAtMouseLocation = event.getModelAtMouseLocation();
 				if(modelAtMouseLocation != null){
@@ -101,14 +100,14 @@ public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClic
 					listeners.addAll(map.get(modelAtMouseLocation));
 				}
 				if(listeners != null){
-					for(AbstractMouseClickListener listener: listeners){
+					for(Object listener: listeners){
 						fireEvent(listener, event, modelAtMouseLocation);
 					}
 				}
 			}
 		}
 	}
-	public void addListener(AbstractMouseClickListener listener, MultipleEventPolicy eventPolicy, Visual[] targets) {
+	public void addListener(Object listener, MultipleEventPolicy eventPolicy, Visual[] targets) {
 		registerIsFiringMap(listener, targets);
 		registerPolicyMap(listener, eventPolicy);
 		if(targets != null && targets.length > 0){
@@ -116,7 +115,7 @@ public class MouseClickedHandler extends AbstractEventHandler< AbstractMouseClic
 				if(map.get(target) != null){
 					map.get(target).add(listener);
 				} else{
-					LinkedList<AbstractMouseClickListener> list = new LinkedList<AbstractMouseClickListener>();
+					LinkedList<Object> list = new LinkedList<Object>();
 					list.add(listener);
 					map.put(target, list);
 				}

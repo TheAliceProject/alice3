@@ -97,13 +97,4 @@ public class Ground extends Entity implements MutableRider, Visual {
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	
-	@MethodTemplate(visibility=Visibility.PRIME_TIME)
-	public void addMouseButtonListener( org.lgna.story.event.MouseClickListener mouseButtonListener ) {
-		this.getImplementation().addMouseButtonListener( mouseButtonListener );
-	}
-	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	public void removeMouseButtonListener( org.lgna.story.event.MouseClickListener mouseButtonListener ) {
-		this.getImplementation().removeMouseButtonListener( mouseButtonListener );
-	}
 }

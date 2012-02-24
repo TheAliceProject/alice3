@@ -9,20 +9,19 @@ import org.lgna.story.Entity;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
-import org.lgna.story.event.AbstractKeyPressListener;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.CollisionListener;
+import org.lgna.story.event.EndOcclusionListener;
 import org.lgna.story.event.EnterViewListener;
 import org.lgna.story.event.ExitViewListener;
 import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MoveWithArrows;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.ProximityListener;
+import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TransformationListener;
 import org.lgna.story.event.WhileCollisionListener;
@@ -79,11 +78,6 @@ public class EventManager {
 		contingent.setScene( scene );
 	}
 
-	public void removeMouseButtonListener( MouseClickListener mouseButtonListener ) {
-		throw new RuntimeException( "todo" );
-		//		this.mouse.removeListener(mouseButtonListener);
-		//		this.mouseButtonListeners.remove( mouseButtonListener );
-	}
 	public void removeKeyListener( KeyPressListener keyListener ) {
 		throw new RuntimeException( "todo" );
 		//		this.mouse.removeListener(keyListener);
@@ -136,7 +130,7 @@ public class EventManager {
 	public void addCollisionListener( CollisionListener collisionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
 		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
 	}
-	public void addProximityEventListener( ProximityListener proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
+	public void addProximityEventListener( Object proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
 
@@ -144,7 +138,7 @@ public class EventManager {
 		timer.addListener( timerEventListener, frequency, policy );
 	}
 
-	public void addKeyListener( AbstractKeyPressListener keyListener, MultipleEventPolicy eventPolicy ) {
+	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy ) {
 		this.keyHandler.addListener( keyListener, eventPolicy, null );
 	}
 	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
@@ -163,7 +157,7 @@ public class EventManager {
 	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, MultipleEventPolicy policy, Visual[] targets ) {
 		this.mouseHandler.addListener( listener, policy, targets );
 	}
-	public void addMouseButtonListener( MouseClickListener listener, MultipleEventPolicy policy, Visual[] targets ) {
+	public void addMouseButtonListener( Object listener, MultipleEventPolicy policy, Visual[] targets ) {
 		this.mouseHandler.addListener( listener, policy, targets );
 	}
 
@@ -171,9 +165,9 @@ public class EventManager {
 		this.transHandler.addTransformationListener( transformationlistener, shouldListenTo );
 	}
 
-	public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
-		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
-	}
+//	public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
+//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+//	}
 
 	public void addComesIntoViewEventListener( EnterViewListener listener, Entity[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
@@ -219,5 +213,13 @@ public class EventManager {
 	}
 	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Entity> group, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register(listener, group, frequency, policy );
+	}
+
+	public void addOcclusionEventListener( StartOcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
+		occlusionHandler.addOcclusionEvent(occlusionEventListener, groupOne, groupTwo);
+	}
+
+	public void addOcclusionEventListener( EndOcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
+		occlusionHandler.addOcclusionEvent(occlusionEventListener, groupOne, groupTwo);
 	}
 }

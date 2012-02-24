@@ -45,6 +45,6 @@ package org.lgna.story.event;
 /**
  * @author Dennis Cosgrove
  */
-public interface KeyPressListener extends AbstractKeyPressListener {
+public interface KeyPressListener {
 	public void keyPressed( KeyEvent e );
 }

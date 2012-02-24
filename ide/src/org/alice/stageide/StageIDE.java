@@ -42,6 +42,8 @@
  */
 package org.alice.stageide;
 
+import org.lgna.story.event.MouseClickOnObjectListener;
+
 public class StageIDE extends org.alice.ide.IDE {
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
@@ -190,7 +192,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation) expression;
 					org.lgna.project.ast.AbstractType<?,?,?> type = instanceCreation.getType();
 					if( type instanceof org.lgna.project.ast.AnonymousUserType ) {
-						if( type.isAssignableTo( org.lgna.story.event.KeyPressListener.class ) || type.isAssignableTo( org.lgna.story.event.MouseClickListener.class ) ) {
+						if( type.isAssignableTo( org.lgna.story.event.KeyPressListener.class ) || type.isAssignableTo( MouseClickOnObjectListener.class ) ) {
 							return false;
 						}
 					}

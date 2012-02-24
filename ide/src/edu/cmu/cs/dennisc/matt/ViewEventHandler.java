@@ -9,18 +9,17 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.EnterViewListener;
-import org.lgna.story.event.LeavesViewEvent;
 import org.lgna.story.event.ExitViewListener;
+import org.lgna.story.event.LeavesViewEvent;
 import org.lgna.story.event.ViewEvent;
-import org.lgna.story.event.ViewEventListener;
 import org.lgna.story.implementation.CameraImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class ViewEventHandler extends TransformationChangedHandler < ViewEventListener, ViewEvent > {
+public class ViewEventHandler extends TransformationChangedHandler < Object, ViewEvent > {
 
 	private CameraImp camera;
-	private Map < Entity, List< ViewEventListener > > map = Collections.newHashMap();
+	private Map < Entity, List< Object > > map = Collections.newHashMap();
 	private Map<Entity, Boolean > wasInView = Collections.newHashMap();
 
 
@@ -36,7 +35,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 		}
 		if ( changedEntity == camera.getAbstraction() ) {
 			for( Entity entity : map.keySet() ) {
-				for( ViewEventListener listener : map.get( entity ) ) {
+				for( Object listener : map.get( entity ) ) {
 					if ( check( listener, entity ) ) {
 						ViewEvent event = listener instanceof EnterViewListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
 						fireEvent( listener, event );
@@ -45,7 +44,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 				wasInView.put( entity, IsInViewDetector.isThisInView( entity, camera ) );
 			}
 		} else {
-			for( ViewEventListener listener : map.get( changedEntity ) ) {
+			for( Object listener : map.get( changedEntity ) ) {
 				if ( check( listener, changedEntity ) ) {
 					ViewEvent event = listener instanceof EnterViewListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
 					fireEvent( listener, event );
@@ -55,7 +54,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 		}
 	}
 
-	private boolean check( ViewEventListener listener, Entity changedEntity ) {
+	private boolean check( Object listener, Entity changedEntity ) {
 		boolean rv = false;
 		boolean thisInView = IsInViewDetector.isThisInView( changedEntity, camera );
 		if (listener instanceof EnterViewListener) {
@@ -71,7 +70,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 	}
 
 	@Override
-	protected void nameOfFireCall(ViewEventListener listener, ViewEvent event) {
+	protected void nameOfFireCall( Object listener, ViewEvent event) {
 		if (listener instanceof EnterViewListener) {
 			EnterViewListener intoViewEL = ( EnterViewListener ) listener;
 			intoViewEL.cameIntoView( ( ComesIntoViewEvent ) event );
@@ -81,7 +80,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 		}
 	}
 
-	public void addViewEventListener( ViewEventListener listener, Entity[] entities) {
+	public void addViewEventListener( Object listener, Entity[] entities) {
 		registerIsFiringMap( listener );
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
 		for( Entity m : entities ) {
@@ -97,7 +96,7 @@ public class ViewEventHandler extends TransformationChangedHandler < ViewEventLi
 		}
 		for( Entity entity : entities ){
 			if ( map.get( entity ) == null ){
-				map.put( entity, new LinkedList<ViewEventListener>() );
+				map.put( entity, new LinkedList< Object >() );
 			}
 			map.get( entity ).add( listener );
 		}

@@ -11,7 +11,7 @@ public class MoveWithArrows implements ArrowKeyPressListener {
 		this.entity = entity;
 	}
 
-	public void keyPressed(ArrowKeyEvent e) {
+	public void arrowKeyPressed(ArrowKeyEvent e) {
 		entity.move( e.getMoveDirection( MoveDirectionSpec.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
 	}
 
