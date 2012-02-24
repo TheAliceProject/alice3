@@ -47,7 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> {
-	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel<T>() {
+	private final edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T>() {
 		public int getChildCount( Object parent ) {
 			return CustomTreeSelectionState.this.getChildCount( (T)parent );
 		}
@@ -102,5 +102,9 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> 
 	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
 		return this.treeModel;
+	}
+	@Override
+	public void refresh( T node ) {
+		this.treeModel.reload( node );
 	}
 }

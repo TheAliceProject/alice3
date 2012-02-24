@@ -268,6 +268,10 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	protected abstract String getTextForNode( T node );
 	protected abstract javax.swing.Icon getIconForNode( T node );
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel();
+	public abstract void refresh( T node ); 
+	public final void refreshAll() { 
+		this.refresh( this.getTreeModel().getRoot() );
+	}
 	public T getSelectedNode() {
 		javax.swing.tree.TreePath path = this.swingModel.treeSelectionModel.getSelectionPath();
 		if( path != null ) {

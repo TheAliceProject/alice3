@@ -24,7 +24,7 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 	public SearchDialogManager() {
 		super( Application.INFORMATION_GROUP, java.util.UUID.fromString( "bb4777b7-20df-4d8d-b214-92acd390fdde" ), SearchCodec.getSingleton(), null );
 
-		this.searchState = new StringState( Application.INFORMATION_GROUP, java.util.UUID.fromString( "7012f7cd-c25b-4e9f-bba2-f4d172a0590b" ), "search" ) {
+		this.searchState = new StringState( Application.INFORMATION_GROUP, java.util.UUID.fromString( "7012f7cd-c25b-4e9f-bba2-f4d172a0590b" ), "" ) {
 		};
 		searchState.addValueListener( this );
 	}
@@ -45,6 +45,7 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 				}
 			}
 		}
+		this.refreshAll();
 	}
 
 	private void show( SearchTreeNode node ) {

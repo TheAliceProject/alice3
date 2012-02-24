@@ -129,6 +129,7 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 			final BorderPanel rv = new BorderPanel();
 			SearchDialogManager manager = new SearchDialogManager();
 			TextField textField = new TextField( manager.getStringState() );
+			textField.getAwtComponent().setTextForBlankCondition( "search" );
 			rv.addComponent( textField, Constraint.PAGE_START );
 			Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
 			tree.expandAllRows();
