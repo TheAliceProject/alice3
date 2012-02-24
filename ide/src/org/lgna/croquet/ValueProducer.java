@@ -73,6 +73,14 @@ public abstract class ValueProducer<T> extends CompletionModel { //todo: PrepMod
 	}
 	
 	@Override
+	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+	@Override
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
+		return false;
+	}
+	@Override
 	protected void localize() {
 	}
 	@Override
