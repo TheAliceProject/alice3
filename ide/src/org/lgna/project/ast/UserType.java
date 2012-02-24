@@ -63,6 +63,32 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 		this.methods.add( methods );
 		this.fields.add( fields );
 	}
+	private boolean isEqualToOrSubTypeOf( UserType<?> candidate ) {
+		if( this == candidate ) {
+			return true;
+		} else {
+			AbstractType<?,?,?> superType = this.superType.getValue();
+			if( superType instanceof UserType<?> ) {
+				UserType<?> superUserType = (UserType<?>)superType;
+				return superUserType.isEqualToOrSubTypeOf( candidate );
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType< ?, ?, ? > other ) {
+		if( other.isArray() ) {
+			return false;
+		} else {
+			if( other instanceof UserType<?> ) {
+				UserType<?> otherUserType = (UserType<?>)other;
+				return this.isEqualToOrSubTypeOf( otherUserType );
+			} else {
+				return false;
+			}
+		}
+	}
 	@Override
 	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
 		return null;

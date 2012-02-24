@@ -99,6 +99,24 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return type;
 		}
 	}
+	
+	@Override
+	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType< ?, ?, ? > other ) {
+		if( other != null ) {
+			//todo: handle arrays
+			JavaType otherTypeDeclaredInJava = other.getFirstEncounteredJavaType();
+			if( otherTypeDeclaredInJava != null ) {
+				Class<?> cls = this.getClassReflectionProxy().getReification();
+				Class<?> otherCls = otherTypeDeclaredInJava.getClassReflectionProxy().getReification();
+				return cls.isAssignableFrom( otherCls );
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 
 	public static JavaType getInstance( ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {

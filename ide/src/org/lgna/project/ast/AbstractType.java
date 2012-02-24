@@ -55,13 +55,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		}
 		return (JavaType)type;
 	}
-	//todo
-	//protected abstract boolean isAssignableFromType( AbstractType<?,?,?> other );
-	protected boolean isAssignableFromType( AbstractType<?,?,?> other ) {
-		JavaType thisTypeDeclaredInJava = this.getFirstEncounteredJavaType();
-		JavaType otherTypeDeclaredInJava = other.getFirstEncounteredJavaType();
-		return thisTypeDeclaredInJava.getClassReflectionProxy().getReification().isAssignableFrom( otherTypeDeclaredInJava.getClassReflectionProxy().getReification() );
-	}
+	protected abstract boolean isAssignableFromType( AbstractType<?,?,?> other );
 	
 	public final boolean isAssignableFrom( AbstractType<?,?,?> other ) {
 		if( other != null ) {
