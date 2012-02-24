@@ -4,17 +4,28 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.UserMethod;
+
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class SearchTreeNode {
 
 	private List<SearchTreeNode> children = Collections.newLinkedList();
 	private SearchTreeNode parent;
-	private String content;
+	private Object content;
+	private ActionOperation operation;
 
-	public SearchTreeNode( SearchTreeNode parent, String content ) {
+	public SearchTreeNode( SearchTreeNode parent, Object content ) {
 		this.parent = parent;
 		this.content = content;
+		if( parent != null && parent.getParent() == null && content instanceof UserMethod ) {//node is not root AND node's parent is root
+			this.operation = DeclarationTabState.getInstance().getItemSelectionOperation( (UserMethod)content );
+		} else if( parent != null ) {
+			this.operation = parent.operation;
+		}
 	}
 
 	public int getNumChildren() {
@@ -26,7 +37,7 @@ public class SearchTreeNode {
 	}
 
 	public int getChildIndex( SearchTreeNode child ) {
-		return child.getParent().getChildIndex( child );
+		return child.getParent().getChildren().indexOf( child );
 	}
 
 	public SearchTreeNode getParent() {
@@ -34,9 +45,17 @@ public class SearchTreeNode {
 	}
 
 	public String getText() {
-		return content;
+		if( content instanceof UserMethod ) {
+			UserMethod method = (UserMethod)content;
+			return "<html><strong>" + method.getName() + "</strong></html>";
+		} else if( content instanceof JavaMethod ) {
+			JavaMethod javaMethod = (JavaMethod)content;
+			return javaMethod.getName();
+		} else if( content instanceof String ) {
+			return (String)content;
+		}
+		return "ERROR: (mmay) unhandledtype in tree: " + content.getClass();
 	}
-
 	public Icon getIcon() {
 		return null;
 	}
@@ -47,8 +66,7 @@ public class SearchTreeNode {
 
 	@Override
 	public String toString() {
-		super.toString();
-		return content;
+		return getText();
 	}
 
 	public void removeSelf() {
@@ -56,8 +74,20 @@ public class SearchTreeNode {
 	}
 
 	private void removeChild( SearchTreeNode child ) {
-		System.out.println( child.getText() );
 		children.remove( child );
 	}
 
+	public List<SearchTreeNode> getChildren() {
+		return children;
+	}
+
+	public void removeChildren() {
+		this.children.clear();
+	}
+
+	public void invokeOperation() {
+		if( this.operation != null ) {
+			this.operation.fire();
+		}
+	}
 }

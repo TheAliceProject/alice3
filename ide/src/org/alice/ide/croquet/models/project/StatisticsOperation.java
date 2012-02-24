@@ -46,11 +46,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.alice.ide.declarationseditor.DeclarationTabState;
-import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.BorderPanel.Constraint;
-import org.lgna.croquet.components.Hyperlink;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
@@ -129,45 +126,30 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 			final BorderPanel rv = new BorderPanel();
 			SearchDialogManager manager = new SearchDialogManager();
 			TextField textField = new TextField( manager.getStringState() );
-			textField.getAwtComponent().setTextForBlankCondition( "search" );
+			textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
 			rv.addComponent( textField, Constraint.PAGE_START );
 			Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
-			tree.expandAllRows();
+			manager.setOwner( tree );
 			rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
 
 			for( Class cls : clses ) {
 				int count = crawler.getCount( cls );
 				if( count > 0 ) {
-					//					String str = "";
-					//					str += cls.getSimpleName();
-					//					str += ": ";
-					//					str += count;
-					//					rv.addComponent(new Label( str ) );
 					if( cls.equals( org.lgna.project.ast.ExpressionStatement.class ) ) {
 						for( UserMethod method : methodParentMap.keySet() ) {
-							String text = "<html><strong>" + method.getName() + "</strong></html>";
-							Operation operation = DeclarationTabState.getInstance().getItemSelectionOperation( method );
-							operation.setName( text );
-
-							Hyperlink hyperlink = operation.createHyperlink();
-							SearchTreeNode parent = manager.addNode( null, text );
+							SearchTreeNode parent = manager.addNode( null, method );
 							List<SearchTreeNode> list = Collections.newLinkedList();
 							for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
-								SearchTreeNode child = manager.addNode( parent, methodInvocation.method.getValue().getName() );
+								SearchTreeNode child = manager.addNode( parent, methodInvocation.method.getValue() );
 								list.add( child );
-
-								//								Operation childOperation = DeclarationTabState.getInstance().getItemSelectionOperation( methodInvocation.method.getValue() );
-								//								String str = "+   " + methodInvocation.method.getValue().getName();
-								//								System.out.println(str);
-								//								childOperation.setName( str );
-								//								Hyperlink childHyperlink = childOperation.createHyperlink();
-								//								rv.addComponent( childHyperlink );
 							}
 							manager.addParentWithChildren( parent, list );
 						}
 					}
 				}
 			}
+			manager.refreshAll();
+			tree.setRootVisible( false );
 			tree.expandAllRows();
 			//			searchState.addPanel( rv );
 			return rv;
