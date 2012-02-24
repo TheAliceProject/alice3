@@ -42,8 +42,6 @@
  */
 package org.alice.stageide;
 
-import org.lgna.story.event.MouseClickOnObjectListener;
-
 public class StageIDE extends org.alice.ide.IDE {
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
@@ -188,15 +186,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {
 			if( expression != null ) {
-				if (expression instanceof org.lgna.project.ast.InstanceCreation) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation) expression;
-					org.lgna.project.ast.AbstractType<?,?,?> type = instanceCreation.getType();
-					if( type instanceof org.lgna.project.ast.AnonymousUserType ) {
-						if( type.isAssignableTo( org.lgna.story.event.KeyPressListener.class ) || type.isAssignableTo( MouseClickOnObjectListener.class ) ) {
-							return false;
-						}
-					}
-				} else if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
+				if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
 					return false;
 				} else {
 					org.lgna.project.ast.Node parent = expression.getParent();
