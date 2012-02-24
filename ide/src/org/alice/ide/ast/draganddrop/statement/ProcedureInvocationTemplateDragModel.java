@@ -65,6 +65,15 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		assert this.method.isProcedure();
 		this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
 	}
+	@Override
+	public boolean isAddEventListenerLikeSubstance() {
+		if( this.method instanceof org.lgna.project.ast.JavaMethod ) {
+			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)this.method;
+			return javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class );
+		} else {
+			return false;
+		}
+	}
 	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}

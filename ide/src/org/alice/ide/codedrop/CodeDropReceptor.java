@@ -66,6 +66,7 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
+			org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel)dragModel;
 			return ide.getFocusedCode() == this.getCode();
 		} else {
 			return false;
@@ -90,12 +91,31 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 	}
 	public final void dragEntered( org.lgna.croquet.history.DragStep step ) {
 		org.lgna.croquet.components.DragComponent source = step.getDragSource();
-		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
+		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( step.getModel(), source );
 		this.repaint();
 	}
 	protected abstract org.lgna.croquet.components.Component< ? > getAsSeenBy();
-	protected StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.components.Container<?> source ) {
+	protected StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( org.lgna.croquet.DragModel dragModel, org.lgna.croquet.components.Container<?> source ) {
 		java.util.List< StatementListPropertyView > statementListPropertyPanes = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, StatementListPropertyView.class );
+		
+		boolean isAddEvent;
+		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
+			org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel)dragModel;
+			isAddEvent = statementDragModel.isAddEventListenerLikeSubstance();
+		} else {
+			isAddEvent = false;
+		}
+		
+		java.util.ListIterator< StatementListPropertyView > listIterator = statementListPropertyPanes.listIterator();
+		while( listIterator.hasNext() ) {
+			StatementListPropertyView view = listIterator.next();
+			if( view.isAcceptingOfAddEventListenerMethodInvocationStatements() == isAddEvent ) {
+				//pass
+			} else {
+				listIterator.remove();
+			}
+		}
+		
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
 		for( StatementListPropertyView statementListPropertyPane : statementListPropertyPanes ) {

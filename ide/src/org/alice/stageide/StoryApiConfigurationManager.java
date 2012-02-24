@@ -43,6 +43,12 @@
 
 package org.alice.stageide;
 
+import java.util.List;
+
+import org.lgna.project.ast.JavaMethod;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,6 +61,21 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public static StoryApiConfigurationManager getInstance() {
 		return SingletonHolder.instance;
 	}
+	
+	
+	
+	@Override
+	public List<JavaMethod> getAddEventListenerMethods() {
+		return Collections.newLinkedList(
+//				ADD_SCENE_ACTIVATION_LISTENER_METHOD,
+//				ADD_MOUSE_BUTTON_LISTENER_METHOD,
+//				ADD_KEY_LISTENER_METHOD,
+//				ADD_COLLISION_LISTENER_METHOD,
+//				ADD_PROXIMITY_LISTENER_METHOD,
+//				ADD_TIMER_EVENT_LISTENER_METHOD
+		);
+	}
+
 	@Override
 	protected boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type ) {
 		return type.isAssignableTo( org.lgna.story.Model.class );

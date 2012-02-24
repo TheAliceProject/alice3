@@ -479,6 +479,21 @@ public class AstUtilities {
 		return createLambdaExpression( JavaType.getInstance( cls ) );
 	}
 	
+	public static boolean isAddEventListenerMethodInvocationStatement( Statement statement ) {
+		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+				if( method instanceof org.lgna.project.ast.JavaMethod ) {
+					org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
+					return javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class );
+				}
+			}
+		}
+		return false;
+	}
 	public static AbstractType< ?,?,? > getKeywordFactoryType( JavaKeyedArgument argument ) {
 		AbstractParameter parameter = argument.parameter.getValue();
 		if( parameter.isKeyworded() ) {

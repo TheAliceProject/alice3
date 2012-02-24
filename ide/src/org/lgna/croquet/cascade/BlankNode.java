@@ -64,6 +64,6 @@ public class BlankNode< B > extends CascadeNode< AbstractItemNode< B, ?, org.lgn
 		return this.rtBlank.getParent() instanceof RtRoot;
 	}
 	public AbstractItemNode getSelectedFillInContext() {	
-		return this.rtBlank.getSelectedFillInContext();
+		return this.rtBlank.getSelectedFillInNode();
 	}
 }
