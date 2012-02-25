@@ -55,6 +55,8 @@ public class DefaultTheme implements Theme {
 	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 230, 230, 210 );
 	private static final java.awt.Color DEFAULT_EVENT_COLOR = new Color( 100, 200, 100 );
 	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_EVENT_COLOR.brighter().brighter(); //new Color( 150, 225, 150 );
+//	private static final java.awt.Color DEFAULT_EVENT_COLOR = new java.awt.Color( 0xd3d7f0 );
+//	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_PROCEDURE_COLOR;
 
 	private static final java.awt.Color DEFAULT_SELECTED_COLOR = new java.awt.Color(255, 255, 179);
 	private static final java.awt.Color DEFAULT_UNSELECTED_COLOR = new java.awt.Color(141, 137, 166);
