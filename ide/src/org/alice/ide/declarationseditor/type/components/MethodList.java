@@ -52,11 +52,7 @@ public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMe
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserMethod item ) {
-		org.lgna.croquet.components.LineAxisPanel lineStart = new org.lgna.croquet.components.LineAxisPanel(
-				org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton(),
-				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton()
-		);
-		return lineStart;
+		return org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton();
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserMethod item ) {
@@ -80,7 +76,10 @@ public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMe
 		if( item.isSignatureLocked.getValue() ) { //todo: isOverride
 			return null;
 		} else {
-			return org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton();
+			return new org.lgna.croquet.components.LineAxisPanel(
+					org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton(),
+					org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton()
+			);
 		}
 	}
 }

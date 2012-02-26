@@ -186,15 +186,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {
 			if( expression != null ) {
-				if (expression instanceof org.lgna.project.ast.InstanceCreation) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation) expression;
-					org.lgna.project.ast.AbstractType<?,?,?> type = instanceCreation.getType();
-					if( type instanceof org.lgna.project.ast.AnonymousUserType ) {
-						if( type.isAssignableTo( org.lgna.story.event.KeyListener.class ) || type.isAssignableTo( org.lgna.story.event.MouseButtonListener.class ) ) {
-							return false;
-						}
-					}
-				} else if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
+				if( expression instanceof org.lgna.project.ast.LambdaExpression ) {
 					return false;
 				} else {
 					org.lgna.project.ast.Node parent = expression.getParent();
@@ -282,7 +274,9 @@ public class StageIDE extends org.alice.ide.IDE {
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 			org.lgna.project.ast.NamedUserType sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				this.setFocusedCode( sceneType.findMethod( "myFirstMethod" ) );
+				String methodName = "myFirstMethod";
+				methodName = StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME;
+				this.setFocusedCode( sceneType.findMethod( methodName ) );
 			}
 		}
 	}

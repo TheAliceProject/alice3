@@ -42,21 +42,70 @@
  */
 package org.lgna.story.event;
 
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.ProgramImp;
+import org.lgna.story.implementation.SceneImp;
+
+import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< java.awt.Component > {
-	private java.awt.event.MouseEvent e;
-	private org.lgna.story.Scene scene;
+public class MouseButtonEvent extends AbstractEvent {
+	protected java.awt.event.MouseEvent e;
+	protected org.lgna.story.Scene scene;
 	private boolean isPickPerformed;
-	private org.lgna.story.Model partAtMouseLocation;
 	private org.lgna.story.Model modelAtMouseLocation;
 	public MouseButtonEvent( java.awt.event.MouseEvent e, org.lgna.story.Scene scene ) {
-		super( e.getComponent() );
 		this.e = e;
 		this.scene = scene;
 		this.isPickPerformed = false;
 	}
+
+	private synchronized void pickIfNecessary() {
+		if( this.isPickPerformed ) {
+			//pass
+		} else {
+			if( this.scene != null )  {
+				SceneImp sceneImp = ImplementationAccessor.getImplementation(this.scene);
+				ProgramImp programImp = sceneImp.getProgram();
+				if( programImp != null ) {
+					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = programImp.getOnscreenLookingGlass();
+					if( lg != null ) {
+						edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
+						if( pickResult != null ) {
+							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
+							if( sgVisual != null ) {
+								edu.cmu.cs.dennisc.scenegraph.Component sgComponent = sgVisual;
+								while( true ) {
+									edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgComponent.getParent();
+									if( sgParent == null ) {
+										break;
+									}
+									if( sgParent == sceneImp.getSgComposite() ) {
+										org.lgna.story.Entity e = EntityImp.getAbstractionFromSgElement( sgComponent );
+										if( e instanceof org.lgna.story.Model ) {
+											this.modelAtMouseLocation = (org.lgna.story.Model)e;
+										}
+										break;
+									}
+									sgComponent = sgParent;
+								}
+							}
+						}
+					}
+				}
+			}
+			this.isPickPerformed = true;
+		}
+	}
+	public org.lgna.story.Model getModelAtMouseLocation() {
+		this.pickIfNecessary();
+		return this.modelAtMouseLocation;
+	}
+	
+	
 
 //	private synchronized void pickIfNecessary() {
 //		if( this.isPickPerformed ) {

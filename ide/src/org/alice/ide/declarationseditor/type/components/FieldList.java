@@ -54,17 +54,16 @@ public abstract class FieldList extends MemberList< org.lgna.project.ast.UserFie
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserField item ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
-		org.lgna.croquet.components.LineAxisPanel lineStartPanel = new org.lgna.croquet.components.LineAxisPanel();
 		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
 			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
 			label.setToolTipText( "managed by the scene editor" );
 			label.setForegroundColor( java.awt.Color.GRAY );
 			label.scaleFont( 2.0f );
 			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			lineStartPanel.addComponent( label );
+			return label;
+		} else {
+			return null;
 		}
-		lineStartPanel.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
-		return lineStartPanel;
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserField item ) {
@@ -73,10 +72,14 @@ public abstract class FieldList extends MemberList< org.lgna.project.ast.UserFie
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
+		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
+		rv.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
 		if( item.isDeletionAllowed.getValue() ) {
-			return org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton();
+			rv.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
 		} else {
-			return null;
+			//todo
+			rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 64 ) );
 		}
+		return rv;
 	}
 }

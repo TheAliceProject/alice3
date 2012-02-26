@@ -40,15 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.cascade.fillerinners;
+package org.lgna.project.annotations;
 
-public class MouseButtonListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public MouseButtonListenerFillerInner() {
-		super( org.lgna.story.event.MouseButtonListener.class );
-	}
-	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		rv.add( org.alice.stageide.croquet.models.cascade.adapters.MouseButtonAdapterFillIn.getInstance() );
-		return rv;
-	}
+/**
+ * @author Dennis Cosgrove
+ */
+@java.lang.annotation.Documented
+@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface AddEventListenerTemplate {
 }

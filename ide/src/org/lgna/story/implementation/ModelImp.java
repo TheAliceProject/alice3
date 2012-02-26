@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -446,10 +447,5 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 //		edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
 //		sgFrontFace.scale.setValue( scale );
 //		sgBackFace.scale.setValue( scale );
-//	}
-	
-//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-//	}
-//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
 //	}
 }
