@@ -48,22 +48,27 @@ package org.alice.ide.croquet.models.gallerybrowser;
  */
 public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
 	private static class CompositeIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DefaultCompositeIcon {
-		public CompositeIcon( javax.swing.ImageIcon imageIcon ) {
+		public CompositeIcon( javax.swing.Icon icon ) {
 			super( 
 					org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE,
-					imageIcon,
+					icon,
 					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE 
 			);
 		}
 	}
+	
+	public static javax.swing.Icon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
+	}
+	
 	private final javax.swing.Icon largeIcon;
 	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( id, type );
-		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
-		javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
-		if( imageIcon != null ) {
-			this.largeIcon = new CompositeIcon(imageIcon);
+		javax.swing.Icon icon = getIcon( type );
+		if( icon != null ) {
+			this.largeIcon = new CompositeIcon(icon);
 		} else {
 			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
 		}

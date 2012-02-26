@@ -64,26 +64,32 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		this.typeLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( nextValue ) );
 		
-		javax.swing.Icon snapshotIcon = null;
+		java.awt.image.BufferedImage thumbnail = null;
 		String snapshotText = null;
+		javax.swing.Icon snapshotIcon = null;
 		if( nextValue != null ) {
 			org.lgna.project.ast.AbstractType< ?,?,? > snapshotType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( nextValue );
 			
 			if( snapshotType != null ) {
 				if( snapshotType instanceof org.lgna.project.ast.JavaType ) {
-					java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(((org.lgna.project.ast.JavaType)snapshotType).getClassReflectionProxy().getReification());
-					if( thumbnail != null ) {
-						snapshotIcon = new javax.swing.ImageIcon(thumbnail);
-					}
+					org.lgna.project.ast.JavaType snapShotJavaType = (org.lgna.project.ast.JavaType)snapshotType;
+					thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(snapShotJavaType.getClassReflectionProxy().getReification());
+				}
+				if( thumbnail != null ) {
+					snapshotIcon = new javax.swing.ImageIcon(thumbnail);
+				} else {
+					snapshotIcon = org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getIcon( snapshotType );
 				}
 				//snapshotIcon = org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconForType( snapshotType );
 				//snapshotText = snapshotType.toString();
 			} else {
 				org.lgna.project.ast.JavaField field = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( nextValue.getDeclaredConstructors().get( 0 ) );
 				if( field != null ) {
-					java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(field.getValueType().getClassReflectionProxy().getReification());
-					snapshotIcon = new javax.swing.ImageIcon(thumbnail);
+					thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(field.getValueType().getClassReflectionProxy().getReification());
 					//snapshotText = field.toString();
+					if( thumbnail != null ) {
+						snapshotIcon = new javax.swing.ImageIcon(thumbnail);
+					}
 				}
 			}
 		}
