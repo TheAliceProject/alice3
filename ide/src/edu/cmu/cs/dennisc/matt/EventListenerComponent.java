@@ -58,8 +58,6 @@ import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.SimpleArgumentListProperty;
 import org.lgna.project.ast.UserLambda;
 
-import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
-
 /**
  * @author Matt May
  */
@@ -67,58 +65,64 @@ public class EventListenerComponent extends BorderPanel {
 
 	public EventListenerComponent( MethodInvocation methodInvocation ) {
 		SimpleArgument argument0 = methodInvocation.requiredArguments.get( 0 );
-		this.addComponent( createHeader(methodInvocation), Constraint.PAGE_START );
-		AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get(0);
-		if (argument0.expression.getValue() instanceof LambdaExpression) {
-			LambdaExpression lambdaExpression = (LambdaExpression) argument0.expression.getValue();
-			if (lambdaExpression.value.getValue() instanceof UserLambda) {
-				UserLambda lambda = (UserLambda) lambdaExpression.value.getValue();
+		this.addComponent( createHeader( methodInvocation ), Constraint.PAGE_START );
+		AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get( 0 );
+		if( argument0.expression.getValue() instanceof LambdaExpression ) {
+			LambdaExpression lambdaExpression = (LambdaExpression)argument0.expression.getValue();
+			if( lambdaExpression.value.getValue() instanceof UserLambda ) {
+				UserLambda lambda = (UserLambda)lambdaExpression.value.getValue();
 				//ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
-				
-				LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
-						new Label( singleAbstractMethod.getName(), TextWeight.BOLD ), 
+
+				LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel( 
+						new Label( "declare procedure", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), 
+						org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ),
+						new Label( singleAbstractMethod.getName(), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), 
 						org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-						new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda ) 
+						new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda )
 				);
+
 				BorderPanel codeContainer = new BorderPanel();
 				StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
+				org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( putCodeHere );
 				codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
-				codeContainer.addComponent(putCodeHere, Constraint.CENTER);
-				codeContainer.addComponent(singleAbstractMethodHeader, Constraint.PAGE_START);
-				codeContainer.setBorder( BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
-				this.addComponent(codeContainer, Constraint.CENTER);
+				codeContainer.addComponent( bodyPane, Constraint.CENTER );
+				codeContainer.addComponent( singleAbstractMethodHeader, Constraint.PAGE_START );
+				codeContainer.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
+				this.addComponent( codeContainer, Constraint.CENTER );
+				this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ), Constraint.LINE_START );
 			}
 		}
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 
-	private JComponent< ? > createHeader( MethodInvocation methodInvocation ) {
+	private JComponent<?> createHeader( MethodInvocation methodInvocation ) {
 		AbstractMethod method = methodInvocation.method.getValue();
 		LineAxisPanel rv = new LineAxisPanel();
-		rv.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		Label label = new Label( methodInvocation.method.getValue().getName(), TextWeight.BOLD );
+		rv.setBorder( BorderFactory.createEmptyBorder( 0, 0, 4, 0 ) );
+		rv.addComponent( new org.alice.ide.common.ThisPane() );
+		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+		Label label = new Label( methodInvocation.method.getValue().getName(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		rv.addComponent( label );
-		if(method.getRequiredParameters() != null){
+		if( method.getRequiredParameters() != null ) {
 			SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
-			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane(
-					org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), requiredArgumentsProperty) {
+			ArgumentListPropertyPane requiredParametersListView = new ArgumentListPropertyPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), requiredArgumentsProperty ) {
 				@Override
-				protected Component<?> createComponent(
-						SimpleArgument argument) {
+				protected Component<?> createComponent( SimpleArgument argument ) {
 					if( argument.expression.getValue() instanceof LambdaExpression ) {
 						return null;
 					} else {
-						return super.createComponent(argument);
+						return super.createComponent( argument );
 					}
 				}
 			};
 			//			if(requiredParametersListView.getComposite() != null){
 			//			requiredParametersListView.
-			rv.addComponent(requiredParametersListView);
+			rv.addComponent( requiredParametersListView );
 			//			}
 			//			System.out.println(requiredParametersListView);
 		}
-		if(method.getKeyedParameter() != null) {
-			JComponent< ? > keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
+		if( method.getKeyedParameter() != null ) {
+			JComponent<?> keyedArgumentListView = new org.alice.ide.x.components.KeyedArgumentListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), methodInvocation.getKeyedArgumentsProperty() );
 			rv.addComponent( keyedArgumentListView );
 		}
 		return rv;
