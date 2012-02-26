@@ -633,6 +633,18 @@ public class ModelResourceExporter {
 	      in.close();
 	  }
 	}
+
+	private File getJavaCodeDir(String root)
+	{
+		String packageDirectory = getDirectoryStringForPackage(this.classData.packageString);
+		return new File(root+packageDirectory);
+	}
+
+	private File getJavaFile(String root)
+	{
+		String filename = getDirectoryStringForPackage(this.classData.packageString+this.name+".java");
+		return new File(root+filename);
+	}
 	
 	private File createJavaCode(String root)
 	{
@@ -676,7 +688,12 @@ public class ModelResourceExporter {
         return null;
     }
 	   
-	
+	private File getXMLFile(String root) {
+		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
+        File xmlFile = new File(resourceDirectory, this.name+".xml");
+		return xmlFile;
+	}
+
 	private File createXMLFile(String root)
 	{
 		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
@@ -766,14 +783,20 @@ public class ModelResourceExporter {
         return thumbnailFiles;
 	}
 	
-	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream)
+	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile)
 	{
 		if (!sourceDirectory.endsWith("/") && !sourceDirectory.endsWith("\\")) {
 			sourceDirectory += File.separator;
         }
 		if (this.classData != null) {
-			File javaFile = createJavaCode(sourceDirectory);
-			File sourceDir = javaFile.getParentFile();
+			File sourceDir = getJavaCodeDir(sourceDirectory);
+			File javaFile;
+			if (rebuildJavaFile) {
+				javaFile = createJavaCode(sourceDirectory);
+			}
+			else {
+				javaFile = getJavaFile(sourceDirectory);
+			}
 			
 			String[] args = new String[]{javaFile.getAbsolutePath(), "-target", "1.5", "-classpath", System.getProperty("java.class.path")};
 			PrintWriter pw = new PrintWriter(System.out);
@@ -794,8 +817,12 @@ public class ModelResourceExporter {
 				return false;
 			}
 		}
-		
-		File xmlFile = createXMLFile(resourceDirectory);
+		if (rebuildXmlFile) {
+			xmlFile = createXMLFile(resourceDirectory);
+		}
+		else {
+			xmlFile = getXMLFile(resourceDirectory);
+		}
 		File resourceDir = xmlFile.getParentFile();
 		List<File> thumbnailFiles = createThumbnails(resourceDirectory);
 		try
@@ -813,7 +840,12 @@ public class ModelResourceExporter {
 	
 	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos)
 	{
-		return addToJar(sourceDirectory, resourceDirectory, jos, jos);
+		return addToJar(sourceDirectory, resourceDirectory, jos, jos, true, true);
+	}
+
+	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles)
+	{
+		return addToJar(sourceDirectory, resourceDirectory, jos, jos, rebuildFiles, rebuildFiles);
 	}
 	
 	public File export(String sourceDirectory, String resourceDirectory, String outputDir)
