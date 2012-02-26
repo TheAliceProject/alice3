@@ -123,6 +123,7 @@ public class ModelResourceExporter {
 	private AxisAlignedBox boundingBox;
 	private File xmlFile;
 	private Map<String, Image> thumbnails = new HashMap<String, Image>();
+	private Map<String, File> existingThumbnails = null;
 	
 	private String attributionName;
 	private String attributionYear;
@@ -230,6 +231,18 @@ public class ModelResourceExporter {
 	public void addThumbnail( String name, Image thumbnail )
 	{
 		this.thumbnails.put(name, thumbnail);
+	}
+
+	public void addExistingThumbnail(String name, File thumbnailFile) {
+		if (thumbnailFile != null && thumbnailFile.exists()) {
+			if (this.existingThumbnails == null) {
+				this.existingThumbnails = new HashMap<String, File>();
+			}
+			this.existingThumbnails.put(name, thumbnailFile);
+		}
+		else {
+			System.err.println("FAILED TO ADDED THUMBAIL: "+thumbnailFile+" does not exist.");
+		}
 	}
 	
 	public void setXMLFile(File xmlFile)
@@ -743,24 +756,60 @@ public class ModelResourceExporter {
         }
         return null;
 	}
-	
+
+	public String getThumbnailPath(String rootPath, String textureName) {
+		String resourceDirectory = rootPath + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
+		if (textureName == null) {
+			return resourceDirectory+this.name+".png";
+		}
+		else {
+			return resourceDirectory+this.name + "_" + textureName + ".png";
+		}
+	}
+
 	private List<File> createThumbnails(String root)
 	{
 		List<File> thumbnailFiles = new LinkedList<File>();
 		boolean isFirst = true;
-		for (Entry<String, Image> entry : this.thumbnails.entrySet())
-		{
-			String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
-			if (isFirst)
+		if (this.existingThumbnails != null && !this.existingThumbnails.isEmpty()) {
+			for(Entry < String, File > entry : this.existingThumbnails.entrySet())
 			{
-				File f = saveImageToFile(resourceDirectory+this.name+".png", entry.getValue());
+				if (isFirst) {
+					File thumb = new File(getThumbnailPath(root, null));
+					try {
+						FileUtilities.copyFile(entry.getValue(), thumb);
+						thumbnailFiles.add(thumb);
+					}
+					catch (IOException e) {
+						e.printStackTrace();
+						return null;
+					}
+					isFirst = false;
+				}
+				if (entry.getValue().exists() ){
+					thumbnailFiles.add(entry.getValue());
+				}
+				else {
+					System.err.println("FAILED TO FIND THUMBNAIL FILE '"+entry.getValue()+"'");
+					return null;
+				}
+			}
+		}
+		else {
+			for(Entry < String, Image > entry : this.thumbnails.entrySet())
+			{
+				if (isFirst)
+				{
+					File f = saveImageToFile(getThumbnailPath(root, null), entry.getValue());
+					if (f != null ){
+						thumbnailFiles.add(f);
+					}
+					isFirst = false;
+				}
+				File f = saveImageToFile(getThumbnailPath(root, entry.getKey()), entry.getValue());
 				if (f != null ){
 					thumbnailFiles.add(f);
 				}
-			}
-			File f = saveImageToFile(resourceDirectory+this.name+"_"+entry.getKey()+".png", entry.getValue());
-			if (f != null ){
-				thumbnailFiles.add(f);
 			}
 		}
         return thumbnailFiles;
