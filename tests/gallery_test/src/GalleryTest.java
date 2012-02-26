@@ -45,7 +45,7 @@
  * @author Dennis Cosgrove
  */
 public class GalleryTest {
-	private static void test( org.alice.ide.croquet.models.gallerybrowser.GalleryNode node, Class<? extends org.lgna.story.JointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException {
+	private static void test( java.util.List<Throwable> brokenModels,  org.alice.ide.croquet.models.gallerybrowser.GalleryNode node, Class<? extends org.lgna.story.JointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException {
 		if( node instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
 			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)node;
 			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldGalleryNode.getDeclaration();
@@ -53,26 +53,45 @@ public class GalleryTest {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.info("TESTING: "+field.getName());
 			Object resource = fld.get( null );
 			assert parameterClses[ 0 ].isInstance( resource ) : parameterClses[ 0 ] + " " + resource;
-			org.lgna.story.JointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( instanceCls, parameterClses, resource );
-			jointedModel.straightenOutJoints();
+			try {
+				org.lgna.story.JointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( instanceCls, parameterClses, resource );
+				jointedModel.straightenOutJoints();
+			} catch( Throwable t ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+				brokenModels.add( t );
+			}
 //			if (jointedModel instanceof org.lgna.story.Swimmer) {
 //				jointedModel.straightenOutJoints();
 //			}
 		}
 		final int N = node.getChildCount();
 		for( int i=0; i<N; i++ ) {
-			test( node.getChild( i ), instanceCls, parameterClses );
+			test( brokenModels, node.getChild( i ), instanceCls, parameterClses );
 		}
 	}
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
 		org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode rootGalleryNode = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance();
+		
+		java.util.List< Throwable > brokenModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		
 		int i = 0;
-		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Biped.class, org.lgna.story.resources.BipedResource.class );
-		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Flyer.class, org.lgna.story.resources.FlyerResource.class );
-		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Prop.class, org.lgna.story.resources.PropResource.class );
-		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Quadruped.class, org.lgna.story.resources.QuadrupedResource.class );
-		test( rootGalleryNode.getChild( i++ ), org.lgna.story.Swimmer.class, org.lgna.story.resources.SwimmerResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Biped.class, org.lgna.story.resources.BipedResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Flyer.class, org.lgna.story.resources.FlyerResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Prop.class, org.lgna.story.resources.PropResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Quadruped.class, org.lgna.story.resources.QuadrupedResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Swimmer.class, org.lgna.story.resources.SwimmerResource.class );
+		
+		if( brokenModels.size() > 0 ) {
+//			System.err.println();
+//			System.err.println();
+//			System.err.println();
+//			for( Throwable t : brokenModels ) {
+//				t.printStackTrace();
+//			}
+			javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
+		}
+		
 	}
 }
