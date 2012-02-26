@@ -40,11 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.event;
+package org.alice.stageide.apis.story.event;
+
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.virtualmachine.LambdaContext;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.event.TimeListener;
+import org.lgna.story.event.TimerEvent;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public interface MouseButtonListener {
-	public void mouseButtonClicked( MouseButtonEvent e );
+public class TimerEventAdapter extends AbstractAdapter implements TimeListener {
+
+	public TimerEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
+		super(context, lambda, userInstance);
+	}
+
+	public void timeElapsed(TimerEvent e) {
+		invokeEntryPoint( e );
+	}
+
 }

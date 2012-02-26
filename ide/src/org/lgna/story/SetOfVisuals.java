@@ -40,11 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.event;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public interface KeyListener {
-	public void keyPressed( KeyEvent e );
+public class SetOfVisuals implements AddMouseButtonListener.Detail {
+	private static final Visual[] DEFAULT_VALUE = null;
+	private final Visual[] value;
+	public SetOfVisuals( Visual... value ) {
+		this.value = value; 
+	}
+	private static Visual[] getValue( Object[] details, Visual[] defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof SetOfVisuals ) {
+				SetOfVisuals setOfVisuals = (SetOfVisuals)detail;
+				return setOfVisuals.value;
+			}
+		}
+		return defaultValue;
+	}
+	/*package-private*/ static Visual[] getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
+	}
 }

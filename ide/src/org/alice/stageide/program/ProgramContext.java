@@ -64,9 +64,21 @@ public abstract class ProgramContext {
 		this.vm = this.createVirtualMachine();
 		this.vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseButtonListener.class, org.alice.stageide.apis.story.event.MouseButtonAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
-
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickOnScreenListener.class, org.alice.stageide.apis.story.event.MouseClickOnScreenAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickOnObjectListener.class, org.alice.stageide.apis.story.event.MouseClickOnObjectAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyPressListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ArrowKeyPressListener.class, org.alice.stageide.apis.story.event.ArrowKeyAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.NumberKeyPressListener.class, org.alice.stageide.apis.story.event.NumberKeyAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.TransformationListener.class, org.alice.stageide.apis.story.event.TransformationEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.EnterViewListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ExitViewListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.StartCollisionListener.class, org.alice.stageide.apis.story.event.StartCollisionAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.EndCollisionListener.class, org.alice.stageide.apis.story.event.EndCollisionAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.EnterProximityListener.class, org.alice.stageide.apis.story.event.EnterProximityAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ExitProximityListener.class, org.alice.stageide.apis.story.event.ExitProximityAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.StartOcclusionListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.EndOcclusionListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
 		this.programInstance = vm.ENTRY_POINT_createInstance( programType );
 	}
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachine() {

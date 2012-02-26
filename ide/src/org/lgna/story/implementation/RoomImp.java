@@ -119,6 +119,7 @@ public class RoomImp extends VisualScaleModelImp {
 			this(1, 1, 1, 1, 1);
 		}
 		
+		@Override
 		public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry()
 		{
 			return this.sgGeometry;

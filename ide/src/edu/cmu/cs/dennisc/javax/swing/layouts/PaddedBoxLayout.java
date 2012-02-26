@@ -54,8 +54,8 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 		this.pad = pad;
 	}
 	@Override
-	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
-		java.awt.Dimension rv = super.preferredLayoutSize( target );
+	public java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
+		java.awt.Dimension rv = super.minimumLayoutSize( target );
 		final int N = target.getComponentCount();
 		switch( this.axis ) {
 		case Y_AXIS:
@@ -69,9 +69,10 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 		}
 		return rv;
 	}
+
 	@Override
-	public java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
-		java.awt.Dimension rv = super.minimumLayoutSize( target );
+	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
+		java.awt.Dimension rv = super.preferredLayoutSize( target );
 		final int N = target.getComponentCount();
 		switch( this.axis ) {
 		case Y_AXIS:

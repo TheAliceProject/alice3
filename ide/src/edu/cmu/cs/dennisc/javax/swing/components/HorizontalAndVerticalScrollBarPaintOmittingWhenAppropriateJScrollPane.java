@@ -40,19 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.apis.story.event;
+package edu.cmu.cs.dennisc.javax.swing.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MouseButtonAdapter implements org.lgna.story.event.MouseButtonListener {
-	private org.lgna.project.virtualmachine.MethodContext context;
-	private org.lgna.project.ast.UserMethod method;
-	public MouseButtonAdapter( org.lgna.project.virtualmachine.MethodContext context, org.lgna.project.ast.UserType< ? > type, Object[] arguments ) {
-		this.context = context;
-		this.method = type.getDeclaredMethod( "mouseButtonClicked", org.lgna.story.event.MouseButtonEvent.class );
+public class HorizontalAndVerticalScrollBarPaintOmittingWhenAppropriateJScrollPane extends ScrollBarPaintOmittingWhenAppropriateJScrollPane {
+	@Override
+	public javax.swing.JScrollBar createHorizontalScrollBar() {
+		return new PaintOmittingJScrollBar( javax.swing.JScrollBar.HORIZONTAL );
 	}
-	public void mouseButtonClicked( org.lgna.story.event.MouseButtonEvent e ) {
-		this.context.invokeEntryPoint( this.method, e );
+	@Override
+	public javax.swing.JScrollBar createVerticalScrollBar() {
+		return new PaintOmittingJScrollBar( javax.swing.JScrollBar.VERTICAL );
 	}
 }

@@ -84,6 +84,9 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 //		} );
 	}
 	
+	public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
+		return false;
+	}
 	@Override
 	protected int getBoxLayoutPad() {
 		int rv;
@@ -95,6 +98,10 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return rv;
 	}
 
+	@Override
+	protected final org.lgna.croquet.components.Component< ? > createInterstitial( int i, int N ) {
+		return null;
+	}
 	@Override
 	protected DefaultJPanel createJPanel() {
 		final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
@@ -307,9 +314,13 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 				bottom = 0;
 			}
 		}
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, 16 ) );
-//		this.revalidateAndRepaint();
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, INDENT, bottom, this.getRightBorder() ) );
 	}
+	
+	protected int getRightBorder() {
+		return 16;
+	}
+	
 	public boolean isFigurativelyEmpty() {
 		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance;
 	}

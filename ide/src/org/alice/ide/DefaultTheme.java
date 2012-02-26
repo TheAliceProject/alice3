@@ -53,6 +53,11 @@ public class DefaultTheme implements Theme {
 	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xb0c9a4 );
 	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xadc0ab );
 	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 230, 230, 210 );
+	private static final java.awt.Color DEFAULT_EVENT_COLOR = new Color( 100, 200, 100 );
+	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_EVENT_COLOR.brighter().brighter(); //new Color( 150, 225, 150 );
+//	private static final java.awt.Color DEFAULT_EVENT_COLOR = new java.awt.Color( 0xd3d7f0 );
+//	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_PROCEDURE_COLOR;
+
 	private static final java.awt.Color DEFAULT_SELECTED_COLOR = new java.awt.Color(255, 255, 179);
 	private static final java.awt.Color DEFAULT_UNSELECTED_COLOR = new java.awt.Color(141, 137, 166);
 	private static final java.awt.Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new java.awt.Color(173, 167, 208);
@@ -78,6 +83,12 @@ public class DefaultTheme implements Theme {
 	}
 	public java.awt.Color getParameterColor() {
 		return getFieldColor();
+	}
+	public java.awt.Color getEventColor() {
+		return DEFAULT_EVENT_COLOR;
+	}
+	public java.awt.Color getEventBodyColor() {
+		return DEFAULT_EVENT_BODY_COLOR;
 	}
 
 	public java.awt.Paint getPaintFor( Class< ? extends org.lgna.project.ast.Statement > cls, int x, int y, int width, int height ) {

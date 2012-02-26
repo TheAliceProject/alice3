@@ -261,7 +261,7 @@ public class ProgramImp {
 			lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 			this.isAnimatorStarted = false;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this.isAnimatorStarted );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.isAnimatorStarted );
 		}
 	}
 	
@@ -279,12 +279,17 @@ public class ProgramImp {
 		}
 	}
 	
+	private void requestFocusInWindow() {
+		this.getOnscreenLookingGlass().getAWTComponent().requestFocusInWindow();
+	}
+	
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				ProgramImp.this.addComponents( frame.getContentPane() );
 				frame.setVisible( true );
 				runnable.run();
+				requestFocusInWindow();
 			}
 		} );
 	}
@@ -292,6 +297,7 @@ public class ProgramImp {
 		assert container.getLayout() instanceof java.awt.BorderLayout;
 		this.addComponents( container );
 		this.startAnimator();
+		this.requestFocusInWindow();
 	}
 	public void initializeInFrame( javax.swing.JFrame frame ) {
 		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
@@ -328,7 +334,9 @@ public class ProgramImp {
 	
 	/*package-private*/ void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		if( this.isProgramClosedExceptionDesired ) {
-			this.stopAnimator();
+			if( this.isAnimatorStarted ) {
+				this.stopAnimator();
+			}
 			throw new org.lgna.project.ProgramClosedException();
 		}
 		this.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );

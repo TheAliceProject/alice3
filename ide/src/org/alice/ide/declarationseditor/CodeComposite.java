@@ -45,7 +45,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.AbstractCode, org.alice.ide.declarationseditor.code.components.CodeDeclarationView > {
+public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.AbstractCode, org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView > {
 	private static java.util.Map< org.lgna.project.ast.AbstractCode, CodeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized CodeComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
 		if( code != null ) {
@@ -87,7 +87,11 @@ public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 		button.scaleFont( 1.2f );
 	}
 	@Override
-	protected org.alice.ide.declarationseditor.code.components.CodeDeclarationView createView() {
-		return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
+	protected org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView createView() {
+		if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( this.getDeclaration().getName() ) ) {
+			return new org.alice.ide.declarationseditor.events.components.EventListenersView( this );
+		} else {
+			return new org.alice.ide.declarationseditor.code.components.CodeDeclarationView( this );
+		}
 	}
 }

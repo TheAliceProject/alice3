@@ -43,6 +43,9 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.matt.EventManager;
+import edu.cmu.cs.dennisc.matt.EventRecorder;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -79,7 +82,12 @@ public class SceneImp extends EntityImp {
 	private ProgramImp program;
 	private final org.lgna.story.Scene abstraction;
 	private float fogDensityValue = 0;
+	private final EventManager eventManager;
 	
+	public EventManager getEventManager() {
+		return this.eventManager;
+	}
+
 	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
@@ -138,7 +146,6 @@ public class SceneImp extends EntityImp {
 			SceneImp.this.setFogDensity(value);
 		}
 	};
-
 	private static final edu.cmu.cs.dennisc.scenegraph.Transformable createDirectionalLightTransformable( edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgDirectionalLight, edu.cmu.cs.dennisc.math.Angle yaw, edu.cmu.cs.dennisc.math.Angle pitch, float brightness ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable rv = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 		rv.applyRotationAboutYAxis( yaw );
@@ -157,7 +164,9 @@ public class SceneImp extends EntityImp {
 		this.sgScene.addComponent( this.sgAmbientLight );
 		this.setFogDensity(0);
 		this.putInstance( this.sgScene );
-		
+
+		this.eventManager = new EventManager( this );
+
 		final edu.cmu.cs.dennisc.math.Angle fromAbovePitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( -60.0 );
 		final float fromAboveBrightness = 0.333f;
 		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightA, new edu.cmu.cs.dennisc.math.AngleInDegrees( 0 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );
@@ -170,6 +179,7 @@ public class SceneImp extends EntityImp {
 		this.sgFromBelowDirectionalLight.color.setValue( edu.cmu.cs.dennisc.color.Color4f.BLACK );
 	}
 	
+
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.sceneActivationListeners.add( sceneActivationListener );
 	}
@@ -187,6 +197,7 @@ public class SceneImp extends EntityImp {
 	
 	private void fireSceneActivationListeners() {
 		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
+		EventRecorder.getSingleton().recordEvent(e);
 		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
 			new org.lgna.common.ComponentThread( new Runnable() {
 				public void run() {
@@ -258,14 +269,26 @@ public class SceneImp extends EntityImp {
 		return this;
 	}
 	@Override
-	protected org.lgna.story.implementation.ProgramImp getProgram() {
+	public org.lgna.story.implementation.ProgramImp getProgram() {
 		return this.program;
 	}
 	public void setProgram( ProgramImp program ) {
+		if( this.program != program ) {
+			if( program != null ) {
+				this.eventManager.removeListenersFrom( program.getOnscreenLookingGlass() );
+			}
+			//handleOwnerChange( null );
+			this.program = program;
+//			handleOwnerChange( program );
+			if( program != null ) {
+				this.eventManager.addListenersTo( program.getOnscreenLookingGlass() );
+			}
+		}
 		this.program = program;
 	}
 
 	public void preserveStateAndEventListeners() {
+		this.eventManager.silenceAllListeners();
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
@@ -274,6 +297,7 @@ public class SceneImp extends EntityImp {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
+		this.eventManager.restoreAllListeners();
 	}
 	public void addCamerasTo( ProgramImp program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {

@@ -46,8 +46,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomTreeSelectionState<T> extends TreeSelectionState< T > {
-	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel< T >() {
+public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> {
+	private final edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T>() {
 		public int getChildCount( Object parent ) {
 			return CustomTreeSelectionState.this.getChildCount( (T)parent );
 		}
@@ -64,7 +64,7 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState< T 
 			return CustomTreeSelectionState.this.isLeaf( (T)node );
 		}
 		private Object[] getPathToRoot( T node ) {
-			java.util.List< T > collection = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<T> collection = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			T n = node;
 			if( n != null ) {
 				T root = this.getRoot();
@@ -87,7 +87,8 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState< T 
 			return path;
 		}
 	};
-	public CustomTreeSelectionState(Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialSelection ) {
+
+	public CustomTreeSelectionState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialSelection ) {
 		super( group, id, itemCodec );
 		this.setValueTransactionlessly( initialSelection );
 	}
@@ -97,7 +98,13 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState< T 
 	protected abstract T getRoot();
 	protected abstract T getParent( T node );
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel() {
+	public abstract boolean isLeaf( T node );
+	@Override
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
 		return this.treeModel;
+	}
+	@Override
+	public void refresh( T node ) {
+		this.treeModel.reload( node );
 	}
 }

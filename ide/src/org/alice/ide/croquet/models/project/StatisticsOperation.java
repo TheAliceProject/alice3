@@ -42,13 +42,32 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.TextField;
+import org.lgna.croquet.components.Tree;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserMethod;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StatisticsOperation extends org.lgna.croquet.InformationDialogOperation {
+
+	private Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap = Collections.newHashMap();
+
 	private static class SingletonHolder {
 		private static StatisticsOperation instance = new StatisticsOperation();
 	}
+
 	public static StatisticsOperation getInstance() {
 		return SingletonHolder.instance;
 	}
@@ -56,16 +75,30 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog) {
+	protected org.lgna.croquet.components.Container<?> createContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog ) {
+		methodParentMap.clear();
+
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 		if( programType != null ) {
 			class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-				private java.util.Map< Class<? extends org.lgna.project.ast.Statement>, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap(); 
-				public void visit(edu.cmu.cs.dennisc.pattern.Crawlable crawlable) {
+				private java.util.Map<Class<? extends org.lgna.project.ast.Statement>,Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 					if( crawlable instanceof org.lgna.project.ast.Statement ) {
 						org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
 						Class<? extends org.lgna.project.ast.Statement> cls = statement.getClass();
+						if( cls.equals( org.lgna.project.ast.ExpressionStatement.class ) ) {
+							ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+							if( expressionStatement.expression.getValue() instanceof MethodInvocation ) {
+								MethodInvocation methodInvocation = (MethodInvocation)expressionStatement.expression.getValue();
+								UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
+								if( methodParentMap.get( method ) == null ) {
+									methodParentMap.put( method, new LinkedList<MethodInvocation>() );
+								}
+								methodParentMap.get( method ).add( methodInvocation );
+							}
+						}
 						Integer count = this.map.get( cls );
 						if( count != null ) {
 							count += 1;
@@ -85,41 +118,47 @@ public class StatisticsOperation extends org.lgna.croquet.InformationDialogOpera
 				}
 			}
 			StatementCountCrawler crawler = new StatementCountCrawler();
-			programType.crawl(crawler, true);
-			
-			Class[] clses = { 
-				org.lgna.project.ast.DoInOrder.class,
-				org.lgna.project.ast.CountLoop.class,
-				org.lgna.project.ast.WhileLoop.class,
-				org.lgna.project.ast.ForEachInArrayLoop.class,
-				org.lgna.project.ast.ConditionalStatement.class,
-				org.lgna.project.ast.DoTogether.class,
-				org.lgna.project.ast.EachInArrayTogether.class,
-				org.lgna.project.ast.Comment.class,
-				org.lgna.project.ast.LocalDeclarationStatement.class,
-				org.lgna.project.ast.ExpressionStatement.class
-			};
-			
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>" );
-			sb.append( "<em>todo: improve this dialog dramatically</em><br><br>" );
+			programType.crawl( crawler, true );
+
+			Class[] clses = { org.lgna.project.ast.DoInOrder.class, org.lgna.project.ast.CountLoop.class, org.lgna.project.ast.WhileLoop.class, org.lgna.project.ast.ForEachInArrayLoop.class, org.lgna.project.ast.ConditionalStatement.class,
+					org.lgna.project.ast.DoTogether.class, org.lgna.project.ast.EachInArrayTogether.class, org.lgna.project.ast.Comment.class, org.lgna.project.ast.LocalDeclarationStatement.class, org.lgna.project.ast.ExpressionStatement.class };
+
+			final BorderPanel rv = new BorderPanel();
+			SearchDialogManager manager = new SearchDialogManager();
+			TextField textField = new TextField( manager.getStringState() );
+			textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
+			rv.addComponent( textField, Constraint.PAGE_START );
+			Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+			manager.setOwner( tree );
+			rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
+
 			for( Class cls : clses ) {
 				int count = crawler.getCount( cls );
 				if( count > 0 ) {
-					sb.append( cls.getSimpleName() );
-					sb.append( ": " );
-					sb.append( count );
-					sb.append( "<br>" );
+					if( cls.equals( org.lgna.project.ast.ExpressionStatement.class ) ) {
+						for( UserMethod method : methodParentMap.keySet() ) {
+							SearchTreeNode parent = manager.addNode( null, method );
+							List<SearchTreeNode> list = Collections.newLinkedList();
+							for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
+								SearchTreeNode child = manager.addNode( parent, methodInvocation.method.getValue() );
+								list.add( child );
+							}
+							manager.addParentWithChildren( parent, list );
+						}
+					}
 				}
 			}
-			sb.append( "</html>" );
-			return new org.lgna.croquet.components.Label( sb.toString() );
+			manager.refreshAll();
+			tree.setRootVisible( false );
+			tree.expandAllRows();
+			//			searchState.addPanel( rv );
+			return rv;
 		} else {
 			//todo
 			return new org.lgna.croquet.components.Label( "open a project first" );
 		}
 	}
 	@Override
-	protected void releaseContentPane(org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
+	protected void releaseContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
 	}
 }
