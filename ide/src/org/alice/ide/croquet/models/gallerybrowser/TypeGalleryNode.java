@@ -57,16 +57,30 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 		}
 	}
 	
-	public static javax.swing.Icon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	
+	private static javax.swing.Icon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type, boolean isOffset ) {
 		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
-		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "images/" );
+		sb.append( cls.getName().replace( ".", "/" ) );
+		if( isOffset ) {
+			sb.append( "_offset" );
+		}
+		sb.append( ".png" );
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( sb.toString() ) );
+	}
+	
+	public static javax.swing.Icon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		return getIcon( type, false );
+	}
+	public static javax.swing.Icon getOffsetIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		return getIcon( type, true );
 	}
 	
 	private final javax.swing.Icon largeIcon;
 	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( id, type );
-		javax.swing.Icon icon = getIcon( type );
+		javax.swing.Icon icon = getOffsetIcon( type );
 		if( icon != null ) {
 			this.largeIcon = new CompositeIcon(icon);
 		} else {
