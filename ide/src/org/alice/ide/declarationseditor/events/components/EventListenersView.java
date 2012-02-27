@@ -65,6 +65,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 			}
 		} );
 		
+		panel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 12, 0 ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 		java.awt.Color color = this.eventsPanel.getBackgroundColor();
 		this.setBackgroundColor( color );

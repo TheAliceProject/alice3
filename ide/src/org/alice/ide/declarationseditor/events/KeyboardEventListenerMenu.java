@@ -3,7 +3,6 @@ package org.alice.ide.declarationseditor.events;
 import java.util.List;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.cascade.BlankNode;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
@@ -15,7 +14,7 @@ import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyPressListener;
 
-public class KeyboardEventListenerMenu extends CascadeMenuModel< org.lgna.project.ast.MethodInvocation > {	
+public class KeyboardEventListenerMenu extends EventListenerMenuModel {	
 
 	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyPressListener", KeyPressListener.class, AddKeyPressListener.Detail[].class );
 	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance( Scene.class, "addObjectMoverFor", MovableTurnable.class, AddObjectMoverFor.Detail[].class );

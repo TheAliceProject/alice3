@@ -3,7 +3,6 @@ package org.alice.ide.declarationseditor.events;
 import java.util.List;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.cascade.BlankNode;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
@@ -12,7 +11,7 @@ import org.lgna.story.Scene;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 
-public class MouseEventListenerMenu extends CascadeMenuModel< org.lgna.project.ast.MethodInvocation > {	
+public class MouseEventListenerMenu extends EventListenerMenuModel {	
 
 	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseClickOnScreenListener", MouseClickOnScreenListener.class, AddMouseButtonListener.Detail[].class );
 	public static final JavaMethod ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addMouseClickOnObjectListener", MouseClickOnObjectListener.class, AddMouseButtonListener.Detail[].class );

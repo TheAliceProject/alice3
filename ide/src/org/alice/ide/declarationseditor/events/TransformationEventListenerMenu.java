@@ -3,7 +3,6 @@ package org.alice.ide.declarationseditor.events;
 import java.util.List;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.cascade.BlankNode;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
@@ -28,7 +27,7 @@ import org.lgna.story.event.ProximityExitListener;
 import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.ViewEnterListener;
 
-public class TransformationEventListenerMenu extends CascadeMenuModel<org.lgna.project.ast.MethodInvocation> {
+public class TransformationEventListenerMenu extends EventListenerMenuModel {
 
 	public static final JavaMethod ADD_TRANSFORMATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addPointOfViewChangeListener", PointOfViewChangeListener.class, Entity[].class, AddPositionOrientationChangeListener.Detail[].class );
 	public static final JavaMethod ADD_START_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addCollisionStartListener", CollisionStartListener.class, Entity[].class, Entity[].class, AddStartCollisionListener.Detail[].class );
