@@ -1,12 +1,6 @@
 package org.lgna.story.event;
 
-import java.util.List;
-
 import org.lgna.story.Key;
-import org.lgna.story.MoveDirection;
-import org.lgna.story.TurnDirection;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class ArrowKeyEvent extends KeyEvent {
 
@@ -14,7 +8,7 @@ public class ArrowKeyEvent extends KeyEvent {
 		FORWARD_BACKWARD_LEFT_RIGHT, UP_DOWN_LEFT_RIGHT;
 	};
 
-	public static final List<Key> ARROWS = Collections.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
+	public static final java.util.List<Key> ARROWS = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
 	private KeyEvent e;
 
 	public ArrowKeyEvent( KeyEvent e ) {
@@ -30,48 +24,48 @@ public class ArrowKeyEvent extends KeyEvent {
 		this.e = e;
 	}
 
-	public MoveDirection getMoveDirection( MoveDirectionPlane plane ) {
+	public org.lgna.story.MoveDirection getMoveDirection( MoveDirectionPlane plane ) {
 		if( plane.equals( MoveDirectionPlane.UP_DOWN_LEFT_RIGHT ) ) {
 			return getUpDownLeftRightMoveDirection();
 		}
 		return getFowardBackwardLeftRightMoveDirection();
 	}
 
-	public TurnDirection getTurnDirection() {
+	public org.lgna.story.TurnDirection getTurnDirection() {
 		if( e.isKey( Key.A ) || e.isKey( Key.LEFT ) ) {
-			return TurnDirection.LEFT;
+			return org.lgna.story.TurnDirection.LEFT;
 		} else if( e.isKey( Key.S ) || e.isKey( Key.DOWN ) ) {
-			return TurnDirection.BACKWARD;
+			return org.lgna.story.TurnDirection.BACKWARD;
 		} else if( e.isKey( Key.W ) || e.isKey( Key.UP ) ) {
-			return TurnDirection.FORWARD;
+			return org.lgna.story.TurnDirection.FORWARD;
 		} else if( e.isKey( Key.D ) || e.isKey( Key.RIGHT ) ) {
-			return TurnDirection.RIGHT;
+			return org.lgna.story.TurnDirection.RIGHT;
 		}
 		return null;
 	}
 
-	private MoveDirection getFowardBackwardLeftRightMoveDirection() {
+	private org.lgna.story.MoveDirection getFowardBackwardLeftRightMoveDirection() {
 		if( e.isKey( Key.A ) || e.isKey( Key.LEFT ) ) {
-			return MoveDirection.LEFT;
+			return org.lgna.story.MoveDirection.LEFT;
 		} else if( e.isKey( Key.S ) || e.isKey( Key.DOWN ) ) {
-			return MoveDirection.BACKWARD;
+			return org.lgna.story.MoveDirection.BACKWARD;
 		} else if( e.isKey( Key.W ) || e.isKey( Key.UP ) ) {
-			return MoveDirection.FORWARD;
+			return org.lgna.story.MoveDirection.FORWARD;
 		} else if( e.isKey( Key.D ) || e.isKey( Key.RIGHT ) ) {
-			return MoveDirection.RIGHT;
+			return org.lgna.story.MoveDirection.RIGHT;
 		}
 		return null;
 	}
 
-	private MoveDirection getUpDownLeftRightMoveDirection() {
+	private org.lgna.story.MoveDirection getUpDownLeftRightMoveDirection() {
 		if( e.isKey( Key.A ) || e.isKey( Key.LEFT ) ) {
-			return MoveDirection.LEFT;
+			return org.lgna.story.MoveDirection.LEFT;
 		} else if( e.isKey( Key.S ) || e.isKey( Key.DOWN ) ) {
-			return MoveDirection.DOWN;
+			return org.lgna.story.MoveDirection.DOWN;
 		} else if( e.isKey( Key.W ) || e.isKey( Key.UP ) ) {
-			return MoveDirection.UP;
+			return org.lgna.story.MoveDirection.UP;
 		} else if( e.isKey( Key.D ) || e.isKey( Key.RIGHT ) ) {
-			return MoveDirection.RIGHT;
+			return org.lgna.story.MoveDirection.RIGHT;
 		}
 		return null;
 	}

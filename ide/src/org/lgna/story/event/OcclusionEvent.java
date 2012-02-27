@@ -1,23 +1,18 @@
 package org.lgna.story.event;
 
-import java.util.List;
-
-import org.lgna.story.Entity;
-
-
 public class OcclusionEvent extends AbstractEvent {
 	
-	private List< Entity > entityPair;
+	private java.util.List< org.lgna.story.Entity > entityPair;
 
-	public OcclusionEvent( List< Entity > entityPair ) {
+	public OcclusionEvent( java.util.List< org.lgna.story.Entity > entityPair ) {
 		assert entityPair.size() == 2;
 		this.entityPair = entityPair;
 	}
 
-	public Entity getForegroundEntity(){
+	public org.lgna.story.Entity getForegroundEntity(){
 		return entityPair.get(0);
 	}
-	public Entity getBackgroundEntity(){
+	public org.lgna.story.Entity getBackgroundEntity(){
 		return entityPair.get(1);
 	}
 	

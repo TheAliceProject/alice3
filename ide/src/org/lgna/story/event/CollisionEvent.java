@@ -1,17 +1,11 @@
 package org.lgna.story.event;
 
-import java.util.List;
-
-import org.lgna.story.Entity;
-
 public class CollisionEvent extends AbstractEvent {
-	
-	private final List<Entity> entity;
-
-	public CollisionEvent(List<Entity> entity) {
+	private final java.util.List<org.lgna.story.Entity> entity;
+	public CollisionEvent(java.util.List<org.lgna.story.Entity> entity) {
 		this.entity = entity;
 	}
-	public List<Entity> getModels() {
+	public java.util.List<org.lgna.story.Entity> getModels() {
 		return entity;
 	}
 }

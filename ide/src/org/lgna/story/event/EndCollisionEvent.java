@@ -1,11 +1,7 @@
 package org.lgna.story.event;
 
-import java.util.List;
-
-import org.lgna.story.Entity;
-
 public class EndCollisionEvent extends CollisionEvent {
-	public EndCollisionEvent( List<Entity> entity ) {
+	public EndCollisionEvent( java.util.List<org.lgna.story.Entity> entity ) {
 		super(entity);
 	}
 }
