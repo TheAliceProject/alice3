@@ -136,11 +136,8 @@ public class BootstrapUtilties {
 		);
 		
 		org.lgna.project.ast.UserField[] fields = new org.lgna.project.ast.UserField[modelFields.length+1];
-		fields[0] = cameraField;
-		for (int i=1; i<fields.length; i++)
-		{
-			fields[i] = modelFields[i-1];
-		}
+		System.arraycopy( modelFields, 0, fields, 0, modelFields.length );
+		fields[modelFields.length] = cameraField;
 		                                                                             
 		for( org.lgna.project.ast.UserField field : fields ) {
 			org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lgna.story.Entity.class );
@@ -252,8 +249,7 @@ public class BootstrapUtilties {
 		handleActiveChangedBody.statements.add( ifOuter );
 		
 		org.lgna.project.ast.NamedUserType sceneType = createType( "MyScene", org.lgna.story.Scene.class );
-		sceneType.fields.add( cameraField );
-		sceneType.fields.add( modelFields );
+		sceneType.fields.add( fields );
 		sceneType.methods.add( performCustomSetupMethod );
 		sceneType.methods.add( performGeneratedSetupMethod );
 		sceneType.methods.add( initializeEventListenersMethod );
