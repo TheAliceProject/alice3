@@ -1,6 +1,6 @@
 package org.lgna.story.event;
 
-public class CollisionEvent extends AbstractEvent {
+public abstract class CollisionEvent extends AbstractEvent {
 	private final org.lgna.story.Entity[] entity;
 
 	public CollisionEvent( org.lgna.story.Entity... entities ) {

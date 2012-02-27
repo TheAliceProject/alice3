@@ -3,7 +3,6 @@ package org.alice.ide.declarationseditor.events;
 import java.util.List;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.cascade.BlankNode;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
@@ -13,7 +12,7 @@ import org.lgna.story.Scene;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
 
-public class TimeEventListenerMenu extends CascadeMenuModel<org.lgna.project.ast.MethodInvocation> {
+public class TimeEventListenerMenu extends EventListenerMenuModel {
 
 	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addSceneActivationListener", SceneActivationListener.class, AddSceneActivationListener.Detail[].class );
 	public static final JavaMethod ADD_TIMER_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addTimeListener", TimeListener.class, AddTimeListener.Detail[].class );
