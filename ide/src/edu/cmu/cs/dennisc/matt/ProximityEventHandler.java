@@ -61,14 +61,14 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class ProximityEventHandler extends TransformationChangedHandler< Object, ProximityEvent>{
+public class ProximityEventHandler extends TransformationChangedHandler<Object,ProximityEvent> {
 
 	private ProximityEventManager proximityEventManager = new ProximityEventManager();
 
-	public void addProximityEventListener(Object pEList, List< Entity > groupOne, List< Entity > groupTwo, Double distance ) {
-		registerIsFiringMap(pEList);
-		registerPolicyMap(pEList, MultipleEventPolicy.IGNORE);
-		List< Entity > allObserving = Collections.newArrayList( groupOne );
+	public void addProximityEventListener( Object pEList, List<Entity> groupOne, List<Entity> groupTwo, Double distance ) {
+		registerIsFiringMap( pEList );
+		registerPolicyMap( pEList, MultipleEventPolicy.IGNORE );
+		List<Entity> allObserving = Collections.newArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( Entity m : allObserving ) {
 			if( !modelList.contains( m ) ) {
@@ -80,69 +80,69 @@ public class ProximityEventHandler extends TransformationChangedHandler< Object,
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, ProximityEvent e) {
-		if (listener instanceof EnterProximityListener) {
-			EnterProximityListener enter = (EnterProximityListener) listener;
-			enter.whenTheseGetClose((EnterProximityEvent) e);
-		} else if (listener instanceof ExitProximityListener) {
-			ExitProximityListener exit = (ExitProximityListener) listener;
-			exit.whenTheseMoveApart((ExitProximityEvent) e);
+	protected void nameOfFireCall( Object listener, ProximityEvent e ) {
+		if( listener instanceof EnterProximityListener ) {
+			EnterProximityListener enter = (EnterProximityListener)listener;
+			enter.whenTheseGetClose( (EnterProximityEvent)e );
+		} else if( listener instanceof ExitProximityListener ) {
+			ExitProximityListener exit = (ExitProximityListener)listener;
+			exit.whenTheseMoveApart( (ExitProximityEvent)e );
 		}
 	}
 
 	@Override
 	protected void check( Entity changedEntity ) {
-		proximityEventManager.check(changedEntity);
+		proximityEventManager.check( changedEntity );
 	}
 
 	protected class ProximityEventManager {
 
-		Map< Entity, LinkedList< Entity >> checkMap = new HashMap< Entity, LinkedList< Entity >>();
-		Map< Entity, HashMap< Entity, LinkedList<Object >>> eventMap = new HashMap< Entity, HashMap< Entity, LinkedList<Object  >>>();
-		Map<Object, HashMap< Entity, HashMap<Entity, Boolean>>> wereClose = new HashMap< Object, HashMap<Entity,HashMap<Entity,Boolean>>>();
-		Map<Object, Double > distMap = new HashMap<Object, Double >();
+		Map<Entity,LinkedList<Entity>> checkMap = new HashMap<Entity,LinkedList<Entity>>();
+		Map<Entity,HashMap<Entity,LinkedList<Object>>> eventMap = new HashMap<Entity,HashMap<Entity,LinkedList<Object>>>();
+		Map<Object,HashMap<Entity,HashMap<Entity,Boolean>>> wereClose = new HashMap<Object,HashMap<Entity,HashMap<Entity,Boolean>>>();
+		Map<Object,Double> distMap = new HashMap<Object,Double>();
 
 		public void check( Entity changedEntity ) {
 			for( Entity m : checkMap.get( changedEntity ) ) {
-				for(Object  proxList : eventMap.get( changedEntity ).get( m ) ) {
-					if( check(proxList, m, changedEntity, distMap.get(proxList))) {
-						LinkedList< Entity > models = new LinkedList< Entity >();
+				for( Object proxList : eventMap.get( changedEntity ).get( m ) ) {
+					if( check( proxList, m, changedEntity, distMap.get( proxList ) ) ) {
+						LinkedList<Entity> models = new LinkedList<Entity>();
 						models.add( changedEntity );
 						models.add( m );
-						if (proxList instanceof EnterProximityListener) {
-							fireEvent( proxList, new EnterProximityEvent( models ) );
-						} else if (proxList instanceof ExitProximityListener) {
-							fireEvent( proxList, new ExitProximityEvent( models ) );
+						if( proxList instanceof EnterProximityListener ) {
+							fireEvent( proxList, new EnterProximityEvent( models.toArray( new Entity[ 0 ] ) ) );
+						} else if( proxList instanceof ExitProximityListener ) {
+							fireEvent( proxList, new ExitProximityEvent( models.toArray( new Entity[ 0 ] ) ) );
 						}
 					}
-					boolean areTheseClose = AabbCollisionDetector.doTheseCollide( m, changedEntity, distMap.get(proxList));
+					boolean areTheseClose = AabbCollisionDetector.doTheseCollide( m, changedEntity, distMap.get( proxList ) );
 					wereClose.get( proxList ).get( m ).put( changedEntity, areTheseClose );
 					wereClose.get( proxList ).get( changedEntity ).put( m, areTheseClose );
 				}
 			}
 		}
 
-		private boolean check( Object proxList, Entity m, Entity changedEntity, Double dist) {
-			if ( proxList instanceof EnterProximityListener ) {
+		private boolean check( Object proxList, Entity m, Entity changedEntity, Double dist ) {
+			if( proxList instanceof EnterProximityListener ) {
 				return !wereClose.get( proxList ).get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity, dist );
-			} else if ( proxList instanceof ExitProximityListener ) {
+			} else if( proxList instanceof ExitProximityListener ) {
 				return wereClose.get( proxList ).get( m ).get( changedEntity ) && !AabbCollisionDetector.doTheseCollide( m, changedEntity, dist );
 			}
 			return false;
 		}
 
-		public void register(Object proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
-			distMap.put(proximityEventListener, dist);
-			wereClose.put( proximityEventListener, new HashMap< Entity, HashMap< Entity, Boolean > >() );
+		public void register( Object proximityEventListener, List<Entity> groupOne, List<Entity> groupTwo, Double dist ) {
+			distMap.put( proximityEventListener, dist );
+			wereClose.put( proximityEventListener, new HashMap<Entity,HashMap<Entity,Boolean>>() );
 			for( Entity m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap< Entity, LinkedList<Object >>() );
-					checkMap.put( m, new LinkedList< Entity >() );
+					eventMap.put( m, new HashMap<Entity,LinkedList<Object>>() );
+					checkMap.put( m, new LinkedList<Entity>() );
 				}
-				wereClose.get( proximityEventListener ).put( m, new HashMap< Entity, Boolean >() );
+				wereClose.get( proximityEventListener ).put( m, new HashMap<Entity,Boolean>() );
 				for( Entity t : groupTwo ) {
 					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new LinkedList<Object >() );
+						eventMap.get( m ).put( t, new LinkedList<Object>() );
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( proximityEventListener );
@@ -153,13 +153,13 @@ public class ProximityEventHandler extends TransformationChangedHandler< Object,
 			}
 			for( Entity m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap< Entity, LinkedList< Object >>() );
-					checkMap.put( m, new LinkedList< Entity >() );
+					eventMap.put( m, new HashMap<Entity,LinkedList<Object>>() );
+					checkMap.put( m, new LinkedList<Entity>() );
 				}
-				wereClose.get( proximityEventListener ).put( m, new HashMap< Entity, Boolean >() );
+				wereClose.get( proximityEventListener ).put( m, new HashMap<Entity,Boolean>() );
 				for( Entity t : groupOne ) {
 					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new LinkedList< Object >() );
+						eventMap.get( m ).put( t, new LinkedList<Object>() );
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( proximityEventListener );

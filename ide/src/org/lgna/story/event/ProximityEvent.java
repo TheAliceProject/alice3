@@ -42,21 +42,18 @@
  */
 package org.lgna.story.event;
 
-import java.util.List;
-
-import org.lgna.story.Entity;
 
 /**
  * @author Matt May
  */
 public class ProximityEvent extends AbstractEvent {
-	
-	private final List<Entity> entities;
-	
-	public ProximityEvent( List<Entity> entities ) {
+
+	private final org.lgna.story.Entity[] entities;
+
+	public ProximityEvent( org.lgna.story.Entity... entities ) {
 		this.entities = entities;
 	}
-	public List<Entity> getModels() {
+	public org.lgna.story.Entity[] getModels() {
 		return entities;
 	}
 
