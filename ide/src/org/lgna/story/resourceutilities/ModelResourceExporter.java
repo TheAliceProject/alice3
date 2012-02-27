@@ -122,6 +122,7 @@ public class ModelResourceExporter {
 	private List<String> tags = new LinkedList<String>();
 	private AxisAlignedBox boundingBox;
 	private File xmlFile;
+	private File javaFile;
 	private Map<String, Image> thumbnails = new HashMap<String, Image>();
 	private Map<String, File> existingThumbnails = null;
 	
@@ -248,6 +249,11 @@ public class ModelResourceExporter {
 	public void setXMLFile(File xmlFile)
 	{
 		this.xmlFile = xmlFile;
+	}
+
+	public void setJavaFile(File javaFile)
+	{
+		this.javaFile = javaFile;
 	}
 	
 	private org.w3c.dom.Element createBoundingBoxElement(Document doc)
@@ -597,6 +603,9 @@ public class ModelResourceExporter {
 	        if (!name.endsWith("/"))
 	          name += "/";
 	        name = name.substring(root.length());
+			if (name.startsWith("/")) {
+				name = name.substring(1);
+			}
 	        if (name.length() > 0)
 	        {
 		        JarEntry entry = new JarEntry(name);
@@ -625,6 +634,9 @@ public class ModelResourceExporter {
 
 	    String entryName = source.getPath().replace("\\", "/");
 	    entryName = entryName.substring(root.length());
+		if (entryName.startsWith("/") || entryName.startsWith("\\")) {
+			entryName = entryName.substring(1);
+		}
 	    JarEntry entry = new JarEntry(entryName);
 	    entry.setTime(source.lastModified());
 	    target.putNextEntry(entry);
@@ -655,7 +667,7 @@ public class ModelResourceExporter {
 
 	private File getJavaFile(String root)
 	{
-		String filename = getDirectoryStringForPackage(this.classData.packageString+this.name+".java");
+		String filename = getDirectoryStringForPackage(this.classData.packageString)+this.name+".java";
 		return new File(root+filename);
 	}
 	
@@ -666,7 +678,7 @@ public class ModelResourceExporter {
 		String javaCode = createJavaCode();
 		System.out.println(javaCode);
 		System.out.println(System.getProperty("java.class.path"));
-		File javaFile = new File(root+packageDirectory+this.name+".java");
+		File javaFile = getJavaFile(root);
 		TextFileUtilities.write(javaFile, javaCode);
 		return javaFile;
 	}
@@ -702,6 +714,9 @@ public class ModelResourceExporter {
     }
 	   
 	private File getXMLFile(String root) {
+		if (!root.endsWith("/") && !root.endsWith("\\")) {
+			root += "/";
+		}
 		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
         File xmlFile = new File(resourceDirectory, this.name+".xml");
 		return xmlFile;
@@ -709,12 +724,16 @@ public class ModelResourceExporter {
 
 	private File createXMLFile(String root)
 	{
-		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
-        File outputFile = new File(resourceDirectory, this.name+".xml");
+        File outputFile = getXMLFile(root);
         try
         {
-	        if (this.xmlFile != null)
+	        if (this.xmlFile != null && this.xmlFile.exists())
 	        {
+				if (!outputFile.exists())
+	            {
+	            	FileUtilities.createParentDirectoriesIfNecessary(outputFile);
+	                outputFile.createNewFile();
+	            }
 	        	FileUtilities.copyFile(this.xmlFile, outputFile);
 	        	return outputFile;
 	        }
@@ -775,6 +794,9 @@ public class ModelResourceExporter {
 	}
 
 	public String getThumbnailPath(String rootPath, String textureName) {
+		if (!rootPath.endsWith("/") && !rootPath.endsWith("\\")) {
+			rootPath += "/";
+		}
 		String resourceDirectory = rootPath + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
 		if (textureName == null) {
 			return resourceDirectory+this.name+".png";
@@ -787,11 +809,12 @@ public class ModelResourceExporter {
 	private List<File> createThumbnails(String root)
 	{
 		List<File> thumbnailFiles = new LinkedList<File>();
-		boolean isFirst = true;
+		List<String> thumbnailsCreated = new LinkedList<String>();
+		boolean gotBase = false;
 		if (this.existingThumbnails != null && !this.existingThumbnails.isEmpty()) {
 			for(Entry < String, File > entry : this.existingThumbnails.entrySet())
 			{
-				if (isFirst) {
+				if (!gotBase) {
 					File thumb = new File(getThumbnailPath(root, null));
 					try {
 						FileUtilities.copyFile(entry.getValue(), thumb);
@@ -801,10 +824,11 @@ public class ModelResourceExporter {
 						e.printStackTrace();
 						return null;
 					}
-					isFirst = false;
+					gotBase = true;
 				}
 				if (entry.getValue().exists() ){
 					thumbnailFiles.add(entry.getValue());
+					thumbnailsCreated.add(entry.getKey());
 				}
 				else {
 					System.err.println("FAILED TO FIND THUMBNAIL FILE '"+entry.getValue()+"'");
@@ -812,19 +836,20 @@ public class ModelResourceExporter {
 				}
 			}
 		}
-		else {
-			for(Entry < String, Image > entry : this.thumbnails.entrySet())
-			{
-				if (isFirst)
+		for(Entry < String, Image > entry : this.thumbnails.entrySet())
+		{
+			if (!thumbnailsCreated.contains(entry.getKey())) {
+				if (!gotBase)
 				{
 					File f = saveImageToFile(getThumbnailPath(root, null), entry.getValue());
 					if (f != null ){
 						thumbnailFiles.add(f);
 					}
-					isFirst = false;
+					gotBase = true;
 				}
 				File f = saveImageToFile(getThumbnailPath(root, entry.getKey()), entry.getValue());
 				if (f != null ){
+					thumbnailsCreated.add(entry.getKey());
 					thumbnailFiles.add(f);
 				}
 			}
@@ -837,14 +862,35 @@ public class ModelResourceExporter {
 		if (!sourceDirectory.endsWith("/") && !sourceDirectory.endsWith("\\")) {
 			sourceDirectory += File.separator;
         }
-		if (this.classData != null) {
-			File sourceDir = getJavaCodeDir(sourceDirectory);
-			File javaFile;
-			if (rebuildJavaFile) {
-				javaFile = createJavaCode(sourceDirectory);
-			}
-			else {
-				javaFile = getJavaFile(sourceDirectory);
+		xmlFile = getXMLFile(resourceDirectory);
+		if (rebuildXmlFile || !xmlFile.exists()) {
+			xmlFile = createXMLFile(resourceDirectory);
+		}
+		boolean addResources = false;
+		File resourceDir = null;
+		if (xmlFile != null) {
+			addResources = true;
+			resourceDir = xmlFile.getParentFile();
+			List<File> thumbnailFiles = createThumbnails(resourceDirectory);
+		}
+		else {
+			System.err.println("FAILED TO MAKE XML FILE FOR "+this.getName()+"--NOT ADDING IT TO JARS.");
+			return false;
+		}
+		boolean addClassData = false;
+		File sourceDir = null;
+		boolean shouldAddClassData = this.classData != null;
+		if (shouldAddClassData) {
+			sourceDir = getJavaCodeDir(sourceDirectory);
+			javaFile = getJavaFile(sourceDirectory);
+			if (rebuildJavaFile || !javaFile.exists()) {
+				try {
+					javaFile = createJavaCode(sourceDirectory);
+				}
+				catch (Exception e) {
+					System.err.println("FAILED TO MAKE JAVA FILE FOR "+this.getName()+"--NOT ADDING IT TO JARS.");
+					return false;
+				}
 			}
 			
 			String[] args = new String[]{javaFile.getAbsolutePath(), "-target", "1.5", "-classpath", System.getProperty("java.class.path")};
@@ -855,36 +901,37 @@ public class ModelResourceExporter {
 			{
 				System.out.println("BOOM!");
 			}
+			else {
+				addClassData = true;
+			}
+			
+		}
+		if (addResources && (shouldAddClassData && addClassData)) {
 			try
 			{
 				System.out.println("Adding "+sourceDir);
 				add(sourceDir, sourceJarStream, sourceDirectory, false);
+				System.out.println("Adding "+resourceDir);
+				add(resourceDir, resourceJarStream, resourceDirectory, true);
+				return true;
 			}
 			catch (Exception e)
 			{
+				System.err.println("FAILED ADDING DATA TO JARS: ");
 				e.printStackTrace();
 				return false;
 			}
 		}
-		if (rebuildXmlFile) {
-			xmlFile = createXMLFile(resourceDirectory);
-		}
 		else {
-			xmlFile = getXMLFile(resourceDirectory);
-		}
-		File resourceDir = xmlFile.getParentFile();
-		List<File> thumbnailFiles = createThumbnails(resourceDirectory);
-		try
-		{
-			System.out.println("Adding "+resourceDir);
-			add(resourceDir, resourceJarStream, resourceDirectory, true);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+			System.err.println("NOT ADDING "+this.getName()+" TO JARS.");
+			if (!addResources) {
+				System.err.println("FAILED TO MAKE RESOURCES FOR "+this.getName());
+			}
+			if (shouldAddClassData && !addClassData) {
+				System.err.println("FAILED TO MAKE JAVA CODE FOR "+this.getName());
+			}
 			return false;
 		}
-		return true;
 	}
 	
 	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos)
