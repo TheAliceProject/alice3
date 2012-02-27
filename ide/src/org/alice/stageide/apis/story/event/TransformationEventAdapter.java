@@ -4,7 +4,7 @@ import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.TransformationEvent;
+import org.lgna.story.event.PointOfViewEvent;
 
 public class TransformationEventAdapter extends AbstractAdapter implements PointOfViewChangeListener {
 
@@ -12,7 +12,7 @@ public class TransformationEventAdapter extends AbstractAdapter implements Point
 		super( context, lambda, userInstance );
 	}
 
-	public void pointOfViewChanged( TransformationEvent e ) {
+	public void pointOfViewChanged( PointOfViewEvent e ) {
 		invokeEntryPoint( e );
 	}
 }

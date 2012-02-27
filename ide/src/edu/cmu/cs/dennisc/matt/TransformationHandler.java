@@ -8,11 +8,11 @@ import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.TransformationEvent;
+import org.lgna.story.event.PointOfViewEvent;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener,TransformationEvent> {
+public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener,PointOfViewEvent> {
 
 	private Map<Entity,List<PointOfViewChangeListener>> checkMap = Collections.newHashMap();
 
@@ -38,12 +38,12 @@ public class TransformationHandler extends TransformationChangedHandler<PointOfV
 	@Override
 	protected void check( Entity changedEntity ) {
 		for( PointOfViewChangeListener listener : checkMap.get( changedEntity ) ) {
-			fireEvent( listener, new TransformationEvent( changedEntity ) );
+			fireEvent( listener, new PointOfViewEvent( changedEntity ) );
 		}
 	}
 
 	@Override
-	protected void nameOfFireCall( PointOfViewChangeListener listener, TransformationEvent event ) {
+	protected void nameOfFireCall( PointOfViewChangeListener listener, PointOfViewEvent event ) {
 		listener.pointOfViewChanged( event );
 	}
 }
