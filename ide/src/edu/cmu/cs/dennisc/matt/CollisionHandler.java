@@ -51,9 +51,9 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.EndCollisionEvent;
-import org.lgna.story.event.EndCollisionListener;
+import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.StartCollisionEvent;
-import org.lgna.story.event.StartCollisionListener;
+import org.lgna.story.event.CollisionStartListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -85,12 +85,12 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 	}
 	@Override
 	protected void nameOfFireCall( Object listener, CollisionEvent event ) {
-		if( listener instanceof StartCollisionListener ) {
-			StartCollisionListener startCollisionEvent = (StartCollisionListener)listener;
+		if( listener instanceof CollisionStartListener ) {
+			CollisionStartListener startCollisionEvent = (CollisionStartListener)listener;
 			startCollisionEvent.collisionStarted( (StartCollisionEvent)event );
-		} else if( listener instanceof EndCollisionListener ) {
-			EndCollisionListener endCollisionEvent = (EndCollisionListener)listener;
-			endCollisionEvent.whenTheseStopColliding( (EndCollisionEvent)event );
+		} else if( listener instanceof CollisionEndListener ) {
+			CollisionEndListener endCollisionEvent = (CollisionEndListener)listener;
+			endCollisionEvent.collisionEnded( (EndCollisionEvent)event );
 		}
 	}
 
@@ -111,9 +111,9 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 						LinkedList<Entity> models = new LinkedList<Entity>();
 						models.add( changedEntity );
 						models.add( m );
-						if( colList instanceof StartCollisionListener ) {
+						if( colList instanceof CollisionStartListener ) {
 							fireEvent( colList, new StartCollisionEvent( models.toArray( new Entity[ 0 ] ) ) );
-						} else if( colList instanceof EndCollisionListener ) {
+						} else if( colList instanceof CollisionEndListener ) {
 							fireEvent( colList, new EndCollisionEvent( models.toArray( new Entity[ 0 ] ) ) );
 						}
 					}
@@ -125,9 +125,9 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 		}
 
 		private boolean check( Object colList, Entity m, Entity changedEntity ) {
-			if( colList instanceof StartCollisionListener ) {
+			if( colList instanceof CollisionStartListener ) {
 				return !wereTouchingMap.get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity );
-			} else if( colList instanceof EndCollisionListener ) {
+			} else if( colList instanceof CollisionEndListener ) {
 				return wereTouchingMap.get( m ).get( changedEntity ) && !AabbCollisionDetector.doTheseCollide( m, changedEntity );
 			}
 			Logger.errln( "UNHANDLED CollisionListener TYPE " + colList.getClass() );

@@ -4,15 +4,15 @@ import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.EndCollisionEvent;
-import org.lgna.story.event.EndCollisionListener;
+import org.lgna.story.event.CollisionEndListener;
 
-public class EndCollisionAdapter extends AbstractAdapter implements EndCollisionListener {
+public class EndCollisionAdapter extends AbstractAdapter implements CollisionEndListener {
 
 	public EndCollisionAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
 		super(context, lambda, userInstance);
 	}
 
-	public void whenTheseStopColliding(EndCollisionEvent e) {
+	public void collisionEnded(EndCollisionEvent e) {
 		invokeEntryPoint( e );
 	}
 }

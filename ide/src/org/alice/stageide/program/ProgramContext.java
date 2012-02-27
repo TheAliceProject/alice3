@@ -70,12 +70,12 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ArrowKeyPressListener.class, org.alice.stageide.apis.story.event.ArrowKeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.NumberKeyPressListener.class, org.alice.stageide.apis.story.event.NumberKeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.PointOfViewChangeListener.class, org.alice.stageide.apis.story.event.TransformationEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.EnterViewListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ViewEnterListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ExitViewListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.StartCollisionListener.class, org.alice.stageide.apis.story.event.StartCollisionAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.EndCollisionListener.class, org.alice.stageide.apis.story.event.EndCollisionAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.EnterProximityListener.class, org.alice.stageide.apis.story.event.EnterProximityAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.ExitProximityListener.class, org.alice.stageide.apis.story.event.ExitProximityAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionStartListener.class, org.alice.stageide.apis.story.event.StartCollisionAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionEndListener.class, org.alice.stageide.apis.story.event.EndCollisionAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityEnterListener.class, org.alice.stageide.apis.story.event.EnterProximityAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityExitListener.class, org.alice.stageide.apis.story.event.ExitProximityAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.StartOcclusionListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.EndOcclusionListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );

@@ -46,18 +46,18 @@ import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.EnterProximityEvent;
-import org.lgna.story.event.EnterProximityListener;
+import org.lgna.story.event.ProximityEnterListener;
 
 /**
  * @author Matt May
  */
-public class EnterProximityAdapter extends AbstractAdapter implements EnterProximityListener{
+public class EnterProximityAdapter extends AbstractAdapter implements ProximityEnterListener {
 
-	public EnterProximityAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
-		super(context, lambda, userInstance);
+	public EnterProximityAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
+		super( context, lambda, userInstance );
 	}
 
-	public void whenTheseGetClose(EnterProximityEvent e) {
+	public void proximityEntered( EnterProximityEvent e ) {
 		invokeEntryPoint( e );
 	}
 

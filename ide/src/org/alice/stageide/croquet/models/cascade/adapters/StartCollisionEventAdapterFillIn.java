@@ -1,6 +1,6 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
-import org.lgna.story.event.StartCollisionListener;
+import org.lgna.story.event.CollisionStartListener;
 
 public class StartCollisionEventAdapterFillIn extends LambdaExpressionFillIn{
 	
@@ -12,6 +12,6 @@ public class StartCollisionEventAdapterFillIn extends LambdaExpressionFillIn{
 	}
 
 	public StartCollisionEventAdapterFillIn() {
-		super( java.util.UUID.fromString( "4888e172-636c-4d03-9b6a-0873017e00e9" ), StartCollisionListener.class );
+		super( java.util.UUID.fromString( "4888e172-636c-4d03-9b6a-0873017e00e9" ), CollisionStartListener.class );
 	}
 }

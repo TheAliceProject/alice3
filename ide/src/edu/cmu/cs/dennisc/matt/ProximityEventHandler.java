@@ -51,10 +51,10 @@ import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.EnterProximityEvent;
-import org.lgna.story.event.EnterProximityListener;
 import org.lgna.story.event.ExitProximityEvent;
-import org.lgna.story.event.ExitProximityListener;
+import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityEvent;
+import org.lgna.story.event.ProximityExitListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -81,12 +81,12 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 
 	@Override
 	protected void nameOfFireCall( Object listener, ProximityEvent e ) {
-		if( listener instanceof EnterProximityListener ) {
-			EnterProximityListener enter = (EnterProximityListener)listener;
-			enter.whenTheseGetClose( (EnterProximityEvent)e );
-		} else if( listener instanceof ExitProximityListener ) {
-			ExitProximityListener exit = (ExitProximityListener)listener;
-			exit.whenTheseMoveApart( (ExitProximityEvent)e );
+		if( listener instanceof ProximityEnterListener ) {
+			ProximityEnterListener enter = (ProximityEnterListener)listener;
+			enter.proximityEntered( (EnterProximityEvent)e );
+		} else if( listener instanceof ProximityExitListener ) {
+			ProximityExitListener exit = (ProximityExitListener)listener;
+			exit.proximityExited( (ExitProximityEvent)e );
 		}
 	}
 
@@ -109,9 +109,9 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 						LinkedList<Entity> models = new LinkedList<Entity>();
 						models.add( changedEntity );
 						models.add( m );
-						if( proxList instanceof EnterProximityListener ) {
+						if( proxList instanceof ProximityEnterListener ) {
 							fireEvent( proxList, new EnterProximityEvent( models.toArray( new Entity[ 0 ] ) ) );
-						} else if( proxList instanceof ExitProximityListener ) {
+						} else if( proxList instanceof ProximityExitListener ) {
 							fireEvent( proxList, new ExitProximityEvent( models.toArray( new Entity[ 0 ] ) ) );
 						}
 					}
@@ -123,9 +123,9 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 		}
 
 		private boolean check( Object proxList, Entity m, Entity changedEntity, Double dist ) {
-			if( proxList instanceof EnterProximityListener ) {
+			if( proxList instanceof ProximityEnterListener ) {
 				return !wereClose.get( proxList ).get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity, dist );
-			} else if( proxList instanceof ExitProximityListener ) {
+			} else if( proxList instanceof ProximityExitListener ) {
 				return wereClose.get( proxList ).get( m ).get( changedEntity ) && !AabbCollisionDetector.doTheseCollide( m, changedEntity, dist );
 			}
 			return false;

@@ -12,7 +12,7 @@ import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.EndOcclusionListener;
-import org.lgna.story.event.EnterViewListener;
+import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ExitViewListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
@@ -168,7 +168,7 @@ public class EventManager {
 	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	//	}
 
-	public void addComesIntoViewEventListener( EnterViewListener listener, Entity[] entities ) {
+	public void addComesIntoViewEventListener( ViewEnterListener listener, Entity[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
 	public void addLeavesViewEventListener( ExitViewListener listener, Entity[] entities ) {
