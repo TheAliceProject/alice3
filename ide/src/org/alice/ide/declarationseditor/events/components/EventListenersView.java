@@ -45,8 +45,13 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 //		BorderPanel panel = new BorderPanel();
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-		final StickyBottomPanel panel = new StickyBottomPanel();
 		scroll = new org.lgna.croquet.components.ScrollPane( eventsPanel );
+		scroll.setBorder( null );
+		scroll.setBothScrollBarIncrements( 12, 24 );
+		LineAxisPanel bottom = new LineAxisPanel( button );
+		bottom.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 8, 0 ) );
+		final StickyBottomPanel panel = new StickyBottomPanel( scroll, bottom );
+		this.addComponent( panel, Constraint.CENTER );
 		scroll.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				Object src = e.getSource();
@@ -60,15 +65,6 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 				}
 			}
 		} );
-		scroll.setBorder( null );
-		scroll.setBothScrollBarIncrements( 12, 24 );
-		panel.addTop( scroll );
-		
-		LineAxisPanel bottom = new LineAxisPanel( button );
-		bottom.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 8, 0 ) );
-		panel.addBottom( bottom );
-		
-		this.addComponent( panel, Constraint.CENTER );
 		
 		java.awt.Color color = this.eventsPanel.getBackgroundColor();
 		this.setBackgroundColor( color );
