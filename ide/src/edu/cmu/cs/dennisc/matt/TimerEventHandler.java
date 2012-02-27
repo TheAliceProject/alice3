@@ -7,7 +7,7 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.TimerEvent;
+import org.lgna.story.event.TimeEvent;
 import org.lgna.story.event.WhileContingencyListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -15,7 +15,7 @@ import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
 
-public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerEvent> implements SceneActivationListener {
+public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEvent> implements SceneActivationListener {
 
 	private Map<TimeListener, Long> freqMap = Collections.newHashMap();
 	private List<TimeListener> timerList = Collections.newArrayList();
@@ -57,12 +57,12 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 	private void update() {
 		for(TimeListener listener: timerList){
 			if(timeToFire(listener)){
-				trigger(listener, new TimerEvent());
+				trigger(listener, new TimeEvent());
 			}
 		}
 	}
 
-	private void trigger( TimeListener listener, TimerEvent timerEvent ) {
+	private void trigger( TimeListener listener, TimeEvent timerEvent ) {
 		mostRecentFire.put( listener, currentTime );
 		if(isActivated) {
 			fireEvent( listener, timerEvent );
@@ -76,7 +76,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimerE
 		return 1000*frequency;
 	}
 	@Override
-	protected void nameOfFireCall(TimeListener listener, TimerEvent event) {
+	protected void nameOfFireCall(TimeListener listener, TimeEvent event) {
 		listener.timeElapsed(event);
 	}
 	public void sceneActivated(SceneActivationEvent e) {

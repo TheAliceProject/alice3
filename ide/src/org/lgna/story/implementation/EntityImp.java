@@ -44,12 +44,16 @@
 package org.lgna.story.implementation;
 
 import org.lgna.story.AudioSource;
+import org.lgna.story.Entity;
+
+import edu.cmu.cs.dennisc.matt.AabbCollisionDetector;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class EntityImp implements ReferenceFrame {
-	protected static final edu.cmu.cs.dennisc.scenegraph.Element.Key< EntityImp > ENTITY_IMP_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "ENTITY_IMP_KEY" );
+	protected static final edu.cmu.cs.dennisc.scenegraph.Element.Key<EntityImp> ENTITY_IMP_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "ENTITY_IMP_KEY" );
+
 	public static EntityImp getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		return sgElement != null ? sgElement.getBonusDataFor( ENTITY_IMP_KEY ) : null;
 	}
@@ -70,8 +74,9 @@ public abstract class EntityImp implements ReferenceFrame {
 	public static <T extends org.lgna.story.Entity> T getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getAbstractionFromSgElement( sgElement ), cls );
 	}
-	
+
 	private String name;
+
 	public String getName() {
 		return this.name;
 	}
@@ -95,36 +100,35 @@ public abstract class EntityImp implements ReferenceFrame {
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
 		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	}
-	
-//	private edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound createCumulativeBound( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
-//		java.util.List< Transformable > transformables = new java.util.LinkedList< Transformable >();
-//		updateHowMuch( transformables, howMuch.isThisACandidate(), howMuch.isChildACandidate(), howMuch.isGrandchildAndBeyondACandidate() );
-//		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
-//		ReferenceFrame actualAsSeenBy = asSeenBy.getActualReferenceFrame( this );
-//
-//		for( Transformable transformable : transformables ) {
-//			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformable.getTransformation( actualAsSeenBy );
-//			assert m.isNaN() == false;
-//			transformable.updateCumulativeBound( rv, m, originPolicy.isOriginIncluded() );
-//		}
-//		return rv;
-//	}
-//	
-//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
-//		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = createCumulativeBound( asSeenBy, howMuch, originPolicy );
-//		return cumulativeBound.getBoundingBox();
-//	}
-//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch ) {
-//		return getAxisAlignedMinimumBoundingBox( asSeenBy, howMuch, DEFAULT_ORIGIN_INCLUSION_POLICY );
-//	}
-//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
-//		return getAxisAlignedMinimumBoundingBox( asSeenBy, DEFAULT_HOW_MUCH );
-//	}
-//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-//		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
-//	}
 
-	
+	//	private edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound createCumulativeBound( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
+	//		java.util.List< Transformable > transformables = new java.util.LinkedList< Transformable >();
+	//		updateHowMuch( transformables, howMuch.isThisACandidate(), howMuch.isChildACandidate(), howMuch.isGrandchildAndBeyondACandidate() );
+	//		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
+	//		ReferenceFrame actualAsSeenBy = asSeenBy.getActualReferenceFrame( this );
+	//
+	//		for( Transformable transformable : transformables ) {
+	//			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformable.getTransformation( actualAsSeenBy );
+	//			assert m.isNaN() == false;
+	//			transformable.updateCumulativeBound( rv, m, originPolicy.isOriginIncluded() );
+	//		}
+	//		return rv;
+	//	}
+	//	
+	//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
+	//		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = createCumulativeBound( asSeenBy, howMuch, originPolicy );
+	//		return cumulativeBound.getBoundingBox();
+	//	}
+	//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch ) {
+	//		return getAxisAlignedMinimumBoundingBox( asSeenBy, howMuch, DEFAULT_ORIGIN_INCLUSION_POLICY );
+	//	}
+	//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+	//		return getAxisAlignedMinimumBoundingBox( asSeenBy, DEFAULT_HOW_MUCH );
+	//	}
+	//	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+	//		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
+	//	}
+
 	public abstract org.lgna.story.Entity getAbstraction();
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
@@ -133,25 +137,25 @@ public abstract class EntityImp implements ReferenceFrame {
 	public EntityImp getActualEntityImplementation( EntityImp ths ) {
 		return this;
 	}
-	
+
 	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
 		return this.getSgComposite().getParent();
 	}
 	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
 		this.getSgComposite().setParent( sgVehicle );
 	}
-	
+
 	//HACK
-	private EntityImp getEntityImpForSgObject(edu.cmu.cs.dennisc.scenegraph.Composite sgObject) {
+	private EntityImp getEntityImpForSgObject( edu.cmu.cs.dennisc.scenegraph.Composite sgObject ) {
 		EntityImp rv = getInstance( sgObject );
 		if( rv != null ) {
 			return rv;
-		} else if (sgObject.getParent() != null){
-			return getEntityImpForSgObject(sgObject.getParent());
+		} else if( sgObject.getParent() != null ) {
+			return getEntityImpForSgObject( sgObject.getParent() );
 		}
 		return null;
 	}
-	
+
 	public final EntityImp getVehicle() {
 		edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle = this.getSgVehicle();
 		if( sgVehicle != null ) {
@@ -159,12 +163,11 @@ public abstract class EntityImp implements ReferenceFrame {
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = getEntityImpForSgObject(sgVehicle);
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "No instance found for sgVehicle "+sgVehicle+". Searched parent and got "+rv );
-				if (rv != null) {
+				rv = getEntityImpForSgObject( sgVehicle );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "No instance found for sgVehicle " + sgVehicle + ". Searched parent and got " + rv );
+				if( rv != null ) {
 					//pass
-				}
-				else {
+				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, sgVehicle );
 				}
 			}
@@ -204,7 +207,7 @@ public abstract class EntityImp implements ReferenceFrame {
 		ProgramImp program = this.getProgram();
 		return program != null ? program.getOnscreenLookingGlass() : null;
 	}
-	
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
 		return this.getSgComposite().getAbsoluteTransformation();
 	}
@@ -224,17 +227,18 @@ public abstract class EntityImp implements ReferenceFrame {
 		rv.setLocalTransformation( m );
 		return rv;
 	}
-	
-	public java.awt.Point transformToAwt( edu.cmu.cs.dennisc.math.Point3 xyz, CameraImp< ? > camera ) {
+
+	public java.awt.Point transformToAwt( edu.cmu.cs.dennisc.math.Point3 xyz, CameraImp<?> camera ) {
 		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenLookingGlass(), camera.getSgCamera() );
 	}
-	
+
 	protected static final double RIGHT_NOW = 0.0;
 	protected static final double DEFAULT_DURATION = 1.0;
 	protected static final edu.cmu.cs.dennisc.animation.Style DEFAULT_STYLE = edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY;
-//	public static final Style DEFAULT_SPEED_STYLE = org.alice.apis.moveandturn.TraditionalStyle.BEGIN_AND_END_ABRUPTLY;
-//	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.THIS_AND_DESCENDANT_PARTS;
-	
+
+	//	public static final Style DEFAULT_SPEED_STYLE = org.alice.apis.moveandturn.TraditionalStyle.BEGIN_AND_END_ABRUPTLY;
+	//	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.THIS_AND_DESCENDANT_PARTS;
+
 	private double getSimulationSpeedFactor() {
 		ProgramImp programImplementation = this.getProgram();
 		if( programImplementation != null ) {
@@ -278,11 +282,11 @@ public abstract class EntityImp implements ReferenceFrame {
 	public void delay( double duration ) {
 		this.alreadyAdjustedDelay( this.adjustDurationIfNecessary( duration ) );
 	}
-		
+
 	public void playAudio( AudioSource audioSource ) {
 		edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 		edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
-		this.perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );		
+		this.perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );
 	}
 
 	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
@@ -296,7 +300,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
 		this.perform( animation, null );
 	}
-	
+
 	protected void appendRepr( StringBuilder sb ) {
 	}
 	@Override
@@ -307,5 +311,8 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.appendRepr( sb );
 		sb.append( "]" );
 		return sb.toString();
+	}
+	public boolean isCollidingWith( Entity other ) {
+		return AabbCollisionDetector.doTheseCollide( this.getAbstraction(), other );
 	}
 }

@@ -43,19 +43,22 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
+
 /**
  * @author Dennis Cosgrove
  */
 @org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false)
 public abstract class Entity implements Rider {
-	/*package-private*/ abstract org.lgna.story.implementation.EntityImp getImplementation();
+	/*package-private*/abstract org.lgna.story.implementation.EntityImp getImplementation();
 	@GetterTemplate(isPersistent = true)
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public String getName() {
 		return this.getImplementation().getName();
 	}
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public void setName( String name ) {
 		this.getImplementation().setName( name );
 	}
@@ -65,11 +68,11 @@ public abstract class Entity implements Rider {
 		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
 	}
-	
+
 	public VantagePoint getVantagePoint( Entity entity ) {
-		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) ); 
+		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) );
 	}
-	
+
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void delay( Number duration ) {
 		this.getImplementation().delay( duration.doubleValue() );
@@ -78,5 +81,10 @@ public abstract class Entity implements Rider {
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void playAudio( AudioSource audioSource ) {
 		this.getImplementation().playAudio( audioSource );
+	}
+
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public boolean isCollidingWith( Entity other ) {
+		return this.getImplementation().isCollidingWith( other );
 	}
 }

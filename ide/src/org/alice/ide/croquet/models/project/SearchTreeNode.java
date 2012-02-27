@@ -47,7 +47,8 @@ public class SearchTreeNode {
 	public String getText() {
 		if( content instanceof UserMethod ) {
 			UserMethod method = (UserMethod)content;
-			return "<html><strong>" + method.getName() + "</strong></html>";
+			String edit = parent.parent == null ? "edit" : "";
+			return "<html> " + edit + " <strong>" + method.getName() + "</strong></html>";
 		} else if( content instanceof JavaMethod ) {
 			JavaMethod javaMethod = (JavaMethod)content;
 			return javaMethod.getName();

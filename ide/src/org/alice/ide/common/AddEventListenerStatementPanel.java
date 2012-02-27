@@ -60,7 +60,10 @@ public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 	}
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		return org.alice.ide.IDE.getActiveInstance().getTheme().getEventColor();
+		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getEventColor();
+		java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
+		java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
+		return new java.awt.GradientPaint( x, y, colorA, x, y+150, colorB );
 	}
 	@Override
 	public boolean isMaximumSizeClampedToPreferredSize() {

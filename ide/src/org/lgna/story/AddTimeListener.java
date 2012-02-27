@@ -1,9 +1,9 @@
 package org.lgna.story;
 
 
-public class AddTimerEventListener {
+public class AddTimeListener {
 
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=AddTimerEventListener.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=AddTimeListener.class )
 	public interface Detail{}
 
 	public static Detail timerFrequency(double d) {
