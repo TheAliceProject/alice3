@@ -52,14 +52,15 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 	}
 	public static final String SCHEME = "gen";
 	public static enum Template {
-		GRASS( org.lgna.story.Ground.SurfaceAppearance.GRASS ),
+		GRASS( org.lgna.story.Ground.SurfaceAppearance.GRASS, new org.lgna.story.Color(150/255.0, 226/255.0, 252/255.0) ),
+		WONDERLAND( org.lgna.story.Ground.SurfaceAppearance.GRASS, new org.lgna.story.Color(0/255.0, 24/255.0, 75/255.0), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color(25/255.0, 0/255.0, 0/255.0)),
 		MOON( org.lgna.story.Ground.SurfaceAppearance.MOON, org.lgna.story.Color.BLACK ),
 		SNOW( org.lgna.story.Ground.SurfaceAppearance.SNOW ),
 		SEA_SURFACE( org.lgna.story.Ground.SurfaceAppearance.WATER ),
-		SEA_FLOOR( org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.3, org.lgna.story.Color.WHITE, org.lgna.story.Color.CYAN ),
-		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, org.lgna.story.Color.DARK_BLUE, 0.3, org.lgna.story.Color.WHITE, org.lgna.story.Color.CYAN ),
+		SEA_FLOOR( org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR, new org.lgna.story.Color(66/255.0, 195/255.0, 252/255.0), 0.25, org.lgna.story.Color.WHITE, org.lgna.story.Color.CYAN ),
+		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, new org.lgna.story.Color(75/255.0, 220/255.0, 255/255.0), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color(0/255.0, 26/255.0, 60/255.0) ),
 		DESERT( org.lgna.story.Ground.SurfaceAppearance.SAND ),
-		MARS( org.lgna.story.Ground.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.3 ),
+		MARS( org.lgna.story.Ground.SurfaceAppearance.MARS, new org.lgna.story.Color(40/255.0, 0/255.0, 0/255.0), 0.3, org.lgna.story.Color.WHITE, new org.lgna.story.Color(11/255.0, 0/255.0, 24/255.0) ),
 		DIRT( org.lgna.story.Ground.SurfaceAppearance.DIRT ),
 		ROOM( org.lgna.story.Room.FloorAppearance.WOOD_ZIG_ZAG, org.lgna.story.Room.WallAppearance.GREEN_STRIPE_WITH_BEAD, org.lgna.story.Room.CeilingAppearance.WHITE_TILES);
 		private final org.lgna.story.Ground.SurfaceAppearance surfaceAppearance;
