@@ -49,7 +49,6 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		scroll.setBorder( null );
 		scroll.setBothScrollBarIncrements( 12, 24 );
 		LineAxisPanel bottom = new LineAxisPanel( button );
-		bottom.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 8, 0 ) );
 		final StickyBottomPanel panel = new StickyBottomPanel( scroll, bottom );
 		this.addComponent( panel, Constraint.CENTER );
 		scroll.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
@@ -66,6 +65,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 			}
 		} );
 		
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 		java.awt.Color color = this.eventsPanel.getBackgroundColor();
 		this.setBackgroundColor( color );
 		scroll.setBackgroundColor( color );

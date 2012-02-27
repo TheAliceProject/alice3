@@ -45,16 +45,23 @@ package org.lgna.story.event;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyEvent extends AbstractKeyEvent {
-	public KeyEvent( java.awt.event.KeyEvent e ) {
-		super( e );
+public abstract class AbstractKeyEvent extends AbstractEvent {
+	private final java.awt.event.KeyEvent e;
+	public AbstractKeyEvent( java.awt.event.KeyEvent e ) {
+		this.e = e;
 	}
-	public Boolean isLetter() {
-		char ch = this.getKeyChar();
-		return Character.isLetter( ch );
+	public org.lgna.story.Key getKey() {
+		return org.lgna.story.Key.get( e );
 	}
-	public Boolean isDigit() {
-		char ch = this.getKeyChar();
-		return Character.isDigit( ch );
+	public Boolean isKey( org.lgna.story.Key key ) {
+		return this.getKey() == key;
+	}
+	protected char getKeyChar() {
+		return this.e.getKeyChar();
+	}
+	
+	//todo: remove
+	public java.awt.event.KeyEvent getJavaEvent() {
+		return this.e;
 	}
 }
