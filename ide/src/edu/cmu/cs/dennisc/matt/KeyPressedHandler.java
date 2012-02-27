@@ -69,10 +69,10 @@ public class KeyPressedHandler extends AbstractEventHandler< Object, KeyEvent > 
 	protected void nameOfFireCall(Object listener, KeyEvent event) {
 		if ( listener instanceof ArrowKeyPressListener ) {
 			ArrowKeyPressListener arrowListener = ( ArrowKeyPressListener ) listener;
-			arrowListener.arrowKeyPressed(new ArrowKeyEvent( event.getJavaEvent() ) );
+			arrowListener.arrowKeyPressed(new ArrowKeyEvent( event ) );
 		} else if ( listener instanceof NumberKeyPressListener ) {
 			NumberKeyPressListener numberListener = ( NumberKeyPressListener ) listener;
-			numberListener.numberKeyPressed( new NumberKeyEvent( event.getJavaEvent() ) );
+			numberListener.numberKeyPressed( new NumberKeyEvent( event ) );
 		} else if ( listener instanceof KeyPressListener ) {
 			KeyPressListener keyListener = ( KeyPressListener ) listener;
 			keyListener.keyPressed( event );

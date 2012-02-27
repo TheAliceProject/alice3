@@ -20,6 +20,9 @@ public class ArrowKeyEvent extends AbstractKeyEvent {
 		}
 		assert isArrow : e;
 	}
+	public ArrowKeyEvent( AbstractKeyEvent other ) {
+		this( other.getJavaEvent() );
+	}
 
 	public org.lgna.story.MoveDirection getMoveDirection( MoveDirectionPlane plane ) {
 		if( plane.equals( MoveDirectionPlane.UP_DOWN_LEFT_RIGHT ) ) {

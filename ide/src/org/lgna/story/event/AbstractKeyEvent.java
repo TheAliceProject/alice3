@@ -59,9 +59,7 @@ public abstract class AbstractKeyEvent extends AbstractEvent {
 	protected char getKeyChar() {
 		return this.e.getKeyChar();
 	}
-	
-	//todo: remove
-	public java.awt.event.KeyEvent getJavaEvent() {
+	protected java.awt.event.KeyEvent getJavaEvent() {
 		return this.e;
 	}
 }

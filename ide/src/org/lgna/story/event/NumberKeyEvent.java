@@ -13,6 +13,9 @@ public class NumberKeyEvent extends AbstractKeyEvent {
 		char ch = this.getKeyChar();
 		assert Character.isDigit( ch ) : ch;
 	}
+	public NumberKeyEvent( AbstractKeyEvent other ) {
+		this( other.getJavaEvent() );
+	}
 
 	public Integer getNumber() {
 		Key key = this.getKey();
