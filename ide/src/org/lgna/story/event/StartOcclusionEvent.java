@@ -1,13 +1,9 @@
 package org.lgna.story.event;
 
-import java.util.List;
-
-import org.lgna.story.Entity;
-
 public class StartOcclusionEvent extends OcclusionEvent {
 
-	public StartOcclusionEvent(List<Entity> entityPair) {
-		super(entityPair);
+	public StartOcclusionEvent( org.lgna.story.Entity foreground, org.lgna.story.Entity background ) {
+		super( foreground, background );
 	}
 
 }

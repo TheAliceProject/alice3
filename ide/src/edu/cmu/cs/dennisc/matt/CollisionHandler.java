@@ -112,9 +112,9 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 						models.add( changedEntity );
 						models.add( m );
 						if( colList instanceof StartCollisionListener ) {
-							fireEvent( colList, new StartCollisionEvent( models ) );
+							fireEvent( colList, new StartCollisionEvent( models.toArray( new Entity[ 0 ] ) ) );
 						} else if( colList instanceof EndCollisionListener ) {
-							fireEvent( colList, new EndCollisionEvent( models ) );
+							fireEvent( colList, new EndCollisionEvent( models.toArray( new Entity[ 0 ] ) ) );
 						}
 					}
 				}
