@@ -46,7 +46,7 @@ import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.TimerEvent;
+import org.lgna.story.event.TimeEvent;
 
 /**
  * @author Matt May
@@ -57,7 +57,7 @@ public class TimerEventAdapter extends AbstractAdapter implements TimeListener {
 		super(context, lambda, userInstance);
 	}
 
-	public void timeElapsed(TimerEvent e) {
+	public void timeElapsed(TimeEvent e) {
 		invokeEntryPoint( e );
 	}
 

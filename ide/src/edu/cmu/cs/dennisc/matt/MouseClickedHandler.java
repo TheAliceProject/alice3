@@ -7,13 +7,13 @@ import org.lgna.story.Model;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
 import org.lgna.story.Visual;
-import org.lgna.story.event.MouseButtonEvent;
+import org.lgna.story.event.MouseClickEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
-import org.lgna.story.event.MouseClickedOnObjectEvent;
+import org.lgna.story.event.MouseClickOnObjectEvent;
 
 
-public class MouseClickedHandler extends AbstractEventHandler< Object, MouseButtonEvent > {
+public class MouseClickedHandler extends AbstractEventHandler< Object, MouseClickEvent > {
 
 	HashMap<Object, LinkedList<Object>> map = new HashMap<Object, LinkedList<Object>>();
 	Object empty = new Object();
@@ -36,16 +36,16 @@ public class MouseClickedHandler extends AbstractEventHandler< Object, MouseButt
 	}
 	
 	@Override
-	protected void nameOfFireCall(Object listener, MouseButtonEvent event) {
+	protected void nameOfFireCall(Object listener, MouseClickEvent event) {
 		if (listener instanceof MouseClickOnObjectListener) {
 			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
-			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
+			mouseCOOL.mouseClicked( new MouseClickOnObjectEvent( event ) );
 		} else if ( listener instanceof MouseClickOnScreenListener ) {
 			MouseClickOnScreenListener mouseCOSL = ( MouseClickOnScreenListener ) listener;
 			mouseCOSL.mouseClicked(  );
-		} else if (listener instanceof MouseButtonEvent ) {//TODO: Deprecated
+		} else if (listener instanceof MouseClickEvent ) {//TODO: Deprecated
 			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
-			mouseCOOL.mouseClicked( new MouseClickedOnObjectEvent( event ) );
+			mouseCOOL.mouseClicked( new MouseClickOnObjectEvent( event ) );
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class MouseClickedHandler extends AbstractEventHandler< Object, MouseButt
 	}
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, Scene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
-			final org.lgna.story.event.MouseButtonEvent mbe = new org.lgna.story.event.MouseButtonEvent( e, scene );
+			final org.lgna.story.event.MouseClickEvent mbe = new org.lgna.story.event.MouseClickEvent( e, scene );
 			Model model = mbe.getModelAtMouseLocation();
 			//todo
 //			if( model != null ) {
@@ -89,7 +89,7 @@ public class MouseClickedHandler extends AbstractEventHandler< Object, MouseButt
 		}
 	}
 
-	public void fireAllTargeted(org.lgna.story.event.MouseButtonEvent event) {
+	public void fireAllTargeted(org.lgna.story.event.MouseClickEvent event) {
 		if(shouldFire){
 			if(event != null){
 				LinkedList<Object> listeners = new LinkedList<Object>();

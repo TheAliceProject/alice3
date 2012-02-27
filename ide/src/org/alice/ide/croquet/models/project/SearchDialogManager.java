@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.Icon;
 
@@ -15,6 +16,7 @@ import org.lgna.croquet.StringState;
 import org.lgna.croquet.components.Tree;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode> implements ValueListener<String> {
 
@@ -57,14 +59,23 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 		}
 		String check = state.getValue();
 		check = check.replaceAll( "\\*", ".*" );
-		for( SearchTreeNode parent : parentList ) {
-			for( SearchTreeNode child : childMap.get( parent ) ) {
-				Pattern pattern = Pattern.compile( check.toLowerCase() );
-				Matcher matcher = pattern.matcher( child.getText().toLowerCase() );
-				if( matcher.find() ) {
-					show( child );
+		String errorMessage;
+		try {
+			Pattern pattern = Pattern.compile( check.toLowerCase() );
+			for( SearchTreeNode parent : parentList ) {
+				for( SearchTreeNode child : childMap.get( parent ) ) {
+					Matcher matcher = pattern.matcher( child.getText().toLowerCase() );
+					if( matcher.find() ) {
+						show( child );
+					}
 				}
 			}
+			errorMessage = null;
+		} catch( PatternSyntaxException pse ) {
+			errorMessage = "bad pattern";
+		}
+		if( errorMessage != null ) {
+			Logger.todo( "update label", errorMessage );
 		}
 		this.refreshAll();
 		owner.expandAllRows();

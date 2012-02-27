@@ -1,9 +1,9 @@
 package org.lgna.story;
 
-import org.lgna.story.AddTimerEventListener.Detail;
+import org.lgna.story.AddTimeListener.Detail;
 
 public class TimerFrequency implements 
-	AddTimerEventListener.Detail {
+	AddTimeListener.Detail {
 
 	public final static TimerFrequency ASAP = new TimerFrequency(Double.doubleToLongBits(0));
 	private Long frequency;

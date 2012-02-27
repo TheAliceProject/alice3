@@ -1,7 +1,7 @@
 ﻿package org.lgna.story.event;
 
-public interface StartCollisionListener extends CollisionListener{
-	
+public interface StartCollisionListener {
+
 	public void collisionStarted( StartCollisionEvent e );
-	
+
 }

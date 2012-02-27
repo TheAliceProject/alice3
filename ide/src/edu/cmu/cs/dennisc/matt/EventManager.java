@@ -11,7 +11,6 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.CollisionListener;
 import org.lgna.story.event.EndOcclusionListener;
 import org.lgna.story.event.EnterViewListener;
 import org.lgna.story.event.ExitViewListener;
@@ -23,7 +22,7 @@ import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.TransformationListener;
+import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.event.WhileOcclusionListener;
@@ -36,7 +35,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 public class EventManager {
 
 	private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
-	
+
 	private final TransformationHandler transHandler = new TransformationHandler();
 	private final OcclusionHandler occlusionHandler = new OcclusionHandler();
 	private final ViewEventHandler viewHandler = new ViewEventHandler();
@@ -45,8 +44,8 @@ public class EventManager {
 	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
 	private final TimerEventHandler timer = new TimerEventHandler();
 	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
-	
-	private final TimerContingencyManager contingent = new TimerContingencyManager(timer);
+
+	private final TimerContingencyManager contingent = new TimerContingencyManager( timer );
 
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
@@ -127,10 +126,10 @@ public class EventManager {
 			handler.restoreListeners();
 		}
 	}
-	public void addCollisionListener( CollisionListener collisionListener, List< Entity > groupOne, List< Entity > groupTwo ) {
+	public void addCollisionListener( Object collisionListener, List<Entity> groupOne, List<Entity> groupTwo ) {
 		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
 	}
-	public void addProximityEventListener( Object proximityEventListener, List< Entity > groupOne, List< Entity > groupTwo, Double dist ) {
+	public void addProximityEventListener( Object proximityEventListener, List<Entity> groupOne, List<Entity> groupTwo, Double dist ) {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
 
@@ -161,18 +160,18 @@ public class EventManager {
 		this.mouseHandler.addListener( listener, policy, targets );
 	}
 
-	public void addTransformationListener( TransformationListener transformationlistener, Entity[] shouldListenTo) {
+	public void addTransformationListener( PointOfViewChangeListener transformationlistener, Entity[] shouldListenTo ) {
 		this.transHandler.addTransformationListener( transformationlistener, shouldListenTo );
 	}
 
-//	public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
-//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
-//	}
+	//	public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
+	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+	//	}
 
 	public void addComesIntoViewEventListener( EnterViewListener listener, Entity[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
-	public void addLeavesViewEventListener(ExitViewListener listener, Entity[] entities) {
+	public void addLeavesViewEventListener( ExitViewListener listener, Entity[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
 
@@ -180,25 +179,25 @@ public class EventManager {
 		if( this.dragAdapter != null ) {
 			//pass
 		} else {
-//			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
+			//			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
 			this.dragAdapter = new org.alice.interact.GlobalDragAdapter();
 			OnscreenLookingGlass lookingGlass = this.scene.getProgram().getOnscreenLookingGlass();
-			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera) scene.findFirstCamera().getSgCamera();
-//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
-//				System.out.println("hi");
-//				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) 
-//				{
-//					camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );
-//					break;
-//				}
-//			}
+			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
+			//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
+			//				System.out.println("hi");
+			//				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) 
+			//				{
+			//					camera = (SymmetricPerspectiveCamera)lookingGlass.getCameraAt( i );
+			//					break;
+			//				}
+			//			}
 			this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
-			this.dragAdapter.addCameraView(CameraView.MAIN, camera, null);
-			this.dragAdapter.makeCameraActive(camera);
-			this.dragAdapter.setAnimator(  this.scene.getProgram().getAnimator() );
-//			for( Transformable transformable : this.scene.getComponents() ) {
-//				this.putBonusDataFor( transformable );
-//			}
+			this.dragAdapter.addCameraView( CameraView.MAIN, camera, null );
+			this.dragAdapter.makeCameraActive( camera );
+			this.dragAdapter.setAnimator( this.scene.getProgram().getAnimator() );
+			//			for( Transformable transformable : this.scene.getComponents() ) {
+			//				this.putBonusDataFor( transformable );
+			//			}
 		}
 	}
 
@@ -212,14 +211,14 @@ public class EventManager {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
 	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Entity> group, Long frequency, MultipleEventPolicy policy ) {
-		contingent.register(listener, group, frequency, policy );
+		contingent.register( listener, group, frequency, policy );
 	}
 
-	public void addOcclusionEventListener( StartOcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
-		occlusionHandler.addOcclusionEvent(occlusionEventListener, groupOne, groupTwo);
+	public void addOcclusionEventListener( StartOcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo ) {
+		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
 
-	public void addOcclusionEventListener( EndOcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
-		occlusionHandler.addOcclusionEvent(occlusionEventListener, groupOne, groupTwo);
+	public void addOcclusionEventListener( EndOcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo ) {
+		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
 }
