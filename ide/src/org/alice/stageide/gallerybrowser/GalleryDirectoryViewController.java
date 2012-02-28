@@ -97,9 +97,13 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	}
 	
 	private java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > update( java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion, boolean isTag, String text ) {
-		String lcName = text.toLowerCase();
-		if( criterion.accept( lcName, lcFilter ) ) {
-			rv.add( treeNode );
+		if( rv.contains( treeNode ) ) {
+			//pass
+		} else {
+			String lcName = text.toLowerCase();
+			if( criterion.accept( lcName, lcFilter ) ) {
+				rv.add( treeNode );
+			}
 		}
 		return rv;
 	}

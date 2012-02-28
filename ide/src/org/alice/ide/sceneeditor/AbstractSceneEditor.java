@@ -218,7 +218,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	
 	public void removeField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
-		assert declaringType == this.getActiveSceneType();
+		assert declaringType == this.getActiveSceneType() : declaringType + " " + field;
 		for (int i=0; i<this.getActiveSceneType().fields.size(); i++)
 		{
 			if (this.getActiveSceneType().fields.get(i) == field)
