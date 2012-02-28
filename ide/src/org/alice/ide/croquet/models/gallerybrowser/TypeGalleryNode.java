@@ -74,7 +74,17 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 		return getIcon( type, false );
 	}
 	public static javax.swing.Icon getOffsetIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		return getIcon( type, true );
+		javax.swing.Icon icon = getIcon( type, true );
+		if( icon != null ) {
+			//pass
+		} else {
+			java.awt.image.BufferedImage image = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification());
+			if( image != null ) {
+				//icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image );
+				icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( image, 120, 90 );
+			}
+		}
+		return icon;
 	}
 	
 	private final javax.swing.Icon largeIcon;

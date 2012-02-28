@@ -65,9 +65,9 @@ public class EventListenerComponent extends BorderPanel {
 
 	public EventListenerComponent( MethodInvocation methodInvocation ) {
 		int bottom = 0;
+		this.addComponent( createHeader( methodInvocation ), Constraint.PAGE_START );
 		if( methodInvocation.requiredArguments.size() > 0 ) {
 			SimpleArgument argument0 = methodInvocation.requiredArguments.get( 0 );
-			this.addComponent( createHeader( methodInvocation ), Constraint.PAGE_START );
 			AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get( 0 );
 			if( argument0.expression.getValue() instanceof LambdaExpression ) {
 				LambdaExpression lambdaExpression = (LambdaExpression)argument0.expression.getValue();
