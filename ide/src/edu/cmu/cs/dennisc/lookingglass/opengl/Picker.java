@@ -83,6 +83,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			} catch( Throwable t ) {
 				throwable = t;
 			}
+			drawable.getContext().makeCurrent();
 			if( throwable != null ) {
 				if( throwable instanceof NullPointerException ) {
 					NullPointerException nullPointerException = (NullPointerException)throwable;

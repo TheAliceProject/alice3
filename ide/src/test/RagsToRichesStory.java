@@ -245,6 +245,18 @@ class SnowScene extends Scene {
 				ogre.move( e.getMoveDirection( MoveDirectionPlane.UP_DOWN_LEFT_RIGHT ), 1 );
 			}
 		} );
+		
+		this.addMouseClickOnObjectListener( new org.lgna.story.event.MouseClickOnObjectListener() {
+			public void mouseClicked( final org.lgna.story.event.MouseClickOnObjectEvent e ) {
+//				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//					public void run() {
+						System.err.println( e.getModelAtMouseLocation() );
+//					}
+//				} );
+			}
+		} );
+		
+		
 		//		this.addDefaultModelManipulation();
 		//		this.addWhileProximityListener(new WhileProximityListener() {
 		//			public void timeElapsed(TimerEvent e) {
