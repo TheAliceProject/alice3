@@ -9,10 +9,10 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Model;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.ComesIntoViewEvent;
-import org.lgna.story.event.ExitViewListener;
 import org.lgna.story.event.LeavesViewEvent;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewEvent;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.implementation.CameraImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -57,11 +57,15 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 	private boolean check( Object listener, Entity changedEntity ) {
 		boolean rv = false;
 		boolean thisInView = IsInViewDetector.isThisInView( changedEntity, camera );
+		if( wasInView.get( changedEntity ) == null ) {
+			wasInView.put( (Model)changedEntity, thisInView );
+			return false;
+		}
 		if( listener instanceof ViewEnterListener ) {
 			if( thisInView && !wasInView.get( changedEntity ) ) {
 				rv = true;
 			}
-		} else if( listener instanceof ExitViewListener ) {
+		} else if( listener instanceof ViewExitListener ) {
 			if( !thisInView && wasInView.get( changedEntity ) ) {
 				rv = true;
 			}
@@ -74,8 +78,8 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 		if( listener instanceof ViewEnterListener ) {
 			ViewEnterListener intoViewEL = (ViewEnterListener)listener;
 			intoViewEL.viewEntered( (ComesIntoViewEvent)event );
-		} else if( listener instanceof ExitViewListener ) {
-			ExitViewListener outOfViewEL = (ExitViewListener)listener;
+		} else if( listener instanceof ViewExitListener ) {
+			ViewExitListener outOfViewEL = (ViewExitListener)listener;
 			outOfViewEL.leftView( (LeavesViewEvent)event );
 		}
 	}
@@ -91,7 +95,6 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 					camera = ImplementationAccessor.getImplementation( m ).getScene().findFirstCamera();
 					camera.getSgComposite().addAbsoluteTransformationListener( this );
 				}
-				wasInView.put( m, false );
 			}
 		}
 		for( Model model : models ) {

@@ -540,8 +540,8 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected Boolean evaluateRelationalInfixExpression( org.lgna.project.ast.RelationalInfixExpression relationalInfixExpression ) {
-		Object leftOperand = this.evaluate( relationalInfixExpression.leftOperand.getValue() );
-		Object rightOperand = this.evaluate( relationalInfixExpression.rightOperand.getValue() );
+		Object leftOperand = UserInstance.getJavaInstanceIfNecessary( this.evaluate( relationalInfixExpression.leftOperand.getValue() ) );
+		Object rightOperand = UserInstance.getJavaInstanceIfNecessary( this.evaluate( relationalInfixExpression.rightOperand.getValue() ) );
 		return relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
 	}
 	protected Object evaluateShiftInfixExpression( org.lgna.project.ast.ShiftInfixExpression shiftInfixExpression ) {

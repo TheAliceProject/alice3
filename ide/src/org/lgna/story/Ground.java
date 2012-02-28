@@ -50,7 +50,8 @@ import org.lgna.project.annotations.*;
  */
 public class Ground extends Entity implements MutableRider, Visual {
 	public static enum SurfaceAppearance implements ImagePaint {
-		GRASS("grass"), 
+		GRASS("grass"),
+		DARK_GRASS("dark_grass"), 
 		DIRT("dirt"), 
 		SAND("sand"),
 		MARS("mars"),

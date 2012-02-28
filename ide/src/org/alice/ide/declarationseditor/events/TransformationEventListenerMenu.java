@@ -16,15 +16,16 @@ import org.lgna.story.AddPositionOrientationChangeListener;
 import org.lgna.story.AddStartCollisionListener;
 import org.lgna.story.AddStartOcclusionListener;
 import org.lgna.story.Entity;
+import org.lgna.story.Model;
 import org.lgna.story.Scene;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.EndOcclusionListener;
-import org.lgna.story.event.ExitViewListener;
+import org.lgna.story.event.ViewExitListener;
+import org.lgna.story.event.OcclusionEndListener;
+import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityExitListener;
-import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.ViewEnterListener;
 
 public class TransformationEventListenerMenu extends EventListenerMenuModel {
@@ -36,10 +37,10 @@ public class TransformationEventListenerMenu extends EventListenerMenuModel {
 			AddEnterProximityEventListener.Detail[].class );
 	public static final JavaMethod ADD_EXIT_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addProximityExitListener", ProximityExitListener.class, Entity[].class, Entity[].class, Double.class,
 			AddExitProximityEventListener.Detail[].class );
-	public static final JavaMethod ADD_ENTER_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addViewEnterListener", ViewEnterListener.class, Entity[].class, AddEnterViewListener.Detail[].class );
-	public static final JavaMethod ADD_EXIT_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addViewExitListener", ExitViewListener.class, Entity[].class, AddExitViewListener.Detail[].class );
-	public static final JavaMethod ADD_START_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addOcclusionStartListener", StartOcclusionListener.class, Entity[].class, Entity[].class, AddStartOcclusionListener.Detail[].class );
-	public static final JavaMethod ADD_END_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addOcclusionEndListener", EndOcclusionListener.class, Entity[].class, Entity[].class, AddEndOcclusionListener.Detail[].class );
+	public static final JavaMethod ADD_ENTER_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addViewEnterListener", ViewEnterListener.class, Model[].class, AddEnterViewListener.Detail[].class );
+	public static final JavaMethod ADD_EXIT_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addViewExitListener", ViewExitListener.class, Model[].class, AddExitViewListener.Detail[].class );
+	public static final JavaMethod ADD_START_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addOcclusionStartListener", OcclusionStartListener.class, Model[].class, Model[].class, AddStartOcclusionListener.Detail[].class );
+	public static final JavaMethod ADD_END_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addOcclusionEndListener", OcclusionEndListener.class, Model[].class, Model[].class, AddEndOcclusionListener.Detail[].class );
 
 	private static class SingletonHolder {
 		private static TransformationEventListenerMenu instance = new TransformationEventListenerMenu();

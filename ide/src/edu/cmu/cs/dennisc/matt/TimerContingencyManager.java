@@ -10,16 +10,16 @@ import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.EndCollisionEvent;
-import org.lgna.story.event.EndOcclusionListener;
 import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.ExitProximityEvent;
-import org.lgna.story.event.ExitViewListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.OcclusionEndListener;
+import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityExitListener;
 import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.event.StartOcclusionEvent;
-import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileInViewListener;
@@ -48,11 +48,11 @@ public class TimerContingencyManager {
 		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 		scene.addProximityExitListener( newExitProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 	}
-	public void register( WhileOcclusionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
-		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
-		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
+		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), (Model[])toArray( groupOne ), (Model[])toArray( groupTwo ) );
+		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), (Model[])toArray( groupOne ), (Model[])toArray( groupTwo ) );
 	}
 
 	public void register( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
@@ -62,8 +62,8 @@ public class TimerContingencyManager {
 		scene.addViewExitListener( newExitViewAdapter( listener ), (Model[])toArray( group ) );
 	}
 
-	private ExitViewListener newExitViewAdapter( final WhileInViewListener listener ) {
-		return new ExitViewListener() {
+	private ViewExitListener newExitViewAdapter( final WhileInViewListener listener ) {
+		return new ViewExitListener() {
 			public void leftView( LeavesViewEvent e ) {
 				timer.deactivate( listener );
 			}
@@ -78,17 +78,17 @@ public class TimerContingencyManager {
 		};
 	}
 
-	private StartOcclusionListener newEnterOcclusionAdapter( final WhileOcclusionListener listener ) {
-		return new StartOcclusionListener() {
-			public void whenTheseOcclude( StartOcclusionEvent e ) {
+	private OcclusionStartListener newEnterOcclusionAdapter( final WhileOcclusionListener listener ) {
+		return new OcclusionStartListener() {
+			public void occlusionStarted( StartOcclusionEvent e ) {
 				timer.activate( listener );
 			}
 		};
 	}
 
-	private EndOcclusionListener newExitOcclusionAdapter( final WhileOcclusionListener listener ) {
-		return new EndOcclusionListener() {
-			public void theseNoLongerOcclude( EndOcclusionEvent e ) {
+	private OcclusionEndListener newExitOcclusionAdapter( final WhileOcclusionListener listener ) {
+		return new OcclusionEndListener() {
+			public void occlusionEnded( EndOcclusionEvent e ) {
 				timer.deactivate( listener );
 			}
 		};

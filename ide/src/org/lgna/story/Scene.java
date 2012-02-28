@@ -48,7 +48,7 @@ import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.story.event.ExitViewListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.TimeListener;
@@ -233,17 +233,17 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addViewExitListener( ExitViewListener listener, Model[] entities, AddExitViewListener.Detail... details ) {
+	public void addViewExitListener( ViewExitListener listener, Model[] entities, AddExitViewListener.Detail... details ) {
 		this.implementation.getEventManager().addLeavesViewEventListener( listener, entities );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addOcclusionStartListener( org.lgna.story.event.StartOcclusionListener occlusionEventListener, Entity[] groupOne, Entity[] groupTwo, AddStartOcclusionListener.Detail... details ) {
+	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, Model[] groupOne, Model[] groupTwo, AddStartOcclusionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileOcclusionListener( org.lgna.story.event.WhileOcclusionListener occlusionListener, Entity[] groupOne, Entity[] groupTwo, AddTimeListener.Detail... details ) {
+	public void addWhileOcclusionListener( org.lgna.story.event.WhileOcclusionListener occlusionListener, Model[] groupOne, Model[] groupTwo, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
 				.addWhileOcclusionListener( occlusionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), TimerFrequency.getValue( details ).getFrequency(),
@@ -251,7 +251,7 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addOcclusionEndListener( org.lgna.story.event.EndOcclusionListener occlusionEventListener, Entity[] groupOne, Entity[] groupTwo, AddEndOcclusionListener.Detail... details ) {
+	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, Model[] groupOne, Model[] groupTwo, AddEndOcclusionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 

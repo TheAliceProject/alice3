@@ -71,13 +71,13 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.NumberKeyPressListener.class, org.alice.stageide.apis.story.event.NumberKeyAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.PointOfViewChangeListener.class, org.alice.stageide.apis.story.event.TransformationEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ViewEnterListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.ExitViewListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.ViewExitListener.class, org.alice.stageide.apis.story.event.ComesOutOfViewEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionStartListener.class, org.alice.stageide.apis.story.event.StartCollisionAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionEndListener.class, org.alice.stageide.apis.story.event.EndCollisionAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityEnterListener.class, org.alice.stageide.apis.story.event.EnterProximityAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityExitListener.class, org.alice.stageide.apis.story.event.ExitProximityAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.StartOcclusionListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.EndOcclusionListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionStartListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionEndListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
 		this.programInstance = vm.ENTRY_POINT_createInstance( programType );
 	}
@@ -98,12 +98,11 @@ public abstract class ProgramContext {
 	}
 
 	private org.alice.ide.ReasonToDisableSomeAmountOfRendering rendering;
-	
+
 	protected void disableRendering() {
 		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
 		org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( rendering );
 	}
-	
 
 	public void setActiveScene() {
 		org.lgna.project.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
@@ -116,11 +115,7 @@ public abstract class ProgramContext {
 				}
 				assert sceneField != null;
 				org.lgna.project.virtualmachine.UserInstance programInstance = ProgramContext.this.getProgramInstance();
-				ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke( 
-						programInstance, 
-						org.alice.stageide.StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD,
-						programInstance.getFieldValue( sceneField )
-				);
+				ProgramContext.this.getVirtualMachine().ENTRY_POINT_invoke( programInstance, org.alice.stageide.StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD, programInstance.getFieldValue( sceneField ) );
 			}
 		} );
 	}

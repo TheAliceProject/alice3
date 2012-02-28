@@ -1,6 +1,6 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
-import org.lgna.story.event.ExitViewListener;
+import org.lgna.story.event.ViewExitListener;
 
 public class LeavesViewEventListenerFillIn extends LambdaExpressionFillIn {
 	
@@ -12,6 +12,6 @@ public class LeavesViewEventListenerFillIn extends LambdaExpressionFillIn {
 	}
 
 	public LeavesViewEventListenerFillIn() {
-		super( java.util.UUID.fromString( "5527c6f4-a785-4c0d-9a7d-68f82e23f6a8" ), ExitViewListener.class );
+		super( java.util.UUID.fromString( "5527c6f4-a785-4c0d-9a7d-68f82e23f6a8" ), ViewExitListener.class );
 	}
 }

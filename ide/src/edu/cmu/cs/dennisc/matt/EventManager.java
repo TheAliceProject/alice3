@@ -12,16 +12,16 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.EndOcclusionListener;
-import org.lgna.story.event.ExitViewListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MoveWithArrows;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
+import org.lgna.story.event.OcclusionEndListener;
+import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.WhileCollisionListener;
@@ -172,7 +172,7 @@ public class EventManager {
 	public void addComesIntoViewEventListener( ViewEnterListener listener, Model[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
-	public void addLeavesViewEventListener( ExitViewListener listener, Model[] entities ) {
+	public void addLeavesViewEventListener( ViewExitListener listener, Model[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
 
@@ -208,18 +208,18 @@ public class EventManager {
 	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, dist, frequency, policy );
 	}
-	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
 	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, group, frequency, policy );
 	}
 
-	public void addOcclusionEventListener( StartOcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo ) {
+	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo ) {
 		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
 
-	public void addOcclusionEventListener( EndOcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo ) {
+	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo ) {
 		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
 }
