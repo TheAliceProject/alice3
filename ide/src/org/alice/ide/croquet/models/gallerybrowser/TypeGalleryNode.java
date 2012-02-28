@@ -97,10 +97,18 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
 		}
 	}
+	
+	private java.util.List<org.lgna.project.ast.AbstractDeclaration> children;
+	
 	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
 	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
-		return this.getDeclarationChildren( apiConfigurationManager );
+		if( this.children != null ) {
+			//pass
+		} else {
+			org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
+			this.children = this.getDeclarationChildren( apiConfigurationManager );
+		}
+		return this.children;
 	}
 	@Override
 	public int getChildCount() {
