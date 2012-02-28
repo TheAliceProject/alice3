@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.croquet.models.cascade.adapters;
 
-import org.lgna.story.event.EnterProximityListener;
+import org.lgna.story.event.ProximityEnterListener;
 
 /**
  * @author Matt May
@@ -57,7 +57,7 @@ public class EnterProximityEventListenerAdapterFillIn extends LambdaExpressionFi
 	}
 
 	public EnterProximityEventListenerAdapterFillIn() {
-		super( java.util.UUID.fromString( "db25d316-7282-493f-9838-124d272db0ca" ), EnterProximityListener.class );
+		super( java.util.UUID.fromString( "db25d316-7282-493f-9838-124d272db0ca" ), ProximityEnterListener.class );
 	}
 }
 

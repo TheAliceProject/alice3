@@ -2,18 +2,18 @@ package org.lgna.story.event;
 
 public class OcclusionEvent extends AbstractEvent {
 
-	private org.lgna.story.Entity foreground;
-	private org.lgna.story.Entity background;
+	private org.lgna.story.MovableTurnable foreground;
+	private org.lgna.story.MovableTurnable background;
 
-	public OcclusionEvent( org.lgna.story.Entity foreground, org.lgna.story.Entity background ) {
+	public OcclusionEvent( org.lgna.story.MovableTurnable foreground, org.lgna.story.MovableTurnable background ) {
 		this.foreground = foreground;
 		this.background = background;
 	}
 
-	public org.lgna.story.Entity getForegroundEntity() {
+	public org.lgna.story.MovableTurnable getForegroundMovable() {
 		return foreground;
 	}
-	public org.lgna.story.Entity getBackgroundEntity() {
+	public org.lgna.story.MovableTurnable getBackgroundMovable() {
 		return background;
 	}
 

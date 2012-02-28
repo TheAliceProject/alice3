@@ -50,9 +50,11 @@ import org.lgna.story.Color;
 import org.lgna.story.Cone;
 import org.lgna.story.Ground;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Key;
 import org.lgna.story.Model;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Program;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
@@ -62,6 +64,9 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane;
 import org.lgna.story.event.ArrowKeyPressListener;
+import org.lgna.story.event.MouseClickOnObjectEvent;
+import org.lgna.story.event.MouseClickOnObjectListener;
+import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.resources.BipedResource;
@@ -74,6 +79,7 @@ import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -242,21 +248,29 @@ class SnowScene extends Scene {
 		//		this.addObjectMoverFor( ogre );
 		this.addArrowKeyPressListener( new ArrowKeyPressListener() {
 			public void arrowKeyPressed( ArrowKeyEvent e ) {
-				ogre.move( e.getMoveDirection( MoveDirectionPlane.UP_DOWN_LEFT_RIGHT ), 1 );
+				if( e.isKey( Key.LEFT ) || e.isKey( Key.RIGHT ) || e.isKey( Key.UP ) || e.isKey( Key.DOWN ) ) {
+					camera.turn( e.getTurnDirection(), .125 );
+				} else {
+					camera.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
+				}
+				//				ogre.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
+			}
+		}, MultipleEventPolicy.COMBINE );
+		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
+
+			public void mouseClicked( MouseClickOnObjectEvent e ) {
+				if( e.getModelAtMouseLocation() != null ) {
+					e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
+					e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
+				}
 			}
 		} );
-		
-		this.addMouseClickOnObjectListener( new org.lgna.story.event.MouseClickOnObjectListener() {
-			public void mouseClicked( final org.lgna.story.event.MouseClickOnObjectEvent e ) {
-//				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//					public void run() {
-						System.err.println( e.getModelAtMouseLocation() );
-//					}
-//				} );
+		this.addOcclusionEndListener( new OcclusionEndListener() {
+
+			public void occlusionEnded( EndOcclusionEvent e ) {
+				e.getForegroundMovable().move( MoveDirection.UP, 10 );
 			}
-		} );
-		
-		
+		}, colListOne, colListTwo );
 		//		this.addDefaultModelManipulation();
 		//		this.addWhileProximityListener(new WhileProximityListener() {
 		//			public void timeElapsed(TimerEvent e) {
@@ -277,7 +291,6 @@ class SnowScene extends Scene {
 		//			}
 		//		}, colListOne );
 	}
-
 	public void chillInSkiChalet() {
 		//		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
 		//		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );

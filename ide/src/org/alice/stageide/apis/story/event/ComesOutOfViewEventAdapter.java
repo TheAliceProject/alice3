@@ -40,13 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.event;
+package org.alice.stageide.apis.story.event;
+
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.virtualmachine.LambdaContext;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.event.ViewExitListener;
+import org.lgna.story.event.LeavesViewEvent;
 
 /**
  * @author Matt May
  */
-public interface EnterProximityListener {
-	
-	public void whenTheseGetClose(EnterProximityEvent e);
+public class ComesOutOfViewEventAdapter extends AbstractAdapter implements ViewExitListener {
 
+	public ComesOutOfViewEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
+		super( context, lambda, userInstance );
+	}
+
+	public void leftView( LeavesViewEvent e ) {
+		invokeEntryPoint( e );
+	}
 }
