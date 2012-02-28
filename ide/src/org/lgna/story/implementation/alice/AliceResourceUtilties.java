@@ -59,6 +59,7 @@ import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
@@ -343,12 +344,14 @@ public class AliceResourceUtilties {
 					return info;
 				}
 				else {
-					return null;
+					Logger.severe("Failed to find class info for "+name);
+					classToInfoMap.put(modelResource, null);
 				}
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				Logger.severe("Failed to parse class info for "+name+": "+e);
+				classToInfoMap.put(modelResource, null);
 			}
 			return null;
 		}

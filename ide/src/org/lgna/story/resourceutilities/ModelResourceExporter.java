@@ -863,7 +863,7 @@ public class ModelResourceExporter {
 			sourceDirectory += File.separator;
         }
 		xmlFile = getXMLFile(resourceDirectory);
-		if (rebuildXmlFile || !xmlFile.exists()) {
+		if (rebuildXmlFile || !xmlFile.exists() || xmlFile.length() == 0) {
 			xmlFile = createXMLFile(resourceDirectory);
 		}
 		boolean addResources = false;
@@ -883,7 +883,7 @@ public class ModelResourceExporter {
 		if (shouldAddClassData) {
 			sourceDir = getJavaCodeDir(sourceDirectory);
 			javaFile = getJavaFile(sourceDirectory);
-			if (rebuildJavaFile || !javaFile.exists()) {
+			if (rebuildJavaFile || !javaFile.exists() || javaFile.length() == 0) {
 				try {
 					javaFile = createJavaCode(sourceDirectory);
 				}
