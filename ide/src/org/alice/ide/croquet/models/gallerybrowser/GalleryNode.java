@@ -50,6 +50,7 @@ public abstract class GalleryNode extends GalleryDragModel implements Iterable< 
 	public GalleryNode( java.util.UUID id ) {
 		super( id );
 	}
+	public abstract String getSearchText();
 	public abstract GalleryNode getParent();
 	public abstract GalleryNode getChild( int index );
 	public abstract int getChildCount();
