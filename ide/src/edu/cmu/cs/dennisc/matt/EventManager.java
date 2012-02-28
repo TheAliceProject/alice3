@@ -6,13 +6,13 @@ import java.util.List;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.GlobalDragAdapter;
 import org.lgna.story.Entity;
+import org.lgna.story.Model;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.EndOcclusionListener;
-import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ExitViewListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
@@ -20,9 +20,10 @@ import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MoveWithArrows;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
+import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.StartOcclusionListener;
 import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.PointOfViewChangeListener;
+import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.event.WhileOcclusionListener;
@@ -168,10 +169,10 @@ public class EventManager {
 	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	//	}
 
-	public void addComesIntoViewEventListener( ViewEnterListener listener, Entity[] entities ) {
+	public void addComesIntoViewEventListener( ViewEnterListener listener, Model[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
-	public void addLeavesViewEventListener( ExitViewListener listener, Entity[] entities ) {
+	public void addLeavesViewEventListener( ExitViewListener listener, Model[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
 
@@ -210,7 +211,7 @@ public class EventManager {
 	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
-	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Entity> group, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, group, frequency, policy );
 	}
 

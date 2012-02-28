@@ -62,6 +62,8 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane;
 import org.lgna.story.event.ArrowKeyPressListener;
+import org.lgna.story.event.MouseClickOnObjectEvent;
+import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.resources.BipedResource;
@@ -243,6 +245,14 @@ class SnowScene extends Scene {
 		this.addArrowKeyPressListener( new ArrowKeyPressListener() {
 			public void arrowKeyPressed( ArrowKeyEvent e ) {
 				ogre.move( e.getMoveDirection( MoveDirectionPlane.UP_DOWN_LEFT_RIGHT ), 1 );
+			}
+		} );
+		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
+
+			public void mouseClicked( MouseClickOnObjectEvent e ) {
+				if( e.getModelAtMouseLocation() != null ) {
+					ogre.say( "mouse clicked on not null!" );
+				}
 			}
 		} );
 		//		this.addDefaultModelManipulation();

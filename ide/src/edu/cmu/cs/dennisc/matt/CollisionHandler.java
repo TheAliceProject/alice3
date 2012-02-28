@@ -48,12 +48,13 @@ import java.util.List;
 
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.event.CollisionEvent;
-import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.CollisionEndListener;
-import org.lgna.story.event.StartCollisionEvent;
+import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionStartListener;
+import org.lgna.story.event.EndCollisionEvent;
+import org.lgna.story.event.StartCollisionEvent;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -112,9 +113,9 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 						models.add( changedEntity );
 						models.add( m );
 						if( colList instanceof CollisionStartListener ) {
-							fireEvent( colList, new StartCollisionEvent( models.toArray( new Entity[ 0 ] ) ) );
+							fireEvent( colList, new StartCollisionEvent( models.toArray( new MovableTurnable[ 0 ] ) ) );
 						} else if( colList instanceof CollisionEndListener ) {
-							fireEvent( colList, new EndCollisionEvent( models.toArray( new Entity[ 0 ] ) ) );
+							fireEvent( colList, new EndCollisionEvent( models.toArray( new MovableTurnable[ 0 ] ) ) );
 						}
 					}
 				}

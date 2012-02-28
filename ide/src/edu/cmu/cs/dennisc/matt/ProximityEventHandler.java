@@ -49,6 +49,7 @@ import java.util.Map;
 
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.ExitProximityEvent;
@@ -110,9 +111,9 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 						models.add( changedEntity );
 						models.add( m );
 						if( proxList instanceof ProximityEnterListener ) {
-							fireEvent( proxList, new EnterProximityEvent( models.toArray( new Entity[ 0 ] ) ) );
+							fireEvent( proxList, new EnterProximityEvent( models.toArray( new MovableTurnable[ 0 ] ) ) );
 						} else if( proxList instanceof ProximityExitListener ) {
-							fireEvent( proxList, new ExitProximityEvent( models.toArray( new Entity[ 0 ] ) ) );
+							fireEvent( proxList, new ExitProximityEvent( models.toArray( new MovableTurnable[ 0 ] ) ) );
 						}
 					}
 					boolean areTheseClose = AabbCollisionDetector.doTheseCollide( m, changedEntity, distMap.get( proxList ) );

@@ -45,15 +45,8 @@ package org.lgna.story.event;
 /**
  * @author Matt May
  */
-public class ProximityEvent extends AbstractEvent {
+public interface ProximityEnterListener {
 
-	private final org.lgna.story.MovableTurnable[] entities;
-
-	public ProximityEvent( org.lgna.story.MovableTurnable... entities ) {
-		this.entities = entities;
-	}
-	public org.lgna.story.MovableTurnable[] getModels() {
-		return entities;
-	}
+	public void proximityEntered( EnterProximityEvent e );
 
 }

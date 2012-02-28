@@ -3,6 +3,7 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.ArrayList;
 
 import org.lgna.story.Entity;
+import org.lgna.story.Model;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
 import org.lgna.story.event.CollisionEndListener;
@@ -54,11 +55,11 @@ public class TimerContingencyManager {
 		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 	}
 
-	public void register( WhileInViewListener listener, ArrayList<Entity> group, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
-		scene.addViewEnterListener( newEnterViewAdapter( listener ), toArray( group ) );
-		scene.addViewExitListener( newExitViewAdapter( listener ), toArray( group ) );
+		scene.addViewEnterListener( newEnterViewAdapter( listener ), (Model[])toArray( group ) );
+		scene.addViewExitListener( newExitViewAdapter( listener ), (Model[])toArray( group ) );
 	}
 
 	private ExitViewListener newExitViewAdapter( final WhileInViewListener listener ) {
@@ -125,7 +126,7 @@ public class TimerContingencyManager {
 		};
 	}
 
-	private Entity[] toArray( ArrayList<Entity> arr ) {
+	private Entity[] toArray( ArrayList<? extends Entity> arr ) {
 		Entity[] rv = new Entity[ arr.size() ];
 		for( int i = 0; i != arr.size(); ++i ) {
 			rv[ i ] = arr.get( i );

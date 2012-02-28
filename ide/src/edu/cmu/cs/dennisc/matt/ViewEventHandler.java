@@ -6,63 +6,63 @@ import java.util.Map;
 
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Model;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.ComesIntoViewEvent;
-import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ExitViewListener;
 import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewEvent;
 import org.lgna.story.implementation.CameraImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class ViewEventHandler extends TransformationChangedHandler < Object, ViewEvent > {
+public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEvent> {
 
 	private CameraImp camera;
-	private Map < Entity, List< Object > > map = Collections.newHashMap();
-	private Map<Entity, Boolean > wasInView = Collections.newHashMap();
-
+	private Map<Model,List<Object>> map = Collections.newHashMap();
+	private Map<Model,Boolean> wasInView = Collections.newHashMap();
 
 	@Override
-	protected void check(Entity changedEntity) {
-		if ( camera == null ){ //should not really be hit
+	protected void check( Entity changedEntity ) {
+		if( camera == null ) { //should not really be hit
 			camera = ImplementationAccessor.getImplementation( changedEntity ).getScene().findFirstCamera();
-			if( camera == null ){
+			if( camera == null ) {
 				return;
 			} else {
 				camera.getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
-		if ( changedEntity == camera.getAbstraction() ) {
-			for( Entity entity : map.keySet() ) {
-				for( Object listener : map.get( entity ) ) {
-					if ( check( listener, entity ) ) {
-						ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
+		if( changedEntity == camera.getAbstraction() ) {
+			for( Model model : map.keySet() ) {
+				for( Object listener : map.get( model ) ) {
+					if( check( listener, model ) ) {
+						ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( model ) : new LeavesViewEvent( model );
 						fireEvent( listener, event );
 					}
 				}
-				wasInView.put( entity, IsInViewDetector.isThisInView( entity, camera ) );
+				wasInView.put( model, IsInViewDetector.isThisInView( model, camera ) );
 			}
 		} else {
 			for( Object listener : map.get( changedEntity ) ) {
-				if ( check( listener, changedEntity ) ) {
-					ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( changedEntity ) : new LeavesViewEvent( changedEntity );
+				if( check( listener, changedEntity ) ) {
+					ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( (Model)changedEntity ) : new LeavesViewEvent( (Model)changedEntity );
 					fireEvent( listener, event );
 				}
 			}
-			wasInView.put( changedEntity, IsInViewDetector.isThisInView( changedEntity, camera ) );
+			wasInView.put( (Model)changedEntity, IsInViewDetector.isThisInView( changedEntity, camera ) );
 		}
 	}
 
 	private boolean check( Object listener, Entity changedEntity ) {
 		boolean rv = false;
 		boolean thisInView = IsInViewDetector.isThisInView( changedEntity, camera );
-		if (listener instanceof ViewEnterListener) {
-			if ( thisInView && !wasInView.get( changedEntity ) ) {
+		if( listener instanceof ViewEnterListener ) {
+			if( thisInView && !wasInView.get( changedEntity ) ) {
 				rv = true;
 			}
-		} else if (listener instanceof ExitViewListener) {
-			if ( !thisInView && wasInView.get( changedEntity ) ) {
+		} else if( listener instanceof ExitViewListener ) {
+			if( !thisInView && wasInView.get( changedEntity ) ) {
 				rv = true;
 			}
 		}
@@ -70,35 +70,35 @@ public class ViewEventHandler extends TransformationChangedHandler < Object, Vie
 	}
 
 	@Override
-	protected void nameOfFireCall( Object listener, ViewEvent event) {
-		if (listener instanceof ViewEnterListener) {
-			ViewEnterListener intoViewEL = ( ViewEnterListener ) listener;
-			intoViewEL.viewEntered( ( ComesIntoViewEvent ) event );
-		} else if (listener instanceof ExitViewListener) {
-			ExitViewListener outOfViewEL = ( ExitViewListener ) listener;
-			outOfViewEL.leftView( ( LeavesViewEvent ) event );
+	protected void nameOfFireCall( Object listener, ViewEvent event ) {
+		if( listener instanceof ViewEnterListener ) {
+			ViewEnterListener intoViewEL = (ViewEnterListener)listener;
+			intoViewEL.viewEntered( (ComesIntoViewEvent)event );
+		} else if( listener instanceof ExitViewListener ) {
+			ExitViewListener outOfViewEL = (ExitViewListener)listener;
+			outOfViewEL.leftView( (LeavesViewEvent)event );
 		}
 	}
 
-	public void addViewEventListener( Object listener, Entity[] entities) {
+	public void addViewEventListener( Object listener, Model[] models ) {
 		registerIsFiringMap( listener );
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
-		for( Entity m : entities ) {
+		for( Model m : models ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-				if ( camera == null ) {
+				if( camera == null ) {
 					camera = ImplementationAccessor.getImplementation( m ).getScene().findFirstCamera();
 					camera.getSgComposite().addAbsoluteTransformationListener( this );
 				}
 				wasInView.put( m, false );
 			}
 		}
-		for( Entity entity : entities ){
-			if ( map.get( entity ) == null ){
-				map.put( entity, new LinkedList< Object >() );
+		for( Model model : models ) {
+			if( map.get( model ) == null ) {
+				map.put( model, new LinkedList<Object>() );
 			}
-			map.get( entity ).add( listener );
+			map.get( model ).add( listener );
 		}
 	}
 }

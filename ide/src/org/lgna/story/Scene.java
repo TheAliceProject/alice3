@@ -217,13 +217,13 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addViewEnterListener( ViewEnterListener listener, Entity[] entities, AddEnterViewListener.Detail... details ) {
-		this.implementation.getEventManager().addComesIntoViewEventListener( listener, entities );
+	public void addViewEnterListener( ViewEnterListener listener, Model[] models, AddEnterViewListener.Detail... details ) {
+		this.implementation.getEventManager().addComesIntoViewEventListener( listener, models );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileInViewListener( WhileInViewListener listener, Entity[] entities, AddTimeListener.Detail... details ) {
-		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( entities ), TimerFrequency.getValue( details ).getFrequency(),
+	public void addWhileInViewListener( WhileInViewListener listener, Model[] models, AddTimeListener.Detail... details ) {
+		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( models ), TimerFrequency.getValue( details ).getFrequency(),
 				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
@@ -233,7 +233,7 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addViewExitListener( ExitViewListener listener, Entity[] entities, AddExitViewListener.Detail... details ) {
+	public void addViewExitListener( ExitViewListener listener, Model[] entities, AddExitViewListener.Detail... details ) {
 		this.implementation.getEventManager().addLeavesViewEventListener( listener, entities );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)

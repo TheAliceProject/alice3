@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.EndOcclusionListener;
 import org.lgna.story.event.OcclusionEvent;
@@ -68,13 +69,13 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 			for( Entity m : checkMap.get( changedEntity ) ) {
 				for( Object occList : eventMap.get( changedEntity ).get( m ) ) {
 					if( check( occList, changedEntity, m ) ) {
-						LinkedList<Entity> models = new LinkedList<Entity>();
+						LinkedList<MovableTurnable> models = new LinkedList<MovableTurnable>();
 						if( camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( changedEntity ) ) ) {
-							models.add( m );
-							models.add( changedEntity );
+							models.add( (MovableTurnable)m );
+							models.add( (MovableTurnable)changedEntity );
 						} else {
-							models.add( changedEntity );
-							models.add( m );
+							models.add( (MovableTurnable)changedEntity );
+							models.add( (MovableTurnable)m );
 						}
 						if( occList instanceof StartOcclusionListener ) {
 							fireEvent( occList, new StartOcclusionEvent( models.getFirst(), models.getLast() ) );
