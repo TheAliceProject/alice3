@@ -118,6 +118,10 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.manipulators.add( mouseRotateObjectLeftRight );
 
+		for (int i=0; i<this.manipulators.size(); i++)
+		{
+			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
+		}
 	}
 	
 	@Override
