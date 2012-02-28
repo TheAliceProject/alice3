@@ -56,11 +56,11 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		SEA_FLOOR( org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color(66/255.0, 195/255.0, 252/255.0) ),
 		MOON( org.lgna.story.Ground.SurfaceAppearance.MOON, org.lgna.story.Color.BLACK ),
 		
-		MARS( org.lgna.story.Ground.SurfaceAppearance.MARS, new org.lgna.story.Color(40/255.0, 0/255.0, 0/255.0), 0.3, org.lgna.story.Color.WHITE, new org.lgna.story.Color(11/255.0, 0/255.0, 24/255.0) ),
+		MARS( org.lgna.story.Ground.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color(11/255.0, 0/255.0, 24/255.0) ),
 		SNOW( org.lgna.story.Ground.SurfaceAppearance.SNOW ),
-		ROOM( org.lgna.story.Room.FloorAppearance.WOOD_ZIG_ZAG, org.lgna.story.Room.WallAppearance.GREEN_STRIPE_WITH_BEAD, org.lgna.story.Room.CeilingAppearance.WHITE_TILES),
+		ROOM( org.lgna.story.Room.FloorAppearance.REDWOOD, org.lgna.story.Room.WallAppearance.YELLOW, org.lgna.story.Color.WHITE),
 		
-		WONDERLAND( org.lgna.story.Ground.SurfaceAppearance.GRASS, new org.lgna.story.Color(0/255.0, 24/255.0, 75/255.0), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color(25/255.0, 0/255.0, 0/255.0)),
+		WONDERLAND( org.lgna.story.Ground.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color(0/255.0, 24/255.0, 75/255.0), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color(25/255.0, 0/255.0, 0/255.0)),
 		SEA_SURFACE( org.lgna.story.Ground.SurfaceAppearance.WATER ),
 		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, new org.lgna.story.Color(75/255.0, 220/255.0, 255/255.0), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color(0/255.0, 26/255.0, 60/255.0) ),
 		
@@ -68,9 +68,9 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		DIRT( org.lgna.story.Ground.SurfaceAppearance.DIRT );
 		
 		private final org.lgna.story.Ground.SurfaceAppearance surfaceAppearance;
-		private final org.lgna.story.Room.FloorAppearance floorAppearance;
-		private final org.lgna.story.Room.WallAppearance wallAppearance;
-		private final org.lgna.story.Room.CeilingAppearance ceilingAppearance;
+		private final org.lgna.story.Paint floorAppearance;
+		private final org.lgna.story.Paint wallAppearance;
+		private final org.lgna.story.Paint ceilingAppearance;
 		//private final org.lgna.story.Color atmosphereColor;
 		private final org.lgna.story.Color atmosphereColor;
 		private final double fogDensity;
@@ -101,7 +101,8 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance ) {
 			this( surfaceAppearance, null );
 		}
-		private Template( org.lgna.story.Room.FloorAppearance floorAppearance, org.lgna.story.Room.WallAppearance wallAppearance, org.lgna.story.Room.CeilingAppearance ceilingAppearance ) {
+		
+		private Template( org.lgna.story.Paint floorAppearance, org.lgna.story.Paint wallAppearance, org.lgna.story.Paint ceilingAppearance ) {
 			this.surfaceAppearance = null;
 			//this.atmosphereColor = atmosphereColor;
 			this.atmosphereColor = null;
@@ -113,16 +114,17 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 			this.wallAppearance = wallAppearance;
 			this.ceilingAppearance = ceilingAppearance;
 		}
+
 		public org.lgna.story.Ground.SurfaceAppearance getSurfaceAppearance() {
 			return this.surfaceAppearance;
 		}
-		public org.lgna.story.Room.FloorAppearance getFloorAppearance() {
+		public org.lgna.story.Paint getFloorAppearance() {
 			return this.floorAppearance;
 		}
-		public org.lgna.story.Room.WallAppearance getWallAppearance() {
+		public org.lgna.story.Paint getWallAppearance() {
 			return this.wallAppearance;
 		}
-		public org.lgna.story.Room.CeilingAppearance getCeilingAppearance() {
+		public org.lgna.story.Paint getCeilingAppearance() {
 			return this.ceilingAppearance;
 		}
 		public boolean isRoom() {
