@@ -275,7 +275,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			org.lgna.project.ast.NamedUserType sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
 				String methodName = "myFirstMethod";
-				methodName = StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME;
+				//methodName = StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME;
 				this.setFocusedCode( sceneType.findMethod( methodName ) );
 			}
 		}
