@@ -105,7 +105,11 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
     			}
     			setIsGeometryChanged( false );
     		} else {
-    			rc.gl.glCallList( id );
+       			if( rc.gl.glIsList( id ) ) {
+           			rc.gl.glCallList( id );
+       			} else {
+       				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+       			}
     		}
     	} else {
     		renderGeometry( rc );
