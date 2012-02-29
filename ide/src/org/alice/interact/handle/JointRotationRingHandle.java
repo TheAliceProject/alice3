@@ -114,7 +114,7 @@ public class JointRotationRingHandle extends RotationRingHandle {
 			}
 			return radius;
 		}
-		return 0.0d;
+		return JOINT_MIN_RADIUS;
 	}
 
 }
