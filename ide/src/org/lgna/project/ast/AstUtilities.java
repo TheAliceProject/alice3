@@ -145,13 +145,18 @@ public class AstUtilities {
 		java.util.List< JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		JavaType javaType = type.getFirstEncounteredJavaType();
 		while( true ) {
-			updatePersistentPropertyGetters( rv, javaType );
-			if( javaType.isFollowToSuperClassDesired() ) {
-				//pass
+			if( javaType != null ) {
+				updatePersistentPropertyGetters( rv, javaType );
+				if( javaType.isFollowToSuperClassDesired() ) {
+					//pass
+				} else {
+					break;
+				}
+				javaType = javaType.getSuperType();
 			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( type );
 				break;
 			}
-			javaType = javaType.getSuperType();
 		}
 		return rv;
 	}
