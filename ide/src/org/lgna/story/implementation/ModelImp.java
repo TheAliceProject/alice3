@@ -311,7 +311,8 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 	}
 
 	public void animateResize( double factor, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		this.animateSetScale( new edu.cmu.cs.dennisc.math.Dimension3( factor, factor, factor ), duration, style );
+		edu.cmu.cs.dennisc.math.Dimension3 scale = this.getScale();
+		this.animateSetScale( new edu.cmu.cs.dennisc.math.Dimension3( scale.x*factor, scale.y*factor, scale.z*factor ), duration, style );
 	}
 	
 	public void animateResizeWidth( double factor, boolean isVolumePreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
