@@ -214,6 +214,14 @@ public class Chain {
 	public java.util.Map< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > getAngularVelocityContributions() {
 		return angularVelocityContributions;
 	}
+	
+	public boolean hasLinearVelocityContributions() {
+		return linearVelocityContributions != null;
+	}
+	
+	public boolean hasAngularVelocityContributions() {
+		return angularVelocityContributions != null;
+	}
 
 	public JointImp getLastJointImp() {
 		return jointImps.get(jointImps.size() - 1);

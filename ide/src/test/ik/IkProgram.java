@@ -239,40 +239,18 @@ class IkProgram extends Program {
 		
 		solver = new org.lgna.ik.Solver();
 		
-		//did not find a way to perform a custom animation
-//		Thread moveThread = new Thread() {
-//			@Override
-//			public void run() {
-//				while(!interrupted()) {
-//					//move all the joints
-//					
-//					movePls();
-//					
-//					try {
-//						sleep(100);
-//					} catch (InterruptedException e) {
-//						break;
-//					}
-//				}
-//			}
-//
-//		};
-//		moveThread.start();
-		
 		Thread calculateThread = new Thread() {
 			@Override
 			public void run() {
 				while(!interrupted()) {
-					//making sure I only do it when UI says it's activated. 
-					//FIXME these following two are not good because they are used when creating the chain.
-					boolean linearActivated = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
-					boolean angularActivated = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
-					if(chain != null && (linearActivated || angularActivated)) { //not good concurrent programming practice but temporary solution
-						//make chain setter not race with this
+					//not bad concurrent programming practice
+					if(chain != null && (chain.hasLinearVelocityContributions() || chain.hasAngularVelocityContributions())) {
+						//I could make chain setter not race with this
+						//However, racing is fine, as long as the old chain is still valid. It is.  
 
 						AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
-						if(linearActivated) {
-							Point3 desiredLinearDistance = Point3.createSubtraction(targetTransformation.translation, chain.getEndEffectorPosition());
+						if(chain.hasLinearVelocityContributions()) {
+							Vector3 desiredLinearDistance = Vector3.createSubtraction(targetTransformation.translation, chain.getEndEffectorPosition());
 							
 							//not going to use it directly because is likely to be too fast (linear is bad approximation for large steps)
 							
@@ -290,7 +268,7 @@ class IkProgram extends Program {
 							chain.setDesiredEndEffectorLinearVelocity(linVelToUse);
 						}
 						
-						if(angularActivated) {
+						if(chain.hasAngularVelocityContributions()) {
 							//these both are not local, so it's good.
 							OrthogonalMatrix3x3 desiredOrientation = targetTransformation.orientation;
 							OrthogonalMatrix3x3 currentOrientation = chain.getEndEffectorOrientation();
@@ -326,33 +304,27 @@ class IkProgram extends Program {
 						java.util.Map<org.lgna.ik.Bone.Axis, Double> speeds = solver.solve();
 						
 						if(speeds == null) {
-//							System.out.println("speeds is null");
+							//this could happen if the chain is removed after we went into this loop
 							continue;
 						}
 						
 						currentSpeeds = speeds;
 						
 						//now apply these
-						
 						for(java.util.Map.Entry<org.lgna.ik.Bone.Axis, Double> e: currentSpeeds.entrySet()) {
 							Axis axis = e.getKey();
 							Double speed = e.getValue();
 							
 							axis.setDesiredAngleSpeed(speed);
 						}
-						
+
+						//force bone reprint
+						//this should be fine even if the chain is not valid anymore. 
 						javax.swing.SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
 								test.ik.croquet.BonesState.getInstance().setChain( chain );
 							}
 						});
-						
-						//force bone reprint
-						
-						//apply rotational velocities?
-						//would this be better as an animation instead?
-						
-//						System.out.println("displayed");
 					}
 					
 					movePls();
@@ -370,12 +342,7 @@ class IkProgram extends Program {
 		
 		this.handleChainChanged();
 	}
-//	private void moveStraight() {
-//		if(chain != null) {
-//			Bone[] bones = chain.getBones();
-//			bones[0].getA().applyRotationInRadians(new Vector3(1, 1, 0), Math.PI / 100.0); //this is local. that's the issue... FIXME
-//		}
-//	}
+
 	private void movePls() {
 		if(chain != null) {
 			
