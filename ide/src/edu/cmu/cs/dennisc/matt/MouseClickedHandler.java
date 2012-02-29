@@ -8,14 +8,13 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.MouseClickEvent;
+import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
-import org.lgna.story.event.MouseClickOnObjectEvent;
 
+public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickEvent> {
 
-public class MouseClickedHandler extends AbstractEventHandler< Object, MouseClickEvent > {
-
-	HashMap<Object, LinkedList<Object>> map = new HashMap<Object, LinkedList<Object>>();
+	HashMap<Object,LinkedList<Object>> map = new HashMap<Object,LinkedList<Object>>();
 	Object empty = new Object();
 
 	private boolean isMouseButtonListenerInExistence() {
@@ -34,94 +33,95 @@ public class MouseClickedHandler extends AbstractEventHandler< Object, MouseClic
 		//		}
 		return true;
 	}
-	
+
 	@Override
-	protected void nameOfFireCall(Object listener, MouseClickEvent event) {
-		if (listener instanceof MouseClickOnObjectListener) {
-			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
+	protected void nameOfFireCall( Object listener, MouseClickEvent event ) {
+		if( listener instanceof MouseClickOnObjectListener ) {
+			MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
 			mouseCOOL.mouseClicked( new MouseClickOnObjectEvent( event ) );
-		} else if ( listener instanceof MouseClickOnScreenListener ) {
-			MouseClickOnScreenListener mouseCOSL = ( MouseClickOnScreenListener ) listener;
-			mouseCOSL.mouseClicked(  );
-		} else if (listener instanceof MouseClickEvent ) {//TODO: Deprecated
-			MouseClickOnObjectListener mouseCOOL = ( MouseClickOnObjectListener ) listener;
+		} else if( listener instanceof MouseClickOnScreenListener ) {
+			MouseClickOnScreenListener mouseCOSL = (MouseClickOnScreenListener)listener;
+			mouseCOSL.mouseClicked();
+		} else if( listener instanceof MouseClickEvent ) {//TODO: Deprecated
+			MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
 			mouseCOOL.mouseClicked( new MouseClickOnObjectEvent( event ) );
 		}
 	}
-	
+
 	public MouseClickedHandler() {
-		map.put(empty, new LinkedList<Object>());
+		map.put( empty, new LinkedList<Object>() );
 	}
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, Scene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
 			final org.lgna.story.event.MouseClickEvent mbe = new org.lgna.story.event.MouseClickEvent( e, scene );
 			Model model = mbe.getModelAtMouseLocation();
 			//todo
-//			if( model != null ) {
-				this.fireAllTargeted(mbe);
-				//
-				//				for( final org.lgna.story.event.MouseButtonListener mouseButtonListener : this.mouseButtonListeners ) {
-				//					Logger.todo( "use parent tracking thread" );
-				//					new Thread() {
-				//						@Override
-				//						public void run() {
-				//							ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-				//								public void run() {
-				//									mouseButtonListener.mouseButtonClicked( mbe );
-				//								}
-				//							} );
-				//						}
-				//					}.start();
-				//				}
-				//				for( final org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener : model.getMouseButtonListeners() ) {
-				//					new Thread() {
-				//						@Override
-				//						public void run() {
-				//							edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
-				//								public void run() {
-				//									mouseButtonListener.mouseButtonClicked( mbe );
-				//								}
-				//							} );
-				//						}
-				//					}.start();
-				//				}
-//			}
+			//			if( model != null ) {
+			this.fireAllTargeted( mbe );
+			//
+			//				for( final org.lgna.story.event.MouseButtonListener mouseButtonListener : this.mouseButtonListeners ) {
+			//					Logger.todo( "use parent tracking thread" );
+			//					new Thread() {
+			//						@Override
+			//						public void run() {
+			//							ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
+			//								public void run() {
+			//									mouseButtonListener.mouseButtonClicked( mbe );
+			//								}
+			//							} );
+			//						}
+			//					}.start();
+			//				}
+			//				for( final org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener : model.getMouseButtonListeners() ) {
+			//					new Thread() {
+			//						@Override
+			//						public void run() {
+			//							edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
+			//								public void run() {
+			//									mouseButtonListener.mouseButtonClicked( mbe );
+			//								}
+			//							} );
+			//						}
+			//					}.start();
+			//				}
+			//			}
 		}
 	}
 
-	public void fireAllTargeted(org.lgna.story.event.MouseClickEvent event) {
-		if(shouldFire){
-			if(event != null){
+	public void fireAllTargeted( org.lgna.story.event.MouseClickEvent event ) {
+		if( shouldFire ) {
+			if( event != null ) {
 				LinkedList<Object> listeners = new LinkedList<Object>();
-				listeners.addAll(map.get(empty));
+				listeners.addAll( map.get( empty ) );
 				Model modelAtMouseLocation = event.getModelAtMouseLocation();
-				if(modelAtMouseLocation != null){
-					if(map.get(modelAtMouseLocation) != null)
-					listeners.addAll(map.get(modelAtMouseLocation));
-				}
-				if(listeners != null){
-					for(Object listener: listeners){
-						fireEvent(listener, event, modelAtMouseLocation);
+				if( modelAtMouseLocation != null ) {
+					if( map.get( modelAtMouseLocation ) != null ) {
+						listeners.addAll( map.get( modelAtMouseLocation ) );
+					}
+					if( listeners != null ) {
+						for( Object listener : listeners ) {
+							fireEvent( listener, event, modelAtMouseLocation );
+						}
 					}
 				}
 			}
 		}
 	}
-	public void addListener(Object listener, MultipleEventPolicy eventPolicy, Visual[] targets) {
-		registerIsFiringMap(listener, targets);
-		registerPolicyMap(listener, eventPolicy);
-		if(targets != null && targets.length > 0){
-			for(Visual target: targets){
-				if(map.get(target) != null){
-					map.get(target).add(listener);
-				} else{
+	public void addListener( Object listener, MultipleEventPolicy eventPolicy, Visual[] targets ) {
+		registerIsFiringMap( listener, targets );
+		registerPolicyMap( listener, eventPolicy );
+		if( targets != null && targets.length > 0 ) {
+			for( Visual target : targets ) {
+				if( map.get( target ) != null ) {
+					map.get( target ).add( listener );
+				} else {
 					LinkedList<Object> list = new LinkedList<Object>();
-					list.add(listener);
-					map.put(target, list);
+					list.add( listener );
+					map.put( target, list );
 				}
 			}
-		} else{
-			map.get(empty).add(listener);
+		} else {
+			map.get( empty ).add( listener );
 		}
 	}
 }
