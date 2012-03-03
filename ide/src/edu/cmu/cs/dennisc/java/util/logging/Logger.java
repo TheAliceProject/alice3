@@ -166,9 +166,11 @@ public class Logger {
 	}
 	
 	public static void throwable( Throwable t, Object object ) {
+		errln( t );
 		log( THROWABLE, object );
 	}
 	public static void throwable( Throwable t, Object... objects ) {
+		errln( t );
 		log( THROWABLE, objects );
 	}
 	

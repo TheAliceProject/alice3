@@ -51,6 +51,16 @@ public class ClipboardDragModel extends org.alice.ide.ast.draganddrop.statement.
 		super( java.util.UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
 	}
 	@Override
+	public boolean isAddEventListenerLikeSubstance() {
+		org.lgna.project.ast.Node node = Clipboard.getInstance().peek();
+		if( node instanceof org.lgna.project.ast.Statement ) {
+			org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
+			return org.lgna.project.ast.AstUtilities.isAddEventListenerMethodInvocationStatement( statement );
+		} else {
+			return false;
+		}
+	}
+	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		org.lgna.croquet.DragModel dragModel = step.getModel();
 		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {

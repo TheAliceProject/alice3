@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.GridPanel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -114,6 +116,7 @@ public abstract class StringState extends State< String > {
 	}
 
 	private boolean isEnabled = true;
+	private GridPanel panel;
 	@Override
 	public boolean isEnabled() {
 		return this.isEnabled;
@@ -175,5 +178,9 @@ public abstract class StringState extends State< String > {
 	}
 	public org.lgna.croquet.components.TextArea createTextArea() {
 		return new org.lgna.croquet.components.TextArea( this );
+	}
+
+	public void addPanel( GridPanel panel ) {
+		this.panel = panel;
 	}
 }

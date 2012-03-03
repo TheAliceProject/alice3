@@ -222,6 +222,7 @@ public class ThumbnailMaker {
 		Point3 cameraLocation = cameraRay.getPointAlong(minVal);
 		OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide(cameraDir, Vector3.accessPositiveYAxis());
 		AffineMatrix4x4 rv = new AffineMatrix4x4(pointAtOrientation, cameraLocation);
+		assert !rv.isNaN() : "Failed to make a useful camera orientation from "+bbox;
 		return rv;
 	}
 	
@@ -385,7 +386,9 @@ public class ThumbnailMaker {
 		int count = 0;
 		boolean framed = isFullyFramed(testImage);
 		//zoom out until framed
-		while (!framed) {
+		final int COUNT_LIMIT = 30;
+		int limitCount = 0;
+		while (!framed && limitCount < COUNT_LIMIT) {
 			cameraRay.getPointAlong(testPosition, currentT);
 			getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
 			testImageLG.clearAndRenderOffscreen();
@@ -398,11 +401,16 @@ public class ThumbnailMaker {
 			{
 				lastGoodPosition.set(testPosition);
 			}
+			limitCount++;
 			count++;
 			currentT -= distanceStep;
 		}
+		if (limitCount > COUNT_LIMIT) {
+			System.err.println("hit thumbnail limit count");
+		}
+		limitCount = 0;
 		//zoom in until just framed
-		while (framed && ((distanceToEdge - currentT) > getSGCamera().nearClippingPlaneDistance.getValue()))
+		while (limitCount < COUNT_LIMIT && framed && ((distanceToEdge - currentT) > getSGCamera().nearClippingPlaneDistance.getValue()))
 		{
 			cameraRay.getPointAlong(testPosition, currentT);
 			getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
@@ -416,8 +424,12 @@ public class ThumbnailMaker {
 			{
 				lastGoodPosition.set(testPosition);
 			}
+			limitCount++;
 			count++;
 			currentT += distanceStep;
+		}
+		if (limitCount > COUNT_LIMIT) {
+			System.err.println("hit thumbnail limit count");
 		}
 		System.out.println(v.getName()+": framed: "+framed+", distance to edge: "+distanceToEdge+", t: "+currentT+", near clip: "+getSGCamera().nearClippingPlaneDistance.getValue());
 		getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world.getSgReferenceFrame());

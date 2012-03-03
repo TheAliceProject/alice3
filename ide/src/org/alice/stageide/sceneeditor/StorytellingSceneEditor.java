@@ -870,8 +870,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		
 		org.lgna.project.ast.AbstractField sceneField = this.getActiveSceneField();
 		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
-		for( org.lgna.project.ast.AbstractField field : this.getActiveSceneType() .getDeclaredFields() ) {
-			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
+		for( org.lgna.project.ast.AbstractField field : this.getActiveSceneType().getDeclaredFields() ) {
+			if( field instanceof UserField ) {
+				UserField userField = (UserField)field;
+				if( userField.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+					this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
+				}
+			}
 		}
 		
 		//Set the camera back to its original position

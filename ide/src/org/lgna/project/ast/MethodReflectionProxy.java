@@ -81,14 +81,41 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 	public String getName() {
 		return this.name;
 	}
+	
+	private static java.lang.reflect.Method findVarArgsVersion( Class<?> cls, String name, Class<?>[] desiredParameterTypes ) {
+		for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
+			if( mthd.isVarArgs() ) {
+				if( mthd.getName().equals( name ) ) {
+					Class<?>[] candidateParameterTypes = mthd.getParameterTypes();
+					if( candidateParameterTypes.length == ( desiredParameterTypes.length + 1 ) ) {
+						java.lang.reflect.Method rv = mthd;
+						for( int i=0; i<desiredParameterTypes.length; i++ ) {
+							if( candidateParameterTypes[ i ].equals( desiredParameterTypes[ i ] ) ) {
+								//pass
+							} else {
+								rv = null;
+							}
+						}
+						if( rv != null ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.info( "MIGRATION: varArgs version used", rv );
+							return rv;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	protected java.lang.reflect.Method reify() {
 		Class< ? > cls = this.getDeclaringClassReflectionProxy().getReification();
 		if( cls != null ) {
+			Class<?>[] parameterTypes = ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies );
 			try {
-				return cls.getDeclaredMethod( name, ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies ) );
+				return cls.getDeclaredMethod( name, parameterTypes );
 			} catch( NoSuchMethodException nsme ) {
-				return null;
+				return findVarArgsVersion( cls, name, parameterTypes );
 			}
 		} else {
 			return null;

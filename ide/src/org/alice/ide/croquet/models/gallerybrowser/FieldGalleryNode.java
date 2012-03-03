@@ -113,6 +113,20 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return this.getDropModel( null, null );
 	}
+
+	@Override
+	public String[] getTags() {
+		org.lgna.project.ast.AbstractField field = this.getDeclaration();
+		if( field instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+			java.lang.reflect.Field fld = javaField.getFieldReflectionProxy().getReification();
+			Class<?> fldCls = fld.getType();
+//			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( fldCls );
+			return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( fldCls );
+		} else {
+			return null;
+		}
+	}
 	
 //	//todo
 //	public org.lgna.croquet.CascadeBlankChild< GalleryNode > getBlankChild() {

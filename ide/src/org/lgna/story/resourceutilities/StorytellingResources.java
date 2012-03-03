@@ -142,6 +142,10 @@ public class StorytellingResources {
 							String className = entry.getName().replace('/', '.');
 							int lastDot = className.lastIndexOf(".");
 							String baseName = className.substring(0, lastDot);
+							if (baseName.startsWith(".")) {
+								baseName = baseName.substring(1);
+							}
+							
 							classNames.add(baseName);
 						}
 					}

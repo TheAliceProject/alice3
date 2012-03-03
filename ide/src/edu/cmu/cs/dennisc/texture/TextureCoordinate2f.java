@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.texture;
  * @author Dennis Cosgrove
  */
 public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public final float u;
-	public final float v;
+	public float u;
+	public float v;
 	
 	public static TextureCoordinate2f createNaN() {
 		return new TextureCoordinate2f( Float.NaN, Float.NaN );

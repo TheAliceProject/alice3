@@ -68,6 +68,10 @@ public class RootGalleryNode extends GalleryNode {
 		return null;
 	}
 
+	@Override
+	public String getSearchText() {
+		return "";
+	}
 	private java.util.List< org.lgna.project.ast.NamedUserType > getDeclarationChildren() {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
 		return org.alice.ide.typemanager.TypeManager.getNamedUserTypesFromSuperTypes( apiConfigurationManager.getTopLevelGalleryTypes() );
@@ -109,6 +113,10 @@ public class RootGalleryNode extends GalleryNode {
 	}
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		return null;
+	}
+	@Override
+	public String[] getTags() {
 		return null;
 	}
 }

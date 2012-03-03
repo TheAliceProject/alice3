@@ -875,6 +875,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void setTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
 		assert target != null : this;
 		assert this.getSgComposite() != null : this;
+		if( offset != null ) {
+			//pass
+		} else {
+			offset = edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity();
+		}
 		this.getSgComposite().setTransformation( offset, target.getSgReferenceFrame() );
 	}
 	public void setTransformation( ReferenceFrame target ) {
@@ -883,7 +888,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void animateTransformation( final ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, boolean isSmooth, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			if( offset.isNaN() ) {
+			if( offset != null && offset.isNaN() ) {
 				//pass
 			} else {
 				this.setTransformation( target, offset );
