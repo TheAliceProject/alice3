@@ -82,7 +82,7 @@ class IkProgram extends Program {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			IkProgram.this.handleChainChanged();
+//			IkProgram.this.handleChainChanged(); //TODO removed this. is it ok?
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener< org.lgna.story.resources.JointId > jointIdListener = new org.lgna.croquet.State.ValueListener< org.lgna.story.resources.JointId >() {
@@ -175,14 +175,9 @@ class IkProgram extends Program {
 		test.ik.croquet.InfoState.getInstance().setValue( sb.toString() );
 	}
 	private org.lgna.ik.Chain createChain() {
-		boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
-		boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
-		
-		if(!isLinearEnabled && !isAngularEnabled) return null;
-		
 		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
-		return org.lgna.ik.Chain.createInstance( this.getSubjectImp(), anchorId, endId, isLinearEnabled, isAngularEnabled );
+		return org.lgna.ik.Chain.createInstance( this.getSubjectImp(), anchorId, endId );
 	}
 	private void handleChainChanged() {//FIXME make this not race with the thread
 		if(chain != null) {
@@ -248,12 +243,14 @@ class IkProgram extends Program {
 					//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
 
 					//not bad concurrent programming practice
-					if(chain != null && (chain.hasLinearVelocityContributions() || chain.hasAngularVelocityContributions())) {
+					boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
+					boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
+					if(chain != null && (isLinearEnabled || isAngularEnabled)) {
 						//I could make chain setter not race with this
 						//However, racing is fine, as long as the old chain is still valid. It is.  
 
 						AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
-						if(chain.hasLinearVelocityContributions()) {
+						if(isLinearEnabled) {
 							Vector3 desiredLinearDistance = Vector3.createSubtraction(targetTransformation.translation, chain.getEndEffectorPosition());
 							
 							//not going to use it directly because is likely to be too fast (linear is bad approximation for large steps)
@@ -271,7 +268,7 @@ class IkProgram extends Program {
 							solver.setDesiredEndEffectorLinearVelocity(chain, linVelToUse);
 						}
 						
-						if(chain.hasAngularVelocityContributions()) {
+						if(isAngularEnabled) {
 							//these both are not local, so it's good.
 							OrthogonalMatrix3x3 desiredOrientation = targetTransformation.orientation;
 							OrthogonalMatrix3x3 currentOrientation = chain.getEndEffectorOrientation();

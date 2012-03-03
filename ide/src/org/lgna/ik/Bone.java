@@ -43,14 +43,10 @@
 
 package org.lgna.ik;
 
-import org.lgna.story.implementation.AsSeenBy;
-import org.lgna.story.implementation.JointImp;
-
-import edu.cmu.cs.dennisc.math.Vector3;
-
 /**
  * @author Dennis Cosgrove
  */
+//this is per-chain. related to the calculation, not the structure. 
 public class Bone {
 	
 	public enum Direction {
@@ -58,51 +54,23 @@ public class Bone {
 		UPSTREAM
 	}
 
-	/*package-private*/ static edu.cmu.cs.dennisc.math.Vector3[] createAxes( boolean b, final int N ) {
-		if( b ) {
-			edu.cmu.cs.dennisc.math.Vector3[] rv = new edu.cmu.cs.dennisc.math.Vector3[ N ];
-			for( int i=0; i<N; i++ ) {
-				rv[ i ] = edu.cmu.cs.dennisc.math.Vector3.createZero();
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
-	/*package-private*/ static double[] createVelocities( boolean isNotToBeNull, final int N ) {
-		if( isNotToBeNull ) {
-			return new double[ N ];
-		} else {
-			return null;
-		}
-	}
-	
 	// Axis does not know whether the joint is reverse or not. it just is an axis. it knows which bone and which index in joint it is, it contains the corrected axis for this chain. 
 	public static class Axis {
 		private final edu.cmu.cs.dennisc.math.Vector3 axis;
-		private double angularVelocity;
+		
 		//these are not local. angular is naturally radian.
-		private final edu.cmu.cs.dennisc.math.Vector3 linearContribution; 
-		private final edu.cmu.cs.dennisc.math.Vector3 angularContribution;
+		private final edu.cmu.cs.dennisc.math.Vector3 linearContribution = edu.cmu.cs.dennisc.math.Vector3.createZero(); 
+		private final edu.cmu.cs.dennisc.math.Vector3 angularContribution = edu.cmu.cs.dennisc.math.Vector3.createZero();
 		private final Bone bone;
 		private final int originalIndexInJoint;
+
+		//this is the speed that will be used during simulation
+		//TODO this should not be here. someone else should take care of this. 
 		private double desiredAngleSpeed; 
-		public Axis( Bone bone, int originalIndexInJoint, boolean isLinearEnabled, boolean isAngularEnabled ) {
+		public Axis( Bone bone, int originalIndexInJoint ) {
 			this.bone = bone;
 			this.originalIndexInJoint = originalIndexInJoint;
 			this.axis = edu.cmu.cs.dennisc.math.Vector3.createZero();
-			if( isLinearEnabled ) {
-				this.linearContribution = edu.cmu.cs.dennisc.math.Vector3.createZero();
-			} else {
-				this.linearContribution = null;
-			}
-			if( isAngularEnabled ) {
-				this.angularContribution = edu.cmu.cs.dennisc.math.Vector3.createZero();
-				this.angularVelocity = 0.0;
-			} else {
-				this.angularContribution = null;
-				this.angularVelocity = Double.NaN;
-			}
 		}
 		public edu.cmu.cs.dennisc.math.Vector3 getLinearContribution() {
 			return linearContribution;
@@ -111,14 +79,10 @@ public class Bone {
 			return angularContribution;
 		}
 		public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 jointEeVector ) {
-			if( this.linearContribution != null ) {
-				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, jointEeVector );
-			}
+			edu.cmu.cs.dennisc.math.Vector3.setReturnValueToCrossProduct(this.linearContribution, this.axis, jointEeVector );
 		}
 		public void updateAngularContributions() {
-			if( this.angularContribution != null ) {
-				this.angularContribution.set( this.axis );
-			}
+			this.angularContribution.set( this.axis );
 		}
 		public edu.cmu.cs.dennisc.math.Vector3 getCurrentValue() {
 			return axis;
@@ -209,24 +173,24 @@ public class Bone {
 	
 	private final edu.cmu.cs.dennisc.math.Point3 anchor = edu.cmu.cs.dennisc.math.Point3.createZero();
 	
-	public Bone( Chain chain, int index, boolean isLinearEnabled, boolean isAngularEnabled ) {
+	public Bone( Chain chain, int index ) {
 		this.chain = chain;
 		this.index = index;
 		
 		org.lgna.story.implementation.JointImp a = this.getA();
 		
 		if( a.isFreeInX() ) {
-			Axis newAxis = new Axis( this, 0, isLinearEnabled, isAngularEnabled );
+			Axis newAxis = new Axis( this, 0 );
 			this.axesByIndex[ 0 ] = newAxis;
 			axesList.add(newAxis);
 		}
 		if( a.isFreeInY() ) {
-			Axis newAxis = new Axis( this, 1, isLinearEnabled, isAngularEnabled );
+			Axis newAxis = new Axis( this, 1 );
 			this.axesByIndex[ 1 ] = newAxis;
 			axesList.add(newAxis);
 		}
 		if( a.isFreeInZ() ) {
-			Axis newAxis = new Axis( this, 2, isLinearEnabled, isAngularEnabled );
+			Axis newAxis = new Axis( this, 2 );
 			this.axesByIndex[ 2 ] = newAxis;
 			axesList.add(newAxis);
 		}
@@ -327,12 +291,12 @@ public class Bone {
 	
 	public void updateStateFromJoint() {
 		//get anchor
-		anchor.set( getA().getTransformation(AsSeenBy.SCENE).translation );
+		anchor.set( getA().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).translation );
 		
 		//get axes 
 //		if( !isABallJoint() ) {
-		JointImp a = getA();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 atrans = a.getTransformation(AsSeenBy.SCENE);
+		org.lgna.story.implementation.JointImp a = getA();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 atrans = a.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
 		//invert if reverse
 		if( a.isFreeInX() ) {
 			this.axesByIndex[ 0 ].setCurrentValue(atrans.orientation.right);
@@ -368,7 +332,7 @@ public class Bone {
 		//these axes HAVE TO BE INVERTED if joint is not in the right direction (not downstream)
 //		throw new RuntimeException("todo invert axes if chain is reverse");
 	}
-	public void applyLocalRotation(Vector3 axis, double angle) {
+	public void applyLocalRotation(edu.cmu.cs.dennisc.math.Vector3 axis, double angle) {
 		getA().applyRotationInRadians(axis, angle);
 	}
 	

@@ -43,6 +43,8 @@
 
 package org.lgna.ik;
 
+import edu.cmu.cs.dennisc.math.Vector3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -82,7 +84,6 @@ public class Solver {
 	}
 	
 	private java.util.Map<org.lgna.ik.Bone.Axis, Double> calculateAngleSpeeds(Jama.Matrix ji) {
-		// TODO Auto-generated method stub
 		Jama.Matrix pDot = createDesiredVelocitiesColumn(desiredVelocities);
 		Jama.Matrix mThetadot = ji.times(pDot);
 
@@ -103,19 +104,26 @@ public class Solver {
 		constraints.clear();
 		for(Chain chain: chains) {
 			//calculate contributions on the last joint location
-			if(chain.isLinearVelocityEnabled() || chain.isAngularVelocityEnabled()) {
-				chain.computeVelocityContributions();
-			}
+			Vector3 desiredLinearVelocity = desiredLinearVelocities.get(chain);
+			Vector3 desiredAngularVelocity = desiredAngularVelocities.get(chain);
 			
-			if(chain.isLinearVelocityEnabled()) {
-				//give this to a constraint set, together with the desired velocity (chain has it). 
-				constraints.add(new Constraint(chain.getLinearVelocityContributions(), chain.getDesiredEndEffectorLinearVelocity()));
-			}
-			if(chain.isAngularVelocityEnabled()) {
-				//give this to a constraint set, together with the desired velocity.
-				constraints.add(new Constraint(chain.getAngularVelocityContributions(), chain.getDesiredEndEffectorAngularVelocity()));
+			if(desiredLinearVelocity != null || desiredAngularVelocity != null) {
+				chain.updateStateFromJoints();
+				
+				if(desiredLinearVelocity != null) {
+					chain.computeLinearVelocityContributions();
+					//give this to a constraint set, together with the desired velocity (chain has it). 
+					constraints.add(new Constraint(chain.getLinearVelocityContributions(), desiredLinearVelocity));
+				}
+				if(desiredAngularVelocity != null) {
+					chain.computeAngularVelocityContributions();
+					//give this to a constraint set, together with the desired velocity.
+					constraints.add(new Constraint(chain.getAngularVelocityContributions(), desiredAngularVelocity));
+				}
 			}
 		}
+		desiredLinearVelocities.clear();
+		desiredAngularVelocities.clear();
 	}
 	private void constructJacobianEntries() {
 		//need to align axes in different constraints 
@@ -247,11 +255,15 @@ public class Solver {
 		
 		return result;
 	}
+	java.util.Map<Chain, edu.cmu.cs.dennisc.math.Vector3> desiredLinearVelocities = new java.util.HashMap<Chain, edu.cmu.cs.dennisc.math.Vector3>();
+	java.util.Map<Chain, edu.cmu.cs.dennisc.math.Vector3> desiredAngularVelocities = new java.util.HashMap<Chain, edu.cmu.cs.dennisc.math.Vector3>();
 	public void setDesiredEndEffectorLinearVelocity(Chain chain, edu.cmu.cs.dennisc.math.Vector3 linVelToUse) {
-		chain.setDesiredEndEffectorLinearVelocity(linVelToUse);
+//		chain.setDesiredEndEffectorLinearVelocity(linVelToUse);
+		desiredLinearVelocities.put(chain, linVelToUse);
 	}
 	public void setDesiredEndEffectorAngularVelocity(Chain chain, edu.cmu.cs.dennisc.math.Vector3 angVelToUse) {
-		chain.setDesiredEndEffectorAngularVelocity(angVelToUse);
+//		chain.setDesiredEndEffectorAngularVelocity(angVelToUse);
+		desiredAngularVelocities.put(chain, angVelToUse);
 	}
 
 }
