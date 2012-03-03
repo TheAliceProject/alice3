@@ -43,14 +43,6 @@
 
 package org.lgna.ik;
 
-import java.util.List;
-
-import org.lgna.story.implementation.JointImp;
-
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -67,34 +59,18 @@ public class Chain {
 	private final java.util.List< org.lgna.story.implementation.JointImp > jointImps;
 	private final Bone[] bones;
 	private final edu.cmu.cs.dennisc.math.Point3 endEffectorLocalPosition;
-	private final List< org.lgna.ik.Bone.Direction > directions;
+	private final java.util.List< org.lgna.ik.Bone.Direction > directions;
 	
 	private final java.util.Map< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > linearVelocityContributions;
 	private final java.util.Map< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > angularVelocityContributions;
 	
-	private Chain( java.util.List< org.lgna.story.implementation.JointImp > jointImps, List< org.lgna.ik.Bone.Direction > directions ) {
+	private Chain( java.util.List< org.lgna.story.implementation.JointImp > jointImps, java.util.List< org.lgna.ik.Bone.Direction > directions ) {
 		this.jointImps = jointImps;
 		this.directions = directions;
 		
 		this.endEffectorLocalPosition = edu.cmu.cs.dennisc.math.Point3.createZero();
 		this.linearVelocityContributions = new java.util.HashMap< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
 		this.angularVelocityContributions = new java.util.HashMap< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
-		
-		
-//		if( isLinearEnabled ) {
-//			this.desiredEndEffectorLinearVelocity = edu.cmu.cs.dennisc.math.Vector3.createZero();
-//			this.linearVelocityContributions = new java.util.HashMap< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
-//		} else {
-//			this.desiredEndEffectorLinearVelocity = null;
-//			this.linearVelocityContributions = null;
-//		}
-//		if( isAngularEnabled ) {
-//			this.desiredEndEffectorAngularVelocity = edu.cmu.cs.dennisc.math.Vector3.createZero();
-//			this.angularVelocityContributions = new java.util.HashMap< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
-//		} else {
-//			this.desiredEndEffectorAngularVelocity = null;
-//			this.angularVelocityContributions = null;
-//		}
 		
 		final int N = this.jointImps.size();
 		this.bones = new Bone[ N ];
@@ -134,7 +110,7 @@ public class Chain {
 		return eeJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).setReturnValueToTransformed(new edu.cmu.cs.dennisc.math.Point3(), endEffectorLocalPosition);
 	}
 	
-	public OrthogonalMatrix3x3 getEndEffectorOrientation() {
+	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getEndEffectorOrientation() {
 		org.lgna.story.implementation.JointImp eeJointImp = jointImps.get(jointImps.size() - 1);
 		return eeJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE).orientation;
 	}
@@ -170,19 +146,11 @@ public class Chain {
 				angularVelocityContributions.put( axis, axis.getAngularContribution() );
 			}
 		}
-
-		//TODO(gazi) updated the unit contributions of each. now need to use them. 
-		//all the axes on the bones know their own contributions
-		//if there was another chain, they would also know their own contributions
-		//therefore, contributions from multiple chains should be taken as a (concrete joint, axis index (axis class has these two))->(contribution) map
-		//then, they should be aligned by axes (ordering in bone is good, contribs are independent of that), empty places should be filled with zeros and a matrix should be formed.  
-//		throw new RuntimeException("todo first resolve the joint direction issue");
-		
-		//should be fine now
 	}
 
 	//these are axis->vel
 	//however axis reference is not the unique thing. it's the (joint,axis index) pair
+	//TODO would this be an issue with multiple chains?
 	public java.util.Map< org.lgna.ik.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > getLinearVelocityContributions() {
 		return linearVelocityContributions;
 	}
@@ -191,38 +159,16 @@ public class Chain {
 		return angularVelocityContributions;
 	}
 	
-	public JointImp getLastJointImp() {
+	public org.lgna.story.implementation.JointImp getLastJointImp() {
 		return jointImps.get(jointImps.size() - 1);
 	}
 
-	public Point3 getAnchorPosition() {
+	public edu.cmu.cs.dennisc.math.Point3 getAnchorPosition() {
 		return bones[0].getAnchorPosition();
 	}
 
 	public boolean isEmpty() {
 		return getBones().length == 0;
-	}
-
-	public void applyVelocitiesForDuration(double dt) {
-		for(Bone bone: bones) {
-			boolean doThreeSeparateRotationsWhichIsNotDesired = false;
-			if(doThreeSeparateRotationsWhichIsNotDesired) {
-				for(org.lgna.ik.Bone.Axis axis: bone.getAxes()) {
-					axis.applyRotation(axis.getDesiredAngleSpeed() * dt);
-				}
-			} else {
-				edu.cmu.cs.dennisc.math.Vector3 cumulativeAxisAngle = edu.cmu.cs.dennisc.math.Vector3.createZero();
-				for(org.lgna.ik.Bone.Axis axis: bone.getAxes()) {
-					Vector3 contribution = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(axis.getLocalAxis(), axis.getDesiredAngleSpeed() * dt);
-					cumulativeAxisAngle.add(contribution);
-				}
-				double angle = cumulativeAxisAngle.calculateMagnitude();
-				if(!edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon(0, angle)) {
-					Vector3 axis = Vector3.createDivision(cumulativeAxisAngle, angle);
-					bone.applyLocalRotation(axis, angle);
-				}
-			}
-		}
 	}
 
 }

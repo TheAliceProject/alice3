@@ -43,8 +43,6 @@
 
 package test.ik;
 
-import java.util.Map;
-
 import org.lgna.ik.Bone.Axis;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
@@ -59,12 +57,6 @@ import org.lgna.story.Sphere;
 import org.lgna.story.Turn;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.implementation.JointImp;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisRotation;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -82,7 +74,6 @@ class IkProgram extends Program {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-//			IkProgram.this.handleChainChanged(); //TODO removed this. is it ok?
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener< org.lgna.story.resources.JointId > jointIdListener = new org.lgna.croquet.State.ValueListener< org.lgna.story.resources.JointId >() {
@@ -106,7 +97,7 @@ class IkProgram extends Program {
 	};
 	private org.lgna.ik.Chain chain;
 	private org.lgna.ik.Solver solver;
-	protected Map<Axis, Double> currentSpeeds;
+	protected java.util.Map<Axis, Double> currentSpeeds;
 	
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
 		return ImplementationAccessor.getImplementation( this.target );
@@ -148,7 +139,7 @@ class IkProgram extends Program {
 	}
 	
 	private void handleTargetTransformChanged() {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getTargetImp().getTransformation( this.getAnchorImp() );
+//		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getTargetImp().getTransformation( this.getAnchorImp() );
 //		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m );
 		this.updateInfo();
 	}
@@ -179,7 +170,9 @@ class IkProgram extends Program {
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
 		return org.lgna.ik.Chain.createInstance( this.getSubjectImp(), anchorId, endId );
 	}
-	private void handleChainChanged() {//FIXME make this not race with the thread
+	private void handleChainChanged() {
+		//this does not race with the thread. this creates a new one, it might use the old one one more time, which is fine. 
+		
 		if(chain != null) {
 			solver.removeChain(chain);
 		}
@@ -189,15 +182,15 @@ class IkProgram extends Program {
 			setDragAdornmentsVisible(true);
 			JointImp lastJointImp = chain.getLastJointImp();
 			
-			AffineMatrix4x4 ltrans = lastJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 ltrans = lastJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
 
 			edu.cmu.cs.dennisc.math.Point3 eePos = new edu.cmu.cs.dennisc.math.Point3(ltrans.translation);
-			eePos.add(Point3.createMultiplication(ltrans.orientation.backward, -.2)); //can do something like this to drag fingertips. right now it results in jumping. 
+			eePos.add(edu.cmu.cs.dennisc.math.Point3.createMultiplication(ltrans.orientation.backward, -.2)); //can do something like this to drag fingertips. right now it results in jumping. 
 			chain.setEndEffectorPosition(eePos);
 			
 //			this.getTargetImp().setTransformation( this.getEndImp() );
 			//assuming that all are parented to scene...
-			this.getTargetImp().setLocalTransformation( new AffineMatrix4x4(chain.getEndEffectorOrientation(), chain.getEndEffectorPosition()) );
+			this.getTargetImp().setLocalTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4(chain.getEndEffectorOrientation(), chain.getEndEffectorPosition()) );
 			solver.addChain(chain);
 		} else {
 			setDragAdornmentsVisible(false);
@@ -242,6 +235,8 @@ class IkProgram extends Program {
 					//I can tell solver, for this chain this is the linear target, etc. 
 					//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
 
+					java.util.Map<org.lgna.ik.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.Bone.Axis, Double>();
+					
 					//not bad concurrent programming practice
 					boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
 					boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
@@ -249,49 +244,49 @@ class IkProgram extends Program {
 						//I could make chain setter not race with this
 						//However, racing is fine, as long as the old chain is still valid. It is.  
 
-						AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+						edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
 						if(isLinearEnabled) {
-							Vector3 desiredLinearDistance = Vector3.createSubtraction(targetTransformation.translation, chain.getEndEffectorPosition());
+							edu.cmu.cs.dennisc.math.Vector3 desiredLinearDistance = edu.cmu.cs.dennisc.math.Vector3.createSubtraction(targetTransformation.translation, chain.getEndEffectorPosition());
 							
 							//not going to use it directly because is likely to be too fast (linear is bad approximation for large steps)
 							
-							Vector3 linVelToUse;
+							edu.cmu.cs.dennisc.math.Vector3 linVelToUse;
 							
 							double maxLinearSpeed = 0.1;
 							
 							if(desiredLinearDistance.calculateMagnitude() > maxLinearSpeed) {
 								desiredLinearDistance.normalize();
-								linVelToUse = Vector3.createMultiplication(desiredLinearDistance, maxLinearSpeed);
+								linVelToUse = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(desiredLinearDistance, maxLinearSpeed);
 							} else {
-								linVelToUse = new Vector3(desiredLinearDistance);
+								linVelToUse = new edu.cmu.cs.dennisc.math.Vector3(desiredLinearDistance);
 							}
 							solver.setDesiredEndEffectorLinearVelocity(chain, linVelToUse);
 						}
 						
 						if(isAngularEnabled) {
 							//these both are not local, so it's good.
-							OrthogonalMatrix3x3 desiredOrientation = targetTransformation.orientation;
-							OrthogonalMatrix3x3 currentOrientation = chain.getEndEffectorOrientation();
+							edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 desiredOrientation = targetTransformation.orientation;
+							edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 currentOrientation = chain.getEndEffectorOrientation();
 							
-							OrthogonalMatrix3x3 inverseCurrent = new OrthogonalMatrix3x3(currentOrientation);
+							edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 inverseCurrent = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3(currentOrientation);
 							inverseCurrent.invert();
 							
-							OrthogonalMatrix3x3 diff = new OrthogonalMatrix3x3();
+							edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 diff = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 							diff.setToMultiplication(desiredOrientation, inverseCurrent);
 							
-							AxisRotation diffAxisRotation = new edu.cmu.cs.dennisc.math.AxisRotation(diff);
+							edu.cmu.cs.dennisc.math.AxisRotation diffAxisRotation = new edu.cmu.cs.dennisc.math.AxisRotation(diff);
 							
-							Vector3 desiredAngularDistance = Vector3.createMultiplication(diffAxisRotation.axis, diffAxisRotation.angle.getAsRadians());
+							edu.cmu.cs.dennisc.math.Vector3 desiredAngularDistance = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(diffAxisRotation.axis, diffAxisRotation.angle.getAsRadians());
 							
 							//not going to use it directly because is likely to be too fast (linear is bad approximation for large steps)
 							
-							Vector3 angVelToUse;
+							edu.cmu.cs.dennisc.math.Vector3 angVelToUse;
 
 							double maxAngularSpeed = Math.PI / 10.0;
 							
 							if(desiredAngularDistance.calculateMagnitude() > maxAngularSpeed) {
 								desiredAngularDistance.normalize();
-								angVelToUse = Vector3.createMultiplication(desiredAngularDistance, maxAngularSpeed);
+								angVelToUse = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(desiredAngularDistance, maxAngularSpeed);
 							} else {
 								angVelToUse = desiredAngularDistance;
 							}
@@ -314,7 +309,7 @@ class IkProgram extends Program {
 							Axis axis = e.getKey();
 							Double speed = e.getValue();
 							
-							axis.setDesiredAngleSpeed(speed);
+							desiredSpeedForAxis.put(axis, speed);
 						}
 
 						//force bone reprint
@@ -326,8 +321,9 @@ class IkProgram extends Program {
 						});
 					}
 					
-					movePls();
-//					moveStraight();
+					double dt = .1; //TODO this would be variable in a real thing. the precision also determines the dt. outsider would request a dt and this would play it. 
+									//in a step we can move up to the duration that the outsider asked us to move.
+					movePls(desiredSpeedForAxis, dt);
 					
 					try {
 						sleep(10);
@@ -342,19 +338,36 @@ class IkProgram extends Program {
 		this.handleChainChanged();
 	}
 
-	private void movePls() {
+	private void movePls(java.util.Map<org.lgna.ik.Bone.Axis, Double> desiredSpeedForAxis, double dt) {
 		if(chain != null) {
 			
 			if(!chain.isEmpty()) {
-				Point3 ap = chain.getAnchorPosition();
-				Point3 ep = chain.getEndEffectorPosition();
+				edu.cmu.cs.dennisc.math.Point3 ap = chain.getAnchorPosition();
+				edu.cmu.cs.dennisc.math.Point3 ep = chain.getEndEffectorPosition();
 				//vehicle is scene, so it's not local. 
 				scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
 				scene.ee.setPositionRelativeToVehicle(new Position(ep.x, ep.y, ep.z));
 			}
 			
-			double dt = .1; //FIXME
-			chain.applyVelocitiesForDuration(dt);
+			boolean doThreeSeparateRotationsWhichIsNotDesired = false;
+			for(org.lgna.ik.Bone bone: chain.getBones()) {
+				if(doThreeSeparateRotationsWhichIsNotDesired) {
+					for(org.lgna.ik.Bone.Axis axis: bone.getAxes()) {
+						axis.applyRotation(desiredSpeedForAxis.get(axis) * dt);
+					}
+				} else {
+					edu.cmu.cs.dennisc.math.Vector3 cumulativeAxisAngle = edu.cmu.cs.dennisc.math.Vector3.createZero();
+					for(org.lgna.ik.Bone.Axis axis: bone.getAxes()) {
+						edu.cmu.cs.dennisc.math.Vector3 contribution = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(axis.getLocalAxis(), desiredSpeedForAxis.get(axis) * dt);
+						cumulativeAxisAngle.add(contribution);
+					}
+					double angle = cumulativeAxisAngle.calculateMagnitude();
+					if(!edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon(0, angle)) {
+						edu.cmu.cs.dennisc.math.Vector3 axis = edu.cmu.cs.dennisc.math.Vector3.createDivision(cumulativeAxisAngle, angle);
+						bone.applyLocalRotation(axis, angle);
+					}
+				}
+			}
 		}
 	}
 

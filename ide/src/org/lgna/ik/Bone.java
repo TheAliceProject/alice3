@@ -118,12 +118,6 @@ public class Bone {
 				return false;
 			}
 		}
-		public void setDesiredAngleSpeed(double speed) {
-			this.desiredAngleSpeed = speed;
-		}
-		public double getDesiredAngleSpeed() {
-			return desiredAngleSpeed;
-		}
 		
 		public void applyRotation(double angleInRadians) {
 			//it's nicer to rotate around one axis once using Bone.applyLocalRotation(angle, axis) 
@@ -135,9 +129,9 @@ public class Bone {
 		public edu.cmu.cs.dennisc.math.Vector3 getLocalAxis() {
 			return indexToLocalVector(originalIndexInJoint);
 		}
-		//FIXME can never have a 2dof joint that rotates an axis? maybe I can? I just always need to apply rotations in order and I'll be fine?
+		//TODO can never have a 2dof joint that rotates an axis? maybe I can? I just always need to apply rotations in order and I'll be fine?
 		//I was using axes to be global x, y, z. ooh, that's right.
-		//FIXME maybe the axis class should be keeping the original, which is inverted of current?
+		//maybe the axis class should be keeping the original, which is inverted of current?
 		private edu.cmu.cs.dennisc.math.Vector3 indexToLocalVector(int originalIndexInJoint) {
 			switch (originalIndexInJoint) {
 			case 0:
@@ -225,11 +219,6 @@ public class Bone {
 	public Direction getDirection() {
 		return this.chain.getDirectionAt( this.index );
 	}
-//	public boolean isABallJoint() {
-//		JointImp a = getA();
-//		return a.isFreeInX() && a.isFreeInY() && a.isFreeInZ();
-////		return false;//FIXME
-//	}
 
 	public int getDegreesOfFreedom() {
 		int rv = 0;
