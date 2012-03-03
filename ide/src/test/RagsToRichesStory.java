@@ -259,10 +259,10 @@ class SnowScene extends Scene {
 		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
 
 			public void mouseClicked( MouseClickOnObjectEvent e ) {
-				if( e.getModelAtMouseLocation() != null ) {
-					e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
-					e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
-				}
+				//				if( e.getModelAtMouseLocation() != null ) {
+				e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
+				e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
+				//				}
 			}
 		} );
 		this.addOcclusionEndListener( new OcclusionEndListener() {
