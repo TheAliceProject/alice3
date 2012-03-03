@@ -243,6 +243,10 @@ class IkProgram extends Program {
 			@Override
 			public void run() {
 				while(!interrupted()) {
+					//solver has the chain. can also have multiple chains. 
+					//I can tell solver, for this chain this is the linear target, etc. 
+					//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
+
 					//not bad concurrent programming practice
 					if(chain != null && (chain.hasLinearVelocityContributions() || chain.hasAngularVelocityContributions())) {
 						//I could make chain setter not race with this
@@ -264,8 +268,7 @@ class IkProgram extends Program {
 							} else {
 								linVelToUse = new Vector3(desiredLinearDistance);
 							}
-							while(chain.getDesiredEndEffectorLinearVelocity() == null); //preventing race condition temporarily...
-							chain.setDesiredEndEffectorLinearVelocity(linVelToUse);
+							solver.setDesiredEndEffectorLinearVelocity(chain, linVelToUse);
 						}
 						
 						if(chain.hasAngularVelocityContributions()) {
@@ -295,8 +298,7 @@ class IkProgram extends Program {
 							} else {
 								angVelToUse = desiredAngularDistance;
 							}
-							while(chain.getDesiredEndEffectorAngularVelocity() == null); //preventing race condition temporarily...
-							chain.setDesiredEndEffectorAngularVelocity(angVelToUse);
+							solver.setDesiredEndEffectorAngularVelocity(chain, angVelToUse);
 						}
 						
 						
@@ -304,7 +306,7 @@ class IkProgram extends Program {
 						java.util.Map<org.lgna.ik.Bone.Axis, Double> speeds = solver.solve();
 						
 						if(speeds == null) {
-							//this could happen if the chain is removed after we went into this loop
+							//I think this could happen if the chain is removed after we went into this loop
 							continue;
 						}
 						

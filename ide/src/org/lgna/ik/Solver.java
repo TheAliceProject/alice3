@@ -74,13 +74,11 @@ public class Solver {
 	public java.util.Map<org.lgna.ik.Bone.Axis, Double> solve() {
 		prepareConstraints();
 		if(constraints.size() == 0) {
-//			System.out.println("no constraints!");
 			return null;
 		}
 		constructJacobianEntries();
 		
 		return calculateAngleSpeeds(invertJacobian(0.1));
-		//TODO apply them? maybe someone else should do it. 
 	}
 	
 	private java.util.Map<org.lgna.ik.Bone.Axis, Double> calculateAngleSpeeds(Jama.Matrix ji) {
@@ -102,30 +100,20 @@ public class Solver {
 		return axisSpeeds;
 	}
 	private void prepareConstraints() {
-//		System.out.println("num chains " + chains.size());
 		constraints.clear();
 		for(Chain chain: chains) {
 			//calculate contributions on the last joint location
 			if(chain.isLinearVelocityEnabled() || chain.isAngularVelocityEnabled()) {
 				chain.computeVelocityContributions();
-//				System.out.println("computed contribs");
-			} else {
-//				System.out.println("no enables");
 			}
 			
 			if(chain.isLinearVelocityEnabled()) {
 				//give this to a constraint set, together with the desired velocity (chain has it). 
 				constraints.add(new Constraint(chain.getLinearVelocityContributions(), chain.getDesiredEndEffectorLinearVelocity()));
-//				System.out.println("lin");
-			} else {
-//				System.out.println("nolin");
 			}
 			if(chain.isAngularVelocityEnabled()) {
 				//give this to a constraint set, together with the desired velocity.
 				constraints.add(new Constraint(chain.getAngularVelocityContributions(), chain.getDesiredEndEffectorAngularVelocity()));
-//				System.out.println("ang");
-			} else {
-//				System.out.println("noang");
 			}
 		}
 	}
@@ -169,9 +157,8 @@ public class Solver {
 	}
 	private Jama.Matrix invertJacobian(double sThreshold) {
 		Jama.Matrix j = createJacobianMatrix(this.jacobianColumns);
-//		System.out.println("jacobian " + j.getRowDimension() + "x" + j.getColumnDimension());
-		Jama.Matrix ji = svdInvert(j, sThreshold);
 
+		Jama.Matrix ji = svdInvert(j, sThreshold);
 		// TODO also do any optimizations (don't move too fast, etc)
 		
 		return ji;
@@ -259,6 +246,12 @@ public class Solver {
 		}
 		
 		return result;
+	}
+	public void setDesiredEndEffectorLinearVelocity(Chain chain, edu.cmu.cs.dennisc.math.Vector3 linVelToUse) {
+		chain.setDesiredEndEffectorLinearVelocity(linVelToUse);
+	}
+	public void setDesiredEndEffectorAngularVelocity(Chain chain, edu.cmu.cs.dennisc.math.Vector3 angVelToUse) {
+		chain.setDesiredEndEffectorAngularVelocity(angVelToUse);
 	}
 
 }
