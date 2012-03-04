@@ -68,8 +68,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private final org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective > perspectiveListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
-			IDE.this.setPerspective( nextValue );
+		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, final org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					IDE.this.setPerspective( nextValue );
+				}
+			} );
 		}
 	};
 
