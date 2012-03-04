@@ -40,26 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package test;
+package org.lgna.croquet.simple;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
-	public static void main( String[] args ) {
-		TestCroquet testCroquet = new TestCroquet();
-		testCroquet.initialize( args );
-		
-		class State extends org.lgna.croquet.BoundedIntegerState {
-			public State() {
-				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 3 ).initialValue( 50 ) );
-			}
-		}
-		
-		State state = new State();
-		testCroquet.getFrame().getContentPanel().addComponent( state.createSlider(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
-		testCroquet.getFrame().pack();
-		testCroquet.getFrame().setVisible( true );
+public class SimpleApplication extends org.lgna.croquet.Application {
+	@Override
+	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+	@Override
+	protected void handleWindowOpened(java.awt.event.WindowEvent e) {
+	}
+	@Override
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+		System.exit( 0 );
+	}
+
+	@Override
+	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.Operation getAboutOperation() {
+		return null;
+	}
+	@Override
+	protected org.lgna.croquet.Operation getPreferencesOperation() {
+		return null;
 	}
 }
