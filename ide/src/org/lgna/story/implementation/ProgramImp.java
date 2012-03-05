@@ -225,7 +225,8 @@ public class ProgramImp {
 		return this.frameRate;
 	}
 	public void setFrameRate( Double frameRate ) {
-		if( frameRate == CLOCK_BASED_FRAME_RATE ) {
+		this.frameRate = frameRate;
+		if( this.frameRate == CLOCK_BASED_FRAME_RATE ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator = this.getFrameBasedAnimator();
