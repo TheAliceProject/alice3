@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.ik;
+package org.lgna.ik.solver;
 
 /**
  * @author Dennis Cosgrove

@@ -47,7 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.lgna.ik.Bone.Direction;
+import org.lgna.ik.solver.Bone.Direction;
 
 /**
  * @author Dennis Cosgrove
@@ -317,7 +317,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	private static enum AddOp {
 		PREPEND {
 			@Override
-			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.Bone.Direction > directions, org.lgna.ik.Bone.Direction direction ) {
+			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.solver.Bone.Direction > directions, org.lgna.ik.solver.Bone.Direction direction ) {
 				rv.add( 0, joint );
 				if( directions != null ) {
 					directions.add( 0, direction );
@@ -327,7 +327,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		},
 		APPEND {
 			@Override
-			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.Bone.Direction > directions, org.lgna.ik.Bone.Direction direction ) {
+			public java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.solver.Bone.Direction > directions, org.lgna.ik.solver.Bone.Direction direction ) {
 				rv.add( joint );
 				if( directions != null ) {
 					directions.add( direction );
@@ -335,9 +335,9 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 				return rv;
 			}
 		};
-		public abstract java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.Bone.Direction > directions, org.lgna.ik.Bone.Direction direction );
+		public abstract java.util.List< JointImp > add( java.util.List< JointImp > rv, JointImp joint, List< org.lgna.ik.solver.Bone.Direction > directions, org.lgna.ik.solver.Bone.Direction direction );
 	}
-	private java.util.List< JointImp > updateJointsBetween( java.util.List< JointImp > rv, List< org.lgna.ik.Bone.Direction > directions, JointImp joint, EntityImp ancestorToReach, AddOp addOp ) {
+	private java.util.List< JointImp > updateJointsBetween( java.util.List< JointImp > rv, List< org.lgna.ik.solver.Bone.Direction > directions, JointImp joint, EntityImp ancestorToReach, AddOp addOp ) {
 		if( joint == ancestorToReach ) {
 			//pass
 		} else {
@@ -347,23 +347,23 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 				this.updateJointsBetween( rv, directions, parent, ancestorToReach, addOp );
 			}
 		}
-		org.lgna.ik.Bone.Direction direction;
+		org.lgna.ik.solver.Bone.Direction direction;
 		if( addOp == AddOp.APPEND ) { 
-			direction = org.lgna.ik.Bone.Direction.DOWNSTREAM; 
+			direction = org.lgna.ik.solver.Bone.Direction.DOWNSTREAM; 
 		} else {
-			direction = org.lgna.ik.Bone.Direction.UPSTREAM;
+			direction = org.lgna.ik.solver.Bone.Direction.UPSTREAM;
 		}
 		addOp.add( rv, joint, directions, direction);
 		return rv;
 	}
-	public java.util.List< JointImp > getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB, java.util.List< org.lgna.ik.Bone.Direction > directions ) {
+	public java.util.List< JointImp > getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB, java.util.List< org.lgna.ik.solver.Bone.Direction > directions ) {
 		assert jointA != null : this;
 		assert jointB != null : this;
 		java.util.List< JointImp > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( jointA == jointB ) {
 			//?
 			rv.add( jointA );
-			directions.add( org.lgna.ik.Bone.Direction.DOWNSTREAM );
+			directions.add( org.lgna.ik.solver.Bone.Direction.DOWNSTREAM );
 //			throw new RuntimeException( "To Gazi: Please ensure that direction is correct in this case." );
 		} else {
 			if( jointA.isDescendantOf( jointB ) ) {
@@ -436,7 +436,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		rvDirections.addAll(directionsB);
 	}
 
-	public java.util.List< JointImp > getInclusiveListOfJointsBetween( org.lgna.story.resources.JointId idA, org.lgna.story.resources.JointId idB, java.util.List< org.lgna.ik.Bone.Direction > directions ) {
+	public java.util.List< JointImp > getInclusiveListOfJointsBetween( org.lgna.story.resources.JointId idA, org.lgna.story.resources.JointId idB, java.util.List< org.lgna.ik.solver.Bone.Direction > directions ) {
 		return this.getInclusiveListOfJointsBetween( this.getJointImplementation( idA ), this.getJointImplementation( idB ), directions );
 	}
 	

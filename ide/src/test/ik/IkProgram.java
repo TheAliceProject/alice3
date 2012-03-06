@@ -43,7 +43,7 @@
 
 package test.ik;
 
-import org.lgna.ik.Bone.Axis;
+import org.lgna.ik.solver.Bone.Axis;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
@@ -83,10 +83,10 @@ class IkProgram extends Program {
 			IkProgram.this.handleChainChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener< org.lgna.ik.Bone > boneListener = new org.lgna.croquet.State.ValueListener< org.lgna.ik.Bone >() {
-		public void changing( org.lgna.croquet.State< org.lgna.ik.Bone > state, org.lgna.ik.Bone prevValue, org.lgna.ik.Bone nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener< org.lgna.ik.solver.Bone > boneListener = new org.lgna.croquet.State.ValueListener< org.lgna.ik.solver.Bone >() {
+		public void changing( org.lgna.croquet.State< org.lgna.ik.solver.Bone > state, org.lgna.ik.solver.Bone prevValue, org.lgna.ik.solver.Bone nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.ik.Bone > state, org.lgna.ik.Bone prevValue, org.lgna.ik.Bone nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.lgna.ik.solver.Bone > state, org.lgna.ik.solver.Bone prevValue, org.lgna.ik.solver.Bone nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleBoneChanged();
 		}
 	};
@@ -95,8 +95,8 @@ class IkProgram extends Program {
 			IkProgram.this.handleTargetTransformChanged();
 		}
 	};
-	private org.lgna.ik.Chain chain;
-	private org.lgna.ik.Solver solver;
+	private org.lgna.ik.solver.Chain chain;
+	private org.lgna.ik.solver.Solver solver;
 	protected java.util.Map<Axis, Double> currentSpeeds;
 	
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
@@ -144,7 +144,7 @@ class IkProgram extends Program {
 		this.updateInfo();
 	}
 	private void updateInfo() {
-		org.lgna.ik.Bone bone = test.ik.croquet.BonesState.getInstance().getSelectedItem();
+		org.lgna.ik.solver.Bone bone = test.ik.croquet.BonesState.getInstance().getSelectedItem();
 		
 		StringBuilder sb = new StringBuilder();
 		if( bone != null ) {
@@ -165,10 +165,10 @@ class IkProgram extends Program {
 		
 		test.ik.croquet.InfoState.getInstance().setValue( sb.toString() );
 	}
-	private org.lgna.ik.Chain createChain() {
+	private org.lgna.ik.solver.Chain createChain() {
 		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
-		return org.lgna.ik.Chain.createInstance( this.getSubjectImp(), anchorId, endId );
+		return org.lgna.ik.solver.Chain.createInstance( this.getSubjectImp(), anchorId, endId );
 	}
 	private void handleChainChanged() {
 		//this does not race with the thread. this creates a new one, it might use the old one one more time, which is fine. 
@@ -225,7 +225,7 @@ class IkProgram extends Program {
 		this.getTargetImp().setTransformation( this.getEndImp() );
 		this.getTargetImp().getSgComposite().addAbsoluteTransformationListener( this.targetTransformListener );
 		
-		solver = new org.lgna.ik.Solver();
+		solver = new org.lgna.ik.solver.Solver();
 		
 		Thread calculateThread = new Thread() {
 			@Override
@@ -235,7 +235,7 @@ class IkProgram extends Program {
 					//I can tell solver, for this chain this is the linear target, etc. 
 					//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
 
-					java.util.Map<org.lgna.ik.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.Bone.Axis, Double>();
+					java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.solver.Bone.Axis, Double>();
 					
 					//not bad concurrent programming practice
 					boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
@@ -295,7 +295,7 @@ class IkProgram extends Program {
 						
 						
 						
-						java.util.Map<org.lgna.ik.Bone.Axis, Double> speeds = solver.solve();
+						java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> speeds = solver.solve();
 						
 						if(speeds == null) {
 							//I think this could happen if the chain is removed after we went into this loop
@@ -305,7 +305,7 @@ class IkProgram extends Program {
 						currentSpeeds = speeds;
 						
 						//now apply these
-						for(java.util.Map.Entry<org.lgna.ik.Bone.Axis, Double> e: currentSpeeds.entrySet()) {
+						for(java.util.Map.Entry<org.lgna.ik.solver.Bone.Axis, Double> e: currentSpeeds.entrySet()) {
 							Axis axis = e.getKey();
 							Double speed = e.getValue();
 							
@@ -338,7 +338,7 @@ class IkProgram extends Program {
 		this.handleChainChanged();
 	}
 
-	private void movePls(java.util.Map<org.lgna.ik.Bone.Axis, Double> desiredSpeedForAxis, double dt) {
+	private void movePls(java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> desiredSpeedForAxis, double dt) {
 		if(chain != null) {
 			
 			if(!chain.isEmpty()) {
@@ -350,14 +350,14 @@ class IkProgram extends Program {
 			}
 			
 			boolean doThreeSeparateRotationsWhichIsNotDesired = false;
-			for(org.lgna.ik.Bone bone: chain.getBones()) {
+			for(org.lgna.ik.solver.Bone bone: chain.getBones()) {
 				if(doThreeSeparateRotationsWhichIsNotDesired) {
-					for(org.lgna.ik.Bone.Axis axis: bone.getAxes()) {
+					for(org.lgna.ik.solver.Bone.Axis axis: bone.getAxes()) {
 						axis.applyRotation(desiredSpeedForAxis.get(axis) * dt);
 					}
 				} else {
 					edu.cmu.cs.dennisc.math.Vector3 cumulativeAxisAngle = edu.cmu.cs.dennisc.math.Vector3.createZero();
-					for(org.lgna.ik.Bone.Axis axis: bone.getAxes()) {
+					for(org.lgna.ik.solver.Bone.Axis axis: bone.getAxes()) {
 						edu.cmu.cs.dennisc.math.Vector3 contribution = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(axis.getLocalAxis(), desiredSpeedForAxis.get(axis) * dt);
 						cumulativeAxisAngle.add(contribution);
 					}

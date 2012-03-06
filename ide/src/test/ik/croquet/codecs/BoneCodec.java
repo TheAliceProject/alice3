@@ -46,18 +46,18 @@ package test.ik.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum BoneCodec implements org.lgna.croquet.ItemCodec< org.lgna.ik.Bone > {
+public enum BoneCodec implements org.lgna.croquet.ItemCodec< org.lgna.ik.solver.Bone > {
 	SINGLETON;
-	public java.lang.StringBuilder appendRepresentation( java.lang.StringBuilder rv, org.lgna.ik.Bone value, java.util.Locale locale ) {
+	public java.lang.StringBuilder appendRepresentation( java.lang.StringBuilder rv, org.lgna.ik.solver.Bone value, java.util.Locale locale ) {
 		return rv;
 	}
-	public org.lgna.ik.Bone decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public org.lgna.ik.solver.Bone decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException();
 	}
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.ik.Bone value ) {
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.ik.solver.Bone value ) {
 		throw new RuntimeException();
 	}
-	public java.lang.Class< org.lgna.ik.Bone > getValueClass() {
-		return org.lgna.ik.Bone.class;
+	public java.lang.Class< org.lgna.ik.solver.Bone > getValueClass() {
+		return org.lgna.ik.solver.Bone.class;
 	}
 }
