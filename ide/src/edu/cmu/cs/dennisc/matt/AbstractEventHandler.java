@@ -26,7 +26,7 @@ public abstract class AbstractEventHandler< L, E extends AbstractEvent > {
 		}
 		if(isFiringMap.get(listener).get(o) == null){
 			isFiringMap.get(listener).put(o, false);
-		}
+		} 
 		if(shouldFire){
 			ComponentThread thread = new org.lgna.common.ComponentThread( new Runnable() {
 				public void run() {
