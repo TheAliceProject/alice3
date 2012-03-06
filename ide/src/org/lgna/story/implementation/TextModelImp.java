@@ -140,10 +140,4 @@ public class TextModelImp extends SimpleModelImp {
 //		this.sb.setLength( length );
 //		updateSGText();
 //	}
-
-	@Override
-	protected double getBoundingSphereRadius() {
-		//todo
-		return 1.0;
-	}
 }

@@ -46,24 +46,28 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultTreeSelectionState< T > extends TreeSelectionState< T > {
-	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel;
-	public DefaultTreeSelectionState(Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialSelection, edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel ) {
+public class DefaultTreeSelectionState<T> extends TreeSelectionState<T> {
+	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel;
+
+	public DefaultTreeSelectionState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialSelection, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel ) {
 		super( group, id, itemCodec );
 		this.treeModel = treeModel;
 		this.setValueTransactionlessly( initialSelection );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel() {
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
 		return this.treeModel;
 	}
 	@Override
-	protected String getTextForNode(T node) {
+	protected String getTextForNode( T node ) {
 		return node.toString();
 	}
-	
 	@Override
-	protected javax.swing.Icon getIconForNode(T node) {
+	protected javax.swing.Icon getIconForNode( T node ) {
 		return null;
+	}
+	@Override
+	public void refresh( T node ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 	}
 }

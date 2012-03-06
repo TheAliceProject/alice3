@@ -161,12 +161,29 @@ public abstract class AstI18nFactory extends I18nFactory {
 				rv = this.createFieldAccessPane( (org.lgna.project.ast.FieldAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.TypeExpression ) {
 				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired() ) {
-					
-					rv = new org.lgna.croquet.components.LineAxisPanel(
-							new org.alice.ide.ast.components.DeclarationNameLabel( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() ),
-							new org.lgna.croquet.components.Label( "." )
-					);
-					//rv = TypeComponent.createInstance( ((org.lgna.project.ast.TypeExpression)expression).value.getValue() );
+					org.lgna.project.ast.TypeExpression typeExpression = (org.lgna.project.ast.TypeExpression)expression;
+					org.lgna.project.ast.Node parent = typeExpression.getParent();
+					if( parent instanceof org.lgna.project.ast.MethodInvocation ) {
+						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)parent;
+						org.lgna.project.ast.Node grandparent = methodInvocation.getParent();
+						if( grandparent instanceof org.lgna.project.ast.JavaKeyedArgument ) {
+							org.lgna.project.ast.JavaKeyedArgument javaKeyedArgument = (org.lgna.project.ast.JavaKeyedArgument)grandparent;
+							org.lgna.project.ast.AbstractType< ?,?,? > type = org.lgna.project.ast.AstUtilities.getKeywordFactoryType( javaKeyedArgument );
+							if( type != null ) {
+								rv = new org.lgna.croquet.components.Label( type.getName() + "." );
+								//rv.makeStandOut();
+							}
+						}
+					}
+					if( rv != null ) {
+						//pass
+					} else {
+						org.lgna.project.ast.AbstractType< ?,?,? > type = typeExpression.value.getValue();
+						rv = new org.lgna.croquet.components.LineAxisPanel(
+								new org.alice.ide.ast.components.DeclarationNameLabel( type ),
+								new org.lgna.croquet.components.Label( "." )
+						);
+					}
 				} else {
 					rv = new org.lgna.croquet.components.Label();
 				}

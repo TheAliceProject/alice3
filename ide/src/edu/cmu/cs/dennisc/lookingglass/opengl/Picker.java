@@ -80,6 +80,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			Throwable throwable = null;
 			try {
 				drawable.getGL();
+				drawable.getContext().makeCurrent();
 			} catch( Throwable t ) {
 				throwable = t;
 			}

@@ -154,19 +154,13 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 
         
         if( m_isScaleIdentity ) {
-            rc.gl.glDisable( GL_NORMALIZE );
+        	//pass
         } else {
             rc.gl.glPushMatrix();
             rc.gl.glMultMatrixd( m_scaleBuffer );
-
-            //todo: what if scale is supposed to affect lighting?
-            rc.gl.glEnable( GL_NORMALIZE );
+        	rc.pushNormalize();
         }
 
-        
-//      //todo: remove
-//      rc.gl.glEnable( GL_NORMALIZE );
-        
         if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
             if( m_frontFacingAppearanceAdapter != null ) {
                 m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT_AND_BACK );
@@ -192,6 +186,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
         if( m_isScaleIdentity ) {
             //pass
         } else {
+        	rc.popNormalize();
             rc.gl.glPopMatrix();
         }
     }

@@ -97,10 +97,6 @@ public class Manager {
 				}
 				Manager.setVersion(NEBULOUS_VERSION);
 				
-				boolean debugDraw = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue(org.alice.ide.IDE.DEBUG_DRAW_PROPERTY_KEY);
-				
-//				Manager.setDebugDraw(debugDraw);
-				
 				s_isInitialized = true;
 			} else {
 				throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();

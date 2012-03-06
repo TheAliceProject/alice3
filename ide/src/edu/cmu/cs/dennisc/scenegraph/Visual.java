@@ -106,6 +106,9 @@ public class Visual extends Leaf {
 		} else {
 			rv.setNaN();
 		}
+		if (rv.isNaN() || rv.getMaximum().isNaN() || rv.getMaximum().isNaN()) {
+			System.err.append("NaN");
+		}
 		return rv;
 	}
     public final edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {

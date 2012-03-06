@@ -57,30 +57,7 @@ public class CreatePersonComposite extends PersonComposite {
 		super( java.util.UUID.fromString( "38ef6581-b196-4937-88d7-bcc75ec5d4a8" ), RenderComposite.getInstance() );
 	}
 	public static void main( String[] args ) {
-		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
-			@Override
-			public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-				return null;
-			}
-			@Override
-			protected org.lgna.croquet.Operation getAboutOperation() {
-				return null;
-			}
-			@Override
-			protected org.lgna.croquet.Operation getPreferencesOperation() {
-				return null;
-			}
-			@Override
-			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-			}
-			@Override
-			protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
-			}
-			@Override
-			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-				System.exit( 0 );
-			}
-		};
+		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
 		application.initialize( args );
 		application.setPerspective( new org.lgna.croquet.Perspective( java.util.UUID.randomUUID(), CreatePersonComposite.getInstance() ) {} );
 		application.getFrame().setSize( 1280, 720 );

@@ -48,30 +48,67 @@ package org.alice.ide.croquet.models.gallerybrowser;
  */
 public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
 	private static class CompositeIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DefaultCompositeIcon {
-		public CompositeIcon( javax.swing.ImageIcon imageIcon ) {
+		public CompositeIcon( javax.swing.Icon icon ) {
 			super( 
 					org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE,
-					imageIcon,
+					icon,
 					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE 
 			);
 		}
 	}
+	
+	
+	private static javax.swing.Icon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type, boolean isOffset ) {
+		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "images/" );
+		sb.append( cls.getName().replace( ".", "/" ) );
+		if( isOffset ) {
+			sb.append( "_offset" );
+		}
+		sb.append( ".png" );
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( sb.toString() ) );
+	}
+	
+	public static javax.swing.Icon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		return getIcon( type, false );
+	}
+	public static javax.swing.Icon getOffsetIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+		javax.swing.Icon icon = getIcon( type, true );
+		if( icon != null ) {
+			//pass
+		} else {
+			java.awt.image.BufferedImage image = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification());
+			if( image != null ) {
+				//icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image );
+				icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( image, 120, 90 );
+			}
+		}
+		return icon;
+	}
+	
 	private final javax.swing.Icon largeIcon;
 	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		super( id, type );
-		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-		String path = "images/" + cls.getName().replace( ".", "/" ) + ".png";
-		javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( path ) );
-		if( imageIcon != null ) {
-			this.largeIcon = new CompositeIcon(imageIcon);
+		javax.swing.Icon icon = getOffsetIcon( type );
+		if( icon != null ) {
+			this.largeIcon = new CompositeIcon(icon);
 		} else {
 			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
 		}
 	}
+	
+	private java.util.List<org.lgna.project.ast.AbstractDeclaration> children;
+	
 	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
 	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
-		return this.getDeclarationChildren( apiConfigurationManager );
+		if( this.children != null ) {
+			//pass
+		} else {
+			org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
+			this.children = this.getDeclarationChildren( apiConfigurationManager );
+		}
+		return this.children;
 	}
 	@Override
 	public int getChildCount() {
@@ -94,6 +131,10 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 		return this.largeIcon;
 	}
 
+	@Override
+	public String[] getTags() {
+		return null;
+	}
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		String name = this.getDeclaration().getName();

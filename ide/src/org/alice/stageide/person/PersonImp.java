@@ -54,12 +54,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 	public org.lgna.story.Entity getAbstraction() {
 		return null;
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return 1.0;
-	}
 	private final java.util.Map< org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person > mapLifeStageToNebPerson = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
 	private edu.cmu.cs.dennisc.scenegraph.Geometry getSgGeometry() {
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		final int N = sgVisual.getGeometryCount();

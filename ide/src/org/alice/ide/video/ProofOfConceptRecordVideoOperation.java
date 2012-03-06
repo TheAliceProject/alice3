@@ -85,5 +85,6 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 		java.io.File file = new java.io.File( directory, "image" + new java.text.DecimalFormat( "#0000" ).format( i ) + ".png" );
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		edu.cmu.cs.dennisc.image.ImageUtilities.write( file, image );
+		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file );
 	}
 }
