@@ -53,7 +53,7 @@ public abstract class VirtualMachine {
 	protected abstract void pushConstructorFrame( org.lgna.project.ast.NamedUserType type, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
 	protected abstract void setConstructorFrameUserInstance( UserInstance instance );
 	protected abstract void pushMethodFrame( UserInstance instance, org.lgna.project.ast.UserMethod method, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
-	protected abstract void pushLambdaFrame( UserInstance instance, org.lgna.project.ast.UserLambda lambda, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
+	protected abstract void pushLambdaFrame( UserInstance instance, org.lgna.project.ast.UserLambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
 	protected abstract void popFrame();
 
 	protected abstract Object lookup( org.lgna.project.ast.AbstractParameter parameter );
@@ -630,7 +630,7 @@ public abstract class VirtualMachine {
 			Class< ? >[] parameterTypes = { org.lgna.project.virtualmachine.LambdaContext.class, org.lgna.project.ast.Lambda.class, org.lgna.project.virtualmachine.UserInstance.class };
 			Object[] arguments = { 
 					new LambdaContext() {
-						public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, org.lgna.project.virtualmachine.UserInstance thisInstance, java.lang.Object... arguments ) {
+						public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, org.lgna.project.virtualmachine.UserInstance thisInstance, java.lang.Object... arguments ) {
 							assert thisInstance != null;
 							if( lambda instanceof org.lgna.project.ast.UserLambda ) {
 								org.lgna.project.ast.UserLambda userLambda = (org.lgna.project.ast.UserLambda)lambda;
@@ -638,7 +638,7 @@ public abstract class VirtualMachine {
 								for( int i = 0; i < arguments.length; i++ ) {
 									map.put( userLambda.requiredParameters.get( i ), arguments[ i ] );
 								}
-								pushLambdaFrame( thisInstance, userLambda, map );
+								pushLambdaFrame( thisInstance, userLambda, singleAbstractMethod, map );
 								try {
 									executeBlockStatement( userLambda.body.getValue() );
 								} catch( ReturnException re ) {

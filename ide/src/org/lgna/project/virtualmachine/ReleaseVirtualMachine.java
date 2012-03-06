@@ -142,6 +142,17 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 				return null;
 			}
 		}
+		protected void appendArgumentsRepr( StringBuilder sb, boolean isFormatted ) {
+			if( this.mapParameterToValue.size() > 0 ) {
+				sb.append( " <i>arguments:</i> " );
+				for( AbstractParameter parameter : this.mapParameterToValue.keySet() ) {
+					Object value = this.mapParameterToValue.get( parameter );
+					sb.append( parameter.getName() );
+					sb.append( "=" );
+					sb.append( value );
+				}
+			}
+		}
 	}
 	
 	protected static class ConstructorInvocationFrame extends InvocationFrame {
@@ -161,6 +172,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		@Override
 		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
 			sb.append( this.type.getName() );
+			this.appendArgumentsRepr( sb, isFormatted );
 		}
 	}
 
@@ -186,19 +198,26 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			sb.append( "<strong>" );
 			sb.append( this.method.getName() );
 			sb.append( "</strong>" );
-			sb.append( " <i>instance:</i>" );
+			sb.append( " <i>instance:</i> " );
 			sb.append( this.getThis() );
+			this.appendArgumentsRepr( sb, isFormatted );
 		}
 	}
 	protected static class LambdaInvocationFrame extends AbstractMethodInvocationFrame {
 		private final UserLambda lambda;
-		public LambdaInvocationFrame( Frame owner, java.util.Map< AbstractParameter, Object > mapParameterToValue, UserInstance instance, UserLambda lambda ) {
+		private final org.lgna.project.ast.AbstractMethod singleAbstractMethod;
+		public LambdaInvocationFrame( Frame owner, java.util.Map< AbstractParameter, Object > mapParameterToValue, UserInstance instance, UserLambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod ) {
 			super( owner, mapParameterToValue, instance );
 			this.lambda = lambda;
+			this.singleAbstractMethod = singleAbstractMethod;
 		}
 		@Override
 		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
-			sb.append( "lambda" );
+			sb.append( "<strong>" );
+			sb.append( this.singleAbstractMethod != null ? this.singleAbstractMethod.getName() : null );
+			sb.append( "</strong> " );
+			//todo
+			//this.appendArgumentsRepr( sb, isFormatted );
 		}
 	}
 
@@ -252,6 +271,8 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	public LgnaStackTraceElement[] getStackTrace( Thread thread ) {
 		Frame frame = this.getFrameForThread( thread );
 		if( frame != null ) {
+			//a bit of double negative logic
+			//push onto stack from top of runtime stack to get the order we want
 			java.util.Stack< LgnaStackTraceElement > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 			do {
 				stack.push( frame );
@@ -262,32 +283,6 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			return new LgnaStackTraceElement[] {};
 		}
 	}
-
-//	private static Frame createCopyOfFrame( Frame frame ) {
-//		Frame owner = frame.getOwner();
-//		Frame ownerCopy;
-//		if( owner != null ) {
-//			ownerCopy = createCopyOfFrame( owner );
-//		} else {
-//			ownerCopy = null;
-//		}
-//		Frame rv;
-//		if( frame instanceof MethodInvocationFrame ) {
-//			rv = new MethodInvocationFrame( ownerCopy, (MethodInvocationFrame)frame );
-//		} else if( frame instanceof ConstructorInvocationFrame ) {
-//			rv = new ConstructorInvocationFrame( ownerCopy, (ConstructorInvocationFrame)frame );
-//		} else if( frame instanceof ThreadFrame ) {
-//			rv = new ThreadFrame( ownerCopy, (ThreadFrame)frame );
-//		} else {
-//			throw new AssertionError();
-//		}
-//		return rv;
-//	}
-//	@Override
-//	protected Frame createCopyOfCurrentFrame() {
-//		Frame frame = getCurrentFrame();
-//		return createCopyOfFrame( frame );
-//	}
 
 	@Override
 	protected UserInstance getThis() {
@@ -322,9 +317,9 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		this.pushFrame( new MethodInvocationFrame( owner, map, instance, method ) );
 	}
 	@Override
-	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, org.lgna.project.ast.UserLambda lambda, java.util.Map< org.lgna.project.ast.AbstractParameter, java.lang.Object > map ) {
+	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, org.lgna.project.ast.UserLambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, java.util.Map< org.lgna.project.ast.AbstractParameter, java.lang.Object > map ) {
 		Frame owner = getCurrentFrame();
-		this.pushFrame( new LambdaInvocationFrame( owner, map, instance, lambda ) );
+		this.pushFrame( new LambdaInvocationFrame( owner, map, instance, lambda, singleAbstractMethod ) );
 	}
 	@Override
 	protected void pushLocal( org.lgna.project.ast.UserLocal local, Object value ) {
