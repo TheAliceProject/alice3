@@ -1,5 +1,5 @@
 package org.lgna.story.event;
 
-public interface MouseClickOnObjectListener /*< T extends Visual >*/ {
+public interface MouseClickOnObjectListener {
 	public void mouseClicked( MouseClickOnObjectEvent e );
 }

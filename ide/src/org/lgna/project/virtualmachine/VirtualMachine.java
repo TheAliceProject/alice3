@@ -46,12 +46,14 @@ package org.lgna.project.virtualmachine;
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachine {
+	public abstract LgnaStackTraceElement[] getStackTrace( Thread thread );
 	protected abstract UserInstance getThis();
 
+	protected abstract void pushBogusFrame( UserInstance instance );
 	protected abstract void pushConstructorFrame( org.lgna.project.ast.NamedUserType type, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
 	protected abstract void setConstructorFrameUserInstance( UserInstance instance );
-	protected abstract void pushMethodFrame( UserInstance instance, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
-	protected abstract void pushLambdaFrame( UserInstance instance, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
+	protected abstract void pushMethodFrame( UserInstance instance, org.lgna.project.ast.UserMethod method, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
+	protected abstract void pushLambdaFrame( UserInstance instance, org.lgna.project.ast.UserLambda lambda, java.util.Map< org.lgna.project.ast.AbstractParameter, Object > map );
 	protected abstract void popFrame();
 
 	protected abstract Object lookup( org.lgna.project.ast.AbstractParameter parameter );
@@ -66,10 +68,6 @@ public abstract class VirtualMachine {
 
 	protected abstract void pushCurrentThread( Frame frame );
 	protected abstract void popCurrentThread();
-
-	private void pushBogusFrame( UserInstance instance ) {
-		this.pushMethodFrame( instance, new java.util.HashMap< org.lgna.project.ast.AbstractParameter, Object >() );
-	}
 
 	public Object[] ENTRY_POINT_evaluate( UserInstance instance, org.lgna.project.ast.Expression[] expressions ) {
 		this.pushBogusFrame( instance );
@@ -113,6 +111,7 @@ public abstract class VirtualMachine {
 		}
 	}
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_removeField( UserInstance instance, org.lgna.project.ast.UserField field, UserInstance value ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( instance, field, value );
 	}
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( UserInstance instance, org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ReturnStatement == false;
@@ -410,13 +409,13 @@ public abstract class VirtualMachine {
 		for( int i = 0; i < arguments.length; i++ ) {
 			map.put( method.requiredParameters.get( i ), arguments[ i ] );
 		}
-		this.pushMethodFrame( userInstance, map );
+		this.pushMethodFrame( userInstance, method, map );
 		try {
 			this.execute( method.body.getValue() );
 			if( method.isProcedure() ) {
 				return null;
 			} else {
-				throw new RuntimeException( "no return value: " + method.getName() );
+				throw new LgnaNoReturnException( this );
 			}
 		} catch( ReturnException re ) {
 			return re.getValue();
@@ -639,7 +638,7 @@ public abstract class VirtualMachine {
 								for( int i = 0; i < arguments.length; i++ ) {
 									map.put( userLambda.requiredParameters.get( i ), arguments[ i ] );
 								}
-								pushLambdaFrame( thisInstance, map );
+								pushLambdaFrame( thisInstance, userLambda, map );
 								try {
 									executeBlockStatement( userLambda.body.getValue() );
 								} catch( ReturnException re ) {

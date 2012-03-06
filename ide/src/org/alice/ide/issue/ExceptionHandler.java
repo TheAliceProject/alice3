@@ -59,60 +59,65 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		this.applicationName = applicationName;
 	}
 	public void uncaughtException( Thread thread, Throwable throwable ) {
-		this.count ++;
-		throwable.printStackTrace();
-		if( this.isBugReportSubmissionPaneDesired ) {
-			try {
-				org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
-				bugReportPane.setThreadAndThrowable( thread, throwable );
-//				javax.swing.JFrame frame = org.alice.ide.IDE.getActiveInstance().getFrame();
-//				if( frame != null ) {
-//					//pass
-//				} else {
-//					frame = new javax.swing.JFrame();
-//				}
-				java.awt.Component owner = org.alice.ide.IDE.getActiveInstance().getFrame().getAwtComponent();
-//				while( true ) {
-					javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-					dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
-					dialog.setVisible( true );
+		if( throwable instanceof org.lgna.project.virtualmachine.LgnaException ) {
+			org.lgna.project.virtualmachine.LgnaException lgnaException = (org.lgna.project.virtualmachine.LgnaException)throwable;
+			javax.swing.JOptionPane.showMessageDialog( null, lgnaException.getFormattedString() );
+		} else {
+			this.count ++;
+			throwable.printStackTrace();
+			if( this.isBugReportSubmissionPaneDesired ) {
+				try {
+					org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
+					bugReportPane.setThreadAndThrowable( thread, throwable );
+//					javax.swing.JFrame frame = org.alice.ide.IDE.getActiveInstance().getFrame();
+//					if( frame != null ) {
+//						//pass
+//					} else {
+//						frame = new javax.swing.JFrame();
+//					}
+					java.awt.Component owner = org.alice.ide.IDE.getActiveInstance().getFrame().getAwtComponent();
+//					while( true ) {
+						javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+						dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
+						dialog.setVisible( true );
 
-					if( bugReportPane.isSubmitAttempted() ) {
-						if( bugReportPane.isSubmitBackgrounded() ) {
-							//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
-						} else {
-							if( bugReportPane.isSubmitSuccessful() ) {
-								javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report has been successfully submitted.  Thank you." );
+						if( bugReportPane.isSubmitAttempted() ) {
+							if( bugReportPane.isSubmitBackgrounded() ) {
+								//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
 							} else {
-								javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report FAILED to submit.  Thank you for trying." );
+								if( bugReportPane.isSubmitSuccessful() ) {
+									javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report has been successfully submitted.  Thank you." );
+								} else {
+									javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report FAILED to submit.  Thank you for trying." );
+								}
 							}
-						}
-//						break;
-					} else {
-						if( this.count > 1 ) {
-							Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
-							String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + this.applicationName + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
-							String title = "Multiple Exceptions Detected";
-							int result = javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
-							if( result == javax.swing.JOptionPane.NO_OPTION ) {
-								this.isBugReportSubmissionPaneDesired = false;
-							}
-						}
-//						int result = javax.swing.JOptionPane.showConfirmDialog( frame,
-//								"NOTE: You do not actually have to fill in any of the fields to submit a bug report.\n\nWould you like to submit this bug?\n\n(If you wish to not see this dialog again during this session, press cancel.  NOTE: Alice may silently fail under these conditions.)",
-//								"Bug report NOT submitted", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
-//						if( result == javax.swing.JOptionPane.YES_OPTION ) {
-//							//pass
-//						} else {
-//							if( result == javax.swing.JOptionPane.CANCEL_OPTION ) {
-//								this.isBugReportSubmissionPaneDesired = false;
-//							}
 //							break;
-//						}
-					}
-//				}
-			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+						} else {
+							if( this.count > 1 ) {
+								Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
+								String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + this.applicationName + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
+								String title = "Multiple Exceptions Detected";
+								int result = javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
+								if( result == javax.swing.JOptionPane.NO_OPTION ) {
+									this.isBugReportSubmissionPaneDesired = false;
+								}
+							}
+//							int result = javax.swing.JOptionPane.showConfirmDialog( frame,
+//									"NOTE: You do not actually have to fill in any of the fields to submit a bug report.\n\nWould you like to submit this bug?\n\n(If you wish to not see this dialog again during this session, press cancel.  NOTE: Alice may silently fail under these conditions.)",
+//									"Bug report NOT submitted", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
+//							if( result == javax.swing.JOptionPane.YES_OPTION ) {
+//								//pass
+//							} else {
+//								if( result == javax.swing.JOptionPane.CANCEL_OPTION ) {
+//									this.isBugReportSubmissionPaneDesired = false;
+//								}
+//								break;
+//							}
+						}
+//					}
+				} catch( Throwable t ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+				}
 			}
 		}
 	}

@@ -49,37 +49,27 @@ import org.lgna.project.ast.*;
  */
 public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static abstract class AbstractFrame implements Frame {
-		private Frame m_owner = null;
-		private java.util.Map< UserLocal, Object > m_mapLocalToValue = new java.util.concurrent.ConcurrentHashMap< UserLocal, Object >();
+		private final Frame owner;
+		private final java.util.Map< UserLocal, Object > mapLocalToValue = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
 
 		public AbstractFrame( Frame owner ) {
-			m_owner = owner;
-		}
-		public AbstractFrame( Frame owner, AbstractFrame other ) {
-			this( owner );
-			m_mapLocalToValue = new java.util.concurrent.ConcurrentHashMap< UserLocal, Object >( other.m_mapLocalToValue );
+			this.owner = owner;
 		}
 		public Frame getOwner() {
-			return m_owner;
+			return this.owner;
 		}
 		private boolean contains( UserLocal local ) {
-			synchronized( m_mapLocalToValue ) {
-				return m_mapLocalToValue.containsKey( local );
-			}
+			return this.mapLocalToValue.containsKey( local );
 		}
 		public void push( UserLocal local, Object value ) {
-			synchronized( m_mapLocalToValue ) {
-				m_mapLocalToValue.put( local, value );
-			}
+			this.mapLocalToValue.put( local, value );
 		}
 		public Object get( UserLocal local ) {
 			if( contains( local ) ) {
-				synchronized( m_mapLocalToValue ) {
-					return m_mapLocalToValue.get( local );
-				}
+				return this.mapLocalToValue.get( local );
 			} else {
-				if( m_owner != null ) {
-					return m_owner.get( local );
+				if( this.owner != null ) {
+					return this.owner.get( local );
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( local );
 					return null;
@@ -87,55 +77,66 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			}
 		}
 		public void set( UserLocal local, Object value ) {
-			if( contains( local ) ) {
-				synchronized( m_mapLocalToValue ) {
-					m_mapLocalToValue.put( local, value );
-				}
+			if( this.contains( local ) ) {
+				this.mapLocalToValue.put( local, value );
 			} else {
-				m_owner.set( local, value );
+				this.owner.set( local, value );
 			}
 		}
 		public void pop( UserLocal local ) {
 			assert contains( local );
-			synchronized( m_mapLocalToValue ) {
-				m_mapLocalToValue.remove( local );
+			synchronized( this.mapLocalToValue ) {
+				this.mapLocalToValue.remove( local );
 			}
 		}
 		public abstract UserInstance getThis();
 		public abstract Object lookup( AbstractParameter parameter );
-		protected abstract StringBuilder appendRepr( StringBuilder rv );
+		protected abstract void appendRepr( StringBuilder sb, boolean isFormatted );
+		public void appendFormatted( StringBuilder sb ) {
+			this.appendRepr( sb, true );
+		}
 		@Override
 		public final String toString() {
 			StringBuilder sb = new StringBuilder();
 			sb.append( this.getClass().getSimpleName() );
 			sb.append( "[" );
-			this.appendRepr( sb );
+			this.appendRepr( sb, false );
 			sb.append( "]" );
 			return sb.toString();
 		}
 	}
-
-	protected static abstract class InvocationFrame extends AbstractFrame {
-		protected UserInstance m_instance;
-		private java.util.Map< AbstractParameter, Object > m_mapParameterToValue;
-		public InvocationFrame( Frame owner, UserInstance instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+	
+	protected static class BogusFrame extends AbstractFrame {
+		private final UserInstance instance;
+		public BogusFrame( Frame owner, UserInstance instance ) {
 			super( owner );
-			m_instance = instance;
-			m_mapParameterToValue = mapParameterToValue;
-		}
-		public InvocationFrame( Frame owner, InvocationFrame other ) {
-			super( owner, other );
-			m_instance = other.m_instance;
-			m_mapParameterToValue = new java.util.concurrent.ConcurrentHashMap< AbstractParameter, Object >( other.m_mapParameterToValue );
+			this.instance = instance;
 		}
 		@Override
 		public UserInstance getThis() {
-			return m_instance;
+			return this.instance;
+		}
+		@Override
+		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
+			sb.append( "bogus" );
+		}
+		@Override
+		public Object lookup( org.lgna.project.ast.AbstractParameter parameter ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( parameter );
+			return null;
+		}
+	}
+
+	protected static abstract class InvocationFrame extends AbstractFrame {
+		private final java.util.Map< AbstractParameter, Object > mapParameterToValue;
+		public InvocationFrame( Frame owner, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+			super( owner );
+			this.mapParameterToValue = mapParameterToValue;
 		}
 		@Override
 		public Object lookup( AbstractParameter parameter ) {
-			if( m_mapParameterToValue.containsKey( parameter ) ) {
-				return m_mapParameterToValue.get( parameter );
+			if( this.mapParameterToValue.containsKey( parameter ) ) {
+				return this.mapParameterToValue.get( parameter );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( parameter );
 				return null;
@@ -143,48 +144,61 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 	}
 	
-	protected static class MethodInvocationFrame extends InvocationFrame {
-		public MethodInvocationFrame( Frame owner, UserInstance instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
-			super( owner, instance, mapParameterToValue );
-		}
-		public MethodInvocationFrame( Frame owner, MethodInvocationFrame other ) {
-			super( owner, other );
-		}
-		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			return null;
-		}
-	}
 	protected static class ConstructorInvocationFrame extends InvocationFrame {
 		private final NamedUserType type;
+		private UserInstance instance;
 		public ConstructorInvocationFrame( Frame owner, NamedUserType type, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
-			super( owner, null, mapParameterToValue );
+			super( owner, mapParameterToValue );
 			this.type = type;
 		}
-		public ConstructorInvocationFrame( Frame owner, ConstructorInvocationFrame other ) {
-			super( owner, other );
-			this.type = other.type;
+		@Override
+		public org.lgna.project.virtualmachine.UserInstance getThis() {
+			return this.instance;
 		}
 		public void setThis( UserInstance instance ) {
-			m_instance = instance;
+			this.instance = instance;
 		}
 		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			rv.append( this.type.getName() );
-			return rv;
+		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
+			sb.append( this.type.getName() );
 		}
 	}
-	protected static class LambdaInvocationFrame extends InvocationFrame {
-		public LambdaInvocationFrame( Frame owner, UserInstance instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
-			super( owner, instance, mapParameterToValue );
-			assert instance != null;
-		}
-		public LambdaInvocationFrame( Frame owner, LambdaInvocationFrame other ) {
-			super( owner, other );
+
+	protected static abstract class AbstractMethodInvocationFrame extends InvocationFrame {
+		private final UserInstance instance;
+		public AbstractMethodInvocationFrame( Frame owner, java.util.Map< AbstractParameter, Object > mapParameterToValue, UserInstance instance ) {
+			super( owner, mapParameterToValue );
+			this.instance = instance;
 		}
 		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			return null;
+		public UserInstance getThis() {
+			return this.instance;
+		}
+	}
+	protected static class MethodInvocationFrame extends AbstractMethodInvocationFrame {
+		private final UserMethod method;
+		public MethodInvocationFrame( Frame owner, java.util.Map< AbstractParameter, Object > mapParameterToValue, UserInstance instance, UserMethod method ) {
+			super( owner, mapParameterToValue, instance );
+			this.method = method;
+		}
+		@Override
+		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
+			sb.append( "<strong>" );
+			sb.append( this.method.getName() );
+			sb.append( "</strong>" );
+			sb.append( " <i>instance:</i>" );
+			sb.append( this.getThis() );
+		}
+	}
+	protected static class LambdaInvocationFrame extends AbstractMethodInvocationFrame {
+		private final UserLambda lambda;
+		public LambdaInvocationFrame( Frame owner, java.util.Map< AbstractParameter, Object > mapParameterToValue, UserInstance instance, UserLambda lambda ) {
+			super( owner, mapParameterToValue, instance );
+			this.lambda = lambda;
+		}
+		@Override
+		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
+			sb.append( "lambda" );
 		}
 	}
 
@@ -192,9 +206,6 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static class ThreadFrame extends AbstractFrame {
 		public ThreadFrame( Frame owner ) {
 			super( owner );
-		}
-		public ThreadFrame( Frame owner, ThreadFrame other ) {
-			super( owner, other );
 		}
 		@Override
 		public UserInstance getThis() {
@@ -217,8 +228,8 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			}
 		}
 		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			return rv;
+		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
+			sb.append( "thread" );
 		}
 	}
 
@@ -234,6 +245,21 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			m_mapThreadToFrame.put( Thread.currentThread(), currentFrame );
 		} else {
 			m_mapThreadToFrame.remove( Thread.currentThread() );
+		}
+	}
+	
+	@Override
+	public LgnaStackTraceElement[] getStackTrace( Thread thread ) {
+		Frame frame = this.getFrameForThread( thread );
+		if( frame != null ) {
+			java.util.Stack< LgnaStackTraceElement > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			do {
+				stack.push( frame );
+				frame = frame.getOwner();
+			} while( frame != null );
+			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( stack, LgnaStackTraceElement.class );
+		} else {
+			return new LgnaStackTraceElement[] {};
 		}
 	}
 
@@ -272,6 +298,12 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	private void pushFrame( Frame frame ) {
 		this.setCurrentFrame( frame );
 	}
+	
+	@Override
+	protected void pushBogusFrame( org.lgna.project.virtualmachine.UserInstance instance ) {
+		Frame owner = getCurrentFrame();
+		this.pushFrame( new BogusFrame( owner, instance ) );
+	}
 	@Override
 	protected void pushConstructorFrame( org.lgna.project.ast.NamedUserType type, java.util.Map< AbstractParameter, Object > map ) {
 		Frame owner = getCurrentFrame();
@@ -285,14 +317,14 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		constructorInvocationFrame.setThis( instance );
 	}
 	@Override
-	protected void pushMethodFrame( UserInstance instance, java.util.Map< AbstractParameter, Object > map ) {
+	protected void pushMethodFrame( UserInstance instance, UserMethod method, java.util.Map< AbstractParameter, Object > map ) {
 		Frame owner = getCurrentFrame();
-		this.pushFrame( new MethodInvocationFrame( owner, instance, map ) );
+		this.pushFrame( new MethodInvocationFrame( owner, map, instance, method ) );
 	}
 	@Override
-	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, java.util.Map< org.lgna.project.ast.AbstractParameter, java.lang.Object > map ) {
+	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, org.lgna.project.ast.UserLambda lambda, java.util.Map< org.lgna.project.ast.AbstractParameter, java.lang.Object > map ) {
 		Frame owner = getCurrentFrame();
-		this.pushFrame( new LambdaInvocationFrame( owner, instance, map ) );
+		this.pushFrame( new LambdaInvocationFrame( owner, map, instance, lambda ) );
 	}
 	@Override
 	protected void pushLocal( org.lgna.project.ast.UserLocal local, Object value ) {

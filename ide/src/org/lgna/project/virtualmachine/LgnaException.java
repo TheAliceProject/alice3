@@ -41,55 +41,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
-
-import org.lgna.project.annotations.GetterTemplate;
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.project.annotations.Visibility;
+package org.lgna.project.virtualmachine;
 
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false)
-public abstract class Entity implements Rider {
-	/*package-private*/abstract org.lgna.story.implementation.EntityImp getImplementation();
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public String getName() {
-		return this.getImplementation().getName();
+public abstract class LgnaException extends RuntimeException {
+	private final Thread thread;
+	private VirtualMachine vm;
+	private LgnaStackTraceElement[] stackTrace;
+	public LgnaException( VirtualMachine vm ) {
+		this.vm = vm;
+		this.thread = Thread.currentThread();
+		this.stackTrace = this.vm.getStackTrace( this.thread );
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setName( String name ) {
-		this.getImplementation().setName( name );
+	public VirtualMachine getVirtualMachine() {
+		return this.vm;
 	}
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate()
-	public Entity getVehicle() {
-		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
-		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
-	}
-
-	public VantagePoint getVantagePoint( Entity entity ) {
-		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) );
-	}
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void delay( Number duration ) {
-		this.getImplementation().delay( duration.doubleValue() );
-	}
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void playAudio( AudioSource audioSource ) {
-		this.getImplementation().playAudio( audioSource );
-	}
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public boolean isCollidingWith( Entity other ) {
-		return this.getImplementation().isCollidingWith( other );
+	public LgnaStackTraceElement[] getLgnaStackTrace() {
+		return this.stackTrace;
 	}
 	
-	@Override
-	public String toString() {
-		return this.getName();
+	public String getFormattedString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "<h1>" );
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "</h1>" );
+		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
+		if( lgnaStackTrace != null ) {
+			sb.append( "<ul>" );
+			for( LgnaStackTraceElement stackTraceElement : lgnaStackTrace ) {
+				sb.append( "<li>" );
+				if( stackTraceElement != null ) {
+					stackTraceElement.appendFormatted( sb );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
+				}
+			}
+			sb.append( "</ul>" );
+		}
+		sb.append( "</html>" );
+		return sb.toString();
 	}
 }
