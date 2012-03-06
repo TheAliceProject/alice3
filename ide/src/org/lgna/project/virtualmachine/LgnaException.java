@@ -84,4 +84,19 @@ public abstract class LgnaException extends RuntimeException {
 		sb.append( "</html>" );
 		return sb.toString();
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( super.toString() );
+		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
+		if( lgnaStackTrace != null ) {
+			for( LgnaStackTraceElement stackTraceElement : lgnaStackTrace ) {
+				if( stackTraceElement != null ) {
+					sb.append( "\n\t" + stackTraceElement.toString() );
+				}
+			}
+		}
+		return sb.toString();
+	}
 }

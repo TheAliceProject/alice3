@@ -59,12 +59,12 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		this.applicationName = applicationName;
 	}
 	public void uncaughtException( Thread thread, Throwable throwable ) {
+		throwable.printStackTrace();
 		if( throwable instanceof org.lgna.project.virtualmachine.LgnaException ) {
 			org.lgna.project.virtualmachine.LgnaException lgnaException = (org.lgna.project.virtualmachine.LgnaException)throwable;
 			javax.swing.JOptionPane.showMessageDialog( null, lgnaException.getFormattedString() );
 		} else {
 			this.count ++;
-			throwable.printStackTrace();
 			if( this.isBugReportSubmissionPaneDesired ) {
 				try {
 					org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();

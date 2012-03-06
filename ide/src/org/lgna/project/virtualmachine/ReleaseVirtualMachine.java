@@ -144,7 +144,13 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 		protected void appendArgumentsRepr( StringBuilder sb, boolean isFormatted ) {
 			if( this.mapParameterToValue.size() > 0 ) {
-				sb.append( " <i>arguments:</i> " );
+				if( isFormatted ) {
+					sb.append( "<i>" );
+				}
+				sb.append( "arguments: " );
+				if( isFormatted ) {
+					sb.append( "</i> " );
+				}
 				for( AbstractParameter parameter : this.mapParameterToValue.keySet() ) {
 					Object value = this.mapParameterToValue.get( parameter );
 					sb.append( parameter.getName() );
@@ -195,11 +201,23 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 		@Override
 		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
-			sb.append( "<strong>" );
+			if( isFormatted ) {
+				sb.append( "<strong>" );
+			}
 			sb.append( this.method.getName() );
-			sb.append( "</strong>" );
-			sb.append( " <i>instance:</i> " );
+			if( isFormatted ) {
+				sb.append( "</strong>" );
+			}
+			sb.append( " " );
+			if( isFormatted ) {
+				sb.append( "<i>" );
+			}
+			sb.append( "instance:" );
+			if( isFormatted ) {
+				sb.append( "</i> " );
+			}
 			sb.append( this.getThis() );
+			sb.append( " " );
 			this.appendArgumentsRepr( sb, isFormatted );
 		}
 	}
@@ -213,9 +231,13 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 		@Override
 		protected void appendRepr( StringBuilder sb, boolean isFormatted ) {
-			sb.append( "<strong>" );
+			if( isFormatted ) {
+				sb.append( "<strong>" );
+			}
 			sb.append( this.singleAbstractMethod != null ? this.singleAbstractMethod.getName() : null );
-			sb.append( "</strong> " );
+			if( isFormatted ) {
+				sb.append( "</strong> " );
+			}
 			//todo
 			//this.appendArgumentsRepr( sb, isFormatted );
 		}
@@ -252,18 +274,18 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 	}
 
-	private java.util.Map< Thread, Frame > m_mapThreadToFrame = new java.util.concurrent.ConcurrentHashMap< Thread, Frame >();
+	private final java.util.Map< Thread, Frame > mapThreadToFrame = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
 
 	private Frame getCurrentFrame() {
-		Frame rv = m_mapThreadToFrame.get( Thread.currentThread() );
+		Frame rv = this.mapThreadToFrame.get( Thread.currentThread() );
 		//assert rv != null;
 		return rv;
 	}
 	private void setCurrentFrame( Frame currentFrame ) {
 		if( currentFrame != null ) {
-			m_mapThreadToFrame.put( Thread.currentThread(), currentFrame );
+			this.mapThreadToFrame.put( Thread.currentThread(), currentFrame );
 		} else {
-			m_mapThreadToFrame.remove( Thread.currentThread() );
+			this.mapThreadToFrame.remove( Thread.currentThread() );
 		}
 	}
 	
@@ -352,7 +374,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	protected Frame getFrameForThread( Thread thread ) {
 		Frame rv;
 		if( thread != null ) {
-			rv = m_mapThreadToFrame.get( thread );
+			rv = this.mapThreadToFrame.get( thread );
 		} else {
 			rv = null;
 		}
