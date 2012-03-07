@@ -46,10 +46,10 @@ package org.lgna.project.virtualmachine;
 /**
  * @author Dennis Cosgrove
  */
-public class LgnaIndexOutOfBoundsException extends LgnaException {
+public class LgnaArrayIndexOutOfBoundsException extends LgnaException {
 	private final int index;
 	private final int length;
-	public LgnaIndexOutOfBoundsException( VirtualMachine vm, int index, int length ) {
+	public LgnaArrayIndexOutOfBoundsException( VirtualMachine vm, int index, int length ) {
 		super( vm );
 		this.index = index;
 		this.length = length;

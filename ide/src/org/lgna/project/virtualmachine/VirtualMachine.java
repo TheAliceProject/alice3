@@ -380,7 +380,7 @@ public abstract class VirtualMachine {
 		if( 0 <= index && index < length ) {
 			//pass
 		} else {
-			throw new LgnaIndexOutOfBoundsException( this, index, length );
+			throw new LgnaArrayIndexOutOfBoundsException( this, index, length );
 		}
 	}
 	protected Object getItemAtIndex( org.lgna.project.ast.AbstractType< ?, ?, ? > arrayType, Object array, Integer index ) {
