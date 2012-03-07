@@ -659,8 +659,9 @@ public abstract class VirtualMachine {
 			} catch( Exception e ) {
 				throw new RuntimeException( e );
 			}
+		} else {
+			throw new RuntimeException( "todo" );
 		}
-		throw new RuntimeException( "todo" );
 	}
 
 	protected Object evaluateLambdaExpression( org.lgna.project.ast.LambdaExpression lambdaExpression ) {
