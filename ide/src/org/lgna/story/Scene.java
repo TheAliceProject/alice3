@@ -48,11 +48,13 @@ import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.story.event.ViewExitListener;
+import org.lgna.story.event.CollisionEndListener;
+import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.ViewEnterListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.WhileInViewListener;
 
 /**
@@ -135,8 +137,14 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
+	@Deprecated
 	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, AddMouseButtonListener.Detail... details ) {
-		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
+		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, Model.class, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public <T extends Model> void addMouseClickOnObjectListener( MouseClickOnObjectListener<T> listener, Class<T> cls, AddMouseButtonListener.Detail... details ) {
+		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, cls, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
@@ -186,8 +194,12 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
+	@Deprecated
 	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddStartCollisionListener.Detail... details ) {
-		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
+		//		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
+	}
+	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionStartListener( CollisionStartListener<A,B> collisionStartListener, Class<A> a, Class<B> b, A[] groupOne, B[] groupTwo ) {
+		this.getImplementation().getEventManager().addCollisionListener( collisionStartListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), a, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), b );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
@@ -197,10 +209,15 @@ public abstract class Scene extends Entity {
 				.addWhileCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), TimerFrequency.getValue( details ).getFrequency(),
 						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
+
+	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionEndListener( CollisionEndListener<A,B> collisionEndListener, Class<A> a, Class<B> b, A[] groupOne, B[] groupTwo ) {
+		this.getImplementation().getEventManager().addCollisionListener( collisionEndListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), a, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), b );
+	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
+	@Deprecated
 	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddEndCollisionListener.Detail... details ) {
-		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
+		//		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()

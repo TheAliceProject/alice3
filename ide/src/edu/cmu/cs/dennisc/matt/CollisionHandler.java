@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,20 +68,22 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 
 	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
-	public void addCollisionListener( Object collisionListener, List<Entity> groupOne, List<Entity> groupTwo ) {
+	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionListener( Object collisionListener, ArrayList<A> arrayList, Class<A> a, ArrayList<B> arrayList2, Class<B> b ) {
 		registerIsFiringMap( collisionListener );
 		registerPolicyMap( collisionListener, MultipleEventPolicy.IGNORE );
-		List<Entity> allObserving = Collections.newArrayList( groupOne );
-		allObserving.addAll( groupTwo );
+		Class<?>[] clsArr = { a, b };
+		ArrayList<ArrayList<?>> list = Collections.newArrayList( (ArrayList<?>)arrayList, (ArrayList<?>)arrayList2 );
+		EventBuilder.register( collisionListener, clsArr, list );
+		List<Entity> allObserving = (List<Entity>)Collections.newArrayList( (Collection<? extends Entity>)arrayList );
+		allObserving.addAll( (Collection<? extends Entity>)arrayList2 );
 		for( Entity m : allObserving ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
-		collisionEventHandler.register( collisionListener, groupOne, groupTwo );
+		collisionEventHandler.register( collisionListener, new ArrayList<Entity>( (ArrayList<? extends Entity>)arrayList ), new ArrayList<Entity>( (ArrayList<? extends Entity>)arrayList2 ) );
 	}
-
 	@Override
 	protected void check( Entity changedEntity ) {
 		collisionEventHandler.check( changedEntity );
@@ -113,9 +117,9 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 						models.add( changedEntity );
 						models.add( m );
 						if( colList instanceof CollisionStartListener ) {
-							fireEvent( colList, new StartCollisionEvent( models.toArray( new MovableTurnable[ 0 ] ) ) );
+							fireEvent( colList, EventBuilder.buildEvent( StartCollisionEvent.class, colList, models.toArray( new MovableTurnable[ 0 ] ) ) );
 						} else if( colList instanceof CollisionEndListener ) {
-							fireEvent( colList, new EndCollisionEvent( models.toArray( new MovableTurnable[ 0 ] ) ) );
+							fireEvent( colList, EventBuilder.buildEvent( EndCollisionEvent.class, colList, models.toArray( new MovableTurnable[ 0 ] ) ) );
 						}
 					}
 				}
@@ -124,7 +128,6 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 				wereTouchingMap.get( changedEntity ).put( m, doTheseCollide );
 			}
 		}
-
 		private boolean check( Object colList, Entity m, Entity changedEntity ) {
 			if( colList instanceof CollisionStartListener ) {
 				return !wereTouchingMap.get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity );

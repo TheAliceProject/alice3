@@ -64,11 +64,14 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane;
 import org.lgna.story.event.ArrowKeyPressListener;
+import org.lgna.story.event.CollisionEndListener;
+import org.lgna.story.event.CollisionStartListener;
+import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
-import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -79,7 +82,6 @@ import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -90,6 +92,11 @@ class MyBiped extends Biped {
 class MyOgre extends MyBiped {
 	public MyOgre( org.lgna.story.resources.biped.Ogre resource ) {
 		super( resource );
+	}
+
+	public void doOgreyThing() {
+		this.say( "I am an ogre!!!" );
+		this.getHead().turn( TurnDirection.RIGHT, 1 );
 	}
 }
 
@@ -237,7 +244,7 @@ class SnowScene extends Scene {
 			}
 		} );
 		Model[] list = { ogre, susan };
-		Model[] colListOne = { ogre };
+		MyOgre[] colListOne = { ogre };
 		Model[] colListTwo = { susan };
 		//		this.addWhileCollisionListener(new WhileCollisionListener() {
 		//			public void timeElapsed(TimerEvent e) {
@@ -249,48 +256,34 @@ class SnowScene extends Scene {
 		this.addArrowKeyPressListener( new ArrowKeyPressListener() {
 			public void arrowKeyPressed( ArrowKeyEvent e ) {
 				if( e.isKey( Key.LEFT ) || e.isKey( Key.RIGHT ) || e.isKey( Key.UP ) || e.isKey( Key.DOWN ) ) {
-					camera.turn( e.getTurnDirection(), .125 );
+					ogre.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
 				} else {
-					camera.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
+					ogre.turn( e.getTurnDirection(), .125 );
 				}
 				//				ogre.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
 			}
 		}, MultipleEventPolicy.COMBINE );
-		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
+		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener<MyOgre>() {
 
-			public void mouseClicked( MouseClickOnObjectEvent e ) {
-				//				if( e.getModelAtMouseLocation() != null ) {
-				e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
-				e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
-				//				}
+			public void mouseClicked( MouseClickOnObjectEvent<MyOgre> e ) {
+				e.getObjectAtMouseLocation().move( MoveDirection.UP, 1 );
+				e.getObjectAtMouseLocation().move( MoveDirection.DOWN, 1 );
 			}
-		} );
-		this.addOcclusionEndListener( new OcclusionEndListener() {
+		}, MyOgre.class );
+		this.addCollisionStartListener( new CollisionStartListener<MyOgre,Model>() {
 
-			public void occlusionEnded( EndOcclusionEvent e ) {
-				e.getForegroundMovable().move( MoveDirection.UP, 10 );
+			public void collisionStarted( StartCollisionEvent<MyOgre,Model> e ) {
+				e.getCollidingFromGroupA()[ 0 ].doOgreyThing();
 			}
-		}, colListOne, colListTwo );
-		//		this.addDefaultModelManipulation();
-		//		this.addWhileProximityListener(new WhileProximityListener() {
-		//			public void timeElapsed(TimerEvent e) {
-		//				susan.move( MoveDirection.UP, 1.0 );
-		//				susan.move( MoveDirection.DOWN, 1.0 );
-		//			}
-		//		}, colListOne, colListTwo, 1.0 );
-		//		this.addWhileOcclusionListener(new WhileOcclusionListener() {
-		//			public void timeElapsed(TimerEvent e) {
-		//				susan.move( MoveDirection.UP, 1.0 );
-		//				susan.move( MoveDirection.DOWN, 1.0 );
-		//			}
-		//		}, colListOne, colListTwo );
-		//		this.addWhileInViewListener( new WhileInViewListener() {
-		//			public void timeElapsed(TimerEvent e) {
-		//				susan.move( MoveDirection.UP, 1.0 );
-		//				susan.move( MoveDirection.DOWN, 1.0 );
-		//			}
-		//		}, colListOne );
+		}, MyOgre.class, Model.class, colListOne, colListTwo );
+		this.addCollisionEndListener( new CollisionEndListener<MyOgre,Model>() {
+
+			public void collisionEnded( EndCollisionEvent<MyOgre,Model> e ) {
+				e.getCollidingFromGroupA()[ 0 ].doOgreyThing();
+			}
+		}, MyOgre.class, Model.class, colListOne, colListTwo );
 	}
+
 	public void chillInSkiChalet() {
 		//		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
 		//		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );

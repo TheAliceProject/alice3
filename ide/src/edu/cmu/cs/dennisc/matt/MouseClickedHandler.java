@@ -12,10 +12,13 @@ import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 
+import edu.cmu.cs.dennisc.java.util.Collections;
+
 public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickEvent> {
 
 	HashMap<Object,LinkedList<Object>> map = new HashMap<Object,LinkedList<Object>>();
 	Object empty = new Object();
+	private HashMap<Object,Class<?>> classMap = Collections.newHashMap();
 
 	private boolean isMouseButtonListenerInExistence() {
 		//		if( this.mouseButtonListeners.size() > 0 ) {
@@ -54,7 +57,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, Scene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
 			final org.lgna.story.event.MouseClickEvent mbe = new org.lgna.story.event.MouseClickEvent( e, scene );
-			Model model = mbe.getModelAtMouseLocation();
+			//			Model model = mbe.getModelAtMouseLocation();
 			//todo
 			//			if( model != null ) {
 			this.fireAllTargeted( mbe );
@@ -93,23 +96,26 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 			if( event != null ) {
 				LinkedList<Object> listeners = new LinkedList<Object>();
 				listeners.addAll( map.get( empty ) );
-				Model modelAtMouseLocation = event.getModelAtMouseLocation();
+				MouseClickOnObjectEvent<Model> checkEvent = new MouseClickOnObjectEvent<Model>( event );
+				Model modelAtMouseLocation = checkEvent.getObjectAtMouseLocation();
 				if( modelAtMouseLocation != null ) {
 					if( map.get( modelAtMouseLocation ) != null ) {
 						listeners.addAll( map.get( modelAtMouseLocation ) );
 					}
 					if( listeners != null ) {
 						for( Object listener : listeners ) {
-							fireEvent( listener, event, modelAtMouseLocation );
+							if( classMap.get( listener ) == null || classMap.get( listener ).isAssignableFrom( checkEvent.getObjectAtMouseLocation().getClass() ) )
+								fireEvent( listener, event, modelAtMouseLocation );
 						}
 					}
 				}
 			}
 		}
 	}
-	public void addListener( Object listener, MultipleEventPolicy eventPolicy, Visual[] targets ) {
+	public <T> void addListener( Object listener, Class<T> cls, MultipleEventPolicy eventPolicy, Visual[] targets ) {
 		registerIsFiringMap( listener, targets );
 		registerPolicyMap( listener, eventPolicy );
+		classMap.put( listener, cls );
 		if( targets != null && targets.length > 0 ) {
 			for( Visual target : targets ) {
 				if( map.get( target ) != null ) {

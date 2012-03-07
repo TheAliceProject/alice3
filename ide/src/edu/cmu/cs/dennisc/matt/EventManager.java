@@ -12,7 +12,6 @@ import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
@@ -24,6 +23,7 @@ import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.ViewEnterListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.event.WhileOcclusionListener;
@@ -127,8 +127,8 @@ public class EventManager {
 			handler.restoreListeners();
 		}
 	}
-	public void addCollisionListener( Object collisionListener, List<Entity> groupOne, List<Entity> groupTwo ) {
-		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
+	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionListener( Object collisionListener, ArrayList<A> arrayList, Class<A> a, ArrayList<B> arrayList2, Class<B> b ) {
+		collisionHandler.addCollisionListener( collisionListener, arrayList, a, arrayList2, b );
 	}
 	public void addProximityEventListener( Object proximityEventListener, List<Entity> groupOne, List<Entity> groupTwo, Double dist ) {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
@@ -152,13 +152,13 @@ public class EventManager {
 	}
 
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
-		mouseHandler.addListener( listener, policy, null );
+		mouseHandler.addListener( listener, null, policy, null );
 	}
-	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, MultipleEventPolicy policy, Visual[] targets ) {
-		this.mouseHandler.addListener( listener, policy, targets );
+	public <T extends Model> void addMouseClickOnObjectListener( MouseClickOnObjectListener<T> listener, Class<T> cls, MultipleEventPolicy policy, Visual[] targets ) {
+		this.mouseHandler.addListener( listener, cls, policy, targets );
 	}
 	public void addMouseButtonListener( Object listener, MultipleEventPolicy policy, Visual[] targets ) {
-		this.mouseHandler.addListener( listener, policy, targets );
+		this.mouseHandler.addListener( listener, null, policy, targets );
 	}
 
 	public void addTransformationListener( PointOfViewChangeListener transformationlistener, Entity[] shouldListenTo ) {
