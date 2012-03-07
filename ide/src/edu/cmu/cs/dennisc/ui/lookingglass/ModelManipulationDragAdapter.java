@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.ui.scenegraph.SetPointOfViewAction;
 public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter {
 	private edu.cmu.cs.dennisc.scenegraph.AbstractCamera m_sgCamera = null;
 	private edu.cmu.cs.dennisc.scenegraph.Transformable m_sgDragAcceptor = null;
-	private edu.cmu.cs.dennisc.math.Plane m_planeInAbsolute = new edu.cmu.cs.dennisc.math.Plane();
+	private edu.cmu.cs.dennisc.math.Plane m_planeInAbsolute = edu.cmu.cs.dennisc.math.Plane.NaN;
 	private edu.cmu.cs.dennisc.math.Point3 m_xyzInAbsoluteAtPress = null;
 	private edu.cmu.cs.dennisc.math.Point3 m_xyzInDragAcceptorAtPress = null;
 	private edu.cmu.cs.dennisc.math.Vector3 m_offset = null;
@@ -128,12 +128,12 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
 				edu.cmu.cs.dennisc.math.Vector3 axis = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( cameraAbsolute.translation, m_xyzInAbsoluteAtPress );
 				axis.normalize();
-				m_planeInAbsolute.set( m_xyzInAbsoluteAtPress, axis );
+				m_planeInAbsolute = edu.cmu.cs.dennisc.math.Plane.createInstance( m_xyzInAbsoluteAtPress, axis );
 			} else {
-				m_planeInAbsolute.set( m_xyzInAbsoluteAtPress, edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis() );
+				m_planeInAbsolute = edu.cmu.cs.dennisc.math.Plane.createInstance( m_xyzInAbsoluteAtPress, edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis() );
 			}
 		} else {
-			m_planeInAbsolute.setNaN();
+			m_planeInAbsolute = edu.cmu.cs.dennisc.math.Plane.NaN;
 			m_xyzInAbsoluteAtPress = edu.cmu.cs.dennisc.math.Point3.createNaN();
 			m_xyzInDragAcceptorAtPress = null;
 		}
@@ -207,7 +207,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 				}
 			}
 			m_sgDragAcceptor = null;
-			m_planeInAbsolute.setNaN();
+			m_planeInAbsolute = edu.cmu.cs.dennisc.math.Plane.NaN;
 		}
 		return rv;
 	}

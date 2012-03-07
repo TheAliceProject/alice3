@@ -267,8 +267,8 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 					awayFromAxis.normalize();
 					axisAlignedNormal = awayFromAxis;
 				}
-				this.handleAlignedPlane = new Plane(this.linearHandle.getAbsoluteTransformation().translation, axisAlignedNormal);
-				this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
+				this.handleAlignedPlane = Plane.createInstance(this.linearHandle.getAbsoluteTransformation().translation, axisAlignedNormal);
+				this.cameraFacingPlane = Plane.createInstance( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 				this.originalOrigin = this.manipulatedTransformable.getAbsoluteTransformation().translation; 
 				this.currentDistanceAlongAxis = this.linearHandle.getCurrentHandleLength();
 				this.initialDistanceAlongAxis = getDistanceAlongAxisBasedOnMouse( startInput.getMouseLocation() );

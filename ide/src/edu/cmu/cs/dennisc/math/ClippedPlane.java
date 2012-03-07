@@ -133,11 +133,7 @@ public class ClippedPlane {
 		m.transform( m_normal );
 	}
 	
-	public Plane getPlane( Plane rv ) {
-		rv.set( m_points[ 0 ], m_normal );
-		return rv;
-	}
 	public Plane getPlane() {
-		return getPlane( new Plane() );
+		return Plane.createInstance( m_points[ 0 ], m_normal );
 	}
 }

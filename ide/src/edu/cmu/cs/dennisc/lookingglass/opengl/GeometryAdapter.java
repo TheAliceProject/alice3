@@ -127,7 +127,7 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
 		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( nx, ny, nz );
 		m.transform( position );
 		m.transform( direction );
-		edu.cmu.cs.dennisc.math.Plane plane = new edu.cmu.cs.dennisc.math.Plane( position, direction );
+		edu.cmu.cs.dennisc.math.Plane plane = edu.cmu.cs.dennisc.math.Plane.createInstance( position, direction );
 		if( plane.isNaN() ) {
 			rv.setNaN();
 		} else {
