@@ -62,7 +62,9 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		throwable.printStackTrace();
 		if( throwable instanceof org.lgna.project.virtualmachine.LgnaException ) {
 			org.lgna.project.virtualmachine.LgnaException lgnaException = (org.lgna.project.virtualmachine.LgnaException)throwable;
-			javax.swing.JOptionPane.showMessageDialog( null, lgnaException.getFormattedString() );
+			
+			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+			application.showMessageDialog( lgnaException.getFormattedString(), lgnaException.getClass().getSimpleName() );
 		} else {
 			this.count ++;
 			if( this.isBugReportSubmissionPaneDesired ) {

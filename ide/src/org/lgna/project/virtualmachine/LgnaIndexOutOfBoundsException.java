@@ -60,4 +60,11 @@ public class LgnaIndexOutOfBoundsException extends LgnaException {
 	public int getLength() {
 		return this.length;
 	}
+	@Override
+	protected void appendDescription( StringBuilder sb ) {
+		sb.append( this.index );
+		sb.append( " is not in range [0," );
+		sb.append( this.length );
+		sb.append( ")" );
+	}
 }

@@ -62,11 +62,13 @@ public abstract class LgnaException extends RuntimeException {
 		return this.stackTrace;
 	}
 	
+	protected abstract void appendDescription( StringBuilder sb );
+	
 	public String getFormattedString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
 		sb.append( "<h1>" );
-		sb.append( this.getClass().getSimpleName() );
+		this.appendDescription( sb );
 		sb.append( "</h1>" );
 		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
 		if( lgnaStackTrace != null ) {

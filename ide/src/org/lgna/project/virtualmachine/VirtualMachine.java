@@ -376,24 +376,35 @@ public abstract class VirtualMachine {
 		}
 	}
 
+	private void checkIndex( int index, int length ) {
+		if( 0 <= index && index < length ) {
+			//pass
+		} else {
+			throw new LgnaIndexOutOfBoundsException( this, index, length );
+		}
+	}
 	protected Object getItemAtIndex( org.lgna.project.ast.AbstractType< ?, ?, ? > arrayType, Object array, Integer index ) {
 		assert arrayType != null;
 		assert arrayType.isArray();
 		if( array instanceof UserArrayInstance ) {
 			UserArrayInstance userArrayInstance = (UserArrayInstance)array;
+			this.checkIndex( index, userArrayInstance.getLength() );
 			return userArrayInstance.get( index );
 		} else {
+			this.checkIndex( index, java.lang.reflect.Array.getLength( array ) );
 			return java.lang.reflect.Array.get( array, index );
 		}
 	}
 	protected void setItemAtIndex( org.lgna.project.ast.AbstractType< ?, ?, ? > arrayType, Object array, Integer index, Object value ) {
 		value = UserInstance.getJavaInstanceIfNecessary( value );
 		assert arrayType != null;
-		assert arrayType.isArray();
+		assert arrayType.isArray() : arrayType;
 		if( array instanceof UserArrayInstance ) {
 			UserArrayInstance userArrayInstance = (UserArrayInstance)array;
+			this.checkIndex( index, userArrayInstance.getLength() );
 			userArrayInstance.set( index, value );
 		} else {
+			this.checkIndex( index, java.lang.reflect.Array.getLength( array ) );
 			java.lang.reflect.Array.set( array, index, value );
 		}
 	}
