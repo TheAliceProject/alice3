@@ -291,9 +291,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
 				if( sceneType != null ) {
 					final int N = sceneType.fields.size();
-					if( N > 0 ) {
-						org.lgna.project.ast.UserField field = sceneType.fields.get( N-1 );
-						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+					int i = N;
+					while( i > 0 ) {
+						i--;
+						org.lgna.project.ast.UserField field = sceneType.fields.get( i );
+						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+							org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+							break;
+						}
 					}
 				}
 			}
