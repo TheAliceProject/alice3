@@ -69,11 +69,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, final org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
+//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//				public void run() {
 					IDE.this.setPerspective( nextValue );
-				}
-			} );
+//				}
+//			} );
 		}
 	};
 
