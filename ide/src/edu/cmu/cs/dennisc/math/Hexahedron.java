@@ -252,15 +252,11 @@ public class Hexahedron {
 		}
 		return rv;
 	}
-	public ClippedPlane getClippedPlane( ClippedPlane rv, Side side ) {
-		Point3[] points = getPoints( side );
-		Vector3 normal = m_normals[ side.getNormalIndex() ];
-		rv.set( points, normal );
-		return rv;
-	}
 
 	public ClippedPlane getClippedPlane( Side side ) {
-		return getClippedPlane( new ClippedPlane(), side );
+		Point3[] points = getPoints( side );
+		Vector3 normal = m_normals[ side.getNormalIndex() ];
+		return new ClippedPlane( points, normal );
 	}
 	
 	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {

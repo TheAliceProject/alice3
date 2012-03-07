@@ -113,8 +113,6 @@ public final class Plane {
 	public final int hashCode() {
 		int rv = 17;
 		long lng;
-		
-		rv = 37*rv + this.getClass().hashCode();
 
 		lng = Double.doubleToLongBits( this.a );
 		rv = 37*rv + (int)( lng ^(lng >>>32) );
