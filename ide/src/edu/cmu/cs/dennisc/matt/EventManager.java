@@ -75,6 +75,13 @@ public class EventManager {
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
 		scene.addSceneActivationListener( timer );
+		for( AbstractEventHandler handler : getEventHandlers() ) {
+			handler.setScene( scene );
+			if( handler instanceof InstanceCreationListener ) {
+				InstanceCreationListener listener = (InstanceCreationListener)handler;
+				scene.addInstanceCreationListener( listener );
+			}
+		}
 		contingent.setScene( scene );
 	}
 
@@ -127,7 +134,7 @@ public class EventManager {
 			handler.restoreListeners();
 		}
 	}
-	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionListener( Object collisionListener, ArrayList<A> arrayList, Class<A> a, ArrayList<B> arrayList2, Class<B> b ) {
+	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionListener( Object collisionListener, Class<A> a, Class<B> b, ArrayList<A> arrayList, ArrayList<B> arrayList2 ) {
 		collisionHandler.addCollisionListener( collisionListener, arrayList, a, arrayList2, b );
 	}
 	public void addProximityEventListener( Object proximityEventListener, List<Entity> groupOne, List<Entity> groupTwo, Double dist ) {

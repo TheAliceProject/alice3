@@ -64,9 +64,7 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane;
 import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.SceneActivationEvent;
@@ -179,6 +177,7 @@ class SnowScene extends Scene {
 	private final Camera camera;
 	private final MyOgre ogre;
 	private final MyBiped susan;
+	private Cone mattsObjectThingy;
 
 	public SnowScene( Camera camera, MyOgre ogre, MyBiped susan ) {
 		this.camera = camera;
@@ -239,13 +238,11 @@ class SnowScene extends Scene {
 	}
 
 	private void performInitializeEvents() {
+		//		addDefaultModelManipulation();
 		this.addSceneActivationListener( new SceneActivationListener() {
 			public void sceneActivated( SceneActivationEvent e ) {
 			}
 		} );
-		Model[] list = { ogre, susan };
-		MyOgre[] colListOne = { ogre };
-		Model[] colListTwo = { susan };
 		//		this.addWhileCollisionListener(new WhileCollisionListener() {
 		//			public void timeElapsed(TimerEvent e) {
 		//				susan.move( MoveDirection.UP, 1.0 );
@@ -260,7 +257,6 @@ class SnowScene extends Scene {
 				} else {
 					ogre.turn( e.getTurnDirection(), .125 );
 				}
-				//				ogre.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
 			}
 		}, MultipleEventPolicy.COMBINE );
 		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener<MyOgre>() {
@@ -275,13 +271,19 @@ class SnowScene extends Scene {
 			public void collisionStarted( StartCollisionEvent<MyOgre,Model> e ) {
 				e.getCollidingFromGroupA()[ 0 ].doOgreyThing();
 			}
-		}, MyOgre.class, Model.class, colListOne, colListTwo );
-		this.addCollisionEndListener( new CollisionEndListener<MyOgre,Model>() {
-
-			public void collisionEnded( EndCollisionEvent<MyOgre,Model> e ) {
-				e.getCollidingFromGroupA()[ 0 ].doOgreyThing();
-			}
-		}, MyOgre.class, Model.class, colListOne, colListTwo );
+		}, MyOgre.class, Model.class );
+		//		this.addCollisionEndListener( new CollisionEndListener<MyOgre,Model>() {
+		//
+		//			public void collisionEnded( EndCollisionEvent<MyOgre,Model> e ) {
+		//				e.getCollidingFromGroupA()[ 0 ].doOgreyThing();
+		//			}
+		//		}, MyOgre.class, Model.class );
+		this.mattsObjectThingy = new Cone();
+		mattsObjectThingy.setVehicle( susan );
+		mattsObjectThingy.setBaseRadius( 1 );
+		mattsObjectThingy.setPaint( Color.PINK );
+		mattsObjectThingy.move( MoveDirection.LEFT, 5 );
+		susan.setVehicle( ImplementationAccessor.getImplementation( susan ).getScene().getAbstraction() );
 	}
 
 	public void chillInSkiChalet() {

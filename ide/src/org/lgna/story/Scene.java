@@ -198,8 +198,8 @@ public abstract class Scene extends Entity {
 	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddStartCollisionListener.Detail... details ) {
 		//		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
-	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionStartListener( CollisionStartListener<A,B> collisionStartListener, Class<A> a, Class<B> b, A[] groupOne, B[] groupTwo ) {
-		this.getImplementation().getEventManager().addCollisionListener( collisionStartListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), a, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), b );
+	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionStartListener( CollisionStartListener<A,B> collisionStartListener, Class<A> a, Class<B> b, AddStartCollisionListener.Detail... details ) {
+		this.getImplementation().getEventManager().addCollisionListener( collisionStartListener, a, b, AddStartCollisionListener.getGroupOne( details, a ), AddStartCollisionListener.getGroupOne( details, b ) );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
@@ -210,8 +210,8 @@ public abstract class Scene extends Entity {
 						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 
-	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionEndListener( CollisionEndListener<A,B> collisionEndListener, Class<A> a, Class<B> b, A[] groupOne, B[] groupTwo ) {
-		this.getImplementation().getEventManager().addCollisionListener( collisionEndListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), a, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), b );
+	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionEndListener( CollisionEndListener<A,B> collisionEndListener, Class<A> a, Class<B> b, AddEndCollisionListener.Detail... details ) {
+		this.getImplementation().getEventManager().addCollisionListener( collisionEndListener, a, b, AddEndCollisionListener.getGroupOne( details, a ), AddEndCollisionListener.getGroupTwo( details, b ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
