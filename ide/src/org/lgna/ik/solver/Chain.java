@@ -43,6 +43,13 @@
 
 package org.lgna.ik.solver;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.lgna.ik.solver.Bone.Axis;
+
+import edu.cmu.cs.dennisc.math.Vector3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,22 +68,29 @@ public class Chain {
 	private final edu.cmu.cs.dennisc.math.Point3 endEffectorLocalPosition;
 	private final java.util.List< org.lgna.ik.solver.Bone.Direction > directions;
 	
-	private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > linearVelocityContributions;
-	private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > angularVelocityContributions;
+//	private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > linearVelocityContributions;
+//	private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > angularVelocityContributions;
+//	
+	private final java.util.Map< Bone, Map< Axis, Vector3 >> linearVelocityContributions;
+	private final java.util.Map< Bone, Map< Axis, Vector3 >> angularVelocityContributions;
 	
 	private Chain( java.util.List< org.lgna.story.implementation.JointImp > jointImps, java.util.List< org.lgna.ik.solver.Bone.Direction > directions ) {
 		this.jointImps = jointImps;
 		this.directions = directions;
 		
 		this.endEffectorLocalPosition = edu.cmu.cs.dennisc.math.Point3.createZero();
-		this.linearVelocityContributions = new java.util.HashMap< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
-		this.angularVelocityContributions = new java.util.HashMap< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
+//		this.linearVelocityContributions = new java.util.HashMap< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
+//		this.angularVelocityContributions = new java.util.HashMap< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
+		this.linearVelocityContributions = new HashMap<Bone, Map<Axis,Vector3>>();
+		this.angularVelocityContributions = new HashMap<Bone, Map<Axis,Vector3>>();
 		
 		final int N = this.jointImps.size();
 		this.bones = new Bone[ N ];
 		for( int i=0; i < N; i++ ) {
 			Bone newBone = new Bone( this, i );
 			this.bones[ i ] = newBone;
+			this.linearVelocityContributions.put(newBone, new HashMap<Bone.Axis, Vector3>());
+			this.angularVelocityContributions.put(newBone, new HashMap<Bone.Axis, Vector3>());
 		}
 	}
 	
@@ -89,6 +103,10 @@ public class Chain {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 eeJointInverse = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createInverse(eeJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE));
 		
 		eeJointInverse.setReturnValueToTransformed(endEffectorLocalPosition, eePosition);
+	}
+	
+	public void setEndEffectorLocalPosition(edu.cmu.cs.dennisc.math.Point3 endEffectorLocalPosition) {
+		this.endEffectorLocalPosition.set(endEffectorLocalPosition);
 	}
 	
 	public Bone[] getBones() {
@@ -123,17 +141,16 @@ public class Chain {
 	
 	public void computeLinearVelocityContributions() {
 		for( Bone bone : this.bones ) {
-			edu.cmu.cs.dennisc.math.Vector3 jointEeVector = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( 
-					this.getEndEffectorPosition(), 
-					bone.getAnchorPosition()
-			); 
+			Vector3 jointEeVector = Vector3.createSubtraction(this.getEndEffectorPosition(), bone.getAnchorPosition()); 
 			bone.updateLinearContributions( jointEeVector );
 			
 			//axis has inverse value. then contrib should also be inversed when merging here?
 			// no. it's good like this. 
 			
+			Map<Axis, Vector3> contributionsForBone = linearVelocityContributions.get(bone);
+			
 			for( org.lgna.ik.solver.Bone.Axis axis: bone.getAxes() ) {
-				linearVelocityContributions.put( axis, axis.getLinearContribution() );
+				contributionsForBone.put( axis, axis.getLinearContribution() );
 			}
 		}
 	}
@@ -142,8 +159,10 @@ public class Chain {
 		for( Bone bone : this.bones ) {
 			bone.updateAngularContributions();
 			
+			Map<Axis, Vector3> contributionsForBone = angularVelocityContributions.get(bone); 
+			
 			for( org.lgna.ik.solver.Bone.Axis axis: bone.getAxes() ) {
-				angularVelocityContributions.put( axis, axis.getAngularContribution() );
+				contributionsForBone.put( axis, axis.getAngularContribution() );
 			}
 		}
 	}
@@ -151,11 +170,11 @@ public class Chain {
 	//these are axis->vel
 	//however axis reference is not the unique thing. it's the (joint,axis index) pair
 	//TODO would this be an issue with multiple chains?
-	public java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > getLinearVelocityContributions() {
+	public Map<Bone, Map<Axis, Vector3>> getLinearVelocityContributions() {
 		return linearVelocityContributions;
 	}
 	
-	public java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > getAngularVelocityContributions() {
+	public Map<Bone, Map<Axis, Vector3>> getAngularVelocityContributions() {
 		return angularVelocityContributions;
 	}
 	

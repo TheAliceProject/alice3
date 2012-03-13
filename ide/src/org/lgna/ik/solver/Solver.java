@@ -43,6 +43,12 @@
 
 package org.lgna.ik.solver;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.lgna.ik.solver.Bone.Axis;
+
 import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
@@ -51,11 +57,11 @@ import edu.cmu.cs.dennisc.math.Vector3;
 public class Solver {
 	
 	private class Constraint {
-		private final java.util.Map<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3> contributions;
+		private final Map<Bone, Map<Axis, Vector3>> contributions;
 		private final edu.cmu.cs.dennisc.math.Vector3 desiredValue;
 
-		public Constraint(java.util.Map<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3> contributions, edu.cmu.cs.dennisc.math.Vector3 desiredValue) {
-			this.contributions = contributions;
+		public Constraint(Map<Bone, Map<Axis, Vector3>> map, Vector3 desiredValue) {
+			this.contributions = map;
 			this.desiredValue = desiredValue;
 		}
 		
@@ -63,8 +69,10 @@ public class Solver {
 	
 	private final java.util.List< Chain > chains = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List< Constraint > constraints = new java.util.ArrayList<Solver.Constraint>();
-	private java.util.Map<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> jacobianColumns;
-	private edu.cmu.cs.dennisc.math.Vector3[] desiredVelocities;
+	//TODO this probably should also know about bone
+//	private java.util.Map<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> jacobianColumns;
+	private Map<Bone, Map<Axis, Vector3[]>> jacobianColumns;
+	private Vector3[] desiredVelocities;
 	
 	public void addChain( Chain chain ) {
 		this.chains.add( chain );
@@ -73,9 +81,10 @@ public class Solver {
 		this.chains.remove( chain );
 	}
 	
-	public java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> solve() {
+	public Map<Bone, Map<Axis, Double>> solve() {
 		prepareConstraints();
 		if(constraints.size() == 0) {
+			System.out.println("no constraints!");
 			return null;
 		}
 		constructJacobianEntries();
@@ -83,23 +92,34 @@ public class Solver {
 		return calculateAngleSpeeds(invertJacobian(0.1));
 	}
 	
-	private java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> calculateAngleSpeeds(Jama.Matrix ji) {
+	private Map<Bone, Map<Axis, Double>> calculateAngleSpeeds(Jama.Matrix ji) {
 		Jama.Matrix pDot = createDesiredVelocitiesColumn(desiredVelocities);
 		Jama.Matrix mThetadot = ji.times(pDot);
-
-		java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> axisSpeeds = new java.util.HashMap<Bone.Axis, Double>();
+		
+		Map<Bone, Map<Axis, Double>> boneSpeeds = new HashMap<Bone, Map<Axis,Double>>();
+		
+		//trusting that this will give me the same order of axes as in createJacobianMatrix(). No reason to doubt this.  
 		
 		int row = 0;
-		//trusting that this will give me the same order of axes as in createJacobianMatrix(). No reason to doubt this.  
-		for(java.util.Map.Entry<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> e: jacobianColumns.entrySet()) {
-			org.lgna.ik.solver.Bone.Axis axis = e.getKey();
-			axisSpeeds.put(axis, mThetadot.get(row, 0));
+		for(Entry<Bone, Map<Axis, Vector3[]>> jce: jacobianColumns.entrySet()) {
+			Bone bone = jce.getKey();
+			Map<Axis, Vector3[]> columnsForBone = jce.getValue();
 			
-			++row;
+			HashMap<Bone.Axis, Double> axisSpeeds = new HashMap<Bone.Axis, Double>();
+			boneSpeeds.put(bone, axisSpeeds);
+			
+			for(Entry<Axis, Vector3[]> e: columnsForBone.entrySet()) {
+				Axis axis = e.getKey();
+				
+				axisSpeeds.put(axis, mThetadot.get(row, 0));
+				
+				++row;
+			}
 		}
 		
-		return axisSpeeds;
+		return boneSpeeds;
 	}
+	
 	private void prepareConstraints() {
 		constraints.clear();
 		for(Chain chain: chains) {
@@ -133,33 +153,56 @@ public class Solver {
 		//I think it's time to get orderly. all lists. 
 		
 		//pass one, create arrays
-		jacobianColumns = new java.util.HashMap<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]>();
-		desiredVelocities = new edu.cmu.cs.dennisc.math.Vector3[constraints.size()];
+		jacobianColumns = new HashMap<Bone, Map<Axis, Vector3[]>>();
+		desiredVelocities = new Vector3[constraints.size()];
 		for(Constraint constraint: constraints) {
-			for(java.util.Map.Entry<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3> e: constraint.contributions.entrySet()) {
-				org.lgna.ik.solver.Bone.Axis axis = e.getKey();
+			for(Entry<Bone, Map<Axis, Vector3>> e: constraint.contributions.entrySet()) {
+				Bone bone = e.getKey();
+				Map<Axis, Vector3> contributionsForBone = e.getValue();
 				
-				if(!jacobianColumns.containsKey(axis)) {
-					jacobianColumns.put(axis, new edu.cmu.cs.dennisc.math.Vector3[constraints.size()]);
+				Map<Axis, Vector3[]> columnForBone = new HashMap<Bone.Axis, Vector3[]>();
+				jacobianColumns.put(bone, columnForBone);
+				
+				for(Entry<Axis, Vector3> eb: contributionsForBone.entrySet()) {
+					Axis axis = eb.getKey();
+					
+					if(columnForBone.containsKey(axis)) {
+						throw new RuntimeException("Axis already in column");
+					}
+					
+					columnForBone.put(axis, new edu.cmu.cs.dennisc.math.Vector3[constraints.size()]);
 				}
 			}
 		}
 		
 		//pass two, fill arrays
-		for(java.util.Map.Entry<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> e: jacobianColumns.entrySet()) {
-			org.lgna.ik.solver.Bone.Axis axis = e.getKey();
-			edu.cmu.cs.dennisc.math.Vector3[] contributions = e.getValue();
-			
-			int row = 0;
-			for(Constraint constraint: constraints) {
-				if(constraint.contributions.containsKey(axis)) {
-					edu.cmu.cs.dennisc.math.Vector3 contribution = constraint.contributions.get(axis);
-					contributions[row] = contribution;
-				} else {
-					contributions[row] = edu.cmu.cs.dennisc.math.Vector3.accessOrigin();
+		for(Entry<Bone, Map<Axis, Vector3[]>> jce: jacobianColumns.entrySet()) {
+			Bone bone = jce.getKey();
+			Map<Axis, Vector3[]> columnsForBone = jce.getValue();
+			for(Entry<Axis, Vector3[]> e: columnsForBone.entrySet()) {
+				Axis axis = e.getKey();
+				Vector3[] contributions = e.getValue();
+				
+				int row = 0;
+				for(Constraint constraint: constraints) {
+					Map<Axis, Vector3> contributionsForBone = constraint.contributions.get(bone);
+					
+					boolean found = false;
+					if(contributionsForBone != null) {
+						Vector3 contribution = contributionsForBone.get(axis);
+						
+						if(contribution != null) {
+							found = true;
+							contributions[row] = contribution;
+						}
+					}
+					if(!found) {
+						contributions[row] = Vector3.accessOrigin();
+					}
+					
+					desiredVelocities[row] = constraint.desiredValue;
+					++row;
 				}
-				desiredVelocities[row] = constraint.desiredValue;
-				++row;
 			}
 		}
 	}
@@ -171,9 +214,6 @@ public class Solver {
 		
 		return ji;
 	}
-	
-	
-	
 	
 	private Jama.Matrix createDesiredVelocitiesColumn(edu.cmu.cs.dennisc.math.Vector3[] desiredVelocities) {
 		Jama.Matrix rv = new Jama.Matrix(desiredVelocities.length * 3, 1);
@@ -188,29 +228,49 @@ public class Solver {
 		
 		return rv;
 	}
-	private Jama.Matrix createJacobianMatrix(java.util.Map<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> jacobianColumns) {
-		if(jacobianColumns.size() == 0) {
-			throw new RuntimeException("Jacobian matrix should have columns.");
-		}
-		int numConstraints = jacobianColumns.values().iterator().next().length;
+	private Jama.Matrix createJacobianMatrix(Map<Bone, Map<Axis, edu.cmu.cs.dennisc.math.Vector3[]>> jacobianColumns) {
+		boolean found = false;
+		int numConstraints = 0;
+		int numColumns = 0;
+		//calculate sizes
 		
-		Jama.Matrix j = new Jama.Matrix(numConstraints * 3, jacobianColumns.size());
-		
-		int column = 0;
-		for(java.util.Map.Entry<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> e: jacobianColumns.entrySet()) {
-			edu.cmu.cs.dennisc.math.Vector3[] contributions = e.getValue();
-			
-			int row = 0;
-			for(edu.cmu.cs.dennisc.math.Vector3 contribution: contributions) {
-				j.set(row, column, contribution.x);
-				j.set(row + 1, column, contribution.y);
-				j.set(row + 2, column, contribution.z);
-				
-				row += 3;
+		for(Entry<Bone, Map<Axis, Vector3[]>> jce: jacobianColumns.entrySet()) {
+			Map<Axis, Vector3[]> columnsForBone = jce.getValue();
+
+			if(!found) {
+				for(Entry<Axis, Vector3[]> e: columnsForBone.entrySet()) {
+					numConstraints = e.getValue().length;
+					found = true;
+					break;
+				}
 			}
 			
-			++column;
+			numColumns += columnsForBone.size();
 		}
+		
+		Jama.Matrix j = new Jama.Matrix(numConstraints * 3, numColumns);
+		
+		int column = 0;
+		
+		for(Entry<Bone, Map<Axis, Vector3[]>> jce: jacobianColumns.entrySet()) {
+			Map<Axis, Vector3[]> columnsForBone = jce.getValue();
+			
+			for(Entry<Axis, Vector3[]> e: columnsForBone.entrySet()) {
+				Vector3[] contributions = e.getValue();
+
+				int row = 0;
+				for(edu.cmu.cs.dennisc.math.Vector3 contribution: contributions) {
+					j.set(row, column, contribution.x);
+					j.set(row + 1, column, contribution.y);
+					j.set(row + 2, column, contribution.z);
+					
+					row += 3;
+				}
+				
+				++column;
+			}
+		}
+		
 		return j;
 	}
 	

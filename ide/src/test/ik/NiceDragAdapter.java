@@ -59,7 +59,15 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 	private edu.cmu.cs.dennisc.math.Vector3 m_offset = null;
 
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_undoPOV;
+	private Runnable onClickRunnable;
+
+	public void setOnClickRunnable(Runnable runnable) {
+		onClickRunnable = runnable;
+	}
 	
+	public edu.cmu.cs.dennisc.math.Point3 getXyzInAbsoluteAtPress() {
+		return m_xyzInAbsoluteAtPress;
+	}
 
 	@Override
 	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
@@ -137,6 +145,10 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 			m_planeInAbsolute.setNaN();
 			m_xyzInAbsoluteAtPress = edu.cmu.cs.dennisc.math.Point3.createNaN();
 			m_xyzInDragAcceptorAtPress = null;
+		}
+		
+		if(onClickRunnable != null) {
+			onClickRunnable.run();
 		}
 	}
 	@Override
