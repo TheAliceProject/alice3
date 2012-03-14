@@ -52,7 +52,6 @@ import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.StartCollisionEvent;
 
-import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
@@ -60,7 +59,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class EventBuilder {
 
-	private static HashMap<Object,ArrayList<ArrayList<?>>> collectionMap = Collections.newHashMap();
+	private static HashMap<Object,ArrayList<ArrayList<? extends Object>>> collectionMap = Collections.newHashMap();
 	private static HashMap<Object,Class<?>[]> classMap = Collections.newHashMap();
 	static Class<?>[] arr = { CollisionStartListener.class };
 	private static ArrayList<Class<?>> handledList = Collections.newArrayList( arr );
@@ -78,9 +77,11 @@ public class EventBuilder {
 		if( collectionMap.keySet().contains( listener ) ) {
 			return;
 		}
+
 		collectionMap.put( listener, list );
 		classMap.put( listener, clsArr );
 	}
+
 	public static <A> A buildEvent( Class<A> event, Object listener, Object[] array ) {
 		if( event == StartCollisionEvent.class || event == EndCollisionEvent.class ) {
 			if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
@@ -94,23 +95,41 @@ public class EventBuilder {
 		return null;
 	}
 	private static <A extends MovableTurnable, B extends MovableTurnable> CollisionEvent<A,B> buildCollisionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
-		ArrayList<A> first = Collections.newArrayList();
-		ArrayList<B> second = Collections.newArrayList();
-		for( Object o : array ) {
-			if( collectionMap.get( listener ).get( 0 ).contains( o ) ) {
-				first.add( (A)o );
+		assert array.length == 2;
+		A first = null;
+		B second = null;
+		if( collectionMap.get( listener ).get( 0 ).contains( array[ 0 ] ) ) {
+			if( collectionMap.get( listener ).get( 1 ).contains( array[ 1 ] ) ) {
+				first = (A)array[ 0 ];
+				second = (B)array[ 1 ];
+			} else {
+				first = (A)array[ 1 ];
+				second = (B)array[ 0 ];
 			}
-			if( collectionMap.get( listener ).get( 1 ).contains( o ) ) {
-				second.add( (B)o );
-			}
+		} else {
+			first = (A)array[ 1 ];
+			second = (B)array[ 0 ];
 		}
+		//		for( Object o : array ) {
+		//			if( collectionMap.get( listener ).get( 0 ).contains( o ) ) {
+		//				if(collectionMap.get( listener ).get( 1 ).contains( o ))
+		//				first = (A)o;
+		//			}
+		//			if( collectionMap.get( listener ).get( 1 ).contains( o ) ) {
+		//				second = (B)o;
+		//			}
+		//		}
 		if( listener instanceof CollisionStartListener ) {
-			return new StartCollisionEvent<A,B>( ArrayUtilities.createArray( first, clsOne ), ArrayUtilities.createArray( second, clsTwo ) );
+			return new StartCollisionEvent<A,B>( first, second );
 		} else if( listener instanceof CollisionEndListener ) {
-			return new EndCollisionEvent<A,B>( ArrayUtilities.createArray( first, clsOne ), ArrayUtilities.createArray( second, clsTwo ) );
+			return new EndCollisionEvent<A,B>( first, second );
 		} else {
 			System.out.println( "ATTEMPTED TO MAKE UNHANDLED COLLISION EVENT" );
 			return null;
 		}
+	}
+	public static void ammend( Object key, int group, Object newObject ) {
+		ArrayList temp = Collections.newArrayList( newObject );
+		collectionMap.get( key ).get( group ).addAll( temp );
 	}
 }

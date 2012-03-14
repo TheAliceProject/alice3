@@ -75,11 +75,11 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 		for( Object key : checkNewMap.keySet() ) {
 			for( int i = 0; i != checkNewMap.get( key ).length; ++i ) {
 				Class cls = checkNewMap.get( key )[ i ];
-				Entity abstraction = created.getAbstraction();
-				if( cls.isAssignableFrom( abstraction.getClass() ) ) {
-					ammend( key, i, abstraction );
-					System.out.println( "WHOA! YOU CREATED A NEW INSTANCE AND MY CODE ACTUALLY HANDLED IT CORRECTLY!" );
-					System.out.println( "ok delete this (mmay)" );
+				if( cls != null ) {
+					Entity abstraction = created.getAbstraction();
+					if( checkNewMap.get( key )[ 1 - i ] == null || cls.isAssignableFrom( abstraction.getClass() ) && !checkNewMap.get( key )[ 1 - i ].isAssignableFrom( cls ) ) {
+						ammend( key, i, abstraction );
+					}
 				}
 			}
 		}
@@ -88,22 +88,68 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 		registerIsFiringMap( collisionListener );
 		registerPolicyMap( collisionListener, MultipleEventPolicy.IGNORE );
 		Class<?>[] clsArr = { a, b };
-		ArrayList<ArrayList<?>> list;
+		ArrayList<ArrayList<? extends Object>> list;
 		ArrayList<?> firstList;
 		ArrayList<?> secondList;
 		Class[] checkClassArr = { null, null };
-		if( arrayList != null ) {
-			firstList = arrayList;
-		} else {
+		if( arrayList == null && arrayList2 == null ) {
 			firstList = scene.findAll( a );
+			secondList = scene.findAll( b );
 			checkClassArr[ 0 ] = a;
-		}
-		if( arrayList2 != null ) {
+			checkClassArr[ 1 ] = b;
+			if( a.equals( b ) ) {
+				System.out.println( a + " equals " + b );
+				System.out.println( "WHAT SHOULD WE DO IF AN OBJECT EXISTS IN BOTH LISTS?" );
+			} else if( a.isAssignableFrom( b ) ) {
+				firstList.removeAll( secondList );
+			} else if( b.isAssignableFrom( a ) ) {
+				secondList.removeAll( firstList );
+			}
+		} else if( arrayList == null && arrayList2 != null ) {
+			firstList = scene.findAll( a );
 			secondList = arrayList2;
-		} else {
+			firstList.removeAll( secondList );
+			checkClassArr[ 0 ] = a;
+		} else if( arrayList != null && arrayList2 == null ) {
+			firstList = arrayList;
 			secondList = scene.findAll( b );
 			checkClassArr[ 1 ] = b;
+			secondList.removeAll( firstList );
+		} else {// if( arrayList != null && arrayList2 != null ) {
+			firstList = arrayList;
+			secondList = arrayList2;
+			for( Object o : secondList ) {
+				if( firstList.contains( o ) ) {
+					System.out.println( "WHAT SHOULD WE DO IF AN OBJECT EXISTS IN BOTH LISTS?" );
+				}
+			}
 		}
+		//		if( a.equals( b ) ) {
+		//			return;
+		//		} else {
+		//			if( arrayList != null ) {
+		//				firstList = arrayList;
+		//			} else {
+		//				firstList = scene.findAll( a );
+		//				checkClassArr[ 0 ] = a;
+		//			}
+		//			if( arrayList2 != null ) {
+		//				secondList = arrayList2;
+		//			} else {
+		//
+		//				secondList = scene.findAll( b );
+		//				if( arrayList == null ) {
+		//					if( a.isAssignableFrom( b ) ) {
+		//						firstList.removeAll( secondList );
+		//					} else if( b.isAssignableFrom( a ) ) {
+		//						secondList.removeAll( firstList );
+		//					}
+		//				} else {
+		//					secondList.removeAll( arrayList );
+		//				}
+		//			}
+		//			checkClassArr[ 1 ] = b;
+		//		}
 		if( checkClassArr[ 0 ] != null || checkClassArr[ 1 ] != null ) {
 			checkNewMap.put( collisionListener, checkClassArr );
 		}
@@ -169,6 +215,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 			}
 		}
 		public void ammend( Object key, int group, Entity newObject ) {
+			EventBuilder.ammend( key, group, newObject );
 			listenerToGroupMap.get( key ).get( group ).add( newObject );
 			if( checkMap.get( newObject ) == null ) {
 				checkMap.put( newObject, new LinkedList<Entity>() );
@@ -198,7 +245,6 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 
 						//wereTouchingMap
 						wereTouchingMap.get( e ).put( newObject, false );
-						System.out.println( wereTouchingMap );
 						wereTouchingMap.get( newObject ).put( e, false );
 					}
 				}

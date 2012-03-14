@@ -48,6 +48,7 @@ import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
+import org.lgna.story.EventCollection;
 import org.lgna.story.Ground;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Key;
@@ -269,9 +270,10 @@ class SnowScene extends Scene {
 		this.addCollisionStartListener( new CollisionStartListener<MyOgre,Model>() {
 
 			public void collisionStarted( StartCollisionEvent<MyOgre,Model> e ) {
-				e.getCollidingFromGroupA()[ 0 ].doOgreyThing();
+				e.getCollidingFromGroupA().doOgreyThing();
+				e.getCollidingFromGroupB().turn( TurnDirection.FORWARD, 1 );
 			}
-		}, MyOgre.class, Model.class );
+		}, MyOgre.class, Model.class, new EventCollection( MyOgre.class, ogre ) );
 		//		this.addCollisionEndListener( new CollisionEndListener<MyOgre,Model>() {
 		//
 		//			public void collisionEnded( EndCollisionEvent<MyOgre,Model> e ) {
