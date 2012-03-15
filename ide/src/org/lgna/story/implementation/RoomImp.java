@@ -204,9 +204,9 @@ public class RoomImp extends VisualScaleModelImp {
 		this.walls.setParent(this.getSgComposite());
 		this.walls.setTiling((float)(width/2), (float)(depth/2));
 		this.floor.setParent(this.getSgComposite());
-		this.floor.setTiling(width/2, depth/2);
+		this.floor.setTiling(width, depth);
 		this.ceiling.setParent(this.getSgComposite());
-		this.ceiling.setTiling(width/2, depth/2);
+		this.ceiling.setTiling(width, depth);
 	}
 	
 	private void internalSetSize(float width, float height, float depth) {

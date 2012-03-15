@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext;
  */
 public final class NebulousTextureBinding implements edu.cmu.cs.dennisc.lookingglass.opengl.ForgettableBinding{
 	public void bind( RenderContext rc, NebulousTexture texture ) {
-		texture.setUp(rc.gl);
+		texture.doSetup(rc.gl);
 	}
 	public void forget( RenderContext rc ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo("IMPLEMENT forget");

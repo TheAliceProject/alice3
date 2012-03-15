@@ -60,19 +60,24 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 	private boolean m_isMipMappingDesired = true;
 	private boolean m_isPotentiallyAlphaBlended = false;
 	
-	public native void initialize(Object textureKey);
-	public native void setUp(javax.media.opengl.GL gl);
+	public native void initializeIfNecessary(Object textureKey);
+	public native void setup(javax.media.opengl.GL gl);
     public native void addReference();
     public native void removeReference();
 
 	public NebulousTexture(String textureKey) {
 		m_textureKey = textureKey;
-		this.initialize(m_textureKey);
+		this.initializeIfNecessary(m_textureKey);
 	}
 	public NebulousTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		m_textureKey = binaryDecoder.decodeString();
-		this.initialize(m_textureKey);
+		this.initializeIfNecessary(m_textureKey);
+	}
+	public void doSetup(javax.media.opengl.GL gl) {
+		assert m_textureKey != null;
+		this.initializeIfNecessary(m_textureKey);
+		this.setup(gl);
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		assert m_textureKey != null;
