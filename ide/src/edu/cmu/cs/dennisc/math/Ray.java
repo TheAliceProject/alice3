@@ -46,19 +46,18 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Ray {
-	protected edu.cmu.cs.dennisc.math.Point3 m_origin = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
-	protected edu.cmu.cs.dennisc.math.Vector3 m_direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 1 );
+public final class Ray {
+	private final Point3 origin = new Point3( 0, 0, 0 );
+	private final Vector3 direction = new Vector3( 0, 0, 1 );
 
 	public Ray() {
 	}
-	public Ray( edu.cmu.cs.dennisc.math.Point3 origin, edu.cmu.cs.dennisc.math.Vector3 direction ) {
-		m_origin.set( origin );
-		m_direction.set( direction );
+	public Ray( Point3 origin, Vector3 direction ) {
+		this.origin.set( origin );
+		this.direction.set( direction );
 	}
 	public Ray( Ray other ) {
-		m_origin = other.getOrigin();
-		m_direction = other.getDirection();
+		this( other.origin, other.direction );
 	}
 
 	@Override
@@ -66,32 +65,43 @@ public class Ray {
 		if( o == this )
 			return true;
 		if( o instanceof Ray ) {
-			Ray ray = (Ray) o;
-			return m_origin.equals( ray.m_origin ) && m_direction.equals( ray.m_direction );
+			Ray ray = (Ray)o;
+			return this.origin.equals( ray.origin ) && this.direction.equals( ray.direction );
 		} else {
 			return false;
 		}
 	}
-
-	public boolean isNaN() {
-		return m_origin.isNaN() || m_direction.isNaN();
-	}
-	public void setNaN() {
-		m_origin.setNaN();
-		m_direction.setNaN();
-	}
-	
-	public edu.cmu.cs.dennisc.math.Point3 accessOrigin() {
-		return m_origin;
-	}
-	public edu.cmu.cs.dennisc.math.Point3 getOrigin( edu.cmu.cs.dennisc.math.Point3 rv ) {
-		rv.set( m_origin );
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.origin != null ) {
+			rv = 37*rv + this.origin.hashCode();
+		}
+		if( this.direction != null ) {
+			rv = 37*rv + this.direction.hashCode();
+		}
 		return rv;
 	}
-	public edu.cmu.cs.dennisc.math.Point3 getOrigin() {
-		return getOrigin( new edu.cmu.cs.dennisc.math.Point3() );
+
+	public boolean isNaN() {
+		return this.origin.isNaN() || this.direction.isNaN();
 	}
-	public void setOrigin( edu.cmu.cs.dennisc.math.Point3 origin ) {
+	public void setNaN() {
+		this.origin.setNaN();
+		this.direction.setNaN();
+	}
+
+	public Point3 accessOrigin() {
+		return this.origin;
+	}
+	public Point3 getOrigin( Point3 rv ) {
+		rv.set( this.origin );
+		return rv;
+	}
+	public Point3 getOrigin() {
+		return getOrigin( new Point3() );
+	}
+	public void setOrigin( Point3 origin ) {
 		if( origin != null ) {
 			this.setOrigin( origin.x, origin.y, origin.z );
 		} else {
@@ -99,19 +109,19 @@ public class Ray {
 		}
 	}
 	public void setOrigin( double x, double y, double z ) {
-		m_origin.set( x, y, z );
+		this.origin.set( x, y, z );
 	}
-	public edu.cmu.cs.dennisc.math.Vector3 accessDirection() {
-		return m_direction;
+	public Vector3 accessDirection() {
+		return this.direction;
 	}
-	public edu.cmu.cs.dennisc.math.Vector3 getDirection( edu.cmu.cs.dennisc.math.Vector3 rv ) {
-		rv.set( m_direction );
+	public Vector3 getDirection( Vector3 rv ) {
+		rv.set( this.direction );
 		return rv;
 	}
-	public edu.cmu.cs.dennisc.math.Vector3 getDirection() {
-		return getDirection( new edu.cmu.cs.dennisc.math.Vector3() );
+	public Vector3 getDirection() {
+		return getDirection( new Vector3() );
 	}
-	public void setDirection( edu.cmu.cs.dennisc.math.Vector3 direction ) {
+	public void setDirection( Vector3 direction ) {
 		if( direction != null ) {
 			this.setDirection( direction.x, direction.y, direction.z );
 		} else {
@@ -119,47 +129,43 @@ public class Ray {
 		}
 	}
 	public void setDirection( double x, double y, double z ) {
-		m_direction.set( x, y, z );
+		this.direction.set( x, y, z );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPointAlong( edu.cmu.cs.dennisc.math.Point3 rv, double t ) {
-		rv.set( m_direction );
+	public Point3 getPointAlong( Point3 rv, double t ) {
+		rv.set( this.direction );
 		rv.multiply( t );
-		rv.add( m_origin );
+		rv.add( this.origin );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPointAlong( double t ) {
-		return getPointAlong( new edu.cmu.cs.dennisc.math.Point3(), t );
+	public Point3 getPointAlong( double t ) {
+		return getPointAlong( new Point3(), t );
 	}
 
-	public double getProjectedPointT( edu.cmu.cs.dennisc.math.Point3 p )
-	{
-		edu.cmu.cs.dennisc.math.Vector3 toPoint = edu.cmu.cs.dennisc.math.Vector3.createSubtraction(p, this.m_origin);
-		double dot = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct(toPoint, this.m_direction);
+	public double getProjectedPointT( Point3 p ) {
+		Vector3 toPoint = Vector3.createSubtraction( p, this.origin );
+		double dot = Vector3.calculateDotProduct( toPoint, this.direction );
 		return dot;
 	}
-	
-	public edu.cmu.cs.dennisc.math.Point3 getProjectedPoint( edu.cmu.cs.dennisc.math.Point3 p )
-	{
-		edu.cmu.cs.dennisc.math.Vector3 toPoint = edu.cmu.cs.dennisc.math.Vector3.createSubtraction(p, this.m_origin);
-		double dot = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct(toPoint, this.m_direction);
-		return getPointAlong(dot);
+
+	public Point3 getProjectedPoint( Point3 p ) {
+		Vector3 toPoint = Vector3.createSubtraction( p, this.origin );
+		double dot = Vector3.calculateDotProduct( toPoint, this.direction );
+		return getPointAlong( dot );
 	}
-	
-	public void transform( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
-		m.transform( m_origin );
-		m.transform( m_direction );
-//		edu.cmu.cs.dennisc.math.Vector4d transformedOrigin = LinearAlgebra.multiply( m_origin.x, m_origin.y, m_origin.z, 1, m );
-//		m_origin = new edu.cmu.cs.dennisc.math.Point3d( transformedOrigin.x/transformedOrigin.w, transformedOrigin.y/transformedOrigin.w, transformedOrigin.z/transformedOrigin.w );
-//		edu.cmu.cs.dennisc.math.Vector4d transformedDirection = LinearAlgebra.multiply( m_direction, 0, m );
-//		transformedDirection.w = 1;
-//		m_direction = LinearAlgebra.newVector3d( transformedDirection );
+
+	public void transform( AffineMatrix4x4 m ) {
+		m.transform( this.origin );
+		m.transform( this.direction );
+		//		Vector4d transformedOrigin = LinearAlgebra.multiply( this.origin.x, this.origin.y, this.origin.z, 1, m );
+		//		this.origin = new Point3d( transformedOrigin.x/transformedOrigin.w, transformedOrigin.y/transformedOrigin.w, transformedOrigin.z/transformedOrigin.w );
+		//		Vector4d transformedDirection = LinearAlgebra.multiply( this.direction, 0, m );
+		//		transformedDirection.w = 1;
+		//		this.direction = LinearAlgebra.newVector3d( transformedDirection );
 	}
 	@Override
 	public String toString() {
-		return "edu.cmu.cs.dennisc.math.Ray[origin=" + m_origin + ",direction=" + m_direction + "]";
+		return "Ray[origin=" + this.origin + ",direction=" + this.direction + "]";
 	}
-	//public static Ray valueOf( String s ) {
-	//}
 }

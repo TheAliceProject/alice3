@@ -341,7 +341,7 @@ public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEnco
 		return rv;
 	}
 	public Hexahedron getHexahedron() {
-		return getHexahedron( new Hexahedron() );
+		return getHexahedron( Hexahedron.createNaN() );
 	}
 	
 	public void translate( Vector3 v ) {

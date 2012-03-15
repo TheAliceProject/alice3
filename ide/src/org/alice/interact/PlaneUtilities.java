@@ -52,9 +52,6 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  * @author David Culyba
  */
 public class PlaneUtilities {
-	
-	public static Plane GROUND_PLANE = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
-	
 	public static edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, edu.cmu.cs.dennisc.math.Ray ray ) {
 		double t = plane.intersect( ray );
 		if ( Double.isNaN( t ) || t < 0)
