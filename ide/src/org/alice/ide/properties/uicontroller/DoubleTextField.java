@@ -79,8 +79,10 @@ public class DoubleTextField extends JTextField
 	{
 		try
 		{
-			Double.parseDouble(this.getText());
-			return true;
+			Double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
+			return Double.isNaN( value ) == false;
+//			Double.parseDouble(this.getText());
+//			return true;
 		}
 		catch (Exception e)
 		{
@@ -118,7 +120,7 @@ public class DoubleTextField extends JTextField
 		{
 			try
 			{
-				double value = Double.parseDouble(this.getText());
+				double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
 				this.trueValue = value;
 			}
 			catch (Exception e)
@@ -135,7 +137,8 @@ public class DoubleTextField extends JTextField
 		if (value != null)
 		{
 			this.trueValue = value;
-			this.setText(FORMAT.format(this.trueValue));
+			//this.setText(FORMAT.format(this.trueValue));
+			this.setText( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( this.trueValue, FORMAT ) );
 		}
 		else
 		{

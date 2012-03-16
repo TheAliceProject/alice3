@@ -52,7 +52,29 @@ public class DoubleUtilities {
 	public static Double divide( Number numerator, Number denominator ) {
 		return numerator.doubleValue() / denominator.doubleValue();
 	}
-	public static double format( double d, java.text.NumberFormat format ) {
-		return Double.parseDouble( format.format( d ) );
+	
+	public static double parseDoubleInCurrentDefaultLocale( String text ) {
+		try {
+			Number number = java.text.NumberFormat.getNumberInstance().parse( text );
+			return number.doubleValue();
+		} catch( java.text.ParseException pe ) {
+			return Double.NaN;
+		}
+	}
+	public static String format( double d, java.text.NumberFormat format ) {
+		return format.format( d );
+	}
+	public static String formatInCurrentDefaultLocale( double d ) {
+		return format( d, java.text.NumberFormat.getNumberInstance() );
+	}
+	public static double formatAndParse( double d, java.text.NumberFormat format, double valueInCaseOfParseException ) {
+		String text = format( d, format );
+		try {
+			Number number = format.parse( text );
+			return number.doubleValue();
+		} catch( java.text.ParseException pe ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( pe, text );
+			return valueInCaseOfParseException;
+		}
 	}
 }

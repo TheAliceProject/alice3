@@ -72,7 +72,7 @@ public abstract class ExpressionCreator {
 	}
 	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value, java.text.NumberFormat format ) {
 		if( format != null ) {
-			value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( value, format );
+			value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatAndParse( value, format, value );
 		}
 		return new org.lgna.project.ast.DoubleLiteral( value );
 	}
