@@ -47,11 +47,11 @@ package org.lgna.project.reflect;
  */
 public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private transient boolean isGetClassForNameAlreadyAttempted = false;
-	private final String clsName;
 	private transient Class<?> cls;
+	private final String clsName;
 
-	private java.util.List< ConstructorInfo > constructorInfos = new java.util.LinkedList< ConstructorInfo >();
-	private java.util.List< MethodInfo > methodInfos = new java.util.LinkedList< MethodInfo >();
+	private final java.util.List< ConstructorInfo > constructorInfos = new java.util.LinkedList< ConstructorInfo >();
+	private final java.util.List< MethodInfo > methodInfos = new java.util.LinkedList< MethodInfo >();
 	
 	private static java.util.Map< String, ClassInfo > map = new java.util.HashMap< String, ClassInfo >();
 	public static ClassInfo forName( String clsName ) {
@@ -81,7 +81,7 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.methodInfos, MethodInfo.class ) );
 	}
-	protected Class<?> getCls() {
+	/*package-private*/ Class<?> getCls() {
 		if( this.isGetClassForNameAlreadyAttempted ) {
 			//pass
 		} else {
@@ -108,11 +108,11 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		this.methodInfos.add( methodInfo );
 	}
 
-	public Iterable< ConstructorInfo > getConstructorInfos() {
-		return this.constructorInfos;
+	public java.util.List< ConstructorInfo > getConstructorInfos() {
+		return java.util.Collections.unmodifiableList( this.constructorInfos );
 	}
-	public Iterable< MethodInfo > getMethodInfos() {
-		return this.methodInfos;
+	public java.util.List< MethodInfo > getMethodInfos() {
+		return java.util.Collections.unmodifiableList( this.methodInfos );
 	}
 	
 	private java.util.Set< MethodInfo > outOfDateMethodInfos = new java.util.HashSet< MethodInfo >();
@@ -134,7 +134,7 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		}
 		return null;
 	}
-	public ConstructorInfo lookupInfo( java.lang.reflect.Constructor cnstrctr ) {
+	public ConstructorInfo lookupInfo( java.lang.reflect.Constructor<?> cnstrctr ) {
 		for( ConstructorInfo constructorInfo : getConstructorInfos() ) {
 			if( constructorInfo.getCnstrctr().equals( cnstrctr ) ) {
 				return constructorInfo;

@@ -51,7 +51,7 @@ public class JavaMethodParameter extends JavaParameter {
 	private static String getParameterNameFor( MethodReflectionProxy methodReflectionProxy, int index ) {
 		String rv = null;
 		try {
-			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
+			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.getInstance( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
 			if( classInfo != null ) {
 				org.lgna.project.reflect.MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
 				if( methodInfo != null ) {

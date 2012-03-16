@@ -57,6 +57,9 @@ public class MethodInfo extends MemberWithParametersInfo {
 		this.name = binaryDecoder.decodeString();
 	}
 	
+	public String getName() {
+		return this.name;
+	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );

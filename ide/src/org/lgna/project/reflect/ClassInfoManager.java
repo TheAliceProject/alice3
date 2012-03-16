@@ -45,7 +45,7 @@ package org.lgna.project.reflect;
 /**
  * @author Dennis Cosgrove
  */
-public final class ClassInfoManager {
+public class ClassInfoManager {
 	private static java.util.Map< String, edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > > s_map = new java.util.HashMap< String, edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > >();
 	private ClassInfoManager() {
 	}
@@ -60,14 +60,6 @@ public final class ClassInfoManager {
 						return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( f, ClassInfo.class );
 					}
 				} );
-//				ClassInfo classInfo = s_map.get( clsName ).get();
-//				for( MethodInfo methodInfo : classInfo.getMethodInfos() ) {
-//					try {
-//						java.lang.reflect.Method mthd = methodInfo.getMthd();
-//					} catch( RuntimeException re ) {
-//						re.printStackTrace();
-//					}
-//				}
 			}
 		} else {
 			try {
@@ -90,14 +82,14 @@ public final class ClassInfoManager {
 		}
 	}
 	
-	public static ClassInfo get( Class<?> cls ) {
-		if( cls != null ) {
-			edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > lazyClassInfo = s_map.get( cls.getName() );
+	public static ClassInfo getInstance( String clsName ) {
+		if( clsName != null ) {
+			edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > lazyClassInfo = s_map.get( clsName );
 			if( lazyClassInfo != null ) {
 				try {
 					return lazyClassInfo.get();
 				} catch( Throwable t ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, cls );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, clsName );
 					return null;
 				}
 			} else {
@@ -107,8 +99,32 @@ public final class ClassInfoManager {
 			return null;
 		}
 	}
+	public static ClassInfo getInstance( Class<?> cls ) {
+		if( cls != null ) {
+			return getInstance( cls.getName() );
+		} else {
+			return null;
+		}
+	}
+	public static java.util.List< MethodInfo > getMethodInfos( String clsName ) {
+		ClassInfo clsInfo = getInstance( clsName );
+		if( clsInfo != null ) {
+			return clsInfo.getMethodInfos();
+		} else {
+			//throw new NullPointerException();
+			return null;
+		}
+	}
+	public static java.util.List< MethodInfo > getMethodInfos( Class<?> cls ) {
+		if( cls != null ) {
+			return getMethodInfos( cls.getName() );
+		} else {
+			return null;
+		}
+	}
+	
 	public static String[] getParameterNamesFor( java.lang.reflect.Method mthd ) {
-		ClassInfo clsInfo = get( mthd.getDeclaringClass() );
+		ClassInfo clsInfo = getInstance( mthd.getDeclaringClass() );
 		if( clsInfo != null ) {
 			MethodInfo methodInfo = clsInfo.lookupInfo( mthd );
 			if( methodInfo != null ) {
@@ -119,25 +135,5 @@ public final class ClassInfoManager {
 		} else {
 			return null;
 		}
-	}
-	public static Iterable< MethodInfo > getMethodInfos( Class<?> cls ) {
-//		if( s_map.isEmpty() ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "EMPTY", cls.getName() );
-//			if( cls.getName().contains( "Model" ) ) {
-//				Thread.dumpStack();
-//			}
-//		}
-		//try {
-			ClassInfo clsInfo = get( cls );
-			if( clsInfo != null ) {
-				return clsInfo.getMethodInfos();
-			} else {
-				//throw new NullPointerException();
-				return null;
-			}
-		//} catch( Exception e ) {
-		//	e.printStackTrace();
-		//	return null;
-		//}
 	}
 }
