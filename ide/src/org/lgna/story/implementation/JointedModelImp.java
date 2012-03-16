@@ -43,6 +43,17 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.story.BubbleFillColor;
+import org.lgna.story.BubbleOutlineColor;
+import org.lgna.story.Color;
+import org.lgna.story.Duration;
+import org.lgna.story.Font;
+import org.lgna.story.Say;
+import org.lgna.story.TextColor;
+import org.lgna.story.TextFont;
+import org.lgna.story.Think;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -457,6 +468,27 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	public void animateStraightenOutJoints() {
 		this.animateStraightenOutJoints( DEFAULT_DURATION );
+	}
+	
+	private void initializeBubble(edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor) {
+		bubble.font.setValue(font);
+		bubble.textColor.setValue(textColor);
+		bubble.fillColor.setValue(fillColor);
+		bubble.outlineColor.setValue(outlineColor);
+	}
+	
+	public void say( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble( this.getSpeechBubbleOriginator() );
+		bubble.text.setValue(text);
+		initializeBubble(bubble, font, textColor, fillColor, outlineColor);
+		this.displayBubble( bubble, duration);
+	}
+	
+	public void think( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble( this.getSpeechBubbleOriginator() );
+		bubble.text.setValue(text);
+		initializeBubble(bubble, font, textColor, fillColor, outlineColor);
+		this.displayBubble( bubble, duration);
 	}
 	
 	@Override
