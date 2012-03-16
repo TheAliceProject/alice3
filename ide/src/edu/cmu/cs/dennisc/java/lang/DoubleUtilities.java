@@ -54,10 +54,11 @@ public class DoubleUtilities {
 	}
 	
 	public static double parseDoubleInCurrentDefaultLocale( String text ) {
-		try {
-			Number number = java.text.NumberFormat.getNumberInstance().parse( text );
+		java.text.ParsePosition parsePosition = new java.text.ParsePosition( 0 );
+		Number number = java.text.NumberFormat.getNumberInstance().parse( text, parsePosition );
+		if( number != null && parsePosition.getIndex() == text.length() ) {
 			return number.doubleValue();
-		} catch( java.text.ParseException pe ) {
+		} else {
 			return Double.NaN;
 		}
 	}
@@ -69,11 +70,12 @@ public class DoubleUtilities {
 	}
 	public static double formatAndParse( double d, java.text.NumberFormat format, double valueInCaseOfParseException ) {
 		String text = format( d, format );
-		try {
-			Number number = format.parse( text );
+		java.text.ParsePosition parsePosition = new java.text.ParsePosition( 0 );
+		Number number = format.parse( text, parsePosition );
+		if( number != null && parsePosition.getIndex() == text.length() ) {
 			return number.doubleValue();
-		} catch( java.text.ParseException pe ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( pe, text );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( text );
 			return valueInCaseOfParseException;
 		}
 	}

@@ -51,7 +51,7 @@ import javax.swing.JTextField;
 
 public class DoubleTextField extends JTextField
 {
-	private static java.text.NumberFormat FORMAT = new java.text.DecimalFormat( "0.00" );
+	private static final java.text.NumberFormat CENTI_FORMAT = new java.text.DecimalFormat( "0.00" );
 	protected boolean isDirty = false;	
 	protected double trueValue = Double.NaN;
 	
@@ -77,17 +77,9 @@ public class DoubleTextField extends JTextField
 	
 	public boolean isValueValid()
 	{
-		try
-		{
-			Double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
-			return Double.isNaN( value ) == false;
-//			Double.parseDouble(this.getText());
-//			return true;
-		}
-		catch (Exception e)
-		{
-			return false;
-		}
+		String text = this.getText();
+		Double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
+		return Double.isNaN( value ) == false;
 	}
 	
 	public void markValueTemporary()
@@ -118,15 +110,8 @@ public class DoubleTextField extends JTextField
 	{
 		if (this.isDirty)
 		{
-			try
-			{
-				double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
-				this.trueValue = value;
-			}
-			catch (Exception e)
-			{
-				this.trueValue = Double.NaN;
-			}
+			double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
+			this.trueValue = value;
 		}
 		this.isDirty = false;
 		return this.trueValue;
@@ -137,8 +122,7 @@ public class DoubleTextField extends JTextField
 		if (value != null)
 		{
 			this.trueValue = value;
-			//this.setText(FORMAT.format(this.trueValue));
-			this.setText( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( this.trueValue, FORMAT ) );
+			this.setText( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( this.trueValue, CENTI_FORMAT ) );
 		}
 		else
 		{
@@ -148,5 +132,4 @@ public class DoubleTextField extends JTextField
 		this.isDirty = false;
 		this.markValueSet();
 	}
-	
 }
