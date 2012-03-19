@@ -49,38 +49,62 @@ public class ClassInfoManager {
 	private static java.util.Map< String, edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > > s_map = new java.util.HashMap< String, edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > >();
 	private ClassInfoManager() {
 	}
-	public static void addClassInfosFrom( java.io.File file ) {
-		assert file != null;
-		if( file.isDirectory() ) {
-			for( final java.io.File f : file.listFiles() ) {
-				String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( f );
-				s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
-					@Override
-					protected ClassInfo initialize() {
-						return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( f, ClassInfo.class );
-					}
-				} );
-			}
-		} else {
-			try {
-				final java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file ); 
-				java.util.Enumeration< ? extends java.util.zip.ZipEntry > e = zipFile.entries();
-				while( e.hasMoreElements() ) {
-					java.util.zip.ZipEntry zipEntry = e.nextElement();
-					final java.io.InputStream is = zipFile.getInputStream( zipEntry );
+	
+	public static void addClassInfosFrom( java.io.InputStream is ) throws java.io.IOException {
+		java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream( is );
+		while( true ) {
+			java.util.zip.ZipEntry zipEntry = zis.getNextEntry();
+			if( zipEntry != null ) {
+				if( zipEntry.isDirectory() ) {
+					//pass
+				} else {
 					String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( zipEntry.getName() );
+					final byte[] data = edu.cmu.cs.dennisc.zip.ZipUtilities.extractBytes(zis, zipEntry);
 					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
 						@Override
-						protected org.lgna.project.reflect.ClassInfo initialize() {
-							return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( is, ClassInfo.class );
+						protected ClassInfo initialize() {
+							return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( data, ClassInfo.class );
 						}
 					} );
 				}
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
+			} else {
+				break;
 			}
 		}
 	}
+	
+//	public static void addClassInfosFrom( java.io.File file ) {
+//		assert file != null;
+//		if( file.isDirectory() ) {
+//			for( final java.io.File f : file.listFiles() ) {
+//				String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( f );
+//				s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
+//					@Override
+//					protected ClassInfo initialize() {
+//						return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( f, ClassInfo.class );
+//					}
+//				} );
+//			}
+//		} else {
+//			try {
+//				final java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file ); 
+//				java.util.Enumeration< ? extends java.util.zip.ZipEntry > e = zipFile.entries();
+//				while( e.hasMoreElements() ) {
+//					java.util.zip.ZipEntry zipEntry = e.nextElement();
+//					final java.io.InputStream is = zipFile.getInputStream( zipEntry );
+//					String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( zipEntry.getName() );
+//					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
+//						@Override
+//						protected org.lgna.project.reflect.ClassInfo initialize() {
+//							return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( is, ClassInfo.class );
+//						}
+//					} );
+//				}
+//			} catch( java.io.IOException ioe ) {
+//				throw new RuntimeException( ioe );
+//			}
+//		}
+//	}
 	
 	public static ClassInfo getInstance( String clsName ) {
 		if( clsName != null ) {
