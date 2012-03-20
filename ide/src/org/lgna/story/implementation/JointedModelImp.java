@@ -43,17 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import org.lgna.project.annotations.MethodTemplate;
-import org.lgna.story.BubbleFillColor;
-import org.lgna.story.BubbleOutlineColor;
-import org.lgna.story.Color;
-import org.lgna.story.Duration;
-import org.lgna.story.Font;
-import org.lgna.story.Say;
-import org.lgna.story.TextColor;
-import org.lgna.story.TextFont;
-import org.lgna.story.Think;
-
 /**
  * @author Dennis Cosgrove
  */
