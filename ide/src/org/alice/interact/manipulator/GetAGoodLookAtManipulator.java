@@ -82,11 +82,13 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		AbstractTransformable toLookAt = endInput.getClickPickTransformable();
 		if (toLookAt != null && this.camera != null)
 		{
-			org.lgna.story.Entity cameraAbstraction  = EntityImp.getInstance(this.camera).getAbstraction();
+			org.lgna.story.Entity toLookAtEntity = EntityImp.getAbstractionFromSgElement(toLookAt);
+			org.lgna.story.Entity cameraAbstraction  = EntityImp.getAbstractionFromSgElement(this.camera);
 			assert cameraAbstraction instanceof org.lgna.story.Camera;
 			org.lgna.story.Camera storytellingCamera = (org.lgna.story.Camera)cameraAbstraction;
 			
-			storytellingCamera.moveAndOrientToAGoodVantagePointOf(EntityImp.getInstance(toLookAt).getAbstraction());
+			org.alice.interact.operations.GetAGoodLookAtActionOperation lookAtOperation = new org.alice.interact.operations.GetAGoodLookAtActionOperation(org.alice.ide.IDE.PROJECT_GROUP, storytellingCamera, toLookAtEntity);
+			lookAtOperation.fire();
 		}
 	}
 
