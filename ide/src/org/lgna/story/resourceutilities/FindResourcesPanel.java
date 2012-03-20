@@ -159,8 +159,8 @@ public class FindResourcesPanel extends javax.swing.JPanel {
 		}
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			jFileChooser.show();
-			if (jFileChooser.getDirectory() != null) {
-				setGalleryDir(jFileChooser.getDirectory());
+			if (jFileChooser.getDirectory() != null && jFileChooser.getFile() != null) {
+				setGalleryDir(new java.io.File(jFileChooser.getDirectory(), jFileChooser.getFile()));
 			}
 		}
 	}
@@ -315,10 +315,13 @@ public class FindResourcesPanel extends javax.swing.JPanel {
 		this.setPreferredSize(new java.awt.Dimension(500, 250));
 	}
 	
+	private void setGalleryDir(final java.io.File dir) {
+		setGalleryDir(dir.getAbsolutePath());
+	}
+	
 	private void setGalleryDir(final String dir) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				System.out.println("Setting dir field to '"+dir+"'");
 				FindResourcesPanel.this.installDirectoryField.setText(dir);
 			}
 		});

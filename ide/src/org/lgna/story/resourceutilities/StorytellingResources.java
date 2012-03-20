@@ -292,15 +292,18 @@ public class StorytellingResources {
 		}
 	}
 	
-	private void buildGalleryTree() {
-		
-//		//DEBUG ONLY
-//		//CLEAR DIR PREFS
+//	//DEBUG
+//	static 
+//	{
+////		//DEBUG ONLY
+////		//CLEAR DIR PREFS
 //		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
 //		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
 //		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
 //		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
-		
+//	}
+	
+	private void buildGalleryTree() {
 		List< File > resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
 		if( resourcePaths.size() == 0 ) {
 			resourcePaths = findAliceResources();
@@ -311,7 +314,8 @@ public class StorytellingResources {
 			if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
 				setGalleryResourceDir(FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath());
 			}
-			else {
+			else 
+			{
 				getGalleryLocationFromUser();
 			}
 			//Try again
@@ -381,7 +385,8 @@ public class StorytellingResources {
 			if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
 				setGalleryResourceDir(FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath());
 			}
-			else {
+			else 
+			{
 				getGalleryLocationFromUser();
 			}
 			//Try again
