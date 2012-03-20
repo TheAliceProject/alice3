@@ -43,11 +43,9 @@
 package edu.cmu.cs.dennisc.matt;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
@@ -58,7 +56,6 @@ import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.StartCollisionEvent;
-import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -69,101 +66,10 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 public class CollisionHandler extends TransformationChangedHandler<Object,CollisionEvent> implements InstanceCreationListener {
 
 	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
-	private Map<Object,Class[]> checkNewMap = Collections.newHashMap();
 
-	public void instanceCreated( AbstractTransformableImp created ) {
-		for( Object key : checkNewMap.keySet() ) {
-			for( int i = 0; i != checkNewMap.get( key ).length; ++i ) {
-				Class cls = checkNewMap.get( key )[ i ];
-				if( cls != null ) {
-					Entity abstraction = created.getAbstraction();
-					if( checkNewMap.get( key )[ 1 - i ] == null || cls.isAssignableFrom( abstraction.getClass() ) && !checkNewMap.get( key )[ 1 - i ].isAssignableFrom( cls ) ) {
-						ammend( key, i, abstraction );
-					}
-				}
-			}
-		}
-	}
-	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionListener( Object collisionListener, ArrayList<A> arrayList, Class<A> a, ArrayList<B> arrayList2, Class<B> b ) {
-		registerIsFiringMap( collisionListener );
-		registerPolicyMap( collisionListener, MultipleEventPolicy.IGNORE );
-		Class<?>[] clsArr = { a, b };
-		ArrayList<ArrayList<? extends Object>> list;
-		ArrayList<?> firstList;
-		ArrayList<?> secondList;
-		Class[] checkClassArr = { null, null };
-		if( arrayList == null && arrayList2 == null ) {
-			firstList = scene.findAll( a );
-			secondList = scene.findAll( b );
-			checkClassArr[ 0 ] = a;
-			checkClassArr[ 1 ] = b;
-			if( a.equals( b ) ) {
-				System.out.println( a + " equals " + b );
-				System.out.println( "WHAT SHOULD WE DO IF AN OBJECT EXISTS IN BOTH LISTS?" );
-			} else if( a.isAssignableFrom( b ) ) {
-				firstList.removeAll( secondList );
-			} else if( b.isAssignableFrom( a ) ) {
-				secondList.removeAll( firstList );
-			}
-		} else if( arrayList == null && arrayList2 != null ) {
-			firstList = scene.findAll( a );
-			secondList = arrayList2;
-			firstList.removeAll( secondList );
-			checkClassArr[ 0 ] = a;
-		} else if( arrayList != null && arrayList2 == null ) {
-			firstList = arrayList;
-			secondList = scene.findAll( b );
-			checkClassArr[ 1 ] = b;
-			secondList.removeAll( firstList );
-		} else {// if( arrayList != null && arrayList2 != null ) {
-			firstList = arrayList;
-			secondList = arrayList2;
-			for( Object o : secondList ) {
-				if( firstList.contains( o ) ) {
-					System.out.println( "WHAT SHOULD WE DO IF AN OBJECT EXISTS IN BOTH LISTS?" );
-				}
-			}
-		}
-		//		if( a.equals( b ) ) {
-		//			return;
-		//		} else {
-		//			if( arrayList != null ) {
-		//				firstList = arrayList;
-		//			} else {
-		//				firstList = scene.findAll( a );
-		//				checkClassArr[ 0 ] = a;
-		//			}
-		//			if( arrayList2 != null ) {
-		//				secondList = arrayList2;
-		//			} else {
-		//
-		//				secondList = scene.findAll( b );
-		//				if( arrayList == null ) {
-		//					if( a.isAssignableFrom( b ) ) {
-		//						firstList.removeAll( secondList );
-		//					} else if( b.isAssignableFrom( a ) ) {
-		//						secondList.removeAll( firstList );
-		//					}
-		//				} else {
-		//					secondList.removeAll( arrayList );
-		//				}
-		//			}
-		//			checkClassArr[ 1 ] = b;
-		//		}
-		if( checkClassArr[ 0 ] != null || checkClassArr[ 1 ] != null ) {
-			checkNewMap.put( collisionListener, checkClassArr );
-		}
-		list = Collections.newArrayList( firstList, secondList );
-		EventBuilder.register( collisionListener, clsArr, list );
-		List<Entity> allObserving = (List<Entity>)Collections.newArrayList( (Collection<? extends Entity>)firstList );
-		allObserving.addAll( (Collection<? extends Entity>)secondList );
-		for( Entity m : allObserving ) {
-			if( !modelList.contains( m ) ) {
-				modelList.add( m );
-				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-			}
-		}
-		collisionEventHandler.register( collisionListener, new ArrayList<Entity>( (ArrayList<? extends Entity>)firstList ), new ArrayList<Entity>( (ArrayList<? extends Entity>)secondList ) );
+	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionListener( Object collisionListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
+		ArrayList[] listArr = super.addPairedListener( collisionListener, groupOne, a, groupTwo, b, policy );
+		collisionEventHandler.register( collisionListener, new ArrayList<Entity>( (ArrayList<? extends Entity>)listArr[ 0 ] ), new ArrayList<Entity>( (ArrayList<? extends Entity>)listArr[ 1 ] ) );
 	}
 	@Override
 	protected void check( Entity changedEntity ) {
@@ -179,7 +85,8 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 			endCollisionEvent.collisionEnded( (EndCollisionEvent)event );
 		}
 	}
-	private void ammend( Object key, int group, Entity newObject ) {
+	@Override
+	protected void ammend( Object key, int group, Entity newObject ) {
 		ImplementationAccessor.getImplementation( newObject ).getSgComposite().addAbsoluteTransformationListener( this );
 		collisionEventHandler.ammend( key, group, newObject );
 	}
@@ -249,7 +156,6 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 					}
 				}
 			}
-
 		}
 		private boolean check( Object colList, Entity m, Entity changedEntity ) {
 			if( colList instanceof CollisionStartListener ) {

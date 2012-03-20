@@ -192,84 +192,77 @@ public abstract class Scene extends Entity {
 	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener transformationlistener, Entity[] shouldListenTo, AddPositionOrientationChangeListener.Detail... details ) {
 		this.getImplementation().getEventManager().addTransformationListener( transformationlistener, shouldListenTo );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
-	@Deprecated
-	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddStartCollisionListener.Detail... details ) {
-		//		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
-	}
 	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionStartListener( CollisionStartListener<A,B> collisionStartListener, Class<A> a, Class<B> b, AddStartCollisionListener.Detail... details ) {
-		this.getImplementation().getEventManager().addCollisionListener( collisionStartListener, a, b, AddStartCollisionListener.getGroupOne( details, a ), AddStartCollisionListener.getGroupOne( details, b ) );
+		this.getImplementation().getEventManager()
+				.addCollisionListener( collisionStartListener, a, b, EventCollection.getGroupOne( details, a ), EventCollection.getGroupOne( details, b ), MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileCollisionListener( org.lgna.story.event.WhileCollisionListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddTimeListener.Detail... details ) {
+	public <A extends MovableTurnable, B extends MovableTurnable> void addWhileCollisionListener( org.lgna.story.event.WhileCollisionListener collisionListener, Class<A> a, Class<B> b, AddWhileCollisionListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
-				.addWhileCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), TimerFrequency.getValue( details ).getFrequency(),
+				.addWhileCollisionListener( collisionListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, TimerFrequency.getValue( details ).getFrequency(),
 						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 
 	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionEndListener( CollisionEndListener<A,B> collisionEndListener, Class<A> a, Class<B> b, AddEndCollisionListener.Detail... details ) {
-		this.getImplementation().getEventManager().addCollisionListener( collisionEndListener, a, b, AddEndCollisionListener.getGroupOne( details, a ), AddEndCollisionListener.getGroupTwo( details, b ) );
+		this.getImplementation().getEventManager().addCollisionListener( collisionEndListener, a, b, EventCollection.getGroupOne( details, a ), EventCollection.getGroupTwo( details, b ), MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	@Deprecated
-	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddEndCollisionListener.Detail... details ) {
-		//		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
-	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
-	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener proximityEventListener, Entity[] groupOne, Entity[] groupTwo, Double distance, AddEnterProximityEventListener.Detail... details ) {
-		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddEnterProximityEventListener.getDist( details ));
+	public <A extends MovableTurnable, B extends MovableTurnable> void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener<A,B> proximityEventListener, Class<A> a, Class<B> b, Double distance,
+			AddEnterProximityEventListener.Detail... details ) {
+		this.getImplementation().getEventManager()
+				.addProximityEventListener( proximityEventListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, distance, MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileProximityListener( org.lgna.story.event.WhileProximityListener proximityListener, Entity[] groupOne, Entity[] groupTwo, Double distance, AddTimeListener.Detail... details ) {
+	public <A extends MovableTurnable, B extends MovableTurnable> void addWhileProximityListener( org.lgna.story.event.WhileProximityListener proximityListener, Class<A> a, Class<B> b, Double distance, AddWhileProximityListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
-				.addWhileProximityListener( proximityListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance,
-						TimerFrequency.getValue( details ).getFrequency(), MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
-	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
-	public void addViewEnterListener( ViewEnterListener listener, Model[] models, AddEnterViewListener.Detail... details ) {
-		this.implementation.getEventManager().addComesIntoViewEventListener( listener, models );
-	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	@AddEventListenerTemplate()
-	public void addWhileInViewListener( WhileInViewListener listener, Model[] models, AddTimeListener.Detail... details ) {
-		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( models ), TimerFrequency.getValue( details ).getFrequency(),
-				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
-	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
-	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener proximityEventListener, Entity[] groupOne, Entity[] groupTwo, Double distance, AddExitProximityEventListener.Detail... details ) {
-		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddExitProximityEventListener.getDist( details ));
-	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
-	public void addViewExitListener( ViewExitListener listener, Model[] entities, AddExitViewListener.Detail... details ) {
-		this.implementation.getEventManager().addLeavesViewEventListener( listener, entities );
-	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
-	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, Model[] groupOne, Model[] groupTwo, AddStartOcclusionListener.Detail... details ) {
-		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
-	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	@AddEventListenerTemplate()
-	public void addWhileOcclusionListener( org.lgna.story.event.WhileOcclusionListener occlusionListener, Model[] groupOne, Model[] groupTwo, AddTimeListener.Detail... details ) {
-		this.getImplementation()
-				.getEventManager()
-				.addWhileOcclusionListener( occlusionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), TimerFrequency.getValue( details ).getFrequency(),
+				.addWhileProximityListener( proximityListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupOne( details, b ), b, distance, TimerFrequency.getValue( details ).getFrequency(),
 						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, Model[] groupOne, Model[] groupTwo, AddEndOcclusionListener.Detail... details ) {
-		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
+	public <A extends MovableTurnable, B extends MovableTurnable> void addProximityExitListener( org.lgna.story.event.ProximityExitListener proximityEventListener, Class<A> a, Class<B> b, Double distance, AddExitProximityEventListener.Detail... details ) {
+		this.getImplementation().getEventManager()
+				.addProximityEventListener( proximityEventListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, distance, MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public <A extends Model> void addViewEnterListener( ViewEnterListener listener, Class<A> a, AddEnterViewListener.Detail... details ) {
+		this.implementation.getEventManager().addViewEventListener( listener, a, EventCollection.getGroupOne( details, a ) );
+	}
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	@AddEventListenerTemplate()
+	public <A extends Model> void addWhileInViewListener( WhileInViewListener listener, Class<A> a, AddWhileInViewListener.Detail... details ) {
+		this.implementation.getEventManager().addWhileInViewListener( listener, EventCollection.getGroupOne( details, a ), a, TimerFrequency.getValue( details ).getFrequency(), MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public <A extends Model> void addViewExitListener( ViewExitListener listener, Class<A> a, AddEnterViewListener.Detail... details ) {
+		this.implementation.getEventManager().addViewEventListener( listener, a, EventCollection.getGroupOne( details, a ) );
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public <A extends Model, B extends Model> void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, Class<A> a, Class<B> b, AddStartOcclusionListener.Detail... details ) {
+		this.getImplementation().getEventManager()
+				.addOcclusionEventListener( occlusionEventListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, MultipleEventPolicy.getValue( details, MultipleEventPolicy.COMBINE ) );
+	}
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	@AddEventListenerTemplate()
+	public <A extends Model, B extends Model> void addWhileOcclusionListener( org.lgna.story.event.WhileOcclusionListener occlusionListener, Class<A> a, Class<B> b, AddTimeListener.Detail... details ) {
+		this.getImplementation()
+				.getEventManager()
+				.addWhileOcclusionListener( occlusionListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, TimerFrequency.getValue( details ).getFrequency(),
+						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@AddEventListenerTemplate()
+	public <A extends Model, B extends Model> void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, Class<A> a, Class<B> b, AddEndOcclusionListener.Detail... details ) {
+		this.getImplementation().getEventManager()
+				.addOcclusionEventListener( occlusionEventListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, MultipleEventPolicy.getValue( details, MultipleEventPolicy.COMBINE ) );
 	}
 
 	//remove

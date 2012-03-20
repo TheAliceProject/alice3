@@ -1,9 +1,7 @@
 package org.lgna.story.event;
 
-public class ExitProximityEvent extends ProximityEvent {
-
-	public ExitProximityEvent( org.lgna.story.MovableTurnable... movables ) {
-		super( movables );
+public class ExitProximityEvent<A extends org.lgna.story.MovableTurnable, B extends org.lgna.story.MovableTurnable> extends ProximityEvent<A,B> {
+	public ExitProximityEvent( A closeFromA, B closeFromB ) {
+		super( closeFromA, closeFromB );
 	}
-
 }

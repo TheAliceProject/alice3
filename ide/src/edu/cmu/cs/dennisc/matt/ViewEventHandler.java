@@ -1,5 +1,6 @@
 package edu.cmu.cs.dennisc.matt;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,10 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 		}
 	}
 
+	@Override
+	protected void ammend( Object key, int i, Entity newObject ) {
+	}
+
 	private boolean check( Object listener, Entity changedEntity ) {
 		boolean rv = false;
 		boolean thisInView = IsInViewDetector.isThisInView( changedEntity, camera );
@@ -84,7 +89,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 		}
 	}
 
-	public void addViewEventListener( Object listener, Model[] models ) {
+	public <A extends Model> void addViewEventListener( Object listener, Class<A> a, ArrayList<A> models ) {
 		registerIsFiringMap( listener );
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
 		for( Model m : models ) {

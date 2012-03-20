@@ -42,22 +42,11 @@
  */
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.matt.ProximityDistance;
-
 /**
  * @author Matt May
  */
-public class AddEnterProximityEventListener {
+public class AddWhileProximityListener {
 
-	public static interface Detail {
-	}
-
-	public static Double getDist( Detail[] details ) {
-		for( Detail detail : details ) {
-			if( detail instanceof ProximityDistance ) {
-				return ((ProximityDistance)detail).getDist();
-			}
-		}
-		return 0.0;
+	public interface Detail {
 	}
 }

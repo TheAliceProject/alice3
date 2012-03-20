@@ -48,7 +48,6 @@ import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
-import org.lgna.story.EventCollection;
 import org.lgna.story.Ground;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Key;
@@ -65,12 +64,14 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane;
 import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.CollisionStartListener;
+import org.lgna.story.event.CollisionEndListener;
+import org.lgna.story.event.EndCollisionEvent;
+import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
+import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -267,19 +268,18 @@ class SnowScene extends Scene {
 				e.getObjectAtMouseLocation().move( MoveDirection.DOWN, 1 );
 			}
 		}, MyOgre.class );
-		this.addCollisionStartListener( new CollisionStartListener<MyOgre,Model>() {
+		this.addCollisionEndListener( new CollisionEndListener<MyOgre,Model>() {
 
-			public void collisionStarted( StartCollisionEvent<MyOgre,Model> e ) {
+			public void collisionEnded( EndCollisionEvent<MyOgre,Model> e ) {
 				e.getCollidingFromGroupA().doOgreyThing();
 				e.getCollidingFromGroupB().turn( TurnDirection.FORWARD, 1 );
 			}
-		}, MyOgre.class, Model.class, new EventCollection( MyOgre.class, ogre ) );
-		//		this.addCollisionEndListener( new CollisionEndListener<MyOgre,Model>() {
-		//
-		//			public void collisionEnded( EndCollisionEvent<MyOgre,Model> e ) {
-		//				e.getCollidingFromGroupA()[ 0 ].doOgreyThing();
-		//			}
-		//		}, MyOgre.class, Model.class );
+		}, MyOgre.class, Model.class );
+		this.addProximityEnterListener( new ProximityEnterListener<MyOgre,MyBiped>() {
+
+			public void proximityEntered( EnterProximityEvent<MyOgre,MyBiped> e ) {
+			}
+		}, MyOgre.class, MyBiped.class, new Double( 1 ) );
 		this.mattsObjectThingy = new Cone();
 		mattsObjectThingy.setVehicle( susan );
 		mattsObjectThingy.setBaseRadius( 1 );

@@ -1,5 +1,6 @@
 package edu.cmu.cs.dennisc.matt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,6 @@ import org.lgna.story.event.StartOcclusionEvent;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 public class OcclusionHandler extends TransformationChangedHandler<Object,OcclusionEvent> {
@@ -24,22 +24,27 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 	private OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
 	private CameraImp camera;
 
-	public void addOcclusionEvent( Object occlusionEventListener, List<Model> groupOne, List<Model> groupTwo ) {
-		registerIsFiringMap( occlusionEventListener );
-		registerPolicyMap( occlusionEventListener, MultipleEventPolicy.IGNORE );
-		List<Model> allObserving = Collections.newArrayList( groupOne );
-		allObserving.addAll( groupTwo );
-		if( groupOne.get( 0 ) != null && camera == null ) {
-			camera = ImplementationAccessor.getImplementation( groupOne.get( 0 ) ).getScene().findFirstCamera();
-			camera.getSgComposite().addAbsoluteTransformationListener( this );
-		}
-		for( Entity m : allObserving ) {
-			if( !modelList.contains( m ) ) {
-				modelList.add( m );
-				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-			}
-		}
-		occlusionEventHandler.register( occlusionEventListener, groupOne, groupTwo );
+	public <A extends Model, B extends Model> void addOcclusionEvent( Object occlusionEventListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
+		ArrayList[] listArr = super.addPairedListener( occlusionEventListener, groupOne, a, groupTwo, b, policy );
+		//		registerIsFiringMap( occlusionEventListener );
+		//		registerPolicyMap( occlusionEventListener, MultipleEventPolicy.IGNORE );
+		//		List<Model> allObserving = Collections.newArrayList( groupOne );
+		//		allObserving.addAll( groupTwo );
+		//		if( groupOne.get( 0 ) != null && camera == null ) {
+		//			camera = ImplementationAccessor.getImplementation( groupOne.get( 0 ) ).getScene().findFirstCamera();
+		//			camera.getSgComposite().addAbsoluteTransformationListener( this );
+		//		}
+		//		for( Entity m : allObserving ) {
+		//			if( !modelList.contains( m ) ) {
+		//				modelList.add( m );
+		//				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
+		//			}
+		//		}
+		occlusionEventHandler.register( occlusionEventListener, listArr[ 0 ], listArr[ 1 ] );
+	}
+
+	@Override
+	protected void ammend( Object key, int i, Entity newObject ) {
 	}
 
 	@Override
@@ -173,5 +178,4 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 			}
 		}
 	}
-
 }

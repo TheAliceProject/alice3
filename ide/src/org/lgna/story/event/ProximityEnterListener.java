@@ -45,8 +45,8 @@ package org.lgna.story.event;
 /**
  * @author Matt May
  */
-public interface ProximityEnterListener {
+public interface ProximityEnterListener<A extends org.lgna.story.MovableTurnable, B extends org.lgna.story.MovableTurnable> {
 
-	public void proximityEntered( EnterProximityEvent e );
+	public void proximityEntered( EnterProximityEvent<A,B> e );
 
 }

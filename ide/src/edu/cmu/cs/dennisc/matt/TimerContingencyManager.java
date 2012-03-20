@@ -3,7 +3,9 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.ArrayList;
 
 import org.lgna.story.Entity;
+import org.lgna.story.EventCollection;
 import org.lgna.story.Model;
+import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Scene;
 import org.lgna.story.event.CollisionEndListener;
@@ -12,7 +14,6 @@ import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.ExitProximityEvent;
-import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.LeavesViewEvent;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionStartListener;
@@ -21,6 +22,7 @@ import org.lgna.story.event.ProximityExitListener;
 import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.event.StartOcclusionEvent;
 import org.lgna.story.event.ViewEnterListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.event.WhileOcclusionListener;
@@ -36,30 +38,58 @@ public class TimerContingencyManager {
 		this.timer = timer;
 	}
 
-	public void register( WhileCollisionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public <A extends MovableTurnable, B extends MovableTurnable> void register( WhileCollisionListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
-		scene.addCollisionStartListener( newStartCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
-		scene.addCollisionEndListener( newEndCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
+		EventCollection collectionOne = null;
+		EventCollection collectionTwo = null;
+		if( groupOne != null ) {
+			collectionOne = EventCollection.makeNew( a, groupOne );
+		}
+		if( groupTwo != null ) {
+			collectionTwo = EventCollection.makeNew( b, groupTwo );
+		}
+		scene.addCollisionStartListener( newStartCollisionAdapter( listener ), a, b, collectionOne, collectionTwo );
+		scene.addCollisionEndListener( newEndCollisionAdapter( listener ), a, b, collectionOne, collectionTwo );
 	}
-	public void register( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
+	public <A extends MovableTurnable, B extends MovableTurnable> void register( WhileProximityListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Double dist, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
-		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
-		scene.addProximityExitListener( newExitProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
+		EventCollection collectionOne = null;
+		EventCollection collectionTwo = null;
+		if( groupOne != null ) {
+			collectionOne = EventCollection.makeNew( a, groupOne );
+		}
+		if( groupTwo != null ) {
+			collectionTwo = EventCollection.makeNew( b, groupTwo );
+		}
+		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), a, b, dist, collectionOne, collectionTwo );
+		scene.addProximityExitListener( newExitProximityAdapter( listener ), a, b, dist, collectionOne, collectionTwo );
 	}
-	public void register( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public <A extends Model, B extends Model> void register( WhileOcclusionListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
-		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), (Model[])toArray( groupOne ), (Model[])toArray( groupTwo ) );
-		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), (Model[])toArray( groupOne ), (Model[])toArray( groupTwo ) );
+		EventCollection collectionOne = null;
+		EventCollection collectionTwo = null;
+		if( groupOne != null ) {
+			collectionOne = EventCollection.makeNew( a, groupOne );
+		}
+		if( groupTwo != null ) {
+			collectionTwo = EventCollection.makeNew( b, groupTwo );
+		}
+		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), a, b, collectionOne, collectionTwo );
+		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), a, b, collectionOne, collectionTwo );
 	}
 
-	public void register( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
+	public <A extends Model> void register( WhileInViewListener listener, Class<A> a, ArrayList group, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
-		scene.addViewEnterListener( newEnterViewAdapter( listener ), (Model[])toArray( group ) );
-		scene.addViewExitListener( newExitViewAdapter( listener ), (Model[])toArray( group ) );
+		EventCollection collection = null;
+		if( group != null ) {
+			collection = EventCollection.makeNew( a, group );
+		}
+		scene.addViewEnterListener( newEnterViewAdapter( listener ), a, collection );
+		scene.addViewExitListener( newExitViewAdapter( listener ), a, collection );
 	}
 
 	private ViewExitListener newExitViewAdapter( final WhileInViewListener listener ) {
@@ -110,6 +140,7 @@ public class TimerContingencyManager {
 		};
 	}
 
+	@SuppressWarnings("rawtypes")
 	private CollisionEndListener newEndCollisionAdapter( final WhileCollisionListener listener ) {
 		return new CollisionEndListener() {
 			public void collisionEnded( EndCollisionEvent e ) {
@@ -118,6 +149,7 @@ public class TimerContingencyManager {
 		};
 	}
 
+	@SuppressWarnings("rawtypes")
 	private CollisionStartListener newStartCollisionAdapter( final WhileCollisionListener listener ) {
 		return new CollisionStartListener() {
 			public void collisionStarted( StartCollisionEvent e ) {

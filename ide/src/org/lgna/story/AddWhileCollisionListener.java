@@ -42,22 +42,42 @@
  */
 package org.lgna.story;
 
-import edu.cmu.cs.dennisc.matt.ProximityDistance;
+import java.util.ArrayList;
 
 /**
  * @author Matt May
  */
-public class AddEnterProximityEventListener {
+public class AddWhileCollisionListener {
 
-	public static interface Detail {
+	public interface Detail {
 	}
 
-	public static Double getDist( Detail[] details ) {
+	public static <T extends MovableTurnable> ArrayList<T> getGroupOne( Detail[] details, Class<T> cls ) {
 		for( Detail detail : details ) {
-			if( detail instanceof ProximityDistance ) {
-				return ((ProximityDistance)detail).getDist();
+			if( detail instanceof EventCollection ) {
+				EventCollection eCollection = (EventCollection)detail;
+				if( eCollection.getInternalClass().equals( cls ) ) {
+					return eCollection.getValue();
+				}
 			}
 		}
-		return 0.0;
+		return null;
+	}
+	public static <T extends MovableTurnable> ArrayList<T> getGroupTwo( Detail[] details, Class<T> cls ) {
+		EventCollection firstCollection = null;
+		for( Detail detail : details ) {
+			if( detail instanceof EventCollection ) {
+				EventCollection eCollection = (EventCollection)detail;
+				if( eCollection.getInternalClass().equals( cls ) && firstCollection != null ) {
+					return eCollection.getValue();
+				} else {
+					firstCollection = eCollection;
+				}
+			}
+		}
+		if( firstCollection != null ) {
+			return firstCollection.getValue();
+		}
+		return null;
 	}
 }

@@ -36,6 +36,10 @@ public class TransformationHandler extends TransformationChangedHandler<PointOfV
 	}
 
 	@Override
+	protected void ammend( Object key, int i, Entity newObject ) {
+	}
+
+	@Override
 	protected void check( Entity changedEntity ) {
 		for( PointOfViewChangeListener listener : checkMap.get( changedEntity ) ) {
 			fireEvent( listener, new PointOfViewEvent( changedEntity ) );

@@ -49,7 +49,8 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class EventCollection implements AddStartCollisionListener.Detail, AddEndCollisionListener.Detail {
+public class EventCollection implements AddStartCollisionListener.Detail, AddWhileCollisionListener.Detail, AddEndCollisionListener.Detail, AddEnterProximityEventListener.Detail, AddExitProximityEventListener.Detail, AddEnterViewListener.Detail,
+		AddWhileInViewListener.Detail, AddExitViewListener.Detail, AddStartOcclusionListener.Detail, AddEndOcclusionListener.Detail {
 
 	private Class internalClass;
 	private ArrayList collection;
@@ -57,6 +58,10 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddEnd
 	public <A extends MovableTurnable> EventCollection( Class<A> cls, A... groupMembers ) {
 		this.internalClass = cls;
 		this.collection = Collections.newArrayList( groupMembers );
+	}
+	private <A extends MovableTurnable> EventCollection( Class<A> cls, ArrayList groupMembers ) {
+		this.internalClass = cls;
+		this.collection = groupMembers;
 	}
 
 	Class getInternalClass() {
@@ -66,5 +71,36 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddEnd
 	ArrayList getValue() {
 		return this.collection;
 	}
+	public static <T extends MovableTurnable> ArrayList<T> getGroupOne( Object[] details, Class<T> cls ) {
+		for( Object detail : details ) {
+			if( detail instanceof EventCollection ) {
+				EventCollection eCollection = (EventCollection)detail;
+				if( eCollection.getInternalClass().equals( cls ) ) {
+					return eCollection.getValue();
+				}
+			}
+		}
+		return null;
+	}
+	public static <T extends MovableTurnable> ArrayList<T> getGroupTwo( Object[] details, Class<T> cls ) {
+		EventCollection firstCollection = null;
+		for( Object detail : details ) {
+			if( detail instanceof EventCollection ) {
+				EventCollection eCollection = (EventCollection)detail;
+				if( eCollection.getInternalClass().equals( cls ) && firstCollection != null ) {
+					return eCollection.getValue();
+				} else {
+					firstCollection = eCollection;
+				}
+			}
+		}
+		if( firstCollection != null ) {
+			return firstCollection.getValue();
+		}
+		return null;
+	}
 
+	public static <A extends MovableTurnable> EventCollection makeNew( Class<A> a, ArrayList<A> arrayList ) {
+		return new EventCollection( a, arrayList );
+	}
 }

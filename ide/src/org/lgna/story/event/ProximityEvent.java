@@ -45,15 +45,18 @@ package org.lgna.story.event;
 /**
  * @author Matt May
  */
-public class ProximityEvent extends AbstractEvent {
+public class ProximityEvent<A extends org.lgna.story.MovableTurnable, B extends org.lgna.story.MovableTurnable> extends AbstractEvent {
+	private A closeFromA;
+	private B closeFromB;
 
-	private final org.lgna.story.MovableTurnable[] entities;
-
-	public ProximityEvent( org.lgna.story.MovableTurnable... entities ) {
-		this.entities = entities;
+	public ProximityEvent( A closeFromA, B closeFromB ) {
+		this.closeFromA = closeFromA;
+		this.closeFromB = closeFromB;
 	}
-	public org.lgna.story.MovableTurnable[] getModels() {
-		return entities;
+	public A getCollidingFromGroupA() {
+		return this.closeFromA;
 	}
-
+	public B getCollidingFromGroupB() {
+		return this.closeFromB;
+	}
 }
