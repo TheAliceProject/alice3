@@ -46,25 +46,26 @@ package org.alice.interact.operations;
  * @author dculyba
  *
  */
-public class GetAGoodLookAtActionOperation extends org.lgna.croquet.ActionOperation {
-	
+public class GetAGoodLookAtEdit extends org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit{
 	private final org.lgna.story.Camera camera;
 	private final org.lgna.story.Entity toLookAt;
-	public GetAGoodLookAtActionOperation( org.lgna.croquet.Group group, org.lgna.story.Camera camera, org.lgna.story.Entity toLookAt)
-	{
-		super(group, java.util.UUID.fromString( "566dedf3-e612-4eed-8025-a49763feeeb4" ));
+	
+	public GetAGoodLookAtEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory cameraInstanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions, org.lgna.story.Camera camera, org.lgna.story.Entity toLookAt ) {
+		super( completionStep, cameraInstanceFactory, method, argumentExpressions );
 		this.camera = camera;
 		this.toLookAt = toLookAt;
 	}
+	public GetAGoodLookAtEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.camera = null;
+		this.toLookAt = null;
+	}
 	
-	@Override
-	protected void perform(org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.lgna.project.ast.UserField cameraField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(this.camera);
-		org.lgna.project.ast.UserField toLookAtField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(this.toLookAt);
-		org.alice.ide.instancefactory.ThisFieldAccessFactory cameraInstanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance(cameraField);
-		org.lgna.project.ast.Expression[] toLookAtExpressions = { new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), toLookAtField ) };
-		GetAGoodLookAtEdit edit = new GetAGoodLookAtEdit(step, cameraInstanceFactory, org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, toLookAtExpressions, camera, toLookAt );
-		step.commitAndInvokeDo( edit );
+	public org.lgna.story.Camera getCamera() {
+		return this.camera;
+	}
+	
+	public org.lgna.story.Entity getTarget() {
+		return this.toLookAt;
 	}
 }
