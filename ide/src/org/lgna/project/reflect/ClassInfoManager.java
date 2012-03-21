@@ -72,40 +72,10 @@ public class ClassInfoManager {
 			}
 		}
 	}
-	
-//	public static void addClassInfosFrom( java.io.File file ) {
-//		assert file != null;
-//		if( file.isDirectory() ) {
-//			for( final java.io.File f : file.listFiles() ) {
-//				String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( f );
-//				s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
-//					@Override
-//					protected ClassInfo initialize() {
-//						return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( f, ClassInfo.class );
-//					}
-//				} );
-//			}
-//		} else {
-//			try {
-//				final java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file ); 
-//				java.util.Enumeration< ? extends java.util.zip.ZipEntry > e = zipFile.entries();
-//				while( e.hasMoreElements() ) {
-//					java.util.zip.ZipEntry zipEntry = e.nextElement();
-//					final java.io.InputStream is = zipFile.getInputStream( zipEntry );
-//					String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( zipEntry.getName() );
-//					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
-//						@Override
-//						protected org.lgna.project.reflect.ClassInfo initialize() {
-//							return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( is, ClassInfo.class );
-//						}
-//					} );
-//				}
-//			} catch( java.io.IOException ioe ) {
-//				throw new RuntimeException( ioe );
-//			}
-//		}
-//	}
-	
+
+	public static java.util.Set<String> getKeys() {
+		return java.util.Collections.unmodifiableSet( s_map.keySet() );
+	}
 	public static ClassInfo getInstance( String clsName ) {
 		if( clsName != null ) {
 			edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > lazyClassInfo = s_map.get( clsName );

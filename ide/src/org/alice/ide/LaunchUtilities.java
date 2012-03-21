@@ -137,28 +137,7 @@ public class LaunchUtilities {
 			}
 		}
 		
-		java.io.InputStream is = org.alice.stageide.StageIDE.class.getResourceAsStream( "apis/org/lgna/story/classinfos.zip" );
-		if( is != null ) {
-			try {
-				org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom( is );
-			} catch( java.io.IOException ioe ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe );
-			}
-		}
-		
-//		java.io.File installDir = getInstallDirectory();
-//		if( installDir != null ) {
-//			java.io.File applicationRootDirectory = new java.io.File( installDir, "application" );
-//			if( applicationRootDirectory.exists() ) {
-//				for( String path : new String[] { "classinfos.zip", "classinfos" } ) {
-//					java.io.File file = new java.io.File( applicationRootDirectory, path );
-//					if( file.exists() ) {
-//						org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom( file );
-//						break;
-//					}
-//				}
-//			}
-//		}
+		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
 	}
 	private static Runnable createRunnable( final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
 		return new Runnable() {
