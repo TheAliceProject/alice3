@@ -189,8 +189,8 @@ public abstract class Scene extends Entity {
 	//TransformationListeners
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener transformationlistener, Entity[] shouldListenTo, AddPositionOrientationChangeListener.Detail... details ) {
-		this.getImplementation().getEventManager().addTransformationListener( transformationlistener, shouldListenTo );
+	public <A extends MovableTurnable> void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener transformationlistener, Class<A> a, AddPositionOrientationChangeListener.Detail... details ) {
+		this.getImplementation().getEventManager().addTransformationListener( transformationlistener, a, EventCollection.getGroupOne( details, a ), MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionStartListener( CollisionStartListener<A,B> collisionStartListener, Class<A> a, Class<B> b, AddStartCollisionListener.Detail... details ) {
 		this.getImplementation().getEventManager()
@@ -232,7 +232,7 @@ public abstract class Scene extends Entity {
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
 	public <A extends Model> void addViewEnterListener( ViewEnterListener listener, Class<A> a, AddEnterViewListener.Detail... details ) {
-		this.implementation.getEventManager().addViewEventListener( listener, a, EventCollection.getGroupOne( details, a ) );
+		this.implementation.getEventManager().addViewEventListener( listener, a, EventCollection.getGroupOne( details, a ), MultipleEventPolicy.getValue( details, MultipleEventPolicy.ENQUEUE ) );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
@@ -242,7 +242,7 @@ public abstract class Scene extends Entity {
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
 	public <A extends Model> void addViewExitListener( ViewExitListener listener, Class<A> a, AddEnterViewListener.Detail... details ) {
-		this.implementation.getEventManager().addViewEventListener( listener, a, EventCollection.getGroupOne( details, a ) );
+		this.implementation.getEventManager().addViewEventListener( listener, a, EventCollection.getGroupOne( details, a ), MultipleEventPolicy.getValue( details, MultipleEventPolicy.ENQUEUE ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()

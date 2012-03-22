@@ -1,7 +1,7 @@
 package org.lgna.story.event;
 
-public class ComesIntoViewEvent extends ViewEvent {
-	public ComesIntoViewEvent( org.lgna.story.Model model ) {
+public class ComesIntoViewEvent<A extends org.lgna.story.Model> extends ViewEvent<A> {
+	public ComesIntoViewEvent( A model ) {
 		super( model );
 	}
 }

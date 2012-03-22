@@ -81,18 +81,22 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 					for( Model m : checkMap.get( t ) ) {
 						for( Object occList : eventMap.get( t ).get( m ) ) {
 							if( check( occList, t, m ) ) {
-								LinkedList<MovableTurnable> models = new LinkedList<MovableTurnable>();
+								LinkedList<Model> models = new LinkedList<Model>();
 								if( camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( t ) ) ) {
-									models.add( (MovableTurnable)m );
-									models.add( (MovableTurnable)t );
+									models.add( (Model)m );
+									models.add( (Model)t );
 								} else {
-									models.add( (MovableTurnable)t );
-									models.add( (MovableTurnable)m );
+									models.add( (Model)t );
+									models.add( (Model)m );
 								}
 								if( occList instanceof OcclusionStartListener ) {
-									fireEvent( occList, new StartOcclusionEvent( models.getFirst(), models.getLast() ) );
+									StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new Model[ 0 ] ) );
+									event.setForeground( models.getFirst() );
+									fireEvent( occList, event, event );
 								} else if( occList instanceof OcclusionEndListener ) {
-									fireEvent( occList, new EndOcclusionEvent( models.getFirst(), models.getLast() ) );
+									StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new Model[ 0 ] ) );
+									event.setForeground( models.getFirst() );
+									fireEvent( occList, event, event );
 								}
 							}
 						}
@@ -126,7 +130,6 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 				}
 			}
 		}
-
 		private boolean check( Object occList, Model changedEntity, Model m ) {
 			if( occList instanceof OcclusionStartListener ) {
 				return !wereOccluded.get( m ).get( changedEntity ) && AabbOcclusionDetector.doesTheseOcclude( camera, m, changedEntity );

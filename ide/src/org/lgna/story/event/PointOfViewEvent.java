@@ -1,11 +1,14 @@
 package org.lgna.story.event;
 
-public class PointOfViewEvent extends AbstractEvent {
-	private final org.lgna.story.Entity entity;
-	public PointOfViewEvent( org.lgna.story.Entity entity ) {
+import org.lgna.story.MovableTurnable;
+
+public class PointOfViewEvent<A extends MovableTurnable> extends AbstractEvent {
+	private final A entity;
+
+	public PointOfViewEvent( A entity ) {
 		this.entity = entity;
 	}
-	public org.lgna.story.Entity getEntity() {
+	public A getMoved() {
 		return entity;
 	}
 }
