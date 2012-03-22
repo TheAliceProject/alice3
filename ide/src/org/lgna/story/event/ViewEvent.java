@@ -1,12 +1,12 @@
 package org.lgna.story.event;
 
-public abstract class ViewEvent extends AbstractEvent {
-	private final org.lgna.story.Model model;
+public abstract class ViewEvent<A extends org.lgna.story.Model> extends AbstractEvent {
+	private final A a;
 
-	public ViewEvent( org.lgna.story.Model model ) {
-		this.model = model;
+	public ViewEvent( A model ) {
+		this.a = model;
 	}
-	public org.lgna.story.Model getModel() {
-		return model;
+	public A getEnteringView() {
+		return a;
 	}
 }

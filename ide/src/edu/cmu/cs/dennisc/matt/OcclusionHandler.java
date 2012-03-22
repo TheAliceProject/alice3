@@ -8,7 +8,6 @@ import java.util.List;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Model;
-import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionEvent;
@@ -81,18 +80,22 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 					for( Model m : checkMap.get( t ) ) {
 						for( Object occList : eventMap.get( t ).get( m ) ) {
 							if( check( occList, t, m ) ) {
-								LinkedList<MovableTurnable> models = new LinkedList<MovableTurnable>();
+								LinkedList<Model> models = new LinkedList<Model>();
 								if( camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( t ) ) ) {
-									models.add( (MovableTurnable)m );
-									models.add( (MovableTurnable)t );
+									models.add( (Model)m );
+									models.add( (Model)t );
 								} else {
-									models.add( (MovableTurnable)t );
-									models.add( (MovableTurnable)m );
+									models.add( (Model)t );
+									models.add( (Model)m );
 								}
 								if( occList instanceof OcclusionStartListener ) {
-									fireEvent( occList, new StartOcclusionEvent( models.getFirst(), models.getLast() ) );
+									StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new Model[ 0 ] ) );
+									event.setForeground( models.getFirst() );
+									fireEvent( occList, event, event );
 								} else if( occList instanceof OcclusionEndListener ) {
-									fireEvent( occList, new EndOcclusionEvent( models.getFirst(), models.getLast() ) );
+									StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new Model[ 0 ] ) );
+									event.setForeground( models.getFirst() );
+									fireEvent( occList, event, event );
 								}
 							}
 						}
@@ -105,18 +108,22 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 				for( Model m : checkMap.get( changedEntity ) ) {
 					for( Object occList : eventMap.get( changedEntity ).get( m ) ) {
 						if( check( occList, (Model)changedEntity, m ) ) {
-							LinkedList<MovableTurnable> models = new LinkedList<MovableTurnable>();
+							LinkedList<Model> models = new LinkedList<Model>();
 							if( camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( m ) ) < camera.getDistanceTo( (AbstractTransformableImp)ImplementationAccessor.getImplementation( changedEntity ) ) ) {
-								models.add( (MovableTurnable)m );
-								models.add( (MovableTurnable)changedEntity );
+								models.add( (Model)m );
+								models.add( (Model)changedEntity );
 							} else {
-								models.add( (MovableTurnable)changedEntity );
-								models.add( (MovableTurnable)m );
+								models.add( (Model)changedEntity );
+								models.add( (Model)m );
 							}
 							if( occList instanceof OcclusionStartListener ) {
-								fireEvent( occList, new StartOcclusionEvent( models.getFirst(), models.getLast() ) );
+								StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new Model[ 0 ] ) );
+								event.setForeground( models.getFirst() );
+								fireEvent( occList, event, event );
 							} else if( occList instanceof OcclusionEndListener ) {
-								fireEvent( occList, new EndOcclusionEvent( models.getFirst(), models.getLast() ) );
+								StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new Model[ 0 ] ) );
+								event.setForeground( models.getFirst() );
+								fireEvent( occList, event, event );
 							}
 						}
 					}
@@ -126,7 +133,6 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 				}
 			}
 		}
-
 		private boolean check( Object occList, Model changedEntity, Model m ) {
 			if( occList instanceof OcclusionStartListener ) {
 				return !wereOccluded.get( m ).get( changedEntity ) && AabbOcclusionDetector.doesTheseOcclude( camera, m, changedEntity );

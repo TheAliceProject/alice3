@@ -1,11 +1,9 @@
 package edu.cmu.cs.dennisc.matt;
 
-import org.lgna.story.event.OcclusionEvent;
+public class EndOcclusionEvent<A extends org.lgna.story.Model, B extends org.lgna.story.Model> extends org.lgna.story.event.OcclusionEvent<A,B> {
 
-public class EndOcclusionEvent extends OcclusionEvent {
-
-	public EndOcclusionEvent( org.lgna.story.MovableTurnable foreground, org.lgna.story.MovableTurnable background ) {
-		super( foreground, background );
+	public EndOcclusionEvent( A a, B b ) {
+		super( a, b );
 	}
 
 }

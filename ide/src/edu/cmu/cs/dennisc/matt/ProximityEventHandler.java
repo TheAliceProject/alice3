@@ -110,9 +110,9 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 						models.add( changedEntity );
 						models.add( m );
 						if( proxList instanceof ProximityEnterListener ) {
-							fireEvent( proxList, EventBuilder.buildEvent( EnterProximityEvent.class, proxList, models.toArray( new MovableTurnable[ 0 ] ) ) );
+							fireEvent( proxList, EventBuilder.buildProximityEvent( EnterProximityEvent.class, proxList, models.toArray( new MovableTurnable[ 0 ] ) ) );
 						} else if( proxList instanceof ProximityExitListener ) {
-							fireEvent( proxList, EventBuilder.buildEvent( ExitProximityEvent.class, proxList, models.toArray( new MovableTurnable[ 0 ] ) ) );
+							fireEvent( proxList, EventBuilder.buildProximityEvent( ExitProximityEvent.class, proxList, models.toArray( new MovableTurnable[ 0 ] ) ) );
 						}
 					}
 					boolean areTheseClose = AabbCollisionDetector.doTheseCollide( m, changedEntity, distMap.get( proxList ) );

@@ -89,7 +89,8 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 		}
 	}
 
-	public <A extends Model> void addViewEventListener( Object listener, Class<A> a, ArrayList<A> models ) {
+	public <A extends Model> void addViewEventListener( Object listener, ArrayList<A> models, Class<A> a, MultipleEventPolicy policy ) {
+		super.addSoloListener( listener, models, a, policy );
 		registerIsFiringMap( listener );
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
 		for( Model m : models ) {

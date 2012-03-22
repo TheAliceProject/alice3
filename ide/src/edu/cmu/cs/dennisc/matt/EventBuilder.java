@@ -45,12 +45,25 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lgna.story.Entity;
+import org.lgna.story.Model;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionStartListener;
+import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.EndCollisionEvent;
+import org.lgna.story.event.EnterProximityEvent;
+import org.lgna.story.event.ExitProximityEvent;
+import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.OcclusionEvent;
+import org.lgna.story.event.PointOfViewChangeListener;
+import org.lgna.story.event.ProximityEnterListener;
+import org.lgna.story.event.ProximityEvent;
 import org.lgna.story.event.StartCollisionEvent;
+import org.lgna.story.event.ViewEnterListener;
+import org.lgna.story.event.ViewEvent;
+import org.lgna.story.event.ViewExitListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -61,40 +74,101 @@ public class EventBuilder {
 
 	private static HashMap<Object,ArrayList<ArrayList<? extends Object>>> collectionMap = Collections.newHashMap();
 	private static HashMap<Object,Class<?>[]> classMap = Collections.newHashMap();
-	static Class<?>[] arr = { CollisionStartListener.class };
-	private static ArrayList<Class<?>> handledList = Collections.newArrayList( arr );
+
+	private static class EventPair<A, B> {
+		A first;
+		B second;
+
+		public EventPair( A first, B second ) {
+			this.first = first;
+			this.second = second;
+		}
+
+		protected A getFirst() {
+			return first;
+		}
+		protected B getSecond() {
+			return second;
+		}
+	}
 
 	public static void register( Object listener, Class<?>[] clsArr, ArrayList<ArrayList<?>> list ) {
-		boolean check = false;
-		for( Class<?> cls : handledList ) {
-			if( listener.getClass().isAssignableFrom( cls ) ) {
-				check = true;
-			}
-		}
-		if( check ) {
-			return;
-		}
-		if( collectionMap.keySet().contains( listener ) ) {
-			return;
-		}
-
 		collectionMap.put( listener, list );
 		classMap.put( listener, clsArr );
 	}
 
-	public static <A> A buildEvent( Class<A> event, Object listener, Object[] array ) {
-		if( event == StartCollisionEvent.class || event == EndCollisionEvent.class ) {
+	@SuppressWarnings("unchecked")
+	private static <A> A buildEvent( Class<A> event, Object listener, Object[] array ) {
+		if( CollisionEvent.class.isAssignableFrom( event ) ) {
 			if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
 				if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
 					Class<? extends MovableTurnable> clsOne = (Class<? extends MovableTurnable>)classMap.get( listener )[ 0 ];
 					Class<? extends MovableTurnable> clsTwo = (Class<? extends MovableTurnable>)classMap.get( listener )[ 1 ];
-					return (A)buildCollisionEvent( clsOne, clsTwo, listener, array );
+					return (A)makeCollisionEvent( clsOne, clsTwo, listener, array );
+				}
+			}
+		} else if( ProximityEvent.class.isAssignableFrom( event ) ) {
+			if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
+				if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
+					Class<? extends MovableTurnable> clsOne = (Class<? extends MovableTurnable>)classMap.get( listener )[ 0 ];
+					Class<? extends MovableTurnable> clsTwo = (Class<? extends MovableTurnable>)classMap.get( listener )[ 1 ];
+					return (A)makeProximityEvent( clsOne, clsTwo, listener, array );
+				}
+			}
+		} else if( ViewEvent.class.isAssignableFrom( event ) ) {
+			if( Model.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
+				Class<? extends Model> clsOne = (Class<? extends Model>)classMap.get( listener )[ 0 ];
+				return (A)makeViewEvent( clsOne, listener, array );
+			}
+		} else if( OcclusionEvent.class.isAssignableFrom( event ) ) {
+			if( Model.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
+				if( Model.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
+					Class<? extends Model> clsOne = (Class<? extends Model>)classMap.get( listener )[ 0 ];
+					Class<? extends Model> clsTwo = (Class<? extends Model>)classMap.get( listener )[ 1 ];
+					return (A)makeCollisionEvent( clsOne, clsTwo, listener, array );
 				}
 			}
 		}
+		System.out.println( "ATTEMPTED TO MAKE UNHANDLED EVENT" );
 		return null;
 	}
-	private static <A extends MovableTurnable, B extends MovableTurnable> CollisionEvent<A,B> buildCollisionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+	@SuppressWarnings("unchecked")
+	private static <A extends Model> ViewEvent<A> makeViewEvent( Class<A> clsOne, Object listener, Object[] array ) {
+		if( listener instanceof ViewEnterListener ) {
+			return new ComesIntoViewEvent<A>( (A)array[ 0 ] );
+		} else if( listener instanceof ViewExitListener ) {
+			return new LeavesViewEvent<A>( (A)array[ 0 ] );
+		} else {
+			System.out.println( "ATTEMPTED TO MAKE UNHANDLED COLLISION EVENT" );
+			return null;
+		}
+	}
+
+	private static <A extends MovableTurnable, B extends MovableTurnable> ProximityEvent<A,B> makeProximityEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
+		if( listener instanceof ProximityEnterListener ) {
+			return new EnterProximityEvent<A,B>( pair.getFirst(), pair.getSecond() );
+		} else if( listener instanceof ProximityEnterListener ) {
+			return new ExitProximityEvent<A,B>( pair.getFirst(), pair.getSecond() );
+		} else {
+			System.out.println( "ATTEMPTED TO MAKE UNHANDLED COLLISION EVENT" );
+			return null;
+		}
+	}
+
+	private static <A extends MovableTurnable, B extends MovableTurnable> CollisionEvent<A,B> makeCollisionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
+		if( listener instanceof CollisionStartListener ) {
+			return new StartCollisionEvent<A,B>( pair.getFirst(), pair.getSecond() );
+		} else if( listener instanceof CollisionEndListener ) {
+			return new EndCollisionEvent<A,B>( pair.getFirst(), pair.getSecond() );
+		} else {
+			System.out.println( "ATTEMPTED TO MAKE UNHANDLED PROXIMITY EVENT" );
+			return null;
+		}
+	}
+	@SuppressWarnings("unchecked")
+	private static <A, B> EventPair<A,B> pairedEvent( Class<A> a, Class<B> b, Object listener, Object[] array ) {
 		assert array.length == 2;
 		A first = null;
 		B second = null;
@@ -110,26 +184,26 @@ public class EventBuilder {
 			first = (A)array[ 1 ];
 			second = (B)array[ 0 ];
 		}
-		//		for( Object o : array ) {
-		//			if( collectionMap.get( listener ).get( 0 ).contains( o ) ) {
-		//				if(collectionMap.get( listener ).get( 1 ).contains( o ))
-		//				first = (A)o;
-		//			}
-		//			if( collectionMap.get( listener ).get( 1 ).contains( o ) ) {
-		//				second = (B)o;
-		//			}
-		//		}
-		if( listener instanceof CollisionStartListener ) {
-			return new StartCollisionEvent<A,B>( first, second );
-		} else if( listener instanceof CollisionEndListener ) {
-			return new EndCollisionEvent<A,B>( first, second );
-		} else {
-			System.out.println( "ATTEMPTED TO MAKE UNHANDLED COLLISION EVENT" );
-			return null;
-		}
+		return new EventPair<A,B>( first, second );
 	}
 	public static void ammend( Object key, int group, Object newObject ) {
 		ArrayList temp = Collections.newArrayList( newObject );
 		collectionMap.get( key ).get( group ).addAll( temp );
+	}
+
+	public static <A> A buildCollisionEvent( Class<A> eventClass, Object colList, MovableTurnable[] array ) {
+		return buildEvent( eventClass, colList, array );
+	}
+
+	public static <A> A buildProximityEvent( Class<A> eventClass, Object proxList, MovableTurnable[] array ) {
+		return buildEvent( eventClass, proxList, array );
+	}
+
+	public static <A> A buildViewEvent( Class<A> eventClass, PointOfViewChangeListener listener, Entity[] array ) {
+		return buildEvent( eventClass, listener, array );
+	}
+
+	public static <A> A buildOcclusionEvent( Class<A> eventClass, PointOfViewChangeListener listener, Entity[] array ) {
+		return buildEvent( eventClass, listener, array );
 	}
 }

@@ -13,7 +13,6 @@ import org.lgna.story.AddExitProximityEventListener;
 import org.lgna.story.AddExitViewListener;
 import org.lgna.story.AddPositionOrientationChangeListener;
 import org.lgna.story.AddStartCollisionListener;
-import org.lgna.story.Entity;
 import org.lgna.story.Scene;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
@@ -25,7 +24,7 @@ import org.lgna.story.event.ViewExitListener;
 
 public class TransformationEventListenerMenu extends EventListenerMenuModel {
 
-	public static final JavaMethod ADD_TRANSFORMATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addPointOfViewChangeListener", PointOfViewChangeListener.class, Entity[].class, AddPositionOrientationChangeListener.Detail[].class );
+	public static final JavaMethod ADD_TRANSFORMATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addPointOfViewChangeListener", PointOfViewChangeListener.class, Class.class, AddPositionOrientationChangeListener.Detail[].class );
 	public static final JavaMethod ADD_START_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addCollisionStartListener", CollisionStartListener.class, Class.class, Class.class, AddStartCollisionListener.Detail[].class );
 	public static final JavaMethod ADD_END_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addCollisionEndListener", CollisionEndListener.class, Class.class, Class.class, AddEndCollisionListener.Detail[].class );
 	public static final JavaMethod ADD_ENTER_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addProximityEnterListener", ProximityEnterListener.class, Class.class, Class.class, Double.class, AddEnterProximityEventListener.Detail[].class );

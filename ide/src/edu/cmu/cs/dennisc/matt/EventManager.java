@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.GlobalDragAdapter;
-import org.lgna.story.Entity;
 import org.lgna.story.Model;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
@@ -163,16 +162,16 @@ public class EventManager {
 		this.mouseHandler.addListener( listener, null, policy, targets );
 	}
 
-	public void addTransformationListener( PointOfViewChangeListener transformationlistener, Entity[] shouldListenTo ) {
-		this.transHandler.addTransformationListener( transformationlistener, shouldListenTo );
+	public <A extends MovableTurnable> void addTransformationListener( PointOfViewChangeListener transformationlistener, Class<A> a, ArrayList<A> shouldListenTo, MultipleEventPolicy policy ) {
+		this.transHandler.addTransformationListener( transformationlistener, a, shouldListenTo, policy );
 	}
 
 	//	public void addOcclusionEventListener( OcclusionListener occlusionEventListener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo) {
 	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	//	}
 
-	public <A extends Model> void addViewEventListener( Object listener, Class<A> a, ArrayList<A> entities ) {
-		this.viewHandler.addViewEventListener( listener, a, entities );
+	public <A extends Model> void addViewEventListener( Object listener, Class<A> a, ArrayList<A> entities, MultipleEventPolicy policy ) {
+		this.viewHandler.addViewEventListener( listener, entities, a, policy );
 	}
 
 	public void addDragAdapter() {

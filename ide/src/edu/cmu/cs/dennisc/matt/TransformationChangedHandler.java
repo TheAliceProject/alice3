@@ -51,8 +51,34 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 
 	protected abstract void check( Entity changedEntity );
 
-	protected <A extends MovableTurnable, B extends MovableTurnable> ArrayList[] addPairedListener( Object listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
+	protected <A extends MovableTurnable> ArrayList<A> addSoloListener( Object listener, ArrayList<A> groupOne, Class<A> a, MultipleEventPolicy policy ) {
+		registerIsFiringMap( listener );
+		registerPolicyMap( (L)listener, policy );
+		Class<?>[] clsArr = { a };
+		ArrayList<ArrayList<? extends Object>> list;
+		ArrayList firstList;
+		Class[] checkClassArr = { null };
+		if( groupOne == null ) {
+			firstList = scene.findAll( a );
+			checkClassArr[ 0 ] = a;
+		} else {// if( arrayList != null && arrayList2 != null ) {
+			firstList = groupOne;
+		}
+		if( checkClassArr[ 0 ] != null || checkClassArr[ 1 ] != null ) {
+			checkNewMap.put( listener, checkClassArr );
+		}
+		EventBuilder.register( listener, clsArr, firstList );
+		List<Entity> allObserving = (List<Entity>)Collections.newArrayList( (Collection<? extends Entity>)firstList );
+		for( Entity m : allObserving ) {
+			if( !modelList.contains( m ) ) {
+				modelList.add( m );
+				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
+			}
+		}
+		return firstList;
+	}
 
+	protected <A extends MovableTurnable, B extends MovableTurnable> ArrayList[] addPairedListener( Object listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
 		registerIsFiringMap( listener );
 		registerPolicyMap( (L)listener, policy );
 		Class<?>[] clsArr = { a, b };
@@ -112,10 +138,5 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
 		Entity source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
 		fireAllTargeted( source );
-		//		if( source instanceof Turnable ) {
-		//			fireAllTargeted( (Turnable)source );
-		//		} else {
-		//			Logger.severe( source );
-		//		}
 	}
 }
