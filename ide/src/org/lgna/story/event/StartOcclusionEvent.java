@@ -1,9 +1,9 @@
 package org.lgna.story.event;
 
-public class StartOcclusionEvent extends OcclusionEvent {
+public class StartOcclusionEvent<A extends org.lgna.story.Model, B extends org.lgna.story.Model> extends OcclusionEvent<A,B> {
 
-	public StartOcclusionEvent( org.lgna.story.MovableTurnable foreground, org.lgna.story.MovableTurnable background ) {
-		super( foreground, background );
+	public StartOcclusionEvent( A a, B b ) {
+		super( a, b );
 	}
 
 }
