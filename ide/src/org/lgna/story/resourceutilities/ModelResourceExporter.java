@@ -573,10 +573,11 @@ public class ModelResourceExporter {
 			}
 			sb.append("\t}\n");
 		}
+		sb.append("\n\tpublic org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {\n");
+		sb.append("\t\treturn "+this.jointAndVisualFactory.getCanonicalName()+".getInstance( this );\n");
+		sb.append("\t}\n");
 		sb.append("\tpublic "+this.classData.implementationClass.getCanonicalName()+" createImplementation( "+this.classData.abstractionClass.getCanonicalName()+" abstraction ) {\n");
 		sb.append("\t\treturn new "+this.classData.implementationClass.getCanonicalName() +"( abstraction, "+this.jointAndVisualFactory.getCanonicalName()+".getInstance( this ) );\n");
-		
-		
 		sb.append("\t}\n");
 		sb.append("}\n");
 		
@@ -863,23 +864,24 @@ public class ModelResourceExporter {
 			sourceDirectory += File.separator;
         }
 		xmlFile = getXMLFile(resourceDirectory);
-		if (rebuildXmlFile || !xmlFile.exists() || xmlFile.length() == 0) {
+		if ((rebuildXmlFile || !xmlFile.exists() || xmlFile.length() == 0) && resourceJarStream != null) {
 			xmlFile = createXMLFile(resourceDirectory);
 		}
+		boolean shouldAddResources = resourceJarStream != null;
 		boolean addResources = false;
 		File resourceDir = null;
-		if (xmlFile != null) {
+		if (resourceJarStream != null && xmlFile != null) {
 			addResources = true;
 			resourceDir = xmlFile.getParentFile();
 			List<File> thumbnailFiles = createThumbnails(resourceDirectory);
 		}
-		else {
+		else if (shouldAddResources){
 			System.err.println("FAILED TO MAKE XML FILE FOR "+this.getName()+"--NOT ADDING IT TO JARS.");
 			return false;
 		}
 		boolean addClassData = false;
 		File sourceDir = null;
-		boolean shouldAddClassData = this.classData != null;
+		boolean shouldAddClassData = this.classData != null && sourceJarStream != null;
 		if (shouldAddClassData) {
 			sourceDir = getJavaCodeDir(sourceDirectory);
 			javaFile = getJavaFile(sourceDirectory);
@@ -906,32 +908,33 @@ public class ModelResourceExporter {
 			}
 			
 		}
-		if (addResources && (shouldAddClassData && addClassData)) {
+		if (shouldAddResources && addResources) {
 			try
 			{
-				System.out.println("Adding "+sourceDir);
-				add(sourceDir, sourceJarStream, sourceDirectory, false);
 				System.out.println("Adding "+resourceDir);
 				add(resourceDir, resourceJarStream, resourceDirectory, true);
-				return true;
 			}
 			catch (Exception e)
 			{
-				System.err.println("FAILED ADDING DATA TO JARS: ");
+				System.err.println("FAILED ADDING RESROUCES TO RESOURCE JAR: ");
 				e.printStackTrace();
 				return false;
 			}
 		}
-		else {
-			System.err.println("NOT ADDING "+this.getName()+" TO JARS.");
-			if (!addResources) {
-				System.err.println("FAILED TO MAKE RESOURCES FOR "+this.getName());
+		if (shouldAddClassData && addClassData) {
+			try
+			{
+				System.out.println("Adding "+sourceDir);
+				add(sourceDir, sourceJarStream, sourceDirectory, false);
 			}
-			if (shouldAddClassData && !addClassData) {
-				System.err.println("FAILED TO MAKE JAVA CODE FOR "+this.getName());
+			catch (Exception e)
+			{
+				System.err.println("FAILED ADDING SOURCE TO SOURCE JAR: ");
+				e.printStackTrace();
+				return false;
 			}
-			return false;
 		}
+		return true;
 	}
 	
 	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos)
