@@ -96,35 +96,35 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		this.visualData.setSGParent( sgComposite );
 	}
 	
-	public void setNewJointedModelFactory(JointImplementationAndVisualDataFactory< R > factory) {
-		if (factory != this.factory) {
-			java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > mapIdToOriginalTransform = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
-				mapIdToOriginalTransform.put(jointEntry.getKey(), jointEntry.getValue().getOriginalTransformation());
-			}
-			edu.cmu.cs.dennisc.scenegraph.Composite originalParent = this.visualData.getSGParent();
-			this.visualData.setSGParent(null);
-			this.factory = factory;
-			this.visualData = this.factory.createVisualData( this );
-			this.visualData.setSGParent(originalParent);
-			matchNewDataToExistingJoints(mapIdToOriginalTransform);
-		}
-	}
-	
-//	public void setNewResource(JointedModelResource resource) {
-//		if (resource != this.getResource()) {
+//	public void setNewJointedModelFactory(JointImplementationAndVisualDataFactory< R > factory) {
+//		if (factory != this.factory) {
 //			java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > mapIdToOriginalTransform = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 //			for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
 //				mapIdToOriginalTransform.put(jointEntry.getKey(), jointEntry.getValue().getOriginalTransformation());
 //			}
 //			edu.cmu.cs.dennisc.scenegraph.Composite originalParent = this.visualData.getSGParent();
 //			this.visualData.setSGParent(null);
-//			this.factory = this.factory.getFactoryForResource((R)resource);
+//			this.factory = factory;
 //			this.visualData = this.factory.createVisualData( this );
 //			this.visualData.setSGParent(originalParent);
 //			matchNewDataToExistingJoints(mapIdToOriginalTransform);
 //		}
 //	}
+	
+	public void setNewResource(JointedModelResource resource) {
+		if (resource != this.getResource()) {
+			java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > mapIdToOriginalTransform = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
+				mapIdToOriginalTransform.put(jointEntry.getKey(), jointEntry.getValue().getOriginalTransformation());
+			}
+			edu.cmu.cs.dennisc.scenegraph.Composite originalParent = this.visualData.getSGParent();
+			this.visualData.setSGParent(null);
+			this.factory = (JointImplementationAndVisualDataFactory<R>)resource.getImplementationAndVisualFactory();
+			this.visualData = this.factory.createVisualData( this );
+			this.visualData.setSGParent(originalParent);
+			matchNewDataToExistingJoints(mapIdToOriginalTransform);
+		}
+	}
 	
 	public org.lgna.story.resources.JointedModelResource getVisualResource() {
 		return this.factory.getResource();

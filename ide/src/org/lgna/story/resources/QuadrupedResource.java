@@ -92,6 +92,6 @@ public interface QuadrupedResource extends JointedModelResource {
 
 	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory< org.lgna.story.resources.QuadrupedResource > getImplementationAndVisualFactory();
+//	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory< org.lgna.story.resources.QuadrupedResource > getImplementationAndVisualFactory();
 	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.Quadruped abstraction );
 }
