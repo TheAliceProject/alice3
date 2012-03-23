@@ -70,6 +70,7 @@ public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ModelResourceFillerInner() );
 		//this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
 
 		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Entity.class );

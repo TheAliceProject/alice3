@@ -49,7 +49,7 @@ package org.lgna.story.implementation.alice;
  * @author Dennis Cosgrove
  */
 public class JointImplementation extends org.lgna.story.implementation.JointImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
+	private edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
 	private final org.lgna.story.resources.JointId jointId;
 	public JointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
 		super( jointedModelImplementation );
@@ -85,5 +85,21 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox(null, false);
 		rv.addBoundingBox(jointBBox, trans);
 		return rv;
+	}
+	
+	@Override
+	public void replaceWithJoint(org.lgna.story.implementation.JointImp newJoint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = this.getLocalTransformation();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 dif = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createMultiplication(edu.cmu.cs.dennisc.math.AffineMatrix4x4.createInverse(originalTransform), currentTransform);
+		if (!dif.isWithinReasonableEpsilonOfIdentity()) {
+			newJoint.setLocalTransformation(edu.cmu.cs.dennisc.math.AffineMatrix4x4.createMultiplication(newJoint.getLocalTransformation(), dif));
+		}
+		edu.cmu.cs.dennisc.scenegraph.Joint originalSgJoint = this.sgJoint;
+		this.sgJoint = (edu.cmu.cs.dennisc.scenegraph.Joint)newJoint.getSgComposite();
+		for (edu.cmu.cs.dennisc.scenegraph.Component child : originalSgJoint.getComponents()) {
+			if (!(child instanceof edu.cmu.cs.dennisc.scenegraph.Joint)) {
+				child.setParent(this.sgJoint);
+			}
+		}
 	}
 }

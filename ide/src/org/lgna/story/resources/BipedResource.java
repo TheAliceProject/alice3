@@ -43,6 +43,8 @@
 
 package org.lgna.story.resources;
 
+import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
+
 
 /**
  * @author Dennis Cosgrove
@@ -84,5 +86,6 @@ public interface BipedResource extends JointedModelResource {
 	
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
+	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > getImplementationAndVisualFactory();
 	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction );
 }

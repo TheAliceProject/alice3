@@ -268,6 +268,40 @@ public class AliceResourceUtilties {
 		rv.scale.setValue(scaleCopy);
 		return rv;
 	}
+	
+	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual createReplaceVisualElements( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal, Object resource) {
+		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgToReplaceWith = getVisual(resource);
+	    edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgToReplaceWith.geometries.getValue();
+	    edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgToReplaceWith.weightedMeshes.getValue();
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = sgToReplaceWith.baseBoundingBox.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Joint sgNewSkeletonRoot = sgToReplaceWith.skeleton.getValue();
+	    final edu.cmu.cs.dennisc.scenegraph.Joint sgNewSkeleton;
+	    if (sgNewSkeletonRoot != null)
+	    {
+	    	sgNewSkeleton = (edu.cmu.cs.dennisc.scenegraph.Joint)sgNewSkeletonRoot.newCopy();
+	    }
+	    else
+	    {
+	    	sgNewSkeleton = null;
+	    }
+	    if (sgNewSkeleton != null) {
+	    	sgNewSkeleton.setParent(sgOriginal.getParent());
+	    }
+	   
+	    
+	    
+//	    if (sgOriginal.skeleton.getValue() != null) {
+//	    	sgOriginal.skeleton.getValue().setParent(null);
+//	    }
+	    sgOriginal.skeleton.setValue(sgNewSkeleton);
+	    
+	    sgOriginal.geometries.setValue( sgGeometries );
+	    sgOriginal.weightedMeshes.setValue( sgWeightedMeshes );
+	    
+	    sgOriginal.baseBoundingBox.setValue(bbox);
+		return sgOriginal;
+	}
+	
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointedModelResource resource, org.lgna.story.resources.JointId jointId ) {
 		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal = getVisual( resource );
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();

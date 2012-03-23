@@ -21,5 +21,6 @@ public interface SwimmerResource extends JointedModelResource {
 
 	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
 	
+	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory< org.lgna.story.resources.SwimmerResource > getImplementationAndVisualFactory();
 	public org.lgna.story.implementation.SwimmerImp createImplementation( org.lgna.story.Swimmer abstraction );
 }

@@ -68,6 +68,11 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	private JointImplementationAndVisualDataFactory( org.lgna.story.resources.JointedModelResource resource ) {
 		this.resource = resource;
 	}
+	
+	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory getFactoryForResource(org.lgna.story.resources.JointedModelResource resource) {
+		return JointImplementationAndVisualDataFactory.getInstance(resource);
+	}
+	
 	public org.lgna.story.resources.JointedModelResource getResource() {
 		return this.resource;
 	}

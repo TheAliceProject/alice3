@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,49 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.properties;
 
-package org.lgna.story.implementation.sims2;
-
-import org.lgna.story.resources.JointedModelResource;
-
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-
+import org.alice.ide.croquet.models.StandardExpressionState;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class NebulousVisualData< M extends edu.cmu.cs.dennisc.nebulous.Model> implements org.lgna.story.implementation.JointedModelImp.VisualData {
-	private final M nebModel;
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { new edu.cmu.cs.dennisc.scenegraph.Visual() };
-	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance() };
-	public NebulousVisualData( M nebModel ) {
-		this.nebModel = nebModel;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebModel } );
-		this.getSgVisuals()[ 0 ].frontFacingAppearance.setValue( sgAppearances[ 0 ] );
-	}
-	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
-		return this.sgAppearances;
-	}
-	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
-	public M getNebModel() {
-		return this.nebModel;
-	}
-	public double getBoundingSphereRadius() {
-		return 1.0;
+public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.story.resources.JointedModelResource, org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.JointedModel, ? extends org.lgna.story.resources.JointedModelResource >> {
+	
+	public ResourcePropertyAdapter(org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.JointedModel, ? extends org.lgna.story.resources.JointedModelResource > instance, StandardExpressionState expressionState) 
+	{
+		super("Visual Resource", instance, expressionState);
 	}
 	
-	public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
-		nebModel.setSGParent(parent);
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
-			sgVisual.setParent( parent );
+
+	@Override
+	public void setValue(org.lgna.story.resources.JointedModelResource value) 
+	{
+		super.setValue(value);
+		if (this.instance != null)
+		{
+			this.instance.setNewResource(value);
 		}
 	}
 
-	public Composite getSGParent() {
-		return nebModel.getSGParent();
+	@Override
+	public Class<org.lgna.story.resources.JointedModelResource> getPropertyType() 
+	{
+		return org.lgna.story.resources.JointedModelResource.class;
 	}
 
+	@Override
+	public org.lgna.story.resources.JointedModelResource getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getResource();
+		}
+		return null;
+	}
 	
+	@Override
+	public org.lgna.story.resources.JointedModelResource getValueCopyIfMutable() 
+	{
+		return this.getValue();
+	}
+
 }

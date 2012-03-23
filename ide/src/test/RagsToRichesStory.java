@@ -182,14 +182,14 @@ class SnowScene extends Scene {
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
-		this.snow.setVehicle( this );
+//		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
-		this.redCone.setVehicle( this );
-		this.greenCone.setVehicle( this );
-		this.blueCone.setVehicle( this );
+//		this.redCone.setVehicle( this );
+//		this.greenCone.setVehicle( this );
+//		this.blueCone.setVehicle( this );
 		//		this.armoire.setVehicle( this );
 		this.camera.setVehicle( this );
-		this.susan.setVehicle( this );
+//		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
 
 		this.redCone.setPaint( Color.RED );
@@ -209,7 +209,7 @@ class SnowScene extends Scene {
 		//		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
 
 		this.ogre.move( MoveDirection.LEFT, 2.0 );
-		this.susan.turn( TurnDirection.LEFT, 0.25 );
+//		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
@@ -295,28 +295,31 @@ class SnowScene extends Scene {
 		//		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
 		//		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );
 		while( true ) {
-			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+//			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+//			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+			this.ogre.delay(1);
 			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-			this.redCone.turn( TurnDirection.FORWARD, 1.0 );
-			this.blueCone.roll( RollDirection.LEFT, 1.0 );
+			this.ogre.setResource(org.lgna.story.resources.biped.Alien.ALIEN);
+			this.ogre.delay(1);
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
-			org.lgna.common.DoTogether.invokeAndWait( new Runnable() {
-				public void run() {
-					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
-				}
-			}, new Runnable() {
-				public void run() {
-					SnowScene.this.greenCone.move( MoveDirection.UP, 1.0 );
-				}
-			}, new Runnable() {
-				public void run() {
-					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
-				}
-			} );
-			this.redCone.move( MoveDirection.DOWN, 1.0, Move.duration( 0.333 ) );
-			this.greenCone.move( MoveDirection.DOWN, 1.0, Move.duration( 0.333 ) );
-			this.blueCone.move( MoveDirection.DOWN, 1.0, Move.duration( 0.333 ) );
+			this.ogre.setResource(new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(), BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ));
+			
+//			org.lgna.common.DoTogether.invokeAndWait( new Runnable() {
+//				public void run() {
+//					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
+//				}
+//			}, new Runnable() {
+//				public void run() {
+//					SnowScene.this.greenCone.move( MoveDirection.UP, 1.0 );
+//				}
+//			}, new Runnable() {
+//				public void run() {
+//					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
+//				}
+//			} );
+//			this.redCone.move( MoveDirection.DOWN, 1.0, Move.duration( 0.333 ) );
+//			this.greenCone.move( MoveDirection.DOWN, 1.0, Move.duration( 0.333 ) );
+//			this.blueCone.move( MoveDirection.DOWN, 1.0, Move.duration( 0.333 ) );
 		}
 	}
 }
@@ -327,9 +330,8 @@ class SnowScene extends Scene {
 class RagsToRichesStory extends Program {
 
 	private final Camera camera = new Camera();
-	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(),
-
-	BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ) );
+//	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(), BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ) );
+	private final MyBiped susan = new MyBiped( org.lgna.story.resources.biped.Alien.ALIEN );
 	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN_OGRE );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
@@ -337,12 +339,19 @@ class RagsToRichesStory extends Program {
 	public void playOutStory() {
 		//		this.setActiveScene( this.desertScene );
 		//		this.desertScene.turnBigRocksIntoLittleRocks();
+		org.lgna.story.implementation.JointedModelImp<?, ?> susanImp = ImplementationAccessor.getImplementation(susan);
+		susanImp.opacity.setValue( 0.25f );
+		susanImp.showVisualization();
+		org.lgna.story.implementation.JointedModelImp<?, ?> ogreImp = ImplementationAccessor.getImplementation(ogre);
+		ogreImp.opacity.setValue( 0.25f );
+		ogreImp.showVisualization();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( final String[] args ) {
 		final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
 		ragsToRichesStory.initializeInFrame( args );
+		
 		new Thread() {
 			@Override
 			public void run() {

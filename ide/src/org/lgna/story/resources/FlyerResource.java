@@ -84,5 +84,6 @@ public interface FlyerResource extends JointedModelResource {
 	
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 	
+	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory< org.lgna.story.resources.FlyerResource > getImplementationAndVisualFactory();
 	public org.lgna.story.implementation.FlyerImp createImplementation( org.lgna.story.Flyer abstraction );
 }

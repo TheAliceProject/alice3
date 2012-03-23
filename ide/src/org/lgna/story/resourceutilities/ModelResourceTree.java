@@ -26,7 +26,6 @@ public class ModelResourceTree {
 	public ModelResourceTree(List<Class<? extends org.lgna.story.resources.ModelResource>> classes)
 	{
 		this.galleryTree = this.createClassTree(classes);
-		
 	}
 	
 	public ModelResourceTreeNode getTree()

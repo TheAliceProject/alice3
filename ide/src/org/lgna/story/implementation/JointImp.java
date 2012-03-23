@@ -83,6 +83,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 	public abstract boolean isFreeInY();
 	public abstract boolean isFreeInZ();
 	
+	public abstract void replaceWithJoint(JointImp newJoint, edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform);
 	
 //	private edu.cmu.cs.dennisc.scenegraph.Visual sgAxisVisual;
 //	private static edu.cmu.cs.dennisc.scenegraph.Geometry[] sgAxisGeometries = new edu.cmu.cs.dennisc.scenegraph.Geometry[] { null };

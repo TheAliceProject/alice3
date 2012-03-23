@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,49 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story.implementation.sims2;
-
-import org.lgna.story.resources.JointedModelResource;
-
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-
+package org.lgna.story.annotation;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class NebulousVisualData< M extends edu.cmu.cs.dennisc.nebulous.Model> implements org.lgna.story.implementation.JointedModelImp.VisualData {
-	private final M nebModel;
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { new edu.cmu.cs.dennisc.scenegraph.Visual() };
-	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance() };
-	public NebulousVisualData( M nebModel ) {
-		this.nebModel = nebModel;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebModel } );
-		this.getSgVisuals()[ 0 ].frontFacingAppearance.setValue( sgAppearances[ 0 ] );
+public enum ModelResourceDetails  implements org.lgna.project.annotations.PublicStaticFieldValueDetails< org.lgna.story.resources.JointedModelResource > {
+	SINGLETON;
+	public Class< org.lgna.story.resources.JointedModelResource  > getSupportedCls() {
+		return org.lgna.story.resources.JointedModelResource.class;
 	}
-	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
-		return this.sgAppearances;
+	public java.lang.reflect.Field[] getFlds() {
+		return org.lgna.story.resources.biped.Ogre.class.getFields();
 	}
-	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
-		return this.sgVisuals;
-	}
-	public M getNebModel() {
-		return this.nebModel;
-	}
-	public double getBoundingSphereRadius() {
-		return 1.0;
-	}
-	
-	public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
-		nebModel.setSGParent(parent);
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
-			sgVisual.setParent( parent );
-		}
-	}
-
-	public Composite getSGParent() {
-		return nebModel.getSGParent();
-	}
-
-	
 }
