@@ -281,25 +281,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     }
     
     private void handleNewSkeleton() {
-    	if (!this.isDataDirty) {
-//	    	 if (this.m_element != null)
-//	         {
-//	             if (this.currentSkeleton != null)
-//	             {
-//	                 this.setListeningOnSkeleton(this.currentSkeleton, false);
-//	             }
-//	             Joint.printJointHierarchy(this.currentSkeleton, "");
-//	             System.out.println("");
-//	             Joint.printJointHierarchy(m_element.skeleton.getValue(), "");
-//	             this.currentSkeleton = m_element.skeleton.getValue();
-//	             if (this.currentSkeleton != null)
-//	             {
-//	                 this.setListeningOnSkeleton(this.currentSkeleton, true);
-//	                 this.skeletonIsDirty = true;
-//	             }
-//	         }
-	    	 this.isDataDirty = true;
-    	}
+	    this.isDataDirty = true;
     }
     
     private void handleSkeletonTransformationChange()

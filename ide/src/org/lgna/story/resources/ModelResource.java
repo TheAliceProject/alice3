@@ -47,5 +47,5 @@ package org.lgna.story.resources;
  *
  */
 public interface ModelResource {
-
+	
 }

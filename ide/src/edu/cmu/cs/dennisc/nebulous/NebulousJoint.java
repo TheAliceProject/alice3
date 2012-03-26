@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 /**
  * @author Dennis Cosgrove
  */
-public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable {
+public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable implements edu.cmu.cs.dennisc.scenegraph.ModelJoint{
 	static {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( NebulousJoint.class, NebulousJointAdapter.class );
 	}
