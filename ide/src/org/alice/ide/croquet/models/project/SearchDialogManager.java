@@ -23,7 +23,7 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 	private List<SearchTreeNode> parentList = Collections.newLinkedList();
 	private HashMap<SearchTreeNode,SearchTreeNode> parentMap = Collections.newHashMap();
 	private HashMap<SearchTreeNode,List<SearchTreeNode>> childMap = Collections.newHashMap();
-	private static SearchTreeNode root = new SearchTreeNode( null, "Project" );
+	private SearchTreeNode root = new SearchTreeNode( null, "Project" );
 	private StringState searchState;
 	private Tree<SearchTreeNode> owner;
 	private ValueListener<SearchTreeNode> adapter = new ValueListener<SearchTreeNode>() {
