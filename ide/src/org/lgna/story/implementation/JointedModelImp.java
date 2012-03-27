@@ -195,14 +195,12 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 				mapIdToOriginalRotation.put(jointEntry.getKey(), jointEntry.getValue().getOriginalOrientation());
 			}
 			edu.cmu.cs.dennisc.scenegraph.Composite originalParent = this.visualData.getSGParent();
-			this.visualData.setSGParent(null);
+			VisualData<?> oldVisualData = this.visualData;
 			this.factory = (JointImplementationAndVisualDataFactory<R>)resource.getImplementationAndVisualFactory();
 			float originalOpacity = this.opacity.getValue();
 			org.lgna.story.Paint originalPaint = this.paint.getValue();
 			this.visualData = this.factory.createVisualData( this );
-			
 			org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
-			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
 			java.util.Map< org.lgna.story.resources.JointId, JointImp > newJoints = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			if( rootIds.length == 0 ) {
 				//pass
@@ -212,7 +210,9 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 				}
 			}
 			matchNewDataToExistingJoints(mapIdToOriginalRotation, newJoints);
-			this.visualData.setSGParent(originalParent);
+			
+			this.visualData.setSGParent(oldVisualData.getSGParent());
+			oldVisualData.setSGParent(null);
 			this.opacity.setValue(originalOpacity);
 			this.paint.setValue(originalPaint);
 		}
