@@ -56,6 +56,9 @@ public enum MessageType {
 	MessageType( int internal ) {
 		this.internal = internal;
 	}
+	/*package-private*/ int getInternal() {
+		return this.internal;
+	}
 	public static MessageType getInstance( int internal ) {
 		for( MessageType value : MessageType.values() ) {
 			if( value.internal == internal ) {
