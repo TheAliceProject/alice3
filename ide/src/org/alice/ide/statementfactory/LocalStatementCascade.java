@@ -41,42 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.draganddrop.expression;
+package org.alice.ide.statementfactory;
 
 /**
- * @author Dennis Cosgrove
+ * @author dennisc
  */
-public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FieldArrayLengthDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		FieldArrayLengthDragModel rv = map.get( field );
+public class LocalStatementCascade extends org.lgna.croquet.CascadeWithInternalBlank< org.lgna.project.ast.Statement > {
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalStatementCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static synchronized LocalStatementCascade getInstance( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		LocalStatementCascade rv = map.get( local, blockStatementIndexPair );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new FieldArrayLengthDragModel( field );
-			map.put( field, rv );
+			rv = new LocalStatementCascade( local, blockStatementIndexPair );
+			map.put( local, blockStatementIndexPair, rv );
 		}
 		return rv;
 	}
-	private org.lgna.project.ast.AbstractField field;
-	private FieldArrayLengthDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "eecd3065-72bf-489a-8338-6c9aad3582ea" ) );
-		this.field = field;
+	private final org.lgna.project.ast.UserLocal local;
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	private LocalStatementCascade( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0c4a6b56-3935-4e4b-a4e0-7828338d0f8c" ), org.lgna.project.ast.Statement.class );
+		this.local = local;
+		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
-		return org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE;
+	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Statement>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Statement>> completionStep, org.lgna.project.ast.Statement[] values ) {
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, this.blockStatementIndexPair, values[ 0 ] );
 	}
 	@Override
-	public boolean isPotentialStatementCreator() {
-		return false;
-	}
-	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		throw new AssertionError();
-	}
-	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Statement> blankNode ) {
+		rv.add( LocalAssignmentStatementFillIn.getInstance( this.local ) );
+		return rv;
 	}
 }

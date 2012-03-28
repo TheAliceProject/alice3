@@ -68,6 +68,14 @@ public class LocalAccessDragModel extends AbstractExpressionDragModel {
 		return this.local.getValueType();
 	}
 	@Override
+	public boolean isPotentialStatementCreator() {
+		return true;
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return org.alice.ide.statementfactory.LocalStatementCascade.getInstance( this.local, blockStatementIndexPair );
+	}
+	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.LocalAccessOperation.getInstance( this.local, expressionProperty );
 	}

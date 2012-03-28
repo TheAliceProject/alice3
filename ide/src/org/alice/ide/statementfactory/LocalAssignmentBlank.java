@@ -41,42 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.draganddrop.expression;
+package org.alice.ide.statementfactory;
 
 /**
- * @author Dennis Cosgrove
+ * @author dennisc
  */
-public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FieldArrayLengthDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		FieldArrayLengthDragModel rv = map.get( field );
+public class LocalAssignmentBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>{
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAssignmentBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized LocalAssignmentBlank getInstance( org.lgna.project.ast.UserLocal local ) {
+		LocalAssignmentBlank rv = map.get( local );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new FieldArrayLengthDragModel( field );
-			map.put( field, rv );
+			rv = new LocalAssignmentBlank( local );
+			map.put( local, rv );
 		}
 		return rv;
 	}
-	private org.lgna.project.ast.AbstractField field;
-	private FieldArrayLengthDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "eecd3065-72bf-489a-8338-6c9aad3582ea" ) );
-		this.field = field;
+	private final org.lgna.project.ast.UserLocal local;
+	private LocalAssignmentBlank( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "2074fb97-d2e3-4bd0-a60f-91448b763914" ) );
+		this.local = local;
 	}
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
-		return org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE;
-	}
-	@Override
-	public boolean isPotentialStatementCreator() {
-		return false;
-	}
-	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		throw new AssertionError();
-	}
-	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.annotations.ValueDetails<?> details = null;
+		ide.getCascadeManager().updateChildren( rv, blankNode, this.local.getValueType(), details );
+		return rv;
 	}
 }

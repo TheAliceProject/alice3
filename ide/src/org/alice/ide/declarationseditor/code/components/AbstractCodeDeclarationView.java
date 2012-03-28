@@ -65,10 +65,7 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 			org.alice.ide.ast.draganddrop.CodeDragModel codeDragModel = (org.alice.ide.ast.draganddrop.CodeDragModel)dragModel;
 			final org.lgna.project.ast.AbstractType< ?,?,? > type = codeDragModel.getType();
 			if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
-				org.alice.ide.codedrop.CodeDropReceptor codeDropReceptor = this.getCodeDropReceptor();
-				if( codeDropReceptor.isPotentiallyAcceptingOf( codeDragModel ) ) {
-					out.add( codeDropReceptor );
-				}
+				//pass
 			} else {
 				java.util.List< org.alice.ide.codeeditor.ExpressionPropertyDropDownPane > list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.codeeditor.ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< org.alice.ide.codeeditor.ExpressionPropertyDropDownPane >() {
 					public boolean accept( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
@@ -93,6 +90,10 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 					}
 				} );
 				out.addAll( list );
+			}
+			org.alice.ide.codedrop.CodeDropReceptor codeDropReceptor = this.getCodeDropReceptor();
+			if( codeDropReceptor.isPotentiallyAcceptingOf( codeDragModel ) ) {
+				out.add( codeDropReceptor );
 			}
 		}
 	}

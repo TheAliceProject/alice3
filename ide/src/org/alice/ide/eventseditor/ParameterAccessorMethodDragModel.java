@@ -111,6 +111,14 @@ public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.dragandd
 //	}
 	
 	@Override
+	public boolean isPotentialStatementCreator() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		throw new AssertionError();
+	}
+	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return new InternalDropModel( expressionProperty, this.parameter, this.method );
 	}
