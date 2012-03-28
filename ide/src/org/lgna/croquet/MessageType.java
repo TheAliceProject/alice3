@@ -52,7 +52,7 @@ public enum MessageType {
 	WARNING( javax.swing.JOptionPane.WARNING_MESSAGE ),
 	QUESTION( javax.swing.JOptionPane.QUESTION_MESSAGE ),
 	PLAIN( javax.swing.JOptionPane.PLAIN_MESSAGE );
-	int internal;
+	private final int internal;
 	MessageType( int internal ) {
 		this.internal = internal;
 	}
