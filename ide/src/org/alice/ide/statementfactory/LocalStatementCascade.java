@@ -72,6 +72,10 @@ public class LocalStatementCascade extends org.lgna.croquet.CascadeWithInternalB
 	@Override
 	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Statement> blankNode ) {
 		rv.add( LocalAssignmentStatementFillIn.getInstance( this.local ) );
+		org.lgna.project.ast.AbstractType<?,?,?> type = this.local.getValueType();
+		if( type.isArray() ) {
+			rv.add( LocalArrayAtIndexAssignmentStatementFillIn.getInstance( this.local ) );
+		}
 		return rv;
 	}
 }
