@@ -46,48 +46,34 @@ package org.alice.ide.statementfactory;
 /**
  * @author dennisc
  */
-public class LocalAssignmentStatementFillIn extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Statement,org.lgna.project.ast.Expression> {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAssignmentStatementFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized LocalAssignmentStatementFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
-		LocalAssignmentStatementFillIn rv = map.get( local );
+public class LocalAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAssignmentFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized LocalAssignmentFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
+		LocalAssignmentFillIn rv = map.get( local );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new LocalAssignmentStatementFillIn( local );
+			rv = new LocalAssignmentFillIn( local );
 			map.put( local, rv );
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.ExpressionStatement transientValue;
-	private LocalAssignmentStatementFillIn( org.lgna.project.ast.UserLocal local ) {
+	private final org.lgna.project.ast.AssignmentExpression transientValue;
+	private LocalAssignmentFillIn( org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "0a624cbf-fca2-4a89-a6b0-11415b8cc084" ) );
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalAssignmentStatement( local );
+		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalAssignment( local );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( local.getValueType() ) );
 	}
 	private org.lgna.project.ast.UserLocal getLocal() {
-		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)this.transientValue.expression.getValue();
-		org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)assignmentExpression.leftHandSide.getValue();
+		org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)this.transientValue.leftHandSide.getValue();
 		return localAccess.local.getValue();
 	}
 	@Override
-	public org.lgna.project.ast.Statement createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Statement,org.lgna.project.ast.Expression> node ) {
-		org.lgna.project.ast.Expression[] expressions = this.createFromBlanks( node, org.lgna.project.ast.Expression.class );
-		return org.lgna.project.ast.AstUtilities.createLocalAssignmentStatement( this.getLocal(), expressions[ 0 ] );
+	protected org.lgna.project.ast.AssignmentExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
+		return org.lgna.project.ast.AstUtilities.createLocalAssignment( this.getLocal(), expressions[ 0 ] );
 	}
 	@Override
-	public org.lgna.project.ast.Statement getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Statement,org.lgna.project.ast.Expression> node ) {
+	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression,org.lgna.project.ast.Expression> node ) {
 		return this.transientValue;
-	}
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Statement,org.lgna.project.ast.Expression> node ) {
-		return null;
-	}
-	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Statement,org.lgna.project.ast.Expression> node ) {
-		return this.getLocal().getName() + " = ???";
-	}
-	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Statement,org.lgna.project.ast.Expression> node ) {
-		return null;
 	}
 }
