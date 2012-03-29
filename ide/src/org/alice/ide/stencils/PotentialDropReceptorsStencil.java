@@ -88,19 +88,19 @@ public class PotentialDropReceptorsStencil extends org.lgna.stencil.LayeredPaneC
 	
 
 	public void showStencilOver( org.lgna.croquet.components.DragComponent<?,?> potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.perspectives.IdePerspective idePerspective = (org.alice.ide.perspectives.IdePerspective)ide.getPerspective();
-		java.util.List< org.lgna.croquet.DropReceptor > dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
-		if( dropReceptors.size() > 0 ) {
-			this.holes = dropReceptors;
-			this.potentialDragSource = potentialDragSource;
-			this.addToLayeredPane();
-		}
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+//		org.alice.ide.perspectives.IdePerspective idePerspective = (org.alice.ide.perspectives.IdePerspective)ide.getPerspective();
+//		java.util.List< org.lgna.croquet.DropReceptor > dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
+//		if( dropReceptors.size() > 0 ) {
+//			this.holes = dropReceptors;
+//			this.potentialDragSource = potentialDragSource;
+//			this.addToLayeredPane();
+//		}
 	}
 	public void hideStencil() {
-		this.removeFromLayeredPane();
-		this.holes = null;
-		this.potentialDragSource = null;
+//		this.removeFromLayeredPane();
+//		this.holes = null;
+//		this.potentialDragSource = null;
 	}
 	
 	@Override

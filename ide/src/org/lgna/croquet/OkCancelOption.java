@@ -49,7 +49,7 @@ package org.lgna.croquet;
 public enum OkCancelOption {
 	OK(javax.swing.JOptionPane.OK_OPTION), 
 	CANCEL(javax.swing.JOptionPane.CANCEL_OPTION);
-	int internal;
+	private final int internal;
 
 	OkCancelOption(int internal) {
 		this.internal = internal;

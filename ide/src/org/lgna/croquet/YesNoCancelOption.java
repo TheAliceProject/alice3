@@ -50,7 +50,7 @@ public enum YesNoCancelOption {
 	YES( javax.swing.JOptionPane.YES_OPTION ),
 	NO( javax.swing.JOptionPane.NO_OPTION ),
 	CANCEL( javax.swing.JOptionPane.CANCEL_OPTION );
-	int internal;
+	private final int internal;
 	YesNoCancelOption( int internal ) {
 		this.internal = internal;
 	}

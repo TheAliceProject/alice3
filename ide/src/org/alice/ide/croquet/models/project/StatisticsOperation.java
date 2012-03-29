@@ -102,5 +102,4 @@ public class StatisticsOperation extends InformationDialogOperation {
 	@Override
 	protected void releaseContentPane( CompletionStep<?> step, Dialog dialog, Container<?> contentPane ) {
 	}
-
 }
