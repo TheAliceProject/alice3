@@ -44,7 +44,6 @@
 package org.lgna.story.implementation;
 
 import org.lgna.story.AudioSource;
-import org.lgna.story.Entity;
 
 import edu.cmu.cs.dennisc.matt.AabbCollisionDetector;
 
@@ -301,6 +300,283 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.perform( animation, null );
 	}
 
+	private java.awt.Component getParentComponent() {
+		SceneImp scene = this.getScene();
+		if( scene != null ) {
+			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
+			if( onscreenLookingGlass != null ) {
+				return onscreenLookingGlass.getAWTComponent();
+			}
+		}
+		return null;
+	}
+	public boolean getBooleanFromUser( String message ) {
+		java.awt.Component parentComponent = this.getParentComponent();
+		String title = null;
+		Object[] selectionValues = { "True", "False" };
+		javax.swing.Icon icon = null;
+		Object initialSelectionValue = null;
+		while( true ) {
+			int option = javax.swing.JOptionPane.showOptionDialog( parentComponent, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, icon, selectionValues, initialSelectionValue );
+			switch( option ) {
+			case javax.swing.JOptionPane.YES_OPTION:
+				return true;
+			case javax.swing.JOptionPane.NO_OPTION:
+				return false;
+			}
+		}
+	}
+	public String getStringFromUser( String message ) {
+		java.awt.Component parentComponent = this.getParentComponent();
+		String title = null;
+		Object[] selectionValues = { "OK" };
+		javax.swing.Icon icon = null;
+		Object initialSelectionValue = null;//selectionValues[ 0 ];
+
+		javax.swing.JTextField textField = new javax.swing.JTextField();
+		javax.swing.JPanel panel = new javax.swing.JPanel();
+		panel.setLayout( new javax.swing.BoxLayout( panel, javax.swing.BoxLayout.PAGE_AXIS ) );
+		panel.add( new javax.swing.JLabel( message ) );
+		panel.add( textField );
+		textField.requestFocusInWindow();
+		while( true ) {
+			int option = javax.swing.JOptionPane.showOptionDialog( parentComponent, panel, title, javax.swing.JOptionPane.OK_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, icon, selectionValues, initialSelectionValue );
+			switch( option ) {
+			case javax.swing.JOptionPane.OK_OPTION:
+				return textField.getText();
+			}
+		}
+	}
+	private static abstract class NumberModel<N extends Number> {
+		private final String message;
+		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+		private final NumeralAction[] numeralActions = new NumeralAction[ 10 ];
+		private final NegateAction negateAction = new NegateAction( this );
+		private final BackspaceAction backspaceAction = new BackspaceAction( this );
+		public NumberModel( String message ) {
+			this.message = message;
+			for( int i=0; i<numeralActions.length; i++ ) {
+				numeralActions[ i ] = new NumeralAction( this, (short)i );
+			}
+		}
+		protected abstract DecimalPointAction getDecimalPointAction();
+		private void append( String s ) {
+			try {
+				this.document.insertString( this.document.getLength(), s, null );
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
+			}
+		}
+		public void appendDigit( short numeral ) {
+			this.append( Short.toString( numeral ) );
+		}
+		public void appendDecimalPoint() {
+			javax.swing.Action action = this.getDecimalPointAction();
+			if( action != null ) {
+				this.append( (String)action.getValue( javax.swing.Action.NAME ) );
+			}
+		}
+		public void negate() {
+			final int N = this.document.getLength();
+			try {
+				boolean isNegative;
+				if( N > 0 ) {
+					String s0 = this.document.getText( 0, 1 );
+					isNegative = s0.charAt( 0 ) == '-';
+				} else {
+					isNegative = false;
+				}
+				if( isNegative ) {
+					this.document.remove( 0, 1 );
+				} else {
+					this.document.insertString( 0, "-", null );
+				}
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
+			}
+		}
+		public void deleteLastCharacter() {
+			final int N = this.document.getLength();
+			if( this.document.getLength() > 0 ) {
+				try {
+					this.document.remove( N-1, 1 );
+				} catch( javax.swing.text.BadLocationException ble ) {
+					throw new RuntimeException( ble );
+				}
+			}
+		}
+		
+		protected abstract N getValue( String text );
+		public N getValue() {
+			try {
+				final int N = this.document.getLength();
+				String text = this.document.getText( 0, N );
+				try {
+					N rv = this.getValue( text );
+					return rv;
+				} catch( NumberFormatException nfe ) {
+					return null;
+				}
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
+			}
+		}
+		
+		public javax.swing.JComponent createComponent() {
+			javax.swing.JPanel gridBagPanel = new javax.swing.JPanel();
+			gridBagPanel.setLayout( new java.awt.GridBagLayout() );
+			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+			gbc.fill = java.awt.GridBagConstraints.BOTH;
+			gbc.weightx = 1.0;
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 7 ] ), gbc );
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 8 ] ), gbc );
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 9 ] ), gbc );
+
+			gbc.weightx = 0.0;
+			gbc.gridwidth = 1;
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 4 ] ), gbc );
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 5 ] ), gbc );
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 6 ] ), gbc );
+
+			gbc.gridwidth = 1;
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 1 ] ), gbc );
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 2 ] ), gbc );
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 3 ] ), gbc );
+
+
+			DecimalPointAction decimalPointAction = this.getDecimalPointAction();
+			if( decimalPointAction != null ) {
+				gbc.gridwidth = 1;
+				gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 0 ] ), gbc );
+				gridBagPanel.add( new javax.swing.JButton( decimalPointAction ), gbc );
+			} else {
+				gbc.gridwidth = 2;
+				gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 0 ] ), gbc );
+			}
+			gridBagPanel.add( new javax.swing.JButton( this.negateAction ), gbc );
+
+			javax.swing.JPanel lineAxisPanel = new javax.swing.JPanel();
+			lineAxisPanel.setLayout( new javax.swing.BoxLayout( lineAxisPanel, javax.swing.BoxLayout.LINE_AXIS ) );
+			lineAxisPanel.add( new javax.swing.JTextField( this.document, "", 0 ) );
+			lineAxisPanel.add( new javax.swing.JButton( this.backspaceAction ) );
+
+			javax.swing.JLabel messageLabel = new javax.swing.JLabel( this.message );
+			//messageLabel.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+			messageLabel.setAlignmentX( 0.0f );
+			lineAxisPanel.setAlignmentX( 0.0f );
+			gridBagPanel.setAlignmentX( 0.0f );
+
+			javax.swing.JPanel rv = new javax.swing.JPanel();
+			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.PAGE_AXIS ) );
+			rv.add( messageLabel );
+			rv.add( lineAxisPanel );
+			rv.add( gridBagPanel );
+			return rv;
+		}
+	}
+	private static class DoubleNumberModel extends NumberModel<Double> {
+		private final DecimalPointAction decimalPointAction = new DecimalPointAction( this );
+		public DoubleNumberModel( String message ) {
+			super( message );
+		}
+		@Override
+		protected Double getValue( String text ) {
+			double d = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
+			if( Double.isNaN( d ) ) {
+				return null;
+			} else {
+				return d;
+			}
+		}
+		@Override
+		public DecimalPointAction getDecimalPointAction() {
+			return this.decimalPointAction;
+		}
+	}
+	private static class IntegerNumberModel extends NumberModel<Integer> {
+		public IntegerNumberModel( String message ) {
+			super( message );
+		}
+		@Override
+		protected Integer getValue( String text ) {
+			return Integer.valueOf( text );
+		}
+		@Override
+		public DecimalPointAction getDecimalPointAction() {
+			return null;
+		}
+	}
+	private static class BackspaceAction extends javax.swing.AbstractAction {
+		private final NumberModel<?> numberModel;
+		public BackspaceAction( NumberModel<?> numberModel ) {
+			this.numberModel = numberModel;
+			this.putValue( NAME, "\u2190" );
+		}
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			this.numberModel.deleteLastCharacter();
+		}
+	}
+
+	private static class NumeralAction extends javax.swing.AbstractAction {
+		private final NumberModel<?> numberModel;
+		private final short digit;
+		public NumeralAction( NumberModel<?> numberModel, short digit ) {
+			this.numberModel = numberModel;
+			this.digit = digit;
+			this.putValue( NAME, Short.toString( this.digit ) );
+		}
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			this.numberModel.appendDigit( digit );
+		}
+	}
+	private static class NegateAction extends javax.swing.AbstractAction {
+		private final NumberModel<?> numberModel;
+		public NegateAction( NumberModel<?> numberModel ) {
+			this.numberModel = numberModel;
+			this.putValue( NAME, "\u00B1" );
+		}
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			this.numberModel.negate();
+		}
+	}
+	private static class DecimalPointAction extends javax.swing.AbstractAction {
+		private final NumberModel<?> numberModel;
+		public DecimalPointAction( NumberModel<?> numberModel ) {
+			this.numberModel = numberModel;
+			java.text.DecimalFormatSymbols decimalFormatSymbols = new java.text.DecimalFormatSymbols();
+			this.putValue( NAME, "" + decimalFormatSymbols.getDecimalSeparator() );
+		}
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			this.numberModel.appendDecimalPoint();
+		}
+	}
+	
+	public double getDoubleFromUser( String message ) {
+		String title = null;
+		DoubleNumberModel model = new DoubleNumberModel( message );
+		while( true ) {
+			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), model.createComponent(), title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			Double value = model.getValue();
+			if( value != null ) {
+				return value;
+			}
+		}
+	}
+	public int getIntegerFromUser( String message ) {
+		String title = null;
+		IntegerNumberModel model = new IntegerNumberModel( message );
+		while( true ) {
+			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), model.createComponent(), title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			Integer value = model.getValue();
+			if( value != null ) {
+				return value;
+			}
+		}
+	}
+	
 	protected void appendRepr( StringBuilder sb ) {
 	}
 	@Override
@@ -312,7 +588,15 @@ public abstract class EntityImp implements ReferenceFrame {
 		sb.append( "]" );
 		return sb.toString();
 	}
-	public boolean isCollidingWith( Entity other ) {
+	public boolean isCollidingWith( org.lgna.story.Entity other ) {
 		return AabbCollisionDetector.doTheseCollide( this.getAbstraction(), other );
+	}
+	
+	public static void main( String[] args ) {
+		org.lgna.story.Entity entity = new org.lgna.story.Cone();
+		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
+		System.err.println( entity.getStringFromUser( "who are you?" ) );
+		System.err.println( entity.getDoubleFromUser( "how much?" ) );
+		System.err.println( entity.getBooleanFromUser( "to be or not to be?" ) );
 	}
 }
