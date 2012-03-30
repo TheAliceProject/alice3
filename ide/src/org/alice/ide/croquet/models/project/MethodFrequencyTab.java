@@ -69,8 +69,10 @@ import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.HorizontalAlignment;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy;
 import org.lgna.croquet.components.View;
 import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
@@ -133,15 +135,19 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		dummy.setName( "Project" );
 		statsDisplay.setMaximum();
 		listSelectionState.addValueListener( statsDisplay );
-		//		listSelectionState.setSelectedIndex( 0 );
+		listSelectionState.setSelectedIndex( 0 );
 		rv.addComponent( statsDisplay.getLayout() );
 		list.setCellRenderer( new ListCellRenderer() );
 
 		ScrollPane scrollPane = new ScrollPane( list );
 		rv.addComponent( scrollPane );
+		scrollPane.setMaximumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
+		scrollPane.setMinimumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
+		statsDisplay.scroll.setMaximumPreferredHeight( StatisticsOperation.TOP_SIZE );
+		statsDisplay.scroll.setMinimumPreferredHeight( StatisticsOperation.TOP_SIZE );
+		statsDisplay.scroll.setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.NEVER );
 		this.view = rv;
 	}
-
 	private void sort( List<? extends AbstractMethod> a ) {
 		java.util.Collections.sort( a, new Comparator<AbstractMethod>() {
 
@@ -196,29 +202,33 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 				if( parentMethod != null ) {
 					if( parentMethod instanceof UserMethod ) {
 						final UserMethod parent = (UserMethod)parentMethod;
+						if( parent.getManagementLevel() != ManagementLevel.GENERATED ) {
 
-						methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
-						methodCountMap.put( parent, new HashMap<AbstractMethod,Integer>() );
-						parent.body.getValue().crawl( new Crawler() {
+							methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
+							methodCountMap.put( parent, new HashMap<AbstractMethod,Integer>() );
+							parent.body.getValue().crawl( new Crawler() {
 
-							public void visit( Crawlable crawlable ) {
-								if( crawlable instanceof MethodInvocation ) {
-									MethodInvocation invocation = (MethodInvocation)crawlable;
-									if( invocation.method.getValue() instanceof AbstractMethod ) {
-										AbstractMethod method = (AbstractMethod)invocation.method.getValue();
-										if( !methodToConstructMap.keySet().contains( parent ) ) {
-											methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
-										}
-										if( !methodToConstructMap.get( parent ).contains( method ) ) {
-											methodCountMap.get( parent ).put( method, 1 );
-											methodToConstructMap.get( parent ).add( method );
-										} else {
-											methodCountMap.get( parent ).put( method, methodCountMap.get( parent ).get( method ) + 1 );
+								public void visit( Crawlable crawlable ) {
+									if( crawlable instanceof MethodInvocation ) {
+										MethodInvocation invocation = (MethodInvocation)crawlable;
+										if( invocation.method.getValue() instanceof AbstractMethod ) {
+											AbstractMethod method = (AbstractMethod)invocation.method.getValue();
+											if( !methodToConstructMap.keySet().contains( parent ) ) {
+												methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
+											}
+											if( !methodToConstructMap.get( parent ).contains( method ) ) {
+												methodCountMap.get( parent ).put( method, 1 );
+												methodToConstructMap.get( parent ).add( method );
+											} else {
+												methodCountMap.get( parent ).put( method, methodCountMap.get( parent ).get( method ) + 1 );
+											}
 										}
 									}
 								}
-							}
-						}, false );
+							}, false );
+						} else {
+							System.out.println( "Hello " + parentMethod.getName() );
+						}
 					}
 				}
 			}

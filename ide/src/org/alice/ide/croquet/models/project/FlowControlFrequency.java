@@ -146,6 +146,10 @@ class FlowControlFrequency extends TabComposite<View<?,?>> {
 
 		ScrollPane scrollPane = new ScrollPane( list );
 		rv.addComponent( scrollPane );
+		scrollPane.setMaximumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
+		scrollPane.setMinimumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
+		statsDisplay.gridPanel.setMaximumPreferredHeight( StatisticsOperation.TOP_SIZE );
+		statsDisplay.gridPanel.setMinimumPreferredHeight( StatisticsOperation.TOP_SIZE );
 		this.view = rv;
 	}
 	@Override

@@ -61,6 +61,9 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  */
 public class StatisticsOperation extends InformationDialogOperation {
 
+	public static final Integer TOP_SIZE = 250;
+	public static final Integer BOTTOM_SIZE = 100;
+
 	public StatisticsOperation() {
 		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ) );
 	}
