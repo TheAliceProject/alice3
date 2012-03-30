@@ -168,7 +168,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 
 	private class ListCellRenderer extends DefaultListCellRenderer {
 		@Override
-		public java.awt.Component getListCellRendererComponent( JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		public java.awt.Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 			Label rv = new Label();
 			if( isSelected ) {
 				rv.setBackgroundColor( Color.BLUE );
