@@ -312,7 +312,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	}
 	public boolean getBooleanFromUser( String message ) {
 		java.awt.Component parentComponent = this.getParentComponent();
-		String title = "getBooleanFromUser";
+		String title = null;
 		Object[] selectionValues = { "True", "False" };
 		javax.swing.Icon icon = null;
 		Object initialSelectionValue = null;
@@ -328,7 +328,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	}
 	public String getStringFromUser( String message ) {
 		java.awt.Component parentComponent = this.getParentComponent();
-		String title = "getStringFromUser";
+		String title = null;
 		Object[] selectionValues = { "OK" };
 		javax.swing.Icon icon = null;
 		Object initialSelectionValue = null;//selectionValues[ 0 ];
@@ -348,22 +348,18 @@ public abstract class EntityImp implements ReferenceFrame {
 		}
 	}
 	private static abstract class NumberModel<N extends Number> {
+		private final String message;
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
 		private final NumeralAction[] numeralActions = new NumeralAction[ 10 ];
 		private final NegateAction negateAction = new NegateAction( this );
 		private final BackspaceAction backspaceAction = new BackspaceAction( this );
-		public NumberModel() {
+		public NumberModel( String message ) {
+			this.message = message;
 			for( int i=0; i<numeralActions.length; i++ ) {
 				numeralActions[ i ] = new NumeralAction( this, (short)i );
 			}
 		}
 		protected abstract DecimalPointAction getDecimalPointAction();
-//		public NumeralAction getNumeralAction( short numeral ) {
-//			return this.numeralActions[ numeral ];
-//		}
-//		public javax.swing.text.Document getDocument() {
-//			return this.document;
-//		}
 		private void append( String s ) {
 			try {
 				this.document.insertString( this.document.getLength(), s, null );
@@ -467,15 +463,25 @@ public abstract class EntityImp implements ReferenceFrame {
 			lineAxisPanel.add( new javax.swing.JTextField( this.document, "", 0 ) );
 			lineAxisPanel.add( new javax.swing.JButton( this.backspaceAction ) );
 
+			javax.swing.JLabel messageLabel = new javax.swing.JLabel( this.message );
+			//messageLabel.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+			messageLabel.setAlignmentX( 0.0f );
+			lineAxisPanel.setAlignmentX( 0.0f );
+			gridBagPanel.setAlignmentX( 0.0f );
+
 			javax.swing.JPanel rv = new javax.swing.JPanel();
-			rv.setLayout( new java.awt.BorderLayout() );
-			rv.add( lineAxisPanel, java.awt.BorderLayout.PAGE_START );
-			rv.add( gridBagPanel, java.awt.BorderLayout.CENTER );
+			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.PAGE_AXIS ) );
+			rv.add( messageLabel );
+			rv.add( lineAxisPanel );
+			rv.add( gridBagPanel );
 			return rv;
 		}
 	}
 	private static class DoubleNumberModel extends NumberModel<Double> {
 		private final DecimalPointAction decimalPointAction = new DecimalPointAction( this );
+		public DoubleNumberModel( String message ) {
+			super( message );
+		}
 		@Override
 		protected Double getValue( String text ) {
 			double d = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
@@ -491,6 +497,9 @@ public abstract class EntityImp implements ReferenceFrame {
 		}
 	}
 	private static class IntegerNumberModel extends NumberModel<Integer> {
+		public IntegerNumberModel( String message ) {
+			super( message );
+		}
 		@Override
 		protected Integer getValue( String text ) {
 			return Integer.valueOf( text );
@@ -546,14 +555,26 @@ public abstract class EntityImp implements ReferenceFrame {
 	}
 	
 	public double getDoubleFromUser( String message ) {
-		DoubleNumberModel model = new DoubleNumberModel();
-		javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), model.createComponent(), message, javax.swing.JOptionPane.QUESTION_MESSAGE );
-		return model.getValue();
+		String title = null;
+		DoubleNumberModel model = new DoubleNumberModel( message );
+		while( true ) {
+			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), model.createComponent(), title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			Double value = model.getValue();
+			if( value != null ) {
+				return value;
+			}
+		}
 	}
 	public int getIntegerFromUser( String message ) {
-		IntegerNumberModel model = new IntegerNumberModel();
-		javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), model.createComponent(), message, javax.swing.JOptionPane.QUESTION_MESSAGE );
-		return model.getValue();
+		String title = null;
+		IntegerNumberModel model = new IntegerNumberModel( message );
+		while( true ) {
+			javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), model.createComponent(), title, javax.swing.JOptionPane.QUESTION_MESSAGE );
+			Integer value = model.getValue();
+			if( value != null ) {
+				return value;
+			}
+		}
 	}
 	
 	protected void appendRepr( StringBuilder sb ) {
@@ -573,9 +594,9 @@ public abstract class EntityImp implements ReferenceFrame {
 	
 	public static void main( String[] args ) {
 		org.lgna.story.Entity entity = new org.lgna.story.Cone();
-		System.err.println( entity.getIntegerFromUser( "how many?" ) );
-		System.err.println( entity.getDoubleFromUser( "how much?" ) );
+		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
 		System.err.println( entity.getStringFromUser( "who are you?" ) );
+		System.err.println( entity.getDoubleFromUser( "how much?" ) );
 		System.err.println( entity.getBooleanFromUser( "to be or not to be?" ) );
 	}
 }
