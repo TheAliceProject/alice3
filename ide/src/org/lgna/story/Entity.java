@@ -88,6 +88,23 @@ public abstract class Entity implements Rider {
 		return this.getImplementation().isCollidingWith( other );
 	}
 	
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public Boolean getBooleanFromUser( String message ) {
+		return this.getImplementation().getBooleanFromUser( message );
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public String getStringFromUser( String message ) {
+		return this.getImplementation().getStringFromUser( message );
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public Double getDoubleFromUser( String message ) {
+		return this.getImplementation().getDoubleFromUser( message );
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public Integer getIntegerFromUser( String message ) {
+		return this.getImplementation().getIntegerFromUser( message );
+	}
+	
 	@Override
 	public String toString() {
 		return this.getName();
