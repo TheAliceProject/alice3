@@ -93,8 +93,7 @@ public abstract class Application {
 		this.stack.pop();
 		return rv;
 	}
-
-	public org.lgna.croquet.components.AbstractWindow< ? > getOwnerWindow() {
+	public org.lgna.croquet.components.AbstractWindow< ? > peekWindow() {
 		return this.stack.peek();
 	}
 
