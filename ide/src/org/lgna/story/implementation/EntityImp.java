@@ -310,43 +310,7 @@ public abstract class EntityImp implements ReferenceFrame {
 		}
 		return null;
 	}
-	public boolean getBooleanFromUser( String message ) {
-		java.awt.Component parentComponent = this.getParentComponent();
-		String title = null;
-		Object[] selectionValues = { "True", "False" };
-		javax.swing.Icon icon = null;
-		Object initialSelectionValue = null;
-		while( true ) {
-			int option = javax.swing.JOptionPane.showOptionDialog( parentComponent, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, icon, selectionValues, initialSelectionValue );
-			switch( option ) {
-			case javax.swing.JOptionPane.YES_OPTION:
-				return true;
-			case javax.swing.JOptionPane.NO_OPTION:
-				return false;
-			}
-		}
-	}
-	public String getStringFromUser( String message ) {
-		java.awt.Component parentComponent = this.getParentComponent();
-		String title = null;
-		Object[] selectionValues = { "OK" };
-		javax.swing.Icon icon = null;
-		Object initialSelectionValue = null;//selectionValues[ 0 ];
 
-		javax.swing.JTextField textField = new javax.swing.JTextField();
-		javax.swing.JPanel panel = new javax.swing.JPanel();
-		panel.setLayout( new javax.swing.BoxLayout( panel, javax.swing.BoxLayout.PAGE_AXIS ) );
-		panel.add( new javax.swing.JLabel( message ) );
-		panel.add( textField );
-		textField.requestFocusInWindow();
-		while( true ) {
-			int option = javax.swing.JOptionPane.showOptionDialog( parentComponent, panel, title, javax.swing.JOptionPane.OK_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, icon, selectionValues, initialSelectionValue );
-			switch( option ) {
-			case javax.swing.JOptionPane.OK_OPTION:
-				return textField.getText();
-			}
-		}
-	}
 	private static abstract class NumberModel<N extends Number> {
 		private final String message;
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
@@ -576,6 +540,51 @@ public abstract class EntityImp implements ReferenceFrame {
 			}
 		}
 	}
+	public boolean getBooleanFromUser( String message ) {
+		java.awt.Component parentComponent = this.getParentComponent();
+		String title = null;
+		Object[] selectionValues = { "True", "False" };
+		javax.swing.Icon icon = null;
+		Object initialSelectionValue = null;
+		while( true ) {
+			int option = javax.swing.JOptionPane.showOptionDialog( parentComponent, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, icon, selectionValues, initialSelectionValue );
+			switch( option ) {
+			case javax.swing.JOptionPane.YES_OPTION:
+				return true;
+			case javax.swing.JOptionPane.NO_OPTION:
+				return false;
+			}
+		}
+	}
+	public String getStringFromUser( String message ) {
+		java.awt.Component parentComponent = this.getParentComponent();
+		String title = null;
+		
+		javax.swing.JOptionPane optionPane = new javax.swing.JOptionPane( message, javax.swing.JOptionPane.QUESTION_MESSAGE, javax.swing.JOptionPane.DEFAULT_OPTION );
+		optionPane.setWantsInput( true );
+		
+		javax.swing.JDialog dialog = optionPane.createDialog( parentComponent, title );
+
+//		dialog.setResizable( true );
+
+//		if( javax.swing.JDialog.isDefaultLookAndFeelDecorated() ) {
+//			if( javax.swing.UIManager.getLookAndFeel().getSupportsWindowDecorations() ) {
+//				dialog.setUndecorated( true );
+//				dialog.getRootPane().setWindowDecorationStyle( javax.swing.JRootPane.QUESTION_DIALOG );
+//			}
+//		}
+		
+		while( true ) {
+			dialog.setVisible( true );
+			Object value = optionPane.getInputValue();
+			if( javax.swing.JOptionPane.UNINITIALIZED_VALUE.equals( value ) ) {
+				//pass
+			} else {
+				dialog.dispose();
+				return (String)value;
+			}
+		}
+	}
 	
 	protected void appendRepr( StringBuilder sb ) {
 	}
@@ -594,8 +603,8 @@ public abstract class EntityImp implements ReferenceFrame {
 	
 	public static void main( String[] args ) {
 		org.lgna.story.Entity entity = new org.lgna.story.Cone();
-		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
 		System.err.println( entity.getStringFromUser( "who are you?" ) );
+		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
 		System.err.println( entity.getDoubleFromUser( "how much?" ) );
 		System.err.println( entity.getBooleanFromUser( "to be or not to be?" ) );
 	}
