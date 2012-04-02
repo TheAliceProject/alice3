@@ -72,8 +72,8 @@ import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy;
 import org.lgna.croquet.components.View;
 import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
@@ -202,33 +202,36 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 				if( parentMethod != null ) {
 					if( parentMethod instanceof UserMethod ) {
 						final UserMethod parent = (UserMethod)parentMethod;
-						if( parent.getManagementLevel() != ManagementLevel.GENERATED ) {
+						//						if( !parent.getManagementLevel().isGenerated() ) {
 
-							methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
-							methodCountMap.put( parent, new HashMap<AbstractMethod,Integer>() );
-							parent.body.getValue().crawl( new Crawler() {
+						methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
+						methodCountMap.put( parent, new HashMap<AbstractMethod,Integer>() );
+						parent.body.getValue().crawl( new Crawler() {
 
-								public void visit( Crawlable crawlable ) {
-									if( crawlable instanceof MethodInvocation ) {
-										MethodInvocation invocation = (MethodInvocation)crawlable;
-										if( invocation.method.getValue() instanceof AbstractMethod ) {
-											AbstractMethod method = (AbstractMethod)invocation.method.getValue();
-											if( !methodToConstructMap.keySet().contains( parent ) ) {
-												methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
-											}
-											if( !methodToConstructMap.get( parent ).contains( method ) ) {
-												methodCountMap.get( parent ).put( method, 1 );
-												methodToConstructMap.get( parent ).add( method );
-											} else {
-												methodCountMap.get( parent ).put( method, methodCountMap.get( parent ).get( method ) + 1 );
-											}
+							public void visit( Crawlable crawlable ) {
+								if( crawlable instanceof MethodInvocation ) {
+									MethodInvocation invocation = (MethodInvocation)crawlable;
+									if( invocation.method.getValue() instanceof AbstractMethod ) {
+										AbstractMethod method = (AbstractMethod)invocation.method.getValue();
+										if( !methodToConstructMap.keySet().contains( parent ) ) {
+											methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
+										}
+										if( !methodToConstructMap.get( parent ).contains( method ) ) {
+											methodCountMap.get( parent ).put( method, 1 );
+											methodToConstructMap.get( parent ).add( method );
+										} else {
+											methodCountMap.get( parent ).put( method, methodCountMap.get( parent ).get( method ) + 1 );
 										}
 									}
 								}
-							}, false );
-						} else {
-							System.out.println( "Hello " + parentMethod.getName() );
+							}
+						}, false );
+					} else {
+						if( !(parentMethod instanceof UserLambda) ) {
+							System.out.println( "hello " + parentMethod.getClass() );
+							System.out.println( " bye: " + parentMethod );
 						}
+						//						System.out.println( "filtred: " + parentMethod.getName() );
 					}
 				}
 			}

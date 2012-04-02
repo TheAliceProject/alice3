@@ -98,8 +98,8 @@ public class StatisticsOperation extends InformationDialogOperation {
 				return null;
 			}
 		} );
-		state.addItem( methodTab );
 		state.addItem( flowControlFrequencyTab );
+		state.addItem( methodTab );
 		return state.createFolderTabbedPane();
 	}
 	@Override
