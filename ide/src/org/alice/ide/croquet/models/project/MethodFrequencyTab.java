@@ -88,21 +88,19 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 	View view;
 	private Map<UserMethod,InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
 
-	private Map<UserMethod,List<AbstractMethod>> methodToConstructMap = Collections.newHashMap();
-	private Map<UserMethod,Map<AbstractMethod,Integer>> methodCountMap = Collections.newHashMap();
 	private DefaultListSelectionState<UserMethod> listSelectionState;
 	private UserMethod dummy = new UserMethod();
 
-	
 	private static class MethodCountPair {
 		private final AbstractMethod method;
 		private int count;
+
 		public MethodCountPair( AbstractMethod method ) {
 			this.method = method;
 			this.count = 1;
 		}
 		public void bumpItUpANotch() {
-			this.count ++;
+			this.count++;
 		}
 		public AbstractMethod getMethod() {
 			return this.method;
@@ -111,22 +109,48 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			return this.count;
 		}
 	}
-	
+
 	private static class InvocationCounts {
 		private List<MethodCountPair> methodCountPairs = Collections.newLinkedList();
+
 		public void addInvocation( MethodInvocation invocation ) {
-			AbstractMethod method = invocation.method.getValue();
+			addMethod( invocation.method.getValue() );
+		}
+		public List<MethodCountPair> getMethodCountPairs() {
+			return this.methodCountPairs;
+		}
+		public void addMethod( AbstractMethod method ) {
+			if( get( method ) != null ) {
+				get( method ).bumpItUpANotch();
+			} else {
+				methodCountPairs.add( new MethodCountPair( method ) );
+				sort();
+			}
+		}
+		private void sort() {
+			java.util.Collections.sort( methodCountPairs, new Comparator<MethodCountPair>() {
+
+				public int compare( MethodCountPair o1, MethodCountPair o2 ) {
+					return o1.getMethod().getName().compareTo( o2.getMethod().getName() );
+				}
+			} );
+		}
+		public int size() {
+			return methodCountPairs.size();
+		}
+		public AbstractMethod get( int i ) {
+			return methodCountPairs.get( i ).getMethod();
+		}
+		public MethodCountPair get( AbstractMethod method ) {
 			for( MethodCountPair methodCountPair : this.methodCountPairs ) {
 				if( methodCountPair.getMethod().equals( method ) ) {
-					methodCountPair.bumpItUpANotch();
-					return;
+					return methodCountPair;
 				}
 			}
-			this.methodCountPairs.add( new MethodCountPair( method ) );
+			return null;
 		}
 	}
-	
-	
+
 	public MethodFrequencyTab() {
 		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ) );
 		final GridPanel rv = GridPanel.createGridPane( 2, 1 );
@@ -134,9 +158,8 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 
-		
 		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
-//		StatementCountCrawler crawler = new StatementCountCrawler();
+		//		StatementCountCrawler crawler = new StatementCountCrawler();
 		programType.crawl( crawler, true );
 		listSelectionState = new DefaultListSelectionState<UserMethod>( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "06b77424-763b-4fdc-a1cb-1404eaefa1d2" ), new ItemCodec<UserMethod>() {
 
@@ -155,12 +178,12 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 				return rv.append( value.getName() );
 			}
 		} );
-		
+
 		for( AbstractMethod method : crawler.getMethods() ) {
 			List<MethodInvocation> invocations = crawler.getInvocationsFor( method );
 			for( MethodInvocation invocation : invocations ) {
 				UserMethod invocationOwner = invocation.getFirstAncestorAssignableTo( UserMethod.class );
-				
+
 				InvocationCounts invocationCounts = this.mapMethodToInvocationCounts.get( invocationOwner );
 				if( invocationCounts != null ) {
 					//pass
@@ -171,11 +194,10 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 				invocationCounts.addInvocation( invocation );
 			}
 		}
-		
+
 		List<UserMethod> a = new LinkedList<UserMethod>();
-		for( UserMethod method : methodToConstructMap.keySet() ) {
+		for( UserMethod method : mapMethodToInvocationCounts.keySet() ) {
 			a.add( method );
-			sort( methodToConstructMap.get( method ) );
 		}
 		sort( a );
 		listSelectionState.addItem( dummy );
@@ -244,60 +266,60 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		}
 	}
 
-//	private class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-//		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>,Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-//
-//		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-//			if( crawlable instanceof org.lgna.project.ast.Statement ) {
-//				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
-//				final AbstractMethod parentMethod = statement.getFirstAncestorAssignableTo( AbstractMethod.class );
-//				if( parentMethod != null ) {
-//					if( parentMethod instanceof UserMethod ) {
-//						final UserMethod parent = (UserMethod)parentMethod;
-//						//						if( !parent.getManagementLevel().isGenerated() ) {
-//
-//						methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
-//						methodCountMap.put( parent, new HashMap<AbstractMethod,Integer>() );
-//						parent.body.getValue().crawl( new Crawler() {
-//
-//							public void visit( Crawlable crawlable ) {
-//								if( crawlable instanceof MethodInvocation ) {
-//									MethodInvocation invocation = (MethodInvocation)crawlable;
-//									if( invocation.method.getValue() instanceof AbstractMethod ) {
-//										AbstractMethod method = (AbstractMethod)invocation.method.getValue();
-//										if( !methodToConstructMap.keySet().contains( parent ) ) {
-//											methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
-//										}
-//										if( !methodToConstructMap.get( parent ).contains( method ) ) {
-//											methodCountMap.get( parent ).put( method, 1 );
-//											methodToConstructMap.get( parent ).add( method );
-//										} else {
-//											methodCountMap.get( parent ).put( method, methodCountMap.get( parent ).get( method ) + 1 );
-//										}
-//									}
-//								}
-//							}
-//						}, false );
-//					} else {
-//						if( !(parentMethod instanceof UserLambda) ) {
-//							System.out.println( "hello " + parentMethod.getClass() );
-//							System.out.println( " bye: " + parentMethod );
-//						}
-//						//						System.out.println( "filtred: " + parentMethod.getName() );
-//					}
-//				}
-//			}
-//		}
-//	}
-	
-	
+	//	private class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
+	//		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>,Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	//
+	//		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+	//			if( crawlable instanceof org.lgna.project.ast.Statement ) {
+	//				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
+	//				final AbstractMethod parentMethod = statement.getFirstAncestorAssignableTo( AbstractMethod.class );
+	//				if( parentMethod != null ) {
+	//					if( parentMethod instanceof UserMethod ) {
+	//						final UserMethod parent = (UserMethod)parentMethod;
+	//						//						if( !parent.getManagementLevel().isGenerated() ) {
+	//
+	//						methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
+	//						methodCountMap.put( parent, new HashMap<AbstractMethod,Integer>() );
+	//						parent.body.getValue().crawl( new Crawler() {
+	//
+	//							public void visit( Crawlable crawlable ) {
+	//								if( crawlable instanceof MethodInvocation ) {
+	//									MethodInvocation invocation = (MethodInvocation)crawlable;
+	//									if( invocation.method.getValue() instanceof AbstractMethod ) {
+	//										AbstractMethod method = (AbstractMethod)invocation.method.getValue();
+	//										if( !methodToConstructMap.keySet().contains( parent ) ) {
+	//											methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
+	//										}
+	//										if( !methodToConstructMap.get( parent ).contains( method ) ) {
+	//											methodCountMap.get( parent ).put( method, 1 );
+	//											methodToConstructMap.get( parent ).add( method );
+	//										} else {
+	//											methodCountMap.get( parent ).put( method, methodCountMap.get( parent ).get( method ) + 1 );
+	//										}
+	//									}
+	//								}
+	//							}
+	//						}, false );
+	//					} else {
+	//						if( !(parentMethod instanceof UserLambda) ) {
+	//							System.out.println( "hello " + parentMethod.getClass() );
+	//							System.out.println( " bye: " + parentMethod );
+	//						}
+	//						//						System.out.println( "filtred: " + parentMethod.getName() );
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+
 	private static class MethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 		private final Map<AbstractMethod,List<MethodInvocation>> mapMethodToInvocations = Collections.newHashMap();
+
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 				AbstractMethod method = methodInvocation.method.getValue();
-				
+
 				List<MethodInvocation> list = this.mapMethodToInvocations.get( method );
 				if( list != null ) {
 					list.add( methodInvocation );
@@ -307,16 +329,15 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 				}
 			}
 		}
-		
+
 		public java.util.Set<AbstractMethod> getMethods() {
 			return this.mapMethodToInvocations.keySet();
 		}
 		public List<MethodInvocation> getInvocationsFor( AbstractMethod method ) {
 			return this.mapMethodToInvocations.get( method );
 		}
-		
+
 	}
-	
 
 	public class ControlDisplay implements ValueListener<UserMethod> {
 
@@ -354,21 +375,16 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		}
 
 		public void setMaximum() {
-			maximum = getCount( dummy, null );
-			methodToConstructMap.put( dummy, new LinkedList<AbstractMethod>() );
-			methodCountMap.put( dummy, new HashMap<AbstractMethod,Integer>() );
-			for( UserMethod method : methodToConstructMap.keySet() ) {
-				for( AbstractMethod childMethod : methodToConstructMap.get( method ) ) {
-					if( !method.equals( dummy ) ) {
-						if( !methodToConstructMap.get( dummy ).contains( childMethod ) ) {
-							methodCountMap.get( dummy ).put( childMethod, 0 );
-							methodToConstructMap.get( dummy ).add( childMethod );
-						}
-						methodCountMap.get( dummy ).put( childMethod, methodCountMap.get( method ).get( childMethod ) + methodCountMap.get( dummy ).get( childMethod ) );
+			InvocationCounts invocationCounts = new InvocationCounts();
+			for( UserMethod method : mapMethodToInvocationCounts.keySet() ) {
+				for( MethodCountPair pair : mapMethodToInvocationCounts.get( method ).getMethodCountPairs() ) {
+					for( int i = 0; i != pair.getCount(); ++i ) {
+						invocationCounts.addMethod( pair.getMethod() );
 					}
 				}
 			}
-			sort( methodToConstructMap.get( dummy ) );
+			mapMethodToInvocationCounts.put( dummy, invocationCounts );
+			maximum = getCount( dummy, null );
 		}
 
 		private class BarLabel extends Label {
@@ -435,7 +451,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		}
 
 		private void update( UserMethod selected ) {
-			setHeight( methodToConstructMap.get( selected ).size() + 1 );
+			setHeight( mapMethodToInvocationCounts.get( selected ).size() + 1 );
 			populateLeftCol( selected );
 			populateRightCol( selected );
 		}
@@ -447,14 +463,14 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 
 		private void populateRightCol( UserMethod selected ) {
 			((Label)getCell( 0, 0 )).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
-			for( int i = 0; i != methodToConstructMap.get( selected ).size(); ++i ) {
-				setCell( 1, i + 1, getCount( selected, methodToConstructMap.get( selected ).get( i ) ) );
+			for( int i = 0; i != mapMethodToInvocationCounts.get( selected ).size(); ++i ) {
+				setCell( 1, i + 1, getCount( selected, mapMethodToInvocationCounts.get( selected ).get( i ) ) );
 			}
 		}
 
 		private void populateLeftCol( UserMethod selected ) {
-			for( int i = 0; i != methodToConstructMap.get( selected ).size(); ++i ) {
-				setCell( 0, i + 1, methodToConstructMap.get( selected ).get( i ).getName() );
+			for( int i = 0; i != mapMethodToInvocationCounts.get( selected ).size(); ++i ) {//methodToConstructMap.get( selected ).size(); ++i ) {
+				setCell( 0, i + 1, mapMethodToInvocationCounts.get( selected ).get( i ).getName() );
 			}
 		}
 
@@ -479,12 +495,12 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		public int getCount( AbstractMethod method, AbstractMethod methodTwo ) {
 			int count = 0;
 			if( methodTwo != null ) {
-				count = methodCountMap.get( method ).get( methodTwo );
+				count = mapMethodToInvocationCounts.get( method ).get( methodTwo ).getCount();
 			} else {
-				for( UserMethod userMethod : methodToConstructMap.keySet() ) {
-					for( AbstractMethod child : methodToConstructMap.get( userMethod ) ) {
-						if( !userMethod.equals( dummy ) ) {
-							count += methodCountMap.get( userMethod ).get( child );
+				if( mapMethodToInvocationCounts.get( method ) != null ) {
+					for( MethodCountPair pair : mapMethodToInvocationCounts.get( method ).methodCountPairs ) {
+						if( pair.getMethod() != dummy ) {
+							count += pair.getCount();
 						}
 					}
 				}
