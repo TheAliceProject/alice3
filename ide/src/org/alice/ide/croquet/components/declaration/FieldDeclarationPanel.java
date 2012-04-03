@@ -59,7 +59,7 @@ public abstract class FieldDeclarationPanel< M extends org.alice.ide.croquet.mod
 		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
 		M model = this.getModel();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), model.createPreviewDeclaration() );
 	}

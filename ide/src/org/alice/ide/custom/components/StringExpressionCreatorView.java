@@ -41,18 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.MethodDeclarationOperation > extends DeclarationPanel< M > {
-	public MethodDeclarationPanel( M model ) {
-		super( model );
+public class StringExpressionCreatorView extends ExpressionCreatorView {
+	public StringExpressionCreatorView( org.alice.ide.custom.StringExpressionCreatorComposite composite ) {
+		super( composite );
 	}
+	
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		M model = this.getModel();
-		return new org.alice.ide.codeeditor.MethodHeaderPane( model.createPreviewDeclaration(), null, true, model.getDeclaringType() );
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		return new org.lgna.croquet.components.Component<?>[] {
+				((org.alice.ide.custom.StringExpressionCreatorComposite)this.getComposite()).getStringState().createTextField()
+		};
 	}
+	
 }

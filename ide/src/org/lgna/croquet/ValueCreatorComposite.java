@@ -46,12 +46,162 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends Composite<V> implements ValueCreator<T> {
+public abstract class ValueCreatorComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends Composite<V> {
+	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>,T> implements org.lgna.croquet.dialog.DialogOwner<V> {
+
+		private final ValueCreatorComposite<V,T> composite;
+		public DialogOwner( ValueCreatorComposite<V,T> composite ) {
+			this.composite = composite;
+		}
+		public V allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+			return this.composite.allocateView( step );
+		}
+
+		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, V view ) {
+			this.composite.releaseView( step, view );
+		}
+
+		public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+			return this.composite.getDialogTitle( step );
+		}
+
+		public java.awt.Point getDesiredDialogLocation() {
+			return this.composite.getDesiredDialogLocation();
+		}
+		public void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+			this.composite.modifyPackedDialogSizeIfDesired( dialog );
+		}
+
+		public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+			return this.composite.isWindowClosingEnabled( trigger );
+		}
+
+		public void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+			this.composite.handleDialogOpened( trigger );
+		}
+
+		public void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+			this.composite.handleDialogClosed( trigger );
+		}
+
+		public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+			this.composite.handlePreShowDialog( step );
+		}
+
+		public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+			this.composite.handlePostHideDialog( step );
+		}
+
+		public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+			this.composite.handleFinally( step, dialog );
+		}
+		
+	}
+
+	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueCreatorComposite<?,F> > {
+		private InternalFillInResolver( ValueCreatorComposite<?,F> internal ) {
+			super( internal );
+		}
+		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalFillIn<F> getDirect( ValueCreatorComposite<?,F> indirect ) {
+			return indirect.getFillIn();
+		}
+	}
+	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
+		private final ValueCreatorComposite<?,F> composite;
+		private InternalFillIn( ValueCreatorComposite<?,F> composite ) {
+			super( java.util.UUID.fromString( "258797f2-c1b6-4887-b6fc-42702493d573" ) );
+			this.composite = composite;
+		}
+		public ValueCreatorComposite<?,F> getComposite() {
+			return this.composite;
+		}
+		@Override
+		protected InternalFillInResolver<F> createResolver() {
+			return new InternalFillInResolver<F>( this.composite );
+		}
+		@Override
+		protected String getTutorialItemText() {
+			return this.composite.getDefaultLocalizedText();
+		}
+		@Override
+		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+			return new javax.swing.JLabel( this.getTutorialItemText() );
+		}
+		@Override
+		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
+			return this.composite.createValue();
+		}
+		@Override
+		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
+			return null;
+		}
+	}
+
+	private InternalFillIn<T> fillIn;
 	public ValueCreatorComposite( java.util.UUID id ) {
 		super( id );
 	}
-	public T createValue() {
-		//todo
+	public synchronized InternalFillIn<T> getFillIn() {
+		if( this.fillIn != null ) {
+			//pass
+		} else {
+			this.fillIn = new InternalFillIn<T>( this );
+		}
+		return this.fillIn;
+	}
+	public T getPreviewValue() {
+		return this.createValue();
+	}
+	protected abstract T createValue();
+	private T createValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > node ) {
+		org.lgna.croquet.history.CompletionStep<?> step = null;
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner<V,T>( this ), step );
+		return this.createValue();
+	}
+
+	//todo
+	private V allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return this.getView();
+	}
+	//todo
+	private void releaseView( org.lgna.croquet.history.CompletionStep<?> step, V view ) {
+	}
+	
+	
+	//todo: remove?
+	protected boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+		return true;
+	}
+	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+//		String rv = this.getName();
+//		if( rv != null ) {
+//			rv = rv.replaceAll( "<[a-z]*>", "" );
+//			rv = rv.replaceAll( "</[a-z]*>", "" );
+//			if( rv.endsWith( "..." ) ) {
+//				rv = rv.substring( 0, rv.length() - 3 );
+//			}
+//		}
+//		return rv;
+		return "";
+	}
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+	}
+	protected java.awt.Point getDesiredDialogLocation() {
 		return null;
+	}
+	private void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+		//org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
+	}
+	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+	}
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 	}
 }

@@ -40,25 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> extends org.alice.ide.croquet.components.InputDialogPanelWithPreview< org.alice.ide.croquet.models.custom.CustomInputDialogOperation< E > > {
-	protected org.lgna.project.ast.Expression getPreviousExpression() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( ide != null ) {
-			return ide.getCascadeManager().getPreviousExpression();
-		} else {
-			return null;
-		}
+public abstract class ExpressionCreatorView extends org.alice.ide.preview.PanelWithPreview {
+	public ExpressionCreatorView( org.alice.ide.custom.ExpressionCreatorComposite<?> composite ) {
+		super( composite );
 	}
+	
+	private org.lgna.project.ast.Expression createValue() {
+		org.alice.ide.custom.ExpressionCreatorComposite<?> composite = (org.alice.ide.custom.ExpressionCreatorComposite<?>)this.getComposite();
+		return composite.getPreviewValue();
+	}
+	
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
 		org.lgna.project.ast.Expression expression;
 		try {
-			expression = this.getValue();
+			expression = this.createValue();
 		} catch( RuntimeException re ) {
 			//re.printStackTrace();
 			expression = new org.lgna.project.ast.NullLiteral();
@@ -67,6 +69,41 @@ public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> ex
 		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		return rv;
 	}
-	public abstract E getValue();
-	public abstract String getExplanationIfOkButtonShouldBeDisabled();
+	
+
+	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
+		return org.lgna.croquet.components.SpringUtilities.createTrailingLabel( text );
+	}
+	private static final String[] LABEL_TEXTS = { "value:" };
+	protected String[] getLabelTexts() {
+		return LABEL_TEXTS;
+	}
+	protected abstract org.lgna.croquet.components.Component< ? >[] getRowComponents();
+	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+		String[] labelTexts = this.getLabelTexts();
+		org.lgna.croquet.components.Component< ? >[] components = this.getRowComponents();
+		final int N = labelTexts.length;
+		for( int i=0; i<N; i++ ) {
+			rv.add( 
+					org.lgna.croquet.components.SpringUtilities.createRow( 
+						this.createLabel( labelTexts[ i ] ), 
+						new org.lgna.croquet.components.LineAxisPanel( 
+								components[ i ],
+								org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
+						)
+					) 
+			);
+		}
+		return rv;
+	}
+	@Override
+	public org.lgna.croquet.components.RowsSpringPanel createMainComponent() {
+		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
+			@Override
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
+				return ExpressionCreatorView.this.updateRows( rv );
+			}
+		};
+		return rowsSpringPanel;
+	}
 }

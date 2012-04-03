@@ -41,18 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.MethodDeclarationOperation > extends DeclarationPanel< M > {
-	public MethodDeclarationPanel( M model ) {
-		super( model );
+public class DoubleExpressionCreatorComposite extends NumberExpressionCreatorComposite<org.alice.ide.custom.components.DoubleExpressionCreatorView> {
+	private static class SingletonHolder {
+		private static DoubleExpressionCreatorComposite instance = new DoubleExpressionCreatorComposite();
+	}
+	public static DoubleExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DoubleExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ) );
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		M model = this.getModel();
-		return new org.alice.ide.codeeditor.MethodHeaderPane( model.createPreviewDeclaration(), null, true, model.getDeclaringType() );
+	protected org.alice.ide.custom.components.DoubleExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.DoubleExpressionCreatorView( this );
 	}
 }

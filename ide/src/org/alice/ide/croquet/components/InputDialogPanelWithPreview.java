@@ -41,18 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.MethodDeclarationOperation > extends DeclarationPanel< M > {
-	public MethodDeclarationPanel( M model ) {
-		super( model );
+public abstract class InputDialogPanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.alice.ide.preview.PanelWithPreview {
+	private M model;
+	public InputDialogPanelWithPreview( M model ) {
+		this.model = model;
 	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		M model = this.getModel();
-		return new org.alice.ide.codeeditor.MethodHeaderPane( model.createPreviewDeclaration(), null, true, model.getDeclaringType() );
+	public InputDialogPanelWithPreview() {
+		this( null );
+		//todo
+	}
+	public M getModel() {
+		return this.model;
 	}
 }

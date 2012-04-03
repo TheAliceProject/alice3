@@ -41,11 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ValueCreator<T> {
-	public T createValue();
+public abstract class ExpressionCreatorComposite<V extends org.lgna.croquet.components.View<?,?>> extends org.lgna.croquet.ValueCreatorComposite<V,org.lgna.project.ast.Expression>{
+	public ExpressionCreatorComposite( java.util.UUID id ) {
+		super( id );
+	}
+	@Override
+	protected void localize() {
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		return false;
+	}
 }

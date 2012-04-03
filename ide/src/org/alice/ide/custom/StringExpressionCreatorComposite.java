@@ -41,18 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components.declaration;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.MethodDeclarationOperation > extends DeclarationPanel< M > {
-	public MethodDeclarationPanel( M model ) {
-		super( model );
+public class StringExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.StringExpressionCreatorView> {
+	private static class SingletonHolder {
+		private static StringExpressionCreatorComposite instance = new StringExpressionCreatorComposite();
+	}
+	public static StringExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private static class ValueStringState extends org.lgna.croquet.StringState {
+		public ValueStringState() {
+			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "e77583b9-16bf-43fd-a933-53017189373d" ), "" );
+		}
+	}
+	private final ValueStringState stringState = new ValueStringState();
+	
+	private StringExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		M model = this.getModel();
-		return new org.alice.ide.codeeditor.MethodHeaderPane( model.createPreviewDeclaration(), null, true, model.getDeclaringType() );
+	protected org.alice.ide.custom.components.StringExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.StringExpressionCreatorView( this );
 	}
+	
+	public org.lgna.croquet.StringState getStringState() {
+		return this.stringState;
+	}
+	
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		return new org.lgna.project.ast.StringLiteral( this.stringState.getValue() );
+	}
+	
 }
