@@ -120,6 +120,10 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 			return this.composite;
 		}
 		@Override
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.composite.getClass();
+		}
+		@Override
 		protected InternalFillInResolver<F> createResolver() {
 			return new InternalFillInResolver<F>( this.composite );
 		}
