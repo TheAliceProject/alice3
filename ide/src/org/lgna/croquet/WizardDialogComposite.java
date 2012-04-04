@@ -164,10 +164,10 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 		this.updateEnabled();
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
 		WizardCardComposite wizardCardComposite = (WizardCardComposite)this.getMainComposite();
 		wizardCardComposite.setIndex( 0 );
 		this.updateEnabled();
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( node );
 	}
 }
