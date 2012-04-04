@@ -1,0 +1,403 @@
+package org.lgna.ik.enforcer;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.lgna.ik.solver.Bone;
+import org.lgna.ik.solver.Bone.Axis;
+import org.lgna.ik.solver.Chain;
+import org.lgna.ik.solver.Solver.JacobianAndInverse;
+import org.lgna.story.resources.JointId;
+
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+
+public class JointedModelIkEnforcer extends IkEnforcer {
+
+	org.lgna.ik.solver.Solver solver = new org.lgna.ik.solver.Solver();
+	private final org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp;
+	
+	public JointedModelIkEnforcer(org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp) {
+		this.jointedModelImp = jointedModelImp;
+	}
+
+	Map<JointId, Map<JointId, Chain> > anchors = new HashMap<JointId, Map<JointId,Chain>>();
+	Map<JointId, Map<JointId, Chain> > chainsForEes = new HashMap<JointId, Map<JointId,Chain>>();
+	Map<JointId, Double> jointWeights = new HashMap<JointId, Double>();
+	double defaultJointWeight = 1.0;
+	
+	class DesiredPositionParameters {
+		private final JointId jointId;
+		private final Point3 position;
+		private final double maxSpeed;
+
+		public DesiredPositionParameters(JointId jointId, Point3 position, double maxSpeed) {
+			this.jointId = jointId;
+			this.position = position;
+			this.maxSpeed = maxSpeed;
+		} 
+	}
+	
+	class DesiredOrientationParameters {
+		private final JointId jointId;
+		private final OrthogonalMatrix3x3 orientation;
+		private final double maxSpeed;
+
+		public DesiredOrientationParameters(JointId jointId, OrthogonalMatrix3x3 orientation, double maxSpeed) {
+			this.jointId = jointId;
+			this.orientation = orientation;
+			this.maxSpeed = maxSpeed;
+		}
+	}
+	
+	class DesiredVelocityParameters {
+		private final JointId jointId;
+		private final Vector3 velocity;
+
+		public DesiredVelocityParameters(JointId jointId, Vector3 velocity) {
+			this.jointId = jointId;
+			this.velocity = velocity;
+		}
+	}
+	
+	List<DesiredPositionParameters> currentDesiredPositions = new ArrayList<DesiredPositionParameters>();
+	List<DesiredOrientationParameters> currentDesiredOrientations = new ArrayList<DesiredOrientationParameters>();
+	List<DesiredVelocityParameters> currentDesiredLinearVelocities = new ArrayList<DesiredVelocityParameters>();
+	List<DesiredVelocityParameters> currentDesiredAngularVelocities = new ArrayList<DesiredVelocityParameters>();
+	
+	public boolean hasActiveChain() {
+		return !chainsForEes.isEmpty();
+	}
+	
+	//this ignores current value of the chain end effector local point
+	public void setChainBetween(org.lgna.story.resources.JointId baseId, org.lgna.story.resources.JointId eeId) {
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> ees = anchors.get(baseId);
+		if(ees == null) {
+			ees = new HashMap<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain>();
+			anchors.put(baseId, ees);
+		}
+		Chain chain = ees.get(eeId);
+		if(chain == null) {
+			//create and use chain
+			chain = createNewChain(baseId, eeId);
+			ees.put(eeId, chain);
+			
+			//add to ee's chains
+			Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+			if(chainsForEe == null) {
+				chainsForEe = new HashMap<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain>();
+				chainsForEes.put(eeId, chainsForEe);
+			}
+			chainsForEe.put(baseId, chain);
+			solver.addChain(chain);
+		}
+	}
+	
+	//can also set weights per chain, axis, etc. 
+	public void setDefaultJointWeight(double weight) {
+		defaultJointWeight = weight;
+	}
+	
+	public void setJointWeight(JointId jointId, double weight) {
+		jointWeights.put(jointId, weight);
+	}
+	
+	private org.lgna.ik.solver.Chain createNewChain(org.lgna.story.resources.JointId baseId, org.lgna.story.resources.JointId eeId) {
+		return org.lgna.ik.solver.Chain.createInstance(jointedModelImp, baseId, eeId);
+	}
+
+	public void clearChainBetween(JointId baseId, JointId eeId) {
+		Chain chain = null;
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> ees = anchors.get(baseId);
+		if(ees != null) {
+			chain = ees.get(eeId);
+			ees.remove(eeId);
+			if(ees.isEmpty()) {
+				anchors.remove(baseId);
+			}
+		}
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+		if(chainsForEe != null) {
+			chainsForEe.remove(baseId);
+			if(chainsForEe.isEmpty()) {
+				chainsForEes.remove(eeId);
+			}
+		}
+		solver.removeChain(chain);
+	}
+	
+	public void setEeLocalPosition(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.Point3 localPosition) {
+		//find the chain(s)
+		//set their local positions
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+		for(Map.Entry<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> e: chainsForEe.entrySet()) {
+			org.lgna.ik.solver.Chain chain = e.getValue();
+			chain.setEndEffectorLocalPosition(localPosition);
+		}
+	}
+	
+	public void setEePosition(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.Point3 position) {
+		//find the chain(s)
+		//set their local positions
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+		for(Map.Entry<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> e: chainsForEe.entrySet()) {
+			org.lgna.ik.solver.Chain chain = e.getValue();
+			chain.setEndEffectorPosition(position);
+		}
+	}
+	
+	public void setEeDesiredLinearVelocity(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.Vector3 linearVelocity) {
+		currentDesiredLinearVelocities.add(new DesiredVelocityParameters(eeId, linearVelocity));
+		setEeDesiredLinearVelocityWithoutRecordingIt(eeId, linearVelocity);
+	}
+	
+	public void setEeDesiredLinearVelocityWithoutRecordingIt(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.Vector3 linearVelocity) {
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+		for(Map.Entry<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> e: chainsForEe.entrySet()) {
+			org.lgna.ik.solver.Chain chain = e.getValue();
+			solver.setDesiredEndEffectorLinearVelocity(chain, linearVelocity);
+		}
+	}
+	
+	public void setEeDesiredAngularVelocity(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.Vector3 angularVelocity) {
+		currentDesiredAngularVelocities.add(new DesiredVelocityParameters(eeId, angularVelocity));
+		setEeDesiredAngularVelocityWithoutRecordingIt(eeId, angularVelocity);
+	}
+	
+	public void setEeDesiredAngularVelocityWithoutRecordingIt(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.Vector3 angularVelocity) {
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+		for(Map.Entry<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> e: chainsForEe.entrySet()) {
+			org.lgna.ik.solver.Chain chain = e.getValue();
+			solver.setDesiredEndEffectorAngularVelocity(chain, angularVelocity);
+		}
+	}
+	
+	public Point3 getEndEffectorPosition(JointId eeId) {
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+		for(Chain chain: chainsForEe.values()) {
+			return chain.getEndEffectorPosition();
+		}
+		return null;
+	}
+	
+	public Point3 getAnchorPosition(JointId anchorId) {
+		Map<JointId, Chain> chainsForBase = anchors.get(anchorId);
+		for(Chain chain: chainsForBase.values()) {
+			return chain.getAnchorPosition();
+		}
+		return null;
+	}
+	
+	public void setEeDesiredPosition(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.Point3 desiredPosition, double maxLinearSpeedForEe) {
+		currentDesiredPositions.add(new DesiredPositionParameters(eeId, desiredPosition, maxLinearSpeedForEe));
+		
+		setEeDesiredPositionWithoutRecordingIt(eeId, desiredPosition, maxLinearSpeedForEe);
+	}
+
+	private void setEeDesiredPositionWithoutRecordingIt(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.Point3 desiredPosition, double maxLinearSpeedForEe) {
+		//for each chain for this ee
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+		edu.cmu.cs.dennisc.math.Vector3 eeLinearVelocityToUse = null;
+		for(Map.Entry<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> e: chainsForEe.entrySet()) {
+			org.lgna.ik.solver.Chain chain = e.getValue();
+			
+			if(eeLinearVelocityToUse == null) {
+				//get the current ee reference position in world (these all should be the same for each loop iteration)
+				edu.cmu.cs.dennisc.math.Point3 eePosition = chain.getEndEffectorPosition();
+				
+				//calculate the error vector
+				edu.cmu.cs.dennisc.math.Vector3 errorVector = edu.cmu.cs.dennisc.math.Vector3.createSubtraction(desiredPosition, eePosition);
+				
+				//calculate the desired velocity
+				if(errorVector.calculateMagnitudeSquared() > maxLinearSpeedForEe * maxLinearSpeedForEe) {
+					errorVector.normalize();
+					errorVector.multiply(maxLinearSpeedForEe);
+				}
+				eeLinearVelocityToUse = errorVector;
+			}
+			
+			//set the desired ee velocity
+			setEeDesiredLinearVelocityWithoutRecordingIt(eeId, eeLinearVelocityToUse);
+		}
+	}
+	
+	public void setEeDesiredOrientation(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 desiredOrientation, double maxAngularSpeedForEe) {
+		currentDesiredOrientations.add(new DesiredOrientationParameters(eeId, desiredOrientation, maxAngularSpeedForEe));
+		
+		setEeDesiredOrientationWithoutRecordingIt(eeId, desiredOrientation, maxAngularSpeedForEe);
+	}
+
+	private void setEeDesiredOrientationWithoutRecordingIt(org.lgna.story.resources.JointId eeId, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 desiredOrientation, double maxAngularSpeedForEe) {
+		//for each chain for this ee
+		Map<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> chainsForEe = chainsForEes.get(eeId);
+		edu.cmu.cs.dennisc.math.Vector3 eeAngularVelocityToUse = null;
+		for(Map.Entry<org.lgna.story.resources.JointId, org.lgna.ik.solver.Chain> e: chainsForEe.entrySet()) {
+			org.lgna.ik.solver.Chain chain = e.getValue();
+			
+			if(eeAngularVelocityToUse == null) {
+				//get the current ee reference position in world (these all should be the same for each loop iteration)
+				edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 endEffectorOrientation = chain.getEndEffectorOrientation();
+				
+				
+				edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 inverseCurrent = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3(endEffectorOrientation);
+				inverseCurrent.invert();
+				
+				edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 diff = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
+				diff.setToMultiplication(desiredOrientation, inverseCurrent);
+				
+				edu.cmu.cs.dennisc.math.AxisRotation diffAxisRotation = new edu.cmu.cs.dennisc.math.AxisRotation(diff);
+				
+				edu.cmu.cs.dennisc.math.Vector3 errorAngularDistance = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(diffAxisRotation.axis, diffAxisRotation.angle.getAsRadians());
+				
+				//not going to use it directly because is likely to be too fast (linear is bad approximation for large steps)
+				
+				if(errorAngularDistance.calculateMagnitude() > maxAngularSpeedForEe) {
+					errorAngularDistance.normalize();
+					eeAngularVelocityToUse = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(errorAngularDistance, maxAngularSpeedForEe);
+				} else {
+					eeAngularVelocityToUse = errorAngularDistance;
+				}
+			}
+			
+			//set the desired ee velocity
+			setEeDesiredAngularVelocityWithoutRecordingIt(eeId, eeAngularVelocityToUse);
+		}
+	}
+	
+	public void advanceTimeAdaptivelyForFixedDuration(double deltaTime, double maxError) {
+		double totalDeltaTimeToFill = deltaTime;
+		double deltaTimePassedSoFar = 0;
+		double deltaTimeAttemptingToAdvance = deltaTime;
+		
+		double minDeltaTime = deltaTime * .5;
+		
+		boolean firstTry = true;
+		
+//		System.out.println("will try to fill " + deltaTime);
+		while(!EpsilonUtilities.isWithinReasonableEpsilon(totalDeltaTimeToFill - deltaTimePassedSoFar, 0.0)) {
+			
+			if(firstTry) {
+				firstTry = false;
+			} else {
+				//TODO what if the user has set a desired velocity instead of a location?
+				//FIXME record all outside commands and reapply them when needed
+				reactivateDesiredPositionAndOrientations();
+			}
+			
+			//should calculate the jacobian
+			JacobianAndInverse jacobianAndInverse = solver.prepareAndCalculateJacobianAndInverse();
+			
+			//should calculate the error of the jacobian for the time left
+			double error = solver.calculateErrorForTime(jacobianAndInverse, deltaTimeAttemptingToAdvance);
+			//while the error is too much, half the time and recalculate
+//			System.out.println("error is " + error);
+			while(Math.abs(error) > maxError && deltaTimeAttemptingToAdvance > minDeltaTime) {
+				deltaTimeAttemptingToAdvance *= .5;
+				error = solver.calculateErrorForTime(jacobianAndInverse, deltaTimeAttemptingToAdvance);
+//				System.out.println("error was " + error);
+			}
+			
+			//move the joints for that time
+			Map<Bone, Map<Axis, Double>> jointSpeedsToUse = solver.calculateAngleSpeeds(jacobianAndInverse);
+			
+			moveJointsWithSpeedsForTime(jointSpeedsToUse, deltaTimeAttemptingToAdvance);
+			
+			deltaTimePassedSoFar += deltaTimeAttemptingToAdvance;
+			
+//			System.out.println("passed " + deltaTimeAttemptingToAdvance + " left " + (totalDeltaTimeToFill - deltaTimePassedSoFar));
+			
+			//if time is not complete, recalculate jacobian and try again
+		}
+		
+		clearDesiredPositionAndOrientations();
+	}
+	
+	private void clearDesiredPositionAndOrientations() {
+		currentDesiredPositions.clear();
+		currentDesiredOrientations.clear();
+		currentDesiredLinearVelocities.clear();
+		currentDesiredAngularVelocities.clear();
+	}
+
+	private void reactivateDesiredPositionAndOrientations() {
+		for(DesiredPositionParameters p: currentDesiredPositions.toArray(new DesiredPositionParameters[0])) {
+			setEeDesiredPositionWithoutRecordingIt(p.jointId, p.position, p.maxSpeed);
+		}
+		
+		for(DesiredOrientationParameters p: currentDesiredOrientations.toArray(new DesiredOrientationParameters[0])) {
+			setEeDesiredOrientationWithoutRecordingIt(p.jointId, p.orientation, p.maxSpeed);
+		}
+		
+		for(DesiredVelocityParameters p: currentDesiredLinearVelocities.toArray(new DesiredVelocityParameters[0])) {
+			setEeDesiredLinearVelocityWithoutRecordingIt(p.jointId, p.velocity);
+		}
+		
+		for(DesiredVelocityParameters p: currentDesiredAngularVelocities.toArray(new DesiredVelocityParameters[0])) {
+			setEeDesiredAngularVelocityWithoutRecordingIt(p.jointId, p.velocity);
+		}
+	}
+
+	public void advanceTimeStaticallyForFixedDuration(double deltaTime) {
+		Map<Bone, Map<Axis, Double>> jointSpeedsToUse = solver.solve();
+		
+		moveJointsWithSpeedsForTime(jointSpeedsToUse, deltaTime);
+		
+		clearDesiredPositionAndOrientations();
+	}
+
+	private void moveJointsWithSpeedsForTime(Map<Bone, Map<Axis, Double>> jointSpeedsToUse, double deltaTime) {
+		if(jointSpeedsToUse == null) {
+			System.err.println("Joint speeds were null. Could not advance time.");
+			return;
+		}
+		
+		boolean doThreeSeparateRotationsWhichIsNotDesired = false;
+		for(Entry<Bone, Map<Axis, Double>> eb: jointSpeedsToUse.entrySet()) {
+			Bone bone = eb.getKey();
+			Map<Axis, Double> jointSpeedsForBone = eb.getValue();
+			
+			JointId jointId = bone.getA().getJointId();
+			
+			double weight;
+			if(!jointWeights.containsKey(jointId)) {
+				weight = defaultJointWeight;
+			} else {
+				weight = jointWeights.get(jointId);
+			}
+			
+			if(doThreeSeparateRotationsWhichIsNotDesired) {
+				for(Entry<Axis, Double> ea: jointSpeedsForBone.entrySet()) {
+					Axis axis = ea.getKey();
+					Double speed = ea.getValue();
+					axis.applyRotation(deltaTime * speed * weight);
+				}
+			} else {
+				Vector3 cumulativeAxisAngle = Vector3.createZero(); 
+				for(Entry<Axis, Double> ea: jointSpeedsForBone.entrySet()) {
+					Axis axis = ea.getKey();
+					Double speed = ea.getValue();
+					
+					Vector3 contribution = Vector3.createMultiplication(axis.getLocalAxis(), deltaTime * speed * weight);
+					cumulativeAxisAngle.add(contribution);
+				}
+
+				double angle = cumulativeAxisAngle.calculateMagnitude();
+				if(!EpsilonUtilities.isWithinReasonableEpsilon(0, angle)) {
+					Vector3 axis = Vector3.createDivision(cumulativeAxisAngle, angle);
+					bone.applyLocalRotation(axis, angle);
+				}
+				
+			}
+		}
+	}
+	
+	public Chain getChainForPrinting(JointId anchorId, JointId eeId) {
+		return anchors.get(anchorId).get(eeId);
+	}
+
+}

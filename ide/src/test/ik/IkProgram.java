@@ -266,7 +266,10 @@ class IkProgram extends Program {
 //		solver = new org.lgna.ik.solver.Solver();
 		ikEnforcer = new org.lgna.ik.enforcer.JointedModelIkEnforcer(getSubjectImp());
 		
-		//TODO use ikEnforcer's methods rather than dealing with chains.
+//		ikEnforcer.setDefaultJointWeight(0.1);
+//		ikEnforcer.setJointWeight(org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 1);
+		
+		//using ikEnforcer's methods rather than dealing with chains.
 		
 		Thread calculateThread = new Thread() {
 			@Override
@@ -304,7 +307,8 @@ class IkProgram extends Program {
 							ikEnforcer.setEeDesiredOrientation(eeId, targetTransformation.orientation, maxAngularSpeedForEe);
 						}
 						
-						ikEnforcer.advanceTimeForFixedDuration(deltaTime);
+//						ikEnforcer.advanceTimeStaticallyForFixedDuration(deltaTime);
+						ikEnforcer.advanceTimeAdaptivelyForFixedDuration(deltaTime, 1e-50);
 												
 						Point3 ep = ikEnforcer.getEndEffectorPosition(eeId);
 						Point3 ap = ikEnforcer.getAnchorPosition(anchorId);

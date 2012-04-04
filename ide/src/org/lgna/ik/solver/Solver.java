@@ -49,6 +49,8 @@ import java.util.Map.Entry;
 
 import org.lgna.ik.solver.Bone.Axis;
 
+import Jama.Matrix;
+
 import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
@@ -64,7 +66,24 @@ public class Solver {
 			this.contributions = map;
 			this.desiredValue = desiredValue;
 		}
+	}
+	
+	public class JacobianAndInverse {
+		private final Matrix jacobian;
+		private final Matrix inverseJacobian;
+
+		public JacobianAndInverse(Matrix jacobian, Matrix inverseJacobian) {
+			this.jacobian = jacobian;
+			this.inverseJacobian = inverseJacobian;
+		}
 		
+		public Matrix getJacobian() {
+			return jacobian;
+		}
+		
+		public Matrix getInverseJacobian() {
+			return inverseJacobian;
+		}
 	}
 	
 	private final java.util.List< Chain > chains = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -81,7 +100,29 @@ public class Solver {
 		this.chains.remove( chain );
 	}
 	
-	public Map<Bone, Map<Axis, Double>> solve() {
+	public double calculateErrorForTime(JacobianAndInverse jacobianAndInverse, double dt) {
+		//will calculate I-(JJ^-1)
+
+		Matrix jj11 = jacobianAndInverse.getJacobian().times(jacobianAndInverse.getInverseJacobian()).times(-1);
+		
+		int n = jj11.getRowDimension();
+		
+		for(int i = 0; i < n; ++i) {
+			jj11.set(i, i, 1 + jj11.get(i, i));
+		}
+
+		double dtn = dt;
+		
+		for(int i = 1; i < n; ++i) {
+			dtn *= dt;
+		}
+		
+		double error = jj11.det() * dtn;
+		
+		return error;
+	}
+	
+	public JacobianAndInverse prepareAndCalculateJacobianAndInverse() {
 		prepareConstraints();
 		if(constraints.size() == 0) {
 			System.out.println("no constraints!");
@@ -89,7 +130,28 @@ public class Solver {
 		}
 		constructJacobianEntries();
 		
-		return calculateAngleSpeeds(invertJacobian(0.1));
+		Matrix jacobian = createJacobian();
+		
+		Matrix inverseJacobian = invertJacobian(jacobian, 0.1);
+		
+		JacobianAndInverse jacobianAndInverse = new JacobianAndInverse(jacobian, inverseJacobian);
+
+		return jacobianAndInverse;
+	}
+	
+	/**
+	 * This is called just by itself to solve everything. Use it as an example 
+	 * when you are doing adaptive.
+	 * @return The angle speeds
+	 */
+	public Map<Bone, Map<Axis, Double>> solve() {
+		JacobianAndInverse jacobianAndInverse = prepareAndCalculateJacobianAndInverse();
+		
+		return calculateAngleSpeeds(jacobianAndInverse);
+	}
+	
+	public Map<Bone, Map<Axis, Double>> calculateAngleSpeeds(JacobianAndInverse jacobianAndInverse) {
+		return calculateAngleSpeeds(jacobianAndInverse.getInverseJacobian());
 	}
 	
 	private Map<Bone, Map<Axis, Double>> calculateAngleSpeeds(Jama.Matrix ji) {
@@ -206,10 +268,13 @@ public class Solver {
 			}
 		}
 	}
-	private Jama.Matrix invertJacobian(double sThreshold) {
-		Jama.Matrix j = createJacobianMatrix(this.jacobianColumns);
-
-		Jama.Matrix ji = svdInvert(j, sThreshold);
+	
+	private Jama.Matrix createJacobian() {
+		return createJacobianMatrix(this.jacobianColumns);
+	}
+	
+	private Jama.Matrix invertJacobian(Jama.Matrix jacobian, double sThreshold) {
+		Jama.Matrix ji = svdInvert(jacobian, sThreshold);
 		// TODO also do any optimizations (don't move too fast, etc)
 		
 		return ji;
