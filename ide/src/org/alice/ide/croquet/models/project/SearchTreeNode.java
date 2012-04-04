@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.alice.ide.declarationseditor.DeclarationTabState;
-import org.lgna.croquet.ActionOperation;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.UserMethod;
 
@@ -16,16 +14,10 @@ public class SearchTreeNode {
 	private List<SearchTreeNode> children = Collections.newLinkedList();
 	private SearchTreeNode parent;
 	private Object content;
-	private ActionOperation operation;
 
 	public SearchTreeNode( SearchTreeNode parent, Object content ) {
 		this.parent = parent;
 		this.content = content;
-		if( parent != null && parent.getParent() == null && content instanceof UserMethod ) {//node is not root AND node's parent is root
-			this.operation = DeclarationTabState.getInstance().getItemSelectionOperation( (UserMethod)content );
-		} else if( parent != null ) {
-			this.operation = parent.operation;
-		}
 	}
 
 	public int getNumChildren() {
@@ -87,8 +79,10 @@ public class SearchTreeNode {
 	}
 
 	public void invokeOperation() {
-		if( this.operation != null ) {
-			this.operation.fire();
+		if( parent != null && parent.getParent() == null && content instanceof UserMethod ) {//node is not root AND node's parent is root
+			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)content ) );
+		} else if( parent != null ) {
+			this.parent.invokeOperation();
 		}
 	}
 }
