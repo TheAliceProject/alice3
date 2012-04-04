@@ -80,11 +80,6 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 	public abstract boolean isValid();
 	
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model );
-		return false;
-	}
-	@Override
 	public String getTitleText() {
 		return this.declaration.getName();
 	}

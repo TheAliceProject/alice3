@@ -41,33 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.alice.ide.preview.PanelWithPreview< PreviewPanel > {
-	private M model;
-	public PanelWithPreview( M model ) {
-		this.model = model;
-	}
-	public PanelWithPreview() {
-		this( null );
-		//todo
-	}
-	public M getModel() {
-		return this.model;
-	}
-	protected abstract org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent();
-	
-	@Override
-	protected final org.alice.ide.croquet.components.PreviewPanel createPreviewPanel() {
-		return new PreviewPanel( this );
-	}
-	public void updatePreview() {
-		PreviewPanel previewPanel = this.getPreviewPanel();
-		if( previewPanel != null ) {
-			previewPanel.refreshLater();
-		}
+public abstract class NumberExpressionCreatorView extends org.lgna.croquet.components.BorderPanel {
+	public NumberExpressionCreatorView( org.alice.ide.custom.NumberExpressionCreatorComposite<?> composite ) {
+		super( composite );
 	}
 }

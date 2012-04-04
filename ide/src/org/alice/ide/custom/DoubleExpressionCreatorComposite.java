@@ -41,25 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.ide.custom;
 
-public class ObjectPropertiesTab extends org.lgna.croquet.TabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> 
-{
-    private static class SingletonHolder {
-        private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
-    }
-    public static ObjectPropertiesTab getInstance() {
-        return SingletonHolder.instance;
-    }
-    private ObjectPropertiesTab() {
-        super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
-    }
-    @Override
-    protected org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel createView() {
-        return new org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel();
-    }
-    @Override
-    public boolean isCloseable() {
-    	return false;
-    }
+/**
+ * @author Dennis Cosgrove
+ */
+public class DoubleExpressionCreatorComposite extends NumberExpressionCreatorComposite<org.alice.ide.custom.components.DoubleExpressionCreatorView> {
+	private static class SingletonHolder {
+		private static DoubleExpressionCreatorComposite instance = new DoubleExpressionCreatorComposite();
+	}
+	public static DoubleExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DoubleExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ) );
+	}
+	@Override
+	protected org.alice.ide.custom.components.DoubleExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.DoubleExpressionCreatorView( this );
+	}
 }

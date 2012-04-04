@@ -41,25 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.sceneditor;
+package org.lgna.croquet.dialog;
 
-public class ObjectPropertiesTab extends org.lgna.croquet.TabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> 
-{
-    private static class SingletonHolder {
-        private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
-    }
-    public static ObjectPropertiesTab getInstance() {
-        return SingletonHolder.instance;
-    }
-    private ObjectPropertiesTab() {
-        super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
-    }
-    @Override
-    protected org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel createView() {
-        return new org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel();
-    }
-    @Override
-    public boolean isCloseable() {
-    	return false;
-    }
+/**
+ * @author Dennis Cosgrove
+ */
+public interface DialogOwner<V extends org.lgna.croquet.components.JComponent<?>> {
+	public V allocateView( org.lgna.croquet.history.CompletionStep<?> step );
+	public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, V view );
+	public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step );
+	public void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog );
+	public java.awt.Point getDesiredDialogLocation();
+	public void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger );
+	public void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger );
+	public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step );
+	public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step );
+	public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog );
+	public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger );
 }
+

@@ -60,9 +60,4 @@ public class TemplatesTab extends ContentTab< org.alice.stageide.openprojectpane
 	protected org.alice.stageide.openprojectpane.components.TemplatesTabContentPane createView() {
 		return new org.alice.stageide.openprojectpane.components.TemplatesTabContentPane( this );
 	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 }

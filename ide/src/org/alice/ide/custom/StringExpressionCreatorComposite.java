@@ -41,25 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.ide.custom;
 
-public class ObjectPropertiesTab extends org.lgna.croquet.TabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> 
-{
-    private static class SingletonHolder {
-        private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
-    }
-    public static ObjectPropertiesTab getInstance() {
-        return SingletonHolder.instance;
-    }
-    private ObjectPropertiesTab() {
-        super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
-    }
-    @Override
-    protected org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel createView() {
-        return new org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel();
-    }
-    @Override
-    public boolean isCloseable() {
-    	return false;
-    }
+/**
+ * @author Dennis Cosgrove
+ */
+public class StringExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.StringExpressionCreatorView> {
+	private static class SingletonHolder {
+		private static StringExpressionCreatorComposite instance = new StringExpressionCreatorComposite();
+	}
+	public static StringExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private static class ValueStringState extends org.lgna.croquet.StringState {
+		public ValueStringState() {
+			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "e77583b9-16bf-43fd-a933-53017189373d" ), "" );
+		}
+	}
+	private final ValueStringState stringState = new ValueStringState();
+	
+	private StringExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+	}
+	@Override
+	protected org.alice.ide.custom.components.StringExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.StringExpressionCreatorView( this );
+	}
+	
+	public org.lgna.croquet.StringState getStringState() {
+		return this.stringState;
+	}
+	
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		return new org.lgna.project.ast.StringLiteral( this.stringState.getValue() );
+	}
+	
 }

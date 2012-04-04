@@ -46,16 +46,11 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
-	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "d4dfb949-2761-432e-9ad0-932ba0d6b4f6" ), "DIALOG_IMPLEMENTATION_GROUP" );
+public abstract class ValueCreatorComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends Composite<V> {
+	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>,T> implements org.lgna.croquet.dialog.DialogOwner<V> {
 
-	protected static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogComposite.DIALOG_KEY" );
-
-	
-	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>> implements org.lgna.croquet.dialog.DialogOwner<V> {
-
-		private final DialogComposite<V> composite;
-		public DialogOwner( DialogComposite<V> composite ) {
+		private final ValueCreatorComposite<V,T> composite;
+		public DialogOwner( ValueCreatorComposite<V,T> composite ) {
 			this.composite = composite;
 		}
 		public V allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
@@ -102,64 +97,72 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 		}
 		
 	}
-	
-	public static final class InternalOperationResolver<V extends org.lgna.croquet.components.View<?,?>> extends IndirectResolver<InternalOperation<V>,DialogComposite<V>> {
-		private InternalOperationResolver( DialogComposite<V> indirect ) {
-			super( indirect );
+
+	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueCreatorComposite<?,F> > {
+		private InternalFillInResolver( ValueCreatorComposite<?,F> internal ) {
+			super( internal );
 		}
-		public InternalOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 		@Override
-		protected InternalOperation<V> getDirect( DialogComposite<V> indirect ) {
-			return indirect.operation;
+		protected InternalFillIn<F> getDirect( ValueCreatorComposite<?,F> indirect ) {
+			return indirect.getFillIn();
 		}
 	}
-
-	
-	
-	private static final class InternalOperation<V extends org.lgna.croquet.components.View<?,?>> extends ActionOperation {
-		private final DialogComposite<V> composite;
-
-		private InternalOperation( Group group, DialogComposite<V> composite ) {
-			super( group, java.util.UUID.fromString( "57aa20b4-0d4b-4cbf-82ae-191ee681aa6f" ) );
+	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
+		private final ValueCreatorComposite<?,F> composite;
+		private InternalFillIn( ValueCreatorComposite<?,F> composite ) {
+			super( java.util.UUID.fromString( "258797f2-c1b6-4887-b6fc-42702493d573" ) );
 			this.composite = composite;
 		}
-		@Override
-		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
-			return this.composite.getClass();
-		}
-		@Override
-		protected void initialize() {
-			super.initialize();
-			this.composite.initializeIfNecessary();
-		}
-		public DialogComposite<V> getComposite() {
+		public ValueCreatorComposite<?,F> getComposite() {
 			return this.composite;
 		}
 		@Override
-		protected InternalOperationResolver<V> createResolver() {
-			return new InternalOperationResolver<V>( this.composite );
+		protected InternalFillInResolver<F> createResolver() {
+			return new InternalFillInResolver<F>( this.composite );
 		}
-		
 		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-			org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner<V>( this.composite ), step );
+		protected String getTutorialItemText() {
+			return this.composite.getDefaultLocalizedText();
+		}
+		@Override
+		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+			return new javax.swing.JLabel( this.getTutorialItemText() );
+		}
+		@Override
+		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
+			return this.composite.createValue();
+		}
+		@Override
+		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
+			return null;
 		}
 	}
 
-	private final InternalOperation<V> operation;
-
-	public DialogComposite( java.util.UUID id, Group operationGroup ) {
+	private InternalFillIn<T> fillIn;
+	public ValueCreatorComposite( java.util.UUID id ) {
 		super( id );
-		this.operation = new InternalOperation<V>( operationGroup, this );
 	}
-	public Operation getOperation() {
-		return this.operation;
+	public synchronized InternalFillIn<T> getFillIn() {
+		if( this.fillIn != null ) {
+			//pass
+		} else {
+			this.fillIn = new InternalFillIn<T>( this );
+		}
+		return this.fillIn;
 	}
-	
-	
+	public T getPreviewValue() {
+		return this.createValue();
+	}
+	protected abstract T createValue();
+	private T createValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > node ) {
+		org.lgna.croquet.history.CompletionStep<?> step = null;
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner<V,T>( this ), step );
+		return this.createValue();
+	}
+
 	//todo
 	private V allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return this.getView();

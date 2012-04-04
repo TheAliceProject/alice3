@@ -41,19 +41,69 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.videoencode;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > { 
-	public RecordEventsPage() {
-		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
+public abstract class ExpressionCreatorView extends org.alice.ide.preview.PanelWithPreview {
+	public ExpressionCreatorView( org.alice.ide.custom.ExpressionCreatorComposite<?> composite ) {
+		super( composite );
+	}
+	
+	private org.lgna.project.ast.Expression createValue() {
+		org.alice.ide.custom.ExpressionCreatorComposite<?> composite = (org.alice.ide.custom.ExpressionCreatorComposite<?>)this.getComposite();
+		return composite.getPreviewValue();
+	}
+	
+	@Override
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.lgna.project.ast.Expression expression;
+		try {
+			expression = this.createValue();
+		} catch( RuntimeException re ) {
+			//re.printStackTrace();
+			expression = new org.lgna.project.ast.NullLiteral();
+		}
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		return rv;
+	}
+	
+
+	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
+		return org.lgna.croquet.components.SpringUtilities.createTrailingLabel( text );
+	}
+	private static final String[] LABEL_TEXTS = { "value:" };
+	protected String[] getLabelTexts() {
+		return LABEL_TEXTS;
+	}
+	protected abstract org.lgna.croquet.components.Component< ? >[] getRowComponents();
+	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+		String[] labelTexts = this.getLabelTexts();
+		org.lgna.croquet.components.Component< ? >[] components = this.getRowComponents();
+		final int N = labelTexts.length;
+		for( int i=0; i<N; i++ ) {
+			rv.add( 
+					org.lgna.croquet.components.SpringUtilities.createRow( 
+						this.createLabel( labelTexts[ i ] ), 
+						new org.lgna.croquet.components.LineAxisPanel( 
+								components[ i ],
+								org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
+						)
+					) 
+			);
+		}
+		return rv;
 	}
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( new org.lgna.croquet.components.Label( "todo: event recorder" ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-		return rv;
+	public org.lgna.croquet.components.RowsSpringPanel createMainComponent() {
+		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
+			@Override
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
+				return ExpressionCreatorView.this.updateRows( rv );
+			}
+		};
+		return rowsSpringPanel;
 	}
 }

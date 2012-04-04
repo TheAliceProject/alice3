@@ -82,9 +82,4 @@ public class TypeTab extends GalleryTab {
 		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.BOOKMARK_ICON_SMALL );
 		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 }

@@ -46,21 +46,35 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelWithPreview< C extends org.lgna.croquet.components.JComponent< ? > > extends org.lgna.croquet.components.BorderPanel {
+public abstract class PanelWithPreview extends org.lgna.croquet.components.BorderPanel {
 	private static final int PAD = 16;
 	public PanelWithPreview() {
+		this( null );
+	}
+	public PanelWithPreview( org.lgna.croquet.Composite<?> composite ) {
+		super( composite );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
 		this.setMinimumPreferredWidth( 320 );
 	}
 	protected boolean isPreviewDesired() {
 		return true;
 	}
-	private C previewPanel;
+	private org.alice.ide.croquet.components.PreviewPanel previewPanel;
 	
-	public C getPreviewPanel() {
+	public abstract org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent();
+	public org.alice.ide.croquet.components.PreviewPanel getPreviewPanel() {
 		return this.previewPanel;
 	}
-	protected abstract C createPreviewPanel();
+	
+	protected final org.alice.ide.croquet.components.PreviewPanel createPreviewPanel() {
+		return new org.alice.ide.croquet.components.PreviewPanel( this );
+	}
+	public void updatePreview() {
+		org.alice.ide.croquet.components.PreviewPanel previewPanel = this.getPreviewPanel();
+		if( previewPanel != null ) {
+			previewPanel.refreshLater();
+		}
+	}
 	protected abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
 	private void initializeIfNecessary() {
 		if( this.previewPanel != null ) {

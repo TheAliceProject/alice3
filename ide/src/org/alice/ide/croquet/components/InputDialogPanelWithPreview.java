@@ -41,25 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.ide.croquet.components;
 
-public class ObjectPropertiesTab extends org.lgna.croquet.TabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> 
-{
-    private static class SingletonHolder {
-        private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
-    }
-    public static ObjectPropertiesTab getInstance() {
-        return SingletonHolder.instance;
-    }
-    private ObjectPropertiesTab() {
-        super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
-    }
-    @Override
-    protected org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel createView() {
-        return new org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel();
-    }
-    @Override
-    public boolean isCloseable() {
-    	return false;
-    }
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class InputDialogPanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.alice.ide.preview.PanelWithPreview {
+	private M model;
+	public InputDialogPanelWithPreview( M model ) {
+		this.model = model;
+	}
+	public InputDialogPanelWithPreview() {
+		this( null );
+		//todo
+	}
+	public M getModel() {
+		return this.model;
+	}
 }

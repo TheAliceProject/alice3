@@ -60,9 +60,4 @@ public class MyProjectsTab extends ContentTab< org.alice.ide.openprojectpane.Dir
 	protected org.alice.ide.openprojectpane.DirectoryListContentPanel createView() {
 		return new org.alice.ide.openprojectpane.DirectoryListContentPanel( this, org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance() );
 	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 }

@@ -41,25 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.ide.custom;
 
-public class ObjectPropertiesTab extends org.lgna.croquet.TabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> 
-{
-    private static class SingletonHolder {
-        private static ObjectPropertiesTab instance = new ObjectPropertiesTab();
-    }
-    public static ObjectPropertiesTab getInstance() {
-        return SingletonHolder.instance;
-    }
-    private ObjectPropertiesTab() {
-        super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
-    }
-    @Override
-    protected org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel createView() {
-        return new org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel();
-    }
-    @Override
-    public boolean isCloseable() {
-    	return false;
-    }
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class NumberExpressionCreatorComposite<V extends org.alice.ide.custom.components.NumberExpressionCreatorView> extends ExpressionCreatorComposite<V> {
+	public NumberExpressionCreatorComposite( java.util.UUID id ) {
+		super( id );
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		return new org.lgna.project.ast.NullLiteral();
+	}
 }

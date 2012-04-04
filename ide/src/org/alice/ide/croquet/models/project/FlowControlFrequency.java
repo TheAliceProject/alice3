@@ -60,7 +60,6 @@ import javax.swing.JList;
 import org.alice.ide.ProjectApplication;
 import org.lgna.croquet.DefaultListSelectionState;
 import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.TabComposite;
@@ -159,11 +158,6 @@ class FlowControlFrequency extends TabComposite<View<?,?>> {
 	@Override
 	protected View<?,?> createView() {
 		return view;
-	}
-
-	@Override
-	public boolean contains( Model model ) {
-		return false;
 	}
 
 	private class ListCellRenderer extends DefaultListCellRenderer {
