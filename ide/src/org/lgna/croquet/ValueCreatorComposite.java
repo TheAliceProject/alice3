@@ -137,7 +137,7 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 		}
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
-			return this.composite.createValue();
+			return this.composite.createValue( node );
 		}
 		@Override
 		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
