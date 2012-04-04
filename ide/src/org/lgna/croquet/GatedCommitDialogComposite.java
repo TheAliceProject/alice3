@@ -216,13 +216,6 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 		public org.lgna.croquet.components.Button getCompleteButton() {
 			return this.completeButton;
 		}
-		@Override
-		protected void localize() {
-		}
-		@Override
-		public boolean contains( org.lgna.croquet.Model model ) {
-			return false;
-		}
 		protected abstract void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton );
 		@Override
 		protected org.lgna.croquet.components.GridBagPanel createView() {
@@ -281,6 +274,7 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 	}
 	@Override
 	protected void localize() {
+		super.localize();
 		this.getControlsComposite().completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogComposite.class ) );
 		this.getControlsComposite().cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogComposite.class ) );
 	}

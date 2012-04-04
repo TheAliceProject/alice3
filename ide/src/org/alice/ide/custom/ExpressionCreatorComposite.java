@@ -50,11 +50,4 @@ public abstract class ExpressionCreatorComposite<V extends org.lgna.croquet.comp
 	public ExpressionCreatorComposite( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
 }

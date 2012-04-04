@@ -51,13 +51,6 @@ public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.
 		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addComponent( new org.lgna.croquet.components.Label( "todo: event recorder" ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );

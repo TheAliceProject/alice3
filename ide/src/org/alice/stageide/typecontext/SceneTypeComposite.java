@@ -57,14 +57,6 @@ public class SceneTypeComposite extends org.lgna.croquet.SimpleComposite< org.al
 		super( java.util.UUID.fromString( "d0484679-2f78-4cc5-9ac5-0de8bcf31db1" ) );
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return true;
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
 	protected org.alice.stageide.typecontext.components.SceneTypeView createView() {
 		return new org.alice.stageide.typecontext.components.SceneTypeView( this );
 	}

@@ -51,11 +51,12 @@ public class MenuBarComposite extends Composite< org.lgna.croquet.components.Men
 		super( id );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		return this.items.contains( model );
+		if( super.contains( model ) ) {
+			return true;
+		} else {
+			return this.items.contains( model );
+		}
 	}
 	public void addItem( StandardMenuItemPrepModel item ) {
 		this.items.add( item );

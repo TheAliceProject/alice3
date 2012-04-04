@@ -62,9 +62,4 @@ public class MarkerPanelTab extends org.lgna.croquet.TabComposite< org.alice.sta
     public boolean isCloseable() {
     	return false;
     }
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 }

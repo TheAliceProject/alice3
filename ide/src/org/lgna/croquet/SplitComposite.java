@@ -72,20 +72,21 @@ public abstract class SplitComposite extends Composite< org.lgna.croquet.compone
 	}
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
-		if( this.leadingComposite != null ) {
-			if( this.leadingComposite.contains( model ) ) {
-				return true;
+		if( super.contains( model ) ) {
+			return true;
+		} else {
+			if( this.leadingComposite != null ) {
+				if( this.leadingComposite.contains( model ) ) {
+					return true;
+				}
 			}
-		}
-		if( this.trailingComposite != null ) {
-			if( this.trailingComposite.contains( model ) ) {
-				return true;
+			if( this.trailingComposite != null ) {
+				if( this.trailingComposite.contains( model ) ) {
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
-	}
-	@Override
-	protected void localize() {
 	}
 	@Override
 	public void releaseView() {

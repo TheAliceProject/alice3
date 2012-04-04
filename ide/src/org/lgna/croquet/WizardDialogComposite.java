@@ -148,11 +148,6 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 		return this.controlsComposite;
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
-	@Override
 	protected String getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return null;

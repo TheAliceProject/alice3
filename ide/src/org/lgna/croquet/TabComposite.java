@@ -69,6 +69,7 @@ public abstract class TabComposite< V extends org.lgna.croquet.components.View<?
 	}
 	@Override
 	protected void localize() {
+		super.localize();
 		this.setTitleText( this.getDefaultLocalizedText() );
 	}
 	public String getTitleText() {
