@@ -345,9 +345,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.splashScreen != null ) {
 			this.splashScreen.setVisible( false );
 		}
-		if( this.getUri() != null ) {
-			//pass
-		} else {
+		if( (this.getProject() == null) || this.isDefaultProjectLoaded() ) {
 			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
 		}
 	}

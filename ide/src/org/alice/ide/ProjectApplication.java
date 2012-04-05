@@ -72,6 +72,20 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		} );
 	}
 
+	private boolean isDefaultProjectLoaded = false;
+	public boolean isDefaultProjectLoaded() {
+		return this.isDefaultProjectLoaded;
+	}
+
+	@Override
+	public void initialize(java.lang.String[] args) {
+		super.initialize(args);
+		org.lgna.project.Project project = this.getProject();
+		if ( project == null ) {
+			this.loadDefaultProject();
+		}
+	}
+
 	private void updateUndoRedoEnabled() {
 		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
 		int index = historyManager.getInsertionIndex();
@@ -89,7 +103,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	public abstract String getApplicationName();
 	protected abstract String getVersionText();
 	protected abstract String getVersionAdornment();
-
 	
 	private void showUnableToOpenFileDialog( java.io.File file, String message ) {
 		StringBuilder sb = new StringBuilder();
@@ -182,6 +195,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		if( project != null ) {
 			this.setProject( project );
 			this.uri = uri;
+			this.isDefaultProjectLoaded = false;
 			try {
 				if( file != null && file.canWrite() ) {
 					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
@@ -261,7 +275,12 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	public void setProject( org.lgna.project.Project project ) {
 		org.alice.ide.project.ProjectState.getInstance().setValue( project );
 	}
-	
+
+	public void loadDefaultProject() {
+		this.loadProjectFrom( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS.getUri() );
+		this.isDefaultProjectLoaded = true;
+	}
+
 	public void loadProjectFrom( java.net.URI uri ) {
 		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
 		projectHistoryManager.performClear();
