@@ -317,16 +317,18 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 		this.updateExplanation( s );
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+		//todo
+		org.lgna.croquet.history.CompletionStep<?> step = (org.lgna.croquet.history.CompletionStep<?>)node;
 		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
 		dialog.setDefaultButton( this.getControlsComposite().getCompleteButton() );
-		step.addListener( this.listener );
+		node.addListener( this.listener );
 		this.updateExplanation( step );
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( node );
 	}
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.removeListener( this.listener );
-		super.handlePostHideDialog( step );
+	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+		node.removeListener( this.listener );
+		super.handlePostHideDialog( node );
 	}
 }

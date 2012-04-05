@@ -53,15 +53,15 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 		public DialogOwner( ValueCreatorComposite<V,T> composite ) {
 			this.composite = composite;
 		}
-		public V allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		public V allocateView( org.lgna.croquet.history.Node<?> step ) {
 			return this.composite.allocateView( step );
 		}
 
-		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, V view ) {
+		public void releaseView( org.lgna.croquet.history.Node<?> step, V view ) {
 			this.composite.releaseView( step, view );
 		}
 
-		public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+		public String getDialogTitle( org.lgna.croquet.history.Node<?> step ) {
 			return this.composite.getDialogTitle( step );
 		}
 
@@ -84,15 +84,15 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 			this.composite.handleDialogClosed( trigger );
 		}
 
-		public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		public void handlePreShowDialog( org.lgna.croquet.history.Node<?> step ) {
 			this.composite.handlePreShowDialog( step );
 		}
 
-		public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		public void handlePostHideDialog( org.lgna.croquet.history.Node<?> step ) {
 			this.composite.handlePostHideDialog( step );
 		}
 
-		public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+		public void handleFinally( org.lgna.croquet.history.Node<?> step, org.lgna.croquet.components.Dialog dialog ) {
 			this.composite.handleFinally( step, dialog );
 		}
 		
@@ -120,6 +120,10 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 			return this.composite;
 		}
 		@Override
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.composite.getClass();
+		}
+		@Override
 		protected InternalFillInResolver<F> createResolver() {
 			return new InternalFillInResolver<F>( this.composite );
 		}
@@ -133,7 +137,7 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 		}
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
-			return this.composite.createValue();
+			return this.composite.createValue( node );
 		}
 		@Override
 		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
@@ -158,17 +162,16 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 	}
 	protected abstract T createValue();
 	private T createValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > node ) {
-		org.lgna.croquet.history.CompletionStep<?> step = null;
-		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner<V,T>( this ), step );
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner<V,T>( this ), /*todo: remove cast*/(org.lgna.croquet.cascade.AbstractItemNode)node );
 		return this.createValue();
 	}
 
 	//todo
-	private V allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	private V allocateView( org.lgna.croquet.history.Node<?> node ) {
 		return this.getView();
 	}
 	//todo
-	private void releaseView( org.lgna.croquet.history.CompletionStep<?> step, V view ) {
+	private void releaseView( org.lgna.croquet.history.Node<?> node, V view ) {
 	}
 	
 	
@@ -176,7 +179,7 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 	protected boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 		return true;
 	}
-	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected String getDialogTitle( org.lgna.croquet.history.Node<?> node ) {
 //		String rv = this.getName();
 //		if( rv != null ) {
 //			rv = rv.replaceAll( "<[a-z]*>", "" );
@@ -198,10 +201,10 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 	}
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
 	}
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
 	}
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
 	}
 }

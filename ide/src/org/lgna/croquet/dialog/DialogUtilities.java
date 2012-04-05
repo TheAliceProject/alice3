@@ -49,8 +49,7 @@ package org.lgna.croquet.dialog;
 public class DialogUtilities {
 	protected static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogUtilities.DIALOG_KEY" );
 
-	public static <V extends org.lgna.croquet.components.JComponent<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+	public static <V extends org.lgna.croquet.components.JComponent<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.Node<?> node ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		
 		org.lgna.croquet.components.AbstractWindow<?> window = application.peekWindow();
@@ -59,7 +58,14 @@ public class DialogUtilities {
 		if( window != null ) {
 			owner = window;
 		} else {
-			org.lgna.croquet.components.ViewController< ?, ? > viewController = trigger.getViewController();
+			org.lgna.croquet.components.ViewController< ?, ? > viewController;
+			if( node instanceof org.lgna.croquet.history.Step<?> ) {
+				org.lgna.croquet.history.Step<?> step = (org.lgna.croquet.history.Step<?>)node;
+				org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+				viewController = trigger.getViewController();	
+			} else {
+				viewController = null;
+			}
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
@@ -67,7 +73,12 @@ public class DialogUtilities {
 			}
 		}
 		final org.lgna.croquet.components.Dialog dialog = new org.lgna.croquet.components.Dialog( owner );
-		step.putEphemeralDataFor( DIALOG_KEY, dialog );
+		if( node instanceof org.lgna.croquet.history.Step<?> ) {
+			org.lgna.croquet.history.Step<?> step = (org.lgna.croquet.history.Step<?>)node;
+			step.putEphemeralDataFor( DIALOG_KEY, dialog );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( node, dialog );
+		}
 
 		class DialogWindowListener implements java.awt.event.WindowListener {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
@@ -92,7 +103,7 @@ public class DialogUtilities {
 		}
 		DialogWindowListener dialogWindowListener = new DialogWindowListener();
 		dialog.addWindowListener( dialogWindowListener );
-		V view = dialogOwner.allocateView( step );
+		V view = dialogOwner.allocateView( node );
 		try {
 			dialog.getAwtComponent().setContentPane( view.getAwtComponent() );
 			dialog.pack();
@@ -110,18 +121,18 @@ public class DialogUtilities {
 					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), owner.getAwtComponent() );
 				}
 			}
-			dialog.setTitle( dialogOwner.getDialogTitle( step ) );
-			dialogOwner.handlePreShowDialog( step );
+			dialog.setTitle( dialogOwner.getDialogTitle( node ) );
+			dialogOwner.handlePreShowDialog( node );
 			application.pushWindow( dialog );
 			dialog.setVisible( true );
-			dialogOwner.handlePostHideDialog( step );
+			dialogOwner.handlePostHideDialog( node );
 			//this.releaseContentPane( step, dialog, contentPane );
 			dialog.removeWindowListener( dialogWindowListener );
-			dialogOwner.releaseView( step, view );
+			dialogOwner.releaseView( node, view );
 			dialog.getAwtComponent().dispose();
 		} finally {
 			application.popWindow();
-			dialogOwner.handleFinally( step, dialog );
+			dialogOwner.handleFinally( node, dialog );
 		}
 		
 	}

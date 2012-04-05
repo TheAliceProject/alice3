@@ -1,7 +1,9 @@
 package org.alice.ide.croquet.models.project;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -14,6 +16,9 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.components.Tree;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -23,7 +28,7 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 	private List<SearchTreeNode> parentList = Collections.newLinkedList();
 	private HashMap<SearchTreeNode,SearchTreeNode> parentMap = Collections.newHashMap();
 	private HashMap<SearchTreeNode,List<SearchTreeNode>> childMap = Collections.newHashMap();
-	private SearchTreeNode root = new SearchTreeNode( null, "Project" );
+	private SearchTreeNode root;
 	private StringState searchState;
 	private Tree<SearchTreeNode> owner;
 	private ValueListener<SearchTreeNode> adapter = new ValueListener<SearchTreeNode>() {
@@ -44,6 +49,9 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 
 	public SearchDialogManager() {
 		super( Application.INFORMATION_GROUP, java.util.UUID.fromString( "bb4777b7-20df-4d8d-b214-92acd390fdde" ), SearchCodec.getSingleton(), null );
+		UserMethod method = new UserMethod();
+		method.setName( "Project" );
+		root = new SearchTreeNode( null, method );
 
 		this.searchState = new StringState( Application.INFORMATION_GROUP, java.util.UUID.fromString( "7012f7cd-c25b-4e9f-bba2-f4d172a0590b" ), "" ) {
 		};
@@ -137,7 +145,7 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 		return this.searchState;
 	}
 
-	public SearchTreeNode addNode( SearchTreeNode parent, Object content ) {
+	public SearchTreeNode addNode( SearchTreeNode parent, AbstractMethod content ) {
 		SearchTreeNode rv;
 		if( parent != null ) {
 			parent.addChild( rv = new SearchTreeNode( parent, content ) );
@@ -159,5 +167,16 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 	public void setOwner( Tree<SearchTreeNode> tree ) {
 		this.owner = tree;
 		this.addValueListener( this.adapter );
+	}
+
+	public void addTunnelling( SearchTreeNode parent, Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+		AbstractMethod parentMethod = parent.getContent();
+		if( methodParentMap.get( parentMethod ) != null ) {
+			for( MethodInvocation methodInvocation : methodParentMap.get( parentMethod ) ) {
+				AbstractMethod childMethod = (AbstractMethod)methodInvocation.method.getValue();
+				SearchTreeNode node = addNode( parent, childMethod );
+				addTunnelling( node, methodParentMap );
+			}
+		}
 	}
 }

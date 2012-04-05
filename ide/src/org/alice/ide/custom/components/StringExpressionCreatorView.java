@@ -54,7 +54,7 @@ public class StringExpressionCreatorView extends ExpressionCreatorView {
 	@Override
 	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
 		return new org.lgna.croquet.components.Component<?>[] {
-				((org.alice.ide.custom.StringExpressionCreatorComposite)this.getComposite()).getStringState().createTextField()
+				((org.alice.ide.custom.StringExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createTextField()
 		};
 	}
 	

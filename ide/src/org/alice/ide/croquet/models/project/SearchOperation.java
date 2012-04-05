@@ -51,6 +51,7 @@ import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
@@ -90,8 +91,6 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 							methodParentMap.put( method, new LinkedList<MethodInvocation>() );
 						}
 						methodParentMap.get( method ).add( methodInvocation );
-					} else {
-						//						System.out.println( crawlable );
 					}
 				}
 			}
@@ -107,15 +106,26 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 			manager.setOwner( tree );
 			rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
 
+			System.out.println( methodParentMap.keySet() );
 			for( UserMethod method : methodParentMap.keySet() ) {
 				SearchTreeNode parent = manager.addNode( null, method );
+				manager.addTunnelling( parent, methodParentMap );
 				List<SearchTreeNode> list = Collections.newLinkedList();
 				for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
-					SearchTreeNode child = manager.addNode( parent, methodInvocation.method.getValue() );
+					AbstractMethod abstractMethod = methodInvocation.method.getValue();
+
+					SearchTreeNode child = manager.addNode( parent, abstractMethod );
+					if( abstractMethod.getName().equals( "fire" ) ) {
+						System.out.println( "hello fire!" );
+					}
+					if( methodParentMap.get( abstractMethod ) != null ) {
+						manager.addTunnelling( child, methodParentMap );
+					}
 					list.add( child );
 				}
 				manager.addParentWithChildren( parent, list );
 			}
+			System.out.println( methodParentMap.keySet() );
 			manager.refreshAll();
 			tree.setRootVisible( false );
 			tree.expandAllRows();
