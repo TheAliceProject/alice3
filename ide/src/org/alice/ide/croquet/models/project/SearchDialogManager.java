@@ -65,7 +65,7 @@ public class SearchDialogManager extends CustomTreeSelectionState<SearchTreeNode
 			for( SearchTreeNode parent : parentList ) {
 				for( SearchTreeNode child : childMap.get( parent ) ) {
 					Matcher matcher = pattern.matcher( child.getText().toLowerCase() );
-					if( matcher.find() ) {
+					if( matcher.find( 0 ) ) {
 						show( child );
 					}
 				}

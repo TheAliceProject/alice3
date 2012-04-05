@@ -21,10 +21,12 @@ public class SearchTreeNode {
 	public SearchTreeNode( SearchTreeNode parent, Object content ) {
 		this.parent = parent;
 		this.content = content;
-		if( parent != null && parent.getParent() == null && content instanceof UserMethod ) {//node is not root AND node's parent is root
+		if( parent != null && parent.getParent() == null ) {// && content instanceof UserMethod ) {//node is not root AND node's parent is root
 			this.operation = DeclarationTabState.getInstance().getItemSelectionOperation( (UserMethod)content );
 		} else if( parent != null ) {
 			this.operation = parent.operation;
+		} else {
+			System.out.println( "FAIL: " + content );
 		}
 	}
 

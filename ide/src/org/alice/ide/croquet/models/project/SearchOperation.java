@@ -51,7 +51,6 @@ import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
-import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
@@ -75,7 +74,7 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.Container<?> createContentPane(org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog) {
+	protected org.lgna.croquet.components.Container<?> createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		methodParentMap.clear();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
@@ -84,43 +83,20 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 				private java.util.Map<Class<? extends org.lgna.project.ast.Statement>,Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-					if( crawlable instanceof org.lgna.project.ast.Statement ) {
-						org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
-						Class<? extends org.lgna.project.ast.Statement> cls = statement.getClass();
-						if( cls.equals( org.lgna.project.ast.ExpressionStatement.class ) ) {
-							ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-							if( expressionStatement.expression.getValue() instanceof MethodInvocation ) {
-								MethodInvocation methodInvocation = (MethodInvocation)expressionStatement.expression.getValue();
-								UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
-								if( methodParentMap.get( method ) == null ) {
-									methodParentMap.put( method, new LinkedList<MethodInvocation>() );
-								}
-								methodParentMap.get( method ).add( methodInvocation );
-							}
+					if( crawlable instanceof MethodInvocation ) {
+						MethodInvocation methodInvocation = (MethodInvocation)crawlable;
+						UserMethod method = methodInvocation.getFirstAncestorAssignableTo( UserMethod.class );
+						if( methodParentMap.get( method ) == null ) {
+							methodParentMap.put( method, new LinkedList<MethodInvocation>() );
 						}
-						Integer count = this.map.get( cls );
-						if( count != null ) {
-							count += 1;
-						} else {
-							count = 1;
-						}
-						this.map.put( cls, count );
-					}
-				}
-				public int getCount( Class<? extends org.lgna.project.ast.Statement> cls ) {
-					Integer count = this.map.get( cls );
-					if( count != null ) {
-						return count;
+						methodParentMap.get( method ).add( methodInvocation );
 					} else {
-						return 0;
+						//						System.out.println( crawlable );
 					}
 				}
 			}
 			StatementCountCrawler crawler = new StatementCountCrawler();
 			programType.crawl( crawler, true );
-
-			Class[] clses = { org.lgna.project.ast.DoInOrder.class, org.lgna.project.ast.CountLoop.class, org.lgna.project.ast.WhileLoop.class, org.lgna.project.ast.ForEachInArrayLoop.class, org.lgna.project.ast.ConditionalStatement.class,
-					org.lgna.project.ast.DoTogether.class, org.lgna.project.ast.EachInArrayTogether.class, org.lgna.project.ast.Comment.class, org.lgna.project.ast.LocalDeclarationStatement.class, org.lgna.project.ast.ExpressionStatement.class };
 
 			final BorderPanel rv = new BorderPanel();
 			SearchDialogManager manager = new SearchDialogManager();
@@ -131,26 +107,18 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 			manager.setOwner( tree );
 			rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
 
-			for( Class cls : clses ) {
-				int count = crawler.getCount( cls );
-				if( count > 0 ) {
-					if( cls.equals( org.lgna.project.ast.ExpressionStatement.class ) ) {
-						for( UserMethod method : methodParentMap.keySet() ) {
-							SearchTreeNode parent = manager.addNode( null, method );
-							List<SearchTreeNode> list = Collections.newLinkedList();
-							for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
-								SearchTreeNode child = manager.addNode( parent, methodInvocation.method.getValue() );
-								list.add( child );
-							}
-							manager.addParentWithChildren( parent, list );
-						}
-					}
+			for( UserMethod method : methodParentMap.keySet() ) {
+				SearchTreeNode parent = manager.addNode( null, method );
+				List<SearchTreeNode> list = Collections.newLinkedList();
+				for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
+					SearchTreeNode child = manager.addNode( parent, methodInvocation.method.getValue() );
+					list.add( child );
 				}
+				manager.addParentWithChildren( parent, list );
 			}
 			manager.refreshAll();
 			tree.setRootVisible( false );
 			tree.expandAllRows();
-			//			searchState.addPanel( rv );
 			return rv;
 		} else {
 			//todo
@@ -158,6 +126,6 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 		}
 	}
 	@Override
-	protected void releaseContentPane(org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
+	protected void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
 	}
 }

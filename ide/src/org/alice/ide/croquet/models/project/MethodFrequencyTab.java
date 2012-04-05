@@ -95,10 +95,8 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 	private DefaultListSelectionState<UserMethod> listSelectionState;
 	private UserMethod dummy = new UserMethod();
 	private BorderPanel returnPanel = new BorderPanel();
-	private BooleanState showFunctionsState = new BooleanState( null, java.util.UUID.fromString( "4d841b58-4e76-419f-a153-09ac90576ffb" ), true ) {
-	};
-	private BooleanState showProceduresState = new BooleanState( null, java.util.UUID.fromString( "6bef8d55-724c-420a-b847-cb94ade67dd1" ), true ) {
-	};
+	private final BooleanState showFunctionsState = this.createBooleanState( true, this.createKey( "areFunctionsShowing" ) );
+	private final BooleanState showProceduresState = this.createBooleanState( true, this.createKey( "areProceduresShowing" ) );
 
 	private static class MethodCountPair {
 		private final AbstractMethod method;
@@ -234,12 +232,6 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		this.view = returnPanel;
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.showFunctionsState.setTextForBothTrueAndFalse( this.getLocalizedText( "areFunctionsShowing" ) );
-		this.showProceduresState.setTextForBothTrueAndFalse( this.getLocalizedText( "areProceduresShowing" ) );
-	}
 	private void sort( List<? extends AbstractMethod> a ) {
 		java.util.Collections.sort( a, new Comparator<AbstractMethod>() {
 
