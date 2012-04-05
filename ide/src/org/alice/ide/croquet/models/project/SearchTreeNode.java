@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.UserMethod;
 
@@ -13,9 +14,9 @@ public class SearchTreeNode {
 
 	private List<SearchTreeNode> children = Collections.newLinkedList();
 	private SearchTreeNode parent;
-	private Object content;
+	private AbstractMethod content;
 
-	public SearchTreeNode( SearchTreeNode parent, Object content ) {
+	public SearchTreeNode( SearchTreeNode parent, AbstractMethod content ) {
 		this.parent = parent;
 		this.content = content;
 	}
@@ -39,13 +40,16 @@ public class SearchTreeNode {
 	public String getText() {
 		if( content instanceof UserMethod ) {
 			UserMethod method = (UserMethod)content;
-			String edit = parent.parent == null ? "edit" : "";
+			String edit = "";
+			if( parent != null ) {
+				edit = parent.parent == null ? "edit" : "";
+			}
 			return "<html> " + edit + " <strong>" + method.getName() + "</strong></html>";
 		} else if( content instanceof JavaMethod ) {
 			JavaMethod javaMethod = (JavaMethod)content;
 			return javaMethod.getName();
-		} else if( content instanceof String ) {
-			return (String)content;
+			//		} else if( content instanceof String ) {
+			//			return (String)content;
 		}
 		return "ERROR: (mmay) unhandledtype in tree: " + content.getClass();
 	}
@@ -82,7 +86,11 @@ public class SearchTreeNode {
 		if( parent != null && parent.getParent() == null && content instanceof UserMethod ) {//node is not root AND node's parent is root
 			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)content ) );
 		} else if( parent != null ) {
-			this.parent.invokeOperation();
+			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)parent.content ) );
 		}
+	}
+
+	public AbstractMethod getContent() {
+		return content;
 	}
 }

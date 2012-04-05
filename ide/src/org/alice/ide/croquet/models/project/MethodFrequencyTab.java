@@ -58,15 +58,20 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import org.alice.ide.ProjectApplication;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.DefaultListSelectionState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.CheckBox;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.HorizontalAlignment;
 import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy;
 import org.lgna.croquet.components.View;
@@ -89,6 +94,9 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 
 	private DefaultListSelectionState<UserMethod> listSelectionState;
 	private UserMethod dummy = new UserMethod();
+	private BorderPanel returnPanel = new BorderPanel();
+	private final BooleanState showFunctionsState = this.createBooleanState( true, this.createKey( "areFunctionsShowing" ) );
+	private final BooleanState showProceduresState = this.createBooleanState( true, this.createKey( "areProceduresShowing" ) );
 
 	private static class MethodCountPair {
 		private final AbstractMethod method;
@@ -214,13 +222,16 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 
 		ScrollPane scrollPane = new ScrollPane( list );
 		rv.addComponent( scrollPane );
+
 		scrollPane.setMaximumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
 		scrollPane.setMinimumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
 		statsDisplay.scroll.setMaximumPreferredHeight( StatisticsOperation.TOP_SIZE );
 		statsDisplay.scroll.setMinimumPreferredHeight( StatisticsOperation.TOP_SIZE );
 		statsDisplay.scroll.setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.NEVER );
-		this.view = rv;
+		returnPanel.addComponent( rv, Constraint.CENTER );
+		this.view = returnPanel;
 	}
+
 	private void sort( List<? extends AbstractMethod> a ) {
 		java.util.Collections.sort( a, new Comparator<AbstractMethod>() {
 
@@ -260,52 +271,6 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		}
 	}
 
-	//	private class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-	//		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>,Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	//
-	//		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-	//			if( crawlable instanceof org.lgna.project.ast.Statement ) {
-	//				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
-	//				final AbstractMethod parentMethod = statement.getFirstAncestorAssignableTo( AbstractMethod.class );
-	//				if( parentMethod != null ) {
-	//					if( parentMethod instanceof UserMethod ) {
-	//						final UserMethod parent = (UserMethod)parentMethod;
-	//						//						if( !parent.getManagementLevel().isGenerated() ) {
-	//
-	//						methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
-	//						methodCountMap.put( parent, new HashMap<AbstractMethod,Integer>() );
-	//						parent.body.getValue().crawl( new Crawler() {
-	//
-	//							public void visit( Crawlable crawlable ) {
-	//								if( crawlable instanceof MethodInvocation ) {
-	//									MethodInvocation invocation = (MethodInvocation)crawlable;
-	//									if( invocation.method.getValue() instanceof AbstractMethod ) {
-	//										AbstractMethod method = (AbstractMethod)invocation.method.getValue();
-	//										if( !methodToConstructMap.keySet().contains( parent ) ) {
-	//											methodToConstructMap.put( parent, new LinkedList<AbstractMethod>() );
-	//										}
-	//										if( !methodToConstructMap.get( parent ).contains( method ) ) {
-	//											methodCountMap.get( parent ).put( method, 1 );
-	//											methodToConstructMap.get( parent ).add( method );
-	//										} else {
-	//											methodCountMap.get( parent ).put( method, methodCountMap.get( parent ).get( method ) + 1 );
-	//										}
-	//									}
-	//								}
-	//							}
-	//						}, false );
-	//					} else {
-	//						if( !(parentMethod instanceof UserLambda) ) {
-	//							System.out.println( "hello " + parentMethod.getClass() );
-	//							System.out.println( " bye: " + parentMethod );
-	//						}
-	//						//						System.out.println( "filtred: " + parentMethod.getName() );
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-
 	private static class MethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 		private final Map<AbstractMethod,List<MethodInvocation>> mapMethodToInvocations = Collections.newHashMap();
 
@@ -343,6 +308,17 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		private ScrollPane scroll = new ScrollPane();
 		private int minSize = 6;
 
+		private ValueListener<Boolean> booleanListener = new ValueListener<Boolean>() {
+
+			public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				update( listSelectionState.getSelectedItem() );
+			}
+
+		};
+
 		public ControlDisplay( DefaultListSelectionState<UserMethod> listSelectionState ) {
 			initGridPanel();
 			populateGridPanel();
@@ -350,6 +326,10 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		}
 
 		private void initGridPanel() {
+			CheckBox hideFunctionsBox = showFunctionsState.createCheckBox();
+			LineAxisPanel child = new LineAxisPanel( hideFunctionsBox, showProceduresState.createCheckBox() );
+
+			returnPanel.addComponent( child, Constraint.PAGE_START );
 			this.gridPanel = GridPanel.createGridPane( minSize, numCols, 5, 5 );
 			for( int i = 0; i != minSize; ++i ) {
 				componentMap.put( i, new HashMap<Integer,Component>() );
@@ -365,6 +345,8 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 					componentMap.get( i ).put( j, label );
 				}
 			}
+			showFunctionsState.addValueListener( booleanListener );
+			showProceduresState.addValueListener( booleanListener );
 			scroll.setViewportView( gridPanel );
 		}
 
@@ -403,7 +385,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 					protected void paintComponent( Graphics g ) {
 						Graphics2D g2 = (Graphics2D)g;
 						//g2.setPaint( this.getBackground() );
-						g2.setPaint( new Color( 150, 150, 255 ) );
+						g2.setPaint( new Color( 150, 255, 150 ) );
 
 						int w = (int)(this.getWidth() * (count / (double)maximum)) + 1;
 						g2.fillRect( 0, 0, w, this.getHeight() );
@@ -445,7 +427,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		}
 
 		private void update( UserMethod selected ) {
-			setHeight( mapMethodToInvocationCounts.get( selected ).size() + 1 );
+			setHeight( getSize( mapMethodToInvocationCounts.get( selected ) ) + 1 );
 			populateLeftCol( selected );
 			populateRightCol( selected );
 		}
@@ -457,14 +439,40 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 
 		private void populateRightCol( UserMethod selected ) {
 			((Label)getCell( 0, 0 )).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
-			for( int i = 0; i != mapMethodToInvocationCounts.get( selected ).size(); ++i ) {
-				setCell( 1, i + 1, getCount( selected, mapMethodToInvocationCounts.get( selected ).get( i ) ) );
+			InvocationCounts invocationCount = mapMethodToInvocationCounts.get( selected );
+			int index = 1;
+			for( MethodCountPair pair : invocationCount.getMethodCountPairs() ) {
+				if( !pair.getMethod().isFunction() || showFunctionsState.getValue() ) {
+					if( !pair.getMethod().isProcedure() || showProceduresState.getValue() ) {
+						setCell( 1, index, getCount( selected, pair.getMethod() ) );
+						++index;
+					}
+				}
 			}
 		}
 
+		private int getSize( InvocationCounts invocationCounts ) {
+			int count = 0;
+			for( MethodCountPair pair : invocationCounts.getMethodCountPairs() ) {
+				if( !pair.getMethod().isFunction() || showFunctionsState.getValue() ) {
+					if( !pair.getMethod().isProcedure() || showProceduresState.getValue() ) {
+						++count;
+					}
+				}
+			}
+			return count;
+		}
+
 		private void populateLeftCol( UserMethod selected ) {
-			for( int i = 0; i != mapMethodToInvocationCounts.get( selected ).size(); ++i ) {//methodToConstructMap.get( selected ).size(); ++i ) {
-				setCell( 0, i + 1, mapMethodToInvocationCounts.get( selected ).get( i ).getName() );
+			int index = 1;
+			InvocationCounts invocationsCount = mapMethodToInvocationCounts.get( selected );
+			for( MethodCountPair pair : invocationsCount.getMethodCountPairs() ) {
+				if( !pair.getMethod().isFunction() || showFunctionsState.getValue() ) {
+					if( !pair.getMethod().isProcedure() || showProceduresState.getValue() ) {
+						setCell( 0, index, pair.getMethod().getName() );
+						++index;
+					}
+				}
 			}
 		}
 

@@ -124,7 +124,6 @@ class FlowControlFrequency extends TabComposite<View<?,?>> {
 			a.add( method );
 		}
 		java.util.Collections.sort( a, new Comparator<UserMethod>() {
-
 			public int compare( UserMethod o1, UserMethod o2 ) {
 				return o1.getName().compareTo( o2.getName() );
 			}
@@ -254,7 +253,7 @@ class FlowControlFrequency extends TabComposite<View<?,?>> {
 					protected void paintComponent( Graphics g ) {
 						Graphics2D g2 = (Graphics2D)g;
 						//g2.setPaint( this.getBackground() );
-						g2.setPaint( new Color( 150, 150, 255 ) );
+						g2.setPaint( new Color( 150, 255, 150 ) );
 
 						int w = (int)(this.getWidth() * (count / (double)maximum)) + 1;
 						g2.fillRect( 0, 0, w, this.getHeight() );
