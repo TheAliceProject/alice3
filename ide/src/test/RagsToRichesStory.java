@@ -56,6 +56,7 @@ import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Program;
+import org.lgna.story.Prop;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
@@ -93,17 +94,17 @@ class MyOgre extends MyBiped {
 	}
 }
 
-//class MyArmoire extends Prop {
-//	public MyArmoire() {
-//		super( org.lgna.story.resources.prop.Helicopter.VEHICLE_HELICOPTER );
-//	}
-//	public Joint getLeftDoor() {
-//		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
-//	}
-//	public Joint getRightDoor() {
-//		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
-//	}
-//}
+class MyArmoire extends Prop {
+	public MyArmoire() {
+		super( org.lgna.story.resources.prop.Armoire.ARMOIRE_QUAINT__ARMOIRE_QUAINT_ARMOIR_LEAVES);
+	}
+	public org.lgna.story.Joint getLeftDoor() {
+		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
+	}
+	public org.lgna.story.Joint getRightDoor() {
+		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
+	}
+}
 
 class DesertScene extends Scene {
 	private final Sun sun = new Sun();
@@ -168,7 +169,7 @@ class SnowScene extends Scene {
 	private final Cone redCone = new Cone();
 	private final Cone greenCone = new Cone();
 	private final Cone blueCone = new Cone();
-	//	private final MyArmoire armoire = new MyArmoire();
+	private final MyArmoire armoire = new MyArmoire();
 	private final Camera camera;
 	private final MyOgre ogre;
 	private final MyBiped susan;
@@ -187,7 +188,7 @@ class SnowScene extends Scene {
 //		this.redCone.setVehicle( this );
 //		this.greenCone.setVehicle( this );
 //		this.blueCone.setVehicle( this );
-		//		this.armoire.setVehicle( this );
+		this.armoire.setVehicle( this );
 		this.camera.setVehicle( this );
 //		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
@@ -298,9 +299,11 @@ class SnowScene extends Scene {
 //			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 //			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 			this.ogre.delay(1);
+			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.ARMOIRE_LOFT__ARMOIRE_LOFT_TRIM_BLACK);
 			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			this.ogre.setResource(org.lgna.story.resources.biped.Alien.ALIEN);
 			this.ogre.delay(1);
+			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.ARMOIRE_QUAINT__ARMOIRE_QUAINT_ARMOIR_LEAVES);
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
 			this.ogre.setResource(new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(), BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ));
 			

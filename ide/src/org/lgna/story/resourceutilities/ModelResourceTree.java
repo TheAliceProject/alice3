@@ -167,6 +167,13 @@ public class ModelResourceTree {
 	private  ModelResourceTreeNode createClassTree(List<Class<? extends org.lgna.story.resources.ModelResource>> classes)
 	{
 		ModelResourceTreeNode topNode = new ModelResourceTreeNode(null, null);
+		
+		for (Class<?> cls : classes)
+		{
+			System.out.println(cls);
+		}
+		
+		
 		for (Class<? extends org.lgna.story.resources.ModelResource> cls : classes)
 		{
 			Class<? extends org.lgna.story.resources.ModelResource> currentClass = cls;

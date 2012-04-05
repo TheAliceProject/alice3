@@ -70,6 +70,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.lgna.project.License;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
@@ -118,13 +119,13 @@ public class ModelResourceExporter {
 	
 	private String resourceName;
 	private String name;
-	private List<String> textures = new LinkedList<String>();
 	private List<String> tags = new LinkedList<String>();
-	private AxisAlignedBox boundingBox;
+	private Map<String, AxisAlignedBox> boundingBoxes = new HashMap<String, AxisAlignedBox>();
 	private File xmlFile;
 	private File javaFile;
-	private Map<String, Image> thumbnails = new HashMap<String, Image>();
+	private Map<ModelSubResourceExporter, Image> thumbnails = new HashMap<ModelSubResourceExporter, Image>();
 	private Map<String, File> existingThumbnails = null;
+	private List<ModelSubResourceExporter> subResources = new LinkedList<ModelSubResourceExporter>();
 	
 	private String attributionName;
 	private String attributionYear;
@@ -187,7 +188,15 @@ public class ModelResourceExporter {
 	{
 		this.jointAndVisualFactory = jointAndVisualFactoryClass;
 	}
-	
+
+	public boolean hasJointMap() {
+		return this.jointList != null;
+	}
+
+	public List<Tuple2<String, String>> getJointMap() {
+		return this.jointList;
+	}
+
 	public void setJointMap(List<Tuple2<String, String>> jointList)
 	{
 		this.jointList = jointList;
@@ -195,6 +204,14 @@ public class ModelResourceExporter {
 //		{
 //			this.classData = ModelResourceExporter.getBestClassDataForJointList(jointList);
 //		}
+	}
+	
+	public void addSubResource(ModelSubResourceExporter subResource) {
+		this.subResources.add(subResource);
+	}
+	
+	public void addResource(String modelName, String textureName) {
+		this.addSubResource(new ModelSubResourceExporter(modelName, textureName));
 	}
 	
 	public void addAttribution(String name, String year)
@@ -219,19 +236,14 @@ public class ModelResourceExporter {
 		return this.classData.packageString;
 	}
 	
-	public void addTexture(String textureName)
+	public void setBoundingBox( String modelName, AxisAlignedBox boundingBox )
 	{
-		this.textures.add(textureName);
+		this.boundingBoxes.put(modelName, boundingBox);
 	}
 	
-	public void setBoundingBox( AxisAlignedBox boundingBox )
+	public void addThumbnail( String modelName, String textureName, Image thumbnail )
 	{
-		this.boundingBox = boundingBox;
-	}
-	
-	public void addThumbnail( String name, Image thumbnail )
-	{
-		this.thumbnails.put(name, thumbnail);
+		this.thumbnails.put(new ModelSubResourceExporter(modelName, textureName), thumbnail);
 	}
 
 	public void addExistingThumbnail(String name, File thumbnailFile) {
@@ -256,17 +268,17 @@ public class ModelResourceExporter {
 		this.javaFile = javaFile;
 	}
 	
-	private org.w3c.dom.Element createBoundingBoxElement(Document doc)
+	private static org.w3c.dom.Element createBoundingBoxElement(Document doc, AxisAlignedBox bbox)
 	{
 		org.w3c.dom.Element bboxElement = doc.createElement("BoundingBox");
 		org.w3c.dom.Element minElement = doc.createElement("Min");
-		minElement.setAttribute("x", Double.toString(this.boundingBox.getXMinimum()));
-		minElement.setAttribute("y", Double.toString(this.boundingBox.getYMinimum()));
-		minElement.setAttribute("z", Double.toString(this.boundingBox.getZMinimum()));
+		minElement.setAttribute("x", Double.toString(bbox.getXMinimum()));
+		minElement.setAttribute("y", Double.toString(bbox.getYMinimum()));
+		minElement.setAttribute("z", Double.toString(bbox.getZMinimum()));
 		org.w3c.dom.Element maxElement = doc.createElement("Max");
-		maxElement.setAttribute("x", Double.toString(this.boundingBox.getXMaximum()));
-		maxElement.setAttribute("y", Double.toString(this.boundingBox.getYMaximum()));
-		maxElement.setAttribute("z", Double.toString(this.boundingBox.getZMaximum()));
+		maxElement.setAttribute("x", Double.toString(bbox.getXMaximum()));
+		maxElement.setAttribute("y", Double.toString(bbox.getYMaximum()));
+		maxElement.setAttribute("z", Double.toString(bbox.getZMaximum()));
 		
 		bboxElement.appendChild(minElement);
 		bboxElement.appendChild(maxElement);
@@ -274,15 +286,31 @@ public class ModelResourceExporter {
 		return bboxElement;
 	}
 	
-	private org.w3c.dom.Element createTagsElement(Document doc)
+	private static org.w3c.dom.Element createTagsElement(Document doc, List<String> tagList)
 	{
 		org.w3c.dom.Element tagsElement = doc.createElement("Tags");
-		for (String tag : this.tags) {
+		for (String tag : tagList) {
 			org.w3c.dom.Element tagElement = doc.createElement("Tag");
 			tagElement.setTextContent(tag);
 			tagsElement.appendChild(tagElement);
 		}
 		return tagsElement;
+	}
+	
+	private static org.w3c.dom.Element createSubResourceElement(Document doc, ModelSubResourceExporter subResource)
+	{
+		org.w3c.dom.Element resourceElement = doc.createElement("Resource");
+		resourceElement.setAttribute("name", subResource.getTextureName());
+		if (subResource.getModelName() != null) {
+			resourceElement.setAttribute("model", subResource.getModelName());
+		}
+		if (subResource.getBbox() != null){
+			resourceElement.appendChild(createBoundingBoxElement(doc, subResource.getBbox()));
+		}
+		if (subResource.getTags().size() > 0) {
+			resourceElement.appendChild(createTagsElement(doc, subResource.getTags()));
+		}
+		return resourceElement;
 	}
 	
 	private Document createXMLDocument()
@@ -301,8 +329,23 @@ public class ModelResourceExporter {
             	modelRoot.setAttribute("creationYear", this.attributionYear);
             }
             doc.appendChild(modelRoot);
-            modelRoot.appendChild(this.createBoundingBoxElement(doc));
-            modelRoot.appendChild(this.createTagsElement(doc));
+			if (this.boundingBoxes.get(this.name) == null) {
+				AxisAlignedBox superBox = new AxisAlignedBox();
+				for (Entry<String, AxisAlignedBox> entry : this.boundingBoxes.entrySet()) {
+					superBox.union(entry.getValue());
+				}
+				this.boundingBoxes.put(this.name, superBox);
+			}
+            modelRoot.appendChild(createBoundingBoxElement(doc, this.boundingBoxes.get(this.name)));
+            modelRoot.appendChild(createTagsElement(doc, this.tags));
+            
+            for (ModelSubResourceExporter subResource : this.subResources) {
+            	if (!subResource.getModelName().equalsIgnoreCase(this.name) && this.boundingBoxes.containsKey(subResource.getModelName())) {
+            		subResource.setBbox(this.boundingBoxes.get(subResource.getModelName()));
+            	}
+            	modelRoot.appendChild(createSubResourceElement(doc, subResource));
+            }
+            
             return doc;
         }
         catch (Exception e)
@@ -494,6 +537,19 @@ public class ModelResourceExporter {
 		return sb.toString();
 	}
 	
+	private String createResourceEnumName(String modelName, String textureName) {
+		if (modelName.equalsIgnoreCase(this.getName())) {
+			return AliceResourceUtilties.makeEnumName(textureName);
+		}
+		else {
+			return AliceResourceUtilties.makeEnumName(modelName) + "__" + AliceResourceUtilties.makeEnumName(textureName);
+		}
+	}
+	
+	private String createResourceEnumName(ModelSubResourceExporter resource) {
+		return createResourceEnumName(resource.getModelName(), resource.getTextureName());
+	}
+	
 	public String createJavaCode()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -503,11 +559,12 @@ public class ModelResourceExporter {
 		sb.append("package "+this.classData.packageString+";\n\n");
 		
 		sb.append("public enum "+this.name+" implements "+this.classData.superClass.getCanonicalName()+" {\n");
-		for (int i=0; i<this.textures.size(); i++)
+		for (int i=0; i<this.subResources.size(); i++)
 		{
-			String texture = this.textures.get(i);
-			sb.append("\t"+texture);
-			if (i < this.textures.size() - 1)
+			ModelSubResourceExporter resource = this.subResources.get(i);
+			String resourceEnumName = createResourceEnumName(resource);
+			sb.append("\t"+resourceEnumName);
+			if (i < this.subResources.size() - 1)
 			{
 				sb.append(",\n");
 			}
@@ -723,12 +780,12 @@ public class ModelResourceExporter {
 		return xmlFile;
 	}
 
-	private File createXMLFile(String root)
+	private File createXMLFile(String root, boolean forceRebuild)
 	{
         File outputFile = getXMLFile(root);
         try
         {
-	        if (this.xmlFile != null && this.xmlFile.exists())
+	        if (!forceRebuild && this.xmlFile != null && this.xmlFile.exists())
 	        {
 				if (!outputFile.exists())
 	            {
@@ -794,20 +851,15 @@ public class ModelResourceExporter {
         return null;
 	}
 
-	public String getThumbnailPath(String rootPath, String textureName) {
+	public String getThumbnailPath(String rootPath, String thumbnailName) {
 		if (!rootPath.endsWith("/") && !rootPath.endsWith("\\")) {
 			rootPath += "/";
 		}
 		String resourceDirectory = rootPath + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
-		if (textureName == null) {
-			return resourceDirectory+this.name+".png";
-		}
-		else {
-			return resourceDirectory+this.name + "_" + textureName + ".png";
-		}
+		return resourceDirectory+thumbnailName;
 	}
 
-	private List<File> createThumbnails(String root)
+	private List<File> saveThumbnailsToDir(String root)
 	{
 		List<File> thumbnailFiles = new LinkedList<File>();
 		List<String> thumbnailsCreated = new LinkedList<String>();
@@ -816,7 +868,8 @@ public class ModelResourceExporter {
 			for(Entry < String, File > entry : this.existingThumbnails.entrySet())
 			{
 				if (!gotBase) {
-					File thumb = new File(getThumbnailPath(root, null));
+					String thumbName = AliceResourceUtilties.getThumbnailResourceName(this.getName(), null);
+					File thumb = new File(getThumbnailPath(root, thumbName));
 					try {
 						FileUtilities.copyFile(entry.getValue(), thumb);
 						thumbnailFiles.add(thumb);
@@ -837,20 +890,22 @@ public class ModelResourceExporter {
 				}
 			}
 		}
-		for(Entry < String, Image > entry : this.thumbnails.entrySet())
+		for(Entry < ModelSubResourceExporter, Image > entry : this.thumbnails.entrySet())
 		{
 			if (!thumbnailsCreated.contains(entry.getKey())) {
 				if (!gotBase)
 				{
-					File f = saveImageToFile(getThumbnailPath(root, null), entry.getValue());
+					String thumbName = AliceResourceUtilties.getThumbnailResourceName(this.getName(), null);
+					File f = saveImageToFile(getThumbnailPath(root, thumbName), entry.getValue());
 					if (f != null ){
 						thumbnailFiles.add(f);
 					}
 					gotBase = true;
 				}
-				File f = saveImageToFile(getThumbnailPath(root, entry.getKey()), entry.getValue());
+				String thumbnailName = AliceResourceUtilties.getThumbnailResourceName(entry.getKey().getModelName(), entry.getKey().getTextureName());
+				File f = saveImageToFile(getThumbnailPath(root, thumbnailName), entry.getValue());
 				if (f != null ){
-					thumbnailsCreated.add(entry.getKey());
+					thumbnailsCreated.add(thumbnailName);
 					thumbnailFiles.add(f);
 				}
 			}
@@ -865,7 +920,7 @@ public class ModelResourceExporter {
         }
 		xmlFile = getXMLFile(resourceDirectory);
 		if ((rebuildXmlFile || !xmlFile.exists() || xmlFile.length() == 0) && resourceJarStream != null) {
-			xmlFile = createXMLFile(resourceDirectory);
+			xmlFile = createXMLFile(resourceDirectory, rebuildXmlFile);
 		}
 		boolean shouldAddResources = resourceJarStream != null;
 		boolean addResources = false;
@@ -873,7 +928,7 @@ public class ModelResourceExporter {
 		if (resourceJarStream != null && xmlFile != null) {
 			addResources = true;
 			resourceDir = xmlFile.getParentFile();
-			List<File> thumbnailFiles = createThumbnails(resourceDirectory);
+			List<File> thumbnailFiles = saveThumbnailsToDir(resourceDirectory);
 		}
 		else if (shouldAddResources){
 			System.err.println("FAILED TO MAKE XML FILE FOR "+this.getName()+"--NOT ADDING IT TO JARS.");

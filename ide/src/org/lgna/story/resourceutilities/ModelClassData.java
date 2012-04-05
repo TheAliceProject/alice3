@@ -40,7 +40,8 @@ public class ModelClassData extends BaseModelClassData
 	
 	public static final ModelClassData TABLE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.TableResource.class, "org.lgna.story.resources.table", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData BED_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BedResource.class, "org.lgna.story.resources.bed", PROP_BASE_CLASS_DATA);
-	public static final ModelClassData ARMOIRE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.ArmoireResource.class, "org.lgna.story.resources.armoire", PROP_BASE_CLASS_DATA);
+//	public static final ModelClassData ARMOIRE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.ArmoireResource.class, "org.lgna.story.resources.armoire", PROP_BASE_CLASS_DATA);
+	public static final ModelClassData ARMOIRE_CLASS_DATA = PROP_CLASS_DATA;
 	public static final ModelClassData BOOKCASE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BookcaseResource.class, "org.lgna.story.resources.bookcase", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData DESK_CLASS_DATA = new ModelClassData(org.lgna.story.resources.DeskResource.class, "org.lgna.story.resources.desk", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData DRESSER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.DresserResource.class, "org.lgna.story.resources.dresser", PROP_BASE_CLASS_DATA);

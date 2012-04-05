@@ -77,7 +77,7 @@ public class AliceResourceUtilties {
 	
 	private static Map<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual> urlToVisualMap = new HashMap<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual>();
 	private static Map<URL, TexturedAppearance[]> urlToTextureMap = new HashMap<URL, TexturedAppearance[]>();
-	private static Map<Class<?>, org.lgna.story.resourceutilities.ModelResourceInfo> classToInfoMap = new HashMap<Class<?>, org.lgna.story.resourceutilities.ModelResourceInfo>();
+	private static Map<String, org.lgna.story.resourceutilities.ModelResourceInfo> classToInfoMap = new HashMap<String, org.lgna.story.resourceutilities.ModelResourceInfo>();
 	
 	private AliceResourceUtilties() {
 	}
@@ -148,20 +148,120 @@ public class AliceResourceUtilties {
 		return StorytellingResources.getInstance().getAliceResource(cls.getPackage().getName().replace(".", "/")+"/"+resourceString);
 	}
 	
+	public static String enumToCamelCase(String enumName) {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<enumName.length(); i++) {
+			if (i == 0 || enumName.charAt(i-1) == '_') {
+				sb.append(Character.toUpperCase(enumName.charAt(i)));
+			}
+			else if (enumName.charAt(i) != '_') {
+				sb.append(Character.toLowerCase(enumName.charAt(i)));
+			}
+		}
+		return sb.toString();
+	}
+	
+	public static String camelCaseToEnum(String name) {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<name.length(); i++) {
+			if (i != 0 && Character.isUpperCase(name.charAt(i))) {
+				sb.append('_');
+			}
+			sb.append(Character.toUpperCase(name.charAt(i)));
+		}
+		return sb.toString();
+	}
+	
+	public static boolean isEnumName(String name) {
+		for (int i=0; i<name.length(); i++) {
+			char c = name.charAt(i);
+			if (c != '_' && !Character.isUpperCase(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static String makeEnumName(String name) {
+		if (isEnumName(name)) {
+			return name;
+		}
+		if (name.contains("_")) {
+			return name.toUpperCase();
+		}
+		else {
+			return camelCaseToEnum(name);
+		}
+	}
+	
+	private static String getModelNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
+		String modelName = resourceClass.getSimpleName();
+		if (resourceName != null && resourceName.contains("__")) {
+			String[] splitName = resourceName.split("__");
+			modelName = enumToCamelCase(splitName[0]);
+		}
+		return modelName;
+	}
+	
+	private static String getTextureNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
+		String textureName = resourceName;
+		if (resourceName != null && resourceName.contains("__")) {
+			String[] splitName = resourceName.split("__");
+			textureName = splitName[1];
+		}
+		return textureName;
+	}
+	
+	public static String getTextureResourceName(Class<?> resourceClass, String resourceName) {
+		String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
+		String textureName = getTextureNameFromClassAndResource(resourceClass, resourceName);
+		return getTextureResourceName(modelName, textureName);
+	}
+	
 	public static String getTextureResourceName(Object resource)
 	{
-		return getTextureResourceName(resource.getClass().getSimpleName(), resource.toString());
+		return getTextureResourceName(resource.getClass(), resource.toString());
+	}
+	
+	public static String getVisualResourceName(Class<?> resourceClass, String resourceName)
+	{
+		String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
+		return getVisualResourceName(modelName);
+	}
+	
+	public static String getVisualResourceName(Object resource)
+	{
+		return getVisualResourceName(resource.getClass(), resource.toString());
+	}
+	
+	public static String getThumbnailResourceName(Class<?> resourceClass, String resourceName) {
+		String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
+		String textureName = getTextureNameFromClassAndResource(resourceClass, resourceName);
+		return getThumbnailResourceName(modelName, textureName);
+	}
+	
+	public static String getThumbnailResourceName(Object resource)
+	{
+		return getThumbnailResourceName(resource.getClass(), resource.toString());
+	}
+	
+	private static String createTextureBaseName(String modelName, String textureName) {
+		if (textureName == null) {
+			textureName = "";
+		}
+		else {
+			textureName = "_"+makeEnumName(textureName);
+		}
+		return modelName.toLowerCase() + textureName;
+	}
+	
+	public static String getThumbnailResourceName(String modelName, String textureName) {
+		return createTextureBaseName(modelName, textureName) + ".png";
 	}
 	
 	public static String getTextureResourceName(String modelName, String textureName)
 	{
-		textureName = textureName.toUpperCase();
-		return modelName.toLowerCase()+"_"+textureName+"."+TEXTURE_RESOURCE_EXTENSION;
-	}
-
-	public static String getVisualResourceName(Object resource)
-	{
-		return getVisualResourceName(resource.getClass().getSimpleName());
+		return createTextureBaseName(modelName, textureName)+"."+TEXTURE_RESOURCE_EXTENSION;
 	}
 
 	public static String getVisualResourceName(String modelName)
@@ -169,8 +269,9 @@ public class AliceResourceUtilties {
 		return modelName.toLowerCase()+"."+MODEL_RESOURCE_EXTENSION;
 	}
 	
-	private static java.net.URL getThumbnailURLInternal(Class<?> modelResource, String name) {
-		return getAliceResource(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator()+ name+".png");
+	private static java.net.URL getThumbnailURLInternal(Class<?> modelResource, String resourceName) {
+		String thumbnailName = getThumbnailResourceName(modelResource, resourceName);
+		return getAliceResource(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator()+ thumbnailName);
 	}
 	
 	public static URL getTextureURL(Object resource)
@@ -321,11 +422,25 @@ public class AliceResourceUtilties {
 		return modelResource.getSimpleName();
 	}
 	
-	private static BufferedImage getThumbnailInternal(Class<?> modelResource, String name)
+	public static String trimName(String name) {
+		name = name.trim();
+		while (name.contains("__")) {
+			name = name.replace("__", "_");
+		}
+		while (name.startsWith("_")) {
+			name = name.substring(1);
+		}
+		while (name.endsWith("_")) {
+			name = name.substring(0, name.length()-1);
+		}
+		return name;
+	}
+	
+	private static BufferedImage getThumbnailInternal(Class<?> modelResource, String resourceName)
 	{
-		URL resourceURL = getThumbnailURLInternal(modelResource, name);
+		URL resourceURL = getThumbnailURLInternal(modelResource, resourceName);
 		if (resourceURL == null) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", name);
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", resourceName);
 		}
 		if( resourceURL != null ) {
 			try {
@@ -341,100 +456,161 @@ public class AliceResourceUtilties {
 	
 	public static BufferedImage getThumbnail(Class<?> modelResource, String instanceName)
 	{
-		return getThumbnailInternal(modelResource, getName(modelResource)+"_"+instanceName);
+		return getThumbnailInternal(modelResource, instanceName);
 	}
 	
 	public static BufferedImage getThumbnail(Class<?> modelResource)
 	{
-		return getThumbnailInternal(modelResource, getName(modelResource));
+		return getThumbnailInternal(modelResource, null);
 	}
 	
 	public static java.net.URL getThumbnailURL(Class<?> modelResource)
 	{
-		return getThumbnailURLInternal(modelResource, getName(modelResource));
+		return getThumbnailURLInternal(modelResource, null);
 	}
 	
 	public static java.net.URL getThumbnailURL(Class<?> modelResource, String instanceName)
 	{
-		return getThumbnailURLInternal(modelResource, getName(modelResource)+"_"+instanceName);
+		return getThumbnailURLInternal(modelResource, instanceName);
 	}
 	
-	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo(Class<?> modelResource) {
+	private static String getKey(Class<?> modelResource, String resourceName) {
+		if (resourceName != null) {
+			return modelResource.getName()+resourceName;
+		}
+		return modelResource.getName();
+	}
+	
+	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo(Class<?> modelResource, String resourceName) {
 		if (modelResource == null)
 		{
 			return null;
 		}
-		if( classToInfoMap.containsKey(modelResource) ) {
-			return classToInfoMap.get(modelResource);
+		String key = getKey(modelResource, resourceName);
+		//Return the info if we have it cached
+		if( classToInfoMap.containsKey(key) ) {
+			return classToInfoMap.get(key);
 		}
 		else {
-			String name = getName(modelResource);
-			try {
-				InputStream is = getAliceResourceAsStream(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator()+name+".xml");
-				if (is != null) {
-					Document doc = XMLUtilities.read(is);
-					ModelResourceInfo info = new ModelResourceInfo(doc);
-					classToInfoMap.put(modelResource, info);
-					return info;
+			String parentKey = getKey(modelResource, null);
+			//If we don't have the parent info cached, load it from disk
+			ModelResourceInfo parentInfo = null;
+			if (!classToInfoMap.containsKey(parentKey)) {
+				String name = getName(modelResource);
+				try {
+					InputStream is = getAliceResourceAsStream(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator()+name+".xml");
+					if (is != null) {
+						Document doc = XMLUtilities.read(is);
+						parentInfo = new ModelResourceInfo(doc);
+						classToInfoMap.put(parentKey, parentInfo);
+					}
+					else {
+						Logger.severe("Failed to find class info for "+name);
+						classToInfoMap.put(parentKey, null);
+					}
 				}
-				else {
-					Logger.severe("Failed to find class info for "+name);
-					classToInfoMap.put(modelResource, null);
+				catch (Exception e)
+				{
+					Logger.severe("Failed to parse class info for "+name+": "+e);
+					classToInfoMap.put(parentKey, null);
 				}
 			}
-			catch (Exception e)
-			{
-				Logger.severe("Failed to parse class info for "+name+": "+e);
-				classToInfoMap.put(modelResource, null);
+			else {
+				parentInfo = classToInfoMap.get(parentKey);
+			}
+			if ( parentInfo != null ) {
+				//If the key we're looking for is the same as the parent key, then just return the parent info
+				if (parentKey.equals(key)) {
+					return parentInfo;
+				}
+				//Otherwise get the model and texture names and find the sub resource we're looking for
+				String modelName = getModelNameFromClassAndResource(modelResource, resourceName);
+				String textureName = getTextureNameFromClassAndResource(modelResource, resourceName);
+				ModelResourceInfo subResource = parentInfo.getSubResource(modelName, textureName);
+				if (subResource == null) {
+					Logger.severe("Failed to find a resource for "+modelResource+" : "+resourceName);
+				}
+				//Cache the sub resource under the original main key
+				classToInfoMap.put(key, subResource);
+				return subResource;
 			}
 			return null;
 		}
-		
 	}
 	
-	public static AxisAlignedBox getBoundingBox(Class<?> modelResource)
+	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo(Class<?> modelResource) {
+		return getModelResourceInfo(modelResource, null);
+	}
+	
+	public static AxisAlignedBox getBoundingBox(Class<?> modelResource, String resourceName)
 	{
-		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		ModelResourceInfo info = getModelResourceInfo(modelResource, resourceName);
 		if (info != null) {
 			return info.getBoundingBox();
 		}
 		return null;
 	}
 	
-	public static String getModelName(Class<?> modelResource)
+	public static AxisAlignedBox getBoundingBox(Class<?> modelResource)
 	{
-		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		return getBoundingBox(modelResource, null);
+	}
+	
+	public static String getModelName(Class<?> modelResource, String resourceName)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource, resourceName);
 		if (info != null) {
 			return info.getName();
 		}
 		return null;
 	}
 	
-	public static String getCreator(Class<?> modelResource)
+	public static String getModelName(Class<?> modelResource)
 	{
-		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		return getModelName(modelResource, null);
+	}
+	
+	
+	public static String getCreator(Class<?> modelResource, String resourceName)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource, resourceName);
 		if (info != null) {
 			return info.getCreator();
 		}
 		return null;
 	}
 	
-	public static int getCreationYear(Class<?> modelResource)
+	public static String getCreator(Class<?> modelResource)
 	{
-		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		return getCreator(modelResource, null);
+	}
+	
+	public static int getCreationYear(Class<?> modelResource, String resourceName)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource, resourceName);
 		if (info != null) {
 			return info.getCreationYear();
 		}
 		return -1;
 	}
 	
-	public static String[] getTags(Class<?> modelResource)
+	public static int getCreationYear(Class<?> modelResource)
 	{
-		ModelResourceInfo info = getModelResourceInfo(modelResource);
+		return getCreationYear(modelResource, null);
+	}
+	
+	public static String[] getTags(Class<?> modelResource, String resourceName)
+	{
+		ModelResourceInfo info = getModelResourceInfo(modelResource, resourceName);
 		if (info != null) {
 			return info.getTags();
 		}
 		return null;
+	}
+	
+	public static String[] getTags(Class<?> modelResource)
+	{
+		return getTags(modelResource, null);
 	}
 	
 	

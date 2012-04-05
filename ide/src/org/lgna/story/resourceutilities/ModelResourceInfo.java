@@ -42,12 +42,15 @@
  */
 package org.lgna.story.resourceutilities;
 
+
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
@@ -56,11 +59,13 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
  *
  */
 public class ModelResourceInfo {
-	
 	private final AxisAlignedBox boundingBox;
 	private final int creationYear;
 	private final String creator;
 	private final String name;
+	private final String textureName;
+	private final ModelResourceInfo parentInfo;
+	private final java.util.List<ModelResourceInfo> subResources = new java.util.LinkedList<ModelResourceInfo>();
 	
 	private final String[] tags;
 	
@@ -87,12 +92,44 @@ public class ModelResourceInfo {
 		return null;
 	}
 	
-	public ModelResourceInfo(String name, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags) {
+	private static ModelResourceInfo getSubResourceFromXML(Element resourceElement, ModelResourceInfo parent)
+	{
+		if (resourceElement != null)
+		{
+			AxisAlignedBox bbox = null;
+			NodeList bboxNodeList = resourceElement.getElementsByTagName("BoundingBox");
+			if (bboxNodeList.getLength() > 0) {
+				bbox = getBoundingBoxFromXML((Element)bboxNodeList.item(0));
+			}
+			String modelName = null;
+			if (resourceElement.hasAttribute("model")) {
+				modelName = resourceElement.getAttribute("model");
+			}
+			String textureName = null;
+			if (resourceElement.hasAttribute("name")) {
+				textureName = resourceElement.getAttribute("name");
+			}
+			LinkedList<String> tagList = new LinkedList<String>();
+			NodeList tagNodeList = resourceElement.getElementsByTagName("Tag");
+			for (int i=0; i<tagNodeList.getLength(); i++) {
+				tagList.add(tagNodeList.item(i).getTextContent());
+			}
+			String[] tags = tagList.toArray(new String[tagList.size()]);
+			ModelResourceInfo resource = new ModelResourceInfo(parent, modelName, null, -1, bbox, tags, textureName);
+			return resource;
+		}
+		
+		return null;
+	}
+	
+	public ModelResourceInfo(ModelResourceInfo parent, String name, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String textureName) {
+		this.parentInfo = parent;
 		this.name = name;
 		this.creator = creator;
 		this.creationYear = creationYear;
 		this.boundingBox = boundingBox;
 		this.tags = tags;
+		this.textureName = textureName;
 	}
 	
 	public ModelResourceInfo(Document xmlDoc) {
@@ -123,42 +160,80 @@ public class ModelResourceInfo {
 			tagList.add(tagNodeList.item(i).getTextContent());
 		}
 		this.tags = tagList.toArray(new String[tagList.size()]);
+		
+		NodeList subResourcesList = modelElement.getElementsByTagName("Resource");
+		for (int i=0; i<subResourcesList.getLength(); i++) {
+			ModelResourceInfo subResource = getSubResourceFromXML((Element)subResourcesList.item(i), this);
+			if (subResource != null) {
+				subResources.add(subResource);
+			}
+			else {
+				Logger.severe("Failed to make sub resource for "+tagNodeList.item(i));
+			}
+		}
+		this.textureName = null;
+		this.parentInfo = null;
 	}
 
-	/**
-	 * @return the boundingBox
-	 */
 	public AxisAlignedBox getBoundingBox() {
+		if (this.boundingBox == null && parentInfo != null) {
+			return this.parentInfo.boundingBox;
+		}
 		return boundingBox;
 	}
 
-	/**
-	 * @return the creationYear
-	 */
 	public int getCreationYear() {
+		if (this.creationYear == -1 && parentInfo != null) {
+			return this.parentInfo.creationYear;
+		}
 		return creationYear;
 	}
 
-	/**
-	 * @return the creator
-	 */
 	public String getCreator() {
+		if (this.creator == null && parentInfo != null) {
+			return this.parentInfo.creator;
+		}
 		return creator;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
+		if (this.name == null && parentInfo != null) {
+			return this.parentInfo.name;
+		}
 		return name;
 	}
+	
+	public String getTextureName() {
+		if (this.textureName == null && parentInfo != null) {
+			return this.parentInfo.textureName;
+		}
+		return textureName;
+	}
 
-	/**
-	 * @return the tags
-	 */
 	public String[] getTags() {
+		if (this.parentInfo != null) {
+			String[] allTags = new String[this.tags.length + this.parentInfo.tags.length];
+			if (this.parentInfo.tags.length > 0) {
+				System.arraycopy(this.parentInfo.tags, 0, allTags, 0, this.parentInfo.tags.length);
+			}
+			if (this.tags.length > 0) {
+				System.arraycopy(this.tags, 0, allTags, this.parentInfo.tags.length, this.tags.length);
+			}
+			return allTags;
+		}
 		return tags;
 	}
 	
+	public ModelResourceInfo getSubResource(String modelName, String textureName) {
+		for (ModelResourceInfo mri : this.subResources) {
+			String subModel = mri.getName();
+			String subTexture = mri.getTextureName();
+			if (subModel != null && subModel.equalsIgnoreCase(modelName) && 
+				subTexture != null && subTexture.equalsIgnoreCase(textureName)) {
+				return mri;
+			}
+		}
+		return null;
+	}
 
 }
