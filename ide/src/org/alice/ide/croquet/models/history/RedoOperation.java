@@ -57,7 +57,7 @@ public class RedoOperation extends HistoryOperation {
 		this.setSmallIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/redo.png" ) ) );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.history.HistoryManager historyManager) {
+	protected void performInternal(org.lgna.project.history.ProjectHistory historyManager) {
 		historyManager.performRedo();
 	}
 }

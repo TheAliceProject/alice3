@@ -40,60 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.history;
+package org.lgna.project.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HistoryManager {
-	private HistoryManager() {
-		throw new AssertionError();
-	}
-	private static org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
-		public void changing(org.lgna.croquet.history.event.Event<?> e) {
-		}
-		public void changed(org.lgna.croquet.history.event.Event<?> e) {
-			if( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-				org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)e;
-				HistoryManager.handleEditCommitted( editCommittedEvent.getEdit() );
-			}
-		}
-	};
-	static {
-		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( HistoryManager.listener );
-	}
-
-	private static java.util.Map< org.lgna.croquet.Group, HistoryManager > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static HistoryManager getInstance( org.lgna.croquet.Group group ) {
-		HistoryManager rv;
-		if( group != null ) {
-			rv = HistoryManager.map.get( group );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new HistoryManager( group );
-				HistoryManager.map.put( group, rv );
-			}
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "group==null" );
-			rv = null;
-		}
-		return rv;
-	}
-	private static void handleEditCommitted( org.lgna.croquet.edits.Edit<?> edit ) {
-		assert edit != null;
-		HistoryManager historyManager = HistoryManager.getInstance( edit.getGroup() );
-		if( historyManager != null ) {
-			historyManager.push( edit );
-		}
-	}
+public class ProjectHistory {
 
 	private java.util.Stack< org.lgna.croquet.edits.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private int insertionIndex = 0;
 	private org.lgna.croquet.Group group;
 
-	private HistoryManager( org.lgna.croquet.Group group ) {
+	public ProjectHistory( org.lgna.croquet.Group group ) {
 		this.group = group;
 	}
 	public org.lgna.croquet.Group getGroup() {
@@ -102,9 +60,9 @@ public class HistoryManager {
 	public java.util.Stack< org.lgna.croquet.edits.Edit<?> > getStack() {
 		return this.stack;
 	}
-	private void push( org.lgna.croquet.edits.Edit<?> edit ) {
+	public void push( org.lgna.croquet.edits.Edit<?> edit ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
-			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, edit );
+			org.lgna.project.history.event.HistoryPushEvent historyPushEvent = new org.lgna.project.history.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
 			this.stack.setSize( this.insertionIndex );
 			this.stack.push( edit );
@@ -123,7 +81,6 @@ public class HistoryManager {
 				edit.undo();
 				this.insertionIndex--;
 			} else {
-				//javax.swing.JOptionPane.showMessageDialog( null, "cannot undo " + edit.getPresentation( null ) );
 				beep();
 			}
 		} else {
@@ -138,7 +95,6 @@ public class HistoryManager {
 					edit.doOrRedo( false );
 					this.insertionIndex++;
 				} else {
-					//javax.swing.JOptionPane.showMessageDialog( null, "cannot redo " + edit.getPresentation( null ) );
 					beep();
 				}
 			} else {
@@ -149,13 +105,6 @@ public class HistoryManager {
 		}
 	}
 
-	public void performClear() {
-		edu.cmu.cs.dennisc.history.event.HistoryClearEvent e = new edu.cmu.cs.dennisc.history.event.HistoryClearEvent( this );
-		this.fireClearing( e );
-		this.stack.clear();
-		this.insertionIndex = 0;
-		this.fireCleared( e );
-	}
 	public void performUndo() {
 		int nextIndex = this.insertionIndex - 1;
 		int actualIndex = this.setInsertionIndex( nextIndex );
@@ -172,7 +121,7 @@ public class HistoryManager {
 	private int setInsertionIndex( int nextInsertionIndex, boolean isActionDesired ) {
 		if( nextInsertionIndex >= 0 && nextInsertionIndex <= this.stack.size() ) {
 			if( this.insertionIndex != nextInsertionIndex ) {
-				edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e = new edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent( this, this.insertionIndex, nextInsertionIndex );
+				org.lgna.project.history.event.HistoryInsertionIndexEvent e = new org.lgna.project.history.event.HistoryInsertionIndexEvent( this, this.insertionIndex, nextInsertionIndex );
 				this.fireInsertionIndexChanging( e );
 
 				final int N = Math.abs( nextInsertionIndex - this.insertionIndex );
@@ -204,57 +153,57 @@ public class HistoryManager {
 		return this.setInsertionIndex( nextInsertionIndex, true );
 	}
 
-	private java.util.List< edu.cmu.cs.dennisc.history.event.HistoryListener > historyListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.history.event.HistoryListener >();
+	private java.util.List< org.lgna.project.history.event.HistoryListener > historyListeners = new java.util.LinkedList< org.lgna.project.history.event.HistoryListener >();
 
-	public void addHistoryListener( edu.cmu.cs.dennisc.history.event.HistoryListener l ) {
+	public void addHistoryListener( org.lgna.project.history.event.HistoryListener l ) {
 		synchronized( this.historyListeners ) {
 			this.historyListeners.add( l );
 		}
 	}
-	public void removeHistoryListener( edu.cmu.cs.dennisc.history.event.HistoryListener l ) {
+	public void removeHistoryListener( org.lgna.project.history.event.HistoryListener l ) {
 		synchronized( this.historyListeners ) {
 			this.historyListeners.remove( l );
 		}
 	}
 
-	private void fireOperationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+	private void fireOperationPushing( org.lgna.project.history.event.HistoryPushEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
 				l.operationPushing( e );
 			}
 		}
 	}
-	private void fireOperationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+	private void fireOperationPushed( org.lgna.project.history.event.HistoryPushEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
 				l.operationPushed( e );
 			}
 		}
 	}
-	private void fireInsertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+	private void fireInsertionIndexChanging( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
 				l.insertionIndexChanging( e );
 			}
 		}
 	}
-	private void fireInsertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+	private void fireInsertionIndexChanged( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
 				l.insertionIndexChanged( e );
 			}
 		}
 	}
-	private void fireClearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+	private void fireClearing( org.lgna.project.history.event.HistoryClearEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
 				l.clearing( e );
 			}
 		}
 	}
-	private void fireCleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+	private void fireCleared( org.lgna.project.history.event.HistoryClearEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
 				l.cleared( e );
 			}
 		}

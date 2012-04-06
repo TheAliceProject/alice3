@@ -159,7 +159,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	/*package-private*/ final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
 		//todo: move up to Model
 		this.initializeIfNecessary();
-		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
+		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		this.perform( transaction, trigger );
 		return transaction.getCompletionStep();
 	}

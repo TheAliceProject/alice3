@@ -47,6 +47,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectApplication extends org.lgna.croquet.Application {
+
 	public static final org.lgna.croquet.Group PROJECT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ), "PROJECT_GROUP" );
 	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
@@ -54,22 +55,24 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	public static ProjectApplication getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), ProjectApplication.class );
 	}
+
+	private org.lgna.project.history.event.HistoryListener projectHistoryListener;
 	public ProjectApplication() {
-		this.getProjectHistoryManager().addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
-			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+		this.projectHistoryListener = new org.lgna.project.history.event.HistoryListener() {
+			public void operationPushing( org.lgna.project.history.event.HistoryPushEvent e ) {
 			}
-			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+			public void operationPushed( org.lgna.project.history.event.HistoryPushEvent e ) {
 			}
-			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+			public void insertionIndexChanging( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
 			}
-			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+			public void insertionIndexChanged( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
 				ProjectApplication.this.handleInsertionIndexChanged( e );
 			}
-			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+			public void clearing( org.lgna.project.history.event.HistoryClearEvent e ) {
 			}
-			public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+			public void cleared( org.lgna.project.history.event.HistoryClearEvent e ) {
 			}
-		} );
+		};
 	}
 
 	private boolean isDefaultProjectLoaded = false;
@@ -80,26 +83,32 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	@Override
 	public void initialize(java.lang.String[] args) {
 		super.initialize(args);
+
+		// Make sure we open the default project, if there isn't a project open.
 		org.lgna.project.Project project = this.getProject();
 		if ( project == null ) {
 			this.loadDefaultProject();
 		}
+
+		assert this.getProject() != null;
 	}
 
 	private void updateUndoRedoEnabled() {
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
+		org.lgna.project.history.ProjectHistory historyManager = this.getProjectHistory( org.alice.ide.IDE.PROJECT_GROUP );
 		int index = historyManager.getInsertionIndex();
 		int size = historyManager.getStack().size();
 		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( index > 0 );
 		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( index < size );
 	}
-	protected void handleInsertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+
+	protected void handleInsertionIndexChanged( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
 		this.updateTitle();
-		edu.cmu.cs.dennisc.history.HistoryManager source = e.getTypedSource();
+		org.lgna.project.history.ProjectHistory source = e.getTypedSource();
 		if( source.getGroup() == PROJECT_GROUP ) {
 			this.updateUndoRedoEnabled();
 		}
 	}
+
 	public abstract String getApplicationName();
 	protected abstract String getVersionText();
 	protected abstract String getVersionAdornment();
@@ -193,9 +202,14 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 			}
 		}
 		if( project != null ) {
+			// Remove the old project history listener, so the old project can be cleaned up
+			if ( (this.getProject() != null) && (this.getProjectHistory() != null) ) {
+				this.getProjectHistory().removeHistoryListener( this.projectHistoryListener );
+			}
 			this.setProject( project );
 			this.uri = uri;
 			this.isDefaultProjectLoaded = false;
+			this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
 			try {
 				if( file != null && file.canWrite() ) {
 					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
@@ -209,31 +223,27 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 			//actionContext.cancel();
 		}
 	}
-	
-	//private org.lgna.project.Project project = null;
-	
-	public final edu.cmu.cs.dennisc.history.HistoryManager getProjectHistoryManager() {
-		return edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
+
+	public final org.lgna.project.history.ProjectHistory getProjectHistory() {
+		return this.getProjectHistory( IDE.PROJECT_GROUP );
 	}
-	
+	public final org.lgna.project.history.ProjectHistory getProjectHistory( org.lgna.croquet.Group group ) {
+		return this.getProject().getProjectHistory( group );
+	}
+
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
 
 	private boolean isProjectChanged() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
-		return this.projectHistoryInsertionIndexOfCurrentFile != projectHistoryManager.getInsertionIndex();
+		return this.projectHistoryInsertionIndexOfCurrentFile != this.getProjectHistory().getInsertionIndex();
 	}
+
 	public boolean isProjectUpToDateWithFile() {
-		if( this.uri != null ) {
-			return isProjectChanged() == false;
-		} else {
-			return true;
-		}
+		return isProjectChanged() == false;
 	}
+
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
 		rv.append( this.getApplicationName() );
 		rv.append( " " );
-//		rv.append( this.getVersionText() );
-//		rv.append( " " );
 		rv.append( this.getVersionAdornment() ); 
 		rv.append( " " );
 		return rv;
@@ -258,15 +268,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		this.updateTitle( sb );
 		this.getFrame().setTitle( sb.toString() );
 	}
-	
+
 	private void updateHistoryLengthAtLastFileOperation() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
-		this.projectHistoryInsertionIndexOfCurrentFile = projectHistoryManager.getInsertionIndex();
+		this.projectHistoryInsertionIndexOfCurrentFile = this.getProjectHistory().getInsertionIndex();
 		this.updateTitle();
-	}
-	protected void preserveProjectProperties() {
-	}
-	protected void restoreProjectProperties() {
 	}
 
 	public org.lgna.project.Project getProject() {
@@ -281,13 +286,14 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		this.isDefaultProjectLoaded = true;
 	}
 
+	public org.lgna.croquet.history.TransactionHistory getProjectTransactionHistory() {
+		return this.getProject().getTransactionHistory();
+	}
+
 	public void loadProjectFrom( java.net.URI uri ) {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = this.getProjectHistoryManager();
-		projectHistoryManager.performClear();
+		setUri( uri );
 		this.updateHistoryLengthAtLastFileOperation();
 		this.updateUndoRedoEnabled();
-		this.restoreProjectProperties();
-		setUri( uri );
 	}
 	public final void loadProjectFrom( java.io.File file ) {
 		loadProjectFrom( file.toURI() );
@@ -302,7 +308,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 
 	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
 		org.lgna.project.Project project = this.getUpToDateProject();
-		this.preserveProjectProperties();
 		edu.cmu.cs.dennisc.zip.DataSource[] dataSources;
 		try {
 			final java.awt.image.BufferedImage thumbnailImage = createThumbnail();
@@ -328,7 +333,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 		}
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
 		this.uri = file.toURI();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();
 	}
 	public void saveProjectTo( String path ) throws java.io.IOException {
@@ -340,11 +344,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	}
 
 	public final org.lgna.project.Project getUpToDateProject() {
-		org.lgna.project.Project rv = this.getProject();
-		if( rv != null ) {
-			this.ensureProjectCodeUpToDate();
-		}
-		return rv;
+		this.ensureProjectCodeUpToDate();
+		return this.getProject();
 	}
 	public abstract void ensureProjectCodeUpToDate();
 }

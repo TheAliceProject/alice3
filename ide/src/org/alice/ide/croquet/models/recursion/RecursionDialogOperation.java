@@ -170,16 +170,6 @@ public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperat
 		return new RecursionPanel( explanationA, explanationB );
 	}
 	
-	private static int getDepth( org.lgna.croquet.history.Transaction transaction, int depth ) {
-		org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
-		org.lgna.croquet.history.CompletionStep< ? > completionStep = transactionHistory.getParent();
-		if( completionStep != null ) {
-			return getDepth( completionStep.getParent(), depth+1 );
-		} else {
-			return depth;
-		}
-	}
-	
 //	@Override
 //	protected void tweakDialog(org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.history.PlainDialogOperationStep step ) {
 //		super.tweakDialog(dialog, step);

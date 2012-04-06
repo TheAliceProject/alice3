@@ -46,10 +46,15 @@ package org.lgna.project;
  * @author Dennis Cosgrove
  */
 public class Project {
+
 	private final org.lgna.project.ast.NamedUserType programType;
 	private final java.util.Set< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private final java.util.Map/*< org.lgna.project.properties.PropertyKey< T >, T >*/ propertyMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+
+	private final org.lgna.croquet.history.TransactionHistory transactionHistory;
+	private final org.lgna.project.history.ProjectHistoryManager projectHistoryManager;
+
 	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.lgna.common.Resource > resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
@@ -57,14 +62,24 @@ public class Project {
 	}
 	public Project( org.lgna.project.ast.NamedUserType programType ) {
 		this.programType = programType;
+		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+		this.projectHistoryManager = new org.lgna.project.history.ProjectHistoryManager( this );
+		this.putValueFor( org.lgna.croquet.history.TransactionHistory.INTERACTION_HISTORY_PROPERTY_KEY, this.transactionHistory );
 	}
+
+	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
+		return this.transactionHistory;
+	}
+
+	public org.lgna.project.history.ProjectHistory getProjectHistory( org.lgna.croquet.Group group ) {
+		return this.projectHistoryManager.getGroupHistory( group );
+	}
+
 	public org.lgna.project.ast.NamedUserType getProgramType() {
 		return this.programType;
 	}
 	public void addResource( org.lgna.common.Resource resource ) {
 		if( this.resources.contains( resource ) ) {
-			//todo
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
 		} else {
 			this.resources.add( resource );
 		}
@@ -95,8 +110,6 @@ public class Project {
 	
 	public void addNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
 		if( this.namedUserTypes.contains( namedUserType ) ) {
-			//todo
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains named user type:", namedUserType );
 		} else {
 			this.namedUserTypes.add( namedUserType );
 		}

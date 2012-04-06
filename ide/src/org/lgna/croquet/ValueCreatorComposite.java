@@ -53,15 +53,15 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 		public DialogOwner( ValueCreatorComposite<V,T> composite ) {
 			this.composite = composite;
 		}
-		public V allocateView( org.lgna.croquet.history.Node<?> step ) {
+		public V allocateView( org.lgna.croquet.history.TransactionNode<?> step ) {
 			return this.composite.allocateView( step );
 		}
 
-		public void releaseView( org.lgna.croquet.history.Node<?> step, V view ) {
+		public void releaseView( org.lgna.croquet.history.TransactionNode<?> step, V view ) {
 			this.composite.releaseView( step, view );
 		}
 
-		public String getDialogTitle( org.lgna.croquet.history.Node<?> step ) {
+		public String getDialogTitle( org.lgna.croquet.history.TransactionNode<?> step ) {
 			return this.composite.getDialogTitle( step );
 		}
 
@@ -84,15 +84,15 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 			this.composite.handleDialogClosed( trigger );
 		}
 
-		public void handlePreShowDialog( org.lgna.croquet.history.Node<?> step ) {
+		public void handlePreShowDialog( org.lgna.croquet.history.TransactionNode<?> step ) {
 			this.composite.handlePreShowDialog( step );
 		}
 
-		public void handlePostHideDialog( org.lgna.croquet.history.Node<?> step ) {
+		public void handlePostHideDialog( org.lgna.croquet.history.TransactionNode<?> step ) {
 			this.composite.handlePostHideDialog( step );
 		}
 
-		public void handleFinally( org.lgna.croquet.history.Node<?> step, org.lgna.croquet.components.Dialog dialog ) {
+		public void handleFinally( org.lgna.croquet.history.TransactionNode<?> step, org.lgna.croquet.components.Dialog dialog ) {
 			this.composite.handleFinally( step, dialog );
 		}
 		
@@ -167,11 +167,11 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 	}
 
 	//todo
-	private V allocateView( org.lgna.croquet.history.Node<?> node ) {
+	private V allocateView( org.lgna.croquet.history.TransactionNode<?> node ) {
 		return this.getView();
 	}
 	//todo
-	private void releaseView( org.lgna.croquet.history.Node<?> node, V view ) {
+	private void releaseView( org.lgna.croquet.history.TransactionNode<?> node, V view ) {
 	}
 	
 	
@@ -179,7 +179,7 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 	protected boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 		return true;
 	}
-	protected String getDialogTitle( org.lgna.croquet.history.Node<?> node ) {
+	protected String getDialogTitle( org.lgna.croquet.history.TransactionNode<?> node ) {
 //		String rv = this.getName();
 //		if( rv != null ) {
 //			rv = rv.replaceAll( "<[a-z]*>", "" );
@@ -201,10 +201,10 @@ public abstract class ValueCreatorComposite<V extends org.lgna.croquet.component
 	}
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
-	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.TransactionNode<?> node ) {
 	}
-	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+	protected void handlePostHideDialog( org.lgna.croquet.history.TransactionNode<?> node ) {
 	}
-	protected void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.TransactionNode<?> node, org.lgna.croquet.components.Dialog dialog ) {
 	}
 }

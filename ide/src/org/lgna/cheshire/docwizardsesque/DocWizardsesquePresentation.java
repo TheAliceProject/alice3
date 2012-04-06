@@ -214,7 +214,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 					}
 				} else if( event instanceof org.lgna.croquet.history.event.FinishedEvent ) {
 					org.lgna.croquet.history.event.FinishedEvent finishEvent = (org.lgna.croquet.history.event.FinishedEvent)event;
-					org.lgna.croquet.history.Node< ? > node = finishEvent.getNode();
+					org.lgna.croquet.history.TransactionNode< ? > node = finishEvent.getNode();
 					org.lgna.croquet.history.Transaction transaction = node.getFirstAncestorAssignableTo( org.lgna.croquet.history.Transaction.class );
 					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
 					if( transactionHistory.getParent() != null ) {

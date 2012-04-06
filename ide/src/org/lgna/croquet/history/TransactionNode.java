@@ -45,14 +45,14 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class TransactionNode<P extends TransactionNode<?>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	
 	private P parent;
-	public Node( P parent ) {
+	public TransactionNode( P parent ) {
 		this.setParent( parent );
 	}
-	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public TransactionNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
 
 	public P getParent() {
@@ -64,8 +64,8 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 
 	protected abstract void appendContexts( java.util.List< org.lgna.croquet.Context > out );
 	
-	private <N extends Node<?>> N findNodeAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
-		Node<?> rv;
+	private <N extends TransactionNode<?>> N findNodeAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
+		TransactionNode<?> rv;
 		if( isThisIncludedInSearch ) {
 			rv = this;
 		} else {
@@ -79,10 +79,10 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 		}
 		return (N)rv;
 	}
-	public final <N extends Node<?>> N getFirstAssignableTo( Class<N> cls ) {
+	public final <N extends TransactionNode<?>> N getFirstAssignableTo( Class<N> cls ) {
 		return this.findNodeAssignableTo( cls, true );
 	}
-	public final <N extends Node<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
+	public final <N extends TransactionNode<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
 		return this.findNodeAssignableTo( cls, false );
 	}
 	
@@ -115,7 +115,6 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 					return step.findStepOfModelAssignableTo( modelCls, stepCls, false );
 				}
 			} else {
-				//todo: return null?
 				return step.findStepOfModelAssignableTo( modelCls, stepCls, false );
 			}
 		} else {
@@ -128,7 +127,6 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
 		return this.findStepOfModelAssignableTo( modelCls, stepCls, true );
 	}
-	
 	
 	public void addListener( org.lgna.croquet.history.event.Listener listener ) {
 		this.listeners.add( listener );

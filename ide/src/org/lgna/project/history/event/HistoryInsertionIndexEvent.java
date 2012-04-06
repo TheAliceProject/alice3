@@ -40,16 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.history.event;
+package org.lgna.project.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HistoryClearEvent extends HistoryEvent {
+public class HistoryInsertionIndexEvent extends HistoryEvent {
 	private int prevIndex;
 	private int nextIndex;
 
-	public HistoryClearEvent( edu.cmu.cs.dennisc.history.HistoryManager source ) {
+	public HistoryInsertionIndexEvent( org.lgna.project.history.ProjectHistory source, int prevIndex, int nextIndex ) {
 		super( source );
+		this.prevIndex = prevIndex;
+		this.nextIndex = nextIndex;
+	}
+	public int getPrevIndex() {
+		return prevIndex;
+	}
+	public int getNextIndex() {
+		return nextIndex;
 	}
 }

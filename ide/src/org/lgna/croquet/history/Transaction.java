@@ -45,7 +45,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class Transaction extends Node<TransactionHistory> {
+public class Transaction extends TransactionNode<TransactionHistory> {
 	private static class DescendantStepIterator implements java.util.Iterator<Step<?>> {
 		private final java.util.List<Transaction> transactions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private int transactionIndex;
@@ -95,16 +95,19 @@ public class Transaction extends Node<TransactionHistory> {
 		}
 	}
 
+	private final TransactionHistory transactionHistory;
 	private final java.util.List<PrepStep<?>> prepSteps;
 	private CompletionStep<?> completionStep;
 
 	public Transaction( TransactionHistory parent ) {
 		super( parent );
+		this.transactionHistory = parent;
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.completionStep = null;
 	}
 	public Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		this.transactionHistory = this.getParent();
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
 		for( PrepStep<?> prepStep : this.prepSteps ) {
 			prepStep.setParent( this );
@@ -238,6 +241,10 @@ public class Transaction extends Node<TransactionHistory> {
 			prepStep.retarget( retargeter );
 		}
 		this.completionStep.retarget( retargeter );
+	}
+
+	public TransactionHistory getTransactionHistory() {
+		return this.transactionHistory;
 	}
 
 	public int getChildStepCount() {

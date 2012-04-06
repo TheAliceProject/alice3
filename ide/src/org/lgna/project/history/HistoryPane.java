@@ -40,11 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.history;
+package org.lgna.project.history;
 
 class HistoryStackModel extends javax.swing.AbstractListModel {
-	private HistoryManager historyManager;
-	public HistoryStackModel( HistoryManager historyManager ) {
+	private ProjectHistory historyManager;
+	public HistoryStackModel( ProjectHistory historyManager ) {
 		this.historyManager = historyManager;
 	}
 	public int getSize() {
@@ -57,7 +57,7 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 			return historyManager.getStack().elementAt( index-1 );
 		}
 	}
-	public HistoryManager getHistoryManager() {
+	public ProjectHistory getHistoryManager() {
 		return this.historyManager;
 	}
 	public void refresh() {
@@ -90,21 +90,21 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListC
 }
 
 public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
-	private edu.cmu.cs.dennisc.history.event.HistoryListener historyListener = new edu.cmu.cs.dennisc.history.event.HistoryListener() {
-		public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+	private org.lgna.project.history.event.HistoryListener historyListener = new org.lgna.project.history.event.HistoryListener() {
+		public void operationPushing( org.lgna.project.history.event.HistoryPushEvent e ) {
 		}
-		public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+		public void operationPushed( org.lgna.project.history.event.HistoryPushEvent e ) {
 		}
-		public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+		public void insertionIndexChanging( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
 		}
-		public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+		public void insertionIndexChanged( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( e.getNextIndex() );
 			HistoryPane.this.list.repaint();
 		}
-		public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+		public void clearing( org.lgna.project.history.event.HistoryClearEvent e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+		public void cleared( org.lgna.project.history.event.HistoryClearEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( 0 );
 		}
@@ -113,7 +113,8 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 	private javax.swing.JList list = new javax.swing.JList();
 	private HistoryStackModel historyStackModel;
 	public HistoryPane( org.lgna.croquet.Group group ) {
-		final HistoryManager historyManager = HistoryManager.getInstance( group );
+		// TODO: <kjh/> This will only work with the first opened project...
+		final ProjectHistory historyManager = org.alice.ide.IDE.getActiveInstance().getProjectHistory( group );
 		this.historyStackModel = new HistoryStackModel( historyManager );
 		this.list.setModel( this.historyStackModel );
 		this.list.setCellRenderer( new HistoryCellRenderer() );

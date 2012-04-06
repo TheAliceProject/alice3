@@ -51,7 +51,6 @@ public class CancelCompletionStep extends CompletionStep {
 	}
 	private CancelCompletionStep( Transaction parent, org.lgna.croquet.CompletionModel completionModel, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, completionModel, trigger, null );
-		TransactionManager.fireTransactionCanceled( parent );
 	}
 	public CancelCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

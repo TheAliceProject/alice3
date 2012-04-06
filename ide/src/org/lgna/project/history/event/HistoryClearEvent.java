@@ -40,13 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.history.event;
+package org.lgna.project.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.history.HistoryManager > {
-	public HistoryEvent( edu.cmu.cs.dennisc.history.HistoryManager source ) {
+public class HistoryClearEvent extends HistoryEvent {
+	private int prevIndex;
+	private int nextIndex;
+
+	public HistoryClearEvent( org.lgna.project.history.ProjectHistory source ) {
 		super( source );
 	}
 }

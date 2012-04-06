@@ -77,7 +77,7 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 	}
 
 	public CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
+		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		CascadeRoot< T, CS > root = this.getElement();
 		CS completionStep = root.createCompletionStep( transaction, trigger );
 		try {

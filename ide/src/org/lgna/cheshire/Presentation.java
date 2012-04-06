@@ -101,10 +101,9 @@ public abstract class Presentation {
 //		}
 //	};
 
-	private final edu.cmu.cs.dennisc.history.HistoryManager[] historyManagers;
+	private final org.lgna.project.history.ProjectHistory[] historyManagers;
 
 	public Presentation( org.lgna.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
-		
 		assert instance == null;
 		instance = this;
 
@@ -115,12 +114,12 @@ public abstract class Presentation {
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
 		filterer.filter( this.book.listIterator(), userInformation );
 		final int N = groupsTrackedForRandomAccess.length;
-		this.historyManagers = new edu.cmu.cs.dennisc.history.HistoryManager[ N+1 ];
+		this.historyManagers = new org.lgna.project.history.ProjectHistory[ N+1 ];
 		for( int i=0; i<N; i++ ) {
-			this.historyManagers[ i ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupsTrackedForRandomAccess[ i ] );
+			this.historyManagers[ i ] = org.alice.ide.IDE.getActiveInstance().getProjectHistory( groupsTrackedForRandomAccess[ i ] );
 		}
-		this.historyManagers[ N ] = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( COMPLETION_GROUP );
-		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( this.listener );
+		this.historyManagers[ N ] = org.alice.ide.IDE.getActiveInstance().getProjectHistory( COMPLETION_GROUP );
+		// <kjh/> org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( this.listener );
 	}
 
 //	private void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {

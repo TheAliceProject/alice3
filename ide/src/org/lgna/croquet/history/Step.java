@@ -45,11 +45,15 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Transaction> {
+public abstract class Step< M extends org.lgna.croquet.Model > extends TransactionNode<Transaction> {
+
+	private final Transaction transaction;
+
 	private final java.util.List< org.lgna.croquet.Context > contexts;
 	private final org.lgna.croquet.resolvers.Resolver< M > modelResolver;
 	private final org.lgna.croquet.triggers.Trigger trigger;
 	private final java.util.UUID id;
+
 	public static class Key<T> {
 		public static <T> Key<T> createInstance( String repr ) {
 			return new Key<T>( repr );
@@ -79,6 +83,8 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 
 	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent );
+		this.transaction = parent;
+
 		if( model != null ) {
 			this.modelResolver = model.getResolver();
 		} else {
@@ -101,6 +107,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		this.transaction = this.getParent();
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.trigger = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.id = binaryDecoder.decodeId();
@@ -124,9 +131,8 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		return this.contexts;
 	}
 	public <C extends org.lgna.croquet.Context> C findFirstContext( Class<C> cls ) {
-		Transaction transaction = this.getParent();
-		if( transaction != null ) {
-			return transaction.findFirstContext( this, cls );
+		if( this.transaction != null ) {
+			return this.transaction.findFirstContext( this, cls );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls );
 			return null;
@@ -140,10 +146,9 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 	}
 	
 	public Step<?> getPreviousStep() {
-		Transaction transaction = getParent();
-		int index = transaction.getIndexOfChildStep( this );
+		int index = this.transaction.getIndexOfChildStep( this );
 		if( index > 0 ) {
-			return transaction.getChildStepAt( index-1 );
+			return this.transaction.getChildStepAt( index-1 );
 		} else {
 			return null;
 		}
@@ -165,8 +170,17 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 			return null;
 		}
 	}
+
 	public M getModel() {
 		return this.modelResolver != null ? this.modelResolver.getResolved() : null;
+	}
+
+	public Transaction getTransaction() {
+		return this.transaction;
+	}
+
+	public TransactionHistory getTransactionHistory() {
+		return this.transaction.getTransactionHistory();
 	}
 
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
@@ -192,6 +206,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 		}
 		return rv;
 	}
+
 	@Override
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();

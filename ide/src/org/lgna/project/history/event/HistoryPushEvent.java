@@ -40,14 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.history.event;
+package org.lgna.project.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
 public class HistoryPushEvent extends HistoryEvent {
 	private org.lgna.croquet.edits.Edit edit;
-	public HistoryPushEvent( edu.cmu.cs.dennisc.history.HistoryManager source, org.lgna.croquet.edits.Edit edit ) {
+	public HistoryPushEvent( org.lgna.project.history.ProjectHistory source, org.lgna.croquet.edits.Edit edit ) {
 		super( source );
 		this.edit = edit;
 	}
