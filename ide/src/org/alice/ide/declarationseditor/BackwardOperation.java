@@ -53,7 +53,7 @@ public class BackwardOperation extends org.lgna.croquet.ActionOperation {
 		return SingletonHolder.instance;
 	}
 	private BackwardOperation() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
 	}
 	@Override
 	protected void localize() {

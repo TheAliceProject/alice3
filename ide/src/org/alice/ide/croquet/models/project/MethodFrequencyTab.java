@@ -168,7 +168,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
 		//		StatementCountCrawler crawler = new StatementCountCrawler();
 		programType.crawl( crawler, true );
-		listSelectionState = new DefaultListSelectionState<UserMethod>( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "06b77424-763b-4fdc-a1cb-1404eaefa1d2" ), new ItemCodec<UserMethod>() {
+		listSelectionState = new DefaultListSelectionState<UserMethod>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "06b77424-763b-4fdc-a1cb-1404eaefa1d2" ), new ItemCodec<UserMethod>() {
 
 			public Class<UserMethod> getValueClass() {
 				return UserMethod.class;

@@ -82,7 +82,7 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 	};
 
 	private TypeState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "99019283-9a9e-4500-95a4-c4748d762137" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.NamedUserType.class ), null );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "99019283-9a9e-4500-95a4-c4748d762137" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.NamedUserType.class ), null );
 	}
 
 	private void handleFieldsChanged() {

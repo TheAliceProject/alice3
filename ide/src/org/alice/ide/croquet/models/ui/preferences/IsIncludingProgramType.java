@@ -54,6 +54,6 @@ public class IsIncludingProgramType extends org.lgna.croquet.preferences.Prefere
 		return SingletonHolder.instance;
 	}
 	private IsIncludingProgramType() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "052fef4d-cac4-431f-b8d9-8c50ff1823d1" ), false );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "052fef4d-cac4-431f-b8d9-8c50ff1823d1" ), false );
 	}
 }

@@ -52,7 +52,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		
 		class State extends org.lgna.croquet.BoundedIntegerState {
 			public State() {
-				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 3 ).initialValue( 50 ) );
+				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 3 ).initialValue( 50 ) );
 			}
 		}
 		

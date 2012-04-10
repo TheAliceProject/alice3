@@ -61,7 +61,7 @@ public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation
 
 	private final org.alice.ide.perspectives.IdePerspective perspective;
 	private ChangePerspectiveOperation( org.alice.ide.perspectives.IdePerspective perspective ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2fc3846a-f943-4384-8af9-2292a3c405cd" ) );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2fc3846a-f943-4384-8af9-2292a3c405cd" ) );
 		this.perspective = perspective;
 	}
 	@Override

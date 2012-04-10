@@ -54,6 +54,6 @@ public class IsLinearEnabledState extends org.lgna.croquet.BooleanState {
 		return SingletonHolder.instance;
 	}
 	private IsLinearEnabledState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "71f69cd4-e3aa-49e6-9501-3dedbcddc8a6" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "71f69cd4-e3aa-49e6-9501-3dedbcddc8a6" ), true );
 	}
 }

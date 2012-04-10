@@ -55,6 +55,6 @@ public class IsUIHistoryShowingState extends org.alice.ide.croquet.models.IsFram
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		return new org.lgna.project.history.HistoryPane( org.lgna.croquet.Application.UI_STATE_GROUP );
+		return new org.lgna.project.history.HistoryPane( org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
 }

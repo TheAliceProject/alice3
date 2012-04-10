@@ -161,7 +161,7 @@ public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperat
 		return SingletonHolder.instance;
 	}
 	private RecursionDialogOperation() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ) );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ) );
 	}
 	@Override
 	protected RecursionPanel createContentPane(org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog) {

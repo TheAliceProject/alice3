@@ -76,7 +76,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private InstanceFactory value;
 	private InstanceFactoryState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
 		org.alice.ide.MetaDeclarationFauxState.getInstance().addValueListener( declarationListener );
 	}
 	private void fallBackToDefaultFactory() {

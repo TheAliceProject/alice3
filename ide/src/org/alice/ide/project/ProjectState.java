@@ -55,7 +55,7 @@ public class ProjectState extends org.lgna.croquet.CustomItemState< org.lgna.pro
 	}
 	private org.lgna.project.Project value;
 	private ProjectState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), org.alice.ide.project.codecs.ProjectCodec.SINGLETON );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), org.alice.ide.project.codecs.ProjectCodec.SINGLETON );
 	}
 	@Override
 	protected void localize() {

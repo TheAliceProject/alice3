@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor;
  */
 public abstract class HistoryCascade extends org.lgna.croquet.CascadeWithInternalBlank< DeclarationComposite > {
 	public HistoryCascade( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, id, DeclarationComposite.class );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, DeclarationComposite.class );
 	}
 	protected abstract java.util.List< DeclarationComposite > getList( DeclarationCompositeHistory declarationCompositeHistory );
 	@Override

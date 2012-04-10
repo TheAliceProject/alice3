@@ -49,7 +49,7 @@ package test.ik.croquet;
 public abstract class JointIdState extends org.lgna.croquet.CustomItemStateWithInternalBlank< org.lgna.story.resources.JointId > {
 	private org.lgna.story.resources.JointId value;
 	public JointIdState( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, id, test.ik.croquet.codecs.JointIdCodec.SINGLETON );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, test.ik.croquet.codecs.JointIdCodec.SINGLETON );
 	}
 	@Override
 	protected org.lgna.story.resources.JointId getActualValue() {

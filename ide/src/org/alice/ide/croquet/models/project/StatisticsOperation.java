@@ -81,7 +81,7 @@ public class StatisticsOperation extends InformationDialogOperation {
 	protected Container<?> createContentPane( CompletionStep<?> step, Dialog dialog ) {
 		FlowControlFrequency flowControlFrequencyTab = new FlowControlFrequency();
 		MethodFrequencyTab methodTab = new MethodFrequencyTab();
-		TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
+		TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
 
 			public Class<TabComposite<?>> getValueClass() {
 				return null;
