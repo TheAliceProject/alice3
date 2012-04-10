@@ -69,7 +69,8 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		if( IS_ENCODING ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
+				    // <kjh/>
+//					org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
 				}
 			} );
 		}
@@ -198,7 +199,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					filterer,
 					recoverer,
 					
-					new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.UI_STATE_GROUP },
+					new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP },
 					
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 
@@ -207,7 +208,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 			);
 		} else {
-			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
 		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
@@ -220,8 +221,9 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
-				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
-				isInteractionTreeShowingState.setValue( true );
+				// <kjh/>
+//				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
+//				isInteractionTreeShowingState.setValue( true );
 				//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );
 				presentation.setSelectedIndex( 0 );
 			}
@@ -240,13 +242,14 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 //			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
 //				rootContext = filter.filter( rootContext );
 //			}
-			org.lgna.project.Project project = this.getProject();
-			project.putValueFor( INTERACTION_HISTORY_PROPERTY_KEY, org.lgna.croquet.history.TransactionManager.getRootTransactionHistory() );
-			try {
-				org.lgna.project.io.IoUtilities.writeProject( ROOT_PATH+POST_PROJECT_PATH, project );
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
+			// <kjh/>
+//			org.lgna.project.Project project = this.getProject();
+//			project.putValueFor( INTERACTION_HISTORY_PROPERTY_KEY, org.lgna.croquet.history.TransactionManager.getRootTransactionHistory() );
+//			try {
+//				org.lgna.project.io.IoUtilities.writeProject( ROOT_PATH+POST_PROJECT_PATH, project );
+//			} catch( java.io.IOException ioe ) {
+//				throw new RuntimeException( ioe );
+//			}
 		}
 		System.exit( 0 );
 	}

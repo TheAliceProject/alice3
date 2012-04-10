@@ -76,7 +76,7 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 				filterer,
 				recoverer,
 				
-				new org.lgna.croquet.Group[] { org.alice.ide.IDE.UI_STATE_GROUP },
+				new org.lgna.croquet.Group[] { org.alice.ide.IDE.DOCUMENT_UI_GROUP },
 				
 				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 
@@ -84,7 +84,7 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
 //				org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 		);
-		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.UI_STATE_GROUP } );
+		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
@@ -101,8 +101,9 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
-				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
-				isInteractionTreeShowingState.setValue( true );
+				// <kjh/>
+//				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
+//				isInteractionTreeShowingState.setValue( true );
 				if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
 					presentation.setSelectedIndex( -1 );
 				} else {
@@ -118,7 +119,8 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 		if( IS_ENCODING ) {
 			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 			
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH );
+			// <kjh/>
+//			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH );
 			
 //			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
 //					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
@@ -146,7 +148,8 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 				if( IS_ENCODING ) {
 					app.getFrame().setVisible(true);
 					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );
-					org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
+					// <kjh/>
+//					org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
 				} else {
 					app.createAndShowTutorial();
 				}
