@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.story.Joint;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
@@ -76,6 +77,14 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			super(jointedModelImp);
 			this.internalJointImp = joint;
 		}
+		
+		@Override
+		public final void setAbstraction(Joint abstraction) {
+			super.setAbstraction(abstraction);
+			if (this.internalJointImp != null) {
+				this.internalJointImp.setAbstraction(abstraction);
+			}
+		}
 		@Override
 		public org.lgna.story.implementation.SceneImp getScene() {
 			return this.internalJointImp.getScene();
@@ -107,6 +116,9 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 				edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 newRotation = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
 				newRotation.setToMultiplication(newJoint.getLocalOrientation(), dif);
 				newJoint.setLocalOrientation(newRotation);
+			}
+			if (this.getAbstraction() != null) {
+				newJoint.setAbstraction(this.getAbstraction());
 			}
 			for (edu.cmu.cs.dennisc.scenegraph.Component child : this.internalJointImp.getSgComposite().getComponents()) {
 				if (!(child instanceof edu.cmu.cs.dennisc.scenegraph.ModelJoint)) {
@@ -336,7 +348,11 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	public org.lgna.story.implementation.JointImp getJointImplementation( org.lgna.story.resources.JointId jointId ) {
-		return this.mapIdToJoint.get( jointId );
+		JointImpWrapper wrapper = this.mapIdToJoint.get( jointId );
+		if (wrapper != null) {
+			return wrapper;
+		}
+		return null;
 	}
 	
 	protected edu.cmu.cs.dennisc.math.Vector4 getFrontOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {

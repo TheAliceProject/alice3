@@ -62,7 +62,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 	public final org.lgna.story.Joint getAbstraction() {
 		return this.abstraction;
 	}
-	public final void setAbstraction( org.lgna.story.Joint abstraction ) {
+	public void setAbstraction( org.lgna.story.Joint abstraction ) {
 		assert abstraction != null;
 		assert this.abstraction == null : this.abstraction;
 		this.abstraction = abstraction;
