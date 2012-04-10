@@ -173,6 +173,7 @@ public abstract class CascadeManager {
 			
 			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
 				org.lgna.project.ast.AbstractType<?,?,?> fieldType = field.getValueType();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( type, fieldType, type.isAssignableFrom( fieldType ) );
 				if( type.isAssignableFrom( fieldType ) ) {
 					org.lgna.project.ast.Expression fieldAccess = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
 					this.addFillInAndPossiblyPartFillIns( rv, fieldAccess, fieldType, type );
