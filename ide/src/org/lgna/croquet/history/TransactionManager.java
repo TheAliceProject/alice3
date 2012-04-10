@@ -65,11 +65,6 @@ public class TransactionManager {
 	}
 
 	@Deprecated
-	public static TransactionHistory getRootTransactionHistory() {
-		return getActiveTransactionHistory();
-	}
-
-	@Deprecated
 	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
 		org.lgna.croquet.triggers.MenuSelectionTrigger trigger = new org.lgna.croquet.triggers.MenuSelectionTrigger( e );
 		if( trigger.isValid() ) {

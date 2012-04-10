@@ -43,41 +43,40 @@
 package org.lgna.project.history;
 
 class HistoryStackModel extends javax.swing.AbstractListModel {
-	private ProjectHistory historyManager;
+	private ProjectHistory projectHistory;
 	public HistoryStackModel( ProjectHistory historyManager ) {
-		this.historyManager = historyManager;
+		this.projectHistory = historyManager;
 	}
 	public int getSize() {
-		return historyManager.getStack().size() + 1;
+		return projectHistory.getStack().size() + 1;
 	}
 	public Object getElementAt( int index ) {
 		if( index == 0 ) {
 			return null;
 		} else {
-			return historyManager.getStack().elementAt( index-1 );
+			return projectHistory.getStack().elementAt( index-1 );
 		}
 	}
 	public ProjectHistory getHistoryManager() {
-		return this.historyManager;
+		return this.projectHistory;
 	}
 	public void refresh() {
 		this.fireContentsChanged( this, 0, this.getSize() );
 	}
 };
 
-class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.croquet.edits.Edit > {
+class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.croquet.edits.Edit<?> > {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.edits.Edit value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.edits.Edit<?> value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( index == 0 ) {
 			rv.setText( "---open project---" );
 		} else {
 			//todo
 			java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
-			
+
 			String text = value.getPresentation( locale );
-//			text = "edit: " + text;
 			rv.setText( text );
-			
+
 			int selectedIndex = list.getSelectedIndex();
 			if( selectedIndex >= 0 && index > selectedIndex ) {
 				rv.setEnabled( false );
@@ -110,39 +109,48 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 		}
 	};
 
-	private javax.swing.JList list = new javax.swing.JList();
+	private org.lgna.croquet.Group group;
+	private javax.swing.JList list;
 	private HistoryStackModel historyStackModel;
-	public HistoryPane( org.lgna.croquet.Group group ) {
-		// TODO: <kjh/> This will only work with the first opened project...
-		final ProjectHistory historyManager = org.alice.ide.IDE.getActiveInstance().getProjectHistory( group );
-		this.historyStackModel = new HistoryStackModel( historyManager );
-		this.list.setModel( this.historyStackModel );
-		this.list.setCellRenderer( new HistoryCellRenderer() );
-		this.list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
-			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
-				if( e.getValueIsAdjusting() ) {
-					//pass
-				} else {
-					historyManager.setInsertionIndex(list.getSelectedIndex());
-					HistoryPane.this.list.repaint();
-				}
+	private ProjectHistory projectHistory;
+	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+			if( e.getValueIsAdjusting() ) {
+				//pass
+			} else {
+				projectHistory.setInsertionIndex(list.getSelectedIndex());
+				HistoryPane.this.list.repaint();
 			}
-		} );
+		}
+	};
+
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+			HistoryPane.this.initializeProjectHistory( state.getValue() );
+		}
+	};
+
+	public HistoryPane( org.lgna.croquet.Group group ) {
+		this.group = group;
+		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
+		this.list = new javax.swing.JList();
+		this.list.setCellRenderer( new HistoryCellRenderer() );
+		this.list.addListSelectionListener( this.listSelectionListener );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list );
 		this.add( scrollPane );
+		this.initializeProjectHistory( org.alice.ide.IDE.getActiveInstance().getProject() );
 	}
-	@Override
-	public void addNotify() {
-		super.addNotify();
+
+	public void initializeProjectHistory( org.lgna.project.Project project ) {
+		this.projectHistory = project.getProjectHistory( this.group );
+		this.historyStackModel = new HistoryStackModel( this.projectHistory );
+		this.list.setModel( this.historyStackModel );
 		this.historyStackModel.getHistoryManager().addHistoryListener( this.historyListener );
 		this.list.setSelectedIndex( this.historyStackModel.getHistoryManager().getInsertionIndex() );
 	}
-	@Override
-	public void removeNotify() {
-		this.list.setSelectedIndex( -1 );
-		this.historyStackModel.getHistoryManager().removeHistoryListener( this.historyListener );
-		super.removeNotify();
-	}
+
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		return new java.awt.Dimension( 240, 768 );
