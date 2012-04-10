@@ -64,7 +64,9 @@ public class Project {
 		this.programType = programType;
 		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		this.projectHistoryManager = new org.lgna.project.history.ProjectHistoryManager( this );
-		this.putValueFor( org.lgna.croquet.history.TransactionHistory.INTERACTION_HISTORY_PROPERTY_KEY, this.transactionHistory );
+
+		// TODO: Once decoding and encoding work, enable it!
+		//this.putValueFor( org.lgna.croquet.history.TransactionHistory.INTERACTION_HISTORY_PROPERTY_KEY, this.transactionHistory );
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
