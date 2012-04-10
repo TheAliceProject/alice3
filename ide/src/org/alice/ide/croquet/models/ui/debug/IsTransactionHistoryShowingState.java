@@ -65,7 +65,6 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			return transaction.getChildStepCount();
 		} else if( parent instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
 			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)parent;
-			//return completionStep.getTransactionHistory() != null ? 1 : 0;
 			org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
 			if( transactionHistory != null ) {
 				return transactionHistory.getTransactionCount();
@@ -91,8 +90,6 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			} else {
 				return null;
 			}
-//			assert index == 0;
-//			return completionStep.getTransactionHistory();
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
@@ -116,14 +113,12 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)parent;
 			org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
 			return transactionHistory.getIndexOfTransaction( (org.lgna.croquet.history.Transaction)child );
-//			assert child == completionStep.getTransactionHistory();
-//			return 0;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
 	}
 
-	
+
 	private java.util.List< Object > updatePath( java.util.List< Object > rv, Object node ) {
 		Object parent;
 		if( node instanceof org.lgna.croquet.history.Transaction ) {
@@ -194,9 +189,10 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
  * @author Dennis Cosgrove
  */
 public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+
 	public static boolean IS_SIDE_DOCKING_DESIRED = false;
 	private static class SingletonHolder {
-		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory() ) {
+		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState() {
 			@Override
 			protected javax.swing.JFrame createFrame() {
 				javax.swing.JFrame rv = super.createFrame();
@@ -212,20 +208,68 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		return SingletonHolder.instance;
 	}
 
-	public static IsTransactionHistoryShowingState createInstance( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new IsTransactionHistoryShowingState( transactionHistory );
-	}
-	
-	private final org.lgna.croquet.history.TransactionHistory transactionHistory;
-	private IsTransactionHistoryShowingState( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	private javax.swing.JTree tree;
+	private TransactionTreeModel treeModel;
+	private javax.swing.JScrollPane scrollPane;
+	private org.lgna.croquet.history.event.Listener transactionListener	= new org.lgna.croquet.history.event.Listener() {
+		private void reload() {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					treeModel.reload();
+					int childCount = treeModel.getChildCount( treeModel.getRoot() );
+					for( int i=0; i<tree.getRowCount(); i++ ) {
+						if( IS_SIDE_DOCKING_DESIRED==false && i<childCount-1 ) {
+							tree.collapseRow( i );
+						} else {
+							tree.expandRow( i );
+						}
+					}
+					tree.scrollRowToVisible( tree.getRowCount()-1 );
+					if ( IsTransactionHistoryShowingState.this.scrollPane != null ) {
+						IsTransactionHistoryShowingState.this.scrollPane.getHorizontalScrollBar().setValue( 0 );
+					}
+				}
+			} );
+		}
+		public void changing(org.lgna.croquet.history.event.Event<?> e) {
+		}
+		public void changed(org.lgna.croquet.history.event.Event<?> e) {
+			if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+				this.reload();
+			} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+				tree.repaint();
+			}
+		}
+	};
+
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+			state.getValue().getTransactionHistory().removeListener( IsTransactionHistoryShowingState.this.transactionListener );
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+			IsTransactionHistoryShowingState.this.initializeTransactionHistory( state.getValue().getTransactionHistory() );
+		}
+	};
+
+	private IsTransactionHistoryShowingState() {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
-		this.transactionHistory = transactionHistory;
+		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
+		this.tree = new javax.swing.JTree();
+		this.initializeTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
 	}
+
+	private void initializeTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		this.treeModel = new TransactionTreeModel( transactionHistory );
+		this.tree.setModel( this.treeModel );
+		transactionHistory.addListener( this.transactionListener );
+	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setTextForBothTrueAndFalse( "Transaction History" );
 	}
+
 	@Override
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
@@ -247,53 +291,22 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		}
 		return rv;
 	}
+
 	@Override
 	protected java.awt.Component createPane() {
-		final TransactionTreeModel treeModel = new TransactionTreeModel( this.transactionHistory );
-		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
-
 		tree.setCellRenderer( new TransactionHistoryCellRenderer() );
 		for( int i = 0; i < tree.getRowCount(); i++ ) {
 			tree.expandRow( i );
 		}
 		tree.setRootVisible( false );
-		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
+		this.scrollPane = new javax.swing.JScrollPane( tree );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 		scrollPane.getVerticalScrollBar().setBlockIncrement( 24 );
-		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( new org.lgna.croquet.history.event.Listener() {
-			private void reload() {
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-					public void run() {
-						treeModel.reload();
-						int childCount = treeModel.getChildCount( treeModel.getRoot() );
-						for( int i=0; i<tree.getRowCount(); i++ ) {
-							if( IS_SIDE_DOCKING_DESIRED==false && i<childCount-1 ) {
-								tree.collapseRow( i );
-							} else {
-								tree.expandRow( i );
-							}
-						}
-						tree.scrollRowToVisible( tree.getRowCount()-1 );
-						scrollPane.getHorizontalScrollBar().setValue( 0 );
-					}
-				} );
-			}
-			public void changing(org.lgna.croquet.history.event.Event<?> e) {
-				
-			}
-			public void changed(org.lgna.croquet.history.event.Event<?> e) {
-				if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
-					this.reload();
-				} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-					tree.repaint();
-				}
-			}
-		} );
 		return scrollPane;
 	}
+
 	@Override
 	protected void handleChanged( boolean value ) {
 		super.handleChanged( value );
-		//todo: remove listener
 	}
 }
