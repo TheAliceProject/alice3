@@ -112,7 +112,9 @@ public abstract class Presentation {
 		this.userInformation = userInformation;
 		this.recoverer = recoverer;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
-		filterer.filter( this.book.listIterator(), userInformation );
+		if ( filterer != null ) {
+			filterer.filter( this.book.listIterator(), userInformation );
+		}
 		final int N = groupsTrackedForRandomAccess.length;
 		this.historyManagers = new org.lgna.project.history.ProjectHistory[ N+1 ];
 		for( int i=0; i<N; i++ ) {
