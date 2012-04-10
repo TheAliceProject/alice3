@@ -308,9 +308,8 @@ class IkProgram extends Program {
 							ikEnforcer.setEeDesiredOrientation(eeId, targetTransformation.orientation, maxAngularSpeedForEe);
 						}
 						
-//						ikEnforcer.advanceTimeStaticallyForFixedDuration(deltaTime);
-						ikEnforcer.advanceTimeAdaptivelyForFixedDuration(deltaTime, IkConstants.MAX_PSEUDO_INVERSE_ERROR_BEFORE_HALVING_DELTA_TIME);
-												
+						ikEnforcer.advanceTime(deltaTime);
+						
 						Point3 ep = ikEnforcer.getEndEffectorPosition(eeId);
 						Point3 ap = ikEnforcer.getAnchorPosition(anchorId);
 						scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));

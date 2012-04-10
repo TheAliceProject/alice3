@@ -50,10 +50,12 @@ import java.util.Map.Entry;
 import javax.management.RuntimeErrorException;
 
 import org.lgna.ik.IkConstants;
+import org.lgna.ik.IkConstants.JacobianInversionMethod;
 import org.lgna.ik.solver.Bone.Axis;
 
 import Jama.Matrix;
 
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
@@ -63,9 +65,9 @@ public class Solver {
 	
 	private class Constraint {
 		private final Map<Bone, Map<Axis, Vector3>> contributions;
-		private final edu.cmu.cs.dennisc.math.Vector3 desiredValue;
+		private final DesiredVelocity desiredValue;
 
-		public Constraint(Map<Bone, Map<Axis, Vector3>> map, Vector3 desiredValue) {
+		public Constraint(Map<Bone, Map<Axis, Vector3>> map, DesiredVelocity desiredValue) {
 			this.contributions = map;
 			this.desiredValue = desiredValue;
 		}
@@ -94,7 +96,18 @@ public class Solver {
 	//TODO this probably should also know about bone
 //	private java.util.Map<org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3[]> jacobianColumns;
 	private Map<Bone, Map<Axis, Vector3[]>> jacobianColumns;
-	private Vector3[] desiredVelocities;
+	
+	class DesiredVelocity {
+		public final Vector3 velocity;
+		public final boolean isLinear;
+
+		DesiredVelocity(Vector3 velocity, boolean isLinear) {
+			this.velocity = velocity;
+			this.isLinear = isLinear;
+		}
+	}
+	
+	private DesiredVelocity[] desiredVelocities;
 	
 	public void addChain( Chain chain ) {
 		this.chains.add( chain );
@@ -148,11 +161,200 @@ public class Solver {
 	 * @return The angle speeds
 	 */
 	public Map<Bone, Map<Axis, Double>> solve() {
-		JacobianAndInverse jacobianAndInverse = prepareAndCalculateJacobianAndInverse();
-		
-		return calculateAngleSpeeds(jacobianAndInverse);
+		if(IkConstants.JACOBIAN_INVERSION_METHOD == JacobianInversionMethod.SCALED_DAMPED) {
+			return calculateAngleSpeedsForSdls();
+		} else {
+			JacobianAndInverse jacobianAndInverse = prepareAndCalculateJacobianAndInverse();
+			
+			return calculateAngleSpeeds(jacobianAndInverse);
+		}
 	}
 	
+	private Map<Bone, Map<Axis, Double>> calculateAngleSpeedsForSdls() {
+		int numLinearVelocityConstraints = desiredLinearVelocities.size();
+		
+		prepareConstraints();
+		if(constraints.size() == 0) {
+			System.out.println("no constraints!");
+			return null;
+		}
+		constructJacobianEntries();
+		
+		Matrix mj = createJacobian();
+		
+		
+		boolean transposed = false;
+		int m = mj.getRowDimension();
+		int n = mj.getColumnDimension();
+		int numConstraints = m / 3;
+		assert m % 3 == 0;
+		
+		//calculate norms for all the positional constraints (Jnorms)
+		//calculate jNorms
+		Matrix mjNorms = new Matrix(m/3, n);
+		for(int r = 0; r < numConstraints; ++r) {
+			for(int c = 0; c < n; ++c) {
+				if(desiredVelocities[r].isLinear) {
+					double v = new Vector3(mj.get(3 * r, c), mj.get(3 * r + 1, c), mj.get(3 * r + 2, c)).calculateMagnitude();
+					mjNorms.set(r, c, v);
+				} else {
+					mjNorms.set(r, c, 0.0); //don't want angular velocity contributions to be mistaken for linear velocity contributions.
+				}
+			}
+		}
+		
+		if(m < n) {
+			transposed = true;
+		} 
+
+		Jama.SingularValueDecomposition svd;
+		if(transposed) {
+			svd = new Jama.SingularValueDecomposition(mj.transpose());
+		} else {
+			svd = new Jama.SingularValueDecomposition(mj);
+		}
+		
+
+		Jama.Matrix u;
+		Jama.Matrix s;
+		Jama.Matrix v;
+		if(!transposed) {
+			u = svd.getU();
+			s = svd.getS();
+			v = svd.getV();
+		} else {
+//			System.out.println("transposed!!");
+			//this is how it ends up
+			u = svd.getV();
+			s = svd.getS().transpose();
+			v = svd.getU();
+		}
+		
+		Jama.Matrix sReduced = s.copy();
+		reduceAndInvertSofSvdByClampingSmallEntries(sReduced, IkConstants.SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO);
+		Jama.Matrix pseudoInverse = v.times(sReduced).times(u.transpose());
+		
+		//w is s
+		
+		Jama.Matrix mThetadot = new Matrix(n, 1);
+		for(int i = 0; i < n; ++i) {
+			mThetadot.set(i, 0, 0.0);
+		}
+		
+		//need the desired vels (zero out angulars)
+		//
+		Matrix el = new Matrix(m, 1);
+		Matrix ea = new Matrix(m, 1);
+		assert m == desiredVelocities.length * 3;
+		for(int i = 0; i < desiredVelocities.length; ++i) {
+			DesiredVelocity desiredVelocity = desiredVelocities[i];
+			
+			if(desiredVelocity.isLinear) {
+				el.set(3 * i, 0, desiredVelocity.velocity.x);
+				el.set(3 * i + 1, 0, desiredVelocity.velocity.y);
+				el.set(3 * i + 2, 0, desiredVelocity.velocity.z);
+			} else {
+				el.set(3 * i, 0, 0.0);
+				el.set(3 * i + 1, 0, 0.0);
+				el.set(3 * i + 2, 0, 0.0);
+				ea.set(3 * i, 0, desiredVelocity.velocity.x);
+				ea.set(3 * i + 1, 0, desiredVelocity.velocity.y);
+				ea.set(3 * i + 2, 0, desiredVelocity.velocity.z);
+			}
+		}
+		
+		assert(s.getRowDimension() == s.getColumnDimension());
+		for(int i = 0; i < s.getRowDimension(); ++i) {
+			//need to know which constraints (thus, rows) are linear
+			if(desiredVelocities[i/3].isLinear) { 
+				double wi = s.get(i, i);
+				
+				if(EpsilonUtilities.isWithinReasonableEpsilon(wi, 0)) {
+					continue;
+				}
+				
+				//calculate alpha using desired linear velocity and U
+				double alpha = 0;
+				assert u.getRowDimension() == el.getRowDimension();
+				
+				for(int r = 0; r < m; ++r) {
+					alpha += u.get(r, i) * el.get(r, 0);
+				}
+				
+				//calculate N using U 
+				double N = 0;
+				//TODO should I try zeroing the rows for angulars? 
+				for(int r = 0; r < numConstraints; ++r) {
+					N += new Vector3(u.get(3 * r, i), u.get(3 * r + 1, i), u.get(3 * r + 2, i)).calculateMagnitude();
+				}
+				
+				//calculate M using wi, V and the jacobian norms
+				//should not zero anything here I believe
+				double M = 0;
+				for(int c = 0; c < n; ++c) {
+					double sum = 0;
+					for(int r = 0; r < numConstraints; ++r) {
+						sum += mjNorms.get(r, c);
+					}
+					M += Math.abs(v.get(c, i)) * sum;
+				}
+				double wiInv = 1 / wi;
+				M *= Math.abs(wiInv);//TODO probably abs is unnecessary but was in his code...
+				
+				//use them to calculate the rest
+				double gamma = IkConstants.SDLS_MAX_ANGULAR_CHANGE;
+				if(N < M) {
+					gamma *= N / M;
+				}
+				
+				double scale = alpha * wiInv;
+				double[] scaled = new double[n];
+				double max = 0;
+				
+				for(int c = 0; c < n; ++c) {
+					scaled[c] = v.get(c, i) * scale;
+					
+					double absScaled = Math.abs(scaled[c]);
+					
+					if(c == 0 || absScaled > max) {
+						max = absScaled;
+					}
+				}
+				
+				double rescale = gamma / (gamma + max);
+				
+				for(int c = 0; c < n; ++c) {
+					mThetadot.set(c, 0, mThetadot.get(c, 0) + scaled[c] * rescale);
+				}
+			} else {
+				//angular, take it easy
+				double wi = sReduced.get(i, i);
+				
+				if(EpsilonUtilities.isWithinReasonableEpsilon(wi, 0)) {
+					continue;
+				}
+				
+				for(int c = 0; c < n; ++c) {
+					mThetadot.set(c, 0, mThetadot.get(c, 0) + pseudoInverse.get(c, i) * ea.get(i, 0));
+				}
+			}
+			
+			//TODO maybe do this without angulars? prolly not. ok. 
+			double maxChange = 0; 
+			for(int c = 0; c < n; ++c) {
+				double absVal = Math.abs(mThetadot.get(c, 0));
+				if(c == 0 || absVal > maxChange) {
+					maxChange = absVal;
+				}
+			}
+			
+			if(maxChange > IkConstants.SDLS_MAX_ANGULAR_CHANGE) {
+				mThetadot.timesEquals(IkConstants.SDLS_MAX_ANGULAR_CHANGE / (IkConstants.SDLS_MAX_ANGULAR_CHANGE + maxChange));
+			}
+		}
+
+		return createBoneSpeedsFromThetadot(mThetadot);
+	}
 	public Map<Bone, Map<Axis, Double>> calculateAngleSpeeds(JacobianAndInverse jacobianAndInverse) {
 		return calculateAngleSpeeds(jacobianAndInverse.getInverseJacobian());
 	}
@@ -161,6 +363,10 @@ public class Solver {
 		Jama.Matrix pDot = createDesiredVelocitiesColumn(desiredVelocities);
 		Jama.Matrix mThetadot = ji.times(pDot);
 		
+		return createBoneSpeedsFromThetadot(mThetadot);
+	}
+	
+	private Map<Bone, Map<Axis, Double>> createBoneSpeedsFromThetadot(Jama.Matrix mThetadot) {
 		Map<Bone, Map<Axis, Double>> boneSpeeds = new HashMap<Bone, Map<Axis,Double>>();
 		
 		//trusting that this will give me the same order of axes as in createJacobianMatrix(). No reason to doubt this.  
@@ -181,7 +387,6 @@ public class Solver {
 				++row;
 			}
 		}
-		
 		return boneSpeeds;
 	}
 	
@@ -198,12 +403,12 @@ public class Solver {
 				if(desiredLinearVelocity != null) {
 					chain.computeLinearVelocityContributions();
 					//give this to a constraint set, together with the desired velocity (chain has it). 
-					constraints.add(new Constraint(chain.getLinearVelocityContributions(), desiredLinearVelocity));
+					constraints.add(new Constraint(chain.getLinearVelocityContributions(), new DesiredVelocity(desiredLinearVelocity, true)));
 				}
 				if(desiredAngularVelocity != null) {
 					chain.computeAngularVelocityContributions();
 					//give this to a constraint set, together with the desired velocity.
-					constraints.add(new Constraint(chain.getAngularVelocityContributions(), desiredAngularVelocity));
+					constraints.add(new Constraint(chain.getAngularVelocityContributions(), new DesiredVelocity(desiredAngularVelocity, false)));
 				}
 			}
 		}
@@ -219,14 +424,15 @@ public class Solver {
 		
 		//pass one, create arrays
 		jacobianColumns = new HashMap<Bone, Map<Axis, Vector3[]>>();
-		desiredVelocities = new Vector3[constraints.size()];
+		desiredVelocities = new DesiredVelocity[constraints.size()];
+//		isDesiredVelocityLinear = new 
 		for(Constraint constraint: constraints) {
 			for(Entry<Bone, Map<Axis, Vector3>> e: constraint.contributions.entrySet()) {
 				Bone bone = e.getKey();
 				Map<Axis, Vector3> contributionsForBone = e.getValue();
 				
 				Map<Axis, Vector3[]> columnForBone = new HashMap<Bone.Axis, Vector3[]>();
-				jacobianColumns.put(bone, columnForBone);
+				jacobianColumns.put(bone, columnForBone); //FIXME if it doesn't already exist? (chains sharing bones)
 				
 				for(Entry<Axis, Vector3> eb: contributionsForBone.entrySet()) {
 					Axis axis = eb.getKey();
@@ -283,14 +489,14 @@ public class Solver {
 		return ji;
 	}
 	
-	private Jama.Matrix createDesiredVelocitiesColumn(edu.cmu.cs.dennisc.math.Vector3[] desiredVelocities) {
-		Jama.Matrix rv = new Jama.Matrix(desiredVelocities.length * 3, 1);
+	private Jama.Matrix createDesiredVelocitiesColumn(DesiredVelocity[] desiredVelocities2) {
+		Jama.Matrix rv = new Jama.Matrix(desiredVelocities2.length * 3, 1);
 
 		int row = 0;
-		for(edu.cmu.cs.dennisc.math.Vector3 desiredVelocity: desiredVelocities) {
-			rv.set(row, 0, desiredVelocity.x);
-			rv.set(row + 1, 0, desiredVelocity.y);
-			rv.set(row + 2, 0, desiredVelocity.z);
+		for(DesiredVelocity desiredVelocity: desiredVelocities2) {
+			rv.set(row, 0, desiredVelocity.velocity.x);
+			rv.set(row + 1, 0, desiredVelocity.velocity.y);
+			rv.set(row + 2, 0, desiredVelocity.velocity.z);
 			row += 3;
 		}
 		
@@ -349,8 +555,9 @@ public class Solver {
 		int n = mj.getColumnDimension();
 		if(m < n) {
 			transposed = true;
+			System.out.println("transposed!");
 		} 
-
+		
 		if(transposed) {
 			mj = mj.transpose();
 		}
@@ -358,10 +565,10 @@ public class Solver {
 		Jama.SingularValueDecomposition svd = new Jama.SingularValueDecomposition(mj);
 		
 		Jama.Matrix u = svd.getU();
-		
 		Jama.Matrix s = svd.getS();
-		
 		Jama.Matrix v = svd.getV();
+		
+		assert IkConstants.JACOBIAN_INVERSION_METHOD != JacobianInversionMethod.SCALED_DAMPED;
 		
 		switch(IkConstants.JACOBIAN_INVERSION_METHOD) {
 		case CLAMPED:
