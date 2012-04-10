@@ -47,6 +47,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.management.RuntimeErrorException;
+
+import org.lgna.ik.IkConstants;
 import org.lgna.ik.solver.Bone.Axis;
 
 import Jama.Matrix;
@@ -100,7 +103,7 @@ public class Solver {
 		this.chains.remove( chain );
 	}
 	
-	public double calculateErrorForTime(JacobianAndInverse jacobianAndInverse, double dt) {
+	public double calculatePseudoInverseErrorForTime(JacobianAndInverse jacobianAndInverse, double dt) {
 		//will calculate I-(JJ^-1)
 
 		Matrix jj11 = jacobianAndInverse.getJacobian().times(jacobianAndInverse.getInverseJacobian()).times(-1);
@@ -132,7 +135,7 @@ public class Solver {
 		
 		Matrix jacobian = createJacobian();
 		
-		Matrix inverseJacobian = invertJacobian(jacobian, 0.1);
+		Matrix inverseJacobian = invertJacobian(jacobian);
 		
 		JacobianAndInverse jacobianAndInverse = new JacobianAndInverse(jacobian, inverseJacobian);
 
@@ -273,8 +276,8 @@ public class Solver {
 		return createJacobianMatrix(this.jacobianColumns);
 	}
 	
-	private Jama.Matrix invertJacobian(Jama.Matrix jacobian, double sThreshold) {
-		Jama.Matrix ji = svdInvert(jacobian, sThreshold);
+	private Jama.Matrix invertJacobian(Jama.Matrix jacobian) {
+		Jama.Matrix ji = svdInvert(jacobian);
 		// TODO also do any optimizations (don't move too fast, etc)
 		
 		return ji;
@@ -339,7 +342,7 @@ public class Solver {
 		return j;
 	}
 	
-	private Jama.Matrix svdInvert(Jama.Matrix mj, double threshold) {
+	private Jama.Matrix svdInvert(Jama.Matrix mj) {
 		
 		boolean transposed = false;
 		int m = mj.getRowDimension();
@@ -360,16 +363,15 @@ public class Solver {
 		
 		Jama.Matrix v = svd.getV();
 		
-		//reduce s
-		assert(s.getRowDimension() == s.getColumnDimension());
-		for(int i = 0; i < s.getRowDimension(); ++i) {
-			if(s.get(i, i) < threshold) {
-//				System.out.printf("A value in S was lower than threshold %f < %f. Correcting.\n", s.get(i, i), threshold);
-				s.set(i, i, 0.0);
-				assert threshold > 0.0;
-			} else {
-				s.set(i, i, 1.0 / s.get(i, i));
-			}
+		switch(IkConstants.JACOBIAN_INVERSION_METHOD) {
+		case CLAMPED:
+			reduceAndInvertSofSvdByClampingSmallEntries(s, IkConstants.SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO);
+			break;
+		case DAMPED:
+			reduceAndInvertSofSvdByDamping(s, IkConstants.SVD_DAMPING_CONSTANT);
+			break;
+		default:
+			throw new RuntimeException("Unknown Jacobian inversion method.");
 		}
 		
 		Jama.Matrix result = v.times(s).times(u.transpose());
@@ -379,6 +381,25 @@ public class Solver {
 		}
 		
 		return result;
+	}
+	
+	private void reduceAndInvertSofSvdByDamping(Matrix s, double svdDampingConstant) {
+		assert(s.getRowDimension() == s.getColumnDimension());
+		for(int i = 0; i < s.getRowDimension(); ++i) {
+			double d = s.get(i, i);
+			s.set(i, i, d / (d * d + svdDampingConstant * svdDampingConstant)); 
+		}
+	}
+	private void reduceAndInvertSofSvdByClampingSmallEntries(Jama.Matrix s, double threshold) {
+		assert(s.getRowDimension() == s.getColumnDimension());
+		for(int i = 0; i < s.getRowDimension(); ++i) {
+			if(s.get(i, i) < threshold) {
+				s.set(i, i, 0.0);
+				assert threshold > 0.0;
+			} else {
+				s.set(i, i, 1.0 / s.get(i, i)); 
+			}
+		}
 	}
 	java.util.Map<Chain, edu.cmu.cs.dennisc.math.Vector3> desiredLinearVelocities = new java.util.HashMap<Chain, edu.cmu.cs.dennisc.math.Vector3>();
 	java.util.Map<Chain, edu.cmu.cs.dennisc.math.Vector3> desiredAngularVelocities = new java.util.HashMap<Chain, edu.cmu.cs.dennisc.math.Vector3>();

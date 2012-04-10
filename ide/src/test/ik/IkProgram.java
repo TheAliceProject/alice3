@@ -43,6 +43,7 @@
 
 package test.ik;
 
+import org.lgna.ik.IkConstants;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
@@ -289,10 +290,10 @@ class IkProgram extends Program {
 					final JointId eeId = test.ik.croquet.EndJointIdState.getInstance().getValue();
 					final JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 					
-					double maxLinearSpeedForEe = 0.1;
-					double maxAngularSpeedForEe = Math.PI / 10.0;
+					double maxLinearSpeedForEe = IkConstants.MAX_LINEAR_SPEED_FOR_EE;
+					double maxAngularSpeedForEe = IkConstants.MAX_ANGULAR_SPEED_FOR_EE;
 					
-					double deltaTime = 0.1;
+					double deltaTime = IkConstants.DESIRED_DELTA_TIME;
 					
 					if(ikEnforcer.hasActiveChain() && (isLinearEnabled || isAngularEnabled)) {
 						//I could make chain setter not race with this
@@ -308,7 +309,7 @@ class IkProgram extends Program {
 						}
 						
 //						ikEnforcer.advanceTimeStaticallyForFixedDuration(deltaTime);
-						ikEnforcer.advanceTimeAdaptivelyForFixedDuration(deltaTime, 1e-50);
+						ikEnforcer.advanceTimeAdaptivelyForFixedDuration(deltaTime, IkConstants.MAX_PSEUDO_INVERSE_ERROR_BEFORE_HALVING_DELTA_TIME);
 												
 						Point3 ep = ikEnforcer.getEndEffectorPosition(eeId);
 						Point3 ap = ikEnforcer.getAnchorPosition(anchorId);

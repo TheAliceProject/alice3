@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.lgna.ik.IkConstants;
 import org.lgna.ik.solver.Bone;
 import org.lgna.ik.solver.Bone.Axis;
 import org.lgna.ik.solver.Chain;
@@ -269,23 +270,21 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 		}
 	}
 	
-	public void advanceTimeAdaptivelyForFixedDuration(double deltaTime, double maxError) {
+	public void advanceTimeAdaptivelyForFixedDuration(double deltaTime, double maxPseudoInverseErrorBeforeHalvingDeltaTime) {
 		double totalDeltaTimeToFill = deltaTime;
 		double deltaTimePassedSoFar = 0;
 		double deltaTimeAttemptingToAdvance = deltaTime;
 		
-		double minDeltaTime = deltaTime * .5;
+		double minDeltaTime = deltaTime * IkConstants.ADAPTIVE_TIME_MIN_DELTA_TIME_IS_FRACTION_OF_DESIRED_DELTA_TIME;
 		
 		boolean firstTry = true;
 		
-//		System.out.println("will try to fill " + deltaTime);
 		while(!EpsilonUtilities.isWithinReasonableEpsilon(totalDeltaTimeToFill - deltaTimePassedSoFar, 0.0)) {
 			
 			if(firstTry) {
 				firstTry = false;
 			} else {
-				//TODO what if the user has set a desired velocity instead of a location?
-				//FIXME record all outside commands and reapply them when needed
+				//reapply all outside commands
 				reactivateDesiredPositionAndOrientations();
 			}
 			
@@ -293,13 +292,14 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 			JacobianAndInverse jacobianAndInverse = solver.prepareAndCalculateJacobianAndInverse();
 			
 			//should calculate the error of the jacobian for the time left
-			double error = solver.calculateErrorForTime(jacobianAndInverse, deltaTimeAttemptingToAdvance);
+			double error = solver.calculatePseudoInverseErrorForTime(jacobianAndInverse, deltaTimeAttemptingToAdvance);
 			//while the error is too much, half the time and recalculate
-//			System.out.println("error is " + error);
-			while(Math.abs(error) > maxError && deltaTimeAttemptingToAdvance > minDeltaTime) {
+			System.out.println("initerror: " + error);
+			while(Math.abs(error) > maxPseudoInverseErrorBeforeHalvingDeltaTime && deltaTimeAttemptingToAdvance * .5 > minDeltaTime) {
+				System.out.println("error: " + error + " abserror: "+ Math.abs(error) + " maxerror: " + maxPseudoInverseErrorBeforeHalvingDeltaTime);
+				System.out.println("scaled down " + (Math.abs(error) > maxPseudoInverseErrorBeforeHalvingDeltaTime) + " " + (Math.abs(error) - maxPseudoInverseErrorBeforeHalvingDeltaTime));
 				deltaTimeAttemptingToAdvance *= .5;
-				error = solver.calculateErrorForTime(jacobianAndInverse, deltaTimeAttemptingToAdvance);
-//				System.out.println("error was " + error);
+				error = solver.calculatePseudoInverseErrorForTime(jacobianAndInverse, deltaTimeAttemptingToAdvance);
 			}
 			
 			//move the joints for that time
@@ -307,9 +307,12 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 			
 			moveJointsWithSpeedsForTime(jointSpeedsToUse, deltaTimeAttemptingToAdvance);
 			
-			deltaTimePassedSoFar += deltaTimeAttemptingToAdvance;
+			if(!EpsilonUtilities.isWithinReasonableEpsilon(deltaTimeAttemptingToAdvance, totalDeltaTimeToFill)) {
+				System.out.printf("advanced %f.1 only\n", deltaTimeAttemptingToAdvance / totalDeltaTimeToFill);
+//				System.out.println("error: " + error + " abserror: "+ Math.abs(error) + " maxerror: " + maxError);
+			}
 			
-//			System.out.println("passed " + deltaTimeAttemptingToAdvance + " left " + (totalDeltaTimeToFill - deltaTimePassedSoFar));
+			deltaTimePassedSoFar += deltaTimeAttemptingToAdvance;
 			
 			//if time is not complete, recalculate jacobian and try again
 		}
