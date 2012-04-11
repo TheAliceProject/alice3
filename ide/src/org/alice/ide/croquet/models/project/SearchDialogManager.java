@@ -58,7 +58,7 @@ public class SearchDialogManager extends SearchTreeManager implements ValueListe
 			for( SearchTreeNode hiddenNode : iterateList ) {
 				Matcher matcher = pattern.matcher( hiddenNode.getContent().getName().toLowerCase() );
 				if( matcher.find() ) {
-					if( check.isEmpty() || hiddenNode.getDepth() <= SHOULD_BE_EXPANDED ) {
+					if( check.length() == 0 || hiddenNode.getDepth() <= SHOULD_BE_EXPANDED ) {
 						show( hiddenNode );
 					}
 				}
