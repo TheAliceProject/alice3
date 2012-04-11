@@ -161,7 +161,7 @@ public class ProgramImp {
 		}
 		this.getAnimator().setSpeedFactor( speedFactor );
 	}
-	private void handleSpeedChange( double speedFactor ) {
+	protected void handleSpeedChange( double speedFactor ) {
 		this.getAnimator().setSpeedFactor( speedFactor );
 	}
 	
