@@ -6,13 +6,13 @@ import java.util.List;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.GlobalDragAdapter;
 import org.lgna.story.Entity;
+import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.Model;
 import org.lgna.story.MovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
@@ -24,6 +24,7 @@ import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.ViewEnterListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.event.WhileOcclusionListener;
@@ -57,9 +58,11 @@ public class EventManager {
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
-			EventManager.this.handleKeyPressed( event );
+			keyHandler.handleKeyPress( event );
 		}
 		public void keyReleased( java.awt.event.KeyEvent e ) {
+			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
+			keyHandler.handleKeyRelease( event );
 		}
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
@@ -82,13 +85,6 @@ public class EventManager {
 		throw new RuntimeException( "todo" );
 		//		this.mouse.removeListener(keyListener);
 		//		this.keyListeners.remove( keyListener );
-	}
-
-	protected void handleKeyPressed( org.lgna.story.event.KeyEvent event ) {
-		keyHandler.fireAllTargeted( event );
-		//		for(KeyListener listener: keyListeners){
-		//			listener.keyPressed(event);
-		//		}
 	}
 
 	public void addListenersTo( OnscreenLookingGlass onscreenLookingGlass ) {
@@ -138,17 +134,17 @@ public class EventManager {
 		timer.addListener( timerEventListener, frequency, policy );
 	}
 
-	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy ) {
-		this.keyHandler.addListener( keyListener, eventPolicy, null );
+	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy, HeldKeyPolicy heldKeyPolicy ) {
+		this.keyHandler.addListener( keyListener, eventPolicy, null, heldKeyPolicy );
 	}
-	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
-		keyHandler.addListener( keyPressListener, policy, NumberKeyEvent.NUMBERS );
+	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
+		keyHandler.addListener( keyPressListener, policy, NumberKeyEvent.NUMBERS, heldKeyPolicy );
 	}
-	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
-		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS );
+	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
+		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS, heldKeyPolicy );
 	}
 	public void moveWithArrows( MovableTurnable entity ) {
-		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS );
+		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS, HeldKeyPolicy.FIRE_MULTIPLE );
 	}
 
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
