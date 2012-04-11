@@ -98,15 +98,22 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			java.awt.Container rv = this.programContext.getContainer(); 
 			this.programContext.cleanUpProgram();
 			this.programContext = null;
+			return rv;
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this );
+			return null;
 		}
-		return rv;
 	}
 	private class RestartAction extends javax.swing.AbstractAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.awt.Container awtContainer = RunOperation.this.stopProgram();
-			RunOperation.this.startProgram( awtContainer );
+			if( awtContainer != null ) {
+				RunOperation.this.startProgram( awtContainer );
+			} else {
+				String message = "Unable to restart";
+				String title = null;
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.ERROR );
+			}
 		}
 	};
 	private final RestartAction restartAction = new RestartAction();
