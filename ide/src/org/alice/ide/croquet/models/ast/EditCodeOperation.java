@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 * @author Dennis Cosgrove
 */
 //todo
-/*package-private*/ abstract class EditCodeOperation<N extends org.lgna.project.ast.AbstractCode> extends org.lgna.croquet.ActionOperation {
+public abstract class EditCodeOperation<N extends org.lgna.project.ast.AbstractCode> extends org.lgna.croquet.ActionOperation {
 	private N code;
 	public EditCodeOperation( java.util.UUID id, N code ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id );
@@ -56,7 +56,7 @@ package org.alice.ide.croquet.models.ast;
 		return this.code;
 	}
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void perform(org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.alice.ide.IDE.getActiveInstance().setFocusedCode( this.code );
 		step.finish();

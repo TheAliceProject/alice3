@@ -59,7 +59,7 @@ public abstract class AbstractTransformable extends Composite {
 	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
 		return getLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
 	}
-	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation, TransformationAffect affect ) {
+	protected void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation, TransformationAffect affect ) {
 		if( transformation == null ) {
 			throw new NullPointerException();
 		}

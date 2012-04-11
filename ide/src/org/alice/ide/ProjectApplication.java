@@ -110,8 +110,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	}
 
 	public abstract String getApplicationName();
-	protected abstract String getVersionText();
-	protected abstract String getVersionAdornment();
+	public abstract String getVersionText();
+	public abstract String getVersionAdornment();
 	
 	private void showUnableToOpenFileDialog( java.io.File file, String message ) {
 		StringBuilder sb = new StringBuilder();

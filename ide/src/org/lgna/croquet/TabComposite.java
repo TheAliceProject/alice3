@@ -75,7 +75,7 @@ public abstract class TabComposite< V extends org.lgna.croquet.components.View<?
 	public String getTitleText() {
 		return this.titleText;
 	}
-	private void setTitleText( String titleText ) {
+	protected void setTitleText( String titleText ) {
 		this.titleText = titleText;
 		this.updateTitleText();
 	}
