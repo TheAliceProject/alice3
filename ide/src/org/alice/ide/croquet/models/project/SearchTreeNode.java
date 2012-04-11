@@ -10,7 +10,7 @@ import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class SearchTreeNode {
+public class SearchTreeNode implements Comparable<SearchTreeNode> {
 
 	private List<SearchTreeNode> children = Collections.newLinkedList();
 	private SearchTreeNode parent;
@@ -83,7 +83,7 @@ public class SearchTreeNode {
 	}
 
 	public void invokeOperation() {
-		if( parent != null && parent.getParent() == null && content instanceof UserMethod ) {//node is not root AND node's parent is root
+		if( parent != null && parent.getParent() == null ) {// && content instanceof UserMethod ) {//node is not root AND node's parent is root
 			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)content ) );
 		} else if( parent != null ) {
 			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)parent.content ) );
@@ -92,5 +92,22 @@ public class SearchTreeNode {
 
 	public AbstractMethod getContent() {
 		return content;
+	}
+
+	public int getDepth() {
+		SearchTreeNode blah = this;
+		int depth = 0;
+		while( blah.getParent() != null ) {
+			blah = blah.getParent();
+			++depth;
+		}
+		return depth;
+	}
+
+	public int compareTo( SearchTreeNode o ) {
+		if( getDepth() != o.getDepth() ) {
+			return new Integer( getDepth() ).compareTo( new Integer( o.getDepth() ) );
+		}
+		return content.getName().compareTo( o.getContent().getName() );
 	}
 }
