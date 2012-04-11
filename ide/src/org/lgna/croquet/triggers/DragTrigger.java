@@ -54,7 +54,7 @@ public class DragTrigger extends MouseEventTrigger {
 		super( binaryDecoder );
 	}
 	@Override
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		return "Press and Drag";
 	}
 }

@@ -1079,8 +1079,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 
 	public String getTutorialNoteText(org.lgna.croquet.Model model,
-			org.lgna.croquet.edits.Edit<?> edit,
-			org.lgna.croquet.UserInformation userInformation) {
+			org.lgna.croquet.edits.Edit<?> edit) {
 		return "Drop...";
 	}
 // ######### End implementation of org.lgna.croquet.DropReceptor

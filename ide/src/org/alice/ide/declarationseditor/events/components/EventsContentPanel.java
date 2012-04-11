@@ -116,7 +116,7 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( potentialDropSite );
 		return null;
 	}
-	public java.lang.String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public java.lang.String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model, edit );
 		return null;
 	}

@@ -141,11 +141,11 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "create: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement );
 		return rv;
 	}
 	
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
 		if( replacementCandidate instanceof org.alice.ide.croquet.edits.DependentEdit ) {
 			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		} else {

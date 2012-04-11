@@ -203,9 +203,9 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		};
 	}
 
-	public String getTitle( org.lgna.croquet.UserInformation userInformation ) {
+	public String getTitle() {
 		if( this.completionStep != null ) {
-			return this.completionStep.getTutorialTransactionTitle( userInformation );
+			return this.completionStep.getTutorialTransactionTitle( );
 		} else {
 			return null;
 		}

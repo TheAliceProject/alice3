@@ -82,7 +82,7 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 	}
 
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, N value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, N value ) {
 		rv.append( value );
 		return rv;
 	}

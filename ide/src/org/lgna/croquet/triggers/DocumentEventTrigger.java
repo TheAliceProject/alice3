@@ -74,7 +74,7 @@ public class DocumentEventTrigger extends AbstractTrigger {
 			throw new RuntimeException( "todo" );
 		}
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		return "Type";
 	}
 }

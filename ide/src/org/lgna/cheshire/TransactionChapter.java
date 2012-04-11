@@ -77,7 +77,7 @@ public class TransactionChapter extends Chapter {
 	
 	@Override
 	public String getTitle() {
-		return "<strong>" + this.transaction.getTitle( Presentation.getInstance().getUserInformation() ) + "</strong>";
+		return "<strong>" + this.transaction.getTitle( ) + "</strong>";
 	}
 	
 	@Override

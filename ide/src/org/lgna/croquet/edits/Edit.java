@@ -46,7 +46,6 @@ import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.Manager;
 import org.lgna.croquet.Retargeter;
-import org.lgna.croquet.UserInformation;
 
 /**
  * @author Dennis Cosgrove
@@ -126,17 +125,13 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 	}
 
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, UserInformation userInformation ) {
-		return rv;
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder title ) {
+		return title;
 	}
-	public final String getTutorialTransactionTitle( UserInformation userInformation ) {
+	public final String getTutorialTransactionTitle() {
 		StringBuilder sb = new StringBuilder();
-		this.updateTutorialTransactionTitle( sb, userInformation );
+		this.updateTutorialTransactionTitle( sb );
 		if( sb.length() == 0 ) {
-			//			sb.append( "TODO: " );
-			//			sb.append( this );
-			//			sb.append( "; " );
-			//			sb.append( edit );
 			return null;
 		} else {
 			return sb.toString();
@@ -164,7 +159,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		this.updatePresentation( sb, locale );
 		return sb.toString();
 	}
-	public ReplacementAcceptability getReplacementAcceptability( Edit< ? > replacementCandidate, UserInformation userInformation ) {
+	public ReplacementAcceptability getReplacementAcceptability( Edit< ? > replacementCandidate ) {
 		if( replacementCandidate != null ) {
 			return ReplacementAcceptability.PERFECT_MATCH;
 		} else {

@@ -60,7 +60,7 @@ public class ThisExpression extends Expression {
 //		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( "this" );
 		return rv;
 	}

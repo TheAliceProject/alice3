@@ -81,7 +81,7 @@ public class ResourceCodec< R extends org.lgna.common.Resource > implements org.
 			binaryEncoder.encode( value.getId() );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, R value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, R value) {
 		rv.append( value );
 		return rv;
 	}

@@ -629,16 +629,16 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			return new org.lgna.croquet.components.ComboBox< T >( this );
 		}
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 			if( edit != null ) {
 				org.lgna.croquet.edits.StateEdit< T > stateEdit = (org.lgna.croquet.edits.StateEdit< T >)edit;
 				rv.append( "First press on " );
 				rv.append( "<strong>" );
-				this.getListSelectionState().appendRepresentation( rv, stateEdit.getPreviousValue(), userInformation.getLocale() );
+				this.getListSelectionState().appendRepresentation( rv, stateEdit.getPreviousValue() );
 				rv.append( "</strong>" );
 				rv.append( " in order to change it to " );
 				rv.append( "<strong>" );
-				this.getListSelectionState().appendRepresentation( rv, stateEdit.getNextValue(), userInformation.getLocale() );
+				this.getListSelectionState().appendRepresentation( rv, stateEdit.getNextValue() );
 				rv.append( "</strong>." );
 			}
 			return rv;

@@ -102,7 +102,7 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return rv;
 	}
 	public org.lgna.croquet.components.PopupButton createPopupButton() {

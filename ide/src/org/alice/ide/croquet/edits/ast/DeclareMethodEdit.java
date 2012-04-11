@@ -97,19 +97,19 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
 		rv.append( "declare: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method);
 		return rv;
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		rv.append( "declare " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method, userInformation.getLocale() );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method );
 		return rv;
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
 		if( replacementCandidate instanceof DeclareMethodEdit ) {
 			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
 			if( this.method != null ) {

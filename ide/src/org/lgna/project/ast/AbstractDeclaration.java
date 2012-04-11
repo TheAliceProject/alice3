@@ -60,7 +60,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 		return super.fillInDeclarationSet( rv, nodes );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		//return super.appendRepr( rv, locale );
 		rv.append( this.getName() );
 		return rv;

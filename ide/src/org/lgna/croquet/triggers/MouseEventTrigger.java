@@ -57,7 +57,7 @@ public class MouseEventTrigger extends ComponentEventTrigger<java.awt.event.Mous
 	protected java.awt.Point getPoint() {
 		return this.getEvent().getPoint();
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		return "Click";
 	}
 }

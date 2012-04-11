@@ -74,9 +74,9 @@ public class CountLoop extends AbstractLoop {
 		this.count.setValue( count );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( "count " );
-		NodeUtilities.safeAppendRepr( rv, this.count.getValue(), locale );
-		return super.appendRepr( rv, locale );
+		NodeUtilities.safeAppendRepr( rv, this.count.getValue() );
+		return super.appendRepr( rv );
 	}
 }

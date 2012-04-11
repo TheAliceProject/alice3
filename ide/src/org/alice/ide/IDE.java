@@ -106,7 +106,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
 	}
-	
+
 	protected void updateEnabled( org.lgna.project.Project project ) {
 		getRunOperation().setEnabled( project != null );
 	}

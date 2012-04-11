@@ -158,7 +158,7 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
 			sb.append( "transaction[" );
 			sb.append( i );
 			sb.append( "] " );
-			String title = transaction.getTitle( org.lgna.croquet.DefaultUserInformation.SINGLETON );
+			String title = transaction.getTitle( );
 			if( title != null ) {
 				sb.append( "<strong>" );
 				sb.append( title );

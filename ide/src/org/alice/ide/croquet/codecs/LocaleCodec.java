@@ -50,7 +50,7 @@ public enum LocaleCodec implements org.lgna.croquet.ItemCodec< java.util.Locale 
 	public Class<java.util.Locale> getValueClass() {
 		return java.util.Locale.class;
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, java.util.Locale value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, java.util.Locale value) {
 		if( value != null ) {
 			rv.append( value.getDisplayName() );
 		} else {

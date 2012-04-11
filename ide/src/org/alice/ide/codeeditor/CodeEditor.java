@@ -143,7 +143,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		return (org.lgna.croquet.components.ScrollPane)this.getComponent( Constraint.CENTER );
 	}
 
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return "Drop...";
 	}
 	

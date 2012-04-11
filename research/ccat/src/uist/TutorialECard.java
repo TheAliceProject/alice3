@@ -66,21 +66,19 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 		
 		final boolean IS_OPTIMIZED_FOR_BUG_REPRO = false;
 		final org.lgna.cheshire.stencil.StencilsPresentation presentation = new org.lgna.cheshire.stencil.StencilsPresentation( 
-				UserInformation.INSTANCE, 
-				
 				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
-				org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS,
-
-				this.originalTransactionHistory, 
-				MigrationManager.INSTANCE, 
-				filterer,
-				recoverer,
+				org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, 
 				
+				this.originalTransactionHistory,
+
+				MigrationManager.INSTANCE, 
+				filterer, 
+				recoverer,
 				new org.lgna.croquet.Group[] { org.alice.ide.IDE.DOCUMENT_UI_GROUP },
 				
 				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
-
-//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
+				
+				//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
 				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
 //				org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 		);

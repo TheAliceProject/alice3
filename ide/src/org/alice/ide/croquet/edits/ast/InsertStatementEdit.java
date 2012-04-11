@@ -139,11 +139,11 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "drop: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement );
 		return rv;
 	}
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
 		if( replacementCandidate instanceof InsertStatementEdit ) {
 			InsertStatementEdit insertStatementEdit = (InsertStatementEdit)replacementCandidate;
 			final int N = this.initialExpressions.length;
@@ -183,9 +183,9 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		rv.append( "insert " );
-		rv.append( this.statement.getRepr( userInformation.getLocale() ) );
+		rv.append( this.statement.getRepr() );
 		return rv;
 	}
 

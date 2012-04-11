@@ -105,7 +105,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit< org.alice
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "dissolve:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getModel().getStatementWithBody(), locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getModel().getStatementWithBody());
 		return rv;
 	}
 }

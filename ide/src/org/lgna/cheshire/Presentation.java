@@ -53,7 +53,6 @@ public abstract class Presentation {
 		return instance;
 	}
 
-	private final org.lgna.croquet.UserInformation userInformation;
 	private final Recoverer recoverer;
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
@@ -103,17 +102,16 @@ public abstract class Presentation {
 
 	private final org.lgna.project.history.ProjectHistory[] historyManagers;
 
-	public Presentation( org.lgna.croquet.UserInformation userInformation, ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public Presentation( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
 		assert instance == null;
 		instance = this;
 
 		this.validate( originalTransactionHistory );
 		
-		this.userInformation = userInformation;
 		this.recoverer = recoverer;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
 		if ( filterer != null ) {
-			filterer.filter( this.book.listIterator(), userInformation );
+			filterer.filter( this.book.listIterator() );
 		}
 		final int N = groupsTrackedForRandomAccess.length;
 		this.historyManagers = new org.lgna.project.history.ProjectHistory[ N+1 ];
@@ -222,10 +220,7 @@ public abstract class Presentation {
 	protected void handleChapterChanged(Chapter chapter) {
 		this.completeOrUndoIfNecessary();
 	}
-	
-	public org.lgna.croquet.UserInformation getUserInformation() {
-		return this.userInformation;
-	}
+
 	public Book getBook() {
 		return this.book;
 	}

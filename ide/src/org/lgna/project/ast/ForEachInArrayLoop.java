@@ -62,10 +62,10 @@ public class ForEachInArrayLoop extends AbstractForEachLoop {
 		this.array.setValue( array );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( "for each in " );
-		NodeUtilities.safeAppendRepr( rv, this.array.getValue(), locale );
-		return super.appendRepr( rv, locale );
+		NodeUtilities.safeAppendRepr( rv, this.array.getValue() );
+		return super.appendRepr( rv );
 	}
 	
 }

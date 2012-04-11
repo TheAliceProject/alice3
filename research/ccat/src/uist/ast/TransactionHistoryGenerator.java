@@ -55,10 +55,7 @@ public class TransactionHistoryGenerator {
 		this.dstIndex0 = dstIndex0;
 	}
 
-	public org.lgna.croquet.history.TransactionHistory generate( org.lgna.croquet.UserInformation userInformation ) {
-		// For now
-		assert userInformation == null;
-
+	public org.lgna.croquet.history.TransactionHistory generate() {
 		org.lgna.croquet.history.TransactionHistory rv = new org.lgna.croquet.history.TransactionHistory();
 		generate( rv, this.src, this.dst, this.dstIndex0 );
 

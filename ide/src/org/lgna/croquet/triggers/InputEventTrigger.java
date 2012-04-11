@@ -66,7 +66,7 @@ public class InputEventTrigger extends ComponentEventTrigger< java.awt.event.Inp
 			return null;
 		}
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		return "Input";
 	}
 }

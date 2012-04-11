@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import java.util.Locale;
 
 import org.alice.ide.ProjectApplication;
 import org.lgna.croquet.InformationDialogOperation;
@@ -94,7 +93,7 @@ public class StatisticsOperation extends InformationDialogOperation {
 			public void encodeValue( BinaryEncoder binaryEncoder, TabComposite<?> value ) {
 			}
 
-			public StringBuilder appendRepresentation( StringBuilder rv, TabComposite<?> value, Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, TabComposite<?> value ) {
 				return null;
 			}
 		} );

@@ -621,13 +621,13 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 
 	//todo: i18n
 	//protected abstract StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ); 
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( this.getClass().getSimpleName() );
 		return rv;
 	}
-	public final String getRepr( java.util.Locale locale ) {
+	public final String getRepr() {
 		StringBuilder sb = new StringBuilder();
-		this.appendRepr( sb, locale );
+		this.appendRepr( sb );
 		return sb.toString();
 	}
 	

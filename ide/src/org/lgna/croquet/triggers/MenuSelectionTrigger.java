@@ -172,7 +172,7 @@ public class MenuSelectionTrigger extends ChangeEventTrigger {
 		return null;
 	}
 	@Override
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		return "Select";
 	}
 }

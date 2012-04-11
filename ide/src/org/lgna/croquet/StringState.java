@@ -95,7 +95,7 @@ public abstract class StringState extends State< String > {
 	}
 
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, String value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, String value ) {
 		rv.append( value );
 		return rv;
 	}

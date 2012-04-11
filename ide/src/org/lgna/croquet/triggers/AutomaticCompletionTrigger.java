@@ -62,7 +62,7 @@ public class AutomaticCompletionTrigger extends AbstractTrigger {
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		this.previousTrigger.showPopupMenu( popupMenu );
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		//todo
 		return "COMPLETE";
 	}

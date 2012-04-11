@@ -105,9 +105,9 @@ public class FieldAccess extends Expression {
 	}
 	
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		//return super.appendRepr( rv, locale );
-		NodeUtilities.safeAppendRepr( rv, this.field.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.field.getValue() );
 		return rv;
 	}
 }

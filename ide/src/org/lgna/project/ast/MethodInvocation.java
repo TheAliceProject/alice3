@@ -137,15 +137,15 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 	
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 //		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 //		rv.append( "." );
-		NodeUtilities.safeAppendRepr( rv, this.method.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.method.getValue() );
 		rv.append( "(" );
 		String separator = "";
 		for( AbstractArgument argument : this.requiredArguments ) {
 			rv.append( separator );
-			NodeUtilities.safeAppendRepr( rv, argument, locale );
+			NodeUtilities.safeAppendRepr( rv, argument );
 			separator = ", ";
 		}
 		rv.append( ")" );

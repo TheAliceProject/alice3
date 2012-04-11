@@ -138,14 +138,14 @@ public class Book {
 		}
 	}
 
-	/*package-private*/ void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	/*package-private*/ void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
 		Chapter chapter = this.getSelectedChapter();
 		if( chapter instanceof TransactionChapter ) {
 			TransactionChapter transactionChapter = (TransactionChapter)chapter;
 			org.lgna.croquet.history.Transaction transaction = transactionChapter.getTransaction();
 			org.lgna.croquet.edits.Edit< ? > originalEdit = transaction.getEdit();
 			if( originalEdit != null ) {
-				org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate, userInformation );
+				org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate );
 				if( replacementAcceptability.isAcceptable() ) {
 					transactionChapter.setReplacementAcceptability( replacementAcceptability );
 					org.lgna.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();

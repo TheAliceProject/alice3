@@ -60,9 +60,9 @@ public abstract class ForEachInIterableLoop extends AbstractForEachLoop {
 		this.iterable.setValue( iterable );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( "for each in " );
-		NodeUtilities.safeAppendRepr( rv, this.iterable.getValue(), locale );
-		return super.appendRepr( rv, locale );
+		NodeUtilities.safeAppendRepr( rv, this.iterable.getValue() );
+		return super.appendRepr( rv );
 	}
 }

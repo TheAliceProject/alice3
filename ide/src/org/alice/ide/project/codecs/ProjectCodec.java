@@ -57,7 +57,7 @@ public enum ProjectCodec implements org.lgna.croquet.ItemCodec< org.lgna.project
 	public Class< org.lgna.project.Project > getValueClass() {
 		return org.lgna.project.Project.class;
 	}
-	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.project.Project value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.project.Project value ) {
 		return rv;
 	}
 }

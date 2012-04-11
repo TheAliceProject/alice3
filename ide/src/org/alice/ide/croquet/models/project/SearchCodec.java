@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import java.util.Locale;
 
 import org.lgna.croquet.ItemCodec;
 
@@ -74,7 +73,7 @@ public class SearchCodec implements ItemCodec<SearchTreeNode> {
 		System.out.println( "encodeValue" );
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, SearchTreeNode value, Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, SearchTreeNode value ) {
 		System.out.println( "appendRepresentation" );
 		return null;
 	}

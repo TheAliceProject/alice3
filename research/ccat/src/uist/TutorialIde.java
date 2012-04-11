@@ -151,8 +151,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 	private void createAndShowTutorial() {
 		if( IS_BASED_ON_INTERACTION_AST ) {
 			uist.ast.TransactionHistoryGenerator transactionHistoryGenerator = new uist.ast.TransactionHistoryGenerator( getMyFirstMethodBody( this.getOriginalProject() ), getMyFirstMethodBody( this.getReplacementProject() ), 0 );
-			org.lgna.croquet.UserInformation userInformation = null;
-			originalTransactionHistory = transactionHistoryGenerator.generate( userInformation );
+			originalTransactionHistory = transactionHistoryGenerator.generate( );
 			//encode and decode
 			this.isOriginalProjectLive = true;
 			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( originalTransactionHistory, ROOT_PATH+AST_MIMIC_PATH );
@@ -189,26 +188,24 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		final org.lgna.cheshire.Presentation presentation;
 		if( IS_STENCILS ) {
 			presentation = new org.lgna.cheshire.stencil.StencilsPresentation( 
-					UserInformation.INSTANCE, 
-					
 					//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
-					org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS,
-
-					originalTransactionHistory, 
-					MigrationManager.INSTANCE, 
-					filterer,
-					recoverer,
+					org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, 
 					
+					originalTransactionHistory,
+
+					MigrationManager.INSTANCE, 
+					filterer, 
+					recoverer,
 					new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP },
 					
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
-
-//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
+					
+					//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
 					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
 //					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 			);
 		} else {
-			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( UserInformation.INSTANCE, originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
 		}
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );

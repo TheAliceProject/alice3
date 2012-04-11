@@ -57,7 +57,7 @@ public class StringLiteral extends AbstractValueLiteral {
 		return JavaType.getInstance( String.class );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( "\"" );
 		rv.append( this.value.getValue() );
 		rv.append( "\"" );

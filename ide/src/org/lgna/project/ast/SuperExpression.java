@@ -58,7 +58,7 @@ public class SuperExpression extends Expression {
 		}
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( "super" );
 		return rv;
 	}

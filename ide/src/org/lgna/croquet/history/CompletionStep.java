@@ -150,10 +150,10 @@ public class CompletionStep< M extends org.lgna.croquet.CompletionModel > extend
 		this.isPending = false;
 	}
 
-	public String getTutorialTransactionTitle( org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialTransactionTitle() {
 		org.lgna.croquet.CompletionModel model = this.getModel();
 		if( model != null ) {
-			return model.getTutorialTransactionTitle( this, userInformation );
+			return model.getTutorialTransactionTitle( this );
 		} else {
 			return null;
 		}

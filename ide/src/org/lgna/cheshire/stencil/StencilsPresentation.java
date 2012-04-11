@@ -209,17 +209,16 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 
 	private boolean isIgnoringEvents = false;
 	public StencilsPresentation( 
-			org.lgna.croquet.UserInformation userInformation, 
 			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
-			org.lgna.croquet.history.TransactionHistory originalTransactionHistory,
+			org.lgna.croquet.history.TransactionHistory originalTransactionHistory, 
 			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
-			org.lgna.croquet.Group[] groupsTrackedForRandomAccess, 
+			org.lgna.croquet.Group[] groupsTrackedForRandomAccess,
 			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
 			org.lgna.stencil.MenuPolicy menuPolicy
 	) {
-		super( userInformation, transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
+		super( transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();

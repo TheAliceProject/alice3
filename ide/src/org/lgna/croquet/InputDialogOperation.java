@@ -128,7 +128,7 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		return explanation;
 	}
 
-	public String getTutorialFinishNoteText( org.lgna.croquet.history.CompletionStep<?> step, UserInformation userInformation ) {
+	public String getTutorialFinishNoteText( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return "When finished press the <strong>OK</strong> button.";
 	}
 }

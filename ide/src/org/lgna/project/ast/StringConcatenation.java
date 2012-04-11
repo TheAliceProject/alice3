@@ -70,10 +70,10 @@ public class StringConcatenation extends Expression {
 		return JavaType.getInstance( String.class );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		NodeUtilities.safeAppendRepr( rv, this.leftOperand.getValue(), locale );
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		NodeUtilities.safeAppendRepr( rv, this.leftOperand.getValue() );
 		rv.append( " + " );
-		NodeUtilities.safeAppendRepr( rv, this.rightOperand.getValue(), locale );
+		NodeUtilities.safeAppendRepr( rv, this.rightOperand.getValue() );
 		return rv;
 	}
 }

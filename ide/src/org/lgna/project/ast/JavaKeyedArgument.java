@@ -74,9 +74,9 @@ public class JavaKeyedArgument extends AbstractArgument {
 		return parameterType.getComponentType();
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		super.appendRepr( rv, locale );
-		NodeUtilities.safeAppendRepr( rv, this.getKeyMethod(), locale );
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		NodeUtilities.safeAppendRepr( rv, this.getKeyMethod() );
 		return rv;
 	}
 }

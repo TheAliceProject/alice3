@@ -98,9 +98,9 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		org.lgna.project.ast.AbstractStatementWithBody original = this.getModel().getOriginal();
 		rv.append( "convert:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, original, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, original);
 		rv.append( " --> " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, replacement, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, replacement);
 		return rv;
 	}
 }

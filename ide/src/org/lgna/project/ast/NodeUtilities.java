@@ -49,9 +49,9 @@ public class NodeUtilities {
 	private NodeUtilities() {
 		throw new AssertionError();
 	}
-	public static StringBuilder safeAppendRepr( StringBuilder rv, Node node, java.util.Locale locale ) {
+	public static StringBuilder safeAppendRepr( StringBuilder rv, Node node ) {
 		if( node instanceof AbstractNode ) {
-			((AbstractNode)node).appendRepr( rv, locale );
+			((AbstractNode)node).appendRepr( rv );
 		} else {
 			//todo?
 			rv.append( node );

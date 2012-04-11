@@ -68,7 +68,7 @@ public enum UriCodec implements org.lgna.croquet.ItemCodec< java.net.URI > {
 			binaryEncoder.encode( false );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, java.net.URI value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, java.net.URI value) {
 		if( value != null ) {
 			rv.append( value.toString() );
 		} else {

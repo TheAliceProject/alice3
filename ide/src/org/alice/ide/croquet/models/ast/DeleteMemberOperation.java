@@ -129,12 +129,12 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 		this.member = retargeter.retarget( this.member );
 		this.declaringType = retargeter.retarget( this.declaringType );
 	}
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
 		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 	}
 	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "delete: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member, locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member);
 		return rv;
 	}
 	

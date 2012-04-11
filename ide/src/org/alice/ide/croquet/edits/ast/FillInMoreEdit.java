@@ -116,11 +116,11 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		org.lgna.project.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );
-			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), locale );
+			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue() );
 			rv.append( " " );
 			final int N = nextMethodInvocation.requiredArguments.size(); 
 			org.lgna.project.ast.AbstractArgument argument = nextMethodInvocation.requiredArguments.get( N-1 );
-			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, argument, locale );
+			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, argument );
 		}
 		return rv;
 	}

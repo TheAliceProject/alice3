@@ -93,8 +93,8 @@ public abstract class BooleanState extends State< Boolean > {
 			return rv;
 		}
 		@Override
-		protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, UserInformation userInformation) {
-			return this.booleanState.updateTutorialStepText( rv, step, edit, userInformation );
+		protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit) {
+			return this.booleanState.updateTutorialStepText( rv, step, edit );
 		}
 	}
 	private InternalMenuItemPrepModel menuPrepModel;
@@ -181,7 +181,7 @@ public abstract class BooleanState extends State< Boolean > {
 		binaryEncoder.encode( value );
 	}
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, Boolean value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, Boolean value ) {
 		rv.append( value );
 		return rv;
 	}

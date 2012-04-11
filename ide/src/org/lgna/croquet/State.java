@@ -60,7 +60,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	public abstract Class<T> getItemClass();
 	public abstract T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	public abstract void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
-	public abstract StringBuilder appendRepresentation( StringBuilder rv, T value, java.util.Locale locale );
+	public abstract StringBuilder appendRepresentation( StringBuilder rv, T value );
 
 	public org.lgna.croquet.StateContext< T > createContext() {
 		return new StateContext< T >( this );
@@ -123,11 +123,11 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	@Override
-	protected final StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected final StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 			org.lgna.croquet.edits.StateEdit< T > stateEdit = (org.lgna.croquet.edits.StateEdit< T >)edit;
 			rv.append( " <strong>" );
-			this.appendRepresentation( rv, stateEdit.getNextValue(), java.util.Locale.getDefault() );
+			this.appendRepresentation( rv, stateEdit.getNextValue() );
 			rv.append( "</strong>." );
 		} else {
 			rv.append( "UNKNOWN EDIT: " + edit );

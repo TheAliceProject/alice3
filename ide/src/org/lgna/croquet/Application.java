@@ -181,6 +181,10 @@ public abstract class Application {
 		}
 	}
 
+	public java.util.Locale getLocale() {
+		return javax.swing.JComponent.getDefaultLocale();
+	}
+
 	protected abstract Operation getAboutOperation();
 	protected abstract Operation getPreferencesOperation();
 

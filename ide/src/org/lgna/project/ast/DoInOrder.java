@@ -53,8 +53,8 @@ public class DoInOrder extends AbstractStatementWithBody {
 		super( body );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		rv.append( "do in order" );
-		return super.appendRepr( rv, locale );
+		return super.appendRepr( rv );
 	}
 }

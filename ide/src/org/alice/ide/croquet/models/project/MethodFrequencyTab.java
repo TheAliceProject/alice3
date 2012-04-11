@@ -50,7 +50,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
@@ -181,7 +180,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			public void encodeValue( BinaryEncoder binaryEncoder, UserMethod value ) {
 			}
 
-			public StringBuilder appendRepresentation( StringBuilder rv, UserMethod value, Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, UserMethod value ) {
 				return rv.append( value.getName() );
 			}
 		} );

@@ -60,8 +60,7 @@ public abstract class Note<S extends org.lgna.croquet.history.Step<?>> extends o
 	protected String getText() {
 		org.lgna.croquet.history.Transaction transaction = this.step.getParent();
 		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
-		org.lgna.croquet.UserInformation userInformation = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getUserInformation();
-		return this.step.getTutorialNoteText( edit, userInformation );
+		return this.step.getTutorialNoteText( edit );
 	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {

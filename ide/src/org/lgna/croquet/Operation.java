@@ -91,7 +91,7 @@ public abstract class Operation extends AbstractCompletionModel {
 //	}
 //
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		rv.append( " <strong>" );
 		rv.append( this.getName() );
 		rv.append( "</strong>" );
@@ -261,8 +261,8 @@ public abstract class Operation extends AbstractCompletionModel {
 			return rv;
 		}
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-			return this.operation.updateTutorialStepText( rv, step, edit, userInformation );
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+			return this.operation.updateTutorialStepText( rv, step, edit );
 		}
 	}
 

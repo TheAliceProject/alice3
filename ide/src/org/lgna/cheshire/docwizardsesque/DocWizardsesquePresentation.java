@@ -43,7 +43,6 @@
 
 package org.lgna.cheshire.docwizardsesque;
 
-import org.lgna.cheshire.stencil.StencilsPresentation;
 
 /**
  * @author Dennis Cosgrove
@@ -77,7 +76,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 							if( replacementAcceptability.isAcceptable() ) {
 								if( replacementAcceptability.isDeviation() ) {
 									StringBuilder sbToolTip = new StringBuilder();
-									sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( StencilsPresentation.getInstance().getUserInformation() ) );
+									sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( ) );
 									sbToolTip.append( ": " );
 									sbToolTip.append( replacementAcceptability.getDeviationDescription() );
 									jTree.setToolTipText( sbToolTip.toString() );
@@ -92,14 +91,13 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		}
 	};
 	public DocWizardsesquePresentation( 
-			org.lgna.croquet.UserInformation userInformation, 
-			org.lgna.croquet.history.TransactionHistory originalTransactionHistory,
+			org.lgna.croquet.history.TransactionHistory originalTransactionHistory, 
 			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess
 	) {
-		super( userInformation, org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
+		super( org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		
 		this.frame.setTitle( "DocWizardsesque" );
 		this.frame.setLocation( 0, 0 );
@@ -176,7 +174,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		if( group == DocWizardsesquePresentation.IMPLEMENTATION_GROUP ) {
 			//pass
 		} else {
-			org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit, this.getUserInformation() );
+			org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidateEdit );
 			if( replacementAcceptability.isAcceptable() ) {
 				transactionChapter.setReplacementAcceptability( replacementAcceptability );
 				this.incrementSelectedIndex();

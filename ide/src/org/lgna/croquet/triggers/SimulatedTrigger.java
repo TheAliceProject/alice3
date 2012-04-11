@@ -59,7 +59,7 @@ public class SimulatedTrigger extends AbstractTrigger {
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		//todo
 		return "SIMULATED";
 	}

@@ -49,6 +49,6 @@ package org.lgna.croquet.triggers;
 public interface Trigger extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController();
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
-	public String getNoteText( java.util.Locale locale );
+	public String getNoteText();
 	public void retarget( org.lgna.croquet.Retargeter retargeter );
 }

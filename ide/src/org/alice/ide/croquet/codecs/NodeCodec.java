@@ -80,8 +80,8 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 			binaryEncoder.encode( value.getId() );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, value, locale );
+	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, value );
 		return rv;
 	}
 }

@@ -163,7 +163,7 @@ public class Clipboard extends org.lgna.croquet.components.DragComponent< javax.
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		return this;
 	}
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return "clipboard";
 	}
 	public org.lgna.croquet.components.JComponent< ? > getViewController() {

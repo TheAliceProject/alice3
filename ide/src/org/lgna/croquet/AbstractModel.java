@@ -113,16 +113,16 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation );
+	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit );
 //	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 //		rv.append( "TODO: override updateTutorialStepText " );
 //		rv.append( this );
 //		return rv;
 //	}
-	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
+	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( triggerText );
-		this.updateTutorialStepText( sb, step, edit, userInformation );
+		this.updateTutorialStepText( sb, step, edit );
 		return sb.toString();
 	}
 }
