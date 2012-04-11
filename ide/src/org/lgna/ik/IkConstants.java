@@ -15,7 +15,7 @@ public class IkConstants {
 	public static final double SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO = 0.08;
 	
 	//for damped
-	public static final double SVD_DAMPING_CONSTANT = .08;
+	public static final double SVD_DAMPING_CONSTANT = .1;
 
 	//for scaled damped (this is speed per unit time rather than actual change. that's why it's larger than pi/4)
 	public static final double SDLS_MAX_ANGULAR_CHANGE = 2 * Math.PI;
@@ -34,7 +34,5 @@ public class IkConstants {
 	public static final double MAX_PSEUDO_INVERSE_ERROR_BEFORE_HALVING_DELTA_TIME = 1e-40; //not good, dependant on the situation...
 
 	public static final double NULLSPACE_DEFAULT_POSE_MOTION_SCALE = 1;
-	
-	public static boolean IGNORE_IK_GOTO_DEFAULT_POSE = false;
-	
+		
 }

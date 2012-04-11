@@ -268,7 +268,7 @@ class IkProgram extends Program {
 		ikEnforcer = new org.lgna.ik.enforcer.JointedModelIkEnforcer(getSubjectImp());
 		ikEnforcer.addFullBodyDefaultPoseUsingCurrentPose(); 
 
-		//the old bad weights
+		//I'm setting joint weights here
 		ikEnforcer.setDefaultJointWeight(1);
 		ikEnforcer.setJointWeight(org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 2);
 		
