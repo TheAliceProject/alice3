@@ -246,16 +246,17 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		updateBugReportSubmissionTitle( sb );
 		return sb.toString();
 	}
+
 	@Override
 	public String getApplicationName() {
 		return "Alice";
 	}
 	@Override
-	protected String getVersionText() {
+	public String getVersionText() {
 		return org.lgna.project.Version.getCurrentVersionText();
 	}
 	@Override
-	protected String getVersionAdornment() {
+	public String getVersionAdornment() {
 		return " 3 BETA ";
 	}
 
@@ -507,7 +508,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	private static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class< E > cls ) {
+	protected static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class< E > cls ) {
 		org.lgna.project.ast.Node ancestor = node.getParent();
 		while( ancestor != null ) {
 			if( cls.isAssignableFrom( ancestor.getClass() ) ) {

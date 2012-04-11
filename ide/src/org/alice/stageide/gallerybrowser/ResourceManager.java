@@ -153,7 +153,7 @@ public class ResourceManager {
 		return getSmallIconFor( getLargeIconForGalleryClassName( className ) );
 	}
 
-	private static java.net.URL getLargeIconResourceForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+	public static java.net.URL getLargeIconResourceForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		String className;
 		if( type != null ) {
 			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();

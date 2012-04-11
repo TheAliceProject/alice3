@@ -138,7 +138,7 @@ public abstract class VirtualMachine {
 		this.mapAnonymousClsToAdapterCls.put( anonymousCls, adapterCls );
 	}
 
-	private UserInstance createInstanceFromUserConstructor( org.lgna.project.ast.NamedUserConstructor constructor, Object[] arguments ) {
+	protected UserInstance createInstanceFromUserConstructor( org.lgna.project.ast.NamedUserConstructor constructor, Object[] arguments ) {
 		return UserInstance.createInstance( this, constructor, arguments );
 	}
 	private Object createInstanceFromConstructorDeclaredInJava( org.lgna.project.ast.JavaConstructor constructor, Object[] arguments ) {
