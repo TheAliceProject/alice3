@@ -43,6 +43,8 @@
 
 package org.lgna.ik.solver;
 
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -276,6 +278,10 @@ public class Bone {
 	public edu.cmu.cs.dennisc.math.Point3 getAnchorPosition() {
 		// this returns the curren anchor position that was just fed to this from the world
 		return anchor;
+	}
+	
+	public OrthogonalMatrix3x3 getCurrentOrientationFromJoint() {
+		return getA().getLocalOrientation();
 	}
 	
 	public void updateStateFromJoint() {

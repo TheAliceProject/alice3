@@ -92,7 +92,7 @@ public class IkScene extends Scene {
 
 	private void performCustomSetup() {
 		//if you want the skeleton visualization to be co-located
-		//this.ogre.setOpacity( 0.25 );
+//		this.ogre.setOpacity( 0.25 );
 		
 		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
 		impl.showVisualization();

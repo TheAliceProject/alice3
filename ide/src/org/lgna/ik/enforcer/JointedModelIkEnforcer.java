@@ -12,6 +12,8 @@ import org.lgna.ik.solver.Bone;
 import org.lgna.ik.solver.Bone.Axis;
 import org.lgna.ik.solver.Chain;
 import org.lgna.ik.solver.Solver.JacobianAndInverse;
+import org.lgna.story.implementation.AsSeenBy;
+import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
@@ -299,10 +301,10 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 			//should calculate the error of the jacobian for the time left
 			double error = solver.calculatePseudoInverseErrorForTime(jacobianAndInverse, deltaTimeAttemptingToAdvance);
 			//while the error is too much, half the time and recalculate
-			System.out.println("initerror: " + error);
+//			System.out.println("initerror: " + error);
 			while(Math.abs(error) > maxPseudoInverseErrorBeforeHalvingDeltaTime && deltaTimeAttemptingToAdvance * .5 > minDeltaTime) {
-				System.out.println("error: " + error + " abserror: "+ Math.abs(error) + " maxerror: " + maxPseudoInverseErrorBeforeHalvingDeltaTime);
-				System.out.println("scaled down " + (Math.abs(error) > maxPseudoInverseErrorBeforeHalvingDeltaTime) + " " + (Math.abs(error) - maxPseudoInverseErrorBeforeHalvingDeltaTime));
+//				System.out.println("error: " + error + " abserror: "+ Math.abs(error) + " maxerror: " + maxPseudoInverseErrorBeforeHalvingDeltaTime);
+//				System.out.println("scaled down " + (Math.abs(error) > maxPseudoInverseErrorBeforeHalvingDeltaTime) + " " + (Math.abs(error) - maxPseudoInverseErrorBeforeHalvingDeltaTime));
 				deltaTimeAttemptingToAdvance *= .5;
 				error = solver.calculatePseudoInverseErrorForTime(jacobianAndInverse, deltaTimeAttemptingToAdvance);
 			}
@@ -310,10 +312,14 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 			//move the joints for that time
 			Map<Bone, Map<Axis, Double>> jointSpeedsToUse = solver.calculateAngleSpeeds(jacobianAndInverse);
 			
+			if(currentFullBodyDefaultPose != null) {
+				solver.addAngleSpeedsTowardsDefaultPoseInNullSpace(currentFullBodyDefaultPose, jointSpeedsToUse, jacobianAndInverse);
+			}
 			moveJointsWithSpeedsForTime(jointSpeedsToUse, deltaTimeAttemptingToAdvance);
 			
+			
 			if(!EpsilonUtilities.isWithinReasonableEpsilon(deltaTimeAttemptingToAdvance, totalDeltaTimeToFill)) {
-				System.out.printf("advanced %f.1 only\n", deltaTimeAttemptingToAdvance / totalDeltaTimeToFill);
+//				System.out.printf("advanced %f.1 only\n", deltaTimeAttemptingToAdvance / totalDeltaTimeToFill);
 //				System.out.println("error: " + error + " abserror: "+ Math.abs(error) + " maxerror: " + maxError);
 			}
 			
@@ -418,6 +424,22 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 				advanceTimeStaticallyForFixedDuration(deltaTime);
 			}
 		}
+	}
+
+	Map<JointImp, OrthogonalMatrix3x3> currentFullBodyDefaultPose;
+	
+	//TODO there should be options to add default poses for specific chains as well
+	public void addFullBodyDefaultPoseUsingCurrentPose() {
+		//normally, chains tell their bones to update their state from their implementations
+		//what we want to do is to go to the jointedmodelimp and get all the values that can later be recalled using chains by solver
+			//first implement the part where you pull defaults for chains. that will determine how I get it. 
+		HashMap<JointImp, OrthogonalMatrix3x3> fullBodyDefaultPose = new HashMap<JointImp, OrthogonalMatrix3x3>();
+		
+		Iterable<JointImp> joints = jointedModelImp.getJoints();
+		for(JointImp jointImp: joints) {
+			fullBodyDefaultPose.put(jointImp, new OrthogonalMatrix3x3(jointImp.getLocalOrientation()));
+		}
+		currentFullBodyDefaultPose = fullBodyDefaultPose;
 	}
 
 }

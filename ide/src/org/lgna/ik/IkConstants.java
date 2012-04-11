@@ -33,4 +33,8 @@ public class IkConstants {
 	public static final double MAX_ANGULAR_SPEED_FOR_EE = Double.POSITIVE_INFINITY;
 	public static final double MAX_PSEUDO_INVERSE_ERROR_BEFORE_HALVING_DELTA_TIME = 1e-40; //not good, dependant on the situation...
 
+	public static final double NULLSPACE_DEFAULT_POSE_MOTION_SCALE = 1;
+	
+	public static boolean IGNORE_IK_GOTO_DEFAULT_POSE = false;
+	
 }

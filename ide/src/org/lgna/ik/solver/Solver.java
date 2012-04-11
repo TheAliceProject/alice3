@@ -46,16 +46,18 @@ package org.lgna.ik.solver;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.management.RuntimeErrorException;
+import java.util.Set;
 
 import org.lgna.ik.IkConstants;
 import org.lgna.ik.IkConstants.JacobianInversionMethod;
 import org.lgna.ik.solver.Bone.Axis;
+import org.lgna.story.implementation.JointImp;
 
 import Jama.Matrix;
 
+import edu.cmu.cs.dennisc.math.AxisRotation;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
@@ -75,7 +77,7 @@ public class Solver {
 	
 	public class JacobianAndInverse {
 		private final Matrix jacobian;
-		private final Matrix inverseJacobian;
+		private final Matrix inverseJacobian; //rather, pseudoinverse
 
 		public JacobianAndInverse(Matrix jacobian, Matrix inverseJacobian) {
 			this.jacobian = jacobian;
@@ -168,6 +170,22 @@ public class Solver {
 			
 			return calculateAngleSpeeds(jacobianAndInverse);
 		}
+	}
+	
+	public Map<Bone, Map<Axis, Double>> projectToNullSpace(JacobianAndInverse jacobianAndInverse, Map<Bone, Map<Axis, Double>> desiredJointSpeeds) {
+		//make sure you use the correct order, the order that you use to go from jama matrix to maps
+		
+		Matrix j1j = jacobianAndInverse.getInverseJacobian().times(jacobianAndInverse.getJacobian());
+		
+		Matrix projector = Matrix.identity(j1j.getRowDimension(), j1j.getColumnDimension()).minus(j1j);
+		
+		//put the map into the column vector
+		Matrix desiredJointSpeedsVector = createThetadotFromBoneSpeeds(desiredJointSpeeds, j1j.getColumnDimension());
+		
+		//multiply
+		Matrix projectedJointSpeedsVector = projector.times(desiredJointSpeedsVector);
+		
+		return createBoneSpeedsFromThetadot(projectedJointSpeedsVector);
 	}
 	
 	private Map<Bone, Map<Axis, Double>> calculateAngleSpeedsForSdls() {
@@ -356,7 +374,9 @@ public class Solver {
 		return createBoneSpeedsFromThetadot(mThetadot);
 	}
 	public Map<Bone, Map<Axis, Double>> calculateAngleSpeeds(JacobianAndInverse jacobianAndInverse) {
-		return calculateAngleSpeeds(jacobianAndInverse.getInverseJacobian());
+		Map<Bone, Map<Axis, Double>> angleSpeeds = calculateAngleSpeeds(jacobianAndInverse.getInverseJacobian());
+		
+		return angleSpeeds;
 	}
 	
 	private Map<Bone, Map<Axis, Double>> calculateAngleSpeeds(Jama.Matrix ji) {
@@ -364,6 +384,75 @@ public class Solver {
 		Jama.Matrix mThetadot = ji.times(pDot);
 		
 		return createBoneSpeedsFromThetadot(mThetadot);
+	}
+
+	public void addAngleSpeedsTowardsDefaultPoseInNullSpace(Map<JointImp, OrthogonalMatrix3x3> defaultPose, Map<Bone, Map<Axis, Double>> angleSpeeds, JacobianAndInverse jacobianAndInverse) {
+		Map<Bone, Map<Axis, Double>> additionalSpeeds = new HashMap<Bone, Map<Axis,Double>>();
+		
+		for(Entry<Bone, Map<Axis, Double>> ae: angleSpeeds.entrySet()) {
+			Bone bone = ae.getKey();
+			Map<Axis, Double> axisToSpeed = ae.getValue();
+			
+			Map<Axis, Double> additionalSpeedsForBone = new HashMap<Axis, Double>();
+			additionalSpeeds.put(bone, additionalSpeedsForBone);
+			
+			OrthogonalMatrix3x3 desiredOrientation = defaultPose.get(bone.getA());
+			if(desiredOrientation == null) continue;
+			
+			OrthogonalMatrix3x3 currentOrientation = bone.getCurrentOrientationFromJoint();
+			
+			OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3(currentOrientation);
+			m.invert();
+			//tried the other way around, didn't matter. 
+			m.setToMultiplication(m, desiredOrientation);
+			OrthogonalMatrix3x3 rotation = m;
+			
+			AxisRotation axisRotation = rotation.createAxisRotation();
+			
+			
+			double scale = IkConstants.NULLSPACE_DEFAULT_POSE_MOTION_SCALE;
+			
+			double amount = axisRotation.angle.getAsRadians() * scale;
+			
+			
+			Vector3 rotationAxis = axisRotation.axis;
+			
+			//project rotation axis on the three axes. then scale with amount and add to them. 
+				//I could have projected the scaled vector but it's the same thing. I guess that requires less computation so I'll do that instead.
+			
+			Vector3 rotationVector = Vector3.createMultiplication(rotationAxis, amount);
+			
+			//project this on the axes, later project the whole thing on the nullspace and then add the result to angleSpeeds.
+			for(Entry<Axis, Double> e: axisToSpeed.entrySet()) {
+				Axis axis = e.getKey();
+				
+				Vector3 localAxis = axis.getLocalAxis();
+				
+				assert !additionalSpeeds.containsKey(axis);
+				
+				double value = Vector3.calculateDotProduct(rotationVector, localAxis);
+				
+				additionalSpeedsForBone.put(axis, value);
+			}
+		}
+		
+		//we know that the rest from here work. it's what's above that messes things up. 
+		//project the whole thing on the nullspace and then add the result to angleSpeeds.
+		Map<Bone, Map<Axis, Double>> projectedExtraThetaDot;
+		projectedExtraThetaDot = projectToNullSpace(jacobianAndInverse, additionalSpeeds);
+		
+		for(Entry<Bone, Map<Axis, Double>> ae: projectedExtraThetaDot.entrySet()) {
+			Bone bone = ae.getKey();
+			Map<Axis, Double> axisToAdditionalSpeed = ae.getValue();
+			
+			Map<Axis, Double> axisToCurrentSpeed = angleSpeeds.get(bone);
+
+			for(Entry<Axis, Double> e: axisToAdditionalSpeed.entrySet()) {
+				Axis axis = e.getKey();
+				
+				axisToCurrentSpeed.put(axis, axisToCurrentSpeed.get(axis) + e.getValue());
+			}
+		}
 	}
 	
 	private Map<Bone, Map<Axis, Double>> createBoneSpeedsFromThetadot(Jama.Matrix mThetadot) {
@@ -388,6 +477,30 @@ public class Solver {
 			}
 		}
 		return boneSpeeds;
+	}
+	
+	private Jama.Matrix createThetadotFromBoneSpeeds(Map<Bone, Map<Axis, Double>> boneSpeeds, int sizeHelper) {
+		Jama.Matrix mThetadot = new Matrix(sizeHelper, 1);
+		
+		int row = 0;
+		for(Entry<Bone, Map<Axis, Vector3[]>> jce: jacobianColumns.entrySet()) {
+			Bone bone = jce.getKey();
+			Map<Axis, Vector3[]> columnsForBone = jce.getValue();
+			
+			Map<Axis, Double> axisSpeeds = boneSpeeds.get(bone);
+			
+			for(Entry<Axis, Vector3[]> e: columnsForBone.entrySet()) {
+				Axis axis = e.getKey();
+				
+				mThetadot.set(row, 0, axisSpeeds.get(axis));
+				
+				++row;
+			}
+		}
+		
+		assert row == sizeHelper;
+		
+		return mThetadot;
 	}
 	
 	private void prepareConstraints() {
@@ -555,7 +668,7 @@ public class Solver {
 		int n = mj.getColumnDimension();
 		if(m < n) {
 			transposed = true;
-			System.out.println("transposed!");
+//			System.out.println("transposed!");
 		} 
 		
 		if(transposed) {

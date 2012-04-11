@@ -266,7 +266,9 @@ class IkProgram extends Program {
 		
 //		solver = new org.lgna.ik.solver.Solver();
 		ikEnforcer = new org.lgna.ik.enforcer.JointedModelIkEnforcer(getSubjectImp());
-		
+		ikEnforcer.addFullBodyDefaultPoseUsingCurrentPose(); 
+
+		//the old bad weights
 //		ikEnforcer.setDefaultJointWeight(0.1);
 //		ikEnforcer.setJointWeight(org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 1);
 		
@@ -333,9 +335,10 @@ class IkProgram extends Program {
 				}
 			}
 		};
-		calculateThread.start();
 		
 		this.handleChainChanged();
+		
+		calculateThread.start();
 	}
 
 	private void handleBoneChanged() {
