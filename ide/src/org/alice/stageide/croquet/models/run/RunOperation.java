@@ -94,9 +94,13 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		new org.lgna.common.ComponentThread( new ProgramRunnable( awtContainer ), RunOperation.this.getName() ).start();
 	}
 	private java.awt.Container stopProgram() {
-		java.awt.Container rv = this.programContext.getContainer(); 
-		this.programContext.cleanUpProgram();
-		this.programContext = null;
+		if( this.programContext != null ) {
+			java.awt.Container rv = this.programContext.getContainer(); 
+			this.programContext.cleanUpProgram();
+			this.programContext = null;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this );
+		}
 		return rv;
 	}
 	private class RestartAction extends javax.swing.AbstractAction {
