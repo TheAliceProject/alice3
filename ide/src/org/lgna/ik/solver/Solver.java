@@ -50,6 +50,7 @@ import java.util.Set;
 
 import org.lgna.ik.IkConstants;
 import org.lgna.ik.IkConstants.JacobianInversionMethod;
+import org.lgna.ik.enforcer.Weights;
 import org.lgna.ik.solver.Bone.Axis;
 import org.lgna.story.implementation.JointImp;
 
@@ -640,6 +641,9 @@ public class Solver {
 		int column = 0;
 		
 		for(Entry<Bone, Map<Axis, Vector3[]>> jce: jacobianColumns.entrySet()) {
+			Bone bone = jce.getKey();
+			double weight = weights.getEffectiveJointWeight(bone.getA().getJointId());
+			
 			Map<Axis, Vector3[]> columnsForBone = jce.getValue();
 			
 			for(Entry<Axis, Vector3[]> e: columnsForBone.entrySet()) {
@@ -647,9 +651,9 @@ public class Solver {
 
 				int row = 0;
 				for(edu.cmu.cs.dennisc.math.Vector3 contribution: contributions) {
-					j.set(row, column, contribution.x);
-					j.set(row + 1, column, contribution.y);
-					j.set(row + 2, column, contribution.z);
+					j.set(row, column, contribution.x * weight);
+					j.set(row + 1, column, contribution.y * weight);
+					j.set(row + 2, column, contribution.z * weight);
 					
 					row += 3;
 				}
@@ -730,6 +734,11 @@ public class Solver {
 	public void setDesiredEndEffectorAngularVelocity(Chain chain, edu.cmu.cs.dennisc.math.Vector3 angVelToUse) {
 //		chain.setDesiredEndEffectorAngularVelocity(angVelToUse);
 		desiredAngularVelocities.put(chain, angVelToUse);
+	}
+	
+	private Weights weights;
+	public void setJointWeights(Weights weights) {
+		this.weights = weights;
 	}
 
 }

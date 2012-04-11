@@ -28,12 +28,14 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 	
 	public JointedModelIkEnforcer(org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp) {
 		this.jointedModelImp = jointedModelImp;
+		solver.setJointWeights(weights);
 	}
 
 	Map<JointId, Map<JointId, Chain> > anchors = new HashMap<JointId, Map<JointId,Chain>>();
 	Map<JointId, Map<JointId, Chain> > chainsForEes = new HashMap<JointId, Map<JointId,Chain>>();
-	Map<JointId, Double> jointWeights = new HashMap<JointId, Double>();
-	double defaultJointWeight = 1.0;
+	
+	//this could also be by axis. actually should be... later. 
+	Weights weights = new Weights();
 	
 	class DesiredPositionParameters {
 		private final JointId jointId;
@@ -104,11 +106,11 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 	
 	//can also set weights per chain, axis, etc. 
 	public void setDefaultJointWeight(double weight) {
-		defaultJointWeight = weight;
+		weights.defaultJointWeight = weight;
 	}
 	
 	public void setJointWeight(JointId jointId, double weight) {
-		jointWeights.put(jointId, weight);
+		weights.setJointWeight(jointId, weight);
 	}
 	
 	private org.lgna.ik.solver.Chain createNewChain(org.lgna.story.resources.JointId baseId, org.lgna.story.resources.JointId eeId) {
@@ -377,12 +379,8 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 			
 			JointId jointId = bone.getA().getJointId();
 			
-			double weight;
-			if(!jointWeights.containsKey(jointId)) {
-				weight = defaultJointWeight;
-			} else {
-				weight = jointWeights.get(jointId);
-			}
+			double weight = getEffectiveWeightForJoint(jointId);
+			
 			
 			if(doThreeSeparateRotationsWhichIsNotDesired) {
 				for(Entry<Axis, Double> ea: jointSpeedsForBone.entrySet()) {
@@ -408,6 +406,10 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 				
 			}
 		}
+	}
+
+	private double getEffectiveWeightForJoint(JointId jointId) {
+		return weights.getEffectiveJointWeight(jointId);
 	}
 	
 	public Chain getChainForPrinting(JointId anchorId, JointId eeId) {

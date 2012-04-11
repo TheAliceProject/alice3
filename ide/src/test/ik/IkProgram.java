@@ -269,8 +269,8 @@ class IkProgram extends Program {
 		ikEnforcer.addFullBodyDefaultPoseUsingCurrentPose(); 
 
 		//the old bad weights
-//		ikEnforcer.setDefaultJointWeight(0.1);
-//		ikEnforcer.setJointWeight(org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 1);
+		ikEnforcer.setDefaultJointWeight(1);
+		ikEnforcer.setJointWeight(org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 2);
 		
 		//using ikEnforcer's methods rather than dealing with chains.
 		
