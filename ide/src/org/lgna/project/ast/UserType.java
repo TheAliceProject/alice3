@@ -83,7 +83,7 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 		} else {
 			if( other instanceof UserType<?> ) {
 				UserType<?> otherUserType = (UserType<?>)other;
-				return this.isEqualToOrSubTypeOf( otherUserType );
+				return otherUserType.isEqualToOrSubTypeOf( this );
 			} else {
 				return false;
 			}
