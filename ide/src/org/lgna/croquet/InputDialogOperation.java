@@ -66,13 +66,18 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
 		rv.addComponent( okButton );
 		
-		//todo: use isCancelDesired?
-		rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
-		rv.addComponent( this.getCancelOperation().createButton() );
+		if(isCancelDesired()) {
+			rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
+			rv.addComponent( this.getCancelOperation().createButton() );
+		}
 
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		dialog.setDefaultButton( okButton );
 		return rv;
+	}
+
+	protected boolean isCancelDesired() {
+		return true;
 	}
 
 	protected abstract JComponent< ? > prologue( org.lgna.croquet.history.CompletionStep<?> step );

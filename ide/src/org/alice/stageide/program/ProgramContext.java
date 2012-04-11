@@ -56,8 +56,8 @@ public abstract class ProgramContext {
 		}
 	}
 
-	private final org.lgna.project.virtualmachine.UserInstance programInstance;
-	private final org.lgna.project.virtualmachine.VirtualMachine vm;
+	protected org.lgna.project.virtualmachine.UserInstance programInstance;
+	protected final org.lgna.project.virtualmachine.VirtualMachine vm;
 
 	public ProgramContext( org.lgna.project.ast.NamedUserType programType ) {
 		assert programType != null;

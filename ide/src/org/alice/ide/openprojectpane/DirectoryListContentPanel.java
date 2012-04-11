@@ -46,7 +46,7 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryListContentPanel extends ListContentPanel< org.alice.ide.openprojectpane.models.DirectoryUriSelectionState > {
+public class DirectoryListContentPanel extends ListContentPanel< org.alice.ide.openprojectpane.models.DirectoryUriSelectionState > {
 	public DirectoryListContentPanel( org.alice.ide.croquet.models.openproject.ContentTab< ? > composite, org.alice.ide.openprojectpane.models.DirectoryUriSelectionState state ) {
 		super( composite, state );
 	}
