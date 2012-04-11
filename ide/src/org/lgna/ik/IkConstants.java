@@ -5,10 +5,10 @@ public class IkConstants {
 	public static enum JacobianInversionMethod {
 		CLAMPED, 
 		DAMPED, 
-		SCALED_DAMPED, //SDLS
+		SCALED_DAMPED, //SDLS. not good for orientation constraints. 
 	}
 	
-	public static final JacobianInversionMethod JACOBIAN_INVERSION_METHOD = JacobianInversionMethod.SCALED_DAMPED;
+	public static final JacobianInversionMethod JACOBIAN_INVERSION_METHOD = JacobianInversionMethod.DAMPED;
 	
 	//	public static final double SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO = .1;
 	//for clamped
@@ -17,7 +17,7 @@ public class IkConstants {
 	//for damped
 	public static final double SVD_DAMPING_CONSTANT = .08;
 
-	//for scaled damped
+	//for scaled damped (this is speed per unit time rather than actual change. that's why it's larger than pi/4)
 	public static final double SDLS_MAX_ANGULAR_CHANGE = 2 * Math.PI;
 	
 	//for clamped and damped
