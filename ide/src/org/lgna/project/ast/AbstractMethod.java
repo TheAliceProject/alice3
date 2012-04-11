@@ -53,7 +53,7 @@ public abstract class AbstractMethod extends AbstractCode implements Method {
 	public abstract boolean isNative();
 	public abstract boolean isSynchronized();
 	public abstract boolean isStrictFloatingPoint();
-	
+
 	public boolean isOverride() {
 		java.util.ArrayList< ? extends AbstractParameter > parameters = this.getRequiredParameters();
 		final int N = parameters.size();

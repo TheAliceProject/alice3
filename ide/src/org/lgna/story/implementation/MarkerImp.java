@@ -45,7 +45,6 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
@@ -185,10 +184,5 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 				sgAppearance.opacity.setValue( scaledValue );
 			}
 		}
-	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		double diagonal = Point3.calculateDistanceBetween(this.boundingBox.getMinimum(), this.boundingBox.getMaximum());
-		return diagonal*.5;
 	}
 }

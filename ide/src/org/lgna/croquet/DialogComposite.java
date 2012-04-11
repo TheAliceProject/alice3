@@ -51,6 +51,58 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 
 	protected static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogComposite.DIALOG_KEY" );
 
+	
+	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>> implements org.lgna.croquet.dialog.DialogOwner<V> {
+
+		private final DialogComposite<V> composite;
+		public DialogOwner( DialogComposite<V> composite ) {
+			this.composite = composite;
+		}
+		public V allocateView( org.lgna.croquet.history.Node<?> node ) {
+			return this.composite.allocateView( node );
+		}
+
+		public void releaseView( org.lgna.croquet.history.Node<?> node, V view ) {
+			this.composite.releaseView( node, view );
+		}
+
+		public String getDialogTitle( org.lgna.croquet.history.Node<?> node ) {
+			return this.composite.getDialogTitle( node );
+		}
+
+		public java.awt.Point getDesiredDialogLocation() {
+			return this.composite.getDesiredDialogLocation();
+		}
+		public void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+			this.composite.modifyPackedDialogSizeIfDesired( dialog );
+		}
+
+		public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+			return this.composite.isWindowClosingEnabled( trigger );
+		}
+
+		public void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+			this.composite.handleDialogOpened( trigger );
+		}
+
+		public void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+			this.composite.handleDialogClosed( trigger );
+		}
+
+		public void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+			this.composite.handlePreShowDialog( node );
+		}
+
+		public void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+			this.composite.handlePostHideDialog( node );
+		}
+
+		public void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
+			this.composite.handleFinally( node, dialog );
+		}
+		
+	}
+	
 	public static final class InternalOperationResolver<V extends org.lgna.croquet.components.View<?,?>> extends IndirectResolver<InternalOperation<V>,DialogComposite<V>> {
 		private InternalOperationResolver( DialogComposite<V> indirect ) {
 			super( indirect );
@@ -64,6 +116,8 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 		}
 	}
 
+	
+	
 	private static final class InternalOperation<V extends org.lgna.croquet.components.View<?,?>> extends ActionOperation {
 		private final DialogComposite<V> composite;
 
@@ -91,78 +145,7 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-			org.lgna.croquet.history.CompletionStep<?> ancestor = step.getFirstAncestorStepOfModelAssignableTo( DialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
-			org.lgna.croquet.components.Dialog ownerDialog;
-			if( ancestor != null ) {
-				ownerDialog = ancestor.getEphemeralDataFor( DIALOG_KEY );
-			} else {
-				ownerDialog = null;
-			}
-			org.lgna.croquet.components.ScreenElement owner;
-			if( ownerDialog != null ) {
-				owner = ownerDialog;
-			} else {
-				org.lgna.croquet.components.ViewController< ?, ? > viewController = trigger.getViewController();
-				if( viewController != null ) {
-					owner = viewController;
-				} else {
-					owner = Application.getActiveInstance().getFrame().getContentPanel();
-				}
-			}
-			final org.lgna.croquet.components.Dialog dialog = new org.lgna.croquet.components.Dialog( owner );
-			step.putEphemeralDataFor( DIALOG_KEY, dialog );
-
-			class DialogWindowListener implements java.awt.event.WindowListener {
-				public void windowOpened( java.awt.event.WindowEvent e ) {
-					composite.handleDialogOpened( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
-				}
-				public void windowClosing( java.awt.event.WindowEvent e ) {
-					if( composite.isWindowClosingEnabled( e ) ) {
-						dialog.setVisible( false );
-					}
-				}
-				public void windowClosed( java.awt.event.WindowEvent e ) {
-					composite.handleDialogClosed( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
-				}
-				public void windowActivated( java.awt.event.WindowEvent e ) {
-				}
-				public void windowDeactivated( java.awt.event.WindowEvent e ) {
-				}
-				public void windowDeiconified( java.awt.event.WindowEvent e ) {
-				}
-				public void windowIconified( java.awt.event.WindowEvent e ) {
-				}
-			}
-			DialogWindowListener dialogWindowListener = new DialogWindowListener();
-			dialog.addWindowListener( dialogWindowListener );
-			V view = composite.getView();
-			try {
-				dialog.getAwtComponent().setContentPane( view.getAwtComponent() );
-				dialog.pack();
-				composite.modifyPackedDialogSizeIfDesired( dialog );
-				if( ownerDialog != null ) {
-					final int OFFSET = 32;
-					java.awt.Point p = ownerDialog.getLocation();
-					dialog.setLocation( p.x + OFFSET, p.y + OFFSET );
-					//dialog.getAwtComponent().setLocationRelativeTo( ownerDialog.getAwtComponent() );
-				} else {
-					java.awt.Point location = composite.getDesiredDialogLocation();
-					if( location != null ) {
-						dialog.setLocation( location );
-					} else {
-						edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getActiveInstance().getFrame().getAwtComponent() );
-					}
-				}
-				dialog.setTitle( composite.getDialogTitle( step ) );
-				composite.handlePreShowDialog( step );
-				dialog.setVisible( true );
-				composite.handlePostHideDialog( step );
-				//this.releaseContentPane( step, dialog, contentPane );
-				dialog.removeWindowListener( dialogWindowListener );
-				dialog.getAwtComponent().dispose();
-			} finally {
-				composite.handleFinally( step, dialog );
-			}
+			org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner<V>( this.composite ), step );
 		}
 	}
 
@@ -176,11 +159,21 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 		return this.operation;
 	}
 	
+	
+	//todo
+	private V allocateView( org.lgna.croquet.history.Node<?> node ) {
+		return this.getView();
+	}
+	//todo
+	private void releaseView( org.lgna.croquet.history.Node<?> node, V view ) {
+	}
+	
+	
 	//todo: remove?
-	protected boolean isWindowClosingEnabled( java.awt.event.WindowEvent e ) {
+	protected boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 		return true;
 	}
-	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected String getDialogTitle( org.lgna.croquet.history.Node<?> node ) {
 //		String rv = this.getName();
 //		if( rv != null ) {
 //			rv = rv.replaceAll( "<[a-z]*>", "" );
@@ -202,10 +195,10 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 	}
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
 	}
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
 	}
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
 	}
 }

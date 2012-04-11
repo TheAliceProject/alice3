@@ -60,12 +60,4 @@ public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposit
 	protected org.alice.ide.declarationseditor.components.TypeEditor createView() {
 		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance();
 	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return true;
-	}
 }

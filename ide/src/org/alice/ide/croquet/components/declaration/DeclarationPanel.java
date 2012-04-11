@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
+public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< ? > > extends org.alice.ide.croquet.components.InputDialogPanelWithPreview< M > {
 //	private java.awt.Dimension isNotArraySize = null;
 //	private java.awt.Dimension isArraySize = null;
 	

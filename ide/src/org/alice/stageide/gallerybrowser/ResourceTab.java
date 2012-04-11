@@ -123,9 +123,4 @@ public class ResourceTab extends GalleryTab {
 		}
 		return new ResourceView();
 	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 }

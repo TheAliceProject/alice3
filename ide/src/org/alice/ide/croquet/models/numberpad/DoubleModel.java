@@ -61,7 +61,7 @@ public class DoubleModel extends NumberModel<org.lgna.project.ast.DoubleLiteral>
 	}
 	@Override
 	protected org.lgna.project.ast.DoubleLiteral valueOf( String s ) {
-		double d = Double.parseDouble( s );
+		double d = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );
 		if( Double.isNaN( d ) ) {
 			return null;
 		} else {

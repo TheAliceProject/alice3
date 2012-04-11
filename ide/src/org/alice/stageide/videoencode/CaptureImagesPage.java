@@ -51,13 +51,6 @@ public class CaptureImagesPage extends org.lgna.croquet.WizardPageComposite< org
 		super( java.util.UUID.fromString( "ae1152d7-4ff3-4137-b410-f83f7c089387" ) );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addComponent( new org.lgna.croquet.components.Label( "todo: image capture" ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );

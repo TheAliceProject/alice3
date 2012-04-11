@@ -214,7 +214,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
 			//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
 			final org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CompletionStep<Cascade<T>>> rtRoot = new org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CompletionStep<Cascade<T>> >( this.getCascade().getRoot() );
-			if( rtRoot.isGoodToGo() ) {
+			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
 				final org.lgna.croquet.history.PopupPrepStep prepStep = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( cascade.getRoot().getPopupPrepModel(), null );

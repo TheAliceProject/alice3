@@ -51,6 +51,13 @@ public class BrowserOperation extends org.alice.ide.operations.InconsequentialAc
 		super( id );
 		this.url = url;
 	}
+	public BrowserOperation( java.util.UUID id, java.net.URL url ) {
+		this(id, url.toString());
+	}
+	public BrowserOperation( java.util.UUID id ) {
+		super( id );
+		this.url = null;
+	}
 	@Override
 	protected void localize() {
 		this.setName( this.url );
@@ -64,5 +71,13 @@ public class BrowserOperation extends org.alice.ide.operations.InconsequentialAc
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( this.url );
 			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + this.url + "\n\nso that you may paste it into your web browser." );
 		}
+	}
+	
+	public void setUrl(java.net.URL url) {
+		this.url = url.toString();
+	}
+	
+	public String getUrlString() {
+		return this.url;
 	}
 }

@@ -401,7 +401,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			Plane planeOfRotation = new Plane(Point3.createZero(), this.rotationAxis);
+			Plane planeOfRotation = Plane.createInstance(Point3.createZero(), this.rotationAxis);
 			Point3 minPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMinimum() );
 			Point3 maxPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMaximum() );
 			double minSize = minPlanePoint.calculateMagnitude();

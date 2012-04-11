@@ -47,8 +47,11 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
 	private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.info( jScrollBar.getMinimum(), jScrollBar.getValue(), jScrollBar.getMaximum(), jScrollBar.getVisibleAmount() );
-		return jScrollBar.getMinimum() != jScrollBar.getValue() || jScrollBar.getMaximum() != jScrollBar.getVisibleAmount();
+		if( jScrollBar != null ) {
+			return jScrollBar.getMinimum() != jScrollBar.getValue() || jScrollBar.getMaximum() != jScrollBar.getVisibleAmount();
+		} else {
+			return false;
+		}
 	}
 	protected class PaintOmittingJScrollBar extends javax.swing.JScrollBar {
 		public PaintOmittingJScrollBar( int orientation ) {
@@ -56,8 +59,8 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends j
 		}
 		@Override
 		public void paint( java.awt.Graphics g ) {
-			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar();
-			if( isPaintRequiredFor( this ) || isPaintRequiredFor( otherScrollBar ) ) {
+			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
+			if( isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && isPaintRequiredFor( otherScrollBar ) ) ) {
 				super.paint( g );
 			} else {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -67,5 +70,14 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends j
 			}
 		}
 	}
-	protected abstract javax.swing.JScrollBar getOtherScrollBar();
+	protected boolean isPaintRequiredIfOtherRequiresIt() {
+		return true;
+	}
+	private javax.swing.JScrollBar getOtherScrollBar( javax.swing.JScrollBar scrollBar ) {
+		if( scrollBar.getOrientation() == javax.swing.JScrollBar.HORIZONTAL ) {
+			return this.getVerticalScrollBar();
+		} else {
+			return this.getHorizontalScrollBar();
+		}
+	}
 }

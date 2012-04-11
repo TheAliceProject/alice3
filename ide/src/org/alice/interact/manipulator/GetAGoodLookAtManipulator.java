@@ -82,11 +82,38 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		AbstractTransformable toLookAt = endInput.getClickPickTransformable();
 		if (toLookAt != null && this.camera != null)
 		{
-			org.lgna.story.Entity cameraAbstraction  = EntityImp.getInstance(this.camera).getAbstraction();
+			org.lgna.story.Entity toLookAtEntity = EntityImp.getAbstractionFromSgElement(toLookAt);
+			org.lgna.story.Entity cameraAbstraction  = EntityImp.getAbstractionFromSgElement(this.camera);
 			assert cameraAbstraction instanceof org.lgna.story.Camera;
 			org.lgna.story.Camera storytellingCamera = (org.lgna.story.Camera)cameraAbstraction;
 			
-			storytellingCamera.moveAndOrientToAGoodVantagePointOf(EntityImp.getInstance(toLookAt).getAbstraction());
+			//Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
+			int transactionCount = org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().getTransactionCount();
+			if (transactionCount > 0) {
+				org.lgna.croquet.history.Transaction lastTransaction = org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().getTransactionAt(transactionCount-1);
+				org.lgna.croquet.edits.Edit lastEdit = lastTransaction.getEdit();
+				if (lastEdit instanceof org.alice.interact.operations.GetAGoodLookAtEdit) {
+					org.alice.interact.operations.GetAGoodLookAtEdit edit = (org.alice.interact.operations.GetAGoodLookAtEdit)lastEdit;
+					if (edit.getCamera() == storytellingCamera && edit.getTarget() == toLookAtEntity) {
+						org.alice.ide.croquet.models.history.UndoOperation.getInstance().fire();
+						return;
+					}
+				}
+			}
+			
+			//Check to see if we're already at a "good look" position of the target. If so, don't do anything
+			org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation(storytellingCamera);
+			org.lgna.story.implementation.StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn(org.lgna.story.ImplementationAccessor.getImplementation(toLookAtEntity));
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
+			if (currentTransform.orientation.isWithinReasonableEpsilonOf(goalTransform.orientation) && currentTransform.translation.isWithinReasonableEpsilonOf(goalTransform.translation)) {
+				//Do nothing since we're already where we're supposed to be
+				return;
+			}
+			
+			//Actually "get a good look at" the target
+			org.alice.interact.operations.GetAGoodLookAtActionOperation lookAtOperation = new org.alice.interact.operations.GetAGoodLookAtActionOperation(org.alice.ide.IDE.PROJECT_GROUP, storytellingCamera, toLookAtEntity);
+			lookAtOperation.fire();
 		}
 	}
 

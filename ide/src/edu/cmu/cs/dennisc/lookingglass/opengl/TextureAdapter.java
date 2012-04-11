@@ -109,7 +109,7 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		return com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
 	}
 	protected abstract com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTexture );
-	public TextureBinding bindTexture( RenderContext rc ) {
+	public ForgettableBinding bindTexture( RenderContext rc ) {
 		if( this.isDirty() ) {
 			if( this.textureData != null ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "new texture data", this );

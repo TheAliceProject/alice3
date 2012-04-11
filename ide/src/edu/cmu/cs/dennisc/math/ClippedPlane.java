@@ -46,35 +46,26 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class ClippedPlane {
-	private Point3[] m_points = { 
+public final class ClippedPlane {
+	private final Point3[] points = { 
 			new Point3(), 
 			new Point3(), 
 			new Point3(),
 			new Point3() 
 	};
-	private Vector3 m_normal = new Vector3(); 
-	public ClippedPlane() {
-		setNaN();
-	}
-
+	private final Vector3 normal = new Vector3(); 
 	public ClippedPlane( Point3[] points, Vector3 normal ) {
 		set( points, normal );
 	}
-
-	public ClippedPlane( ClippedPlane other ) {
-		set( other );
-	}
-
 	private boolean isEqual( ClippedPlane other ) {
-		for( int i = 0; i < m_points.length; i++ ) {
-			if( m_points[ i ].equals( other.m_points[ i ] ) ) {
+		for( int i = 0; i < this.points.length; i++ ) {
+			if( this.points[ i ].equals( other.points[ i ] ) ) {
 				// pass
 			} else {
 				return false;
 			}
 		}
-		if( m_normal.equals( other.m_normal ) ) {
+		if( this.normal.equals( other.normal ) ) {
 			// pass
 		} else {
 			return false;
@@ -83,11 +74,21 @@ public class ClippedPlane {
 	}
 
 	@Override
+	public final int hashCode() {
+		int rv = 17;
+		for( Point3 point : this.points ) {
+			rv = 37*rv + point.hashCode();
+		}
+		rv = 37*rv + this.normal.hashCode();
+		return rv;
+	}
+
+	@Override
 	public boolean equals( Object other ) {
 		if( other == this ) {
 			return true;
 		}
-		if( other instanceof Frustum ) {
+		if( other instanceof ClippedPlane ) {
 			return isEqual( (ClippedPlane)other );
 		} else {
 			return false;
@@ -95,49 +96,37 @@ public class ClippedPlane {
 	}
 
 	public void set( Point3[] points, Vector3 normal ) {
-		for( int i = 0; i < m_points.length; i++ ) {
-			m_points[ i ].set( points[ i ] );
+		for( int i = 0; i < this.points.length; i++ ) {
+			this.points[ i ].set( points[ i ] );
 		}
-		m_normal.set( normal );
-	}
-
-	public void set( ClippedPlane other ) {
-		if( other != null ) {
-			set( other.m_points, other.m_normal );
-		} else {
-			setNaN();
-		}
+		this.normal.set( normal );
 	}
 
 	public void setNaN() {
-		for( Point3 point : m_points ) {
+		for( Point3 point : this.points ) {
 			point.setNaN();
 		}
-		m_normal.setNaN();
+		this.normal.setNaN();
 	}
 	public boolean isNaN() {
-		for( Point3 point : m_points ) {
+		for( Point3 point : this.points ) {
 			if( point.isNaN() ) {
 				return true;
 			}
 		}
-		if( m_normal.isNaN() ) {
+		if( this.normal.isNaN() ) {
 			return true;
 		}
 		return false;
 	}
 	public void transform( AbstractMatrix4x4 m ) {
-		for( Point3 point : m_points ) {
+		for( Point3 point : this.points ) {
 			m.transform( point );
 		}
-		m.transform( m_normal );
+		m.transform( this.normal );
 	}
 	
-	public Plane getPlane( Plane rv ) {
-		rv.set( m_points[ 0 ], m_normal );
-		return rv;
-	}
 	public Plane getPlane() {
-		return getPlane( new Plane() );
+		return Plane.createInstance( this.points[ 0 ], this.normal );
 	}
 }

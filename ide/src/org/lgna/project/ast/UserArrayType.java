@@ -75,6 +75,15 @@ public class UserArrayType extends AbstractType {
 	}
 	
 	@Override
+	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType other ) {
+		if( other.isArray() ) {
+			return this.getComponentType().isAssignableFrom( other.getComponentType() );
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
 	public String getName() {
 		StringBuffer sb = new StringBuffer();
 		sb.append( m_leafType.getName() );
@@ -163,6 +172,10 @@ public class UserArrayType extends AbstractType {
 	@Override
 	public AccessLevel getAccessLevel() {
 		return m_leafType.getAccessLevel();
+	}
+	@Override
+	public boolean isPrimitive() {
+		return false;
 	}
 	@Override
 	public boolean isInterface() {

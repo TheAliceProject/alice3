@@ -75,8 +75,27 @@ public abstract class CascadeMenuModel< FB > extends CascadeBlankOwner< FB, FB >
 	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode ) {
 		return this.getSelectedFillInContext( itemNode ).createValue();
 	}
+	protected boolean isBackedByIconProxy() {
+		return true;
+	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode ) {
 		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
+	}
+	@Override
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super FB,FB> node ) {
+		if( this.isBackedByIconProxy() ) {
+			return super.getMenuItemText( node );
+		} else {
+			return this.getDefaultLocalizedText();
+		}
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super FB,FB> node ) {
+		if( this.isBackedByIconProxy() ) {
+			return super.getMenuItemIcon( node );
+		} else {
+			return null;
+		}
 	}
 }

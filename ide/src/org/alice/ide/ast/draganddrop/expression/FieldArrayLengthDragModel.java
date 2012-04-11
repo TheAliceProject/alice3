@@ -68,6 +68,14 @@ public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
 		return org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE;
 	}
 	@Override
+	public boolean isPotentialStatementCreator() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		throw new AssertionError();
+	}
+	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
 	}

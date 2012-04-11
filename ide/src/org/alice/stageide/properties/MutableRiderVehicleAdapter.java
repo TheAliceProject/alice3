@@ -104,7 +104,7 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 			{
 				expressionValue = new NullLiteral();
 			}
-			this.expressionState.setValue(expressionValue);
+			this.expressionState.setValueTransactionlessly(expressionValue);
 		}
 	}
 	

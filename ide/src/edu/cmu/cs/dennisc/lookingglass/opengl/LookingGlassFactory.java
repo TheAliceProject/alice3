@@ -102,7 +102,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			
 			ule.printStackTrace();
 			
-			System.exit( 0 );
+			System.exit( -1 );
 		}
 	}
 

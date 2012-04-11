@@ -291,7 +291,7 @@ public abstract class AbstractManipulator {
 			}
 			if (originalTransformation == null )
 			{
-				System.out.println("boom");
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Ending manipulation where the original transformaion is null.");
 			}
 			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(org.alice.ide.IDE.PROJECT_GROUP, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
 			undoOperation.fire();

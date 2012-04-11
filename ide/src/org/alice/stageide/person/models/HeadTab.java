@@ -72,9 +72,4 @@ public class HeadTab extends ContentTab<org.lgna.croquet.components.RowsSpringPa
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		return rv;
 	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 };

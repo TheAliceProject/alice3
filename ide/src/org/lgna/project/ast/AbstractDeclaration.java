@@ -71,7 +71,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 		if( nameProperty != null ) {
 			return nameProperty.getValue();
 		} else {
-			throw new RuntimeException( this.toString() );
+			return null;
 		}
 	}
 	public void setName( String name ) {

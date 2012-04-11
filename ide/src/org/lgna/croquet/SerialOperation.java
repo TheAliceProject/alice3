@@ -47,7 +47,7 @@ package org.lgna.croquet;
  */
 public abstract class SerialOperation extends SingleThreadOperation {
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		for( Operation operation : this.getOperations() ) {
 			//todo?

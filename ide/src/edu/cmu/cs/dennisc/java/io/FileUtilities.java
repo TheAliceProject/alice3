@@ -268,7 +268,7 @@ public class FileUtilities {
 		return listFiles( new java.io.File( rootPath ), extension );
 	}
 
-	private static java.util.Vector< java.io.File > updateDescendants( java.util.Vector< java.io.File > rv, java.io.File dir, java.io.FileFilter fileFilter ) {
+	private static java.util.Vector< java.io.File > updateDescendants( java.util.Vector< java.io.File > rv, java.io.File dir, java.io.FileFilter fileFilter, int depth ) {
 		java.io.File[] files = dir.listFiles( fileFilter );
 		if( files != null ) {
 			for( java.io.File childFile : files ) {
@@ -276,28 +276,43 @@ public class FileUtilities {
 			}
 		}
 
-		java.io.File[] dirs = dir.listFiles( new java.io.FileFilter() {
-			public boolean accept( java.io.File file ) {
-				return file.isDirectory();
+		if (depth != 0) {
+			if (depth != -1) {
+				depth--;
 			}
-		} );
-		if( files != dirs ) {
-			for( java.io.File childDir : dirs ) {
-				updateDescendants( rv, childDir, fileFilter );
+			java.io.File[] dirs = dir.listFiles( new java.io.FileFilter() {
+				public boolean accept( java.io.File file ) {
+					return file.isDirectory();
+				}
+			} );
+			if( files != dirs ) {
+				for( java.io.File childDir : dirs ) {
+					updateDescendants( rv, childDir, fileFilter, depth );
+				}
 			}
 		}
 		return rv;
 	}
 
-	public static java.io.File[] listDescendants( java.io.File root, java.io.FileFilter fileFilter ) {
-		java.util.Vector< java.io.File > v = updateDescendants( new java.util.Vector< java.io.File >(), root, fileFilter );
+	public static java.io.File[] listDescendants( java.io.File root, java.io.FileFilter fileFilter, int depth ) {
+		java.util.Vector< java.io.File > v = updateDescendants( new java.util.Vector< java.io.File >(), root, fileFilter, depth );
 		java.io.File[] rv = new java.io.File[ v.size() ];
 		v.copyInto( rv );
 		return rv;
 	}
+	
+	public static java.io.File[] listDescendants( java.io.File root, java.io.FileFilter fileFilter ) {
+		return listDescendants(root, fileFilter, -1);
+	}
+	
 	public static java.io.File[] listDescendants( String rootPath, java.io.FileFilter fileFilter ) {
 		return listDescendants( new java.io.File( rootPath ), fileFilter );
 	}
+	
+	public static java.io.File[] listDescendants( String rootPath, java.io.FileFilter fileFilter, int depth ) {
+		return listDescendants( new java.io.File( rootPath ), fileFilter, depth );
+	}
+	
 	public static java.io.File[] listDescendants( java.io.File root, final String extension ) {
 		assert root.exists() : root;
 		assert extension != null;

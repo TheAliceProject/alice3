@@ -47,10 +47,6 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class VerticalScrollBarPaintOmittingWhenAppropriateJScrollPane extends ScrollBarPaintOmittingWhenAppropriateJScrollPane {
 	@Override
-	protected javax.swing.JScrollBar getOtherScrollBar() {
-		return this.getHorizontalScrollBar();
-	}
-	@Override
 	public javax.swing.JScrollBar createVerticalScrollBar() {
 		return new PaintOmittingJScrollBar( javax.swing.JScrollBar.VERTICAL );
 	}

@@ -73,7 +73,6 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
 private double PIXEL_DISTANCE_FACTOR = 200.0d;
 	
-	static final Plane GROUND_PLANE = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
 	private static final double MAX_DISTANCE_PER_PIXEL = .1d;
 	
 	private Point originalMousePoint;
@@ -85,7 +84,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 	private double initialDistanceToGround;
 	private double initialCameraDotVertical;
 	private double pickDistance;
-	protected Plane orthographicPickPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	protected Plane orthographicPickPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
 	protected Point3 orthographicOffsetToOrigin = null;
 	protected Point3 originalPosition = null;
 	protected Boolean hasMoved = false;
@@ -263,7 +262,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 			this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
 			this.originalMousePoint = new Point(startInput.getMouseLocation());
 			this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
-			this.orthographicPickPlane = new Plane( this.originalPosition, this.getCamera().getAxes( AsSeenBy.SCENE ).backward );
+			this.orthographicPickPlane = Plane.createInstance( this.originalPosition, this.getCamera().getAxes( AsSeenBy.SCENE ).backward );
 			
 			Ray orthoPickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			Point3 orthoPickPoint = PlaneUtilities.getPointInPlane( orthographicPickPlane, orthoPickRay );
@@ -313,7 +312,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 			pickDistance = -1;
 			Vector3 cameraForward = new Vector3(cameraTransform.orientation.backward);
 			cameraForward.multiply( -1.0d );
-			Point3 pickPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
+			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
 			if ( pickPoint != null)
 			{
 				pickDistance = Point3.calculateDistanceBetween(pickPoint, cameraTransform.translation);
@@ -340,10 +339,10 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 		double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
 		double distancePerRightPixel = MAX_DISTANCE_PER_PIXEL;
 		double distancePerLeftPixel = MAX_DISTANCE_PER_PIXEL;
-		Point3 centerPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, centerRay);
+		Point3 centerPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, centerRay);
 		if ( centerPoint != null)
 		{
-			Point3 offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneUp);
+			Point3 offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneUp);
 			if (offsetPoint != null)
 			{
 				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
@@ -352,7 +351,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 					distancePerUpPixel = pixelDistance;
 				}
 			}
-			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneDown);
+			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneDown);
 			if (offsetPoint != null)
 			{
 				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
@@ -361,7 +360,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 					distancePerDownPixel = pixelDistance;
 				}
 			}
-			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneRight);
+			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneRight);
 			if (offsetPoint != null)
 			{
 				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
@@ -370,7 +369,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 					distancePerRightPixel = pixelDistance;
 				}
 			}
-			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneLeft);
+			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneLeft);
 			if (offsetPoint != null)
 			{
 				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
@@ -394,7 +393,7 @@ private double PIXEL_DISTANCE_FACTOR = 200.0d;
 		if (!cameraFacingVector.isNaN())
 		{
 			Point3 planeLocation = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin);
-			return new Plane(planeLocation, cameraFacingVector);
+			return Plane.createInstance(planeLocation, cameraFacingVector);
 		}
 		return null;
 	}

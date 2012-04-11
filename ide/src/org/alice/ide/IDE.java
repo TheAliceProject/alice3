@@ -50,8 +50,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "624d4db6-2e1a-43c2-b1df-c0bfd6407b35" ), "EXPORT_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
-	public static final String DEBUG_DRAW_PROPERTY_KEY = "org.alice.ide.DebugDrawMode";
-
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
@@ -70,8 +68,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private final org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective > perspectiveListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective >() {
 		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
-			IDE.this.setPerspective( nextValue );
+		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, final org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
+//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//				public void run() {
+					IDE.this.setPerspective( nextValue );
+//				}
+//			} );
 		}
 	};
 
@@ -244,16 +246,17 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		updateBugReportSubmissionTitle( sb );
 		return sb.toString();
 	}
+
 	@Override
 	public String getApplicationName() {
 		return "Alice";
 	}
 	@Override
-	protected String getVersionText() {
+	public String getVersionText() {
 		return org.lgna.project.Version.getCurrentVersionText();
 	}
 	@Override
-	protected String getVersionAdornment() {
+	public String getVersionAdornment() {
 		return " 3 BETA ";
 	}
 
@@ -289,9 +292,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
 				if( sceneType != null ) {
 					final int N = sceneType.fields.size();
-					if( N > 0 ) {
-						org.lgna.project.ast.UserField field = sceneType.fields.get( N-1 );
-						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+					int i = N;
+					while( i > 0 ) {
+						i--;
+						org.lgna.project.ast.UserField field = sceneType.fields.get( i );
+						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+							org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+							break;
+						}
 					}
 				}
 			}
@@ -500,7 +508,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	private static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class< E > cls ) {
+	protected static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class< E > cls ) {
 		org.lgna.project.ast.Node ancestor = node.getParent();
 		while( ancestor != null ) {
 			if( cls.isAssignableFrom( ancestor.getClass() ) ) {

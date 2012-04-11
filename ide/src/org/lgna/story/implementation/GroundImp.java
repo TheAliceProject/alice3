@@ -691,9 +691,4 @@ public class GroundImp extends SimpleModelImp {
 	public org.lgna.story.Ground getAbstraction() {
 		return this.abstraction;
 	}
-
-	@Override
-	protected double getBoundingSphereRadius() {
-		return Double.POSITIVE_INFINITY;
-	}
 }

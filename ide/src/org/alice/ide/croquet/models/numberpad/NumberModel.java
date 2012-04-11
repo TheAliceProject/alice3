@@ -113,7 +113,7 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 		this.append( Short.toString( numeral ) );
 	}
 	public void appendDecimalPoint() {
-		this.append( "." );
+		this.append( DecimalPointOperation.getInstance( this ).getName() );
 	}
 	public void negate() {
 		javax.swing.text.Document document = this.getDocument();
@@ -155,15 +155,16 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 			javax.swing.text.Document document = this.getDocument();
 			final int N = document.getLength();
 			if( N > 0 ) {
+				String text = document.getText( 0, N );
 				try {
-					org.lgna.project.ast.Expression rv = this.valueOf( document.getText( 0, N ) );
+					org.lgna.project.ast.Expression rv = this.valueOf( text );
 					if( rv != null ) {
 						return null;
 					} else {
-						return document.getText( 0, document.getLength() ) + " is not valid.";
+						return text + " is not valid.";
 					}
 				} catch( NumberFormatException nfe ) {
-					return document.getText( 0, document.getLength() ) + " is not valid.";
+					return text + " is not valid.";
 				}
 			} else {
 				return "Enter a number.";
@@ -175,8 +176,10 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 	public N getExpressionValue() {
 		try {
 			javax.swing.text.Document document = this.getDocument();
+			final int N = document.getLength();
+			String text = document.getText( 0, N );
 			try {
-				N rv = this.valueOf( document.getText( 0, document.getLength() ) );
+				N rv = this.valueOf( text );
 				return rv;
 			} catch( NumberFormatException nfe ) {
 				return null;

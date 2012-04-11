@@ -211,8 +211,6 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 		EQUALS() { 
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
-				assert leftOperand != null;
-				assert rightOperand != null;
 				//todo Character
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
@@ -234,7 +232,7 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 						throw new RuntimeException();
 					}
 				} else {
-					throw new RuntimeException();
+					return leftOperand == rightOperand;
 				}
 			}			
 		},
@@ -262,7 +260,7 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 						throw new RuntimeException();
 					}
 				} else {
-					throw new RuntimeException();
+					return leftOperand != rightOperand;
 				}
 			}
 		};

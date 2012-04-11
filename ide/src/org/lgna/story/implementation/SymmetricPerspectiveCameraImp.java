@@ -63,7 +63,7 @@ public class SymmetricPerspectiveCameraImp extends CameraImp< edu.cmu.cs.dennisc
 		}
 	}
 
-	private StandInImp createGoodVantagePointStandIn( EntityImp other ) {
+	public StandInImp createGoodVantagePointStandIn( EntityImp other ) {
 		StandInImp standIn = other.createStandIn();
 		standIn.getSgComposite().setTranslationOnly( 2,4,-8, other.getSgReferenceFrame() );
 		standIn.setOrientationOnlyToPointAt( other );

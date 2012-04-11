@@ -51,13 +51,6 @@ public class UploadPage extends org.lgna.croquet.WizardPageComposite< org.lgna.c
 		super( java.util.UUID.fromString( "92fe0efa-60f6-4ed7-af7c-6f27389356ac" ) );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addComponent( new org.lgna.croquet.components.Label( "todo: upload" ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );

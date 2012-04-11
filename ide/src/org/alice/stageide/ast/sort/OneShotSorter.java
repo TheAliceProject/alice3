@@ -74,12 +74,15 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_METHOD;
 	public static final org.lgna.project.ast.JavaMethod PLACE_METHOD;
 	
+	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD;
+
 	public static final org.lgna.project.ast.JavaMethod STRAIGHTEN_OUT_JOINTS_METHOD;
 
 	static {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class );
 		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
+		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Camera.class );
 
 		TURN_METHOD = turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class );
 		assert TURN_METHOD != null;
@@ -110,6 +113,9 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		STRAIGHTEN_OUT_JOINTS_METHOD = jointedModelType.getDeclaredMethod( "straightenOutJoints", org.lgna.story.StraightenOutJoints.Detail[].class );
 		assert STRAIGHTEN_OUT_JOINTS_METHOD != null;
 
+		MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD = cameraType.getDeclaredMethod( "moveAndOrientToAGoodVantagePointOf", org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientToAGoodVantagePointOf.Detail[].class );
+		assert MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD != null;
+		
 		double value = 1.0;
 		final double INCREMENT = 0.01;
 		map.put( MOVE_METHOD, value += INCREMENT );
@@ -121,6 +127,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		value = 2.0;
 		map.put( MOVE_TO_METHOD, value += INCREMENT );
 		map.put( MOVE_AND_ORIENT_TO_METHOD, value += INCREMENT );
+		map.put( MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, value += INCREMENT );
 		map.put( PLACE_METHOD, value += INCREMENT );
 		map.put( TURN_TO_FACE_METHOD, value += INCREMENT );
 		map.put( POINT_AT_METHOD, value += INCREMENT );

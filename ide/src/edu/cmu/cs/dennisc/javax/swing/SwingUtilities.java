@@ -161,10 +161,10 @@ public class SwingUtilities {
 	}
 
 	public static boolean isQuoteControlUnquoteDown( java.awt.event.InputEvent e ) {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			return e.isControlDown();
-		} else {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			return e.isAltDown();
+		} else {
+			return e.isControlDown();
 		}
 	}
 

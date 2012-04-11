@@ -50,9 +50,9 @@ import static javax.media.opengl.GL.*;
  */
 public class RenderContext extends Context {
 	private final java.util.Map< GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry >, Integer > displayListMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, TextureBinding > textureBindingMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, ForgettableBinding > textureBindingMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.List< Integer > toBeForgottenDisplayLists = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.List< TextureBinding > toBeForgottenTextures = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List< ForgettableBinding > toBeForgottenTextures = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private int lastTime_nextLightID = GL_LIGHT0;
 	private int nextLightID;
@@ -78,6 +78,23 @@ public class RenderContext extends Context {
 	private final java.util.Stack< Float > globalOpacityStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private float globalOpacity = 1.0f;
 
+	
+	private int normalizeCount = 0;
+	
+	public void pushNormalize() {
+		this.normalizeCount ++;
+		if( this.normalizeCount == 1 ) {
+			this.gl.glEnable( GL_NORMALIZE );
+		}
+		
+	}
+	public void popNormalize() {
+		if( this.normalizeCount == 1 ) {
+			this.gl.glDisable( GL_NORMALIZE );
+		}
+		this.normalizeCount --;
+	}
+	
 	public void pushGlobalOpacity() {
 		this.globalOpacityStack.push( this.globalOpacity );
 	}
@@ -92,6 +109,9 @@ public class RenderContext extends Context {
 		this.clearRect.setBounds( 0, 0, 0, 0 );
 		this.globalOpacity = 1.0f;
 		this.globalOpacityStack.clear();
+
+		this.normalizeCount = 0;
+		this.gl.glDisable( GL_NORMALIZE );
 	}
 	public void renderLetterboxingIfNecessary( int width, int height ) {
 		if( this.clearRect.x == 0 && this.clearRect.y == 0 && this.clearRect.width == width && this.clearRect.height == height ) {
@@ -211,7 +231,7 @@ public class RenderContext extends Context {
 		if( N > 0 ) {
 			synchronized( this.toBeForgottenTextures ) {
 				//java.nio.IntBuffer ids = java.nio.IntBuffer.allocate( N );
-				for( TextureBinding toBeForgottenTexture : this.toBeForgottenTextures ) {
+				for( ForgettableBinding toBeForgottenTexture : this.toBeForgottenTextures ) {
 					//toBeForgottenTexture.destroy( this.gl );
 					toBeForgottenTexture.forget( this );
 					//ids.put( toBeForgottenTexture );
@@ -401,7 +421,7 @@ public class RenderContext extends Context {
 		forgetGeometryAdapter( geometryAdapter, true );
 	}
 
-	private void forgetTextureBindingID( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, TextureBinding value, boolean removeFromMap ) {
+	private void forgetTextureBindingID( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, ForgettableBinding value, boolean removeFromMap ) {
 		if( value != null ) {
 			this.toBeForgottenTextures.add( value );
 			if( removeFromMap ) {
@@ -457,6 +477,7 @@ public class RenderContext extends Context {
 				int value = isDiffuseColorTextureClamped ? GL_CLAMP : GL_REPEAT;
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, value );
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, value );
+				//gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 				this.currDiffuseColorTextureAdapter = diffuseColorTextureAdapter;
 			}
 		} else {

@@ -27,16 +27,34 @@ public class StorytellingResources {
 
 	private static final String NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY = "NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY";
 	private static final String ALICE_RESOURCE_DIRECTORY_PREF_KEY = "ALICE_RESOURCE_DIRECTORY_PREF_KEY";
+	private static final String GALLERY_DIRECTORY_PREF_KEY = "GALLERY_DIRECTORY_PREF_KEY";
 
-	private static final String SIMS_RESOURCE_INSTALL_PATH = "assets/sims";
+	private static final String NEBULOUS_RESOURCE_INSTALL_PATH = "assets/sims";
 	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
 
 	private ModelResourceTree galleryTree;
 	private final List< File > simsPathsLoaded = new LinkedList< File >();
 	
 	private URLClassLoader classLoader;
+	private static final java.io.FileFilter DIR_FILE_FILTER = new java.io.FileFilter() {
+		public boolean accept( java.io.File file ) {
+			return file.isDirectory();
+		}
+	};
 	
-
+	public static File getGalleryDirectory(java.io.File dir) {
+		if (dir.exists() && dir.isDirectory()) {
+			File[] dirs = FileUtilities.listDescendants(dir, DIR_FILE_FILTER, 4 ); //only search a limited depth to avoid massive spidering
+			for (File subDir : dirs) {
+				String galleryDir = getGalleryPathFromResourcePath(subDir.getAbsolutePath());
+				if (galleryDir != null) {
+					return new File(galleryDir);
+				}
+			}
+		}
+		return null;
+	}
+	
 	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
 		for( String propertyKey : propertyKeys ) {
 			for( String subPath : subPaths ) {
@@ -60,6 +78,46 @@ public class StorytellingResources {
 		return null;
 	}
 	
+	private static String getGalleryPathFromResourcePath(String resourcePath) {
+		if (resourcePath != null) {
+			resourcePath = resourcePath.replace('\\', '/');
+			int resourceIndex = -1;
+			resourceIndex = resourcePath.lastIndexOf(NEBULOUS_RESOURCE_INSTALL_PATH);
+			if (resourceIndex == -1) {
+				resourceIndex = resourcePath.lastIndexOf(ALICE_RESOURCE_INSTALL_PATH);
+			}
+			if (resourceIndex != -1) {
+				resourcePath = resourcePath.substring(0, resourceIndex);
+				while (resourcePath.endsWith("/")) {
+					resourcePath = resourcePath.substring(0, resourcePath.length()-1);
+				}
+				java.io.File galleryDir = new java.io.File(resourcePath);
+				if (galleryDir.exists()) {
+					return resourcePath;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private File getNebulousDirFromGalleryPref() {
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		String dir = rv.get( GALLERY_DIRECTORY_PREF_KEY, "" );
+		if( dir != null && dir.length() > 0 ) {
+			return new File( dir, NEBULOUS_RESOURCE_INSTALL_PATH );
+		}
+		return null;
+	}
+	
+	private File getAliceDirFromGalleryPref() {
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		String dir = rv.get( GALLERY_DIRECTORY_PREF_KEY, "" );
+		if( dir != null && dir.length() > 0 ) {
+			return new File( dir, ALICE_RESOURCE_INSTALL_PATH );
+		}
+		return null;
+	}
+	
 	public void setNebulousResourceDir( String dir ) {
 		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
 		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, dir );
@@ -71,12 +129,18 @@ public class StorytellingResources {
 		if( dir != null && dir.length() > 0 ) {
 			return new File( dir );
 		}
-		return null;
+		else {
+			return getNebulousDirFromGalleryPref();
+		}
 	}
 	
 	public void setAliceResourceDir( String dir ) {
 		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
 		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, dir );
+		String galleryDir = getGalleryPathFromResourcePath(dir);
+		if (galleryDir != null) {
+			setGalleryResourceDir(galleryDir);
+		}
 	}
 
 	public File getAliceDirFromPref() {
@@ -85,11 +149,27 @@ public class StorytellingResources {
 		if( dir != null && dir.length() > 0 ) {
 			return new File( dir );
 		}
+		else {
+			return getAliceDirFromGalleryPref();
+		}
+	}
+	
+	public void setGalleryResourceDir( String dir ) {
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		rv.put( GALLERY_DIRECTORY_PREF_KEY, dir );
+	}
+
+	public File getGalleryDirFromPref() {
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		String dir = rv.get( GALLERY_DIRECTORY_PREF_KEY, "" );
+		if( dir != null && dir.length() > 0 ) {
+			return new File( dir );
+		}
 		return null;
 	}
 
 	private List< File > findSimsBundles() {
-		File simsPath = findResourcePath( SIMS_RESOURCE_INSTALL_PATH );
+		File simsPath = findResourcePath( NEBULOUS_RESOURCE_INSTALL_PATH );
 		if( simsPath != null ) {
 			ResourcePathManager.addPath( ResourcePathManager.SIMS_RESOURCE_KEY, simsPath );
 			return ResourcePathManager.getPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
@@ -112,6 +192,7 @@ public class StorytellingResources {
 		else {
 			LinkedList< File > directoryFromSavedPreference = new LinkedList< File >();
 			File resourceDir = getAliceDirFromPref();
+			
 			if( resourceDir != null ) {
 				directoryFromSavedPreference.add( resourceDir );
 			}
@@ -141,6 +222,10 @@ public class StorytellingResources {
 							String className = entry.getName().replace('/', '.');
 							int lastDot = className.lastIndexOf(".");
 							String baseName = className.substring(0, lastDot);
+							if (baseName.startsWith(".")) {
+								baseName = baseName.substring(1);
+							}
+							
 							classNames.add(baseName);
 						}
 					}
@@ -159,13 +244,17 @@ public class StorytellingResources {
 			
 			for (String className : classNames)
 			{
-				Class<?> cls = cl.loadClass(className);
-				if (org.lgna.story.resources.ModelResource.class.isAssignableFrom(cls))
-				{
-					classes.add((Class<? extends org.lgna.story.resources.ModelResource>)cls);
+				try {
+					Class<?> cls = cl.loadClass(className);
+					if (org.lgna.story.resources.ModelResource.class.isAssignableFrom(cls))
+					{
+						classes.add((Class<? extends org.lgna.story.resources.ModelResource>)cls);
+					}
+				}
+				catch (ClassNotFoundException cnfe) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe("FAILED TO LOAD GALLERY CLASS: "+className);
 				}
 			}
-			
 			this.classLoader = cl;
 			
 		}
@@ -182,17 +271,37 @@ public class StorytellingResources {
 		List<Class<? extends org.lgna.story.resources.ModelResource>> galleryClasses = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
 		for (File modelPath : resourcePaths)
 		{
-			try {
-				File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
-				galleryClasses.addAll( this.loadResourceJarFile(jarFiles) );
-			}
-			catch (Exception e)
-			{
-				System.err.println("Failed to load resources on path: '"+modelPath+"'");
+			if (modelPath.exists()) {
+				try {
+					File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
+					galleryClasses.addAll( this.loadResourceJarFile(jarFiles) );
+				}
+				catch (Exception e)
+				{
+					System.err.println("Failed to load resources on path: '"+modelPath+"'");
+				}
 			}
 		}
 		return galleryClasses;
 	}
+	
+	public void getGalleryLocationFromUser() {
+		FindResourcesPanel.getInstance().show(null);
+		if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
+			setGalleryResourceDir(FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath());
+		}
+	}
+	
+//	//DEBUG
+//	static 
+//	{
+////		//DEBUG ONLY
+////		//CLEAR DIR PREFS
+//		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+//		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
+//		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
+//		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
+//	}
 	
 	private void buildGalleryTree() {
 		List< File > resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
@@ -201,8 +310,34 @@ public class StorytellingResources {
 		}
 		List< Class< ? extends org.lgna.story.resources.ModelResource >> modelResourceClasses = this.getAndLoadModelResourceClasses( resourcePaths );
 		this.galleryTree = new ModelResourceTree( modelResourceClasses );
-		if( resourcePaths.size() == 0 ) {
-			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find the Alice gallery resources." );
+		if( modelResourceClasses.size() == 0) {
+			if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
+				setGalleryResourceDir(FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath());
+			}
+			else 
+			{
+				getGalleryLocationFromUser();
+			}
+			//Try again
+			resourcePaths = findAliceResources();
+			modelResourceClasses = this.getAndLoadModelResourceClasses( resourcePaths );
+			this.galleryTree = new ModelResourceTree( modelResourceClasses );
+		}
+		if( modelResourceClasses.size() == 0) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Cannot find the Alice gallery resources.");
+			if (resourcePaths == null || resourcePaths.size() == 0) {
+				sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
+			} else {
+				sb.append("\nFailed to locate the resources in:");
+				String separator = "\n   ";
+				for (File path : resourcePaths) {
+					sb.append(separator+"'"+path+"'");
+				}
+				String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
+				sb.append("\nVerify that "+phrase+" and verify that Alice is properly installed.");
+			}
+			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
 		}
 		else {
 			File galleryFile = resourcePaths.get( 0 );
@@ -216,29 +351,67 @@ public class StorytellingResources {
 		}
 	}
 	
+	private int loadSimsBundlesFromPaths(List< File > resourcePaths) {
+		int count = 0;
+		for( File path : resourcePaths ) {
+			if (path.exists()) {
+				for( java.io.File file : path.listFiles() ) {
+					if( !simsPathsLoaded.contains( file ) ) {
+						try {
+							if( file.getName().endsWith( "txt" ) ) {
+								//pass
+							} else {
+								edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
+								simsPathsLoaded.add( file );
+								count++;
+							}
+						} catch( Throwable t ) {
+							t.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		return count;
+	}
+	
 	public void loadSimsBundles() {
 		List< File > resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
 		if( resourcePaths.size() == 0 ) {
 			resourcePaths = findSimsBundles();
 		}
-		for( File path : resourcePaths ) {
-			for( java.io.File file : path.listFiles() ) {
-				if( !simsPathsLoaded.contains( file ) ) {
-					try {
-						if( file.getName().endsWith( "txt" ) ) {
-							//pass
-						} else {
-							edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
-							simsPathsLoaded.add( file );
-						}
-					} catch( Throwable t ) {
-						t.printStackTrace();
+		int loaded = loadSimsBundlesFromPaths(resourcePaths);
+		if ( loaded == 0 && simsPathsLoaded.size() == 0) {
+			if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
+				setGalleryResourceDir(FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath());
+			}
+			else 
+			{
+				getGalleryLocationFromUser();
+			}
+			//Try again
+			resourcePaths = findSimsBundles();
+			loaded = loadSimsBundlesFromPaths(resourcePaths);
+		}
+		if( loaded == 0 && simsPathsLoaded.size() == 0 ) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Cannot find The Sims (TM) 2 Art Assets.");
+			if (resourcePaths == null || resourcePaths.size() == 0) {
+				sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
+			} else {
+				sb.append("\nSearched in ");
+				String separator = "";
+				for (File path : resourcePaths) {
+					sb.append(separator+"'"+path+"'");
+					if (separator.length() == 0){
+						separator = ", ";
 					}
 				}
+				String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
+				sb.append("\nVerify that "+phrase+" and verify that Alice is properly installed.");
 			}
-		}
-		if( simsPathsLoaded.size() == 0 ) {
-			javax.swing.JOptionPane.showMessageDialog( null, "Cannot find The Sims (TM) 2 Art Assets." );
+			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
+			
 		} else {
 			File galleryFile = simsPathsLoaded.get( 0 );
 			if (galleryFile.isDirectory()) {

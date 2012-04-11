@@ -65,8 +65,6 @@ public class CameraMoveDragManipulator  extends CameraManipulator implements OnS
 	private double PIXEL_DISTANCE_FACTOR = 200.0d;
 	private double MAX_DISTANCE_PER_PIXEL = .05d;
 	
-	static final Plane GROUND_PLANE = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
-	
 	private Point originalMousePoint;
 	private AffineMatrix4x4 originalLocalTransformation;
 	private Vector3 moveXVector;
@@ -170,7 +168,7 @@ public class CameraMoveDragManipulator  extends CameraManipulator implements OnS
 			pickDistance = -1;
 			Vector3 cameraForward = new Vector3(absoluteTransform.orientation.backward);
 			cameraForward.multiply( -1.0d );
-			Point3 pickPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
+			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
 			if ( pickPoint != null)
 			{
 				pickDistance = Point3.calculateDistanceBetween(pickPoint, absoluteTransform.translation);
@@ -194,10 +192,10 @@ public class CameraMoveDragManipulator  extends CameraManipulator implements OnS
 		double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
 		double distancePerRightPixel = MAX_DISTANCE_PER_PIXEL;
 		double distancePerLeftPixel = MAX_DISTANCE_PER_PIXEL;
-		Point3 centerPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, centerRay);
+		Point3 centerPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, centerRay);
 		if ( centerPoint != null)
 		{
-			Point3 offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneUp);
+			Point3 offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneUp);
 			if (offsetPoint != null)
 			{
 				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
@@ -206,7 +204,7 @@ public class CameraMoveDragManipulator  extends CameraManipulator implements OnS
 					distancePerUpPixel = pixelDistance;
 				}
 			}
-			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneDown);
+			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneDown);
 			if (offsetPoint != null)
 			{
 				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
@@ -215,7 +213,7 @@ public class CameraMoveDragManipulator  extends CameraManipulator implements OnS
 					distancePerDownPixel = pixelDistance;
 				}
 			}
-			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneRight);
+			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneRight);
 			if (offsetPoint != null)
 			{
 				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );
@@ -224,7 +222,7 @@ public class CameraMoveDragManipulator  extends CameraManipulator implements OnS
 					distancePerRightPixel = pixelDistance;
 				}
 			}
-			offsetPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, oneLeft);
+			offsetPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, oneLeft);
 			if (offsetPoint != null)
 			{
 				double pixelDistance = Point3.calculateDistanceBetween(centerPoint, offsetPoint );

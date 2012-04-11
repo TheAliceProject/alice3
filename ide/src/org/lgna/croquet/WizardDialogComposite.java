@@ -148,11 +148,6 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 		return this.controlsComposite;
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
-	@Override
 	protected String getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return null;
@@ -169,10 +164,10 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 		this.updateEnabled();
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
 		WizardCardComposite wizardCardComposite = (WizardCardComposite)this.getMainComposite();
 		wizardCardComposite.setIndex( 0 );
 		this.updateEnabled();
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( node );
 	}
 }

@@ -53,10 +53,6 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 		super( id );
 		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
 	}
-	@Override
-	protected void localize() {
-	}
-	
 	public void addCard( Composite<?> card ) {
 		this.cards.add( card );
 		org.lgna.croquet.components.CardPanel view = this.peekView();
@@ -70,13 +66,17 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
-		for( Composite< ? > card : this.cards ) {
-			//todo
-			if( card.contains( model ) ) {
-				return true;
+		if( super.contains( model ) ) {
+			return true;
+		} else {
+			for( Composite< ? > card : this.cards ) {
+				//todo
+				if( card.contains( model ) ) {
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
 	}
 	public java.util.List< Composite< ? >> getCards() {
 		return this.cards;
