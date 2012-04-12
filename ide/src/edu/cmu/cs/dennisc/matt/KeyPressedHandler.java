@@ -19,7 +19,6 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 
-	//	private final List< Object > list = Collections.newLinkedList();
 	HashMap<Object,LinkedList<Object>> map = new HashMap<Object,LinkedList<Object>>();
 	Object empty = new Object();
 	private HashMap<Object,HeldKeyPolicy> heldKeyMap = Collections.newHashMap();
@@ -45,9 +44,6 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 		}
 		registerIsFiringMap( keyList );
 		registerPolicyMap( keyList, policy );
-		//		if( !list.contains( keyList ) ){
-		//			list.add( keyList );
-		//		}
 	}
 	public void addListener( KeyPressListener keyList, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy ) {
 		this.internalAddListener( keyList, policy, validKeys, heldKeyPolicy );
