@@ -74,7 +74,7 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
-	private org.lgna.croquet.State.ValueObserver<Boolean> isEmphasizingClassesObserver = new org.lgna.croquet.State.ValueObserver<Boolean>() {
+	private org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -84,11 +84,11 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueObserver( this.isEmphasizingClassesObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesObserver );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueObserver( this.isEmphasizingClassesObserver );
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesObserver );
 		super.handleUndisplayable();
 	}
 	public AbstractTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
@@ -101,7 +101,7 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		this.refresh();
 	}
 	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type );
-	private static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
+	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
 			if( method.isStatic() ) {
@@ -113,7 +113,7 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 				return false;
 			}
 		}
-		if( member.isPublicAccess() || member.isDeclaredInAlice() ) {
+		if( member.isPublicAccess() || member.isUserAuthored() ) {
 			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
 			return visibility == null || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
 		} else {
@@ -167,9 +167,9 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 			}
 		}
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.NamedUserType typeInAlice = (org.lgna.project.ast.NamedUserType)type;
-			org.lgna.croquet.components.Button createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
-			org.lgna.croquet.components.Button editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			org.lgna.project.ast.NamedUserType userType = (org.lgna.project.ast.NamedUserType)type;
+			org.lgna.croquet.components.Button createAndAddMemberButton = this.createDeclareMemberButton( userType );
+			org.lgna.croquet.components.Button editConstructorButton = this.createEditConstructorButton( userType );
 			if( createAndAddMemberButton != null ) {
 				page.addComponent( createAndAddMemberButton );
 			}
