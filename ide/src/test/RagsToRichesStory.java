@@ -231,41 +231,6 @@ class SnowScene extends Scene {
 			public void sceneActivated( SceneActivationEvent e ) {
 			}
 		} );
-		//		Model[] list = { ogre, susan };
-		//		Model[] colListOne = { ogre };
-		//		Model[] colListTwo = { susan };
-		//		//		this.addWhileCollisionListener(new WhileCollisionListener() {
-		//		//			public void timeElapsed(TimerEvent e) {
-		//		//				susan.move( MoveDirection.UP, 1.0 );
-		//		//				susan.move( MoveDirection.DOWN, 1.0 );
-		//		//			}
-		//		//		}, colListOne, colListTwo, AddTimerEventListener.timerFrequency(0), MultipleEventPolicy.IGNORE );
-		//		//		this.addObjectMoverFor( ogre );
-		//		this.addArrowKeyPressListener( new ArrowKeyPressListener() {
-		//			public void arrowKeyPressed( ArrowKeyEvent e ) {
-		//				if( e.isKey( Key.LEFT ) || e.isKey( Key.RIGHT ) || e.isKey( Key.UP ) || e.isKey( Key.DOWN ) ) {
-		//					camera.turn( e.getTurnDirection(), .125 );
-		//				} else {
-		//					camera.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
-		//				}
-		//				//				ogre.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
-		//			}
-		//		}, MultipleEventPolicy.COMBINE );
-		//		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
-		//
-		//			public void mouseClicked( MouseClickOnObjectEvent e ) {
-		//				//				if( e.getModelAtMouseLocation() != null ) {
-		//				e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
-		//				e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
-		//				//				}
-		//			}
-		//		} );
-		//		this.addOcclusionEndListener( new OcclusionEndListener() {
-		//
-		//			public void occlusionEnded( EndOcclusionEvent e ) {
-		//				e.getForegroundMovable().move( MoveDirection.UP, 10 );
-		//			}
-		//		}, colListOne, colListTwo );
 		this.addKeyPressListener( new KeyPressListener() {
 
 			public void keyPressed( KeyEvent e ) {
@@ -274,8 +239,6 @@ class SnowScene extends Scene {
 		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
 	}
 	public void chillInSkiChalet() {
-		//		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
-		//		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );
 		while( true ) {
 			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
