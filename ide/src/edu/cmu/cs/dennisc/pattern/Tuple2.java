@@ -53,9 +53,9 @@ public class Tuple2<A, B> {
 
 	private A m_a = null;
 	private B m_b = null;
-	protected Tuple2() {
+	private Tuple2() {
 	}
-	protected Tuple2( A a, B b ) {
+	private Tuple2( A a, B b ) {
 		set( a, b );
 	}
 	public A getA() {
