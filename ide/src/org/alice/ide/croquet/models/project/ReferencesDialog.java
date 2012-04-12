@@ -40,61 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.project;
 
-package org.lgna.croquet.components;
+import java.util.LinkedList;
+import java.util.Map;
 
-import javax.swing.tree.TreePath;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.Tree;
+import org.lgna.croquet.components.View;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.TreeSelectionState<E>> {
-	public Tree( org.lgna.croquet.TreeSelectionState<E> model ) {
-		super( model );
-		this.setSwingTreeModel( model.getTreeModel() );
-		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
+public class ReferencesDialog extends TabComposite implements ValueListener<SearchTreeNode> {
+
+	BorderPanel view;
+	private ReferencesDialogManager manager;
+
+	public ReferencesDialog( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
+		view = new BorderPanel();
+
+		manager = new ReferencesDialogManager( methodParentMap );
+		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+		tree.setRootVisible( false );
+		manager.setOwner( tree );
+		view.addComponent( new ScrollPane( tree ), Constraint.CENTER );
 	}
 
-	private void setSwingTreeModel( javax.swing.tree.TreeModel treeModel ) {
-		this.getAwtComponent().setModel( treeModel );
-	}
-	private void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {
-		this.getAwtComponent().setSelectionModel( treeSelectionModel );
-	}
 	@Override
-	protected javax.swing.JTree createAwtComponent() {
-		return new javax.swing.JTree();
+	public boolean isCloseable() {
+		return false;
 	}
 
-	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
-		return this.getAwtComponent().getCellRenderer();
-	}
-	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
-		this.getAwtComponent().setCellRenderer( listCellRenderer );
+	@Override
+	protected View createView() {
+		return view;
 	}
 
-	public void expandAllRows() {
-		for( int i = 0; i < this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().expandRow( i );
-		}
-	}
-	public void collapseAllRows() {
-		for( int i = 0; i < this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().collapseRow( i );
-		}
+	public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
 	}
 
-	public void setRootVisible( boolean isRootVisible ) {
-		this.getAwtComponent().setRootVisible( isRootVisible );
+	public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+		manager.update( nextValue );
 	}
 
-	public void collapseNode( E node ) {
-		TreePath path = this.getModel().getTreeModel().getTreePath( node );
-		this.getAwtComponent().collapsePath( path );
-	}
-
-	public void expandNode( E node ) {
-		TreePath path = this.getModel().getTreeModel().getTreePath( node );
-		this.getAwtComponent().expandPath( path );
-	}
 }
