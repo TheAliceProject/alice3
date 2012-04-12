@@ -40,61 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
-
-import javax.swing.tree.TreePath;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.TreeSelectionState<E>> {
-	public Tree( org.lgna.croquet.TreeSelectionState<E> model ) {
-		super( model );
-		this.setSwingTreeModel( model.getTreeModel() );
-		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
-	}
+public enum HeldKeyPolicy implements AddKeyPressListener.Detail {
 
-	private void setSwingTreeModel( javax.swing.tree.TreeModel treeModel ) {
-		this.getAwtComponent().setModel( treeModel );
-	}
-	private void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {
-		this.getAwtComponent().setSelectionModel( treeSelectionModel );
-	}
-	@Override
-	protected javax.swing.JTree createAwtComponent() {
-		return new javax.swing.JTree();
-	}
+	FIRE_MULTIPLE, FIRE_ONCE_ON_PRESS, FIRE_ONCE_ON_RELEASE;
 
-	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
-		return this.getAwtComponent().getCellRenderer();
-	}
-	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
-		this.getAwtComponent().setCellRenderer( listCellRenderer );
-	}
+	static HeldKeyPolicy DEFAULT_VALUE = FIRE_MULTIPLE;
 
-	public void expandAllRows() {
-		for( int i = 0; i < this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().expandRow( i );
+	/*package-private*/static HeldKeyPolicy getValue( Object[] details, HeldKeyPolicy defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof HeldKeyPolicy ) {
+				HeldKeyPolicy heldKeyPolicy = (HeldKeyPolicy)detail;
+				return heldKeyPolicy;
+			}
 		}
+		return defaultValue;
 	}
-	public void collapseAllRows() {
-		for( int i = 0; i < this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().collapseRow( i );
-		}
-	}
-
-	public void setRootVisible( boolean isRootVisible ) {
-		this.getAwtComponent().setRootVisible( isRootVisible );
-	}
-
-	public void collapseNode( E node ) {
-		TreePath path = this.getModel().getTreeModel().getTreePath( node );
-		this.getAwtComponent().collapsePath( path );
-	}
-
-	public void expandNode( E node ) {
-		TreePath path = this.getModel().getTreeModel().getTreePath( node );
-		this.getAwtComponent().expandPath( path );
+	/*package-private*/static HeldKeyPolicy getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
 	}
 }
