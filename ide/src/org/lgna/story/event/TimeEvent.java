@@ -2,13 +2,13 @@ package org.lgna.story.event;
 
 public class TimeEvent extends AbstractEvent {
 
-	private Long timeSinceLastFire;
+	private final Double timeSinceLastFire;
 
-	public TimeEvent( Long timeElapsed ) {
-		this.timeSinceLastFire = timeElapsed / 1000;
+	public TimeEvent( Double timeElapsed ) {
+		this.timeSinceLastFire = timeElapsed;
 	}
 
-	public Long getTimeSinceLastFire() {
+	public Double getTimeSinceLastFire() {
 		return this.timeSinceLastFire;
 	}
 

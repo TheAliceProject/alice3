@@ -40,63 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
+
+package org.alice.ide.browser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Tuple2<A, B> {
-
-	public static <A,B> Tuple2<A,B> createInstance( A a, B b ) {
-		return new Tuple2<A,B>( a, b );
+public class MutableUrlBrowserOperation extends BrowserOperation {
+	public MutableUrlBrowserOperation( java.util.UUID id ) {
+		super( id );
 	}
-
-	private A m_a = null;
-	private B m_b = null;
-	private Tuple2() {
-	}
-	private Tuple2( A a, B b ) {
-		set( a, b );
-	}
-	public A getA() {
-		return m_a;
-	}
-	public void setA( A a ) {
-		m_a = a;
-	}
-	public B getB() {
-		return m_b;
-	}
-	public void setB( B b ) {
-		m_b = b;
-	}
-	public void set( A a, B b ) {
-		m_a = a;
-		m_b = b;
-	}
-	
+	private java.net.URL url;
 	@Override
-	public boolean equals( Object other ) {
-		if( super.equals( other ) ) {
-			return true;
-		} else {
-			if( other instanceof Tuple2<?,?> ) {
-				Tuple2<?,?> otherT = (Tuple2<?,?>)other;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b );
-			} else {
-				return false;
-			}
-		}
+	protected java.net.URL getUrl() {
+		return this.url;
 	}
-	
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "edu.cmu.cs.dennisc.pattern.Tuple2[ a=" );
-		sb.append( m_a );
-		sb.append( ", b=" );
-		sb.append( m_b );
-		sb.append( " ]" );
-		return sb.toString();
+	public void setUrl( java.net.URL url ) {
+		this.url = url;
 	}
 }
