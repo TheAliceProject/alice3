@@ -57,7 +57,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 	private void update() {
 		for( TimeListener listener : timerList ) {
 			if( timeToFire( listener ) ) {
-				trigger( listener, new TimeEvent( currentTime - mostRecentFire.get( listener ) ) );
+				trigger( listener, new TimeEvent( (currentTime - mostRecentFire.get( listener )) * 0.001 ) );
 			}
 		}
 	}
