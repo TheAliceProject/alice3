@@ -41,46 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story;
+package org.alice.ide.browser;
 
 /**
  * @author Dennis Cosgrove
  */
-public /*abstract*/ class Program {
-	private final org.lgna.story.implementation.ProgramImp implementation = new org.lgna.story.implementation.ProgramImp( this );
-	private Scene activeScene;
-	/*package-private*/ org.lgna.story.implementation.ProgramImp getImplementation() {
-		return this.implementation;
+public class MutableUrlBrowserOperation extends BrowserOperation {
+	public MutableUrlBrowserOperation( java.util.UUID id ) {
+		super( id );
 	}
-	
-	public Scene getActiveScene() {
-		return this.activeScene;
+	private java.net.URL url;
+	@Override
+	protected java.net.URL getUrl() {
+		return this.url;
 	}
-	public void setActiveScene( Scene scene ) {
-		if( this.activeScene != null ) {
-			this.activeScene.getImplementation().deactivate( this.getImplementation() );
-		}
-		this.activeScene = scene;
-		if( this.activeScene != null ) {
-			this.activeScene.getImplementation().activate( this.getImplementation() );
-		}
-	}
-	
-	public Double getSimulationSpeedFactor() {
-		return this.implementation.getSimulationSpeedFactor();
-	}
-	public void setSimulationSpeedFactor( Number simulationSpeedFactor ) {
-		this.implementation.setSimulationSpeedFactor( simulationSpeedFactor.doubleValue() );
-	}
-	
-	public void initializeInFrame( String[] args ) {
-		final int DEFAULT_CLOSE_OPERATION = javax.swing.WindowConstants.EXIT_ON_CLOSE;
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.setSize( 640, 480 );
-		frame.setDefaultCloseOperation( DEFAULT_CLOSE_OPERATION );
-		this.implementation.initializeInFrame( frame );
-	}
-	public void initializeInApplet( javax.swing.JApplet applet ) {
-		this.implementation.initializeInApplet( applet );
+	public void setUrl( java.net.URL url ) {
+		this.url = url;
 	}
 }

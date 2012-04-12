@@ -40,44 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.browser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private String url;
-	public BrowserOperation( java.util.UUID id, String url ) {
-		super( id );
-		this.url = url;
-	}
-	public BrowserOperation( java.util.UUID id, java.net.URL url ) {
-		this(id, url.toString());
-	}
+public abstract class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public BrowserOperation( java.util.UUID id ) {
 		super( id );
-		this.url = null;
 	}
+	protected abstract java.net.URL getUrl();
 	@Override
 	protected void localize() {
-		this.setName( this.url );
+		java.net.URL url = this.getUrl();
+		this.setName( url.toString());
 		super.localize();
 	}
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		java.net.URL url = this.getUrl();
 		try {
-			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
+			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
 		} catch( Exception e ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( this.url );
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + this.url + "\n\nso that you may paste it into your web browser." );
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url.toString() );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
 		}
-	}
-	
-	public void setUrl(java.net.URL url) {
-		this.url = url.toString();
-	}
-	
-	public String getUrlString() {
-		return this.url;
 	}
 }

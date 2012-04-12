@@ -55,6 +55,9 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 	public double getFrameRate() {
 		return this.frameRate;
 	}
+	public void setFrameRate( double frameRate ) {
+		this.frameRate = frameRate;
+	}
 
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	protected abstract org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel();

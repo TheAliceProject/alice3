@@ -110,6 +110,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			if( awtContainer != null ) {
 				RunOperation.this.startProgram( awtContainer );
 			} else {
+				//todo: prompt w/ dialog that can submit world to bugs database
 				String message = "Unable to restart";
 				String title = null;
 				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.ERROR );
