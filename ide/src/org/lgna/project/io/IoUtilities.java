@@ -61,17 +61,17 @@ public abstract class IoUtilities {
 	}
 	
 	
-	private static String PROPERTIES_ENTRY_NAME = "properties.bin";
-	private static String PROGRAM_TYPE_ENTRY_NAME = "programType.xml";
-	private static String VERSION_ENTRY_NAME = "version.txt";
-	private static String TYPE_ENTRY_NAME = "type.xml";
-	private static String RESOURCES_ENTRY_NAME = "resources.xml";
+	private static final String PROPERTIES_ENTRY_NAME = "properties.bin";
+	private static final String PROGRAM_TYPE_ENTRY_NAME = "programType.xml";
+	private static final String VERSION_ENTRY_NAME = "version.txt";
+	private static final String TYPE_ENTRY_NAME = "type.xml";
+	private static final String RESOURCES_ENTRY_NAME = "resources.xml";
 
-	private static String XML_RESOURCE_TAG_NAME = "resource";
+	private static final String XML_RESOURCE_TAG_NAME = "resource";
 
-	private static String XML_RESOURCE_CLASSNAME_ATTRIBUTE = "className";
-	private static String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
-	private static String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
+	private static final String XML_RESOURCE_CLASSNAME_ATTRIBUTE = "className";
+	private static final String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
+	private static final String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
 
 	private static interface ZipEntryContainer {
