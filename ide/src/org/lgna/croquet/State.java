@@ -136,7 +136,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 	
 	protected abstract void updateSwingModel( T nextValue );
-	protected void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger, boolean isFromSwing ) {
+	private void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger, boolean isFromSwing ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValueForSkipCheck, nextValue ) ) {
 			//pass
 		} else {
@@ -176,7 +176,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 			return this.getActualValue();
 		}
 	}
-	public void setValue( T value ) {
+	public final void setValue( T value ) {
 		this.changeValue( value, false, null );
 	}
 

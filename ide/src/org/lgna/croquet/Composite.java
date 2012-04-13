@@ -61,6 +61,10 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 			return this.localizationKey;
 		}
 	}
+	
+	protected static interface OperationListener {
+		public void perform();
+	}
 	private static class InternalStringState extends org.lgna.croquet.StringState {
 		private final Key key;
 		public InternalStringState( String initialValue, Key key ) {
@@ -146,5 +150,8 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		InternalBooleanState rv = new InternalBooleanState( initialValue, key );
 		this.mapKeyToBooleanState.put( key, rv );
 		return rv;
+	}
+	protected ActionOperation createActionOperation( OperationListener listener, Key key ) {
+		return null;
 	}
 }
