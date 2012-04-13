@@ -124,7 +124,7 @@ public class CompletionStep< M extends org.lgna.croquet.CompletionModel > extend
 	public org.lgna.croquet.edits.Edit< ? > getEdit() {
 		return this.edit;
 	}
-	/*package-private*/ void setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
+	public void setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
 		this.isPending = false;

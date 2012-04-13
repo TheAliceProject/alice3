@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public interface Crawlable {
-	public void accept( java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > alreadyVisited, Crawler crawler );
+	public void accept( Crawler crawler, java.util.Set< Crawlable > visited, boolean followReferences );
 }
