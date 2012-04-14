@@ -221,8 +221,8 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		super.fireAdded( e );
 	}
 
-	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences ) {
-		accept( crawler, new java.util.HashSet< edu.cmu.cs.dennisc.pattern.Crawlable >(), followReferences );
+	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited ) {
+		accept( crawler, visited, false );
 	}
 
 	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited, boolean followReferences ) {
@@ -260,28 +260,35 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 				if( value instanceof Iterable<?> ) {
 					Iterable<?> iterable = (Iterable<?>)value;
 					for( Object item : iterable ) {
-						this.accept( crawler, visited, followReferences, item );
+						this.acceptIfCrawlable( crawler, visited, item, followReferences );
 					}
 				} else if( value instanceof Object[] ) {
 					Object[] array = (Object[])value;
 					for( Object item : array ) {
-						this.accept( crawler, visited, followReferences, item );
+						this.acceptIfCrawlable( crawler, visited, item, followReferences );
 					}
 				} else {
-					this.accept( crawler, visited, followReferences, value );
+					this.acceptIfCrawlable( crawler, visited, value, followReferences );
 				}
 			}
 		}
 	}
 
-	private void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited, boolean followReferences, Object value ) {
-		if ( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
-			edu.cmu.cs.dennisc.pattern.Crawlable crawlable = (edu.cmu.cs.dennisc.pattern.Crawlable)value;
+	private void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited, Object value, boolean followReferences ) {
+		if ( value instanceof AbstractNode ) {
+			AbstractNode crawlable = (AbstractNode)value;
 			crawlable.accept( crawler, visited, followReferences );
+		} else if ( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
+			edu.cmu.cs.dennisc.pattern.Crawlable crawlable = (edu.cmu.cs.dennisc.pattern.Crawlable)value;
+			crawlable.accept( crawler, visited );
 		}
 	}
 
-	private java.lang.reflect.Method getVisitMethod( edu.cmu.cs.dennisc.pattern.Crawler crawler, Class<?> cls ) {
+	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences ) {
+		accept( crawler, new java.util.HashSet< edu.cmu.cs.dennisc.pattern.Crawlable >(), followReferences );
+	}
+
+	private final java.lang.reflect.Method getVisitMethod( edu.cmu.cs.dennisc.pattern.Crawler crawler, Class<?> cls ) {
 		try {
 			return crawler.getClass().getMethod( "visit", new Class[]{ cls } );
 		} catch (NoSuchMethodException e) {
