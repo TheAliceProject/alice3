@@ -64,4 +64,9 @@ public class ThisExpression extends Expression {
 		rv.append( "this" );
 		return rv;
 	}
+	@Override
+	public boolean isValid() {
+		//todo
+		return true;
+	}
 }

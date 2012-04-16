@@ -122,6 +122,10 @@ public class PickHint extends BitSet{
 		return this.get( pickType.ordinal() );
 	}
 	
+	public void addPickType(PickType pickType) {
+		this.set(pickType.ordinal());
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

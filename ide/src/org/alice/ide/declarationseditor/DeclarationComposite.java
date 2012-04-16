@@ -76,18 +76,9 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 	public D getDeclaration() {
 		return this.declaration;
 	}
-	
+	public abstract org.lgna.project.ast.AbstractType<?,?,?> getType();
 	public abstract boolean isValid();
 	
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model );
-		return false;
-	}
-	@Override
-	public boolean isCloseable() {
-		return this.declaration instanceof org.lgna.project.ast.AbstractCode;
-	}
 	@Override
 	public String getTitleText() {
 		return this.declaration.getName();

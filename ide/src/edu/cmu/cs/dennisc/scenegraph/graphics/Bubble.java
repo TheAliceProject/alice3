@@ -65,10 +65,10 @@ public abstract class Bubble extends ShapeEnclosedText {
 
 	private final Originator originator; 
 
-	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_TEXT_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
-	private static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
-	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.WHITE;
-	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_OUTLINE_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_TEXT_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	public static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
+	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.WHITE;
+	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_OUTLINE_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
 
 	public Bubble( Originator originator ) {
 		super( DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR );

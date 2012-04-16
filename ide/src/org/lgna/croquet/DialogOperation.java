@@ -42,18 +42,20 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.Container;
 import org.lgna.croquet.components.Dialog;
-import org.lgna.croquet.components.ViewController;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation< S extends org.lgna.croquet.history.DialogOperationStep<?> > extends SingleThreadOperation<S> {
+public abstract class DialogOperation extends SingleThreadOperation {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
-	public DialogOperation(Group group, java.util.UUID id) {
-		super(group, id);
+
+	public static final org.lgna.croquet.history.Step.Key< Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogOperation.DIALOG_KEY" );
+	public static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Container< ? > > CONTENT_PANE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogOperation.CONTENT_PANEL_KEY" );
+	
+	public DialogOperation( Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 
 	protected void modifyPackedDialogSizeIfDesired( Dialog dialog ) {
@@ -61,42 +63,38 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 	protected java.awt.Point getDesiredDialogLocation() {
 		return null;
 	}
-	private Dialog EPIC_HACK_activeDialog;
-	@Deprecated
-	public Dialog EPIC_HACK_getActiveDialog() {
-		return this.EPIC_HACK_activeDialog;
+
+	protected abstract org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog );
+	protected abstract void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane );
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 	}
-	
-	protected abstract Container<?> createContentPane(S context, Dialog dialog);
-	protected abstract void releaseContentPane(S context, Dialog dialog, Container<?> contentPane );
-	protected void handleFinally( S context, Dialog dialog, Container<?> contentPane ) {
-	}
-	
-	protected String getDialogTitle(S context) {
+
+	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String rv = this.getName();
 		if( rv != null ) {
 			rv = rv.replaceAll( "<[a-z]*>", "" );
 			rv = rv.replaceAll( "</[a-z]*>", "" );
 			if( rv.endsWith( "..." ) ) {
-				rv = rv.substring( 0, rv.length()-3 );
+				rv = rv.substring( 0, rv.length() - 3 );
 			}
 		}
 		return rv;
 	}
-	
-	protected boolean isWindowClosingEnabled( java.awt.event.WindowEvent e ) {
+
+	protected boolean isClearedToClose( Dialog dialog ) {
 		return true;
 	}
-	
+
 	protected void handleClosing() {
 	}
-	
+
 	@Override
-	protected final void perform( final S step ) {
-		org.lgna.croquet.history.DialogOperationStep<?> ancestor = step.getFirstAncestorAssignableTo( org.lgna.croquet.history.DialogOperationStep.class );
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		org.lgna.croquet.history.CompletionStep<?> ancestor = step.getFirstAncestorStepOfModelAssignableTo( DialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
 		Dialog ownerDialog;
 		if( ancestor != null ) {
-			ownerDialog = ancestor.getDialog();
+			ownerDialog = ancestor.getEphemeralDataFor( DIALOG_KEY );
 		} else {
 			ownerDialog = null;
 		}
@@ -104,45 +102,24 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 		if( ownerDialog != null ) {
 			owner = ownerDialog;
 		} else {
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			ViewController<?,?> viewController = trigger.getViewController();
+			org.lgna.croquet.components.ViewController< ?, ? > viewController = trigger.getViewController();
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
 				owner = Application.getActiveInstance().getFrame().getContentPanel();
 			}
 		}
-		final Dialog dialog = new Dialog( owner );
-		step.setDialog( dialog );
-//		dialog.getAwtComponent().setUndecorated( true );
-//		dialog.getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.PLAIN_DIALOG);
-
-		dialog.setDefaultCloseOperation( org.lgna.croquet.components.Dialog.DefaultCloseOperation.DO_NOTHING );
-		java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
-				step.handleWindowOpened( e );
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				if( DialogOperation.this.isWindowClosingEnabled( e ) ) {
-					dialog.setVisible( false );
-					step.handleWindowClosing( e );
-				}
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
+		final Dialog dialog = new Dialog( owner ) {
+			@Override
+			protected boolean isClearedToClose() {
+				return DialogOperation.this.isClearedToClose( this );
 			}
 		};
-		dialog.addWindowListener( windowListener );
-
-		Container<?> contentPane = this.createContentPane(step, dialog);
+		step.putEphemeralDataFor( DIALOG_KEY, dialog );
+		//		dialog.getAwtComponent().setUndecorated( true );
+		//		dialog.getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.PLAIN_DIALOG);
+		org.lgna.croquet.components.Container< ? > contentPane = this.createContentPane( step, dialog );
+		step.putEphemeralDataFor( CONTENT_PANE_KEY, contentPane );
 		
 		try {
 			if( contentPane != null ) {
@@ -152,28 +129,22 @@ public abstract class DialogOperation< S extends org.lgna.croquet.history.Dialog
 				if( ownerDialog != null ) {
 					final int OFFSET = 32;
 					java.awt.Point p = ownerDialog.getLocation();
-					dialog.setLocation( p.x+OFFSET, p.y+OFFSET );
+					dialog.setLocation( p.x + OFFSET, p.y + OFFSET );
 					//dialog.getAwtComponent().setLocationRelativeTo( ownerDialog.getAwtComponent() );
 				} else {
 					java.awt.Point location = this.getDesiredDialogLocation();
 					if( location != null ) {
 						dialog.setLocation( location );
 					} else {
-						edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getActiveInstance().getFrame().getAwtComponent() ); 
+						edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), Application.getActiveInstance().getFrame().getAwtComponent() );
 					}
 				}
-				
-				dialog.setTitle( this.getDialogTitle(step) );
-				this.EPIC_HACK_activeDialog = dialog;
-				try {
-					dialog.setVisible( true );
-					this.handleClosing();
-					this.releaseContentPane( step, dialog, contentPane );
-					dialog.removeWindowListener( windowListener );
-					dialog.getAwtComponent().dispose();
-				} finally {
-					this.EPIC_HACK_activeDialog = null;
-				}
+
+				dialog.setTitle( this.getDialogTitle( step ) );
+				dialog.setVisible( true );
+				this.handleClosing();
+				this.releaseContentPane( step, dialog, contentPane );
+				dialog.dispose();
 			} else {
 				this.releaseContentPane( step, dialog, contentPane );
 			}

@@ -413,7 +413,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 			rv.appendChild( xmlType );
 		} else if( this instanceof JavaConstructorParameter ) {
 			JavaConstructorParameter parameterDeclaredInJavaConstructor = (JavaConstructorParameter)this;
-			JavaConstructor constructor = parameterDeclaredInJavaConstructor.getConstructor();
+			JavaConstructor constructor = parameterDeclaredInJavaConstructor.getCode();
 			rv.appendChild( encodeValue( constructor, xmlDocument, set ) );
 
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
@@ -421,7 +421,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 			rv.appendChild( xmlIndex );
 		} else if( this instanceof JavaMethodParameter ) {
 			JavaMethodParameter parameterDeclaredInJavaMethod = (JavaMethodParameter)this;
-			JavaMethod method = parameterDeclaredInJavaMethod.getMethod();
+			JavaMethod method = parameterDeclaredInJavaMethod.getCode();
 			rv.appendChild( encodeValue( method, xmlDocument, set ) );
 
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );

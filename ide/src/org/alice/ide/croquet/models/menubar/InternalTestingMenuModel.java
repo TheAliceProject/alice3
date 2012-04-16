@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -50,20 +49,20 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 	private static class SingletonHolder {
 		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
 	}
+
 	public static InternalTestingMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
 	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
+		super(
+				java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
+				org.alice.stageide.videoencode.VideoEncodeWizardComposite.getInstance().getOperation().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().getMenuItemPrepModel(),
 				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel()
-		);
+				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(), org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(), org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(), org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(), org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation.getInstance().getMenuItemPrepModel() );
 	}
 }

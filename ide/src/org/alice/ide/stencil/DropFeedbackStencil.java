@@ -55,7 +55,7 @@ public class DropFeedbackStencil extends org.lgna.stencil.Stencil {
 		return null;
 	}
 	@Override
-	public org.lgna.croquet.Operation< ? > getNextOperation() {
+	public org.lgna.croquet.Operation getNextOperation() {
 		return null;
 	}
 	@Override

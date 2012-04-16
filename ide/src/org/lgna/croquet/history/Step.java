@@ -50,6 +50,33 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Node<Tran
 	private final org.lgna.croquet.resolvers.Resolver< M > modelResolver;
 	private final org.lgna.croquet.triggers.Trigger trigger;
 	private final java.util.UUID id;
+	public static class Key<T> {
+		public static <T> Key<T> createInstance( String repr ) {
+			return new Key<T>( repr );
+		}
+		private final String repr;
+		private Key( String repr ) {
+			this.repr = repr;
+		}
+		@Override
+		public java.lang.String toString() {
+			return this.repr;
+		}
+	}
+	private final java.util.Map/*< Key<T>, T >*/ dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public <T> boolean containsEphemeralDataFor( Key<T> key ) {
+		return this.dataMap.containsKey( key );
+	}
+	public <T> T getEphemeralDataFor( Key<T> key ) {
+		return (T)this.dataMap.get( key );
+	}
+	public <T> void putEphemeralDataFor( Key<T> key, T value ) {
+		this.dataMap.put( key, value );
+	}
+	public <T> void removeEphemeralDataFor( Key<T> key ) {
+		this.dataMap.remove( key );
+	}
+
 	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent );
 		if( model != null ) {

@@ -101,7 +101,7 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 			this.setName( "Log In" );
 		}
 		@Override
-		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 			try {
 				com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
@@ -148,7 +148,16 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 
 		edu.cmu.cs.dennisc.javax.swing.components.JPane signUpPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
 		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Not a member?" ) );
-		org.alice.ide.croquet.models.help.BrowserOperation hyperlinkOperation = new org.alice.ide.croquet.models.help.BrowserOperation( java.util.UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ), "http://bugs.alice.org:8080/secure/Signup!default.jspa" ) {
+		org.alice.ide.browser.BrowserOperation hyperlinkOperation = new org.alice.ide.browser.BrowserOperation( java.util.UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ) ) {
+			@Override
+			protected java.net.URL getUrl() {
+				String path = "http://bugs.alice.org:8080/secure/Signup!default.jspa";
+				try {
+					return new java.net.URL( path );
+				} catch( java.net.MalformedURLException murle ) {
+					throw new RuntimeException( path, murle );
+				}
+			}
 			@Override
 			protected void localize() {
 				super.localize();
@@ -188,7 +197,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			this.setName( "Log In... (Optional)" );
 		}
 		@Override
-		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 			LogInPane pane = new LogInPane();
 			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 			java.awt.Component owner = trigger.getViewController().getAwtComponent();
@@ -210,7 +219,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			this.setName( "Log Out" );
 		}
 		@Override
-		protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 			edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			LogInStatusPane.this.show( OFF_KEY );
 		}

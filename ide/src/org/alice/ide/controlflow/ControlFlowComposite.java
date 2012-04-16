@@ -92,7 +92,11 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		return this.models.contains( model );
+		if( super.contains( model ) ) {
+			return true;
+		} else {
+			return this.models.contains( model );
+		}
 	}
 	public java.util.List< org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > getModels() {
 		return this.models;

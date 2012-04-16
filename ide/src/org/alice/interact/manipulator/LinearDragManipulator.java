@@ -125,11 +125,13 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
-		MovementDirection oppositeDirection = this.linearHandle.getMovementDescription().direction.getOpposite();
-		if (oppositeDirection != this.linearHandle.getMovementDescription().direction)
-		{
-			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(oppositeDirection, this.linearHandle.getMovementDescription().type), this.manipulatedTransformable ) );
+		if (this.linearHandle != null) {
+			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
+			MovementDirection oppositeDirection = this.linearHandle.getMovementDescription().direction.getOpposite();
+			if (oppositeDirection != this.linearHandle.getMovementDescription().direction)
+			{
+				this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(oppositeDirection, this.linearHandle.getMovementDescription().type), this.manipulatedTransformable ) );
+			}
 		}
 	}
 	
@@ -265,8 +267,8 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 					awayFromAxis.normalize();
 					axisAlignedNormal = awayFromAxis;
 				}
-				this.handleAlignedPlane = new Plane(this.linearHandle.getAbsoluteTransformation().translation, axisAlignedNormal);
-				this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
+				this.handleAlignedPlane = Plane.createInstance(this.linearHandle.getAbsoluteTransformation().translation, axisAlignedNormal);
+				this.cameraFacingPlane = Plane.createInstance( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 				this.originalOrigin = this.manipulatedTransformable.getAbsoluteTransformation().translation; 
 				this.currentDistanceAlongAxis = this.linearHandle.getCurrentHandleLength();
 				this.initialDistanceAlongAxis = getDistanceAlongAxisBasedOnMouse( startInput.getMouseLocation() );

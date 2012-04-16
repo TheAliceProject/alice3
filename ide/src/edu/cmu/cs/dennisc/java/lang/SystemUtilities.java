@@ -83,6 +83,22 @@ public class SystemUtilities {
 		return getPropertiesAsXMLByteArrayOutputStream().toString();
 	}
 
+	public static java.util.List< Property > getPropertyList() {
+		java.util.List< edu.cmu.cs.dennisc.java.lang.Property > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(); 
+		java.util.Properties systemProperties = System.getProperties();
+		java.util.Enumeration<?> keys = systemProperties.propertyNames();
+		while( keys.hasMoreElements() ) {
+			Object key = keys.nextElement();
+			Object value = systemProperties.get( key );
+			if( key instanceof String && value instanceof String ) {
+				rv.add( new edu.cmu.cs.dennisc.java.lang.Property( (String)key, (String)value ) );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( key, value );
+			}
+		}
+		return rv;
+	}
+	
 	private enum Platform {
 		WINDOWS, OSX, LINUX
 	}

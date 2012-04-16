@@ -46,7 +46,47 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Composite< V extends org.lgna.croquet.components.View< ?, ? > > extends Element {
+public abstract class Composite< V extends org.lgna.croquet.components.View< ?, ? > > extends AbstractElement {
+	protected static class Key {
+		private final Composite<?> composite;
+		private final String localizationKey;
+		public Key( Composite<?> composite, String localizationKey ) {
+			this.composite = composite;
+			this.localizationKey = localizationKey;
+		}
+		public Composite<?> getComposite() {
+			return this.composite;
+		}
+		public String getLocalizationKey() {
+			return this.localizationKey;
+		}
+	}
+	
+	protected static interface OperationListener {
+		public void perform();
+	}
+	private static class InternalStringState extends org.lgna.croquet.StringState {
+		private final Key key;
+		public InternalStringState( String initialValue, Key key ) {
+			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	private static class InternalBooleanState extends org.lgna.croquet.BooleanState {
+		private final Key key;
+		public InternalBooleanState( boolean initialValue, Key key ) {
+			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "5053e40f-9561-41c8-835d-069bd106723c" ), initialValue );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+
+	
 	public Composite( java.util.UUID id ) {
 		super( id );
 		Manager.registerComposite( this );
@@ -68,16 +108,50 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	public void releaseView() {
 		this.view = null;
 	}
-	public abstract boolean contains( Model model );
-//	private boolean isActive;
-//	public boolean isActive() {
-//		return this.isActive;
-//	}
-//	public void setActive( boolean isActive ) {
-//		this.isActive = isActive;
-//	}
 	public void handlePreActivation() {
 	}
 	public void handlePostDectivation() {
+	}
+	
+	private java.util.Map<Key,InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	@Override
+	protected void localize() {
+		for( Key key : this.mapKeyToBooleanState.keySet() ) {
+			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
+			booleanState.setTextForBothTrueAndFalse( this.getLocalizedText( key.getLocalizationKey() ) );
+		}
+	}
+	public boolean contains( Model model ) {
+		for( Key key : this.mapKeyToBooleanState.keySet() ) {
+			InternalBooleanState state = this.mapKeyToBooleanState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToStringState.keySet() ) {
+			InternalStringState state = this.mapKeyToStringState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected Key createKey( String localizationKey ) {
+		return new Key( this, localizationKey );
+	}
+	protected StringState createStringState( String initialValue, Key key ) {
+		InternalStringState rv = new InternalStringState( initialValue, key );
+		this.mapKeyToStringState.put( key, rv );
+		return rv;
+	}
+	protected BooleanState createBooleanState( boolean initialValue, Key key ) {
+		InternalBooleanState rv = new InternalBooleanState( initialValue, key );
+		this.mapKeyToBooleanState.put( key, rv );
+		return rv;
+	}
+	protected ActionOperation createActionOperation( OperationListener listener, Key key ) {
+		return null;
 	}
 }

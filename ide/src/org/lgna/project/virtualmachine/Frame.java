@@ -45,7 +45,7 @@ package org.lgna.project.virtualmachine;
 /**
  * @author Dennis Cosgrove
  */
-public interface Frame {
+public interface Frame extends LgnaStackTraceElement {
 	public Frame getOwner();
 	public UserInstance getThis();
 	public Object lookup( org.lgna.project.ast.AbstractParameter parameter );

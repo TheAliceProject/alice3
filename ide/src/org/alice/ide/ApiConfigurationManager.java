@@ -43,11 +43,12 @@
 
 package org.alice.ide;
 
+import org.lgna.project.ast.JavaMethod;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ApiConfigurationManager {
-	
 	@Deprecated
 	public static ApiConfigurationManager EPIC_HACK_getActiveInstance() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -59,7 +60,8 @@ public abstract class ApiConfigurationManager {
 		}
 	}
 	
-	
+	public abstract java.util.List<JavaMethod> getAddEventListenerMethods();
+
 	//override to create user types if desired
 	public org.lgna.project.ast.AbstractType< ?,?,? > getTypeFor( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		return type;
@@ -190,4 +192,7 @@ public abstract class ApiConfigurationManager {
 	public abstract org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails );
 	public abstract org.alice.ide.ast.ExpressionCreator getExpressionCreator();
 	public abstract org.lgna.project.ast.UserType< ? > augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv );
+
+
+	public abstract boolean isTabClosable( org.lgna.project.ast.AbstractCode code );
 }

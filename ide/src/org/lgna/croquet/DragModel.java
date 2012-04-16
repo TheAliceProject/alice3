@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragModel extends PrepModel {
+public abstract class DragModel extends AbstractPrepModel {
 	public DragModel( java.util.UUID id ) {
 		super( id );
 	}

@@ -62,26 +62,22 @@ public abstract class JointedModel extends Model {
 		this.getImplementation().animateStraightenOutJoints( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
-	private void initializeBubble(edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Object[] details) {
-		bubble.font.setValue(TextFont.getValue(details, new Font(new java.awt.Font( null, java.awt.Font.PLAIN, 16 ))).getAsAWTFont());
-		bubble.textColor.setValue(TextColor.getValue(details, Color.BLACK).getInternal());
-		bubble.fillColor.setValue(BubbleFillColor.getValue(details, Color.WHITE).getInternal());
-		bubble.outlineColor.setValue(BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
-	}
 	@MethodTemplate()
 	public void say( String text, Say.Detail... details ) {
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble( this.getImplementation().getSpeechBubbleOriginator() );
-		bubble.text.setValue(text);
-		initializeBubble(bubble, details);
-		this.getImplementation().displayBubble( bubble, Duration.getValue(details));
+		this.getImplementation().say( text, Duration.getValue(details), 
+				TextFont.getValue(details, new Font(new java.awt.Font( null, java.awt.Font.PLAIN, 16 ))).getAsAWTFont(),
+				TextColor.getValue(details, Color.BLACK).getInternal(),
+				BubbleFillColor.getValue(details, Color.WHITE).getInternal(),
+				BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
 	}
 	
 	@MethodTemplate()
 	public void think( String text, Think.Detail... details ) {
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble( this.getImplementation().getSpeechBubbleOriginator() );
-		bubble.text.setValue(text);
-		initializeBubble(bubble, details);
-		this.getImplementation().displayBubble( bubble, Duration.getValue(details));
+		this.getImplementation().think( text, Duration.getValue(details), 
+				TextFont.getValue(details, new Font(new java.awt.Font( null, java.awt.Font.PLAIN, 16 ))).getAsAWTFont(),
+				TextColor.getValue(details, Color.BLACK).getInternal(),
+				BubbleFillColor.getValue(details, Color.WHITE).getInternal(),
+				BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
 	}
 	
 	//TODO: Get this to work

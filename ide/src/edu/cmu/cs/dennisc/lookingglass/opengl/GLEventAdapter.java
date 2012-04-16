@@ -467,16 +467,17 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
 		
-//		final boolean USE_DEBUG_GL = false;
-//		if( USE_DEBUG_GL ) {
-//			if( gl instanceof javax.media.opengl.DebugGL2 ) {
-//				// pass
-//			} else {
-//				gl = new javax.media.opengl.DebugGL2( gl );
-//				System.out.println( "using debug gl: " + gl );
-//				drawable.setGL( gl );
-//			}
-//		}
+		final boolean USE_DEBUG_GL = false;
+		if( USE_DEBUG_GL ) {
+			if( gl instanceof javax.media.opengl.DebugGL ) {
+				// pass
+			} else {
+				gl = new javax.media.opengl.DebugGL( gl );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "using debug gl: ", gl );
+				drawable.setGL( gl );
+			}
+		}
+		
 		this.renderContext.setGL( gl );
 		this.pickContext.setGL( gl );
 		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, this.drawable.getWidth(), this.drawable.getHeight() ) );

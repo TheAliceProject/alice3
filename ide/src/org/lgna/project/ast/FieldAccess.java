@@ -71,6 +71,7 @@ public class FieldAccess extends Expression {
 	public AbstractType<?,?,?> getType() {
 		return field.getValue().getValueType();
 	}
+	@Override
 	public boolean isValid() {
 		boolean rv;
 		Expression e = expression.getValue();

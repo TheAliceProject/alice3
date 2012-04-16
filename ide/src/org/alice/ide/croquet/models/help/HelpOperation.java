@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import org.alice.ide.browser.BrowserOperation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,7 +57,17 @@ public class HelpOperation extends org.alice.ide.operations.InconsequentialActio
 
 	private static class HelpPanel extends org.lgna.croquet.components.BorderPanel {
 		public HelpPanel() {
-			BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" ); //"http://kenai.com/projects/alice/pages/Help"
+			BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ) ) {
+				@Override
+				protected java.net.URL getUrl() {
+					String path = "http://help.alice.org/";
+					try {
+						return new java.net.URL( path );
+					} catch( java.net.MalformedURLException murle ) {
+						throw new RuntimeException( path, murle );
+					}
+				}
+			};
 
 			org.lgna.croquet.components.Hyperlink hyperlink = browserOperation.createHyperlink();
 			org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( HelpPanel.class.getResource( "images/help.png" ) ) );
@@ -83,7 +95,7 @@ public class HelpOperation extends org.alice.ide.operations.InconsequentialActio
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.ActionOperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( new HelpPanel(), "Help", org.lgna.croquet.MessageType.PLAIN );
 	}
 }

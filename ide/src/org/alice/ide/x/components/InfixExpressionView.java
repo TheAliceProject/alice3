@@ -46,9 +46,9 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class InfixExpressionView extends AbstractExpressionView {
-	public InfixExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InfixExpression< ? extends Enum< ? > > infixExpression ) {
-		super( infixExpression );
+public class InfixExpressionView extends AbstractExpressionView<org.lgna.project.ast.InfixExpression> {
+	public InfixExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InfixExpression<? extends Enum<?>> infixExpression ) {
+		super( factory, infixExpression );
 		String clsName = infixExpression.getClass().getName();
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( clsName, javax.swing.JComponent.getDefaultLocale() );
 		

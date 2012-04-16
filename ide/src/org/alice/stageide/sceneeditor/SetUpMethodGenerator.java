@@ -47,8 +47,21 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public class SetUpMethodGenerator {
+	
+	private static org.alice.stageide.ast.ExpressionCreator expressionCreator = null;
+	
 	private static org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+		if (org.alice.stageide.StageIDE.getActiveInstance() != null 
+				&& org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager() != null
+				&& org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator() != null) {
+			return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+		}
+		else {
+			if (expressionCreator == null) {
+				expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
+			}
+			return expressionCreator;
+		}
 	}
 
 	private static org.lgna.project.ast.Expression createInstanceExpression( boolean isThis, org.lgna.project.ast.AbstractField field ) {
@@ -377,8 +390,8 @@ public class SetUpMethodGenerator {
 										sceneInstance, 
 										new org.lgna.project.ast.Expression[] { getJointExpression }
 								);
-							} catch( RuntimeException re ) {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( re, jointGetter );
+							} catch( Throwable t ) {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, jointGetter );
 								values = new Object[ 0 ];
 							}
 							for (Object o : values) {

@@ -46,12 +46,12 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupPrepNote< S extends org.lgna.croquet.history.PopupPrepStep<?> > extends PrepNote< S > {
-	public PopupPrepNote( S step ) {
+public final class PopupPrepNote extends PrepNote< org.lgna.croquet.history.PopupPrepStep > {
+	public PopupPrepNote( org.lgna.croquet.history.PopupPrepStep step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures(S step) {
+	protected void addFeatures(org.lgna.croquet.history.PopupPrepStep step) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }

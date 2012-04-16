@@ -66,8 +66,30 @@ public class StepNoteFactory {
 			}
 		} else {
 			Class<?> stepCls = step.getClass();
-			String stepClsName = stepCls.getSimpleName();
-			String noteClsName = PACKAGE_NAME + "." + stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";
+			String stepClsName;
+			stepClsName = stepCls.getSimpleName();
+			stepClsName = stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";
+			if( stepCls == org.lgna.croquet.history.CompletionStep.class ) {
+				org.lgna.croquet.CompletionModel model = (org.lgna.croquet.CompletionModel)step.getModel();
+				if( model instanceof org.lgna.croquet.ActionOperation ) {
+					stepClsName = "ActionOperationNote";
+				} else if( model instanceof org.lgna.croquet.InputDialogOperation ) {
+					stepClsName = "InputDialogOperationNote";
+				} else if( model instanceof org.lgna.croquet.PlainDialogOperation ) {
+					stepClsName = "PlainDialogOperationNote";
+				} else if( model instanceof org.lgna.croquet.PlainDialogOperation.InternalCloseOperation ) {
+					stepClsName = "PlainDialogCloseOperationNote";
+				} else if( model instanceof org.lgna.croquet.SerialOperation ) {
+					stepClsName = "SerialOperationNote";
+				} else if( model instanceof org.lgna.croquet.WizardDialogOperation ) {
+					stepClsName = "WizardDialogOperationNote";
+				} else if( model instanceof org.lgna.croquet.Cascade ) {
+					stepClsName = "CascadeNote";
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model ); 
+				}
+			}
+			String noteClsName = PACKAGE_NAME + "." + stepClsName;
 			try {
 				Class<? extends Note<?>> noteCls = (Class<? extends Note<?>>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( noteClsName );
 				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( noteCls, new Class<?>[] { stepCls }, step );

@@ -63,4 +63,15 @@ public class LogicalComplement extends Expression {
 	public AbstractType<?,?,?> getType() {
 		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
+	
+	@Override
+	public boolean isValid() {
+		Expression operand = this.operand.getValue();
+		if( operand != null ) {
+			AbstractType<?,?,?> operandType = operand.getType();
+			return JavaType.BOOLEAN_OBJECT_TYPE.isAssignableFrom( operandType );
+		} else {
+			return false;
+		}
+	}
 }

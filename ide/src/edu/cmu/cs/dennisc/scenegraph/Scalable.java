@@ -54,5 +54,15 @@ public class Scalable extends Composite {
 		}
 	};
 	
-	//todo: absolute transformation
+	@Override
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation(edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv) {
+		super.getAbsoluteTransformation( rv );
+		edu.cmu.cs.dennisc.math.Dimension3 scale = this.scale.getValue();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 s = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		s.orientation.right.x = scale.x;
+		s.orientation.up.y = scale.y;
+		s.orientation.backward.z = scale.z;
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4.setReturnValueToMultiplication( rv, rv, s );
+		return rv;
+	}
 }

@@ -46,7 +46,7 @@ package org.alice.stageide.person;
 /**
  * @author Dennis Cosgrove
  */
-public class RenderComposite extends org.lgna.croquet.Composite< org.alice.stageide.person.components.PersonViewer > {
+public class RenderComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.person.components.PersonViewer > {
 	private static class SingletonHolder {
 		private static RenderComposite instance = new RenderComposite();
 	}
@@ -55,13 +55,6 @@ public class RenderComposite extends org.lgna.croquet.Composite< org.alice.stage
 	}
 	private RenderComposite() {
 		super( java.util.UUID.fromString( "248ab13c-60cf-400b-9023-cfe46a1dd8df" ) );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
-	protected void localize() {
 	}
 	private org.lgna.story.resources.sims2.PersonResource createPersonResource() {
 		return org.alice.stageide.person.RandomPersonUtilities.createRandomResource();

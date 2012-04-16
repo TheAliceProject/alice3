@@ -57,11 +57,6 @@ public class FileSystemTab extends ContentTab< org.alice.ide.openprojectpane.Fil
 		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
-	@Override
 	protected org.alice.ide.openprojectpane.FileSystemPane createView() {
 		return new org.alice.ide.openprojectpane.FileSystemPane( this );
 	}

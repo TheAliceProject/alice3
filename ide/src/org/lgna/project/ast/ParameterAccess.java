@@ -56,6 +56,26 @@ public class ParameterAccess extends Expression {
 	}
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return parameter.getValue().getValueType();
+		AbstractParameter parameter = this.parameter.getValue();
+		if( parameter != null ) {
+			return parameter.getValueType();
+		} else {
+			return null;
+		}
+	}
+	@Override
+	public boolean isValid() {
+		AbstractParameter parameter = this.parameter.getValue();
+		if( parameter != null ) {
+			Code parameterCode = parameter.getCode();
+			if( parameterCode != null ) {
+				Code code = this.getFirstAncestorAssignableTo( Code.class );
+				return code == parameterCode;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 }

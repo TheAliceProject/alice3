@@ -56,6 +56,10 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	private ThisInstanceFactory() {
 	}
 	@Override
+	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+		return type != null;
+	}
+	@Override
 	protected org.lgna.croquet.resolvers.Resolver< ThisInstanceFactory > createResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver< ThisInstanceFactory >( this );
 	}

@@ -46,15 +46,15 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisExpressionLikeView extends AbstractExpressionView {
-	private ThisExpressionLikeView( org.lgna.project.ast.Expression expression ) {
-		super( expression );
+public class ThisExpressionLikeView extends AbstractExpressionView<org.lgna.project.ast.Expression> {
+	private ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
+		super( factory, expression );
 		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
 	}
-	public ThisExpressionLikeView( org.lgna.project.ast.ThisExpression thisExpression ) {
-		this( (org.lgna.project.ast.Expression)thisExpression );
+	public ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ThisExpression thisExpression ) {
+		this( factory, (org.lgna.project.ast.Expression)thisExpression );
 	}
-	public ThisExpressionLikeView( org.alice.ide.ast.CurrentThisExpression currentThisExpression ) {
-		this( (org.lgna.project.ast.Expression)currentThisExpression );
+	public ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.alice.ide.ast.CurrentThisExpression currentThisExpression ) {
+		this( factory, (org.lgna.project.ast.Expression)currentThisExpression );
 	}
 }

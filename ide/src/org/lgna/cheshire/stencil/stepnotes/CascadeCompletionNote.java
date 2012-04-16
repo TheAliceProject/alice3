@@ -46,12 +46,12 @@ package org.lgna.cheshire.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeCompletionNote extends CompletionNote< org.lgna.croquet.history.CascadeCompletionStep< ? > > {
-	public CascadeCompletionNote( org.lgna.croquet.history.CascadeCompletionStep< ? > step ) {
+public class CascadeCompletionNote extends CompletionNote< org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade<?> > > {
+	public CascadeCompletionNote( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade<?> > step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures( org.lgna.croquet.history.CascadeCompletionStep< ? > step ) {
+	protected void addFeatures( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade<?> > step ) {
 	}
 //	@Override
 //	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {

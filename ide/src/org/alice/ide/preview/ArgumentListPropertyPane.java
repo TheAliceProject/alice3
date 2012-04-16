@@ -46,8 +46,32 @@ package org.alice.ide.preview;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.PreviewAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
+	public ArgumentListPropertyPane( org.alice.ide.x.ImmutableAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
 		super( factory, property );
+	}
+	@Override
+	protected boolean isComponentDesiredFor( org.lgna.project.ast.SimpleArgument argument, int i, int N ) {
+		if( i == 0 ) {
+			if( argument != null ) {
+				org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
+				if( parameter != null ) {
+					org.lgna.project.ast.Code code = parameter.getCode();
+					if( code instanceof org.lgna.project.ast.JavaMethod ) {
+						org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)code;
+						if( javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class ) ) {
+							org.lgna.project.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
+							if( parameterType != null ) {
+								if( parameterType.isInterface() ) {
+									//assume it is going to be a lambda
+									return parameterType.getDeclaredMethods().size() != 1;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return super.isComponentDesiredFor( argument, i, N );
 	}
 	@Override
 	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {

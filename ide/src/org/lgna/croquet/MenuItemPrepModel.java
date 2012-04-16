@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuItemPrepModel extends PrepModel {
+public abstract class MenuItemPrepModel extends AbstractPrepModel {
 	public MenuItemPrepModel( java.util.UUID id ) {
 		super( id );
 	}

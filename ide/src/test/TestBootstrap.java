@@ -48,10 +48,10 @@ package test;
  */
 public class TestBootstrap {
 	public static void main( String[] args ) {
-		org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.SurfaceAppearance.GRASS, null, Double.NaN, null, null );
+		org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.Ground.SurfaceAppearance.GRASS, null, Double.NaN, org.lgna.story.Color.WHITE, null );
 		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 		vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
-		if( true ) {
+		if( false ) {
 			org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
 			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );
 			System.err.println();
@@ -59,6 +59,7 @@ public class TestBootstrap {
 			System.err.println();
 			System.err.println();
 			vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
+//			vm.ENTRY_POINT_invoke( null, programType.methods.get( 1 ) );
 			System.err.println();
 			System.err.println();
 			System.err.println();

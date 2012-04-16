@@ -50,7 +50,15 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 	public RecordVideoOperation( java.util.UUID id ) {
 		super( org.alice.ide.IDE.EXPORT_GROUP, id );
 	}
-	
+
+	private double frameRate = 24.0;
+	public double getFrameRate() {
+		return this.frameRate;
+	}
+	public void setFrameRate( double frameRate ) {
+		this.frameRate = frameRate;
+	}
+
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	protected abstract org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel();
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
@@ -98,7 +106,7 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 	}
 	
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step ) {
+	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		final org.alice.ide.video.components.RecordVideoPanel videoExportPanel = this.createVideoExportPanel();
 		new Thread() {
 			@Override
@@ -106,7 +114,7 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 				super.run();
 				image = null;
 				imageCount = 0;
-				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( 30.0 );
+				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( frameRate );
 				programContext.initialize( videoExportPanel.getLookingGlassContainer() );
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				programContext.setActiveScene();
@@ -115,17 +123,17 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 		return videoExportPanel;
 	}
 	@Override
-	protected void epilogue( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, boolean isCommit ) {
+	protected void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit ) {
 		if( isCommit ) {
 			step.finish();
 		}
 	}
 	
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
-		this.setRecording( false );
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
+		this.setRecording( false );
 		programContext.cleanUpProgram();
-		super.handleFinally( context, dialog, contentPane );
+		super.handleFinally( step, dialog, contentPane );
 	}
 }

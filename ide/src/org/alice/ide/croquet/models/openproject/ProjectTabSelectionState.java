@@ -83,6 +83,6 @@ public class ProjectTabSelectionState extends org.lgna.croquet.TabSelectionState
 			tab = MyProjectsTab.getInstance(); //todo: recentPane?
 		}
 		this.setSelectedItem( tab );
-		this.revalidateAndRepaintAllComponents();
+		org.lgna.croquet.components.ComponentManager.revalidateAndRepaintAllComponents( this );
 	}
 }

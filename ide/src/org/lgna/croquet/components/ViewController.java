@@ -58,8 +58,6 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 	public M getModel() {
 		return model;
 	}
-	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
-	}
 	private boolean isPopupMenuOperationLimitedToRightMouseButton = true;
 //	public boolean isPopupMenuOperationLimitedToRightMouseButton() {
 //		return this.isPopupMenuOperationLimitedToRightMouseButton;
@@ -81,11 +79,11 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 		if( this.popupPrepModel != null ) {
 			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
 			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
-			this.popupPrepModel.removeComponent( this );
+			org.lgna.croquet.components.ComponentManager.removeComponent( this.popupPrepModel, this );
 		}
 		this.popupPrepModel = popupMenuPrepModel;
 		if( this.popupPrepModel != null ) {
-			this.popupPrepModel.addComponent( this );
+			org.lgna.croquet.components.ComponentManager.addComponent( this.popupPrepModel, this );
 			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
 			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
 		}
@@ -125,14 +123,14 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 		super.handleAddedTo( parent );
 		M model = this.getModel();
 		if( model != null ) {
-			model.addComponent( this );
+			org.lgna.croquet.components.ComponentManager.addComponent( model, this );
 		}
 	}
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		M model = this.getModel();
 		if( model != null ) {
-			model.removeComponent( this );
+			org.lgna.croquet.components.ComponentManager.removeComponent( model, this );
 		}
 		super.handleRemovedFrom( parent );
 	}

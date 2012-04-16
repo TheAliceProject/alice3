@@ -44,7 +44,7 @@ package org.alice.media;
 
 import org.lgna.croquet.components.Container;
 import org.lgna.croquet.components.Dialog;
-import org.lgna.croquet.history.InformationDialogOperationStep;
+import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author Matt May
@@ -56,12 +56,12 @@ public class ExportToYouTubeOperation extends org.lgna.croquet.InformationDialog
 	}
 
 	@Override
-	protected Container<?> createContentPane( InformationDialogOperationStep context, Dialog dialog ) {
+	protected Container<?> createContentPane( CompletionStep<?> step, Dialog dialog ) {
 		return null;
 	}
 
 	@Override
-	protected void releaseContentPane( InformationDialogOperationStep context, Dialog dialog, Container<?> contentPane ) {
+	protected void releaseContentPane( CompletionStep<?> step, Dialog dialog, Container<?> contentPane ) {
 	}
 
 }

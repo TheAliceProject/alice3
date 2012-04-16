@@ -82,21 +82,21 @@ public class Cylinder extends Shape {
 	public final BoundDoubleProperty length = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
-			assert value >= 0.0;
+			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
-			assert value >= 0.0;
+			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty topRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
-			assert value >= 0.0;
+			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};

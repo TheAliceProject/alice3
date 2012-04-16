@@ -100,9 +100,9 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		this.action.setEnabled( isEnabled );
 	}
 	
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
 	}
-	public void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
+	public void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
 	}
 	
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {

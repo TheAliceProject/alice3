@@ -46,28 +46,27 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.InputDialogOperation {
+public abstract class SelectAndLoadProjectOperation extends org.lgna.croquet.InputDialogOperation<java.net.URI> {
 	public SelectAndLoadProjectOperation( java.util.UUID individualUUID ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
 	protected abstract boolean isNew();
 	@Override
-	protected String getInternalExplanation(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected String getInternalExplanation(org.lgna.croquet.history.CompletionStep<?> step) {
 		if( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI() != null ) {
 			return super.getInternalExplanation(step);
 		} else {
 			return "must select project to open.";
 		}
 	}
-	
 	@Override
-	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue(org.lgna.croquet.history.InputDialogOperationStep step) {
+	protected org.alice.ide.openprojectpane.SelectProjectToOpenPanel prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew() );
 		org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().refresh();
 		return org.alice.ide.openprojectpane.SelectProjectToOpenPanel.getInstance();
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.history.InputDialogOperationStep step, boolean isOk) {
+	protected void epilogue(org.lgna.croquet.history.CompletionStep<?> step, boolean isOk) {
 		if( isOk ) {
 			//org.alice.ide.openprojectpane.SelectProjectToOpenPanel selectProjectToOpenPanel = step.getMainPanel();
 			java.net.URI uri = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedURI();

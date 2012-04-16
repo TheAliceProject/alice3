@@ -45,27 +45,7 @@ package test;
 /**
  * @author Dennis Cosgrove
  */
-public class TestCroquet extends org.lgna.croquet.Application {
-	@Override
-	protected org.lgna.croquet.Operation< ? > getAboutOperation() {
-		return null;
-	}
-	@Override
-	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		return null;
-	}@Override
-	protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
-		return null;
-	}
-	@Override
-	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
-	}
-	@Override
-	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-	}
-	@Override
-	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-	}
+public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 	public static void main( String[] args ) {
 		TestCroquet testCroquet = new TestCroquet();
 		testCroquet.initialize( args );

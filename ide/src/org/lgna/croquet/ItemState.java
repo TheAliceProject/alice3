@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> implements org.lgna.croquet.ContextFactory< ItemStateContext<T> > {
+public abstract class ItemState<T> extends State<T> {
 	private final ItemCodec< T > itemCodec;
 	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
 		super( group, id, initialValue );
@@ -58,11 +58,23 @@ public abstract class ItemState<T> extends State<T> implements org.lgna.croquet.
 		}
 		this.itemCodec = itemCodec;
 	}
+	@Override
+	public Class< T > getItemClass() {
+		return this.itemCodec.getValueClass();
+	}
+	@Override
+	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return this.itemCodec.decodeValue( binaryDecoder );
+	}
+	@Override
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
+		this.itemCodec.encodeValue( binaryEncoder, value );
+	}
+	@Override
+	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+		return this.itemCodec.appendRepresentation( rv, value, locale );
+	}
 	public ItemCodec< T > getItemCodec() {
 		return this.itemCodec;
-	}
-	
-	public org.lgna.croquet.ItemStateContext< T > createContext() {
-		return new ItemStateContext< T >( this );
 	}
 }

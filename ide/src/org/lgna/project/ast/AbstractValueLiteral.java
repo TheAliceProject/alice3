@@ -47,4 +47,9 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractValueLiteral extends AbstractLiteral {
 	public abstract edu.cmu.cs.dennisc.property.InstanceProperty< ? > getValueProperty();
+	
+	@Override
+	public boolean isValid() {
+		return this.getValueProperty().getValue() != null;
+	}
 }

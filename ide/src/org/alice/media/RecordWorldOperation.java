@@ -42,6 +42,10 @@
  */
 package org.alice.media;
 
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Container;
+import org.lgna.croquet.components.Dialog;
+import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author dculyba
@@ -51,20 +55,21 @@ public class RecordWorldOperation extends org.alice.ide.video.RecordVideoOperati
 	private static class SingletonHolder {
 		private static RecordWorldOperation instance = new RecordWorldOperation();
 	}
+
 	public static RecordWorldOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private final org.lgna.croquet.State.ValueListener< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+	private final org.lgna.croquet.State.ValueListener<Boolean> isRecordingListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			RecordWorldOperation.this.setRecording( nextValue );
 		}
 	};
-	
+
 	private org.alice.media.encoder.ImagesToQuickTimeEncoder encoder;
-	
+
 	private RecordWorldOperation() {
 		super( java.util.UUID.fromString( "e01a8089-6de1-4e46-ba89-75606e01c7a3" ) );
 	}
@@ -74,16 +79,17 @@ public class RecordWorldOperation extends org.alice.ide.video.RecordVideoOperati
 		this.encoder = rv.getEncoder();
 		return rv;
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, org.lgna.croquet.components.Dialog dialog ) {
+	protected Component<?> createControlsPanel( CompletionStep<?> step, Dialog dialog ) {
 		org.alice.ide.video.IsRecordingState.getInstance().setValue( false );
 		org.alice.ide.video.IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( CompletionStep<?> step, Dialog dialog, Container<?> contentPane ) {
 		org.alice.ide.video.IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
-		super.handleFinally( context, dialog, contentPane );
+		super.handleFinally( step, dialog, contentPane );
 	}
 	@Override
 	protected void handleImage( java.awt.image.BufferedImage image, int i ) {

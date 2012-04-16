@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.zip;
  * @author Dennis Cosgrove
  */
 public class ZipUtilities {
-	private static byte[] extractBytes( java.util.zip.ZipInputStream zis, java.util.zip.ZipEntry zipEntry ) throws java.io.IOException {
+	public static byte[] extractBytes( java.util.zip.ZipInputStream zis, java.util.zip.ZipEntry zipEntry ) throws java.io.IOException {
 		final int BUFFER_SIZE = 2048;
 		byte[] buffer = new byte[BUFFER_SIZE];
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream( BUFFER_SIZE );

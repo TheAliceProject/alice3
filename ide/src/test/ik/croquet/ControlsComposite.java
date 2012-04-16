@@ -46,16 +46,9 @@ package test.ik.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlsComposite extends org.lgna.croquet.Composite< test.ik.croquet.views.ControlsPanel > {
+public class ControlsComposite extends org.lgna.croquet.SimpleComposite< test.ik.croquet.views.ControlsPanel > {
 	public ControlsComposite() {
 		super( java.util.UUID.fromString( "88035214-3a37-4aa7-a083-ce093a24bb88" ) );
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
 	}
 	@Override
 	protected test.ik.croquet.views.ControlsPanel createView() {

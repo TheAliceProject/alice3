@@ -42,6 +42,11 @@
  */
 package org.alice.ide.operations.file;
 
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.Container;
+import org.lgna.croquet.components.Dialog;
+import org.lgna.croquet.history.CompletionStep;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,17 +54,19 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.video.Rec
 	private static class SingletonHolder {
 		private static ExportVideoUploadToYouTubeOperation instance = new ExportVideoUploadToYouTubeOperation();
 	}
+
 	public static ExportVideoUploadToYouTubeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private final org.lgna.croquet.State.ValueListener< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+	private final org.lgna.croquet.State.ValueListener<Boolean> isRecordingListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			ExportVideoUploadToYouTubeOperation.this.setRecording( nextValue );
 		}
 	};
+
 	private ExportVideoUploadToYouTubeOperation() {
 		super( java.util.UUID.fromString( "fd6ec0d7-add3-4061-a895-f085f45c0667" ) );
 		this.setName( "Export Video / Upload To YouTube\u2122..." );
@@ -69,20 +76,38 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.video.Rec
 		return new org.alice.media.ExportToYoutubePanel();
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, org.lgna.croquet.components.Dialog dialog ) {
+	protected Component<?> createControlsPanel( CompletionStep<?> step, Dialog dialog ) {
 		org.alice.ide.video.IsRecordingState.getInstance().setValue( false );
 		org.alice.ide.video.IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( CompletionStep<?> step, Dialog dialog, Container<?> contentPane ) {
 		org.alice.ide.video.IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
-		super.handleFinally( context, dialog, contentPane );
+		super.handleFinally( step, dialog, contentPane );
 	}
 	@Override
 	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( image );
 	}
+	//	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+	//		final org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	//		org.lgna.project.Project project = ide.getUpToDateProject();
+	//		if( project != null ) {
+	//			final int frameRate = 24;
+	//			//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
+	//			org.alice.media.VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane(project, frameRate){
+	//				@Override
+	//				protected void onClose()
+	//				{
+	//					javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
+	//				}
+	//			};
+	//
+	//			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+	//			dialog.setVisible( true );
+	//		}
+	//	}
 }
 //
 //

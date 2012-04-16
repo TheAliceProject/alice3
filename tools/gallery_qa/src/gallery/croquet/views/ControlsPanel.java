@@ -43,8 +43,6 @@
 
 package gallery.croquet.views;
 
-import java.awt.Component;
-
 import javax.swing.JLabel;
 import javax.swing.JTree;
 

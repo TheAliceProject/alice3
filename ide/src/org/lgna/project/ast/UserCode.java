@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public interface UserCode extends UserMember {
+public interface UserCode extends UserMember, Code {
 	public NodeProperty< ? extends BlockStatement > getBodyProperty();
 	public NodeListProperty< UserParameter > getRequiredParamtersProperty();
 }

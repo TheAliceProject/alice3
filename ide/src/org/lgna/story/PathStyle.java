@@ -60,7 +60,7 @@ public enum PathStyle implements
 	/*package-private*/ boolean isSmooth() {
 		return this.isSmooth;
 	}
-	private static final PathStyle DEFAULT_VALUE = PathStyle.SMOOTH;
+	private static final PathStyle DEFAULT_VALUE = PathStyle.BEE_LINE;
 	private static PathStyle getValue( Object[] details, PathStyle defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof PathStyle ) {

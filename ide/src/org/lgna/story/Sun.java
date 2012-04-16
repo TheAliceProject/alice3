@@ -46,6 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class Sun extends Turnable implements MutableRider {
 	private final org.lgna.story.implementation.SunImp implementation = new org.lgna.story.implementation.SunImp( this );
 	@Override

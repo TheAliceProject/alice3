@@ -52,7 +52,7 @@ import org.lgna.project.ast.UserField;
  */
 public abstract class MarkerFieldList extends FieldList {
 
-	public MarkerFieldList(ListSelectionState<UserField> model, Operation<?> operation) {
+	public MarkerFieldList(ListSelectionState<UserField> model, Operation operation) {
 		super(model, operation);
 	}
 	@Override

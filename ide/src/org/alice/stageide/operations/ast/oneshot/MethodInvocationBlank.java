@@ -73,6 +73,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class );
 		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
+		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Camera.class );
 
 		org.lgna.project.ast.AbstractType< ?, ?, ? > instanceFactoryValueType = this.instanceFactory.getValueType();
 		java.util.List< org.lgna.project.ast.AbstractMethod > methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -94,6 +95,9 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 
 		if( jointedModelType.isAssignableFrom( instanceFactoryValueType ) ) {
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD );
+		}
+		if( cameraType.isAssignableFrom( instanceFactoryValueType ) ) {
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD );
 		}
 
 		java.util.List< org.lgna.project.ast.AbstractMethod > sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );

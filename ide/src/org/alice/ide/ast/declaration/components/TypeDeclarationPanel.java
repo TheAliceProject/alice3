@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclarationPanel extends org.alice.ide.preview.PanelWithPreview< TypeHeader > {
+public class TypeDeclarationPanel extends org.alice.ide.preview.PanelWithPreview {
 	private final org.alice.ide.ast.declaration.TypeDeclarationOperation model;
 	public TypeDeclarationPanel( org.alice.ide.ast.declaration.TypeDeclarationOperation model ) {
 		this.model = model;
@@ -55,9 +55,14 @@ public class TypeDeclarationPanel extends org.alice.ide.preview.PanelWithPreview
 		return this.model;
 	}
 	@Override
-	protected TypeHeader createPreviewPanel() {
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		return new TypeHeader( null );
 	}
+	//todo
+//	@Override
+//	protected TypeHeader createPreviewPanel() {
+//		return new TypeHeader( null );
+//	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
 		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {

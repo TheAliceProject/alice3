@@ -43,6 +43,8 @@
 
 package org.alice.ide.declarationseditor;
 
+import org.alice.stageide.StageIDE;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -106,6 +108,18 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueListener( this.isEmphasizingClassesListener );
 		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
 	}
+	@Override
+	protected void handleMissingItem( org.alice.ide.declarationseditor.DeclarationComposite missingItem ) {
+		this.addItem( missingItem );
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			if( missingItem != null ) {
+				org.lgna.project.ast.NamedUserType missingItemType = (org.lgna.project.ast.NamedUserType)missingItem.getType();
+				if( missingItemType != TypeState.getInstance().getValue() ) {
+					TypeState.getInstance().setValue( missingItemType );
+				}
+			}
+		}
+	}
 	private void refresh() {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			this.pushAtomic();
@@ -113,8 +127,9 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 				java.util.List< DeclarationComposite > items = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				if( this.type != null ) {
 					items.add( DeclarationComposite.getInstance( this.type ) );
+					final boolean isInitializeEventListenersDesired = false;
 					for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
-						if( method.isPublicAccess() ) {
+						if( method.isPublicAccess() || ( isInitializeEventListenersDesired && StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( method.getName() ) ) ) {
 							if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
 								items.add( DeclarationComposite.getInstance( method ) );
 							}
@@ -172,8 +187,13 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 			}
 		}
 	}
-
 	public org.lgna.croquet.ActionOperation getItemSelectionOperation( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		return super.getItemSelectionOperation( DeclarationComposite.getInstance( declaration ) );
+		org.lgna.croquet.ActionOperation rv = super.getItemSelectionOperation( DeclarationComposite.getInstance( declaration ) );
+		if( declaration instanceof org.lgna.project.ast.AbstractConstructor ) {
+			rv.setName( "Edit Constructor" );
+		} else {
+			rv.setName( "Edit" );
+		}
+		return rv;
 	}	
 }

@@ -60,4 +60,8 @@ public class TypeExpression extends Expression {
 		//todo
 		return JavaType.getInstance( Class.class );
 	}
+	@Override
+	public boolean isValid() {
+		return this.value.getValue() != null;
+	}
 }

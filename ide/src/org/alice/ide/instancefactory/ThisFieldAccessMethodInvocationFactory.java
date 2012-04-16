@@ -65,6 +65,15 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 		this.field = field;
 	}
 	@Override
+	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getValidInstanceType( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+		org.lgna.project.ast.AbstractType< ?,?,? > fieldDeclarationType = this.field.getDeclaringType();
+		if( fieldDeclarationType != null && fieldDeclarationType.isAssignableFrom( type ) ) {
+			return this.field.getValueType();
+		} else {
+			return null;
+		}
+	}
+	@Override
 	protected org.lgna.croquet.resolvers.Resolver< ThisFieldAccessMethodInvocationFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessMethodInvocationFactory >( 
 				this,

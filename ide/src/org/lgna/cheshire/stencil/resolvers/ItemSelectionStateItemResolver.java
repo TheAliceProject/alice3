@@ -48,16 +48,17 @@ import org.lgna.croquet.resolvers.RuntimeResolver;
  * @author Dennis Cosgrove
  */
 public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lgna.croquet.components.TrackableShape> {
-	private final org.lgna.croquet.history.ListSelectionStateChangeStep< E > step;
-	public ItemSelectionStateItemResolver( org.lgna.croquet.history.ListSelectionStateChangeStep< E > step ) {
+	private final org.lgna.croquet.history.StateChangeStep< E > step;
+	public ItemSelectionStateItemResolver( org.lgna.croquet.history.StateChangeStep< E > step ) {
 		this.step = step;
 	}
 
 	public org.lgna.croquet.components.TrackableShape getResolved() {
-		org.lgna.croquet.ListSelectionState<E> model = this.step.getModel();
-		if (model != null) {
+		org.lgna.croquet.State<E> model = this.step.getModel();
+		if (model instanceof org.lgna.croquet.ListSelectionState ) {
+			org.lgna.croquet.ListSelectionState< E > listSelectionState = (org.lgna.croquet.ListSelectionState< E >)model;
 			E item = this.step.getItem();
-			org.lgna.croquet.components.TrackableShape rv = model.getTrackableShapeFor(item);
+			org.lgna.croquet.components.TrackableShape rv = listSelectionState.getTrackableShapeFor(item);
 			return rv;
 		} else {
 			return null;

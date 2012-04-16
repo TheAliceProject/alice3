@@ -80,4 +80,18 @@ public class ArrayAccess extends Expression {
 		assert arrayType != null;
 		return arrayType.getComponentType();
 	}
+	@Override
+	public boolean isValid() {
+		Expression arrayExpression = this.array.getValue();
+		if( arrayExpression != null ) {
+			AbstractType< ?,?,? > type = arrayExpression.getType();
+			if( type != null ) {
+				return type.isArray();
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
 }

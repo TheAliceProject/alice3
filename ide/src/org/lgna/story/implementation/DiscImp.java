@@ -68,9 +68,4 @@ public class DiscImp extends ShapeImp {
 	public org.lgna.story.Disc getAbstraction() {
 		return this.abstraction;
 	}
-	@Override
-	protected double getBoundingSphereRadius() {
-		return this.outerRadius.getValue();
-	}
-
 }

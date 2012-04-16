@@ -53,6 +53,8 @@ public interface Theme {
 	public java.awt.Color getFieldColor();
 	public java.awt.Color getLocalColor();
 	public java.awt.Color getParameterColor();
+	public java.awt.Color getEventColor();
+	public java.awt.Color getEventBodyColor();
 	public java.awt.Paint getPaintFor( Class< ? extends org.lgna.project.ast.Statement > cls, int x, int y, int width, int height );
 	public java.awt.Color getColorFor( Class< ? extends org.lgna.project.ast.Node > cls );
 	public java.awt.Color getColorFor( org.lgna.project.ast.Node node );

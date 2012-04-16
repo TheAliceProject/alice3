@@ -144,14 +144,19 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		if (expression == null) {
 			return null;
 		}
-		Object[] values = this.getVM().ENTRY_POINT_evaluate(
-				getActiveSceneInstance(), 
-				new Expression[] { expression }
-		);
-		if (values.length > 0) {
-			return values[0];
-		}
-		else {
+		try {
+			Object[] values = this.getVM().ENTRY_POINT_evaluate(
+					getActiveSceneInstance(), 
+					new Expression[] { expression }
+			);
+			if (values.length > 0) {
+				return values[0];
+			}
+			else {
+				return null;
+			}
+		} catch( Throwable t ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
 			return null;
 		}
 	}
@@ -213,7 +218,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	
 	public void removeField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
-		assert declaringType == this.getActiveSceneType();
+		assert declaringType == this.getActiveSceneType() : declaringType + " " + field;
 		for (int i=0; i<this.getActiveSceneType().fields.size(); i++)
 		{
 			if (this.getActiveSceneType().fields.get(i) == field)

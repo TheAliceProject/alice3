@@ -115,9 +115,21 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 		super( details.group, details.id, details.getBoundedRangeModel().getValue()/100.0, details.getBoundedRangeModel(), details.getSpinnerModel() );
 	}
 	@Override
-	protected void commitStateEdit( Double prevValue, Double nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.TransactionManager.handleBoundedDoubleStateChanged( BoundedDoubleState.this, nextValue, isAdjusting, trigger );
+	public Class< Double > getItemClass() {
+		return Double.class;
 	}
+	@Override
+	public Double decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		return binaryDecoder.decodeDouble();
+	}
+	@Override
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Double value ) {
+		binaryEncoder.encode( value );
+	}
+//	@Override
+//	protected void commitStateEdit( Double prevValue, Double nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+//		org.lgna.croquet.history.TransactionManager.handleStateChanged( BoundedDoubleState.this, prevValue, nextValue, isAdjusting, trigger );
+//	}
 	@Override
 	protected Double fromInt( int value ) {
 //		java.math.BigDecimal bigDecimal = new java.math.BigDecimal( value );

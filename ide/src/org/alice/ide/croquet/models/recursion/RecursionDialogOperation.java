@@ -122,7 +122,17 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 
 	public RecursionPanel( String explanationA, String explanationB ) {
 		//todo
-		org.alice.ide.croquet.models.help.BrowserOperation browserOperation = new org.alice.ide.croquet.models.help.BrowserOperation( java.util.UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ), "http://help.alice.org/recursion" );
+		org.alice.ide.browser.BrowserOperation browserOperation = new org.alice.ide.browser.BrowserOperation( java.util.UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ) )  {
+			@Override
+			protected java.net.URL getUrl() {
+				String path = "http://help.alice.org/recursion";
+				try {
+					return new java.net.URL( path );
+				} catch( java.net.MalformedURLException murle ) {
+					throw new RuntimeException( path, murle );
+				}
+			}
+		};
 		org.lgna.croquet.components.Hyperlink hyperlink = browserOperation.createHyperlink();
 		hyperlink.scaleFont( FONT_SCALE_FACTOR );
 		hyperlink.setBorder( javax.swing.BorderFactory.createEmptyBorder( SPACING, INDENT, SPACING, 0 ) );
@@ -164,7 +174,7 @@ public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperat
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ) );
 	}
 	@Override
-	protected RecursionPanel createContentPane(org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog) {
+	protected RecursionPanel createContentPane(org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog) {
 		String explanationA = "<html>Recursion is disabled by default because otherwise many users unwittingly and mistakenly make recursive calls.<p><p>Recursion is a powerful tool in computer science.  It is not to be feared.  It simply needs to be understood.<p><p>For more information on recursion, please see:</html>";
 		String explanationB = "Hopefully, this button makes sense to you:  ";
 		return new RecursionPanel( explanationA, explanationB );
@@ -191,7 +201,7 @@ public class RecursionDialogOperation extends org.lgna.croquet.PlainDialogOperat
 //		dialog.setLocation( p );
 //	}
 	@Override
-	protected void releaseContentPane(org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
+	protected void releaseContentPane(org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane) {
 	}
 	@Override
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {

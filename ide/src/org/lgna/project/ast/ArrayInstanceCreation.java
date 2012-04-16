@@ -63,6 +63,37 @@ public class ArrayInstanceCreation extends Expression {
 	
 	@Override
 	public AbstractType<?,?,?> getType() {
-		return arrayType.getValue();
+		return this.arrayType.getValue();
+	}
+	
+	@Override
+	public boolean isValid() {
+		AbstractType< ?,?,? > type = this.getType();
+		if( type != null ) {
+			if( type.isArray() ) {
+				//todo: check lengths
+				for( Expression expression : this.expressions ) {
+					if( expression != null ) {
+						if( type.getComponentType().isAssignableFrom( expression.getType() ) ) {
+							if( expression.isValid() ) {
+								//pass
+							} else {
+								return false;
+							}
+						} else {
+							return false;
+						}
+					} else {
+						//todo?
+						return false;
+					}
+				}
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 }

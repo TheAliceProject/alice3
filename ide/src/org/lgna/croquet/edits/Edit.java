@@ -148,11 +148,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		StringBuilder sb = new StringBuilder();
 		this.updatePresentation( sb, locale );
 		if( sb.length() == 0 ) {
-			Class<?> cls = this.getClass();
-			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( cls ) );
-		}
-		if( sb.length() == 0 ) {
-			sb.append( this.getClass() );
+			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
 		}
 		return sb.toString();
 	}

@@ -45,12 +45,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InformationDialogOperation extends DialogOperation<org.lgna.croquet.history.InformationDialogOperationStep> {
+public abstract class InformationDialogOperation extends DialogOperation {
 	public InformationDialogOperation(java.util.UUID individualId) {
 		super(Application.INFORMATION_GROUP, individualId);
-	}
-	@Override
-	public org.lgna.croquet.history.InformationDialogOperationStep createAndPushStep( org.lgna.croquet.triggers.Trigger trigger ) {
-		return org.lgna.croquet.history.TransactionManager.addInformationDialogOperationStep( this, trigger );
 	}
 }

@@ -47,6 +47,7 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class DeleteParameterEdit extends ParameterEdit< org.alice.ide.operations.ast.DeleteParameterOperation > {
+	private transient int index;
 	public DeleteParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
 		super( completionStep, parameter );
 	}
@@ -60,11 +61,14 @@ public class DeleteParameterEdit extends ParameterEdit< org.alice.ide.operations
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.removeParameter();
+		if( isDo ) {
+			this.index = this.getParametersProperty().indexOf( this.getParameter() );
+		}
+		this.removeParameter( this.index );
 	}
 	@Override
 	protected final void undoInternal() {
-		this.addParameter();
+		this.addParameter( this.index );
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

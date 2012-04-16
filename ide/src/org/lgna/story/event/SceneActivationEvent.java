@@ -46,5 +46,5 @@ package org.lgna.story.event;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneActivationEvent {
+public class SceneActivationEvent extends AbstractEvent {
 }

@@ -147,4 +147,11 @@ public class ClassUtilities {
 			return null;
 		}
 	}
+	public static String getTrimmedClassNameForInstance( Object instance ) {
+		if( instance != null ) {
+			return getTrimmedClassName( instance.getClass() );
+		} else {
+			return null;
+		}
+	}
 }

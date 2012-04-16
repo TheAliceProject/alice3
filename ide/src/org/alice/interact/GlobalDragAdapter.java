@@ -295,10 +295,12 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		
 		ManipulationHandleIndirection handleAxis = new ManipulationHandleIndirection(new org.alice.interact.handle.ManipulationAxes());
 		handleAxis.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
-		handleAxis.addToSet( HandleSet.DEFAULT_INTERACTION );
-		handleAxis.addToSet( HandleSet.ROTATION_INTERACTION );
-		handleAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
-		handleAxis.addToSet( HandleSet.TRANSLATION_INTERACTION );
+		
+//		handleAxis.addToSet( HandleSet.DEFAULT_INTERACTION );
+//		handleAxis.addToSet( HandleSet.ROTATION_INTERACTION );
+//		handleAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+//		handleAxis.addToSet( HandleSet.TRANSLATION_INTERACTION );
+		
 		handleAxis.addCondition( new ManipulationEventCriteria(ManipulationEvent.EventType.Rotate, null, PickHint.ANYTHING ) );
 		handleAxis.addCondition( new ManipulationEventCriteria(ManipulationEvent.EventType.Translate, null, PickHint.ANYTHING ) );
 		this.manipulationEventManager.addManipulationListener( handleAxis );
@@ -486,10 +488,10 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		
 		if (this.sceneEditor != null)
 		{
-			InteractionGroup defaultInteraction = new InteractionGroup(HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject);
-			InteractionGroup rotationInteraction = new InteractionGroup(HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight);
-			InteractionGroup translationInteraction = new InteractionGroup(HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject);
-			InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject);
+			InteractionGroup defaultInteraction = new InteractionGroup(HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE);
+			InteractionGroup rotationInteraction = new InteractionGroup(HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, org.alice.interact.PickHint.PickType.TURNABLE);
+			InteractionGroup translationInteraction = new InteractionGroup(HandleSet.TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE);
+			InteractionGroup resizeInteraction = new InteractionGroup(HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, org.alice.interact.PickHint.PickType.RESIZABLE);
 			
 			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.DEFAULT, defaultInteraction );
 			this.mapHandleStyleToInteractionGroup.put( org.alice.stageide.sceneeditor.HandleStyle.ROTATION, rotationInteraction );

@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.ComponentManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -67,7 +69,7 @@ public class TabSelectionState< T extends TabComposite< ? > > extends DefaultLis
 		return new org.lgna.croquet.components.ToolPaletteTabbedPane< T >( this );
 	};
 	public org.lgna.croquet.components.JComponent< ? > getMainComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( abstractTabbedPane != null ) {
 			return abstractTabbedPane.getMainComponentFor( item );
 		} else {
@@ -75,7 +77,7 @@ public class TabSelectionState< T extends TabComposite< ? > > extends DefaultLis
 		}
 	}
 	public org.lgna.croquet.components.ScrollPane getScrollPaneFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( abstractTabbedPane != null ) {
 			return abstractTabbedPane.getScrollPaneFor( item );
 		} else {
@@ -83,7 +85,7 @@ public class TabSelectionState< T extends TabComposite< ? > > extends DefaultLis
 		}
 	}
 	public org.lgna.croquet.components.JComponent< ? > getRootComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = this.getFirstComponent( org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane< T, ?, ? > abstractTabbedPane = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( abstractTabbedPane != null ) {
 			return abstractTabbedPane.getRootComponentFor( item );
 		} else {

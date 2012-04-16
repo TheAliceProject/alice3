@@ -179,9 +179,11 @@ class TreeNodeCascade<T> extends Cascade< T > {
 		this.node = node;
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, T[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< T >> completionStep, T[] values ) {
 		assert values.length == 1;
-		return new org.lgna.croquet.edits.TreeSelectionStateEdit< T >( completionStep, this.model, this.model.getSelectedNode(), values[ 0 ] );
+		this.model.setValue( values[ 0 ] );
+		return null;
+		//return new org.lgna.croquet.edits.TreeSelectionStateEdit< T >( completionStep, this.model, this.model.getSelectedNode(), values[ 0 ] );
 	}
 }
 
@@ -218,7 +220,8 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 			this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.history.ActionOperationStep step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			//todo: create edit
 			this.treeSelectionState.setSelectedNode( this.treeNode );
 			step.finish();
@@ -251,6 +254,11 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		this.swingModel.treeSelectionModel.addTreeSelectionListener( this.treeSelectionListener );
 	}
 
+	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
@@ -261,6 +269,10 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	protected abstract String getTextForNode( T node );
 	protected abstract javax.swing.Icon getIconForNode( T node );
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel();
+	public abstract void refresh( T node ); 
+	public final void refreshAll() { 
+		this.refresh( this.getTreeModel().getRoot() );
+	}
 	public T getSelectedNode() {
 		javax.swing.tree.TreePath path = this.swingModel.treeSelectionModel.getSelectionPath();
 		if( path != null ) {
@@ -280,11 +292,6 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	@Override
 	protected void updateSwingModel(T nextValue) {
 		this.setSelectedNode( nextValue );
-	}
-
-	@Override
-	protected void commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		//todo
 	}
 
 	public java.util.List< T > getChildren( T node ) {
@@ -325,9 +332,5 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	}
 	public org.lgna.croquet.components.Tree< T > createTree() {
 		return new org.lgna.croquet.components.Tree< T >( this );
-	}
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		return rv;
 	}
 }

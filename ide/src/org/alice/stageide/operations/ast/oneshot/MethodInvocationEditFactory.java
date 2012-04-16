@@ -47,5 +47,5 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public interface MethodInvocationEditFactory {
-	public org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step );
+	public org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step );
 }

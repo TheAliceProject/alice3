@@ -49,7 +49,7 @@ package org.lgna.croquet;
 public enum YesNoOption {
 	YES(javax.swing.JOptionPane.YES_OPTION), 
 	NO(javax.swing.JOptionPane.NO_OPTION);
-	int internal;
+	private final int internal;
 
 	YesNoOption(int internal) {
 		this.internal = internal;

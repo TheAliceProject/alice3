@@ -42,9 +42,57 @@
  */
 package org.alice.media;
 
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.Button;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.TextField;
+import org.lgna.croquet.components.View;
+
 /**
  * @author Matt May
  */
-public class ExportToYouTubeLoginView {
+public class ExportToYouTubeLoginView extends WizardPageComposite<View<?,?>> {
 
+	public ExportToYouTubeLoginView() {
+		super( java.util.UUID.fromString( "9fb59b54-f9af-4abd-835e-f1e89674e8dd" ) );
+	}
+
+	@Override
+	protected View<?,?> createView() {
+		BorderPanel rv = new BorderPanel();
+		rv.addComponent( new UserNameAndPasswordComponent(), Constraint.PAGE_START );
+		
+		Component<?> meat = new VideoPlayer();
+		VideoInfoComponent potatoes = new VideoInfoComponent();
+		rv.addComponent( GridPanel.createGridPane( 1, 2, meat, potatoes ), Constraint.CENTER );
+		rv.addComponent( new Button( null ), Constraint.PAGE_END );
+		return rv;
+	}
+
+	private class UserNameAndPasswordComponent extends Component {
+
+		@Override
+		protected java.awt.Component createAwtComponent() {
+			BorderPanel rv = new BorderPanel();
+			rv.addComponent( new Button( null ), Constraint.PAGE_END );
+			StringState userNameState = new StringState( null, java.util.UUID.fromString( "2c0d22d6-396d-460c-9afd-8cbb14d661ac" ), "" ) {
+			};
+			StringState passwordState = new StringState( null, java.util.UUID.fromString( "5d38ea7c-b7ec-4a45-aef3-fa5d9dee55cd" ), "" ) {
+			};
+			TextField userName = new TextField( userNameState );
+			TextField password = new TextField( passwordState );
+			GridPanel top = GridPanel.createGridPane( 2, 2 );
+			top.addComponent( new Label( "user name" ) );
+			top.addComponent( userName );
+			top.addComponent( new Label( "password" ) );
+			top.addComponent( password );
+			rv.addComponent( top, Constraint.CENTER );
+			return rv.getAwtComponent();
+		}
+	}
 }

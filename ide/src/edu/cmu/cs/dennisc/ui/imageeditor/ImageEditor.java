@@ -45,11 +45,10 @@ package edu.cmu.cs.dennisc.ui.imageeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageEditor extends edu.cmu.cs.dennisc.program.DefaultProgram {
+public class ImageEditor extends javax.swing.JFrame {
 	private ImagePane m_imagePane = new ImagePane();
 
-	@Override
-	protected void initialize() {
+	public ImageEditor() {
 		class MyFileTransferHandler extends edu.cmu.cs.dennisc.javax.swing.transfer.FileTransferHandler {
 			@Override
 			protected void handleFiles( java.util.List<java.io.File> files ) {
@@ -63,5 +62,11 @@ public class ImageEditor extends edu.cmu.cs.dennisc.program.DefaultProgram {
 	}
 	private void load( java.io.File file ) {
 		m_imagePane.setImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( file ) );
+	}
+	public static void main( String[] args ) {
+		ImageEditor imageEditor = new ImageEditor();
+		imageEditor.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
+		imageEditor.pack();
+		imageEditor.setVisible( true );
 	}
 }

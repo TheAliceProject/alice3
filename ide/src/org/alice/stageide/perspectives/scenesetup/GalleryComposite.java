@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives.scenesetup;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryComposite extends org.lgna.croquet.Composite< org.alice.stageide.gallerybrowser.GalleryBrowser > {
+public class GalleryComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.gallerybrowser.GalleryBrowser > {
 	private static class SingletonHolder {
 		private static GalleryComposite instance = new GalleryComposite();
 	}
@@ -55,13 +55,6 @@ public class GalleryComposite extends org.lgna.croquet.Composite< org.alice.stag
 	}
 	private GalleryComposite() {
 		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
 	}
 	@Override
 	protected org.alice.stageide.gallerybrowser.GalleryBrowser createView() {

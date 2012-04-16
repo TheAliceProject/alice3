@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationsEditorComposite extends org.lgna.croquet.Composite< org.alice.ide.declarationseditor.components.TypeEditor > {
+public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposite< org.alice.ide.declarationseditor.components.TypeEditor > {
 	private static class SingletonHolder {
 		private static DeclarationsEditorComposite instance = new DeclarationsEditorComposite();
 	}
@@ -59,13 +59,5 @@ public class DeclarationsEditorComposite extends org.lgna.croquet.Composite< org
 	@Override
 	protected org.alice.ide.declarationseditor.components.TypeEditor createView() {
 		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance();
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return true;
 	}
 }

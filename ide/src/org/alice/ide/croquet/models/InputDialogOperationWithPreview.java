@@ -51,13 +51,13 @@ public abstract class InputDialogOperationWithPreview<T> extends org.lgna.croque
 		super( group, id );
 	}
 	@Override
-	protected void updateExplanation( org.lgna.croquet.history.InputDialogOperationStep< T > step ) {
+	protected void updateExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		super.updateExplanation( step );
-		org.alice.ide.croquet.components.PanelWithPreview< ? > panelWithPreview = (org.alice.ide.croquet.components.PanelWithPreview< ? >)step.getMainPanel();
+		org.alice.ide.croquet.components.InputDialogPanelWithPreview< ? > panelWithPreview = (org.alice.ide.croquet.components.InputDialogPanelWithPreview< ? >)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 		if( panelWithPreview != null ) {
 			panelWithPreview.updatePreview();
 		}
 	}
 	@Override
-	protected abstract org.alice.ide.croquet.components.PanelWithPreview< ? > prologue( org.lgna.croquet.history.InputDialogOperationStep< T > step );
+	protected abstract org.alice.ide.croquet.components.InputDialogPanelWithPreview< ? > prologue( org.lgna.croquet.history.CompletionStep<?> step );
 }

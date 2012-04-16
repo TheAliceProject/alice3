@@ -49,13 +49,11 @@ import org.lgna.croquet.Application;
  * @author Dennis Cosgrove
  */
 public class Dialog extends AbstractWindow< javax.swing.JDialog > {
-	/**
-	 * @author Dennis Cosgrove
-	 */
 	public enum DefaultCloseOperation {
 		DO_NOTHING( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE ),
 		HIDE( javax.swing.WindowConstants.HIDE_ON_CLOSE ),
 		DISPOSE( javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		//note: no longer necessary
 		private int internal;
 		private DefaultCloseOperation( int internal ) {
 			this.internal = internal;
@@ -70,6 +68,25 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 		}
 	}
 
+	private static class JDialog extends javax.swing.JDialog {
+		public JDialog( java.awt.Frame owner ) {
+			super( owner );
+		}
+		public JDialog( java.awt.Dialog owner ) {
+			super( owner );
+		}
+		public JDialog() {
+			super();
+		}
+		@Override
+		public void setDefaultCloseOperation( int operation ) {
+			super.setDefaultCloseOperation( operation );
+			if( operation != javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( operation );
+			}
+		}
+	}
+	
 	private static javax.swing.JDialog createJDialog( ScreenElement owner ) {
 		javax.swing.JDialog rv;
 		if( owner != null ) {
@@ -77,9 +94,9 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 			if( root != null ) {
 				java.awt.Window ownerWindow = root.getAwtComponent();
 				if( ownerWindow instanceof java.awt.Frame ) {
-					rv = new javax.swing.JDialog( (java.awt.Frame)ownerWindow );
+					rv = new JDialog( (java.awt.Frame)ownerWindow );
 				} else 	if( ownerWindow instanceof java.awt.Dialog ) {
-					rv = new javax.swing.JDialog( (java.awt.Dialog)ownerWindow );
+					rv = new JDialog( (java.awt.Dialog)ownerWindow );
 				} else {
 					rv = null;
 				}
@@ -92,10 +109,30 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new javax.swing.JDialog();
+			rv = new JDialog();
 		}
 		return rv;
 	}
+
+	private DefaultCloseOperation defaultCloseOperation = DefaultCloseOperation.HIDE;
+	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
+		public void windowOpened( java.awt.event.WindowEvent e ) {
+		}
+		public void windowClosing( java.awt.event.WindowEvent e ) {
+			Dialog.this.handleWindowClosing( e );
+		}
+		public void windowClosed( java.awt.event.WindowEvent e ) {
+		}
+		public void windowActivated( java.awt.event.WindowEvent e ) {
+		}
+		public void windowDeactivated( java.awt.event.WindowEvent e ) {
+		}
+		public void windowIconified( java.awt.event.WindowEvent e ) {
+		}
+		public void windowDeiconified( java.awt.event.WindowEvent e ) {
+		}
+	};
+	
 	public Dialog() {
 		this( null );
 	}
@@ -105,17 +142,37 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 	public Dialog( ScreenElement owner, boolean isModal ) {
 		super( Dialog.createJDialog( owner ) );
 		this.getAwtComponent().setModal( isModal );
+		this.getAwtComponent().setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
+		this.addWindowListener( this.windowListener );
 	}
+	
+	protected boolean isClearedToClose() {
+		return true;
+	}
+	private void handleWindowClosing( java.awt.event.WindowEvent e ) {
+		if( this.defaultCloseOperation == DefaultCloseOperation.DO_NOTHING || this.defaultCloseOperation == null ) {
+			//pass
+		} else {
+			if( isClearedToClose() ) {
+				if( this.defaultCloseOperation == DefaultCloseOperation.HIDE ) {
+					this.setVisible( false );
+				} else {
+					System.exit( 0 );
+				}
+			}
+		}
+	}
+	
 	@Override
 	protected javax.swing.JRootPane getRootPane() {
 		return this.getAwtComponent().getRootPane();
 	}
 	
 	public DefaultCloseOperation getDefaultCloseOperation() {
-		return DefaultCloseOperation.valueOf( this.getAwtComponent().getDefaultCloseOperation() );
+		return this.defaultCloseOperation;
 	}
 	public void setDefaultCloseOperation( DefaultCloseOperation defaultCloseOperation ) {
-		this.getAwtComponent().setDefaultCloseOperation( defaultCloseOperation.internal );
+		this.defaultCloseOperation = defaultCloseOperation;
 	}
 	
 	public String getTitle() {
@@ -140,5 +197,10 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 	@Override
 	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
 		this.getAwtComponent().setJMenuBar( jMenuBar );
+	}
+	
+	public void dispose() {
+		this.removeWindowListener( this.windowListener );
+		this.getAwtComponent().dispose();
 	}
 }

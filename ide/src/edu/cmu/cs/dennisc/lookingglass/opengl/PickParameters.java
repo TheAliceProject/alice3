@@ -47,61 +47,54 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class PickParameters {
-	private java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > m_pickResults = new java.util.LinkedList< edu.cmu.cs.dennisc.lookingglass.PickResult >();
-	private javax.media.opengl.GLAutoDrawable m_glAutoDrawable;
-	private edu.cmu.cs.dennisc.scenegraph.AbstractCamera m_sgCamera;
-	private int m_x;
-	private int m_y;
-	private boolean m_isSubElementRequired;
-	private edu.cmu.cs.dennisc.lookingglass.PickObserver m_pickObserver;
+	private final java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickResults = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
+	private final int x;
+	private final int y;
+	private final boolean isSubElementRequired;
+	private final edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver;
 
-	public PickParameters( javax.media.opengl.GLAutoDrawable glAutoDrawable, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
-		m_glAutoDrawable = glAutoDrawable;
-		m_sgCamera = sgCamera;
-		m_x = x;
-		m_y = y;
-		m_isSubElementRequired = isSubElementRequired;
-		m_pickObserver = pickObserver;
+	public PickParameters( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
+		this.sgCamera = sgCamera;
+		this.x = x;
+		this.y = y;
+		this.isSubElementRequired = isSubElementRequired;
+		this.pickObserver = pickObserver;
 	}
 
-	
 	public void addPickResult( edu.cmu.cs.dennisc.scenegraph.Component source, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
-		m_pickResults.add(  new edu.cmu.cs.dennisc.lookingglass.PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
+		this.pickResults.add(  new edu.cmu.cs.dennisc.lookingglass.PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
 	}
 	
 	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > accessAllPickResults() {
-		return m_pickResults;
+		return this.pickResults;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.PickResult accessFrontMostPickResult() {
 		edu.cmu.cs.dennisc.lookingglass.PickResult rv;
-		if( m_pickResults.isEmpty() ) {
-			rv = new edu.cmu.cs.dennisc.lookingglass.PickResult( m_sgCamera );
+		if( this.pickResults.isEmpty() ) {
+			rv = new edu.cmu.cs.dennisc.lookingglass.PickResult( this.sgCamera );
 		} else {
-			rv = m_pickResults.get( 0 );
+			rv = this.pickResults.get( 0 );
 		}
 		return rv;
 	}
 	
-	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		return m_glAutoDrawable;
-
-	}
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
-		return m_sgCamera;
+		return this.sgCamera;
 	}
 	public int getX() {
-		return m_x;
+		return this.x;
 	}
 	public int getY() {
-		return m_y;
+		return this.y;
 	}
 	public int getFlippedY( java.awt.Rectangle actualViewport ) {
-		return actualViewport.height - m_y;
+		return actualViewport.height - this.y;
 	}
 	public boolean isSubElementRequired() {
-		return m_isSubElementRequired;
+		return this.isSubElementRequired;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.PickObserver getPickObserver() {
-		return m_pickObserver;
+		return this.pickObserver;
 	}
 }

@@ -51,9 +51,14 @@ public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croqu
 	private static org.alice.ide.croquet.models.ast.DeleteStatementOperation getModel( org.lgna.croquet.history.CompletionStep<org.alice.ide.croquet.models.ast.DeleteStatementOperation> completionStep ) {
 		return completionStep.getModel();
 	}
+	private static org.lgna.project.ast.BlockStatement getBlockStatement( org.lgna.croquet.history.CompletionStep completionStep ) {
+		org.lgna.project.ast.BlockStatement rv = (org.lgna.project.ast.BlockStatement)getModel( completionStep ).getStatement().getParent();
+		assert rv != null : completionStep;
+		return rv;
+	}
 	private final int index;
 	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		super( completionStep, (org.lgna.project.ast.BlockStatement) (getModel( completionStep ).getStatement().getParent() ) );
+		super( completionStep, getBlockStatement( completionStep ) );
 		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		this.index = this.getBlockStatement().statements.indexOf( statement );
 	}

@@ -53,6 +53,9 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
 	}
+	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
+		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
+	}
 //	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
 //	@Override
 //	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
@@ -74,11 +77,11 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
 	@Override
 	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
-		return this.createValue( this.getPreviousExpression() );
+		return this.createValue( this.createCopyOfPreviousExpression() );
 	}
 	@Override
 	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 		//todo?
-		return this.createValue( this.getPreviousExpression() );
+		return this.createValue( this.createCopyOfPreviousExpression() );
 	}
 }

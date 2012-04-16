@@ -94,15 +94,27 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		new org.lgna.common.ComponentThread( new ProgramRunnable( awtContainer ), RunOperation.this.getName() ).start();
 	}
 	private java.awt.Container stopProgram() {
-		java.awt.Container rv = this.programContext.getContainer(); 
-		this.programContext.cleanUpProgram();
-		this.programContext = null;
-		return rv;
+		if( this.programContext != null ) {
+			java.awt.Container rv = this.programContext.getContainer(); 
+			this.programContext.cleanUpProgram();
+			this.programContext = null;
+			return rv;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this );
+			return null;
+		}
 	}
 	private class RestartAction extends javax.swing.AbstractAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.awt.Container awtContainer = RunOperation.this.stopProgram();
-			RunOperation.this.startProgram( awtContainer );
+			if( awtContainer != null ) {
+				RunOperation.this.startProgram( awtContainer );
+			} else {
+				//todo: prompt w/ dialog that can submit world to bugs database
+				String message = "Unable to restart";
+				String title = null;
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.ERROR );
+			}
 		}
 	};
 	private final RestartAction restartAction = new RestartAction();
@@ -113,7 +125,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
 			org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
@@ -125,7 +137,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		}
 	}
 	@Override
-	protected void releaseContentPane( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
@@ -134,7 +146,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.PlainDialogOperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
 		this.stopProgram();
 	}

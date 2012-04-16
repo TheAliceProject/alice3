@@ -65,6 +65,14 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 		this.local = local;
 	}
 	@Override
+	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+		if( code != null ) {
+			return this.local.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code;
+		} else {
+			return false;
+		}
+	}
+	@Override
 	protected org.lgna.croquet.resolvers.Resolver< LocalAccessFactory > createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAccessFactory >( this, this.local, org.lgna.project.ast.UserLocal.class );
 	}

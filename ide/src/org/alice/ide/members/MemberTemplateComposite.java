@@ -108,9 +108,4 @@ public abstract class MemberTemplateComposite<V extends org.lgna.croquet.compone
 		//booleanState.setIconForBothTrueAndFalse( ICON );
 		button.getAwtComponent().setIcon( ICON );
 	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model );
-		return false;
-	}
 }

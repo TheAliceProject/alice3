@@ -1,0 +1,113 @@
+package uist.ecard.ribbon;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+
+public class PictureEffectsRibbonModel extends org.lgna.croquet.TabComposite {
+	private static class SingletonHolder {
+		private static PictureEffectsRibbonModel instance = new PictureEffectsRibbonModel();
+	}
+	public static PictureEffectsRibbonModel getInstance() {
+		return SingletonHolder.instance;
+	}
+	private org.lgna.croquet.Operation[] operations = new org.lgna.croquet.Operation[] {
+			uist.ecard.menu.DropShadowModel.getInstance(),
+			null,
+			uist.ecard.menu.RoundedCornersModel.getInstance(),
+			uist.ecard.ThoughtBubbleEffectModel.getInstance(),
+			uist.ecard.menu.EllipseModel.getInstance(),
+			null,
+			uist.ecard.menu.RotateForwardModel.getInstance(),
+			uist.ecard.menu.RotateBackwardModel.getInstance()
+	};
+	private PictureEffectsRibbonModel() {
+		super( java.util.UUID.fromString( "e0b095cb-1cba-443d-b320-c0fc4f7c3312" ) );
+	}
+	@Override
+	public boolean isCloseable() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.components.View createView() {
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.weightx = 0.0;
+		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel( this );
+		rv.setBorder( BorderFactory.createEmptyBorder( 4,2,4,2 ) );
+		rv.setBackgroundColor(java.awt.SystemColor.control);
+
+		org.lgna.croquet.components.Button button;
+		javax.swing.JButton jButton;
+
+//		LineAxisPanel rotatePanel = new LineAxisPanel();
+//		rotatePanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//		rv.addComponent(rotatePanel, gbc );
+//		rotatePanel.setBorder( null );
+
+		button = uist.ecard.menu.RotateBackwardModel.getInstance().createButton();
+		jButton = button.getAwtComponent();
+		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource( "resources/ribbon/rotate-counter-clockwise.png") ));
+		rv.addComponent( button, gbc );
+//		rotatePanel.addComponent(button);
+
+		button = uist.ecard.menu.RotateForwardModel.getInstance().createButton();
+		jButton = button.getAwtComponent();
+		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource( "resources/ribbon/rotate-clockwise.png") ));
+		rv.addComponent( button, gbc );
+//		rotatePanel.addComponent(button);
+
+
+		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
+		org.lgna.croquet.components.GridPanel effectsPanel = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane();
+//		effectsPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		rv.addComponent(effectsPanel, gbc );
+
+		button = uist.ecard.menu.EllipseModel.getInstance().createButton();
+		button.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+		effectsPanel.addComponent(button);
+
+		button = uist.ecard.menu.RoundedCornersModel.getInstance().createButton();
+		button.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+		effectsPanel.addComponent(button);
+
+		button = uist.ecard.ThoughtBubbleEffectModel.getInstance().createButton();
+		button.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+		effectsPanel.addComponent(button);
+		effectsPanel.setBorder( null );
+		
+		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 6 ), gbc  );
+//		LineAxisPanel shadowPanel = new LineAxisPanel();
+//		shadowPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//		rv.addComponent(shadowPanel, gbc );
+//		shadowPanel.setBorder( null );
+
+		button = uist.ecard.menu.DropShadowModel.getInstance().createButton();
+		jButton = button.getAwtComponent();
+		jButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		jButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		jButton.setIcon(new ImageIcon(uist.ecard.ECardApplication.class.getResource( "resources/ribbon/drop-shadow.png") ));
+//		shadowPanel.addComponent(button);
+		rv.addComponent( button, gbc );
+
+//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0;
+		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue(), gbc  );
+		return rv;
+	}
+	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		for( org.lgna.croquet.Operation operation : this.operations ) {
+			if( operation == model ) {
+				return true;
+			}
+		}
+		return false;
+		//		return edu.cmu.cs.dennisc.java.util.Collections.newHashSet( this.operations ).contains( model );
+	}
+}

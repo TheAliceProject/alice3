@@ -77,9 +77,9 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
  */
 public class OmniDirectionalDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
-	protected Plane pickPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	protected Plane pickPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
 	protected Plane backPlane;
-	protected Plane orthographicPickPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	protected Plane orthographicPickPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
 	protected Point3 orthographicOffsetToOrigin = null;
 	protected Boolean hasMoved = false;
 	protected Point3 originalPosition = null;
@@ -171,7 +171,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		Vector3 clickPlaneNormal = this.getCamera().getAxes( AsSeenBy.SCENE ).backward;
 //		clickPlaneNormal.y += 2d;  //Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
 		clickPlaneNormal.normalize();
-		return new Plane( clickPoint, clickPlaneNormal );
+		return Plane.createInstance( clickPoint, clickPlaneNormal );
 	}
 	
 	protected Plane createLevelPickPlane( Point3 clickPoint )
@@ -179,7 +179,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		Vector3 levelPlaneNormal = MovementDirection.UP.getVector();
 //		clickPlaneNormal.y += 2d;  //Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
 		levelPlaneNormal.normalize();
-		return new Plane( clickPoint, levelPlaneNormal );
+		return Plane.createInstance( clickPoint, levelPlaneNormal );
 	}
 	
 	private Vector3 getMouseMovementFromVector(Point mouseVector)
@@ -419,7 +419,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
 			toOrigin.normalize();
 			Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
-			this.orthographicPickPlane = new Plane( this.originalPosition, cameraFacingNormal );
+			this.orthographicPickPlane = Plane.createInstance( this.originalPosition, cameraFacingNormal );
 			
 			Ray orthoPickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			Point3 orthoPickPoint = PlaneUtilities.getPointInPlane( orthographicPickPlane, orthoPickRay );
@@ -447,11 +447,11 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	
 	protected void setUpPlanes(Point3 planePosition, Point mousePoint )
 	{
-		Plane horizontalPlane = new Plane(planePosition, Vector3.accessPositiveYAxis());
+		Plane horizontalPlane = Plane.createInstance(planePosition, Vector3.accessPositiveYAxis());
 		AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
 		boolean isAbove = cameraTransform.translation.y > planePosition.y;
 		
-		Point3 pointInCameraSidewaysPlane = PlaneUtilities.projectPointIntoPlane(new Plane(cameraTransform.translation, cameraTransform.orientation.right), planePosition);
+		Point3 pointInCameraSidewaysPlane = PlaneUtilities.projectPointIntoPlane(Plane.createInstance(cameraTransform.translation, cameraTransform.orientation.right), planePosition);
 		Vector3 toCamera = Vector3.createSubtraction(cameraTransform.translation, pointInCameraSidewaysPlane);
 		toCamera.normalize();
 		double verticalDistance = Math.abs(cameraTransform.translation.y - planePosition.y);
@@ -526,7 +526,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		}
 		
 //		planeTransitionPointDebugSphere.setLocalTranslation(planePosition);
-		Plane backPlane = new Plane(planePosition, worstCasePlaneNormal);
+		Plane backPlane = Plane.createInstance(planePosition, worstCasePlaneNormal);
 		if (shouldUseHorizontalPlane)
 		{
 			this.pickPlane = horizontalPlane;

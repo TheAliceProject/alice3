@@ -102,7 +102,33 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 				super( "show all system properties..." );
 			}
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( AbstractCaughtExceptionPane.this, edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLString(), "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				java.util.List< edu.cmu.cs.dennisc.java.lang.Property > propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertyList();
+				java.util.Collections.sort( propertyList );
+				StringBuilder sb = new StringBuilder();
+				sb.append( "<html>" );
+				sb.append( "<body>" );
+				for( edu.cmu.cs.dennisc.java.lang.Property property : propertyList ) {
+					sb.append( "<strong> " );
+					sb.append( property.getKey() );
+					sb.append( ":</strong> " );
+					sb.append( property.getValue() );
+					sb.append( "<br>" ); 
+				}
+				sb.append( "</body>" );
+				sb.append( "</html>" );
+				javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane();
+				editorPane.setEditable( false );
+				editorPane.setContentType( "text/html" );
+				editorPane.setText( sb.toString() );
+				javax.swing.JOptionPane.showMessageDialog( AbstractCaughtExceptionPane.this, new javax.swing.JScrollPane( editorPane ) {
+					@Override
+					public java.awt.Dimension getPreferredSize() {
+						java.awt.Dimension rv = super.getPreferredSize();
+						rv.width = Math.min( rv.width, 640 );
+						rv.height = Math.min( rv.height, 480 );
+						return rv;
+					}
+				}, "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			}
 		}
 

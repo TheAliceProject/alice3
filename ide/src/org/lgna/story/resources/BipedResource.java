@@ -61,9 +61,9 @@ public interface BipedResource extends JointedModelResource {
 	public static final JointId RIGHT_KNEE = new JointId( RIGHT_HIP, BipedResource.class );
 	public static final JointId RIGHT_ANKLE = new JointId( RIGHT_KNEE, BipedResource.class );
 	
-	public static final JointId PELVIS_UPPER_BODY = new JointId( ROOT, BipedResource.class );
+	public static final JointId SPINE_BASE = new JointId( ROOT, BipedResource.class );
 	
-	public static final JointId SPINE_MIDDLE = new JointId( PELVIS_UPPER_BODY, BipedResource.class );
+	public static final JointId SPINE_MIDDLE = new JointId( SPINE_BASE, BipedResource.class );
 	public static final JointId SPINE_UPPER = new JointId( SPINE_MIDDLE, BipedResource.class );
 	
 	public static final JointId NECK = new JointId( SPINE_UPPER, BipedResource.class );

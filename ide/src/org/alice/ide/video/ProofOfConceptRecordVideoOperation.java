@@ -69,15 +69,15 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 		return new org.alice.ide.video.components.ProofOfConceptRecordVideoPanel();
 	}
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		IsRecordingState.getInstance().setValue( false );
 		IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.InputDialogOperationStep< java.lang.Void > context, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
-		super.handleFinally( context, dialog, contentPane );
+		super.handleFinally( step, dialog, contentPane );
 	}
 	@Override
 	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
@@ -85,5 +85,6 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 		java.io.File file = new java.io.File( directory, "image" + new java.text.DecimalFormat( "#0000" ).format( i ) + ".png" );
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		edu.cmu.cs.dennisc.image.ImageUtilities.write( file, image );
+		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file );
 	}
 }

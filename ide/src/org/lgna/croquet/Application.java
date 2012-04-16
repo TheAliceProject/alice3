@@ -93,8 +93,7 @@ public abstract class Application {
 		this.stack.pop();
 		return rv;
 	}
-
-	public org.lgna.croquet.components.AbstractWindow< ? > getOwnerWindow() {
+	public org.lgna.croquet.components.AbstractWindow< ? > peekWindow() {
 		return this.stack.peek();
 	}
 
@@ -125,13 +124,13 @@ public abstract class Application {
 		} );
 		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
 			public void handleAbout( java.util.EventObject e ) {
-				Operation< ? > aboutOperation = Application.this.getAboutOperation();
+				Operation aboutOperation = Application.this.getAboutOperation();
 				if( aboutOperation != null ) {
 					aboutOperation.fire( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 				}
 			}
 			public void handlePreferences( java.util.EventObject e ) {
-				Operation< ? > preferencesOperation = Application.this.getPreferencesOperation();
+				Operation preferencesOperation = Application.this.getPreferencesOperation();
 				if( preferencesOperation != null ) {
 					preferencesOperation.fire( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
 				}
@@ -158,7 +157,7 @@ public abstract class Application {
 				java.util.Locale.setDefault( locale );
 				javax.swing.JComponent.setDefaultLocale( locale );
 
-				Manager.localizeAllModels();
+				Manager.relocalizeAllElements();
 
 				try {
 					javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getLookAndFeel() );
@@ -180,8 +179,8 @@ public abstract class Application {
 		}
 	}
 
-	protected abstract Operation< ? > getAboutOperation();
-	protected abstract Operation< ? > getPreferencesOperation();
+	protected abstract Operation getAboutOperation();
+	protected abstract Operation getPreferencesOperation();
 
 	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
@@ -191,7 +190,7 @@ public abstract class Application {
 		if( message instanceof org.lgna.croquet.components.Component< ? > ) {
 			message = ((org.lgna.croquet.components.Component< ? >)message).getAwtComponent();
 		}
-		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.internal, icon );
+		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.getInternal(), icon );
 	}
 	public void showMessageDialog( Object message, String title, MessageType messageType ) {
 		showMessageDialog( message, title, messageType, null );
@@ -204,7 +203,7 @@ public abstract class Application {
 	}
 
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.internal, icon ) );
+		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon ) );
 	}
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType ) {
 		return showYesNoCancelConfirmDialog( message, title, messageType, null );
@@ -216,7 +215,7 @@ public abstract class Application {
 		return showYesNoCancelConfirmDialog( message, null );
 	}
 	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.internal, icon ) );
+		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon ) );
 	}
 	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType ) {
 		return showYesNoConfirmDialog( message, title, messageType, null );
@@ -231,7 +230,7 @@ public abstract class Application {
 	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, int initialValueIndex ) {
 		Object[] options = { optionA, optionB };
 		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
-		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.internal, icon, options, initialValue );
+		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon, options, initialValue );
 		switch( result ) {
 		case javax.swing.JOptionPane.YES_OPTION:
 			return options[ 0 ];
@@ -244,7 +243,7 @@ public abstract class Application {
 	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, Object optionC, int initialValueIndex ) {
 		Object[] options = { optionA, optionB, optionC };
 		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
-		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.internal, icon, options, initialValue );
+		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon, options, initialValue );
 		switch( result ) {
 		case javax.swing.JOptionPane.YES_OPTION:
 			return options[ 0 ];

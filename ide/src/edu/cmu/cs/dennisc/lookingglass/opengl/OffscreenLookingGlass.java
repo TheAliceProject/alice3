@@ -72,6 +72,11 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
 				this.glPbuffer.destroy();
 				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
+				if( this.glPbuffer != null ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "create external drawable" );
+				}
 			}
 		} else {
 			javax.media.opengl.GLContext share;

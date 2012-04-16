@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.ComponentManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -111,8 +113,8 @@ public abstract class MenuModel extends AbstractMenuModel {
 		
 		
 		@Override
-		protected org.lgna.croquet.history.StandardPopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger ) {
-			final org.lgna.croquet.history.StandardPopupPrepStep step = org.lgna.croquet.history.TransactionManager.addStandardPopupOperationStep( this, trigger );
+		protected org.lgna.croquet.history.PopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger ) {
+			final org.lgna.croquet.history.PopupPrepStep step = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );
 
 			final org.lgna.croquet.components.PopupMenu popupMenu = new org.lgna.croquet.components.PopupMenu( this ) {
 				@Override
@@ -120,11 +122,11 @@ public abstract class MenuModel extends AbstractMenuModel {
 					//todo: investigate
 					super.handleDisplayable();
 					//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
-					InternalPopupPrepModel.this.addComponent( this );
+					ComponentManager.addComponent( InternalPopupPrepModel.this, this );
 				}
 				@Override
 				protected void handleUndisplayable() {
-					InternalPopupPrepModel.this.removeComponent( this );
+					ComponentManager.removeComponent( InternalPopupPrepModel.this, this );
 					InternalPopupPrepModel.this.menuModel.removePopupMenuListener( this );
 					super.handleUndisplayable();
 				}

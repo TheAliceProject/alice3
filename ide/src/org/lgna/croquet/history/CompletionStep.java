@@ -45,11 +45,18 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
+public class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
 	private final TransactionHistory transactionHistory;
 	private org.lgna.croquet.edits.Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
+	public static <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
+		return new CompletionStep<M>( parent, model, trigger, transactionHistory );
+	}
+	public static <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return createAndAddToTransaction( parent, model, trigger, null );
+	}
+	
 	public CompletionStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		super( parent, model, trigger );
 		parent.setCompletionStep( this );
@@ -101,7 +108,11 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	protected void popTransactionHistoryIfNecessary() {
 		if( this.transactionHistory != null ) {
 			TransactionHistory pop = TransactionManager.popTransactionHistory();
-			assert pop == this.transactionHistory;
+			if( pop == this.transactionHistory ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( pop, this.transactionHistory );
+			}
 		}
 	}
 	public boolean isPending() {

@@ -46,7 +46,7 @@ package org.alice.stageide.person;
 /**
  * @author Dennis Cosgrove
  */
-public class IngredientsComposite extends org.lgna.croquet.Composite< org.alice.stageide.person.components.IngredientsPanel > {
+public class IngredientsComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.person.components.IngredientsPanel > {
 	private static class SingletonHolder {
 		private static IngredientsComposite instance = new IngredientsComposite();
 	}
@@ -55,13 +55,6 @@ public class IngredientsComposite extends org.lgna.croquet.Composite< org.alice.
 	}
 	private IngredientsComposite() {
 		super( java.util.UUID.fromString( "a782a11f-fd56-4f6f-b178-1116acbeb1e6" ) );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
-	protected void localize() {
 	}
 	@Override
 	protected org.alice.stageide.person.components.IngredientsPanel createView() {

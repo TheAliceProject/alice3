@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends Element {
+public abstract class CascadeBlank< B > extends AbstractElement {
 	public CascadeBlank( java.util.UUID id ) {
 		super( id );
 	}

@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives.scenesetup;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneLayoutComposite extends org.lgna.croquet.Composite< org.lgna.croquet.components.BorderPanel > {
+public class SceneLayoutComposite extends org.lgna.croquet.SimpleComposite< org.lgna.croquet.components.BorderPanel > {
 	private static class SingletonHolder {
 		private static SceneLayoutComposite instance = new SceneLayoutComposite();
 	}
@@ -55,13 +55,6 @@ public class SceneLayoutComposite extends org.lgna.croquet.Composite< org.lgna.c
 	}
 	private SceneLayoutComposite() {
 		super( java.util.UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ) );
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
 	}
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {

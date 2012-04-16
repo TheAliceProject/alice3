@@ -76,6 +76,17 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 		this.swingModel.boundedRangeModel.addChangeListener( this.changeListener );
 	}
 	
+	@Override
+	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+
+	@Override
+	public StringBuilder appendRepresentation( StringBuilder rv, N value, java.util.Locale locale ) {
+		rv.append( value );
+		return rv;
+	}
+
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
@@ -189,10 +200,6 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 //		}
 //	}
 
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		return rv;
-	}
 	public org.lgna.croquet.components.Slider createSlider() {
 		return new org.lgna.croquet.components.Slider( this );
 	}

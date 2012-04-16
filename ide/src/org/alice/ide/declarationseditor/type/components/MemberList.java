@@ -117,10 +117,10 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 	}
 	private org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 
-	public MemberList( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Operation< ? >... operations ) {
+	public MemberList( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Operation... operations ) {
 		super( model );
 		this.internalAddComponent( pageAxisPanel );
-		for( org.lgna.croquet.Operation< ? > operation : operations ) {
+		for( org.lgna.croquet.Operation operation : operations ) {
 			if( operation != null ) {
 				this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
 				this.internalAddComponent( operation.createButton() );
