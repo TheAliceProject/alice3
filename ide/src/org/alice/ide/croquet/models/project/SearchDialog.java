@@ -40,54 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.codecs;
+package org.alice.ide.croquet.models.project;
+
+import java.util.LinkedList;
+import java.util.Map;
+
+import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.TextField;
+import org.lgna.croquet.components.Tree;
+import org.lgna.croquet.components.View;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
-	private static java.util.Map< Class<?>, SingletonCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T > SingletonCodec< T > getInstance( Class< T > cls ) {
-		SingletonCodec< ? > rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SingletonCodec< T >( cls );
-		}
-		return (SingletonCodec< T >)rv;
+public class SearchDialog extends TabComposite {
+
+	private View composite;
+	private SearchDialogManager manager;
+
+	public SearchDialog( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+		super( java.util.UUID.fromString( "8f75a1e2-805d-4d9f-bef6-099204fe8d60" ) );
+
+		final BorderPanel rv = new BorderPanel();
+		manager = new SearchDialogManager( methodParentMap );
+		TextField textField = new TextField( manager.getStringState() );
+		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
+		rv.addComponent( textField, Constraint.PAGE_START );
+
+		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+		manager.setOwner( tree );
+		rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
+
+		manager.refreshAll();
+		tree.setRootVisible( false );
+		tree.expandAllRows();
+		composite = rv;
 	}
-	private Class<T> valueCls;
-	private SingletonCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
+
+	@Override
+	public boolean isCloseable() {
+		return false;
 	}
-	public Class< T > getValueClass() {
-		return this.valueCls;
+
+	@Override
+	protected View createView() {
+		return composite;
 	}
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			String clsName = binaryDecoder.decodeString();
-			try {
-				Class<?> cls = Class.forName( clsName );
-				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getInstance" );
-				return (T)mthd.invoke( null );
-			} catch( Exception e ) {
-				throw new RuntimeException( e );
-			}
-		} else {
-			return null;
-		}
-	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
-		if( value != null ) {
-			binaryEncoder.encode( true );
-			binaryEncoder.encode( value.getClass().getName() );
-		} else {
-			binaryEncoder.encode( false );
-		}
-	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+
+	public void addSelectedListener( ValueListener<SearchTreeNode> listener ) {
+		manager.addValueListener( listener );
 	}
 }

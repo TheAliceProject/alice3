@@ -40,54 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.codecs;
+package org.alice.ide.croquet.models.project;
+
+import java.util.LinkedList;
+import java.util.Map;
+
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.Tree;
+import org.lgna.croquet.components.View;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
-	private static java.util.Map< Class<?>, SingletonCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T > SingletonCodec< T > getInstance( Class< T > cls ) {
-		SingletonCodec< ? > rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SingletonCodec< T >( cls );
-		}
-		return (SingletonCodec< T >)rv;
+public class ReferencesDialog extends TabComposite implements ValueListener<SearchTreeNode> {
+
+	BorderPanel view;
+	private ReferencesDialogManager manager;
+
+	public ReferencesDialog( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
+		view = new BorderPanel();
+
+		manager = new ReferencesDialogManager( methodParentMap );
+		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+		tree.setRootVisible( false );
+		manager.setOwner( tree );
+		view.addComponent( new ScrollPane( tree ), Constraint.CENTER );
 	}
-	private Class<T> valueCls;
-	private SingletonCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
+
+	@Override
+	public boolean isCloseable() {
+		return false;
 	}
-	public Class< T > getValueClass() {
-		return this.valueCls;
+
+	@Override
+	protected View createView() {
+		return view;
 	}
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			String clsName = binaryDecoder.decodeString();
-			try {
-				Class<?> cls = Class.forName( clsName );
-				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getInstance" );
-				return (T)mthd.invoke( null );
-			} catch( Exception e ) {
-				throw new RuntimeException( e );
-			}
-		} else {
-			return null;
-		}
+
+	public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
-		if( value != null ) {
-			binaryEncoder.encode( true );
-			binaryEncoder.encode( value.getClass().getName() );
-		} else {
-			binaryEncoder.encode( false );
-		}
+
+	public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+		manager.update( nextValue );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
-	}
+
 }

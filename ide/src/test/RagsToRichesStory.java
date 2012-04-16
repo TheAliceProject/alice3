@@ -44,29 +44,25 @@ package test;
 
 import java.awt.Component;
 
+import org.lgna.story.AddKeyPressListener;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
 import org.lgna.story.Cone;
+import org.lgna.story.Duration;
 import org.lgna.story.Ground;
+import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Key;
-import org.lgna.story.Model;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
-import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Program;
 import org.lgna.story.RollDirection;
 import org.lgna.story.Scene;
 import org.lgna.story.Sphere;
 import org.lgna.story.Sun;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.event.ArrowKeyEvent;
-import org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.MouseClickOnObjectEvent;
-import org.lgna.story.event.MouseClickOnObjectListener;
-import org.lgna.story.event.OcclusionEndListener;
+import org.lgna.story.event.KeyEvent;
+import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.resources.BipedResource;
@@ -79,7 +75,6 @@ import org.lgna.story.resources.sims2.Gender;
 
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.matt.EndOcclusionEvent;
 
 class MyBiped extends Biped {
 	public MyBiped( BipedResource resource ) {
@@ -236,64 +231,14 @@ class SnowScene extends Scene {
 			public void sceneActivated( SceneActivationEvent e ) {
 			}
 		} );
-		Model[] list = { ogre, susan };
-		Model[] colListOne = { ogre };
-		Model[] colListTwo = { susan };
-		//		this.addWhileCollisionListener(new WhileCollisionListener() {
-		//			public void timeElapsed(TimerEvent e) {
-		//				susan.move( MoveDirection.UP, 1.0 );
-		//				susan.move( MoveDirection.DOWN, 1.0 );
-		//			}
-		//		}, colListOne, colListTwo, AddTimerEventListener.timerFrequency(0), MultipleEventPolicy.IGNORE );
-		//		this.addObjectMoverFor( ogre );
-		this.addArrowKeyPressListener( new ArrowKeyPressListener() {
-			public void arrowKeyPressed( ArrowKeyEvent e ) {
-				if( e.isKey( Key.LEFT ) || e.isKey( Key.RIGHT ) || e.isKey( Key.UP ) || e.isKey( Key.DOWN ) ) {
-					camera.turn( e.getTurnDirection(), .125 );
-				} else {
-					camera.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
-				}
-				//				ogre.move( e.getMoveDirection( MoveDirectionPlane.FORWARD_BACKWARD_LEFT_RIGHT ), 1 );
-			}
-		}, MultipleEventPolicy.COMBINE );
-		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
+		this.addKeyPressListener( new KeyPressListener() {
 
-			public void mouseClicked( MouseClickOnObjectEvent e ) {
-				//				if( e.getModelAtMouseLocation() != null ) {
-				e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
-				e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
-				//				}
+			public void keyPressed( KeyEvent e ) {
+				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
 			}
-		} );
-		this.addOcclusionEndListener( new OcclusionEndListener() {
-
-			public void occlusionEnded( EndOcclusionEvent e ) {
-				e.getForegroundMovable().move( MoveDirection.UP, 10 );
-			}
-		}, colListOne, colListTwo );
-		//		this.addDefaultModelManipulation();
-		//		this.addWhileProximityListener(new WhileProximityListener() {
-		//			public void timeElapsed(TimerEvent e) {
-		//				susan.move( MoveDirection.UP, 1.0 );
-		//				susan.move( MoveDirection.DOWN, 1.0 );
-		//			}
-		//		}, colListOne, colListTwo, 1.0 );
-		//		this.addWhileOcclusionListener(new WhileOcclusionListener() {
-		//			public void timeElapsed(TimerEvent e) {
-		//				susan.move( MoveDirection.UP, 1.0 );
-		//				susan.move( MoveDirection.DOWN, 1.0 );
-		//			}
-		//		}, colListOne, colListTwo );
-		//		this.addWhileInViewListener( new WhileInViewListener() {
-		//			public void timeElapsed(TimerEvent e) {
-		//				susan.move( MoveDirection.UP, 1.0 );
-		//				susan.move( MoveDirection.DOWN, 1.0 );
-		//			}
-		//		}, colListOne );
+		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
 	}
 	public void chillInSkiChalet() {
-		//		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
-		//		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );
 		while( true ) {
 			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );

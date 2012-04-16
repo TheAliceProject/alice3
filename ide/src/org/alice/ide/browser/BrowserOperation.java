@@ -40,54 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.codecs;
+package org.alice.ide.browser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
-	private static java.util.Map< Class<?>, SingletonCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T > SingletonCodec< T > getInstance( Class< T > cls ) {
-		SingletonCodec< ? > rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SingletonCodec< T >( cls );
+public abstract class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	public BrowserOperation( java.util.UUID id ) {
+		super( id );
+	}
+	protected abstract java.net.URL getUrl();
+	@Override
+	protected void localize() {
+		java.net.URL url = this.getUrl();
+		this.setName( url.toString());
+		super.localize();
+	}
+	@Override
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		java.net.URL url = this.getUrl();
+		try {
+			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
+		} catch( Exception e ) {
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url.toString() );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
 		}
-		return (SingletonCodec< T >)rv;
-	}
-	private Class<T> valueCls;
-	private SingletonCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
-	}
-	public Class< T > getValueClass() {
-		return this.valueCls;
-	}
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			String clsName = binaryDecoder.decodeString();
-			try {
-				Class<?> cls = Class.forName( clsName );
-				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getInstance" );
-				return (T)mthd.invoke( null );
-			} catch( Exception e ) {
-				throw new RuntimeException( e );
-			}
-		} else {
-			return null;
-		}
-	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
-		if( value != null ) {
-			binaryEncoder.encode( true );
-			binaryEncoder.encode( value.getClass().getName() );
-		} else {
-			binaryEncoder.encode( false );
-		}
-	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
 	}
 }

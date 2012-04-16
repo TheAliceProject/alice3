@@ -43,11 +43,13 @@
 
 package org.lgna.croquet.components;
 
+import javax.swing.tree.TreePath;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Tree<E> extends ViewController< javax.swing.JTree, org.lgna.croquet.TreeSelectionState< E > > {
-	public Tree( org.lgna.croquet.TreeSelectionState< E > model ) {
+public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.TreeSelectionState<E>> {
+	public Tree( org.lgna.croquet.TreeSelectionState<E> model ) {
 		super( model );
 		this.setSwingTreeModel( model.getTreeModel() );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
@@ -84,5 +86,15 @@ public class Tree<E> extends ViewController< javax.swing.JTree, org.lgna.croquet
 
 	public void setRootVisible( boolean isRootVisible ) {
 		this.getAwtComponent().setRootVisible( isRootVisible );
+	}
+
+	public void collapseNode( E node ) {
+		TreePath path = this.getModel().getTreeModel().getTreePath( node );
+		this.getAwtComponent().collapsePath( path );
+	}
+
+	public void expandNode( E node ) {
+		TreePath path = this.getModel().getTreeModel().getTreePath( node );
+		this.getAwtComponent().expandPath( path );
 	}
 }

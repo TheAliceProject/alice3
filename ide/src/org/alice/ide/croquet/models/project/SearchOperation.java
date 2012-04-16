@@ -43,18 +43,22 @@
 package org.alice.ide.croquet.models.project;
 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.BorderPanel.Constraint;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.TextField;
-import org.lgna.croquet.components.Tree;
-import org.lgna.project.ast.AbstractMethod;
+import org.alice.ide.ProjectApplication;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.TabSelectionState;
+import org.lgna.croquet.components.Container;
+import org.lgna.croquet.components.Dialog;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
@@ -62,21 +66,20 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class SearchOperation extends org.lgna.croquet.InformationDialogOperation {
 
-	private Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap = Collections.newHashMap();
-
 	private static class SingletonHolder {
 		private static SearchOperation instance = new SearchOperation();
 	}
 
-	public static SearchOperation getInstance() {
+	public static Operation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SearchOperation() {
 		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
 	}
 	@Override
-	protected org.lgna.croquet.components.Container<?> createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
-		methodParentMap.clear();
+	protected Container<?> createContentPane( CompletionStep<?> step, Dialog dialog ) {
+		final Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap = Collections.newHashMap();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 		if( programType != null ) {
@@ -96,42 +99,30 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 			}
 			StatementCountCrawler crawler = new StatementCountCrawler();
 			programType.crawl( crawler, true );
+			SearchDialog searchDialog = new SearchDialog( methodParentMap );
+			ReferencesDialog refDialog = new ReferencesDialog( methodParentMap );
+			searchDialog.addSelectedListener( refDialog );
+			TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
 
-			final BorderPanel rv = new BorderPanel();
-			SearchDialogManager manager = new SearchDialogManager();
-			TextField textField = new TextField( manager.getStringState() );
-			textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
-			rv.addComponent( textField, Constraint.PAGE_START );
-			Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
-			manager.setOwner( tree );
-			rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
-
-			System.out.println( methodParentMap.keySet() );
-			for( UserMethod method : methodParentMap.keySet() ) {
-				SearchTreeNode parent = manager.addNode( null, method );
-				manager.addTunnelling( parent, methodParentMap );
-				List<SearchTreeNode> list = Collections.newLinkedList();
-				for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
-					AbstractMethod abstractMethod = methodInvocation.method.getValue();
-
-					SearchTreeNode child = manager.addNode( parent, abstractMethod );
-					if( abstractMethod.getName().equals( "fire" ) ) {
-						System.out.println( "hello fire!" );
-					}
-					if( methodParentMap.get( abstractMethod ) != null ) {
-						manager.addTunnelling( child, methodParentMap );
-					}
-					list.add( child );
+				public Class<TabComposite<?>> getValueClass() {
+					return null;
 				}
-				manager.addParentWithChildren( parent, list );
-			}
-			System.out.println( methodParentMap.keySet() );
-			manager.refreshAll();
-			tree.setRootVisible( false );
-			tree.expandAllRows();
-			return rv;
+
+				public TabComposite<?> decodeValue( BinaryDecoder binaryDecoder ) {
+					return null;
+				}
+
+				public void encodeValue( BinaryEncoder binaryEncoder, TabComposite<?> value ) {
+				}
+
+				public StringBuilder appendRepresentation( StringBuilder rv, TabComposite<?> value, Locale locale ) {
+					return null;
+				}
+			} );
+			state.addItem( searchDialog );
+			state.addItem( refDialog );
+			return state.createFolderTabbedPane();
 		} else {
-			//todo
 			return new org.lgna.croquet.components.Label( "open a project first" );
 		}
 	}

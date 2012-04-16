@@ -61,7 +61,7 @@ public class ModifierMask {
 	public static ModifierKey[] JUST_CONTROL = { ModifierKey.CONTROL, ModifierKey.NOT_ALT, ModifierKey.NOT_SHIFT};
 	public static ModifierKey[] JUST_ALT = { ModifierKey.NOT_CONTROL, ModifierKey.ALT, ModifierKey.NOT_SHIFT};
 	
-	enum ModifierKey
+	public enum ModifierKey
 	{
 		CONTROL (KeyEventUtilities.getQuoteControlUnquoteKey(), false),
 		NOT_CONTROL (KeyEventUtilities.getQuoteControlUnquoteKey(), true),

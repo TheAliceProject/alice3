@@ -40,54 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.codecs;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
-	private static java.util.Map< Class<?>, SingletonCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T > SingletonCodec< T > getInstance( Class< T > cls ) {
-		SingletonCodec< ? > rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SingletonCodec< T >( cls );
-		}
-		return (SingletonCodec< T >)rv;
-	}
-	private Class<T> valueCls;
-	private SingletonCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
-	}
-	public Class< T > getValueClass() {
-		return this.valueCls;
-	}
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		boolean isNotNull = binaryDecoder.decodeBoolean();
-		if( isNotNull ) {
-			String clsName = binaryDecoder.decodeString();
-			try {
-				Class<?> cls = Class.forName( clsName );
-				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getInstance" );
-				return (T)mthd.invoke( null );
-			} catch( Exception e ) {
-				throw new RuntimeException( e );
+public enum HeldKeyPolicy implements AddKeyPressListener.Detail {
+
+	FIRE_MULTIPLE, FIRE_ONCE_ON_PRESS, FIRE_ONCE_ON_RELEASE;
+
+	static HeldKeyPolicy DEFAULT_VALUE = FIRE_MULTIPLE;
+
+	/*package-private*/static HeldKeyPolicy getValue( Object[] details, HeldKeyPolicy defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof HeldKeyPolicy ) {
+				HeldKeyPolicy heldKeyPolicy = (HeldKeyPolicy)detail;
+				return heldKeyPolicy;
 			}
-		} else {
-			return null;
 		}
+		return defaultValue;
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
-		if( value != null ) {
-			binaryEncoder.encode( true );
-			binaryEncoder.encode( value.getClass().getName() );
-		} else {
-			binaryEncoder.encode( false );
-		}
-	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+	/*package-private*/static HeldKeyPolicy getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
 	}
 }

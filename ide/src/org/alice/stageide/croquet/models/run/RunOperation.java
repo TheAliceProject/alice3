@@ -94,15 +94,27 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		new org.lgna.common.ComponentThread( new ProgramRunnable( awtContainer ), RunOperation.this.getName() ).start();
 	}
 	private java.awt.Container stopProgram() {
-		java.awt.Container rv = this.programContext.getContainer(); 
-		this.programContext.cleanUpProgram();
-		this.programContext = null;
-		return rv;
+		if( this.programContext != null ) {
+			java.awt.Container rv = this.programContext.getContainer(); 
+			this.programContext.cleanUpProgram();
+			this.programContext = null;
+			return rv;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this );
+			return null;
+		}
 	}
 	private class RestartAction extends javax.swing.AbstractAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.awt.Container awtContainer = RunOperation.this.stopProgram();
-			RunOperation.this.startProgram( awtContainer );
+			if( awtContainer != null ) {
+				RunOperation.this.startProgram( awtContainer );
+			} else {
+				//todo: prompt w/ dialog that can submit world to bugs database
+				String message = "Unable to restart";
+				String title = null;
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.ERROR );
+			}
 		}
 	};
 	private final RestartAction restartAction = new RestartAction();

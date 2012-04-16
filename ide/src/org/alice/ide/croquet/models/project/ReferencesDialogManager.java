@@ -40,29 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.croquet.models.project;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Map;
+
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserMethod;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private String url;
-	public BrowserOperation( java.util.UUID id, String url ) {
-		super( id );
-		this.url = url;
+public class ReferencesDialogManager extends SearchTreeManager {
+
+	public ReferencesDialogManager( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+		super( java.util.UUID.fromString( "7b2c3b3d-062b-49ce-a746-13d2bba8f572" ), methodParentMap );
 	}
-	@Override
-	protected void localize() {
-		this.setName( this.url );
-		super.localize();
+
+	public void update( SearchTreeNode newValue ) {
+		if( newValue != null ) {
+			hideAll();
+			ArrayList<SearchTreeNode> hiddenList2 = Collections.newArrayList( hiddenList );
+			for( SearchTreeNode node : hiddenList2 ) {
+				if( node.getContent().equals( newValue.getContent() ) && node.getDepth() <= SHOULD_BE_EXPANDED ) {
+					show( node );
+				}
+			}
+			crawl( root, 0 );
+			setProperExpandedLevels( root );
+		}
 	}
-	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		try {
-			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
-		} catch( Exception e ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( this.url );
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + this.url + "\n\nso that you may paste it into your web browser." );
+
+	private void crawl( SearchTreeNode root, int depth ) {
+		System.out.println( root.getText() + " " + depth );
+		for( SearchTreeNode child : root.getChildren() ) {
+			crawl( child, depth + 1 );
 		}
 	}
 }
