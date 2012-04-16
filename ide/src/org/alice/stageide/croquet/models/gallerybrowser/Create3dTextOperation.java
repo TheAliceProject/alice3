@@ -269,12 +269,12 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
 				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "family:" ), 
-				this.familySelection.getPrepModel().createComboBox(), 
+				this.familySelection.createComboBox(), 
 				null 
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
 				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "style:" ), 
-				this.styleSelection.getPrepModel().createComboBox(), 
+				this.styleSelection.createComboBox(), 
 				null 
 		) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 

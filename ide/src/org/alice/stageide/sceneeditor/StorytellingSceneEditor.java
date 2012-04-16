@@ -695,7 +695,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
 			
-			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
+			this.mainCameraViewSelector = this.mainCameraMarkerList.createComboBox();
 			this.mainCameraViewSelector.setFontSize(15);
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.LAYOUT_SCENE_VIEW, this.sceneViewMarkerImp );

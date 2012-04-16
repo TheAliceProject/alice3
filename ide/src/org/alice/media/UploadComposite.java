@@ -45,10 +45,14 @@ package org.alice.media;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.Composite;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.triggers.Trigger;
 
 /**
  * @author Matt May
@@ -63,8 +67,19 @@ public class UploadComposite extends Composite<UploadView>{
 	
 	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
 	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
+	private final StringState titleState = this.createStringState( "Alice Video", this.createKey( "title" ) );
+	private final BooleanState isPrivateState = this.createBooleanState( true, this.createKey( "isPrivate" ) );
+	private final ListSelectionState<VideoCategory> videoCategoryState = this.createListSelectionState( VideoCategory.class, VideoCategory.SCIENCE_AND_TECHNOLOGY, this.createKey( "videoCategory" ) );
+	private final StringState descriptionState = this.createStringState( "", this.createKey( "description" ) );
+	private final StringState tagState = this.createStringState( "", this.createKey( "tag" ) );
 	private final ActionOperation loginOperation = this.createActionOperation( new Action() {
+		public void perform( Transaction transaction, Trigger trigger ) {
+		}
 	}, this.createKey( "login" ) );
+	private final ActionOperation uploadOperation = this.createActionOperation( new Action() {
+		public void perform( Transaction transaction, Trigger trigger ) {
+		}
+	}, this.createKey( "upload" ) );
 	private UploadComposite() {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
 	}
@@ -74,12 +89,32 @@ public class UploadComposite extends Composite<UploadView>{
 	public StringState getPasswordState() {
 		return this.passwordState;
 	}
+	public ActionOperation getLoginOperation() {
+		return this.loginOperation;
+	}
+	public StringState getTitleState() {
+		return this.titleState;
+	}
+	public BooleanState getIsPrivateState() {
+		return this.isPrivateState;
+	}
+	public ListSelectionState<VideoCategory> getVideoCategoryState() {
+		return this.videoCategoryState;
+	}
+	public StringState getDescriptionState() {
+		return this.descriptionState;
+	}
+	public StringState getTagState() {
+		return this.tagState;
+	}
+	public ActionOperation getUploadOperation() {
+		return this.uploadOperation;
+	}
 	
 	@Override
 	protected UploadView createView() {
 		return new UploadView( this );
 	}
-
 	
 	public static void main( String[] args ) {
 		Application application = new SimpleApplication();

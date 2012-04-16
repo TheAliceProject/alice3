@@ -43,7 +43,14 @@
 package org.alice.media.components;
 
 import org.alice.media.UploadComposite;
+import org.alice.media.VideoPlayer;
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.CheckBox;
+import org.lgna.croquet.components.Component;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.PasswordField;
+import org.lgna.croquet.components.TextField;
 
 /**
  * @author Matt May
@@ -51,8 +58,51 @@ import org.lgna.croquet.components.BorderPanel;
 public class UploadView extends BorderPanel {
 	public UploadView( UploadComposite composite ) {
 		super( composite );
-		
-		this.addComponent( composite.getIdState().createTextField(), Constraint.PAGE_START );
-		this.addComponent( composite.getPasswordState().createPasswordField(), Constraint.PAGE_END );
+		this.addComponent( new UserNameAndPasswordComponent( composite ), Constraint.PAGE_START );
+
+		Component<?> meat = new VideoPlayer();
+		VideoInfoComponent potatoes = new VideoInfoComponent( composite );
+		this.addComponent( GridPanel.createGridPane( 1, 2, meat, potatoes ), Constraint.CENTER );
+		this.addComponent( composite.getUploadOperation().createButton(), Constraint.PAGE_END );
+	}
+
+	private class UserNameAndPasswordComponent extends BorderPanel {
+		public UserNameAndPasswordComponent( UploadComposite composite ) {
+			this.addComponent( composite.getLoginOperation().createButton(), Constraint.PAGE_END );
+			TextField userName = composite.getIdState().createTextField();
+			PasswordField password = composite.getPasswordState().createPasswordField();
+			GridPanel top = GridPanel.createGridPane( 2, 2 );
+			top.addComponent( new Label( "user name" ) );
+			top.addComponent( userName );
+			top.addComponent( new Label( "password" ) );
+			top.addComponent( password );
+			this.addComponent( top, Constraint.CENTER );
+		}
+	}
+
+	private class VideoInfoComponent extends BorderPanel {
+
+		public VideoInfoComponent( UploadComposite composite ) {
+			GridPanel titlePanel = GridPanel.createGridPane( 2, 1 );
+			titlePanel.addComponent( new Label( "Video Title: " ) );
+			TextField titleField = composite.getTitleState().createTextField();
+			titlePanel.addComponent( titleField );
+			this.addComponent( titlePanel, Constraint.PAGE_START );
+			GridPanel detailPanel = GridPanel.createGridPane( 2, 1 );
+			detailPanel.addComponent( composite.getVideoCategoryState().createComboBox() );
+			CheckBox isPrivateBox = composite.getIsPrivateState().createCheckBox();
+			detailPanel.addComponent( isPrivateBox );
+			GridPanel middle = GridPanel.createGridPane( 2, 1 );
+			BorderPanel topBorder = new BorderPanel();
+			topBorder.addComponent( new Label( "Description" ), Constraint.PAGE_START );
+			topBorder.addComponent( composite.getDescriptionState().createTextArea(), Constraint.CENTER );
+			BorderPanel bottomBorder = new BorderPanel();
+			bottomBorder.addComponent( new Label( "Tags" ), Constraint.PAGE_START );
+			bottomBorder.addComponent( composite.getTagState().createTextArea(), Constraint.CENTER );
+			middle.addComponent( topBorder );
+			middle.addComponent( bottomBorder );
+			this.addComponent( middle, Constraint.CENTER );
+			this.addComponent( detailPanel, Constraint.PAGE_END );
+		}
 	}
 }

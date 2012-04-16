@@ -215,7 +215,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	private InternalPrepModel< T > prepModel;
-	public synchronized InternalPrepModel< T > getPrepModel() {
+	protected synchronized InternalPrepModel< T > getPrepModel() {
 		if( this.prepModel != null ) {
 			//pass
 		} else {
@@ -505,6 +505,9 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	public org.lgna.croquet.components.DefaultRadioButtons< T > createHorizontalDefaultRadioButtons() {
 		return new org.lgna.croquet.components.DefaultRadioButtons< T >( this, false );
 	}
+	public org.lgna.croquet.components.ComboBox<T> createComboBox() {
+		return this.getPrepModel().createComboBox();
+	}
 
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item ) {
 		org.lgna.croquet.components.ItemSelectable< ?, T > itemSelectable = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.ItemSelectable.class );
@@ -625,7 +628,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 		protected InternalPrepModelResolver<T> createResolver() {
 			return new InternalPrepModelResolver<T>( this.listSelectionState );
 		}
-		public org.lgna.croquet.components.ComboBox< T > createComboBox() {
+		private org.lgna.croquet.components.ComboBox< T > createComboBox() {
 			return new org.lgna.croquet.components.ComboBox< T >( this );
 		}
 		@Override
