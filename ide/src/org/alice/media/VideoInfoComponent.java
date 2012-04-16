@@ -42,9 +42,11 @@
  */
 package org.alice.media;
 
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.CheckBox;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;
@@ -66,6 +68,10 @@ public class VideoInfoComponent extends Component {
 		titlePanel.addComponent( titleField );
 		outer.addComponent( titlePanel, Constraint.PAGE_START );
 		GridPanel detailPanel = GridPanel.createGridPane( 2, 1 );
+//		detailPanel.addComponent(  )
+		
+//		CheckBox isPrivateBox = new CheckBox( isPrivateState  );
+//		detailPanel.addComponent( isPrivateBox  );
 		outer.addComponent( detailPanel, Constraint.PAGE_END );
 		return null;
 	}

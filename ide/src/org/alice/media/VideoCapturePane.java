@@ -206,10 +206,9 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 
 	private static final String NO_RECORDING_STATUS = "Ready to record.";
 	private static final String YOUTUBE_NOT_UPLOADED_STATUS = "Not uploaded to YouTube.";
-
+	
 	public VideoCapturePane( org.alice.stageide.program.VideoEncodingProgramContext programContext ) {
 		this.programContext = programContext;
-
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
 		Frame frame = null;
 		if( root instanceof java.awt.Frame ) {
@@ -669,7 +668,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	public org.alice.media.encoder.ImagesToQuickTimeEncoder getEncoder() {
 		return this.getEncoder();
 	}
-
+	
 	abstract protected void onClose();
 
 	private void record() {
@@ -697,7 +696,6 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 				} else {
 					VideoCapturePane.this.isRestart = true;
 				}
-				//				VideoCapturePane.this.rtProgram.setMovieEncoder( VideoCapturePane.this.encoder );
 				VideoCapturePane.this.runWorld();
 				return Boolean.TRUE;
 			}
@@ -755,13 +753,11 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	}
 
 	protected void showWorldInContainer( java.awt.Container awtContainer ) {
-		//		this.rtProgram.setArgs(  new String[] {} );
-		//		this.rtProgram.init();
 		awtContainer.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		//		awtContainer.add( this.rtProgram );
 		this.programContext.initialize( awtContainer );
 		this.programContext.setActiveScene();
-
+		
 		if( awtContainer instanceof javax.swing.JComponent ) {
 			((javax.swing.JComponent)awtContainer).revalidate();
 		}
@@ -807,7 +803,6 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 
 	private void stop() {
 		this.programContext.cleanUpProgram();
-		//		this.rtProgram.shutDownCleanly();
 	}
 	private void uploadToYouTube() {
 		File videoFile = this.savedMovieFile;

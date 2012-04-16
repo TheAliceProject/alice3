@@ -40,43 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.media;
+
+import org.alice.media.components.UploadView;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.simple.SimpleApplication;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				PrintMenuModel.getInstance()
-		);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel() );
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
-
+public class UploadComposite extends Composite<UploadView>{
 	private static class SingletonHolder {
-		private static FileMenuModel instance = new FileMenuModel();
+		private static UploadComposite instance = new UploadComposite();
 	}
-
-	public static FileMenuModel getInstance() {
+	public static UploadComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private FileMenuModel() {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), createMenuItemPrepModels() );
+	
+	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
+	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
+	private final ActionOperation loginOperation = this.createActionOperation( new Action() {
+	}, this.createKey( "login" ) );
+	private UploadComposite() {
+		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
+	}
+	public StringState getIdState() {
+		return this.idState;
+	}
+	public StringState getPasswordState() {
+		return this.passwordState;
+	}
+	
+	@Override
+	protected UploadView createView() {
+		return new UploadView( this );
+	}
+
+	
+	public static void main( String[] args ) {
+		Application application = new SimpleApplication();
+		application.initialize( args );
+		application.getFrame().setSize( 640, 480 );
+		
+		application.getFrame().getContentPanel().addComponent( UploadComposite.getInstance().getView(), Constraint.CENTER );
+		application.getFrame().setVisible( true );
+		
 	}
 }
