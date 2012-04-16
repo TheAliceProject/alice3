@@ -124,7 +124,13 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 		org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 		try {
 			org.lgna.project.ast.AbstractNode node = org.lgna.project.ast.AbstractNode.decode( xmlDocument, this.version );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( node );
+			
+			org.lgna.project.ast.NamedUserType programType = (org.lgna.project.ast.NamedUserType)node;
+			org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( programType );
+			runProgramContext.initializeInContainer( this.getFrame().getContentPanel().getAwtComponent() );
+			runProgramContext.setActiveScene();
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( runProgramContext );
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new RuntimeException( vnse );
 		}
