@@ -62,29 +62,48 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		}
 	}
 	
-	protected static interface OperationListener {
-		public void perform();
+	protected static interface Action {
+		public void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 	}
-	private static class InternalStringState extends org.lgna.croquet.StringState {
+		
+	private static class InternalStringState extends StringState {
 		private final Key key;
 		public InternalStringState( String initialValue, Key key ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue );
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue );
 			this.key = key;
 		}
 		@Override
 		protected void localize() {
 		}
 	}
-	private static class InternalBooleanState extends org.lgna.croquet.BooleanState {
+	private static class InternalBooleanState extends BooleanState {
 		private final Key key;
 		public InternalBooleanState( boolean initialValue, Key key ) {
-			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "5053e40f-9561-41c8-835d-069bd106723c" ), initialValue );
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "5053e40f-9561-41c8-835d-069bd106723c" ), initialValue );
 			this.key = key;
 		}
 		@Override
 		protected void localize() {
 		}
 	}
+	
+	private static class InternalActionOperation extends ActionOperation {
+		private final Action action;
+		private final Key key;
+		public InternalActionOperation( Action action, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "2c311356-2bf2-4a57-b06b-f6cdb39b0d78" ) );
+			this.action = action;
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+		@Override
+		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			this.action.perform( transaction, trigger );
+		}
+	}
+	
 
 	
 	public Composite( java.util.UUID id ) {
@@ -115,6 +134,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	
 	private java.util.Map<Key,InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
@@ -135,6 +155,12 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 				return true;
 			}
 		}
+		for( Key key : this.mapKeyToActionOperation.keySet() ) {
+			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
+			if( model == operation ) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -151,7 +177,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		this.mapKeyToBooleanState.put( key, rv );
 		return rv;
 	}
-	protected ActionOperation createActionOperation( OperationListener listener, Key key ) {
-		return null;
+	protected ActionOperation createActionOperation( Action action, Key key ) {
+		InternalActionOperation rv = new InternalActionOperation( action, key );
+		this.mapKeyToActionOperation.put( key, rv );
+		return rv;
 	}
 }

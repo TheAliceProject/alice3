@@ -47,37 +47,32 @@ package org.alice.ide.formatter;
  */
 public class AliceFormatter extends Formatter {
 	private static class SingletonHolder {
-		private static AliceFormatter instance = new AliceFormatter( new java.util.Locale( "en", "US", "alice" ), "Alice" );
+		private static AliceFormatter instance = new AliceFormatter();
 	}
 	public static AliceFormatter getInstance() {
 		return SingletonHolder.instance;
 	}
-
-	protected java.util.Map<String, String> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	protected final String[] bundleNames = { 
-			getClass().getName().replace(getClass().getPackage().getName() + ".", ""), 
-			"java_lang_Functions", 
-			"org_alice_integer_Functions", 
-			"org_alice_random_Functions", 
-			"org_alice_apis_moveandturn_Procedures", 
-			"org_alice_apis_moveandturn_Functions", 
-			"org_alice_apis_moveandturn_Fields", 
-			"org_alice_apis_moveandturn_Parameters", 
-			"edu_wustl_cse_lookingglass_apis_walkandtouch_Procedures", 
-			"edu_wustl_cse_lookingglass_apis_walkandtouch_Functions", 
-			"edu_wustl_cse_lookingglass_apis_walkandtouch_Parameters" 
-	};
-
-	protected AliceFormatter( java.util.Locale l, String repr ) {
-		super( l, repr );
+	private java.util.Map<String, String> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+	private AliceFormatter() {
+		super( new java.util.Locale( "en", "US", "alice" ), "Alice" );
 		java.util.Locale locale = java.util.Locale.getDefault(); 
-		loadResourceBundles( getClass().getPackage().getName(), locale );
-	}
-
-	protected void loadResourceBundles( String baseName, java.util.Locale locale ) {
+		String[] bundleNames = { 
+				"AliceFormatter", 
+				"java_lang_Functions", 
+				"org_alice_integer_Functions", 
+				"org_alice_random_Functions", 
+				"org_alice_apis_moveandturn_Procedures", 
+				"org_alice_apis_moveandturn_Functions", 
+				"org_alice_apis_moveandturn_Fields", 
+				"org_alice_apis_moveandturn_Parameters", 
+				"edu_wustl_cse_lookingglass_apis_walkandtouch_Procedures", 
+				"edu_wustl_cse_lookingglass_apis_walkandtouch_Functions", 
+				"edu_wustl_cse_lookingglass_apis_walkandtouch_Parameters" 
+		};
 		for( String bundleName : bundleNames ) {
 			try {
-				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( baseName + "." + bundleName, locale );
+				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.formatter." + bundleName, locale );
 				for( java.util.Enumeration<String> e=resourceBundle.getKeys(); e.hasMoreElements();  ) {
 					String key = e.nextElement();
 					map.put( key, resourceBundle.getString( key ) );
@@ -88,7 +83,7 @@ public class AliceFormatter extends Formatter {
 		}
 	}
 	
-	protected String getLocalizedText( String text, String rvIfNull ) {
+	private String getLocalizedText( String text, String rvIfNull ) {
 		String rv = this.map.get( text );
 		if( rv != null ) {
 			return rv;
@@ -96,7 +91,7 @@ public class AliceFormatter extends Formatter {
 			return rvIfNull;
 		}
 	}
-	protected String getLocalizedText( String text ) {
+	private String getLocalizedText( String text ) {
 		return getLocalizedText( text, text );
 	}
 //	public String getTextForThis() {
