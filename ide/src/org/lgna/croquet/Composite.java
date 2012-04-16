@@ -86,7 +86,16 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		protected void localize() {
 		}
 	}
-	
+	private static class InternalListSelectionState<T> extends ListSelectionState<T> {
+		private final Key key;
+		public InternalListSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), codec, selectionIndex, data );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
 	private static class InternalActionOperation extends ActionOperation {
 		private final Action action;
 		private final Key key;
@@ -134,12 +143,17 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	
 	private java.util.Map<Key,InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalListSelectionState> mapKeyToListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
 			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
 			booleanState.setTextForBothTrueAndFalse( this.getLocalizedText( key.getLocalizationKey() ) );
+		}
+		for( Key key : this.mapKeyToActionOperation.keySet() ) {
+			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
+			operation.setName( this.getLocalizedText( key.getLocalizationKey() ) );
 		}
 	}
 	public boolean contains( Model model ) {
@@ -151,6 +165,12 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		}
 		for( Key key : this.mapKeyToStringState.keySet() ) {
 			InternalStringState state = this.mapKeyToStringState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToListSelectionState.keySet() ) {
+			InternalListSelectionState state = this.mapKeyToListSelectionState.get( key );
 			if( model == state ) {
 				return true;
 			}
@@ -182,4 +202,13 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		this.mapKeyToActionOperation.put( key, rv );
 		return rv;
 	}
+	
+	protected <T extends Enum<T>> ListSelectionState<T> createListSelectionState( Class<T> valueCls, T initialValue, Key key ) {
+		T[] constants = valueCls.getEnumConstants();
+		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
+		InternalListSelectionState<T> rv = new InternalListSelectionState<T>( edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), selectionIndex, constants, key );
+		this.mapKeyToListSelectionState.put( key, rv );
+		return rv;
+	}
+	
 }
