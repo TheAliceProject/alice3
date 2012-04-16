@@ -86,7 +86,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		protected void localize() {
 		}
 	}
-	private static class InternalListSelectionState<T> extends ListSelectionState<T> {
+	private static class InternalListSelectionState<T> extends DefaultListSelectionState<T> {
 		private final Key key;
 		public InternalListSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), codec, selectionIndex, data );
