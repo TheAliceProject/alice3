@@ -220,34 +220,6 @@ public abstract class BooleanState extends State< Boolean > {
 			}
 		}
 	}
-	
-//	@Override
-//	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
-//		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
-//			org.lgna.croquet.edits.StateEdit<?,Boolean> stateEdit = (org.lgna.croquet.edits.StateEdit<?,Boolean>)edit;
-//			rv.append( " " );
-//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
-////				if( booleanStateEdit.getNextValue() ) {
-////					rv.append( "Select " );
-////				} else {
-////					rv.append( "Unselect " );
-////				}
-//				rv.append( "<strong>" );
-//				rv.append( this.trueText );
-//				rv.append( "</strong>" );
-//			} else {
-////				rv.append( "Press " );
-//				rv.append( "<strong>" );
-//				if( stateEdit.getNextValue() ) {
-//					rv.append( this.falseText );
-//				} else {
-//					rv.append( this.trueText );
-//				}
-//				rv.append( "</strong>" );
-//			}
-//		}
-//		return rv;
-//	}
 
 	@Override
 	protected Boolean getActualValue() {
@@ -263,23 +235,6 @@ public abstract class BooleanState extends State< Boolean > {
 			this.swingModel.buttonModel.addItemListener( this.itemListener );
 		}
 	}
-//	@Override
-//	protected void handleValueChange( Boolean nextValue ) {
-//		if( nextValue != this.value ) {
-//			//this.buttonModel.removeItemListener(itemListener);
-//
-//			boolean isAdjusting = false;
-//			
-//			Boolean prevValue = this.value;
-//			this.fireChanging( prevValue, nextValue, isAdjusting );
-//			this.swingModel.buttonModel.setSelected( value );
-//			this.value = nextValue;
-//			this.fireChanged( prevValue, nextValue, isAdjusting );
-//
-//			//this.buttonModel.addItemListener(itemListener);
-//			this.updateNameAndIcon();
-//		}
-//	}
 
 	private boolean isTextVariable() {
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.getTrueText(), this.getFalseText() );

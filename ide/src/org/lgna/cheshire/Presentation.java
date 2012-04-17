@@ -45,12 +45,13 @@ package org.lgna.cheshire;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Presentation {
+public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	public static org.lgna.croquet.Group COMPLETION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
 
 	private final Recoverer recoverer;
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
+	private final org.lgna.project.history.ProjectHistory[] historyManagers;
 
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
@@ -60,9 +61,16 @@ public abstract class Presentation {
 		}
 	};
 
-	private final org.lgna.project.history.ProjectHistory[] historyManagers;
+	public Presentation( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess, boolean isVisible ) {
+		super( org.lgna.cheshire.stencil.StencilsPresentation.PRESENTATION_GROUP, java.util.UUID.fromString( "1303fdcf-6ba4-4933-9754-5b7933f8c01f" ), isVisible);
+		this.addValueListener( new org.lgna.croquet.State.ValueListener<Boolean>() {
+			public void changing(org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
+			}
+			public void changed(org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
+				Presentation.this.handleStateChange( state.getValue() );
+			}
+		} );
 
-	public Presentation( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
 		this.validate( originalTransactionHistory );
 
 		this.recoverer = recoverer;
@@ -259,5 +267,13 @@ public abstract class Presentation {
 		this.book.decrementSelectedIndex();
 	}
 
-	public abstract void setVisible( boolean isVisible );
+	public void showStencilsPresentation() {
+		this.setValue(true);
+	}
+
+	public void hideStencilsPresentation() {
+		this.setValue(false);
+	}
+
+	protected abstract void handleStateChange( boolean isVisible );
 }

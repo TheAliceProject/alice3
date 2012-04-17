@@ -98,7 +98,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess
 	) {
-		super( org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
+		super( org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess, false );
 		
 		this.frame.setTitle( "DocWizardsesque" );
 		this.frame.setLocation( 0, 0 );
@@ -241,14 +241,14 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		this.jTree.scrollPathToVisible( treePath );
 		this.previewComponent.repaint();
 	}
-	
+
 	/*package-private*/ void getBackOnTrack() {
 		this.restoreHistoryIndicesDueToCancel();
 		this.cardPanel.showKey( this.previewKey );
 	}
+
 	@Override
-	public void setVisible( boolean isVisible ) {
-		this.frame.setVisible( isVisible );
-		
+	protected void handleStateChange(boolean isVisible) {
+		// TODO: <kjh/> Auto-generated method stub
 	}
 }

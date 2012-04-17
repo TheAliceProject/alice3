@@ -206,9 +206,10 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess,
 			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
-			org.lgna.stencil.MenuPolicy menuPolicy
+			org.lgna.stencil.MenuPolicy menuPolicy,
+			boolean isVisible
 	) {
-		super( transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
+		super( transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess, isVisible );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
@@ -365,7 +366,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			}
 		}
 	}
-	
+
 	private void insertRecoveryTransactionChapter( org.lgna.croquet.history.Transaction recoveryTransaction ) {
 		org.lgna.cheshire.Chapter recoveryChapter = new org.lgna.cheshire.TransactionChapter( recoveryTransaction );
 		this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
@@ -374,7 +375,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	}
 
 	@Override
-	public void setVisible( boolean isVisible ) {
+	protected void handleStateChange(boolean isVisible) {
 		if( isVisible ) {
 			this.stencil.addToLayeredPane();
 		} else {

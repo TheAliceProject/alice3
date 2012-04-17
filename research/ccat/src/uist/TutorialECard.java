@@ -79,15 +79,16 @@ public class TutorialECard extends uist.ecard.ECardApplication {
 				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 				
 				//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
-				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
+				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
 //				org.lgna.stencil.MenuPolicy.BELOW_STENCIL
+				false
 		);
 		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
 		
 		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
 		presentation.setRetargeter( astLiveRetargeter );
 
-		presentation.setVisible( true );
+		presentation.showStencilsPresentation();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );

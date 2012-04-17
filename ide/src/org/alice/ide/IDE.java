@@ -74,7 +74,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	private final org.lgna.cheshire.stencil.StencilsPresentation stencilsPresentation;
-	private final org.lgna.cheshire.models.IsStencilsPresentationShowingState isStencilsPresentationShowingState;
 	private final org.alice.ide.stencils.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
 	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
@@ -105,8 +104,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		// Initialize the Stencils infrastructure
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
 		// TODO: <kjh/> This stencils presentation will crack out... fix it.
-		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation(null, null, null, null, null, null, null, null);
-		this.isStencilsPresentationShowingState = new org.lgna.cheshire.models.IsStencilsPresentationShowingState(this.stencilsPresentation, false);
+		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation(null, null, null, null, null, null, null, null, false);
 	}
 
 	protected void updateEnabled( org.lgna.project.Project project ) {

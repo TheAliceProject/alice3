@@ -202,8 +202,9 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 					
 					//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
-					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
+					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
 //					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
+					false
 			);
 		} else {
 			presentation = new org.lgna.cheshire.docwizardsesque.DocWizardsesquePresentation( originalTransactionHistory, MigrationManager.INSTANCE, uist.filterers.FinishFilterer.INSTANCE, recoverer, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
@@ -213,7 +214,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() );
 
-		presentation.setVisible( true );
+		presentation.showStencilsPresentation();
 		this.getFrame().setVisible( true );
 		
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
