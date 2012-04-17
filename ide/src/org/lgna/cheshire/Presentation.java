@@ -48,10 +48,10 @@ package org.lgna.cheshire;
 public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	public static org.lgna.croquet.Group COMPLETION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
 
-	private final Recoverer recoverer;
-	private final Book book;
+	private Recoverer recoverer;
+	private Book book;
 	private boolean isResultOfNextOperation = false;
-	private final org.lgna.project.history.ProjectHistory[] historyManagers;
+	private org.lgna.project.history.ProjectHistory[] historyManagers;
 
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
@@ -61,7 +61,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		}
 	};
 
-	public Presentation( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess, boolean isVisible ) {
+	public Presentation( boolean isVisible ) {
 		super( org.lgna.cheshire.stencil.StencilsPresentation.PRESENTATION_GROUP, java.util.UUID.fromString( "1303fdcf-6ba4-4933-9754-5b7933f8c01f" ), isVisible);
 		this.addValueListener( new org.lgna.croquet.State.ValueListener<Boolean>() {
 			public void changing(org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
@@ -70,7 +70,10 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 				Presentation.this.handleStateChange( state.getValue() );
 			}
 		} );
+	}
 
+	// TODO: <kjh/> This needs to be invoked at some point
+	public void setPresentationData( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
 		this.validate( originalTransactionHistory );
 
 		this.recoverer = recoverer;
@@ -78,6 +81,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		if ( filterer != null ) {
 			filterer.filter( this.book.listIterator() );
 		}
+
 		final int N = groupsTrackedForRandomAccess.length;
 		this.historyManagers = new org.lgna.project.history.ProjectHistory[ N+1 ];
 		for( int i=0; i<N; i++ ) {

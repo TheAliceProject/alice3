@@ -56,15 +56,15 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.history.Transaction transaction) {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
-	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
-	private final PreviewComponent previewComponent = new PreviewComponent();
-	private final OffTrackPanel offTrackPanel = new OffTrackPanel();
-	private final org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
-	private final org.lgna.croquet.components.CardPanel.Key previewKey;
-	private final org.lgna.croquet.components.CardPanel.Key offTrackKey;
-	private final javax.swing.JTree jTree;
-	private final BookTreeModel bookTreeModel;
-	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+	private org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
+	private PreviewComponent previewComponent = new PreviewComponent();
+	private OffTrackPanel offTrackPanel = new OffTrackPanel();
+	private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
+	private org.lgna.croquet.components.CardPanel.Key previewKey;
+	private org.lgna.croquet.components.CardPanel.Key offTrackKey;
+	private javax.swing.JTree jTree;
+	private BookTreeModel bookTreeModel;
+	private java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 			javax.swing.tree.TreePath treePath = jTree.getPathForLocation( e.getX(), e.getY() );
 			if( treePath != null ) {
@@ -91,6 +91,11 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 		}
 	};
+
+	public DocWizardsesquePresentation(boolean isVisible) {
+		super(isVisible);
+	}
+
 	public DocWizardsesquePresentation( 
 			org.lgna.croquet.history.TransactionHistory originalTransactionHistory, 
 			org.lgna.croquet.migration.MigrationManager migrationManager,
@@ -98,7 +103,9 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess
 	) {
-		super( org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess, false );
+		// <kjh/> not fixing this now.
+		super(false);
+		//super( org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess, false );
 		
 		this.frame.setTitle( "DocWizardsesque" );
 		this.frame.setLocation( 0, 0 );

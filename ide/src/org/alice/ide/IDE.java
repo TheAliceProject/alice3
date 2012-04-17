@@ -103,8 +103,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		// Initialize the Stencils infrastructure
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
-		// TODO: <kjh/> This stencils presentation will crack out... fix it.
-		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation(null, null, null, null, null, null, null, null, false);
+		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation(false);
 	}
 
 	protected void updateEnabled( org.lgna.project.Project project ) {

@@ -194,24 +194,26 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 	}
 
-	private final BookComboBoxModel bookComboBoxModel;
-	private final Stencil stencil;
+	private BookComboBoxModel bookComboBoxModel;
+	private Stencil stencil;
 
 	private boolean isIgnoringEvents = false;
-	public StencilsPresentation( 
-			org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
+	public StencilsPresentation( boolean isVisible ) {
+		super( isVisible );
+	}
+
+	// TODO: <kjh/> this needs to be invoked or something.
+	public void setPresentationData(org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.history.TransactionHistory originalTransactionHistory, 
 			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess,
 			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
-			org.lgna.stencil.MenuPolicy menuPolicy,
-			boolean isVisible
-	) {
-		super( transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess, isVisible );
+			org.lgna.stencil.MenuPolicy menuPolicy) {
+		super.setPresentationData(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		
+
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		this.stencil = new Stencil( application.getFrame(), scrollingRequiredRenderer, menuPolicy );
 		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
@@ -240,6 +242,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			}
 		} );
 	}
+
 	@Override
 	protected void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
 		this.restoreHistoryIndicesDueToCancel();
