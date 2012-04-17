@@ -47,114 +47,112 @@ package uist;
  * @author Dennis Cosgrove
  */
 public class TutorialECard extends uist.ecard.ECardApplication {
-// <kjh/> not fixing this.
-//	private static boolean IS_ENCODING;
-//	private static String ROOT_PATH;
-//	private static final String TRANSACTION_HISTORY_SUB_PATH = "/transactionHistory.bin";
-//	private org.lgna.croquet.history.TransactionHistory originalTransactionHistory;
-//
-//	private void createAndShowTutorial() {
-//		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
-//		this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH, org.lgna.croquet.history.TransactionHistory.class );
-//		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
-//
-//		org.lgna.cheshire.Filterer filterer = new uist.filterers.TutorialFilterer();
-//		org.lgna.cheshire.Recoverer recoverer = new org.lgna.cheshire.Recoverer() {
-//			public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction ) {
-//				return null;
+	private static boolean IS_ENCODING;
+	private static String ROOT_PATH;
+	private static final String TRANSACTION_HISTORY_SUB_PATH = "/transactionHistory.bin";
+	private org.lgna.croquet.history.TransactionHistory originalTransactionHistory;
+
+	private void createAndShowTutorial() {
+		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
+		this.originalTransactionHistory = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH, org.lgna.croquet.history.TransactionHistory.class );
+		edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+
+		org.lgna.cheshire.Filterer filterer = new uist.filterers.TutorialFilterer();
+		org.lgna.cheshire.Recoverer recoverer = new org.lgna.cheshire.Recoverer() {
+			public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction ) {
+				return null;
+			}
+		};
+		
+		final boolean IS_OPTIMIZED_FOR_BUG_REPRO = false;
+		final org.lgna.cheshire.stencil.StencilsPresentation presentation = new org.lgna.cheshire.stencil.StencilsPresentation( 
+				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
+				org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, 
+				
+				this.originalTransactionHistory,
+
+				MigrationManager.INSTANCE, 
+				filterer, 
+				recoverer,
+				new org.lgna.croquet.Group[] { org.alice.ide.IDE.DOCUMENT_UI_GROUP },
+				
+				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
+				
+				//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
+				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
+//				org.lgna.stencil.MenuPolicy.BELOW_STENCIL
+				false
+		);
+		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+		
+		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
+		presentation.setRetargeter( astLiveRetargeter );
+
+		presentation.showStencilsPresentation();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
+				TutorialECard.this.getFrame().setVisible( true );
+			}
+		} );
+		
+		
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
+				// <kjh/>
+//				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
+//				isInteractionTreeShowingState.setValue( true );
+				if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
+					presentation.setSelectedIndex( -1 );
+				} else {
+					presentation.setSelectedIndex( 0 );
+				}
+			}
+		} );
+	}
+	
+	@Override
+	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+//		super.handleQuit( e );
+		if( IS_ENCODING ) {
+			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
+			
+			// <kjh/>
+//			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH );
+			
+//			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
+//					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
+//			};
+//			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
+//				rootContext = filter.filter( rootContext );
 //			}
-//		};
-//		
-//		final boolean IS_OPTIMIZED_FOR_BUG_REPRO = false;
-//		final org.lgna.cheshire.stencil.StencilsPresentation presentation = new org.lgna.cheshire.stencil.StencilsPresentation( 
-//				//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
-//				org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, 
-//				
-//				this.originalTransactionHistory,
-//
-//				MigrationManager.INSTANCE, 
-//				filterer, 
-//				recoverer,
-//				new org.lgna.croquet.Group[] { org.alice.ide.IDE.DOCUMENT_UI_GROUP },
-//				
-//				org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
-//				
-//				//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
-//				org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK,
-////				org.lgna.stencil.MenuPolicy.BELOW_STENCIL
-//				false
-//		);
-//		//final org.lgna.cheshire.docwizardsesque.Presentation presentation = new org.lgna.cheshire.docwizardsesque.Presentation( UserInformation.INSTANCE, this.originalTransactionHistory, uist.filterers.NoOpFilterer.INSTANCE, recoverer, new edu.cmu.cs.dennisc.croquet.Group[] { edu.cmu.cs.dennisc.alice.Project.GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
-//		
-//		AstLiveRetargeter astLiveRetargeter = new AstLiveRetargeter();
-//		presentation.setRetargeter( astLiveRetargeter );
-//
-//		presentation.showStencilsPresentation();
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
-//				TutorialECard.this.getFrame().setVisible( true );
-//			}
-//		} );
-//		
-//		
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				//org.alice.ide.croquet.models.ui.debug.IsInteractionTreeShowingState.getInstance().setValue( true );
-//				// <kjh/>
-////				org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState isInteractionTreeShowingState = org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.createInstance( originalTransactionHistory );
-////				isInteractionTreeShowingState.setValue( true );
-//				if( IS_OPTIMIZED_FOR_BUG_REPRO ) {
-//					presentation.setSelectedIndex( -1 );
-//				} else {
-//					presentation.setSelectedIndex( 0 );
-//				}
-//			}
-//		} );
-//	}
-//	
-//	@Override
-//	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-////		super.handleQuit( e );
-//		if( IS_ENCODING ) {
-//			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = true;
 //			
-//			// <kjh/>
-////			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory(), ROOT_PATH + TRANSACTION_HISTORY_SUB_PATH );
-//			
-////			edu.cmu.cs.dennisc.cheshire.Filter[] filters = {
-////					edu.cmu.cs.dennisc.cheshire.MenuSelectionEventFilter.SINGLETON,
-////			};
-////			for( edu.cmu.cs.dennisc.cheshire.Filter filter : filters ) {
-////				rootContext = filter.filter( rootContext );
-////			}
-////			
-//			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
-//		}
-//		System.exit( 0 );
-//	}
+			edu.cmu.cs.dennisc.codec.CodecUtilities.isDebugDesired = false;
+		}
+		System.exit( 0 );
+	}
 
 	public static void main( final String[] args ) throws Exception {
-		// <kjh/> not fixing this
-//		ROOT_PATH = args[ 5 ];
-//		IS_ENCODING = "2003".equals( args[ 4 ] );
-//		if( IS_ENCODING ) {
-//			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.IS_SIDE_DOCKING_DESIRED = true;
-//			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
-//		}
-//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//			public void run() {
-//				final TutorialECard app = new TutorialECard();
-//				app.initialize( args );
-//				if( IS_ENCODING ) {
-//					app.getFrame().setVisible(true);
-//					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );
-//					// <kjh/>
-////					org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
-//				} else {
-//					app.createAndShowTutorial();
-//				}
-//			}
-//		} );
+		ROOT_PATH = args[ 5 ];
+		IS_ENCODING = "2003".equals( args[ 4 ] );
+		if( IS_ENCODING ) {
+			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.IS_SIDE_DOCKING_DESIRED = true;
+			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
+		}
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				final TutorialECard app = new TutorialECard();
+				app.initialize( args );
+				if( IS_ENCODING ) {
+					app.getFrame().setVisible(true);
+					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );
+					// <kjh/>
+//					org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().EPIC_HACK_clear();
+				} else {
+					app.createAndShowTutorial();
+				}
+			}
+		} );
 	}
 }
