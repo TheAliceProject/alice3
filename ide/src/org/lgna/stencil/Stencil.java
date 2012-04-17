@@ -89,11 +89,6 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 				java.awt.Component componentDst = menuSelectionManager.componentForPoint( componentSrc, pSrc );
 				if( componentDst != null ) {
 					java.awt.Point pDst = javax.swing.SwingUtilities.convertPoint( componentSrc, pSrc, componentDst );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( pDst );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( componentDst );
-//					java.awt.event.MouseEvent eDst = new java.awt.event.MouseEvent(componentDst, eSrc.getID(), eSrc.getWhen(), eSrc.getModifiers() + eSrc.getModifiersEx(), pDst.x, pDst.y, eSrc.getClickCount(), eSrc.isPopupTrigger() ); 
-					//componentDst.dispatchEvent( eDst );
-					//menuSelectionManager.processMouseEvent( eDst );
 					menuSelectionManager.processMouseEvent( eSrc );
 				}
 			} else {
@@ -126,7 +121,6 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 					this.getAwtComponent().repaint( bounds );
 				}
 			}
-			//this.getAwtComponent().repaint();
 		}
 	}
 	@Override
@@ -180,7 +174,6 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 										}
 									}
 								} else {
-									//System.err.println( "cannot find trackable shape for: " + feature );
 									feature.unbind();
 									feature.bind();
 								}
@@ -226,8 +219,6 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 										java.awt.Shape repaintShape = scrollingRequiredRenderer.renderScrollIndicators( g2, Stencil.this, trackableShape );
 										if( repaintShape != null ) {
 											//todo: repaint?
-//											g2.setColor( java.awt.Color.RED );
-//											g2.fill( repaintShape );
 										}
 									}
 								}
@@ -266,8 +257,6 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 									}
 								}
 							}
-						} else {
-							//System.err.println( "cannot find trackable shape for: " + feature );
 						}
 					}
 				}

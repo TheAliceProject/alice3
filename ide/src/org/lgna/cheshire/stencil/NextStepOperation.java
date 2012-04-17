@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NextStepOperation extends PresentationOperation {
+/*package-private*/class NextStepOperation extends PresentationNavigationOperation {
 	private static class SingletonHolder {
 		private static NextStepOperation instance = new NextStepOperation();
 	}
@@ -58,7 +58,7 @@ package org.lgna.cheshire.stencil;
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		StencilsPresentation.getInstance().incrementSelectedIndex();
+		org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().incrementSelectedIndex();
 		step.finish();
 	}
 }

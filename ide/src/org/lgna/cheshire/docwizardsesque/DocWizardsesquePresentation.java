@@ -47,6 +47,7 @@ package org.lgna.cheshire.docwizardsesque;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated // TODO: <kjh/> don't use docwizards... just keeping this code as a reference for now.
 public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation {
 	/*package-private*/static org.lgna.croquet.Group IMPLEMENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "90e2f36f-512c-41e4-8e7b-61e10c95cee6" ), "IMPLEMENTATION_GROUP" );
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );

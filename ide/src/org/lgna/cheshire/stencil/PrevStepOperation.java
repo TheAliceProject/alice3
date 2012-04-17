@@ -48,7 +48,7 @@ import org.lgna.cheshire.Presentation;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class PrevStepOperation extends PresentationOperation {
+/*package-private*/class PrevStepOperation extends PresentationNavigationOperation {
 	private final Presentation presentation;
 	public PrevStepOperation( Presentation presentation ) {
 		super( java.util.UUID.fromString( "dbb7a622-95b4-48b9-ad86-db9350503aee" ), "\u2190 Previous" );

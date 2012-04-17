@@ -63,11 +63,11 @@ public class TransactionChapter extends Chapter {
 		if( originalEdit != null ) {
 			//todo
 			org.lgna.croquet.history.CompletionStep< ? > step = null;
-			org.lgna.croquet.Retargeter retargeter = org.lgna.cheshire.stencil.StencilsPresentation.getInstance().getRetargeter();
+			org.lgna.croquet.Retargeter retargeter = org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().getRetargeter();
 			org.lgna.croquet.edits.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter );
 			if( replacementEdit != null ) {
 				//todo
-				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().retargetAll( retargeter );
+				org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().retargetAll( retargeter );
 			}
 		}
 //		for( RetargetableNote note : this.notes ) {

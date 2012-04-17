@@ -46,13 +46,10 @@ package org.lgna.cheshire.stencil;
  * @author Dennis Cosgrove
  */
 public class StencilsPresentation extends org.lgna.cheshire.Presentation {
-	/*package-private*/static org.lgna.croquet.Group IMPLEMENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
-	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
-//	private static Presentation instance;
-//	public static Presentation getInstance() {
-//		return instance;
-//	}
+	public static org.lgna.croquet.Group PRESENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
+
+	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 	
 	public static javax.swing.JLayeredPane getLayeredPane( org.lgna.croquet.components.AbstractWindow< ? > window ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
@@ -80,15 +77,8 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	protected org.lgna.cheshire.Chapter createChapter(org.lgna.croquet.history.Transaction transaction) {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
-	
-	//	public edu.cmu.cs.dennisc.croquet.Operation< ? > getNextOperation() {
-	//		return this.nextOperation;
-	//	}
-	//	public edu.cmu.cs.dennisc.croquet.Operation< ? > getPrevOperation() {
-	//		return this.prevOperation;
-	//	}
 
-	class Stencil extends org.lgna.stencil.Stencil {
+	public class Stencil extends org.lgna.stencil.Stencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.stencil.MenuPolicy menuPolicy ) {
 			super( getLayeredPane( window ), menuPolicy, scrollingRequiredRenderer );
@@ -382,21 +372,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		this.handleChapterChanged( recoveryChapter );
 		this.stencil.revalidateAndRepaint();
 	}
-	
-//	@Override
-//	protected edu.cmu.cs.dennisc.croquet.Step< ? > getCurrentStep() {
-//		return this.transactionsModel.getSelectedStep();
-//	}
-//	public void addStep( edu.cmu.cs.dennisc.croquet.Step< ? > transaction ) {
-//		this.transactionsModel.addStep( transaction );
-//		transaction.setTutorialStencil( this );
-//	}
-//	public void setSelectedIndex( int index ) {
-//		if( index < 0 ) {
-//			index += this.transactionsModel.getTransactionCount();
-//		}
-//		this.transactionsModel.setSelectedIndex( index );
-//	}
+
 	@Override
 	public void setVisible( boolean isVisible ) {
 		if( isVisible ) {

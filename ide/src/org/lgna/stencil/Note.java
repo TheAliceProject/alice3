@@ -95,33 +95,6 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		}
 		return rv;
 	}
-
-//	private boolean prevFeatureInView = false;
-//	private boolean isRepaintRequiredForFeatureViewChanged = false;
-//
-//	private boolean isFeatureInView() {
-//		for( Feature feature : this.features ) {
-//			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
-//			if( trackableShape != null ) {
-//				if( trackableShape.isInView() ) {
-//					return true;
-//				}
-//			}
-//		}
-//		return false;
-//	}
-//
-//	/*package-private*/ boolean isRepaintAllRequired() {
-//		boolean nextFeatureInView = isFeatureInView();
-//		if( nextFeatureInView != prevFeatureInView ) {
-//			prevFeatureInView = nextFeatureInView;
-//			if( isRepaintRequiredForFeatureViewChanged ) {
-//				return true;
-//			}
-//		}
-//		isRepaintRequiredForFeatureViewChanged = true;
-//		return false;
-//	}
 		
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
 		return null;
@@ -160,8 +133,6 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 			sb.append( POSTFIX );
 		}
 		textComponent.setText( sb.toString() );
-
-		//textPane.setEnabled( false );
 
 		JNote rv = new JNote() {
 			@Override
@@ -346,7 +317,6 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 	};
 	
 	private void handleShowingChanged( boolean isShowing ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleShowingChanged", isShowing );
 	}
 	
 	@Override

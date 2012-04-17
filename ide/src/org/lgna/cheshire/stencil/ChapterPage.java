@@ -321,8 +321,7 @@ public class ChapterPage implements org.lgna.stencil.Page {
 					}
 				}
 			} catch( org.lgna.croquet.CancelException ce ) {
-				//this.reset();
-				org.lgna.cheshire.stencil.StencilsPresentation.getInstance().restoreHistoryIndicesDueToCancel();
+				org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().restoreHistoryIndicesDueToCancel();
 				this.reset();
 			}
 		}

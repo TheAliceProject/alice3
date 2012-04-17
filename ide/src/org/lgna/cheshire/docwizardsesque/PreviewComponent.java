@@ -54,47 +54,48 @@ public class PreviewComponent extends org.lgna.croquet.components.JComponent< ja
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
-				org.lgna.cheshire.Presentation presentation = DocWizardsesquePresentation.getInstance();
-				org.lgna.cheshire.Chapter chapter = presentation.getBook().getSelectedChapter();
-				if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
-					org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
-					org.lgna.croquet.history.Step< ? > step0 = transactionChapter.getTransaction().getChildStepAt( 0 );
-					if( step0 != null ) {
-						org.lgna.croquet.Model model = step0.getModel();
-//						if( step0 instanceof org.lgna.croquet.steps.StandardPopupOperationPrepStep ) {
-//							org.lgna.croquet.steps.StandardPopupOperationPrepStep standardPopupOperationPrepStep = (org.lgna.croquet.steps.StandardPopupOperationPrepStep)step0;
-//							model = standardPopupOperationPrepStep.getStandardPopupOperation();
+				// TODO: <kjh/> I just broke doc wizards presentation
+//				org.lgna.cheshire.Presentation presentation = DocWizardsesquePresentation.getInstance();
+//				org.lgna.cheshire.Chapter chapter = presentation.getBook().getSelectedChapter();
+//				if( chapter instanceof org.lgna.cheshire.TransactionChapter ) {
+//					org.lgna.cheshire.TransactionChapter transactionChapter = (org.lgna.cheshire.TransactionChapter)chapter;
+//					org.lgna.croquet.history.Step< ? > step0 = transactionChapter.getTransaction().getChildStepAt( 0 );
+//					if( step0 != null ) {
+//						org.lgna.croquet.Model model = step0.getModel();
+////						if( step0 instanceof org.lgna.croquet.steps.StandardPopupOperationPrepStep ) {
+////							org.lgna.croquet.steps.StandardPopupOperationPrepStep standardPopupOperationPrepStep = (org.lgna.croquet.steps.StandardPopupOperationPrepStep)step0;
+////							model = standardPopupOperationPrepStep.getStandardPopupOperation();
+////						}
+//						if( model != null ) {
+//							org.lgna.croquet.components.Component component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+//							if( component != null ) {
+//								if( component instanceof org.lgna.croquet.components.FolderTabbedPane ) {
+//									org.lgna.croquet.components.FolderTabbedPane folderTabbedPane = (org.lgna.croquet.components.FolderTabbedPane)component;
+//									component = ((org.lgna.croquet.components.JComponent)((org.lgna.croquet.components.JComponent)folderTabbedPane.getComponent( 0 )).getComponent( 0 )).getComponent( 0 );
+//								}
+//								java.awt.Dimension size = component.getAwtComponent().getSize();
+//								java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//								java.awt.Paint paint = g2.getPaint();
+//								java.awt.Stroke stroke = g2.getStroke();
+//								final int INSET = 0;
+//								int x = INSET - component.getX();
+//								int y = INSET - component.getY();
+//								g2.translate( +x, +y );
+//								try {
+//									component.getAwtComponent().getParent().printAll( g );
+//									g2.setPaint( java.awt.Color.RED );
+//									g2.setStroke( STROKE );
+//									g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+//								} finally {
+//									g2.translate( -x, -y );
+//									g2.drawOval( 0, 0, size.width+INSET*2, size.height+INSET*2 );
+//									g2.setPaint( paint );
+//									g2.setStroke( stroke );
+//								}
+//							}
 //						}
-						if( model != null ) {
-							org.lgna.croquet.components.Component component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
-							if( component != null ) {
-								if( component instanceof org.lgna.croquet.components.FolderTabbedPane ) {
-									org.lgna.croquet.components.FolderTabbedPane folderTabbedPane = (org.lgna.croquet.components.FolderTabbedPane)component;
-									component = ((org.lgna.croquet.components.JComponent)((org.lgna.croquet.components.JComponent)folderTabbedPane.getComponent( 0 )).getComponent( 0 )).getComponent( 0 );
-								}
-								java.awt.Dimension size = component.getAwtComponent().getSize();
-								java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-								java.awt.Paint paint = g2.getPaint();
-								java.awt.Stroke stroke = g2.getStroke();
-								final int INSET = 0;
-								int x = INSET - component.getX();
-								int y = INSET - component.getY();
-								g2.translate( +x, +y );
-								try {
-									component.getAwtComponent().getParent().printAll( g );
-									g2.setPaint( java.awt.Color.RED );
-									g2.setStroke( STROKE );
-									g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-								} finally {
-									g2.translate( -x, -y );
-									g2.drawOval( 0, 0, size.width+INSET*2, size.height+INSET*2 );
-									g2.setPaint( paint );
-									g2.setStroke( stroke );
-								}
-							}
-						}
-					}
-				}
+//					}
+//				}
 			}
 		};
 	}

@@ -59,7 +59,7 @@ public class DoSingleStepOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.lgna.cheshire.Book book = DocWizardsesquePresentation.getInstance().getBook();
+		org.lgna.cheshire.Book book = org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().getBook();
 		int i = book.getSelectedIndex();
 		book.setSelectedIndex( Math.min( i+1, book.getChapterCount()-1 ) );
 		step.finish();

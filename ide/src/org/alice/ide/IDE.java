@@ -69,14 +69,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, final org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
-//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//				public void run() {
-					IDE.this.setPerspective( nextValue );
-//				}
-//			} );
+			IDE.this.setPerspective( nextValue );
 		}
 	};
 
+	private final org.lgna.cheshire.stencil.StencilsPresentation stencilsPresentation;
+	private final org.lgna.cheshire.models.IsStencilsPresentationShowingState isStencilsPresentationShowingState;
 	private final org.alice.ide.stencils.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
 	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
@@ -103,8 +101,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueListener( this.isAlwaysShowingBlocksListener );
 
 		org.alice.ide.project.ProjectState.getInstance().addAndInvokeValueListener( this.projectListener );
-		
+
+		// Initialize the Stencils infrastructure
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
+		// TODO: <kjh/> This stencils presentation will crack out... fix it.
+		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation(null, null, null, null, null, null, null, null);
+		this.isStencilsPresentationShowingState = new org.lgna.cheshire.models.IsStencilsPresentationShowingState(this.stencilsPresentation, false);
 	}
 
 	protected void updateEnabled( org.lgna.project.Project project ) {
@@ -260,16 +262,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return " 3 BETA ";
 	}
 
-
 	public org.alice.ide.stencils.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
 		return this.potentialDropReceptorsStencil;
-	}
-	
-	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		this.potentialDropReceptorsStencil.showStencilOver( potentialDragSource, type );
-	}
-	public void hideStencil() {
-		this.potentialDropReceptorsStencil.hideStencil();
 	}
 
 	@Deprecated
@@ -282,8 +276,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
 	}
-
-	
 	
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
 		org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
@@ -548,5 +540,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			return null;
 		}
+	}
+
+	public org.lgna.cheshire.stencil.StencilsPresentation getStencilsPresentation() {
+		return stencilsPresentation;
 	}
 }

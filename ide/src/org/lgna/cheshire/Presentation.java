@@ -48,11 +48,6 @@ package org.lgna.cheshire;
 public abstract class Presentation {
 	public static org.lgna.croquet.Group COMPLETION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
 
-	private static Presentation instance;
-	public static Presentation getInstance() {
-		return instance;
-	}
-
 	private final Recoverer recoverer;
 	private final Book book;
 	private boolean isResultOfNextOperation = false;
@@ -64,50 +59,12 @@ public abstract class Presentation {
 			Presentation.this.handleEvent( e );
 		}
 	};
-//	private final org.lgna.croquet.history.TransactionManager.Observer observer = new org.lgna.croquet.history.TransactionManager.Observer() {
-//		public void addingStep( org.lgna.croquet.history.Step< ? > step ) {
-//		}
-//		public void addedStep( org.lgna.croquet.history.Step< ? > step ) {
-//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.AddStepEvent( step ) );
-//		}
-//		public void editCommitting( org.lgna.croquet.edits.Edit< ? > edit ) {
-//		}
-//		public void editCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
-//			Presentation.this.handleEditCommitted( edit );
-//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.EditCommittedEvent( edit ) );
-//		}
-//		public void finishing(org.lgna.croquet.history.Transaction transaction) {
-//		}
-//		public void finished(org.lgna.croquet.history.Transaction transaction) {
-//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.FinishedEvent( transaction ) );
-//		}
-//		public void transactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
-//			Presentation.this.handleTransactionCanceled( transaction );
-//		}
-//		public void dropPending( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-//		}
-//		public void dropPended( org.lgna.croquet.Model model, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.DropPendedEvent( model, dropReceptor, dropSite ) );
-//		}
-//		public void popupMenuResized(org.lgna.croquet.components.PopupMenu popupMenu ) {
-//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.PopupMenuResizedEvent( popupMenu ) );
-//		}
-//		public void dialogOpened(org.lgna.croquet.components.Dialog dialog) {
-//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.DialogOpenedEvent( dialog ) );
-//		}
-//		public void menuItemsSelectionChanged( java.util.List< org.lgna.croquet.Model > models ) {
-//			Presentation.this.handleEvent( new org.lgna.croquet.history.event.MenuSelectionChangedEvent( models ) );
-//		}
-//	};
 
 	private final org.lgna.project.history.ProjectHistory[] historyManagers;
 
 	public Presentation( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
-		assert instance == null;
-		instance = this;
-
 		this.validate( originalTransactionHistory );
-		
+
 		this.recoverer = recoverer;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
 		if ( filterer != null ) {
@@ -122,9 +79,6 @@ public abstract class Presentation {
 		// <kjh/> org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( this.listener );
 	}
 
-//	private void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > edit ) {
-//		this.book.handleEditCommitted( edit, this.userInformation );
-//	}
 	protected abstract void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction );
 	protected abstract void handleEvent( org.lgna.croquet.history.event.Event<?> event );
 	private org.lgna.cheshire.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.Book.SelectionObserver() {
@@ -136,7 +90,6 @@ public abstract class Presentation {
 		}
 	};
 
-	
 	protected void startListening() {
 		this.getBook().addSelectionObserver( this.selectionObserver );
 	}
@@ -156,15 +109,13 @@ public abstract class Presentation {
 		}
 		return rv;
 	}
-	
+
 	private void preserveHistoryIndices( int transactionIndex ) {
 		Chapter chapter = this.book.getChapterAt( transactionIndex );
 		final int N = historyManagers.length;
 		int[] indices = new int[ N ];
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "preserveHistoryIndices", transactionIndex );
 		for( int i=0; i<N; i++ ) {
 			indices[ i ] = historyManagers[ i ].getInsertionIndex();
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( historyManagers[ i ], indices[ i ] );
 		}
 		chapter.setHistoryIndices( indices );
 	}
@@ -172,9 +123,7 @@ public abstract class Presentation {
 		Chapter chapter = this.book.getChapterAt( transactionIndex );
 		final int N = historyManagers.length;
 		int[] indices = chapter.getHistoryIndices();
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "restoreHistoryIndices", transactionIndex );
 		for( int i=0; i<N; i++ ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( historyManagers[ i ], indices[ i ] );
 			historyManagers[ i ].setInsertionIndex( indices[ i ] );
 		}
 	}
@@ -182,7 +131,7 @@ public abstract class Presentation {
 	public void restoreHistoryIndicesDueToCancel() {
 		this.restoreHistoryIndices( this.book.getSelectedIndex() );
 	}
-	
+
 	private int prevSelectedIndex = -1;
 	private void completeOrUndoIfNecessary() {
 		SoundCache.pushIgnoreStartRequests();
@@ -216,7 +165,7 @@ public abstract class Presentation {
 			SoundCache.popIgnoreStartRequests();
 		}
 	}
-	
+
 	protected void handleChapterChanged(Chapter chapter) {
 		this.completeOrUndoIfNecessary();
 	}
@@ -224,7 +173,7 @@ public abstract class Presentation {
 	public Book getBook() {
 		return this.book;
 	}
-	
+
 	protected void validate( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		java.util.ListIterator< org.lgna.croquet.history.Transaction > transactionListIterator = transactionHistory.listIterator();
 		while( transactionListIterator.hasNext() ) {
@@ -232,7 +181,7 @@ public abstract class Presentation {
 			if( transaction.isValid() ) {
 				//pass
 			} else {
-				
+
 			}
 		}
 	}
@@ -271,19 +220,8 @@ public abstract class Presentation {
 		}
 		return null;
 	}
-	
-	
+
 	protected org.lgna.croquet.history.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.history.Transaction transaction ) {
-//		if( false ) {
-//			org.lgna.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
-//			for( org.lgna.croquet.TabSelectionState< org.lgna.croquet.TabComposite > tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
-//				for( org.lgna.croquet.TabComposite item : tabSelectionState ) {
-//					if( item.contains( model ) ) {
-//						return org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getParent(), tabSelectionState, tabSelectionState.getValue(), item, false );
-//					}
-//				}
-//			}
-//		}
 		return null;
 	}
 	private org.lgna.croquet.Retargeter retargeter;
@@ -293,14 +231,14 @@ public abstract class Presentation {
 	public void setRetargeter( org.lgna.croquet.Retargeter retargeter ) {
 		this.retargeter = retargeter;
 	}
-	
+
 	public void retargetAll( org.lgna.croquet.Retargeter retargeter ) {
 		this.book.retargetAll( retargeter );
 	}
 	public void retargetForward() {
 		this.book.retargetForward( this.retargeter );
 	}
-	
+
 	public void setSelectedIndex( int index ) {
 		this.book.setSelectedIndex( index );
 	}
@@ -320,6 +258,6 @@ public abstract class Presentation {
 	public void decrementSelectedIndex() {
 		this.book.decrementSelectedIndex();
 	}
-	
+
 	public abstract void setVisible( boolean isVisible );
 }
