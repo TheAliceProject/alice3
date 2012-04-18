@@ -39,5 +39,5 @@ public class IkConstants {
 	public static final boolean USE_NULLSPACE_TO_MOVE_CLOSE_TO_DEFAULT_POSE = true;
 	
 	public static final double NULLSPACE_DEFAULT_POSE_MOTION_SCALE = 1;
-		
+	
 }
