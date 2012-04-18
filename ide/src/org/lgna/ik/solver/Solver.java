@@ -78,19 +78,25 @@ public class Solver {
 	
 	public class JacobianAndInverse {
 		private final Matrix jacobian;
-		private final Matrix inverseJacobian; //rather, pseudoinverse
+		private final Matrix pseudoInverseJacobianForMotion; 
+		private final Matrix pseudoInverseJacobianForNullspace; 
 
-		public JacobianAndInverse(Matrix jacobian, Matrix inverseJacobian) {
+		public JacobianAndInverse(Matrix jacobian, Matrix pseudoInverseJacobianForMotion, Matrix pseudoInverseJacobianForNullspace) {
 			this.jacobian = jacobian;
-			this.inverseJacobian = inverseJacobian;
+			this.pseudoInverseJacobianForMotion = pseudoInverseJacobianForMotion;
+			this.pseudoInverseJacobianForNullspace = pseudoInverseJacobianForNullspace;
 		}
 		
 		public Matrix getJacobian() {
 			return jacobian;
 		}
 		
-		public Matrix getInverseJacobian() {
-			return inverseJacobian;
+		public Matrix getPseudoInverseJacobianForMotion() {
+			return pseudoInverseJacobianForMotion;
+		}
+		
+		public Matrix getPseudoInverseJacobianForNullspace() {
+			return pseudoInverseJacobianForNullspace;
 		}
 	}
 	
@@ -122,7 +128,7 @@ public class Solver {
 	public double calculatePseudoInverseErrorForTime(JacobianAndInverse jacobianAndInverse, double dt) {
 		//will calculate I-(JJ^-1)
 
-		Matrix jj11 = jacobianAndInverse.getJacobian().times(jacobianAndInverse.getInverseJacobian()).times(-1);
+		Matrix jj11 = jacobianAndInverse.getJacobian().times(jacobianAndInverse.getPseudoInverseJacobianForMotion()).times(-1);
 		
 		int n = jj11.getRowDimension();
 		
@@ -151,9 +157,7 @@ public class Solver {
 		
 		Matrix jacobian = createJacobian();
 		
-		Matrix inverseJacobian = invertJacobian(jacobian);
-		
-		JacobianAndInverse jacobianAndInverse = new JacobianAndInverse(jacobian, inverseJacobian);
+		JacobianAndInverse jacobianAndInverse = invertJacobian(jacobian);
 
 		return jacobianAndInverse;
 	}
@@ -176,7 +180,7 @@ public class Solver {
 	public Map<Bone, Map<Axis, Double>> projectToNullSpace(JacobianAndInverse jacobianAndInverse, Map<Bone, Map<Axis, Double>> desiredJointSpeeds) {
 		//make sure you use the correct order, the order that you use to go from jama matrix to maps
 		
-		Matrix j1j = jacobianAndInverse.getInverseJacobian().times(jacobianAndInverse.getJacobian());
+		Matrix j1j = jacobianAndInverse.getPseudoInverseJacobianForNullspace().times(jacobianAndInverse.getJacobian());
 		
 		Matrix projector = Matrix.identity(j1j.getRowDimension(), j1j.getColumnDimension()).minus(j1j);
 		
@@ -375,7 +379,7 @@ public class Solver {
 		return createBoneSpeedsFromThetadot(mThetadot);
 	}
 	public Map<Bone, Map<Axis, Double>> calculateAngleSpeeds(JacobianAndInverse jacobianAndInverse) {
-		Map<Bone, Map<Axis, Double>> angleSpeeds = calculateAngleSpeeds(jacobianAndInverse.getInverseJacobian());
+		Map<Bone, Map<Axis, Double>> angleSpeeds = calculateAngleSpeeds(jacobianAndInverse.getPseudoInverseJacobianForMotion());
 		
 		return angleSpeeds;
 	}
@@ -596,11 +600,57 @@ public class Solver {
 		return createJacobianMatrix(this.jacobianColumns);
 	}
 	
-	private Jama.Matrix invertJacobian(Jama.Matrix jacobian) {
-		Jama.Matrix ji = svdInvert(jacobian);
-		// TODO also do any optimizations (don't move too fast, etc)
+	private JacobianAndInverse invertJacobian(Jama.Matrix jacobian) {
+		Jama.Matrix mj = jacobian;
 		
-		return ji;
+		boolean transposed = false;
+		int m = mj.getRowDimension();
+		int n = mj.getColumnDimension();
+		if(m < n) {
+			transposed = true;
+		} 
+		
+		if(transposed) {
+			mj = mj.transpose();
+		}
+		
+		Jama.SingularValueDecomposition svd = new Jama.SingularValueDecomposition(mj);
+		
+		Jama.Matrix u = svd.getU();
+		Jama.Matrix s = svd.getS();
+		Jama.Matrix v = svd.getV();
+
+		//don't need to optimize this by preventing the copi in the pure case because it's not going to be used in production anyway.
+		Jama.Matrix sForBasic = s.copy();
+		
+		assert IkConstants.JACOBIAN_INVERSION_METHOD != JacobianInversionMethod.SCALED_DAMPED;
+		
+		switch(IkConstants.JACOBIAN_INVERSION_METHOD) {
+		case PURE_SVD:
+			reduceAndInvertSofSvdBasically(s);
+			break;
+		case CLAMPED:
+			reduceAndInvertSofSvdByClampingSmallEntries(s, IkConstants.SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO);
+			break;
+		case DAMPED:
+			reduceAndInvertSofSvdByDamping(s, IkConstants.SVD_DAMPING_CONSTANT);
+			break;
+		default:
+			throw new RuntimeException("Unknown Jacobian inversion method.");
+		}
+		
+		reduceAndInvertSofSvdBasically(sForBasic);
+
+		
+		Jama.Matrix pseudoInverseForMotion = v.times(s).times(u.transpose());
+		Jama.Matrix pseudoInverseForNullspace = v.times(sForBasic).times(u.transpose());
+		
+		if(transposed) {
+			pseudoInverseForMotion = pseudoInverseForMotion.transpose();
+			pseudoInverseForNullspace = pseudoInverseForNullspace.transpose();
+		}
+		
+		return new JacobianAndInverse(jacobian, pseudoInverseForMotion, pseudoInverseForNullspace);
 	}
 	
 	private Jama.Matrix createDesiredVelocitiesColumn(DesiredVelocity[] desiredVelocities2) {
@@ -666,13 +716,11 @@ public class Solver {
 	}
 	
 	private Jama.Matrix svdInvert(Jama.Matrix mj) {
-		
 		boolean transposed = false;
 		int m = mj.getRowDimension();
 		int n = mj.getColumnDimension();
 		if(m < n) {
 			transposed = true;
-//			System.out.println("transposed!");
 		} 
 		
 		if(transposed) {
@@ -689,7 +737,8 @@ public class Solver {
 		
 		switch(IkConstants.JACOBIAN_INVERSION_METHOD) {
 		case PURE_SVD:
-			reduceAndInvertSofSvdByClampingSmallEntries(s, 0.0);
+			reduceAndInvertSofSvdBasically(s);
+			break;
 		case CLAMPED:
 			reduceAndInvertSofSvdByClampingSmallEntries(s, IkConstants.SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO);
 			break;
@@ -709,6 +758,12 @@ public class Solver {
 		return result;
 	}
 	
+	private void reduceAndInvertSofSvdBasically(Matrix s) {
+		assert(s.getRowDimension() == s.getColumnDimension());
+		for(int i = 0; i < s.getRowDimension(); ++i) {
+			s.set(i, i, 1.0 / s.get(i, i)); 
+		}
+	}
 	private void reduceAndInvertSofSvdByDamping(Matrix s, double svdDampingConstant) {
 		assert(s.getRowDimension() == s.getColumnDimension());
 		for(int i = 0; i < s.getRowDimension(); ++i) {
