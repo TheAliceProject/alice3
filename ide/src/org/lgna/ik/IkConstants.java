@@ -3,6 +3,7 @@ package org.lgna.ik;
 public class IkConstants {
 
 	public static enum JacobianInversionMethod {
+		PURE_SVD, 
 		CLAMPED, 
 		DAMPED, 
 		SCALED_DAMPED, //SDLS. not good for orientation constraints. 
@@ -33,6 +34,10 @@ public class IkConstants {
 	public static final double MAX_ANGULAR_SPEED_FOR_EE = Double.POSITIVE_INFINITY;
 	public static final double MAX_PSEUDO_INVERSE_ERROR_BEFORE_HALVING_DELTA_TIME = 1e-40; //not good, dependant on the situation...
 
+	
+	//make it natural-ish by moving it close to default pose(s)
+	public static final boolean USE_NULLSPACE_TO_MOVE_CLOSE_TO_DEFAULT_POSE = true;
+	
 	public static final double NULLSPACE_DEFAULT_POSE_MOTION_SCALE = 1;
 		
 }

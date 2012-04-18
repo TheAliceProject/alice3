@@ -688,6 +688,8 @@ public class Solver {
 		assert IkConstants.JACOBIAN_INVERSION_METHOD != JacobianInversionMethod.SCALED_DAMPED;
 		
 		switch(IkConstants.JACOBIAN_INVERSION_METHOD) {
+		case PURE_SVD:
+			reduceAndInvertSofSvdByClampingSmallEntries(s, 0.0);
 		case CLAMPED:
 			reduceAndInvertSofSvdByClampingSmallEntries(s, IkConstants.SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO);
 			break;

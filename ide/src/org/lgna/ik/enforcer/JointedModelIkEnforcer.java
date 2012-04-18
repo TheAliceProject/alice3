@@ -314,7 +314,7 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 			//move the joints for that time
 			Map<Bone, Map<Axis, Double>> jointSpeedsToUse = solver.calculateAngleSpeeds(jacobianAndInverse);
 			
-			if(currentFullBodyDefaultPose != null) {
+			if(IkConstants.USE_NULLSPACE_TO_MOVE_CLOSE_TO_DEFAULT_POSE && currentFullBodyDefaultPose != null) {
 				solver.addAngleSpeedsTowardsDefaultPoseInNullSpace(currentFullBodyDefaultPose, jointSpeedsToUse, jacobianAndInverse);
 			}
 			moveJointsWithSpeedsForTime(jointSpeedsToUse, deltaTimeAttemptingToAdvance);
