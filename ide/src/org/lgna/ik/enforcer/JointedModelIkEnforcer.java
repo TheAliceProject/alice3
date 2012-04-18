@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.lgna.ik.IkConstants;
-import org.lgna.ik.IkConstants.JacobianInversionMethod;
 import org.lgna.ik.solver.Bone;
 import org.lgna.ik.solver.Bone.Axis;
 import org.lgna.ik.solver.Chain;
@@ -276,10 +275,6 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 	}
 	
 	public void advanceTimeAdaptivelyForFixedDuration(double deltaTime, double maxPseudoInverseErrorBeforeHalvingDeltaTime) {
-		if(IkConstants.JACOBIAN_INVERSION_METHOD == JacobianInversionMethod.SCALED_DAMPED) {
-			throw new RuntimeException("Caught trying adaptive time with SDLS.");
-		}
-			
 		double totalDeltaTimeToFill = deltaTime;
 		double deltaTimePassedSoFar = 0;
 		double deltaTimeAttemptingToAdvance = deltaTime;
@@ -417,14 +412,10 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 	}
 
 	public void advanceTime(double deltaTime) {
-		if(IkConstants.JACOBIAN_INVERSION_METHOD == JacobianInversionMethod.SCALED_DAMPED) {
-			advanceTimeStaticallyForFixedDuration(deltaTime);
+		if(IkConstants.USE_ADAPTIVE_TIME) {
+			advanceTimeAdaptivelyForFixedDuration(deltaTime, IkConstants.MAX_PSEUDO_INVERSE_ERROR_BEFORE_HALVING_DELTA_TIME);
 		} else {
-			if(IkConstants.USE_ADAPTIVE_TIME) {
-				advanceTimeAdaptivelyForFixedDuration(deltaTime, IkConstants.MAX_PSEUDO_INVERSE_ERROR_BEFORE_HALVING_DELTA_TIME);
-			} else {
-				advanceTimeStaticallyForFixedDuration(deltaTime);
-			}
+			advanceTimeStaticallyForFixedDuration(deltaTime);
 		}
 	}
 

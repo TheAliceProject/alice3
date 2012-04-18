@@ -2,24 +2,8 @@ package org.lgna.ik;
 
 public class IkConstants {
 
-	public static enum JacobianInversionMethod {
-		PURE_SVD, 
-		CLAMPED, 
-		DAMPED, 
-		SCALED_DAMPED, //SDLS. not good for orientation constraints. 
-	}
-	
-	public static final JacobianInversionMethod JACOBIAN_INVERSION_METHOD = JacobianInversionMethod.DAMPED;
-	
-	//	public static final double SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO = .1;
-	//for clamped
-	public static final double SVD_SINGULAR_VALUES_SMALLER_THAN_THIS_BECOME_ZERO = 0.08;
-	
 	//for damped
 	public static final double SVD_DAMPING_CONSTANT = .1;
-
-	//for scaled damped (this is speed per unit time rather than actual change. that's why it's larger than pi/4)
-	public static final double SDLS_MAX_ANGULAR_CHANGE = 2 * Math.PI;
 	
 	//for clamped and damped
 	public static final boolean USE_ADAPTIVE_TIME = true;
