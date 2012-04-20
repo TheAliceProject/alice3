@@ -152,9 +152,14 @@ public abstract class IoUtilities {
 	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName, org.lgna.project.Version version ) throws java.io.IOException {
 		assert zipEntryContainer != null;
 		java.io.InputStream is = zipEntryContainer.getInputStream( entryName );
-		String text = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
-		text = org.lgna.project.migration.MigrationManager.migrate( text, version );
-		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( new java.io.ByteArrayInputStream( text.getBytes() ) );
+		if( org.lgna.project.Version.getCurrentVersion().compareTo( version ) == 0 ) {
+			//pass
+		} else {
+			String text = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
+			text = org.lgna.project.migration.MigrationManager.migrate( text, version );
+			is = new java.io.ByteArrayInputStream( text.getBytes() );
+		}
+		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 	}
 
 	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
