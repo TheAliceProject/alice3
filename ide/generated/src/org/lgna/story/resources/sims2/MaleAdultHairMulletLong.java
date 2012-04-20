@@ -46,6 +46,6 @@ public enum MaleAdultHairMulletLong implements MaleAdultHair {
  	BLACK ,
  	RED ,
  	BLOND ,
- 	GREY ,
- 	BLENDBLOND ;
+ 	GREY ;
+ 	//BLENDBLOND ; //Nonstandard hair color is not supported
 }
