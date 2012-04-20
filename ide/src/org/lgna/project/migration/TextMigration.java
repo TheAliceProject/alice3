@@ -82,10 +82,15 @@ public class TextMigration implements Migration {
 		return this.resultVersion;
 	}
 	public boolean isApplicable( org.lgna.project.Version version ) {
-		return 
-				this.minimumVersion.compareTo( version ) <= 0
-					&&
-				this.resultVersion.compareTo( version ) >= 0;
+		if( this.minimumVersion != null && this.resultVersion != null ) {
+			return 
+					this.minimumVersion.compareTo( version ) <= 0
+						&&
+					this.resultVersion.compareTo( version ) >= 0;
+		} else {
+			//todo?
+			return false;
+		}
 	}
 	public String migrate( String source ) {
 		for( Pair pair : this.pairs ) {
