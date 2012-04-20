@@ -54,6 +54,8 @@ public class MigrationManager {
 				"org.lgna.story.resources.armoire.Armoire" 
 		)
 	};
+	private static final java.util.List< Migration > versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
 	private MigrationManager() {
 		throw new AssertionError();
 	}
@@ -66,6 +68,18 @@ public class MigrationManager {
 				version = textMigration.getResultVersion();
 			}
 		}
+		
+		for( Migration versionIndependentMigration : versionIndependentMigrations ) {
+			rv = versionIndependentMigration.migrate( rv );
+		}
+		
 		return rv;
+	}
+	
+	public static void addVersionIndependentMigration( Migration migration ) {
+		versionIndependentMigrations.add( migration );
+	}
+	public static void removeVersionIndependentMigration( Migration migration ) {
+		versionIndependentMigrations.remove( migration );
 	}
 }
