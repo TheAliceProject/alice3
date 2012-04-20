@@ -97,7 +97,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 			new Thread() {
 				@Override
 				public void run() {
-					org.lgna.common.DoTogether.invokeAndWait( jointUndoRunnables );
+					org.lgna.common.ThreadUtilities.doTogether( jointUndoRunnables );
 				}
 			}.start();
 		}

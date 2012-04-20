@@ -40,62 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextMigration implements Migration {
-	private static class Pair {
-		private final java.util.regex.Pattern pattern;
-		private final String replacement;
-		public Pair( String regex, String replacement ) {
-			this.pattern = java.util.regex.Pattern.compile( regex );
-			this.replacement = replacement;
-		}
-		public String migrate( String source ) {
-			java.util.regex.Matcher matcher = this.pattern.matcher( source );
-			if( matcher.find() ) {
-				//todo?
-				matcher.reset();
-				return matcher.replaceAll( this.replacement );
-			} else {
-				return source;
-			}
-		}
-	}
-	
-	private final org.lgna.project.Version minimumVersion;
-	private final org.lgna.project.Version resultVersion;
-	
-	private final Pair[] pairs;
-	public TextMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion, String... values ) {
-		this.minimumVersion = minimumVersion;
-		this.resultVersion = resultVersion;
-		assert values.length % 2 == 0 : values.length;
-		this.pairs = new Pair[ values.length / 2 ];
-		for( int i=0; i< this.pairs.length; i++ ) {
-			this.pairs[ i ] = new Pair( values[ i*2 ], values[ i*2 + 1 ] );
-		}
-	}
-	public org.lgna.project.Version getResultVersion() {
-		return this.resultVersion;
-	}
-	public boolean isApplicable( org.lgna.project.Version version ) {
-		if( this.minimumVersion != null && this.resultVersion != null ) {
-			return 
-					this.minimumVersion.compareTo( version ) <= 0
-						&&
-					this.resultVersion.compareTo( version ) >= 0;
-		} else {
-			//todo?
-			return false;
-		}
-	}
-	public String migrate( String source ) {
-		for( Pair pair : this.pairs ) {
-			source = pair.migrate( source );
-		}
-		return source;
-	}
+public interface EachInTogetherRunnable<T> {
+	public void run( T item );
 }

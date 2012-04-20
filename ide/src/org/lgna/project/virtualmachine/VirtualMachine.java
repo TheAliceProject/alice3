@@ -838,7 +838,7 @@ public abstract class VirtualMachine {
 					}
 				};
 			}
-			org.lgna.common.DoTogether.invokeAndWait( runnables );
+			org.lgna.common.ThreadUtilities.doTogether( runnables );
 		}
 	}
 	protected void executeExpressionStatement( org.lgna.project.ast.ExpressionStatement expressionStatement ) {
@@ -886,7 +886,7 @@ public abstract class VirtualMachine {
 			break;
 		default:
 			final Frame owner = this.getFrameForThread( Thread.currentThread() );
-			org.lgna.common.ForEachTogether.invokeAndWait( array, new org.lgna.common.ForEachRunnable< Object >() {
+			org.lgna.common.ThreadUtilities.eachInTogether( new org.lgna.common.EachInTogetherRunnable< Object >() {
 				public void run( Object value ) {
 					pushCurrentThread( owner );
 					try {
@@ -902,7 +902,7 @@ public abstract class VirtualMachine {
 						popCurrentThread();
 					}
 				}
-			} );
+			}, array );
 		}
 	}
 	protected void executeEachInArrayTogether( org.lgna.project.ast.EachInArrayTogether eachInArrayTogether ) throws ReturnException {
