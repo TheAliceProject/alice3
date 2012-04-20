@@ -45,8 +45,8 @@
  * @author Dennis Cosgrove
  */
 public class MigrateProjects extends Batch {
-	private static final int WIDTH = 200;
-	private static final int HEIGHT = 200;
+	private static final int WIDTH = 400;
+	private static final int HEIGHT = 300 + 60;
 	private int x = 0;
 	private int y = 0;
 	

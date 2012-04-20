@@ -42,18 +42,12 @@
  */
 package org.lgna.common;
 
-
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class DoTogether {
+public class ThreadUtilities {
 	private static int threadCountForDescription = 0;
-	//todo 
-	public static void invokeAndWait( 
-			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable=true )
-			Runnable... runnables 
-	) {
+	public static void doTogether( Runnable... runnables ) {
 		switch( runnables.length ) {
 		case 0:
 			break;
@@ -82,7 +76,7 @@ public class DoTogether {
 	            			}
 	            		}
 	    	        }
-	    		}, "DoTogether-"+(DoTogether.threadCountForDescription++ ) ).start();
+	    		}, "DoTogether-"+(ThreadUtilities.threadCountForDescription++ ) ).start();
 	    	}
 			try {
     			barrier.await();
@@ -99,6 +93,32 @@ public class DoTogether {
 		        	throw runtimeExceptions.get( 0 );
 		        }
 			}
+		}
+	}
+	private static class ForEachRunnableAdapter<T> implements Runnable {
+		private final EachInTogetherRunnable<T> eachInTogetherRunnable;
+		private final T item;
+		public ForEachRunnableAdapter( EachInTogetherRunnable<T> eachInTogetherRunnable, T item ) {
+			this.eachInTogetherRunnable = eachInTogetherRunnable;
+			this.item = item;
+		}
+		public void run() {
+			this.eachInTogetherRunnable.run( this.item );
+		}
+	}
+	public static <T extends Object> void eachInTogether( EachInTogetherRunnable<T> eachInTogetherRunnable, T... items ) {
+		switch( items.length ) {
+		case 0:
+			break;
+		case 1:
+			eachInTogetherRunnable.run( items[ 0 ] );
+			break;
+		default:
+			Runnable[] runnables = new Runnable[ items.length ];
+			for( int i = 0; i < runnables.length; i++ ) {
+				runnables[ i ] = new ForEachRunnableAdapter<T>( eachInTogetherRunnable, items[ i ] );
+			}
+			doTogether( runnables );
 		}
 	}
 }

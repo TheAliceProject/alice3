@@ -367,7 +367,7 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 				}
 			};
 			runnables[ 1 ] = textToSpeech;
-			org.lgna.common.DoTogether.invokeAndWait( runnables );
+			org.lgna.common.ThreadUtilities.doTogether( runnables );
 		}
 		else
 		{

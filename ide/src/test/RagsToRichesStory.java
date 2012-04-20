@@ -246,7 +246,7 @@ class SnowScene extends Scene {
 			this.redCone.turn( TurnDirection.FORWARD, 1.0 );
 			this.blueCone.roll( RollDirection.LEFT, 1.0 );
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
-			org.lgna.common.DoTogether.invokeAndWait( new Runnable() {
+			org.lgna.common.ThreadUtilities.doTogether( new Runnable() {
 				public void run() {
 					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
 				}
