@@ -40,70 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project;
+package org.lgna.project.migration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Version implements Comparable<Version> {
-	private static final String TEXT;
-	private static final Version CURRENT;
-	static {
-		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Version.class.getResourceAsStream( "Version.txt" ) ).trim();
-		CURRENT = new Version( TEXT );
-	}
-	public static String getCurrentVersionText() {
-		return TEXT;
-	}
-	public static Version getCurrentVersion() {
-		return CURRENT;
-	}
-	
-	private int[] subNumbers;
-	public Version( String text ) {
-		String[] subTexts = text.split( "\\." );
-		final int N = subTexts.length;
-		this.subNumbers = new int[ N ];
-		for( int i=0; i<N; i++ ) {
-			this.subNumbers[ i ] = Integer.parseInt( subTexts[ i ] );
-		}
+public class MigrationManager {
+	private static final TextMigration[] textMigrations = {
+		new TextMigration( 
+				new org.lgna.project.Version( "3.1.18.0.0" ), 
+				new org.lgna.project.Version( "3.1.23.0.0" ), 
+				"org.lgna.story.resources.prop.Armoire", 
+				"org.lgna.story.resources.armoire.Armoire" 
+		)
+	};
+	private MigrationManager() {
+		throw new AssertionError();
 	}
 	
-	public int getMajor() {
-		return this.subNumbers[ 0 ];
-	}
-	public int getMinor() {
-		return this.subNumbers[ 1 ];
-	}
-	public int getBuild() {
-		return this.subNumbers[ 2 ];
-	}
-	
-	private static int[] growIfNecessary( int[] source, int[] other ) {
-		if( source.length < other.length ) {
-			int[] rv = new int[ other.length ];
-			System.arraycopy( source, 0, rv, 0, source.length );
-			return rv;
-		} else {
-			return source;
-		}
-	}
-	
-	public int compareTo( org.lgna.project.Version other ) {
-		int[] thisSubNumbers = growIfNecessary( this.subNumbers, other.subNumbers );
-		int[] otherSubNumbers = growIfNecessary( other.subNumbers, this.subNumbers );
-		for( int i=0; i<thisSubNumbers.length; i++ ) {
-			int result = Integer.signum( thisSubNumbers[ i ] - otherSubNumbers[ i ] );
-			if( result == 0 ) {
-				//pass
-			} else {
-				return result;
+	public static String migrate( String source, org.lgna.project.Version version ) {
+		String rv = source;
+		for( TextMigration textMigration : textMigrations ) {
+			if( textMigration.isApplicable( version ) ) {
+				rv = textMigration.migrate( rv );
+				version = textMigration.getResultVersion();
 			}
 		}
-		return 0;
-	}
-	
-	public static void main( String[] args ) {
-		System.out.println( new Version( "3.1.20.0.0" ).compareTo( new Version( "3.1.22.0.0.0" ) ) );
+		return rv;
 	}
 }

@@ -40,70 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project;
 
-/**
- * @author Dennis Cosgrove
- */
-public class Version implements Comparable<Version> {
-	private static final String TEXT;
-	private static final Version CURRENT;
-	static {
-		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Version.class.getResourceAsStream( "Version.txt" ) ).trim();
-		CURRENT = new Version( TEXT );
-	}
-	public static String getCurrentVersionText() {
-		return TEXT;
-	}
-	public static Version getCurrentVersion() {
-		return CURRENT;
-	}
-	
-	private int[] subNumbers;
-	public Version( String text ) {
-		String[] subTexts = text.split( "\\." );
-		final int N = subTexts.length;
-		this.subNumbers = new int[ N ];
-		for( int i=0; i<N; i++ ) {
-			this.subNumbers[ i ] = Integer.parseInt( subTexts[ i ] );
-		}
-	}
-	
-	public int getMajor() {
-		return this.subNumbers[ 0 ];
-	}
-	public int getMinor() {
-		return this.subNumbers[ 1 ];
-	}
-	public int getBuild() {
-		return this.subNumbers[ 2 ];
-	}
-	
-	private static int[] growIfNecessary( int[] source, int[] other ) {
-		if( source.length < other.length ) {
-			int[] rv = new int[ other.length ];
-			System.arraycopy( source, 0, rv, 0, source.length );
-			return rv;
-		} else {
-			return source;
-		}
-	}
-	
-	public int compareTo( org.lgna.project.Version other ) {
-		int[] thisSubNumbers = growIfNecessary( this.subNumbers, other.subNumbers );
-		int[] otherSubNumbers = growIfNecessary( other.subNumbers, this.subNumbers );
-		for( int i=0; i<thisSubNumbers.length; i++ ) {
-			int result = Integer.signum( thisSubNumbers[ i ] - otherSubNumbers[ i ] );
-			if( result == 0 ) {
-				//pass
+public abstract class Batch {
+	protected abstract void handle( java.io.File inFile, java.io.File outFile );
+	protected abstract boolean isSkipExistingOutFilesDesirable();
+	public void process( String inRootPath, String outRootPath, String inExt, String outExt ) {
+		boolean isSkipExistingOutFilesDesirable = this.isSkipExistingOutFilesDesirable();
+		
+		java.io.File inRoot = new java.io.File(inRootPath);
+		java.io.File outRoot = new java.io.File(outRootPath);
+		System.out.print( "FileUtilities.listDescendants... " );
+		java.io.File[] inFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( inRoot, inExt );
+		System.out.println( "Done.  ( " + inFiles.length + " files )" );
+
+		java.util.Set< java.io.File > unhandledFiles = new java.util.HashSet< java.io.File >();
+		//Runtime.getRuntime().gc();
+		//long freeMemory0 = Runtime.getRuntime().freeMemory();
+		for( java.io.File inFile : inFiles ) {
+			java.io.File outFile = edu.cmu.cs.dennisc.java.io.FileUtilities.getAnalogousFile(inFile, inRoot, outRoot, inExt, outExt );
+			if( isSkipExistingOutFilesDesirable && edu.cmu.cs.dennisc.java.io.FileUtilities.existsAndHasLengthGreaterThanZero( outFile ) ) {
+				//System.out.println( "SKIPPING: " + outFile + " exists." );
 			} else {
-				return result;
+				if( inFile.exists() ) {
+					//todo:
+					if( inFile.length() < 100L * 1024L * 1024L ) {
+						try {
+							handle( inFile, outFile );
+						} catch( RuntimeException re ) {
+							re.printStackTrace();
+							unhandledFiles.add( inFile );
+						}
+					} else {
+						unhandledFiles.add( inFile );
+					}
+				}
 			}
+			//Runtime.getRuntime().gc();
+			//long freeMemoryI = Runtime.getRuntime().freeMemory();
+			//System.err.println( freeMemoryI + " " + (freeMemoryI-freeMemory0) );
 		}
-		return 0;
-	}
-	
-	public static void main( String[] args ) {
-		System.out.println( new Version( "3.1.20.0.0" ).compareTo( new Version( "3.1.22.0.0.0" ) ) );
+		System.out.flush();
+		for( java.io.File unhandledFile : unhandledFiles ) {
+			System.err.println( "UNHANDLED FILE: " + unhandledFile );
+		}
 	}
 }
