@@ -3,7 +3,7 @@ package org.lgna.cheshire.ast;
 /**
  * @author Kyle J. Harms
  */
-/* package-private */ class TransactionGeneratorVisitor implements edu.cmu.cs.dennisc.pattern.Crawler {
+public class TransactionGeneratorVisitor implements edu.cmu.cs.dennisc.pattern.Crawler {
 
 	protected org.lgna.croquet.history.TransactionHistory transactionHistory;
 
