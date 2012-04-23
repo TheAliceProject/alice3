@@ -95,7 +95,11 @@ package org.lgna.cheshire.ast;
 	}
 	
 	public void visit(org.lgna.project.ast.MethodInvocation methodInvocation) {
-		
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(methodInvocation);
+	}
+	
+	public void visit( org.lgna.project.ast.UserMethod userMethod ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(userMethod);
 	}
 
 	//	public void visit(Statement statement) {
