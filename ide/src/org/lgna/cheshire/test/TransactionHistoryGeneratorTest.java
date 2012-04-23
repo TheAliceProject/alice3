@@ -73,7 +73,7 @@ public class TransactionHistoryGeneratorTest {
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		frame.setTitle( "Reuse Transaction History" );
 		frame.getContentPane().add( component );
-		frame.setSize( 300, 800);
+		frame.setSize( 300, 800 );
 		frame.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
 		frame.setVisible(true);
 		
