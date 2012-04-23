@@ -179,10 +179,6 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		return this.transaction;
 	}
 
-	public TransactionHistory getTransactionHistory() {
-		return this.transaction.getTransactionHistory();
-	}
-
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		for( org.lgna.croquet.Context context : this.contexts ) {
 			context.retarget( retargeter );

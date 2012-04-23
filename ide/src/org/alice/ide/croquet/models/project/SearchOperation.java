@@ -43,7 +43,6 @@
 package org.alice.ide.croquet.models.project;
 
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.Map;
 
 import org.alice.ide.ProjectApplication;
