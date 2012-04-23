@@ -95,25 +95,22 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	private final TransactionHistory transactionHistory;
 	private final java.util.List<PrepStep<?>> prepSteps;
 	private CompletionStep<?> completionStep;
 
 	public Transaction( TransactionHistory parent ) {
 		super( parent );
-		this.transactionHistory = parent;
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.completionStep = null;
 	}
 	public Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.transactionHistory = this.getParent();
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
 		for( PrepStep<?> prepStep : this.prepSteps ) {
-			prepStep.setParent( this );
+			prepStep.setOwner( this );
 		}
 		this.completionStep = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.completionStep.setParent( this );
+		this.completionStep.setOwner( this );
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
@@ -243,8 +240,8 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		this.completionStep.retarget( retargeter );
 	}
 
-	public TransactionHistory getTransactionHistory() {
-		return this.transactionHistory;
+	public TransactionHistory getOwnerTransactionHistory() {
+		return this.getOwner();
 	}
 
 	public int getChildStepCount() {
@@ -317,14 +314,14 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	public CompletionStep<?> getCompletionStep() {
 		return this.completionStep;
 	}
-	
+
 	public <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory subTransactionHistory ) {
 		return CompletionStep.createAndAddToTransaction( this, model, trigger, subTransactionHistory );
 	}
 	public <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return this.createAndSetCompletionStep( model, trigger, null );
 	}
-	
+
 	/*package-private*/void setCompletionStep( CompletionStep<?> step ) {
 		//assert this.completionStep == null : this.completionStep + " " + step;
 		this.addStep( step );

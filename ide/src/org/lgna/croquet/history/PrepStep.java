@@ -59,7 +59,7 @@ public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Ste
 	}
 	
 	public void cancelTransaction( org.lgna.croquet.triggers.Trigger trigger ) {
-		CancelCompletionStep.createAndAddToTransaction( this.getParent(), null, trigger );
+		CancelCompletionStep.createAndAddToTransaction( this.getOwner(), null, trigger );
 	}
 	@Deprecated
 	public void cancelTransaction() {

@@ -206,9 +206,9 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 					org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
 					org.lgna.croquet.edits.Edit< ? > replacementCandidateEdit = editCommittedEvent.getEdit();
 					org.lgna.croquet.history.CompletionStep< ? > completionStep = replacementCandidateEdit.getCompletionStep();
-					org.lgna.croquet.history.Transaction transaction = completionStep.getParent();
-					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
-					if( transactionHistory.getParent() != null ) {
+					org.lgna.croquet.history.Transaction transaction = completionStep.getOwner();
+					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getOwner();
+					if( transactionHistory.getOwner() != null ) {
 						//pass
 					} else {
 						try { 
@@ -222,8 +222,8 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 					org.lgna.croquet.history.event.FinishedEvent finishEvent = (org.lgna.croquet.history.event.FinishedEvent)event;
 					org.lgna.croquet.history.TransactionNode< ? > node = finishEvent.getNode();
 					org.lgna.croquet.history.Transaction transaction = node.getFirstAncestorAssignableTo( org.lgna.croquet.history.Transaction.class );
-					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getParent();
-					if( transactionHistory.getParent() != null ) {
+					org.lgna.croquet.history.TransactionHistory transactionHistory = transaction.getOwner();
+					if( transactionHistory.getOwner() != null ) {
 						//pass
 					} else {
 						if( transaction.getCompletionStep().getModel() == org.alice.stageide.croquet.models.run.RunOperation.getInstance() ) {

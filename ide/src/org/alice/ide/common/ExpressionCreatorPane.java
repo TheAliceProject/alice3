@@ -57,4 +57,13 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return true;
 	}
+	@Override
+	public void setActive( boolean isActive ) {
+		super.setActive( isActive );
+		if( isActive ) {
+			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
+		} else {
+			org.alice.ide.IDE.getActiveInstance().hideStencil();
+		}
+	}
 }

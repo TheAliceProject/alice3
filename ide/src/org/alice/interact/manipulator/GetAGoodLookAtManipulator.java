@@ -86,7 +86,21 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 			org.lgna.story.Entity cameraAbstraction  = EntityImp.getAbstractionFromSgElement(this.camera);
 			assert cameraAbstraction instanceof org.lgna.story.Camera;
 			org.lgna.story.Camera storytellingCamera = (org.lgna.story.Camera)cameraAbstraction;
-			
+
+			//Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
+			int transactionCount = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionCount();
+			if (transactionCount > 0) {
+				org.lgna.croquet.history.Transaction lastTransaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionAt(transactionCount-1);
+				org.lgna.croquet.edits.Edit lastEdit = lastTransaction.getEdit();
+				if (lastEdit instanceof org.alice.interact.operations.GetAGoodLookAtEdit) {
+					org.alice.interact.operations.GetAGoodLookAtEdit edit = (org.alice.interact.operations.GetAGoodLookAtEdit)lastEdit;
+					if (edit.getCamera() == storytellingCamera && edit.getTarget() == toLookAtEntity) {
+						org.alice.ide.croquet.models.history.UndoOperation.getInstance().fire();
+						return;
+					}
+				}
+			}
+
 			//Check to see if we're already at a "good look" position of the target. If so, don't do anything
 			org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation(storytellingCamera);
 			org.lgna.story.implementation.StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn(org.lgna.story.ImplementationAccessor.getImplementation(toLookAtEntity));

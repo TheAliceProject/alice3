@@ -61,7 +61,7 @@ public class CompletionStep< M extends org.lgna.croquet.CompletionModel > extend
 		parent.setCompletionStep( this );
 		this.transactionHistory = transactionHistory;
 		if( this.transactionHistory != null ) {
-			this.transactionHistory.setParent( this );
+			this.transactionHistory.setOwner( this );
 		}
 	}
 	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -71,7 +71,7 @@ public class CompletionStep< M extends org.lgna.croquet.CompletionModel > extend
 		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable( this );
 		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		if( this.transactionHistory != null ) {
-			this.transactionHistory.setParent( this );
+			this.transactionHistory.setOwner( this );
 		}
 	}
 	@Override

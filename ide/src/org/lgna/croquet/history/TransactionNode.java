@@ -48,18 +48,18 @@ package org.lgna.croquet.history;
 public abstract class TransactionNode<P extends TransactionNode<?>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	
-	private P parent;
-	public TransactionNode( P parent ) {
-		this.setParent( parent );
+	private P owner;
+	public TransactionNode( P owner ) {
+		this.setOwner( owner );
 	}
 	public TransactionNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
 
-	public P getParent() {
-		return this.parent;
+	public P getOwner() {
+		return this.owner;
 	}
-	/*package-private*/ void setParent( P parent ) {
-		this.parent = parent;
+	/*package-private*/ void setOwner( P owner ) {
+		this.owner = owner;
 	}
 
 	protected abstract void appendContexts( java.util.List< org.lgna.croquet.Context > out );
@@ -69,13 +69,13 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 		if( isThisIncludedInSearch ) {
 			rv = this;
 		} else {
-			rv = this.getParent();
+			rv = this.getOwner();
 		}
 		while( rv != null ) {
 			if( cls.isAssignableFrom( rv.getClass() ) ) {
 				break;
 			}
-			rv = rv.getParent();
+			rv = rv.getOwner();
 		}
 		return (N)rv;
 	}
@@ -135,16 +135,16 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 		this.listeners.remove( listener );
 	}
 	protected void fireChanging( org.lgna.croquet.history.event.Event<?> e ) {
-		if( this.parent != null ) {
-			this.parent.fireChanging( e );
+		if( this.owner != null ) {
+			this.owner.fireChanging( e );
 		}
 		for( org.lgna.croquet.history.event.Listener listener : this.listeners ) {
 			listener.changing( e );
 		}
 	}
 	protected void fireChanged( org.lgna.croquet.history.event.Event<?> e ) {
-		if( this.parent != null ) {
-			this.parent.fireChanged( e );
+		if( this.owner != null ) {
+			this.owner.fireChanged( e );
 		}
 		for( org.lgna.croquet.history.event.Listener listener : this.listeners ) {
 			listener.changed( e );

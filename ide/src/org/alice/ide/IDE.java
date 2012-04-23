@@ -262,6 +262,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.alice.ide.stencils.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
 		return this.potentialDropReceptorsStencil;
 	}
+	
+	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+		this.potentialDropReceptorsStencil.showStencilOver( potentialDragSource, type );
+	}
+	public void hideStencil() {
+		this.potentialDropReceptorsStencil.hideStencil();
+	}
 
 	@Deprecated
 	@Override

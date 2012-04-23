@@ -109,7 +109,7 @@ public class BookTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rendere
 			rv.setIcon( STEP_ICON );
 		} else if( value instanceof org.lgna.croquet.history.Step< ? > ) {
 			org.lgna.croquet.history.Step< ? > step = (org.lgna.croquet.history.Step< ? >)value;
-			org.lgna.croquet.edits.Edit< ? > edit = step.getParent().getEdit();
+			org.lgna.croquet.edits.Edit< ? > edit = step.getOwner().getEdit();
 			rv.setText( "<html>" + step.getTutorialNoteText( edit ) + "</html>" );
 			rv.setFont( STEP_FONT );
 			rv.setIcon( STEP_ICON );

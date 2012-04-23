@@ -108,7 +108,7 @@ public class BookTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 //			}
 			parent = this.book;
 		} else if( node instanceof org.lgna.croquet.history.Step ) {
-			parent = ((org.lgna.croquet.history.Step)node).getParent();
+			parent = ((org.lgna.croquet.history.Step)node).getOwner();
 		} else {
 			parent = null;
 		}

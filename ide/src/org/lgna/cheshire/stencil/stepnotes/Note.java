@@ -58,7 +58,7 @@ public abstract class Note<S extends org.lgna.croquet.history.Step<?>> extends o
 	}
 	@Override
 	protected String getText() {
-		org.lgna.croquet.history.Transaction transaction = this.step.getParent();
+		org.lgna.croquet.history.Transaction transaction = this.step.getOwner();
 		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
 		return this.step.getTutorialNoteText( edit );
 	}

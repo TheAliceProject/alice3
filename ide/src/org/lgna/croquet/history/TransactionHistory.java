@@ -61,7 +61,7 @@ public class TransactionHistory extends TransactionNode< CompletionStep<?> > imp
 		super( binaryDecoder );
 		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
 		for( Transaction transaction : this.transactions ) {
-			transaction.setParent( this );
+			transaction.setOwner( this );
 		}
 	}
 

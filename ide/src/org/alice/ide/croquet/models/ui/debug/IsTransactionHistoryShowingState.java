@@ -122,15 +122,15 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 	private java.util.List< Object > updatePath( java.util.List< Object > rv, Object node ) {
 		Object parent;
 		if( node instanceof org.lgna.croquet.history.Transaction ) {
-			parent = ((org.lgna.croquet.history.Transaction)node).getParent();
+			parent = ((org.lgna.croquet.history.Transaction)node).getOwner();
 			if( parent instanceof org.lgna.croquet.history.TransactionHistory ) {
 				org.lgna.croquet.history.TransactionHistory transactionHistory = (org.lgna.croquet.history.TransactionHistory)parent;
-				if( transactionHistory.getParent() != null ) {
+				if( transactionHistory.getOwner() != null ) {
 					parent = transactionHistory; 
 				}
 			}
 		} else if( node instanceof org.lgna.croquet.history.Step ) {
-			parent = ((org.lgna.croquet.history.Step)node).getParent();
+			parent = ((org.lgna.croquet.history.Step)node).getOwner();
 		} else {
 			parent = null;
 		}
@@ -152,7 +152,7 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
 	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		if( value instanceof org.lgna.croquet.history.Transaction ) {
 			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)value;
-			int i = transaction.getParent().getIndexOfTransaction( transaction );
+			int i = transaction.getOwner().getIndexOfTransaction( transaction );
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html>" );
 			sb.append( "transaction[" );

@@ -47,8 +47,6 @@ package org.lgna.croquet.history;
  */
 public abstract class Step< M extends org.lgna.croquet.Model > extends TransactionNode<Transaction> {
 
-	private final Transaction transaction;
-
 	private final java.util.List< org.lgna.croquet.Context > contexts;
 	private final org.lgna.croquet.resolvers.Resolver< M > modelResolver;
 	private final org.lgna.croquet.triggers.Trigger trigger;
@@ -83,7 +81,6 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 
 	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent );
-		this.transaction = parent;
 
 		if( model != null ) {
 			this.modelResolver = model.getResolver();
@@ -96,7 +93,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 			this.trigger = new org.lgna.croquet.triggers.NullTrigger();
 		}
 		this.id = java.util.UUID.randomUUID();
-		
+
 		java.util.List< org.lgna.croquet.Context > contexts = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( model != null ) {
 			for( org.lgna.croquet.ContextFactory<?> contextFactory : model.getContextFactories() ) {
@@ -107,14 +104,13 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 	}
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.transaction = this.getParent();
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.trigger = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.id = binaryDecoder.decodeId();
 		org.lgna.croquet.Context[] contexts = binaryDecoder.decodeBinaryEncodableAndDecodableArray( org.lgna.croquet.Context.class );
 		this.contexts = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( contexts ) );
 	}
-	
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
 		binaryEncoder.encode( this.trigger );
@@ -131,8 +127,8 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		return this.contexts;
 	}
 	public <C extends org.lgna.croquet.Context> C findFirstContext( Class<C> cls ) {
-		if( this.transaction != null ) {
-			return this.transaction.findFirstContext( this, cls );
+		if( this.getOwnerTransaction() != null ) {
+			return this.getOwnerTransaction().findFirstContext( this, cls );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls );
 			return null;
@@ -144,11 +140,11 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 	public java.util.UUID getId() {
 		return this.id;
 	}
-	
+
 	public Step<?> getPreviousStep() {
-		int index = this.transaction.getIndexOfChildStep( this );
+		int index = this.getOwnerTransaction().getIndexOfChildStep( this );
 		if( index > 0 ) {
-			return this.transaction.getChildStepAt( index-1 );
+			return this.getOwnerTransaction().getChildStepAt( index-1 );
 		} else {
 			return null;
 		}
@@ -156,7 +152,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 	protected org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return this.trigger != null ? this.trigger.getViewController() : null;
 	}
-	
+
 	protected org.lgna.croquet.Model getModelForTutorialNoteText() {
 		return this.getModel();
 	}
@@ -175,8 +171,9 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		return this.modelResolver != null ? this.modelResolver.getResolved() : null;
 	}
 
-	public Transaction getTransaction() {
-		return this.transaction;
+	/* This is here to clarify the structure of the transaction history tree */
+	public Transaction getOwnerTransaction() {
+		return this.getOwner();
 	}
 
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
@@ -186,7 +183,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		this.modelResolver.retarget( retargeter );
 		this.trigger.retarget( retargeter );
 	}
-	
+
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		org.lgna.croquet.Model model = this.getModel();
 		if( model != null ) {
