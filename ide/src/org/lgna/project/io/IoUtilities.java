@@ -149,9 +149,7 @@ public abstract class IoUtilities {
 		}
 		return rv;
 	}
-	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName, org.lgna.project.Version version ) throws java.io.IOException {
-		assert zipEntryContainer != null;
-		java.io.InputStream is = zipEntryContainer.getInputStream( entryName );
+	public static org.w3c.dom.Document readXML( java.io.InputStream is, org.lgna.project.Version version ) throws java.io.IOException {
 		if( org.lgna.project.Version.getCurrentVersion().compareTo( version ) == 0 ) {
 			//pass
 		} else {
@@ -160,6 +158,11 @@ public abstract class IoUtilities {
 			is = new java.io.ByteArrayInputStream( text.getBytes() );
 		}
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
+	}
+	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName, org.lgna.project.Version version ) throws java.io.IOException {
+		assert zipEntryContainer != null;
+		java.io.InputStream is = zipEntryContainer.getInputStream( entryName );
+		return readXML( is, version );
 	}
 
 	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {

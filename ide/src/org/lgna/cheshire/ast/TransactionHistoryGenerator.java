@@ -19,6 +19,12 @@ public class TransactionHistoryGenerator {
 	}
 
 	public org.lgna.croquet.history.TransactionHistory generate() {
+		
+		org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.ast;
+		
+		
+		org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance().createAndAddTransaction( this.transactionHistory, method.body.getValue().statements.get( 0 ) );
+		
 		this.ast.crawl( transactionGeneratorVisitor, true );
 
 		// TODO: Create a run operation, at the end of the tutorial

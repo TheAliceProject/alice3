@@ -49,6 +49,16 @@ package org.alice.ide.ast.draganddrop;
 public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite {
 	private final org.lgna.project.ast.BlockStatement blockStatement;
 	private final int index;
+	
+	public static BlockStatementIndexPair createInstanceFromChildStatement( org.lgna.project.ast.Statement statement ) {
+		assert statement != null;
+		org.lgna.project.ast.Node parent = statement.getParent();
+		assert parent instanceof org.lgna.project.ast.BlockStatement : parent;
+		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+		int index = blockStatement.statements.indexOf( statement );
+		return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
+	}
+	
 	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
 		assert index >= 0 : index + " " + blockStatement;
 		assert index < (blockStatement.statements.size()+1) : index + " " + blockStatement.statements.size();

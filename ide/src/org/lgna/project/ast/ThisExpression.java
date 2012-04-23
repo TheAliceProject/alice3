@@ -69,4 +69,12 @@ public class ThisExpression extends Expression {
 		//todo
 		return true;
 	}
+	
+	//<kjh/> BAD BAD BAD
+	@Override
+	protected void handleMissingProperty( String propertyName, Object value ) {
+		if( "baseTypeName".equals( propertyName ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "handleMissingProperty:", propertyName, value );
+		}
+	}
 }

@@ -57,7 +57,7 @@ public class TransactionHistoryGeneratorTest {
 
 	private org.lgna.project.ast.AbstractNode loadReuseLgp( java.io.File file ) throws java.io.IOException {
 		java.io.FileInputStream fis = new java.io.FileInputStream( file );
-		org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( fis );
+		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, /* BAD BAD BAD */ new org.lgna.project.Version( "3.1" ) );
 		try {
 			return org.lgna.project.ast.AbstractNode.decode( xmlDocument, /* BAD BAD BAD */ "3.1" );
 		} catch (org.lgna.project.VersionNotSupportedException e ) {
@@ -86,6 +86,9 @@ public class TransactionHistoryGeneratorTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
+		ide.initialize( args );
+		
 		TransactionHistoryGeneratorTest test = new TransactionHistoryGeneratorTest( "Spin Crazy" );
 		test.showTransactionHistory();
 	}
