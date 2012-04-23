@@ -67,11 +67,19 @@ public class TransactionHistoryGeneratorTest {
 	}
 
 	public void showTransactionHistory() {
-		// Um. just for now... print the ast of the reuse method
+		// Show the transaction history panel.
+		org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState showTransactionState = new org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState( this.reuseTransactionHistory );
+		java.awt.Component component = showTransactionState.TODO_REMOVE_ME_createPane();
+		javax.swing.JFrame frame = new javax.swing.JFrame();
+		frame.setTitle( "Reuse Transaction History" );
+		frame.getContentPane().add( component );
+		frame.setSize( 300, 800);
+		frame.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
+		frame.setVisible(true);
+		
+		// Also print out the ast
 		org.lgna.cheshire.test.PrintAstVisitor printAstVisitor = new org.lgna.cheshire.test.PrintAstVisitor( this.reuseMethod );
 		this.reuseMethod.crawl(printAstVisitor, false);
-
-		// TODO: show the transaction history panel
 	}
 
 	/**

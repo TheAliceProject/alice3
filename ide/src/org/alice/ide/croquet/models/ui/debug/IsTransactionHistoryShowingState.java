@@ -291,8 +291,9 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		return scrollPane;
 	}
 
-	@Override
-	protected void handleChanged( boolean value ) {
-		super.handleChanged( value );
+	// <kjh/> remove this!!!!! BAD BAD BAD.
+	@Deprecated
+	public java.awt.Component TODO_REMOVE_ME_createPane() {
+		return createPane();
 	}
 }
