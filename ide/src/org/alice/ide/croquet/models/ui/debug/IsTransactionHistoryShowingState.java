@@ -190,24 +190,6 @@ class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rend
  */
 public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
 
-	public static boolean IS_SIDE_DOCKING_DESIRED = false;
-	private static class SingletonHolder {
-		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState() {
-			@Override
-			protected javax.swing.JFrame createFrame() {
-				javax.swing.JFrame rv = super.createFrame();
-				if( IS_SIDE_DOCKING_DESIRED ) {
-					rv.setLocation( 1280, 0 );
-					rv.setSize( 280, 720 );
-				}
-				return rv;
-			}
-		};
-	}
-	public static IsTransactionHistoryShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private javax.swing.JTree tree;
 	private TransactionTreeModel treeModel;
 	private javax.swing.JScrollPane scrollPane;
@@ -218,7 +200,7 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 					treeModel.reload();
 					int childCount = treeModel.getChildCount( treeModel.getRoot() );
 					for( int i=0; i<tree.getRowCount(); i++ ) {
-						if( IS_SIDE_DOCKING_DESIRED==false && i<childCount-1 ) {
+						if( i<childCount-1 ) {
 							tree.collapseRow( i );
 						} else {
 							tree.expandRow( i );
@@ -251,11 +233,15 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		}
 	};
 
-	private IsTransactionHistoryShowingState() {
+	public IsTransactionHistoryShowingState() {
+		this( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
+	}
+
+	public IsTransactionHistoryShowingState( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
-		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
 		this.tree = new javax.swing.JTree();
-		this.initializeTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
+		this.initializeTransactionHistory( transactionHistory );
+		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
 	}
 
 	private void initializeTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
