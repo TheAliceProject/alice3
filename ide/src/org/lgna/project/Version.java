@@ -103,7 +103,20 @@ public class Version implements Comparable<Version> {
 		return 0;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		String separator = "";
+		for( int subNumber : this.subNumbers ) {
+			sb.append( separator );
+			sb.append( subNumber );
+			separator = ".";
+		}
+		return sb.toString();
+	}
+	
 	public static void main( String[] args ) {
+		System.out.println( new Version( "3.1.20.0.0" ) );
 		System.out.println( new Version( "3.1.20.0.0" ).compareTo( new Version( "3.1.22.0.0.0" ) ) );
 	}
 }
