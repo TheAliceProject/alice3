@@ -1,41 +1,27 @@
 package org.lgna.croquet.stencil.todo;
 
+// TODO: <kjh/> THIS IS NOT DONE!!!
+/**
+ * @author Kyle J. Harms
+ */
 public abstract class TutorialStencil extends org.lgna.croquet.components.Stencil {
 
 	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 
-	private java.awt.Paint stencilPaint = null;
+	private final java.awt.Paint stencilPaint;
 	private final org.lgna.croquet.stencil.ScrollRenderer scrollRenderer;
+	private Feature enteredFeature;
 
 	public TutorialStencil( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		super( window );
 		this.scrollRenderer = new org.lgna.croquet.stencil.BasicScrollRenderer();
+		this.stencilPaint = this.getStencilPaint();
 	}
 
-
-
-
-	
-	/******************************** Stencil ************************************/
-	
-	
-	
-	
-	static {
-		int width = 8;
-		int height = 8;
-		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
-		g2.setColor( STENCIL_BASE_COLOR );
-		g2.fillRect( 0, 0, width, height );
-		g2.setColor( STENCIL_LINE_COLOR );
-		g2.drawLine( 0, height, width, 0 );
-		g2.fillRect( 0, 0, 1, 1 );
-		g2.dispose();
-		stencilPaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
-	}
+	// TODO: <kjh/> Do I want this here?
+	protected abstract boolean isPaintingStencilEnabled();
+	protected abstract Page getCurrentPage();
 
 	@Override
 	protected void redispatchMouseEvent(java.awt.event.MouseEvent eSrc) {
@@ -64,14 +50,15 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 			}
 		}
 	}
-	
+
+	@Override
 	protected void handleMouseMoved(java.awt.event.MouseEvent e) {
 		Page page = this.getCurrentPage();
 		if( page != null ) {
 			for( Note note : page.getNotes() ) {
 				if( note.isActive() ) {
 					for( Feature feature : note.getFeatures() ) {
-						java.awt.Shape shape = feature.getShape( Stencil.this, null );
+						java.awt.Shape shape = feature.getShape( TutorialStencil.this, null );
 						if( shape != null ) {
 							if( shape.contains( e.getX(), e.getY() ) ) {
 								this.setEnteredFeature(feature);
@@ -84,32 +71,6 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 		}
 		this.setEnteredFeature( null );
 	}
-	
-	
-//	protected abstract boolean isPaintingStencilEnabled();
-//	protected abstract Page getCurrentPage();
-	
-	private Feature enteredFeature;
-	public void setEnteredFeature(Feature enteredFeature) {
-		if( this.enteredFeature != enteredFeature ) {
-			if( this.enteredFeature != null ) {
-				this.enteredFeature.setEntered( false );
-				java.awt.Rectangle bounds = this.enteredFeature.getBoundsForRepaint( this );
-				if( bounds != null ) {
-					this.getAwtComponent().repaint( bounds );
-				}
-			}
-			this.enteredFeature = enteredFeature;
-			if( this.enteredFeature != null ) {
-				this.enteredFeature.setEntered( true );
-				java.awt.Rectangle bounds = this.enteredFeature.getBoundsForRepaint( this );
-				if( bounds != null ) {
-					this.getAwtComponent().repaint( bounds );
-				}
-			}
-		}
-	}
-
 
 	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
@@ -124,7 +85,7 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 								org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 								if( trackableShape != null ) {
 									if( trackableShape.isInView() ) {
-										java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
+										java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( TutorialStencil.this );
 										if( featureArea != null ) {
 											area.subtract( featureArea );
 										}
@@ -133,7 +94,7 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 											org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 											if( scrollPane != null ) {
 												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), TutorialStencil.this.getAwtComponent() );
 												area.subtract( new java.awt.geom.Area( rect ) );
 											} else {
 												System.err.println( "cannot find scroll pane for: " + feature );
@@ -162,7 +123,7 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 				for( Note note : page.getNotes() ) {
 					if( note.isActive() ) {
 						for( Feature feature : note.getFeatures() ) {
-							feature.paint( g2, Stencil.this, note );
+							feature.paint( g2, TutorialStencil.this, note );
 						}
 					}
 				}
@@ -184,7 +145,7 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 									//pass
 								} else {
 									if( scrollRenderer != null ) {
-										java.awt.Shape repaintShape = scrollRenderer.renderScrollIndicators( g2, Stencil.this, trackableShape );
+										java.awt.Shape repaintShape = scrollRenderer.renderScrollIndicators( g2, TutorialStencil.this, trackableShape );
 										if( repaintShape != null ) {
 											//todo: repaint?
 										}
@@ -209,7 +170,7 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 						org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 						if( trackableShape != null ) {
 							if( trackableShape.isInView() ) {
-								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
+								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( TutorialStencil.this );
 								if( featureArea != null ) {
 									area.subtract( featureArea );
 								}
@@ -218,7 +179,7 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 									org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 									if( scrollPane != null ) {
 										javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), TutorialStencil.this.getAwtComponent() );
 										area.subtract( new java.awt.geom.Area( rect ) );
 									} else {
 										System.err.println( "cannot find scroll pane for: " + feature );
@@ -232,6 +193,41 @@ public abstract class TutorialStencil extends org.lgna.croquet.components.Stenci
 			return area.contains(x, y);
 		} else {
 			return superContains;
+		}
+	}
+
+	public java.awt.Paint getStencilPaint() {
+		int width = 8;
+		int height = 8;
+		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
+		g2.setColor( STENCIL_BASE_COLOR );
+		g2.fillRect( 0, 0, width, height );
+		g2.setColor( STENCIL_LINE_COLOR );
+		g2.drawLine( 0, height, width, 0 );
+		g2.fillRect( 0, 0, 1, 1 );
+		g2.dispose();
+		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+	}
+
+	public void setEnteredFeature(Feature enteredFeature) {
+		if( this.enteredFeature != enteredFeature ) {
+			if( this.enteredFeature != null ) {
+				this.enteredFeature.setEntered( false );
+				java.awt.Rectangle bounds = this.enteredFeature.getBoundsForRepaint( this );
+				if( bounds != null ) {
+					this.getAwtComponent().repaint( bounds );
+				}
+			}
+			this.enteredFeature = enteredFeature;
+			if( this.enteredFeature != null ) {
+				this.enteredFeature.setEntered( true );
+				java.awt.Rectangle bounds = this.enteredFeature.getBoundsForRepaint( this );
+				if( bounds != null ) {
+					this.getAwtComponent().repaint( bounds );
+				}
+			}
 		}
 	}
 }
