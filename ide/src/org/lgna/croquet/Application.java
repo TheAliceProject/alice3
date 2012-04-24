@@ -103,8 +103,8 @@ public abstract class Application {
 		return this.frame;
 	}
 
-	public javax.swing.JLayeredPane getLayeredPane() {
-		return this.frame.getAwtComponent().getLayeredPane();
+	public org.lgna.croquet.components.LayeredPaneComponent getLayeredPane() {
+		return this.frame.getLayeredPane();
 	}
 
 	public abstract DropReceptor getDropReceptor( DropSite dropSite );

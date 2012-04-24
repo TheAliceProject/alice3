@@ -51,22 +51,6 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
-	public javax.swing.JLayeredPane getLayeredPane( org.lgna.croquet.components.AbstractWindow< ? > window ) {
-		javax.swing.JFrame frame = this.application.getFrame().getAwtComponent();
-		javax.swing.JLayeredPane layeredPane = this.application.getLayeredPane();
-		final int PAD = 4;
-		javax.swing.JMenuBar jMenuBar = frame.getJMenuBar();
-		int y;
-		if( jMenuBar != null ) {
-			jMenuBar.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD + 32, PAD, 0, PAD ) );
-			y = 0;
-		} else {
-			y = PAD + 32;
-		}
-		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder( y, PAD, PAD, PAD ) );
-		return layeredPane;
-	}
-
 	private final org.lgna.croquet.Operation prevOperation = new PrevStepOperation( this );
 	private final org.lgna.croquet.BooleanState isInterceptingEvents = new PresentationBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
 	private final org.lgna.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
@@ -80,7 +64,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	public class Stencil extends org.lgna.croquet.stencil.Stencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.MenuPolicy menuPolicy ) {
-			super( getLayeredPane( window ), menuPolicy, scrollingRequiredRenderer );
+			super( application.getLayeredPane().getAwtComponent(), menuPolicy, scrollingRequiredRenderer );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
 			controlPanel.addComponent( StencilsPresentation.this.prevOperation.createButton() );

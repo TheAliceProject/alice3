@@ -102,7 +102,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.project.ProjectState.getInstance().addAndInvokeValueListener( this.projectListener );
 
 		// Initialize the Stencils infrastructure
-		this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
+		this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame().getLayeredPane().getAwtComponent() );
 		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation( this );
 	}
 

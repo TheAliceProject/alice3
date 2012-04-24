@@ -60,8 +60,11 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	}
 
 	private W window;
+	private LayeredPaneComponent layeredPane;
+
 	public AbstractWindow( W window ) {
 		this.window = window;
+		this.layeredPane = new LayeredPaneComponent( getJLayeredPane() );
 		this.getRootPane().setContentPane( this.contentPanel.getAwtComponent() );
 		AbstractWindow.map.put( window, this );
 	}
@@ -70,18 +73,24 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public final W getAwtComponent() {
 		return this.window;
 	}
-	
+
 	@Override
 	public org.lgna.croquet.components.AbstractWindow< ? > getRoot() {
 		return this;
 	}
+
 	protected abstract javax.swing.JRootPane getRootPane();
+	protected abstract javax.swing.JLayeredPane getJLayeredPane();
+
+	public LayeredPaneComponent getLayeredPane() {
+		return this.layeredPane;
+	}
 
 	private BorderPanel contentPanel = new BorderPanel(); 
 	public BorderPanel getContentPanel() {
 		return this.contentPanel;
 	}
-	
+
 	public void addWindowListener( java.awt.event.WindowListener listener ) {
 		this.window.addWindowListener( listener );
 	}
@@ -101,7 +110,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public void setVisible( boolean isVisible ) {
 		this.window.setVisible( isVisible );
 	}
-	
+
 	public int getX() {
 		return this.window.getX();
 	}
@@ -143,13 +152,13 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public void setSize( int width, int height ) {
 		this.window.setSize( width, height );
 	}
-	
-//	public java.awt.Rectangle getBounds() {
-//		return this.window.getBounds();
-//	}
-//	public java.awt.Rectangle getLocalBounds() {
-//		return new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() );
-//	}
+
+	//	public java.awt.Rectangle getBounds() {
+	//		return this.window.getBounds();
+	//	}
+	//	public java.awt.Rectangle getLocalBounds() {
+	//		return new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() );
+	//	}
 	public java.awt.Rectangle getBounds( ScreenElement asSeenBy ) {
 		java.awt.Point pt = this.getLocation( asSeenBy );
 		if( pt != null ) {
@@ -171,7 +180,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public boolean isInView() {
 		return this.isVisible();
 	}
-	
+
 	public TrackableShape getCloseButtonTrackableShape() {
 		return new TrackableShape() {
 			public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
@@ -221,14 +230,14 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 			return null;
 		}
 	}
-	
+
 	public Button getDefaultButton() {
 		return lookupButton( this.getRootPane().getDefaultButton() );
 	}
 	public void setDefaultButton( Button button ) {
 		this.getRootPane().setDefaultButton( button.getAwtComponent() );
 	}
-	
+
 	private java.util.Stack< javax.swing.JButton > defaultJButtonStack;
 	public void pushDefaultButton( Button button ) {
 		if( this.defaultJButtonStack != null ) {
@@ -256,14 +265,14 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		}
 		return rv;
 	}
-	
+
 	private MenuBarComposite menuBarModel;
 	public MenuBarComposite getMenuBarModel() {
 		return this.menuBarModel;
 	}
-	
+
 	protected abstract void setJMenuBar( javax.swing.JMenuBar jMenuBar );
-	
+
 	public void setMenuBarModel( MenuBarComposite menuBarModel ) {
 		this.menuBarModel = menuBarModel;
 		javax.swing.JMenuBar jMenuBar;
@@ -273,39 +282,5 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 			jMenuBar = null;
 		}
 		this.setJMenuBar( jMenuBar );
-//		try {
-//		java.util.List< javax.swing.KeyStroke > keyStrokesToRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//		javax.swing.JComponent component = this.getAwtComponent().getRootPane();
-//		//javax.swing.JComponent component = new javax.swing.JDesktopPane();
-//		//javax.swing.JComponent component = this.getAwtComponent().getLayeredPane();
-//		
-//		//int condition = javax.swing.JComponent.WHEN_FOCUSED;
-//		int condition = javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
-//		//int condition = javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW;
-//		javax.swing.InputMap inputMap = javax.swing.SwingUtilities.getUIInputMap( component, condition );
-//		javax.swing.KeyStroke[] allKeys = inputMap.allKeys();
-//		for( javax.swing.KeyStroke keyStroke : allKeys ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( keyStroke, inputMap.get( keyStroke ) );
-//			if( keyStroke.getKeyCode() == java.awt.event.KeyEvent.VK_F6 ) {
-//				keyStrokesToRemove.add( keyStroke );
-//			}
-//		}
-//		for( javax.swing.KeyStroke keyStroke : keyStrokesToRemove ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "removing:", keyStroke );
-//			inputMap.remove( keyStroke );
-//		}
-//
-//		//javax.swing.SwingUtilities.replaceUIInputMap( component, type, inputMap );
-//		inputMap = javax.swing.SwingUtilities.getUIInputMap( component, condition );
-//		allKeys = inputMap.allKeys();
-//		for( javax.swing.KeyStroke keyStroke : allKeys ) {
-//			if( keyStroke.getKeyCode() == java.awt.event.KeyEvent.VK_F6 ) {
-//				assert false;
-//			}
-//		}
-//	} catch( Exception e ) {
-//		e.printStackTrace();
-//	}
 	}
-	
 }
