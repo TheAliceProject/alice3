@@ -56,7 +56,7 @@ public enum StencilLayer {
 		this.stencilLayer = stencilLayer;
 	}
 
-	public int getStencilLayer() {
+	public int getLayer() {
 		return this.stencilLayer;
 	}
 

@@ -45,7 +45,7 @@ package org.lgna.croquet.stencil.trash;
 /**
  * @author Dennis Cosgrove
  */
-public class TODO_REMOVE_RepaintManagerUtilities {
+public class RepaintManagerUtilities {
 	private static javax.swing.RepaintManager originalRepaintManager;
 	private static java.util.Stack< javax.swing.JComponent > stencils = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	
@@ -76,7 +76,7 @@ public class TODO_REMOVE_RepaintManagerUtilities {
 			}
 		}
 	}
-	private TODO_REMOVE_RepaintManagerUtilities() {
+	private RepaintManagerUtilities() {
 		throw new AssertionError();
 	}
 	public static void pushStencil( javax.swing.JComponent jStencil ) {

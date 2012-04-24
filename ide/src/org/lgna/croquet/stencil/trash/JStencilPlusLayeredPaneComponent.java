@@ -76,7 +76,7 @@ public abstract class JStencilPlusLayeredPaneComponent extends org.lgna.croquet.
 	}
 	public void addToLayeredPane() {
 		this.layeredPane.add( this.getAwtComponent(), null );
-		this.layeredPane.setLayer( this.getAwtComponent(), this.menuPolicy.getStencilLayer() );
+		this.layeredPane.setLayer( this.getAwtComponent(), this.menuPolicy.getLayer() );
 		this.layeredPane.repaint();
 	}
 	public void removeFromLayeredPane() {
@@ -93,11 +93,11 @@ public abstract class JStencilPlusLayeredPaneComponent extends org.lgna.croquet.
 		super.handleDisplayable();
 		this.getAwtComponent().setBounds( this.layeredPane.getBounds() );
 		this.layeredPane.addComponentListener( this.componentListener );
-		org.lgna.croquet.stencil.trash.TODO_REMOVE_RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
+		org.lgna.croquet.stencil.trash.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		assert org.lgna.croquet.stencil.trash.TODO_REMOVE_RepaintManagerUtilities.popStencil() == this.getAwtComponent();
+		assert org.lgna.croquet.stencil.trash.RepaintManagerUtilities.popStencil() == this.getAwtComponent();
 		this.layeredPane.removeComponentListener( this.componentListener );
 		super.handleUndisplayable();
 	}

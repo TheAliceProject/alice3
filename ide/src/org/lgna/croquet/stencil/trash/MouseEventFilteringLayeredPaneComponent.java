@@ -47,16 +47,16 @@ import org.lgna.croquet.stencil.StencilLayer;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TODO_REMOVE_MouseEventFilteringLayeredPaneComponent extends JStencilPlusLayeredPaneComponent {
-	public TODO_REMOVE_MouseEventFilteringLayeredPaneComponent( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy ) {
+public abstract class MouseEventFilteringLayeredPaneComponent extends JStencilPlusLayeredPaneComponent {
+	public MouseEventFilteringLayeredPaneComponent( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy ) {
 		super( layeredPane, menuPolicy );
 	}
 
 	private final java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
 		public void eventDispatched(java.awt.AWTEvent event) {
 			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
-			e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(e.getComponent(), e, TODO_REMOVE_MouseEventFilteringLayeredPaneComponent.this.getAwtComponent());
-			TODO_REMOVE_MouseEventFilteringLayeredPaneComponent.this.handleMouseMoved( e );
+			e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(e.getComponent(), e, MouseEventFilteringLayeredPaneComponent.this.getAwtComponent());
+			MouseEventFilteringLayeredPaneComponent.this.handleMouseMoved( e );
 		}
 	};
 	protected abstract void handleMouseMoved(java.awt.event.MouseEvent e);

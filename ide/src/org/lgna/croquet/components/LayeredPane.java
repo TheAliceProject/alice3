@@ -12,7 +12,6 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 		this.layeredPane = layeredPane;
 		this.componentListener = new java.awt.event.ComponentListener() {
 			public void componentResized( java.awt.event.ComponentEvent e ) {
-				LayeredPane.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
 				LayeredPane.this.revalidateAndRepaint();
 			}
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
@@ -35,6 +34,15 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 		javax.swing.JLayeredPane layeredPane = this.getAwtComponent();
 		layeredPane.remove( component.getAwtComponent() );
 		layeredPane.repaint();
+	}
+
+	public boolean contains( Component<?> component ) {
+		for ( Component<?> c : this.getComponents() ) {
+			if ( c == component ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

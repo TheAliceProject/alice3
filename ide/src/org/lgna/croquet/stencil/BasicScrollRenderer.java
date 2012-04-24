@@ -47,7 +47,7 @@ package org.lgna.croquet.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultScrollingRequiredRenderer implements ScrollingRequiredRenderer {
+public class BasicScrollRenderer implements ScrollRenderer {
 
 	private java.awt.geom.Area drawScrollFeedback( java.awt.Graphics2D g2, java.awt.Rectangle rect ) {
 		g2.setColor( java.awt.Color.BLACK );

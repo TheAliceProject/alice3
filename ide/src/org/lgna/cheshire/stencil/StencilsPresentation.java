@@ -61,9 +61,9 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 
-	public class Stencil extends org.lgna.croquet.stencil.trash.TODO_REMOVE_Stencil {
+	public class Stencil extends org.lgna.croquet.stencil.trash.Stencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
-		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.StencilLayer menuPolicy ) {
+		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.StencilLayer menuPolicy ) {
 			super( application.getLayeredPane().getAwtComponent(), menuPolicy, scrollingRequiredRenderer );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
@@ -85,9 +85,9 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			//controlsPanel.addComponent(westPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_START);
 
 			org.lgna.croquet.components.FlowPanel eastPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.TRAILING, 2, 0 );
-			//eastPanel.addComponent( isInterceptingEventsCheckBox );
+			eastPanel.addComponent( isInterceptingEventsCheckBox );
 			eastPanel.addComponent( isPaintingStencilCheckBox );
-			//controlsPanel.addComponent(eastPanel, edu.cmu.cs.dennisc.croquet.BorderPanel.Constraint.LINE_END);
+			controlsPanel.addComponent(eastPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END);
 			controlsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
 
 			for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( controlsPanel.getAwtComponent() ) ) {
@@ -193,7 +193,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		super.setPresentationData(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
 		// TODO: <kjh/> clean this up!!!! This should go in the constructor
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.croquet.stencil.DefaultScrollingRequiredRenderer(), org.lgna.croquet.stencil.StencilLayer.BELOW_POPUP_LAYER );
+		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.croquet.stencil.BasicScrollRenderer(), org.lgna.croquet.stencil.StencilLayer.BELOW_POPUP_LAYER );
 
 		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

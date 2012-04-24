@@ -54,11 +54,6 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		}
-//		@Override
-//		public void doLayout() {
-//			Panel.this.refreshIfNecessary();
-//			super.doLayout();
-//		}
 		@Override
 		public void invalidate() {
 			super.invalidate();
@@ -77,7 +72,7 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 			return rv;
 		}
 	}
-	
+
 	public Panel() {
 		this( null );
 	}

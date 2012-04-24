@@ -99,6 +99,10 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 		this.getAwtComponent().setBorder(border);
 	}
 
+	public void setOpaque(boolean isOpaque) {
+		this.getAwtComponent().setOpaque( isOpaque );
+	}
+
 	private void revalidate() {
 		this.getAwtComponent().revalidate();
 	}
