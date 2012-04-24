@@ -46,7 +46,7 @@ package org.alice.ide.stencil;
  * @author Dennis Cosgrove
  *
  */
-public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.TODO_REMOVE_LayeredPaneComponent {
+public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.trash.JStencilPlusLayeredPaneComponent {
 	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
 	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );//, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_MITER );
 
@@ -101,11 +101,6 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.TODO
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {
 		return superContains;
-	}
-
-	@Override
-	protected java.awt.LayoutManager createLayout( JStencil jStencil ) {
-		return null;
 	}
 
 	@Override

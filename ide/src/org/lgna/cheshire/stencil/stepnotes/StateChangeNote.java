@@ -52,7 +52,7 @@ public final class StateChangeNote extends CompletionNote< org.lgna.croquet.hist
 	}
 	@Override
 	protected void addFeatures(org.lgna.croquet.history.StateChangeStep step) {
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.croquet.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.croquet.stencil.todo.Feature.ConnectionPreference.EAST_WEST ) );
 		//this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ItemSelectionStateItemResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH ) );
 	}
 }

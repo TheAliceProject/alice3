@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.stencil;
+package org.lgna.croquet.stencil.trash;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RepaintManagerUtilities {
+public class TODO_REMOVE_RepaintManagerUtilities {
 	private static javax.swing.RepaintManager originalRepaintManager;
 	private static java.util.Stack< javax.swing.JComponent > stencils = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	
@@ -76,7 +76,7 @@ public class RepaintManagerUtilities {
 			}
 		}
 	}
-	private RepaintManagerUtilities() {
+	private TODO_REMOVE_RepaintManagerUtilities() {
 		throw new AssertionError();
 	}
 	public static void pushStencil( javax.swing.JComponent jStencil ) {

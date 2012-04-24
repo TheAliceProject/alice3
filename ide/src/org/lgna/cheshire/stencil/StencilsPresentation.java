@@ -61,7 +61,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 
-	public class Stencil extends org.lgna.croquet.stencil.Stencil {
+	public class Stencil extends org.lgna.croquet.stencil.trash.TODO_REMOVE_Stencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.StencilLayer menuPolicy ) {
 			super( application.getLayeredPane().getAwtComponent(), menuPolicy, scrollingRequiredRenderer );
@@ -104,7 +104,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 
 		@Override
-		protected org.lgna.croquet.stencil.Page getCurrentPage() {
+		protected org.lgna.croquet.stencil.todo.Page getCurrentPage() {
 			return ChapterPage.getInstance( StencilsPresentation.this.getBook().getSelectedChapter() );
 		}
 		@Override

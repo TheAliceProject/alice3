@@ -42,7 +42,7 @@
  */
 package org.lgna.cheshire.stencil.features;
 
-import org.lgna.croquet.stencil.Feature;
+import org.lgna.croquet.stencil.todo.Feature;
 
 
 /**

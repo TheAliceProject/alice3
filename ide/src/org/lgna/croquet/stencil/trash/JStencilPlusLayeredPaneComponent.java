@@ -40,17 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.stencil;
+package org.lgna.croquet.stencil.trash;
+
+import org.lgna.croquet.stencil.StencilLayer;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TODO_REMOVE_LayeredPaneComponent extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+public abstract class JStencilPlusLayeredPaneComponent extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
 
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
 		public void componentResized( java.awt.event.ComponentEvent e ) {
-			TODO_REMOVE_LayeredPaneComponent.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
-			TODO_REMOVE_LayeredPaneComponent.this.revalidateAndRepaint();
+			JStencilPlusLayeredPaneComponent.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
+			JStencilPlusLayeredPaneComponent.this.revalidateAndRepaint();
 		}
 		public void componentMoved( java.awt.event.ComponentEvent e ) {
 		}
@@ -62,7 +64,7 @@ public abstract class TODO_REMOVE_LayeredPaneComponent extends org.lgna.croquet.
 
 	private final javax.swing.JLayeredPane layeredPane;
 	private final StencilLayer menuPolicy;
-	public TODO_REMOVE_LayeredPaneComponent( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy ) {
+	public JStencilPlusLayeredPaneComponent( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy ) {
 		this.layeredPane = layeredPane;
 		this.menuPolicy = menuPolicy;
 	}
@@ -91,11 +93,11 @@ public abstract class TODO_REMOVE_LayeredPaneComponent extends org.lgna.croquet.
 		super.handleDisplayable();
 		this.getAwtComponent().setBounds( this.layeredPane.getBounds() );
 		this.layeredPane.addComponentListener( this.componentListener );
-		org.lgna.croquet.stencil.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
+		org.lgna.croquet.stencil.trash.TODO_REMOVE_RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		assert org.lgna.croquet.stencil.RepaintManagerUtilities.popStencil() == this.getAwtComponent();
+		assert org.lgna.croquet.stencil.trash.TODO_REMOVE_RepaintManagerUtilities.popStencil() == this.getAwtComponent();
 		this.layeredPane.removeComponentListener( this.componentListener );
 		super.handleUndisplayable();
 	}
@@ -114,9 +116,9 @@ public abstract class TODO_REMOVE_LayeredPaneComponent extends org.lgna.croquet.
 			Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 			try {
-				TODO_REMOVE_LayeredPaneComponent.this.paintComponentPrologue( g2 );
+				JStencilPlusLayeredPaneComponent.this.paintComponentPrologue( g2 );
 				super.paintComponent( g2 );
-				TODO_REMOVE_LayeredPaneComponent.this.paintComponentEpilogue( g2 );
+				JStencilPlusLayeredPaneComponent.this.paintComponentEpilogue( g2 );
 			} finally {
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				g2.setPaint( prevPaint );
@@ -127,23 +129,19 @@ public abstract class TODO_REMOVE_LayeredPaneComponent extends org.lgna.croquet.
 		public void paint(java.awt.Graphics g) {
 			super.paint(g);
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-			TODO_REMOVE_LayeredPaneComponent.this.paintEpilogue( g2 );
+			JStencilPlusLayeredPaneComponent.this.paintEpilogue( g2 );
 		}
 
 		@Override
 		public boolean contains(int x, int y) {
-			return TODO_REMOVE_LayeredPaneComponent.this.contains( x, y, super.contains( x, y ) );
+			return JStencilPlusLayeredPaneComponent.this.contains( x, y, super.contains( x, y ) );
 		}
 	}
 
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
 		JStencil rv = new JStencil();
-		rv.setLayout( this.createLayout( rv ) );
 		rv.setOpaque( false );
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		return rv;
 	}
-
-	protected abstract java.awt.LayoutManager createLayout( JStencil jStencil );
 }

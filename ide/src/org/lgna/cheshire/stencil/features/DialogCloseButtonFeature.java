@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil.features;
 /**
  * @author Dennis Cosgrove
  */
-public class DialogCloseButtonFeature extends org.lgna.croquet.stencil.Feature {
+public class DialogCloseButtonFeature extends org.lgna.croquet.stencil.todo.Feature {
 	public DialogCloseButtonFeature( final org.lgna.croquet.history.CompletionStep<?> step ) {
 		super( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
 			public org.lgna.croquet.components.TrackableShape getResolved() {
@@ -62,7 +62,7 @@ public class DialogCloseButtonFeature extends org.lgna.croquet.stencil.Feature {
 					return null;
 				}
 			}
-		}, org.lgna.croquet.stencil.Feature.ConnectionPreference.EAST_WEST );
+		}, org.lgna.croquet.stencil.todo.Feature.ConnectionPreference.EAST_WEST );
 	}
 	@Override
 	protected boolean isPathRenderingDesired() {

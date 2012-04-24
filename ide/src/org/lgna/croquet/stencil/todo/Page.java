@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.stencil;
+package org.lgna.croquet.stencil.todo;
 
 /**
  * @author Dennis Cosgrove
@@ -48,7 +48,7 @@ package org.lgna.croquet.stencil;
 public interface Page {
 	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
 
-	public Iterable< ? extends org.lgna.croquet.stencil.Note > getNotes();
+	public Iterable< ? extends org.lgna.croquet.stencil.todo.Note > getNotes();
 	public boolean isStencilRenderingDesired();
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e );
 }

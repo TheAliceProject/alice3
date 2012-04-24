@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.stencil;
+package org.lgna.croquet.stencil.todo;
 
 /**
  * @author Dennis Cosgrove
@@ -174,7 +174,7 @@ public abstract class Feature {
 	public void unbind() {
 		this.trackableShape = null;
 	}
-	protected org.lgna.croquet.components.TrackableShape getTrackableShape() {
+	public org.lgna.croquet.components.TrackableShape getTrackableShape() {
 		return this.trackableShape;
 	}
 
@@ -388,7 +388,7 @@ public abstract class Feature {
 	protected abstract java.awt.Insets getContainsInsets();
 	protected abstract java.awt.Insets getPaintInsets();
 
-	protected java.awt.Shape getShape( org.lgna.croquet.components.Component<?> asSeenBy, java.awt.Insets insets ) {
+	public java.awt.Shape getShape( org.lgna.croquet.components.Component<?> asSeenBy, java.awt.Insets insets ) {
 		org.lgna.croquet.components.TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
 			if( trackableShape.isInView() ) {

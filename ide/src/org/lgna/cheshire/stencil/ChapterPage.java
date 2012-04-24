@@ -46,7 +46,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class ChapterPage implements org.lgna.croquet.stencil.Page {
+public class ChapterPage implements org.lgna.croquet.stencil.todo.Page {
 	private static java.util.Map< org.lgna.cheshire.Chapter, ChapterPage > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ChapterPage getInstance( org.lgna.cheshire.Chapter chapter ) {
 		ChapterPage rv = map.get( chapter );
@@ -67,7 +67,7 @@ public class ChapterPage implements org.lgna.croquet.stencil.Page {
 	public org.lgna.cheshire.Chapter getChapter() {
 		return this.chapter;
 	}
-	public Iterable< ? extends org.lgna.croquet.stencil.Note > getNotes() {
+	public Iterable< ? extends org.lgna.croquet.stencil.todo.Note > getNotes() {
 		return this.notes;
 	}
 	
@@ -124,7 +124,7 @@ public class ChapterPage implements org.lgna.croquet.stencil.Page {
 							p = new java.awt.Point( prevLocation.x + prevSize.width - 64, prevLocation.y - 33 );
 						}
 					} else {
-						if (awtComponent instanceof org.lgna.croquet.stencil.Note.JNote) {
+						if (awtComponent instanceof org.lgna.croquet.stencil.todo.Note.JNote) {
 							if( ChapterPage.this.layoutHint != null ) {
 								p = ChapterPage.this.layoutHint;
 								if( p.x < 0 ) {
@@ -166,8 +166,8 @@ public class ChapterPage implements org.lgna.croquet.stencil.Page {
 				private java.util.ArrayList<java.awt.Component> sortedComponents = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 				private boolean isActiveNote( java.awt.Component component ) {
 					boolean rv;
-					if( component instanceof org.lgna.croquet.stencil.Note.JNote ) {
-						org.lgna.croquet.stencil.Note.JNote jNote = (org.lgna.croquet.stencil.Note.JNote)component;
+					if( component instanceof org.lgna.croquet.stencil.todo.Note.JNote ) {
+						org.lgna.croquet.stencil.todo.Note.JNote jNote = (org.lgna.croquet.stencil.todo.Note.JNote)component;
 						rv = jNote.isActive();
 					} else {
 						rv = false;
@@ -231,7 +231,7 @@ public class ChapterPage implements org.lgna.croquet.stencil.Page {
 //		}
 		@Override
 		protected void handleDisplayable() {
-			for( org.lgna.croquet.stencil.Note note : ChapterPage.this.getNotes() ) {
+			for( org.lgna.croquet.stencil.todo.Note note : ChapterPage.this.getNotes() ) {
 				this.internalAddComponent( note );
 			}
 			super.handleDisplayable();
@@ -254,7 +254,7 @@ public class ChapterPage implements org.lgna.croquet.stencil.Page {
 	protected int getIndexOfFirstActiveNote() { 
 		final int N = this.notes.size();
 		for( int i=0; i<N; i++ ) {
-			org.lgna.croquet.stencil.Note note = this.notes.get( i );
+			org.lgna.croquet.stencil.todo.Note note = this.notes.get( i );
 			if( note.isActive() ) {
 				return i;
 			}
@@ -405,7 +405,7 @@ public class ChapterPage implements org.lgna.croquet.stencil.Page {
 			stepLayoutManager.set.clear();
 			this.stepPanel.revalidateAndRepaint();
 		}
-		for( org.lgna.croquet.stencil.Note note : this.getNotes() ) {
+		for( org.lgna.croquet.stencil.todo.Note note : this.getNotes() ) {
 			note.reset();
 		}
 		this.setActiveNote( 0 );

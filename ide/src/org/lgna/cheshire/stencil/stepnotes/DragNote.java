@@ -52,7 +52,7 @@ public class DragNote extends PrepNote< org.lgna.croquet.history.DragStep > {
 	}
 	@Override
 	protected void addFeatures( org.lgna.croquet.history.DragStep step ) {
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.croquet.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.croquet.stencil.todo.Feature.ConnectionPreference.EAST_WEST ) );
 		org.lgna.croquet.history.Transaction transaction = step.getOwner();
 		int i = transaction.getIndexOfChildStep( step );
 		org.lgna.croquet.history.Step< ? > siblingStep = transaction.getChildStepAt( i+1 );

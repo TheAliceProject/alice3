@@ -79,12 +79,12 @@ public class DropNoteUtilities {
 		org.lgna.croquet.DropSite desiredDropSite = ((org.lgna.croquet.triggers.DropTrigger)step.getTrigger()).getDropSite();
 		return isWhatWeveBeenWaitingFor( event, desiredModel, desiredDropSite );
 	}
-	public static org.lgna.croquet.stencil.Feature createHole( org.lgna.croquet.history.Step< ? > dropStep ) {
-		org.lgna.cheshire.stencil.features.Hole rv = new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), org.lgna.croquet.stencil.Feature.ConnectionPreference.NORTH_SOUTH );
+	public static org.lgna.croquet.stencil.todo.Feature createHole( org.lgna.croquet.history.Step< ? > dropStep ) {
+		org.lgna.cheshire.stencil.features.Hole rv = new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), org.lgna.croquet.stencil.todo.Feature.ConnectionPreference.NORTH_SOUTH );
 		rv.setHeightConstraint( 64 );
 		return rv;
 	}
-	public static org.lgna.croquet.stencil.Feature createPreviewHole( org.lgna.croquet.history.Step< ? > dropStep ) {
+	public static org.lgna.croquet.stencil.todo.Feature createPreviewHole( org.lgna.croquet.history.Step< ? > dropStep ) {
 		return new org.lgna.cheshire.stencil.features.DropPreviewHole( new org.lgna.cheshire.stencil.resolvers.DropSiteResolver( dropStep ), null );
 	}
 }

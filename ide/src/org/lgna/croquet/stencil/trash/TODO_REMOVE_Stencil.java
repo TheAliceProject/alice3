@@ -40,12 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.stencil;
+package org.lgna.croquet.stencil.trash;
+
+import org.lgna.croquet.stencil.ScrollingRequiredRenderer;
+import org.lgna.croquet.stencil.StencilLayer;
+import org.lgna.croquet.stencil.todo.Feature;
+import org.lgna.croquet.stencil.todo.Note;
+import org.lgna.croquet.stencil.todo.Page;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
+public abstract class TODO_REMOVE_Stencil extends TODO_REMOVE_MouseEventFilteringLayeredPaneComponent {
 
 	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
@@ -67,14 +73,9 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 	}
 
 	private final ScrollingRequiredRenderer scrollingRequiredRenderer;
-	public Stencil( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer ) {
+	public TODO_REMOVE_Stencil( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer ) {
 		super( layeredPane, menuPolicy );
 		this.scrollingRequiredRenderer = scrollingRequiredRenderer;
-	}
-
-	@Override
-	protected java.awt.LayoutManager createLayout( JStencil jStencil ) {
-		return new java.awt.BorderLayout();
 	}
 
 	@Override
@@ -133,7 +134,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 			for( Note note : page.getNotes() ) {
 				if( note.isActive() ) {
 					for( Feature feature : note.getFeatures() ) {
-						java.awt.Shape shape = feature.getShape( Stencil.this, null );
+						java.awt.Shape shape = feature.getShape( TODO_REMOVE_Stencil.this, null );
 						if( shape != null ) {
 							if( shape.contains( e.getX(), e.getY() ) ) {
 								this.setEnteredFeature(feature);
@@ -149,8 +150,8 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 
 	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
-		Page page = Stencil.this.getCurrentPage();
-		if( Stencil.this.isPaintingStencilEnabled() ) {
+		Page page = TODO_REMOVE_Stencil.this.getCurrentPage();
+		if( TODO_REMOVE_Stencil.this.isPaintingStencilEnabled() ) {
 			if( page != null ) {
 				if( page.isStencilRenderingDesired() ) {
 					java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
@@ -160,7 +161,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 								org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 								if( trackableShape != null ) {
 									if( trackableShape.isInView() ) {
-										java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( Stencil.this );
+										java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( TODO_REMOVE_Stencil.this );
 										if( featureArea != null ) {
 											area.subtract( featureArea );
 										}
@@ -169,7 +170,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 											org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 											if( scrollPane != null ) {
 												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), TODO_REMOVE_Stencil.this.getAwtComponent() );
 												area.subtract( new java.awt.geom.Area( rect ) );
 											} else {
 												System.err.println( "cannot find scroll pane for: " + feature );
@@ -191,13 +192,13 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 	}
 	@Override
 	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
-		Page page = Stencil.this.getCurrentPage();
-		if( Stencil.this.isPaintingStencilEnabled() ) {
+		Page page = TODO_REMOVE_Stencil.this.getCurrentPage();
+		if( TODO_REMOVE_Stencil.this.isPaintingStencilEnabled() ) {
 			if( page != null ) {
 				for( Note note : page.getNotes() ) {
 					if( note.isActive() ) {
 						for( Feature feature : note.getFeatures() ) {
-							feature.paint( g2, Stencil.this, note );
+							feature.paint( g2, TODO_REMOVE_Stencil.this, note );
 						}
 					}
 				}
@@ -207,8 +208,8 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
-		Page page = Stencil.this.getCurrentPage();
-		if( Stencil.this.isPaintingStencilEnabled() ) {
+		Page page = TODO_REMOVE_Stencil.this.getCurrentPage();
+		if( TODO_REMOVE_Stencil.this.isPaintingStencilEnabled() ) {
 			if( page != null ) {
 				for( Note note : page.getNotes() ) {
 					if( note.isActive() ) {
@@ -219,7 +220,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 									//pass
 								} else {
 									if( scrollingRequiredRenderer != null ) {
-										java.awt.Shape repaintShape = scrollingRequiredRenderer.renderScrollIndicators( g2, Stencil.this, trackableShape );
+										java.awt.Shape repaintShape = scrollingRequiredRenderer.renderScrollIndicators( g2, TODO_REMOVE_Stencil.this, trackableShape );
 										if( repaintShape != null ) {
 											//todo: repaint?
 										}
@@ -235,7 +236,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {
-		Page page = Stencil.this.getCurrentPage();
+		Page page = TODO_REMOVE_Stencil.this.getCurrentPage();
 		if( page != null ) {
 			java.awt.geom.Area area = new java.awt.geom.Area(new java.awt.Rectangle(0, 0, this.getWidth(), this.getHeight()));
 			for( Note note : page.getNotes() ) {
@@ -244,7 +245,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 						org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 						if( trackableShape != null ) {
 							if( trackableShape.isInView() ) {
-								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( Stencil.this );
+								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( TODO_REMOVE_Stencil.this );
 								if( featureArea != null ) {
 									area.subtract( featureArea );
 								}
@@ -253,7 +254,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 									org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 									if( scrollPane != null ) {
 										javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), Stencil.this.getAwtComponent() );
+										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), TODO_REMOVE_Stencil.this.getAwtComponent() );
 										area.subtract( new java.awt.geom.Area( rect ) );
 									} else {
 										System.err.println( "cannot find scroll pane for: " + feature );

@@ -52,6 +52,6 @@ public class ListSelectionStatePrepNote extends PrepNote< org.lgna.croquet.histo
 	}
 	@Override
 	protected void addFeatures( org.lgna.croquet.history.ListSelectionStatePrepStep< ? > step ) {
-		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.croquet.stencil.Feature.ConnectionPreference.EAST_WEST ) );
+		this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.croquet.stencil.todo.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }
