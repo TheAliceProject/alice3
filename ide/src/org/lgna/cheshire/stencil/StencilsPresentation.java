@@ -50,11 +50,10 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	public static org.lgna.croquet.Group PRESENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
 
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
-	
-	public static javax.swing.JLayeredPane getLayeredPane( org.lgna.croquet.components.AbstractWindow< ? > window ) {
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-		javax.swing.JFrame frame = application.getFrame().getAwtComponent();
-		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
+
+	public javax.swing.JLayeredPane getLayeredPane( org.lgna.croquet.components.AbstractWindow< ? > window ) {
+		javax.swing.JFrame frame = this.application.getFrame().getAwtComponent();
+		javax.swing.JLayeredPane layeredPane = this.application.getLayeredPane();
 		final int PAD = 4;
 		javax.swing.JMenuBar jMenuBar = frame.getJMenuBar();
 		int y;
@@ -187,7 +186,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			StencilsPresentation.this.stopListening();
 			super.handleUndisplayable();
 		}
-		
+
 		@Override
 		public org.lgna.croquet.Operation getNextOperation() {
 			return NextStepOperation.getInstance();
@@ -196,26 +195,27 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 
 	private BookComboBoxModel bookComboBoxModel;
 	private Stencil stencil;
+	final private org.lgna.croquet.Application application;
 
 	private boolean isIgnoringEvents = false;
-	public StencilsPresentation( boolean isVisible ) {
-		super( isVisible );
+	public StencilsPresentation( org.lgna.croquet.Application application ) {
+		super();
+		this.application = application;
 	}
 
 	// TODO: <kjh/> this needs to be invoked or something.
+	@Override
 	public void setPresentationData(org.lgna.cheshire.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.history.TransactionHistory originalTransactionHistory, 
 			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
-			org.lgna.croquet.Group[] groupsTrackedForRandomAccess,
-			org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, 
-			org.lgna.stencil.MenuPolicy menuPolicy) {
+			org.lgna.croquet.Group[] groupsTrackedForRandomAccess) {
 		super.setPresentationData(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
+		// TODO: <kjh/> clean this up!!!! This should go in the constructor
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
+		this.stencil = new Stencil( this.application.getFrame(), org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE, org.lgna.stencil.MenuPolicy.BELOW_STENCIL );
 
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-		this.stencil = new Stencil( application.getFrame(), scrollingRequiredRenderer, menuPolicy );
 		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
@@ -317,7 +317,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				boolean isWaiting = chapterPage.getChapter().isAlreadyInTheDesiredState() == false;
 
 				NextStepOperation.getInstance().setEnabled( 0 <= selectedIndex && selectedIndex < this.getBook().getChapterCount() - 1 && isWaiting == false );
-				
+
 				this.prevOperation.setEnabled( 1 <= selectedIndex );
 
 				this.stencil.requestFocus();
@@ -325,15 +325,15 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				this.stencil.setCursor( cursor );
 			} else {
 				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.TransactionChapter)chapter).getTransaction();
-				
+
 				org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 				org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
-				
+
 				Iterable< ? extends org.lgna.croquet.PrepModel > prepModels = completionModel.getPotentialRootPrepModels();
 				for( org.lgna.croquet.PrepModel prepModel : prepModels ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( prepModel );
 				}
-				
+
 				edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 				if( false ) {
 					org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
@@ -379,6 +379,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 
 	@Override
 	protected void handleStateChange(boolean isVisible) {
+		assert this.stencil != null : this.stencil;
 		if( isVisible ) {
 			this.stencil.addToLayeredPane();
 		} else {

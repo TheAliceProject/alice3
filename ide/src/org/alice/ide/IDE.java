@@ -103,7 +103,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		// Initialize the Stencils infrastructure
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
-		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation(false);
+		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation( this );
 	}
 
 	protected void updateEnabled( org.lgna.project.Project project ) {
@@ -118,6 +118,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.croquet.components.Frame frame = this.getFrame();
 		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );
 		this.getPerspectiveState().addAndInvokeValueListener( this.perspectiveListener );
+		
+		// TODO: <kjh/> Set this to false... remove it...
+		this.stencilsPresentation.setPresentationData(org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, this.getProjectTransactionHistory(), null, null, null, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+		this.stencilsPresentation.showStencilsPresentation();
 	}
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {

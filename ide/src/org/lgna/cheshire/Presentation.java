@@ -61,8 +61,8 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		}
 	};
 
-	public Presentation( boolean isVisible ) {
-		super( org.lgna.cheshire.stencil.StencilsPresentation.PRESENTATION_GROUP, java.util.UUID.fromString( "1303fdcf-6ba4-4933-9754-5b7933f8c01f" ), isVisible);
+	public Presentation( ) {
+		super( org.lgna.cheshire.stencil.StencilsPresentation.PRESENTATION_GROUP, java.util.UUID.fromString( "1303fdcf-6ba4-4933-9754-5b7933f8c01f" ), false );
 		this.addValueListener( new org.lgna.croquet.State.ValueListener<Boolean>() {
 			public void changing(org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
 			}

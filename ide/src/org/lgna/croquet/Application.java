@@ -103,6 +103,10 @@ public abstract class Application {
 		return this.frame;
 	}
 
+	public javax.swing.JLayeredPane getLayeredPane() {
+		return this.frame.getAwtComponent().getLayeredPane();
+	}
+
 	public abstract DropReceptor getDropReceptor( DropSite dropSite );
 	public void initialize( String[] args ) {
 		this.frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.DO_NOTHING );

@@ -92,8 +92,8 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 		}
 	};
 
-	public DocWizardsesquePresentation(boolean isVisible) {
-		super(isVisible);
+	public DocWizardsesquePresentation() {
+		super();
 	}
 
 	public DocWizardsesquePresentation( 
@@ -104,7 +104,7 @@ public class DocWizardsesquePresentation extends org.lgna.cheshire.Presentation 
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess
 	) {
 		// <kjh/> not fixing this now.
-		super(false);
+		super();
 		//super( org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess, false );
 		
 		this.frame.setTitle( "DocWizardsesque" );
