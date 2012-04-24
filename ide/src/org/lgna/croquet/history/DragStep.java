@@ -72,7 +72,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 			this.bounds = bounds;
 		}
 	}
-	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+	private DropReceptorInfo[] potentialDropReceptorInfos;
 	private org.lgna.croquet.DropReceptor currentDropReceptor;
 	private org.lgna.croquet.DropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
@@ -81,23 +81,28 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 	}
 	private DragStep( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
-		java.util.List< ? extends org.lgna.croquet.DropReceptor > potentialDropReceptors = model.createListOfPotentialDropReceptors();
-		this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
-		int i = 0;
-		for( org.lgna.croquet.DropReceptor dropReceptor : potentialDropReceptors ) {
-			org.lgna.croquet.components.Component<?> dropComponent = dropReceptor.getViewController();
-			java.awt.Rectangle bounds = dropComponent.getBounds();
-			bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
-			this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
-			i++;
-		}
-		for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-			//todo: pass original mouse pressed event?
-			dropReceptorInfo.getDropReceptor().dragStarted( this );
-		}
 	}
 	public DragStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+	}
+	
+	private DropReceptorInfo[] getPotentialDropReceptorInfos() {
+		if( this.potentialDropReceptorInfos != null ) {
+			//pass
+		} else {
+			org.lgna.croquet.DragModel dragModel = this.getModel();
+			java.util.List< ? extends org.lgna.croquet.DropReceptor > potentialDropReceptors = dragModel.createListOfPotentialDropReceptors();
+			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
+			int i = 0;
+			for( org.lgna.croquet.DropReceptor dropReceptor : potentialDropReceptors ) {
+				org.lgna.croquet.components.Component<?> dropComponent = dropReceptor.getViewController();
+				java.awt.Rectangle bounds = dropComponent.getBounds();
+				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getAwtComponent().getParent(), bounds, this.getDragSource().getAwtComponent() );
+				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
+				i++;
+			}
+		}
+		return this.potentialDropReceptorInfos;
 	}
 	
 	public org.lgna.croquet.components.DragComponent getDragSource() {
@@ -110,6 +115,12 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 		this.latestMouseEvent = e;
 	}
 
+	public void fireDragStarted() {
+		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
+			//todo: pass original mouse pressed event?
+			dropReceptorInfo.getDropReceptor().dragStarted( this );
+		}
+	}
 //	public java.awt.event.MouseEvent getOriginalMouseEvent() {
 //		return (java.awt.event.MouseEvent)this.getAwtEvent();
 //	}
@@ -123,7 +134,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 	private org.lgna.croquet.DropReceptor getDropReceptorUnder( int x, int y ) {
 		org.lgna.croquet.DropReceptor rv = null;
 		int prevHeight = Integer.MAX_VALUE;
-		for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
 			assert dropReceptorInfo != null;
 			if( dropReceptorInfo.contains( x, y ) ) {
 				java.awt.Rectangle bounds = dropReceptorInfo.getBounds();
@@ -140,7 +151,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 	private org.lgna.croquet.DropReceptor getDropReceptorUnder( java.awt.Rectangle bounds ) {
 		org.lgna.croquet.DropReceptor rv = null;
 		int prevHeight = Integer.MAX_VALUE;
-		for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
 			if( dropReceptorInfo.intersects( bounds ) ) {
 				int nextHeight = dropReceptorInfo.getBounds().height;
 				if( nextHeight < prevHeight ) {
@@ -245,11 +256,11 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 			} else {
 				this.cancel( trigger );
 			}
-			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+			for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
 				dropReceptorInfo.getDropReceptor().dragStopped( this );
 			}
 			this.getModel().handleDragStopped( this );
-			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+			this.potentialDropReceptorInfos = null;
 			this.hideProxies();
 		}
 	}
@@ -257,11 +268,11 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 		if( this.currentDropReceptor != null ) {
 			this.currentDropReceptor.dragExited( this, false );
 		}
-		for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
 			dropReceptorInfo.getDropReceptor().dragStopped( this );
 		}
 		this.getModel().handleDragStopped( this );
-		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+		this.potentialDropReceptorInfos = null;
 		this.cancel( null );
 		this.hideProxies();
 	}
