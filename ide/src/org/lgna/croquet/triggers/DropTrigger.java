@@ -51,7 +51,7 @@ public class DropTrigger extends MouseEventTrigger {
 	private org.lgna.croquet.DropSite dropSite;
 	public DropTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
 		super( viewController, e );
-		this.dropReceptorResolver = dropReceptor.getResolver();
+		this.dropReceptorResolver = dropReceptor != null ? dropReceptor.getResolver() : null;
 		this.dropSite = dropSite;
 	}
 	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -66,7 +66,7 @@ public class DropTrigger extends MouseEventTrigger {
 		binaryEncoder.encode( this.dropSite );
 	}
 	public org.lgna.croquet.DropReceptor getDropReceptor() {
-		return this.dropReceptorResolver.getResolved();
+		return this.dropReceptorResolver != null ? this.dropReceptorResolver.getResolved() : null;
 	}
 	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
@@ -74,7 +74,11 @@ public class DropTrigger extends MouseEventTrigger {
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
-		this.dropReceptorResolver.retarget( retargeter );
+		if( dropReceptorResolver != null ) {
+			this.dropReceptorResolver.retarget( retargeter );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+		}
 		this.dropSite = this.dropSite.createReplacement( retargeter );
 	}
 	@Override

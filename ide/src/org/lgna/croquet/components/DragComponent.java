@@ -190,6 +190,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 		
 		this.step = org.lgna.croquet.history.TransactionManager.addDragStep( this.getModel(), new org.lgna.croquet.triggers.DragTrigger( this, this.getLeftButtonPressedEvent() ) );
 		this.step.setLatestMouseEvent( e );
+		this.step.fireDragStarted();
 		this.getModel().handleDragStarted( this.step );
 		this.showDragProxy();
 	}
