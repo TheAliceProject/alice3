@@ -40,26 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.stencil;
+package org.lgna.croquet.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropFeedbackStencil extends org.lgna.stencil.Stencil {
-	public DropFeedbackStencil( javax.swing.JLayeredPane layeredPane ) {
-		super( layeredPane, org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK, org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE );
-	}
-	@Override
-	protected org.lgna.stencil.Page getCurrentPage() {
-		return null;
-	}
-	@Override
-	public org.lgna.croquet.Operation getNextOperation() {
-		return null;
-	}
-	@Override
-	protected boolean isPaintingStencilEnabled() {
-		return false;
-	}
+public interface Page {
+	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
+
+	public Iterable< ? extends org.lgna.croquet.stencil.Note > getNotes();
+	public boolean isStencilRenderingDesired();
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e );
 }

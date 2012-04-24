@@ -74,7 +74,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	private final org.lgna.cheshire.stencil.StencilsPresentation stencilsPresentation;
-	private final org.alice.ide.stencils.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
+	private final org.alice.ide.stencil.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
 	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
 		}
@@ -102,7 +102,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.project.ProjectState.getInstance().addAndInvokeValueListener( this.projectListener );
 
 		// Initialize the Stencils infrastructure
-		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
+		this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
 		this.stencilsPresentation = new org.lgna.cheshire.stencil.StencilsPresentation( this );
 	}
 
@@ -263,7 +263,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return " 3 BETA ";
 	}
 
-	public org.alice.ide.stencils.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
+	public org.alice.ide.stencil.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
 		return this.potentialDropReceptorsStencil;
 	}
 	

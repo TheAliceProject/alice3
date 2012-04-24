@@ -55,7 +55,7 @@ public class MenuItemSelectNote extends PrepNote< org.lgna.croquet.history.MenuI
 	protected void addFeatures( org.lgna.croquet.history.MenuItemSelectStep step ) {
 		this.addFeature( new org.lgna.cheshire.stencil.features.MenuHole( 
 				new org.lgna.cheshire.stencil.resolvers.ModelFirstComponentResolver( step ), 
-				org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH,
+				org.lgna.croquet.stencil.Feature.ConnectionPreference.NORTH_SOUTH,
 				true,
 				true,
 				false

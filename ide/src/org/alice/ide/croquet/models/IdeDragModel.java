@@ -59,7 +59,7 @@ public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
 			return java.util.Collections.emptyList();
 		}
 	}
-	private org.alice.ide.stencils.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
+	private org.alice.ide.stencil.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
 		return org.alice.ide.IDE.getActiveInstance().getPotentialDropReceptorsStencil();
 	}
 	@Override

@@ -40,15 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.stencil;
+package org.lgna.croquet.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
+
 	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
 	private static java.awt.Paint stencilPaint = null;
+
 	static {
 		int width = 8;
 		int height = 8;
@@ -63,21 +65,22 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 		g2.dispose();
 		stencilPaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 	}
+
 	private final ScrollingRequiredRenderer scrollingRequiredRenderer;
 	public Stencil( javax.swing.JLayeredPane layeredPane, MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer ) {
 		super( layeredPane, menuPolicy );
 		this.scrollingRequiredRenderer = scrollingRequiredRenderer;
 	}
-	
+
 	@Override
 	protected java.awt.LayoutManager createLayout( JStencil jStencil ) {
 		return new java.awt.BorderLayout();
 	}
-	
+
 	@Override
 	protected void redispatchMouseEvent(java.awt.event.MouseEvent eSrc) {
 		Page page = this.getCurrentPage();
-		
+
 		boolean isInterceptable = page == null || page.isEventInterceptable( eSrc );
 		java.awt.Point pSrc = eSrc.getPoint();
 		java.awt.Component componentSrc = eSrc.getComponent();
@@ -201,7 +204,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
 		Page page = Stencil.this.getCurrentPage();
@@ -229,7 +232,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 			}
 		}
 	}
-	
+
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {
 		Page page = Stencil.this.getCurrentPage();
@@ -266,5 +269,4 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 			return superContains;
 		}
 	}
-	public abstract org.lgna.croquet.Operation getNextOperation();
 }

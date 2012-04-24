@@ -46,7 +46,7 @@ package org.lgna.cheshire.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note extends org.lgna.stencil.Note {
+public abstract class Note extends org.lgna.croquet.stencil.Note {
 	protected static boolean isMouseEventInterceptedInAllCasesEvenPopups( java.awt.event.MouseEvent e ) {
 		int id = e.getID();
 		switch( id ) {
@@ -65,7 +65,7 @@ public abstract class Note extends org.lgna.stencil.Note {
 	}
 	public boolean isGoodToGo() {
 		boolean rv = false;
-		for( org.lgna.stencil.Feature feature : this.getFeatures() ) {
+		for( org.lgna.croquet.stencil.Feature feature : this.getFeatures() ) {
 			if( feature.isGoodToGo() ) {
 				//at least one feature
 				rv = true;
@@ -77,10 +77,9 @@ public abstract class Note extends org.lgna.stencil.Note {
 		return rv;
 	}
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
-//		return true;
 		return isMouseEventInterceptedInAllCasesEvenPopups( e );
 	}
-	
+
 	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event );
 	private boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.components.ScreenElement screenElement ) {
 		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();

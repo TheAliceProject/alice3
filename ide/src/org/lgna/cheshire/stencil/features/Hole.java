@@ -45,7 +45,7 @@ package org.lgna.cheshire.stencil.features;
 /**
  * @author Dennis Cosgrove
  */
-public class Hole extends org.lgna.stencil.Feature {
+public class Hole extends org.lgna.croquet.stencil.Feature {
 	private static final int PAD = 4;
 	private static final int BOUNDS_PAD = PAD + 64;
 	private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );

@@ -84,7 +84,7 @@ public class DropPreviewHole extends org.lgna.cheshire.stencil.features.Hole {
 	}
 	
 	@Override
-	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, org.lgna.stencil.Feature.Connection actualConnection ) {
+	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, org.lgna.croquet.stencil.Feature.Connection actualConnection ) {
 		java.awt.Paint prevPaint = g2.getPaint();
 		java.awt.Stroke prevStroke = g2.getStroke();
 		try {

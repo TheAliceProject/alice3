@@ -41,31 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.stencil;
+package org.lgna.croquet.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum MenuPolicy {
-	ABOVE_STENCIL_WITH_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, true ),
-	ABOVE_STENCIL_WITHOUT_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, false ),
-	BELOW_STENCIL( javax.swing.JLayeredPane.POPUP_LAYER + 1, true );
-	private int stencilLayer;
-	private boolean isFeedbackDesired;
-	private MenuPolicy( int stencilLayer, boolean isFeedbackDesired ) {
-		this.stencilLayer = stencilLayer;
-		this.isFeedbackDesired = isFeedbackDesired;
-	}
-	public int getStencilLayer() {
-		return this.stencilLayer;
-	}
-	public boolean isAboveStencil() {
-		return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
-	}
-	public boolean isBelowStencil() {
-		return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
-	}
-	public boolean isFeedbackDesired() {
-		return this.isFeedbackDesired;
-	}
+public interface ScrollingRequiredRenderer {
+	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.components.ScreenElement root, org.lgna.croquet.components.TrackableShape trackableShape );
 }

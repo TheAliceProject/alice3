@@ -54,7 +54,6 @@ public class PopupFactoryUtilities {
 			field.setAccessible( true );
 			rv.putClientProperty( field.get( null ), Boolean.TRUE );
 		} catch( Exception e ) {
-			e.printStackTrace();
 		}
 		return rv;
 	}

@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.stencil;
+package org.lgna.croquet.stencil;
 
 /**
  * @author Dennis Cosgrove
@@ -94,7 +94,7 @@ public abstract class MouseEventFilteringLayeredPaneComponent extends LayeredPan
 			}
 		}
 	};
-	
+
 	private boolean isEventInterceptEnabled = false;
 	public boolean isEventInterceptEnabled() {
 		return this.isEventInterceptEnabled;
@@ -114,17 +114,6 @@ public abstract class MouseEventFilteringLayeredPaneComponent extends LayeredPan
 			}
 		}
 	}
-//	private java.util.Stack< Boolean > isEventInterceptEnabledStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-//	public void pushEventInterceptEnabled( boolean isEventInterceptEnabled ) {
-//		this.isEventInterceptEnabledStack.push( this.isEventInterceptEnabled );
-//		this.setEventInterceptEnabled( isEventInterceptEnabled );
-//	}
-//	public boolean popEventInterceptEnabled() {
-//		boolean rv = this.isEventInterceptEnabled;
-//		boolean nextValue = this.isEventInterceptEnabledStack.pop();
-//		this.setEventInterceptEnabled( nextValue );
-//		return rv;
-//	}
 
 	@Override
 	protected void handleDisplayable() {

@@ -40,12 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.stencil;
+package org.lgna.croquet.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class LayeredPaneComponent extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
 		public void componentResized( java.awt.event.ComponentEvent e ) {
 			LayeredPaneComponent.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
@@ -90,19 +91,21 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 		super.handleDisplayable();
 		this.getAwtComponent().setBounds( this.layeredPane.getBounds() );
 		this.layeredPane.addComponentListener( this.componentListener );
-		edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
+		org.lgna.croquet.stencil.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
 	}
 	@Override
 	protected void handleUndisplayable() {
-		assert edu.cmu.cs.dennisc.stencil.RepaintManagerUtilities.popStencil() == this.getAwtComponent();
+		assert org.lgna.croquet.stencil.RepaintManagerUtilities.popStencil() == this.getAwtComponent();
 		this.layeredPane.removeComponentListener( this.componentListener );
 		super.handleUndisplayable();
 	}
+
 	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
 	protected abstract boolean contains( int x, int y, boolean superContains );
-	
+
+	// TODO: Move this out...
 	protected class JStencil extends javax.swing.JPanel {
 		@Override
 		protected void paintComponent(java.awt.Graphics g) {
@@ -119,7 +122,7 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 				g2.setPaint( prevPaint );
 			}
 		}
-		
+
 		@Override
 		public void paint(java.awt.Graphics g) {
 			super.paint(g);
@@ -132,7 +135,7 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 			return LayeredPaneComponent.this.contains( x, y, super.contains( x, y ) );
 		}
 	}
-	
+
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
 		JStencil rv = new JStencil();
@@ -141,6 +144,6 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		return rv;
 	}
-	
+
 	protected abstract java.awt.LayoutManager createLayout( JStencil jStencil );
 }

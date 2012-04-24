@@ -77,9 +77,9 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 
-	public class Stencil extends org.lgna.stencil.Stencil {
+	public class Stencil extends org.lgna.croquet.stencil.Stencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
-		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.stencil.MenuPolicy menuPolicy ) {
+		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.MenuPolicy menuPolicy ) {
 			super( getLayeredPane( window ), menuPolicy, scrollingRequiredRenderer );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
@@ -120,7 +120,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		}
 
 		@Override
-		protected org.lgna.stencil.Page getCurrentPage() {
+		protected org.lgna.croquet.stencil.Page getCurrentPage() {
 			return ChapterPage.getInstance( StencilsPresentation.this.getBook().getSelectedChapter() );
 		}
 		@Override
@@ -186,11 +186,6 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			StencilsPresentation.this.stopListening();
 			super.handleUndisplayable();
 		}
-
-		@Override
-		public org.lgna.croquet.Operation getNextOperation() {
-			return NextStepOperation.getInstance();
-		}
 	}
 
 	private BookComboBoxModel bookComboBoxModel;
@@ -214,7 +209,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		super.setPresentationData(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
 		// TODO: <kjh/> clean this up!!!! This should go in the constructor
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		this.stencil = new Stencil( this.application.getFrame(), org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE, org.lgna.stencil.MenuPolicy.BELOW_STENCIL );
+		this.stencil = new Stencil( this.application.getFrame(), org.lgna.croquet.stencil.DefaultScrollingRequiredRenderer.INSTANCE, org.lgna.croquet.stencil.MenuPolicy.BELOW_STENCIL );
 
 		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

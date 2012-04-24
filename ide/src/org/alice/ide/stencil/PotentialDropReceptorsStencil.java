@@ -40,23 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.stencils;
+package org.alice.ide.stencil;
 
 /**
  * @author Dennis Cosgrove
  *
  */
-public class PotentialDropReceptorsStencil extends org.lgna.stencil.LayeredPaneComponent {
+public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.LayeredPaneComponent {
 	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
 	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );//, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_MITER );
 
-//	private final java.util.List< org.lgna.croquet.DropReceptor > holes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private java.util.List< org.lgna.croquet.DropReceptor > holes = null;
 	private org.lgna.croquet.components.DragComponent<?,?> potentialDragSource;
 	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
 
 	public PotentialDropReceptorsStencil( javax.swing.JLayeredPane layeredPane ) {
-		super( layeredPane, org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK );
+		super( layeredPane, org.lgna.croquet.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK );
 	}
 	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.potentialDragSource = null;
@@ -65,10 +64,6 @@ public class PotentialDropReceptorsStencil extends org.lgna.stencil.LayeredPaneC
 		}
 	}
 	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
-		//		if( this.stencil != null && this.holes != null ) {
-		//			this.stencil.repaint();
-		//		}
 	}
 	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.currentDropReceptorComponent = null;
@@ -85,34 +80,34 @@ public class PotentialDropReceptorsStencil extends org.lgna.stencil.LayeredPaneC
 	public void setDragInProgress( boolean isDragInProgress ) {
 		this.currentDropReceptorComponent = null;
 	}
-	
+
 
 	public void showStencilOver( org.lgna.croquet.components.DragComponent<?,?> potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-//		org.alice.ide.perspectives.IdePerspective idePerspective = (org.alice.ide.perspectives.IdePerspective)ide.getPerspective();
-//		java.util.List< org.lgna.croquet.DropReceptor > dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
-//		if( dropReceptors.size() > 0 ) {
-//			this.holes = dropReceptors;
-//			this.potentialDragSource = potentialDragSource;
-//			this.addToLayeredPane();
-//		}
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.alice.ide.perspectives.IdePerspective idePerspective = (org.alice.ide.perspectives.IdePerspective)ide.getPerspective();
+		java.util.List< org.lgna.croquet.DropReceptor > dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
+		if( dropReceptors.size() > 0 ) {
+			this.holes = dropReceptors;
+			this.potentialDragSource = potentialDragSource;
+			this.addToLayeredPane();
+		}
 	}
 	public void hideStencil() {
-//		this.removeFromLayeredPane();
-//		this.holes = null;
-//		this.potentialDragSource = null;
+		this.removeFromLayeredPane();
+		this.holes = null;
+		this.potentialDragSource = null;
 	}
-	
+
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {
 		return superContains;
 	}
-	
+
 	@Override
 	protected java.awt.LayoutManager createLayout( JStencil jStencil ) {
 		return null;
 	}
-	
+
 	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
 		if( this.holes != null ) {
@@ -168,33 +163,8 @@ public class PotentialDropReceptorsStencil extends org.lgna.stencil.LayeredPaneC
 							g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
 							g2.fill( holeBounds );
 						}
-						//
-						////						g2.translate( 1, 1 );
-						////						g2.draw( holeBounds );
-						////						g2.translate( -1, -1 );
-						//						if( IDE.this.currentDropReceptorComponent == component ) {
-						//							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
-						//							g2.draw( holeBounds );
-						//						} else {
-						////							g2.setColor( java.awt.Color.YELLOW );
-						////							g2.draw3DRect( holeBounds.x, holeBounds.y, holeBounds.width, holeBounds.height, false );
-						//							int x0 = holeBounds.x;
-						//							int x1 = holeBounds.x+holeBounds.width;
-						//							int y0 = holeBounds.y;
-						//							int y1 = holeBounds.y+holeBounds.height;
-						//							g2.setColor( new java.awt.Color( 63, 91, 63 ) );
-						//							g2.drawLine( x0, y1, x0, y0 );
-						//							g2.drawLine( x0, y0, x1, y0 );
-						//							g2.setColor( new java.awt.Color( 160, 191, 160 ) );
-						//							g2.drawLine( x0, y1, x1, y1 );
-						//							g2.drawLine( x1, y1, x1, y0 );
-						//						}
 					}
 				}
-				//					if( potentialDragSourceBounds != null ) {
-				//						g2.setColor( java.awt.Color.BLUE );
-				//						g2.draw( potentialDragSourceBounds );
-				//					}
 			}
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );

@@ -199,10 +199,10 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 					recoverer,
 					new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP },
 					
-					org.lgna.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
+					org.lgna.croquet.stencil.DefaultScrollingRequiredRenderer.INSTANCE,
 					
 					//					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITH_FEEDBACK
-					org.lgna.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
+					org.lgna.croquet.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK
 //					org.lgna.stencil.MenuPolicy.BELOW_STENCIL
 			);
 		} else {

@@ -40,62 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.stencil;
+
+package org.lgna.croquet.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RepaintManagerUtilities {
-	private static javax.swing.RepaintManager originalRepaintManager;
-	private static java.util.Stack< javax.swing.JComponent > stencils = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	
-	private static class StencilRepaintManager extends javax.swing.RepaintManager {
-		@Override
-		public void addDirtyRegion(javax.swing.JComponent c, int x, int y, int w, int h) {
-			super.addDirtyRegion(c, x, y, w, h);
-			final javax.swing.JComponent jStencil = stencils.peek();
-			if( jStencil == c || jStencil.isAncestorOf( c ) ) {
-				//pass
-			} else {
-				java.awt.Component srcRoot = javax.swing.SwingUtilities.getRoot( c );
-				java.awt.Component dstRoot = javax.swing.SwingUtilities.getRoot( jStencil );
+public enum MenuPolicy {
+	ABOVE_STENCIL_WITH_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, true ),
+	ABOVE_STENCIL_WITHOUT_FEEDBACK( javax.swing.JLayeredPane.POPUP_LAYER - 1, false ),
+	BELOW_STENCIL( javax.swing.JLayeredPane.POPUP_LAYER + 1, true );
 
-				if( srcRoot != null && srcRoot == dstRoot ) {
-					java.awt.Rectangle rect = new java.awt.Rectangle(x,y,w,h);
-					java.awt.Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
-					if( visibleRect.width != 0 && visibleRect.height != 0 ) {
-						final java.awt.Rectangle rectAsSeenByStencil = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( c, visibleRect, jStencil );
-						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								StencilRepaintManager.super.addDirtyRegion( jStencil, rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height);
-								//jStencil.repaint( rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
-							}
-						} );
-					}
-				}
-			}
-		}
+	private int stencilLayer;
+	private boolean isFeedbackDesired;
+	private MenuPolicy( int stencilLayer, boolean isFeedbackDesired ) {
+		this.stencilLayer = stencilLayer;
+		this.isFeedbackDesired = isFeedbackDesired;
 	}
-	private RepaintManagerUtilities() {
-		throw new AssertionError();
+	public int getStencilLayer() {
+		return this.stencilLayer;
 	}
-	public static void pushStencil( javax.swing.JComponent jStencil ) {
-		if( stencils.size() > 0 ) {
-			//pass
-		} else {
-			originalRepaintManager = javax.swing.RepaintManager.currentManager( jStencil );
-			javax.swing.RepaintManager.setCurrentManager( new StencilRepaintManager() );
-		}
-		stencils.push( jStencil );
+	public boolean isAboveStencil() {
+		return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
 	}
-	
-	public static javax.swing.JComponent popStencil() {
-		javax.swing.JComponent rv = stencils.pop();
-		if( stencils.size() > 0 ) {
-			//pass
-		} else {
-			javax.swing.RepaintManager.setCurrentManager( originalRepaintManager );
-		}
-		return rv;
+	public boolean isBelowStencil() {
+		return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
+	}
+	public boolean isFeedbackDesired() {
+		return this.isFeedbackDesired;
 	}
 }

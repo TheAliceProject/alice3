@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.stencil;
+package org.lgna.croquet.stencil;
 
 
 /**
