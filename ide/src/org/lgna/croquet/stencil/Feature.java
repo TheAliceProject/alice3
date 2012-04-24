@@ -46,6 +46,7 @@ package org.lgna.croquet.stencil;
  * @author Dennis Cosgrove
  */
 public abstract class Feature {
+
 	private static final int ARROW_HEAD_LENGTH = 19;
 	private static final double ARROW_HEAD_LENGTH_SQUARED = ARROW_HEAD_LENGTH*ARROW_HEAD_LENGTH;
 	private static final int ARROW_HEAD_HALF_HEIGHT = 6;
@@ -88,7 +89,7 @@ public abstract class Feature {
 		this.trackableShapeResolver = trackableShapeResolver;
 		this.connectionPreference = connectionPreference;
 	}
-	
+
 	public boolean isGoodToGo() {
 		org.lgna.croquet.components.TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
 		if( trackableShape != null ) {
@@ -99,7 +100,7 @@ public abstract class Feature {
 		}
 	}	
 	protected abstract boolean isPathRenderingDesired();
-	
+
 	public java.awt.Rectangle getBoundsForRepaint( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		org.lgna.croquet.components.TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
@@ -118,7 +119,7 @@ public abstract class Feature {
 			return null;
 		}
 	}
-	
+
 	public void setHeightConstraint( Integer heightConstraint ) {
 		this.heightConstraint = heightConstraint;
 	}
@@ -147,7 +148,7 @@ public abstract class Feature {
 			repaintAll();
 		}
 	};
-	
+
 	protected org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > getTrackableShapeResolver() {
 		return this.trackableShapeResolver;
 	}
@@ -176,19 +177,19 @@ public abstract class Feature {
 	protected org.lgna.croquet.components.TrackableShape getTrackableShape() {
 		return this.trackableShape;
 	}
-	
+
 	//todo: move this to TrackableShape?
 	public boolean isPotentiallyScrollable() {
 		return true;
 	}
-	
+
 	public boolean isEntered() {
 		return this.isEntered;
 	}
 	public void setEntered(boolean isEntered) {
 		this.isEntered = isEntered;
 	}
-	
+
 	private static java.awt.Shape constrainHeightIfNecessary( java.awt.Shape shape, Integer heightConstraint ) {
 		if( heightConstraint != null ) {
 			if( shape instanceof java.awt.geom.Rectangle2D ) {
@@ -206,7 +207,7 @@ public abstract class Feature {
 	public ConnectionPreference getConnectionPreference() {
 		return this.connectionPreference;
 	}
-	
+
 	private static int getXForWestLayout( java.awt.Rectangle noteBounds, java.awt.Rectangle featureComponentBounds ) {
 		int x = featureComponentBounds.x;
 		x -= 200;
@@ -232,7 +233,7 @@ public abstract class Feature {
 		y += 200;
 		return y;
 	}
-	
+
 	/*package-private*/ Connection calculateActualConnection( org.lgna.croquet.components.Component<?> container, org.lgna.croquet.components.JComponent<?> note ) {
 		Connection actualConnection = null;
 		org.lgna.croquet.components.TrackableShape featureTrackableShape = this.getTrackableShape();
@@ -283,7 +284,7 @@ public abstract class Feature {
 	public java.awt.Point calculateNoteLocation( org.lgna.croquet.components.Container< ? > container, org.lgna.croquet.components.Component< ? > note ) {
 		java.awt.Rectangle containerBounds = container.getLocalBounds();
 		java.awt.Rectangle noteBounds = note.getBounds( container );
-		
+
 		java.awt.Point rv = new java.awt.Point();
 		Connection actualConnection = null;
 		org.lgna.croquet.components.TrackableShape featureTrackableShape = this.getTrackableShape();
@@ -386,7 +387,7 @@ public abstract class Feature {
 	protected abstract java.awt.Insets getBoundsInsets();
 	protected abstract java.awt.Insets getContainsInsets();
 	protected abstract java.awt.Insets getPaintInsets();
-	
+
 	protected java.awt.Shape getShape( org.lgna.croquet.components.Component<?> asSeenBy, java.awt.Insets insets ) {
 		org.lgna.croquet.components.TrackableShape trackableShape = this.getTrackableShape();
 		if( trackableShape != null ) {
@@ -428,51 +429,37 @@ public abstract class Feature {
 			float yVector = yTo-yFrom;
 			final float A = 0.15f;
 			final float B = 1.0f;
-			
+
 			float xA = xFrom + xVector*A;
 			float yA = yFrom + yVector*A;
 
 			float xB = xFrom + xVector*B;
 			float yB = yFrom + yVector*B;
-			
-			
+
 			float xC0 = xB;
 			float yC0 = yA;
 			float xC1 = xA;
 			float yC1 = yB;
-			
-			
+
 			path.curveTo( xC0, yC0, xC1, yC1, xTo, yTo );
 
 			xPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierCubic( xFrom, xC0, xC1, xTo );
 			yPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierCubic( yFrom, yC0, yC1, yTo );
-			
-			
-			//g2.drawLine( (int)xB, (int)yA, (int)xA, (int)yB );
 		} else {
 			float xC = xTo;
 			float yC = yFrom;
 			path.quadTo(xC, yC, xTo, yTo);
 			xPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierQuadratic( xFrom, xC, xTo );
 			yPolynomial = new edu.cmu.cs.dennisc.math.polynomial.BezierQuadratic( yFrom, yC, yTo );
-			
+
 		}
 		g2.draw( path );
-
-//		java.awt.Paint prevPaint = g2.getPaint();
-//		g2.setPaint( java.awt.Color.RED );
-//		for( double t=0.0; t<=1.0; t+=0.05 ) {
-//			double x = xPolynomial.evaluate( t );
-//			double y = yPolynomial.evaluate( t );
-//			g2.fillRect( ((int)x)-4, ((int)y)-4, 8, 8 );
-//		}
-//		g2.setPaint( prevPaint );
 
 		final double tDelta = 0.01;
 		double theta = Double.NaN;
 		double t = 0.9;
 		while( true ) {
-			
+
 			double xApproaching = xPolynomial.evaluate( t );
 			double yApproaching = yPolynomial.evaluate( t );
 
@@ -483,14 +470,14 @@ public abstract class Feature {
 
 			boolean isCloseEnough = xDelta*xDelta + yDelta*yDelta < ARROW_HEAD_LENGTH_SQUARED;
 			boolean isBreaking = isCloseEnough || t >= 1.0;
-			
+
 			if( isBreaking  ) {
 				theta = Math.atan2( yDelta, xDelta );
 				break;
 			}
-			
+
 		}
-			
+
 		if( Double.isNaN( theta ) ) {
 			//pass
 		} else {
@@ -518,7 +505,7 @@ public abstract class Feature {
 
 			this.paint( g2, shape, actualConnection );
 
-			
+
 			if( this.isPathRenderingDesired() ) {
 				g2.setPaint( java.awt.Color.BLACK );
 
@@ -537,7 +524,7 @@ public abstract class Feature {
 					drawPath( g2, ptNote.x, ptNote.y, ptComponent.x, ptComponent.y, actualConnection.isCurveDesired() );
 				}
 			}
-			
+
 			g2.setStroke( prevStroke );
 			g2.setPaint( prevPaint );
 		}

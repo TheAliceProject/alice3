@@ -47,10 +47,9 @@ package org.lgna.croquet.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public enum DefaultScrollingRequiredRenderer implements ScrollingRequiredRenderer {
-	INSTANCE;
-	
-	private static java.awt.geom.Area drawScrollFeedback( java.awt.Graphics2D g2, java.awt.Rectangle rect ) {
+public class DefaultScrollingRequiredRenderer implements ScrollingRequiredRenderer {
+
+	private java.awt.geom.Area drawScrollFeedback( java.awt.Graphics2D g2, java.awt.Rectangle rect ) {
 		g2.setColor( java.awt.Color.BLACK );
 		g2.drawRect( rect.x, rect.y, rect.width, rect.height );
 		g2.setColor( java.awt.Color.YELLOW );
@@ -59,15 +58,16 @@ public enum DefaultScrollingRequiredRenderer implements ScrollingRequiredRendere
 		g2.drawRect( rect.x-2, rect.y-2, rect.width+4, rect.height+4 );
 		return new java.awt.geom.Area( new java.awt.Rectangle( rect.x-2, rect.y-2, rect.width+4 + 1, rect.height+4 + 1 ) );
 	}
+
 	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.components.ScreenElement root, org.lgna.croquet.components.TrackableShape trackableShape ) {
 		org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 		if( scrollPane != null ) {
 			org.lgna.croquet.components.Component<?> view = scrollPane.getViewportView();
-			
+
 			java.awt.Shape shape = trackableShape.getShape( view, null);
 			if( shape != null ) {
 				java.awt.geom.Area repaintShape = new java.awt.geom.Area();
-				
+
 				java.awt.geom.Rectangle2D bounds = shape.getBounds2D();
 				double portion = bounds.getCenterY() / view.getHeight();
 
@@ -75,41 +75,39 @@ public enum DefaultScrollingRequiredRenderer implements ScrollingRequiredRendere
 				java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), root.getAwtComponent() );
 
 				StringBuilder sb = new StringBuilder();
-				sb.append( "You must SCROLL " );
-				
+				sb.append( "You must scroll " );
+
 				javax.swing.JViewport viewport = scrollPane.getAwtComponent().getViewport();
 				java.awt.Rectangle viewBounds = viewport.getViewRect();
 				if( bounds.getY() < viewBounds.y ) {
-					sb.append( "UP" );
+					sb.append( "up" );
 				} else if( bounds.getY() > ( viewBounds.y + viewBounds.height ) ) {
-					sb.append( "DOWN" );
+					sb.append( "down" );
 				} else {
 					//pass
 				}
 				sb.append( " first." );
-				
+
 				String s = sb.toString();
 
 				java.awt.FontMetrics fm = g2.getFontMetrics();
 				java.awt.Rectangle textBounds = fm.getStringBounds( s, g2 ).getBounds();
-				
+
 				textBounds.x += rect.x + rect.width + 12;
 				textBounds.y += rect.y + rect.height/2;
-				
-				
+
 				edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( textBounds, new java.awt.Insets( 4,4,4,4 ) );
 				g2.setColor( java.awt.Color.WHITE );
 				g2.fill( textBounds );
-				
+
 				repaintShape.add( drawScrollFeedback( g2, textBounds ) );
-				
+
 				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText(g2, s, textBounds );
 
 				repaintShape.add( drawScrollFeedback( g2, rect ) );
-				
+
 				int y = rect.y + (int)( rect.height * portion );
-				
-				
+
 				float xSize = 24.0f;
 				float yHalfSize = xSize * 0.5f;
 				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
@@ -117,7 +115,7 @@ public enum DefaultScrollingRequiredRenderer implements ScrollingRequiredRendere
 				path.lineTo( -xSize, yHalfSize );
 				path.lineTo( -xSize, -yHalfSize );
 				path.closePath();
-				
+
 				repaintShape.add( new java.awt.geom.Area( new java.awt.geom.Rectangle2D.Float( rect.x-2-xSize, y-yHalfSize, xSize+1, yHalfSize+yHalfSize+1 ) ) ); 
 				repaintShape.add( new java.awt.geom.Area( new java.awt.geom.Rectangle2D.Float( rect.x+rect.width+2, y-yHalfSize, xSize+1, yHalfSize+yHalfSize+1 ) ) ); 
 
@@ -134,7 +132,7 @@ public enum DefaultScrollingRequiredRenderer implements ScrollingRequiredRendere
 				g2.setColor( java.awt.Color.BLACK );
 				g2.draw( path );
 				g2.setTransform( m );
-				
+
 				return repaintShape;
 			}
 		}

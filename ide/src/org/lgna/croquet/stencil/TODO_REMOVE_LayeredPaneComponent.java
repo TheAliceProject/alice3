@@ -61,15 +61,15 @@ public abstract class TODO_REMOVE_LayeredPaneComponent extends org.lgna.croquet.
 	};
 
 	private final javax.swing.JLayeredPane layeredPane;
-	private final MenuPolicy menuPolicy;
-	public TODO_REMOVE_LayeredPaneComponent( javax.swing.JLayeredPane layeredPane, MenuPolicy menuPolicy ) {
+	private final StencilLayer menuPolicy;
+	public TODO_REMOVE_LayeredPaneComponent( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy ) {
 		this.layeredPane = layeredPane;
 		this.menuPolicy = menuPolicy;
 	}
 	protected javax.swing.JLayeredPane getJLayeredPane() {
 		return this.layeredPane;
 	}
-	public MenuPolicy getMenuPolicy() {
+	public StencilLayer getMenuPolicy() {
 		return this.menuPolicy;
 	}
 	public void addToLayeredPane() {

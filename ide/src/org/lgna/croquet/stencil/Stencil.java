@@ -67,7 +67,7 @@ public abstract class Stencil extends MouseEventFilteringLayeredPaneComponent {
 	}
 
 	private final ScrollingRequiredRenderer scrollingRequiredRenderer;
-	public Stencil( javax.swing.JLayeredPane layeredPane, MenuPolicy menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer ) {
+	public Stencil( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy, ScrollingRequiredRenderer scrollingRequiredRenderer ) {
 		super( layeredPane, menuPolicy );
 		this.scrollingRequiredRenderer = scrollingRequiredRenderer;
 	}

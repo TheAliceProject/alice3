@@ -46,7 +46,7 @@ package org.lgna.croquet.stencil;
  * @author Dennis Cosgrove
  */
 public abstract class MouseEventFilteringLayeredPaneComponent extends TODO_REMOVE_LayeredPaneComponent {
-	public MouseEventFilteringLayeredPaneComponent( javax.swing.JLayeredPane layeredPane, MenuPolicy menuPolicy ) {
+	public MouseEventFilteringLayeredPaneComponent( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy ) {
 		super( layeredPane, menuPolicy );
 	}
 
@@ -85,6 +85,7 @@ public abstract class MouseEventFilteringLayeredPaneComponent extends TODO_REMOV
 		}
 	};
 	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		// TODO: <kjh/> this seems wrong...
 		public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
 			java.awt.Point p = e.getPoint();
 			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
