@@ -45,12 +45,12 @@ package org.lgna.croquet.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LayeredPaneComponent extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+public abstract class TODO_REMOVE_LayeredPaneComponent extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
 
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
 		public void componentResized( java.awt.event.ComponentEvent e ) {
-			LayeredPaneComponent.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
-			LayeredPaneComponent.this.revalidateAndRepaint();
+			TODO_REMOVE_LayeredPaneComponent.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
+			TODO_REMOVE_LayeredPaneComponent.this.revalidateAndRepaint();
 		}
 		public void componentMoved( java.awt.event.ComponentEvent e ) {
 		}
@@ -62,7 +62,7 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 
 	private final javax.swing.JLayeredPane layeredPane;
 	private final MenuPolicy menuPolicy;
-	public LayeredPaneComponent( javax.swing.JLayeredPane layeredPane, MenuPolicy menuPolicy ) {
+	public TODO_REMOVE_LayeredPaneComponent( javax.swing.JLayeredPane layeredPane, MenuPolicy menuPolicy ) {
 		this.layeredPane = layeredPane;
 		this.menuPolicy = menuPolicy;
 	}
@@ -114,9 +114,9 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 			Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 			try {
-				LayeredPaneComponent.this.paintComponentPrologue( g2 );
+				TODO_REMOVE_LayeredPaneComponent.this.paintComponentPrologue( g2 );
 				super.paintComponent( g2 );
-				LayeredPaneComponent.this.paintComponentEpilogue( g2 );
+				TODO_REMOVE_LayeredPaneComponent.this.paintComponentEpilogue( g2 );
 			} finally {
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				g2.setPaint( prevPaint );
@@ -127,12 +127,12 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 		public void paint(java.awt.Graphics g) {
 			super.paint(g);
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-			LayeredPaneComponent.this.paintEpilogue( g2 );
+			TODO_REMOVE_LayeredPaneComponent.this.paintEpilogue( g2 );
 		}
 
 		@Override
 		public boolean contains(int x, int y) {
-			return LayeredPaneComponent.this.contains( x, y, super.contains( x, y ) );
+			return TODO_REMOVE_LayeredPaneComponent.this.contains( x, y, super.contains( x, y ) );
 		}
 	}
 

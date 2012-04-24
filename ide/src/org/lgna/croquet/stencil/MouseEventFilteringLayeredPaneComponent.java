@@ -45,7 +45,7 @@ package org.lgna.croquet.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MouseEventFilteringLayeredPaneComponent extends LayeredPaneComponent {
+public abstract class MouseEventFilteringLayeredPaneComponent extends TODO_REMOVE_LayeredPaneComponent {
 	public MouseEventFilteringLayeredPaneComponent( javax.swing.JLayeredPane layeredPane, MenuPolicy menuPolicy ) {
 		super( layeredPane, menuPolicy );
 	}
