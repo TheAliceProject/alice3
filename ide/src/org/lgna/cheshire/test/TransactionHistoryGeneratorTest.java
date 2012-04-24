@@ -30,10 +30,11 @@ public class TransactionHistoryGeneratorTest {
 		this.projectFile = new java.io.File( this.testPath, PROJECT_FILENAME );
 		this.reuseFile = new java.io.File( this.testPath, REUSE_FILENAME );
 
+		org.lgna.project.Version VERSION_INDEPENDENT = null;
 		// We need to "convert" lgp to a3p... this hack will suffice
 		org.lgna.project.migration.MigrationManager.addVersionIndependentMigration( new org.lgna.project.migration.TextMigration( 
-				new org.lgna.project.Version( "3.1" ), 
-				new org.lgna.project.Version( "3.1" ), 
+				VERSION_INDEPENDENT, 
+				VERSION_INDEPENDENT, 
 				"edu.wustl.cse.lookingglass.ast.ThisInstanceExpression", 
 				"org.lgna.project.ast.ThisExpression" ) );
 
@@ -68,11 +69,12 @@ public class TransactionHistoryGeneratorTest {
 
 	public void showTransactionHistory() {
 		// Show the transaction history panel.
-		org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState showTransactionState = new org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState( this.reuseTransactionHistory );
-		java.awt.Component component = showTransactionState.TODO_REMOVE_ME_createPane();
+		
+		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel transactionHistoryPanel = new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel( this.reuseTransactionHistory );
+
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		frame.setTitle( "Reuse Transaction History" );
-		frame.getContentPane().add( component );
+		frame.getContentPane().add( transactionHistoryPanel.getAwtComponent() );
 		frame.setSize( 300, 800 );
 		frame.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
 		frame.setVisible(true);
@@ -82,9 +84,6 @@ public class TransactionHistoryGeneratorTest {
 		this.reuseMethod.crawl(printAstVisitor, false);
 	}
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		ide.initialize( args );
