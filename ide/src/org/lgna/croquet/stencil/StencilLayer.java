@@ -40,38 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.simple;
+
+package org.lgna.croquet.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleApplication extends org.lgna.croquet.Application {
+public enum StencilLayer {
+	ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
+	BELOW_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
 
-	@Override
-	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	private int stencilLayer;
+
+	private StencilLayer( int stencilLayer ) {
+		this.stencilLayer = stencilLayer;
 	}
 
-	@Override
-	protected void handleWindowOpened(java.awt.event.WindowEvent e) {
+	public int getStencilLayer() {
+		return this.stencilLayer;
 	}
 
-	@Override
-	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-		System.exit( 0 );
+	public boolean isAboveStencil() {
+		return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
 	}
 
-	@Override
-	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.Operation getAboutOperation() {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.Operation getPreferencesOperation() {
-		return null;
+	public boolean isBelowStencil() {
+		return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
 	}
 }

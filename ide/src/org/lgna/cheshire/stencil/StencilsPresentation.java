@@ -63,7 +63,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 
 	public class Stencil extends org.lgna.croquet.stencil.Stencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
-		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.MenuPolicy menuPolicy ) {
+		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollingRequiredRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.StencilLayer menuPolicy ) {
 			super( application.getLayeredPane().getAwtComponent(), menuPolicy, scrollingRequiredRenderer );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
@@ -193,7 +193,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		super.setPresentationData(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
 		// TODO: <kjh/> clean this up!!!! This should go in the constructor
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		this.stencil = new Stencil( this.application.getFrame(), org.lgna.croquet.stencil.DefaultScrollingRequiredRenderer.INSTANCE, org.lgna.croquet.stencil.MenuPolicy.BELOW_STENCIL );
+		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.croquet.stencil.DefaultScrollingRequiredRenderer(), org.lgna.croquet.stencil.StencilLayer.BELOW_POPUP_LAYER );
 
 		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

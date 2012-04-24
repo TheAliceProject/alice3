@@ -55,7 +55,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.TODO
 	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
 
 	public PotentialDropReceptorsStencil( javax.swing.JLayeredPane layeredPane ) {
-		super( layeredPane, org.lgna.croquet.stencil.MenuPolicy.ABOVE_STENCIL_WITHOUT_FEEDBACK );
+		super( layeredPane, org.lgna.croquet.stencil.StencilLayer.ABOVE_POPUP_LAYER );
 	}
 	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.potentialDragSource = null;

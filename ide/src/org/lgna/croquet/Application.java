@@ -103,7 +103,7 @@ public abstract class Application {
 		return this.frame;
 	}
 
-	public org.lgna.croquet.components.LayeredPaneComponent getLayeredPane() {
+	public org.lgna.croquet.components.LayeredPane getLayeredPane() {
 		return this.frame.getLayeredPane();
 	}
 

@@ -3,21 +3,17 @@ package org.lgna.croquet.components;
 /**
  * @author Kyle J. Harms
  */
-public class LayeredPaneComponent extends JComponent<javax.swing.JLayeredPane> {
+public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 
 	private final java.awt.event.ComponentListener componentListener;
 	private final javax.swing.JLayeredPane layeredPane;
 
-	public LayeredPaneComponent() {
-		this( new javax.swing.JLayeredPane() );
-	}
-
-	/*package-private*/ LayeredPaneComponent( javax.swing.JLayeredPane layeredPane ) {
+	/*package-private*/ LayeredPane( javax.swing.JLayeredPane layeredPane ) {
 		this.layeredPane = layeredPane;
 		this.componentListener = new java.awt.event.ComponentListener() {
 			public void componentResized( java.awt.event.ComponentEvent e ) {
-				LayeredPaneComponent.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
-				LayeredPaneComponent.this.revalidateAndRepaint();
+				LayeredPane.this.getAwtComponent().setBounds( e.getComponent().getBounds() );
+				LayeredPane.this.revalidateAndRepaint();
 			}
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
 			}
@@ -26,7 +22,6 @@ public class LayeredPaneComponent extends JComponent<javax.swing.JLayeredPane> {
 			public void componentHidden( java.awt.event.ComponentEvent e ) {
 			}
 		};
-		this.layeredPane.addComponentListener( this.componentListener );
 	}
 
 	public void addToLayeredPane( Component<?> component, int layer ) {
@@ -45,5 +40,17 @@ public class LayeredPaneComponent extends JComponent<javax.swing.JLayeredPane> {
 	@Override
 	protected javax.swing.JLayeredPane createAwtComponent() {
 		return this.layeredPane;
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.layeredPane.addComponentListener( this.componentListener );
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.layeredPane.removeComponentListener( this.componentListener );
 	}
 }
