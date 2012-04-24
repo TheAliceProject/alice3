@@ -72,7 +72,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.video.Rec
 		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
 	@Override
-	protected org.alice.media.ExportToYoutubePanel createVideoExportPanel() {
+	public org.alice.media.ExportToYoutubePanel createVideoExportPanel() {
 		return new org.alice.media.ExportToYoutubePanel();
 	}
 	@Override

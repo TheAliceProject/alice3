@@ -75,7 +75,6 @@ public class ReferencesDialogManager extends SearchTreeManager {
 	}
 
 	private void crawl( SearchTreeNode root, int depth ) {
-		System.out.println( root.getText() + " " + depth );
 		for( SearchTreeNode child : root.getChildren() ) {
 			crawl( child, depth + 1 );
 		}

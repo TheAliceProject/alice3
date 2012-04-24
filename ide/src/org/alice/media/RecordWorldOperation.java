@@ -74,7 +74,7 @@ public class RecordWorldOperation extends org.alice.ide.video.RecordVideoOperati
 		super( java.util.UUID.fromString( "e01a8089-6de1-4e46-ba89-75606e01c7a3" ) );
 	}
 	@Override
-	protected ExportToYoutubePanel createVideoExportPanel() {
+	public ExportToYoutubePanel createVideoExportPanel() {
 		ExportToYoutubePanel rv = new ExportToYoutubePanel();
 		this.encoder = rv.getEncoder();
 		return rv;

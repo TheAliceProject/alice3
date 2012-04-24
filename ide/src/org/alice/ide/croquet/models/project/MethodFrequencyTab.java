@@ -76,6 +76,7 @@ import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy;
 import org.lgna.croquet.components.View;
 import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractUserMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
@@ -278,13 +279,17 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 				AbstractMethod method = methodInvocation.method.getValue();
-
-				List<MethodInvocation> list = this.mapMethodToInvocations.get( method );
-				if( list != null ) {
-					list.add( methodInvocation );
-				} else {
-					list = Collections.newLinkedList( methodInvocation );
-					this.mapMethodToInvocations.put( method, list );
+				if( method instanceof AbstractUserMethod ) {
+					AbstractUserMethod userMethod = (AbstractUserMethod)method;
+					if( !userMethod.getManagementLevel().isGenerated() ) {
+						List<MethodInvocation> list = this.mapMethodToInvocations.get( userMethod );
+						if( list != null ) {
+							list.add( methodInvocation );
+						} else {
+							list = Collections.newLinkedList( methodInvocation );
+							this.mapMethodToInvocations.put( userMethod, list );
+						}
+					}
 				}
 			}
 		}

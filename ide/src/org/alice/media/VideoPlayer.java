@@ -44,6 +44,7 @@ package org.alice.media;
 
 import java.awt.BorderLayout;
 
+import org.alice.stageide.program.ProgramContext;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.Label;
@@ -58,6 +59,7 @@ public class VideoPlayer extends Component {
 	protected java.awt.Component createAwtComponent() {
 		BorderPanel rv = new BorderPanel();
 		rv.addComponent( new Label("PLACEHOLDER FOR VIDEO PLAYER"), Constraint.CENTER );
+		
 		return rv.getAwtComponent();
 	}
 

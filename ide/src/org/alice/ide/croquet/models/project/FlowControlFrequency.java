@@ -188,10 +188,12 @@ class FlowControlFrequency extends TabComposite<View<?,?>> {
 				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
 				UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
 				if( method != null ) {
-					if( !methodToConstructMap.keySet().contains( method ) ) {
-						methodToConstructMap.put( method, new LinkedList<Statement>() );
+					if( !method.getManagementLevel().isGenerated() ) {
+						if( !methodToConstructMap.keySet().contains( method ) ) {
+							methodToConstructMap.put( method, new LinkedList<Statement>() );
+						}
+						methodToConstructMap.get( method ).add( statement );
 					}
-					methodToConstructMap.get( method ).add( statement );
 				}
 			}
 		}

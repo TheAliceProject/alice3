@@ -40,51 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.media;
 
-package org.alice.ide.video;
+import org.alice.ide.video.RecordVideoOperation;
+import org.alice.media.components.RecordView;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
+public class RecordComposite extends Composite<RecordView> {
 	private static class SingletonHolder {
-		private static ProofOfConceptRecordVideoOperation instance = new ProofOfConceptRecordVideoOperation();
+		private static RecordComposite instance = new RecordComposite();
 	}
-	public static ProofOfConceptRecordVideoOperation getInstance() {
+
+	public static RecordComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
+		public void perform( Transaction transaction, Trigger trigger ) {
+//			getView().stopPressed();
+		}
+	}, this.createKey( "record" ) );//RecordWorldOperation.getInstance();
 	
-	private final org.lgna.croquet.State.ValueListener< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final ActionOperation stopOperation = this.createActionOperation( new Action() {
+		public void perform( Transaction transaction, Trigger trigger ) {
+//			getView().stopPressed();
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			ProofOfConceptRecordVideoOperation.this.setRecording( nextValue );
+	}, this.createKey( "stop" ) );
+	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
+		public void perform( Transaction transaction, Trigger trigger ) {
 		}
-	};
-	private ProofOfConceptRecordVideoOperation() {
-		super( java.util.UUID.fromString( "63876374-ce69-44f0-a454-2bedda151818" ) );
+	}, this.createKey( "play" ) );
+	
+	public RecordComposite() {
+		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 	}
+
 	@Override
-	public org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel() {
-		return new org.alice.ide.video.components.ProofOfConceptRecordVideoPanel();
+	protected RecordView createView() {
+		return new RecordView( this );
 	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
-		IsRecordingState.getInstance().setValue( false );
-		IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
-		return super.createControlsPanel( step, dialog );
+	
+	public ActionOperation getRecordOperation() {
+		return this.recordOperation;
 	}
-	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
-		IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
-		super.handleFinally( step, dialog, contentPane );
+	public ActionOperation getStopOperation() {
+		return this.stopOperation;
 	}
-	@Override
-	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
-		java.io.File directory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "ProofOfConceptVideoExport" );
-		java.io.File file = new java.io.File( directory, "image" + new java.text.DecimalFormat( "#0000" ).format( i ) + ".png" );
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		edu.cmu.cs.dennisc.image.ImageUtilities.write( file, image );
-		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file );
+	public ActionOperation getPlayRecordedOperation() {
+		return this.playRecordedOperation;
 	}
 }

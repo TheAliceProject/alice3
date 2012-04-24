@@ -90,10 +90,12 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 					if( crawlable instanceof MethodInvocation ) {
 						MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 						UserMethod method = methodInvocation.getFirstAncestorAssignableTo( UserMethod.class );
-						if( methodParentMap.get( method ) == null ) {
-							methodParentMap.put( method, new LinkedList<MethodInvocation>() );
+						if( !method.getManagementLevel().isGenerated() ) {
+							if( methodParentMap.get( method ) == null ) {
+								methodParentMap.put( method, new LinkedList<MethodInvocation>() );
+							}
+							methodParentMap.get( method ).add( methodInvocation );
 						}
-						methodParentMap.get( method ).add( methodInvocation );
 					}
 				}
 			}

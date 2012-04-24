@@ -59,16 +59,18 @@ public class UploadView extends BorderPanel {
 	public UploadView( UploadComposite composite ) {
 		super( composite );
 		this.addComponent( new UserNameAndPasswordComponent( composite ), Constraint.PAGE_START );
-
 		Component<?> meat = new VideoPlayer();
-		VideoInfoComponent potatoes = new VideoInfoComponent( composite );
-		this.addComponent( GridPanel.createGridPane( 1, 2, meat, potatoes ), Constraint.CENTER );
+		this.addComponent( GridPanel.createGridPane( 1, 2, meat, new VideoInfoComponent( composite ) ), Constraint.CENTER );
 		this.addComponent( composite.getUploadOperation().createButton(), Constraint.PAGE_END );
 	}
 
 	private class UserNameAndPasswordComponent extends BorderPanel {
 		public UserNameAndPasswordComponent( UploadComposite composite ) {
-			this.addComponent( composite.getLoginOperation().createButton(), Constraint.PAGE_END );
+			GridPanel bottom = GridPanel.createGridPane( 1, 3 );
+			bottom.addComponent( new Label() );
+			bottom.addComponent( composite.getLoginOperation().createButton() );
+			bottom.addComponent( new Label() );
+			this.addComponent( bottom, Constraint.PAGE_END );
 			TextField userName = composite.getIdState().createTextField();
 			PasswordField password = composite.getPasswordState().createPasswordField();
 			GridPanel top = GridPanel.createGridPane( 2, 2 );
@@ -81,7 +83,6 @@ public class UploadView extends BorderPanel {
 	}
 
 	private class VideoInfoComponent extends BorderPanel {
-
 		public VideoInfoComponent( UploadComposite composite ) {
 			GridPanel titlePanel = GridPanel.createGridPane( 2, 1 );
 			titlePanel.addComponent( new Label( "Video Title: " ) );

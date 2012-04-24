@@ -40,82 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.media;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.LinkedList;
-import java.util.Map;
+import java.awt.image.BufferedImage;
 
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.BorderPanel.Constraint;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.TextField;
-import org.lgna.croquet.components.Tree;
-import org.lgna.croquet.components.View;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserMethod;
+import org.alice.ide.video.RecordVideoOperation;
+import org.alice.ide.video.components.RecordVideoPanel;
+
 
 /**
  * @author Matt May
  */
-public class SearchDialog extends TabComposite {
+public class YoutubeRecordVideoOperation extends RecordVideoOperation {
 
-	private View composite;
-	private SearchDialogManager manager;
-
-	public SearchDialog( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
-		super( java.util.UUID.fromString( "8f75a1e2-805d-4d9f-bef6-099204fe8d60" ) );
-
-		final BorderPanel rv = new BorderPanel();
-		manager = new SearchDialogManager( methodParentMap );
-		TextField textField = new TextField( manager.getStringState() );
-		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
-		rv.addComponent( textField, Constraint.PAGE_START );
-
-		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
-		tree.addMouseListener( new MouseListener() {
-
-			public void mouseReleased( MouseEvent e ) {
-			}
-
-			public void mousePressed( MouseEvent e ) {
-			}
-
-			public void mouseExited( MouseEvent e ) {
-			}
-
-			public void mouseEntered( MouseEvent e ) {
-			}
-
-			public void mouseClicked( MouseEvent e ) {
-				if( e.getButton() == MouseEvent.BUTTON2 ) {
-					System.out.println( "right click" );
-				}
-			}
-		} );
-		manager.setOwner( tree );
-		rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
-
-		manager.refreshAll();
-		tree.setRootVisible( false );
-		tree.expandAllRows();
-		composite = rv;
+	public YoutubeRecordVideoOperation(  ) {
+		super( java.util.UUID.fromString( "c487a9ee-3889-4d4d-b851-203d426974ea" ) );
 	}
 
 	@Override
-	public boolean isCloseable() {
-		return false;
+	protected RecordVideoPanel createVideoExportPanel() {
+		return null;
 	}
 
 	@Override
-	protected View createView() {
-		return composite;
+	protected void handleImage( BufferedImage image, int i ) {
 	}
-
-	public void addSelectedListener( ValueListener<SearchTreeNode> listener ) {
-		manager.addValueListener( listener );
-	}
-}
+};
