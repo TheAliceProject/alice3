@@ -43,7 +43,6 @@
 package org.alice.media.components;
 
 import org.alice.media.UploadComposite;
-import org.alice.media.VideoPlayer;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.CheckBox;
 import org.lgna.croquet.components.Component;
@@ -59,7 +58,7 @@ public class UploadView extends BorderPanel {
 	public UploadView( UploadComposite composite ) {
 		super( composite );
 		this.addComponent( new UserNameAndPasswordComponent( composite ), Constraint.PAGE_START );
-		Component<?> meat = new VideoPlayer();
+		Component<?> meat = new Label( "potatoes" );
 		this.addComponent( GridPanel.createGridPane( 1, 2, meat, new VideoInfoComponent( composite ) ), Constraint.CENTER );
 		this.addComponent( composite.getUploadOperation().createButton(), Constraint.PAGE_END );
 	}

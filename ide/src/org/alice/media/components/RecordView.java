@@ -42,18 +42,8 @@
  */
 package org.alice.media.components;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.alice.media.RecordComposite;
-import org.alice.media.VideoPlayer;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;
 
@@ -62,81 +52,80 @@ import org.lgna.croquet.components.Label;
  */
 public class RecordView extends BorderPanel {
 
-	private GridPanel bottom;
-	private Button recordSlashStop;
-	private ChangeListener recordAdapter = new ChangeListener() {
-
-		//		public void actionPerformed( ActionEvent e ) {
-		//			System.out.println("a " + bottom.getComponentCount());
-		//			bottom.removeComponent( recordSlashStop );
-		//			System.out.println("b " + bottom.getComponentCount());
-		//			recordSlashStop.getAwtComponent().removeActionListener( recordAdapter );
-		//			System.out.println("c " + bottom.getComponentCount());
-		//			recordSlashStop = composite.getStopOperation().createButton();
-		//			System.out.println("d " + bottom.getComponentCount());
-		//			recordSlashStop.getAwtComponent().addActionListener( stopAdapter );
-		//			System.out.println("e " + bottom.getComponentCount());
-		//			bottom.addComponent( recordSlashStop );
-		//			System.out.println("f " + bottom.getComponentCount());
-		//		}
-		int count = 0;
-
-		public void stateChanged( ChangeEvent e ) {
-			++count;
-			System.out.println( e.getSource().getClass() + " " + count );
-//			System.out.println( "a " + bottom.getComponentCount() );
+//	private ChangeListener recordAdapter = new ChangeListener() {
+//
+//		//		public void actionPerformed( ActionEvent e ) {
+//		//			System.out.println("a " + bottom.getComponentCount());
+//		//			bottom.removeComponent( recordSlashStop );
+//		//			System.out.println("b " + bottom.getComponentCount());
+//		//			recordSlashStop.getAwtComponent().removeActionListener( recordAdapter );
+//		//			System.out.println("c " + bottom.getComponentCount());
+//		//			recordSlashStop = composite.getStopOperation().createButton();
+//		//			System.out.println("d " + bottom.getComponentCount());
+//		//			recordSlashStop.getAwtComponent().addActionListener( stopAdapter );
+//		//			System.out.println("e " + bottom.getComponentCount());
+//		//			bottom.addComponent( recordSlashStop );
+//		//			System.out.println("f " + bottom.getComponentCount());
+//		//		}
+//		int count = 0;
+//
+//		public void stateChanged( ChangeEvent e ) {
+//			++count;
+//			System.out.println( e.getSource().getClass() + " " + count );
+////			System.out.println( "a " + bottom.getComponentCount() );
+////			bottom.removeComponent( recordSlashStop );
+////			System.out.println( "b " + bottom.getComponentCount() );
+////			recordSlashStop.getAwtComponent().removeChangeListener( recordAdapter );
+////			System.out.println( "c " + bottom.getComponentCount() );
+////			recordSlashStop = composite.getStopOperation().createButton();
+////			System.out.println( "d " + bottom.getComponentCount() );
+////			recordSlashStop.getAwtComponent().addActionListener( stopAdapter );
+////			System.out.println( "e " + bottom.getComponentCount() );
+////			bottom.addComponent( recordSlashStop );
+////			System.out.println( "f " + bottom.getComponentCount() );
+//		}
+//	};
+//	private ActionListener stopAdapter = new ActionListener() {
+//
+//		public void actionPerformed( ActionEvent e ) {
 //			bottom.removeComponent( recordSlashStop );
-//			System.out.println( "b " + bottom.getComponentCount() );
-//			recordSlashStop.getAwtComponent().removeChangeListener( recordAdapter );
-//			System.out.println( "c " + bottom.getComponentCount() );
-//			recordSlashStop = composite.getStopOperation().createButton();
-//			System.out.println( "d " + bottom.getComponentCount() );
 //			recordSlashStop.getAwtComponent().addActionListener( stopAdapter );
-//			System.out.println( "e " + bottom.getComponentCount() );
+//			recordSlashStop = getComposite().getRecordOperation().createButton();
+//			recordSlashStop.getAwtComponent().removeChangeListener( recordAdapter );
 //			bottom.addComponent( recordSlashStop );
-//			System.out.println( "f " + bottom.getComponentCount() );
-		}
-	};
-	private ActionListener stopAdapter = new ActionListener() {
-
-		public void actionPerformed( ActionEvent e ) {
-			bottom.removeComponent( recordSlashStop );
-			recordSlashStop.getAwtComponent().addActionListener( stopAdapter );
-			recordSlashStop = getComposite().getRecordOperation().createButton();
-			recordSlashStop.getAwtComponent().removeChangeListener( recordAdapter );
-			bottom.addComponent( recordSlashStop );
-		}
-	};
-	private ComponentListener adapter = new ComponentListener() {
-		
-		public void componentShown( ComponentEvent e ) {
-		}
-		
-		public void componentResized( ComponentEvent e ) {
-		}
-		
-		public void componentMoved( ComponentEvent e ) {
-		}
-		
-		public void componentHidden( ComponentEvent e ) {
-		}
-	};
+//		}
+//	};
+//	private ComponentListener adapter = new ComponentListener() {
+//		
+//		public void componentShown( ComponentEvent e ) {
+//		}
+//		
+//		public void componentResized( ComponentEvent e ) {
+//		}
+//		
+//		public void componentMoved( ComponentEvent e ) {
+//		}
+//		
+//		public void componentHidden( ComponentEvent e ) {
+//		}
+//	};
+	
+	private final BorderPanel lookingGlassContainer = new BorderPanel();
 
 	public RecordView( RecordComposite recordComposite ) {
 		super( recordComposite );
-		addComponent( new VideoPlayer(), Constraint.CENTER );
-		bottom = GridPanel.createGridPane( 1, 3 );
-		recordSlashStop = recordComposite.getRecordOperation().createButton();
-		bottom.addComponent( recordSlashStop );
-		bottom.addComponent( recordComposite.getPlayRecordedOperation().createButton() );
-		bottom.addComponent( new Label() );
-		addComponent( bottom, Constraint.PAGE_END );
-		recordSlashStop.getAwtComponent().addChangeListener( recordAdapter );
-		recordSlashStop.addComponentListener( adapter  );
+		this.addComponent( this.lookingGlassContainer, Constraint.CENTER );
+		GridPanel bottomPanel = GridPanel.createGridPane( 1, 3 );
+		bottomPanel.addComponent( recordComposite.getRecordOperation().createButton() );
+		bottomPanel.addComponent( recordComposite.getPlayRecordedOperation().createButton() );
+		bottomPanel.addComponent( new Label() );
+		addComponent( bottomPanel, Constraint.PAGE_END );
 	}
 	@Override
 	public RecordComposite getComposite() {
 		return (RecordComposite)super.getComposite();
 	}
-
+	public BorderPanel getLookingGlassContainer() {
+		return this.lookingGlassContainer;
+	}
 }

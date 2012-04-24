@@ -42,7 +42,6 @@
  */
 package org.alice.media;
 
-import org.alice.ide.video.RecordVideoOperation;
 import org.alice.media.components.RecordView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Composite;
@@ -62,15 +61,10 @@ public class RecordComposite extends Composite<RecordView> {
 	}
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
-//			getView().stopPressed();
+			toggleRecording();
 		}
-	}, this.createKey( "record" ) );//RecordWorldOperation.getInstance();
+	}, this.createKey( "record" ) );
 	
-	private final ActionOperation stopOperation = this.createActionOperation( new Action() {
-		public void perform( Transaction transaction, Trigger trigger ) {
-//			getView().stopPressed();
-		}
-	}, this.createKey( "stop" ) );
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
 		}
@@ -88,10 +82,89 @@ public class RecordComposite extends Composite<RecordView> {
 	public ActionOperation getRecordOperation() {
 		return this.recordOperation;
 	}
-	public ActionOperation getStopOperation() {
-		return this.stopOperation;
-	}
 	public ActionOperation getPlayRecordedOperation() {
 		return this.playRecordedOperation;
+	}
+
+	private java.awt.image.BufferedImage image;
+	private int imageCount;
+	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
+		public void update( double tCurrent ) {
+			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
+			if( lookingGlass.getWidth() > 0 && lookingGlass.getHeight() > 0 ) {
+				if( image != null ) {
+					//pass
+				} else {
+					image = lookingGlass.createBufferedImageForUseAsColorBuffer();
+				}
+				if( image != null ) {
+					image = lookingGlass.getColorBuffer( image );
+					handleImage( image, imageCount );
+					imageCount++;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
+				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
+			}
+		}
+		public void complete() {
+		}
+	};
+
+	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
+	private boolean isRecording;
+	public boolean isRecording() {
+		return this.isRecording;
+	}
+	public void setRecording( boolean isRecording ) {
+		if( this.isRecording != isRecording ) {
+			if( this.isRecording ) {
+				programContext.getProgramImp().stopAnimator();
+			}
+			this.isRecording = isRecording;
+			if( this.isRecording ) {
+				programContext.getProgramImp().startAnimator();
+				this.recordOperation.setName( "stop" );
+			} else {
+				this.recordOperation.setName( "record" );
+			}
+		}
+	}
+	
+	private void toggleRecording() {
+		this.setRecording( this.isRecording() == false );
+	}
+
+	private int getFrameRate() {
+		return 24;
+	}
+	
+
+	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
+		final RecordView recordView = this.getView();
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				org.lgna.croquet.components.BorderPanel lookingGlassContainer = recordView.getLookingGlassContainer();
+				image = null;
+				imageCount = 0;
+				
+				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, getFrameRate() );
+				programContext.initialize( lookingGlassContainer.getAwtComponent() );
+				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
+				programContext.setActiveScene();
+			}
+		}.start();
+	}
+	public void shutDown() {
+		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
+		this.setRecording( false );
+		programContext.cleanUpProgram();
+	}
+	
+	private void handleImage( java.awt.image.BufferedImage image, int imageCount ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( image );
 	}
 }

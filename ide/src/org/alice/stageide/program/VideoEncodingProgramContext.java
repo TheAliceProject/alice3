@@ -47,9 +47,12 @@ package org.alice.stageide.program;
  * @author Dennis Cosgrove
  */
 public class VideoEncodingProgramContext extends ProgramContext {
-	public VideoEncodingProgramContext( double frameRate ) {
-		super( getUpToDateProgramTypeFromActiveIde() );
+	public VideoEncodingProgramContext( org.lgna.project.ast.NamedUserType programType, double frameRate ) {
+		super( programType );
 		this.getProgramImp().setFrameRate( frameRate );
+	}
+	public VideoEncodingProgramContext( double frameRate ) {
+		this( getUpToDateProgramTypeFromActiveIde(), frameRate );
 	}
 	public Double getFrameRate() {
 		return this.getProgramImp().getFrameRate();
