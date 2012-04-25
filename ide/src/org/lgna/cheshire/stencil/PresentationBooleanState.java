@@ -42,12 +42,14 @@
  */
 package org.lgna.cheshire.stencil;
 
+import org.lgna.cheshire.Presentation;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PresentationBooleanState extends org.lgna.croquet.BooleanState {
 	public PresentationBooleanState( java.util.UUID id, boolean initialState, String trueAndFalseText ) {
-		super( BasicTutorialPresentation.PRESENTATION_GROUP, id, initialState );
+		super( Presentation.PRESENTATION_GROUP, id, initialState );
 		this.setTextForBothTrueAndFalse( trueAndFalseText );
 	}
 }
