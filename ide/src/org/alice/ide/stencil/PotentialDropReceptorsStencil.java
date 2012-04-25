@@ -47,8 +47,9 @@ package org.alice.ide.stencil;
  *
  */
 public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.Stencil {
+
 	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
-	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );//, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_MITER );
+	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );
 
 	private java.util.List< org.lgna.croquet.DropReceptor > holes = null;
 	private org.lgna.croquet.components.DragComponent<?,?> potentialDragSource;
@@ -57,6 +58,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 	public PotentialDropReceptorsStencil( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		super( window );
 	}
+
 	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.holes != null ) {
@@ -80,7 +82,6 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 	public void setDragInProgress( boolean isDragInProgress ) {
 		this.currentDropReceptorComponent = null;
 	}
-
 
 	public void showStencilOver( org.lgna.croquet.components.DragComponent<?,?> potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();

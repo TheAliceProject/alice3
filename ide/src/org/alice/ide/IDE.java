@@ -121,7 +121,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		
 		// TODO: <kjh/> Set this to false... remove it...
 		this.stencilsPresentation.setPresentationData(org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, this.getProjectTransactionHistory(), null, null, null, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
-		//this.stencilsPresentation.showStencilsPresentation();
+		this.stencilsPresentation.showStencilsPresentation();
 	}
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
