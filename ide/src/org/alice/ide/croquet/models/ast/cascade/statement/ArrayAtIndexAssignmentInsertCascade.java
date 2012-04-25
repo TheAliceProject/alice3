@@ -52,6 +52,10 @@ public abstract class ArrayAtIndexAssignmentInsertCascade extends StatementInser
 		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
 		this.arrayType = arrayType;
 	}
+	@Override
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement ) {
+		throw new UnsupportedOperationException( "todo" );
+	}
 	protected abstract org.lgna.project.ast.Expression createAccessExpression(); 
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {

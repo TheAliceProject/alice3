@@ -72,7 +72,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		return this.statementCls;
 	}
 	
-	public void createAndAddTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement ) {
+	public void generateAndAddStepsToTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement ) {
 		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( history );
 		history.addTransaction( transaction );
 		
@@ -93,7 +93,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		if( dropModel instanceof org.lgna.croquet.CompletionModel ) {
 			if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade ) {
 				org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade statementInsertCascade = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade)dropModel;
-				statementInsertCascade.createAndAddDropAndBeyondSteps( transaction, statement );
+				statementInsertCascade.generateAndAddPostDragStepsToTransaction( transaction, statement );
 			} else {
 				org.lgna.croquet.CompletionModel completionModel = (org.lgna.croquet.CompletionModel)dropModel;
 				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, completionModel, dropTrigger, null );

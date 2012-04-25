@@ -63,6 +63,21 @@ public class CountLoopInsertCascade extends StatementInsertCascade {
 		super( java.util.UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, CountBlank.getInstance() );
 	}
 	@Override
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement ) {
+		assert statement instanceof org.lgna.project.ast.CountLoop : statement;
+		org.lgna.project.ast.CountLoop countLoop = (org.lgna.project.ast.CountLoop)statement;
+		org.lgna.project.ast.Expression expression = countLoop.count.getValue();
+		if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
+			org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)expression;
+			return new org.lgna.croquet.CascadeFillIn[] {
+					org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( integerLiteral.value.getValue() )
+			};
+		} else {
+			throw new UnsupportedOperationException( "todo" );
+		}
+	}
+	
+	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createCountLoop( expressions[ 0 ] );
 	}

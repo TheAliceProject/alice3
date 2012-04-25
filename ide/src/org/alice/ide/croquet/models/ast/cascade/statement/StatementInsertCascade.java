@@ -56,14 +56,10 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 		return this.blockStatementIndexPair;
 	}
 	
-	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] getFillIns( org.lgna.project.ast.Statement statement ) {
-		return new org.lgna.croquet.CascadeFillIn[] {
-				org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( 3 )
-		};
-	}
-	public void createAndAddDropAndBeyondSteps( org.lgna.croquet.history.Transaction transaction, org.lgna.project.ast.Statement statement ) {
+	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement );
+	public void generateAndAddPostDragStepsToTransaction( org.lgna.croquet.history.Transaction transaction, org.lgna.project.ast.Statement statement ) {
 		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
-		for( org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?> fillIn : this.getFillIns( statement ) ) {
+		for( org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?> fillIn : this.extractFillInsForStepGeneration( statement ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( fillIn );
 			javax.swing.event.ChangeEvent changeEvent = null;
 			org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, new org.lgna.croquet.triggers.MenuSelectionTrigger( changeEvent ) );

@@ -76,7 +76,7 @@ public class BlockStatementGenerator {
 				statementGenerator = mapStatementClassToGenerator.get( statement.getClass() );
 			}
 			if( statementGenerator != null ) {
-				statementGenerator.createAndAddTransaction( history, statement );
+				statementGenerator.generateAndAddStepsToTransaction( history, statement );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( statement );
 			}

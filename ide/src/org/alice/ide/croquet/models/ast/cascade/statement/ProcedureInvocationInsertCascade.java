@@ -71,6 +71,25 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
 	}
 	@Override
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement ) {
+		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
+		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+		assert expression instanceof org.lgna.project.ast.MethodInvocation : expression;
+		org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+		
+		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+		
+		
+		assert method == this.method : method;
+		
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( methodInvocation.requiredArguments.toArray() );
+		
+		return new org.lgna.croquet.CascadeFillIn[] {
+				
+		};
+	}
+	@Override
 	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndMethodStaticGetInstanceResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndMethodStaticGetInstanceResolver( this );
 	}
