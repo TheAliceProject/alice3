@@ -48,7 +48,6 @@ package org.lgna.cheshire.ast;
  */
 public class BlockStatementGenerator {
 	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>,StatementGenerator> mapStatementClassToGenerator = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	//private static final java.util.Map<Class<? extends org.lgna.project.ast.Expression>,StatementGenerator> mapExpressionClassToGenerator = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.Comment.class, org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
 		mapStatementClassToGenerator.put( org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance() );
