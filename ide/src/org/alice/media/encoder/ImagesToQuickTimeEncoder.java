@@ -339,11 +339,9 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 			}
 			try {
 				File tempFile = File.createTempFile( "TEMP_soundTrack", ".wav" );
-				System.out.println("tempFile: " + tempFile);
 				FileOutputStream out = new FileOutputStream( tempFile );
 				mixer.write( out );
 				out.close();
-				System.out.println("tempFile: " + tempFile);
 				return tempFile;
 			} catch( Exception e ) {
 				e.printStackTrace();
