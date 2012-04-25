@@ -15,9 +15,7 @@ public class TransactionHistoryGeneratorTest {
 	private java.io.File projectFile;
 	private java.io.File reuseFile;
 
-	private org.lgna.project.Project project;
 	private org.lgna.project.ast.AbstractNode reuseMethod;
-	private org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator;
 	private org.lgna.croquet.history.TransactionHistory reuseTransactionHistory;
 
 	public TransactionHistoryGeneratorTest( String testName ) {
@@ -39,28 +37,21 @@ public class TransactionHistoryGeneratorTest {
 				"org.lgna.project.ast.ThisExpression" ) );
 
 		try {
-			this.project = org.lgna.project.io.IoUtilities.readProject( this.projectFile );
-		} catch (java.io.IOException e) {
-			e.printStackTrace();
-		} catch (org.lgna.project.VersionNotSupportedException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			this.reuseMethod = loadReuseLgp( this.reuseFile );
 		} catch (java.io.IOException e) {
 			e.printStackTrace();
 		}
 
-		this.transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator( this.reuseMethod );
-		this.reuseTransactionHistory = this.transactionHistoryGenerator.generate();
+		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
+		this.reuseTransactionHistory = transactionHistoryGenerator.generate( this.reuseMethod );
 	}
 
 	private org.lgna.project.ast.AbstractNode loadReuseLgp( java.io.File file ) throws java.io.IOException {
+		org.lgna.project.Version BAD_BAD_BAD_madeUpVersion = new org.lgna.project.Version( "3.1" );
 		java.io.FileInputStream fis = new java.io.FileInputStream( file );
-		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, /* BAD BAD BAD */ new org.lgna.project.Version( "3.1" ) );
+		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, BAD_BAD_BAD_madeUpVersion  );
 		try {
-			return org.lgna.project.ast.AbstractNode.decode( xmlDocument, /* BAD BAD BAD */ "3.1" );
+			return org.lgna.project.ast.AbstractNode.decode( xmlDocument, BAD_BAD_BAD_madeUpVersion.toString() );
 		} catch (org.lgna.project.VersionNotSupportedException e ) {
 			e.printStackTrace();
 			return null;
@@ -70,7 +61,8 @@ public class TransactionHistoryGeneratorTest {
 	public void showTransactionHistory() {
 		// Show the transaction history panel.
 		
-		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel transactionHistoryPanel = new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel( this.reuseTransactionHistory );
+		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel transactionHistoryPanel = new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel();
+		transactionHistoryPanel.setTransactionHistory( this.reuseTransactionHistory );
 
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		frame.setTitle( "Reuse Transaction History" );

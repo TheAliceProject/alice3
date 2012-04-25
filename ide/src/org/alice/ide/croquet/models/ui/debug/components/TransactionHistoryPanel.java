@@ -47,13 +47,62 @@ package org.alice.ide.croquet.models.ui.debug.components;
  * @author Dennis Cosgrove
  */
 public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderPanel {
+	private final org.lgna.croquet.history.event.Listener transactionListener = new org.lgna.croquet.history.event.Listener() {
+		private void reload() {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					TransactionHistoryTreeModel treeModel = (TransactionHistoryTreeModel)tree.getModel();
+					treeModel.reload();
+					int childCount = treeModel.getChildCount( treeModel.getRoot() );
+					for( int i=0; i<tree.getRowCount(); i++ ) {
+						if( i<childCount-1 ) {
+							tree.collapseRow( i );
+						} else {
+							tree.expandRow( i );
+						}
+					}
+					tree.scrollRowToVisible( tree.getRowCount()-1 );
+					if ( scrollPane != null ) {
+						scrollPane.getAwtComponent().getHorizontalScrollBar().setValue( 0 );
+					}
+				}
+			} );
+		}
+		public void changing(org.lgna.croquet.history.event.Event<?> e) {
+		}
+		public void changed(org.lgna.croquet.history.event.Event<?> e) {
+			if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+				this.reload();
+			} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+				tree.repaint();
+			}
+		}
+	};
+
+	private final org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane();
 	private final javax.swing.JTree tree = new javax.swing.JTree();
-	public TransactionHistoryPanel( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		this.tree.setModel( new TransactionHistoryTreeModel( transactionHistory ) );
+	private org.lgna.croquet.history.TransactionHistory transactionHistory;
+	public TransactionHistoryPanel() {
 		this.tree.setCellRenderer( new TransactionHistoryCellRenderer() );
-		
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane();
-		scrollPane.getAwtComponent().setViewportView( this.tree );
+		this.scrollPane.getAwtComponent().setViewportView( this.tree );
+		this.scrollPane.setBothScrollBarIncrements( 12,  24 );
 		this.addComponent( scrollPane, Constraint.CENTER );
+		this.tree.setRootVisible( false );
+	}
+
+	public void setTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		if( this.transactionHistory != null ) {
+			this.transactionHistory.removeListener( this.transactionListener );
+		}
+		this.transactionHistory = transactionHistory;
+		if( this.transactionHistory != null ) {
+			TransactionHistoryTreeModel treeModel = new TransactionHistoryTreeModel( this.transactionHistory );
+			treeModel.reload();
+			this.tree.setModel( treeModel );
+			for( int i = 0; i < this.tree.getRowCount(); i++ ) {
+				this.tree.expandRow( i );
+			}
+			this.transactionHistory.addListener( this.transactionListener );
+		}
 	}
 }

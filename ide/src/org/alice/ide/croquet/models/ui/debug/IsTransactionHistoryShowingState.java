@@ -42,9 +42,6 @@
  */
 package org.alice.ide.croquet.models.ui.debug;
 
-import org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryCellRenderer;
-import org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryTreeModel;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -56,71 +53,28 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 		return SingletonHolder.instance;
 	}
 
-	//private final org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel transactionHistoryPanel = new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel( transactionHistory );
-	
-	private javax.swing.JTree tree;
-	private TransactionHistoryTreeModel treeModel;
-	private javax.swing.JScrollPane scrollPane;
-	private org.lgna.croquet.history.event.Listener transactionListener	= new org.lgna.croquet.history.event.Listener() {
-		private void reload() {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					treeModel.reload();
-					int childCount = treeModel.getChildCount( treeModel.getRoot() );
-					for( int i=0; i<tree.getRowCount(); i++ ) {
-						if( i<childCount-1 ) {
-							tree.collapseRow( i );
-						} else {
-							tree.expandRow( i );
-						}
-					}
-					tree.scrollRowToVisible( tree.getRowCount()-1 );
-					if ( IsTransactionHistoryShowingState.this.scrollPane != null ) {
-						IsTransactionHistoryShowingState.this.scrollPane.getHorizontalScrollBar().setValue( 0 );
-					}
-				}
-			} );
-		}
-		public void changing(org.lgna.croquet.history.event.Event<?> e) {
-		}
-		public void changed(org.lgna.croquet.history.event.Event<?> e) {
-			if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
-				this.reload();
-			} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-				tree.repaint();
-			}
-		}
-	};
-
+	private final org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel transactionHistoryPanel = new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel();
 	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
-			state.getValue().getTransactionHistory().removeListener( IsTransactionHistoryShowingState.this.transactionListener );
 		}
 		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
-			IsTransactionHistoryShowingState.this.initializeTransactionHistory( state.getValue().getTransactionHistory() );
+			org.lgna.croquet.history.TransactionHistory transactionHistory = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory();
+			IsTransactionHistoryShowingState.this.transactionHistoryPanel.setTransactionHistory( transactionHistory );
 		}
 	};
-
-	private IsTransactionHistoryShowingState(  ) {
+	private IsTransactionHistoryShowingState( ) {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
-		this.tree = new javax.swing.JTree();
-		org.lgna.croquet.history.TransactionHistory transactionHistory = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory();
-		this.initializeTransactionHistory( transactionHistory );
-		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
+		org.alice.ide.project.ProjectState.getInstance().addAndInvokeValueListener( this.projectListener );
 	}
-
-	private void initializeTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		this.treeModel = new TransactionHistoryTreeModel( transactionHistory );
-		this.tree.setModel( this.treeModel );
-		transactionHistory.addListener( this.transactionListener );
-	}
-
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setTextForBothTrueAndFalse( "Transaction History" );
 	}
-
+	@Override
+	protected java.awt.Component createPane() {
+		return this.transactionHistoryPanel.getAwtComponent();
+	}
 	@Override
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
@@ -141,18 +95,5 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			}
 		}
 		return rv;
-	}
-
-	@Override
-	protected java.awt.Component createPane() {
-		tree.setCellRenderer( new TransactionHistoryCellRenderer() );
-		for( int i = 0; i < tree.getRowCount(); i++ ) {
-			tree.expandRow( i );
-		}
-		tree.setRootVisible( false );
-		this.scrollPane = new javax.swing.JScrollPane( tree );
-		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
-		scrollPane.getVerticalScrollBar().setBlockIncrement( 24 );
-		return scrollPane;
 	}
 }
