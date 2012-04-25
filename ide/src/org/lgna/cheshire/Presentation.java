@@ -47,6 +47,7 @@ package org.lgna.cheshire;
  */
 public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	public static org.lgna.croquet.Group COMPLETION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "d2f09b36-fb08-425d-825c-0075284e095b" ), "COMPLETION_GROUP" );
+	public static org.lgna.croquet.Group PRESENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "PRESENTATION_GROUP" );
 
 	private Recoverer recoverer;
 	private Book book;
@@ -62,7 +63,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	};
 
 	public Presentation( ) {
-		super( org.lgna.cheshire.stencil.BasicTutorialPresentation.PRESENTATION_GROUP, java.util.UUID.fromString( "1303fdcf-6ba4-4933-9754-5b7933f8c01f" ), false );
+		super( org.lgna.cheshire.Presentation.PRESENTATION_GROUP, java.util.UUID.fromString( "1303fdcf-6ba4-4933-9754-5b7933f8c01f" ), false );
 		this.addValueListener( new org.lgna.croquet.State.ValueListener<Boolean>() {
 			public void changing(org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
 			}
@@ -237,6 +238,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		return null;
 	}
 	private org.lgna.croquet.Retargeter retargeter;
+
 	public org.lgna.croquet.Retargeter getRetargeter() {
 		return this.retargeter;
 	}

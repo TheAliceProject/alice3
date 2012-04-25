@@ -42,12 +42,14 @@
  */
 package org.lgna.cheshire.stencil;
 
+import org.lgna.cheshire.Presentation;
+
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class PresentationNavigationOperation extends org.lgna.croquet.ActionOperation {
 	public PresentationNavigationOperation( java.util.UUID individualId, String name ) {
-		super( BasicTutorialPresentation.PRESENTATION_GROUP, individualId );
+		super( Presentation.PRESENTATION_GROUP, individualId );
 		this.setName( name );
 	}
 

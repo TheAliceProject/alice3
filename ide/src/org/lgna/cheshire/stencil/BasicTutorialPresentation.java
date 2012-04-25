@@ -49,8 +49,6 @@ import org.lgna.croquet.stencil.StencilLayer;
  */
 public class BasicTutorialPresentation extends org.lgna.cheshire.Presentation {
 
-	public static org.lgna.croquet.Group PRESENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
-
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
 	private final org.lgna.croquet.Operation prevOperation = new PrevStepOperation( this );
