@@ -40,14 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.cheshire.simple.stencil;
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+import org.lgna.cheshire.simple.Presentation;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public class PresentationBooleanState extends org.lgna.croquet.BooleanState {
+	public PresentationBooleanState( java.util.UUID id, boolean initialState, String trueAndFalseText ) {
+		super( Presentation.PRESENTATION_GROUP, id, initialState );
+		this.setTextForBothTrueAndFalse( trueAndFalseText );
+	}
 }

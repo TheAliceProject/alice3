@@ -40,14 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.cheshire.simple.stencil.resolvers;
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+import org.lgna.croquet.resolvers.RuntimeResolver;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lgna.croquet.components.TrackableShape> {
+	private final org.lgna.croquet.history.StateChangeStep< E > step;
+	public ItemSelectionStateItemResolver( org.lgna.croquet.history.StateChangeStep< E > step ) {
+		this.step = step;
+	}
+
+	public org.lgna.croquet.components.TrackableShape getResolved() {
+		org.lgna.croquet.State<E> model = this.step.getModel();
+		if (model instanceof org.lgna.croquet.ListSelectionState ) {
+			org.lgna.croquet.ListSelectionState< E > listSelectionState = (org.lgna.croquet.ListSelectionState< E >)model;
+			E item = this.step.getItem();
+			org.lgna.croquet.components.TrackableShape rv = listSelectionState.getTrackableShapeFor(item);
+			return rv;
+		} else {
+			return null;
+		}
+	}
 }

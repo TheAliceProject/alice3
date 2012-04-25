@@ -41,13 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public class DropCompletionNote extends CompletionNote< org.lgna.croquet.history.CompletionStep<?> > {
+	public DropCompletionNote( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super( step );
+	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.addFeature( DropNoteUtilities.createHole( step ) );
+	}
+	
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
+		return DropNoteUtilities.isWhatWeveBeenWaitingFor( event, this );
+	}
+	@Override
+	public boolean isGoodToGo() {
+		return false;
+	}
 }

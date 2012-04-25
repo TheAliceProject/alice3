@@ -41,13 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple.stencil.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public class DropSiteResolver implements org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > {
+	private final org.lgna.croquet.history.Step<?> step;
+	public DropSiteResolver( org.lgna.croquet.history.Step<?> step ) {
+		this.step = step;
+	}
+	public org.lgna.croquet.components.TrackableShape getResolved() {
+		org.lgna.croquet.triggers.Trigger trigger = this.step.getTrigger();
+		if (trigger instanceof org.lgna.croquet.triggers.DropTrigger) {
+			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger) trigger;
+			org.lgna.croquet.DropReceptor dropReceptor = dropTrigger.getDropReceptor();
+			org.lgna.croquet.DropSite dropSite = dropTrigger.getDropSite();
+			return dropReceptor.getTrackableShape( dropSite );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( trigger );
+			return null;
+		}
+	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.step );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

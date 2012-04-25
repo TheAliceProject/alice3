@@ -41,13 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public enum ChapterAccessPolicy {
+	ALLOW_ACCESS_TO_ALL_CHAPTERS() {
+		@Override
+		public boolean isIndexAccessible( int nextIndex, int furthestCompletedIndex ) {
+			return true;
+		}
+	},
+	ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_CHAPTER() {
+		@Override
+		public boolean isIndexAccessible( int nextIndex, int furthestCompletedIndex ) {
+			return nextIndex <= furthestCompletedIndex;
+		}
+	};
+	public abstract boolean isIndexAccessible( int nextIndex, int furthestCompletedIndex );
 }

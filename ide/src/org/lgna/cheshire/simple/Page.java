@@ -40,14 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public interface Page {
+	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
+
+	public Iterable< ? extends org.lgna.cheshire.simple.Note > getNotes();
+	public boolean isStencilRenderingDesired();
+	public boolean isEventInterceptable( java.awt.event.MouseEvent e );
 }

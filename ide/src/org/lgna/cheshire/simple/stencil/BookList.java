@@ -40,14 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
-}
+public class BookList extends org.lgna.croquet.components.JComponent< javax.swing.JList > {
+	private BookComboBoxModel comboBoxModel;
+	public BookList( BookComboBoxModel comboBoxModel ) {
+		this.comboBoxModel = comboBoxModel;
+	}
+	
+	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+			comboBoxModel.setSelectedItem( getAwtComponent().getSelectedValue() );
+		}
+	};
+	@Override
+	protected javax.swing.JList createAwtComponent() {
+		javax.swing.JList rv = new javax.swing.JList( this.comboBoxModel );
+		ChapterCellRenderer cellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), SimplePresentation.CONTROL_COLOR );
+		rv.setCellRenderer( cellRenderer );
+		return rv;
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getAwtComponent().addListSelectionListener( this.listSelectionListener );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.getAwtComponent().removeListSelectionListener( this.listSelectionListener );
+		super.handleUndisplayable();
+	}
+};

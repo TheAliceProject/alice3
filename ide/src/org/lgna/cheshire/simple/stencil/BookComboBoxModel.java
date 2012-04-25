@@ -40,14 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+/*package-private*/ class BookComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+	private org.lgna.cheshire.simple.Book book;
+	public BookComboBoxModel( org.lgna.cheshire.simple.Book book ) {
+		this.book = book;
+	}
+	/*package-private*/ org.lgna.cheshire.simple.Book getTransactionsModel() {
+		return this.book;
+	}
+	public org.lgna.cheshire.simple.Chapter getElementAt(int index) {
+		return this.book.getChapterAt( index );
+	}
+	public int getSize() {
+		return this.book.getChapterCount();
+	}
+
+	public org.lgna.cheshire.simple.Chapter getSelectedItem() {
+		return this.book.getSelectedChapter();
+	}
+	public void setSelectedItem(Object item) {
+		this.book.setSelectedChapter( (org.lgna.cheshire.simple.Chapter)item );
+	}
 }

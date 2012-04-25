@@ -40,14 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.cheshire.simple.stencil.features;
 
-package org.lgna.cheshire;
+import org.lgna.cheshire.simple.Feature;
 
-import org.lgna.cheshire.simple.Chapter;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public class InputDialogCommitFeature extends Feature {
+	public InputDialogCommitFeature(org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.components.TrackableShape> trackableShapeResolver) {
+		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
+	}
+	@Override
+	protected boolean isPathRenderingDesired() {
+		return true;
+	}
+	@Override
+	public boolean isPotentiallyScrollable() {
+		return false;
+	}
+	@Override
+	protected java.awt.Insets getBoundsInsets() {
+		return null;
+	}
+	@Override
+	protected java.awt.Insets getContainsInsets() {
+		return null;
+	}
+	@Override
+	protected java.awt.Insets getPaintInsets() {
+		return null;
+	}
+	@Override
+	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
+	}
 }

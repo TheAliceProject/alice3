@@ -40,14 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.cheshire.simple.stencil;
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+import org.lgna.cheshire.simple.Presentation;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+/*package-private*/abstract class PresentationNavigationOperation extends org.lgna.croquet.ActionOperation {
+	public PresentationNavigationOperation( java.util.UUID individualId, String name ) {
+		super( Presentation.PRESENTATION_GROUP, individualId );
+		this.setName( name );
+	}
+
+	@Override
+	public org.lgna.croquet.components.Button createButton() {
+		org.lgna.croquet.components.Button rv = super.createButton();
+		rv.setBackgroundColor( SimplePresentation.CONTROL_COLOR );
+		return rv;
+	}
 }

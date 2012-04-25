@@ -41,13 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple.stencil.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public class ModelFirstComponentResolver implements org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.Component<?> > {
+	private final org.lgna.croquet.history.Step< ? > step;
+	public ModelFirstComponentResolver( org.lgna.croquet.history.Step< ? > step ) {
+		this.step = step;
+	}
+	protected org.lgna.croquet.Model getModel() {
+		return this.step.getModel();
+	}
+	public org.lgna.croquet.components.Component<?> getResolved() {
+		org.lgna.croquet.Model model = this.getModel();
+		if( model != null ) {
+			return org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+		} else {
+			return null;
+		}
+	}
 }

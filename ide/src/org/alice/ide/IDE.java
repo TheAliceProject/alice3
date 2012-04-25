@@ -73,7 +73,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	private final org.lgna.cheshire.stencil.BasicTutorialPresentation stencilsPresentation;
+	private final org.lgna.cheshire.simple.stencil.SimplePresentation stencilsPresentation;
 	private final org.alice.ide.stencil.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
 	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
@@ -103,7 +103,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		// Initialize the Stencils infrastructure
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame() );
-		this.stencilsPresentation = new org.lgna.cheshire.stencil.BasicTutorialPresentation( this );
+		this.stencilsPresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
 	}
 
 	protected void updateEnabled( org.lgna.project.Project project ) {
@@ -122,7 +122,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		// TODO: <kjh/> Set this to false... remove it...
 		final boolean IS_STENCILS_PRESENTATION_SHOWING = true;
 		if( IS_STENCILS_PRESENTATION_SHOWING ) {
-			this.stencilsPresentation.setPresentationData(org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, this.getProjectTransactionHistory(), null, null, null, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+			this.stencilsPresentation.setPresentationData(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, this.getProjectTransactionHistory(), null, null, null, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
 			this.stencilsPresentation.showStencilsPresentation();
 		} else {
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
@@ -555,7 +555,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public org.lgna.cheshire.stencil.BasicTutorialPresentation getStencilsPresentation() {
+	public org.lgna.cheshire.simple.stencil.SimplePresentation getStencilsPresentation() {
 		return stencilsPresentation;
 	}
 }

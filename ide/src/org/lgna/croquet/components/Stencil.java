@@ -1,9 +1,34 @@
 package org.lgna.croquet.components;
 
+import org.lgna.croquet.components.Stencil.StencilLayer;
+
 /**
  * @author Kyle J. Harms
  */
 public abstract class Stencil extends Panel {
+
+	public enum StencilLayer {
+		ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
+		BELOW_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
+
+		private int stencilLayer;
+
+		private StencilLayer( int stencilLayer ) {
+			this.stencilLayer = stencilLayer;
+		}
+
+		public int getLayer() {
+			return this.stencilLayer;
+		}
+
+		public boolean isAboveStencil() {
+			return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
+		}
+
+		public boolean isBelowStencil() {
+			return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
+		}
+	}
 
 	private LayeredPane layeredPane;
 	private boolean isEventInterceptEnabled;
@@ -21,7 +46,41 @@ public abstract class Stencil extends Panel {
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
 	protected abstract boolean contains( int x, int y, boolean superContains );
-	protected abstract org.lgna.croquet.stencil.StencilLayer getStencilsLayer();
+	protected abstract StencilLayer getStencilsLayer();
+
+	private final class StencilRepaintManager extends javax.swing.RepaintManager {
+
+		private org.lgna.croquet.components.Stencil stencil;
+
+		public StencilRepaintManager( org.lgna.croquet.components.Stencil stencil ) {
+			this.stencil = stencil;
+		}
+
+		@Override
+		public void addDirtyRegion(javax.swing.JComponent c, int x, int y, int w, int h) {
+			super.addDirtyRegion(c, x, y, w, h);
+			final javax.swing.JComponent stencil = this.stencil.getAwtComponent();
+			if( stencil == c || stencil.isAncestorOf( c ) ) {
+				//pass
+			} else {
+				java.awt.Component srcRoot = javax.swing.SwingUtilities.getRoot( c );
+				java.awt.Component dstRoot = javax.swing.SwingUtilities.getRoot( stencil );
+
+				if( srcRoot != null && srcRoot == dstRoot ) {
+					java.awt.Rectangle rect = new java.awt.Rectangle(x,y,w,h);
+					java.awt.Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
+					if( visibleRect.width != 0 && visibleRect.height != 0 ) {
+						final java.awt.Rectangle rectAsSeenByStencil = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( c, visibleRect, stencil );
+						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								StencilRepaintManager.super.addDirtyRegion( stencil, rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height);
+							}
+						} );
+					}
+				}
+			}
+		}
+	}
 
 	private final java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
 		public void eventDispatched(java.awt.AWTEvent event) {
@@ -127,7 +186,7 @@ public abstract class Stencil extends Panel {
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.repaintManager = javax.swing.RepaintManager.currentManager( this.getAwtComponent() );
-		javax.swing.RepaintManager.setCurrentManager( new org.lgna.croquet.stencil.StencilRepaintManager( this ) );
+		javax.swing.RepaintManager.setCurrentManager( new StencilRepaintManager( this ) );
 		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
 	}
 

@@ -40,14 +40,66 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public class TransactionChapter extends Chapter {
+	private final org.lgna.croquet.history.Transaction transaction;
+	public TransactionChapter( org.lgna.croquet.history.Transaction transaction ) {
+		this.transaction = transaction;
+	}
+	public org.lgna.croquet.history.Transaction getTransaction() {
+		return this.transaction;
+	}
+	@Override
+	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		this.transaction.retarget( retargeter );
+	}
+	@Override
+	public void complete( org.lgna.croquet.Group completionGroup ) {
+		final org.lgna.croquet.edits.Edit<?> originalEdit = this.transaction.getEdit();
+		if( originalEdit != null ) {
+			//todo
+			org.lgna.croquet.history.CompletionStep< ? > step = null;
+			org.lgna.croquet.Retargeter retargeter = org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().getRetargeter();
+			org.lgna.croquet.edits.Edit< ? > replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter );
+			if( replacementEdit != null ) {
+				//todo
+				org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().retargetAll( retargeter );
+			}
+		}
+//		for( RetargetableNote note : this.notes ) {
+//			note.complete();
+//		}
+	}
+	
+	@Override
+	public String getTitle() {
+		return "<strong>" + this.transaction.getTitle( ) + "</strong>";
+	}
+	
+	@Override
+	public boolean isAutoAdvanceDesired() {
+		return true;
+	}
+	
+	@Override
+	public boolean isAlreadyInTheDesiredState() {
+		org.lgna.croquet.history.Transaction transaction = this.getTransaction();
+		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+		org.lgna.croquet.CompletionModel model = completionStep.getModel();
+		if( model != null ) {
+			org.lgna.croquet.edits.Edit< ? > edit = completionStep.getEdit();
+			return model.isAlreadyInState( edit );
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public Iterable< org.lgna.croquet.Context > getAllContexts() {
+		return this.transaction.getAllContexts();
+	}
 }

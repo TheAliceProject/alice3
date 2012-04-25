@@ -40,14 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public abstract class Chapter {
+	private java.util.UUID id = java.util.UUID.randomUUID();
+	private int[] historyIndices = null;
+	private org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability;
+	public java.util.UUID getId() {
+		return id;
+	}
+	/*package-private*/ int[] getHistoryIndices() {
+		return this.historyIndices;
+	}
+	/*package-private*/ void setHistoryIndices( int[] historyIndices ) {
+		this.historyIndices = historyIndices;
+	}
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
+		return this.replacementAcceptability;
+	}
+	public void setReplacementAcceptability( org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability ) {
+		this.replacementAcceptability = replacementAcceptability;
+	}
+
+	public abstract boolean isAutoAdvanceDesired();
+	public abstract boolean isAlreadyInTheDesiredState();
+	
+	public abstract void retarget( org.lgna.croquet.Retargeter retargeter ); 
+
+	public abstract void complete( org.lgna.croquet.Group completionGroup );
+	
+	public abstract String getTitle();
+	
+	public abstract Iterable< org.lgna.croquet.Context > getAllContexts();
 }

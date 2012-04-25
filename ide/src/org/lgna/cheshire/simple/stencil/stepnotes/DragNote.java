@@ -41,13 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public class DragNote extends PrepNote< org.lgna.croquet.history.DragStep > {
+	public DragNote( org.lgna.croquet.history.DragStep step ) {
+		super( step );
+	}
+	@Override
+	protected void addFeatures( org.lgna.croquet.history.DragStep step ) {
+		this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.EAST_WEST ) );
+		org.lgna.croquet.history.Transaction transaction = step.getOwner();
+		int i = transaction.getIndexOfChildStep( step );
+		org.lgna.croquet.history.Step< ? > siblingStep = transaction.getChildStepAt( i+1 );
+		org.lgna.croquet.triggers.Trigger trigger = siblingStep.getTrigger();
+		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+			this.addFeature( DropNoteUtilities.createPreviewHole( siblingStep ) );
+		}
+	}
 }

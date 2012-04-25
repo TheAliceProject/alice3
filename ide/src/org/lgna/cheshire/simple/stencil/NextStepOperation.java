@@ -40,14 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+/*package-private*/class NextStepOperation extends PresentationNavigationOperation {
+	private static class SingletonHolder {
+		private static NextStepOperation instance = new NextStepOperation();
+	}
+	public static NextStepOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+	private NextStepOperation() {
+		super( java.util.UUID.fromString( "114060ef-1231-433b-9084-48faa024d1ba" ), "Next \u2192" );
+	}
+	@Override
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().incrementSelectedIndex();
+		step.finish();
+	}
 }

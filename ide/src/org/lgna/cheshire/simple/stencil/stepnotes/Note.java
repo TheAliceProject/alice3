@@ -41,13 +41,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire;
-
-import org.lgna.cheshire.simple.Chapter;
+package org.lgna.cheshire.simple.stencil.stepnotes;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+public abstract class Note<S extends org.lgna.croquet.history.Step<?>> extends org.lgna.cheshire.simple.stencil.Note {
+	private final S step;
+	public Note( S step ) {
+		this.step = step;
+		this.addFeatures( this.step );
+	}
+	protected abstract void addFeatures( S step );
+	public S getStep() {
+		return this.step;
+	}
+	@Override
+	protected String getText() {
+		org.lgna.croquet.history.Transaction transaction = this.step.getOwner();
+		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
+		return this.step.getTutorialNoteText( edit );
+	}
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
+		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+			org.lgna.croquet.history.event.AddStepEvent stepAddedEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
+			if( this.getStep().getModel() == stepAddedEvent.getStep().getModel() ) {
+				return true;
+			} else {
+				//todo
+				if( stepAddedEvent.getStep().getModel() != null ) {
+					try {
+						if( this.getStep().getModel().getClass() == stepAddedEvent.getStep().getModel().getClass() ) {;
+							edu.cmu.cs.dennisc.java.util.logging.Logger.info( this.getStep().getModel() == stepAddedEvent.getStep().getModel(), this.getStep().getModel(), stepAddedEvent.getStep().getModel() );
+							return true;
+						} else {
+							return false;
+						}
+					} catch( NullPointerException npe ) {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+	}
 }
