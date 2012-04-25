@@ -6,8 +6,7 @@ package org.lgna.cheshire.test;
 @Deprecated
 public class TransactionHistoryGeneratorTest {
 
-	private static final String PROJECT_FILENAME = "original.lgp";
-	private static final String REMIXED_FILENAME = "remixed.lgp";
+	private static final String PROJECT_FILENAME = "project.lgp";
 	private static final String REUSE_FILENAME = "reuse.xml";
 
 	private String testName;
@@ -60,7 +59,7 @@ public class TransactionHistoryGeneratorTest {
 
 	public void showTransactionHistory() {
 		// Show the transaction history panel.
-		
+
 		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel transactionHistoryPanel = new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel();
 		transactionHistoryPanel.setTransactionHistory( this.reuseTransactionHistory );
 
@@ -70,17 +69,23 @@ public class TransactionHistoryGeneratorTest {
 		frame.setSize( 300, 800 );
 		frame.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
 		frame.setVisible(true);
-		
+
 		// Also print out the ast
 		org.lgna.cheshire.test.PrintAstVisitor printAstVisitor = new org.lgna.cheshire.test.PrintAstVisitor( this.reuseMethod );
 		this.reuseMethod.crawl(printAstVisitor, false);
 	}
 
 	public static void main(String[] args) {
+		TransactionHistoryGeneratorTest test;
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		ide.initialize( args );
-		
-		TransactionHistoryGeneratorTest test = new TransactionHistoryGeneratorTest( "Spin Crazy" );
+
+		// Spin Crazy
+		test = new TransactionHistoryGeneratorTest( "Spin Crazy" );
+		test.showTransactionHistory();
+
+		// Battle Crazy
+		test = new TransactionHistoryGeneratorTest( "Battle Crazy" );
 		test.showTransactionHistory();
 	}
 }
