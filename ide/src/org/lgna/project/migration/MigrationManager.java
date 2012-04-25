@@ -46,13 +46,142 @@ package org.lgna.project.migration;
  * @author Dennis Cosgrove
  */
 public class MigrationManager {
+	public static final String NO_REPLACEMENT  = null;
+	
 	private static final TextMigration[] textMigrations = {
-		new TextMigration( 
-				new org.lgna.project.Version( "3.1.18.0.0" ), 
-				new org.lgna.project.Version( "3.1.23.0.0" ), 
-				"org.lgna.story.resources.prop.Armoire", 
-				"org.lgna.story.resources.armoire.Armoire" 
-		)
+		new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.7.0.0" ),
+				new org.lgna.project.Version( "3.1.8.0.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.8.0.0" ),
+				new org.lgna.project.Version( "3.1.9.0.0" ),
+
+				"org.lgna.story.resources.armoire.ArmoireArtNouveau.ARMOIRE_CLOTHING",
+				NO_REPLACEMENT,
+				
+				"org.lgna.story.resources.armoire.ArmoireArtNouveau",
+				NO_REPLACEMENT,
+				
+				"org.lgna.story.resources.quadruped.Poodle.PINK_POODLE",
+				NO_REPLACEMENT,
+				
+				"org.lgna.story.resources.quadruped.Poodle",
+				NO_REPLACEMENT 
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.9.0.0" ),
+				new org.lgna.project.Version( "3.1.10.0.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.10.0.0" ),
+				new org.lgna.project.Version( "3.1.11.0.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.11.0.0" ),
+				new org.lgna.project.Version( "3.1.14.0.0" ),
+
+				"org.lgna.story.resources.quadruped.Camel.CAMEL",
+				NO_REPLACEMENT ,
+				
+				"org.lgna.story.resources.quadruped.Camel",
+				NO_REPLACEMENT ,
+
+				"org.lgna.story.resources.flyer.Falcon.FALCON",
+				NO_REPLACEMENT ,
+
+				"org.lgna.story.resources.flyer.Falcon",
+				NO_REPLACEMENT ,
+
+				"org.lgna.story.resources.quadruped.Lion.LION",
+				NO_REPLACEMENT ,
+
+				"org.lgna.story.resources.quadruped.Lion",
+				NO_REPLACEMENT ,
+
+				"org.lgna.story.resources.quadruped.Wolf.WOLF",
+				NO_REPLACEMENT ,
+
+				"org.lgna.story.resources.quadruped.Wolf",
+				NO_REPLACEMENT
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.14.0.0" ),
+				new org.lgna.project.Version( "3.1.15.1.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.15.1.0" ),
+				new org.lgna.project.Version( "3.1.20.0.0" ),
+
+				"org.lgna.story.resources.dresser.DresserCentralAsian.DRESSER_CENTRAL_ASIAN_GREEN_FLOWERS",
+				"org.lgna.story.resources.prop.DresserCentralAsian.DRESSER_CENTRAL_ASIAN_GREEN_FLOWERS",
+
+				"org.lgna.story.resources.dresser.DresserCentralAsian.DRESSER_CENTRAL_ASIAN_RED_FLOWERS",
+				"org.lgna.story.resources.prop.DresserCentralAsian.DRESSER_CENTRAL_ASIAN_RED_FLOWERS",
+
+				"org.lgna.story.resources.dresser.DresserCentralAsian.DRESSER_CENTRAL_ASIAN_GREEN",
+				"org.lgna.story.resources.prop.DresserCentralAsian.DRESSER_CENTRAL_ASIAN_GREEN",
+
+				"org.lgna.story.resources.dresser.DresserCentralAsian.DRESSER_CENTRAL_ASIAN_RED",
+				"org.lgna.story.resources.prop.DresserCentralAsian.DRESSER_CENTRAL_ASIAN_RED",
+
+				"org.lgna.story.resources.dresser.DresserCentralAsian",
+				"org.lgna.story.resources.prop.DresserCentralAsian",
+
+				"org.lgna.story.resources.dresser.DresserColonial.DRESSER_COLONIAL_WOOD",
+				"org.lgna.story.resources.prop.DresserColonial.DRESSER_COLONIAL_WOOD",
+
+				"org.lgna.story.resources.dresser.DresserColonial.DRESSER_COLONIAL_LIGHT_WOOD_CURLY",
+				"org.lgna.story.resources.prop.DresserColonial.DRESSER_COLONIAL_LIGHT_WOOD_CURLY",
+
+				"org.lgna.story.resources.dresser.DresserColonial.DRESSER_COLONIAL_RED_WOOD",
+				"org.lgna.story.resources.prop.DresserColonial.DRESSER_COLONIAL_RED_WOOD",
+
+				"org.lgna.story.resources.dresser.DresserColonial.DRESSER_COLONIAL_WOOD_STRAIGHT_DARK",
+				"org.lgna.story.resources.prop.DresserColonial.DRESSER_COLONIAL_WOOD_STRAIGHT_DARK",
+
+				"org.lgna.story.resources.dresser.DresserColonial",
+				"org.lgna.story.resources.prop.DresserColonial",
+
+				"org.lgna.story.resources.dresser.DresserDesigner.DRESSER_DESIGNER_BROWN",
+				"org.lgna.story.resources.prop.DresserDesigner.DRESSER_DESIGNER_BROWN",
+
+				"org.lgna.story.resources.dresser.DresserDesigner.DRESSER_DESIGNER_LIGHT_WOOD",
+				"org.lgna.story.resources.prop.DresserDesigner.DRESSER_DESIGNER_LIGHT_WOOD",
+
+				"org.lgna.story.resources.dresser.DresserDesigner.DRESSER_DESIGNER_RED",
+				"org.lgna.story.resources.prop.DresserDesigner.DRESSER_DESIGNER_RED",
+
+				"org.lgna.story.resources.dresser.DresserDesigner.DRESSER_DESIGNER_BLACK",
+				"org.lgna.story.resources.prop.DresserDesigner.DRESSER_DESIGNER_BLACK",
+
+				"org.lgna.story.resources.dresser.DresserDesigner.DRESSER_DESIGNER_BLUE",
+				"org.lgna.story.resources.prop.DresserDesigner.DRESSER_DESIGNER_BLUE",
+
+				"org.lgna.story.resources.dresser.DresserDesigner",
+				"org.lgna.story.resources.prop.DresserDesigner"
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.20.0.0" ),
+				new org.lgna.project.Version( "3.1.23.0.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.23.0.0" ),
+				new org.lgna.project.Version( "3.1.24.0.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+				new org.lgna.project.Version( "3.1.24.0.0" ),
+				new org.lgna.project.Version( "3.1.25.0.0" )
+			)
 	};
 	private static final java.util.List< Migration > versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	

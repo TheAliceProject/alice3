@@ -1,10 +1,14 @@
+package galleryutils;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.lgna.project.Version;
 
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
@@ -110,6 +114,11 @@ public class GalleryDiff {
 		this.curVersion = curVersion;
 	}
 	
+	private GalleryDiff(String prevVersion, String curVersion) {
+		this.prevVersion = new Version(prevVersion);
+		this.curVersion = new Version(curVersion);
+	}
+	
 	public GalleryDiff(org.lgna.project.Version prevVersion, org.lgna.project.Version curVersion, java.io.File[] prevJars, java.io.File[] curJars) {
 		this(prevVersion, curVersion);
 		
@@ -129,22 +138,31 @@ public class GalleryDiff {
 		doMatch();
 	}
 	
-	public GalleryDiff(org.lgna.project.Version prevVersion, org.lgna.project.Version curVersion, java.io.File prevDataFile, java.io.File curDataFile, String... jarFileNames) {
+	public GalleryDiff(String prevVersion, String curVersion, String prevDataFile, String curDataFile, String... jarFileNames) throws IOException{
+		this(new Version(prevVersion), new Version(curVersion), new File(prevDataFile), new File(curDataFile), jarFileNames);
+	}
+	
+	public GalleryDiff(String prevVersion, String curVersion, java.io.File prevDataFile, java.io.File curDataFile, String... jarFileNames) throws IOException {
+		this(new Version(prevVersion), new Version(curVersion), prevDataFile, curDataFile, jarFileNames);
+	}
+	
+	public GalleryDiff(org.lgna.project.Version prevVersion, org.lgna.project.Version curVersion, java.io.File prevDataFile, java.io.File curDataFile, String... jarFileNames) throws IOException{
 		this(prevVersion, curVersion);
 		
 		prevSymbols = new java.util.ArrayList<String>();
 		curSymbols = new java.util.ArrayList<String>();
-		try {
-			for (String fileName : jarFileNames) {
-				byte[] prevData = getBytesFromDataZip(prevDataFile, fileName);
-				prevSymbols.addAll(loadResourceSymbols(prevData));
-				
-				byte[] curData = getBytesFromDataZip(curDataFile, fileName);
-				curSymbols.addAll(loadResourceSymbols(curData));
+		for (String fileName : jarFileNames) {
+			byte[] prevData = getBytesFromDataZip(prevDataFile, fileName);
+			if (prevData == null) {
+				throw new IOException("Target jar file does not exist in zipData: "+prevDataFile);
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+			prevSymbols.addAll(loadResourceSymbols(prevData));
+			
+			byte[] curData = getBytesFromDataZip(curDataFile, fileName);
+			if (curData == null) {
+				throw new IOException("Target jar file does not exist in zipData: "+prevDataFile);
+			}
+			curSymbols.addAll(loadResourceSymbols(curData));
 		}
 		doMatch();
 	}
@@ -158,7 +176,7 @@ public class GalleryDiff {
 			if (matches.size() > 0) {
 				int score = computeLevenshteinDistance(symbol, matches.get(0));
 				if (score == 0) {
-					System.out.println("No change found for symbol '"+symbol+"'");
+					//System.out.println("No change found for symbol '"+symbol+"'");
 				}
 				else if (score < SCORE_THRESHOLD) {
 					if (matches.size() == 1) {
@@ -223,25 +241,20 @@ public class GalleryDiff {
 		return sb.toString();
 	}
 	
-	private static byte[] getBytesFromDataZip(File dataZip, String fileName) {
-		try
+	private static byte[] getBytesFromDataZip(File dataZip, String fileName) throws IOException{
+		java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream(new java.io.FileInputStream(dataZip));
+		ZipEntry entry = zis.getNextEntry();
+		while (entry != null)
 		{
-			java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream(new java.io.FileInputStream(dataZip));
-			ZipEntry entry = zis.getNextEntry();
-			while (entry != null)
+			if (entry.getName().endsWith(fileName))
 			{
-				if (entry.getName().endsWith(fileName))
-				{
-					byte[] data = edu.cmu.cs.dennisc.zip.ZipUtilities.extractBytes(zis, entry);
-					zis.close();
-					return data;
-				}
-				entry = zis.getNextEntry();
+				byte[] data = edu.cmu.cs.dennisc.zip.ZipUtilities.extractBytes(zis, entry);
+				zis.close();
+				return data;
 			}
+			entry = zis.getNextEntry();
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		return null;
 	}
 	
@@ -471,19 +484,66 @@ public class GalleryDiff {
 	
 	public static void main( String[] args ) throws Exception {
 		
+		final String[] DATA_VERSIONS = {
+//				"3.1.0.0.0", //Not supported
+//				"3.1.1.0.0", //Not supported
+//				"3.1.2.0.0", //Not supported
+//				"3.1.3.0.0", //Not supported
+//				"3.1.4.0.0", //Not supported
+//				"3.1.5.0.0", //Not supported
+//				"3.1.6.0.0", //Not supported
+				"3.1.7.0.0",
+				"3.1.8.0.0",
+				"3.1.9.0.0",
+				"3.1.10.0.0",
+				"3.1.11.0.0",
+				"3.1.14.0.0",
+				"3.1.15.1.0",
+				"3.1.20.0.0",
+				"3.1.23.0.0",
+				"3.1.24.0.0",
+				"3.1.25.0.0",
+				
+		};
+		
+		GalleryDiff differ = null;
+		
 		if (args.length < 4 || args.length % 4 != 0) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Proper use: GalleryDiff <prevVersion> <curVersion> <prevJar1> <prevJar2> ... <curJar1> <curJar2> ...");
+			final String ZIP_LOCATIONS = "C:\\unstableBuild\\Data_AliceVersions\\";
+			final String ZIP_NAME = "\\aliceData.zip";
+			StringBuilder sb = new StringBuilder();
+			for (int i=0; i<DATA_VERSIONS.length-1; i++)
+			{
+				String prev = DATA_VERSIONS[i];
+				String cur = DATA_VERSIONS[i+1];
+				try {
+					differ = new GalleryDiff(prev, cur, ZIP_LOCATIONS+prev+ZIP_NAME, ZIP_LOCATIONS+cur+ZIP_NAME, new String[] {"aliceModelSource.jar", "nebulousModelSource.jar"});
+					String code = differ.getMigrationCode();
+					sb.append(code+"\n");
+				}
+				catch (IOException e) {
+					System.err.println("Failed to make diff for "+prev+" -> "+cur+": "+e);
+				}
+			}
+			String finalCode = sb.toString();
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(finalCode);
+			System.out.println(finalCode);
 			return;
 		}
-		File baseDir = new File(System.getProperty( "user.dir" ));
-		File baseAliceDir = baseDir;
-		if (baseAliceDir.exists() && baseAliceDir.getParentFile() != null) {
-			baseAliceDir = baseAliceDir.getParentFile();
-			if (baseAliceDir.exists() && baseAliceDir.getParent() != null) {
+		else {
+			File baseDir = new File(System.getProperty( "user.dir" ));
+			File baseAliceDir = baseDir;
+			if (baseAliceDir.exists() && baseAliceDir.getParentFile() != null) {
 				baseAliceDir = baseAliceDir.getParentFile();
-				if (baseAliceDir.exists()) {
-					baseAliceDir = new File(baseAliceDir, "ide/lib/alice");
-					if (!baseAliceDir.exists()) {
+				if (baseAliceDir.exists() && baseAliceDir.getParent() != null) {
+					baseAliceDir = baseAliceDir.getParentFile();
+					if (baseAliceDir.exists()) {
+						baseAliceDir = new File(baseAliceDir, "ide/lib/alice");
+						if (!baseAliceDir.exists()) {
+							baseAliceDir = null;
+						}
+					}
+					else {
 						baseAliceDir = null;
 					}
 				}
@@ -494,56 +554,55 @@ public class GalleryDiff {
 			else {
 				baseAliceDir = null;
 			}
-		}
-		else {
-			baseAliceDir = null;
-		}
-		File baseTestDir = new File(baseDir, "test");
-		if (!baseTestDir.exists()) {
-			baseTestDir = null;
-		}
-		int argsOffset = 2;
-		int fileCount = args.length - argsOffset;
-		File[] files = new File[fileCount];
-		for (int i=0; i<files.length; i++) {
-			files[i] = new File(args[argsOffset+i]);
-			if (!files[i].exists() && baseDir != null) {
-				files[i] = new File(baseDir, args[argsOffset+i]);
+			File baseTestDir = new File(baseDir, "test");
+			if (!baseTestDir.exists()) {
+				baseTestDir = null;
 			}
-			if (!files[i].exists() && baseTestDir != null) {
-				files[i] = new File(baseTestDir, args[argsOffset+i]);
+			int argsOffset = 2;
+			int fileCount = args.length - argsOffset;
+			File[] files = new File[fileCount];
+			for (int i=0; i<files.length; i++) {
+				files[i] = new File(args[argsOffset+i]);
+				if (!files[i].exists() && baseDir != null) {
+					files[i] = new File(baseDir, args[argsOffset+i]);
+				}
+				if (!files[i].exists() && baseTestDir != null) {
+					files[i] = new File(baseTestDir, args[argsOffset+i]);
+				}
+				if (!files[i].exists()) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Failed to find file '"+args[argsOffset+i]+"'");
+					return;
+				}
 			}
-			if (!files[i].exists()) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Failed to find file '"+args[argsOffset+i]+"'");
-				return;
+			int toDiffCount = files.length /2;
+			File[] prevFiles = new File[toDiffCount];
+			System.arraycopy(files, 0, prevFiles, 0, toDiffCount);
+			File[] curFiles = new File[toDiffCount];
+			System.arraycopy(files, toDiffCount, curFiles, 0, toDiffCount);
+			
+			org.lgna.project.Version previousVersion = new org.lgna.project.Version(args[0]);
+			org.lgna.project.Version currentVersion = new org.lgna.project.Version(args[1]);
+			boolean areZips = false;
+			for (File f : files) {
+				if (edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension(f).equalsIgnoreCase("zip")) {
+					areZips = true;
+					break;
+				}
+			}
+
+			if (areZips) {
+				differ = new GalleryDiff(previousVersion, currentVersion, prevFiles[0], curFiles[0], new String[] {"aliceModelSource.jar", "nebulousModelSource.jar"});
+			}
+			else {
+				differ = new GalleryDiff(previousVersion, currentVersion, prevFiles, curFiles);
 			}
 		}
-		int toDiffCount = files.length /2;
-		File[] prevFiles = new File[toDiffCount];
-		System.arraycopy(files, 0, prevFiles, 0, toDiffCount);
-		File[] curFiles = new File[toDiffCount];
-		System.arraycopy(files, toDiffCount, curFiles, 0, toDiffCount);
-		
-		org.lgna.project.Version previousVersion = new org.lgna.project.Version(args[0]);
-		org.lgna.project.Version currentVersion = new org.lgna.project.Version(args[1]);
-		boolean areZips = false;
-		for (File f : files) {
-			if (edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension(f).equalsIgnoreCase("zip")) {
-				areZips = true;
-				break;
-			}
+		if (differ != null) {
+			String code = differ.getMigrationCode();
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(code);
+			System.out.println(code);
+			System.out.println();
 		}
-		GalleryDiff differ;
-		if (areZips) {
-			differ = new GalleryDiff(previousVersion, currentVersion, prevFiles[0], curFiles[0], new String[] {"aliceModelSource.jar", "nebulousModelSource.jar"});
-		}
-		else {
-			differ = new GalleryDiff(previousVersion, currentVersion, prevFiles, curFiles);
-		}
-		String code = differ.getMigrationCode();
-		edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(code);
-		System.out.println(code);
-		System.out.println();
 	}
 	
 }
