@@ -46,7 +46,7 @@ package org.alice.ide.stencil;
  * @author Dennis Cosgrove
  *
  */
-public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.trash.LayeredPaneComponent {
+public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.Stencil {
 	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
 	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );//, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_MITER );
 
@@ -54,8 +54,8 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.tras
 	private org.lgna.croquet.components.DragComponent<?,?> potentialDragSource;
 	private org.lgna.croquet.components.Component< ? > currentDropReceptorComponent;
 
-	public PotentialDropReceptorsStencil( javax.swing.JLayeredPane layeredPane ) {
-		super( layeredPane, org.lgna.croquet.stencil.StencilLayer.ABOVE_POPUP_LAYER );
+	public PotentialDropReceptorsStencil( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		super( window );
 	}
 	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		this.potentialDragSource = null;
@@ -89,11 +89,11 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.tras
 		if( dropReceptors.size() > 0 ) {
 			this.holes = dropReceptors;
 			this.potentialDragSource = potentialDragSource;
-			this.addToLayeredPane();
+			this.setShowing( true );
 		}
 	}
 	public void hideStencil() {
-		this.removeFromLayeredPane();
+		this.setShowing( false );
 		this.holes = null;
 		this.potentialDragSource = null;
 	}
@@ -165,10 +165,25 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.tras
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		}
 	}
+
 	@Override
 	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
 	}
+
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
+	}
+
+	@Override
+	protected void handleMouseMoved(java.awt.event.MouseEvent e) {
+	}
+
+	@Override
+	protected void redispatchMouseEvent(java.awt.event.MouseEvent e) {
+	}
+
+	@Override
+	protected org.lgna.croquet.stencil.StencilLayer getStencilsLayer() {
+		return org.lgna.croquet.stencil.StencilLayer.ABOVE_POPUP_LAYER;
 	}
 }
