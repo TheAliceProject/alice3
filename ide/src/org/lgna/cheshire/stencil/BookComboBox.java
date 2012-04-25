@@ -94,7 +94,7 @@ public class BookComboBox extends org.lgna.croquet.components.JComponent< javax.
 		} else {
 			edu.cmu.cs.dennisc.javax.swing.PopupFactoryUtilities.forceHeavyWeightPopups( rv );
 		}
-		ChapterCellRenderer stepCellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), StencilsPresentation.CONTROL_COLOR );
+		ChapterCellRenderer stepCellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), BasicTutorialPresentation.CONTROL_COLOR );
 		rv.setRenderer( stepCellRenderer );
 		return rv;
 	}

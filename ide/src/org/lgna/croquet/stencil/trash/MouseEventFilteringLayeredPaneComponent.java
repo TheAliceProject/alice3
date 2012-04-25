@@ -47,7 +47,7 @@ import org.lgna.croquet.stencil.StencilLayer;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MouseEventFilteringLayeredPaneComponent extends JStencilPlusLayeredPaneComponent {
+public abstract class MouseEventFilteringLayeredPaneComponent extends LayeredPaneComponent {
 	public MouseEventFilteringLayeredPaneComponent( javax.swing.JLayeredPane layeredPane, StencilLayer menuPolicy ) {
 		super( layeredPane, menuPolicy );
 	}

@@ -47,14 +47,14 @@ package org.lgna.cheshire.stencil;
  */
 /*package-private*/abstract class PresentationNavigationOperation extends org.lgna.croquet.ActionOperation {
 	public PresentationNavigationOperation( java.util.UUID individualId, String name ) {
-		super( StencilsPresentation.PRESENTATION_GROUP, individualId );
+		super( BasicTutorialPresentation.PRESENTATION_GROUP, individualId );
 		this.setName( name );
 	}
 
 	@Override
 	public org.lgna.croquet.components.Button createButton() {
 		org.lgna.croquet.components.Button rv = super.createButton();
-		rv.setBackgroundColor( StencilsPresentation.CONTROL_COLOR );
+		rv.setBackgroundColor( BasicTutorialPresentation.CONTROL_COLOR );
 		return rv;
 	}
 }

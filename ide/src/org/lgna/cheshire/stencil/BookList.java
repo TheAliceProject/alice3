@@ -59,7 +59,7 @@ public class BookList extends org.lgna.croquet.components.JComponent< javax.swin
 	@Override
 	protected javax.swing.JList createAwtComponent() {
 		javax.swing.JList rv = new javax.swing.JList( this.comboBoxModel );
-		ChapterCellRenderer cellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), StencilsPresentation.CONTROL_COLOR );
+		ChapterCellRenderer cellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), BasicTutorialPresentation.CONTROL_COLOR );
 		rv.setCellRenderer( cellRenderer );
 		return rv;
 	}

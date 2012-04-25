@@ -42,10 +42,12 @@
  */
 package org.lgna.cheshire.stencil;
 
+import org.lgna.croquet.stencil.StencilLayer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StencilsPresentation extends org.lgna.cheshire.Presentation {
+public class BasicTutorialPresentation extends org.lgna.cheshire.Presentation {
 
 	public static org.lgna.croquet.Group PRESENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "e582737d-b56b-4105-93d2-581853e193e2" ), "IMPLEMENTATION_GROUP" );
 
@@ -61,23 +63,23 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 
-	public class Stencil extends org.lgna.croquet.stencil.trash.Stencil {
+	public class Stencil extends org.lgna.croquet.stencil.todo.BasicFeatureStencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.StencilLayer menuPolicy ) {
-			super( application.getLayeredPane().getAwtComponent(), menuPolicy, scrollingRequiredRenderer );
+			super( window );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
-			controlPanel.addComponent( StencilsPresentation.this.prevOperation.createButton() );
-			controlPanel.addComponent( new BookComboBox( StencilsPresentation.this.bookComboBoxModel, menuPolicy.isAboveStencil() ) );
+			controlPanel.addComponent( BasicTutorialPresentation.this.prevOperation.createButton() );
+			controlPanel.addComponent( new BookComboBox( BasicTutorialPresentation.this.bookComboBoxModel, menuPolicy.isAboveStencil() ) );
 			controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
 			controlsPanel.addComponent( controlPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-			StencilsPresentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
+			BasicTutorialPresentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
 
-			org.lgna.croquet.components.CheckBox isPlayingSoundsCheckBox = StencilsPresentation.this.isPlayingSounds.createCheckBox();
+			org.lgna.croquet.components.CheckBox isPlayingSoundsCheckBox = BasicTutorialPresentation.this.isPlayingSounds.createCheckBox();
 			isPlayingSoundsCheckBox.getAwtComponent().setOpaque( false );
-			org.lgna.croquet.components.CheckBox isInterceptingEventsCheckBox = StencilsPresentation.this.isInterceptingEvents.createCheckBox();
+			org.lgna.croquet.components.CheckBox isInterceptingEventsCheckBox = BasicTutorialPresentation.this.isInterceptingEvents.createCheckBox();
 			isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
-			org.lgna.croquet.components.CheckBox isPaintingStencilCheckBox = StencilsPresentation.this.isPaintingStencil.createCheckBox();
+			org.lgna.croquet.components.CheckBox isPaintingStencilCheckBox = BasicTutorialPresentation.this.isPaintingStencil.createCheckBox();
 			isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
 
 			org.lgna.croquet.components.FlowPanel westPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.TRAILING, 2, 0 );
@@ -105,12 +107,13 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 
 		@Override
 		protected org.lgna.croquet.stencil.todo.Page getCurrentPage() {
-			return ChapterPage.getInstance( StencilsPresentation.this.getBook().getSelectedChapter() );
+			return ChapterPage.getInstance( BasicTutorialPresentation.this.getBook().getSelectedChapter() );
 		}
-		@Override
-		protected boolean isPaintingStencilEnabled() {
-			return StencilsPresentation.this.isPaintingStencil.getValue();
-		}
+		// TODO: <kjh/> I donnno if I need this anymore...
+		//		@Override
+		//		protected boolean isPaintingStencilEnabled() {
+		//			return BasicTutorialPresentation.this.isPaintingStencil.getValue();
+		//		}
 
 		private java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
@@ -157,8 +160,8 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			StencilsPresentation.this.startListening();
-			StencilsPresentation.this.handleChapterChanged( StencilsPresentation.this.getBook().getSelectedChapter() );
+			BasicTutorialPresentation.this.startListening();
+			BasicTutorialPresentation.this.handleChapterChanged( BasicTutorialPresentation.this.getBook().getSelectedChapter() );
 			this.addKeyListener( this.keyListener );
 			this.addMouseListener( this.mouseListener );
 		}
@@ -167,8 +170,18 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 		protected void handleUndisplayable() {
 			this.removeMouseListener( this.mouseListener );
 			this.removeKeyListener( this.keyListener );
-			StencilsPresentation.this.stopListening();
+			BasicTutorialPresentation.this.stopListening();
 			super.handleUndisplayable();
+		}
+
+		@Override
+		protected StencilLayer getStencilsLayer() {
+			return StencilLayer.ABOVE_POPUP_LAYER;
+		}
+		
+		@Override
+		protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+			return new java.awt.BorderLayout();
 		}
 	}
 
@@ -177,7 +190,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	final private org.lgna.croquet.Application application;
 
 	private boolean isIgnoringEvents = false;
-	public StencilsPresentation( org.lgna.croquet.Application application ) {
+	public BasicTutorialPresentation( org.lgna.croquet.Application application ) {
 		super();
 		this.application = application;
 	}
@@ -199,7 +212,7 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				StencilsPresentation.this.stencil.setEventInterceptEnabled( nextValue );
+				BasicTutorialPresentation.this.stencil.setEventInterceptEnabled( nextValue );
 			}
 		} );
 
@@ -207,9 +220,9 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
 			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				StencilsPresentation.this.stencil.revalidateAndRepaint();
-				StencilsPresentation.this.isInterceptingEvents.setValueTransactionlessly( nextValue );
-				StencilsPresentation.this.isInterceptingEvents.setEnabled( nextValue );
+				BasicTutorialPresentation.this.stencil.revalidateAndRepaint();
+				BasicTutorialPresentation.this.isInterceptingEvents.setValueTransactionlessly( nextValue );
+				BasicTutorialPresentation.this.isInterceptingEvents.setEnabled( nextValue );
 			}
 		} );
 
@@ -245,11 +258,11 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 				if( chapterPage.isAutoAdvanceDesired() ) {
 					javax.swing.SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-							StencilsPresentation.this.isIgnoringEvents = true;
+							BasicTutorialPresentation.this.isIgnoringEvents = true;
 							try {
 								NextStepOperation.getInstance().fire();
 							} finally {
-								StencilsPresentation.this.isIgnoringEvents = false;
+								BasicTutorialPresentation.this.isIgnoringEvents = false;
 							}
 						}
 					} );
@@ -359,10 +372,6 @@ public class StencilsPresentation extends org.lgna.cheshire.Presentation {
 	@Override
 	protected void handleStateChange(boolean isVisible) {
 		assert this.stencil != null : this.stencil;
-		if( isVisible ) {
-			this.stencil.addToLayeredPane();
-		} else {
-			this.stencil.removeFromLayeredPane();
-		}
+		this.stencil.setShowing( isVisible);
 	}
 }

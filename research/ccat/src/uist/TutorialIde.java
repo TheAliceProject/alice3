@@ -188,7 +188,7 @@ public class TutorialIde extends org.alice.stageide.StageIDE {
 		Recoverer recoverer = new Recoverer();
 		final org.lgna.cheshire.Presentation presentation;
 		if( IS_STENCILS ) {
-			presentation = new org.lgna.cheshire.stencil.StencilsPresentation( 
+			presentation = new org.lgna.cheshire.stencil.BasicTutorialPresentation( 
 					//edu.cmu.cs.dennisc.croquet.guide.StepAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_STEP,
 					org.lgna.cheshire.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, 
 					

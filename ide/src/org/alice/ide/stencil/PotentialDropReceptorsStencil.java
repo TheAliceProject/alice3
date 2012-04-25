@@ -46,7 +46,7 @@ package org.alice.ide.stencil;
  * @author Dennis Cosgrove
  *
  */
-public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.trash.JStencilPlusLayeredPaneComponent {
+public class PotentialDropReceptorsStencil extends org.lgna.croquet.stencil.trash.LayeredPaneComponent {
 	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
 	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );//, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_MITER );
 

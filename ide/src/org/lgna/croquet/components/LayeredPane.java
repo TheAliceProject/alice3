@@ -12,6 +12,7 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 		this.layeredPane = layeredPane;
 		this.componentListener = new java.awt.event.ComponentListener() {
 			public void componentResized( java.awt.event.ComponentEvent e ) {
+				LayeredPane.this.resizeComponents();
 				LayeredPane.this.revalidateAndRepaint();
 			}
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
@@ -27,22 +28,30 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 		javax.swing.JLayeredPane layeredPane = this.getAwtComponent();
 		layeredPane.add( component.getAwtComponent() );
 		layeredPane.setLayer( component.getAwtComponent(), layer );
+		this.resizeComponents();
 		layeredPane.repaint();
 	}
 
 	public void removeFromLayeredPane( Component<?> component ) {
 		javax.swing.JLayeredPane layeredPane = this.getAwtComponent();
 		layeredPane.remove( component.getAwtComponent() );
+		this.resizeComponents();
 		layeredPane.repaint();
 	}
 
 	public boolean contains( Component<?> component ) {
-		for ( Component<?> c : this.getComponents() ) {
-			if ( c == component ) {
+		for ( java.awt.Component c : this.getAwtComponent().getComponents() ) {
+			if ( c == component.getAwtComponent() ) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private void resizeComponents() {
+		for ( java.awt.Component component : this.getAwtComponent().getComponents() ) {
+			component.setBounds( this.layeredPane.getBounds() );
+		}
 	}
 
 	@Override
@@ -53,6 +62,7 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
+		this.resizeComponents();
 		this.layeredPane.addComponentListener( this.componentListener );
 	}
 
