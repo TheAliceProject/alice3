@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui.debug.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistoryTreeModel  extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
+class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
 	private org.lgna.croquet.history.TransactionHistory root;
 	public TransactionHistoryTreeModel( org.lgna.croquet.history.TransactionHistory root ) {
 		this.root = root;

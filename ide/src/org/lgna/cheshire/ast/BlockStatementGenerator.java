@@ -41,45 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ui.debug.components;
+package org.lgna.cheshire.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
-	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value instanceof org.lgna.croquet.history.Transaction ) {
-			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)value;
-			int i = transaction.getOwner().getIndexOfTransaction( transaction );
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>" );
-			sb.append( "transaction[" );
-			sb.append( i );
-			sb.append( "] " );
-			String title = transaction.getTitle( );
-			if( title != null ) {
-				sb.append( "<strong>" );
-				sb.append( title );
-				sb.append( "</strong>" );
-			}
-			sb.append( "</html>" );
-			rv.setText( sb.toString() );
-			rv.setIcon( null );
-		} else if( value instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
-			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)value;
-			String name;
-			if( completionStep.isPending() ) {
-				name = "pending";
+public class BlockStatementGenerator {
+	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>,StatementGenerator> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	static {
+		map.put( org.lgna.project.ast.DoTogether.class, org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance() );
+	}
+	public static void createAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
+		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
+			StatementGenerator statementGenerator = map.get( statement.getClass() );
+			if( statementGenerator != null ) {
+				statementGenerator.createAndAddTransaction( history, statement );
 			} else {
-				if( completionStep.isSuccessfullyCompleted() ) {
-					name = "completed";
-				} else {
-					name = "canceled";
-				}
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( statement );
 			}
-			rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
+			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+				BlockStatementGenerator.createAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
+			}
 		}
-		return rv;
-	}	
+	}
 }

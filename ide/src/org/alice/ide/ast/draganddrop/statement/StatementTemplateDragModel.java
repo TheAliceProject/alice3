@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementTemplateDragModel extends AbstractStatementDragModel {
+public abstract class StatementTemplateDragModel extends AbstractStatementDragModel implements org.lgna.cheshire.ast.StatementGenerator {
 	private final Class<? extends org.lgna.project.ast.Statement > statementCls;
 	private final org.lgna.project.ast.Statement possiblyIncompleteStatement;
 	public StatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement > statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement ) {
@@ -74,6 +74,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 	
 	public void createAndAddTransaction( org.lgna.croquet.history.TransactionHistory owner, org.lgna.project.ast.Statement statement ) {
 		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( owner );
+		owner.addTransaction( transaction );
 		
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "TODO: contemplate AstGeneratedTrigger class" );
 		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
