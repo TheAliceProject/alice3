@@ -75,8 +75,10 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	}
 	
 	@Override
-	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement ) {
-		throw new UnsupportedOperationException( "todo" );
+	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
+		assert statement instanceof org.lgna.project.ast.ReturnStatement : statement;
+		org.lgna.project.ast.ReturnStatement returnStatement = (org.lgna.project.ast.ReturnStatement)statement;
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( returnStatement.expression.getValue() );
 	}
 	@Override
 	protected org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
