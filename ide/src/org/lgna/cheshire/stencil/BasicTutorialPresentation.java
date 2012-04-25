@@ -63,7 +63,7 @@ public class BasicTutorialPresentation extends org.lgna.cheshire.Presentation {
 		return new org.lgna.cheshire.TransactionChapter( transaction );
 	}
 
-	public class Stencil extends org.lgna.croquet.stencil.todo.BasicFeatureStencil {
+	public class Stencil extends org.lgna.croquet.stencil.BasicFeatureStencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.croquet.stencil.ScrollRenderer scrollingRequiredRenderer, org.lgna.croquet.stencil.StencilLayer menuPolicy ) {
 			super( window );

@@ -1,4 +1,8 @@
-package org.lgna.croquet.stencil.todo;
+package org.lgna.croquet.stencil;
+
+import org.lgna.croquet.stencil.todo.Feature;
+import org.lgna.croquet.stencil.todo.Note;
+import org.lgna.croquet.stencil.todo.Page;
 
 /**
  * @author Kyle J. Harms
