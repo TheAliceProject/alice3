@@ -48,7 +48,7 @@ package org.lgna.cheshire.simple;
 /**
  * @author Dennis Cosgrove
  */
-public class BasicScrollRenderer implements ScrollRenderer {
+public class SimpleScrollRenderer implements ScrollRenderer {
 
 	private java.awt.geom.Area drawScrollFeedback( java.awt.Graphics2D g2, java.awt.Rectangle rect ) {
 		g2.setColor( java.awt.Color.BLACK );

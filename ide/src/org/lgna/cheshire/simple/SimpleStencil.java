@@ -4,7 +4,8 @@ package org.lgna.cheshire.simple;
 /**
  * @author Kyle J. Harms
  */
-public abstract class BasicFeatureStencil extends org.lgna.croquet.components.Stencil {
+@Deprecated
+public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil {
 
 	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
 	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
@@ -13,9 +14,9 @@ public abstract class BasicFeatureStencil extends org.lgna.croquet.components.St
 	private final org.lgna.cheshire.simple.ScrollRenderer scrollRenderer;
 	private Feature enteredFeature;
 
-	public BasicFeatureStencil( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	public SimpleStencil( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		super( window );
-		this.scrollRenderer = new org.lgna.cheshire.simple.BasicScrollRenderer();
+		this.scrollRenderer = new org.lgna.cheshire.simple.SimpleScrollRenderer();
 		this.stencilPaint = this.getStencilPaint();
 	}
 
@@ -57,7 +58,7 @@ public abstract class BasicFeatureStencil extends org.lgna.croquet.components.St
 			for( Note note : page.getNotes() ) {
 				if( note.isActive() ) {
 					for( Feature feature : note.getFeatures() ) {
-						java.awt.Shape shape = feature.getShape( BasicFeatureStencil.this, null );
+						java.awt.Shape shape = feature.getShape( SimpleStencil.this, null );
 						if( shape != null ) {
 							if( shape.contains( e.getX(), e.getY() ) ) {
 								this.setEnteredFeature(feature);
@@ -84,7 +85,7 @@ public abstract class BasicFeatureStencil extends org.lgna.croquet.components.St
 								org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 								if( trackableShape != null ) {
 									if( trackableShape.isInView() ) {
-										java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( BasicFeatureStencil.this );
+										java.awt.geom.Area featureArea = feature.getAreaToSubstractForPaint( SimpleStencil.this );
 										if( featureArea != null ) {
 											area.subtract( featureArea );
 										}
@@ -93,7 +94,7 @@ public abstract class BasicFeatureStencil extends org.lgna.croquet.components.St
 											org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 											if( scrollPane != null ) {
 												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), BasicFeatureStencil.this.getAwtComponent() );
+												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), SimpleStencil.this.getAwtComponent() );
 												area.subtract( new java.awt.geom.Area( rect ) );
 											} else {
 												System.err.println( "cannot find scroll pane for: " + feature );
@@ -122,7 +123,7 @@ public abstract class BasicFeatureStencil extends org.lgna.croquet.components.St
 				for( Note note : page.getNotes() ) {
 					if( note.isActive() ) {
 						for( Feature feature : note.getFeatures() ) {
-							feature.paint( g2, BasicFeatureStencil.this, note );
+							feature.paint( g2, SimpleStencil.this, note );
 						}
 					}
 				}
@@ -144,7 +145,7 @@ public abstract class BasicFeatureStencil extends org.lgna.croquet.components.St
 									//pass
 								} else {
 									if( scrollRenderer != null ) {
-										java.awt.Shape repaintShape = scrollRenderer.renderScrollIndicators( g2, BasicFeatureStencil.this, trackableShape );
+										java.awt.Shape repaintShape = scrollRenderer.renderScrollIndicators( g2, SimpleStencil.this, trackableShape );
 										if( repaintShape != null ) {
 											//todo: repaint?
 										}
@@ -169,7 +170,7 @@ public abstract class BasicFeatureStencil extends org.lgna.croquet.components.St
 						org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 						if( trackableShape != null ) {
 							if( trackableShape.isInView() ) {
-								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( BasicFeatureStencil.this );
+								java.awt.geom.Area featureArea = feature.getAreaToSubstractForContains( SimpleStencil.this );
 								if( featureArea != null ) {
 									area.subtract( featureArea );
 								}
@@ -178,7 +179,7 @@ public abstract class BasicFeatureStencil extends org.lgna.croquet.components.St
 									org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 									if( scrollPane != null ) {
 										javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), BasicFeatureStencil.this.getAwtComponent() );
+										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), SimpleStencil.this.getAwtComponent() );
 										area.subtract( new java.awt.geom.Area( rect ) );
 									} else {
 										System.err.println( "cannot find scroll pane for: " + feature );

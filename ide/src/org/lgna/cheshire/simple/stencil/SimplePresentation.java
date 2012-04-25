@@ -58,7 +58,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		return new org.lgna.cheshire.simple.TransactionChapter( transaction );
 	}
 
-	public class Stencil extends org.lgna.cheshire.simple.BasicFeatureStencil {
+	public class Stencil extends org.lgna.cheshire.simple.SimpleStencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
 		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, StencilLayer menuPolicy ) {
 			super( window );
@@ -195,7 +195,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		super.setPresentationData(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
 		// TODO: <kjh/> clean this up!!!! This should go in the constructor
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.BasicScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
+		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
 
 		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
