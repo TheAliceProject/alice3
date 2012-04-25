@@ -63,6 +63,10 @@ public class WhileLoopInsertCascade extends StatementInsertCascade {
 		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement ) {
+		throw new UnsupportedOperationException( "todo" );
+	}
+	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createWhileLoop( expressions[ 0 ] );
 	}

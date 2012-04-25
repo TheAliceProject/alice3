@@ -47,15 +47,36 @@ package org.lgna.cheshire.ast;
  * @author Dennis Cosgrove
  */
 public class BlockStatementGenerator {
-	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>,StatementGenerator> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>,StatementGenerator> mapStatementClassToGenerator = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
-		map.put( org.lgna.project.ast.DoTogether.class, org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.Comment.class, org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.CountLoop.class, org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.DoInOrder.class, org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.DoTogether.class, org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.EachInArrayTogether.class, org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.ForEachInArrayLoop.class, org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance() );
+		//mapStatementClassToGenerator.put( org.lgna.project.ast.ReturnStatement.class, org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
 	}
 	public static void createAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
-			StatementGenerator statementGenerator = map.get( statement.getClass() );
+			StatementGenerator statementGenerator;
+			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+				if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+					statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( expression );
+					statementGenerator = null;
+				}
+			} else {
+				statementGenerator = mapStatementClassToGenerator.get( statement.getClass() );
+			}
 			if( statementGenerator != null ) {
-				statementGenerator.createAndAddTransaction( history, statement );
+				statementGenerator.generateAndAddStepsToTransaction( history, statement );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( statement );
 			}

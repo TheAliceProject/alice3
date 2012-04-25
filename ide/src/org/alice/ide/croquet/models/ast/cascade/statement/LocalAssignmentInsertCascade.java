@@ -53,6 +53,10 @@ public class LocalAssignmentInsertCascade extends ExpressionStatementInsertCasca
 		this.local = local;
 	}
 	@Override
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement ) {
+		throw new UnsupportedOperationException( "todo " + this );
+	}
+	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createLocalAssignment( this.local, expressions[ 0 ] );
 	}

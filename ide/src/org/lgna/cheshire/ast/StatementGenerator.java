@@ -47,5 +47,5 @@ package org.lgna.cheshire.ast;
  * @author Dennis Cosgrove
  */
 public interface StatementGenerator {
-	public void createAndAddTransaction( org.lgna.croquet.history.TransactionHistory owner, org.lgna.project.ast.Statement statement );
+	public void generateAndAddStepsToTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement );
 }

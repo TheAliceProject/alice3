@@ -75,6 +75,10 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 	}
 	
 	@Override
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement ) {
+		throw new UnsupportedOperationException( "todo" );
+	}
+	@Override
 	protected org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
 	}

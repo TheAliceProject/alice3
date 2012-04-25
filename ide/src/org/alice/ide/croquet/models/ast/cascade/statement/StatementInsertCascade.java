@@ -55,6 +55,18 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
+	
+	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement );
+	public void generateAndAddPostDragStepsToTransaction( org.lgna.croquet.history.Transaction transaction, org.lgna.project.ast.Statement statement ) {
+		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+		for( org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?> fillIn : this.extractFillInsForStepGeneration( statement ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( fillIn );
+			javax.swing.event.ChangeEvent changeEvent = null;
+			org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, new org.lgna.croquet.triggers.MenuSelectionTrigger( changeEvent ) );
+		}
+		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, new org.lgna.croquet.triggers.SimulatedTrigger(), null );
+	}
+	
 	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions );
 	@Override
 	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> step, org.lgna.project.ast.Expression[] values ) {
