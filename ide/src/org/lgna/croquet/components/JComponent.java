@@ -47,29 +47,20 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class JComponent<J extends javax.swing.JComponent> extends Container<J> {
-	
-//	public void setOpaque(boolean isOpaque) {
-//		this.getAwtComponent().setOpaque(isOpaque);
-//	}
+
 	@Override
 	public void setBackgroundColor( java.awt.Color color ) {
 		super.setBackgroundColor( color );
 		this.getAwtComponent().setOpaque( color != null );
-//		//todo?
-//		if( color != null ) {
-//			//pass
-//		} else {
-//			this.getAwtComponent().setOpaque( false );
-//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-//		}
 	}
+
 	public void setAlignmentX(float alignmentX) {
 		this.getAwtComponent().setAlignmentX(alignmentX);
 	}
 	public void setAlignmentY(float alignmentY) {
 		this.getAwtComponent().setAlignmentY(alignmentY);
 	}
-	
+
 	@Override
 	public java.awt.Rectangle getVisibleRectangle() {
 		return this.getAwtComponent().getVisibleRect();
