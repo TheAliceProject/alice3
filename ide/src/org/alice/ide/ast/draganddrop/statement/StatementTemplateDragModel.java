@@ -75,8 +75,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 	public void generateAndAddStepsToTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement ) {
 		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( history );
 		history.addTransaction( transaction );
-		
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "TODO: contemplate AstGeneratedTrigger class" );
+
 		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
 		
 		org.lgna.croquet.history.DragStep dragStep = org.lgna.croquet.history.DragStep.createAndAddToTransaction( transaction, this, trigger );
@@ -90,14 +89,20 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		org.lgna.croquet.DropReceptor dropReceptor = org.alice.ide.IDE.getActiveInstance().getDropReceptor( blockStatementIndexPair );
 		org.lgna.croquet.triggers.DropTrigger dropTrigger = new org.lgna.croquet.triggers.DropTrigger( viewController, mouseEvent, dropReceptor, blockStatementIndexPair );
 		
-		if( dropModel instanceof org.lgna.croquet.CompletionModel ) {
-			if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade ) {
-				org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade statementInsertCascade = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade)dropModel;
-				statementInsertCascade.generateAndAddPostDragStepsToTransaction( transaction, statement );
-			} else {
-				org.lgna.croquet.CompletionModel completionModel = (org.lgna.croquet.CompletionModel)dropModel;
-				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, completionModel, dropTrigger, null );
-			}
-		} 
+		if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade ) {
+			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade statementInsertCascade = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade)dropModel;
+			statementInsertCascade.generateAndAddPostDragStepsToTransaction( transaction, statement );
+		} else if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation ) {
+			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation statementInsertOperation = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation)dropModel;
+			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, statementInsertOperation, dropTrigger, null );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropModel );
+		}
+		
+		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
+		if( completionStep != null ) {
+			completionStep.setEdit( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement ) );
+		}
+		
 	}
 }

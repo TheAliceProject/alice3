@@ -56,11 +56,34 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 		return this.blockStatementIndexPair;
 	}
 	
-	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?>[] extractFillInsForStepGeneration( org.lgna.project.ast.Statement statement );
+	protected abstract java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement );
 	public void generateAndAddPostDragStepsToTransaction( org.lgna.croquet.history.Transaction transaction, org.lgna.project.ast.Statement statement ) {
 		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
-		for( org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?> fillIn : this.extractFillInsForStepGeneration( statement ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( fillIn );
+		java.util.List<org.lgna.project.ast.Expression> expressions = this.extractExpressionsForFillInGeneration( statement );
+		for( org.lgna.project.ast.Expression expression : expressions ) {
+			org.lgna.croquet.CascadeFillIn fillIn;
+			if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
+				org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)expression;
+				fillIn = org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( integerLiteral.value.getValue() );
+			} else if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
+				org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
+				fillIn = org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn.getInstance( doubleLiteral.value.getValue() );
+			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+				if( field.isStatic() ) {
+					fillIn = org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field );
+				} else {
+					fillIn = null;
+				}
+			} else {
+				fillIn = null;
+			}
+			if( fillIn != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: pass fill in to menu selection step ", fillIn );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle expression ", expression );
+			}
 			javax.swing.event.ChangeEvent changeEvent = null;
 			org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, new org.lgna.croquet.triggers.MenuSelectionTrigger( changeEvent ) );
 		}
