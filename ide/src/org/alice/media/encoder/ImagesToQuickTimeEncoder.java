@@ -75,14 +75,13 @@ import edu.cmu.cs.dennisc.movie.MovieEncoder;
  * @author dculyba
  *
  */
-public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserver
-{
-//	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(22050f, 16, 1, true, false);
+public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserver {
+	//	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(22050f, 16, 1, true, false);
 	private static float RATE_22 = 22050f;
 	private static float RATE_44 = 44100f;
-	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false);
+	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 	private static VideoFormat QUICKTIME_VIDEO_FORMAT = VideoFormat.JPG;
-	
+
 	private double framesPerSecond;
 	private int width = -1;
 	private int height = -1;
@@ -92,56 +91,47 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 	boolean isRunning = false;
 	private int frameCount;
 	private List<ScheduledAudioStream> audioStreams = new LinkedList<ScheduledAudioStream>();
-	
+
 	private List<EncoderListener> listeners = new LinkedList<EncoderListener>();
 
-	
 	public static File createTempDirectory() throws IOException {
 		final File temp;
 
-		temp = File.createTempFile("temp", Long.toString(System.nanoTime()));
+		temp = File.createTempFile( "temp", Long.toString( System.nanoTime() ) );
 
-		if (!(temp.delete())) {
-			throw new IOException("Could not delete temp file: "
-					+ temp.getAbsolutePath());
+		if( !(temp.delete()) ) {
+			throw new IOException( "Could not delete temp file: " + temp.getAbsolutePath() );
 		}
 
-		if (!(temp.mkdir())) {
-			throw new IOException("Could not create temp directory: "
-					+ temp.getAbsolutePath());
+		if( !(temp.mkdir()) ) {
+			throw new IOException( "Could not create temp directory: " + temp.getAbsolutePath() );
 		}
 
 		return (temp);
 	}
-	
-	public ImagesToQuickTimeEncoder(double framesPerSecond)
-	{
+
+	public ImagesToQuickTimeEncoder( double framesPerSecond ) {
 		this.framesPerSecond = framesPerSecond;
 		this.frameCount = 0;
 	}
-	
-	private void initializeFrameDirectory()
-	{
-		try
-		{
+
+	private void initializeFrameDirectory() {
+		try {
 			this.frameDirectory = createTempDirectory();
-		}
-		catch (Exception e)
-		{
+		} catch( Exception e ) {
 			this.frameDirectory = null;
 		}
 	}
-	
+
 	private void writeVideoAndAudio(File[] imgFiles, File audioFile, QuickTimeWriter.VideoFormat videoFormat, boolean passThrough, String streaming) throws IOException {
         File tmpFile = streaming.equals("none") ? this.outputFile : new File(this.outputFile.getPath() + ".tmp");
         AudioInputStream audioIn = null;
         QuickTimeWriter qtOut = null;
         BufferedImage imgBuffer = null;
         Graphics2D g = null;
-
         try {
             // Determine audio format
-            if (audioFile.getName().toLowerCase().endsWith(".mp3")) {
+        	 if (audioFile.getName().toLowerCase().endsWith(".mp3")) {
                 audioIn = new MP3AudioInputStream(audioFile);
             } else {
                 audioIn = AudioSystem.getAudioInputStream(audioFile);
@@ -235,7 +225,8 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
             IOException ioe = new IOException(e.getMessage());
             ioe.initCause(e);
             throw ioe;
-        } finally {
+        }
+        finally {
             if (qtOut != null) {
                 qtOut.close();
             }
@@ -250,174 +241,133 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
             }
         }
     }
-	
-	
-	public ImagesToQuickTimeEncoder(float framesPerSecond, File out) throws IOException
-	{
-		this(framesPerSecond);
-		setOutput(out);
+	public ImagesToQuickTimeEncoder( float framesPerSecond, File out ) throws IOException {
+		this( framesPerSecond );
+		setOutput( out );
 	}
-	
-	public void setOutput(File out)
-	{
+
+	public void setOutput( File out ) {
 		this.outputFile = out;
 	}
-	
-	public void setDimensions(int width, int height)
-	{
+
+	public void setDimensions( int width, int height ) {
 		this.width = width;
 		this.height = height;
 	}
-	
-	private static BufferedImage deepCopy(BufferedImage bi)
-    {
-        ColorModel cm = bi.getColorModel();
-        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
-        WritableRaster raster = bi.copyData(null);
-        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
-    }
 
-	public void addListener(EncoderListener listener)
-    {
-        if (!this.listeners.contains(listener))
-        {
-            this.listeners.add(listener);
-        }
-    }
-	
-	public boolean isRunning()
-	{
+	private static BufferedImage deepCopy( BufferedImage bi ) {
+		ColorModel cm = bi.getColorModel();
+		boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+		WritableRaster raster = bi.copyData( null );
+		return new BufferedImage( cm, raster, isAlphaPremultiplied, null );
+	}
+
+	public void addListener( EncoderListener listener ) {
+		if( !this.listeners.contains( listener ) ) {
+			this.listeners.add( listener );
+		}
+	}
+
+	public boolean isRunning() {
 		return this.isRunning;
 	}
-	
-	protected static String getFileNameForFrame(int frame, String extension)
-    {
-		return "frame_" + String.format("%05d", frame) + "." + extension;
+
+	protected static String getFileNameForFrame( int frame, String extension ) {
+		return "frame_" + String.format( "%05d", frame ) + "." + extension;
 	}
-	
-	private void addImageToMovie(BufferedImage bufferedImage)
-	{
-		try
-		{
-			if (this.width == -1 || this.height == -1)
-			{
+
+	private void addImageToMovie( BufferedImage bufferedImage ) {
+		try {
+			if( this.width == -1 || this.height == -1 ) {
 				this.width = bufferedImage.getWidth();
 				this.height = bufferedImage.getHeight();
 			}
-			if (ImagesToQuickTimeEncoder.this.frameDirectory != null)
-            {
-                try
-                {
-                    ImageIO.write(
-                            bufferedImage,
-                            "png",
-                            new File(ImagesToQuickTimeEncoder.this.frameDirectory,
-                                    getFileNameForFrame(this.frameCount,
-                                            "png")));
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-			if (this.frameCount == 0)
-			{
-				this.thumbnailImage = deepCopy(bufferedImage);
+			if( ImagesToQuickTimeEncoder.this.frameDirectory != null ) {
+				try {
+					ImageIO.write( bufferedImage, "png", new File( ImagesToQuickTimeEncoder.this.frameDirectory, getFileNameForFrame( this.frameCount, "png" ) ) );
+				} catch( IOException e ) {
+					e.printStackTrace();
+				}
+			}
+			if( this.frameCount == 0 ) {
+				this.thumbnailImage = deepCopy( bufferedImage );
 			}
 			this.frameCount++;
-			for (EncoderListener l : this.listeners)
-            {
-                l.frameUpdate(this.frameCount);
-            }
-		}
-		catch (Exception e)
-		{
+			for( EncoderListener l : this.listeners ) {
+				l.frameUpdate( this.frameCount );
+			}
+		} catch( Exception e ) {
 			e.printStackTrace();
 		}
 	}
 
-	public void addBufferedImage(BufferedImage bufferedImage)
-    {
-		try
-		{
-			addImageToMovie(deepCopy(bufferedImage));
-			
-//			synchronized (this.imageQueueLock) {
-//				this.images.add(deepCopy(bufferedImage));
-//			}
-		}
-		catch (Exception e)
-		{
+	public void addBufferedImage( BufferedImage bufferedImage ) {
+		try {
+			addImageToMovie( deepCopy( bufferedImage ) );
+
+			//			synchronized (this.imageQueueLock) {
+			//				this.images.add(deepCopy(bufferedImage));
+			//			}
+		} catch( Exception e ) {
 			e.printStackTrace();
 		}
-    }
-	
-	public BufferedImage getThumbnailImage()
-	{
+	}
+
+	public BufferedImage getThumbnailImage() {
 		return this.thumbnailImage;
 	}
-	
 
-	private void initializeWriter() throws IOException
-	{
-		if (this.frameDirectory != null)
-		{
-			FileUtilities.delete(this.frameDirectory);
+	private void initializeWriter() throws IOException {
+		if( this.frameDirectory != null ) {
+			FileUtilities.delete( this.frameDirectory );
 		}
 		initializeFrameDirectory();
+		System.out.println("INITIALIZEWRITER");
 		this.audioStreams.clear();
 	}
-	
-	private double movieLength()
-	{
+
+	private double movieLength() {
 		double totalTime = this.frameCount / this.framesPerSecond;
 		return totalTime;
 	}
-	
-	private File createAudioFile()
-	{
-		if (this.audioStreams.size() > 0)
-		{
-			AudioTrackMixer mixer = new AudioTrackMixer(QUICKTIME_AUDIO_FORMAT, movieLength());
-			for (ScheduledAudioStream stream : this.audioStreams)
-			{
-				mixer.addScheduledStream(stream);
+
+	private File createAudioFile() {
+		if( this.audioStreams.size() > 0 ) {
+			AudioTrackMixer mixer = new AudioTrackMixer( QUICKTIME_AUDIO_FORMAT, movieLength() );
+			for( ScheduledAudioStream stream : this.audioStreams ) {
+				mixer.addScheduledStream( stream );
 			}
-			try
-			{
-				File tempFile = File.createTempFile("TEMP_soundTrack", ".wav");
-				FileOutputStream out = new FileOutputStream(tempFile);
-				mixer.write(out);
+			try {
+				File tempFile = File.createTempFile( "TEMP_soundTrack", ".wav" );
+				System.out.println("tempFile: " + tempFile);
+				FileOutputStream out = new FileOutputStream( tempFile );
+				mixer.write( out );
 				out.close();
+				System.out.println("tempFile: " + tempFile);
 				return tempFile;
-			}
-			catch (Exception e)
-			{
+			} catch( Exception e ) {
 				e.printStackTrace();
 			}
 		}
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see edu.cmu.cs.dennisc.movie.MovieEncoder#start()
 	 */
 	public void start() {
 		this.isRunning = true;
 		this.frameCount = 0;
-		try
-		{
+		try {
 			initializeWriter();
-		}
-		catch (IOException e)
-		{
+		} catch( IOException e ) {
 			e.printStackTrace();
 		}
-		for (EncoderListener l : this.listeners)
-        {
-            l.encodingStarted();
-        }
+		for( EncoderListener l : this.listeners ) {
+			l.encodingStarted();
+		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see edu.cmu.cs.dennisc.movie.MovieEncoder#stop()
 	 */
@@ -425,58 +375,44 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 		this.isRunning = false;
 		boolean success = false;
 		File audioFile = null;
-		try
-		{
+		try {
 			audioFile = this.createAudioFile();
 			File[] imgFiles = this.frameDirectory.listFiles();
-			writeVideoAndAudio(imgFiles, audioFile, QUICKTIME_VIDEO_FORMAT, false, "none");
+			writeVideoAndAudio( imgFiles, audioFile, QUICKTIME_VIDEO_FORMAT, false, "none" );
 			success = true;
-		}
-		catch (Exception e)
-		{
+		} catch( Exception e ) {
 			e.printStackTrace();
 			success = false;
-		}
-		finally
-		{
-			if (audioFile != null)
-			{
-				FileUtilities.delete(audioFile);
+		} finally {
+			if( audioFile != null ) {
+				FileUtilities.delete( audioFile );
 			}
-			if (this.frameDirectory != null)
-			{
-				FileUtilities.delete(this.frameDirectory);
+			if( this.frameDirectory != null ) {
+				FileUtilities.delete( this.frameDirectory );
 			}
 		}
-		for (EncoderListener l : this.listeners)
-        {
-            l.encodingFinished(success);
-        }
-		
+		for( EncoderListener l : this.listeners ) {
+			l.encodingFinished( success );
+		}
+
 	}
 
 	public MediaPlayerObserver getMediaPlayerObserver() {
 		return this;
-//		return null;
 	}
 
-	public void playerStarted(MediaPlayerAnimation playerAnimation, double playTime) {
+	public void playerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
 		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
-		if (player instanceof edu.cmu.cs.dennisc.media.jmf.Player)
-		{
+		if( player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
 			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
-			ScheduledAudioStream audioStream = new ScheduledAudioStream(jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel());
-			this.audioStreams.add(audioStream);
+			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
+			this.audioStreams.add( audioStream );
 		}
 	}
 
-	public void started(Animation animation) {
-		// TODO Auto-generated method stub
-		
+	public void started( Animation animation ) {
 	}
 
-	public void finished(Animation animation) {
-		// TODO Auto-generated method stub
-		
+	public void finished( Animation animation ) {
 	}
 }

@@ -42,7 +42,10 @@
  */
 package org.alice.media;
 
+import java.io.File;
+
 import org.alice.media.components.RecordView;
+import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.history.Transaction;
@@ -52,6 +55,9 @@ import org.lgna.croquet.triggers.Trigger;
  * @author Matt May
  */
 public class RecordComposite extends Composite<RecordView> {
+
+	private org.alice.media.encoder.ImagesToQuickTimeEncoder encoder = new ImagesToQuickTimeEncoder( 24.0 );
+
 	private static class SingletonHolder {
 		private static RecordComposite instance = new RecordComposite();
 	}
@@ -59,17 +65,18 @@ public class RecordComposite extends Composite<RecordView> {
 	public static RecordComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
 			toggleRecording();
 		}
 	}, this.createKey( "record" ) );
-	
+
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
 		}
 	}, this.createKey( "play" ) );
-	
+
 	public RecordComposite() {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 	}
@@ -78,7 +85,7 @@ public class RecordComposite extends Composite<RecordView> {
 	protected RecordView createView() {
 		return new RecordView( this );
 	}
-	
+
 	public ActionOperation getRecordOperation() {
 		return this.recordOperation;
 	}
@@ -114,6 +121,7 @@ public class RecordComposite extends Composite<RecordView> {
 
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
+
 	public boolean isRecording() {
 		return this.isRecording;
 	}
@@ -126,12 +134,15 @@ public class RecordComposite extends Composite<RecordView> {
 			if( this.isRecording ) {
 				programContext.getProgramImp().startAnimator();
 				this.recordOperation.setName( "stop" );
+				encoder.start();
+				encoder.setOutput( new File( "C:/Users/Matt/Desktop/videos/test.mp3" ) );
 			} else {
 				this.recordOperation.setName( "record" );
+				encoder.stop();
 			}
 		}
 	}
-	
+
 	private void toggleRecording() {
 		this.setRecording( this.isRecording() == false );
 	}
@@ -139,7 +150,6 @@ public class RecordComposite extends Composite<RecordView> {
 	private int getFrameRate() {
 		return 24;
 	}
-	
 
 	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
 		final RecordView recordView = this.getView();
@@ -150,7 +160,7 @@ public class RecordComposite extends Composite<RecordView> {
 				org.lgna.croquet.components.BorderPanel lookingGlassContainer = recordView.getLookingGlassContainer();
 				image = null;
 				imageCount = 0;
-				
+
 				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, getFrameRate() );
 				programContext.initialize( lookingGlassContainer.getAwtComponent() );
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
@@ -163,8 +173,8 @@ public class RecordComposite extends Composite<RecordView> {
 		this.setRecording( false );
 		programContext.cleanUpProgram();
 	}
-	
+
 	private void handleImage( java.awt.image.BufferedImage image, int imageCount ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( image );
+		encoder.addBufferedImage( image );
 	}
 }
