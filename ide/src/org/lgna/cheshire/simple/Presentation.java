@@ -56,12 +56,22 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	private Book book;
 	private boolean isResultOfNextOperation = false;
 	private org.lgna.project.history.ProjectHistory[] historyManagers;
+	private org.lgna.croquet.Retargeter retargeter;
 
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			Presentation.this.handleEvent( e );
+		}
+	};
+
+	private org.lgna.cheshire.simple.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.simple.Book.SelectionObserver() {
+		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
+		}
+		public void selectionChanged( Book source, int fromIndex, int toIndex ) {
+			Chapter chapter = source.getChapterAt( toIndex );
+			Presentation.this.handleChapterChanged( chapter );
 		}
 	};
 
@@ -78,7 +88,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 
 	// TODO: <kjh/> This needs to be invoked at some point
 	public void setPresentationData( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
-		this.validate( originalTransactionHistory );
+		this.validateTransactionHistory( originalTransactionHistory );
 
 		this.recoverer = recoverer;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
@@ -92,19 +102,12 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 			this.historyManagers[ i ] = org.alice.ide.IDE.getActiveInstance().getProjectHistory( groupsTrackedForRandomAccess[ i ] );
 		}
 		this.historyManagers[ N ] = org.alice.ide.IDE.getActiveInstance().getProjectHistory( COMPLETION_GROUP );
-		// <kjh/> org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( this.listener );
+
+		org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().addListener( this.listener );
 	}
 
 	protected abstract void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction );
 	protected abstract void handleEvent( org.lgna.croquet.history.event.Event<?> event );
-	private org.lgna.cheshire.simple.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.simple.Book.SelectionObserver() {
-		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
-		}
-		public void selectionChanged( Book source, int fromIndex, int toIndex ) {
-			Chapter chapter = source.getChapterAt( toIndex );
-			Presentation.this.handleChapterChanged( chapter );
-		}
-	};
 
 	protected void startListening() {
 		this.getBook().addSelectionObserver( this.selectionObserver );
@@ -185,7 +188,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		return this.book;
 	}
 
-	protected void validate( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	protected void validateTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		java.util.ListIterator< org.lgna.croquet.history.Transaction > transactionListIterator = transactionHistory.listIterator();
 		while( transactionListIterator.hasNext() ) {
 			org.lgna.croquet.history.Transaction transaction = transactionListIterator.next();
@@ -196,6 +199,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 			}
 		}
 	}
+
 	private org.lgna.croquet.CompletionModel huntForInMenus( java.util.List< org.lgna.croquet.MenuItemPrepModel > list, org.lgna.croquet.MenuItemPrepModel menuModel, org.lgna.croquet.CompletionModel model ) {
 		if( menuModel instanceof org.lgna.croquet.PredeterminedMenuModel ) {
 			org.lgna.croquet.PredeterminedMenuModel defaultMenuModel = (org.lgna.croquet.PredeterminedMenuModel)menuModel;
@@ -235,7 +239,6 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	protected org.lgna.croquet.history.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.history.Transaction transaction ) {
 		return null;
 	}
-	private org.lgna.croquet.Retargeter retargeter;
 
 	public org.lgna.croquet.Retargeter getRetargeter() {
 		return this.retargeter;

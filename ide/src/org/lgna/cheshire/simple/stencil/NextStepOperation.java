@@ -58,7 +58,7 @@ package org.lgna.cheshire.simple.stencil;
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().incrementSelectedIndex();
+		org.alice.ide.IDE.getActiveInstance().getSimplePresentation().incrementSelectedIndex();
 		step.finish();
 	}
 }

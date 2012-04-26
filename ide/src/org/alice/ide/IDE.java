@@ -73,7 +73,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	private final org.lgna.cheshire.simple.stencil.SimplePresentation stencilsPresentation;
+	private final org.lgna.cheshire.simple.stencil.SimplePresentation simplePresentation;
 	private final org.alice.ide.stencil.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
 	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
@@ -103,7 +103,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		// Initialize the Stencils infrastructure
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame() );
-		this.stencilsPresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
+		this.simplePresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
 	}
 
 	protected void updateEnabled( org.lgna.project.Project project ) {
@@ -124,8 +124,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getBattleCrazy();
 			this.loadProjectFrom( test.getProject() );
 			org.lgna.croquet.history.TransactionHistory reuseTransactionHistory = test.getReuseTransactionHistory();
-			this.stencilsPresentation.setPresentationData(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, reuseTransactionHistory, null, null, null, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
-			this.stencilsPresentation.showStencilsPresentation();
+			this.simplePresentation.setPresentationData(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, reuseTransactionHistory, null, null, null, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+			this.simplePresentation.showStencilsPresentation();
 			test.showTransactionHistory();
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 		}
@@ -557,7 +557,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public org.lgna.cheshire.simple.stencil.SimplePresentation getStencilsPresentation() {
-		return stencilsPresentation;
+	public org.lgna.cheshire.simple.stencil.SimplePresentation getSimplePresentation() {
+		return simplePresentation;
 	}
 }

@@ -148,7 +148,7 @@ public class Book {
 				org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate );
 				if( replacementAcceptability.isAcceptable() ) {
 					transactionChapter.setReplacementAcceptability( replacementAcceptability );
-					org.lgna.croquet.Retargeter retargeter = org.alice.ide.IDE.getActiveInstance().getStencilsPresentation().getRetargeter();
+					org.lgna.croquet.Retargeter retargeter = org.alice.ide.IDE.getActiveInstance().getSimplePresentation().getRetargeter();
 					originalEdit.addKeyValuePairs( retargeter, replacementCandidate );
 					this.retargetForward( retargeter );
 				}
