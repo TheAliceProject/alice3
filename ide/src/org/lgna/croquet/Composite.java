@@ -103,7 +103,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	}
 	private static class InternalBoundedIntegerState extends BoundedIntegerState {
 		private final Key key;
-		public InternalBoundedIntegerState( BoundedIntegerDetails details, Key key ) {
+		public InternalBoundedIntegerState( BoundedIntegerState.Details details, Key key ) {
 			super( details );
 			this.key = key;
 		}
@@ -118,7 +118,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	}
 	private static class InternalBoundedDoubleState extends BoundedDoubleState {
 		private final Key key;
-		public InternalBoundedDoubleState( BoundedDoubleDetails details, Key key ) {
+		public InternalBoundedDoubleState( BoundedDoubleState.Details details, Key key ) {
 			super( details );
 			this.key = key;
 		}
@@ -241,12 +241,12 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		this.mapKeyToBooleanState.put( key, rv );
 		return rv;
 	}
-	protected BoundedIntegerState createBoundedIntegerState( BoundedIntegerDetails details, Key key ) {
+	protected BoundedIntegerState createBoundedIntegerState( BoundedIntegerState.Details details, Key key ) {
 		InternalBoundedIntegerState rv = new InternalBoundedIntegerState( details, key );
 		this.mapKeyToBoundedIntegerState.put( key, rv );
 		return rv;
 	}
-	protected BoundedDoubleState createBoundedDoubleState( BoundedDoubleDetails details, Key key ) {
+	protected BoundedDoubleState createBoundedDoubleState( BoundedDoubleState.Details details, Key key ) {
 		InternalBoundedDoubleState rv = new InternalBoundedDoubleState( details, key );
 		this.mapKeyToBoundedDoubleState.put( key, rv );
 		return rv;
