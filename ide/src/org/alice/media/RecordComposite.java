@@ -56,8 +56,9 @@ import org.lgna.croquet.triggers.Trigger;
  */
 public class RecordComposite extends Composite<RecordView> {
 
-	private org.alice.media.encoder.ImagesToQuickTimeEncoder encoder = new ImagesToQuickTimeEncoder( 24.0 );
-
+	int frameRate = 24;
+	private org.alice.media.encoder.ImagesToQuickTimeEncoder encoder = new ImagesToQuickTimeEncoder( frameRate );
+	
 	private static class SingletonHolder {
 		private static RecordComposite instance = new RecordComposite();
 	}
@@ -148,7 +149,7 @@ public class RecordComposite extends Composite<RecordView> {
 	}
 
 	private int getFrameRate() {
-		return 24;
+		return frameRate;
 	}
 
 	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {

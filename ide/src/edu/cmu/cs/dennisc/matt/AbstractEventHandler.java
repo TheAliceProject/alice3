@@ -70,6 +70,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	}
 
 	private void fire( L listener, E event ) {
+		System.out.println("fire");
 		recorder.recordEvent( event );
 		nameOfFireCall( listener, event );
 	}

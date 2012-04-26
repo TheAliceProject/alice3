@@ -337,7 +337,6 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 			FileUtilities.delete( this.frameDirectory );
 		}
 		initializeFrameDirectory();
-		System.out.println("INITIALIZEWRITER");
 		this.audioStreams.clear();
 	}
 
@@ -385,12 +384,14 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 	 * @see edu.cmu.cs.dennisc.movie.MovieEncoder#stop()
 	 */
 	public void stop() {
+		System.out.println("STOP");
 		this.isRunning = false;
 		boolean success = false;
 		File audioFile = null;
 		try {
 			audioFile = this.createAudioFile();
 			File[] imgFiles = this.frameDirectory.listFiles();
+			System.out.println("length: " + imgFiles.length);
 			writeVideoAndAudio( imgFiles, audioFile, QUICKTIME_VIDEO_FORMAT, false, "none" );
 			success = true;
 		} catch( Exception e ) {
