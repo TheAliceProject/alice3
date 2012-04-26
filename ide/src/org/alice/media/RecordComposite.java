@@ -79,8 +79,16 @@ public class RecordComposite extends Composite<RecordView> {
 	}, this.createKey( "record" ) );
 
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
+		
+		private boolean isPlaying = false;
+
 		public void perform( Transaction transaction, Trigger trigger ) {
-			programContext.getProgramImp().startAnimator();
+			if(isPlaying) {
+				programContext.getProgramImp().startAnimator();
+			}
+			if(!isPlaying) {
+				programContext.getProgramImp().startAnimator();
+			}
 		}
 	}, this.createKey( "play" ) );
 
@@ -138,12 +146,14 @@ public class RecordComposite extends Composite<RecordView> {
 			if( this.isRecording ) {
 				programContext.getProgramImp().startAnimator();
 				this.recordOperation.setName( "stop" );
+				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				encoder.start();
 				encoder.setOutput( new File( "C:/Users/Matt/Desktop/videos/test.mp3" ) );
 			} else {
 				this.recordOperation.setName( "record" );
 				encoder.stop();
+				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			}
 		}
 	}
@@ -168,7 +178,6 @@ public class RecordComposite extends Composite<RecordView> {
 
 				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, getFrameRate().getValue() );
 				programContext.initialize( lookingGlassContainer.getAwtComponent() );
-				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				programContext.setActiveScene();
 			}
 		}.start();
