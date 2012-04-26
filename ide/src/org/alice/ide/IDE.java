@@ -120,16 +120,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.getPerspectiveState().addAndInvokeValueListener( this.perspectiveListener );
 
 		// TODO: <kjh/> Set this to false... remove it...
-		final boolean IS_STENCILS_PRESENTATION_SHOWING = false;
-		if( IS_STENCILS_PRESENTATION_SHOWING ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.hackTutorial" ) ) {
 			org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getBattleCrazy();
 			this.loadProjectFrom( test.getProject() );
 			org.lgna.croquet.history.TransactionHistory reuseTransactionHistory = test.getReuseTransactionHistory();
 			this.stencilsPresentation.setPresentationData(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, reuseTransactionHistory, null, null, null, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
 			this.stencilsPresentation.showStencilsPresentation();
 			test.showTransactionHistory();
+			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 		}
-		org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 	}
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
