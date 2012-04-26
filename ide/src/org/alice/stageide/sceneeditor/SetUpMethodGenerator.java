@@ -252,7 +252,7 @@ public class SetUpMethodGenerator {
 		return null;
 	}
 	
-	private static org.lgna.project.ast.Expression getGetterExpressionForJoint(org.lgna.story.Joint joint, org.lgna.project.virtualmachine.UserInstance sceneInstance)
+	public static org.lgna.project.ast.Expression getGetterExpressionForJoint(org.lgna.story.Joint joint, org.lgna.project.virtualmachine.UserInstance sceneInstance)
 	{
 		org.lgna.project.ast.AbstractMethod getJointMethod = getJointGetterForJoint(joint, sceneInstance);
 		org.lgna.story.implementation.JointImp jointImp = org.lgna.story.ImplementationAccessor.getImplementation(joint);

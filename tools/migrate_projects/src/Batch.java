@@ -40,65 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.common;
 
+public abstract class Batch {
+	protected abstract void handle( java.io.File inFile, java.io.File outFile );
+	protected abstract boolean isSkipExistingOutFilesDesirable();
+	public void process( String inRootPath, String outRootPath, String inExt, String outExt ) {
+		boolean isSkipExistingOutFilesDesirable = this.isSkipExistingOutFilesDesirable();
+		
+		java.io.File inRoot = new java.io.File(inRootPath);
+		java.io.File outRoot = new java.io.File(outRootPath);
+		System.out.print( "FileUtilities.listDescendants... " );
+		java.io.File[] inFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( inRoot, inExt );
+		System.out.println( "Done.  ( " + inFiles.length + " files )" );
 
-/**
- * @author Dennis Cosgrove
- */
-@Deprecated
-public class DoTogether {
-	private static int threadCountForDescription = 0;
-	//todo 
-	public static void invokeAndWait( 
-			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable=true )
-			Runnable... runnables 
-	) {
-		switch( runnables.length ) {
-		case 0:
-			break;
-		case 1:
-			runnables[ 0 ].run();
-			break;
-		default:
-			final java.util.List< RuntimeException > runtimeExceptions = new java.util.LinkedList< RuntimeException >();
-			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
-	    	for( final Runnable runnable : runnables ) {
-	    		new ComponentThread( new Runnable() {
-	                public void run() {
-	            		try {
-		            		runnable.run();
-	            		} catch( RuntimeException re ) {
-	            			synchronized( runtimeExceptions ) {
-		            			runtimeExceptions.add( re );
-							}
-	            		} finally {
-	            			try {
-            					barrier.await();
-	            			} catch( InterruptedException ie ) {
-	            				throw new RuntimeException( ie );
-	            			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-	            				throw new RuntimeException( bbe );
-	            			}
-	            		}
-	    	        }
-	    		}, "DoTogether-"+(DoTogether.threadCountForDescription++ ) ).start();
-	    	}
-			try {
-    			barrier.await();
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
+		java.util.Set< java.io.File > unhandledFiles = new java.util.HashSet< java.io.File >();
+		//Runtime.getRuntime().gc();
+		//long freeMemory0 = Runtime.getRuntime().freeMemory();
+		for( java.io.File inFile : inFiles ) {
+			java.io.File outFile = edu.cmu.cs.dennisc.java.io.FileUtilities.getAnalogousFile(inFile, inRoot, outRoot, inExt, outExt );
+			if( isSkipExistingOutFilesDesirable && edu.cmu.cs.dennisc.java.io.FileUtilities.existsAndHasLengthGreaterThanZero( outFile ) ) {
+				//System.out.println( "SKIPPING: " + outFile + " exists." );
+			} else {
+				if( inFile.exists() ) {
+					//todo:
+					if( inFile.length() < 100L * 1024L * 1024L ) {
+						try {
+							handle( inFile, outFile );
+						} catch( RuntimeException re ) {
+							re.printStackTrace();
+							unhandledFiles.add( inFile );
+						}
+					} else {
+						unhandledFiles.add( inFile );
+					}
+				}
 			}
-			synchronized( runtimeExceptions ) {
-		        if( runtimeExceptions.isEmpty() ) {
-		        	//pass
-		        } else {
-		        	//todo:
-		        	throw runtimeExceptions.get( 0 );
-		        }
-			}
+			//Runtime.getRuntime().gc();
+			//long freeMemoryI = Runtime.getRuntime().freeMemory();
+			//System.err.println( freeMemoryI + " " + (freeMemoryI-freeMemory0) );
+		}
+		System.out.flush();
+		for( java.io.File unhandledFile : unhandledFiles ) {
+			System.err.println( "UNHANDLED FILE: " + unhandledFile );
 		}
 	}
 }

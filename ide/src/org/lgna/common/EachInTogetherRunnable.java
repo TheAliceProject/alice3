@@ -42,63 +42,9 @@
  */
 package org.lgna.common;
 
-
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class DoTogether {
-	private static int threadCountForDescription = 0;
-	//todo 
-	public static void invokeAndWait( 
-			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable=true )
-			Runnable... runnables 
-	) {
-		switch( runnables.length ) {
-		case 0:
-			break;
-		case 1:
-			runnables[ 0 ].run();
-			break;
-		default:
-			final java.util.List< RuntimeException > runtimeExceptions = new java.util.LinkedList< RuntimeException >();
-			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
-	    	for( final Runnable runnable : runnables ) {
-	    		new ComponentThread( new Runnable() {
-	                public void run() {
-	            		try {
-		            		runnable.run();
-	            		} catch( RuntimeException re ) {
-	            			synchronized( runtimeExceptions ) {
-		            			runtimeExceptions.add( re );
-							}
-	            		} finally {
-	            			try {
-            					barrier.await();
-	            			} catch( InterruptedException ie ) {
-	            				throw new RuntimeException( ie );
-	            			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-	            				throw new RuntimeException( bbe );
-	            			}
-	            		}
-	    	        }
-	    		}, "DoTogether-"+(DoTogether.threadCountForDescription++ ) ).start();
-	    	}
-			try {
-    			barrier.await();
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			}
-			synchronized( runtimeExceptions ) {
-		        if( runtimeExceptions.isEmpty() ) {
-		        	//pass
-		        } else {
-		        	//todo:
-		        	throw runtimeExceptions.get( 0 );
-		        }
-			}
-		}
-	}
+public interface EachInTogetherRunnable<T> {
+	public void run( T item );
 }

@@ -40,65 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.common;
-
+package org.lgna.project.migration;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class DoTogether {
-	private static int threadCountForDescription = 0;
-	//todo 
-	public static void invokeAndWait( 
-			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable=true )
-			Runnable... runnables 
-	) {
-		switch( runnables.length ) {
-		case 0:
-			break;
-		case 1:
-			runnables[ 0 ].run();
-			break;
-		default:
-			final java.util.List< RuntimeException > runtimeExceptions = new java.util.LinkedList< RuntimeException >();
-			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
-	    	for( final Runnable runnable : runnables ) {
-	    		new ComponentThread( new Runnable() {
-	                public void run() {
-	            		try {
-		            		runnable.run();
-	            		} catch( RuntimeException re ) {
-	            			synchronized( runtimeExceptions ) {
-		            			runtimeExceptions.add( re );
-							}
-	            		} finally {
-	            			try {
-            					barrier.await();
-	            			} catch( InterruptedException ie ) {
-	            				throw new RuntimeException( ie );
-	            			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-	            				throw new RuntimeException( bbe );
-	            			}
-	            		}
-	    	        }
-	    		}, "DoTogether-"+(DoTogether.threadCountForDescription++ ) ).start();
-	    	}
-			try {
-    			barrier.await();
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			}
-			synchronized( runtimeExceptions ) {
-		        if( runtimeExceptions.isEmpty() ) {
-		        	//pass
-		        } else {
-		        	//todo:
-		        	throw runtimeExceptions.get( 0 );
-		        }
+public class TextMigration implements Migration {
+	private static class Pair {
+		private final java.util.regex.Pattern pattern;
+		private final String replacement;
+		public Pair( String regex, String replacement ) {
+			this.pattern = java.util.regex.Pattern.compile( regex );
+			this.replacement = replacement;
+		}
+		public String migrate( String source ) {
+			java.util.regex.Matcher matcher = this.pattern.matcher( source );
+			if( matcher.find() ) {
+				//todo?
+				matcher.reset();
+				return matcher.replaceAll( this.replacement );
+			} else {
+				return source;
 			}
 		}
+	}
+	
+	private final org.lgna.project.Version minimumVersion;
+	private final org.lgna.project.Version resultVersion;
+	
+	private final Pair[] pairs;
+	public TextMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion, String... values ) {
+		this.minimumVersion = minimumVersion;
+		this.resultVersion = resultVersion;
+		assert values.length % 2 == 0 : values.length;
+		this.pairs = new Pair[ values.length / 2 ];
+		for( int i=0; i< this.pairs.length; i++ ) {
+			this.pairs[ i ] = new Pair( values[ i*2 ], values[ i*2 + 1 ] );
+		}
+	}
+	public org.lgna.project.Version getResultVersion() {
+		return this.resultVersion;
+	}
+	public boolean isApplicable( org.lgna.project.Version version ) {
+		if( this.minimumVersion != null && this.resultVersion != null ) {
+			return 
+					this.minimumVersion.compareTo( version ) <= 0
+						&&
+					this.resultVersion.compareTo( version ) >= 0;
+		} else {
+			//todo?
+			return false;
+		}
+	}
+	public String migrate( String source ) {
+		for( Pair pair : this.pairs ) {
+			source = pair.migrate( source );
+		}
+		return source;
 	}
 }

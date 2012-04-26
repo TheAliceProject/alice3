@@ -91,13 +91,18 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 			if (value != null)
 			{
 				org.lgna.story.Entity entity = value;
-				org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
-				org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
-				if (value instanceof org.lgna.story.Scene) {
-					expressionValue = thisExpression;
+				if (entity instanceof org.lgna.story.Joint) {
+					expressionValue = org.alice.stageide.sceneeditor.SetUpMethodGenerator.getGetterExpressionForJoint((org.lgna.story.Joint)entity, this.sceneInstance);
 				}
 				else {
-					expressionValue = new org.lgna.project.ast.FieldAccess( thisExpression, entityField );
+					org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
+					org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
+					if (value instanceof org.lgna.story.Scene) {
+						expressionValue = thisExpression;
+					}
+					else {
+						expressionValue = new org.lgna.project.ast.FieldAccess( thisExpression, entityField );
+					}
 				}
 			}
 			else

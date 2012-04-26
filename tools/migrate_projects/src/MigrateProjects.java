@@ -40,65 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.common;
-
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class DoTogether {
-	private static int threadCountForDescription = 0;
-	//todo 
-	public static void invokeAndWait( 
-			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable=true )
-			Runnable... runnables 
-	) {
-		switch( runnables.length ) {
-		case 0:
-			break;
-		case 1:
-			runnables[ 0 ].run();
-			break;
-		default:
-			final java.util.List< RuntimeException > runtimeExceptions = new java.util.LinkedList< RuntimeException >();
-			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
-	    	for( final Runnable runnable : runnables ) {
-	    		new ComponentThread( new Runnable() {
-	                public void run() {
-	            		try {
-		            		runnable.run();
-	            		} catch( RuntimeException re ) {
-	            			synchronized( runtimeExceptions ) {
-		            			runtimeExceptions.add( re );
-							}
-	            		} finally {
-	            			try {
-            					barrier.await();
-	            			} catch( InterruptedException ie ) {
-	            				throw new RuntimeException( ie );
-	            			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-	            				throw new RuntimeException( bbe );
-	            			}
-	            		}
-	    	        }
-	    		}, "DoTogether-"+(DoTogether.threadCountForDescription++ ) ).start();
-	    	}
-			try {
-    			barrier.await();
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
+public class MigrateProjects extends Batch {
+	private static final int WIDTH = 400;
+	private static final int HEIGHT = 300 + 60;
+	private int x = 0;
+	private int y = 0;
+	
+	@Override
+	protected void handle( java.io.File inFile, java.io.File outFile ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( inFile );
+		try {
+			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
+
+			
+			javax.swing.JFrame frame = new javax.swing.JFrame();
+			frame.setLocation( x, y );
+			frame.setSize( WIDTH, HEIGHT );
+			x += WIDTH;
+			if( x > 1600 ) {
+				x = 0;
+				y += HEIGHT;
 			}
-			synchronized( runtimeExceptions ) {
-		        if( runtimeExceptions.isEmpty() ) {
-		        	//pass
-		        } else {
-		        	//todo:
-		        	throw runtimeExceptions.get( 0 );
-		        }
-			}
+			frame.setVisible( true );
+			
+			org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
+			runProgramContext.initializeInContainer( frame.getContentPane() );
+			runProgramContext.setActiveScene();
+			//runProgramContext.cleanUpProgram();
+			
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
+		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+			throw new RuntimeException( inFile.toString(), vnse );
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( inFile.toString(), ioe );
 		}
+	}
+	@Override
+	protected boolean isSkipExistingOutFilesDesirable() {
+		return false;
+	}
+	public static void main( String[] args ) {
+		MigrateProjects migrateProjects = new MigrateProjects();
+		String inRootPath = "C:/Users/dennisc/Documents/Alice3/MyProjects/Section_Examples";
+		String outRootPath = inRootPath + "_Fixed";
+		String ext = "a3p";
+		migrateProjects.process( inRootPath, outRootPath, ext, ext );
 	}
 }

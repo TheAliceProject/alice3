@@ -53,6 +53,7 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 	
 	private final javax.swing.JEditorPane editor = new javax.swing.JEditorPane();
 	private final javax.swing.JTextField find = new javax.swing.JTextField();
+	private final org.lgna.croquet.components.BorderPanel programContainer = new org.lgna.croquet.components.BorderPanel();
 
 	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
@@ -80,6 +81,7 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 	public void initialize( java.lang.String[] args ) {
 		super.initialize( args );
 		
+		this.programContainer.setMinimumPreferredHeight( 480 );
 		javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
 		javax.swing.JMenu fileMenu = new javax.swing.JMenu( "File" );
 		fileMenu.setMnemonic( java.awt.event.KeyEvent.VK_F );
@@ -97,8 +99,9 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 		this.testAction.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ) );
 
 		java.awt.Container contentPanel = this.getFrame().getContentPanel().getAwtComponent();
-		contentPanel.add( this.find, java.awt.BorderLayout.PAGE_END );
+		contentPanel.add( this.find, java.awt.BorderLayout.PAGE_START );
 		contentPanel.add( new javax.swing.JScrollPane( this.editor ), java.awt.BorderLayout.CENTER );
+		contentPanel.add( this.programContainer.getAwtComponent(), java.awt.BorderLayout.PAGE_END );
 		this.find.getDocument().addDocumentListener( this.documentListener );
 		
 		java.awt.Font font = new java.awt.Font( "Monospaced", 0, 18 );
@@ -124,7 +127,13 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 		org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 		try {
 			org.lgna.project.ast.AbstractNode node = org.lgna.project.ast.AbstractNode.decode( xmlDocument, this.version );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( node );
+			
+			org.lgna.project.ast.NamedUserType programType = (org.lgna.project.ast.NamedUserType)node;
+			org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( programType );
+			runProgramContext.initializeInContainer( this.programContainer.getAwtComponent() );
+			runProgramContext.setActiveScene();
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( runProgramContext );
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new RuntimeException( vnse );
 		}
@@ -175,10 +184,10 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 			java.util.zip.ZipEntry astEntry = this.zipFile.getEntry( PROGRAM_TYPE_ENTRY_NAME );
 			java.io.InputStream astIs = this.zipFile.getInputStream( astEntry );
 			String text = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( astIs );
-			editor.setText( text );
+			this.editor.setText( text );
 			
 			
-			java.util.zip.ZipEntry versionEntry = this.zipFile.getEntry( PROGRAM_TYPE_ENTRY_NAME );
+			java.util.zip.ZipEntry versionEntry = this.zipFile.getEntry( VERSION_ENTRY_NAME );
 			java.io.InputStream versionIs = this.zipFile.getInputStream( versionEntry );
 			this.version = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( versionIs );
 
