@@ -47,18 +47,23 @@ import java.io.File;
 import org.alice.media.components.RecordView;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
+
+import com.sun.tools.javac.tree.Tree.NewArray;
 
 /**
  * @author Matt May
  */
 public class RecordComposite extends Composite<RecordView> {
 
-	int frameRate = 24;
-	private org.alice.media.encoder.ImagesToQuickTimeEncoder encoder = new ImagesToQuickTimeEncoder( frameRate );
-	
+	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
+	private boolean isRecording;
+	private ImagesToQuickTimeEncoder encoder;
+	private BoundedIntegerState frameRate = this.createBoundedIntegerState( (org.lgna.croquet.Composite.BoundedIntegerDetails)new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
+
 	private static class SingletonHolder {
 		private static RecordComposite instance = new RecordComposite();
 	}
@@ -75,6 +80,7 @@ public class RecordComposite extends Composite<RecordView> {
 
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
+			programContext.getProgramImp().startAnimator();
 		}
 	}, this.createKey( "play" ) );
 
@@ -120,9 +126,6 @@ public class RecordComposite extends Composite<RecordView> {
 		}
 	};
 
-	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
-	private boolean isRecording;
-
 	public boolean isRecording() {
 		return this.isRecording;
 	}
@@ -135,6 +138,7 @@ public class RecordComposite extends Composite<RecordView> {
 			if( this.isRecording ) {
 				programContext.getProgramImp().startAnimator();
 				this.recordOperation.setName( "stop" );
+				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				encoder.start();
 				encoder.setOutput( new File( "C:/Users/Matt/Desktop/videos/test.mp3" ) );
 			} else {
@@ -148,7 +152,7 @@ public class RecordComposite extends Composite<RecordView> {
 		this.setRecording( this.isRecording() == false );
 	}
 
-	private int getFrameRate() {
+	public BoundedIntegerState getFrameRate() {
 		return frameRate;
 	}
 
@@ -162,7 +166,7 @@ public class RecordComposite extends Composite<RecordView> {
 				image = null;
 				imageCount = 0;
 
-				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, getFrameRate() );
+				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, getFrameRate().getValue() );
 				programContext.initialize( lookingGlassContainer.getAwtComponent() );
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				programContext.setActiveScene();
