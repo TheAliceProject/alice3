@@ -68,6 +68,7 @@ import ch.randelshofer.media.quicktime.QuickTimeWriter.VideoFormat;
 import edu.cmu.cs.dennisc.animation.Animation;
 import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.cmu.cs.dennisc.movie.MovieEncoder;
 
@@ -123,139 +124,138 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 		}
 	}
 
-	private void writeVideoAndAudio(File[] imgFiles, File audioFile, QuickTimeWriter.VideoFormat videoFormat, boolean passThrough, String streaming) throws IOException {
-        File tmpFile = streaming.equals("none") ? this.outputFile : new File(this.outputFile.getPath() + ".tmp");
-        AudioInputStream audioIn = null;
-        QuickTimeWriter qtOut = null;
-        BufferedImage imgBuffer = null;
-        Graphics2D g = null;
-        boolean hasAudio = audioFile != null;
-        try {
-        	AudioFormat audioFormat = null;
-        	int asDuration = 0;
-        	if (hasAudio) {
-	            // Determine audio format
-	            if (audioFile.getName().toLowerCase().endsWith(".mp3")) {
-	                audioIn = new MP3AudioInputStream(audioFile);
-	            } else {
-	                audioIn = AudioSystem.getAudioInputStream(audioFile);
-	            }
-	            audioFormat = audioIn.getFormat();
-	         // Determine duration of a single audio sample
-	            asDuration = (int) (audioFormat.getSampleRate() / audioFormat.getFrameRate());
-        	}
-            boolean isVBR = false;
+	private void writeVideoAndAudio( File[] imgFiles, File audioFile, QuickTimeWriter.VideoFormat videoFormat, boolean passThrough, String streaming ) throws IOException {
+		File tmpFile = streaming.equals( "none" ) ? this.outputFile : new File( this.outputFile.getPath() + ".tmp" );
+		AudioInputStream audioIn = null;
+		QuickTimeWriter qtOut = null;
+		BufferedImage imgBuffer = null;
+		Graphics2D g = null;
+		boolean hasAudio = audioFile != null;
+		try {
+			AudioFormat audioFormat = null;
+			int asDuration = 0;
+			if( hasAudio ) {
+				// Determine audio format
+				if( audioFile.getName().toLowerCase().endsWith( ".mp3" ) ) {
+					audioIn = new MP3AudioInputStream( audioFile );
+				} else {
+					audioIn = AudioSystem.getAudioInputStream( audioFile );
+				}
+				audioFormat = audioIn.getFormat();
+				// Determine duration of a single audio sample
+				asDuration = (int)(audioFormat.getSampleRate() / audioFormat.getFrameRate());
+			}
+			boolean isVBR = false;
 
-            // Determine duration of a single video sample
-            int vsDuration = 100;
-            // Create writer
-            int audioChannelIndex = 0;
-            int videoChannelIndex = hasAudio ? 1 : 0;
-            qtOut = new QuickTimeWriter(videoFormat == QuickTimeWriter.VideoFormat.RAW ? this.outputFile : tmpFile);
-            if (hasAudio) {
-            	qtOut.addAudioTrack(audioFormat); // audio in track 0
-            	audioChannelIndex = 0;
-            }
-            qtOut.addVideoTrack(videoFormat, (int) (this.framesPerSecond * vsDuration), this.width, this.height);  // video in track 1
+			// Determine duration of a single video sample
+			int vsDuration = 100;
+			// Create writer
+			int audioChannelIndex = 0;
+			int videoChannelIndex = hasAudio ? 1 : 0;
+			qtOut = new QuickTimeWriter( videoFormat == QuickTimeWriter.VideoFormat.RAW ? this.outputFile : tmpFile );
+			if( hasAudio ) {
+				qtOut.addAudioTrack( audioFormat ); // audio in track 0
+				audioChannelIndex = 0;
+			}
+			qtOut.addVideoTrack( videoFormat, (int)(this.framesPerSecond * vsDuration), this.width, this.height ); // video in track 1
 
-            // Create audio buffer
-            int asSize = 0;
-            byte[] audioBuffer = null;
-            if (hasAudio) {
-	            if (isVBR) {
-	                // => variable bit rate: create audio buffer for a single frame
-	                asSize = audioFormat.getFrameSize();
-	                audioBuffer = new byte[asSize];
-	            } else {
-	                // => fixed bit rate: create audio buffer for half a second
-	                asSize = audioFormat.getChannels() * audioFormat.getSampleSizeInBits() / 8;
-	                audioBuffer = new byte[(int) (qtOut.getMediaTimeScale(0) / 2 * asSize)];
-	            }
-            }
+			// Create audio buffer
+			int asSize = 0;
+			byte[] audioBuffer = null;
+			if( hasAudio ) {
+				if( isVBR ) {
+					// => variable bit rate: create audio buffer for a single frame
+					asSize = audioFormat.getFrameSize();
+					audioBuffer = new byte[ asSize ];
+				} else {
+					// => fixed bit rate: create audio buffer for half a second
+					asSize = audioFormat.getChannels() * audioFormat.getSampleSizeInBits() / 8;
+					audioBuffer = new byte[ (int)(qtOut.getMediaTimeScale( 0 ) / 2 * asSize) ];
+				}
+			}
 
-            // Create video buffer
-            if (!passThrough) {
-                imgBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-                g = imgBuffer.createGraphics();
-                g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            } // Main loop
-            int movieTime = 0;
-            int imgIndex = 0;
-            boolean isAudioDone = !hasAudio;
-            while ((imgIndex < imgFiles.length || !isAudioDone)) {
-                // Advance movie time by half a second (we interleave twice per second)
-                movieTime += qtOut.getMovieTimeScale() / 2;
+			// Create video buffer
+			if( !passThrough ) {
+				imgBuffer = new BufferedImage( width, height, BufferedImage.TYPE_INT_RGB );
+				g = imgBuffer.createGraphics();
+				g.setRenderingHint( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY );
+			} // Main loop
+			int movieTime = 0;
+			int imgIndex = 0;
+			boolean isAudioDone = !hasAudio;
+			while( (imgIndex < imgFiles.length || !isAudioDone) ) {
+				// Advance movie time by half a second (we interleave twice per second)
+				movieTime += qtOut.getMovieTimeScale() / 2;
 
-                if (hasAudio) {
-	                // Advance audio to movie time + 1 second (audio must be ahead of video by 1 second)
-	                while (!isAudioDone && qtOut.getTrackDuration(audioChannelIndex) < movieTime + qtOut.getMovieTimeScale()) {
-	                    int len = audioIn.read(audioBuffer);
-	                    if (len == -1) {
-	                        isAudioDone = true;
-	                    } else {
-	                        qtOut.writeSamples(audioChannelIndex, len / asSize, audioBuffer, 0, len, asDuration);
-	                    }
-	                    if (isVBR) {
-	                        // => variable bit rate: format can change at any time
-	                        audioFormat = audioIn.getFormat();
-	                        if (audioFormat == null) {
-	                            break;
-	                        }
-	                        asSize = audioFormat.getFrameSize();
-	                        asDuration = (int) (audioFormat.getSampleRate() / audioFormat.getFrameRate());
-	                        if (audioBuffer.length < asSize) {
-	                            audioBuffer = new byte[asSize];
-	                        }
-	                    }
-	                }
-                }
+				if( hasAudio ) {
+					// Advance audio to movie time + 1 second (audio must be ahead of video by 1 second)
+					while( !isAudioDone && qtOut.getTrackDuration( audioChannelIndex ) < movieTime + qtOut.getMovieTimeScale() ) {
+						int len = audioIn.read( audioBuffer );
+						if( len == -1 ) {
+							isAudioDone = true;
+						} else {
+							qtOut.writeSamples( audioChannelIndex, len / asSize, audioBuffer, 0, len, asDuration );
+						}
+						if( isVBR ) {
+							// => variable bit rate: format can change at any time
+							audioFormat = audioIn.getFormat();
+							if( audioFormat == null ) {
+								break;
+							}
+							asSize = audioFormat.getFrameSize();
+							asDuration = (int)(audioFormat.getSampleRate() / audioFormat.getFrameRate());
+							if( audioBuffer.length < asSize ) {
+								audioBuffer = new byte[ asSize ];
+							}
+						}
+					}
+				}
 
-                // Advance video to movie time
-                while (imgIndex < imgFiles.length && qtOut.getTrackDuration(videoChannelIndex) < movieTime) {
-                    // catch up with video time
-                    if (passThrough) {
-                        qtOut.writeSample(videoChannelIndex, imgFiles[imgIndex], vsDuration);
-                    } else {
-                        BufferedImage fImg = ImageIO.read(imgFiles[imgIndex]);
-                        if (fImg == null) {
-                            continue;
-                        }
-                        g.drawImage(fImg, 0, 0, width, height, null);
-                        fImg.flush();
-                        qtOut.writeFrame(videoChannelIndex, imgBuffer, vsDuration);
-                    }
-                    ++imgIndex;
-                }
-            }
-            if (streaming.equals("fastStart")) {
-                qtOut.toWebOptimizedMovie(this.outputFile, false);
-                tmpFile.delete();
-            } else if (streaming.equals("fastStartCompressed")) {
-                qtOut.toWebOptimizedMovie(this.outputFile, true);
-                tmpFile.delete();
-            }
-                qtOut.close();
-                qtOut = null;
-        } catch (UnsupportedAudioFileException e) {
-            IOException ioe = new IOException(e.getMessage());
-            ioe.initCause(e);
-            throw ioe;
-        }
-        finally {
-            if (qtOut != null) {
-                qtOut.close();
-            }
-            if (audioIn != null) {
-                audioIn.close();
-            }
-            if (g != null) {
-                g.dispose();
-            }
-            if (imgBuffer != null) {
-                imgBuffer.flush();
-            }
-        }
-    }
+				// Advance video to movie time
+				while( imgIndex < imgFiles.length && qtOut.getTrackDuration( videoChannelIndex ) < movieTime ) {
+					// catch up with video time
+					if( passThrough ) {
+						qtOut.writeSample( videoChannelIndex, imgFiles[ imgIndex ], vsDuration );
+					} else {
+						BufferedImage fImg = ImageIO.read( imgFiles[ imgIndex ] );
+						if( fImg == null ) {
+							continue;
+						}
+						g.drawImage( fImg, 0, 0, width, height, null );
+						fImg.flush();
+						qtOut.writeFrame( videoChannelIndex, imgBuffer, vsDuration );
+					}
+					++imgIndex;
+				}
+			}
+			if( streaming.equals( "fastStart" ) ) {
+				qtOut.toWebOptimizedMovie( this.outputFile, false );
+				tmpFile.delete();
+			} else if( streaming.equals( "fastStartCompressed" ) ) {
+				qtOut.toWebOptimizedMovie( this.outputFile, true );
+				tmpFile.delete();
+			}
+			qtOut.close();
+			qtOut = null;
+		} catch( UnsupportedAudioFileException e ) {
+			IOException ioe = new IOException( e.getMessage() );
+			ioe.initCause( e );
+			throw ioe;
+		} finally {
+			if( qtOut != null ) {
+				qtOut.close();
+			}
+			if( audioIn != null ) {
+				audioIn.close();
+			}
+			if( g != null ) {
+				g.dispose();
+			}
+			if( imgBuffer != null ) {
+				imgBuffer.flush();
+			}
+		}
+	}
 	public ImagesToQuickTimeEncoder( float framesPerSecond, File out ) throws IOException {
 		this( framesPerSecond );
 		setOutput( out );
@@ -384,14 +384,14 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 	 * @see edu.cmu.cs.dennisc.movie.MovieEncoder#stop()
 	 */
 	public void stop() {
-		System.out.println("STOP");
+		System.out.println( "STOP" );
 		this.isRunning = false;
 		boolean success = false;
 		File audioFile = null;
 		try {
 			audioFile = this.createAudioFile();
 			File[] imgFiles = this.frameDirectory.listFiles();
-			System.out.println("length: " + imgFiles.length);
+			System.out.println( "length: " + imgFiles.length );
 			writeVideoAndAudio( imgFiles, audioFile, QUICKTIME_VIDEO_FORMAT, false, "none" );
 			success = true;
 		} catch( Exception e ) {

@@ -9,7 +9,6 @@ import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeEvent;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.WhileContingencyListener;
-import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -55,20 +54,20 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 		registerPolicyMap( timerEventListener, policy );
 		registerIsFiringMap( timerEventListener );
 		freqMap.put( timerEventListener, frequency );
-		mostRecentFire.put( timerEventListener, 0.0 );
+		mostRecentFire.put( timerEventListener, Double.MIN_VALUE );
 		timerList.add( timerEventListener );
 	}
 
 	private void update() {
 		for( TimeListener listener : timerList ) {
 			if( timeToFire( listener ) ) {
-				trigger( listener, new TimeEvent( (currentTime - mostRecentFire.get( listener )) * 0.001 ) );
+//				mostRecentFire.put( listener, currentTime );
+				trigger( listener, new TimeEvent( (currentTime - mostRecentFire.get( listener )) ) );
 			}
 		}
 	}
 
 	private void trigger( TimeListener listener, TimeEvent timerEvent ) {
-		mostRecentFire.put( listener, currentTime );
 		if( isActivated ) {
 			fireEvent( listener, timerEvent );
 		}
@@ -79,7 +78,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 
 	@Override
 	protected void nameOfFireCall( TimeListener listener, TimeEvent event ) {
-		listener.timeElapsed( event );
+		listener.timeElapsed( new TimeEvent( (currentTime - mostRecentFire.get( listener )) ) );
 	}
 	public void sceneActivated( SceneActivationEvent e ) {
 		this.isActivated = true;

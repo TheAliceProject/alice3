@@ -51,6 +51,7 @@ import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
+import org.lgna.story.implementation.ProgramImp;
 
 import com.sun.tools.javac.tree.Tree.NewArray;
 
@@ -85,6 +86,7 @@ public class RecordComposite extends Composite<RecordView> {
 		public void perform( Transaction transaction, Trigger trigger ) {
 			if( isPlaying ) {
 				isPlaying = !isPlaying;
+				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
 				programContext.getProgramImp().stopAnimator();
 			} else {
 				isPlaying = !isPlaying;
