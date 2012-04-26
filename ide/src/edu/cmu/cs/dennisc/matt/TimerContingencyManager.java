@@ -36,26 +36,26 @@ public class TimerContingencyManager {
 		this.timer = timer;
 	}
 
-	public void register( WhileCollisionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileCollisionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addCollisionStartListener( newStartCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 		scene.addCollisionEndListener( newEndCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 	}
-	public void register( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 		scene.addProximityExitListener( newExitProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 	}
-	public void register( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), (Model[])toArray( groupOne ), (Model[])toArray( groupTwo ) );
 		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), (Model[])toArray( groupOne ), (Model[])toArray( groupTwo ) );
 	}
 
-	public void register( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileInViewListener listener, ArrayList<Model> group, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addViewEnterListener( newEnterViewAdapter( listener ), (Model[])toArray( group ) );

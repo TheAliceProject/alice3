@@ -79,14 +79,15 @@ public class RecordComposite extends Composite<RecordView> {
 	}, this.createKey( "record" ) );
 
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
-		
+
 		private boolean isPlaying = false;
 
 		public void perform( Transaction transaction, Trigger trigger ) {
-			if(isPlaying) {
-				programContext.getProgramImp().startAnimator();
-			}
-			if(!isPlaying) {
+			if( isPlaying ) {
+				isPlaying = !isPlaying;
+				programContext.getProgramImp().stopAnimator();
+			} else {
+				isPlaying = !isPlaying;
 				programContext.getProgramImp().startAnimator();
 			}
 		}
@@ -159,7 +160,7 @@ public class RecordComposite extends Composite<RecordView> {
 	}
 
 	private void toggleRecording() {
-		this.setRecording( this.isRecording() == false );
+		this.setRecording( !this.isRecording() );
 	}
 
 	public BoundedIntegerState getFrameRate() {
@@ -189,6 +190,10 @@ public class RecordComposite extends Composite<RecordView> {
 	}
 
 	private void handleImage( java.awt.image.BufferedImage image, int imageCount ) {
-		encoder.addBufferedImage( image );
+		if( image != null ) {
+			encoder.addBufferedImage( image );
+		} else {
+			System.out.println( "NULL" );
+		}
 	}
 }

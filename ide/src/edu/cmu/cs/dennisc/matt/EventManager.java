@@ -44,10 +44,10 @@ public class EventManager {
 	private final CollisionHandler collisionHandler = new CollisionHandler();
 	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
 	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
-	private final TimerEventHandler timer = new TimerEventHandler();
+	private final TimerEventHandler timer;
 	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
 
-	private final TimerContingencyManager contingent = new TimerContingencyManager( timer );
+	private final TimerContingencyManager contingent;
 
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
@@ -77,7 +77,9 @@ public class EventManager {
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
+		timer = new TimerEventHandler(scene);
 		scene.addSceneActivationListener( timer );
+		contingent = new TimerContingencyManager( timer );
 		contingent.setScene( scene );
 	}
 
@@ -130,7 +132,7 @@ public class EventManager {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
 
-	public void addTimerEventListener( TimeListener timerEventListener, Long frequency, MultipleEventPolicy policy ) {
+	public void addTimerEventListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( timerEventListener, frequency, policy );
 	}
 
@@ -198,16 +200,16 @@ public class EventManager {
 		}
 	}
 
-	public void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
-	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, dist, frequency, policy );
 	}
-	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
-	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Model> group, Double frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, group, frequency, policy );
 	}
 

@@ -9,6 +9,8 @@ import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeEvent;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.WhileContingencyListener;
+import org.lgna.story.implementation.ProgramImp;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
@@ -17,21 +19,25 @@ import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
 
 public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEvent> implements SceneActivationListener {
 
-	private Map<TimeListener,Long> freqMap = Collections.newHashMap();
+	private Map<TimeListener,Double> freqMap = Collections.newHashMap();
 	private List<TimeListener> timerList = Collections.newArrayList();
-	private Long currentTime;
-	private Map<TimeListener,Long> mostRecentFire = Collections.newHashMap();
+	private double currentTime;
+	private Map<TimeListener,Double> mostRecentFire = Collections.newHashMap();
 
 	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
-			currentTime = System.currentTimeMillis();
+			currentTime = programImp.getProgram().getAnimator().getCurrentTime();
 			update();
 		}
 	};
 	private boolean isEnabled = false;
 	private boolean isActivated = false;
 	private Map<TimeListener,Boolean> activationMap = Collections.newHashMap();
+	private SceneImp programImp;
 
+	public TimerEventHandler( SceneImp scene ) {
+		this.programImp = scene;
+	}
 	public void enable() {
 		isEnabled = true;
 		LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
@@ -41,16 +47,15 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 		LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
-	public void addListener( TimeListener timerEventListener, Long frequency, MultipleEventPolicy policy ) {
+	public void addListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {
 		activationMap.put( timerEventListener, true );
 		if( !isEnabled ) {
 			enable();
 		}
 		registerPolicyMap( timerEventListener, policy );
 		registerIsFiringMap( timerEventListener );
-		Long a = secondsToMills( frequency );
-		freqMap.put( timerEventListener, a );
-		mostRecentFire.put( timerEventListener, Double.doubleToLongBits( 0 ) );
+		freqMap.put( timerEventListener, frequency );
+		mostRecentFire.put( timerEventListener, 0.0 );
 		timerList.add( timerEventListener );
 	}
 
@@ -72,9 +77,6 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 		return (currentTime - mostRecentFire.get( listener ) > freqMap.get( listener ) && activationMap.get( listener ));
 	}
 
-	private Long secondsToMills( Long frequency ) {
-		return 1000 * frequency;
-	}
 	@Override
 	protected void nameOfFireCall( TimeListener listener, TimeEvent event ) {
 		listener.timeElapsed( event );
