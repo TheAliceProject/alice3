@@ -71,10 +71,13 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 		public void changing(org.lgna.croquet.history.event.Event<?> e) {
 		}
 		public void changed(org.lgna.croquet.history.event.Event<?> e) {
-			if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
-				this.reload();
-			} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-				tree.repaint();
+			// Do not bother to listen to this event, if we aren't displayed.
+			if ( TransactionHistoryPanel.this.isVisible() ) {
+				if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+					this.reload();
+				} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+					tree.repaint();
+				}
 			}
 		}
 	};
