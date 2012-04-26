@@ -67,6 +67,15 @@ public class BlockStatementGenerator {
 				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 				if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
 					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+
+					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+					
+					if( method instanceof org.lgna.project.ast.UserMethod ) {
+						org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+						//todo: check to see if generation actually required
+						org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( userMethod.getDeclaringType() ).generateAndAddToTransactionHistory( history, userMethod );
+					}
+					
 					statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( expression );
