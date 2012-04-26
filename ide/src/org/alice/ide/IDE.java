@@ -120,7 +120,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.getPerspectiveState().addAndInvokeValueListener( this.perspectiveListener );
 
 		// TODO: <kjh/> Set this to false... remove it...
-		final boolean IS_STENCILS_PRESENTATION_SHOWING = true;
+		final boolean IS_STENCILS_PRESENTATION_SHOWING = false;
 		if( IS_STENCILS_PRESENTATION_SHOWING ) {
 			org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getBattleCrazy();
 			this.loadProjectFrom( test.getProject() );

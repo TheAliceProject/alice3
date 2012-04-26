@@ -98,6 +98,13 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	private final java.util.List<PrepStep<?>> prepSteps;
 	private CompletionStep<?> completionStep;
 
+	
+	public static Transaction createAndAddToHistory( TransactionHistory owner ) {
+		Transaction rv = new Transaction( owner );
+		owner.addTransaction( rv );
+		return rv;
+	}
+	
 	public Transaction( TransactionHistory parent ) {
 		super( parent );
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

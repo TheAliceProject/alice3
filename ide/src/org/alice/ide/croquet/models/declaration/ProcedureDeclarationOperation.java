@@ -69,6 +69,26 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 				"", true 
 		);
 	}
+	
+	public void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.UserMethod method ) {
+		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
+
+		org.lgna.croquet.history.TransactionHistory subTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
+		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, new org.lgna.croquet.triggers.SimulatedTrigger(), subTransactionHistory );
+
+		org.lgna.croquet.history.Transaction nameTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+		org.lgna.croquet.history.StateChangeStep nameChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( nameTransaction, this.getNameState(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+		nameChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( nameChangeStep, "", method.getName() ) );
+		
+		org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+		org.lgna.croquet.history.CompletionStep commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, this.getCompleteOperation(), new org.lgna.croquet.triggers.SimulatedTrigger(), null );
+		commitStep.finish();
+
+		org.lgna.croquet.history.CompletionStep completionStep = transaction.getCompletionStep();
+		completionStep.setEdit( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, method.getDeclaringType(), method ) );
+		
+		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, method.body.getValue() );
+	}
 
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {

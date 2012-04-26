@@ -10,7 +10,10 @@ public class TransactionHistoryGenerator {
 
 		org.lgna.croquet.history.TransactionHistory history = new org.lgna.croquet.history.TransactionHistory();
 		
-		BlockStatementGenerator.createAndAddToTransactionHistory( history, method.body.getValue() );
+		// <kjh/> method invocations should be handled more generically
+		
+		org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( method.getDeclaringType() ).generateAndAddToTransactionHistory( history, method );
+		
 
 		// TODO: Create a run operation, at the end of the tutorial
 		// <kjh/> this should probably be done live, during the tutorial... not poorly inserted here.

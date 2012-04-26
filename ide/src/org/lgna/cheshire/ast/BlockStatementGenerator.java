@@ -59,7 +59,7 @@ public class BlockStatementGenerator {
 		//mapStatementClassToGenerator.put( org.lgna.project.ast.ReturnStatement.class, org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance() );
 		mapStatementClassToGenerator.put( org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
 	}
-	public static void createAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
+	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
 			StatementGenerator statementGenerator;
 			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
@@ -82,7 +82,7 @@ public class BlockStatementGenerator {
 			}
 			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
-				BlockStatementGenerator.createAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
+				BlockStatementGenerator.generateAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
 			}
 		}
 	}
