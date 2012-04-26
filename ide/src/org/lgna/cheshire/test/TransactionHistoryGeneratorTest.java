@@ -57,6 +57,14 @@ public class TransactionHistoryGeneratorTest {
 		}
 	}
 
+	public org.lgna.croquet.history.TransactionHistory getReuseTransactionHistory() {
+		return this.reuseTransactionHistory;
+	}
+
+	public java.io.File getProject() {
+		return this.projectFile;
+	}
+
 	public void showTransactionHistory() {
 		// Show the transaction history panel.
 
@@ -75,17 +83,25 @@ public class TransactionHistoryGeneratorTest {
 		this.reuseMethod.crawl(printAstVisitor, false);
 	}
 
+	public static TransactionHistoryGeneratorTest getSpinCrazy() {
+		return new TransactionHistoryGeneratorTest( "Spin Crazy" );
+	}
+
+	public static TransactionHistoryGeneratorTest getBattleCrazy() {
+		return new TransactionHistoryGeneratorTest( "Battle Crazy" );
+	}
+
 	public static void main(String[] args) {
 		TransactionHistoryGeneratorTest test;
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		ide.initialize( args );
 
 		// Spin Crazy
-		test = new TransactionHistoryGeneratorTest( "Spin Crazy" );
+		test = getSpinCrazy();
 		test.showTransactionHistory();
 
 		// Battle Crazy
-		test = new TransactionHistoryGeneratorTest( "Battle Crazy" );
+		test = getBattleCrazy();
 		test.showTransactionHistory();
 	}
 }
