@@ -96,6 +96,36 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		protected void localize() {
 		}
 	}
+	protected static class BoundedIntegerDetails extends BoundedIntegerState.Details {
+		public BoundedIntegerDetails() {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "3cb7dfc5-de8c-442c-9e9a-deab2eff38e8" ) );
+		}
+	}
+	private static class InternalBoundedIntegerState extends BoundedIntegerState {
+		private final Key key;
+		public InternalBoundedIntegerState( BoundedIntegerDetails details, Key key ) {
+			super( details );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	protected static class BoundedDoubleDetails extends BoundedDoubleState.Details {
+		public BoundedDoubleDetails() {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "603d4a60-cc60-41df-b5a5-992966128b41" ) );
+		}
+	}
+	private static class InternalBoundedDoubleState extends BoundedDoubleState {
+		private final Key key;
+		public InternalBoundedDoubleState( BoundedDoubleDetails details, Key key ) {
+			super( details );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
 	private static class InternalActionOperation extends ActionOperation {
 		private final Action action;
 		private final Key key;
@@ -144,6 +174,8 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	private java.util.Map<Key,InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalListSelectionState> mapKeyToListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	@Override
 	protected void localize() {
@@ -175,6 +207,18 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 				return true;
 			}
 		}
+		for( Key key : this.mapKeyToListSelectionState.keySet() ) {
+			InternalBoundedIntegerState state = this.mapKeyToBoundedIntegerState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToListSelectionState.keySet() ) {
+			InternalBoundedDoubleState state = this.mapKeyToBoundedDoubleState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
 		for( Key key : this.mapKeyToActionOperation.keySet() ) {
 			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
 			if( model == operation ) {
@@ -197,11 +241,23 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		this.mapKeyToBooleanState.put( key, rv );
 		return rv;
 	}
+	protected BoundedIntegerState createBoundedIntegerState( BoundedIntegerDetails details, Key key ) {
+		InternalBoundedIntegerState rv = new InternalBoundedIntegerState( details, key );
+		this.mapKeyToBoundedIntegerState.put( key, rv );
+		return rv;
+	}
+	protected BoundedDoubleState createBoundedDoubleState( BoundedDoubleDetails details, Key key ) {
+		InternalBoundedDoubleState rv = new InternalBoundedDoubleState( details, key );
+		this.mapKeyToBoundedDoubleState.put( key, rv );
+		return rv;
+	}
 	protected ActionOperation createActionOperation( Action action, Key key ) {
 		InternalActionOperation rv = new InternalActionOperation( action, key );
 		this.mapKeyToActionOperation.put( key, rv );
 		return rv;
 	}
+	
+	
 	
 	protected <T extends Enum<T>> ListSelectionState<T> createListSelectionState( Class<T> valueCls, T initialValue, Key key ) {
 		T[] constants = valueCls.getEnumConstants();
