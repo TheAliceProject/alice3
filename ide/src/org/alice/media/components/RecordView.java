@@ -45,8 +45,6 @@ package org.alice.media.components;
 import org.alice.media.RecordComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.Spinner;
 
 /**
  * @author Matt May

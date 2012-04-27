@@ -53,8 +53,6 @@ import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.story.implementation.ProgramImp;
 
-import com.sun.tools.javac.tree.Tree.NewArray;
-
 /**
  * @author Matt May
  */
@@ -63,7 +61,6 @@ public class RecordComposite extends Composite<RecordView> {
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
 	private ImagesToQuickTimeEncoder encoder;
-	private BoundedIntegerState frameRate = this.createBoundedIntegerState( (org.lgna.croquet.Composite.BoundedIntegerDetails)new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
 
 	private static class SingletonHolder {
 		private static RecordComposite instance = new RecordComposite();
@@ -95,6 +92,7 @@ public class RecordComposite extends Composite<RecordView> {
 		}
 	}, this.createKey( "play" ) );
 
+	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
 	public RecordComposite() {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 	}
