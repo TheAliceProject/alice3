@@ -56,6 +56,6 @@ public class SnapGridSpacingState extends BoundedDoubleState {
 		return SingletonHolder.instance;
 	}
 	private SnapGridSpacingState() {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "f8a1a56f-70da-41c7-9fb0-8d874a37ec27" ) ).minimum( 0.05 ).maximum( 10.0 ).initialValue( 0.5 ).delta( 0.05 ) );
+		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "f8a1a56f-70da-41c7-9fb0-8d874a37ec27" ) ).minimum( 0.05 ).maximum( 10.0 ).initialValue( 0.5 ).stepSize( 0.05 ) );
 	}
 }

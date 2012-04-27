@@ -46,23 +46,54 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedNumberState< N extends Number > extends State< N > {
-	public class SwingModel {
-		private final javax.swing.BoundedRangeModel boundedRangeModel;
-		private final javax.swing.SpinnerModel spinnerModel;
-		private SwingModel( javax.swing.BoundedRangeModel boundedRangeModel, javax.swing.SpinnerModel spinnerModel ) {
-			this.boundedRangeModel = boundedRangeModel;
-			this.spinnerModel = spinnerModel;
+public abstract class BoundedNumberState<N extends Number> extends State<N> {
+	public static class AtomicChange<N extends Number> {
+		private N minimum = null;
+		private N maximum = null;
+		private N stepSize = null;
+		private N extent = null;
+		private N value = null;
+		private boolean isAdjusting;
+
+		public AtomicChange<N> minimum( N minimum ) {
+			this.minimum = minimum;
+			return this;
 		}
-		public javax.swing.BoundedRangeModel getBoundedRangeModel() {
-			return this.boundedRangeModel;
+		public AtomicChange<N> maximum( N maximum ) {
+			this.maximum = maximum;
+			return this;
 		}
-		public javax.swing.SpinnerModel getSpinnerModel() {
-			return this.spinnerModel;
+		public AtomicChange<N> stepSize( N stepSize ) {
+			this.stepSize = stepSize;
+			return this;
+		}
+		public AtomicChange<N> extent( N extent ) {
+			this.extent = extent;
+			return this;
+		}
+		public AtomicChange<N> value( N value ) {
+			this.value = value;
+			return this;
+		}
+		public AtomicChange<N> isAdjusting( boolean isAdjusting ) {
+			this.isAdjusting = isAdjusting;
+			return this;
+		}
+		
+		private void updateSwingModel( SwingModel<N> swingModel ) {
+			swingModel.setAll( this.value, this.minimum, this.maximum, this.stepSize, this.extent, this.isAdjusting );
 		}
 	}
 
-	private final SwingModel swingModel;
+	public static interface SwingModel<N extends Number> {
+		public javax.swing.BoundedRangeModel getBoundedRangeModel();
+		public javax.swing.SpinnerNumberModel getSpinnerModel();
+
+		public void setValue( N value );
+		public void setAll( N value, N minimum, N maximum, N stepSize, N extent, boolean isAdjusting );
+	}
+
+	private final SwingModel<N> swingModel;
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		//private boolean previousValueIsAdjusting = false;
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
@@ -70,14 +101,14 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 		}
 	};
 
-	public BoundedNumberState( Group group, java.util.UUID id, N initialValue, javax.swing.BoundedRangeModel boundedRangeModel, javax.swing.SpinnerModel spinnerModel ) {
+	public BoundedNumberState( Group group, java.util.UUID id, N initialValue, SwingModel<N> swingModel ) {
 		super( group, id, initialValue );
-		this.swingModel = new SwingModel( boundedRangeModel, spinnerModel );
-		this.swingModel.boundedRangeModel.addChangeListener( this.changeListener );
+		this.swingModel = swingModel;
+		this.swingModel.getSpinnerModel().addChangeListener( this.changeListener );
 	}
-	
+
 	@Override
-	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
 		return java.util.Collections.emptyList();
 	}
 
@@ -87,118 +118,44 @@ public abstract class BoundedNumberState< N extends Number > extends State< N > 
 		return rv;
 	}
 
-	public SwingModel getSwingModel() {
+	public SwingModel<N> getSwingModel() {
 		return this.swingModel;
 	}
 
 	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
 		N nextValue = this.getValue();
-		this.changeValue( nextValue, this.swingModel.boundedRangeModel.getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
+		this.changeValue( nextValue, this.swingModel.getBoundedRangeModel().getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
 	}
 	@Override
 	protected void localize() {
 	}
-	protected abstract N fromInt( int value );
-	protected abstract int toInt( N value );
-	public N getMinimum() {
-		return this.fromInt( this.swingModel.boundedRangeModel.getMinimum() );
+	public abstract N getMinimum();
+	public abstract void setMinimum( N minimum );
+	public abstract N getMaximum();
+	public abstract void setMaximum( N maximum );
+	public N getStepSize() {
+		return (N)this.getSwingModel().getSpinnerModel().getStepSize();
 	}
-	public N getMaximum() {
-		return this.fromInt( this.swingModel.boundedRangeModel.getMaximum() );
-	}
-	public N getExtent() {
-		return this.fromInt( this.swingModel.boundedRangeModel.getExtent() );
-	}
-	
-	public class AtomicChange {
-		private N minimum;
-		private N maximum;
-		private N extent;
-		private N value;
-		private boolean isAdjusting;
-		AtomicChange minimum( N minimum ) {
-			this.minimum = minimum;
-			return this;
-		}
-		AtomicChange maximum( N maximum ) {
-			this.maximum = maximum;
-			return this;
-		}
-		AtomicChange extent( N extent ) {
-			this.extent = extent;
-			return this;
-		}
-		AtomicChange value( N value ) {
-			this.value = value;
-			return this;
-		}
-		AtomicChange isAdjusting( boolean isAdjusting ) {
-			this.isAdjusting = isAdjusting;
-			return this;
-		}
-		
-		private void updateBoundedRangeModel( javax.swing.BoundedRangeModel boundedRangeModel ) {
-			int minimum; 
-			if( this.minimum != null ) {
-				minimum = toInt( this.minimum );
-			} else {
-				minimum = boundedRangeModel.getMinimum();
-			}
-			int maximum; 
-			if( this.maximum != null ) {
-				maximum = toInt( this.maximum );
-			} else {
-				maximum = boundedRangeModel.getMaximum();
-			}
-			int extent; 
-			if( this.extent != null ) {
-				extent = toInt( this.extent );
-			} else {
-				extent = boundedRangeModel.getExtent();
-			}
-			int value; 
-			if( this.value != null ) {
-				value = toInt( this.value );
-			} else {
-				value = boundedRangeModel.getValue();
-			}
-			boundedRangeModel.setRangeProperties( value, extent, minimum, maximum, this.isAdjusting );
-		}
+	public void setStepSize( N stepSize ) {
+		this.getSwingModel().getSpinnerModel().setStepSize( stepSize );
 	}
 	
-	public void setMinimum( N value ) {
-		this.swingModel.boundedRangeModel.setMinimum( this.toInt( value ) );
+	public void setAll( AtomicChange<N> atomicChange ) {
+		atomicChange.updateSwingModel( this.swingModel );
 	}
-	public void setMaximum( N value ) {
-		this.swingModel.boundedRangeModel.setMaximum( this.toInt( value ) );
+	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {
+		this.pushIgnore();
+		try {
+			this.setAll( atomicChange );
+		} finally {
+			this.popIgnore();
+		}
 	}
-	public void setExtent( N value ) {
-		this.swingModel.boundedRangeModel.setExtent( this.toInt( value ) );
-	}
-	
-	public void setAll( AtomicChange atomicChange ) {	
-		atomicChange.updateBoundedRangeModel( this.swingModel.boundedRangeModel );
-	}
+
 	@Override
-	protected N getActualValue() {
-		return this.fromInt( this.swingModel.boundedRangeModel.getValue() );
+	protected void updateSwingModel( N nextValue ) {
+		this.swingModel.setValue( nextValue );
 	}
-	
-	@Override
-	protected void updateSwingModel(N nextValue) {
-		this.swingModel.boundedRangeModel.setValue( this.toInt( nextValue ) );
-	}
-//	@Override
-//	protected void handleValueChange(N nextValue) {
-//		if( nextValue != this.previousValue ) {
-//			N prevValue = this.previousValue;
-//			boolean isAdjusting = false;
-//			this.fireChanging( prevValue, nextValue, isAdjusting );
-//			this.swingModel.boundedRangeModel.setValue( this.toInt( nextValue ) );
-//			this.previousValue = nextValue;
-//			this.fireChanged( prevValue, nextValue, isAdjusting );
-//		}
-//	}
 
 	public org.lgna.croquet.components.Slider createSlider() {
 		return new org.lgna.croquet.components.Slider( this );
