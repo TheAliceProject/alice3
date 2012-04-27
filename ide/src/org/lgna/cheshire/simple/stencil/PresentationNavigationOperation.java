@@ -56,7 +56,7 @@ import org.lgna.cheshire.simple.Presentation;
 	@Override
 	public org.lgna.croquet.components.Button createButton() {
 		org.lgna.croquet.components.Button rv = super.createButton();
-		rv.setBackgroundColor( SimplePresentation.CONTROL_COLOR );
+		rv.setOpaque( false );
 		return rv;
 	}
 }
