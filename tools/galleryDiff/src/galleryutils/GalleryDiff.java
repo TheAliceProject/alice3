@@ -503,7 +503,6 @@ public class GalleryDiff {
 				"3.1.23.0.0",
 				"3.1.24.0.0",
 				"3.1.25.0.0",
-				
 		};
 		
 		GalleryDiff differ = null;
