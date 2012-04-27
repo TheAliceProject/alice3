@@ -192,6 +192,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess) {
 		super.initializePresentation(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
+		this.setRetargeter( new org.lgna.cheshire.simple.AstLiveRetargeter() );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
 
