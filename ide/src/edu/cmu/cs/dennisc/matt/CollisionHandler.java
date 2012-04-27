@@ -55,6 +55,7 @@ import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.StartCollisionEvent;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -63,6 +64,10 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  * @author Matt May
  */
 public class CollisionHandler extends TransformationChangedHandler<Object,CollisionEvent> {
+
+	public CollisionHandler( SceneImp scene ) {
+		super( scene );
+	}
 
 	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 

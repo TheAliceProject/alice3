@@ -25,17 +25,18 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 
 	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
-			currentTime = programImp.getProgram().getAnimator().getCurrentTime();
+			currentTime = sceneImp.getProgram().getAnimator().getCurrentTime();
 			update();
 		}
 	};
 	private boolean isEnabled = false;
 	private boolean isActivated = false;
 	private Map<TimeListener,Boolean> activationMap = Collections.newHashMap();
-	private SceneImp programImp;
+	private SceneImp sceneImp;
 
 	public TimerEventHandler( SceneImp scene ) {
-		this.programImp = scene;
+		super(scene);
+		this.sceneImp = scene;
 	}
 	public void enable() {
 		isEnabled = true;

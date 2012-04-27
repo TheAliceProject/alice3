@@ -5,44 +5,79 @@ import java.util.Map;
 
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.event.SceneActivationEvent;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class EventRecorder {
 
-	private Long startTime = new Long( -1 );
-	private static EventRecorder instance = new EventRecorder();
-	private Map<Long, AbstractEvent> eventMap = Collections.newHashMap();
-	private List<Long> remainingEvents = Collections.newArrayList();
+	private Double startTime = new Double( -1 );
+	private static List<EventRecorder> instanceList = Collections.newLinkedList();
+	private Map<Double,AbstractEvent> eventMap = Collections.newHashMap();
+	private List<EventWithTime> remainingEvents = Collections.newArrayList();
+	private SceneImp scene;
 
-	private EventRecorder() {
-		// make private
+	private EventRecorder( SceneImp scene ) {
+		this.scene = scene;
+	}
+	
+	private class EventWithTime implements Comparable<EventWithTime> {
+		AbstractEvent event;
+		Double timeOfFire;
+		public EventWithTime( double timeOfFire, AbstractEvent e ){
+			this.event = e;
+			this.timeOfFire = timeOfFire;
+		}
+		public int compareTo( EventWithTime o ) {
+			return this.getTimeOfFire().compareTo( o.getTimeOfFire() );
+		}
+		
+		public Double getTimeOfFire() {
+			return this.timeOfFire;
+		}
+		
+		public AbstractEvent getEvent() {
+			return this.event;
+		}
 	}
 
-	public static EventRecorder getSingleton() {
-		return instance;
-	}
-
-	public void recordEvent(AbstractEvent e) {
-		synchronized ( startTime ) {
-			if (e instanceof SceneActivationEvent) {
-				if( startTime == -1 ){
-					startTime = System.currentTimeMillis();
-					eventMap.put( startTime - startTime, e );
+	public void recordEvent( AbstractEvent e ) {
+		synchronized( startTime ) {
+			if( e instanceof SceneActivationEvent ) {
+				if( startTime == -1 ) {
+					startTime = scene.getProgram().getAnimator().getCurrentTime();
+					register(startTime, e);
 				}
-			} else if ( startTime != -1 ) {
-				eventMap.put( System.currentTimeMillis() - startTime, e );
+			} else if( startTime != -1 ) {
+				register( scene.getProgram().getAnimator().getCurrentTime(), e );
 			} else {
-				System.out.println( "WARNING EVENTS NOT BEING PROPERLY RECORDED " + e.getClass());
+				System.out.println( "WARNING EVENTS NOT BEING PROPERLY RECORDED " + e.getClass() );
 				Thread.dumpStack();
 			}
 		}
 	}
 
-	public AbstractEvent eventToFire(Long time) {
-		if (remainingEvents.get(0) < time) {
-			return eventMap.get(remainingEvents.remove(0));
+	private void register( Double currentTime, AbstractEvent e ) {
+		eventMap.put( currentTime, e );
+		remainingEvents.add( new EventWithTime( currentTime, e ) );
+	}
+
+	public List<AbstractEvent> eventToFire( Long time ) {
+		List<AbstractEvent> rv = Collections.newLinkedList();
+		while( remainingEvents.get( 0 ).getTimeOfFire() < time ) {
+			rv.add( eventMap.get( remainingEvents.remove( 0 ).getEvent() ) );
 		}
-		return null;
+		return rv;
+	}
+
+	public static EventRecorder findRecorderForScene( SceneImp sceneImp ) {
+		for(EventRecorder recorder : instanceList ) {
+			if(recorder.scene.equals( sceneImp )){
+				return recorder;
+			}
+		}
+		EventRecorder rv = new EventRecorder( sceneImp );
+		instanceList.add( rv );
+		return rv;
 	}
 }

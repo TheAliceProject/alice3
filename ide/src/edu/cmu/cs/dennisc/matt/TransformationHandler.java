@@ -9,12 +9,17 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.PointOfViewEvent;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener,PointOfViewEvent> {
 
 	private Map<Entity,List<PointOfViewChangeListener>> checkMap = Collections.newHashMap();
+
+	public TransformationHandler( SceneImp scene ) {
+		super(scene);
+	}
 
 	public void addTransformationListener( PointOfViewChangeListener transformationlistener, Entity[] shouldListenTo ) {
 		registerIsFiringMap( transformationlistener );

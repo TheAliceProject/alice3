@@ -8,6 +8,7 @@ import org.lgna.common.ComponentThread;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -17,8 +18,12 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	protected Integer count = 0;
 	protected Map<Object,MultipleEventPolicy> policyMap = Collections.newHashMap();
 	protected Map<Object,HashMap<Object,Boolean>> isFiringMap = Collections.newHashMap();
-	protected EventRecorder recorder = EventRecorder.getSingleton();
+	protected EventRecorder recorder;// = new EventRecorder( scene );
 	private LinkedList<E> queue = new LinkedList<E>();
+	
+	public AbstractEventHandler(SceneImp scene) {
+		this.recorder = EventRecorder.findRecorderForScene( scene );
+	}
 
 	protected void fireEvent( final L listener, final E event, final Object o ) {
 		if( isFiringMap.get( listener ) == null ) {

@@ -197,7 +197,7 @@ public class SceneImp extends EntityImp {
 	
 	private void fireSceneActivationListeners() {
 		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
-		EventRecorder.getSingleton().recordEvent(e);
+//		EventRecorder.getSingleton().recordEvent(e);
 		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
 			new org.lgna.common.ComponentThread( new Runnable() {
 				public void run() {

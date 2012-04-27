@@ -56,6 +56,7 @@ import org.lgna.story.event.ExitProximityEvent;
 import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityEvent;
 import org.lgna.story.event.ProximityExitListener;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -63,6 +64,10 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  * @author Matt May
  */
 public class ProximityEventHandler extends TransformationChangedHandler<Object,ProximityEvent> {
+
+	public ProximityEventHandler( SceneImp scene ) {
+		super( scene );
+	}
 
 	private ProximityEventManager proximityEventManager = new ProximityEventManager();
 

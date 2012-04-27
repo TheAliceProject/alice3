@@ -36,16 +36,16 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 public class EventManager {
 
-	private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
+	private final MouseClickedHandler mouseHandler;
 
-	private final TransformationHandler transHandler = new TransformationHandler();
-	private final OcclusionHandler occlusionHandler = new OcclusionHandler();
-	private final ViewEventHandler viewHandler = new ViewEventHandler();
-	private final CollisionHandler collisionHandler = new CollisionHandler();
-	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
-	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
+	private final TransformationHandler transHandler;
+	private final OcclusionHandler occlusionHandler;
+	private final ViewEventHandler viewHandler;
+	private final CollisionHandler collisionHandler;
+	private final ProximityEventHandler proxyHandler;
+	private final KeyPressedHandler keyHandler;
 	private final TimerEventHandler timer;
-	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
+	private final AbstractEventHandler[] handlers;
 
 	private final TimerContingencyManager contingent;
 
@@ -77,10 +77,18 @@ public class EventManager {
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
-		timer = new TimerEventHandler(scene);
+		timer = new TimerEventHandler( scene );
 		scene.addSceneActivationListener( timer );
 		contingent = new TimerContingencyManager( timer );
 		contingent.setScene( scene );
+		keyHandler = new KeyPressedHandler( scene );
+		mouseHandler = new MouseClickedHandler( scene );
+		transHandler = new TransformationHandler( scene );
+		occlusionHandler = new OcclusionHandler( scene );
+		viewHandler = new ViewEventHandler( scene );
+		collisionHandler = new CollisionHandler( scene );
+		proxyHandler = new ProximityEventHandler( scene );
+		handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
 	}
 
 	public void removeKeyListener( KeyPressListener keyListener ) {

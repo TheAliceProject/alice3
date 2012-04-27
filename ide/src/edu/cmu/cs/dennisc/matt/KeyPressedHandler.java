@@ -14,6 +14,7 @@ import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -25,7 +26,8 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 	private HashMap<Object,HashMap<Key,Boolean>> firePolicyMap = Collections.newHashMap();
 	private long sleepTime = 500;
 
-	public KeyPressedHandler() {
+	public KeyPressedHandler( SceneImp scene ) {
+		super(scene);
 		map.put( empty, new LinkedList<Object>() );
 	}
 

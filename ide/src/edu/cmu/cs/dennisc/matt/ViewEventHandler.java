@@ -14,10 +14,15 @@ import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewEvent;
 import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.implementation.CameraImp;
+import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEvent> {
+
+	public ViewEventHandler( SceneImp scene ) {
+		super( scene );
+	}
 
 	private CameraImp camera;
 	private Map<Model,List<Object>> map = Collections.newHashMap();
