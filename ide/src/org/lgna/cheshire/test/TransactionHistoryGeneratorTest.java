@@ -27,8 +27,8 @@ public class TransactionHistoryGeneratorTest {
 		this.projectFile = new java.io.File( this.testPath, PROJECT_FILENAME );
 		this.reuseFile = new java.io.File( this.testPath, REUSE_FILENAME );
 
-		org.lgna.project.Version VERSION_INDEPENDENT = null;
 		// We need to "convert" lgp to a3p... this hack will suffice
+		org.lgna.project.Version VERSION_INDEPENDENT = null;
 		org.lgna.project.migration.MigrationManager.addVersionIndependentMigration( new org.lgna.project.migration.TextMigration( 
 				VERSION_INDEPENDENT, 
 				VERSION_INDEPENDENT, 

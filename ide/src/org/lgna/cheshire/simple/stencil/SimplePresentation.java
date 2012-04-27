@@ -68,7 +68,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			controlPanel.addComponent( new BookComboBox( SimplePresentation.this.bookComboBoxModel, menuPolicy.isAboveStencil() ) );
 			controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
 			controlsPanel.addComponent( controlPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-			SimplePresentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "", "WARNING: stencil is disabled.  Click here to turn re-enable." );
+			SimplePresentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "stencil", "stencil" );
 
 			org.lgna.croquet.components.CheckBox isInterceptingEventsCheckBox = SimplePresentation.this.isInterceptingEvents.createCheckBox();
 			isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
@@ -184,16 +184,14 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		this.application = application;
 	}
 
-	// TODO: <kjh/> this needs to be invoked or something.
 	@Override
-	public void setPresentationData(org.lgna.cheshire.simple.ChapterAccessPolicy transactionAccessPolicy, 
+	public void initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy transactionAccessPolicy, 
 			org.lgna.croquet.history.TransactionHistory originalTransactionHistory, 
 			org.lgna.croquet.migration.MigrationManager migrationManager,
 			org.lgna.cheshire.Filterer filterer,
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess) {
-		super.setPresentationData(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
-		// TODO: <kjh/> clean this up!!!! This should go in the constructor
+		super.initializePresentation(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
 
@@ -297,6 +295,8 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				this.stencil.revalidateAndRepaint();
 				this.stencil.setCursor( cursor );
 			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "not good to go!" );
+
 				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.simple.TransactionChapter)chapter).getTransaction();
 
 				org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
@@ -307,34 +307,33 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( prepModel );
 				}
 
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
-				if( false ) {
-					org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
-					transaction.removeAllPrepSteps();
-					chapterPage.refreshNotes();
-					if( chapterPage.isGoodToGo() ) {
-						this.handleChapterChanged( chapter );
+				// TODO: <kjh/> This should probably not be done here... this should probably be part of croquet contexts or something...
+
+				org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
+				transaction.removeAllPrepSteps();
+				chapterPage.refreshNotes();
+				if( chapterPage.isGoodToGo() ) {
+					this.handleChapterChanged( chapter );
+				} else {
+					java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
+					if( menuItemPrepModels != null ) {
+						org.lgna.croquet.history.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
+						chapterPage.refreshNotes();
+						if( chapterPage.isGoodToGo() ) {
+							this.handleChapterChanged( chapter );
+						}
 					} else {
-						java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
-						if( menuItemPrepModels != null ) {
-							org.lgna.croquet.history.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
-							chapterPage.refreshNotes();
-							if( chapterPage.isGoodToGo() ) {
-								this.handleChapterChanged( chapter );
-							}
+						transaction.setPrepSteps( prepSteps );
+						chapterPage.refreshNotes();
+						org.lgna.croquet.history.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
+						if( tabSelectionRecoveryTransaction != null ) {
+							this.insertRecoveryTransactionChapter( tabSelectionRecoveryTransaction );
 						} else {
-							transaction.setPrepSteps( prepSteps );
-							chapterPage.refreshNotes();
-							org.lgna.croquet.history.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
-							if( tabSelectionRecoveryTransaction != null ) {
-								this.insertRecoveryTransactionChapter( tabSelectionRecoveryTransaction );
+							org.lgna.croquet.history.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
+							if( applicationRecoveryTransaction != null ) {
+								this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
 							} else {
-								org.lgna.croquet.history.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
-								if( applicationRecoveryTransaction != null ) {
-									this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
-								} else {
-									org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
-								}
+								org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
 							}
 						}
 					}

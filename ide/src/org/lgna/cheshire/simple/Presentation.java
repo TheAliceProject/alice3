@@ -86,8 +86,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		} );
 	}
 
-	// TODO: <kjh/> This needs to be invoked at some point
-	public void setPresentationData( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
+	public void initializePresentation( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
 		this.validateTransactionHistory( originalTransactionHistory );
 
 		this.recoverer = recoverer;
@@ -95,6 +94,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		if ( filterer != null ) {
 			filterer.filter( this.book.listIterator() );
 		}
+		this.book.setSelectedIndex(0);
 
 		final int N = groupsTrackedForRandomAccess.length;
 		this.historyManagers = new org.lgna.project.history.ProjectHistory[ N+1 ];

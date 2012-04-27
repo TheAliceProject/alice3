@@ -20,7 +20,6 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 		this.stencilPaint = this.getStencilPaint();
 	}
 
-	// TODO: <kjh/> Do I want this here?
 	protected abstract Page getCurrentPage();
 
 	@Override

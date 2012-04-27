@@ -124,7 +124,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getBattleCrazy();
 			this.loadProjectFrom( test.getProject() );
 			org.lgna.croquet.history.TransactionHistory reuseTransactionHistory = test.getReuseTransactionHistory();
-			this.simplePresentation.setPresentationData(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, reuseTransactionHistory, null, null, null, new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+			this.simplePresentation.initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, reuseTransactionHistory, null, null, new org.lgna.cheshire.simple.Recoverer(), new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
 			this.simplePresentation.showStencilsPresentation();
 			test.showTransactionHistory();
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
