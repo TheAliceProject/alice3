@@ -46,9 +46,8 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class BoundedIntegerState extends BoundedNumberState< Integer > {
-
 	public static class Details {
-		private static class SwingModel {
+		private static class IntegerSwingModel implements SwingModel< Integer > {
 			private boolean isInTheMidstOfStateChanged = false;
 			private class CustomSpinnerNumberModel extends javax.swing.SpinnerNumberModel {
 				public CustomSpinnerNumberModel( Details details ) {
@@ -99,11 +98,50 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 			private final CustomBoundedRangeModel boundedRangeModel;
 			private final CustomSpinnerNumberModel spinnerModel;
 
-			public SwingModel( Details details ) {
+			public IntegerSwingModel( Details details ) {
 				this.spinnerModel = new CustomSpinnerNumberModel( details );
 				this.boundedRangeModel = new CustomBoundedRangeModel( details );
 			}
-			
+			public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+				return this.boundedRangeModel;
+			}
+			public javax.swing.SpinnerNumberModel getSpinnerModel() {
+				return this.spinnerModel;
+			}
+			public void setValue( Integer value ) {
+				this.boundedRangeModel.setValue( value );
+			}			
+			public void setAll( Integer value, Integer minimum, Integer maximum, Integer stepSize, Integer extent, boolean isAdjusting ) {
+				if( value != null ) {
+					//pass
+				} else {
+					value = this.boundedRangeModel.getValue();
+				}
+				if( extent != null ) {
+					//pass
+				} else {
+					extent = this.boundedRangeModel.getExtent();
+				}
+				if( minimum != null ) {
+					//pass
+				} else {
+					minimum = this.boundedRangeModel.getMinimum();
+				}
+				if( maximum != null ) {
+					//pass
+				} else {
+					maximum = this.boundedRangeModel.getMaximum();
+				}
+				this.boundedRangeModel.setRangeProperties( value, extent, minimum, maximum, isAdjusting );
+				if( stepSize != null ) {
+					Number prevStepSize = this.spinnerModel.getStepSize();
+					if( stepSize.doubleValue() == prevStepSize.doubleValue() ) {
+						//pass
+					} else {
+						this.spinnerModel.setStepSize( stepSize );
+					}
+				}
+			}
 		}
 
 		private final Group group;
@@ -138,18 +176,12 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 			return this;
 		}
 		
-		private SwingModel swingModel;
-		private synchronized SwingModel getSwingModel() {
-			if( this.swingModel != null ) {
-				//pass
-			} else {
-				this.swingModel = new SwingModel( this );
-			}
-			return this.swingModel;
+		private synchronized IntegerSwingModel createSwingModel() {
+			return new IntegerSwingModel( this );
 		}
 	}
 	public BoundedIntegerState( Details details ) {
-		super( details.group, details.id, details.getSwingModel().boundedRangeModel.getValue(), details.getSwingModel().boundedRangeModel, details.getSwingModel().spinnerModel );
+		super( details.group, details.id, details.initialValue, details.createSwingModel() );
 	}
 	@Override
 	public Class< Integer > getItemClass() {
@@ -163,16 +195,26 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
 		binaryEncoder.encode( value );
 	}
-//	@Override
-//	protected void commitStateEdit( Integer prevValue, Integer nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-//		org.lgna.croquet.history.TransactionManager.handleBoundedIntegerStateChanged( BoundedIntegerState.this, nextValue, isAdjusting, trigger );
-//	}
+	
 	@Override
-	protected Integer fromInt( int value ) {
-		return value;
+	public Integer getMinimum() {
+		return this.getSwingModel().getBoundedRangeModel().getMinimum();
 	}
 	@Override
-	protected int toInt( Integer value ) {
-		return value;
+	public void setMinimum( Integer minimum ) {
+		this.getSwingModel().getBoundedRangeModel().setMinimum( minimum );
+	}
+	@Override
+	public Integer getMaximum() {
+		return this.getSwingModel().getBoundedRangeModel().getMaximum();
+	}
+	@Override
+	public void setMaximum( Integer maximum ) {
+		this.getSwingModel().getBoundedRangeModel().setMaximum( maximum );
+	}
+	
+	@Override
+	protected Integer getActualValue() {
+		return this.getSwingModel().getBoundedRangeModel().getValue();
 	}
 }
