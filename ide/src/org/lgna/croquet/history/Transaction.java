@@ -46,6 +46,7 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class Transaction extends TransactionNode<TransactionHistory> {
+
 	private static class DescendantStepIterator implements java.util.Iterator<Step<?>> {
 		private final java.util.List<Transaction> transactions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private int transactionIndex;
@@ -98,13 +99,12 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	private final java.util.List<PrepStep<?>> prepSteps;
 	private CompletionStep<?> completionStep;
 
-	
 	public static Transaction createAndAddToHistory( TransactionHistory owner ) {
 		Transaction rv = new Transaction( owner );
 		owner.addTransaction( rv );
 		return rv;
 	}
-	
+
 	public Transaction( TransactionHistory parent ) {
 		super( parent );
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -214,6 +214,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 			return null;
 		}
 	}
+
 	/*package-private*/void addMenuSelection( org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
 		java.util.ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator( this.prepSteps.size() );
 		while( iterator.hasPrevious() ) {
@@ -232,6 +233,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 		MenuItemSelectStep.createAndAddToTransaction( this, trigger );
 	}
+
 	public org.lgna.croquet.edits.Edit<?> getEdit() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getEdit();
@@ -299,7 +301,6 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		//		step = this.pendingSteps.reify( step, true );
 		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
 		step.fireChanging( e );
 		if( step instanceof PrepStep<?> ) {
@@ -315,9 +316,6 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	/*package-private*/void addPrepStep( PrepStep<?> step ) {
 		this.addStep( step );
 	}
-	//	public void removePrepStep( PrepStep< ? > step ) {
-	//		this.prepSteps.remove( step );
-	//	}
 	public CompletionStep<?> getCompletionStep() {
 		return this.completionStep;
 	}
