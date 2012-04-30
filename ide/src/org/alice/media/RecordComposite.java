@@ -51,7 +51,11 @@ import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
+import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.ProgramImp;
+import org.lgna.story.implementation.SceneImp;
+
+import edu.cmu.cs.dennisc.matt.EventTranscript;
 
 /**
  * @author Matt May
@@ -84,15 +88,18 @@ public class RecordComposite extends Composite<RecordView> {
 			if( isPlaying ) {
 				isPlaying = !isPlaying;
 				programContext.getProgramImp().stopAnimator();
+				EventTranscript transcript = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+				System.out.println( transcript );
 			} else {
 				isPlaying = !isPlaying;
-//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
+				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
 				programContext.getProgramImp().startAnimator();
 			}
 		}
 	}, this.createKey( "play" ) );
 
 	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
+
 	public RecordComposite() {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 	}

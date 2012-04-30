@@ -43,9 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.matt.EventManager;
-import edu.cmu.cs.dennisc.matt.EventRecorder;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -82,9 +79,9 @@ public class SceneImp extends EntityImp {
 	private ProgramImp program;
 	private final org.lgna.story.Scene abstraction;
 	private float fogDensityValue = 0;
-	private final EventManager eventManager;
+	private final edu.cmu.cs.dennisc.matt.EventManager eventManager;
 	
-	public EventManager getEventManager() {
+	public edu.cmu.cs.dennisc.matt.EventManager getEventManager() {
 		return this.eventManager;
 	}
 
@@ -165,7 +162,7 @@ public class SceneImp extends EntityImp {
 		this.setFogDensity(0);
 		this.putInstance( this.sgScene );
 
-		this.eventManager = new EventManager( this );
+		this.eventManager = new edu.cmu.cs.dennisc.matt.EventManager( this );
 
 		final edu.cmu.cs.dennisc.math.Angle fromAbovePitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( -60.0 );
 		final float fromAboveBrightness = 0.533f;
@@ -197,7 +194,7 @@ public class SceneImp extends EntityImp {
 	
 	private void fireSceneActivationListeners() {
 		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
-//		EventRecorder.getSingleton().recordEvent(e);
+		edu.cmu.cs.dennisc.matt.EventRecorder.findRecorderForScene( this ).recordEvent(e);
 		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
 			new org.lgna.common.ComponentThread( new Runnable() {
 				public void run() {
@@ -351,5 +348,9 @@ public class SceneImp extends EntityImp {
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		//todo
 		return rv;
+	}
+	
+	public edu.cmu.cs.dennisc.matt.EventTranscript getTranscript() {
+		return edu.cmu.cs.dennisc.matt.EventRecorder.findRecorderForScene( this ).getEventTranscript();
 	}
 }
