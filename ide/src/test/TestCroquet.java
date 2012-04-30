@@ -57,7 +57,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		}
 		class DoubleState extends org.lgna.croquet.BoundedDoubleState {
 			public DoubleState() {
-				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "e2259f84-65bc-4276-a990-e8e6408583f4" ) ).maximum( 80 ).initialValue( 30 ).stepSize( 10 ).minimum( 20 ) );
+				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ).stepSize( 10 ).minimum( 20 ) );
 			}
 		}
 		
