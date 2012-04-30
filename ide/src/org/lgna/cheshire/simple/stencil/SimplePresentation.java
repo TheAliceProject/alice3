@@ -303,7 +303,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				this.stencil.revalidateAndRepaint();
 				this.stencil.setCursor( cursor );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "not good to go!" );
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "not good to go!" );
 
 				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.simple.TransactionChapter)chapter).getTransaction();
 
@@ -311,6 +311,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
 
 				Iterable< ? extends org.lgna.croquet.PrepModel > prepModels = completionModel.getPotentialRootPrepModels();
+				assert prepModels != null : completionModel;
 				for( org.lgna.croquet.PrepModel prepModel : prepModels ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( prepModel );
 				}

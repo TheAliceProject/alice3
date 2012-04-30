@@ -65,6 +65,15 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.AbstractType.class );
 	}
 	@Override
+	public boolean contains( org.lgna.croquet.Model model ) {
+		if( super.contains( model ) ) {
+			return true;
+		} else {
+			//todo
+			return true;
+		}
+	}
+	@Override
 	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
 		return this.getDeclaration();
 	}

@@ -41,8 +41,21 @@ public class TransactionHistoryGeneratorTest {
 			e.printStackTrace();
 		}
 
+		
+		
+	}
+	
+	public void generate( org.lgna.project.Project target ) {
+		
+		org.lgna.project.ast.NamedUserType programType = target.getProgramType();
+		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
+		assert sceneType.isAssignableTo( org.lgna.story.Scene.class ) : sceneType;
+		org.lgna.project.ast.UserMethod owner = sceneType.getDeclaredMethod( "myFirstMethod" );
+		
+		org.lgna.project.ast.UserMethod methodToGenerate = (org.lgna.project.ast.UserMethod)this.reuseMethod;
+		org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), methodToGenerate );
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
-		this.reuseTransactionHistory = transactionHistoryGenerator.generate( this.reuseMethod );
+		this.reuseTransactionHistory = transactionHistoryGenerator.generate( owner, methodInvocation );
 	}
 
 	private org.lgna.project.ast.AbstractNode loadReuseLgp( java.io.File file ) throws java.io.IOException {
@@ -95,17 +108,20 @@ public class TransactionHistoryGeneratorTest {
 		return new TransactionHistoryGeneratorTest( "Battle Crazy" );
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		TransactionHistoryGeneratorTest test;
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		ide.initialize( args );
 
+		
 		// Spin Crazy
 		test = getSpinCrazy();
+		test.generate( org.lgna.project.io.IoUtilities.readProject( test.getProject() ) );
 		test.showTransactionHistory();
 
 		// Battle Crazy
 		test = getBattleCrazy();
+		test.generate( org.lgna.project.io.IoUtilities.readProject( test.getProject() ) );
 		test.showTransactionHistory();
 	}
 }

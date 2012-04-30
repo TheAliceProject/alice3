@@ -225,8 +225,8 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 	
 	@Override
-	public java.lang.Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
-		return null;
+	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
 	}
 
 	public javax.swing.Action createActionForItem( final T item ) {

@@ -95,7 +95,7 @@ public abstract class Feature {
 		if( trackableShape != null ) {
 			return true;//trackableShape.isInView();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.trackableShapeResolver );
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.trackableShapeResolver );
 			return false;
 		}
 	}	

@@ -150,7 +150,7 @@ public abstract class IoUtilities {
 		return rv;
 	}
 	public static org.w3c.dom.Document readXML( java.io.InputStream is, org.lgna.project.Version version ) throws java.io.IOException {
-		if( org.lgna.project.Version.getCurrentVersion().compareTo( version ) == 0 ) {
+		if( org.lgna.project.Version.getCurrentVersion().compareTo( version ) == 0 && org.lgna.project.migration.MigrationManager.isDevoidOfVersionIndependentMigrations() ) {
 			//pass
 		} else {
 			String text = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
