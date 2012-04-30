@@ -46,13 +46,17 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public final class StateChangeNote extends CompletionNote< org.lgna.croquet.history.StateChangeStep > {
-	public StateChangeNote( org.lgna.croquet.history.StateChangeStep step ) {
+public final class StateChangeNote<T> extends CompletionNote< org.lgna.croquet.history.StateChangeStep<T> > {
+	public StateChangeNote( org.lgna.croquet.history.StateChangeStep<T> step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures(org.lgna.croquet.history.StateChangeStep step) {
-		this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.EAST_WEST ) );
-		//this.addFeature( new org.lgna.cheshire.stencil.features.Hole( new org.lgna.cheshire.stencil.resolvers.ItemSelectionStateItemResolver( step ), org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH ) );
+	protected void addFeatures(org.lgna.croquet.history.StateChangeStep<T> step) {
+		org.lgna.croquet.State<T> state = step.getModel();
+		if( state instanceof org.lgna.croquet.ListSelectionState ) {
+			this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ItemSelectionStateItemResolver<T>( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.NORTH_SOUTH ) );
+		} else {
+			this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.EAST_WEST ) );
+		}
 	}
 }
