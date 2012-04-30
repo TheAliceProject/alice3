@@ -52,7 +52,6 @@ import org.lgna.croquet.Composite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.matt.EventTranscript;

@@ -1,7 +1,6 @@
 package edu.cmu.cs.dennisc.matt;
 
 import java.util.List;
-import java.util.Map;
 
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.event.SceneActivationEvent;

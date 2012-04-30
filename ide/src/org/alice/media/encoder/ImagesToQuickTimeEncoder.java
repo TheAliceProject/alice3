@@ -68,7 +68,6 @@ import ch.randelshofer.media.quicktime.QuickTimeWriter.VideoFormat;
 import edu.cmu.cs.dennisc.animation.Animation;
 import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.cmu.cs.dennisc.movie.MovieEncoder;
 
