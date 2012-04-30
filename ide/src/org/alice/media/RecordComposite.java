@@ -89,7 +89,6 @@ public class RecordComposite extends Composite<RecordView> {
 				isPlaying = !isPlaying;
 				programContext.getProgramImp().stopAnimator();
 				EventTranscript transcript = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
-				System.out.println( transcript );
 			} else {
 				isPlaying = !isPlaying;
 				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
@@ -184,7 +183,7 @@ public class RecordComposite extends Composite<RecordView> {
 				image = null;
 				imageCount = 0;
 
-				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, getFrameRate().getValue() );
+				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRate.getValue() );
 				programContext.initialize( lookingGlassContainer.getAwtComponent() );
 				programContext.setActiveScene();
 			}
