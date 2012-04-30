@@ -219,8 +219,13 @@ public class ProgramImp {
 	
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator( edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator ) {
 		this.clockBasedAnimator = clockBasedAnimator;
+		this.frameRate = CLOCK_BASED_FRAME_RATE;
 	}
-	
+	public void ACCEPTABLE_HACK_FOR_VIDEO_RECORDER_setFrameBasedAnimator( edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator ) {
+		this.frameBasedAnimator = frameBasedAnimator;
+		this.frameRate = this.frameBasedAnimator.getFramesPerSecond();
+	}
+
 	public Double getFrameRate() {
 		return this.frameRate;
 	}
