@@ -59,9 +59,6 @@ public class TransactionHistoryGenerator {
 		org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		//generate( transactionHistory, this.src, this.dst, this.dstIndex0 );
 
-		PrintAstVisitor printAstVisitor = new PrintAstVisitor(this.src);
-		this.src.crawl(printAstVisitor, false);
-
 		AstTransactionGeneratorVisitor astGenerator = new AstTransactionGeneratorVisitor(transactionHistory);
 		this.src.crawl(astGenerator, true);
 
