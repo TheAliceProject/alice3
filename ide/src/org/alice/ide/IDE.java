@@ -125,11 +125,17 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.loadProjectFrom( test.getProject() );
 			org.lgna.croquet.history.TransactionHistory reuseTransactionHistory = test.getReuseTransactionHistory();
 			this.simplePresentation.initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, reuseTransactionHistory, null, null, new org.lgna.cheshire.simple.Recoverer(), new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+
+			// Retarget the scene type... BAD BAD BAD HACK.
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)test.getReuseAst();
+			this.simplePresentation.retargetType( this.getProject().getProgramType().getDeclaredFields().get( 0 ).getValueType(), method.getDeclaringType() );
+
 			this.simplePresentation.showStencilsPresentation();
 			test.showTransactionHistory();
 			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 		}
 	}
+
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
 		if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {

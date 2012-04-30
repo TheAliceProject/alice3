@@ -12,7 +12,8 @@ public class TransactionHistoryGenerator {
 		
 		// <kjh/> method invocations should be handled more generically
 		
-		org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( method.getDeclaringType() ).generateAndAddToTransactionHistory( history, method );
+		org.lgna.project.ast.UserType<?> declaringType = method.getDeclaringType();
+		org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( declaringType ).generateAndAddToTransactionHistory( history, method );
 		
 
 		// TODO: Create a run operation, at the end of the tutorial

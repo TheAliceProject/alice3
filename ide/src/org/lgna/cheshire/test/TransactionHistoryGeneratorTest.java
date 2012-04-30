@@ -65,6 +65,10 @@ public class TransactionHistoryGeneratorTest {
 		return this.projectFile;
 	}
 
+	public org.lgna.project.ast.AbstractNode getReuseAst() {
+		return this.reuseMethod;
+	}
+
 	public void showTransactionHistory() {
 		// Show the transaction history panel.
 

@@ -215,6 +215,13 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		} );
 	}
 
+	@Deprecated
+	public void retargetType( org.lgna.project.ast.AbstractType<?,?,?> originalType, org.lgna.project.ast.AbstractType<?,?,?> replacementType ) {
+		// BAD BAD BAD
+		org.lgna.cheshire.simple.AstLiveRetargeter retargeter = (org.lgna.cheshire.simple.AstLiveRetargeter)getRetargeter();
+		retargeter.addKeyValuePair( originalType, replacementType );
+	}
+
 	@Override
 	protected void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
 		this.restoreHistoryIndicesDueToCancel();

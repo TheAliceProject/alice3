@@ -249,6 +249,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	}
 
 	public org.lgna.croquet.Retargeter getRetargeter() {
+		assert this.retargeter != null;
 		return this.retargeter;
 	}
 	public void setRetargeter( org.lgna.croquet.Retargeter retargeter ) {
