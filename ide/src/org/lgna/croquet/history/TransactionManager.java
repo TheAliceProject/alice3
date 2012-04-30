@@ -66,9 +66,10 @@ public class TransactionManager {
 
 	@Deprecated
 	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
-		org.lgna.croquet.triggers.MenuSelectionTrigger trigger = new org.lgna.croquet.triggers.MenuSelectionTrigger( e );
-		if( trigger.isValid() ) {
-			getActiveTransaction().addMenuSelection( trigger );
+		org.lgna.croquet.triggers.ChangeEventTrigger trigger = new org.lgna.croquet.triggers.ChangeEventTrigger( e );
+		MenuSelection menuSelection = new MenuSelection( trigger );
+		if( menuSelection.isValid() ) {
+			getActiveTransaction().addMenuSelection( menuSelection );
 		}
 	}
 	@Deprecated

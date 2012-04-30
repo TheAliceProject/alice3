@@ -41,12 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.triggers;
+package org.lgna.croquet.history;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MenuSelectionTrigger extends ChangeEventTrigger {
+class MenuSelection {
 	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
 		for( javax.swing.MenuElement menuElement : menuElements ) {
 			org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( menuElement.getComponent() );
@@ -56,7 +56,6 @@ public class MenuSelectionTrigger extends ChangeEventTrigger {
 		}
 		return menuElements.length == 0;
 	}
-
 	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 
 		if( menuElements.length > 0 ) {
 			javax.swing.MenuElement menuElement0 = menuElements[ 0 ];
@@ -83,24 +82,24 @@ public class MenuSelectionTrigger extends ChangeEventTrigger {
 		}
 	}
 
-	private transient final javax.swing.MenuElement[] selectedPath;
+	private final org.lgna.croquet.triggers.ChangeEventTrigger trigger;
 	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
 	private final org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels;
-	public MenuSelectionTrigger( javax.swing.event.ChangeEvent changeEvent ) {
-		super( changeEvent );
-		this.selectedPath = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
-		if( isCroquetMenuSelection( this.selectedPath ) ) {
-			this.menuBarComposite = getMenuBarComposite( this.selectedPath );
+	public MenuSelection( org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
+		this.trigger = trigger;
+		javax.swing.MenuElement[] selectedPath = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
+		if( isCroquetMenuSelection( selectedPath ) ) {
+			menuBarComposite = getMenuBarComposite( selectedPath );
 			java.util.List< org.lgna.croquet.MenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			int i0;
-			if( this.menuBarComposite != null ) {
+			if( menuBarComposite != null ) {
 				i0 = 1;
 			} else {
 				i0 = 0;
 			}
-			final int N = this.selectedPath.length;
+			final int N = selectedPath.length;
 			for( int i=i0; i<N; i++ ) {
-				javax.swing.MenuElement menuElementI = this.selectedPath[ i ];
+				javax.swing.MenuElement menuElementI = selectedPath[ i ];
 				if( menuElementI instanceof javax.swing.JPopupMenu ) {
 					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
 					//pass
@@ -128,28 +127,37 @@ public class MenuSelectionTrigger extends ChangeEventTrigger {
 					}
 				}
 			}
-			this.menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.MenuItemPrepModel.class );
+			menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.MenuItemPrepModel.class );
 		} else {
-			this.menuBarComposite = null;
-			this.menuItemPrepModels = new org.lgna.croquet.MenuItemPrepModel[ 0 ];
+			menuBarComposite = null;
+			menuItemPrepModels = new org.lgna.croquet.MenuItemPrepModel[ 0 ];
 		}
 	}
-	public MenuSelectionTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.selectedPath = null;
-		//todo
-		this.menuBarComposite = null;
-		this.menuItemPrepModels = new org.lgna.croquet.MenuItemPrepModel[ 0 ];
+	public org.lgna.croquet.triggers.ChangeEventTrigger getTrigger() {
+		return this.trigger;
+	}
+	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
+		return this.menuBarComposite;
+	}
+	public org.lgna.croquet.MenuItemPrepModel[] getMenuItemPrepModels() {
+		return this.menuItemPrepModels;
 	}
 	public boolean isValid() {
 		return this.menuBarComposite != null || this.menuItemPrepModels.length > 0;
 	}
-	public boolean isPrevious( MenuSelectionTrigger other ) {
-		if( this.menuBarComposite == other.menuBarComposite ) {
-			if( this.menuItemPrepModels.length+1 == other.menuItemPrepModels.length ) {
-				final int N = this.menuItemPrepModels.length;
+	public org.lgna.croquet.MenuItemPrepModel getLastMenuItemPrepModel() {
+		if( this.menuItemPrepModels.length > 0 ) {
+			return this.menuItemPrepModels[ this.menuItemPrepModels.length - 1 ];
+		} else {
+			return null;
+		}
+	}
+	public boolean isPrevious( org.lgna.croquet.MenuBarComposite otherMenuBarComposite, org.lgna.croquet.MenuItemPrepModel[] otherMenuItemPrepModels ) {
+		if( this.menuBarComposite == otherMenuBarComposite ) {
+			if( this.menuItemPrepModels.length == otherMenuItemPrepModels.length+1 ) {
+				final int N = otherMenuItemPrepModels.length;
 				for( int i=0; i<N; i++ ) {
-					if( this.menuItemPrepModels[ i ] == other.menuItemPrepModels[ i ] ) {
+					if( this.menuItemPrepModels[ i ] == otherMenuItemPrepModels[ i ] ) {
 						//pass
 					} else {
 						return false;
@@ -159,20 +167,5 @@ public class MenuSelectionTrigger extends ChangeEventTrigger {
 			}
 		}
 		return false;
-	}
-	public org.lgna.croquet.MenuItemPrepModel getLastMenuItemPrepModel() {
-		if( this.menuItemPrepModels.length > 0 ) {
-			return this.menuItemPrepModels[ this.menuItemPrepModels.length - 1 ];
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected java.awt.Point getPoint() {
-		return null;
-	}
-	@Override
-	public String getNoteText( ) {
-		return "Select";
 	}
 }

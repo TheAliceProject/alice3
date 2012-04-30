@@ -60,6 +60,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	public void generateAndAddPostDragStepsToTransaction( org.lgna.croquet.history.Transaction transaction, org.lgna.project.ast.Statement statement ) {
 		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
 		java.util.List<org.lgna.project.ast.Expression> expressions = this.extractExpressionsForFillInGeneration( statement );
+		java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.Expression expression : expressions ) {
 			org.lgna.croquet.CascadeFillIn fillIn;
 			if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
@@ -80,12 +81,15 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 				fillIn = null;
 			}
 			if( fillIn != null ) {
+				prepModels.add( fillIn );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: pass fill in to menu selection step ", fillIn );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle expression ", expression );
 			}
-			javax.swing.event.ChangeEvent changeEvent = null;
-			org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, new org.lgna.croquet.triggers.MenuSelectionTrigger( changeEvent ) );
+			org.lgna.croquet.MenuBarComposite menuBarComposite = null;
+			org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );
+			
+			org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, new org.lgna.croquet.triggers.SimulatedTrigger() );
 		}
 		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, new org.lgna.croquet.triggers.SimulatedTrigger(), null );
 	}

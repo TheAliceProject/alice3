@@ -215,14 +215,13 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	/*package-private*/void addMenuSelection( org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
+	/*package-private*/void addMenuSelection( MenuSelection menuSelection ) {
 		java.util.ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator( this.prepSteps.size() );
 		while( iterator.hasPrevious() ) {
 			PrepStep<?> prepStep = iterator.previous();
 			if( prepStep instanceof MenuItemSelectStep ) {
-				MenuItemSelectStep menuItemSelectStep = (MenuItemSelectStep)prepStep;
-				org.lgna.croquet.triggers.MenuSelectionTrigger menuSelectionTrigger = (org.lgna.croquet.triggers.MenuSelectionTrigger)menuItemSelectStep.getTrigger();
-				if( menuSelectionTrigger.isPrevious( trigger ) ) {
+				MenuItemSelectStep prevMenuItemSelectStep = (MenuItemSelectStep)prepStep;
+				if( menuSelection.isPrevious( prevMenuItemSelectStep.getMenuBarComposite(), prevMenuItemSelectStep.getMenuItemPrepModels() ) ) {
 					break;
 				} else {
 					iterator.remove();
@@ -231,7 +230,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 				break;
 			}
 		}
-		MenuItemSelectStep.createAndAddToTransaction( this, trigger );
+		MenuItemSelectStep.createAndAddToTransaction( this, menuSelection.getMenuBarComposite(), menuSelection.getMenuItemPrepModels(), menuSelection.getTrigger() );
 	}
 
 	public org.lgna.croquet.edits.Edit<?> getEdit() {

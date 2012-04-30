@@ -47,13 +47,30 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class MenuItemSelectStep extends PrepStep< org.lgna.croquet.MenuItemPrepModel > {
-	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
-		return new MenuItemSelectStep( parent, trigger );
+	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.Trigger trigger ) {
+		return new MenuItemSelectStep( parent, menuBarComposite, menuItemPrepModels, trigger );
 	}
-	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
-		super( parent, trigger.getLastMenuItemPrepModel(), trigger );
+	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
+	private final org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels;
+	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.Trigger trigger ) {
+		super( parent, menuItemPrepModels[ menuItemPrepModels.length-1 ], trigger );
+		this.menuBarComposite = menuBarComposite;
+		this.menuItemPrepModels = menuItemPrepModels;
 	}
 	public MenuItemSelectStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
+		//todo
+		this.menuBarComposite = null;
+		this.menuItemPrepModels = new org.lgna.croquet.MenuItemPrepModel[ 0 ];
+	}
+
+	public boolean isValid() {
+		return this.menuBarComposite != null || this.menuItemPrepModels.length > 0;
+	}
+	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
+		return this.menuBarComposite;
+	}
+	public org.lgna.croquet.MenuItemPrepModel[] getMenuItemPrepModels() {
+		return this.menuItemPrepModels;
 	}
 }
