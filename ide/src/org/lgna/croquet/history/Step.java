@@ -81,7 +81,6 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 
 	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent );
-
 		if( model != null ) {
 			this.modelResolver = model.getResolver();
 		} else {
@@ -110,7 +109,6 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		org.lgna.croquet.Context[] contexts = binaryDecoder.decodeBinaryEncodableAndDecodableArray( org.lgna.croquet.Context.class );
 		this.contexts = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( contexts ) );
 	}
-
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.modelResolver );
 		binaryEncoder.encode( this.trigger );
@@ -118,7 +116,6 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		org.lgna.croquet.Context[] contexts = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.contexts, org.lgna.croquet.Context.class );
 		binaryEncoder.encode( contexts );
 	}
-
 	@Override
 	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
 		out.addAll( this.contexts );
@@ -168,7 +165,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 	}
 
 	public M getModel() {
-		return this.modelResolver != null ? this.modelResolver.getResolved() : null;
+		return this.modelResolver.getResolved();
 	}
 
 	/* This is here to clarify the structure of the transaction history tree */

@@ -50,25 +50,31 @@ public class MenuItemSelectStep extends PrepStep< org.lgna.croquet.MenuItemPrepM
 	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new MenuItemSelectStep( parent, menuBarComposite, menuItemPrepModels, trigger );
 	}
-	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
+	private final org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.MenuBarComposite > menuBarCompositeResolver;
 	private final org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels;
 	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, menuItemPrepModels[ menuItemPrepModels.length-1 ], trigger );
-		this.menuBarComposite = menuBarComposite;
+		if( menuBarComposite != null ) {
+			this.menuBarCompositeResolver = menuBarComposite.getResolver();
+		} else {
+			this.menuBarCompositeResolver = new org.lgna.croquet.resolvers.NullResolver< org.lgna.croquet.MenuBarComposite >();
+		}
 		this.menuItemPrepModels = menuItemPrepModels;
 	}
 	public MenuItemSelectStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		//todo
-		this.menuBarComposite = null;
+		this.menuBarCompositeResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.menuItemPrepModels = new org.lgna.croquet.MenuItemPrepModel[ 0 ];
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this.menuItemPrepModels );
 	}
-
-	public boolean isValid() {
-		return this.menuBarComposite != null || this.menuItemPrepModels.length > 0;
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.menuBarCompositeResolver );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this.menuItemPrepModels );
 	}
 	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
-		return this.menuBarComposite;
+		return this.menuBarCompositeResolver.getResolved();
 	}
 	public org.lgna.croquet.MenuItemPrepModel[] getMenuItemPrepModels() {
 		return this.menuItemPrepModels;
