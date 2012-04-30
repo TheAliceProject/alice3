@@ -67,8 +67,13 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< o
 				null, false,
 				new org.alice.ide.name.validators.MethodNameValidator( initialDeclaringType )
 		);
+		
+		//<kjh/> looking glass will be entirely different.  contemplate meta context factories.
+		this.addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
+		// should be taken care of by searching the tabs 
+		//this.addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
 	}
-	
+
 	@Override
 	public org.lgna.project.ast.UserMethod createPreviewDeclaration() {
 		org.lgna.project.ast.UserMethod rv = new org.lgna.project.ast.UserMethod();
