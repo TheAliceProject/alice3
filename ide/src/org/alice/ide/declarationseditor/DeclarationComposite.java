@@ -52,7 +52,7 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			return CodeComposite.getInstance( (org.lgna.project.ast.AbstractCode)declaration );
 		} else if( declaration instanceof org.lgna.project.ast.NamedUserType ) {
-			return TypeComposite.getInstance( (org.lgna.project.ast.AbstractType< ?,?,? >)declaration );
+			return TypeComposite.getInstance( (org.lgna.project.ast.NamedUserType)declaration );
 		} else {
 			if( declaration != null ) {
 				throw new RuntimeException( "todo " + declaration );
