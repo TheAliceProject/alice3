@@ -119,30 +119,24 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );
 		this.getPerspectiveState().addAndInvokeValueListener( this.perspectiveListener );
 
-		final org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getBattleCrazy();
-		IDE.this.loadProjectFrom( test.getProject() );
-		test.generate( IDE.this.getProject() );
+		// TODO: <kjh/> Set this to false... remove it...
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.hackTutorial" ) ) {
+			final org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getBattleCrazyGenerator();
+			IDE.this.loadProjectFrom( test.getProjectFile() );
+			test.generate( this.getProject() );
+			IDE.this.simplePresentation.initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, test.getReuseTransactionHistory(), null, null, new org.lgna.cheshire.simple.Recoverer(), new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+			test.showTransactionHistory();
+			org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 
-		new Thread() {
-			@Override
-			public void run() {
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
-				// TODO: <kjh/> Set this to false... remove it...
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.hackTutorial" ) ) {
-					org.lgna.croquet.history.TransactionHistory reuseTransactionHistory = test.getReuseTransactionHistory();
-					IDE.this.simplePresentation.initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, reuseTransactionHistory, null, null, new org.lgna.cheshire.simple.Recoverer(), new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
-
-//					// Retarget the scene type... BAD BAD BAD HACK.
-//					org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)test.getReuseAst();
-//					this.simplePresentation.retargetType( this.getProject().getProgramType().getDeclaredFields().get( 0 ).getValueType(), method.getDeclaringType() );
-
+			new Thread() {
+				@Override
+				public void run() {
+					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1200 );
 					IDE.this.simplePresentation.showStencilsPresentation();
-					test.showTransactionHistory();
-					org.alice.ide.croquet.models.ui.debug.IsTransactionHistoryShowingState.getInstance().setValue( true );
 				}
-			}
-		}.start();
-		
+
+			}.start();
+		}
 	}
 
 	@Override
