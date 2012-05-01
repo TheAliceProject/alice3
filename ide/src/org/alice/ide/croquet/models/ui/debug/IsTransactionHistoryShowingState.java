@@ -78,20 +78,14 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 	@Override
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();
-		final int SCREEN_INDEX = 1;
-		java.awt.Rectangle bounds = edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getScreenDeviceDefaultConfigurationBounds( SCREEN_INDEX );
-		if( bounds != null ) {
-			rv.setBounds( bounds );
-		} else {
-			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-			if( application != null ) {
-				org.lgna.croquet.components.Frame frame = application.getFrame();
-				if( frame != null ) {
-					java.awt.Rectangle bounds2 = frame.getBounds();
-					bounds2.x += bounds2.width;
-					bounds2.width = 200;
-					rv.setBounds( bounds2 );
-				}
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		if( application != null ) {
+			org.lgna.croquet.components.Frame frame = application.getFrame();
+			if( frame != null ) {
+				java.awt.Rectangle bounds2 = frame.getBounds();
+				bounds2.x += bounds2.width;
+				bounds2.width = 300;
+				rv.setBounds( bounds2 );
 			}
 		}
 		return rv;
