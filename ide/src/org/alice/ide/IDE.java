@@ -131,10 +131,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			new Thread() {
 				@Override
 				public void run() {
-					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1200 );
+					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1500 );
 					IDE.this.simplePresentation.showStencilsPresentation();
 				}
-
 			}.start();
 		}
 	}
