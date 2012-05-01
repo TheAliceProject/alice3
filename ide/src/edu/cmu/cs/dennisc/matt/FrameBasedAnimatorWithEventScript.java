@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
-import org.lgna.story.event.AbstractEvent;
-
 import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
 
 /**
@@ -60,7 +58,7 @@ public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
 	@Override
 	public void update() {
 		super.update();
-		for( EventRecord eventRecord : script.getEventRecordsToFire( getCurrentTime() ) ) {
+		for( @SuppressWarnings("rawtypes") EventRecord eventRecord : script.getEventRecordsToFire( getCurrentTime() ) ) {
 			eventRecord.fire();
 		}
 	}

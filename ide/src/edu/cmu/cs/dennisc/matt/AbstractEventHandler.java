@@ -78,7 +78,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
 	private void fire( L listener, E event ) {
 		if( this.recorder != null ) {
-			this.recorder.recordEvent( new EventRecord( this, listener, event, scene.getProgram().getAnimator().getCurrentTime() ) );
+			this.recorder.recordEvent( new EventRecord<L, E>( this, listener, event, scene.getProgram().getAnimator().getCurrentTime() ) );
 		}
 		nameOfFireCall( listener, event );
 	}

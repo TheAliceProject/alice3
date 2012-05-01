@@ -47,14 +47,14 @@ import org.lgna.story.event.AbstractEvent;
 /**
  * @author Dennis Cosgrove
  */
-public class EventRecord {
+public class EventRecord<L, E extends AbstractEvent> {
 	
-	private final AbstractEventHandler handler;
-	private final Object listener;
-	private final AbstractEvent event;
+	private final AbstractEventHandler<L, E> handler;
+	private final L listener;
+	private final E event;
 	private double timeOfFire;
 	
-	public EventRecord( AbstractEventHandler handler, Object listener, AbstractEvent event, double timeOfFire ) {
+	public EventRecord( AbstractEventHandler<L, E> handler, L listener, E event, double timeOfFire ) {
 		this.handler = handler;
 		this.listener = listener;
 		this.event = event;
@@ -66,7 +66,7 @@ public class EventRecord {
 	public Object getListener() {
 		return this.listener;
 	}
-	public AbstractEventHandler getHandler() {
+	public AbstractEventHandler<L, E> getHandler() {
 		return this.handler;
 	}
 	public void fire() {
