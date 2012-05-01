@@ -42,26 +42,38 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
-import org.lgna.story.event.AbstractEvent;
+import java.util.List;
 
-import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
+import org.lgna.story.event.SceneActivationEvent;
+import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.implementation.SceneImp;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
+public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener,SceneActivationEvent> {
 
-	private EventTranscript script;
+	List<SceneActivationListener> listeners = Collections.newLinkedList();
 
-	public FrameBasedAnimatorWithEventScript( EventTranscript script ) {
-		this.script = script;
+	public SceneActivationHandler( SceneImp scene ) {
+		super( scene );
+	}
+
+	public void handleEventFire( SceneActivationEvent event ) {
+		for( SceneActivationListener listener : listeners ) {
+			fireEvent( listener, event );
+		}
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		for( EventRecord eventRecord : script.getEventRecordsToFire( getCurrentTime() ) ) {
-			eventRecord.fire();
-		}
+	protected void nameOfFireCall( SceneActivationListener listener, SceneActivationEvent event ) {
+		listener.sceneActivated( event );
 	}
+
+	public void addListener( SceneActivationListener listener ) {
+		listeners.add( listener );
+	}
+
 }

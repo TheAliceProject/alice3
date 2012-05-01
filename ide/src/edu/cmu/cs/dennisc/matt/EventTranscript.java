@@ -55,22 +55,22 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class EventTranscript {
 
-	private Map<Double,AbstractEvent> eventMap = Collections.newHashMap();
-	private List<EventWithTime> allRecordedEvents = Collections.newArrayList();
-	private List<EventWithTime> unPoppedEvents = Collections.newArrayList();
+	private Map<Double,EventRecord> eventMap = Collections.newHashMap();
+	private List<EventRecord> allRecordedEvents = Collections.newArrayList();
+	private List<EventRecord> unPoppedEvents = Collections.newArrayList();
 	private boolean virgin = true;
 
-	public void register( Double currentTime, AbstractEvent e ) {
-		eventMap.put( currentTime, e );
-		allRecordedEvents.add( new EventWithTime( currentTime, e ) );
+	public void register( EventRecord e ) {
+		eventMap.put( e.getTimeOfFire(), e );
+		allRecordedEvents.add( e );//new EventRecord( currentTime, e ) );
 	}
 
-	public List<AbstractEvent> eventToFire( Double time ) {
+	public List<EventRecord> getEventRecordsToFire( Double time ) {
 		if( virgin ) {
 			virgin = false;
 			resetQueue();
 		}
-		List<AbstractEvent> rv = Collections.newLinkedList();
+		List<EventRecord> rv = Collections.newLinkedList();
 		while( unPoppedEvents.get( 0 ).getTimeOfFire() < time ) {
 			rv.add( eventMap.get( unPoppedEvents.remove( 0 ).getEvent() ) );
 		}
@@ -81,36 +81,15 @@ public class EventTranscript {
 		unPoppedEvents = Collections.newArrayList( allRecordedEvents );
 	}
 
-	private class EventWithTime implements Comparable<EventWithTime> {
-		AbstractEvent event;
-		Double timeOfFire;
-
-		public EventWithTime( double timeOfFire, AbstractEvent e ) {
-			this.event = e;
-			this.timeOfFire = timeOfFire;
-		}
-		public int compareTo( EventWithTime o ) {
-			return this.getTimeOfFire().compareTo( o.getTimeOfFire() );
-		}
-
-		public Double getTimeOfFire() {
-			return this.timeOfFire;
-		}
-
-		public AbstractEvent getEvent() {
-			return this.event;
-		}
-	}
-
 	@Override
 	public String toString() {
 		String rv = "";
-		ArrayList<EventWithTime> blah;
+		ArrayList<EventRecord> blah;
 		synchronized( allRecordedEvents ) {
 			blah = Collections.newArrayList( allRecordedEvents );
 		}
-		for( EventWithTime ewt : blah ) {
-			rv += ewt.event + " @ " + ewt.getTimeOfFire() + "\n";
+		for( EventRecord record : blah ) {
+			rv += record.getEvent() + " @ " + record.getTimeOfFire() + "\n";
 		}
 		return rv;
 	}

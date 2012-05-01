@@ -22,6 +22,8 @@ import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.PointOfViewChangeListener;
+import org.lgna.story.event.SceneActivationEvent;
+import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewExitListener;
@@ -45,6 +47,7 @@ public class EventManager {
 	private final ProximityEventHandler proxyHandler;
 	private final KeyPressedHandler keyHandler;
 	private final TimerEventHandler timer;
+	private final SceneActivationHandler sceneActivationHandler;
 	private final AbstractEventHandler[] handlers;
 
 	private final TimerContingencyManager contingent;
@@ -88,6 +91,7 @@ public class EventManager {
 		viewHandler = new ViewEventHandler( scene );
 		collisionHandler = new CollisionHandler( scene );
 		proxyHandler = new ProximityEventHandler( scene );
+		sceneActivationHandler = new SceneActivationHandler( scene );
 		handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
 	}
 
@@ -181,6 +185,9 @@ public class EventManager {
 	public void addLeavesViewEventListener( ViewExitListener listener, Model[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
+	public void sceneActivated(){
+		this.sceneActivationHandler.handleEventFire( new SceneActivationEvent() );
+	}
 
 	public void addDragAdapter() {
 		if( this.dragAdapter != null ) {
@@ -227,5 +234,9 @@ public class EventManager {
 
 	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo ) {
 		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+	}
+	
+	public void addSceneActivationListener( SceneActivationListener listener ) {
+		sceneActivationHandler.addListener( listener );
 	}
 }

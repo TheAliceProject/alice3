@@ -1,9 +1,7 @@
 package edu.cmu.cs.dennisc.matt;
 
 import java.util.List;
-import java.util.Map;
 
-import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.implementation.SceneImp;
 
@@ -20,15 +18,15 @@ public class EventRecorder {
 		this.scene = scene;
 	}
 
-	public void recordEvent( AbstractEvent e ) {
+	public void recordEvent( EventRecord e ) {
 		synchronized( startTime ) {
-			if( e instanceof SceneActivationEvent ) {
+			if( e.getEvent() instanceof SceneActivationEvent ) {
 				if( startTime == -1 ) {
 					startTime = scene.getProgram().getAnimator().getCurrentTime();
-					transcript.register(startTime, e);
+					transcript.register( e );
 				}
 			} else if( startTime != -1 ) {
-				transcript.register( scene.getProgram().getAnimator().getCurrentTime(), e );
+				transcript.register( e );
 			} else {
 				System.out.println( "WARNING EVENTS NOT BEING PROPERLY RECORDED " + e.getClass() );
 				Thread.dumpStack();

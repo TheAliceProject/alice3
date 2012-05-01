@@ -44,24 +44,35 @@ package edu.cmu.cs.dennisc.matt;
 
 import org.lgna.story.event.AbstractEvent;
 
-import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
-
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
-
-	private EventTranscript script;
-
-	public FrameBasedAnimatorWithEventScript( EventTranscript script ) {
-		this.script = script;
+public class EventRecord {
+	
+	private final AbstractEventHandler handler;
+	private final Object listener;
+	private final AbstractEvent event;
+	private double timeOfFire;
+	
+	public EventRecord( AbstractEventHandler handler, Object listener, AbstractEvent event, double timeOfFire ) {
+		this.handler = handler;
+		this.listener = listener;
+		this.event = event;
+		this.timeOfFire = timeOfFire;
 	}
-
-	@Override
-	public void update() {
-		super.update();
-		for( EventRecord eventRecord : script.getEventRecordsToFire( getCurrentTime() ) ) {
-			eventRecord.fire();
-		}
+	public AbstractEvent getEvent() {
+		return this.event;
+	}
+	public Object getListener() {
+		return this.listener;
+	}
+	public AbstractEventHandler getHandler() {
+		return this.handler;
+	}
+	public void fire() {
+		this.handler.nameOfFireCall( this.listener, this.event );
+	}
+	public Double getTimeOfFire() {
+		return timeOfFire;
 	}
 }

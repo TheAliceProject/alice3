@@ -20,8 +20,10 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	protected Map<Object,HashMap<Object,Boolean>> isFiringMap = Collections.newHashMap();
 	protected EventRecorder recorder;// = new EventRecorder( scene );
 	private LinkedList<E> queue = new LinkedList<E>();
+	private SceneImp scene;
 	
 	public AbstractEventHandler(SceneImp scene) {
+		this.scene = scene;
 		this.recorder = EventRecorder.findRecorderForScene( scene );
 	}
 
@@ -75,7 +77,9 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	}
 
 	private void fire( L listener, E event ) {
-		recorder.recordEvent( event );
+		if( this.recorder != null ) {
+			this.recorder.recordEvent( new EventRecord( this, listener, event, scene.getProgram().getAnimator().getCurrentTime() ) );
+		}
 		nameOfFireCall( listener, event );
 	}
 

@@ -43,6 +43,9 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.matt.EventRecord;
+import edu.cmu.cs.dennisc.matt.EventRecorder;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -193,15 +196,17 @@ public class SceneImp extends EntityImp {
 	}
 	
 	private void fireSceneActivationListeners() {
-		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
-		edu.cmu.cs.dennisc.matt.EventRecorder.findRecorderForScene( this ).recordEvent(e);
-		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
-			new org.lgna.common.ComponentThread( new Runnable() {
-				public void run() {
-					sceneActivationListener.sceneActivated( e );
-				}
-			}, "SceneActivation" ).start();
-		}
+		eventManager.sceneActivated();
+//		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
+//		final EventRecorder recorder = edu.cmu.cs.dennisc.matt.EventRecorder.findRecorderForScene( this );
+//		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
+//			new org.lgna.common.ComponentThread( new Runnable() {
+//				public void run() {
+//					recorder.recordEvent(new EventRecord( null, sceneActivationListener, e, getProgram().getAnimator().getCurrentTime() ));
+//					sceneActivationListener.sceneActivated( e );
+//				}
+//			}, "SceneActivation" ).start();
+//		}
 	}
 	
 	private void changeActiveStatus( ProgramImp programImp, boolean isActive, int activationCount ) {
