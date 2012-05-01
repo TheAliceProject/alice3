@@ -63,12 +63,13 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, StencilLayer menuPolicy ) {
 			super( window );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
+			controlsPanel.setOpaque( false );
 			org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
 			controlPanel.addComponent( SimplePresentation.this.prevOperation.createButton() );
 			controlPanel.addComponent( new BookComboBox( SimplePresentation.this.bookComboBoxModel, menuPolicy.isAboveStencil() ) );
 			controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
 			controlsPanel.addComponent( controlPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-			SimplePresentation.this.isPaintingStencil.setTextForTrueAndTextForFalse( "stencil", "stencil" );
+			SimplePresentation.this.isPaintingStencil.setTextForBothTrueAndFalse( "stencil" );
 
 			org.lgna.croquet.components.CheckBox isInterceptingEventsCheckBox = SimplePresentation.this.isInterceptingEvents.createCheckBox();
 			isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
@@ -78,8 +79,8 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			org.lgna.croquet.components.FlowPanel eastPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.TRAILING, 2, 0 );
 			eastPanel.addComponent( isInterceptingEventsCheckBox );
 			eastPanel.addComponent( isPaintingStencilCheckBox );
-			controlsPanel.addComponent(eastPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END);
-			controlsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
+			//controlsPanel.addComponent(eastPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END);
+			controlsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
 			for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( controlsPanel.getAwtComponent() ) ) {
 				if( component instanceof javax.swing.JPanel ) {
@@ -98,11 +99,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		protected org.lgna.cheshire.simple.Page getCurrentPage() {
 			return ChapterPage.getInstance( SimplePresentation.this.getBook().getSelectedChapter() );
 		}
-		// TODO: <kjh/> I donnno if I need this anymore...
-		//		@Override
-		//		protected boolean isPaintingStencilEnabled() {
-		//			return BasicTutorialPresentation.this.isPaintingStencil.getValue();
-		//		}
 
 		private java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
@@ -303,8 +299,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				this.stencil.revalidateAndRepaint();
 				this.stencil.setCursor( cursor );
 			} else {
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "not good to go!" );
-
 				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.simple.TransactionChapter)chapter).getTransaction();
 
 				org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
@@ -360,7 +354,26 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 
 	@Override
 	protected void handleStateChange(boolean isVisible) {
-		assert this.stencil != null : this.stencil;
-		this.stencil.setShowing( isVisible);
+		assert this.stencil != null;
+
+		// Adjust spacing for tutorial controls
+		javax.swing.JFrame frame = this.application.getFrame().getAwtComponent();
+		javax.swing.JMenuBar menu = frame.getJMenuBar();
+		int menuSpacer = 0;
+		int frameSpacer = 0;
+		if ( isVisible ) {
+			menuSpacer = 48;
+			if( menu != null ) {
+				frameSpacer = 0;
+			} else {
+				frameSpacer = menuSpacer;
+			}
+		}
+		if( menu != null ) {
+			menu.setBorder( javax.swing.BorderFactory.createEmptyBorder( menuSpacer, 0, 0, 0 ) );
+		}
+		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder( frameSpacer, 0, 0, 0 ) );
+
+		this.stencil.setShowing( isVisible );
 	}
 }
