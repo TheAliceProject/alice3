@@ -47,37 +47,50 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class StateContext< T > implements Context {
+
 	private final org.lgna.croquet.resolvers.Resolver< State< T > > stateResolver;
 	private T value;
+
 	public StateContext( State< T > state ) {
 		this.stateResolver = state.getResolver();
 		this.value = state.getValue();
 	}
+
 	public StateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.stateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		State<T> state = this.stateResolver.getResolved();
 		this.value = state.decodeValue( binaryDecoder );
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.stateResolver );
 		State<T> state = this.stateResolver.getResolved();
 		state.encodeValue( binaryEncoder, this.value );
 	}
+
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.stateResolver.retarget( retargeter );
 		this.value = retargeter.retarget( this.value );
 	}
-	
+
 	public boolean isGoodToGo() {
 		T currentValue = this.getState().getValue();
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );
 	}
+
 	public org.lgna.croquet.history.Transaction createRecoveryTransaction() {
-		return org.lgna.croquet.history.TransactionManager.createSimulatedTransactionForState( this.getState(), this.value );
+		State< T > state = this.getState();
+		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( (org.lgna.croquet.history.TransactionHistory)null );
+		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
+		org.lgna.croquet.history.StateChangeStep< T > step = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( transaction, state, trigger );
+		step.setEdit( new org.lgna.croquet.edits.StateEdit< T >( step, state.getValue(), this.value ) );
+		return transaction;
 	}
+
 	public State< T > getState() {
 		return this.stateResolver.getResolved();
 	}
+
 	public T getValue() {
 		return this.value;
 	}

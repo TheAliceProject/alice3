@@ -54,37 +54,8 @@ public class TransactionManager {
 	}
 
 	@Deprecated
-	public static void TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		transaction.addPrepStep( new TODO_REMOVE_BogusStep( transaction, trigger ) );
-	}
-
-	@Deprecated
 	private static TransactionHistory getActiveTransactionHistory() {
 		return org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getActiveTransactionHistory();
-	}
-
-	@Deprecated
-	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
-		org.lgna.croquet.triggers.ChangeEventTrigger trigger = new org.lgna.croquet.triggers.ChangeEventTrigger( e );
-		MenuSelection menuSelection = new MenuSelection( trigger );
-		if( menuSelection.isValid() ) {
-			getActiveTransaction().addMenuSelection( menuSelection );
-		}
-	}
-	@Deprecated
-	private static javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			handleMenuSelectionStateChanged( e );
-		}
-	};
-	@Deprecated
-	public static void startListeningToMenuSelection() {
-		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( menuSelectionChangeListener );
-	}
-	@Deprecated
-	public static void stopListeningToMenuSelection() {
-		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( menuSelectionChangeListener );
 	}
 
 	@Deprecated
@@ -92,43 +63,66 @@ public class TransactionManager {
 		return getActiveTransactionHistory().acquireActiveTransaction();
 	}
 
-	@Deprecated
+	public static void TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.Trigger trigger ) {
+		Transaction transaction = getActiveTransaction();
+		transaction.addPrepStep( new TODO_REMOVE_BogusStep( transaction, trigger ) );
+	}
+
+	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
+		org.lgna.croquet.triggers.ChangeEventTrigger trigger = new org.lgna.croquet.triggers.ChangeEventTrigger( e );
+		MenuSelection menuSelection = new MenuSelection( trigger );
+		if( menuSelection.isValid() ) {
+			getActiveTransaction().addMenuSelection( menuSelection );
+		}
+	}
+
+	private static javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			handleMenuSelectionStateChanged( e );
+		}
+	};
+
+	public static void startListeningToMenuSelection() {
+		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( menuSelectionChangeListener );
+	}
+
+	public static void stopListeningToMenuSelection() {
+		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( menuSelectionChangeListener );
+	}
+
 	public static void firePopupMenuResized( PopupPrepStep step ) {
 		step.fireChanged( new org.lgna.croquet.history.event.PopupMenuResizedEvent( step ) );
 	}
 
-	@Deprecated
 	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	@Deprecated
+
 	public static CompletionStep<?> addOperationStep( org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		Transaction transaction = getActiveTransaction();
 		return CompletionStep.createAndAddToTransaction( transaction, model, trigger, transactionHistory ); 
 	}
-	@Deprecated
+
 	public static CompletionStep<?> addOperationStep( org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return addOperationStep( model, trigger, null ); 
 	}
-	@Deprecated
+
 	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
 		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );
 	}
 
-	@Deprecated
 	public static <T> StateChangeStep<T> addStateChangeStep( org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return StateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	@Deprecated
+
 	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.ListSelectionState.InternalPrepModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
-	@Deprecated
+
 	public static CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
-	@Deprecated
 	public static void simulatedMenuTransaction( Transaction transaction, java.util.List< MenuItemPrepModel > menuItemPrepModels ) {
 		for( org.lgna.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
 			System.err.println( "todo: add step for: " + menuItemPrepModel );
@@ -136,16 +130,6 @@ public class TransactionManager {
 		}
 	}
 
-	@Deprecated
-	public static <T> Transaction createSimulatedTransactionForState( org.lgna.croquet.State< T > state, T value ) {
-		Transaction rv = new Transaction( (TransactionHistory)null );
-		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
-		StateChangeStep< T > step = StateChangeStep.createAndAddToTransaction( rv, state, trigger );
-		step.setEdit( new org.lgna.croquet.edits.StateEdit< T >( step, state.getValue(), value ) );
-		return rv;
-	}
-
-	@Deprecated
 	public static <E> Transaction createSimulatedTransaction( TransactionHistory transactionHistory, State< E > state, E prevValue, E nextValue ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
 		org.lgna.croquet.history.StateChangeStep< E > completionStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( rv, state, new org.lgna.croquet.triggers.SimulatedTrigger() );
@@ -154,7 +138,6 @@ public class TransactionManager {
 		return rv;
 	}
 
-	@Deprecated
 	public static <T> Transaction createSimulatedTransactionForCascade( TransactionHistory transactionHistory, Cascade<T> cascade ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
 		org.lgna.croquet.history.CompletionStep< Cascade<T> > completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( rv, cascade, new org.lgna.croquet.triggers.SimulatedTrigger(), transactionHistory );
