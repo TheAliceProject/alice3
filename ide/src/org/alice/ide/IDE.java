@@ -137,19 +137,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}.start();
 		}
 	}
-
-	@Override
-	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
-			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
-			org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
-			org.lgna.project.ast.AbstractCode code = blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( dropSite );
-			return getCodeEditorInFocus();
-		}
-		return null;
-	}
-
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 
 	private Theme theme;

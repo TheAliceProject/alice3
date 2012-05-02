@@ -107,7 +107,6 @@ public abstract class Application {
 		return this.frame.getLayeredPane();
 	}
 
-	public abstract DropReceptor getDropReceptor( DropSite dropSite );
 	public void initialize( String[] args ) {
 		this.frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.DO_NOTHING );
 		this.frame.addWindowListener( new java.awt.event.WindowListener() {

@@ -117,7 +117,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
 				backwardFowardComponent,
 				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
-				org.alice.ide.clipboard.Clipboard.getInstance()
+				org.alice.ide.clipboard.Clipboard.SINGLETON.getDropReceptor()
 		);
 		this.tabbedPane = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().createFolderTabbedPane();
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );

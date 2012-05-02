@@ -61,11 +61,6 @@ public class SimpleApplication extends org.lgna.croquet.Application {
 	}
 
 	@Override
-	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		return null;
-	}
-
-	@Override
 	protected org.lgna.croquet.Operation getAboutOperation() {
 		return null;
 	}

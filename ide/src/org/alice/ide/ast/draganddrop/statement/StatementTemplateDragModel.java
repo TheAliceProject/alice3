@@ -86,8 +86,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		
 		org.lgna.croquet.components.ViewController<?,?> viewController = null;
 		java.awt.event.MouseEvent mouseEvent = null;
-		org.lgna.croquet.DropReceptor dropReceptor = org.alice.ide.IDE.getActiveInstance().getDropReceptor( blockStatementIndexPair );
-		org.lgna.croquet.triggers.DropTrigger dropTrigger = new org.lgna.croquet.triggers.DropTrigger( viewController, mouseEvent, dropReceptor, blockStatementIndexPair );
+		org.lgna.croquet.triggers.DropTrigger dropTrigger = new org.lgna.croquet.triggers.DropTrigger( viewController, mouseEvent, blockStatementIndexPair );
 		
 		if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade ) {
 			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade statementInsertCascade = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade)dropModel;

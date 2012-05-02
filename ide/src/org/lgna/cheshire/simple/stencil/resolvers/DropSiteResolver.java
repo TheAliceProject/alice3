@@ -55,8 +55,8 @@ public class DropSiteResolver implements org.lgna.croquet.resolvers.RuntimeResol
 		org.lgna.croquet.triggers.Trigger trigger = this.step.getTrigger();
 		if (trigger instanceof org.lgna.croquet.triggers.DropTrigger) {
 			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger) trigger;
-			org.lgna.croquet.DropReceptor dropReceptor = dropTrigger.getDropReceptor();
 			org.lgna.croquet.DropSite dropSite = dropTrigger.getDropSite();
+			org.lgna.croquet.DropReceptor dropReceptor = dropSite.getOwningDropReceptor();
 			return dropReceptor.getTrackableShape( dropSite );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( trigger );

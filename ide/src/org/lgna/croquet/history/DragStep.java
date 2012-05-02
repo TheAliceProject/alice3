@@ -245,7 +245,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 						viewController = null;
 					}
 					try {
-						org.lgna.croquet.history.Step< ? > step = model.fire( new org.lgna.croquet.triggers.DropTrigger( viewController, this.getLatestMouseEvent(), this.currentDropReceptor, this.currentPotentialDropSite ) );
+						org.lgna.croquet.history.Step< ? > step = model.fire( new org.lgna.croquet.triggers.DropTrigger( viewController, this.getLatestMouseEvent(), this.currentPotentialDropSite ) );
 					} catch( org.lgna.croquet.CancelException ce ) {
 						this.cancelTransaction();
 					}
