@@ -46,8 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.event.AbstractEvent;
-
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**

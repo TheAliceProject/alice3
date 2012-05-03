@@ -43,9 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.matt.EventRecord;
-import edu.cmu.cs.dennisc.matt.EventRecorder;
-
 /**
  * @author Dennis Cosgrove
  */
