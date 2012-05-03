@@ -40,14 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package test.ik.croquet;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IkPerspective extends org.lgna.croquet.Perspective {
-	public IkPerspective() {
-		super( java.util.UUID.fromString( "858b7466-45e3-4b85-8154-9c3bf570a485" ), new IkSplitComposite() );
+public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
+	private static class SingletonHolder {
+		private static MenuBarComposite instance = new MenuBarComposite();
+	}
+	public static MenuBarComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private MenuBarComposite() {
+		super( java.util.UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
+		this.addItem( FileMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
 	}
 }

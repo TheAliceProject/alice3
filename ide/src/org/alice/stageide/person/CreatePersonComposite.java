@@ -59,7 +59,7 @@ public class CreatePersonComposite extends PersonComposite {
 	public static void main( String[] args ) {
 		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
 		application.initialize( args );
-		application.setPerspective( new org.lgna.croquet.Perspective( java.util.UUID.randomUUID(), CreatePersonComposite.getInstance() ) {} );
+		application.getFrame().setMainComposite( CreatePersonComposite.getInstance() );
 		application.getFrame().setSize( 1280, 720 );
 		application.getFrame().setVisible( true );
 	}

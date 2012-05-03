@@ -47,8 +47,8 @@ package org.alice.ide.perspectives;
  * @author Dennis Cosgrove
  */
 public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.alice.ide.perspectives.IdePerspective, ChangePerspectiveOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ChangePerspectiveOperation getInstance( org.alice.ide.perspectives.IdePerspective perspective ) {
+	private static java.util.Map< org.alice.ide.perspectives.ProjectPerspective, ChangePerspectiveOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ChangePerspectiveOperation getInstance( org.alice.ide.perspectives.ProjectPerspective perspective ) {
 		ChangePerspectiveOperation rv = map.get( perspective );
 		if( rv != null ) {
 			//pass
@@ -59,8 +59,8 @@ public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation
 		return rv;
 	}
 
-	private final org.alice.ide.perspectives.IdePerspective perspective;
-	private ChangePerspectiveOperation( org.alice.ide.perspectives.IdePerspective perspective ) {
+	private final org.alice.ide.perspectives.ProjectPerspective perspective;
+	private ChangePerspectiveOperation( org.alice.ide.perspectives.ProjectPerspective perspective ) {
 		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2fc3846a-f943-4384-8af9-2292a3c405cd" ) );
 		this.perspective = perspective;
 	}

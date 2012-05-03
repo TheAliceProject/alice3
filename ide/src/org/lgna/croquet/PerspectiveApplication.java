@@ -40,26 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.perspectives.codecs;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.perspectives.ProjectPerspective > {
-	SINGLETON;
-	public Class< org.alice.ide.perspectives.ProjectPerspective > getValueClass() {
-		return org.alice.ide.perspectives.ProjectPerspective.class;
+public abstract class PerspectiveApplication extends Application {
+	private Perspective perspective;
+	public Perspective getPerspective() {
+		return this.perspective;
 	}
-	public org.alice.ide.perspectives.ProjectPerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.Resolver< org.alice.ide.perspectives.ProjectPerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		return resolver.getResolved();
-	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
-		binaryEncoder.encode( value.getResolver() );
-	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.ProjectPerspective value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+	public void setPerspective( Perspective perspective ) {
+		if( this.perspective != perspective ) {
+			this.perspective = perspective;
+			Composite<?> mainComposite;
+			MenuBarComposite menuBarComposite;
+			if( this.perspective != null ) {
+				mainComposite = this.perspective.getMainComposite();
+				menuBarComposite = this.perspective.getMenuBarComposite();
+			} else {
+				mainComposite = null;
+				menuBarComposite = null;
+			}
+			this.getFrame().setMainComposite( mainComposite );
+			this.getFrame().setMenuBarComposite( menuBarComposite );
+		}
 	}
 }
