@@ -96,7 +96,7 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	public void showCard( Composite< ? > card ) {
 		synchronized( this.getView().getTreeLock() ) {
 			if( this.showingCard != null ) {
-				this.showingCard.handlePostDectivation();
+				this.showingCard.handlePostDeactivation();
 			}
 			this.showingCard = card;
 			if( this.showingCard != null ) {
@@ -113,10 +113,10 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 		}
 	}
 	@Override
-	public void handlePostDectivation() {
+	public void handlePostDeactivation() {
 		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
+			this.showingCard.handlePostDeactivation();
 		}
-		super.handlePostDectivation();
+		super.handlePostDeactivation();
 	}
 }

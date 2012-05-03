@@ -40,14 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package test.ik.croquet;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IkPerspective extends org.lgna.croquet.Perspective {
-	public IkPerspective() {
-		super( java.util.UUID.fromString( "858b7466-45e3-4b85-8154-9c3bf570a485" ), new IkSplitComposite() );
+public abstract class PerspectiveApplication extends Application {
+	private Perspective perspective;
+	public Perspective getPerspective() {
+		return this.perspective;
+	}
+	public void setPerspective( Perspective perspective ) {
+		if( this.perspective != perspective ) {
+			this.perspective = perspective;
+			Composite<?> mainComposite;
+			MenuBarComposite menuBarComposite;
+			if( this.perspective != null ) {
+				mainComposite = this.perspective.getMainComposite();
+				menuBarComposite = this.perspective.getMenuBarComposite();
+			} else {
+				mainComposite = null;
+				menuBarComposite = null;
+			}
+			this.getFrame().setMainComposite( mainComposite );
+			this.getFrame().setMenuBarComposite( menuBarComposite );
+		}
 	}
 }

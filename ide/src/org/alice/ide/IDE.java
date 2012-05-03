@@ -98,7 +98,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		this.promptForLicenseAgreements();
-
+		
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueListener( this.isAlwaysShowingBlocksListener );
 
@@ -116,8 +116,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
-		org.lgna.croquet.components.Frame frame = this.getFrame();
-		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );
 		this.getPerspectiveState().addAndInvokeValueListener( this.perspectiveListener );
 	}
 	@Override

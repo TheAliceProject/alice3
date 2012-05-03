@@ -160,7 +160,7 @@ class IkProgram extends Program {
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
-		app.setPerspective( new test.ik.croquet.IkPerspective() );
+		app.getFrame().setMainComposite( new test.ik.croquet.IkSplitComposite() );
 
 		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.LEFT_CLAVICLE; 
 		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.LEFT_WRIST; 
