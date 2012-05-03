@@ -116,7 +116,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
-		this.getPerspectiveState().addAndInvokeValueListener( this.perspectiveListener );
+		this.getPerspectiveState().addValueListener( this.perspectiveListener );
 	}
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
@@ -310,7 +310,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		super.setProject( project );
 		
 		if( this.getPerspective() == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
-			this.setPerspective( org.alice.stageide.perspectives.CodePerspective.getInstance() );
+			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
 		}
 		
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
