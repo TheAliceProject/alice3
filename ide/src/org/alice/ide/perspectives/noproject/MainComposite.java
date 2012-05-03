@@ -40,26 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.perspectives.codecs;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.perspectives.ProjectPerspective > {
-	SINGLETON;
-	public Class< org.alice.ide.perspectives.ProjectPerspective > getValueClass() {
-		return org.alice.ide.perspectives.ProjectPerspective.class;
+public class MainComposite extends org.lgna.croquet.Composite {
+	private static class SingletonHolder {
+		private static MainComposite instance = new MainComposite();
 	}
-	public org.alice.ide.perspectives.ProjectPerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.Resolver< org.alice.ide.perspectives.ProjectPerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		return resolver.getResolved();
+	public static MainComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
-		binaryEncoder.encode( value.getResolver() );
+	private MainComposite() {
+		super( java.util.UUID.fromString( "b5c8681f-5ab9-4a40-a2fa-7ddb2f49b712" ) );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.ProjectPerspective value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+	@Override
+	protected org.lgna.croquet.components.View createView() {
+		return new org.lgna.croquet.components.BorderPanel();
 	}
 }

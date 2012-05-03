@@ -40,26 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.perspectives.codecs;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.perspectives.ProjectPerspective > {
-	SINGLETON;
-	public Class< org.alice.ide.perspectives.ProjectPerspective > getValueClass() {
-		return org.alice.ide.perspectives.ProjectPerspective.class;
+public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
+		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
+				org.lgna.croquet.MenuModel.SEPARATOR, 
+				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance()
+		);
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			//pass
+		} else {
+			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
+			list.add(org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel());
+		}
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
-	public org.alice.ide.perspectives.ProjectPerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.Resolver< org.alice.ide.perspectives.ProjectPerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		return resolver.getResolved();
+	private static class SingletonHolder {
+		private static FileMenuModel instance = new FileMenuModel();
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
-		binaryEncoder.encode( value.getResolver() );
+	public static FileMenuModel getInstance() {
+		return SingletonHolder.instance;
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.ProjectPerspective value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+	private FileMenuModel() {
+		super( java.util.UUID.fromString( "f35b5ea2-315e-487d-af62-52f99f1c6306" ), createMenuItemPrepModels() );
 	}
 }

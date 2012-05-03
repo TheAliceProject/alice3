@@ -46,10 +46,10 @@ package org.alice.ide.perspectives;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdePerspective extends org.lgna.croquet.AbstractElement implements org.lgna.croquet.Perspective {
+public abstract class ProjectPerspective extends org.lgna.croquet.AbstractElement implements org.lgna.croquet.Perspective {
 	private final org.lgna.croquet.Composite< ? > mainComposite;
 	private String name;
-	public IdePerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > mainComposite ) {
+	public ProjectPerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > mainComposite ) {
 		super( id );
 		this.mainComposite = mainComposite;
 	}

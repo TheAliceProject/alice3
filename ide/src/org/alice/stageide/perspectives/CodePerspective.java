@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives;
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspective extends org.alice.ide.perspectives.IdePerspective {
+public class CodePerspective extends org.alice.ide.perspectives.ProjectPerspective {
 	private static class SingletonHolder {
 		private static CodePerspective instance = new CodePerspective();
 	}

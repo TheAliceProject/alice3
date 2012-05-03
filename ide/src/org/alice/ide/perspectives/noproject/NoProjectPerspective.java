@@ -40,26 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.perspectives.codecs;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.perspectives.ProjectPerspective > {
-	SINGLETON;
-	public Class< org.alice.ide.perspectives.ProjectPerspective > getValueClass() {
-		return org.alice.ide.perspectives.ProjectPerspective.class;
+public class NoProjectPerspective extends org.lgna.croquet.AbstractElement implements org.lgna.croquet.Perspective {
+	private static class SingletonHolder {
+		private static NoProjectPerspective instance = new NoProjectPerspective();
 	}
-	public org.alice.ide.perspectives.ProjectPerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.Resolver< org.alice.ide.perspectives.ProjectPerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		return resolver.getResolved();
+	public static NoProjectPerspective getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
-		binaryEncoder.encode( value.getResolver() );
+	private NoProjectPerspective() {
+		super( java.util.UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.ProjectPerspective value, java.util.Locale locale) {
-		rv.append( value );
-		return rv;
+	@Override
+	protected void localize() {
+	}
+	public org.lgna.croquet.Composite< ? > getMainComposite() {
+		return MainComposite.getInstance();
+	}
+	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
+		return MenuBarComposite.getInstance();
 	}
 }
