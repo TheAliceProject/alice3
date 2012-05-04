@@ -57,14 +57,14 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 			public void run() {
 				org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
 
-				if( true ) {
+				if( false ) {
 					ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();
 					composite.getOperation().fire();
 					System.exit( 0 );
 				} else {
+					application.initialize( args );
+					application.getFrame().setSize( 640, 480 );
 					if( true ) {
-						application.initialize( args );
-						application.getFrame().setSize( 640, 480 );
 						RecordComposite recordComposite = new RecordComposite();
 						application.getFrame().getContentPanel().addComponent( recordComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 						recordComposite.startUp( project.getProgramType() );
