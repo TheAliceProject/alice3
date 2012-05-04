@@ -282,6 +282,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	public void loadDefaultProject() {
+		// TODO: <kjh/> hack. hack. hack. 
+		this.isDefaultProjectLoaded = true;
 		this.loadProjectFrom( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS.getUri() );
 		this.isDefaultProjectLoaded = true;
 	}

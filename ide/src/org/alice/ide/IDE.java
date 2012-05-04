@@ -311,11 +311,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
-		
-		if( this.getPerspective() == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
+
+		// TODO: <kjh/> hack hack hack. does this even make sense???
+		if( this.getPerspective() == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() || this.isDefaultProjectLoaded() ) {
 			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
 		}
-		
+
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
 		try {
 			this.setRootField( this.getSceneField() );
@@ -347,20 +348,26 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void setSplashScreen( java.awt.Window splashScreen ) {
 		this.splashScreen = splashScreen;
 	}
+
 	@Override
 	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 		if( this.splashScreen != null ) {
 			this.splashScreen.setVisible( false );
 		}
 		// TODO: <kjh/> load default project? // TODO: Fix transaction history for application.
-		if( (this.getProject() == null) || this.isDefaultProjectLoaded() ) {
+		// I need to rethink this level of interaction...
+		if( (this.getProject() == null) && !this.isDefaultProjectLoaded() ) {
 			this.setPerspective( org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() );
+			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
+		} else if ( this.isDefaultProjectLoaded() ) {
 			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
 		}
 	}
+
 	@Override
 	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
 	}
+
 	protected void preservePreferences() {
 		try {
 			org.lgna.croquet.preferences.PreferenceManager.preservePreferences();
