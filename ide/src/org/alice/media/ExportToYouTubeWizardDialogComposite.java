@@ -54,7 +54,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 	}
 	
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite();
-	private final RecordComposite recordComposite = new RecordComposite();
+	private final ImageRecordComposite recordComposite = new ImageRecordComposite();
 	private final UploadComposite uploadComposite = new UploadComposite();
 	
 	private org.lgna.project.Project project;
@@ -89,7 +89,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 					application.initialize( args );
 					application.getFrame().setSize( 640, 480 );
 					if( true ) {
-						RecordComposite recordComposite = new RecordComposite();
+						ImageRecordComposite recordComposite = new ImageRecordComposite();
 						application.getFrame().getContentPanel().addComponent( recordComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 						recordComposite.startUp( project.getProgramType() );
 					} else {

@@ -42,18 +42,18 @@
  */
 package org.alice.media.components;
 
-import org.alice.media.RecordComposite;
+import org.alice.media.ImageRecordComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 
 /**
  * @author Matt May
  */
-public class RecordView extends BorderPanel {
+public class ImageRecordView extends BorderPanel {
 	
 	private final BorderPanel lookingGlassContainer = new BorderPanel();
 
-	public RecordView( RecordComposite recordComposite ) {
+	public ImageRecordView( ImageRecordComposite recordComposite ) {
 		super( recordComposite );
 		this.addComponent( this.lookingGlassContainer, Constraint.CENTER );
 		GridPanel bottomPanel = GridPanel.createGridPane( 1, 3 );
@@ -63,8 +63,8 @@ public class RecordView extends BorderPanel {
 		addComponent( bottomPanel, Constraint.PAGE_END );
 	}
 	@Override
-	public RecordComposite getComposite() {
-		return (RecordComposite)super.getComposite();
+	public ImageRecordComposite getComposite() {
+		return (ImageRecordComposite)super.getComposite();
 	}
 	public BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;

@@ -43,7 +43,7 @@
 package org.alice.media.components;
 
 import org.alice.media.EventRecordComposite;
-import org.alice.media.RecordComposite;
+import org.alice.media.ImageRecordComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 
@@ -61,8 +61,8 @@ public class EventRecordView extends BorderPanel {
 		this.addComponent( bottom, Constraint.PAGE_END );
 	}
 	@Override
-	public RecordComposite getComposite() {
-		return (RecordComposite)super.getComposite();
+	public ImageRecordComposite getComposite() {
+		return (ImageRecordComposite)super.getComposite();
 	}
 	public BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;

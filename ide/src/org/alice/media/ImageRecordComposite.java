@@ -46,7 +46,7 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import org.alice.media.components.RecordView;
+import org.alice.media.components.ImageRecordView;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BoundedIntegerState;
@@ -67,7 +67,7 @@ import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
 /**
  * @author Matt May
  */
-public class RecordComposite extends WizardPageComposite<RecordView> {
+public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
@@ -106,13 +106,13 @@ public class RecordComposite extends WizardPageComposite<RecordView> {
 
 	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
 
-	public RecordComposite() {
+	public ImageRecordComposite() {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 	}
 
 	@Override
-	protected RecordView createView() {
-		return new RecordView( this );
+	protected ImageRecordView createView() {
+		return new ImageRecordView( this );
 	}
 
 	public ActionOperation getRecordOperation() {
@@ -181,7 +181,7 @@ public class RecordComposite extends WizardPageComposite<RecordView> {
 	}
 
 	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
-		final RecordView recordView = this.getView();
+		final ImageRecordView recordView = this.getView();
 		new Thread() {
 			@Override
 			public void run() {
