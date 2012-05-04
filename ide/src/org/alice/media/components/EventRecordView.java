@@ -60,10 +60,6 @@ public class EventRecordView extends BorderPanel {
 		bottom.addComponent( eventRecordComposite.getPlayRecordedOperation().createButton() );
 		this.addComponent( bottom, Constraint.PAGE_END );
 	}
-	@Override
-	public ImageRecordComposite getComposite() {
-		return (ImageRecordComposite)super.getComposite();
-	}
 	public BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}

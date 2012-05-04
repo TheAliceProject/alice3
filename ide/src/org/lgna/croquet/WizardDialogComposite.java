@@ -147,6 +147,11 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 	protected WizardDialogControlsComposite getControlsComposite() {
 		return this.controlsComposite;
 	}
+	
+	protected void addWizardPageComposite( WizardPageComposite<?> pageComposite ) {
+		this.getMainComposite().addCard( pageComposite );
+	}
+	
 	@Override
 	protected String getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo

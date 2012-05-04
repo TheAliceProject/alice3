@@ -68,12 +68,11 @@ import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
  * @author Matt May
  */
 public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
+	private final ExportToYouTubeWizardDialogComposite owner;
 
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
 	private ImagesToQuickTimeEncoder encoder;
-	private String[] args;
-	private Project project;
 
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
@@ -81,33 +80,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		}
 	}, this.createKey( "record" ) );
 
-	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
-
-		private boolean isPlaying = false;
-
-		public void perform( Transaction transaction, Trigger trigger ) {
-			SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo" );
-				}
-			} );
-
-//			if( isPlaying ) {
-//				isPlaying = !isPlaying;
-//				programContext.getProgramImp().stopAnimator();
-//				EventTranscript transcript = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
-//			} else {
-//				isPlaying = !isPlaying;
-//				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
-//				programContext.getProgramImp().startAnimator();
-//			}
-		}
-	}, this.createKey( "recordEvents" ) );
-
 	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
 
-	public ImageRecordComposite() {
+	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
+		this.owner = owner;
 	}
 
 	@Override
@@ -117,9 +94,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	public ActionOperation getRecordOperation() {
 		return this.recordOperation;
-	}
-	public ActionOperation getPlayRecordedOperation() {
-		return this.playRecordedOperation;
 	}
 
 	private java.awt.image.BufferedImage image;
@@ -180,7 +154,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		return frameRate;
 	}
 
-	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		final org.lgna.project.ast.NamedUserType programType = this.owner.getProject().getProgramType();
 		final ImageRecordView recordView = this.getView();
 		new Thread() {
 			@Override
@@ -205,10 +182,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			}
 		}.start();
 	}
-	public void shutDown() {
+	
+	@Override
+	public void handlePostDeactivation() {
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		this.setRecording( false );
 		programContext.cleanUpProgram();
+		super.handlePostDeactivation();
 	}
 
 	private void handleImage( java.awt.image.BufferedImage image, int imageCount ) {
@@ -217,10 +197,5 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		} else {
 			System.out.println( "NULL" );
 		}
-	}
-
-	public void setArgs( String[] args, Project project ) {
-		this.args = args;
-		this.project = project;
 	}
 }

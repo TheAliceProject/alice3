@@ -42,10 +42,12 @@
  */
 package org.alice.media;
 
+import javax.swing.SwingUtilities;
+
 import org.alice.media.components.EventRecordView;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.Composite;
+import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.story.ImplementationAccessor;
@@ -56,10 +58,11 @@ import edu.cmu.cs.dennisc.matt.EventScript;
 /**
  * @author Matt May
  */
-public class EventRecordComposite extends Composite<EventRecordView> {
-	
-	private RunProgramContext programContext;
+public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
+	private final ExportToYouTubeWizardDialogComposite owner;
 
+	private RunProgramContext programContext;
+	
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
 
 		private boolean isPlaying = false;
@@ -69,19 +72,25 @@ public class EventRecordComposite extends Composite<EventRecordView> {
 			if( isPlaying ) {
 				isPlaying = !isPlaying;
 				programContext.getProgramImp().stopAnimator();
+				playRecordedOperation.setName( "play" );
 				script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
 				System.out.println("stop");
 			} else {
 				isPlaying = !isPlaying;
 				System.out.println("play");
+				playRecordedOperation.setName( "stop" );
 				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
 				programContext.getProgramImp().startAnimator();
 			}
 		}
-	}, this.createKey( "recordEvents" ) );
+	}, this.createKey( "recordEventsStopToggle" ) );
+	
 
-	public EventRecordComposite() {
+	
+	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
+		this.owner = owner;
+		this.playRecordedOperation.setName( "play" );
 	}
 	
 //	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {

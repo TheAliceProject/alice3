@@ -58,13 +58,8 @@ public class ImageRecordView extends BorderPanel {
 		this.addComponent( this.lookingGlassContainer, Constraint.CENTER );
 		GridPanel bottomPanel = GridPanel.createGridPane( 1, 3 );
 		bottomPanel.addComponent( recordComposite.getRecordOperation().createButton() );
-		bottomPanel.addComponent( recordComposite.getPlayRecordedOperation().createButton() );
 		bottomPanel.addComponent( recordComposite.getFrameRate().createSpinner() );
 		addComponent( bottomPanel, Constraint.PAGE_END );
-	}
-	@Override
-	public ImageRecordComposite getComposite() {
-		return (ImageRecordComposite)super.getComposite();
 	}
 	public BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
