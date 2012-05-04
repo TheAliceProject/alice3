@@ -48,7 +48,7 @@ import org.alice.media.components.RecordView;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BoundedIntegerState;
-import org.lgna.croquet.Composite;
+import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.story.ImplementationAccessor;
@@ -59,19 +59,11 @@ import edu.cmu.cs.dennisc.matt.EventTranscript;
 /**
  * @author Matt May
  */
-public class RecordComposite extends Composite<RecordView> {
+public class RecordComposite extends WizardPageComposite<RecordView> {
 
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
 	private ImagesToQuickTimeEncoder encoder;
-
-	private static class SingletonHolder {
-		private static RecordComposite instance = new RecordComposite();
-	}
-
-	public static RecordComposite getInstance() {
-		return SingletonHolder.instance;
-	}
 
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {

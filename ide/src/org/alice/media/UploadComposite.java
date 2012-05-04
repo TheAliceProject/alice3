@@ -42,32 +42,19 @@
  */
 package org.alice.media;
 
-import javax.swing.SwingUtilities;
-
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.Composite;
+import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.croquet.triggers.Trigger;
 
 /**
  * @author Matt May
  */
-public class UploadComposite extends Composite<UploadView> {
-	private static class SingletonHolder {
-		private static UploadComposite instance = new UploadComposite();
-	}
-
-	public static UploadComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
+public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
 	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
 	private final StringState titleState = this.createStringState( "Alice Video", this.createKey( "title" ) );
@@ -84,7 +71,7 @@ public class UploadComposite extends Composite<UploadView> {
 		}
 	}, this.createKey( "upload" ) );
 
-	private UploadComposite() {
+	public UploadComposite() {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
 	}
 	public StringState getIdState() {
@@ -118,27 +105,5 @@ public class UploadComposite extends Composite<UploadView> {
 	@Override
 	protected UploadView createView() {
 		return new UploadView( this );
-	}
-
-	public static void main( final String[] args ) throws Exception {
-		final org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
-		SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				Application application = new SimpleApplication();
-				application.initialize( args );
-				application.getFrame().setSize( 640, 480 );
-
-				if( true ) {
-					application.getFrame().getContentPanel().addComponent( RecordComposite.getInstance().getView(), Constraint.CENTER );
-					RecordComposite.getInstance().startUp( project.getProgramType() );
-				} else {
-					application.getFrame().getContentPanel().addComponent( UploadComposite.getInstance().getView(), Constraint.CENTER );
-				}
-				
-				
-				application.getFrame().setVisible( true );
-			}
-		} );
-
 	}
 }
