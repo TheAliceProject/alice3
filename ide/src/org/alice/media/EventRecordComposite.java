@@ -60,14 +60,6 @@ public class EventRecordComposite extends Composite<EventRecordView> {
 	
 	private RunProgramContext programContext;
 
-	private EventRecordComposite() {
-		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
-	}
-
-	private static class SingletonHolder {
-		private static EventRecordComposite instance = new EventRecordComposite();
-	}
-
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
 
 		private boolean isPlaying = false;
@@ -88,10 +80,9 @@ public class EventRecordComposite extends Composite<EventRecordView> {
 		}
 	}, this.createKey( "recordEvents" ) );
 
-	public static EventRecordComposite getInstance() {
-		return SingletonHolder.instance;
+	public EventRecordComposite() {
+		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
 	}
-
 	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
 		final EventRecordView recordView = this.getView();
 		new Thread() {

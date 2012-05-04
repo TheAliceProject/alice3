@@ -88,7 +88,7 @@ public class RecordComposite extends WizardPageComposite<RecordView> {
 		public void perform( Transaction transaction, Trigger trigger ) {
 			SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					EventRecordComposite.getInstance().startUp( project.getProgramType() );
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo" );
 				}
 			} );
 

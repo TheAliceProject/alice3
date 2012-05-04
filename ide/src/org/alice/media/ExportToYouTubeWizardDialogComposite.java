@@ -53,12 +53,14 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 		return SingletonHolder.instance;
 	}
 	
+	private final EventRecordComposite eventRecordComposite = new EventRecordComposite();
 	private final RecordComposite recordComposite = new RecordComposite();
 	private final UploadComposite uploadComposite = new UploadComposite();
 	
 	private org.lgna.project.Project project;
 	private ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
+		this.getMainComposite().addCard( this.eventRecordComposite );
 		this.getMainComposite().addCard( this.recordComposite );
 		this.getMainComposite().addCard( this.uploadComposite );
 	}

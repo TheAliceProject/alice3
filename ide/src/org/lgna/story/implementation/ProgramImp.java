@@ -304,6 +304,10 @@ public class ProgramImp {
 		this.addComponents( container );
 		this.startAnimator();
 		this.requestFocusInWindow();
+		if( container instanceof javax.swing.JComponent ) {
+			((javax.swing.JComponent)container).revalidate();
+		}
+		container.repaint();
 	}
 	public void initializeInFrame( javax.swing.JFrame frame ) {
 		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
