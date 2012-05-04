@@ -11,7 +11,6 @@ import org.lgna.story.event.MouseClickEvent;
 import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
-import org.lgna.story.implementation.SceneImp;
 
 public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickEvent> {
 
@@ -49,11 +48,10 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 		}
 	}
 
-	public MouseClickedHandler( SceneImp scene ) {
-		super( scene );
+	public MouseClickedHandler() {
 		map.put( empty, new LinkedList<Object>() );
 	}
-	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, Scene scene ) {
+	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, /*int quoteClickCountUnquote,*/ Scene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
 			final org.lgna.story.event.MouseClickEvent mbe = new org.lgna.story.event.MouseClickEvent( e, scene );
 			Model model = mbe.getModelAtMouseLocation();

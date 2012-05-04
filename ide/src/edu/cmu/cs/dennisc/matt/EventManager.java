@@ -1,5 +1,7 @@
 package edu.cmu.cs.dennisc.matt;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,38 +35,68 @@ import org.lgna.story.event.WhileOcclusionListener;
 import org.lgna.story.event.WhileProximityListener;
 import org.lgna.story.implementation.SceneImp;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 public class EventManager {
 
-	private final MouseClickedHandler mouseHandler;
-
-	private final TransformationHandler transHandler;
-	private final OcclusionHandler occlusionHandler;
-	private final ViewEventHandler viewHandler;
-	private final CollisionHandler collisionHandler;
-	private final ProximityEventHandler proxyHandler;
-	private final KeyPressedHandler keyHandler;
-	private final TimerEventHandler timer;
-	private final SceneActivationHandler sceneActivationHandler;
-	private final AbstractEventHandler[] handlers;
+	private final SceneImp scene;
+	private final InputEventRecorder inputRecorder = new InputEventRecorder();
+	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
+	private final MouseClickedHandler mouseHandler = new MouseClickedHandler();
+	private final TransformationHandler transHandler = new TransformationHandler();
+	private final OcclusionHandler occlusionHandler = new OcclusionHandler();
+	private final ViewEventHandler viewHandler = new ViewEventHandler();
+	private final CollisionHandler collisionHandler = new CollisionHandler();
+	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
+	private final TimerEventHandler timer = new TimerEventHandler();
+	private final SceneActivationHandler sceneActivationHandler = new SceneActivationHandler();
+	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { keyHandler, mouseHandler, transHandler, occlusionHandler, viewHandler, collisionHandler, proxyHandler, timer, sceneActivationHandler };
 
 	private final TimerContingencyManager contingent;
 
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+	public void recieveEvent( Object event ) {
+		if( event instanceof MouseEvent ) {
+			MouseEvent mouseEvent = (MouseEvent)event;
+			mouseAdapter.handleReplayedEvent( mouseEvent );
+		} else if( event instanceof KeyEvent ) {
+			KeyEvent keyEvent = (KeyEvent)event;
+			if( new Integer( keyEvent.getID() ).equals( KeyEvent.KEY_PRESSED ) ) {
+				keyAdapter.keyPressed( keyEvent );
+			} else if( new Integer( keyEvent.getID() ).equals( KeyEvent.KEY_RELEASED ) ) {
+				keyAdapter.keyReleased( keyEvent );
+			} else {
+				Logger.errln( "mishandled recieved keyboard event", keyEvent );
+			}
+		} else {
+			Logger.errln( "mishandled recieved event ", event );
+		}
+	}
+
+	public final CustomLenientMouseAdapter mouseAdapter = new CustomLenientMouseAdapter();
+
+	private class CustomLenientMouseAdapter extends edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote( e, quoteClickCountUnquote, EventManager.this.scene.getAbstraction() );
+			inputRecorder.record( e );
+			EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote( e, /*quoteClickCountUnquote,*/EventManager.this.scene.getAbstraction() );
+		}
+
+		public void handleReplayedEvent( MouseEvent e ) {
+			mouseQuoteClickedUnquote( e, 0 );
 		}
 	};
+
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
-		public void keyPressed( java.awt.event.KeyEvent e ) {
+		public void keyPressed( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
+			inputRecorder.record( e );
 			keyHandler.handleKeyPress( event );
 		}
-		public void keyReleased( java.awt.event.KeyEvent e ) {
+		public void keyReleased( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
+			inputRecorder.record( e );
 			keyHandler.handleKeyRelease( event );
 		}
 		public void keyTyped( java.awt.event.KeyEvent e ) {
@@ -74,25 +106,19 @@ public class EventManager {
 	//	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
 	//	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 
-	private final SceneImp scene;
-
 	private GlobalDragAdapter dragAdapter;
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
-		timer = new TimerEventHandler( scene );
-		scene.addSceneActivationListener( timer );
+		for( AbstractEventHandler handler : handlers ) {
+			handler.setScene( scene );
+		}
+		inputRecorder.setScene( scene );
 		contingent = new TimerContingencyManager( timer );
-		contingent.setScene( scene );
-		keyHandler = new KeyPressedHandler( scene );
-		mouseHandler = new MouseClickedHandler( scene );
-		transHandler = new TransformationHandler( scene );
-		occlusionHandler = new OcclusionHandler( scene );
-		viewHandler = new ViewEventHandler( scene );
-		collisionHandler = new CollisionHandler( scene );
-		proxyHandler = new ProximityEventHandler( scene );
-		sceneActivationHandler = new SceneActivationHandler( scene );
-		handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
+	}
+
+	public void setScene() {
+		scene.addSceneActivationListener( timer );
 	}
 
 	public void removeKeyListener( KeyPressListener keyListener ) {
@@ -185,7 +211,7 @@ public class EventManager {
 	public void addLeavesViewEventListener( ViewExitListener listener, Model[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
-	public void sceneActivated(){
+	public void sceneActivated() {
 		this.sceneActivationHandler.handleEventFire( new SceneActivationEvent() );
 	}
 
@@ -235,8 +261,15 @@ public class EventManager {
 	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo ) {
 		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
-	
+
 	public void addSceneActivationListener( SceneActivationListener listener ) {
 		sceneActivationHandler.addListener( listener );
+	}
+	public void removeSceneActivationListener( SceneActivationListener listener ) {
+		sceneActivationHandler.removeListener( listener );
+	}
+
+	public EventScript getScript() {
+		return inputRecorder.getScript();
 	}
 }

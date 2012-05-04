@@ -15,7 +15,6 @@ import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.StartOcclusionEvent;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraImp;
-import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -24,10 +23,6 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 
 	private OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
 	private CameraImp camera;
-
-	public OcclusionHandler( SceneImp scene ) {
-		super( scene );
-	}
 
 	public void addOcclusionEvent( Object occlusionEventListener, List<Model> groupOne, List<Model> groupTwo ) {
 		registerIsFiringMap( occlusionEventListener );

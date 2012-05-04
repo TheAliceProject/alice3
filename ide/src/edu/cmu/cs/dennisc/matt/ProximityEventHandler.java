@@ -65,10 +65,6 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class ProximityEventHandler extends TransformationChangedHandler<Object,ProximityEvent> {
 
-	public ProximityEventHandler( SceneImp scene ) {
-		super( scene );
-	}
-
 	private ProximityEventManager proximityEventManager = new ProximityEventManager();
 
 	public void addProximityEventListener( Object pEList, List<Entity> groupOne, List<Entity> groupTwo, Double distance ) {

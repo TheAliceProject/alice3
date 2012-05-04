@@ -26,8 +26,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 	private HashMap<Object,HashMap<Key,Boolean>> firePolicyMap = Collections.newHashMap();
 	private long sleepTime = 500;
 
-	public KeyPressedHandler( SceneImp scene ) {
-		super(scene);
+	public KeyPressedHandler() {
 		map.put( empty, new LinkedList<Object>() );
 	}
 

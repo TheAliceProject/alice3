@@ -40,25 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.media.components;
 
-package org.alice.stageide.program;
+import org.alice.media.EventRecordComposite;
+import org.alice.media.RecordComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.GridPanel;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class VideoEncodingProgramContext extends ProgramContext {
-	public VideoEncodingProgramContext( org.lgna.project.ast.NamedUserType programType, double frameRate ) {
-		super( programType );
-		this.getProgramImp().setFrameRate( frameRate );
+public class EventRecordView extends BorderPanel {
+	
+	private final BorderPanel lookingGlassContainer = new BorderPanel();
+
+	public EventRecordView( EventRecordComposite eventRecordComposite ) {
+		this.addComponent( this.lookingGlassContainer, Constraint.CENTER );
+		GridPanel bottom = GridPanel.createGridPane( 1, 3 );
+		bottom.addComponent( eventRecordComposite.getPlayRecordedOperation().createButton() );
+		this.addComponent( bottom, Constraint.PAGE_END );
 	}
-	public VideoEncodingProgramContext( double frameRate ) {
-		this( getUpToDateProgramTypeFromActiveIde(), frameRate );
+	@Override
+	public RecordComposite getComposite() {
+		return (RecordComposite)super.getComposite();
 	}
-	public Double getFrameRate() {
-		return this.getProgramImp().getFrameRate();
+	public BorderPanel getLookingGlassContainer() {
+		return this.lookingGlassContainer;
 	}
-	//todo: add String[] args?
-	public void initializeInContainer( java.awt.Container container ) {
-		container.add( this.getProgramImp().getOnscreenLookingGlass().getAWTComponent() );
-	}
+
 }

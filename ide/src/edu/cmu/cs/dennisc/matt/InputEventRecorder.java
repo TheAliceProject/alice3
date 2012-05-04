@@ -40,25 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.matt;
 
-package org.alice.stageide.program;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
+import org.lgna.story.implementation.SceneImp;
+
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class VideoEncodingProgramContext extends ProgramContext {
-	public VideoEncodingProgramContext( org.lgna.project.ast.NamedUserType programType, double frameRate ) {
-		super( programType );
-		this.getProgramImp().setFrameRate( frameRate );
+public class InputEventRecorder {
+
+	private SceneImp scene;
+	private Animator animator;
+	private EventScript eventScript = new EventScript();
+
+	public void record( Object event ) {
+		if( event instanceof KeyEvent ) {
+			KeyEvent keyEvent = (KeyEvent)event;
+			record( keyEvent );
+		} else if( event instanceof MouseEvent ) {
+			MouseEvent mouseEvent = (MouseEvent)event;
+			record( mouseEvent );
+		}
 	}
-	public VideoEncodingProgramContext( double frameRate ) {
-		this( getUpToDateProgramTypeFromActiveIde(), frameRate );
+
+	private void record( KeyEvent e ) {
+		if( animator == null ) {
+			animator = scene.getProgram().getAnimator();
+		}
+		if( animator == null ) {
+			Logger.warning( "Not Recording Correctly" );
+			return;
+		} else {
+			eventScript.record( animator.getCurrentTime(), e );
+		}
 	}
-	public Double getFrameRate() {
-		return this.getProgramImp().getFrameRate();
+
+	private void record( MouseEvent e ) {
+		if( animator == null ) {
+			animator = scene.getProgram().getAnimator();
+		}
+		if( animator == null ) {
+			Logger.warning( "Not Recording Correctly" );
+			return;
+		} else {
+			eventScript.record( animator.getCurrentTime(), e );
+		}
 	}
-	//todo: add String[] args?
-	public void initializeInContainer( java.awt.Container container ) {
-		container.add( this.getProgramImp().getOnscreenLookingGlass().getAWTComponent() );
+
+	public EventScript getScript() {
+		return eventScript;
 	}
+	
+	public void setScene( SceneImp scene ) {
+		this.scene = scene;
+	}
+
 }

@@ -20,10 +20,6 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEvent> {
 
-	public ViewEventHandler( SceneImp scene ) {
-		super( scene );
-	}
-
 	private CameraImp camera;
 	private Map<Model,List<Object>> map = Collections.newHashMap();
 	private Map<Model,Boolean> wasInView = Collections.newHashMap();

@@ -40,43 +40,79 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package org.alice.media;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.event.SceneActivationEvent;
-import org.lgna.story.event.SceneActivationListener;
+import org.alice.media.components.EventRecordView;
+import org.alice.stageide.program.RunProgramContext;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.matt.EventScript;
 
 /**
  * @author Matt May
  */
-public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener,SceneActivationEvent> {
+public class EventRecordComposite extends Composite<EventRecordView> {
+	
+	private RunProgramContext programContext;
 
-	List<SceneActivationListener> listeners = Collections.newLinkedList();
+	private EventRecordComposite() {
+		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
+	}
 
-	public void handleEventFire( SceneActivationEvent event ) {
-		for( SceneActivationListener listener : listeners ) {
-			fireEvent( listener, event );
+	private static class SingletonHolder {
+		private static EventRecordComposite instance = new EventRecordComposite();
+	}
+
+	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
+
+		private boolean isPlaying = false;
+		private EventScript script;
+
+		public void perform( Transaction transaction, Trigger trigger ) {
+			if( isPlaying ) {
+				isPlaying = !isPlaying;
+				programContext.getProgramImp().stopAnimator();
+				script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+				System.out.println("stop");
+			} else {
+				isPlaying = !isPlaying;
+				System.out.println("play");
+				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
+				programContext.getProgramImp().startAnimator();
+			}
 		}
+	}, this.createKey( "recordEvents" ) );
+
+	public static EventRecordComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
+		final EventRecordView recordView = this.getView();
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				org.lgna.croquet.components.BorderPanel lookingGlassContainer = recordView.getLookingGlassContainer();
+
+				programContext = new RunProgramContext( programType );
+				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
+				programContext.setActiveScene();
+			}
+		}.start();
+	}
+	
+	public ActionOperation getPlayRecordedOperation() {
+		return this.playRecordedOperation;
 	}
 
 	@Override
-	protected void nameOfFireCall( SceneActivationListener listener, SceneActivationEvent event ) {
-		listener.sceneActivated( event );
+	protected EventRecordView createView() {
+		return new EventRecordView( this );
 	}
-
-	public void addListener( SceneActivationListener listener ) {
-		registerIsFiringMap( listener );
-		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
-		listeners.add( listener );
-	}
-	public void removeListener( SceneActivationListener listener ) {
-		listeners.remove( listener );
-	}
-
 }

@@ -9,7 +9,6 @@ import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.TimeEvent;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.WhileContingencyListener;
-import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
@@ -25,19 +24,14 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 
 	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
-			currentTime = sceneImp.getProgram().getAnimator().getCurrentTime();
+			currentTime = scene.getProgram().getAnimator().getCurrentTime();
 			update();
 		}
 	};
 	private boolean isEnabled = false;
 	private boolean isActivated = false;
 	private Map<TimeListener,Boolean> activationMap = Collections.newHashMap();
-	private SceneImp sceneImp;
 
-	public TimerEventHandler( SceneImp scene ) {
-		super(scene);
-		this.sceneImp = scene;
-	}
 	public void enable() {
 		isEnabled = true;
 		LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );

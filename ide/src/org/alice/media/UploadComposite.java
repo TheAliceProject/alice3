@@ -120,17 +120,18 @@ public class UploadComposite extends Composite<UploadView> {
 		return new UploadView( this );
 	}
 
+	private static Application application = new SimpleApplication();
 	public static void main( final String[] args ) throws Exception {
 		final org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 		SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				Application application = new SimpleApplication();
 				application.initialize( args );
 				application.getFrame().setSize( 640, 480 );
 
 				if( true ) {
-					application.getFrame().getContentPanel().addComponent( RecordComposite.getInstance().getView(), Constraint.CENTER );
-					RecordComposite.getInstance().startUp( project.getProgramType() );
+					application.getFrame().getContentPanel().addComponent( EventRecordComposite.getInstance().getView(), Constraint.CENTER );
+//					RecordComposite.getInstance().setArgs( args, project );
+					EventRecordComposite.getInstance().startUp( project.getProgramType() );
 				} else {
 					application.getFrame().getContentPanel().addComponent( UploadComposite.getInstance().getView(), Constraint.CENTER );
 				}
