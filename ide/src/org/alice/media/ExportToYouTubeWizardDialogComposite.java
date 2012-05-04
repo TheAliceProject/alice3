@@ -46,20 +46,37 @@ package org.alice.media;
  * @author Dennis Cosgrove
  */
 public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.WizardDialogComposite {
-	public ExportToYouTubeWizardDialogComposite() {
-		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP,
-				new RecordComposite(),
-				new UploadComposite() );
+	private static class SingletonHolder {
+		private static ExportToYouTubeWizardDialogComposite instance = new ExportToYouTubeWizardDialogComposite();
+	}
+	public static ExportToYouTubeWizardDialogComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	
+	private final RecordComposite recordComposite = new RecordComposite();
+	private final UploadComposite uploadComposite = new UploadComposite();
+	
+	private org.lgna.project.Project project;
+	private ExportToYouTubeWizardDialogComposite() {
+		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
+		this.getMainComposite().addCard( this.recordComposite );
+		this.getMainComposite().addCard( this.uploadComposite );
+	}
+	public org.lgna.project.Project getProject() {
+		return this.project;
+	}
+	public void setProject( org.lgna.project.Project project ) {
+		this.project = project;
+		this.recordComposite.startUp( this.project.getProgramType() );
 	}
 	public static void main( final String[] args ) throws Exception {
 		final org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-
 				if( true ) {
-					ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();
-					composite.getOperation().fire();
+					ExportToYouTubeWizardDialogComposite.getInstance().setProject( project );
+					ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire();
 					System.exit( 0 );
 				} else {
 					if( true ) {
