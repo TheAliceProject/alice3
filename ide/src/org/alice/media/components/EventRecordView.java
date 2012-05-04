@@ -43,7 +43,6 @@
 package org.alice.media.components;
 
 import org.alice.media.EventRecordComposite;
-import org.alice.media.ImageRecordComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 

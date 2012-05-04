@@ -42,8 +42,6 @@
  */
 package org.alice.media;
 
-import javax.swing.SwingUtilities;
-
 import org.alice.media.components.EventRecordView;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
