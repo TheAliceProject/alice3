@@ -309,7 +309,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
 		
-		if( this.getPerspective() == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
+		org.lgna.croquet.Perspective perspective = this.getPerspective();
+		if( perspective == null || perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
 			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
 		}
 		
