@@ -73,7 +73,7 @@ public class SceneImp extends EntityImp {
 	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromBelowDirectionalLight = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight(); 
 	private final edu.cmu.cs.dennisc.scenegraph.ExponentialFog sgFog = new edu.cmu.cs.dennisc.scenegraph.ExponentialFog();
 
-	private final java.util.List< org.lgna.story.event.SceneActivationListener > sceneActivationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	private final java.util.List< org.lgna.story.event.SceneActivationListener > sceneActivationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List< Capsule > capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private ProgramImp program;
@@ -153,6 +153,8 @@ public class SceneImp extends EntityImp {
 	}
 	
 	public SceneImp( org.lgna.story.Scene abstraction ) {
+		eventManager = new edu.cmu.cs.dennisc.matt.EventManager( this );
+		eventManager.setScene();
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
 		this.sgFog.color.setValue(this.sgBackground.color.getValue());
@@ -161,8 +163,6 @@ public class SceneImp extends EntityImp {
 		this.sgScene.addComponent( this.sgAmbientLight );
 		this.setFogDensity(0);
 		this.putInstance( this.sgScene );
-
-		this.eventManager = new edu.cmu.cs.dennisc.matt.EventManager( this );
 
 		final edu.cmu.cs.dennisc.math.Angle fromAbovePitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( -60.0 );
 		final float fromAboveBrightness = 0.533f;
@@ -178,10 +178,11 @@ public class SceneImp extends EntityImp {
 	
 
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
-		this.sceneActivationListeners.add( sceneActivationListener );
+		this.eventManager.addSceneActivationListener( sceneActivationListener );
 	}
+	
 	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
-		this.sceneActivationListeners.remove( sceneActivationListener );
+		this.eventManager.removeSceneActivationListener( sceneActivationListener );
 	}
 	
 	private int ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount = 0;
@@ -352,7 +353,7 @@ public class SceneImp extends EntityImp {
 		return rv;
 	}
 	
-	public edu.cmu.cs.dennisc.matt.EventTranscript getTranscript() {
-		return edu.cmu.cs.dennisc.matt.EventRecorder.findRecorderForScene( this ).getEventTranscript();
+	public edu.cmu.cs.dennisc.matt.EventScript getTranscript() {
+		return eventManager.getScript();
 	}
 }

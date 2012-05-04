@@ -755,7 +755,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	protected void showWorldInContainer( java.awt.Container awtContainer ) {
 		awtContainer.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		//		awtContainer.add( this.rtProgram );
-		this.programContext.initialize( awtContainer );
+		this.programContext.initializeInContainer( awtContainer );
 		this.programContext.setActiveScene();
 		
 		if( awtContainer instanceof javax.swing.JComponent ) {

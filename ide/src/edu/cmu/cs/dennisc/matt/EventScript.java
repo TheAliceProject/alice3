@@ -40,25 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.matt;
 
-package org.alice.stageide.program;
+import java.util.List;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class VideoEncodingProgramContext extends ProgramContext {
-	public VideoEncodingProgramContext( org.lgna.project.ast.NamedUserType programType, double frameRate ) {
-		super( programType );
-		this.getProgramImp().setFrameRate( frameRate );
+public class EventScript {
+
+	List<EventWithTime> eventList = Collections.newLinkedList();
+	List<EventWithTime> list = Collections.newLinkedList();
+	private boolean isVirgin = true;
+
+	public void record( double currentTime, Object e ) {
+		eventList.add( new EventWithTime( currentTime, e ) );
 	}
-	public VideoEncodingProgramContext( double frameRate ) {
-		this( getUpToDateProgramTypeFromActiveIde(), frameRate );
+
+	public List<Object> getEventsForTime( double time ) {
+		if( isVirgin ) {
+			isVirgin = false;
+			refresh();
+		}
+		List<Object> rv = Collections.newLinkedList();
+		while( list.get( 0 ).getTime() < time ) {
+			rv.add( list.remove( 0 ).getEvent() );
+		}
+		return rv;
 	}
-	public Double getFrameRate() {
-		return this.getProgramImp().getFrameRate();
+
+	private void refresh() {
+		list = Collections.newLinkedList( eventList );
 	}
-	//todo: add String[] args?
-	public void initializeInContainer( java.awt.Container container ) {
-		container.add( this.getProgramImp().getOnscreenLookingGlass().getAWTComponent() );
+
+	private class EventWithTime {
+		Object event;
+		double time;
+
+		public EventWithTime( double time, Object event ) {
+			this.time = time;
+			this.event = event;
+		}
+
+		public Object getEvent() {
+			return this.event;
+		}
+		public double getTime() {
+			return this.time;
+		}
 	}
+
 }

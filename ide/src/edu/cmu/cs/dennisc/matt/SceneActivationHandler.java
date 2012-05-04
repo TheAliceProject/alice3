@@ -44,9 +44,9 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.util.List;
 
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -56,10 +56,6 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener,SceneActivationEvent> {
 
 	List<SceneActivationListener> listeners = Collections.newLinkedList();
-
-	public SceneActivationHandler( SceneImp scene ) {
-		super( scene );
-	}
 
 	public void handleEventFire( SceneActivationEvent event ) {
 		for( SceneActivationListener listener : listeners ) {
@@ -73,7 +69,12 @@ public class SceneActivationHandler extends AbstractEventHandler<SceneActivation
 	}
 
 	public void addListener( SceneActivationListener listener ) {
+		registerIsFiringMap( listener );
+		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
 		listeners.add( listener );
+	}
+	public void removeListener( SceneActivationListener listener ) {
+		listeners.remove( listener );
 	}
 
 }

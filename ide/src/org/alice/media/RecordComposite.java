@@ -44,6 +44,8 @@ package org.alice.media;
 
 import java.io.File;
 
+import javax.swing.SwingUtilities;
+
 import org.alice.media.components.RecordView;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
@@ -51,10 +53,16 @@ import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
+import org.lgna.project.Project;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Scene;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.matt.EventTranscript;
+import edu.cmu.cs.dennisc.matt.EventManager;
+import edu.cmu.cs.dennisc.matt.EventScript;
+import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
 
 /**
  * @author Matt May
@@ -64,6 +72,8 @@ public class RecordComposite extends WizardPageComposite<RecordView> {
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
 	private ImagesToQuickTimeEncoder encoder;
+	private String[] args;
+	private Project project;
 
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
@@ -76,17 +86,23 @@ public class RecordComposite extends WizardPageComposite<RecordView> {
 		private boolean isPlaying = false;
 
 		public void perform( Transaction transaction, Trigger trigger ) {
-			if( isPlaying ) {
-				isPlaying = !isPlaying;
-				programContext.getProgramImp().stopAnimator();
-				EventTranscript transcript = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
-			} else {
-				isPlaying = !isPlaying;
-				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
-				programContext.getProgramImp().startAnimator();
-			}
+			SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					EventRecordComposite.getInstance().startUp( project.getProgramType() );
+				}
+			} );
+
+//			if( isPlaying ) {
+//				isPlaying = !isPlaying;
+//				programContext.getProgramImp().stopAnimator();
+//				EventTranscript transcript = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+//			} else {
+//				isPlaying = !isPlaying;
+//				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
+//				programContext.getProgramImp().startAnimator();
+//			}
 		}
-	}, this.createKey( "play" ) );
+	}, this.createKey( "recordEvents" ) );
 
 	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
 
@@ -175,7 +191,16 @@ public class RecordComposite extends WizardPageComposite<RecordView> {
 				imageCount = 0;
 
 				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRate.getValue() );
-				programContext.initialize( lookingGlassContainer.getAwtComponent() );
+				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
+
+				EventScript script = null; //todo
+
+				UserInstance programInstance = programContext.getProgramInstance();
+				UserField sceneField = programInstance.getType().fields.get( 0 );
+				Scene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, Scene.class );
+				SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
+				EventManager manager = sceneImp.getEventManager();
+				programContext.getProgramImp().ACCEPTABLE_HACK_FOR_VIDEO_RECORDER_setFrameBasedAnimator( new FrameBasedAnimatorWithEventScript( script, manager ) );
 				programContext.setActiveScene();
 			}
 		}.start();
@@ -192,5 +217,10 @@ public class RecordComposite extends WizardPageComposite<RecordView> {
 		} else {
 			System.out.println( "NULL" );
 		}
+	}
+
+	public void setArgs( String[] args, Project project ) {
+		this.args = args;
+		this.project = project;
 	}
 }

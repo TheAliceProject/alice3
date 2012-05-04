@@ -18,15 +18,9 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	protected Integer count = 0;
 	protected Map<Object,MultipleEventPolicy> policyMap = Collections.newHashMap();
 	protected Map<Object,HashMap<Object,Boolean>> isFiringMap = Collections.newHashMap();
-	protected EventRecorder recorder;// = new EventRecorder( scene );
 	private LinkedList<E> queue = new LinkedList<E>();
-	private SceneImp scene;
+	protected SceneImp scene;
 	
-	public AbstractEventHandler(SceneImp scene) {
-		this.scene = scene;
-		this.recorder = EventRecorder.findRecorderForScene( scene );
-	}
-
 	protected void fireEvent( final L listener, final E event, final Object o ) {
 		if( isFiringMap.get( listener ) == null ) {
 			isFiringMap.put( listener, new HashMap<Object,Boolean>() );
@@ -77,9 +71,6 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	}
 
 	private void fire( L listener, E event ) {
-		if( this.recorder != null ) {
-			this.recorder.recordEvent( new EventRecord<L, E>( this, listener, event, scene.getProgram().getAnimator().getCurrentTime() ) );
-		}
 		nameOfFireCall( listener, event );
 	}
 
@@ -110,6 +101,10 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
 	protected void fireEvent( L listener, E event ) {
 		fireEvent( listener, event, listener ); //used if policy is not constrained by anything else, such as selected model for mouse click events
+	}
+
+	public void setScene( SceneImp scene ) {
+		this.scene = scene;
 	}
 
 }

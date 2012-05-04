@@ -115,7 +115,7 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 				image = null;
 				imageCount = 0;
 				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( frameRate );
-				programContext.initialize( videoExportPanel.getLookingGlassContainer() );
+				programContext.initializeInContainer( videoExportPanel.getLookingGlassContainer() );
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				programContext.setActiveScene();
 			}

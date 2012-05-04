@@ -40,14 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.media.components;
 
-package gallery.croquet;
+import org.alice.media.EventRecordComposite;
+import org.alice.media.RecordComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.GridPanel;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class GalleryPerspective extends org.lgna.croquet.Perspective {
-	public GalleryPerspective() {
-		super( java.util.UUID.fromString( "db725789-5ad4-4f6f-9653-12f383f6815e" ), new GallerySplitComposite() );
+public class EventRecordView extends BorderPanel {
+	
+	private final BorderPanel lookingGlassContainer = new BorderPanel();
+
+	public EventRecordView( EventRecordComposite eventRecordComposite ) {
+		this.addComponent( this.lookingGlassContainer, Constraint.CENTER );
+		GridPanel bottom = GridPanel.createGridPane( 1, 3 );
+		bottom.addComponent( eventRecordComposite.getPlayRecordedOperation().createButton() );
+		this.addComponent( bottom, Constraint.PAGE_END );
 	}
+	@Override
+	public RecordComposite getComposite() {
+		return (RecordComposite)super.getComposite();
+	}
+	public BorderPanel getLookingGlassContainer() {
+		return this.lookingGlassContainer;
+	}
+
 }

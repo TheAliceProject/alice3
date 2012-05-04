@@ -8,17 +8,12 @@ import org.lgna.story.Entity;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.implementation.EntityImp;
-import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler< L, E > implements AbsoluteTransformationListener {
-
-	public TransformationChangedHandler( SceneImp scene ) {
-		super( scene );
-	}
 
 	HashMap<Visual, LinkedList<Object>> eventMap = new HashMap<Visual, LinkedList<Object>>();
 	List< L > listenerList = Collections.newLinkedList();

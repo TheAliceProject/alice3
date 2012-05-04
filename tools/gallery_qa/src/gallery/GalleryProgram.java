@@ -380,7 +380,7 @@ public class GalleryProgram extends Program {
 		Logger.setLevel( Level.WARNING );
 		GalleryApplication app = new GalleryApplication();
 		app.initialize( args );
-		app.setPerspective( new gallery.croquet.GalleryPerspective() );
+		app.getFrame().setMainComposite( new gallery.croquet.GallerySplitComposite() );
 		GalleryProgram program = new GalleryProgram();
 
 		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );

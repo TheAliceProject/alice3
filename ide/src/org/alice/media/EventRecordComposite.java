@@ -40,30 +40,79 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.matt;
+package org.alice.media;
 
-import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
+import org.alice.media.components.EventRecordView;
+import org.alice.stageide.program.RunProgramContext;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.implementation.SceneImp;
+
+import edu.cmu.cs.dennisc.matt.EventScript;
 
 /**
  * @author Matt May
  */
-public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
+public class EventRecordComposite extends Composite<EventRecordView> {
+	
+	private RunProgramContext programContext;
 
-	private final EventScript script;
-	private final EventManager manager;
+	private EventRecordComposite() {
+		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
+	}
 
-	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
-		this.script = script;
-		this.manager = manager;
+	private static class SingletonHolder {
+		private static EventRecordComposite instance = new EventRecordComposite();
+	}
+
+	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
+
+		private boolean isPlaying = false;
+		private EventScript script;
+
+		public void perform( Transaction transaction, Trigger trigger ) {
+			if( isPlaying ) {
+				isPlaying = !isPlaying;
+				programContext.getProgramImp().stopAnimator();
+				script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+				System.out.println("stop");
+			} else {
+				isPlaying = !isPlaying;
+				System.out.println("play");
+				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
+				programContext.getProgramImp().startAnimator();
+			}
+		}
+	}, this.createKey( "recordEvents" ) );
+
+	public static EventRecordComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
+		final EventRecordView recordView = this.getView();
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				org.lgna.croquet.components.BorderPanel lookingGlassContainer = recordView.getLookingGlassContainer();
+
+				programContext = new RunProgramContext( programType );
+				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
+				programContext.setActiveScene();
+			}
+		}.start();
+	}
+	
+	public ActionOperation getPlayRecordedOperation() {
+		return this.playRecordedOperation;
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		if( script != null ) {
-			for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
-				manager.recieveEvent( event );
-			}
-		}
+	protected EventRecordView createView() {
+		return new EventRecordView( this );
 	}
 }
