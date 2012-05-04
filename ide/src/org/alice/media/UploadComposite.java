@@ -55,6 +55,7 @@ import org.lgna.croquet.triggers.Trigger;
  * @author Matt May
  */
 public class UploadComposite extends WizardPageComposite<UploadView> {
+	private final ExportToYouTubeWizardDialogComposite owner;
 	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
 	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
 	private final StringState titleState = this.createStringState( "Alice Video", this.createKey( "title" ) );
@@ -71,8 +72,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		}
 	}, this.createKey( "upload" ) );
 
-	public UploadComposite() {
+	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
+		this.owner = owner;
 	}
 	public StringState getIdState() {
 		return this.idState;

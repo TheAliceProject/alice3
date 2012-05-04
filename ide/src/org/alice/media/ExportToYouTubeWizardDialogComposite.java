@@ -53,51 +53,31 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 		return SingletonHolder.instance;
 	}
 	
-	private final EventRecordComposite eventRecordComposite = new EventRecordComposite();
-	private final ImageRecordComposite recordComposite = new ImageRecordComposite();
-	private final UploadComposite uploadComposite = new UploadComposite();
+	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
+	private final ImageRecordComposite recordComposite = new ImageRecordComposite( this );
+	private final UploadComposite uploadComposite = new UploadComposite( this );
 	
 	private org.lgna.project.Project project;
 	private ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
-		this.getMainComposite().addCard( this.eventRecordComposite );
-		this.getMainComposite().addCard( this.recordComposite );
-		this.getMainComposite().addCard( this.uploadComposite );
+		this.addWizardPageComposite( this.eventRecordComposite );
+		this.addWizardPageComposite( this.recordComposite );
+		this.addWizardPageComposite( this.uploadComposite );
 	}
 	public org.lgna.project.Project getProject() {
 		return this.project;
 	}
 	public void setProject( org.lgna.project.Project project ) {
 		this.project = project;
-		this.recordComposite.startUp( this.project.getProgramType() );
 	}
 	public static void main( final String[] args ) throws Exception {
+		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
 		final org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-
-				if( false ) {
-					ExportToYouTubeWizardDialogComposite composite = new ExportToYouTubeWizardDialogComposite();
-					composite.getOperation().fire();
-				}
-				if( true ) {
-					ExportToYouTubeWizardDialogComposite.getInstance().setProject( project );
-					ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire();
-					System.exit( 0 );
-				} else {
-					application.initialize( args );
-					application.getFrame().setSize( 640, 480 );
-					if( true ) {
-						ImageRecordComposite recordComposite = new ImageRecordComposite();
-						application.getFrame().getContentPanel().addComponent( recordComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-						recordComposite.startUp( project.getProgramType() );
-					} else {
-						UploadComposite uploadComposite = new UploadComposite();
-						application.getFrame().getContentPanel().addComponent( uploadComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-					}
-					application.getFrame().setVisible( true );
-				}
+				ExportToYouTubeWizardDialogComposite.getInstance().setProject( project );
+				ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire();
+				System.exit( 0 );
 			}
 		} );
 	}
