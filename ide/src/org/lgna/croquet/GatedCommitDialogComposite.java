@@ -103,7 +103,7 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 			protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 				org.lgna.croquet.history.CompletionStep<?> dialogStep = step.getFirstAncestorStepOfEquivalentModel( this.getControlsComposite().getGatedCommitDialogComposite().getOperation(), org.lgna.croquet.history.CompletionStep.class );
-				org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
+				org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 				dialogStep.putEphemeralDataFor( IS_COMPLETED_KEY, this.isCompletion );
 				dialog.setVisible( false );
 				step.finish();
@@ -320,8 +320,11 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 	protected void handlePreShowDialog( org.lgna.croquet.history.TransactionNode<?> node ) {
 		//todo
 		org.lgna.croquet.history.CompletionStep<?> step = (org.lgna.croquet.history.CompletionStep<?>)node;
-		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
-		dialog.setDefaultButton( this.getControlsComposite().getCompleteButton() );
+		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+		assert dialog != null : this + " " + node;
+		ControlsComposite controlsComposite = this.getControlsComposite();
+		assert controlsComposite != null : this;
+		dialog.setDefaultButton( controlsComposite.getCompleteButton() );
 		node.addListener( this.listener );
 		this.updateExplanation( step );
 		super.handlePreShowDialog( node );

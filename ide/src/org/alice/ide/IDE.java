@@ -311,9 +311,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
-
-		// TODO: <kjh/> hack hack hack. does this even make sense???
-		if( this.getPerspective() == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() || this.isDefaultProjectLoaded() ) {
+		org.lgna.croquet.Perspective perspective = this.getPerspective();
+		if( perspective == null || perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
 			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
 		}
 

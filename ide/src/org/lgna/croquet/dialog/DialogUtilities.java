@@ -47,7 +47,7 @@ package org.lgna.croquet.dialog;
  * @author Dennis Cosgrove
  */
 public class DialogUtilities {
-	protected static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogUtilities.DIALOG_KEY" );
+	public static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogUtilities.DIALOG_KEY" );
 
 	public static <V extends org.lgna.croquet.components.JComponent<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.TransactionNode<?> node ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
@@ -77,7 +77,7 @@ public class DialogUtilities {
 			org.lgna.croquet.history.Step<?> step = (org.lgna.croquet.history.Step<?>)node;
 			step.putEphemeralDataFor( DIALOG_KEY, dialog );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( node, dialog );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( node, dialog );
 		}
 
 		class DialogWindowListener implements java.awt.event.WindowListener {

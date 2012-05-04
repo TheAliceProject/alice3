@@ -49,9 +49,6 @@ package org.lgna.croquet;
 public abstract class DialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "d4dfb949-2761-432e-9ad0-932ba0d6b4f6" ), "DIALOG_IMPLEMENTATION_GROUP" );
 
-	protected static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogComposite.DIALOG_KEY" );
-
-	
 	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>> implements org.lgna.croquet.dialog.DialogOwner<V> {
 
 		private final DialogComposite<V> composite;
