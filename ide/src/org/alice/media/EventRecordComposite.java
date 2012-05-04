@@ -83,20 +83,21 @@ public class EventRecordComposite extends Composite<EventRecordView> {
 	public EventRecordComposite() {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
 	}
-	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
-		final EventRecordView recordView = this.getView();
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				org.lgna.croquet.components.BorderPanel lookingGlassContainer = recordView.getLookingGlassContainer();
-
-				programContext = new RunProgramContext( programType );
-				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
-				programContext.setActiveScene();
-			}
-		}.start();
-	}
+	
+//	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
+//		final EventRecordView recordView = this.getView();
+//		new Thread() {
+//			@Override
+//			public void run() {
+//				super.run();
+//				org.lgna.croquet.components.BorderPanel lookingGlassContainer = recordView.getLookingGlassContainer();
+//
+//				programContext = new RunProgramContext( programType );
+//				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
+//				programContext.setActiveScene();
+//			}
+//		}.start();
+//	}
 	
 	public ActionOperation getPlayRecordedOperation() {
 		return this.playRecordedOperation;
