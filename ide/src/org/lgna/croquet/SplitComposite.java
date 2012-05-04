@@ -115,13 +115,13 @@ public abstract class SplitComposite extends Composite< org.lgna.croquet.compone
 		}
 	}
 	@Override
-	public void handlePostDectivation() {
+	public void handlePostDeactivation() {
 		if( this.leadingComposite != null ) {
-			this.leadingComposite.handlePostDectivation();
+			this.leadingComposite.handlePostDeactivation();
 		}
 		if( this.trailingComposite != null ) {
-			this.trailingComposite.handlePostDectivation();
+			this.trailingComposite.handlePostDeactivation();
 		}
-		super.handlePostDectivation();
+		super.handlePostDeactivation();
 	}
 }

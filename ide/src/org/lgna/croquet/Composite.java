@@ -168,7 +168,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	}
 	public void handlePreActivation() {
 	}
-	public void handlePostDectivation() {
+	public void handlePostDeactivation() {
 	}
 	
 	private java.util.Map<Key,InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

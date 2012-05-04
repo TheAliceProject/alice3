@@ -40,48 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.perspectives;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdePerspective extends org.lgna.croquet.Perspective {
-	public IdePerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > composite ) {
-		super( id, composite );
+public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
+	private static class SingletonHolder {
+		private static MenuBarComposite instance = new MenuBarComposite();
 	}
-	public abstract org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus();
-	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-		this.stack.push( reasonToDisableSomeAmountOfRendering );
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
+	public static MenuBarComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void enableRendering() {
-		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
+	private MenuBarComposite() {
+		super( java.util.UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
+		this.addItem( FileMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
 	}
-	
-	protected abstract void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel );
-	public final java.util.List< org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.addPotentialDropReceptors( rv, dragModel );
-		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
-		if( clipboard.isPotentiallyAcceptingOf( dragModel ) ) {
-			rv.add( clipboard );
-		}
-		return rv;
-	}
-//	public void handleDeactivation( org.alice.ide.MainComponent mainComponent ) {
-//		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
-//		view.handleDeactivated( mainComponent );
-//	}
-//	public void handleActivation( org.alice.ide.MainComponent mainComponent ) {
-//		mainComponent.removeAllComponents();
-//		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
-//		
-//		view.handleActivated( mainComponent );
-//		
-//		mainComponent.addComponent( view, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-//		mainComponent.revalidateAndRepaint();
-//	}
 }

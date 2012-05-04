@@ -43,9 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.matt.EventManager;
-import edu.cmu.cs.dennisc.matt.EventScript;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -156,7 +153,7 @@ public class SceneImp extends EntityImp {
 	}
 	
 	public SceneImp( org.lgna.story.Scene abstraction ) {
-		eventManager = new EventManager( this );
+		eventManager = new edu.cmu.cs.dennisc.matt.EventManager( this );
 		eventManager.setScene();
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
@@ -356,7 +353,7 @@ public class SceneImp extends EntityImp {
 		return rv;
 	}
 	
-	public EventScript getTranscript() {
+	public edu.cmu.cs.dennisc.matt.EventScript getTranscript() {
 		return eventManager.getScript();
 	}
 }
