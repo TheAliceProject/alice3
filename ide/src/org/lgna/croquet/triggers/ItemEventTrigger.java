@@ -60,6 +60,7 @@ public class ItemEventTrigger extends EventObjectTrigger<java.awt.event.ItemEven
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	@Override
 	public String getNoteText( ) {
 		return "Select";
 	}

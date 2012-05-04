@@ -46,9 +46,10 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public interface Trigger extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController();
-	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
-	public String getNoteText();
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public abstract org.lgna.croquet.components.ViewController< ?, ? > getViewController();
+	public abstract void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
+	public abstract String getNoteText();
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+	}
 }

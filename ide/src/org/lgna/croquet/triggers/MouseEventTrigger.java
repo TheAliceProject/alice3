@@ -57,6 +57,7 @@ public class MouseEventTrigger extends ComponentEventTrigger<java.awt.event.Mous
 	protected java.awt.Point getPoint() {
 		return this.getEvent().getPoint();
 	}
+	@Override
 	public String getNoteText( ) {
 		return "Click";
 	}

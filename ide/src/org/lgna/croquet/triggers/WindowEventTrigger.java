@@ -57,6 +57,7 @@ public class WindowEventTrigger extends ComponentEventTrigger< java.awt.event.Wi
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	@Override
 	public String getNoteText( ) {
 		return "Window";
 	}

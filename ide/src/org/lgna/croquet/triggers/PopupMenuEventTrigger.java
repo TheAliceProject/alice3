@@ -60,6 +60,7 @@ public class PopupMenuEventTrigger extends EventObjectTrigger<javax.swing.event.
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	@Override
 	public String getNoteText( ) {
 		return "PopUp";
 	}

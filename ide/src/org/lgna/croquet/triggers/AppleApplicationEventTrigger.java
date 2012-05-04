@@ -57,6 +57,7 @@ public class AppleApplicationEventTrigger extends EventObjectTrigger< java.util.
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	@Override
 	public String getNoteText( ) {
 		return "Apple";
 	}

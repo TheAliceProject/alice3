@@ -46,19 +46,22 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class SimulatedTrigger extends AbstractTrigger {
+public class SimulatedTrigger extends Trigger {
 	public SimulatedTrigger() {
 	}
 	public SimulatedTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return null;
 	}
+	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
 	}
+	@Override
 	public String getNoteText( ) {
 		//todo
 		return "SIMULATED";

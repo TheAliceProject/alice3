@@ -66,6 +66,7 @@ public class InputEventTrigger extends ComponentEventTrigger< java.awt.event.Inp
 			return null;
 		}
 	}
+	@Override
 	public String getNoteText( ) {
 		return "Input";
 	}

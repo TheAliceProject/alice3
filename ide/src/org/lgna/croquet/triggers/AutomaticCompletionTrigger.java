@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class AutomaticCompletionTrigger extends AbstractTrigger {
+public class AutomaticCompletionTrigger extends Trigger {
 	private final transient org.lgna.croquet.triggers.Trigger previousTrigger;
 	public AutomaticCompletionTrigger( org.lgna.croquet.triggers.Trigger previousTrigger ) {
 		this.previousTrigger = previousTrigger;
@@ -56,12 +56,15 @@ public class AutomaticCompletionTrigger extends AbstractTrigger {
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return this.previousTrigger.getViewController();
 	}
+	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		this.previousTrigger.showPopupMenu( popupMenu );
 	}
+	@Override
 	public String getNoteText( ) {
 		//todo
 		return "COMPLETE";

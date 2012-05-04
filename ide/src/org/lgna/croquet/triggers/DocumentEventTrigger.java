@@ -46,7 +46,7 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DocumentEventTrigger extends AbstractTrigger {
+public class DocumentEventTrigger extends Trigger {
 	private final transient org.lgna.croquet.components.ViewController< ?, ? > viewController;
 	private final transient javax.swing.event.DocumentEvent documentEvent;
 	public DocumentEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent ) {
@@ -62,9 +62,11 @@ public class DocumentEventTrigger extends AbstractTrigger {
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return this.viewController;
 	}
+	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		if( this.viewController != null ) {
 			java.awt.Component invoker = this.viewController.getAwtComponent();
@@ -74,6 +76,7 @@ public class DocumentEventTrigger extends AbstractTrigger {
 			throw new RuntimeException( "todo" );
 		}
 	}
+	@Override
 	public String getNoteText( ) {
 		return "Type";
 	}

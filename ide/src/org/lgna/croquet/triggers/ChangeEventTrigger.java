@@ -57,6 +57,7 @@ public class ChangeEventTrigger extends EventObjectTrigger< javax.swing.event.Ch
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	@Override
 	public String getNoteText( ) {
 		return "Change";
 	}

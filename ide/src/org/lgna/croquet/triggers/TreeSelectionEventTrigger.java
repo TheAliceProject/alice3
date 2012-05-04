@@ -57,6 +57,7 @@ public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.ev
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+	@Override
 	public String getNoteText( ) {
 		return "Select";
 	}

@@ -46,19 +46,22 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class NullTrigger extends AbstractTrigger {
+public class NullTrigger extends Trigger {
 	public NullTrigger() {
 	}
 	public NullTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		return null;
 	}
+	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
 	}
+	@Override
 	public String getNoteText( ) {
 		return "null";
 	}
