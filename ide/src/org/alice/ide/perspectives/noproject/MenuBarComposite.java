@@ -40,49 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
-	public IdeDragModel( java.util.UUID id ) {
-		super( id );
+public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
+	private static class SingletonHolder {
+		private static MenuBarComposite instance = new MenuBarComposite();
 	}
-	@Override
-	public final java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-		org.lgna.croquet.Perspective perspective = org.alice.ide.IDE.getActiveInstance().getPerspective();
-		if( perspective instanceof org.alice.ide.perspectives.ProjectPerspective ) {
-			org.alice.ide.perspectives.ProjectPerspective idePerspective = (org.alice.ide.perspectives.ProjectPerspective)perspective;
-			return idePerspective.createListOfPotentialDropReceptors( this );
-		} else {
-			return java.util.Collections.emptyList();
-		}
+	public static MenuBarComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	private org.alice.ide.stencil.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
-		return org.alice.ide.IDE.getActiveInstance().getPotentialDropReceptorsStencil();
-	}
-	@Override
-	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStarted( step );
-//		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
-//		if( (step.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
-//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
-//		} else {
-//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
-//		}
-//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
-	@Override
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor( step );
-	}
-	@Override
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor( step );
-	}
-	@Override
-	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStopped( step );
+	private MenuBarComposite() {
+		super( java.util.UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
+		this.addItem( FileMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
 	}
 }

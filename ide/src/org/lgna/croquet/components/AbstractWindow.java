@@ -43,8 +43,6 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.MenuBarComposite;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -266,21 +264,52 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		return rv;
 	}
 
-	private MenuBarComposite menuBarModel;
-	public MenuBarComposite getMenuBarModel() {
-		return this.menuBarModel;
+	private org.lgna.croquet.MenuBarComposite menuBarComposite;
+	private org.lgna.croquet.Composite<?> mainComposite;
+
+	public org.lgna.croquet.Composite<?> getMainComposite() {
+		return this.mainComposite;
+	}
+	public void setMainComposite( org.lgna.croquet.Composite<?> mainComposite ) {
+		if( this.mainComposite != mainComposite ) {
+			synchronized( this.getAwtComponent().getTreeLock() ) {
+				this.getContentPanel().removeAllComponents();
+				if( this.mainComposite != null ) {
+					this.mainComposite.handlePostDeactivation();
+				}
+				this.mainComposite = mainComposite;
+				if( this.mainComposite != null ) {
+					this.mainComposite.handlePreActivation();
+					this.getContentPanel().addComponent( this.mainComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+				}
+			}
+			this.getContentPanel().revalidateAndRepaint();
+		}
+	}
+
+	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
+		return this.menuBarComposite;
 	}
 
 	protected abstract void setJMenuBar( javax.swing.JMenuBar jMenuBar );
 
-	public void setMenuBarModel( MenuBarComposite menuBarModel ) {
-		this.menuBarModel = menuBarModel;
-		javax.swing.JMenuBar jMenuBar;
-		if( this.menuBarModel != null ) {
-			jMenuBar = menuBarModel.getView().getAwtComponent();
-		} else {
-			jMenuBar = null;
+	public void setMenuBarComposite( org.lgna.croquet.MenuBarComposite menuBarComposite ) {
+		if( this.menuBarComposite != menuBarComposite ) {
+			synchronized( this.getAwtComponent().getTreeLock() ) {
+				if( this.menuBarComposite != null ) {
+					this.menuBarComposite.handlePostDeactivation();
+				}
+				this.menuBarComposite = menuBarComposite;
+				javax.swing.JMenuBar jMenuBar;
+				if( this.menuBarComposite != null ) {
+					this.menuBarComposite.handlePreActivation();
+					jMenuBar = menuBarComposite.getView().getAwtComponent();
+				} else {
+					jMenuBar = null;
+				}
+				this.setJMenuBar( jMenuBar );
+			}
+
 		}
-		this.setJMenuBar( jMenuBar );
 	}
 }

@@ -40,49 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
-	public IdeDragModel( java.util.UUID id ) {
-		super( id );
-	}
-	@Override
-	public final java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-		org.lgna.croquet.Perspective perspective = org.alice.ide.IDE.getActiveInstance().getPerspective();
-		if( perspective instanceof org.alice.ide.perspectives.ProjectPerspective ) {
-			org.alice.ide.perspectives.ProjectPerspective idePerspective = (org.alice.ide.perspectives.ProjectPerspective)perspective;
-			return idePerspective.createListOfPotentialDropReceptors( this );
+public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
+		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
+				org.lgna.croquet.MenuModel.SEPARATOR, 
+				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance()
+		);
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			//pass
 		} else {
-			return java.util.Collections.emptyList();
+			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
+			list.add(org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel());
 		}
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
-	private org.alice.ide.stencil.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
-		return org.alice.ide.IDE.getActiveInstance().getPotentialDropReceptorsStencil();
+	private static class SingletonHolder {
+		private static FileMenuModel instance = new FileMenuModel();
 	}
-	@Override
-	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStarted( step );
-//		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
-//		if( (step.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
-//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
-//		} else {
-//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
-//		}
-//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
+	public static FileMenuModel getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor( step );
-	}
-	@Override
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor( step );
-	}
-	@Override
-	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStopped( step );
+	private FileMenuModel() {
+		super( java.util.UUID.fromString( "f35b5ea2-315e-487d-af62-52f99f1c6306" ), createMenuItemPrepModels() );
 	}
 }

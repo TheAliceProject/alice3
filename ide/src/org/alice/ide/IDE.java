@@ -65,10 +65,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
 	}
 
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective > perspectiveListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.ProjectPerspective > perspectiveListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.ProjectPerspective >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.ProjectPerspective > state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, final org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.ProjectPerspective > state, org.alice.ide.perspectives.ProjectPerspective prevValue, final org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
 			IDE.this.setPerspective( nextValue );
 		}
 	};
@@ -95,7 +95,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		this.promptForLicenseAgreements();
-
+		
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueListener( this.isAlwaysShowingBlocksListener );
 
@@ -115,9 +115,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
-		org.lgna.croquet.components.Frame frame = this.getFrame();
-		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );
-		this.getPerspectiveState().addAndInvokeValueListener( this.perspectiveListener );
+		this.getPerspectiveState().addValueListener( this.perspectiveListener );
 
 		// TODO: <kjh/> Set this to false... remove it...
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.hackTutorial" ) ) {
@@ -137,6 +135,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}.start();
 		}
 	}
+
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
 
 	private Theme theme;
@@ -156,7 +155,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.croquet.Operation getPreferencesOperation() {
 		return null;
 	}
-	public abstract org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState();
+	public abstract org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.ProjectPerspective > getPerspectiveState();
 	public abstract org.lgna.croquet.Operation getRunOperation();
 	public abstract org.lgna.croquet.Operation getRestartOperation();
 
@@ -312,6 +311,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
+		
+		if( this.getPerspective() == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
+			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
+		}
+		
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
 		try {
 			this.setRootField( this.getSceneField() );
@@ -348,7 +352,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.splashScreen != null ) {
 			this.splashScreen.setVisible( false );
 		}
+		// TODO: <kjh/> load default project? // TODO: Fix transaction history for application.
 		if( (this.getProject() == null) || this.isDefaultProjectLoaded() ) {
+			this.setPerspective( org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() );
 			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
 		}
 	}
@@ -427,7 +433,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus() {
-		org.alice.ide.perspectives.IdePerspective perspective = this.getPerspectiveState().getValue();
+		org.alice.ide.perspectives.ProjectPerspective perspective = this.getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getCodeDropReceptorInFocus();
 		} else {

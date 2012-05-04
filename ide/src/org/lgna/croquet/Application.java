@@ -60,33 +60,13 @@ public abstract class Application {
 
 	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
 	private final java.util.Stack< org.lgna.croquet.components.AbstractWindow< ? > > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow< ? >[] { this.frame } );
-	private Perspective perspective;
 
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
 		org.lgna.croquet.history.TransactionManager.startListeningToMenuSelection();
 	}
-
-	public Perspective getPerspective() {
-		return this.perspective;
-	}
-	public void setPerspective( Perspective perspective ) {
-		if( this.perspective != perspective ) {
-			synchronized( this.frame.getContentPanel().getTreeLock() ) {
-				if( this.perspective != null ) {
-					this.frame.getContentPanel().removeAllComponents();
-					this.perspective.handlePostDeactivation();
-				}
-				this.perspective = perspective;
-				if( this.perspective != null ) {
-					this.perspective.handlePreActivation();
-					this.frame.getContentPanel().addComponent( this.perspective.getComposite().getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-				}
-			}
-			this.frame.getContentPanel().revalidateAndRepaint();
-		}
-	}
+	
 	public void pushWindow( org.lgna.croquet.components.AbstractWindow< ? > window ) {
 		this.stack.push( window );
 	}

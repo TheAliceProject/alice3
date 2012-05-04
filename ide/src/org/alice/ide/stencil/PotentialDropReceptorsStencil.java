@@ -87,7 +87,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 
 	public void showStencilOver( org.lgna.croquet.components.DragComponent<?,?> potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.perspectives.IdePerspective idePerspective = (org.alice.ide.perspectives.IdePerspective)ide.getPerspective();
+		org.alice.ide.perspectives.ProjectPerspective idePerspective = (org.alice.ide.perspectives.ProjectPerspective)ide.getPerspective();
 		java.util.List< org.lgna.croquet.DropReceptor > dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
 		if( dropReceptors.size() > 0 ) {
 			this.holes = dropReceptors;
