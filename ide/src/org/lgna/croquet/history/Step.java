@@ -89,7 +89,8 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		if( trigger != null ) {
 			this.trigger = trigger;
 		} else {
-			this.trigger = new org.lgna.croquet.triggers.NullTrigger();
+			//todo?
+			this.trigger = new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER );
 		}
 		this.id = java.util.UUID.randomUUID();
 

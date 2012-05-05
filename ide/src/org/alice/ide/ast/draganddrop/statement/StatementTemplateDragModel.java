@@ -76,17 +76,13 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( history );
 		history.addTransaction( transaction );
 
-		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
-		
-		org.lgna.croquet.history.DragStep dragStep = org.lgna.croquet.history.DragStep.createAndAddToTransaction( transaction, this, trigger );
+		org.lgna.croquet.history.DragStep dragStep = org.lgna.croquet.history.DragStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.DragTrigger.createGeneratorInstance() );
 
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statement );
 		
 		org.lgna.croquet.Model dropModel = this.getDropModel( dragStep, blockStatementIndexPair );
 		
-		org.lgna.croquet.components.ViewController<?,?> viewController = null;
-		java.awt.event.MouseEvent mouseEvent = null;
-		org.lgna.croquet.triggers.DropTrigger dropTrigger = new org.lgna.croquet.triggers.DropTrigger( viewController, mouseEvent, blockStatementIndexPair );
+		org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair );
 		
 		if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade ) {
 			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade statementInsertCascade = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade)dropModel;

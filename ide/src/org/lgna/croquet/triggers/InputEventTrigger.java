@@ -47,11 +47,14 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class InputEventTrigger extends ComponentEventTrigger< java.awt.event.InputEvent > {
-	public InputEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.InputEvent inputEvent ) {
-		super( viewController, inputEvent );
+	public static InputEventTrigger createUserInstance( java.awt.event.InputEvent inputEvent ) {
+		return new InputEventTrigger( Origin.USER, null, inputEvent );
 	}
-	public InputEventTrigger( java.awt.event.InputEvent inputEvent ) {
-		this( null, inputEvent );
+	public static InputEventTrigger createGeneratorInstance() {
+		return new InputEventTrigger( Origin.GENERATOR, null, null );
+	}
+	private InputEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.InputEvent inputEvent ) {
+		super( origin, viewController, inputEvent );
 	}
 	public InputEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

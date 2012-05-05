@@ -36,16 +36,16 @@ public class TransactionGeneratorVisitor implements edu.cmu.cs.dennisc.pattern.C
 	public void visit(org.lgna.project.ast.CountLoop countLoop) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln("DONE: countLoop");
 
-		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)countLoop.getParent();
-		int index = blockStatement.statements.indexOf( countLoop );
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair(blockStatement, index);
-		org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade countLoopInsertCascade = org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance(blockStatementIndexPair);
-
-		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.createSimulatedTransactionForCascade( this.transactionHistory, countLoopInsertCascade );
-		org.lgna.croquet.edits.Edit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit(transaction.getCompletionStep(), blockStatementIndexPair, countLoop);
-
-		transaction.getCompletionStep().setEdit( edit );
-		this.transactionHistory.addTransaction(transaction);
+//		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)countLoop.getParent();
+//		int index = blockStatement.statements.indexOf( countLoop );
+//		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair(blockStatement, index);
+//		org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade countLoopInsertCascade = org.alice.ide.croquet.models.ast.cascade.statement.CountLoopInsertCascade.getInstance(blockStatementIndexPair);
+//
+//		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.createSimulatedTransactionForCascade( this.transactionHistory, countLoopInsertCascade );
+//		org.lgna.croquet.edits.Edit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit(transaction.getCompletionStep(), blockStatementIndexPair, countLoop);
+//
+//		transaction.getCompletionStep().setEdit( edit );
+//		this.transactionHistory.addTransaction(transaction);
 	}
 
 	public void visit(org.lgna.project.ast.DoInOrder doInOrder) {
@@ -55,17 +55,17 @@ public class TransactionGeneratorVisitor implements edu.cmu.cs.dennisc.pattern.C
 	public void visit(org.lgna.project.ast.DoTogether doTogether) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln(doTogether);
 
-		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)doTogether.getParent();
-		int index = blockStatement.statements.indexOf( doTogether );
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair(blockStatement, index);
-		org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation doTogetherOperation = org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.getInstance(blockStatementIndexPair);
-
-		// Um...??? TODO?
-//		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( this.transactionHistory, doTogetherOperation );
-//		org.lgna.croquet.edits.Edit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit(transaction.getCompletionStep(), blockStatementIndexPair, doTogether);
+//		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)doTogether.getParent();
+//		int index = blockStatement.statements.indexOf( doTogether );
+//		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair(blockStatement, index);
+//		org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation doTogetherOperation = org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.getInstance(blockStatementIndexPair);
 //
-//		transaction.getCompletionStep().setEdit( edit );
-//		this.transactionHistory.addTransaction(transaction);
+//		// Um...??? TODO?
+////		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( this.transactionHistory, doTogetherOperation );
+////		org.lgna.croquet.edits.Edit edit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit(transaction.getCompletionStep(), blockStatementIndexPair, doTogether);
+////
+////		transaction.getCompletionStep().setEdit( edit );
+////		this.transactionHistory.addTransaction(transaction);
 	}
 
 	public void visit(org.lgna.project.ast.EachInArrayTogether eachInArrayTogether) {

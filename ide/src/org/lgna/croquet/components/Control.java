@@ -124,7 +124,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 			this.leftButtonPressedEvent = e;
 			if( this.leftButtonPressModel != null ) {
-				this.leftButtonPressModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( this, e ) );
+				this.leftButtonPressModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
 //		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 //			if( Application.getSingleton().isDragInProgress() ) {
@@ -143,12 +143,12 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 		switch( e.getClickCount() ) {
 		case 1:
 			if( this.leftButtonClickModel != null ) {
-				this.leftButtonClickModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( this, e ) );
+				this.leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
 			break;
 		case 2:
 			if( this.leftButtonDoubleClickModel != null ) {
-				this.leftButtonDoubleClickModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( this, e ) );
+				this.leftButtonDoubleClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
 			break;
 		}

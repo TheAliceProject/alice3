@@ -357,9 +357,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		// I need to rethink this level of interaction...
 		if( (this.getProject() == null) && !this.isDefaultProjectLoaded() ) {
 			this.setPerspective( org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() );
-			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
+			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 		} else if ( this.isDefaultProjectLoaded() ) {
-			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
+			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 		}
 	}
 

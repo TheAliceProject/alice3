@@ -47,11 +47,14 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class ItemEventTrigger extends EventObjectTrigger<java.awt.event.ItemEvent> {
-	public ItemEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.ItemEvent itemEvent ) {
-		super( viewController, itemEvent );
+	public static ItemEventTrigger createUserInstance( java.awt.event.ItemEvent itemEvent ) {
+		return new ItemEventTrigger( Origin.USER, null, itemEvent );
 	}
-	public ItemEventTrigger( java.awt.event.ItemEvent itemEvent ) {
-		this( null, itemEvent );
+	public static ItemEventTrigger createGeneratorInstance() {
+		return new ItemEventTrigger( Origin.GENERATOR, null, null );
+	}
+	private ItemEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?,?> viewController, java.awt.event.ItemEvent itemEvent ) {
+		super( origin, viewController, itemEvent );
 	}
 	public ItemEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

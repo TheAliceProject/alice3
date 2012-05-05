@@ -107,12 +107,12 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				case java.awt.event.KeyEvent.VK_SPACE:
 				case java.awt.event.KeyEvent.VK_RIGHT:
 				case java.awt.event.KeyEvent.VK_DOWN:
-					NextStepOperation.getInstance().fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
+					NextStepOperation.getInstance().fire();
 					break;
 				case java.awt.event.KeyEvent.VK_BACK_SPACE:
 				case java.awt.event.KeyEvent.VK_LEFT:
 				case java.awt.event.KeyEvent.VK_UP:
-					prevOperation.fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
+					prevOperation.fire();
 					break;
 				}
 			}

@@ -94,7 +94,7 @@ public abstract class Application {
 				Application.this.handleWindowOpened( e );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				Application.this.handleQuit( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
+				Application.this.handleQuit( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
@@ -111,20 +111,20 @@ public abstract class Application {
 			public void handleAbout( java.util.EventObject e ) {
 				Operation aboutOperation = Application.this.getAboutOperation();
 				if( aboutOperation != null ) {
-					aboutOperation.fire( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+					aboutOperation.fire( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 				}
 			}
 			public void handlePreferences( java.util.EventObject e ) {
 				Operation preferencesOperation = Application.this.getPreferencesOperation();
 				if( preferencesOperation != null ) {
-					preferencesOperation.fire( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+					preferencesOperation.fire( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 				}
 			}
 			public void handleQuit( java.util.EventObject e ) {
-				Application.this.handleQuit( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+				Application.this.handleQuit( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 			}
 			public void handleOpenFile( java.util.EventObject e ) {
-				Application.this.handleOpenFile( new org.lgna.croquet.triggers.AppleApplicationEventTrigger( e ) );
+				Application.this.handleOpenFile( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 			}
 		} );
 		//this.frame.pack();

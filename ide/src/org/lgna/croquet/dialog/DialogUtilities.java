@@ -82,15 +82,15 @@ public class DialogUtilities {
 
 		class DialogWindowListener implements java.awt.event.WindowListener {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
-				dialogOwner.handleDialogOpened( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
+				dialogOwner.handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				if( dialogOwner.isWindowClosingEnabled( new org.lgna.croquet.triggers.WindowEventTrigger( e ) ) ) {
+				if( dialogOwner.isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) ) ) {
 					dialog.setVisible( false );
 				}
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
-				dialogOwner.handleDialogClosed( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
+				dialogOwner.handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}

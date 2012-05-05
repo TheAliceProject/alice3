@@ -40,37 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ButtonWithRightClickCascade extends Button {
-	private final org.lgna.croquet.Cascade< ? > cascade;
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseClickListener = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			if( e.getButton() == java.awt.event.MouseEvent.BUTTON3 ) {
-				cascade.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( ButtonWithRightClickCascade.this, e ) );
-			}
-		}
-	};
-	public ButtonWithRightClickCascade( org.lgna.croquet.Operation model, org.lgna.croquet.Cascade< ? > cascade ) {
-		super( model );
-		this.cascade = cascade;
+public abstract class AbstractMouseEventTrigger extends ComponentEventTrigger<java.awt.event.MouseEvent> {
+	public AbstractMouseEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
+		super( origin, viewController, mouseEvent );
+	}
+	public AbstractMouseEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.addMouseListener( this.mouseClickListener );
-		this.addMouseMotionListener( this.mouseClickListener );
+	protected java.awt.Point getPoint() {
+		return this.getEvent().getPoint();
 	}
-	@Override
-	protected void handleUndisplayable() {
-		this.removeMouseMotionListener( this.mouseClickListener );
-		this.removeMouseListener( this.mouseClickListener );
-		super.handleUndisplayable();
-	}
-
 }

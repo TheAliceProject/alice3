@@ -47,8 +47,14 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class ChangeEventTrigger extends EventObjectTrigger< javax.swing.event.ChangeEvent > {
-	public ChangeEventTrigger( javax.swing.event.ChangeEvent changeEvent ) {
-		super( null, changeEvent );
+	public static ChangeEventTrigger createUserInstance( javax.swing.event.ChangeEvent changeEvent ) {
+		return new ChangeEventTrigger( Origin.USER, null, changeEvent );
+	}
+	public static ChangeEventTrigger createGeneratorInstance() {
+		return new ChangeEventTrigger( Origin.GENERATOR, null, null );
+	}
+	private ChangeEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?,?> viewController, javax.swing.event.ChangeEvent changeEvent ) {
+		super( origin, viewController, changeEvent );
 	}
 	public ChangeEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

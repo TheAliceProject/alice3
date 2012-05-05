@@ -46,24 +46,27 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class SimulatedTrigger extends Trigger {
-	public SimulatedTrigger() {
+public class CascadeAutomaticDeterminationTrigger extends Trigger {
+	private final transient org.lgna.croquet.triggers.Trigger previousTrigger;
+	public CascadeAutomaticDeterminationTrigger( org.lgna.croquet.triggers.Trigger previousTrigger ) {
+		super( Origin.USER );
+		this.previousTrigger = previousTrigger;
 	}
-	public SimulatedTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public CascadeAutomaticDeterminationTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+		this.previousTrigger = null;
 	}
 	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
-		return null;
+		return this.previousTrigger.getViewController();
 	}
 	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
-		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
+		this.previousTrigger.showPopupMenu( popupMenu );
 	}
 	@Override
 	public String getNoteText( ) {
 		//todo
-		return "SIMULATED";
+		return "COMPLETE";
 	}
 }

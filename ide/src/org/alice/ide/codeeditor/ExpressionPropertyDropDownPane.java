@@ -112,7 +112,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 			//pass
 		} else {
 //			source.hideDropProxyIfNecessary();
-			context.cancelTransaction();
+			context.cancelTransaction( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
 		}
 		return rv;
 	}

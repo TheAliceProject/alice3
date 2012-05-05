@@ -49,15 +49,15 @@ package org.lgna.croquet.triggers;
 public abstract class EventObjectTrigger< E extends java.util.EventObject > extends Trigger {
 	private final transient org.lgna.croquet.components.ViewController< ?, ? > viewController;
 	private final transient E event;
-	public EventObjectTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, E event ) {
+	public EventObjectTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, E event ) {
+		super( origin );
 		this.viewController = viewController;
 		this.event = event;
 	}
 	public EventObjectTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 		this.viewController = null;
 		this.event = null;
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	public E getEvent() {
 		return this.event;

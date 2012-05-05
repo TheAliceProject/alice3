@@ -49,7 +49,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	public class SwingModel {
 		private javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				Operation.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
+				Operation.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 			}
 		};
 		public javax.swing.Action getAction() {
@@ -136,10 +136,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 	}
 	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
-		return this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( viewController, e ) );
+		return this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( viewController, e ) );
 	}
 	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
-		return this.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, e ) );
+		return this.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( viewController, e ) );
 	}
 	@Deprecated
 	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e ) {
@@ -151,7 +151,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 	@Deprecated
 	public final org.lgna.croquet.history.CompletionStep<?> fire() {
-		return fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
+		return fire( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
 	}
 	
 	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );

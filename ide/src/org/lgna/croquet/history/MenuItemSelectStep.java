@@ -47,12 +47,12 @@ package org.lgna.croquet.history;
  * @author Dennis Cosgrove
  */
 public class MenuItemSelectStep extends PrepStep< org.lgna.croquet.MenuItemPrepModel > {
-	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
 		return new MenuItemSelectStep( parent, menuBarComposite, menuItemPrepModels, trigger );
 	}
 	private final org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.MenuBarComposite > menuBarCompositeResolver;
 	private final org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels;
-	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.Trigger trigger ) {
+	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
 		super( parent, menuItemPrepModels[ menuItemPrepModels.length-1 ], trigger );
 		if( menuBarComposite != null ) {
 			this.menuBarCompositeResolver = menuBarComposite.getResolver();

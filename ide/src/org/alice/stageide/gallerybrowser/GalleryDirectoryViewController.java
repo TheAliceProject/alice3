@@ -159,7 +159,9 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 					//note: we need to invoke later or transaction history is ignored due to being in the midst of redo
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {
 						public void run() {
-							nextValue.getDropModel( null, null ).fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
+							//todo
+							javax.swing.event.TreeSelectionEvent treeSelectionEvent = null;
+							nextValue.getDropModel( null, null ).fire( org.lgna.croquet.triggers.TreeSelectionEventTrigger.createUserInstance( treeSelectionEvent ) );
 							org.alice.ide.croquet.models.gallerybrowser.GalleryNode followUpValue = nextValue.getParent();
 							if( followUpValue != null ) {
 								if( followUpValue.getChildCount() == 1 ) {

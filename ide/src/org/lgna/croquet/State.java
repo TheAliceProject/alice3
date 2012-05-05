@@ -119,7 +119,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	public final org.lgna.croquet.edits.StateEdit< T > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		assert originalEdit instanceof org.lgna.croquet.edits.StateEdit;
 		org.lgna.croquet.edits.StateEdit< T > originalStateEdit = (org.lgna.croquet.edits.StateEdit< T >)originalEdit;
-		return this.commitStateEdit( originalStateEdit.getPreviousValue(), originalStateEdit.getNextValue(), false, new org.lgna.croquet.triggers.SimulatedTrigger() );
+		return this.commitStateEdit( originalStateEdit.getPreviousValue(), originalStateEdit.getNextValue(), false, new org.lgna.croquet.triggers.AutomaticCompletionTrigger() );
 	}
 
 	@Override

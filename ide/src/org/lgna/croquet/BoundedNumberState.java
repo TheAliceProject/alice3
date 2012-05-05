@@ -124,7 +124,7 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 
 	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
 		N nextValue = this.getValue();
-		this.changeValue( nextValue, this.swingModel.getBoundedRangeModel().getValueIsAdjusting(), new org.lgna.croquet.triggers.ChangeEventTrigger( e ) );
+		this.changeValue( nextValue, this.swingModel.getBoundedRangeModel().getValueIsAdjusting(), org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
 	}
 	@Override
 	protected void localize() {

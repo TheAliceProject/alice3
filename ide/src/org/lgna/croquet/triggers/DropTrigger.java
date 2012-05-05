@@ -46,10 +46,20 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DropTrigger extends MouseEventTrigger {
+public class DropTrigger extends AbstractMouseEventTrigger {
+	public static DropTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
+		return new DropTrigger( Origin.USER, viewController, mouseEvent, dropSite );
+	}
+	public static DropTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
+		return createUserInstance( null, mouseEvent, dropSite );
+	}
+	public static DropTrigger createGeneratorInstance( org.lgna.croquet.DropSite dropSite ) {
+		return new DropTrigger( Origin.GENERATOR, null, null, dropSite );
+	}
+
 	private org.lgna.croquet.DropSite dropSite;
-	public DropTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
-		super( viewController, e );
+	private DropTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
+		super( origin, viewController, e );
 		this.dropSite = dropSite;
 	}
 	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

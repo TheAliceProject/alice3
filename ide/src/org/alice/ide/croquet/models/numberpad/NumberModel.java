@@ -64,7 +64,7 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 	private javax.swing.text.Document document;
 	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		private void update( javax.swing.event.DocumentEvent e ) {
-			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( new org.lgna.croquet.triggers.DocumentEventTrigger( e ) );
+			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
 		}
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );

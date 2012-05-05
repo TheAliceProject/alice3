@@ -58,7 +58,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	
 	protected abstract java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement );
 	public void generateAndAddPostDragStepsToTransaction( org.lgna.croquet.history.Transaction transaction, org.lgna.project.ast.Statement statement ) {
-		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), org.lgna.croquet.triggers.PopupMenuEventTrigger.createGeneratorInstance() );
 		java.util.List<org.lgna.project.ast.Expression> expressions = this.extractExpressionsForFillInGeneration( statement );
 		java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.Expression expression : expressions ) {
@@ -89,9 +89,9 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 			org.lgna.croquet.MenuBarComposite menuBarComposite = null;
 			org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );
 			
-			org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, new org.lgna.croquet.triggers.SimulatedTrigger() );
+			org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
 		}
-		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, new org.lgna.croquet.triggers.SimulatedTrigger(), null );
+		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), null );
 	}
 	
 	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions );

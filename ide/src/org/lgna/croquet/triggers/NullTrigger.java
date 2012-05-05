@@ -46,12 +46,13 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class NullTrigger extends Trigger {
-	public NullTrigger() {
+	public NullTrigger( Origin origin ) {
+		super( origin );
 	}
 	public NullTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super( binaryDecoder );
 	}
 	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {

@@ -81,8 +81,7 @@ public class StateContext< T > implements Context {
 	public org.lgna.croquet.history.Transaction createRecoveryTransaction() {
 		State< T > state = this.getState();
 		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( (org.lgna.croquet.history.TransactionHistory)null );
-		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.SimulatedTrigger();
-		org.lgna.croquet.history.StateChangeStep< T > step = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( transaction, state, trigger );
+		org.lgna.croquet.history.StateChangeStep< T > step = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( transaction, state, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
 		step.setEdit( new org.lgna.croquet.edits.StateEdit< T >( step, state.getValue(), this.value ) );
 		return transaction;
 	}

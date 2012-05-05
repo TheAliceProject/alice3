@@ -200,7 +200,7 @@ public abstract class BooleanState extends State< Boolean > {
 	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
 		if( this.isAppropriateToComplete() ) {
 			boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-			this.commitStateEdit( !nextValue, nextValue, false, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
+			this.commitStateEdit( !nextValue, nextValue, false, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 		}
 	}
 	@Override
