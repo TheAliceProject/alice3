@@ -78,10 +78,4 @@ public class DeleteMemberOperationResolver< N extends org.lgna.project.ast.Abstr
 		binaryEncoder.encode( member.getId() );
 		binaryEncoder.encode( declaringType.getId() );
 	}
-	@Override
-	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
-		super.performCustomRetargeting( retargeter );
-		Object[] arguments = this.getArguments();
-		org.alice.ide.croquet.models.ast.DeleteMemberOperation.retargetArguments( arguments, retargeter );
-	}
 }

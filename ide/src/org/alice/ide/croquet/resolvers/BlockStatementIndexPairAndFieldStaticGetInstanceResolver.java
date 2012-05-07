@@ -64,24 +64,6 @@ public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends or
 	}
 
 	@Override
-	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
-		super.performCustomRetargeting( retargeter );
-		Object[] arguments = this.getArguments();
-		assert arguments != null;
-		assert arguments.length == 2;
-		//arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-		
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
-		org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
-		blockStatement = retargeter.retarget( blockStatement );
-		int index = blockStatementIndexPair.getIndex();
-		
-		
-		arguments[ 0 ] = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
-		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
-	}
-
-	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		java.util.UUID statementId = binaryDecoder.decodeId();

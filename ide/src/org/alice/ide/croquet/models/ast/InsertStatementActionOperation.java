@@ -65,15 +65,6 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 			this.statement
 		};
 	}
-
-	public static Object[] retargetArguments( Object[] rv, org.lgna.croquet.Retargeter retargeter ) {
-		assert rv != null;
-		assert rv.length == 3;
-		rv[ 0 ] = retargeter.retarget( rv[ 0 ] );
-		//todo: retarget index?
-		rv[ 2 ] = retargeter.retarget( rv[ 2 ] );
-		return rv;
-	}
 	public void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
 	}

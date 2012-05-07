@@ -72,9 +72,20 @@ public class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
 			org.lgna.project.ast.AbstractDeclaration originalDeclaration = originalDeclarationComposite.getDeclaration();
 			org.lgna.project.ast.AbstractDeclaration possiblyRetargettedDeclaration = this.retarget( originalDeclaration ); 
 			return (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( possiblyRetargettedDeclaration );
+		} else if( original instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
+			org.alice.ide.ast.draganddrop.BlockStatementIndexPair originalBlockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)original;
+			org.lgna.project.ast.BlockStatement originalBlockStatement = originalBlockStatementIndexPair.getBlockStatement();
+			org.lgna.project.ast.BlockStatement replacementBlockStatement = (org.lgna.project.ast.BlockStatement)map.get( originalBlockStatement );
+			if( replacementBlockStatement != null ) {
+				return (N)new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( replacementBlockStatement, originalBlockStatementIndexPair.getIndex() );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( originalBlockStatementIndexPair.getOwningDropReceptor() );
+				return original;
+			}
 		} else if( original instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
 			original = (N)org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( retarget( ((org.alice.ide.instancefactory.ThisFieldAccessFactory)original).getField() ) );
 		}
+
 		N rv = (N)map.get( original );
 		if( rv != null ) {
 			//pass

@@ -62,7 +62,6 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
 		assert blockStatement != null;
 		assert index >= 0 : index + " " + blockStatement;
-		assert index < (blockStatement.statements.size()+1) : index + " " + blockStatement.statements.size();
 		this.blockStatement = blockStatement;
 		this.index = index;
 	}

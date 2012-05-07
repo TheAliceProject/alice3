@@ -225,13 +225,15 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		if( this.isIgnoringEvents ) {
 			//pass
 		} else {
-			if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-				org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
-				this.retargetForward();
-			}
-			
 			org.lgna.cheshire.simple.Book book = getBook();
 			org.lgna.cheshire.simple.Chapter chapter = book.getSelectedChapter();
+
+			if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+				org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
+				org.lgna.croquet.edits.Edit< ? > replacementCandidate = editCommittedEvent.getEdit();
+				book.handleEditCommitted( replacementCandidate );
+			}
+			
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.adjustIfNecessary( event );
 			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {

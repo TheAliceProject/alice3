@@ -81,10 +81,4 @@ public class MoveStatementActionOperationNewInstanceResolver extends org.lgna.cr
 		binaryEncoder.encode( toBlockStatement.getId() );
 		binaryEncoder.encode( toIndex );
 	}
-	@Override
-	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
-		super.performCustomRetargeting( retargeter );
-		Object[] arguments = this.getArguments();
-		org.alice.ide.croquet.models.ast.MoveStatementActionOperation.retargetArguments( arguments, retargeter );
-	}
 }

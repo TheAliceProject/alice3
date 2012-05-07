@@ -84,7 +84,7 @@ public class StepNoteFactory {
 				} else if( model instanceof org.lgna.croquet.WizardDialogOperation ) {
 					stepClsName = "WizardDialogOperationNote";
 				} else if( model instanceof org.lgna.croquet.Cascade ) {
-					stepClsName = "CascadeNote";
+					stepClsName = "CascadeCompletionNote";
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model ); 
 				}

@@ -138,7 +138,7 @@ public class Book {
 		}
 	}
 
-	/*package-private*/ void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
+	public void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
 		Chapter chapter = this.getSelectedChapter();
 		if( chapter instanceof TransactionChapter ) {
 			TransactionChapter transactionChapter = (TransactionChapter)chapter;

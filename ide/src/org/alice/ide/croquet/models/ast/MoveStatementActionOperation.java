@@ -70,18 +70,6 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 			this.toIndex
 		};
 	}
-	
-	public static Object[] retargetArguments( Object[] rv, org.lgna.croquet.Retargeter retargeter ) {
-		assert rv != null;
-		assert rv.length == 5;
-		rv[ 0 ] = retargeter.retarget( rv[ 0 ] );
-		//todo: retarget fromIndex?
-		rv[ 2 ] = retargeter.retarget( rv[ 2 ] );
-		rv[ 3 ] = retargeter.retarget( rv[ 3 ] );
-		//todo: retarget toIndex?
-		return rv;
-	}
-	
 
 	private int getToDelta() {
 		int toDelta;

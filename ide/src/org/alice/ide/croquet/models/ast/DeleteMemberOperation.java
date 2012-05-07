@@ -64,16 +64,6 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	protected org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N> createResolver() {
 		return new org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N>( this );
 	}
-	
-	public static Object[] retargetArguments( Object[] rv, org.lgna.croquet.Retargeter retargeter ) {
-		assert rv != null;
-		assert rv.length == 3;
-		rv[ 0 ] = retargeter.retarget( rv[ 0 ] );
-		rv[ 1 ] = retargeter.retarget( rv[ 1 ] );
-		//todo: retarget index?
-		return rv;
-	}
-	
 	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		return this.declaringType;
 	}

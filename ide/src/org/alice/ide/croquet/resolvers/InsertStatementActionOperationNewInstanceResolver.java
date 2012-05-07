@@ -72,10 +72,4 @@ public class InsertStatementActionOperationNewInstanceResolver extends org.lgna.
 		binaryEncoder.encode( index );
 		binaryEncoder.encode( statement.getId() );
 	}
-	@Override
-	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
-		super.performCustomRetargeting( retargeter );
-		Object[] arguments = this.getArguments();
-		org.alice.ide.croquet.models.ast.InsertStatementActionOperation.retargetArguments( arguments, retargeter );
-	}
 }
