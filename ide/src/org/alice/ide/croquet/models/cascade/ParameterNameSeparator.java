@@ -77,6 +77,6 @@ public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparat
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator >( this, this.parameter, org.lgna.project.ast.AbstractParameter.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator >( this, org.lgna.project.ast.AbstractParameter.class, this.parameter );
 	}
 }

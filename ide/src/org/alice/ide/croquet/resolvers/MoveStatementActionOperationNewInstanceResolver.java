@@ -48,26 +48,38 @@ package org.alice.ide.croquet.resolvers;
  */
 public class MoveStatementActionOperationNewInstanceResolver extends org.lgna.croquet.resolvers.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.MoveStatementActionOperation > {
 	public MoveStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.MoveStatementActionOperation instance ) {
-		super( instance );
+		super( instance, org.alice.ide.croquet.models.ast.MoveStatementActionOperation.CONSTRUCTOR_PARAMETER_TYPES, instance.getArguments() );
 	}
 	public MoveStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.MoveStatementActionOperation.CONSTRUCTOR_PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.MoveStatementActionOperation.decodeArguments( binaryDecoder );
+		java.util.UUID fromBlockStatementId = binaryDecoder.decodeId();
+		int fromIndex = binaryDecoder.decodeInt();
+		java.util.UUID statementId = binaryDecoder.decodeId();
+		java.util.UUID toBlockStatementId = binaryDecoder.decodeId();
+		int toIndex = binaryDecoder.decodeInt();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.ast.BlockStatement fromBlockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), fromBlockStatementId );
+		org.lgna.project.ast.Statement statement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
+		org.lgna.project.ast.BlockStatement toBlockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), toBlockStatementId );
+		return new Object[] { fromBlockStatement, fromIndex, statement, toBlockStatement, toIndex };
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		this.getInstance().encodeArguments( binaryEncoder );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		org.lgna.project.ast.BlockStatement fromBlockStatement = (org.lgna.project.ast.BlockStatement)arguments[ 0 ];
+		int fromIndex = (Integer)arguments[ 1 ];
+		org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)arguments[ 2 ];
+		org.lgna.project.ast.BlockStatement toBlockStatement = (org.lgna.project.ast.BlockStatement)arguments[ 3 ];
+		int toIndex = (Integer)arguments[ 4 ];
+
+		binaryEncoder.encode( fromBlockStatement.getId() );
+		binaryEncoder.encode( fromIndex );
+		binaryEncoder.encode( statement.getId() );
+		binaryEncoder.encode( toBlockStatement.getId() );
+		binaryEncoder.encode( toIndex );
 	}
 	@Override
 	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {

@@ -40,35 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.draganddrop.statement;
+package edu.cmu.cs.dennisc.codec;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldAssignmentTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FieldAssignmentTemplateDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		FieldAssignmentTemplateDragModel rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldAssignmentTemplateDragModel( field );
-			map.put( field, rv );
-		}
-		return rv;
+public class ByteArrayBinaryEncoder extends OutputStreamBinaryEncoder {
+	private final java.io.ByteArrayOutputStream baos;
+	private ByteArrayBinaryEncoder( java.io.ByteArrayOutputStream baos ) {
+		super( baos );
+		this.baos = baos;
 	}
-	private org.lgna.project.ast.AbstractField field;
-	private FieldAssignmentTemplateDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "c2116770-a3e7-44cc-ad48-e52d22404d35" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpressionStatement( field ) );
-		this.field = field;
+	public ByteArrayBinaryEncoder() {
+		this( new java.io.ByteArrayOutputStream() );
 	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldAssignmentTemplateDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldAssignmentTemplateDragModel >( this, org.lgna.project.ast.AbstractField.class, this.field );
-	}
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, this.field );
+	public BinaryDecoder createDecoder() {
+		this.flush();
+		byte[] data = this.baos.toByteArray();
+		InputStreamBinaryDecoder decoder = new InputStreamBinaryDecoder( new java.io.ByteArrayInputStream( data ) );
+		return decoder;
 	}
 }

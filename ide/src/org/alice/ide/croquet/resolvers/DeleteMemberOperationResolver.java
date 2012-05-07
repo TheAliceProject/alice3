@@ -48,26 +48,35 @@ package org.alice.ide.croquet.resolvers;
  */
 public class DeleteMemberOperationResolver< N extends org.lgna.project.ast.AbstractMember > extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation< N > > {
 	public DeleteMemberOperationResolver( org.alice.ide.croquet.models.ast.DeleteMemberOperation<N> instance ) {
-		super( instance );
+		super( instance, 
+				new Class[] {
+					instance.getNodeParameterType(),
+					org.lgna.project.ast.UserType.class
+				}, 
+				new Object[] {
+					instance.getMember(),
+					instance.getDeclaringType()
+				}
+		);
 	}
 	public DeleteMemberOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return this.getInstance().getStaticGetInstanceParameterTypes();
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-
-	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.DeleteMemberOperation.decodeArguments( binaryDecoder );
+		java.util.UUID memberId = binaryDecoder.decodeId();
+		java.util.UUID declaringTypeId = binaryDecoder.decodeId();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.ast.AbstractMember member = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), memberId );
+		org.lgna.project.ast.UserType<?> declaringType = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), declaringTypeId );
+		return new Object[] { member, declaringType };
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		this.getInstance().encodeArguments( binaryEncoder );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		org.lgna.project.ast.AbstractMember member = (org.lgna.project.ast.AbstractMember)arguments[ 0 ];
+		org.lgna.project.ast.UserType<?> declaringType = (org.lgna.project.ast.UserType<?>)arguments[ 1 ];
+		binaryEncoder.encode( member.getId() );
+		binaryEncoder.encode( declaringType.getId() );
 	}
 	@Override
 	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {

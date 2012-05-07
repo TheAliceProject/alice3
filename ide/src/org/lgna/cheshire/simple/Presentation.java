@@ -264,7 +264,9 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		this.book.retargetAll( retargeter );
 	}
 	public void retargetForward() {
-		this.book.retargetForward( this.retargeter );
+		if( this.book != null ) {
+			this.book.retargetForward( this.retargeter );
+		}
 	}
 
 	public void setSelectedIndex( int index ) {

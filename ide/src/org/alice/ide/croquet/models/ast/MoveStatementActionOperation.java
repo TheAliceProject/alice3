@@ -60,6 +60,17 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 		this.toBlockStatement = toBlockStatement;
 		this.toIndex = toIndex;
 	}
+	
+	public Object[] getArguments() {
+		return new Object[] {
+			this.fromBlockStatement,
+			this.fromIndex,
+			this.statement,
+			this.toBlockStatement,
+			this.toIndex
+		};
+	}
+	
 	public static Object[] retargetArguments( Object[] rv, org.lgna.croquet.Retargeter retargeter ) {
 		assert rv != null;
 		assert rv.length == 5;
@@ -72,25 +83,6 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 	}
 	
 
-	public static Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID fromBlockStatementId = binaryDecoder.decodeId();
-		int fromIndex = binaryDecoder.decodeInt();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		java.util.UUID toBlockStatementId = binaryDecoder.decodeId();
-		int toIndex = binaryDecoder.decodeInt();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.BlockStatement fromBlockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), fromBlockStatementId );
-		org.lgna.project.ast.Statement statement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
-		org.lgna.project.ast.BlockStatement toBlockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), toBlockStatementId );
-		return new Object[] { fromBlockStatement, fromIndex, statement, toBlockStatement, toIndex };
-	}
-	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.fromBlockStatement.getId() );
-		binaryEncoder.encode( this.fromIndex );
-		binaryEncoder.encode( this.statement.getId() );
-		binaryEncoder.encode( this.toBlockStatement.getId() );
-		binaryEncoder.encode( this.toIndex );
-	}
 	private int getToDelta() {
 		int toDelta;
 		if( this.fromBlockStatement == this.toBlockStatement ) {

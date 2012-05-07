@@ -63,6 +63,6 @@ public class RenameParameterOperation extends RenameDeclarationOperation< org.lg
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserParameter.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation >( this, org.lgna.project.ast.UserParameter.class, this.getDeclaration() );
 	}
 }

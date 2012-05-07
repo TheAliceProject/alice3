@@ -68,7 +68,7 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn >( this, this.type, org.lgna.project.ast.AbstractType.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeFillIn >( this, org.lgna.project.ast.AbstractType.class, this.type );
 	}
 	@Override
 	public org.lgna.project.ast.AbstractType createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType<?,?,?>, Void > step ) {

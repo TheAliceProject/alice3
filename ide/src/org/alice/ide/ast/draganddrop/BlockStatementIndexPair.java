@@ -60,6 +60,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	}
 	
 	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+		assert blockStatement != null;
 		assert index >= 0 : index + " " + blockStatement;
 		assert index < (blockStatement.statements.size()+1) : index + " " + blockStatement.statements.size();
 		this.blockStatement = blockStatement;
@@ -70,6 +71,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID id = binaryDecoder.decodeId();
 		this.blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
+		assert this.blockStatement != null;
 		this.index = binaryDecoder.decodeInt(); 
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -86,7 +88,12 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	
 	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-		return new BlockStatementIndexPair( replacementBlockStatement, this.index );
+		if( this.blockStatement != replacementBlockStatement ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( replacementBlockStatement );
+			return new BlockStatementIndexPair( replacementBlockStatement, this.index );
+		} else {
+			return this;
+		}
 	}
 
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {

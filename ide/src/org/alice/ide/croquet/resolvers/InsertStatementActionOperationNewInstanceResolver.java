@@ -48,26 +48,29 @@ package org.alice.ide.croquet.resolvers;
  */
 public class InsertStatementActionOperationNewInstanceResolver extends org.lgna.croquet.resolvers.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
 	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
-		super( instance );
+		super( instance, org.alice.ide.croquet.models.ast.InsertStatementActionOperation.CONSTRUCTOR_PARAMETER_TYPES, instance.getArguments() );
 	}
 	public InsertStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.InsertStatementActionOperation.CONSTRUCTOR_PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-
-	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.InsertStatementActionOperation.decodeArguments( binaryDecoder );
+		java.util.UUID blockStatementId = binaryDecoder.decodeId();
+		int index = binaryDecoder.decodeInt();
+		java.util.UUID statementId = binaryDecoder.decodeId();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.ast.BlockStatement blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), blockStatementId );
+		org.lgna.project.ast.Statement statement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
+		return new Object[] { blockStatement, index, statement };
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		this.getInstance().encodeArguments( binaryEncoder );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)arguments[ 0 ];
+		int index = (Integer)arguments[ 1 ];
+		org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)arguments[ 2 ];
+		binaryEncoder.encode( blockStatement.getId() );
+		binaryEncoder.encode( index );
+		binaryEncoder.encode( statement.getId() );
 	}
 	@Override
 	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {

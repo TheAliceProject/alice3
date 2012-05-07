@@ -59,19 +59,12 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 		this.member = node;
 		this.declaringType = declaringType;
 	}
-	protected abstract Class<N> getNodeParameterType();
+	public abstract Class<N> getNodeParameterType();
 	@Override
 	protected org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N> createResolver() {
 		return new org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N>( this );
 	}
 	
-	public Class<?>[] getStaticGetInstanceParameterTypes() {
-		return new Class[] {
-				this.getNodeParameterType(),
-				org.lgna.project.ast.UserType.class,
-				Integer.TYPE
-		};
-	}
 	public static Object[] retargetArguments( Object[] rv, org.lgna.croquet.Retargeter retargeter ) {
 		assert rv != null;
 		assert rv.length == 3;
@@ -81,27 +74,10 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 		return rv;
 	}
 	
-
-	public static Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID memberId = binaryDecoder.decodeId();
-		java.util.UUID declaringTypeId = binaryDecoder.decodeId();
-		int index = binaryDecoder.decodeInt();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.BlockStatement member = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), memberId );
-		org.lgna.project.ast.Statement declaringType = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), declaringTypeId );
-		return new Object[] { member, declaringType, index };
-	}
-	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.member.getId() );
-		binaryEncoder.encode( this.declaringType.getId() );
-		binaryEncoder.encode( this.index );
-	}
-	
-	
 	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		return this.declaringType;
 	}
-	protected N getMember() {
+	public N getMember() {
 		return this.member;
 	}
 	protected abstract org.lgna.project.ast.NodeListProperty<N> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType );

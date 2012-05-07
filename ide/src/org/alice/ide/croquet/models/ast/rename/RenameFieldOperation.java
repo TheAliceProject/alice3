@@ -63,6 +63,6 @@ public class RenameFieldOperation extends RenameDeclarationOperation< org.lgna.p
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserField.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation >( this, org.lgna.project.ast.UserField.class, this.getDeclaration() );
 	}
 }

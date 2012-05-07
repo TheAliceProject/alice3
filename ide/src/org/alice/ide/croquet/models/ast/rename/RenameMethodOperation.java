@@ -63,6 +63,6 @@ public class RenameMethodOperation extends RenameDeclarationOperation< org.lgna.
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserMethod.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation >( this, org.lgna.project.ast.UserMethod.class, this.getDeclaration() );
 	}
 }
