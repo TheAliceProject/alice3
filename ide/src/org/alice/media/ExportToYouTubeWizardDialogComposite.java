@@ -42,6 +42,8 @@
  */
 package org.alice.media;
 
+import edu.cmu.cs.dennisc.matt.EventScript;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,6 +60,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 	private final UploadComposite uploadComposite = new UploadComposite( this );
 	
 	private org.lgna.project.Project project;
+	private EventScript script;
 	private ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
 		this.addWizardPageComposite( this.eventRecordComposite );
@@ -80,5 +83,11 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 				System.exit( 0 );
 			}
 		} );
+	}
+	public EventScript getScript() {
+		return this.script;
+	}
+	public void setScript( EventScript script ) {
+		this.script = script;
 	}
 }

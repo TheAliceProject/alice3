@@ -137,7 +137,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				encoder.start();
-				encoder.setOutput( new File( "C:/Users/Matt/Desktop/videos/test.mp3" ) );
+				encoder.setOutput( new File( "C:/Users/Matt/Desktop/videos/test.mov" ) );
 			} else {
 				this.recordOperation.setName( "record" );
 				encoder.stop();
@@ -170,7 +170,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRate.getValue() );
 				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
 
-				EventScript script = null; //todo
+				EventScript script = owner.getScript();
+				System.out.println( script );
 
 				UserInstance programInstance = programContext.getProgramInstance();
 				UserField sceneField = programInstance.getType().fields.get( 0 );

@@ -42,9 +42,9 @@
  */
 package org.alice.media;
 
-import javax.swing.SwingUtilities;
-
 import org.alice.media.components.EventRecordView;
+import org.alice.stageide.croquet.models.run.RestartOperation;
+import org.alice.stageide.croquet.models.run.RunOperation;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.WizardPageComposite;
@@ -62,56 +62,74 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	private final ExportToYouTubeWizardDialogComposite owner;
 
 	private RunProgramContext programContext;
-	
-	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
+	private EventScript script;
+	org.lgna.croquet.components.BorderPanel lookingGlassContainer;
 
-		private boolean isPlaying = false;
-		private EventScript script;
-
-		public void perform( Transaction transaction, Trigger trigger ) {
-			if( isPlaying ) {
-				isPlaying = !isPlaying;
-				programContext.getProgramImp().stopAnimator();
-				playRecordedOperation.setName( "play" );
-				script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
-				System.out.println("stop");
-			} else {
-				isPlaying = !isPlaying;
-				System.out.println("play");
-				playRecordedOperation.setName( "stop" );
-				//				programContext.getProgramImp().setFrameRate( ProgramImp.CLOCK_BASED_FRAME_RATE );
-				programContext.getProgramImp().startAnimator();
-			}
-		}
-	}, this.createKey( "recordEventsStopToggle" ) );
-	
-
-	
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
 		this.owner = owner;
 		this.playRecordedOperation.setName( "play" );
 	}
+
+	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
+
+		private boolean isPlaying = false;
+
+		public void perform( Transaction transaction, Trigger trigger ) {
+			if( programContext == null ) {
+				if( owner != null ) {
+					programContext = new RunProgramContext( owner.getProject().getProgramType() );
+				} else {
+					System.out.println( "program context is null (mmay)" );
+					return;
+				}
+			}
+			if( isPlaying ) {
+				isPlaying = !isPlaying;
+				playRecordedOperation.setName( "play" );
+				programContext.getProgramImp().stopAnimator();
+			} else {
+				isPlaying = !isPlaying;
+				playRecordedOperation.setName( "pause" );
+				script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+				owner.setScript( script );
+				programContext.getProgramImp().startAnimator();
+			}
+		}
+	}, this.createKey( "recordEventsStopToggle" ) );
 	
-//	public void startUp( final org.lgna.project.ast.NamedUserType programType ) {
-//		final EventRecordView recordView = this.getView();
-//		new Thread() {
-//			@Override
-//			public void run() {
-//				super.run();
-//				org.lgna.croquet.components.BorderPanel lookingGlassContainer = recordView.getLookingGlassContainer();
+//	private final ActionOperation startOverRecording = this.createActionOperation( new Action() {
 //
-//				programContext = new RunProgramContext( programType );
-//				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
-//				programContext.setActiveScene();
-//			}
-//		}.start();
-//	}
-	
+//		public void perform( Transaction transaction, Trigger trigger ) {
+////			programContext.getProgramImp().startAnimator();
+////			programContext.setActiveScene();
+//			programContext.getProgramInstance().
+//			System.out.println("restart");
+//			programContext.getProgramImp().getRestartAction().;
+////			script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+////			programContext.getProgramImp().startAnimator();
+//		}
+//	}, this.createKey( "restart" ) );
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		lookingGlassContainer = getView().getLookingGlassContainer();
+		programContext = new RunProgramContext( owner.getProject().getProgramType() );
+		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
+		programContext.getProgramImp().stopAnimator();
+		programContext.setActiveScene();
+	}
+
 	public ActionOperation getPlayRecordedOperation() {
 		return this.playRecordedOperation;
 	}
-
+//	public ActionOperation getStartOverRecording() {
+//		return this.startOverRecording;
+//	}
+	public EventScript getScript() {
+		return this.script;
+	}
 	@Override
 	protected EventRecordView createView() {
 		return new EventRecordView( this );

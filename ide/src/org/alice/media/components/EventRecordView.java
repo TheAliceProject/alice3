@@ -46,6 +46,7 @@ import org.alice.media.EventRecordComposite;
 import org.alice.media.ImageRecordComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.Label;
 
 /**
  * @author Matt May
@@ -58,6 +59,9 @@ public class EventRecordView extends BorderPanel {
 		this.addComponent( this.lookingGlassContainer, Constraint.CENTER );
 		GridPanel bottom = GridPanel.createGridPane( 1, 3 );
 		bottom.addComponent( eventRecordComposite.getPlayRecordedOperation().createButton() );
+		bottom.addComponent( new Label() );
+		bottom.addComponent( new Label() );
+//		bottom.addComponent( eventRecordComposite.getStartOverRecording().createButton() );
 		this.addComponent( bottom, Constraint.PAGE_END );
 	}
 	public BorderPanel getLookingGlassContainer() {

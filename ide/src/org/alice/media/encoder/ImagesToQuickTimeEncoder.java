@@ -390,7 +390,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 		try {
 			audioFile = this.createAudioFile();
 			File[] imgFiles = this.frameDirectory.listFiles();
-			System.out.println( "length: " + imgFiles.length );
+			System.out.println( "length: " + imgFiles.length / framesPerSecond );
 			writeVideoAndAudio( imgFiles, audioFile, QUICKTIME_VIDEO_FORMAT, false, "none" );
 			success = true;
 		} catch( Exception e ) {
