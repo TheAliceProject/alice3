@@ -90,8 +90,8 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueListener( this.declarationListener );
 	}
 	@Override
-	public void handlePostDectivation() {
+	public void handlePostDeactivation() {
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().removeValueListener( this.declarationListener );
-		super.handlePostDectivation();
+		super.handlePostDeactivation();
 	}
 }

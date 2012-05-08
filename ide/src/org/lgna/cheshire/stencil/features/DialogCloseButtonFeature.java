@@ -52,7 +52,7 @@ public class DialogCloseButtonFeature extends org.lgna.stencil.Feature {
 				org.lgna.croquet.PlainDialogOperation.InternalCloseOperation closeOperation = (org.lgna.croquet.PlainDialogOperation.InternalCloseOperation)step.getModel();
 				org.lgna.croquet.PlainDialogOperation dialogOperation = closeOperation.getPlainDialogOperation();
 				if( dialogOperation != null ) {
-					org.lgna.croquet.components.Dialog activeDialog = step.getEphemeralDataFor( org.lgna.croquet.DialogOperation.DIALOG_KEY );
+					org.lgna.croquet.components.Dialog activeDialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 					if( activeDialog != null ) {
 						return activeDialog.getCloseButtonTrackableShape();
 					} else {
