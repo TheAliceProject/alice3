@@ -244,6 +244,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			}
 
 			for( JointImp jointImp : this.mapIdToJoint.values() ) {
+				//todo?
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt = jointImp.getLocalTransformation();
 				lt.translation.multiply( axis );
 				jointImp.setLocalTransformation( lt );

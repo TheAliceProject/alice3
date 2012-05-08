@@ -40,21 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.videoencode;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	private final org.lgna.croquet.StringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
-	public RecordEventsPage() {
-		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
+public class ImmutableTextArea extends ImmutableTextComponent<javax.swing.JTextArea> {
+	public ImmutableTextArea( org.lgna.croquet.StringValue value ) {
+		super( value );
 	}
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( gettysburgAddress.createImmutableTextArea(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+	protected javax.swing.JTextArea createAwtComponent() {
+		javax.swing.JTextArea rv = new javax.swing.JTextArea();
+		this.initializeJComponent( rv );
+		rv.setWrapStyleWord( true );
+		rv.setLineWrap( true );
 		return rv;
 	}
 }
