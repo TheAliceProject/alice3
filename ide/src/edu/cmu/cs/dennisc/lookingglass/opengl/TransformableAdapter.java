@@ -58,7 +58,7 @@ public class TransformableAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Trans
 	public java.nio.DoubleBuffer accessLocalTransformationAsBuffer() {
 		return m_localTransformationBuffer;
 	}
-		
+	
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.localTransformation ) {
