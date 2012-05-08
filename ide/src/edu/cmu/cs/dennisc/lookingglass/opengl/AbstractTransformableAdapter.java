@@ -22,13 +22,14 @@ public abstract class AbstractTransformableAdapter< E extends edu.cmu.cs.dennisc
 
 	private boolean isUnscalingDesired( Context c ) {
 		//todo
-		edu.cmu.cs.dennisc.scenegraph.Composite parent = this.m_element.getParent();
-		return 
-				c.isScaled() 
-					&&
-				( this.m_element instanceof edu.cmu.cs.dennisc.scenegraph.Joint == false )
-					&&
-				( parent instanceof edu.cmu.cs.dennisc.scenegraph.Scalable || parent instanceof edu.cmu.cs.dennisc.scenegraph.Joint );
+		return false;
+//		edu.cmu.cs.dennisc.scenegraph.Composite parent = this.m_element.getParent();
+//		return 
+//				c.isScaled() 
+//					&&
+//				( this.m_element instanceof edu.cmu.cs.dennisc.scenegraph.Joint == false )
+//					&&
+//				( parent instanceof edu.cmu.cs.dennisc.scenegraph.Scalable || parent instanceof edu.cmu.cs.dennisc.scenegraph.Joint );
 	}
 	
 	private boolean unscaleIfDesired( Context c ) {
