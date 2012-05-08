@@ -66,6 +66,7 @@ import javax.swing.JPanel;
  */
 public class MoviePlayer extends JPanel implements ControllerListener{
 	
+	private MoviePlayerComposite EPIC_HACK_moviePlayerComposite = null;
 	private Player player;
 	private Component visualComponent = null;
     // controls gain, position, start, stop
@@ -255,9 +256,14 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 //			}
 //			this.revalidate();
 //		}
-		
+		fireUpdated();
 	}
 	
+	private void fireUpdated() {
+		if(EPIC_HACK_moviePlayerComposite != null)
+		EPIC_HACK_moviePlayerComposite.fireUpdated();
+	}
+
 	public static void main( String[] args ) {
 		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
 			@Override
@@ -275,7 +281,7 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 				System.exit( 0 );
 			}
 		};
-		MoviePlayer myPlayer = new MoviePlayer(new File( "C:/Users/Administrator/Documents/testMovie.mov" ));
+		MoviePlayer myPlayer = new MoviePlayer(new File( "C:/Users/Matt/Desktop/videos/test.mov" ));
 		myPlayer.init();
 		frame.getContentPane().add( myPlayer );
 		frame.setPreferredSize( new Dimension(800, 600) );
@@ -284,4 +290,14 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 		
 	}
 
+	public Component getVisualComponent() {
+		return this.visualComponent;
+	}
+	public Component getControlComponent() {
+		return this.controlComponent;
+	}
+
+	public void registerHack( MoviePlayerComposite moviePlayerComposite ) {
+		this.EPIC_HACK_moviePlayerComposite = moviePlayerComposite;
+	}
 }

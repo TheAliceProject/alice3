@@ -50,6 +50,7 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
+import org.lgna.project.Project;
 
 /**
  * @author Matt May
@@ -107,5 +108,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	@Override
 	protected UploadView createView() {
 		return new UploadView( this );
+	}
+	public Project getProject() {
+		return owner.getProject();
 	}
 }
