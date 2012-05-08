@@ -58,6 +58,7 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lgna.story.resources.JointId jointId ) {
 		this.nebModel = nebModel;
 		this.jointId = jointId;
+		this.setName(this.jointId.toString());
 	}
 	public org.lgna.story.resources.JointId getJointId() {
 		return this.jointId;
