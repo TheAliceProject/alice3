@@ -43,8 +43,6 @@
 package org.alice.media.components;
 
 import org.alice.media.EventRecordComposite;
-import org.alice.stageide.croquet.models.run.RestartOperation;
-import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;

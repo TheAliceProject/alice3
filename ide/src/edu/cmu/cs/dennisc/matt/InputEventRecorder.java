@@ -43,7 +43,6 @@
 package edu.cmu.cs.dennisc.matt;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 import org.lgna.story.implementation.SceneImp;
 

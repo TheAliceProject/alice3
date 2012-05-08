@@ -42,8 +42,6 @@
  */
 package org.lgna.story.event;
 
-import java.util.Vector;
-
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
