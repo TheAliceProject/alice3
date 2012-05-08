@@ -92,5 +92,9 @@ public class EventScript {
 			return this.time;
 		}
 	}
+	
+	public int size() {
+		return eventList.size();
+	}
 
 }

@@ -16,6 +16,7 @@ import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.KeyPressListener;
+import org.lgna.story.event.MouseClickEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.MoveWithArrows;
@@ -57,8 +58,8 @@ public class EventManager {
 	private final TimerContingencyManager contingent;
 
 	public void recieveEvent( Object event ) {
-		if( event instanceof MouseEvent ) {
-			MouseEvent mouseEvent = (MouseEvent)event;
+		if( event instanceof MouseEventWrapper ) {
+			MouseEventWrapper mouseEvent = (MouseEventWrapper)event;
 			mouseAdapter.handleReplayedEvent( mouseEvent );
 		} else if( event instanceof KeyEvent ) {
 			KeyEvent keyEvent = (KeyEvent)event;
@@ -79,12 +80,15 @@ public class EventManager {
 	private class CustomLenientMouseAdapter extends edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			inputRecorder.record( e );
+			inputRecorder.record( createWrapper( e ) );
 			EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote( e, /*quoteClickCountUnquote,*/EventManager.this.scene.getAbstraction() );
 		}
 
-		public void handleReplayedEvent( MouseEvent e ) {
-			mouseQuoteClickedUnquote( e, 0 );
+		public void handleReplayedEvent( MouseEventWrapper e ) {
+			e.translatePoint(scene);
+			MouseClickEvent event = new MouseClickEvent( e.getEvent(), scene.getAbstraction() );
+			System.out.println( event.getModelAtMouseLocation() );
+			mouseQuoteClickedUnquote( e.getEvent(), 0 );
 		}
 	};
 
@@ -115,6 +119,10 @@ public class EventManager {
 		}
 		inputRecorder.setScene( scene );
 		contingent = new TimerContingencyManager( timer );
+	}
+
+	public MouseEventWrapper createWrapper( MouseEvent e ) {
+		return new MouseEventWrapper( e, scene );
 	}
 
 	public void setScene() {

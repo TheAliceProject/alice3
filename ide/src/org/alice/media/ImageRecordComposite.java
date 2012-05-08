@@ -168,7 +168,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
 
 				EventScript script = owner.getScript();
-				System.out.println( script );
 
 				UserInstance programInstance = programContext.getProgramInstance();
 				UserField sceneField = programInstance.getType().fields.get( 0 );
@@ -180,7 +179,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			}
 		}.start();
 	}
-	
+
 	@Override
 	public void handlePostDeactivation() {
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );

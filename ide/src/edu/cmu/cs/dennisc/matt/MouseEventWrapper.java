@@ -42,28 +42,36 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
-import edu.cmu.cs.dennisc.animation.FrameBasedAnimator;
+import java.awt.event.MouseEvent;
+
+import org.lgna.story.implementation.SceneImp;
 
 /**
  * @author Matt May
  */
-public class FrameBasedAnimatorWithEventScript extends FrameBasedAnimator {
+public class MouseEventWrapper {
 
-	private final EventScript script;
-	private final EventManager manager;
+	private double xVal;
+	private double yVal;
+	private MouseEvent event;
 
-	public FrameBasedAnimatorWithEventScript( EventScript script, EventManager manager ) {
-		this.script = script != null ? script : new EventScript();
-		this.manager = manager;
+	public MouseEventWrapper( MouseEvent e, SceneImp scene ) {
+		this.event = e;
+		this.xVal = scene.getProgram().getOnscreenLookingGlass().getWidth();
+		this.yVal = scene.getProgram().getOnscreenLookingGlass().getHeight();
 	}
 
-	@Override
-	public void update() {
-		super.update();
-		if( script != null ) {
-			for( Object event : script.getEventsForTime( getCurrentTime() ) ) {
-				manager.recieveEvent( event );
-			}
-		}
+	public MouseEvent getEvent() {
+		return this.event;
+	}
+
+	public void translatePoint( SceneImp scene ) {
+		int newWidth = scene.getProgram().getOnscreenLookingGlass().getWidth();
+		double finalX = event.getX() * newWidth / xVal;
+		int newHeight = scene.getProgram().getOnscreenLookingGlass().getHeight();
+		double finalY = event.getY() * newHeight / yVal;
+		int deltaX = (int)(finalX - event.getX());
+		int deltaY = (int)(finalY - event.getY());
+		event.translatePoint(deltaX, deltaY);
 	}
 }

@@ -43,8 +43,6 @@
 package org.alice.media;
 
 import org.alice.media.components.EventRecordView;
-import org.alice.stageide.croquet.models.run.RestartOperation;
-import org.alice.stageide.croquet.models.run.RunOperation;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.WizardPageComposite;
@@ -91,25 +89,24 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			} else {
 				isPlaying = !isPlaying;
 				playRecordedOperation.setName( "pause" );
-				script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
-				owner.setScript( script );
 				programContext.getProgramImp().startAnimator();
 			}
 		}
 	}, this.createKey( "recordEventsStopToggle" ) );
-	
-//	private final ActionOperation startOverRecording = this.createActionOperation( new Action() {
-//
-//		public void perform( Transaction transaction, Trigger trigger ) {
-////			programContext.getProgramImp().startAnimator();
-////			programContext.setActiveScene();
-//			programContext.getProgramInstance().
-//			System.out.println("restart");
-//			programContext.getProgramImp().getRestartAction().;
-////			script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
-////			programContext.getProgramImp().startAnimator();
-//		}
-//	}, this.createKey( "restart" ) );
+
+
+	private final ActionOperation restartRecording = this.createActionOperation( new Action() {
+		public void perform(Transaction transaction, Trigger trigger) {
+			lookingGlassContainer.removeAllComponents();
+			lookingGlassContainer = getView().getLookingGlassContainer();
+			programContext = new RunProgramContext( owner.getProject().getProgramType() );
+			programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
+			programContext.getProgramImp().stopAnimator();
+			programContext.setActiveScene();
+			script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+			owner.setScript( script );
+		}
+	}, this.createKey( "restart" ) );
 
 	@Override
 	public void handlePreActivation() {
@@ -119,14 +116,16 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
 		programContext.getProgramImp().stopAnimator();
 		programContext.setActiveScene();
+		script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+		owner.setScript( script );
 	}
 
 	public ActionOperation getPlayRecordedOperation() {
 		return this.playRecordedOperation;
 	}
-//	public ActionOperation getStartOverRecording() {
-//		return this.startOverRecording;
-//	}
+	public ActionOperation getRestartRecording() {
+		return this.restartRecording;
+	}
 	public EventScript getScript() {
 		return this.script;
 	}

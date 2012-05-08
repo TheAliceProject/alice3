@@ -49,6 +49,8 @@ package org.lgna.croquet;
 public abstract class WizardDialogComposite extends GatedCommitDialogComposite< WizardDialogComposite.WizardCardComposite, WizardDialogComposite.WizardDialogControlsComposite > {
 	protected static class WizardCardComposite extends CardComposite {
 		private int index = 0;
+		protected boolean nextIsAvailable = true;
+		protected boolean prevIsAvailable = true;
 		public WizardCardComposite( WizardPageComposite<?>[] wizardPages ) {
 			super( java.util.UUID.fromString( "d660e0ed-900a-4f98-ac23-bec8804dba22" ), wizardPages );
 		}
@@ -60,16 +62,22 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 			this.showCard( this.getCards().get( index ) );
 		}
 		public boolean isPrevPageAvailable() {
-			return this.index > 0; 
+			return  ( this.index > 0 && prevIsAvailable ); 
 		}
 		public boolean isNextPageAvailable() {
-			return this.index < this.getCards().size()-1; 
+			return ( this.index < this.getCards().size() - 1 && nextIsAvailable ); 
 		}
 		public void prev() {
 			this.setIndex( this.getIndex()-1 );
 		}
 		public void next() {
 			this.setIndex( this.getIndex()+1 );
+		}
+		public void setNextIsAvailable( boolean nextIsAvailable ) {
+			this.nextIsAvailable = nextIsAvailable;
+		}
+		public void setPrevIsAvailable( boolean prevIsAvailable ) {
+			this.prevIsAvailable = prevIsAvailable;
 		}
 	}
 	protected static class WizardDialogControlsComposite extends GatedCommitDialogComposite.ControlsComposite {

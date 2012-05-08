@@ -63,9 +63,11 @@ public class InputEventRecorder {
 		if( event instanceof KeyEvent ) {
 			KeyEvent keyEvent = (KeyEvent)event;
 			record( keyEvent );
-		} else if( event instanceof MouseEvent ) {
-			MouseEvent mouseEvent = (MouseEvent)event;
+		} else if( event instanceof MouseEventWrapper ) {
+			MouseEventWrapper mouseEvent = (MouseEventWrapper)event;
 			record( mouseEvent );
+		} else {
+			Logger.severe( event );
 		}
 	}
 
@@ -81,7 +83,7 @@ public class InputEventRecorder {
 		}
 	}
 
-	private void record( MouseEvent e ) {
+	private void record( MouseEventWrapper e ) {
 		if( animator == null ) {
 			animator = scene.getProgram().getAnimator();
 		}

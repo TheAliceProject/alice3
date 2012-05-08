@@ -43,6 +43,8 @@
 package org.alice.media.components;
 
 import org.alice.media.EventRecordComposite;
+import org.alice.stageide.croquet.models.run.RestartOperation;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;
@@ -60,7 +62,7 @@ public class EventRecordView extends BorderPanel {
 		bottom.addComponent( eventRecordComposite.getPlayRecordedOperation().createButton() );
 		bottom.addComponent( new Label() );
 		bottom.addComponent( new Label() );
-//		bottom.addComponent( eventRecordComposite.getStartOverRecording().createButton() );
+		bottom.addComponent( eventRecordComposite.getRestartRecording().createButton() );
 		this.addComponent( bottom, Constraint.PAGE_END );
 	}
 	public BorderPanel getLookingGlassContainer() {
