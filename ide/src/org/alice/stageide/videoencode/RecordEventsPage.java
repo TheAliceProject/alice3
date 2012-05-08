@@ -46,14 +46,15 @@ package org.alice.stageide.videoencode;
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > { 
+public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
+	private final org.lgna.croquet.StringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
 	public RecordEventsPage() {
 		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
 	}
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( new org.lgna.croquet.components.Label( "todo: event recorder" ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+		rv.addComponent( gettysburgAddress.createImmutableTextArea(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		return rv;
 	}
 }

@@ -300,32 +300,27 @@ public class SceneImp extends EntityImp {
 		this.eventManager.restoreAllListeners();
 	}
 	public void addCamerasTo( ProgramImp program ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				CameraImp cameraImplementation = (CameraImp)entityImplementation;
-				program.getOnscreenLookingGlass().addCamera( cameraImplementation.getSgCamera() );
+		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class ) ) {
+			EntityImp entityImp = EntityImp.getInstance( sgCamera );
+			if( entityImp instanceof CameraImp ) {
+				CameraImp cameraImp = (CameraImp)entityImp;
+				program.getOnscreenLookingGlass().addCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}
 	public void removeCamerasFrom( ProgramImp program ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				CameraImp cameraImplementation = (CameraImp)entityImplementation;
-				program.getOnscreenLookingGlass().removeCamera( cameraImplementation.getSgCamera() );
+		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class ) ) {
+			EntityImp entityImp = EntityImp.getInstance( sgCamera );
+			if( entityImp instanceof CameraImp ) {
+				CameraImp cameraImp = (CameraImp)entityImp;
+				program.getOnscreenLookingGlass().removeCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}
 	
 	public CameraImp findFirstCamera() {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				return (CameraImp)entityImplementation;
-			}
-		}
-		return null;
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = edu.cmu.cs.dennisc.pattern.VisitUtilities.getFirst( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class );
+		return (CameraImp)EntityImp.getInstance( sgCamera );
 	}
 	
 	public float getGlobalBrightness() {

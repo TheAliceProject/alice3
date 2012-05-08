@@ -40,55 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass.opengl;
-
-import static javax.media.opengl.GL.*;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PickContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
-
-	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
-		synchronized( m_pickNameMap ) {
-			int name = m_pickNameMap.size();
-			m_pickNameMap.put( new Integer( name ), visualAdapter );
-			return name;
-		}
+public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextComponent> extends JComponent<J> {
+	private final org.lgna.croquet.StringValue value;
+	public ImmutableTextComponent( org.lgna.croquet.StringValue value ) {
+		this.value = value;
 	}
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
-		synchronized( m_pickNameMap ) {
-			return m_pickNameMap.get( name );
-		}
-	}
-	@Override
-	protected void enableNormalize() {
-	}
-	@Override
-	protected void disableNormalize() {
-	}
-
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
-		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
-	}
-	public void pickScene( AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-		gl.glMatrixMode( GL_MODELVIEW );
-		synchronized( cameraAdapter ) {
-			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
-		}
-		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters, conformanceTestResults );
-	}
-
-	@Override
-	protected void handleGLChange() {
-	}
-	
-	//todo: remove?
-	@Override
-	public void setAppearanceIndex( int index ) {
+	protected void initializeJComponent( javax.swing.text.JTextComponent component ) {
+		component.setDocument( this.value.getDocument() );
+		component.setEditable( false );
+		component.setCursor( null );
+		component.setOpaque( false );
+		component.setFocusable( false );
+		component.setBorder( null );
+		component.setFont( javax.swing.UIManager.getFont( "Label.font" ) );
 	}
 }

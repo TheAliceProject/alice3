@@ -57,4 +57,20 @@ public abstract class VisitUtilities {
 		} );
 		return rv;
 	}
+	public static <E extends Visitable> E getFirst( Visitable visitable, final Class< E > cls ) {
+		final E[] buffer = (E[])java.lang.reflect.Array.newInstance( cls, 1 );
+		visitable.accept( new Visitor() {
+			public void visit( Visitable visitable ) {
+				if( buffer[ 0 ] != null ) {
+					//pass
+				} else {
+					if( cls.isAssignableFrom( visitable.getClass() ) ) {
+						buffer[ 0 ] = (E)visitable;
+						//todo: break
+					}
+				}
+			}		
+		} );
+		return buffer[ 0 ];
+	}
 }

@@ -158,7 +158,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
         } else {
             rc.gl.glPushMatrix();
             rc.gl.glMultMatrixd( m_scaleBuffer );
-        	rc.pushNormalize();
+        	rc.incrementScaledCount();
         }
 
         if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
@@ -186,7 +186,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
         if( m_isScaleIdentity ) {
             //pass
         } else {
-        	rc.popNormalize();
+        	rc.decrementScaledCount();
             rc.gl.glPopMatrix();
         }
     }
@@ -236,6 +236,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
                 //pass
             } else {
                 pc.gl.glPushMatrix();
+                pc.incrementScaledCount();
                 pc.gl.glMultMatrixd( m_scaleBuffer );
             }
 
@@ -257,6 +258,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
             if( m_isScaleIdentity ) {
                 //pass
             } else {
+                pc.decrementScaledCount();
                 pc.gl.glPopMatrix();
             }
         }

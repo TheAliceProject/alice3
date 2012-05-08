@@ -55,6 +55,41 @@ public abstract class Context {
 	public Context() {
 		glu = new javax.media.opengl.glu.GLU();
 	}
+	
+	private int scaledCount = 0;
+	private java.util.Stack< Integer > scaledCountStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	public void initialize() {
+		this.scaledCount = 0;
+		this.disableNormalize();
+	}
+	
+	public boolean isScaled() {
+		return this.scaledCount > 0;
+	}
+	protected abstract void enableNormalize();
+	protected abstract void disableNormalize();
+	public void incrementScaledCount() {
+		this.scaledCount ++;
+		if( this.scaledCount == 1 ) {
+			this.enableNormalize();
+		}
+		
+	}
+	public void decrementScaledCount() {
+		if( this.scaledCount == 1 ) {
+			this.disableNormalize();
+		}
+		this.scaledCount --;
+	}
+	
+	public void pushScaledCountAndSetToZero() {
+		this.scaledCountStack.push( this.scaledCount );
+		this.scaledCount = 0;
+	}
+	public void popAndRestoreScaledCount() {
+		this.scaledCount = this.scaledCountStack.pop();
+	}
+	
 
 	//todo: synchronize?
 	public javax.media.opengl.glu.GLUquadric getQuadric() {
