@@ -356,7 +356,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         for (int i=0; i<currentNode.getComponentCount(); i++)
         {
             Component comp = currentNode.getComponentAt(i);
-            if (comp instanceof Composite)
+            if (comp instanceof Joint)
             {
                 Composite jointChild = (Composite)comp;
                 processWeightedMesh( jointChild, oTransformationPost );
