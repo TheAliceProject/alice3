@@ -40,21 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.videoencode;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	private final org.lgna.croquet.StringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
-	public RecordEventsPage() {
-		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
+public abstract class StringValue extends AbstractElement {
+	private final javax.swing.text.PlainDocument document = new javax.swing.text.PlainDocument();
+	public StringValue( java.util.UUID id ) {
+		super( id );
 	}
-	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( gettysburgAddress.createImmutableTextArea(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-		return rv;
+	public javax.swing.text.PlainDocument getDocument() {
+		return this.document;
+	}
+	public void setText( String text ) {
+		try {
+			this.document.replace( 0, this.document.getLength(), text, null );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( text, ble );
+		}
+	}
+	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea() {
+		return new org.lgna.croquet.components.ImmutableTextArea( this );
+	}
+	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField() {
+		return new org.lgna.croquet.components.ImmutableTextField( this );
 	}
 }

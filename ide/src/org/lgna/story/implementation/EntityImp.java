@@ -601,11 +601,11 @@ public abstract class EntityImp implements ReferenceFrame {
 		return AabbCollisionDetector.doTheseCollide( this.getAbstraction(), other );
 	}
 	
-	public static void main( String[] args ) {
-		org.lgna.story.Entity entity = new org.lgna.story.Cone();
-		System.err.println( entity.getStringFromUser( "who are you?" ) );
-		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
-		System.err.println( entity.getDoubleFromUser( "how much?" ) );
-		System.err.println( entity.getBooleanFromUser( "to be or not to be?" ) );
-	}
+//	public static void main( String[] args ) {
+//		org.lgna.story.Entity entity = new org.lgna.story.Cone();
+//		System.err.println( entity.getStringFromUser( "who are you?" ) );
+//		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
+//		System.err.println( entity.getDoubleFromUser( "how much?" ) );
+//		System.err.println( entity.getBooleanFromUser( "to be or not to be?" ) );
+//	}
 }
