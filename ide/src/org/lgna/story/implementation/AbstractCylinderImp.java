@@ -40,42 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DiscImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Disc sgDisc = new edu.cmu.cs.dennisc.scenegraph.Disc();
-	private final org.lgna.story.Disc abstraction;
-	public final DoubleProperty outerRadius = new DoubleProperty( DiscImp.this ) {
+public abstract class AbstractCylinderImp extends ShapeImp {
+	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
+	public final DoubleProperty length = new DoubleProperty( AbstractCylinderImp.this ) {
 		@Override
 		public Double getValue() {
-			return DiscImp.this.sgDisc.outerRadius.getValue();
+			return AbstractCylinderImp.this.sgCylinder.length.getValue();
 		}
 		@Override
 		protected void handleSetValue( Double value ) {
-			DiscImp.this.sgDisc.outerRadius.setValue( value );
+			AbstractCylinderImp.this.sgCylinder.length.setValue( value );
 		}
 	};
-	public DiscImp( org.lgna.story.Disc abstraction ) {
-		this.abstraction = abstraction;
-		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
-		sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgDisc } );
+
+	public AbstractCylinderImp() {
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
-	@Override
-	public org.lgna.story.Disc getAbstraction() {
-		return this.abstraction;
+	protected abstract void setXZ( double xz );
+	protected edu.cmu.cs.dennisc.scenegraph.Cylinder getSgCylinder() {
+		return this.sgCylinder;
 	}
 	@Override
 	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XZ_PLANE };
+		return new Resizer[] { Resizer.Y_AXIS, Resizer.XZ_PLANE, Resizer.UNIFORM };
 	}
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.XZ_PLANE ) {
-			return this.outerRadius.getValue();
+		if( resizer == Resizer.Y_AXIS ) {
+			return this.length.getValue();
+		} else if( resizer == Resizer.XZ_PLANE ) {
+			return this.sgCylinder.bottomRadius.getValue();
+		} else if( resizer == Resizer.UNIFORM ) {
+			return this.length.getValue();
 		} else {
 			assert false : resizer;
 			return Double.NaN;
@@ -83,8 +84,17 @@ public class DiscImp extends ShapeImp {
 	}
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
-		if( resizer == Resizer.XZ_PLANE ) {
-			this.outerRadius.setValue( value );
+		if( resizer == Resizer.Y_AXIS ) {
+			this.length.setValue( value );
+		} else if( resizer == Resizer.XZ_PLANE ) {
+			this.setXZ( value );
+		} else if( resizer == Resizer.UNIFORM ) {
+			double prevValue = this.sgCylinder.length.getValue();
+			this.length.setValue( value );
+			if( prevValue != 0.0 ) {
+				double ratio = value / prevValue;
+				this.setXZ( this.sgCylinder.bottomRadius.getValue() * ratio );
+			}
 		} else {
 			assert false : resizer;
 		}
