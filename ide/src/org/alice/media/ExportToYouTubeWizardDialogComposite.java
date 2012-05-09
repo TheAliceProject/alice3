@@ -42,6 +42,8 @@
  */
 package org.alice.media;
 
+import java.io.File;
+
 import edu.cmu.cs.dennisc.matt.EventScript;
 
 /**
@@ -61,6 +63,8 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 	
 	private org.lgna.project.Project project;
 	private EventScript script;
+	private File file = new File( "C:/Users/Matt/Desktop/videos/testOne.mov" );
+	
 	private ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
 		this.addWizardPageComposite( this.eventRecordComposite );
@@ -89,5 +93,8 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 	}
 	public void setScript( EventScript script ) {
 		this.script = script;
+	}
+	public File getFile() {
+		return file;
 	}
 }

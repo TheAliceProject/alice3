@@ -130,13 +130,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			this.isRecording = isRecording;
 			if( this.isRecording ) {
 				programContext.getProgramImp().startAnimator();
-				this.recordOperation.setName( "stop" );
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				encoder.start();
 				encoder.setOutput( new File( "C:/Users/Matt/Desktop/videos/test.mov" ) );
 			} else {
-				this.recordOperation.setName( "record" );
 				encoder.stop();
 				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			}

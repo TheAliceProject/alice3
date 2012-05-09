@@ -50,6 +50,7 @@ import org.lgna.croquet.components.BorderPanel;
 /**
  * @author Matt May
  */
+@Deprecated
 public class MoviePlayerView extends BorderPanel {
 
 	private MoviePlayerComposite composite;

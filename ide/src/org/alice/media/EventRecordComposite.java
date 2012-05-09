@@ -66,7 +66,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
 		this.owner = owner;
-		this.playRecordedOperation.setName( "play" );
 	}
 
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
@@ -84,11 +83,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			}
 			if( isPlaying ) {
 				isPlaying = !isPlaying;
-				playRecordedOperation.setName( "play" );
 				programContext.getProgramImp().stopAnimator();
 			} else {
 				isPlaying = !isPlaying;
-				playRecordedOperation.setName( "pause" );
 				programContext.getProgramImp().startAnimator();
 			}
 		}

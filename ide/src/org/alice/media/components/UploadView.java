@@ -42,6 +42,7 @@
  */
 package org.alice.media.components;
 
+import org.alice.media.MoviePlayer;
 import org.alice.media.MoviePlayerComposite;
 import org.alice.media.UploadComposite;
 import org.lgna.croquet.components.BorderPanel;
@@ -49,6 +50,7 @@ import org.lgna.croquet.components.CheckBox;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.PasswordField;
+import org.lgna.croquet.components.SwingAdapter;
 import org.lgna.croquet.components.TextField;
 
 /**
@@ -58,8 +60,12 @@ public class UploadView extends BorderPanel {
 	public UploadView( UploadComposite composite ) {
 		super( composite );
 		this.addComponent( new UserNameAndPasswordComponent( composite ), Constraint.PAGE_START );
-		MoviePlayerComposite moviePlayerComposite = new MoviePlayerComposite( composite.getProject() );
-		this.addComponent( GridPanel.createGridPane( 1, 2, moviePlayerComposite.getView(), new VideoInfoComponent( composite ) ), Constraint.CENTER );
+//		MoviePlayerComposite moviePlayerComposite = new MoviePlayerComposite( composite.getProject() );
+		GridPanel gridPane = GridPanel.createGridPane( 1, 2 );
+		SwingAdapter swingAdapter = new SwingAdapter( new MoviePlayer() );
+		gridPane.addComponent( swingAdapter );
+		gridPane.addComponent( new VideoInfoComponent( composite ) );
+		this.addComponent( gridPane, Constraint.CENTER );
 		this.addComponent( composite.getUploadOperation().createButton(), Constraint.PAGE_END );
 	}
 
@@ -73,9 +79,9 @@ public class UploadView extends BorderPanel {
 			TextField userName = composite.getIdState().createTextField();
 			PasswordField password = composite.getPasswordState().createPasswordField();
 			GridPanel top = GridPanel.createGridPane( 2, 2 );
-			top.addComponent( new Label( "user name" ) );
+			top.addComponent( composite.getUsername().createImmutableTextArea() );
 			top.addComponent( userName );
-			top.addComponent( new Label( "password" ) );
+			top.addComponent( composite.getPasswordLabelValue().createImmutableTextArea() );
 			top.addComponent( password );
 			this.addComponent( top, Constraint.CENTER );
 		}
@@ -84,20 +90,21 @@ public class UploadView extends BorderPanel {
 	private class VideoInfoComponent extends BorderPanel {
 		public VideoInfoComponent( UploadComposite composite ) {
 			GridPanel titlePanel = GridPanel.createGridPane( 2, 1 );
-			titlePanel.addComponent( new Label( "Video Title: " ) );
+			titlePanel.addComponent( composite.getTitleLabelValue().createImmutableTextArea() );
 			TextField titleField = composite.getTitleState().createTextField();
 			titlePanel.addComponent( titleField );
 			this.addComponent( titlePanel, Constraint.PAGE_START );
-			GridPanel detailPanel = GridPanel.createGridPane( 2, 1 );
+			GridPanel detailPanel = GridPanel.createGridPane( 3, 1 );
+			detailPanel.addComponent( composite.getCategoryValue().createImmutableTextArea() );
 			detailPanel.addComponent( composite.getVideoCategoryState().createComboBox() );
 			CheckBox isPrivateBox = composite.getIsPrivateState().createCheckBox();
 			detailPanel.addComponent( isPrivateBox );
 			GridPanel middle = GridPanel.createGridPane( 2, 1 );
 			BorderPanel topBorder = new BorderPanel();
-			topBorder.addComponent( new Label( "Description" ), Constraint.PAGE_START );
+			topBorder.addComponent( composite.getDescriptionValue().createImmutableTextArea(), Constraint.PAGE_START );
 			topBorder.addComponent( composite.getDescriptionState().createTextArea(), Constraint.CENTER );
 			BorderPanel bottomBorder = new BorderPanel();
-			bottomBorder.addComponent( new Label( "Tags" ), Constraint.PAGE_START );
+			bottomBorder.addComponent( composite.getTagLabel().createImmutableTextArea(), Constraint.PAGE_START );
 			bottomBorder.addComponent( composite.getTagState().createTextArea(), Constraint.CENTER );
 			middle.addComponent( topBorder );
 			middle.addComponent( bottomBorder );

@@ -42,27 +42,49 @@
  */
 package org.alice.media;
 
+import java.io.File;
+
+import org.alice.media.components.ImageRecordView;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
+import org.lgna.croquet.StringValue;
+import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.Project;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Scene;
+import org.lgna.story.implementation.SceneImp;
+
+import edu.cmu.cs.dennisc.matt.EventManager;
+import edu.cmu.cs.dennisc.matt.EventScript;
+import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
 
 /**
  * @author Matt May
  */
 public class UploadComposite extends WizardPageComposite<UploadView> {
+	
+	private MoviePlayer player = new MoviePlayer();
+	
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
+	private final StringValue username = this.createStringValue( this.createKey( "username" ) );
 	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
+	private final StringValue passwordLabelValue = this.createStringValue( this.createKey( "passwordLabel" ) );
+	private final StringValue titleLabelValue= this.createStringValue( this.createKey( "titleLabel" ) );
 	private final StringState titleState = this.createStringState( "Alice Video", this.createKey( "title" ) );
 	private final BooleanState isPrivateState = this.createBooleanState( true, this.createKey( "isPrivate" ) );
+	private final StringValue categoryValue = this.createStringValue( this.createKey( "category" ) );
 	private final ListSelectionState<VideoCategory> videoCategoryState = this.createListSelectionState( VideoCategory.class, VideoCategory.SCIENCE_AND_TECHNOLOGY, this.createKey( "videoCategory" ) );
+	private final StringValue descriptionValue = this.createStringValue( this.createKey( "descriptionValue" ) );
 	private final StringState descriptionState = this.createStringState( "", this.createKey( "description" ) );
+	private final StringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
 	private final StringState tagState = this.createStringState( "", this.createKey( "tag" ) );
 	private final ActionOperation loginOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
@@ -80,11 +102,20 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	public StringState getIdState() {
 		return this.idState;
 	}
+	public StringValue getUsername() {
+		return this.username;
+	}
 	public StringState getPasswordState() {
 		return this.passwordState;
 	}
+	public StringValue getPasswordLabelValue() {
+		return this.passwordLabelValue;
+	}
 	public ActionOperation getLoginOperation() {
 		return this.loginOperation;
+	}
+	public StringValue getTitleLabelValue() {
+		return this.titleLabelValue;
 	}
 	public StringState getTitleState() {
 		return this.titleState;
@@ -92,11 +123,20 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	public BooleanState getIsPrivateState() {
 		return this.isPrivateState;
 	}
+	public StringValue getCategoryValue() {
+		return this.categoryValue;
+	}
 	public ListSelectionState<VideoCategory> getVideoCategoryState() {
 		return this.videoCategoryState;
 	}
+	public StringValue getDescriptionValue() {
+		return this.descriptionValue;
+	}
 	public StringState getDescriptionState() {
 		return this.descriptionState;
+	}
+	public StringValue getTagLabel() {
+		return this.tagLabel;
 	}
 	public StringState getTagState() {
 		return this.tagState;
@@ -111,5 +151,13 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	}
 	public Project getProject() {
 		return owner.getProject();
+	}
+	public File getFile() {
+		return owner.getFile();
+	}
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		player.setMovie( owner.getFile() );
 	}
 }
