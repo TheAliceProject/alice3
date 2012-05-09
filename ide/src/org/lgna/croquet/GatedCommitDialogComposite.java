@@ -270,7 +270,7 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 	private static class InternalWarningValue extends StringValue {
 		private final Key key;
 		public InternalWarningValue( Key key ) {
-			super( java.util.UUID.fromString( "f53f9c5b-1ab0-4eb5-ac4f-7312a32d240e" ) );
+			super( java.util.UUID.fromString( "df9a6066-bbca-46ae-82d6-97d2392dca70" ) );
 			this.key = key;
 		}
 		@Override
@@ -310,6 +310,14 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 	@Override
 	protected void localize() {
 		super.localize();
+		for( Key key : this.mapKeyToErrorValue.keySet() ) {
+			InternalErrorValue stringValue = this.mapKeyToErrorValue.get( key );
+			stringValue.setText( this.getLocalizedText( key.getLocalizationKey() ) );
+		}
+		for( Key key : this.mapKeyToWarningValue.keySet() ) {
+			InternalWarningValue stringValue = this.mapKeyToWarningValue.get( key );
+			stringValue.setText( this.getLocalizedText( key.getLocalizationKey() ) );
+		}
 		this.getControlsComposite().completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogComposite.class ) );
 		this.getControlsComposite().cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogComposite.class ) );
 	}
