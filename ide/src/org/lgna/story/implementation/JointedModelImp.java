@@ -61,7 +61,6 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId );
 	}
 	
-	
 	private final JointImplementationAndVisualDataFactory<R> factory;
 	private final A abstraction;
 	private final VisualData visualData;
