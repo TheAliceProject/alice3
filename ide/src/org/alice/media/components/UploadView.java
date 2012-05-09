@@ -43,7 +43,6 @@
 package org.alice.media.components;
 
 import org.alice.media.MoviePlayer;
-import org.alice.media.MoviePlayerComposite;
 import org.alice.media.UploadComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.CheckBox;

@@ -44,7 +44,6 @@ package org.alice.media;
 
 import java.io.File;
 
-import org.alice.media.components.ImageRecordView;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -55,15 +54,6 @@ import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.Project;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Scene;
-import org.lgna.story.implementation.SceneImp;
-
-import edu.cmu.cs.dennisc.matt.EventManager;
-import edu.cmu.cs.dennisc.matt.EventScript;
-import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
 
 /**
  * @author Matt May
