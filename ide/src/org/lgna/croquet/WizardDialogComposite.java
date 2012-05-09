@@ -147,11 +147,6 @@ public abstract class WizardDialogComposite extends GatedCommitDialogComposite< 
 	protected WizardDialogControlsComposite getControlsComposite() {
 		return this.controlsComposite;
 	}
-	@Override
-	protected String getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
-		//todo
-		return null;
-	}
 	
 	private void updateEnabled() {
 		WizardCardComposite wizardCardComposite = this.getMainComposite();

@@ -64,6 +64,11 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogCom
 		this.getMainComposite().addCard( this.uploadPage );
 	}
 	
+	@Override
+	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return null;
+	}
+	
 	public static void main( String[] args ) {
 		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
 		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();

@@ -256,6 +256,41 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 			return this.cancelOperation;
 		}
 	}
+
+	private static class InternalErrorValue extends StringValue {
+		private final Key key;
+		public InternalErrorValue( Key key ) {
+			super( java.util.UUID.fromString( "f53f9c5b-1ab0-4eb5-ac4f-7312a32d240e" ) );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	private static class InternalWarningValue extends StringValue {
+		private final Key key;
+		public InternalWarningValue( Key key ) {
+			super( java.util.UUID.fromString( "f53f9c5b-1ab0-4eb5-ac4f-7312a32d240e" ) );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	
+	private java.util.Map<Key,InternalErrorValue> mapKeyToErrorValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalWarningValue> mapKeyToWarningValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	protected StringValue createErrorValue( Key key ) {
+		InternalErrorValue rv = new InternalErrorValue( key );
+		this.mapKeyToErrorValue.put( key, rv );
+		return rv;
+	}
+	protected StringValue createWarningValue( Key key ) {
+		InternalWarningValue rv = new InternalWarningValue( key );
+		this.mapKeyToWarningValue.put( key, rv );
+		return rv;
+	}
+
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
@@ -288,13 +323,13 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 		return rv;
 	}
 
-	protected abstract String getExplanation( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step );
 	protected void updateExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String explanation;
 		if( step != null ) {
-			explanation = this.getExplanation( step );
-			if( explanation != null ) {
-				//pass
+			StringValue stringValue = this.getExplanation( step );
+			if( stringValue != null ) {
+				explanation = stringValue.getText();
 			} else {
 				explanation = NULL_EXPLANATION;
 			}
