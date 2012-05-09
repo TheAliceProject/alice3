@@ -232,9 +232,6 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		if( this.sgScalable != null ) {
 			this.sgScalable.scale.setValue( new edu.cmu.cs.dennisc.math.Dimension3( scale ) );
 		} else {
-			edu.cmu.cs.dennisc.math.Dimension3 prevScale = this.getScale();
-			edu.cmu.cs.dennisc.math.Dimension3 axis = edu.cmu.cs.dennisc.math.Dimension3.createDivision( scale, prevScale );
-			
 			edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createZero();
 			m.right.x = scale.x;
 			m.up.y = scale.y;
@@ -242,11 +239,9 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
 				sgVisual.scale.setValue( m );
 			}
-
 			for( JointImp jointImp : this.mapIdToJoint.values() ) {
-				//todo?
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt = jointImp.getLocalTransformation();
-				lt.translation.multiply( axis );
+				lt.translation.setToMultiplication( jointImp.getOriginalTransformation().translation, scale );
 				jointImp.setLocalTransformation( lt );
 			}
 		}
