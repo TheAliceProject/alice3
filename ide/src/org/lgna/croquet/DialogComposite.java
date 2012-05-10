@@ -199,8 +199,10 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
 	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+		this.handlePreActivation();
 	}
 	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+		this.handlePostDeactivation();
 	}
 	protected void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
 	}

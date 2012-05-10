@@ -154,6 +154,23 @@ public abstract class WizardDialogMainComposite extends GatedCommitMainComposite
 			assert this.controlsComposite != null : this;
 			return this.controlsComposite;
 		}
+		private void updateEnabled() {
+			WizardCardComposite wizardCardComposite = this.getMainComposite().getCardComposite();
+			this.getControlsComposite().nextOperation.setEnabled( wizardCardComposite.isNextPageAvailable() );
+			this.getControlsComposite().prevOperation.setEnabled( wizardCardComposite.isPrevPageAvailable() );
+		}
+		@Override
+		public void handleFiredEvent( org.lgna.croquet.history.event.Event< ? > event ) {
+			super.handleFiredEvent( event );
+			this.updateEnabled();
+		}
+		@Override
+		protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+			WizardCardComposite wizardCardComposite = this.getMainComposite().getCardComposite();
+			wizardCardComposite.setIndex( 0 );
+			this.updateEnabled();
+			super.handlePreShowDialog( node );
+		}
 	}
 
 	private final WizardDialogComposite gatedCommitDialogComposite;
@@ -187,22 +204,14 @@ public abstract class WizardDialogMainComposite extends GatedCommitMainComposite
 	public GatedCommitDialogComposite getGatedCommitDialogComposite() {
 		return this.gatedCommitDialogComposite;
 	}
-	
-//	private void updateEnabled() {
-//		WizardCardComposite wizardCardComposite = this.getWizardCardComposite();
-//		this.getControlsComposite().nextOperation.setEnabled( wizardCardComposite.isNextPageAvailable() );
-//		this.getControlsComposite().prevOperation.setEnabled( wizardCardComposite.isPrevPageAvailable() );
-//	}
-//	@Override
-//	public void handleFiredEvent( org.lgna.croquet.history.event.Event< ? > event ) {
-//		super.handleFiredEvent( event );
-//		this.updateEnabled();
-//	}
-//	@Override
-//	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
-//		WizardCardComposite wizardCardComposite = this.getWizardCardComposite();
-//		wizardCardComposite.setIndex( 0 );
-//		this.updateEnabled();
-//		super.handlePreShowDialog( node );
-//	}
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.cardComposite.handlePreActivation();
+	}
+	@Override
+	public void handlePostDeactivation() {
+		this.cardComposite.handlePostDeactivation();
+		super.handlePostDeactivation();
+	}
 }

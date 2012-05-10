@@ -40,50 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.videoencode;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMainComposite {
-	private static class SingletonHolder {
-		private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
+public class ToggleButton extends BooleanStateButton<javax.swing.JToggleButton> {
+	public ToggleButton( org.lgna.croquet.BooleanState model ) {
+		super( model );
 	}
-	public static VideoEncodeWizardComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final RecordEventsPage recordEventsPage = new RecordEventsPage();
-	private final CaptureImagesPage captureImagesPage = new CaptureImagesPage();
-	private final UploadPage uploadPage = new UploadPage();
-	private VideoEncodeWizardComposite() {
-		super( java.util.UUID.fromString( "cc531529-314d-457c-bb30-d707dfd2b8d8" ), org.alice.ide.IDE.EXPORT_GROUP );
-		this.addPage( this.recordEventsPage );
-		this.addPage( this.captureImagesPage );
-		this.addPage( this.uploadPage );
-	}
-	
 	@Override
-	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
+	protected javax.swing.JToggleButton createAwtComponent() {
+		return new javax.swing.JToggleButton();
 	}
-	
-	public static void main( String[] args ) {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			try {
-				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-//				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
-		}
-		
-		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "zh", "TW" ) );
-		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
-		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
-		composite.getGatedCommitDialogComposite().getOperation().fire();
-		System.exit( 0 );
-	}
+
 }

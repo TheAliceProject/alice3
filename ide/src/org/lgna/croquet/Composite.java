@@ -200,7 +200,14 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
 			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
 			//todo
-			booleanState.setTextForBothTrueAndFalse( this.getLocalizedText( key.getLocalizationKey() ) );
+			String trueAndFalseText = this.findLocalizedText( key.getLocalizationKey(), Composite.class );
+			if( trueAndFalseText != null ) {
+				booleanState.setTextForBothTrueAndFalse( trueAndFalseText );
+			} else {
+				String trueText = this.findLocalizedText( key.getLocalizationKey() + ".true", Composite.class );
+				String falseText = this.findLocalizedText( key.getLocalizationKey() + ".false", Composite.class );
+				booleanState.setTextForTrueAndTextForFalse( trueText, falseText );
+			}
 		}
 		for( Key key : this.mapKeyToActionOperation.keySet() ) {
 			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );

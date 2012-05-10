@@ -249,12 +249,6 @@ public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComp
 				}
 			}
 			this.cancelOperation.setName( cancelText );
-
-			for( java.util.Map.Entry entry : javax.swing.UIManager.getLookAndFeelDefaults().entrySet() ) {
-//				if( entry.getValue() instanceof String ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( entry.getKey(), entry.getValue() );
-//				}
-			}
 		}
 		@Override
 		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
