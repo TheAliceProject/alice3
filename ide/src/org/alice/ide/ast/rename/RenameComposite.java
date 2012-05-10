@@ -40,50 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.videoencode;
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMainComposite {
-	private static class SingletonHolder {
-		private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
+public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainComposite<org.lgna.croquet.components.BorderPanel> {
+	private final org.lgna.croquet.StringValue nameLabel = this.createStringValue( this.createKey( "nameLabel" ) );
+	private final org.lgna.croquet.StringState nameState = this.createStringState( "", this.createKey( "nameState" ) );
+	public RenameComposite( java.util.UUID migrationId ) {
+		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 	}
-	public static VideoEncodeWizardComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final RecordEventsPage recordEventsPage = new RecordEventsPage();
-	private final CaptureImagesPage captureImagesPage = new CaptureImagesPage();
-	private final UploadPage uploadPage = new UploadPage();
-	private VideoEncodeWizardComposite() {
-		super( java.util.UUID.fromString( "cc531529-314d-457c-bb30-d707dfd2b8d8" ), org.alice.ide.IDE.EXPORT_GROUP );
-		this.addPage( this.recordEventsPage );
-		this.addPage( this.captureImagesPage );
-		this.addPage( this.uploadPage );
-	}
-	
 	@Override
-	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep step ) {
 		return null;
 	}
-	
-	public static void main( String[] args ) {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			try {
-				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-//				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
-		}
-		
-		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "zh", "TW" ) );
-		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
-		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
-		composite.getGatedCommitDialogComposite().getOperation().fire();
-		System.exit( 0 );
+	protected abstract java.awt.Color getViewBackgroundColor();
+	@Override
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( this );
+		rv.addComponent( this.nameLabel.createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		rv.addComponent( this.nameState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
+		rv.setBackgroundColor( this.getViewBackgroundColor() );
+		return rv;
 	}
 }

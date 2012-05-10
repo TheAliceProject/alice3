@@ -51,7 +51,12 @@ public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JText
 	}
 	@Override
 	protected javax.swing.JTextField createAwtComponent() {
-		javax.swing.JTextField rv = new javax.swing.JTextField();
+		javax.swing.JTextField rv = new javax.swing.JTextField() {
+			@Override
+			public java.awt.Color getBackground() {
+				return getDesiredBackgroundColor( this.getParent() );
+			}
+		};
 		this.initializeJComponent( rv );
 		return rv;
 	}

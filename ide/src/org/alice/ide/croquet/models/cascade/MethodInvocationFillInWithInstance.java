@@ -40,50 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.videoencode;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMainComposite {
-	private static class SingletonHolder {
-		private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
-	}
-	public static VideoEncodeWizardComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final RecordEventsPage recordEventsPage = new RecordEventsPage();
-	private final CaptureImagesPage captureImagesPage = new CaptureImagesPage();
-	private final UploadPage uploadPage = new UploadPage();
-	private VideoEncodeWizardComposite() {
-		super( java.util.UUID.fromString( "cc531529-314d-457c-bb30-d707dfd2b8d8" ), org.alice.ide.IDE.EXPORT_GROUP );
-		this.addPage( this.recordEventsPage );
-		this.addPage( this.captureImagesPage );
-		this.addPage( this.uploadPage );
-	}
-	
-	@Override
-	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
-	}
-	
-	public static void main( String[] args ) {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			try {
-				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-//				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
+public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.MethodInvocation > {
+	private final org.lgna.project.ast.MethodInvocation transientValue;
+	public MethodInvocationFillInWithInstance( org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "8f3d3ba6-7c5f-411d-b3a8-432a5216e9eb" ) );
+		org.lgna.project.ast.AbstractType<?,?,?> type = method.getDeclaringType();
+		this.addBlank( CascadeManager.getBlankForType( type ) );
+		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( new org.alice.ide.ast.EmptyExpression( type ), method );
+		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
+			ParameterBlank parameterBlank = ParameterBlank.getInstance( parameter );
+			this.addBlank( parameterBlank );
 		}
-		
-		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "zh", "TW" ) );
-		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
-		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
-		composite.getGatedCommitDialogComposite().getOperation().fire();
-		System.exit( 0 );
+	}
+	@Override
+	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
+		org.lgna.project.ast.Expression[] argumentExpressions = new org.lgna.project.ast.Expression[ expressions.length - 1 ];
+		System.arraycopy( expressions, 0, argumentExpressions, 0, argumentExpressions.length );
+		return org.lgna.project.ast.AstUtilities.createMethodInvocation( expressions[ 0 ], this.transientValue.method.getValue(), argumentExpressions );
+	}
+	@Override
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
+		return this.transientValue;
 	}
 }

@@ -65,7 +65,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	private static class InternalStringValue extends StringValue {
 		private final Key key;
 		public InternalStringValue( Key key ) {
-			super( java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ) );
+			super( java.util.UUID.fromString( "142b66a2-0b95-42d0-8ea4-a22a79c8ff8c" ) );
 			this.key = key;
 		}
 		@Override
@@ -195,15 +195,23 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
 			InternalStringValue stringValue = this.mapKeyToStringValue.get( key );
-			stringValue.setText( this.getLocalizedText( key.getLocalizationKey() ) );
+			stringValue.setText( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
 		}
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
 			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
-			booleanState.setTextForBothTrueAndFalse( this.getLocalizedText( key.getLocalizationKey() ) );
+			//todo
+			String trueAndFalseText = this.findLocalizedText( key.getLocalizationKey(), Composite.class );
+			if( trueAndFalseText != null ) {
+				booleanState.setTextForBothTrueAndFalse( trueAndFalseText );
+			} else {
+				String trueText = this.findLocalizedText( key.getLocalizationKey() + ".true", Composite.class );
+				String falseText = this.findLocalizedText( key.getLocalizationKey() + ".false", Composite.class );
+				booleanState.setTextForTrueAndTextForFalse( trueText, falseText );
+			}
 		}
 		for( Key key : this.mapKeyToActionOperation.keySet() ) {
 			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
-			operation.setName( this.getLocalizedText( key.getLocalizationKey() ) );
+			operation.setName( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
 		}
 	}
 	public boolean contains( Model model ) {

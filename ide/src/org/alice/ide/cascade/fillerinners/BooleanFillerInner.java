@@ -110,6 +110,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 			for( org.lgna.project.ast.AbstractType< ?,?,? > type : this.relationalTypes ) {
 				rv.add( new org.alice.ide.croquet.models.cascade.RelationalObjectCascadeMenu( type ) );
 			}
+			rv.add( org.alice.ide.croquet.models.cascade.string.StringComparisonCascadeMenu.getInstance() );
 		}
  		return rv;
 	}

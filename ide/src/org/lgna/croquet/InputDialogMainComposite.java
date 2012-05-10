@@ -40,50 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.croquet;
 
-package org.alice.stageide.videoencode;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMainComposite {
-	private static class SingletonHolder {
-		private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
-	}
-	public static VideoEncodeWizardComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final RecordEventsPage recordEventsPage = new RecordEventsPage();
-	private final CaptureImagesPage captureImagesPage = new CaptureImagesPage();
-	private final UploadPage uploadPage = new UploadPage();
-	private VideoEncodeWizardComposite() {
-		super( java.util.UUID.fromString( "cc531529-314d-457c-bb30-d707dfd2b8d8" ), org.alice.ide.IDE.EXPORT_GROUP );
-		this.addPage( this.recordEventsPage );
-		this.addPage( this.captureImagesPage );
-		this.addPage( this.uploadPage );
-	}
-	
-	@Override
-	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
-	}
-	
-	public static void main( String[] args ) {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			try {
-				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-//				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
+public abstract class InputDialogMainComposite<V extends org.lgna.croquet.components.View<?,?>> extends GatedCommitMainComposite<V> {
+	private static class InternalControlsComposite extends GatedCommitDialogComposite.ControlsComposite {
+		public InternalControlsComposite( InternalInputDialogComposite composite ) {
+			super( java.util.UUID.fromString( "d36cd73f-20dd-45ed-8151-163c44033f8b" ), composite );
 		}
-		
-		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "zh", "TW" ) );
-		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
-		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
-		composite.getGatedCommitDialogComposite().getOperation().fire();
-		System.exit( 0 );
+		@Override
+		protected String getCommitUiKey() {
+			return "OptionPane.okButtonText";
+		}
+		@Override
+		protected String getDefaultCommitText() {
+			return "OK";
+		}
+		@Override
+		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+			controlLine.addComponent( leadingOkCancelButton );
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+			controlLine.addComponent( trailingOkCancelButton );
+		}
+	}
+
+	private static class InternalInputDialogComposite extends GatedCommitDialogComposite<InputDialogMainComposite,InternalControlsComposite> {
+		private final InternalControlsComposite controlsComposite = new InternalControlsComposite( this );
+		public InternalInputDialogComposite( Group operationGroup, InputDialogMainComposite<?> mainComposite ) {
+			super( java.util.UUID.fromString( "d98ddc2f-b344-4b38-b4dd-e55a7b703054" ), operationGroup, mainComposite );
+		}
+		@Override
+		protected InternalControlsComposite getControlsComposite() {
+			assert this.controlsComposite != null : this;
+			return this.controlsComposite;
+		}
+	}
+
+	private final InternalInputDialogComposite gatedCommitDialogComposite;
+	public InputDialogMainComposite( java.util.UUID migrationId, Group operationGroup ) {
+		super( migrationId );
+		this.gatedCommitDialogComposite = new InternalInputDialogComposite( operationGroup, this );
+	}
+	@Override
+	public GatedCommitDialogComposite getGatedCommitDialogComposite() {
+		return this.gatedCommitDialogComposite;
 	}
 }

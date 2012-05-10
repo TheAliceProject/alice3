@@ -40,32 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.croquet.models.cascade.string;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogComposite extends GatedCommitDialogComposite {
-	private static class InputDialogControlsComposite extends ControlsComposite {
-		public InputDialogControlsComposite( InputDialogComposite composite ) {
-			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
-		}
-		@Override
-		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
-			controlLine.addComponent( leadingOkCancelButton );
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
-			controlLine.addComponent( trailingOkCancelButton );
-		}
+public class StringComparisonCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.MethodInvocation > {
+	private static class SingletonHolder {
+		private static StringComparisonCascadeMenu instance = new StringComparisonCascadeMenu();
 	}
-	private final InputDialogControlsComposite controlsComposite = new InputDialogControlsComposite( this );
-	public InputDialogComposite( java.util.UUID id, Group operationGroup, Composite<?> mainComposite ) {
-		super( id, operationGroup, mainComposite );
+	public static StringComparisonCascadeMenu getInstance() {
+		return SingletonHolder.instance;
+	}
+	private StringComparisonCascadeMenu() {
+		super( java.util.UUID.fromString( "bcf7f58d-3431-4c6c-820c-55dc31b5d765" ) );
 	}
 	@Override
-	protected org.lgna.croquet.GatedCommitDialogComposite.ControlsComposite getControlsComposite() {
-		assert this.controlsComposite != null : this;
-		return this.controlsComposite;
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.MethodInvocation > step ) {
+		//rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equals", Object.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "contentEquals", CharSequence.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equalsIgnoreCase", String.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "startsWith", String.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "endsWith", String.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "contains", CharSequence.class ) ) );
+		return rv;
 	}
 }
