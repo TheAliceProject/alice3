@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC extends GatedCommitDialogComposite.ControlsComposite > extends DialogComposite< org.lgna.croquet.components.BorderPanel > {
+public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComposite< ? >, CC extends GatedCommitDialogComposite.ControlsComposite > extends DialogComposite< org.lgna.croquet.components.BorderPanel > {
 	private static final org.lgna.croquet.history.Step.Key< Boolean > IS_COMPLETED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "GatedCommitDialogComposite.IS_COMPLETED_KEY" );
 
 	private static final String NULL_EXPLANATION = "good to go";
@@ -210,6 +210,56 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 			this.gatedCommitDialogComposite = gatedCommitDialogComposite;
 			this.completeButton = this.getCompleteOperation().createButton();
 		}
+		
+		protected abstract String getDefaultCommitText();
+		protected abstract String getCommitUiKey();
+		protected String getCancelUiKey() {
+			return "OptionPane.cancelButtonText";
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+
+			java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
+			
+			String commitText = this.findLocalizedText( "commit", GatedCommitMainComposite.class );
+			if( commitText != null ) {
+				//pass
+			} else {
+				String commitUiKey = this.getCommitUiKey();
+				if( commitUiKey != null ) {
+					commitText = javax.swing.UIManager.getString( commitUiKey, locale );
+				}
+				if( commitText != null ) {
+					//pass
+				} else {
+					commitText = this.getDefaultCommitText();
+				}
+			}
+			this.completeOperation.setName( commitText );
+			String cancelText = this.findLocalizedText( "cancel", GatedCommitMainComposite.class );
+			if( cancelText != null ) {
+				//pass
+			} else {
+				cancelText = javax.swing.UIManager.getString( "OptionPane.cancelButtonText", locale );
+				if( commitText != null ) {
+					//pass
+				} else {
+					commitText = "Cancel";
+				}
+			}
+			this.cancelOperation.setName( cancelText );
+
+			for( java.util.Map.Entry entry : javax.swing.UIManager.getLookAndFeelDefaults().entrySet() ) {
+//				if( entry.getValue() instanceof String ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( entry.getKey(), entry.getValue() );
+//				}
+			}
+		}
+		@Override
+		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
+			return this.getGatedCommitDialogComposite().getClassUsedForLocalization();
+		}
 		public GatedCommitDialogComposite getGatedCommitDialogComposite() {
 			return this.gatedCommitDialogComposite;
 		}
@@ -318,8 +368,6 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 			InternalWarningValue stringValue = this.mapKeyToWarningValue.get( key );
 			stringValue.setText( this.getLocalizedText( key.getLocalizationKey() ) );
 		}
-		this.getControlsComposite().completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogComposite.class ) );
-		this.getControlsComposite().cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogComposite.class ) );
 	}
 	protected abstract CC getControlsComposite();
 	@Override
@@ -330,8 +378,13 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 		rv.setBackgroundColor( this.mainComposite.getView().getBackgroundColor() );
 		return rv;
 	}
-
-	protected abstract StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step );
+	@Override
+	protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
+		return this.getMainComposite().getClassUsedForLocalization();
+	}
+	private StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return this.getMainComposite().getExplanation( step );
+	}
 	protected void updateExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String explanation;
 		if( step != null ) {
@@ -376,5 +429,17 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
 		node.removeListener( this.listener );
 		super.handlePostHideDialog( node );
+	}
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.mainComposite.handlePreActivation();
+		this.getControlsComposite().handlePreActivation();
+	}
+	@Override
+	public void handlePostDeactivation() {
+		this.mainComposite.handlePostDeactivation();
+		this.getControlsComposite().handlePostDeactivation();
+		super.handlePostDeactivation();
 	}
 }

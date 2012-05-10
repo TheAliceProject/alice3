@@ -40,47 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.declarationseditor.type.components;
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod > {
-	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation operation ) {
-		super( model, operation );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserMethod item ) {
-		return org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton();
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserMethod item ) {
-		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( item, NAME_FONT_SCALE );
-		
-		org.lgna.croquet.components.JComponent< ? > component;
-		if( item.isProcedure() ) {
-			component = nameLabel;
+public class RenameMethodComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserMethod> {
+	private static java.util.Map< org.lgna.project.ast.UserMethod, RenameMethodComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameMethodComposite getInstance( org.lgna.project.ast.UserMethod method ) {
+		assert method != null;
+		RenameMethodComposite rv = map.get( method );
+		if( rv != null ) {
 			//pass
 		} else {
-			component = new org.lgna.croquet.components.LineAxisPanel( 
-					org.alice.ide.common.TypeComponent.createInstance( item.getReturnType() ),
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-					nameLabel
-			);
+			rv = new RenameMethodComposite( method );
+			map.put( method, rv );
 		}
-		return component;
+		return rv;
 	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserMethod item ) {
-		if( item.isSignatureLocked.getValue() ) { //todo: isOverride
-			return null;
-		} else {
-			return new org.lgna.croquet.components.LineAxisPanel(
-					org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton(),
-					org.alice.ide.ast.rename.RenameMethodComposite.getInstance( item ).getGatedCommitDialogComposite().getOperation().createButton(),
-					org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton()
-			);
-		}
+	private RenameMethodComposite( org.lgna.project.ast.UserMethod method ) {
+		super( java.util.UUID.fromString( "5ce5b309-8163-437b-b5ed-c1fbdd6cd763" ), method );
 	}
 }

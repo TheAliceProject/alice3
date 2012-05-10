@@ -124,7 +124,7 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 		}
 		@Override
 		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
-			return this.composite.getClass();
+			return this.composite.getClassUsedForLocalization();
 		}
 		@Override
 		protected void initialize() {

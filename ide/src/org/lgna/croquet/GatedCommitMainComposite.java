@@ -40,32 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogComposite extends GatedCommitDialogComposite {
-	private static class InputDialogControlsComposite extends ControlsComposite {
-		public InputDialogControlsComposite( InputDialogComposite composite ) {
-			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
-		}
-		@Override
-		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
-			controlLine.addComponent( leadingOkCancelButton );
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
-			controlLine.addComponent( trailingOkCancelButton );
-		}
+public abstract class GatedCommitMainComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+	public GatedCommitMainComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
-	private final InputDialogControlsComposite controlsComposite = new InputDialogControlsComposite( this );
-	public InputDialogComposite( java.util.UUID id, Group operationGroup, Composite<?> mainComposite ) {
-		super( id, operationGroup, mainComposite );
-	}
-	@Override
-	protected org.lgna.croquet.GatedCommitDialogComposite.ControlsComposite getControlsComposite() {
-		assert this.controlsComposite != null : this;
-		return this.controlsComposite;
-	}
+	protected abstract StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step );
+	public abstract GatedCommitDialogComposite getGatedCommitDialogComposite();
 }

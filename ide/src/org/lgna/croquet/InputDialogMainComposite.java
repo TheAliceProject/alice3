@@ -40,47 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.croquet;
 
-package org.alice.ide.declarationseditor.type.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod > {
-	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation operation ) {
-		super( model, operation );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserMethod item ) {
-		return org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton();
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserMethod item ) {
-		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( item, NAME_FONT_SCALE );
-		
-		org.lgna.croquet.components.JComponent< ? > component;
-		if( item.isProcedure() ) {
-			component = nameLabel;
-			//pass
-		} else {
-			component = new org.lgna.croquet.components.LineAxisPanel( 
-					org.alice.ide.common.TypeComponent.createInstance( item.getReturnType() ),
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-					nameLabel
-			);
+public abstract class InputDialogMainComposite<V extends org.lgna.croquet.components.View<?,?>> extends GatedCommitMainComposite<V> {
+	private static class InternalControlsComposite extends GatedCommitDialogComposite.ControlsComposite {
+		public InternalControlsComposite( InternalInputDialogComposite composite ) {
+			super( java.util.UUID.fromString( "d36cd73f-20dd-45ed-8151-163c44033f8b" ), composite );
 		}
-		return component;
+		@Override
+		protected String getCommitUiKey() {
+			return "OptionPane.okButtonText";
+		}
+		@Override
+		protected String getDefaultCommitText() {
+			return "OK";
+		}
+		@Override
+		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+			controlLine.addComponent( leadingOkCancelButton );
+			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
+			controlLine.addComponent( trailingOkCancelButton );
+		}
+	}
+
+	private static class InternalInputDialogComposite extends GatedCommitDialogComposite<InputDialogMainComposite,InternalControlsComposite> {
+		private final InternalControlsComposite controlsComposite = new InternalControlsComposite( this );
+		public InternalInputDialogComposite( Group operationGroup, InputDialogMainComposite<?> mainComposite ) {
+			super( java.util.UUID.fromString( "d98ddc2f-b344-4b38-b4dd-e55a7b703054" ), operationGroup, mainComposite );
+		}
+		@Override
+		protected InternalControlsComposite getControlsComposite() {
+			assert this.controlsComposite != null : this;
+			return this.controlsComposite;
+		}
+	}
+
+	private final InternalInputDialogComposite gatedCommitDialogComposite;
+	public InputDialogMainComposite( java.util.UUID migrationId, Group operationGroup ) {
+		super( migrationId );
+		this.gatedCommitDialogComposite = new InternalInputDialogComposite( operationGroup, this );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserMethod item ) {
-		if( item.isSignatureLocked.getValue() ) { //todo: isOverride
-			return null;
-		} else {
-			return new org.lgna.croquet.components.LineAxisPanel(
-					org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton(),
-					org.alice.ide.ast.rename.RenameMethodComposite.getInstance( item ).getGatedCommitDialogComposite().getOperation().createButton(),
-					org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton()
-			);
-		}
+	public GatedCommitDialogComposite getGatedCommitDialogComposite() {
+		return this.gatedCommitDialogComposite;
 	}
 }

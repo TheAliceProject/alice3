@@ -40,47 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.declarationseditor.type.components;
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMethod > {
-	public MethodList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserMethod > model, org.lgna.croquet.Operation operation ) {
-		super( model, operation );
+public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainComposite {
+	private final org.lgna.croquet.StringValue nameLabel = this.createStringValue( this.createKey( "nameLabel" ) );
+	public RenameComposite( java.util.UUID migrationId ) {
+		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserMethod item ) {
-		return org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton();
+	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep step ) {
+		return null;
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserMethod item ) {
-		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( item, NAME_FONT_SCALE );
-		
-		org.lgna.croquet.components.JComponent< ? > component;
-		if( item.isProcedure() ) {
-			component = nameLabel;
-			//pass
-		} else {
-			component = new org.lgna.croquet.components.LineAxisPanel( 
-					org.alice.ide.common.TypeComponent.createInstance( item.getReturnType() ),
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-					nameLabel
-			);
-		}
-		return component;
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserMethod item ) {
-		if( item.isSignatureLocked.getValue() ) { //todo: isOverride
-			return null;
-		} else {
-			return new org.lgna.croquet.components.LineAxisPanel(
-					org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton(),
-					org.alice.ide.ast.rename.RenameMethodComposite.getInstance( item ).getGatedCommitDialogComposite().getOperation().createButton(),
-					org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton()
-			);
-		}
+	protected org.lgna.croquet.components.View createView() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( this );
+		rv.addComponent( this.nameLabel.createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		return rv;
 	}
 }
