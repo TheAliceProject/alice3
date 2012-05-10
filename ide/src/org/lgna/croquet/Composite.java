@@ -195,15 +195,16 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
 			InternalStringValue stringValue = this.mapKeyToStringValue.get( key );
-			stringValue.setText( this.getLocalizedText( key.getLocalizationKey() ) );
+			stringValue.setText( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
 		}
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
 			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
+			//todo
 			booleanState.setTextForBothTrueAndFalse( this.getLocalizedText( key.getLocalizationKey() ) );
 		}
 		for( Key key : this.mapKeyToActionOperation.keySet() ) {
 			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
-			operation.setName( this.getLocalizedText( key.getLocalizationKey() ) );
+			operation.setName( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
 		}
 	}
 	public boolean contains( Model model ) {

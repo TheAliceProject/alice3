@@ -45,8 +45,9 @@ package org.alice.ide.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainComposite {
+public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainComposite<org.lgna.croquet.components.BorderPanel> {
 	private final org.lgna.croquet.StringValue nameLabel = this.createStringValue( this.createKey( "nameLabel" ) );
+	private final org.lgna.croquet.StringState nameState = this.createStringState( "", this.createKey( "nameState" ) );
 	public RenameComposite( java.util.UUID migrationId ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 	}
@@ -55,9 +56,13 @@ public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainCo
 		return null;
 	}
 	@Override
-	protected org.lgna.croquet.components.View createView() {
+	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( this );
-		rv.addComponent( this.nameLabel.createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.addComponent( new org.lgna.croquet.components.LineAxisPanel( 
+				this.nameLabel.createImmutableTextField(),
+				this.nameState.createTextField() 
+		), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.setBackgroundColor( null );
 		return rv;
 	}
 }

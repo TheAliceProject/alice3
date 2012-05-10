@@ -361,12 +361,12 @@ public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComp
 	protected void localize() {
 		super.localize();
 		for( Key key : this.mapKeyToErrorValue.keySet() ) {
-			InternalErrorValue stringValue = this.mapKeyToErrorValue.get( key );
-			stringValue.setText( this.getLocalizedText( key.getLocalizationKey() ) );
+			InternalErrorValue error = this.mapKeyToErrorValue.get( key );
+			error.setText( this.getLocalizedText( key.getLocalizationKey() ) );
 		}
 		for( Key key : this.mapKeyToWarningValue.keySet() ) {
-			InternalWarningValue stringValue = this.mapKeyToWarningValue.get( key );
-			stringValue.setText( this.getLocalizedText( key.getLocalizationKey() ) );
+			InternalWarningValue warning = this.mapKeyToWarningValue.get( key );
+			warning.setText( this.getLocalizedText( key.getLocalizationKey() ) );
 		}
 	}
 	protected abstract CC getControlsComposite();
