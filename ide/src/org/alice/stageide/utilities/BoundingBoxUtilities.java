@@ -49,7 +49,6 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
 public class BoundingBoxUtilities {
 	

@@ -61,6 +61,11 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 	public AbstractCylinderImp() {
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgCylinder.length, this.sgCylinder.bottomRadius };
+	}
+	
 	protected abstract void setXZ( double xz );
 	protected edu.cmu.cs.dennisc.scenegraph.Cylinder getSgCylinder() {
 		return this.sgCylinder;

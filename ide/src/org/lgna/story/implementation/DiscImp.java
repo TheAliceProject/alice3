@@ -69,6 +69,10 @@ public class DiscImp extends ShapeImp {
 		return this.abstraction;
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgDisc.outerRadius };
+	}
+	@Override
 	public Resizer[] getResizers() {
 		return new Resizer[] { Resizer.XZ_PLANE };
 	}

@@ -50,8 +50,6 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
-
 public class ResizeDragManipulator extends AbstractManipulator
 {
 

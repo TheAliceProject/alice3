@@ -201,19 +201,11 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	
 	@Override
-	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
 		if( this.sgScalable != null ) {
-			this.sgScalable.scale.addPropertyListener( listener );
+			return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgScalable.scale };
 		} else {
-			this.visualData.getSgVisuals()[ 0 ].scale.addPropertyListener( listener );
-		}
-	}
-	@Override
-	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
-		if( this.sgScalable != null ) {
-			this.sgScalable.scale.removePropertyListener( listener );
-		} else {
-			this.visualData.getSgVisuals()[ 0 ].scale.removePropertyListener( listener );
+			return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.visualData.getSgVisuals()[ 0 ].scale };
 		}
 	}
 	

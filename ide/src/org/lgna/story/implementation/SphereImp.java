@@ -68,6 +68,10 @@ public class SphereImp extends ShapeImp {
 		return this.abstraction;
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgSphere.radius };
+	}
+	@Override
 	public Resizer[] getResizers() {
 		return new Resizer[] { Resizer.UNIFORM };
 	}

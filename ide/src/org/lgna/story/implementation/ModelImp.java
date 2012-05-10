@@ -138,8 +138,17 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 //		}
 //	}
 
-	public abstract void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
-	public abstract void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
+	protected abstract edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties();
+	public final void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getScaleProperties() ) {
+			property.addPropertyListener( listener );
+		}
+	}
+	public final void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getScaleProperties() ) {
+			property.removePropertyListener( listener );
+		}
+	}
 	public abstract edu.cmu.cs.dennisc.math.Dimension3 getScale();
 	public abstract void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale );
 	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {

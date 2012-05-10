@@ -42,8 +42,6 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.scale;
 
-import org.alice.interact.manipulator.Scalable;
-
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
