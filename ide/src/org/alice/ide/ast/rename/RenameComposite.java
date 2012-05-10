@@ -59,10 +59,9 @@ public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainCo
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( this );
-		rv.addComponent( new org.lgna.croquet.components.LineAxisPanel( 
-				this.nameLabel.createImmutableTextField(),
-				this.nameState.createTextField() 
-		), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.addComponent( this.nameLabel.createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		rv.addComponent( this.nameState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
 		rv.setBackgroundColor( this.getViewBackgroundColor() );
 		return rv;
 	}
