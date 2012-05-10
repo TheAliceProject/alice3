@@ -49,11 +49,6 @@ public class Matrix3x3Property extends edu.cmu.cs.dennisc.property.InstancePrope
 	public Matrix3x3Property( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
 		super( owner, value );
 	}
-	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
-		assert value != null;
-		assert value.isNaN() == false;  
-		super.setValue( owner, value );
-	}
 	public edu.cmu.cs.dennisc.math.Matrix3x3 getCopy( edu.cmu.cs.dennisc.math.Matrix3x3 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		rv.setValue( getValue( owner ) );
 		return rv;

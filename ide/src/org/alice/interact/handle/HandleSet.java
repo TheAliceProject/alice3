@@ -75,6 +75,7 @@ public class HandleSet extends BitSet
 		RESIZE_AXIS,
 		X_AND_Z_AXIS,
 		X_AND_Y_AXIS,
+		Y_AND_Z_AXIS,
 		CAMERA,
 		ORTHOGRAPHIC_CAMERA,
 		PERSPECTIVE_CAMERA,
