@@ -198,7 +198,7 @@ public abstract class AbstractElement implements Element {
 		return getKeyCode( getLocalizedText( cls, "mnemonic" ) );
 	}
 	protected int getLocalizedMnemonicKey() {
-		return getLocalizedMnemonicKey( this.getClass() );
+		return getLocalizedMnemonicKey( this.getClassUsedForLocalization() );
 	}
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
@@ -234,7 +234,7 @@ public abstract class AbstractElement implements Element {
 		return null;
 	}
 	protected javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke() {
-		return getLocalizedAcceleratorKeyStroke( this.getClass() );
+		return getLocalizedAcceleratorKeyStroke( this.getClassUsedForLocalization() );
 	}
 	
 	protected abstract void localize();
