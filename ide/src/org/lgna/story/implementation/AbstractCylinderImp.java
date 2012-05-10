@@ -89,6 +89,7 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 	}
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
+		assert value > 0.0 : value;
 		if( resizer == Resizer.Y_AXIS ) {
 			this.length.setValue( value );
 		} else if( resizer == Resizer.XZ_PLANE ) {
