@@ -125,20 +125,4 @@ public class ScaleUtilities {
 		return null;
 	}
 	
-	public static edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable t )
-	{
-		Scalable scalable;
-		if (t instanceof Scalable) {
-			scalable = (Scalable)t;
-		}
-		else {
-			scalable = t.getBonusDataFor( Scalable.KEY );
-		}
-		if( scalable != null ) {
-			return edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( scalable.getScale() );
-		}
-		else {
-			return edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( 1.0d, 1.0d, 1.0d );
-		}
-	}
 }

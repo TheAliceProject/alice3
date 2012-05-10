@@ -138,6 +138,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
+			
 			Vector3 desiredHandleValues = new Vector3(0.0d, 0.0d, 0.0d);
 			Point3 max = boundingBox.getMaximum();
 			Point3 min = boundingBox.getMinimum();
@@ -252,7 +253,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 			}
 			else
 			{
-				return this.manipulatedObject;
+				return this.getParentTransformable();
 			}
 		}
 		return this;

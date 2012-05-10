@@ -67,10 +67,10 @@ public class BoundingBoxUtilities {
 				boundingBox = ((JointImp)entityImp).getAxisAlignedMinimumBoundingBox();
 			}
 		}
-		if (boundingBox != null && scaled)
-		{
-			boundingBox.scale(ScaleUtilities.getTransformableScale( sgTransformable ) );
-		}
+//		if (boundingBox != null && scaled)
+//		{
+//			boundingBox.scale(ScaleUtilities.getTransformableScale( sgTransformable ) );
+//		}
 		return boundingBox;
 	}
 	

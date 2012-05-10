@@ -187,13 +187,17 @@ public class HandleManager implements ManipulationListener{
 		else if (handle instanceof LinearScaleHandle) {
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)handle;
 			if (objectPickHint.intersects(PickHint.PickType.RESIZABLE.pickHint())) {
-				Entity entity = PickUtilities.getEntityFromPickedObject(selectedObject);
-				if (entity instanceof org.lgna.story.Disc) {
-					if (scaleHandle.getMovementDescription().direction == MovementDirection.UP || scaleHandle.getMovementDescription().direction == MovementDirection.DOWN) {
-						return false;
+				org.lgna.story.implementation.EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject(selectedObject);
+				if (entityImp instanceof org.lgna.story.implementation.ModelImp) {
+					org.lgna.story.implementation.ModelImp modelImp = (org.lgna.story.implementation.ModelImp)entityImp;
+					org.lgna.story.implementation.ModelImp.Resizer[] resizers = modelImp.getResizers();
+					for (org.lgna.story.implementation.ModelImp.Resizer r : resizers) {
+						if (r == scaleHandle.getResizer()) {
+							return true;
+						}
 					}
 				}
-				else return true;
+				return false;
 			}
 			else {
 				return false;

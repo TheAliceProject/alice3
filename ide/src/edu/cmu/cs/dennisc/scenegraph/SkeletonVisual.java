@@ -122,10 +122,12 @@ public class SkeletonVisual extends Visual {
     
     @Override
     public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
-        if( skeleton.getValue()!= null  ) {
-            skeleton.getValue().getBoundingBox(rv, true);
-        } else {
-            rv.setNaN();
+        if (this.weightedMeshes.getValue() != null) {
+        	for (edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue())
+        	{
+        		edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+        		rv.union(b);
+        	}
         }
         if( this.geometries.getValue() != null) {
         	for (edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue())

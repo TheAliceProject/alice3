@@ -45,6 +45,7 @@ package org.alice.interact.handle;
 import java.awt.Color;
 
 import org.alice.interact.MovementDirection;
+import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -65,6 +66,52 @@ public class LinearScaleHandle extends LinearDragHandle{
 	protected Color4f baseColor;
 	protected Transformable standUpReference = new Transformable();
 	protected boolean applyAlongAxis = false;
+	protected org.lgna.story.implementation.ModelImp.Resizer resizer;
+	
+	
+	public static LinearScaleHandle createFromResizer(org.lgna.story.implementation.ModelImp.Resizer resizer) {
+		LinearScaleHandle toReturn = null;
+		switch (resizer) {
+			case UNIFORM : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP), Color4f.PINK);
+				break;
+			}
+			case X_AXIS : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), Color4f.MAGENTA, true);
+				break;
+			}
+			case Y_AXIS : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.LOCAL), Color4f.YELLOW, true);
+				break;
+			}
+			case Z_AXIS : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL), Color4f.CYAN, true);
+				break;
+			}
+			case XY_PLANE : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_RIGHT, MovementType.LOCAL), Color4f.PINK);
+				break;
+			}
+			case XZ_PLANE : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT_FORWARD, MovementType.LOCAL), Color4f.PINK);
+				break;
+			}
+			case YZ_PLANE : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_FORWARD, MovementType.LOCAL), Color4f.PINK);
+				break;
+			}
+		}
+		toReturn.resizer = resizer;
+		return toReturn;
+	}
+	
 	
 	public LinearScaleHandle( MovementDescription dragDescription, Color4f color )
 	{
@@ -84,6 +131,7 @@ public class LinearScaleHandle extends LinearDragHandle{
 		super(handle);
 		this.baseColor = handle.baseColor;
 		this.applyAlongAxis = handle.applyAlongAxis;
+		this.resizer = handle.resizer;
 		this.initializeAppearance();
 	}
 	
@@ -107,6 +155,11 @@ public class LinearScaleHandle extends LinearDragHandle{
 	protected void createShape(double scale) {
 		this.arrow = new Arrow(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
 		this.arrow.setParent( this );
+	}
+	
+	public org.lgna.story.implementation.ModelImp.Resizer getResizer()
+	{
+		return this.resizer;
 	}
 	
 	protected Vector3 getUniformResizeOffset()
