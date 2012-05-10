@@ -51,7 +51,12 @@ public class ImmutableTextArea extends ImmutableTextComponent<javax.swing.JTextA
 	}
 	@Override
 	protected javax.swing.JTextArea createAwtComponent() {
-		javax.swing.JTextArea rv = new javax.swing.JTextArea();
+		javax.swing.JTextArea rv = new javax.swing.JTextArea() {
+			@Override
+			public java.awt.Color getBackground() {
+				return getDesiredBackgroundColor( this.getParent() );
+			}
+		};
 		this.initializeJComponent( rv );
 		rv.setWrapStyleWord( true );
 		rv.setLineWrap( true );

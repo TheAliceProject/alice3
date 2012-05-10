@@ -55,6 +55,7 @@ public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainCo
 	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep step ) {
 		return null;
 	}
+	protected abstract java.awt.Color getViewBackgroundColor();
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( this );
@@ -62,7 +63,7 @@ public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainCo
 				this.nameLabel.createImmutableTextField(),
 				this.nameState.createTextField() 
 		), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.setBackgroundColor( null );
+		rv.setBackgroundColor( this.getViewBackgroundColor() );
 		return rv;
 	}
 }

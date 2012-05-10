@@ -51,4 +51,8 @@ public abstract class RenameDeclarationComposite< N extends org.lgna.project.ast
 		super( migrationIde );
 		this.declaration = declaration;
 	}
+	@Override
+	protected java.awt.Color getViewBackgroundColor() {
+		return org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( this.declaration );
+	}
 }

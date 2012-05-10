@@ -46,17 +46,28 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextComponent> extends JComponent<J> {
+	protected static java.awt.Color getDesiredBackgroundColor( java.awt.Container awtParent ) {
+		if( awtParent != null ) {
+			if( awtParent.isOpaque() ) {
+				return awtParent.getBackground();
+			} else {
+				return getDesiredBackgroundColor( awtParent.getParent() );
+			}
+		} else {
+			return java.awt.Color.RED;
+		}
+	}
 	private final org.lgna.croquet.StringValue value;
 	public ImmutableTextComponent( org.lgna.croquet.StringValue value ) {
 		this.value = value;
 	}
 	protected void initializeJComponent( javax.swing.text.JTextComponent component ) {
+		//component.setOpaque( false );
 		component.setDocument( this.value.getDocument() );
 		component.setEditable( false );
 		component.setCursor( null );
-		component.setOpaque( false );
 		component.setFocusable( false );
-		component.setBorder( null );
+		component.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		component.setFont( javax.swing.UIManager.getFont( "Label.font" ) );
 	}
 }
