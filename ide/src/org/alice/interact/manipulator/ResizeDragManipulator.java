@@ -57,7 +57,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 	private double initialScale = 1d;
 	private double accumulatedScale = 1d;
 	private static final double RESIZE_SCALE = .005;
-	private static final double MIN_SCALE = .1;
+	public static final double MIN_SCALE = .1;
 	private final org.lgna.story.implementation.ModelImp.Resizer resizer;
 	
 	public ResizeDragManipulator(org.lgna.story.implementation.ModelImp.Resizer resizer) {
