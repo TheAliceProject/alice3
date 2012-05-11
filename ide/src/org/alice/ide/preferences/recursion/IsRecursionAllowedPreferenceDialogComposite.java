@@ -40,19 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.recursion;
+package org.alice.ide.preferences.recursion;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsAccessToRecursionAllowedEnabledState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.PlainDialogComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
 	private static class SingletonHolder {
-		private static IsAccessToRecursionAllowedEnabledState instance = new IsAccessToRecursionAllowedEnabledState();
+		private static IsRecursionAllowedPreferenceDialogComposite instance = new IsRecursionAllowedPreferenceDialogComposite();
 	}
-	public static IsAccessToRecursionAllowedEnabledState getInstance() {
+	public static IsRecursionAllowedPreferenceDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsAccessToRecursionAllowedEnabledState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
+	private final org.lgna.croquet.StringValue descriptionValue = this.createStringValue( this.createKey( "description" ) );
+	private final org.lgna.croquet.StringValue recursiveButtonLabelValue = this.createStringValue( this.createKey( "recursiveButtonLabel" ) );
+	private IsRecursionAllowedPreferenceDialogComposite() {
+		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.UI_STATE_GROUP );
 	}
+	@Override
+	protected org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView createView() {
+		return new org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView( this );
+	}
+	public org.lgna.croquet.StringValue getDescriptionValue() {
+		return this.descriptionValue;
+	}
+	public org.lgna.croquet.StringValue getRecursiveButtonLabelValue() {
+		return this.recursiveButtonLabelValue;
+	}
+//	@Override
+//	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+//		dialog.setSize( 760, 400 );
+//	}
 }

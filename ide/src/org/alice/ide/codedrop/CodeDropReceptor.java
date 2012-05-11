@@ -274,7 +274,7 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 		if( statementListPropertyPane != null ) {
 			final int index = statementListPropertyPane.calculateIndex( dragSource.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
 			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel ) {
-				if( org.alice.ide.croquet.models.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
+				if( org.alice.ide.preferences.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
 					//pass
 				} else {
 					if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel ) {

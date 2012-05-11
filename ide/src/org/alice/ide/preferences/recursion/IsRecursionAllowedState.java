@@ -40,37 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.ide.preferences.recursion;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextComponent> extends JComponent<J> {
-	protected static java.awt.Color getDesiredBackgroundColor( java.awt.Container awtParent ) {
-		if( awtParent != null ) {
-			if( awtParent.isOpaque() ) {
-				return awtParent.getBackground();
-			} else {
-				return getDesiredBackgroundColor( awtParent.getParent() );
-			}
-		} else {
-			return java.awt.Color.RED;
-		}
+public class IsRecursionAllowedState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+	private static class SingletonHolder {
+		private static IsRecursionAllowedState instance = new IsRecursionAllowedState();
 	}
-	private final org.lgna.croquet.StringValue value;
-	public ImmutableTextComponent( org.lgna.croquet.StringValue value ) {
-		this.value = value;
+	public static IsRecursionAllowedState getInstance() {
+		return SingletonHolder.instance;
 	}
-	protected void initializeJComponent( javax.swing.text.JTextComponent component ) {
-		//component.setOpaque( false );
-		component.setDocument( this.value.getDocument() );
-		component.setEditable( false );
-		component.setCursor( null );
-		component.setFocusable( false );
-		component.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		component.setFont( javax.swing.UIManager.getFont( "Label.font" ) );
-		component.setAlignmentX( 0.0f );
-		String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
-		component.setDisabledTextColor( javax.swing.UIManager.getColor( disabledColorKey ) );
+	private IsRecursionAllowedState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "d3bbfe60-166d-4fa0-a98b-5992998dfca9" ), false );
 	}
 }
