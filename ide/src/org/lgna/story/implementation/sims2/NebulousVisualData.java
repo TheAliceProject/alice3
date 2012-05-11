@@ -53,6 +53,7 @@ public class NebulousVisualData< M extends edu.cmu.cs.dennisc.nebulous.Model> im
 	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance() };
 	public NebulousVisualData( M nebModel ) {
 		this.nebModel = nebModel;
+		this.nebModel.setVisual(sgVisuals[0]);
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebModel } );
 		this.getSgVisuals()[ 0 ].frontFacingAppearance.setValue( sgAppearances[ 0 ] );
 	}
