@@ -54,7 +54,6 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	private RunOperation() {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
-		//java.awt.Toolkit.getDefaultToolkit().setDynamicLayout( false );
 		this.setSmallIcon( new RunIcon() );
 	}
 	
@@ -67,6 +66,8 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 //	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
+	private java.awt.GraphicsDevice[] graphicsDevices = null;
+	
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
 		private int ignoreResizeCount = 0;
 		private int prevWidth;
@@ -81,36 +82,52 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		public void componentMoved( java.awt.event.ComponentEvent e ) {
 		}
 		public void componentResized( java.awt.event.ComponentEvent e ) {
-			java.awt.Component component = e.getComponent();
-			if( component instanceof java.awt.Window ) {
-				if( programContext != null ) {
-					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = programContext.getOnscreenLookingGlass();
-					if( onscreenLookingGlass != null ) {
-						if( this.ignoreResizeCount > 0 ) {
-							//pass
-						} else {
-							this.ignoreResizeCount ++;
-							try {
-								java.awt.Window window = (java.awt.Window)component;
-								int nextWidth = component.getWidth();
-								int nextHeight = component.getHeight();
-								if( ( nextWidth != this.prevWidth ) || ( nextHeight != this.prevHeight ) ) {
-									java.awt.Component lgComponent = onscreenLookingGlass.getAWTComponent();
-									int lgWidth = lgComponent.getWidth();
-									int lgHeight = lgComponent.getHeight();
-									if( Math.abs( nextWidth - this.prevWidth ) > Math.abs( nextHeight - this.prevHeight ) ) { //todo: account for ratio
-										lgHeight = (int)( lgWidth * 9.0 / 16.0 );
-									} else {
-										lgWidth = (int)( lgHeight * 16.0 / 9.0 );
+			if( programContext != null ) {
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = programContext.getOnscreenLookingGlass();
+				if( onscreenLookingGlass != null ) {
+					if( this.ignoreResizeCount > 0 ) {
+						//pass
+					} else {
+						this.ignoreResizeCount ++;
+						try {
+							java.awt.Component component = e.getComponent();
+							if( component instanceof java.awt.Dialog ) {
+								java.awt.Dialog dialog = (java.awt.Dialog)component;
+								if( graphicsDevices != null ) {
+									java.awt.GraphicsDevice graphicsDevice = edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getGraphicsDeviceFor( graphicsDevices, dialog.getLocation() );
+									if( graphicsDevice != null ) {
+										edu.cmu.cs.dennisc.java.util.logging.Logger.outln( graphicsDevice.getDefaultConfiguration().getBounds() );
+										int nextWidth = dialog.getWidth();
+										int nextHeight = dialog.getHeight();
+										if( ( nextWidth != this.prevWidth ) || ( nextHeight != this.prevHeight ) ) {
+											java.awt.Component lgComponent = onscreenLookingGlass.getAWTComponent();
+											int lgPrevWidth = lgComponent.getWidth();
+											int lgPrevHeight = lgComponent.getHeight();
+											int lgNextWidth;
+											int lgNextHeight;
+											if( Math.abs( nextWidth - this.prevWidth ) > Math.abs( nextHeight - this.prevHeight ) ) { //todo: account for ratio
+												lgNextWidth = lgPrevWidth;
+												lgNextHeight = (int)( lgPrevWidth * 9.0 / 16.0 );
+											} else {
+												lgNextWidth = (int)( lgPrevHeight * 16.0 / 9.0 );
+												lgNextHeight = lgPrevHeight;
+											}
+											lgComponent.setPreferredSize( new java.awt.Dimension( lgNextWidth, lgNextHeight ) );
+											dialog.pack();
+											if( graphicsDevice.getDefaultConfiguration().getBounds().contains( dialog.getBounds() ) ) {
+												//pass
+											} else {
+												lgComponent.setPreferredSize( new java.awt.Dimension( lgPrevWidth, lgPrevHeight ) );
+												dialog.pack();
+											}
+											this.prevWidth = dialog.getWidth();
+											this.prevHeight = dialog.getHeight();
+										}
 									}
-									lgComponent.setPreferredSize( new java.awt.Dimension( lgWidth, lgHeight ) );
-									window.pack();
-									this.prevWidth = component.getWidth();
-									this.prevHeight = component.getHeight();
 								}
-							} finally {
-								this.ignoreResizeCount--;
 							}
+						} finally {
+							this.ignoreResizeCount--;
 						}
 					}
 				}
@@ -186,9 +203,12 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		this.isDynamicLayoutActivePrevValue = java.awt.Toolkit.getDefaultToolkit().isDynamicLayoutActive();
+
 		
 		//todo: investigate is this is desired/necessary across platforms
 		if( this.isDynamicLayoutActivePrevValue ) {
+			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
+			this.graphicsDevices = graphicsEnvironment.getScreenDevices();
 			java.awt.Toolkit.getDefaultToolkit().setDynamicLayout( false );
 		}
 		dialog.addComponentListener( this.componentListener );
@@ -209,6 +229,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "releaseContentPane" );
 		step.finish();
+		this.graphicsDevices = null;
 		if( this.isDynamicLayoutActivePrevValue ) {
 			java.awt.Toolkit.getDefaultToolkit().setDynamicLayout( true );
 		}
