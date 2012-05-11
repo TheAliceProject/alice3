@@ -6,5 +6,6 @@ public class MouseClickOnScreenEvent extends MouseClickEvent {
 	}
 	public MouseClickOnScreenEvent( MouseClickEvent e ) {
 		super( e.e, e.scene );
+		this.isPickPerformed = true;
 	}
 }
