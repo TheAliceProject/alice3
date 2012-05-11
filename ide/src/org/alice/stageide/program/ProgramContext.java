@@ -96,6 +96,9 @@ public abstract class ProgramContext {
 	public org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
 		return this.vm;
 	}
+	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		return this.getProgramImp().getOnscreenLookingGlass();
+	}
 
 	private org.alice.ide.ReasonToDisableSomeAmountOfRendering rendering;
 

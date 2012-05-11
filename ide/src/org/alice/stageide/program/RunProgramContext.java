@@ -58,7 +58,7 @@ public class RunProgramContext extends ProgramContext {
 		this.getProgramImp().initializeInAwtContainer( container );
 	}
 	public java.awt.Container getContainer() {
-		return this.getProgramImp().getOnscreenLookingGlass().getAWTComponent().getParent();
+		return this.getOnscreenLookingGlass().getAWTComponent().getParent();
 	}
 	@Override
 	public void cleanUpProgram() {
