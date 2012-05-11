@@ -42,6 +42,9 @@
  */
 package org.alice.ide.croquet.models.recursion;
 
+import org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState;
+import org.alice.ide.preferences.recursion.IsRecursionAllowedState;
+
 class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 	private static final int SPACING = 16;
 	private static final float FONT_SCALE_FACTOR = 1.5f;
@@ -68,7 +71,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 			return new DefaultJPanel() {
 				@Override
 				public boolean contains( int x, int y ) {
-					if( IsAccessToRecursionAllowedEnabledState.getInstance().getValue() ) {
+					if( IsAccessToRecursionPreferenceAllowedState.getInstance().getValue() ) {
 						return super.contains( x, y );
 					} else {
 						return false;
@@ -77,7 +80,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 				@Override
 				public void paint(java.awt.Graphics g) {
 					super.paint(g);
-					if( IsAccessToRecursionAllowedEnabledState.getInstance().getValue() ) {
+					if( IsAccessToRecursionPreferenceAllowedState.getInstance().getValue() ) {
 						//pass
 					} else {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -111,11 +114,11 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
-			IsAccessToRecursionAllowedEnabledState.getInstance().addAndInvokeValueListener( valueObserver );
+			IsAccessToRecursionPreferenceAllowedState.getInstance().addAndInvokeValueListener( valueObserver );
 		}
 		@Override
 		protected void handleUndisplayable() {
-			IsAccessToRecursionAllowedEnabledState.getInstance().removeValueListener( valueObserver );
+			IsAccessToRecursionPreferenceAllowedState.getInstance().removeValueListener( valueObserver );
 			super.handleUndisplayable();
 		}
 	}
@@ -138,7 +141,7 @@ class RecursionPanel extends org.lgna.croquet.components.BorderPanel {
 		hyperlink.setBorder( javax.swing.BorderFactory.createEmptyBorder( SPACING, INDENT, SPACING, 0 ) );
 		
 		
-		org.lgna.croquet.components.CheckBox checkBox = IsAccessToRecursionAllowedEnabledState.getInstance().createCheckBox(); 
+		org.lgna.croquet.components.CheckBox checkBox = IsAccessToRecursionPreferenceAllowedState.getInstance().createCheckBox(); 
 		checkBox.scaleFont( FONT_SCALE_FACTOR );
 
 		

@@ -93,7 +93,7 @@ public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
 		rv.addDividerLocationChangeListener( this.dividerLocationListener );
 		rv.setResizeWeight( 0.0 );
 		//todo
-		rv.setDividerLocation( 300 );
+		rv.setDividerLocation( 400 );
 		return rv;
 	}
 }

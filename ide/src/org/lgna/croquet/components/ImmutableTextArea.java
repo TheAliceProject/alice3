@@ -56,6 +56,10 @@ public class ImmutableTextArea extends ImmutableTextComponent<javax.swing.JTextA
 			public java.awt.Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
+			@Override
+			public void updateUI() {
+				this.setUI( new javax.swing.plaf.basic.BasicTextAreaUI() );
+			}
 		};
 		this.initializeJComponent( rv );
 		rv.setWrapStyleWord( true );

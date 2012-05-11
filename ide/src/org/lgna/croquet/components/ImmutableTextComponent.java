@@ -69,5 +69,8 @@ public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextCom
 		component.setFocusable( false );
 		component.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		component.setFont( javax.swing.UIManager.getFont( "Label.font" ) );
+		component.setAlignmentX( 0.0f );
+		String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
+		component.setDisabledTextColor( javax.swing.UIManager.getColor( disabledColorKey ) );
 	}
 }
