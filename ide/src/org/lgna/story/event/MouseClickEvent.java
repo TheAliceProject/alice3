@@ -55,15 +55,15 @@ import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
 public class MouseClickEvent extends AbstractEvent {
 	protected java.awt.event.MouseEvent e;
 	protected org.lgna.story.Scene scene;
-	private boolean isPickPerformed;
-	private org.lgna.story.Model modelAtMouseLocation;
+	protected boolean isPickPerformed;
+	protected org.lgna.story.Model modelAtMouseLocation;
 	public MouseClickEvent( java.awt.event.MouseEvent e, org.lgna.story.Scene scene ) {
 		this.e = e;
 		this.scene = scene;
 		this.isPickPerformed = false;
 	}
 
-	private synchronized void pickIfNecessary() {
+	protected synchronized void pickIfNecessary() {
 		if( this.isPickPerformed ) {
 			//pass
 		} else {

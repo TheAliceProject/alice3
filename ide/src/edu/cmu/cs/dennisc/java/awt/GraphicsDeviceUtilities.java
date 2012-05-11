@@ -50,6 +50,18 @@ public class GraphicsDeviceUtilities {
 	private GraphicsDeviceUtilities() {
 		throw new AssertionError();
 	}
+	public static java.awt.GraphicsDevice getGraphicsDeviceFor( java.awt.GraphicsDevice[] graphicsDevices, java.awt.Point p ) {
+		for( java.awt.GraphicsDevice graphicsDevice : graphicsDevices ) {
+			if( graphicsDevice.getDefaultConfiguration().getBounds().contains( p ) ) {
+				return graphicsDevice;
+			}
+		}
+		return null;
+	}
+	public static java.awt.GraphicsDevice getGraphicsDeviceFor( java.awt.Point p ) {
+		java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
+		return getGraphicsDeviceFor( graphicsEnvironment.getScreenDevices(), p );
+	}
 	public static java.awt.Rectangle getScreenDeviceDefaultConfigurationBounds( int screenDeviceIndex ) {
 		java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
 		java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
