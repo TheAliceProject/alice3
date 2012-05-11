@@ -74,8 +74,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
 			toggleRecording();
+			recordOperation.setName( ImageRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
 		}
-	}, this.createKey( "record" ) );
+	}, this.createKey( "isRecording.false" ) );
 
 	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
 

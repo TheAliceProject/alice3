@@ -70,7 +70,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
 
-		private boolean isPlaying = false;
+		private boolean isRecording = false;
 
 		public void perform( Transaction transaction, Trigger trigger ) {
 			if( programContext == null ) {
@@ -81,15 +81,15 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 					return;
 				}
 			}
-			if( isPlaying ) {
-				isPlaying = !isPlaying;
-				programContext.getProgramImp().stopAnimator();
-			} else {
-				isPlaying = !isPlaying;
+			isRecording = !isRecording;
+			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + this.isRecording ) );
+			if( isRecording ) {
 				programContext.getProgramImp().startAnimator();
+			} else {
+				programContext.getProgramImp().stopAnimator();
 			}
 		}
-	}, this.createKey( "recordEventsStopToggle" ) );
+	}, this.createKey( "isRecording.false" ) );
 
 
 	private final ActionOperation restartRecording = this.createActionOperation( new Action() {
