@@ -67,8 +67,4 @@ public class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croque
 	public org.lgna.croquet.StringValue getRecursiveButtonLabelValue() {
 		return this.recursiveButtonLabelValue;
 	}
-//	@Override
-//	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-//		dialog.setSize( 760, 400 );
-//	}
 }

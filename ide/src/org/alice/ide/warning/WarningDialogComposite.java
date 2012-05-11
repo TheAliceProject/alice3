@@ -40,24 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.warning;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ShowWarningOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class WarningDialogComposite extends org.lgna.croquet.PlainDialogComposite< org.alice.ide.warning.components.WarningView > {
 	private static class SingletonHolder {
-		private static ShowWarningOperation instance = new ShowWarningOperation();
+		private static WarningDialogComposite instance = new WarningDialogComposite();
 	}
-	public static ShowWarningOperation getInstance() {
+	public static WarningDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ShowWarningOperation() {
-		super( java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" ) );
+	private final org.lgna.croquet.StringValue descriptionValue = this.createStringValue( this.createKey( "description" ) );
+	private WarningDialogComposite() {
+		super( java.util.UUID.randomUUID()/*java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" )*/, org.lgna.croquet.Application.INFORMATION_GROUP );
+	}
+//	@Override
+//	protected void localize() {
+//		super.localize();
+//		StringBuilder sb = new StringBuilder();
+//		sb.append( "WARNING: Alice3 is not for the faint of heart.\n\n" );
+//		sb.append( "Alice3 is currently under development.  We are working very hard to make this dialog box obsolete.\n" );
+//		sb.append( "Thank you for your patience.\n" );
+//		sb.append( "We welcome your feedback.\n" );
+//		this.descriptionValue.setText( sb.toString() );
+//	}
+	public org.lgna.croquet.StringValue getDescriptionValue() {
+		return this.descriptionValue;
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( true );
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( warningPane, "Alice3 is currently under development", org.lgna.croquet.MessageType.WARNING ); 
+	protected org.alice.ide.warning.components.WarningView createView() {
+		return new org.alice.ide.warning.components.WarningView( this );
+	}
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		WarningDialogComposite.getInstance().getOperation().fire();
+		System.exit( 0 );
+//		WarningView warningPane = new WarningView( null );
+//		javax.swing.JOptionPane.showMessageDialog( null, warningPane, "Alice3 is currently under development", javax.swing.JOptionPane.WARNING_MESSAGE );
 	}
 }

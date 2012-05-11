@@ -126,7 +126,6 @@ public class DialogUtilities {
 			application.pushWindow( dialog );
 			dialog.setVisible( true );
 			dialogOwner.handlePostHideDialog( node );
-			//this.releaseContentPane( step, dialog, contentPane );
 			dialog.removeWindowListener( dialogWindowListener );
 			dialogOwner.releaseView( node, view );
 			dialog.getAwtComponent().dispose();
