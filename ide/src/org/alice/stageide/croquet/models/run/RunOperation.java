@@ -67,17 +67,43 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 //	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
-//	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
-//		public void componentShown(java.awt.event.ComponentEvent e) {
-//		}
-//		public void componentHidden( java.awt.event.ComponentEvent e ) {
-//		}
-//		public void componentMoved( java.awt.event.ComponentEvent e ) {
-//		}
-//		public void componentResized( java.awt.event.ComponentEvent e ) {
-//			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
-//		}
-//	};
+	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
+		private int ignoreResizeCount = 0;
+		private int prevWidth;
+		private int prevHeight;
+		public void componentShown(java.awt.event.ComponentEvent e) {
+			java.awt.Component component = e.getComponent();
+			this.prevWidth = component.getWidth();
+			this.prevHeight = component.getHeight();
+		}
+		public void componentHidden( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentMoved( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentResized( java.awt.event.ComponentEvent e ) {
+			if( this.ignoreResizeCount > 0 ) {
+				//pass
+			} else {
+				this.ignoreResizeCount ++;
+				try {
+					java.awt.Component component = e.getComponent();
+					int nextWidth = component.getWidth();
+					int nextHeight = component.getHeight();
+					if( Math.abs( nextWidth - this.prevWidth ) > Math.abs( nextHeight - this.prevHeight ) ) {
+						nextHeight = (int)( nextWidth * 9.0 / 16.0 );
+					} else {
+						nextWidth = (int)( nextHeight * 16.0 / 9.0 );
+					}
+					component.setSize( nextWidth, nextHeight );
+					this.prevWidth = nextWidth;
+					this.prevHeight = nextHeight;
+				} finally {
+					this.ignoreResizeCount--;
+				}
+				
+			}
+		}
+	};
 	private transient org.alice.stageide.program.RunProgramContext programContext;
 	private static final int DEFAULT_WIDTH = 640;
 	private static final int DEFAULT_HEIGHT = (int)(DEFAULT_WIDTH * 9.0 / 16.0 );
@@ -137,6 +163,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		}
 	};
 	private final RestartAction restartAction = new RestartAction();
+	private boolean isDynamicLayoutActivePrevValue = false;
 	@Override
 	protected void localize() {
 		super.localize();
@@ -145,7 +172,13 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	
 	@Override
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
-//		dialog.addComponentListener( this.componentListener );
+		this.isDynamicLayoutActivePrevValue = java.awt.Toolkit.getDefaultToolkit().isDynamicLayoutActive();
+		
+		//todo: investigate is this is desired/necessary across platforms
+		if( this.isDynamicLayoutActivePrevValue ) {
+			java.awt.Toolkit.getDefaultToolkit().setDynamicLayout( false );
+		}
+		dialog.addComponentListener( this.componentListener );
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
 			org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
@@ -163,7 +196,10 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "releaseContentPane" );
 		step.finish();
-//		dialog.removeComponentListener( this.componentListener );
+		if( this.isDynamicLayoutActivePrevValue ) {
+			java.awt.Toolkit.getDefaultToolkit().setDynamicLayout( true );
+		}
+		dialog.removeComponentListener( this.componentListener );
 	}
 	
 	@Override
