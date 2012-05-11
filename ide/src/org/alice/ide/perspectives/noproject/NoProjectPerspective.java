@@ -40,19 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.recursion;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsRecursionAllowedState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class NoProjectPerspective extends org.lgna.croquet.AbstractElement implements org.lgna.croquet.Perspective {
 	private static class SingletonHolder {
-		private static IsRecursionAllowedState instance = new IsRecursionAllowedState();
+		private static NoProjectPerspective instance = new NoProjectPerspective();
 	}
-	public static IsRecursionAllowedState getInstance() {
+	public static NoProjectPerspective getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsRecursionAllowedState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "d3bbfe60-166d-4fa0-a98b-5992998dfca9" ), false );
+	private NoProjectPerspective() {
+		super( java.util.UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
+	}
+	@Override
+	protected void localize() {
+	}
+	public org.lgna.croquet.Composite< ? > getMainComposite() {
+		return MainComposite.getInstance();
+	}
+	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
+		return MenuBarComposite.getInstance();
 	}
 }

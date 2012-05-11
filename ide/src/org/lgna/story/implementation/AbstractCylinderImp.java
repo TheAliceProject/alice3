@@ -40,48 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.perspectives;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdePerspective extends org.lgna.croquet.Perspective {
-	public IdePerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > composite ) {
-		super( id, composite );
+public abstract class AbstractCylinderImp extends ShapeImp {
+	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
+	public final DoubleProperty length = new DoubleProperty( AbstractCylinderImp.this ) {
+		@Override
+		public Double getValue() {
+			return AbstractCylinderImp.this.sgCylinder.length.getValue();
+		}
+		@Override
+		protected void handleSetValue( Double value ) {
+			AbstractCylinderImp.this.sgCylinder.length.setValue( value );
+		}
+	};
+
+	public AbstractCylinderImp() {
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
-	public abstract org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus();
-	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-		this.stack.push( reasonToDisableSomeAmountOfRendering );
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
-	public void enableRendering() {
-		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
+	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgCylinder.length, this.sgCylinder.bottomRadius };
 	}
 	
-	protected abstract void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel );
-	public final java.util.List< org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.addPotentialDropReceptors( rv, dragModel );
-		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
-		if( clipboard.isPotentiallyAcceptingOf( dragModel ) ) {
-			rv.add( clipboard );
-		}
-		return rv;
+	protected abstract void setXZ( double xz );
+	protected edu.cmu.cs.dennisc.scenegraph.Cylinder getSgCylinder() {
+		return this.sgCylinder;
 	}
-//	public void handleDeactivation( org.alice.ide.MainComponent mainComponent ) {
-//		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
-//		view.handleDeactivated( mainComponent );
-//	}
-//	public void handleActivation( org.alice.ide.MainComponent mainComponent ) {
-//		mainComponent.removeAllComponents();
-//		org.alice.stageide.perspectives.components.IdePerspectiveView< ?,? > view = this.getView();
-//		
-//		view.handleActivated( mainComponent );
-//		
-//		mainComponent.addComponent( view, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-//		mainComponent.revalidateAndRepaint();
-//	}
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.Y_AXIS, Resizer.XZ_PLANE, Resizer.UNIFORM };
+	}
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.Y_AXIS ) {
+			return this.length.getValue();
+		} else if( resizer == Resizer.XZ_PLANE ) {
+			return this.sgCylinder.bottomRadius.getValue();
+		} else if( resizer == Resizer.UNIFORM ) {
+			return this.length.getValue();
+		} else {
+			assert false : resizer;
+			return Double.NaN;
+		}
+	}
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		assert value > 0.0 : value;
+		if( resizer == Resizer.Y_AXIS ) {
+			this.length.setValue( value );
+		} else if( resizer == Resizer.XZ_PLANE ) {
+			this.setXZ( value );
+		} else if( resizer == Resizer.UNIFORM ) {
+			double prevValue = this.sgCylinder.length.getValue();
+			this.length.setValue( value );
+			if( prevValue != 0.0 ) {
+				double ratio = value / prevValue;
+				this.setXZ( this.sgCylinder.bottomRadius.getValue() * ratio );
+			}
+		} else {
+			assert false : resizer;
+		}
+	}
 }

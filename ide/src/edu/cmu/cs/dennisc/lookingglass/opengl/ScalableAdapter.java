@@ -56,12 +56,12 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 			super.renderOpaque( rc );
 		} else {
 			rc.gl.glPushMatrix();
-			rc.pushNormalize();
+			rc.incrementScaledCount();
 			try {
 				rc.gl.glScaled( this.x, this.y, this.z );
 				super.renderOpaque( rc );
 			} finally {
-				rc.popNormalize();
+				rc.decrementScaledCount();
 				rc.gl.glPopMatrix();
 			}
 		}
@@ -72,12 +72,12 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 			super.renderGhost( rc, root );
 		} else {
 			rc.gl.glPushMatrix();
-			rc.pushNormalize();
+			rc.incrementScaledCount();
 			try {
 				rc.gl.glScaled( this.x, this.y, this.z );
 				super.renderGhost( rc, root );
 			} finally {
-				rc.popNormalize();
+				rc.decrementScaledCount();
 				rc.gl.glPopMatrix();
 			}
 		}
@@ -88,10 +88,12 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 			super.pick( pc, pickParameters, conformanceTestResults );
 		} else {
 			pc.gl.glPushMatrix();
+			pc.incrementScaledCount();
 			try {
 				pc.gl.glScaled( this.x, this.y, this.z );
 				super.pick( pc, pickParameters, conformanceTestResults );
 			} finally {
+				pc.decrementScaledCount();
 				pc.gl.glPopMatrix();
 			}
 		}

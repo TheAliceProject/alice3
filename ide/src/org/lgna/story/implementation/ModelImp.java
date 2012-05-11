@@ -48,6 +48,28 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ModelImp extends TransformableImp implements org.alice.interact.manipulator.Scalable {
+	public static enum Resizer {
+		X_AXIS,
+		Y_AXIS,
+		Z_AXIS,
+		XY_PLANE,
+		XZ_PLANE,
+		YZ_PLANE,
+		UNIFORM
+	};
+	
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.UNIFORM };
+	}
+	public double getValueForResizer( Resizer resizer ) {
+		assert resizer == Resizer.UNIFORM : resizer;
+		return this.getScale().x;
+	}
+	public void setValueForResizer( Resizer resizer, double value ) {
+		assert resizer == Resizer.UNIFORM : resizer;
+		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
+	}
+	
 	public final PaintProperty paint = new PaintProperty( ModelImp.this ) {
 		@Override
 		protected void internalSetValue(org.lgna.story.Paint value) {
@@ -116,8 +138,17 @@ public abstract class ModelImp extends TransformableImp implements org.alice.int
 //		}
 //	}
 
-	public abstract void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
-	public abstract void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
+	protected abstract edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties();
+	public final void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getScaleProperties() ) {
+			property.addPropertyListener( listener );
+		}
+	}
+	public final void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getScaleProperties() ) {
+			property.removePropertyListener( listener );
+		}
+	}
 	public abstract edu.cmu.cs.dennisc.math.Dimension3 getScale();
 	public abstract void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale );
 	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {

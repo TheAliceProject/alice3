@@ -233,7 +233,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState() {
+	public org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.ProjectPerspective > getPerspectiveState() {
 		return org.alice.stageide.perspectives.PerspectiveState.getInstance();
 	}
 

@@ -40,14 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package test.ik.croquet;
+package org.alice.ide.croquet.models.cascade.string;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IkPerspective extends org.lgna.croquet.Perspective {
-	public IkPerspective() {
-		super( java.util.UUID.fromString( "858b7466-45e3-4b85-8154-9c3bf570a485" ), new IkSplitComposite() );
+public class StringComparisonCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.MethodInvocation > {
+	private static class SingletonHolder {
+		private static StringComparisonCascadeMenu instance = new StringComparisonCascadeMenu();
+	}
+	public static StringComparisonCascadeMenu getInstance() {
+		return SingletonHolder.instance;
+	}
+	private StringComparisonCascadeMenu() {
+		super( java.util.UUID.fromString( "bcf7f58d-3431-4c6c-820c-55dc31b5d765" ) );
+	}
+	@Override
+	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.MethodInvocation > step ) {
+		//rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equals", Object.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "contentEquals", CharSequence.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "equalsIgnoreCase", String.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "startsWith", String.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "endsWith", String.class ) ) );
+		rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod.getInstance( String.class, "contains", CharSequence.class ) ) );
+		return rv;
 	}
 }

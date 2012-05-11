@@ -40,32 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.perspectives.noproject;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogComposite extends GatedCommitDialogComposite {
-	private static class InputDialogControlsComposite extends ControlsComposite {
-		public InputDialogControlsComposite( InputDialogComposite composite ) {
-			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
-		}
-		@Override
-		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
-			controlLine.addComponent( leadingOkCancelButton );
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
-			controlLine.addComponent( trailingOkCancelButton );
-		}
+public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
+	private static class SingletonHolder {
+		private static MenuBarComposite instance = new MenuBarComposite();
 	}
-	private final InputDialogControlsComposite controlsComposite = new InputDialogControlsComposite( this );
-	public InputDialogComposite( java.util.UUID id, Group operationGroup, Composite<?> mainComposite ) {
-		super( id, operationGroup, mainComposite );
+	public static MenuBarComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected org.lgna.croquet.GatedCommitDialogComposite.ControlsComposite getControlsComposite() {
-		assert this.controlsComposite != null : this;
-		return this.controlsComposite;
+	private MenuBarComposite() {
+		super( java.util.UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
+		this.addItem( FileMenuModel.getInstance() );
+		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
 	}
 }

@@ -143,16 +143,25 @@ public class DefaultTheme implements Theme {
 	}
 	public java.awt.Color getColorFor( org.lgna.project.ast.Node node ) {
 		if( node != null ) {
-			Class< ? extends org.lgna.project.ast.Node > cls = node.getClass();
-//			if( node instanceof org.lgna.project.ast.FieldAccess ) {
-//				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)node;
-//				if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
-//					//pass
-//				} else {
-//					cls = org.lgna.project.ast.MethodInvocation.class;
+			if( node instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)node;
+				if( method.isProcedure() ) {
+					return this.getProcedureColor();
+				} else {
+					return this.getFunctionColor();
+				}
+			} else {
+				Class< ? extends org.lgna.project.ast.Node > cls = node.getClass();
+//				if( node instanceof org.lgna.project.ast.FieldAccess ) {
+//					org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)node;
+//					if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
+//						//pass
+//					} else {
+//						cls = org.lgna.project.ast.MethodInvocation.class;
+//					}
 //				}
-//			}
-			return this.getColorFor( cls );
+				return this.getColorFor( cls );
+			}
 		} else {
 			return java.awt.Color.RED;
 		}

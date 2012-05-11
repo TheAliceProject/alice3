@@ -58,39 +58,9 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 
 	public static final double MIN_HANDLE_PULL = .1d;
 
-	private Dimension3 initialScale;
-	private Dimension3 accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
+	private double initialScale;
+	private double accumulatedScale = 1.0d;
 
-	protected static Dimension3 getInvertedScaleVector( Dimension3 scaleVector )
-	{
-		Dimension3 invertedScale = new Dimension3();
-		if (scaleVector.x != 0)
-		{
-			invertedScale.x = 1.0 / scaleVector.x;
-		}
-		else
-		{
-			invertedScale.x = 1;
-		}
-		if (scaleVector.y != 0)
-		{
-			invertedScale.y = 1.0 / scaleVector.y;
-		}
-		else
-		{
-			invertedScale.y = 1;
-		}
-		if (scaleVector.z != 0)
-		{
-			invertedScale.z = 1.0 / scaleVector.z;
-		}
-		else
-		{
-			invertedScale.z = 1;
-		}
-		return invertedScale;
-	}
-	
 	@Override
 	protected void initializeEventMessages()
 	{
@@ -107,9 +77,11 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		boolean started = super.doStartManipulator(startInput);
 		
 		if (started) {
+			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
-				initialScale = scalable.getScale();
+				org.lgna.story.implementation.ModelImp.Resizer resizer = scaleHandle.getResizer();
+				this.initialScale = scalable.getValueForResizer(resizer);
 			}
 		}
 		
@@ -121,39 +93,26 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	{
 		double pullDif = newPull - initialPull;
 		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-		Dimension3 scaleVector;
-		if( scaleHandle.applyAlongAxis() ) {
-			scaleVector = new Dimension3( 0.0d, 0.0d, 0.0d );
-			if( scaleHandle.getDragAxis().x != 0.0d )
-				scaleVector.x = Math.abs( scaleHandle.getDragAxis().x ) * pullDif;
-			if( scaleHandle.getDragAxis().y != 0.0d )
-				scaleVector.y = Math.abs( scaleHandle.getDragAxis().y ) * pullDif;
-			if( scaleHandle.getDragAxis().z != 0.0d )
-				scaleVector.z = Math.abs( scaleHandle.getDragAxis().z ) * pullDif;
-		} else {
-			scaleVector = new Dimension3( pullDif, pullDif, pullDif );
-		}
-
+		double scale = pullDif;
 		//Don't scale if the handles are pulled past their origin
 		if( newPull <= MIN_HANDLE_PULL ) {
-			scaleVector = new Dimension3( 0.0d, 0.0d, 0.0d );
+			scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
 		}
-		scaleVector.x += this.initialScale.x;
-		scaleVector.y += this.initialScale.y;
-		scaleVector.z += this.initialScale.z;
-		//Now apply the new scale
-		accumulatedScaleVector.set(scaleVector);
+		if (this.initialScale + scale < ResizeDragManipulator.MIN_SCALE) {
+			scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
+		}
+		accumulatedScale = scale + this.initialScale;
 		
 		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 		if( scalable != null ) {
-			scalable.setScale( scaleVector );
+			scalable.setValueForResizer(scaleHandle.getResizer(), accumulatedScale);
 		}
 
 	}
 
 	@Override
 	public void undoRedoBeginManipulation() {
-		accumulatedScaleVector = new Dimension3(this.initialScale);
+		accumulatedScale = this.initialScale;
 	}
 
 	@Override
@@ -166,7 +125,9 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			} else {
 				animator = null;
 			}
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, this.getManipulatedTransformable(), accumulatedScaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
+			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
+			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, scalable, scaleHandle.getResizer(), initialScale, accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
 			undoOperation.fire();
 		}
 	}

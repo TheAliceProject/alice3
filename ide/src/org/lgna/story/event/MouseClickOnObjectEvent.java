@@ -6,5 +6,7 @@ public class MouseClickOnObjectEvent extends MouseClickEvent {
 	}
 	public MouseClickOnObjectEvent( MouseClickEvent e ) {
 		super( e.e, e.scene );
+		this.isPickPerformed = true;
+		this.modelAtMouseLocation = e.getModelAtMouseLocation();
 	}
 }

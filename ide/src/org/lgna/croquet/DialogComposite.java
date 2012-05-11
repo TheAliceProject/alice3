@@ -49,9 +49,6 @@ package org.lgna.croquet;
 public abstract class DialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "d4dfb949-2761-432e-9ad0-932ba0d6b4f6" ), "DIALOG_IMPLEMENTATION_GROUP" );
 
-	protected static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogComposite.DIALOG_KEY" );
-
-	
 	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>> implements org.lgna.croquet.dialog.DialogOwner<V> {
 
 		private final DialogComposite<V> composite;
@@ -126,8 +123,14 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 			this.composite = composite;
 		}
 		@Override
+		protected void localize() {
+			//todo
+			//note: do not call super
+			this.setName( this.findLocalizedText( null, Composite.class ) );
+		}
+		@Override
 		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
-			return this.composite.getClass();
+			return this.composite.getClassUsedForLocalization();
 		}
 		@Override
 		protected void initialize() {
@@ -196,8 +199,10 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
 	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+		this.handlePreActivation();
 	}
 	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+		this.handlePostDeactivation();
 	}
 	protected void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
 	}

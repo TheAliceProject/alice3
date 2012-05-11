@@ -49,7 +49,6 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
 public class BoundingBoxUtilities {
 	
@@ -67,10 +66,10 @@ public class BoundingBoxUtilities {
 				boundingBox = ((JointImp)entityImp).getAxisAlignedMinimumBoundingBox();
 			}
 		}
-		if (boundingBox != null && scaled)
-		{
-			boundingBox.scale(ScaleUtilities.getTransformableScale( sgTransformable ) );
-		}
+//		if (boundingBox != null && scaled)
+//		{
+//			boundingBox.scale(ScaleUtilities.getTransformableScale( sgTransformable ) );
+//		}
 		return boundingBox;
 	}
 	

@@ -241,7 +241,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		leftClickMouseRotateObjectLeftRight.setEnabled(false);
 		this.manipulators.add( leftClickMouseRotateObjectLeftRight );
 		
-		ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator() );
+		ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator(org.lgna.story.implementation.ModelImp.Resizer.UNIFORM) );
 		leftClickMouseResizeObject.addCondition( leftClickResizableObjects );
 		//This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
 		leftClickMouseResizeObject.setEnabled(false);
@@ -445,46 +445,83 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		translateForward.setDragAdapterAndAddHandle( this );
 		translateBackward.setDragAdapterAndAddHandle( this );
 		
-		ManipulationHandleIndirection scaleAxis = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP), Color4f.PINK));
+		LinearScaleHandle scaleUniform = LinearScaleHandle.createFromResizer(org.lgna.story.implementation.ModelImp.Resizer.UNIFORM);
+		ManipulationHandleIndirection scaleAxis = new ManipulationHandleIndirection(scaleUniform);
 		scaleAxis.setManipulation( new ScaleDragManipulator() );
 		scaleAxis.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxis.addToGroups( HandleSet.HandleGroup.RESIZE_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 		scaleAxis.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Scale,
-				new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP),
+				scaleUniform.getMovementDescription(),
 				PickHint.PickType.RESIZABLE.pickHint() ) );
 		scaleAxis.setDragAdapterAndAddHandle( this );
 		
-		ManipulationHandleIndirection scaleAxisX = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP), Color4f.MAGENTA, true));
+		LinearScaleHandle scaleX = LinearScaleHandle.createFromResizer(org.lgna.story.implementation.ModelImp.Resizer.X_AXIS);
+		ManipulationHandleIndirection scaleAxisX = new ManipulationHandleIndirection(scaleX);
 		scaleAxisX.setManipulation( new ScaleDragManipulator() );
 		scaleAxisX.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisX.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 		scaleAxisX.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Scale,
-				new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP),
+				scaleX.getMovementDescription(),
 				PickHint.PickType.RESIZABLE.pickHint() ) );
 		scaleAxisX.setDragAdapterAndAddHandle( this );
 		
-		ManipulationHandleIndirection scaleAxisY = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), Color4f.YELLOW, true));
+		LinearScaleHandle scaleY = LinearScaleHandle.createFromResizer(org.lgna.story.implementation.ModelImp.Resizer.Y_AXIS);
+		ManipulationHandleIndirection scaleAxisY = new ManipulationHandleIndirection(scaleY);
 		scaleAxisY.setManipulation( new ScaleDragManipulator() );
 		scaleAxisY.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisY.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 		scaleAxisY.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Scale,
-				new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP),
+				scaleY.getMovementDescription(),
 				PickHint.PickType.RESIZABLE.pickHint() ) );
 		scaleAxisY.setDragAdapterAndAddHandle( this );
 		
-		ManipulationHandleIndirection scaleAxisZ = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP), Color4f.CYAN, true));
+		LinearScaleHandle scaleZ = LinearScaleHandle.createFromResizer(org.lgna.story.implementation.ModelImp.Resizer.Z_AXIS);
+		ManipulationHandleIndirection scaleAxisZ = new ManipulationHandleIndirection(scaleZ);
 		scaleAxisZ.setManipulation( new ScaleDragManipulator() );
 		scaleAxisZ.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisZ.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 		scaleAxisZ.addCondition( new ManipulationEventCriteria(
 				ManipulationEvent.EventType.Scale,
-				new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP),
+				scaleZ.getMovementDescription(),
 				PickHint.PickType.RESIZABLE.pickHint() ) );
 		scaleAxisZ.setDragAdapterAndAddHandle( this );
 
+		LinearScaleHandle scaleXY = LinearScaleHandle.createFromResizer(org.lgna.story.implementation.ModelImp.Resizer.XY_PLANE);
+		ManipulationHandleIndirection scaleAxisXY = new ManipulationHandleIndirection(scaleXY);
+		scaleAxisXY.setManipulation( new ScaleDragManipulator() );
+		scaleAxisXY.addToSet( HandleSet.RESIZE_INTERACTION );
+		scaleAxisXY.addToGroups( HandleSet.HandleGroup.X_AND_Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
+		scaleAxisXY.addCondition( new ManipulationEventCriteria(
+				ManipulationEvent.EventType.Scale,
+				scaleXY.getMovementDescription(),
+				PickHint.PickType.RESIZABLE.pickHint() ) );
+		scaleAxisXY.setDragAdapterAndAddHandle( this );
+		
+		LinearScaleHandle scaleXZ = LinearScaleHandle.createFromResizer(org.lgna.story.implementation.ModelImp.Resizer.XZ_PLANE);
+		ManipulationHandleIndirection scaleAxisXZ = new ManipulationHandleIndirection(scaleXZ);
+		scaleAxisXZ.setManipulation( new ScaleDragManipulator() );
+		scaleAxisXZ.addToSet( HandleSet.RESIZE_INTERACTION );
+		scaleAxisXZ.addToGroups( HandleSet.HandleGroup.X_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
+		scaleAxisXZ.addCondition( new ManipulationEventCriteria(
+				ManipulationEvent.EventType.Scale,
+				scaleXZ.getMovementDescription(),
+				PickHint.PickType.RESIZABLE.pickHint() ) );
+		scaleAxisXZ.setDragAdapterAndAddHandle( this );
+		
+		LinearScaleHandle scaleYZ = LinearScaleHandle.createFromResizer(org.lgna.story.implementation.ModelImp.Resizer.YZ_PLANE);
+		ManipulationHandleIndirection scaleAxisYZ = new ManipulationHandleIndirection(scaleYZ);
+		scaleAxisYZ.setManipulation( new ScaleDragManipulator() );
+		scaleAxisYZ.addToSet( HandleSet.RESIZE_INTERACTION );
+		scaleAxisYZ.addToGroups( HandleSet.HandleGroup.Y_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
+		scaleAxisYZ.addCondition( new ManipulationEventCriteria(
+				ManipulationEvent.EventType.Scale,
+				scaleYZ.getMovementDescription(),
+				PickHint.PickType.RESIZABLE.pickHint() ) );
+		scaleAxisYZ.setDragAdapterAndAddHandle( this );
+		
 		
 		if (this.sceneEditor != null)
 		{
