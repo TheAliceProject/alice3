@@ -94,9 +94,9 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 							if( component instanceof java.awt.Dialog ) {
 								java.awt.Dialog dialog = (java.awt.Dialog)component;
 								if( graphicsDevices != null ) {
-									java.awt.GraphicsDevice graphicsDevice = edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getGraphicsDeviceFor( graphicsDevices, dialog.getLocation() );
-									if( graphicsDevice != null ) {
-										edu.cmu.cs.dennisc.java.util.logging.Logger.outln( graphicsDevice.getDefaultConfiguration().getBounds() );
+									java.awt.Rectangle bounds = edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getGraphicsDeviceConfigurationBoundsFor( graphicsDevices, dialog.getLocation() );
+									if( bounds != null ) {
+										edu.cmu.cs.dennisc.java.util.logging.Logger.outln( bounds );
 										int nextWidth = dialog.getWidth();
 										int nextHeight = dialog.getHeight();
 										if( ( nextWidth != this.prevWidth ) || ( nextHeight != this.prevHeight ) ) {
@@ -114,7 +114,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 											}
 											lgComponent.setPreferredSize( new java.awt.Dimension( lgNextWidth, lgNextHeight ) );
 											dialog.pack();
-											if( graphicsDevice.getDefaultConfiguration().getBounds().contains( dialog.getBounds() ) ) {
+											if( bounds.contains( dialog.getBounds() ) ) {
 												//pass
 											} else {
 												lgComponent.setPreferredSize( new java.awt.Dimension( lgPrevWidth, lgPrevHeight ) );
