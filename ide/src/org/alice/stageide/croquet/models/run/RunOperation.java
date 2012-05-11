@@ -81,26 +81,39 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		public void componentMoved( java.awt.event.ComponentEvent e ) {
 		}
 		public void componentResized( java.awt.event.ComponentEvent e ) {
-			if( this.ignoreResizeCount > 0 ) {
-				//pass
-			} else {
-				this.ignoreResizeCount ++;
-				try {
-					java.awt.Component component = e.getComponent();
-					int nextWidth = component.getWidth();
-					int nextHeight = component.getHeight();
-					if( Math.abs( nextWidth - this.prevWidth ) > Math.abs( nextHeight - this.prevHeight ) ) {
-						nextHeight = (int)( nextWidth * 9.0 / 16.0 );
-					} else {
-						nextWidth = (int)( nextHeight * 16.0 / 9.0 );
+			java.awt.Component component = e.getComponent();
+			if( component instanceof java.awt.Window ) {
+				if( programContext != null ) {
+					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = programContext.getOnscreenLookingGlass();
+					if( onscreenLookingGlass != null ) {
+						if( this.ignoreResizeCount > 0 ) {
+							//pass
+						} else {
+							this.ignoreResizeCount ++;
+							try {
+								java.awt.Window window = (java.awt.Window)component;
+								int nextWidth = component.getWidth();
+								int nextHeight = component.getHeight();
+								if( ( nextWidth != this.prevWidth ) || ( nextHeight != this.prevHeight ) ) {
+									java.awt.Component lgComponent = onscreenLookingGlass.getAWTComponent();
+									int lgWidth = lgComponent.getWidth();
+									int lgHeight = lgComponent.getHeight();
+									if( Math.abs( nextWidth - this.prevWidth ) > Math.abs( nextHeight - this.prevHeight ) ) { //todo: account for ratio
+										lgHeight = (int)( lgWidth * 9.0 / 16.0 );
+									} else {
+										lgWidth = (int)( lgHeight * 16.0 / 9.0 );
+									}
+									lgComponent.setPreferredSize( new java.awt.Dimension( lgWidth, lgHeight ) );
+									window.pack();
+									this.prevWidth = component.getWidth();
+									this.prevHeight = component.getHeight();
+								}
+							} finally {
+								this.ignoreResizeCount--;
+							}
+						}
 					}
-					component.setSize( nextWidth, nextHeight );
-					this.prevWidth = nextWidth;
-					this.prevHeight = nextHeight;
-				} finally {
-					this.ignoreResizeCount--;
 				}
-				
 			}
 		}
 	};

@@ -97,7 +97,8 @@ public abstract class ProgramContext {
 		return this.vm;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.getProgramImp().getOnscreenLookingGlass();
+		org.lgna.story.implementation.ProgramImp programImp = this.getProgramImp();
+		return programImp != null ? programImp.getOnscreenLookingGlass() : null;
 	}
 
 	private org.alice.ide.ReasonToDisableSomeAmountOfRendering rendering;
