@@ -40,32 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.warningpane;
+package org.alice.ide.warning.components;
 
-public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
-	public WarningPane( boolean isSolicited ) {
-		javax.swing.JLabel label = new javax.swing.JLabel( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
-
-		StringBuffer sb = new StringBuffer();
-		sb.append( "<html><body>" );
-		sb.append( "<h1>WARNING: Alice3 is not for the faint of heart.</h1>" );
-		sb.append( "<font size=\"+1\">" );
-		sb.append( "Alice3 is currently under development.  We are working very hard to make this dialog box obsolete.<br>" );
-		sb.append( "Thank you for your patience.<br>" );
-		sb.append( "We welcome your feedback.<br>" );
-		sb.append( "</font>" );
-		sb.append( "</body></html>" );
-		
-		javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane( "text/html", sb.toString() );
-		editorPane.setEditable( false );
-		editorPane.setBackground( null );
-		
-		label.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		editorPane.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		this.add( label );
-		this.add( editorPane );
-		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-		
+public class WarningView extends org.lgna.croquet.components.PageAxisPanel {
+	public WarningView( org.alice.ide.warning.WarningDialogComposite composite ) {
+		super( composite );
+		this.addComponent( new org.lgna.croquet.components.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( WarningView.class.getResource( "images/toxic.png" ) ) ) );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+		this.addComponent( composite.getDescriptionValue().createImmutableTextArea() );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
 		class FurtherInfoPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane {
 			public FurtherInfoPane() {
 				super( 8, 4 );
@@ -85,18 +68,9 @@ public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPage
 				return rv;
 			}
 		}
-		this.add( new FurtherInfoPane() );
-		
-		if( isSolicited ) {
-			//pass
-		} else {
-			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			this.add( new javax.swing.JCheckBox( "show this warning at start up ") );
-		}
-	}
-	
-	public static void main( String[] args ) {
-		WarningPane warningPane = new WarningPane( false );
-		javax.swing.JOptionPane.showMessageDialog( null, warningPane, "Alice3 is currently under development", javax.swing.JOptionPane.WARNING_MESSAGE );
+		this.getAwtComponent().add( new FurtherInfoPane() );
+
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16,16,16,16 ) );
+		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 }
