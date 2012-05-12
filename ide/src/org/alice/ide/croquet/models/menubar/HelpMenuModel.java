@@ -54,7 +54,7 @@ public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 				org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.help.RequestNewFeatureOperation.getInstance().getMenuItemPrepModel(), 
 				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ShowWarningOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.warning.WarningDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel()
 		);

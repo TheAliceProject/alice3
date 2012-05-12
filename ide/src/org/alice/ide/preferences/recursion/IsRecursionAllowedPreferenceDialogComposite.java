@@ -47,15 +47,18 @@ package org.alice.ide.preferences.recursion;
  */
 public class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.PlainDialogComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
 	private static class SingletonHolder {
-		private static IsRecursionAllowedPreferenceDialogComposite instance = new IsRecursionAllowedPreferenceDialogComposite();
+		private static IsRecursionAllowedPreferenceDialogComposite instance = new IsRecursionAllowedPreferenceDialogComposite( 0 );
 	}
 	public static IsRecursionAllowedPreferenceDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 	private final org.lgna.croquet.StringValue descriptionValue = this.createStringValue( this.createKey( "description" ) );
 	private final org.lgna.croquet.StringValue recursiveButtonLabelValue = this.createStringValue( this.createKey( "recursiveButtonLabel" ) );
-	private IsRecursionAllowedPreferenceDialogComposite() {
+	private final int depth;
+	private IsRecursionAllowedPreferenceDialogComposite next;
+	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
 		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.UI_STATE_GROUP );
+		this.depth = index;
 	}
 	@Override
 	protected org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView createView() {
@@ -67,8 +70,12 @@ public class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croque
 	public org.lgna.croquet.StringValue getRecursiveButtonLabelValue() {
 		return this.recursiveButtonLabelValue;
 	}
-//	@Override
-//	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-//		dialog.setSize( 760, 400 );
-//	}
+	public IsRecursionAllowedPreferenceDialogComposite getNext() {
+		if( this.next != null ) {
+			//pass
+		} else {
+			this.next = new IsRecursionAllowedPreferenceDialogComposite( this.depth + 1 );
+		}
+		return this.next; 
+	}
 }
