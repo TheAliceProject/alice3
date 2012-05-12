@@ -93,6 +93,8 @@ import org.lgna.story.implementation.RoomImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.implementation.TextModelImp;
+import org.lgna.story.implementation.CylinderImp;
+import org.lgna.story.implementation.DiscImp;
 import org.lgna.story.resources.JointedModelResource;
 
 
@@ -335,21 +337,30 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			}
 			else if (setter.getName().equalsIgnoreCase("setRadius"))
 			{
-				if (entityImp instanceof SphereImp)
+				if (entityImp instanceof CylinderImp) {
+					return new DoublePropertyAdapter<CylinderImp>("Radius", (CylinderImp)entityImp, ((CylinderImp)entityImp).radius, state);
+				}
+				else if (entityImp instanceof SphereImp)
 				{
-					return new DoublePropertyAdapter<SphereImp>("Opacity", (SphereImp)entityImp, ((SphereImp)entityImp).radius, state);
+					return new DoublePropertyAdapter<SphereImp>("Radius", (SphereImp)entityImp, ((SphereImp)entityImp).radius, state);
+				}
+				else if (entityImp instanceof DiscImp) {
+					return new DoublePropertyAdapter<DiscImp>("Radius", (DiscImp)entityImp, ((DiscImp)entityImp).outerRadius, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setBaseRadius"))
 			{
 				if (entityImp instanceof ConeImp)
 				{
-					return new DoublePropertyAdapter<ConeImp>("Base Radius", (ConeImp)entityImp, ((ConeImp)entityImp).baseRadius, state);
+					return new DoublePropertyAdapter<ConeImp>("Radius", (ConeImp)entityImp, ((ConeImp)entityImp).baseRadius, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setLength"))
 			{
-				if (entityImp instanceof ConeImp)
+				if (entityImp instanceof CylinderImp) {
+					return new DoublePropertyAdapter<CylinderImp>("Length", (CylinderImp)entityImp, ((CylinderImp)entityImp).length, state);
+				}
+				else if (entityImp instanceof ConeImp)
 				{
 					return new DoublePropertyAdapter<ConeImp>("Length", (ConeImp)entityImp, ((ConeImp)entityImp).length, state);
 				}

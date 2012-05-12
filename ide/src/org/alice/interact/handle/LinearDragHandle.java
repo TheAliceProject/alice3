@@ -140,26 +140,34 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 			
 			Vector3 desiredHandleValues = new Vector3(0.0d, 0.0d, 0.0d);
-			Point3 max = boundingBox.getMaximum();
-			Point3 min = boundingBox.getMinimum();
-			Vector3 extents[] = new Vector3[6];
-			extents[0] = new Vector3(max.x, 0, 0);
-			extents[1] = new Vector3(0, max.y, 0);
-			extents[2] = new Vector3(0, 0, max.z);
-			extents[3] = new Vector3(min.x, 0, 0);
-			extents[4] = new Vector3(0, min.y, 0);
-			extents[5] = new Vector3(0, 0, min.z);
-			for (int i=0; i<extents.length; i++)
-			{
-				double axisDot = Vector3.calculateDotProduct( this.dragAxis, extents[i] );
-				if (axisDot > 0.0d)
-				{
-					desiredHandleValues.add( Vector3.createMultiplication( extents[i], this.dragAxis ) );
+			if (this.dragAxis.x != 0) {
+				if (this.dragAxis.x < 0 ) {
+					desiredHandleValues.x = boundingBox.getMinimum().x;
+				}
+				else {
+					desiredHandleValues.x = boundingBox.getMaximum().x;
 				}
 			}
+			if (this.dragAxis.y != 0) {
+				if (this.dragAxis.y < 0 ) {
+					desiredHandleValues.y = boundingBox.getMinimum().y;
+				}
+				else {
+					desiredHandleValues.y = boundingBox.getMaximum().y;
+				}
+			}
+			if (this.dragAxis.z != 0) {
+				if (this.dragAxis.z < 0 ) {
+					desiredHandleValues.z = boundingBox.getMinimum().z;
+				}
+				else {
+					desiredHandleValues.z = boundingBox.getMaximum().z;
+				}
+			}
+			
 			return desiredHandleValues.calculateMagnitude();
 		}
-		return 0.0d;
+		return 0;
 	}
 	
 	@Override

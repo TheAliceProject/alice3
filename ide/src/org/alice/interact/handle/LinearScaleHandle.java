@@ -52,6 +52,7 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -168,8 +169,7 @@ public class LinearScaleHandle extends LinearDragHandle{
 		Vector3 handleOffset;
 		if (bbox != null)
 		{
-			Vector3.createSubtraction(bbox.getMaximum(), bbox.getCenter());
-			handleOffset = new Vector3();
+			handleOffset = new Vector3(bbox.getMaximum());
 			handleOffset.z = 0;
 			handleOffset.x *= -1;
 		}
