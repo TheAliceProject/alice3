@@ -45,12 +45,14 @@ package org.alice.interact.handle;
 import java.awt.Color;
 
 import org.alice.interact.MovementDirection;
+import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -65,6 +67,52 @@ public class LinearScaleHandle extends LinearDragHandle{
 	protected Color4f baseColor;
 	protected Transformable standUpReference = new Transformable();
 	protected boolean applyAlongAxis = false;
+	protected org.lgna.story.implementation.ModelImp.Resizer resizer;
+	
+	
+	public static LinearScaleHandle createFromResizer(org.lgna.story.implementation.ModelImp.Resizer resizer) {
+		LinearScaleHandle toReturn = null;
+		switch (resizer) {
+			case UNIFORM : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP), Color4f.PINK);
+				break;
+			}
+			case X_AXIS : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), Color4f.MAGENTA, true);
+				break;
+			}
+			case Y_AXIS : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.LOCAL), Color4f.YELLOW, true);
+				break;
+			}
+			case Z_AXIS : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL), Color4f.CYAN, true);
+				break;
+			}
+			case XY_PLANE : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_RIGHT, MovementType.LOCAL), Color4f.PINK);
+				break;
+			}
+			case XZ_PLANE : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT_FORWARD, MovementType.LOCAL), Color4f.PINK);
+				break;
+			}
+			case YZ_PLANE : 
+			{
+				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_FORWARD, MovementType.LOCAL), Color4f.PINK);
+				break;
+			}
+		}
+		toReturn.resizer = resizer;
+		return toReturn;
+	}
+	
 	
 	public LinearScaleHandle( MovementDescription dragDescription, Color4f color )
 	{
@@ -84,6 +132,7 @@ public class LinearScaleHandle extends LinearDragHandle{
 		super(handle);
 		this.baseColor = handle.baseColor;
 		this.applyAlongAxis = handle.applyAlongAxis;
+		this.resizer = handle.resizer;
 		this.initializeAppearance();
 	}
 	
@@ -109,14 +158,18 @@ public class LinearScaleHandle extends LinearDragHandle{
 		this.arrow.setParent( this );
 	}
 	
+	public org.lgna.story.implementation.ModelImp.Resizer getResizer()
+	{
+		return this.resizer;
+	}
+	
 	protected Vector3 getUniformResizeOffset()
 	{
 		AxisAlignedBox bbox = getManipulatedObjectBox();
 		Vector3 handleOffset;
 		if (bbox != null)
 		{
-			Vector3.createSubtraction(bbox.getMaximum(), bbox.getCenter());
-			handleOffset = new Vector3();
+			handleOffset = new Vector3(bbox.getMaximum());
 			handleOffset.z = 0;
 			handleOffset.x *= -1;
 		}

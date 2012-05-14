@@ -68,4 +68,29 @@ public class DiscImp extends ShapeImp {
 	public org.lgna.story.Disc getAbstraction() {
 		return this.abstraction;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgDisc.outerRadius };
+	}
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.XZ_PLANE };
+	}
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.XZ_PLANE ) {
+			return this.outerRadius.getValue();
+		} else {
+			assert false : resizer;
+			return Double.NaN;
+		}
+	}
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		if( resizer == Resizer.XZ_PLANE ) {
+			this.outerRadius.setValue( value );
+		} else {
+			assert false : resizer;
+		}
+	}
 }

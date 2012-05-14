@@ -141,6 +141,23 @@ public class BillboardImp extends VisualScaleModelImp {
 		return this.abstraction;
 	}
 
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.XY_PLANE };
+	}
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		//todo
+		assert resizer == Resizer.XY_PLANE : resizer;
+		return this.getScale().x;
+	}
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		//todo
+		assert resizer == Resizer.XY_PLANE : resizer;
+		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
+	}
+
 	private void updateAspectRatio() {
 		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
 		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();

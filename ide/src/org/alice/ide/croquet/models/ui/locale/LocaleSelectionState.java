@@ -77,7 +77,8 @@ public class LocaleSelectionState extends org.lgna.croquet.preferences.Preferenc
 				new java.util.Locale( "ar" ),
 				new java.util.Locale( "iw" ),
 				new java.util.Locale( "in" ),
-				new java.util.Locale( "zh" ),
+				//new java.util.Locale( "zh", "CN" ),
+				new java.util.Locale( "zh", "TW" ),
 				new java.util.Locale( "ko" )
 		);
 		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );

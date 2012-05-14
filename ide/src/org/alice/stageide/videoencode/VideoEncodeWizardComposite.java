@@ -46,7 +46,7 @@ package org.alice.stageide.videoencode;
 /**
  * @author Dennis Cosgrove
  */
-public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogComposite {
+public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMainComposite {
 	private static class SingletonHolder {
 		private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
 	}
@@ -59,14 +59,31 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogCom
 	private final UploadPage uploadPage = new UploadPage();
 	private VideoEncodeWizardComposite() {
 		super( java.util.UUID.fromString( "cc531529-314d-457c-bb30-d707dfd2b8d8" ), org.alice.ide.IDE.EXPORT_GROUP );
-		this.getMainComposite().addCard( this.recordEventsPage );
-		this.getMainComposite().addCard( this.captureImagesPage );
-		this.getMainComposite().addCard( this.uploadPage );
+		this.addPage( this.recordEventsPage );
+		this.addPage( this.captureImagesPage );
+		this.addPage( this.uploadPage );
+	}
+	
+	@Override
+	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return null;
 	}
 	
 	public static void main( String[] args ) {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			try {
+				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+//				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
+		}
+		
+		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "zh", "TW" ) );
 		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
 		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
-		composite.getOperation().fire();
+		composite.getGatedCommitDialogComposite().getOperation().fire();
+		System.exit( 0 );
 	}
 }

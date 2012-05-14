@@ -93,7 +93,7 @@ class TimeSlider extends javax.swing.JSlider {
 		if( Double.isNaN( this.time ) ) {
 			return this.time;
 		} else {
-			return Double.parseDouble( format.format( this.time ) );
+			return edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatAndParse( this.time, format, this.time );
 		}
 	}
 	public void setTime( double time ) {

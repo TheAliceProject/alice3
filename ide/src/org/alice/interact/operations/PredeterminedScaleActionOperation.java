@@ -51,53 +51,46 @@ import org.lgna.croquet.Group;
 public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
-	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable;
-	private edu.cmu.cs.dennisc.math.Dimension3 redoVector;
-	private edu.cmu.cs.dennisc.math.Dimension3 undoVector;
+	private Scalable scalable;
+	private org.lgna.story.implementation.ModelImp.Resizer resizer;
+	private double redoScale;
+	private double undoScale;
 	private edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion;
 	
 	private String editPresentationKey;
-	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.Dimension3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
+	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, Scalable scalable, org.lgna.story.implementation.ModelImp.Resizer resizer, double previousScale, double currentScale, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
 		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
-		this.sgTransformable = sgTransformable;
+		this.scalable = scalable;
+		this.resizer = resizer;
+	
+		this.redoScale = currentScale;
+		this.undoScale = previousScale;
 		
-		assert axis.isNaN() == false;
-		assert axis.x != 0.0;
-		assert axis.y != 0.0;
-		assert axis.z != 0.0;
-
-		this.redoVector = axis;
-		this.undoVector = new edu.cmu.cs.dennisc.math.Dimension3( 1.0/axis.x, 1.0/axis.y, 1.0/axis.z );
-		assert this.undoVector.isNaN() == false;
+		assert redoScale != 0.0;
+		assert undoScale != 0.0;
 		
 		this.criterion = criterion;
 		this.editPresentationKey = editPresentationKey;
 	}
-	private void scale( final edu.cmu.cs.dennisc.math.Dimension3 axis ) {
+	private void scale( final double startScale, final double endScale ) {
 		if( this.animator != null ) {
-			class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
-				private edu.cmu.cs.dennisc.math.Dimension3 m_vPrev = new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
-				private edu.cmu.cs.dennisc.math.Dimension3 m_vBuffer = new edu.cmu.cs.dennisc.math.Dimension3();
+			class ScaleAnimation extends edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation {
 				public ScaleAnimation() {
-					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), new edu.cmu.cs.dennisc.math.Vector3( axis ) );
+					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, startScale , endScale );
 				}
 				@Override
-				protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
-					edu.cmu.cs.dennisc.math.Dimension3.setReturnValueToDivision( m_vBuffer, v, m_vPrev );
-					Scalable scalable = PredeterminedScaleActionOperation.this.sgTransformable.getBonusDataFor( Scalable.KEY );
+				protected void updateValue(Double v) {
 					if( scalable != null ) {
-						scalable.setScale( m_vBuffer );
+						scalable.setValueForResizer(resizer, v);
 					}
-					m_vPrev.set( v );
 				}
 			}
 			this.animator.invokeLater( new ScaleAnimation(), null );
 		} else {
-			Scalable scalable = this.sgTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
-				scalable.setScale( axis );
+				scalable.setValueForResizer(resizer, endScale);
 			}
 		}
 		
@@ -111,12 +104,12 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 				if( isDo && ( isDoRequired == false ) ) {
 					//pass
 				} else {
-					scale( redoVector );
+					scale( undoScale, redoScale );
 				}
 			}
 			@Override
 			protected final void undoInternal() {
-				scale( undoVector );
+				scale( redoScale, undoScale );
 			}
 			@Override
 			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {

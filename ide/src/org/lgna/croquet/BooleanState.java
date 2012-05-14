@@ -298,6 +298,11 @@ public abstract class BooleanState extends State< Boolean > {
 	public org.lgna.croquet.components.CheckBox createCheckBox() {
 		return new org.lgna.croquet.components.CheckBox( this );
 	}
+	public org.lgna.croquet.components.ToggleButton createToggleButton() {
+		return new org.lgna.croquet.components.ToggleButton( this );
+	}
+	
+	@Deprecated
 	public org.lgna.croquet.components.PushButton createPushButton() {
 		return new org.lgna.croquet.components.PushButton( this );
 	}

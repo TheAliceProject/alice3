@@ -691,4 +691,18 @@ public class GroundImp extends SimpleModelImp {
 	public org.lgna.story.Ground getAbstraction() {
 		return this.abstraction;
 	}
+
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] {};
+	}
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		assert false : resizer;
+		return Double.NaN;
+	}
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		assert false : resizer;
+	}
 }

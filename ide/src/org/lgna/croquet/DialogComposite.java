@@ -123,8 +123,14 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 			this.composite = composite;
 		}
 		@Override
+		protected void localize() {
+			//todo
+			//note: do not call super
+			this.setName( this.findLocalizedText( null, Composite.class ) );
+		}
+		@Override
 		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
-			return this.composite.getClass();
+			return this.composite.getClassUsedForLocalization();
 		}
 		@Override
 		protected void initialize() {
@@ -193,8 +199,10 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
 	protected void handlePreShowDialog( org.lgna.croquet.history.TransactionNode<?> node ) {
+		this.handlePreActivation();
 	}
 	protected void handlePostHideDialog( org.lgna.croquet.history.TransactionNode<?> node ) {
+		this.handlePostDeactivation();
 	}
 	protected void handleFinally( org.lgna.croquet.history.TransactionNode<?> node, org.lgna.croquet.components.Dialog dialog ) {
 	}

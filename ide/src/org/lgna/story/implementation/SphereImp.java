@@ -67,4 +67,29 @@ public class SphereImp extends ShapeImp {
 	public org.lgna.story.Sphere getAbstraction() {
 		return this.abstraction;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgSphere.radius };
+	}
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.UNIFORM };
+	}
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.UNIFORM ) {
+			return this.radius.getValue();
+		} else {
+			assert false : resizer;
+			return Double.NaN;
+		}
+	}
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		if( resizer == Resizer.UNIFORM ) {
+			this.radius.setValue( value );
+		} else {
+			assert false : resizer;
+		}
+	}
 }

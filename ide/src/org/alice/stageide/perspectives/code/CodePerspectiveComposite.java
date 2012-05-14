@@ -53,18 +53,47 @@ public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
 	public static CodePerspectiveComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
+		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+			if( ignoreDividerChangeCount > 0 ) {
+				//pass
+			} else {
+				CodeContextSplitComposite otherComposite = CodeContextSplitComposite.getInstance();
+				org.lgna.croquet.components.SplitPane otherSplitPane = otherComposite.getView();
+				int prevValue = otherSplitPane.getDividerLocation();
+				int nextValue = (int)( (Integer)e.getNewValue()*9.0/16.0 );
+				if( prevValue != nextValue ) {
+					otherComposite.incrementIgnoreDividerLocationChangeCount();
+					try {
+						otherSplitPane.setDividerLocation( nextValue );
+					} finally {
+						otherComposite.decrementIgnoreDividerLocationChangeCount();
+					}
+				}
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "outer:", e.getOldValue(), e.getNewValue() );
+			}
+		}
+	};
+	private int ignoreDividerChangeCount = 0;
 	private CodePerspectiveComposite() {
 		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ),
 				CodeContextSplitComposite.getInstance(),
 				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance()
 		);
 	}
+	public void incrementIgnoreDividerLocationChangeCount() {
+		this.ignoreDividerChangeCount ++;
+	}
+	public void decrementIgnoreDividerLocationChangeCount() {
+		this.ignoreDividerChangeCount --;
+	}
 	@Override
 	protected org.lgna.croquet.components.SplitPane createView() {
 		org.lgna.croquet.components.SplitPane rv = this.createHorizontalSplitPane();
+		rv.addDividerLocationChangeListener( this.dividerLocationListener );
 		rv.setResizeWeight( 0.0 );
 		//todo
-		rv.setDividerLocation( 300 );
+		rv.setDividerLocation( 400 );
 		return rv;
 	}
 }

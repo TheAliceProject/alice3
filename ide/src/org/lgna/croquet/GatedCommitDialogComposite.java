@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC extends GatedCommitDialogComposite.ControlsComposite > extends DialogComposite< org.lgna.croquet.components.BorderPanel > {
+public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComposite< ? >, CC extends GatedCommitDialogComposite.ControlsComposite > extends DialogComposite< org.lgna.croquet.components.BorderPanel > {
 	private static final org.lgna.croquet.history.Step.Key< Boolean > IS_COMPLETED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "GatedCommitDialogComposite.IS_COMPLETED_KEY" );
 
 	private static final String NULL_EXPLANATION = "good to go";
@@ -210,6 +210,50 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 			this.gatedCommitDialogComposite = gatedCommitDialogComposite;
 			this.completeButton = this.getCompleteOperation().createButton();
 		}
+		
+		protected abstract String getDefaultCommitText();
+		protected abstract String getCommitUiKey();
+		protected String getCancelUiKey() {
+			return "OptionPane.cancelButtonText";
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+
+			java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
+			
+			String commitText = this.findLocalizedText( "commit", GatedCommitMainComposite.class );
+			if( commitText != null ) {
+				//pass
+			} else {
+				String commitUiKey = this.getCommitUiKey();
+				if( commitUiKey != null ) {
+					commitText = javax.swing.UIManager.getString( commitUiKey, locale );
+				}
+				if( commitText != null ) {
+					//pass
+				} else {
+					commitText = this.getDefaultCommitText();
+				}
+			}
+			this.completeOperation.setName( commitText );
+			String cancelText = this.findLocalizedText( "cancel", GatedCommitMainComposite.class );
+			if( cancelText != null ) {
+				//pass
+			} else {
+				cancelText = javax.swing.UIManager.getString( "OptionPane.cancelButtonText", locale );
+				if( commitText != null ) {
+					//pass
+				} else {
+					commitText = "Cancel";
+				}
+			}
+			this.cancelOperation.setName( cancelText );
+		}
+		@Override
+		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
+			return this.getGatedCommitDialogComposite().getClassUsedForLocalization();
+		}
 		public GatedCommitDialogComposite getGatedCommitDialogComposite() {
 			return this.gatedCommitDialogComposite;
 		}
@@ -256,6 +300,41 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 			return this.cancelOperation;
 		}
 	}
+
+	private static class InternalErrorValue extends StringValue {
+		private final Key key;
+		public InternalErrorValue( Key key ) {
+			super( java.util.UUID.fromString( "f53f9c5b-1ab0-4eb5-ac4f-7312a32d240e" ) );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	private static class InternalWarningValue extends StringValue {
+		private final Key key;
+		public InternalWarningValue( Key key ) {
+			super( java.util.UUID.fromString( "df9a6066-bbca-46ae-82d6-97d2392dca70" ) );
+			this.key = key;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	
+	private java.util.Map<Key,InternalErrorValue> mapKeyToErrorValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalWarningValue> mapKeyToWarningValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	protected StringValue createErrorValue( Key key ) {
+		InternalErrorValue rv = new InternalErrorValue( key );
+		this.mapKeyToErrorValue.put( key, rv );
+		return rv;
+	}
+	protected StringValue createWarningValue( Key key ) {
+		InternalWarningValue rv = new InternalWarningValue( key );
+		this.mapKeyToWarningValue.put( key, rv );
+		return rv;
+	}
+
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
@@ -275,8 +354,14 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 	@Override
 	protected void localize() {
 		super.localize();
-		this.getControlsComposite().completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogComposite.class ) );
-		this.getControlsComposite().cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogComposite.class ) );
+		for( Key key : this.mapKeyToErrorValue.keySet() ) {
+			InternalErrorValue error = this.mapKeyToErrorValue.get( key );
+			error.setText( this.getLocalizedText( key.getLocalizationKey() ) );
+		}
+		for( Key key : this.mapKeyToWarningValue.keySet() ) {
+			InternalWarningValue warning = this.mapKeyToWarningValue.get( key );
+			warning.setText( this.getLocalizedText( key.getLocalizationKey() ) );
+		}
 	}
 	protected abstract CC getControlsComposite();
 	@Override
@@ -287,14 +372,19 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 		rv.setBackgroundColor( this.mainComposite.getView().getBackgroundColor() );
 		return rv;
 	}
-
-	protected abstract String getExplanation( org.lgna.croquet.history.CompletionStep<?> step );
+	@Override
+	protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
+		return this.getMainComposite().getClassUsedForLocalization();
+	}
+	private StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return this.getMainComposite().getExplanation( step );
+	}
 	protected void updateExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String explanation;
 		if( step != null ) {
-			explanation = this.getExplanation( step );
-			if( explanation != null ) {
-				//pass
+			StringValue stringValue = this.getExplanation( step );
+			if( stringValue != null ) {
+				explanation = stringValue.getText();
 			} else {
 				explanation = NULL_EXPLANATION;
 			}
@@ -333,5 +423,17 @@ public abstract class GatedCommitDialogComposite< MC extends Composite< ? >, CC 
 	protected void handlePostHideDialog( org.lgna.croquet.history.TransactionNode<?> node ) {
 		node.removeListener( this.listener );
 		super.handlePostHideDialog( node );
+	}
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.mainComposite.handlePreActivation();
+		this.getControlsComposite().handlePreActivation();
+	}
+	@Override
+	public void handlePostDeactivation() {
+		this.mainComposite.handlePostDeactivation();
+		this.getControlsComposite().handlePostDeactivation();
+		super.handlePostDeactivation();
 	}
 }
