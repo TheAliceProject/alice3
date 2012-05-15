@@ -195,6 +195,7 @@ class IkProgram extends Program {
 		if(endId != null && anchorId != null) {
 			if(useTightIkEnforcer) {
 				//TODO 
+				//should I remove? depends. when is this called?
 			} else {
 				ikEnforcer.clearChainBetween(anchorId, endId);
 			}
