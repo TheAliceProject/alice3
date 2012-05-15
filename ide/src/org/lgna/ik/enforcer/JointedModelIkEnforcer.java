@@ -23,10 +23,8 @@ import edu.cmu.cs.dennisc.math.Vector3;
 public class JointedModelIkEnforcer extends IkEnforcer {
 
 	org.lgna.ik.solver.Solver solver = new org.lgna.ik.solver.Solver();
-	private final org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp;
-	
 	public JointedModelIkEnforcer(org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp) {
-		this.jointedModelImp = jointedModelImp;
+		super(jointedModelImp);
 		solver.setJointWeights(weights);
 	}
 

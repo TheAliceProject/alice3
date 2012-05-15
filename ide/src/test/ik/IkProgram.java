@@ -43,7 +43,12 @@
 
 package test.ik;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lgna.ik.IkConstants;
+import org.lgna.ik.enforcer.TightPositionalIkEnforcer;
+import org.lgna.ik.enforcer.TightPositionalIkEnforcer.Constraint;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
@@ -103,6 +108,11 @@ class IkProgram extends Program {
 //	private org.lgna.ik.solver.Chain chain;
 //	private org.lgna.ik.solver.Solver solver;
 	private org.lgna.ik.enforcer.JointedModelIkEnforcer ikEnforcer;
+	private TightPositionalIkEnforcer tightIkEnforcer;
+	private List<Constraint> activeConstraints = new ArrayList<Constraint>();
+	
+	private boolean useTightIkEnforcer = false;
+	
 //	protected java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> currentSpeeds;
 	
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
@@ -183,7 +193,11 @@ class IkProgram extends Program {
 		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 		
 		if(endId != null && anchorId != null) {
-			ikEnforcer.clearChainBetween(anchorId, endId);
+			if(useTightIkEnforcer) {
+				//TODO 
+			} else {
+				ikEnforcer.clearChainBetween(anchorId, endId);
+			}
 		}
 	}
 
@@ -192,8 +206,14 @@ class IkProgram extends Program {
 		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 		
 		if(endId != null && anchorId != null) {
-			ikEnforcer.setChainBetween(anchorId, endId);
+			if(useTightIkEnforcer) {
+				//TODO 
+			} else {
+				ikEnforcer.setChainBetween(anchorId, endId);
+			}
 			setDragAdornmentsVisible(true);
+			Point3 ap = getSubjectImp().getJointImplementation(anchorId).getAbsoluteTransformation().translation;
+			scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
 		} else {
 			setDragAdornmentsVisible(false);
 		}
@@ -264,6 +284,21 @@ class IkProgram extends Program {
 		this.getTargetImp().setTransformation( this.getEndImp() );
 		this.getTargetImp().getSgComposite().addAbsoluteTransformationListener( this.targetTransformListener );
 		
+		
+		Thread calculateThread;
+		
+		if(useTightIkEnforcer) {
+			calculateThread = initializeTightIkEnforcer();
+		} else {
+			calculateThread = initializeOldIkEnforcer();
+		}
+		
+		this.handleChainChanged();
+		
+		calculateThread.start();
+	}
+	
+	private Thread initializeOldIkEnforcer() {
 //		solver = new org.lgna.ik.solver.Solver();
 		ikEnforcer = new org.lgna.ik.enforcer.JointedModelIkEnforcer(getSubjectImp());
 		ikEnforcer.addFullBodyDefaultPoseUsingCurrentPose(); 
@@ -317,7 +352,6 @@ class IkProgram extends Program {
 						scene.anchor.setPositionRelativeToVehicle(new Position(ap.x, ap.y, ap.z));
 						scene.ee.setPositionRelativeToVehicle(new Position(ep.x, ep.y, ep.z));
 						
-						//TODO do this kind of thing as well
 						//force bone reprint
 						//this should be fine even if the chain is not valid anymore.
 						javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -335,10 +369,57 @@ class IkProgram extends Program {
 				}
 			}
 		};
+		return calculateThread;
+	}
+	
+	
+	private Thread initializeTightIkEnforcer() {
+		tightIkEnforcer = new TightPositionalIkEnforcer(getSubjectImp());
 		
-		this.handleChainChanged();
-		
-		calculateThread.start();
+		Thread calculateThread = new Thread() {
+			@Override
+			public void run() {
+				while(!interrupted()) {
+					
+					//not bad concurrent programming practice
+					boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
+					boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
+					
+					//these could be multiple. in this app it is one pair.
+					final JointId eeId = test.ik.croquet.EndJointIdState.getInstance().getValue();
+					final JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
+					
+					double deltaTime = IkConstants.DESIRED_DELTA_TIME;
+					
+					for(Constraint constraint: activeConstraints) {
+						
+						edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+						if(constraint.isLinear()) {
+							constraint.setEeDesiredPosition(targetTransformation.translation);
+						} else {
+							constraint.setEeDesiredOrientation(targetTransformation.orientation);
+						}
+						
+						tightIkEnforcer.enforceConstraints();
+						
+						//force bone reprint
+						//this should be fine even if the chain is not valid anymore.
+						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
+							}
+						});
+					}
+					
+					try {
+						sleep(10);
+					} catch (InterruptedException e) {
+						break;
+					}
+				}
+			}
+		};
+		return calculateThread;
 	}
 
 	private void handleBoneChanged() {
