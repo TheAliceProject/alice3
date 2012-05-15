@@ -97,7 +97,8 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		java.util.List< org.lgna.croquet.Context > contexts = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( model != null ) {
 			for( org.lgna.croquet.ContextFactory<?> contextFactory : model.getContextFactories() ) {
-				contexts.add( contextFactory.createContext() );
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( model );
+				contexts.add( contextFactory.createContext( trigger.getOrigin() ) );
 			}
 		}
 		this.contexts = java.util.Collections.unmodifiableList( contexts );

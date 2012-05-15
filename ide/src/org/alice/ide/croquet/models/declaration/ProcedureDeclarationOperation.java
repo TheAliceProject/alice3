@@ -69,25 +69,37 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 				"", true 
 		);
 	}
-	
+
 	public void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.UserMethod method ) {
-		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
+		this.generateAndAddToTransactionHistory( history, method.getDeclaringType(), method );
+	}
 
-		org.lgna.croquet.history.TransactionHistory subTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subTransactionHistory );
+	public void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserMethod method ) {
+		org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)declaringType;
+		org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( namedUserType );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
+		try {
+			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 
-		org.lgna.croquet.history.Transaction nameTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
-		org.lgna.croquet.history.StateChangeStep nameChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( nameTransaction, this.getNameState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance() );
-		nameChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( nameChangeStep, "", method.getName() ) );
-		
-		org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
-		org.lgna.croquet.history.CompletionStep commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, this.getCompleteOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), null );
-		commitStep.finish();
+			org.lgna.croquet.history.TransactionHistory subTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
+			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subTransactionHistory );
 
-		org.lgna.croquet.history.CompletionStep completionStep = transaction.getCompletionStep();
-		completionStep.setEdit( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, method.getDeclaringType(), method ) );
-		
-		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, method.body.getValue() );
+			org.lgna.croquet.history.Transaction nameTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+			org.lgna.croquet.history.StateChangeStep nameChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( nameTransaction, this.getNameState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance() );
+			nameChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( nameChangeStep, "", method.getName() ) );
+
+			org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+			org.lgna.croquet.history.CompletionStep commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, this.getCompleteOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), null );
+			commitStep.finish();
+
+			org.lgna.croquet.history.CompletionStep completionStep = transaction.getCompletionStep();
+			completionStep.setEdit( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, declaringType, method ) );
+
+			org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, method.body.getValue() );
+		} finally {
+			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().popGeneratedValue();
+			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
+		}
 	}
 
 	@Override

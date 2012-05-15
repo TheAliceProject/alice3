@@ -52,18 +52,39 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	};
 	private final java.util.List< ValueListener<T> > valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private T prevValueForSkipCheck;
+	private final java.util.Stack<T> generatorValueStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	
 	public State( Group group, java.util.UUID id, T initialValue ) {
 		super(group, id);
 		this.prevValueForSkipCheck = initialValue;
 	}
-	
+
 	public abstract Class<T> getItemClass();
 	public abstract T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	public abstract void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
 	public abstract StringBuilder appendRepresentation( StringBuilder rv, T value );
 
-	public org.lgna.croquet.StateContext< T > createContext() {
-		return new StateContext< T >( this );
+	public void pushGeneratedValue( T value ) {
+		this.generatorValueStack.push( value );
+	}
+	public T popGeneratedValue() {
+		return this.generatorValueStack.pop();
+	}
+	public org.lgna.croquet.StateContext< T > createContext( org.lgna.croquet.triggers.Trigger.Origin origin ) {
+		T value;
+		if( origin == org.lgna.croquet.triggers.Trigger.Origin.GENERATOR ) {
+			//todo: warn and not assert?
+			//assert this.generatorValueStack.isEmpty() == false : this;
+			if( this.generatorValueStack.isEmpty() ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+				value = this.getValue();
+			} else {
+				value = this.generatorValueStack.peek();
+			}
+		} else {
+			value = this.getValue();
+		}
+		return new StateContext< T >( this, value );
 	}
 	
 	public void addValueListener( ValueListener<T> valueListener ) {

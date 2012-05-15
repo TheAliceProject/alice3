@@ -62,6 +62,7 @@ public class BlockStatementGenerator {
 	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
 			StatementGenerator statementGenerator;
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
 			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
 				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
@@ -75,7 +76,15 @@ public class BlockStatementGenerator {
 						//todo: check to see if generation actually required
 						org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( userMethod.getDeclaringType() ).generateAndAddToTransactionHistory( history, userMethod );
 					}
+
+					org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
 					
+					instanceFactory = org.alice.ide.instancefactory.InstanceFactoryUtilities.getInstanceFactoryForExpression( instanceExpression );
+					if( instanceFactory != null ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instanceExpression );
+					}
 					statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( expression );
@@ -85,7 +94,13 @@ public class BlockStatementGenerator {
 				statementGenerator = mapStatementClassToGenerator.get( statement.getClass() );
 			}
 			if( statementGenerator != null ) {
+				if( instanceFactory != null ) {
+					org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
+				}
 				statementGenerator.generateAndAddStepsToTransaction( history, statement );
+				if( instanceFactory != null ) {
+					org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
+				}
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( statement );
 			}

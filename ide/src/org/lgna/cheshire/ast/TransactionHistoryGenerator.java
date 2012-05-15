@@ -27,7 +27,7 @@ public class TransactionHistoryGenerator {
 		//we add the new method to the same class as the method we add the invocation to
 		org.lgna.project.ast.UserType<?> sharedDeclaringType = owner.getDeclaringType();
 		org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)methodInvocation.method.getValue();
-		org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( sharedDeclaringType ).generateAndAddToTransactionHistory( history, method );
+		org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( sharedDeclaringType ).generateAndAddToTransactionHistory( history, sharedDeclaringType, method );
 
 		//todo: add methodInvocation to owner
 

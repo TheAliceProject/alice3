@@ -70,8 +70,8 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< o
 		
 		//<kjh/> looking glass will be entirely different.  contemplate meta context factories.
 		this.addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
-		// should be taken care of by searching the tabs 
-		//this.addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
+		// can be taken care of by searching the tabs 
+		this.addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
 	}
 
 	@Override

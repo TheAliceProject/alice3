@@ -51,9 +51,9 @@ public class StateContext< T > implements Context {
 	private final org.lgna.croquet.resolvers.Resolver< State< T > > stateResolver;
 	private T value;
 
-	public StateContext( State< T > state ) {
+	public StateContext( State< T > state, T value ) {
 		this.stateResolver = state.getResolver();
-		this.value = state.getValue();
+		this.value = value;
 	}
 
 	public StateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -78,12 +78,12 @@ public class StateContext< T > implements Context {
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );
 	}
 
-	public org.lgna.croquet.history.Transaction createRecoveryTransaction() {
+	public org.lgna.croquet.history.Transaction[] createRecoveryTransactions() {
 		State< T > state = this.getState();
 		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( (org.lgna.croquet.history.TransactionHistory)null );
 		org.lgna.croquet.history.StateChangeStep< T > step = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( transaction, state, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
 		step.setEdit( new org.lgna.croquet.edits.StateEdit< T >( step, state.getValue(), this.value ) );
-		return transaction;
+		return new org.lgna.croquet.history.Transaction[] { transaction };
 	}
 
 	public State< T > getState() {

@@ -264,8 +264,10 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				if( context.isGoodToGo() ) {
 					//pass
 				} else {
-					org.lgna.croquet.history.Transaction recoveryTransaction = context.createRecoveryTransaction();
-					this.insertRecoveryTransactionChapter( recoveryTransaction );
+					org.lgna.croquet.history.Transaction[] recoveryTransactions = context.createRecoveryTransactions();
+					for( org.lgna.croquet.history.Transaction recoveryTransaction : recoveryTransactions ) {
+						this.insertRecoveryTransactionChapter( recoveryTransaction );
+					}
 					return;
 				}
 			}
