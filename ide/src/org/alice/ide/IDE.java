@@ -119,7 +119,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 		// TODO: <kjh/> Set this to false... remove it...
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.hackTutorial" ) ) {
-			final org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getBattleCrazyGenerator();
+			final org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getColorCrazyGenerator();
 			IDE.this.loadProjectFrom( test.getProjectFile() );
 			test.generate( this.getProject() );
 			IDE.this.simplePresentation.initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, test.getReuseTransactionHistory(), null, null, new org.lgna.cheshire.simple.Recoverer(), new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );

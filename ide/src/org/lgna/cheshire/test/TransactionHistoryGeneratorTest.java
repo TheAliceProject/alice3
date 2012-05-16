@@ -112,6 +112,10 @@ public class TransactionHistoryGeneratorTest {
 		return new TransactionHistoryGeneratorTest( "Battle Crazy" );
 	}
 
+	public static TransactionHistoryGeneratorTest getColorCrazyGenerator() {
+		return new TransactionHistoryGeneratorTest( "Color Crazy" );
+	}
+
 	public static void main(String[] args) throws Exception {
 		TransactionHistoryGeneratorTest test;
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
