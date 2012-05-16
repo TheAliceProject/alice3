@@ -1,15 +1,20 @@
 package org.lgna.cheshire.test;
 
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.UserType;
+
 /**
  * @author Kyle J. Harms
  */
 @Deprecated
 public class TransactionHistoryGeneratorTest {
 
-	private static final String PROJECT_FILENAME = "project.lgp";
-	private static final String REUSE_FILENAME = "reuse.xml";
+	private static final String PROJECT_FILENAME = "project.";
+	private static final String LGP_REUSE_FILENAME = "reuse.xml";
+	private static final String A3P_REUSE_FILENAME = "complete.a3p";
 
 	private String testName;
+	private String reuseType;
 	private java.io.File testPath;
 	private java.io.File projectFile;
 	private java.io.File reuseFile;
@@ -17,15 +22,17 @@ public class TransactionHistoryGeneratorTest {
 	private org.lgna.project.ast.AbstractNode reuseMethod;
 	private org.lgna.croquet.history.TransactionHistory reuseTransactionHistory;
 
-	public TransactionHistoryGeneratorTest( String testName ) {
+	public TransactionHistoryGeneratorTest( String testName, String reuseType ) {
 		this.testName = testName;
+		this.reuseType = reuseType;
+
 		try {
 			this.testPath = new java.io.File(this.getClass().getResource( this.testName ).toURI());
 		} catch (java.net.URISyntaxException e) {
 			e.printStackTrace();
 		}
-		this.projectFile = new java.io.File( this.testPath, PROJECT_FILENAME );
-		this.reuseFile = new java.io.File( this.testPath, REUSE_FILENAME );
+
+		this.projectFile = new java.io.File( this.testPath, PROJECT_FILENAME + this.reuseType );
 
 		// We need to "convert" lgp to a3p... this hack will suffice
 		org.lgna.project.Version VERSION_INDEPENDENT = null;
@@ -36,7 +43,14 @@ public class TransactionHistoryGeneratorTest {
 				"org.lgna.project.ast.ThisExpression" ) );
 
 		try {
-			this.reuseMethod = loadReuseLgp( this.reuseFile );
+			if ( this.reuseType.equals("lgp") ) {
+				this.reuseFile = new java.io.File( this.testPath, LGP_REUSE_FILENAME );
+				this.reuseMethod = loadReuseLgp( this.reuseFile );
+			} else if ( this.reuseType.equals("a3p") ) {
+				this.reuseFile = new java.io.File( this.testPath, A3P_REUSE_FILENAME );
+			} else {
+				// blah?
+			}
 		} catch (java.io.IOException e) {
 			e.printStackTrace();
 		}
@@ -54,16 +68,36 @@ public class TransactionHistoryGeneratorTest {
 		}
 	}
 
+	// TODO: Make this method more general...
+	private org.lgna.project.ast.AbstractNode loadReuseA3p( java.io.File file ) throws java.io.IOException {
+		org.lgna.project.Project project;
+		org.lgna.project.ast.AbstractMethod method = null;
+		try {
+			project = org.lgna.project.io.IoUtilities.readProject( file );
+
+			org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
+			org.lgna.project.ast.AbstractField alienField = sceneType.findField( "alien" );
+
+			method = alienField.getValueType().findMethod( "color_crazy" );
+		} catch (VersionNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return method;
+	}
+
+	// TODO: Make this more general....
 	public void generate( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
-		assert sceneType.isAssignableTo( org.lgna.story.Scene.class ) : sceneType;
-		org.lgna.project.ast.UserMethod owner = sceneType.getDeclaredMethod( "myFirstMethod" );
+//		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
+//		assert sceneType.isAssignableTo( org.lgna.story.Scene.class ) : sceneType;
+//		org.lgna.project.ast.UserMethod owner = sceneType.getDeclaredMethod( "myFirstMethod" );
+		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
+		org.lgna.project.ast.UserType<?> alienField = (UserType<?>) sceneType.findField( "alien" ).getDeclaringType();
 
 		org.lgna.project.ast.UserMethod methodToGenerate = (org.lgna.project.ast.UserMethod)this.reuseMethod;
 		org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), methodToGenerate );
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
-		this.reuseTransactionHistory = transactionHistoryGenerator.generate( owner, methodInvocation );
+		this.reuseTransactionHistory = transactionHistoryGenerator.generate( alienField, methodInvocation );
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getReuseTransactionHistory() {
@@ -105,15 +139,15 @@ public class TransactionHistoryGeneratorTest {
 	}
 
 	public static TransactionHistoryGeneratorTest getSpinCrazyGenerator() {
-		return new TransactionHistoryGeneratorTest( "Spin Crazy" );
+		return new TransactionHistoryGeneratorTest( "Spin Crazy", "lgp" );
 	}
 
 	public static TransactionHistoryGeneratorTest getBattleCrazyGenerator() {
-		return new TransactionHistoryGeneratorTest( "Battle Crazy" );
+		return new TransactionHistoryGeneratorTest( "Battle Crazy", "lgp" );
 	}
 
 	public static TransactionHistoryGeneratorTest getColorCrazyGenerator() {
-		return new TransactionHistoryGeneratorTest( "Color Crazy" );
+		return new TransactionHistoryGeneratorTest( "Color Crazy", "a3p" );
 	}
 
 	public static void main(String[] args) throws Exception {
