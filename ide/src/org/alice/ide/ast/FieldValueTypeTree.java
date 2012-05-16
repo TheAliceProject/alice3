@@ -64,6 +64,7 @@ public class FieldValueTypeTree {
 					//pass
 				} else {
 					typeNode = new TypeNode( getTypeNode( type.getSuperType() ), type );
+					map.put( type,  typeNode );
 				}
 				return typeNode;
 			} else {
@@ -73,28 +74,60 @@ public class FieldValueTypeTree {
 		public void insertField( org.lgna.project.ast.UserField field ) {
 			FieldNode fieldNode = new FieldNode( getTypeNode( field.getValueType() ), field );
 		}
-	}
-	private static class Node {
-		private final TypeNode parent;
-		public Node( TypeNode parent ) {
-			this.parent = parent;
+		public void output() {
+			StringBuilder sb = new StringBuilder();
+			this.root.append( sb, 0 );
+			System.out.println( sb.toString() );
 		}
 	}
-	private static class TypeNode extends Node {
-		private final org.lgna.project.ast.AbstractType<?,?,?> type;
+	private static class Node<N extends org.lgna.project.ast.AbstractDeclaration> {
+		private final TypeNode parent;
+		private final N declaration;
+		private final int depth;
+		public Node( TypeNode parent, N declaration ) {
+			this.parent = parent;
+			if( this.parent != null ) {
+				this.depth = this.parent.getDepth() + 1;
+			} else {
+				this.depth = 0;
+			}
+			this.declaration = declaration;
+		}
+		public int getDepth() {
+			return this.depth;
+		}
+		protected void append( StringBuilder sb, int level ) {
+			for( int i=0; i<level; i++ ) {
+				sb.append( "\t" );
+			}
+			sb.append( this.declaration );
+			sb.append( "\n" );
+		}
+	}
+	private static class TypeNode extends Node<org.lgna.project.ast.AbstractType<?,?,?>> {
 		private final java.util.List<TypeNode> typeNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private final java.util.List<FieldNode> fieldNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		public TypeNode( TypeNode parent, org.lgna.project.ast.AbstractType<?,?,?> type ) {
-			super( parent );
-			this.type = type;
-			parent.typeNodes.add( this );
+			super( parent, type );
+			if( parent != null ) {
+				parent.typeNodes.add( this );
+			}
+		}
+		
+		@Override
+		protected void append( StringBuilder sb, int level ) {
+			super.append( sb, level );
+			for( TypeNode typeNode : this.typeNodes ) {
+				typeNode.append( sb, level+1 );
+			}
+			for( FieldNode fieldNode : this.fieldNodes ) {
+				fieldNode.append( sb, level+1 );
+			}
 		}
 	}
-	private static class FieldNode extends Node {
-		private final org.lgna.project.ast.UserField field;
+	private static class FieldNode extends Node<org.lgna.project.ast.UserField> {
 		public FieldNode( TypeNode parent, org.lgna.project.ast.UserField field ) {
-			super( parent );
-			this.field = field;
+			super( parent, field );
 			parent.fieldNodes.add( this );
 		}
 	}
@@ -108,5 +141,12 @@ public class FieldValueTypeTree {
 		for( org.lgna.project.ast.UserField field : declaringType.fields ) {
 			data.insertField( field );
 		}
+		data.output();
+	}
+	public static void main( String[] args ) throws Exception {
+		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
+		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
+		FieldValueTypeTree tree = new FieldValueTypeTree( sceneType, org.lgna.story.Biped.class, org.lgna.story.Quadruped.class, org.lgna.story.Swimmer.class, org.lgna.story.Flyer.class, org.lgna.story.Prop.class, org.lgna.story.Entity.class );
+		
 	}
 }
