@@ -218,7 +218,8 @@ class IkProgram extends Program {
 		} else {
 			setDragAdornmentsVisible(false);
 		}
-		updateInfo();
+		test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, endId) );
+//		updateInfo();
 	}
 	
 //	private void handleChainChanged_old() {
@@ -355,11 +356,14 @@ class IkProgram extends Program {
 						
 						//force bone reprint
 						//this should be fine even if the chain is not valid anymore.
-						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
-							}
-						});
+//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//							public void run() {
+//								//this would prevent me from selecting the list
+////								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
+//								//this would throw java.lang.IllegalStateException: Attempt to mutate in notification
+////								updateInfo();
+//							}
+//						});
 					}
 					
 					try {
@@ -405,11 +409,12 @@ class IkProgram extends Program {
 						
 						//force bone reprint
 						//this should be fine even if the chain is not valid anymore.
-						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
-							}
-						});
+						//this would prevent me from selecting the list
+//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//							public void run() {
+//								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
+//							}
+//						});
 					}
 					
 					try {
