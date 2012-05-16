@@ -1,8 +1,5 @@
 package org.lgna.cheshire.test;
 
-import org.lgna.project.VersionNotSupportedException;
-import org.lgna.project.ast.UserType;
-
 /**
  * @author Kyle J. Harms
  */
@@ -48,6 +45,7 @@ public class TransactionHistoryGeneratorTest {
 				this.reuseMethod = loadReuseLgp( this.reuseFile );
 			} else if ( this.reuseType.equals("a3p") ) {
 				this.reuseFile = new java.io.File( this.testPath, A3P_REUSE_FILENAME );
+				this.reuseMethod = loadReuseA3p( this.reuseFile );
 			} else {
 				// blah?
 			}
@@ -79,7 +77,7 @@ public class TransactionHistoryGeneratorTest {
 			org.lgna.project.ast.AbstractField alienField = sceneType.findField( "alien" );
 
 			method = alienField.getValueType().findMethod( "color_crazy" );
-		} catch (VersionNotSupportedException e) {
+		} catch (org.lgna.project.VersionNotSupportedException e) {
 			e.printStackTrace();
 		}
 		return method;
@@ -88,16 +86,16 @@ public class TransactionHistoryGeneratorTest {
 	// TODO: Make this more general....
 	public void generate( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-//		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
-//		assert sceneType.isAssignableTo( org.lgna.story.Scene.class ) : sceneType;
-//		org.lgna.project.ast.UserMethod owner = sceneType.getDeclaredMethod( "myFirstMethod" );
+		//		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
+		//		assert sceneType.isAssignableTo( org.lgna.story.Scene.class ) : sceneType;
+		//		org.lgna.project.ast.UserMethod owner = sceneType.getDeclaredMethod( "myFirstMethod" );
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
-		org.lgna.project.ast.UserType<?> alienField = (UserType<?>) sceneType.findField( "alien" ).getDeclaringType();
+		org.lgna.project.ast.UserType<?> alienType = (org.lgna.project.ast.UserType<?>) sceneType.findField( "alien" ).getDeclaringType();
 
 		org.lgna.project.ast.UserMethod methodToGenerate = (org.lgna.project.ast.UserMethod)this.reuseMethod;
 		org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), methodToGenerate );
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
-		this.reuseTransactionHistory = transactionHistoryGenerator.generate( alienField, methodInvocation );
+		this.reuseTransactionHistory = transactionHistoryGenerator.generate( alienType, methodInvocation );
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getReuseTransactionHistory() {
