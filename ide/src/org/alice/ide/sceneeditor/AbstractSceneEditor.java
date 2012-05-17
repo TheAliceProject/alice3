@@ -54,6 +54,8 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	private java.util.Map< org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance > mapSceneFieldToInstance = new java.util.HashMap< org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance >();
 	private java.util.Map< org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField > mapSceneInstanceToField = new java.util.HashMap< org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField >();
 	
+	private java.util.Map< org.lgna.project.ast.UserField, org.lgna.project.ast.BlockStatement > mapSceneFieldToInitialCodeState = new java.util.HashMap< org.lgna.project.ast.UserField, org.lgna.project.ast.BlockStatement >();
+	
 	private org.lgna.project.ast.NamedUserType programType;
 	private org.lgna.project.virtualmachine.UserInstance programInstance;
 	private org.lgna.project.ast.UserField selectedField;
@@ -115,6 +117,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	protected void initializeObservers(){
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().addAndInvokeValueListener( this.perspectiveListener );
+	}
+	
+	protected void setInitialCodeStateForField(org.lgna.project.ast.UserField field, org.lgna.project.ast.BlockStatement code) {
+		this.mapSceneFieldToInitialCodeState.put(field, code);
+	}
+	
+	protected org.lgna.project.ast.BlockStatement getInitialCodeforField(org.lgna.project.ast.UserField field) {
+		return this.mapSceneFieldToInitialCodeState.get(field);
 	}
 	
 	
@@ -215,6 +225,21 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
 		this.setSelectedField(declaringType, field);
 		
+	}
+	
+	public abstract org.lgna.project.ast.BlockStatement getCurrentStateCodeForField(org.lgna.project.ast.UserField field);
+	
+	public void setFieldToState(org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements) {
+		this.executeStatements(statements);
+	}
+	
+	public void revertFieldToInitialState(org.lgna.project.ast.UserField field) {
+		org.lgna.project.ast.BlockStatement code = this.getInitialCodeforField(field);
+		if (code == null) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("No initial state code found for field "+field);
+			return;
+		}
+		this.setFieldToState(field, code.statements.toArray(org.lgna.project.ast.Statement.class));
 	}
 	
 	public void removeField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){

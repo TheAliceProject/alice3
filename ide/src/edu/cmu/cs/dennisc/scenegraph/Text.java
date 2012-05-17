@@ -53,6 +53,7 @@ public class Text extends Geometry {
 	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, DEFAULT_TEXT ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, String value) {
+			boundsChanging();
 			super.setValue( owner, value );
 			m_glyphVector.setText( value.toString() );
 			m_unalignedBoundingBox.setNaN();
@@ -62,6 +63,7 @@ public class Text extends Geometry {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty< java.awt.Font > font = new edu.cmu.cs.dennisc.property.InstanceProperty< java.awt.Font >( this, DEFAULT_FONT ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, java.awt.Font value) {
+			boundsChanging();
 			super.setValue( owner, value );
 			m_glyphVector.setFont( value );
 			m_unalignedBoundingBox.setNaN();
@@ -81,6 +83,7 @@ public class Text extends Geometry {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, LeftToRightAlignment value) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				boundsChanging();
 				super.setValue( owner, value );
 				m_unalignedBoundingBox.setNaN();
 				fireBoundChange();
@@ -91,6 +94,7 @@ public class Text extends Geometry {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, TopToBottomAlignment value) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				boundsChanging();
 				super.setValue( owner, value );
 				m_unalignedBoundingBox.setNaN();
 				fireBoundChange();
@@ -101,6 +105,7 @@ public class Text extends Geometry {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, FrontToBackAlignment value) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				boundsChanging();
 				super.setValue( owner, value );
 				m_unalignedBoundingBox.setNaN();
 				fireBoundChange();
