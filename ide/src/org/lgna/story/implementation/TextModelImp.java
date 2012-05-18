@@ -43,7 +43,6 @@
 
 package org.lgna.story.implementation;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
 
 /**
  * @author Dennis Cosgrove

@@ -43,7 +43,6 @@
 
 package org.alice.stageide.person;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
 
 /**
  * @author Dennis Cosgrove

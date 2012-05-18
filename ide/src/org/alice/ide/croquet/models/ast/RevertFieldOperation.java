@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-import org.alice.ide.croquet.models.ast.rename.RenameFieldOperation;
 
 /**
  * @author dculyba
