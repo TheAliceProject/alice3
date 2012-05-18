@@ -365,13 +365,13 @@ public class SetUpMethodGenerator {
 				}
 				if( instance instanceof org.lgna.story.Resizable ) {
 					org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
-					org.lgna.story.Scale scale = resizable.getScale();
+					org.lgna.story.Size size = resizable.getSize();
 					try {
 						statements.add( 
 								createStatement( 
-										org.lgna.story.Resizable.class, "setScale", new Class< ? >[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class }, 
+										org.lgna.story.Resizable.class, "setSize", new Class< ? >[] { org.lgna.story.Size.class, org.lgna.story.SetSize.Detail[].class }, 
 										SetUpMethodGenerator.createInstanceExpression( isThis, field ), 
-										getExpressionCreator().createExpression( scale ) 
+										getExpressionCreator().createExpression( size ) 
 								)
 						);
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {

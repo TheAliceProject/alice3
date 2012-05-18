@@ -705,4 +705,9 @@ public class GroundImp extends SimpleModelImp {
 	public void setValueForResizer( Resizer resizer, double value ) {
 		assert false : resizer;
 	}
+	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		assert false : size;
+	}
 }

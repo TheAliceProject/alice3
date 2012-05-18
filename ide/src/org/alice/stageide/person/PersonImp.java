@@ -43,6 +43,8 @@
 
 package org.alice.stageide.person;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -100,5 +102,10 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 //			Thread.dumpStack();
 			this.setSgGeometry( nebPerson );
 		}
+	}
+	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		this.setScale(getScaleForSize(size));
 	}
 }

@@ -417,7 +417,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 			Point3 maxPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMaximum() );
 			double minSize = minPlanePoint.calculateMagnitude();
 			double maxSize = maxPlanePoint.calculateMagnitude();
-			double radius = Math.max( minSize, maxSize );
+			double radius = Math.max( minSize, maxSize ) + MIN_TORUS_RADIUS;
 			if (Double.isNaN( radius ) || radius < MIN_RADIUS)
 			{
 				radius = MIN_RADIUS;

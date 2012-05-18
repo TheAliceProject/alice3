@@ -73,13 +73,15 @@ public abstract class Geometry extends Element {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			//todo: check isEqual
+			Geometry.this.boundsChanging();
 			super.setValue( owner, value );
 			Geometry.this.fireBoundChange();
 		};
 	}
 
 	public final edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		if( this.boundingBox.isNaN() ) {
+		if( this.boundingBox.isNaN()) 
+		{
 			updateBoundingBox( this.boundingBox );
 		}
 		boundingBox.set( this.boundingBox );
@@ -89,7 +91,7 @@ public abstract class Geometry extends Element {
 		return getAxisAlignedMinimumBoundingBox( new edu.cmu.cs.dennisc.math.AxisAlignedBox() );
 	}
 	public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		if( this.boundingSphere.isNaN() ) {
+		if( this.boundingSphere.isNaN()) {
 			updateBoundingSphere( this.boundingSphere );
 		}
 		boundingSphere.set( this.boundingSphere );
@@ -108,9 +110,12 @@ public abstract class Geometry extends Element {
 	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.BoundListener > accessBoundObservers() {
 		return this.boundObservers;
 	}
-	protected void fireBoundChange() {
+	
+	protected void boundsChanging() {
 		this.boundingBox.setNaN();
 		this.boundingSphere.setNaN();
+	}
+	protected void fireBoundChange() {
 		edu.cmu.cs.dennisc.scenegraph.event.BoundEvent e = new edu.cmu.cs.dennisc.scenegraph.event.BoundEvent( this );
 		for( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver : this.boundObservers ) {
 			boundObserver.boundChanged( e );
