@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -135,9 +136,10 @@ public class TextModelImp extends SimpleModelImp {
 		this.sb.setCharAt( index, c );
 		this.updateSGText();
 	}
+
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		this.setScale(getScaleForSize(size));
+	}
 	
-//	public void setLength( int length ) {
-//		this.sb.setLength( length );
-//		updateSGText();
-//	}
 }

@@ -40,39 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+
+package org.alice.ide.ast.fieldtree;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderImp extends AbstractCylinderImp {
-	private final org.lgna.story.Cylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
-	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
-		this.abstraction = abstraction;
+public class FieldNode extends Node<org.lgna.project.ast.UserField> {
+	public static FieldNode createAndAddToParent( TypeNode parent, org.lgna.project.ast.UserField field ) {
+		FieldNode rv = new FieldNode( parent, field );
+		parent.getFieldNodes().add( rv );
+		return rv;
 	}
-	@Override
-	public org.lgna.story.Cylinder getAbstraction() {
-		return this.abstraction;
-	}
-	@Override
-	protected void setXZ( double xz ) {
-		this.radius.setValue( xz );
-	}
-	
-	@Override
-	protected double getXZ() {
-		return this.radius.getValue();
+	private FieldNode( TypeNode parent, org.lgna.project.ast.UserField field ) {
+		super( parent, field );
 	}
 }

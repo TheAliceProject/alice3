@@ -737,6 +737,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				this.setSelectedObjectMarker(field);
 			}
 		}
+		setInitialCodeStateForField(field, getCurrentStateCodeForField(field));
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY ) ) {
 			if( field.getValueType().isAssignableTo( org.lgna.story.JointedModel.class ) ) {
 				org.lgna.story.JointedModel jointedModel = this.getInstanceInJavaVMForField( field, org.lgna.story.JointedModel.class );
@@ -838,6 +839,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ManagedCameraMarkerFieldState.getInstance((NamedUserType)sceneAliceInstance.getType()).addAndInvokeValueListener(this.cameraMarkerFieldSelectionObserver);
 		ManagedObjectMarkerFieldState.getInstance((NamedUserType)sceneAliceInstance.getType()).addAndInvokeValueListener(this.objectMarkerFieldSelectionObserver);
 		
+		for (org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields())
+		{
+			if( field instanceof UserField) 
+			{
+				UserField userField = (UserField)field;
+				if (userField.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED) {
+					this.setInitialCodeStateForField(userField, getCurrentStateCodeForField(userField));
+				}
+			}
+		}
+		
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( 1.0 );
 	}
 	
@@ -860,6 +872,30 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field) {
 		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField(field), this.getActiveSceneInstance() );
+	}
+	
+	@Override
+	public void setFieldToState(org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements) {
+		org.lgna.story.implementation.EntityImp fieldImp = getImplementation(field);
+		AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation();
+		super.setFieldToState(field, statements);
+		if (fieldImp == this.sceneCameraImp && this.mainCameraMarkerList.getSelectedItem() != View.STARTING_CAMERA_VIEW) {
+			AffineMatrix4x4 revertedTransform = fieldImp.getAbsoluteTransformation();
+			this.openingSceneMarkerImp.setTransformation(this.openingSceneMarkerImp.getScene(), revertedTransform);
+			this.sceneCameraImp.setTransformation(this.sceneCameraImp.getScene(), originalTransform);
+		}
+	}
+	
+	@Override
+	public org.lgna.project.ast.BlockStatement getCurrentStateCodeForField(org.lgna.project.ast.UserField field) {
+		org.lgna.project.ast.BlockStatement bs = new org.lgna.project.ast.BlockStatement();
+		
+		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
+		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
+		this.fillInAutomaticSetUpMethod( bs.statements, false, field );
+		this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
+		
+		return bs;
 	}
 	
 	@Override

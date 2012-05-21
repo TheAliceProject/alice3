@@ -56,6 +56,7 @@ public class Disc extends Shape {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Axis value ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				Disc.this.boundsChanging();
 				super.setValue( owner, value );
 				Disc.this.fireBoundChange();
 			}

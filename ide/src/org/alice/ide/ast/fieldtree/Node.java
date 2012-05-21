@@ -40,39 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+
+package org.alice.ide.ast.fieldtree;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderImp extends AbstractCylinderImp {
-	private final org.lgna.story.Cylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
+public abstract class Node<N extends org.lgna.project.ast.AbstractDeclaration>  implements Comparable< Node<N> > {
+	private final TypeNode parent;
+	private final N declaration;
+	public Node( TypeNode parent, N declaration ) {
+		this.parent = parent;
+		this.declaration = declaration;
+	}
+	public TypeNode getParent() {
+		return this.parent;
+	}
+	public N getDeclaration() {
+		return this.declaration;
+	}
+	protected void append( StringBuilder sb, int depth ) {
+		for( int i=0; i<depth; i++ ) {
+			sb.append( "\t" );
 		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
-	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
-		this.abstraction = abstraction;
+		sb.append( this.declaration );
+		sb.append( "\n" );
+	}
+	public int compareTo( Node<N> other ) {
+		return this.getDeclaration().getName().toLowerCase().compareTo( other.getDeclaration().getName().toLowerCase() );
 	}
 	@Override
-	public org.lgna.story.Cylinder getAbstraction() {
-		return this.abstraction;
-	}
-	@Override
-	protected void setXZ( double xz ) {
-		this.radius.setValue( xz );
-	}
-	
-	@Override
-	protected double getXZ() {
-		return this.radius.getValue();
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.declaration.getName() );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

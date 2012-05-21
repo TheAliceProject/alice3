@@ -45,6 +45,7 @@ package org.alice.stageide.properties;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 
@@ -52,18 +53,22 @@ import org.lgna.croquet.BooleanState;
 
 
 
-public class LinkScaleButton  extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> 
+public class LinkScaleButton extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> 
 {
 	private ImageIcon linkedIcon;
 	private ImageIcon unlinkedIcon;
 	private Dimension size;
 	
-	public LinkScaleButton( BooleanState booleanState ) {
+	public LinkScaleButton( BooleanState booleanState, URL linkedResource, URL unlinkedResource) {
 		super( booleanState );
-		this.linkedIcon = new ImageIcon(IsScaleLinkedState.class.getResource("images/scaleLinked.png"));
-		this.unlinkedIcon = new ImageIcon(IsScaleLinkedState.class.getResource("images/scaleUnlinked.png"));
+		this.linkedIcon = new ImageIcon(linkedResource);
+		this.unlinkedIcon = new ImageIcon(unlinkedResource);
 		this.size = new Dimension(this.linkedIcon.getIconWidth(), this.linkedIcon.getIconHeight());
 		this.updateLabel();
+	}
+	
+	public LinkScaleButton( BooleanState booleanState ) {
+		this( booleanState, IsAllScaleLinkedState.class.getResource("images/scaleLinked.png"), IsAllScaleLinkedState.class.getResource("images/scaleUnlinked.png") );
 	}
 	
 	private org.lgna.croquet.State.ValueListener< Boolean > valueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {

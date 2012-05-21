@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+package org.alice.stageide.properties;
+
+import org.lgna.croquet.BooleanState;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class CylinderImp extends AbstractCylinderImp {
-	private final org.lgna.story.Cylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
-	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
-		this.abstraction = abstraction;
+public class IsXYScaleLinkedState extends BooleanState 
+{
+	private static class SingletonHolder {
+		private static IsXYScaleLinkedState instance = new IsXYScaleLinkedState();
 	}
-	@Override
-	public org.lgna.story.Cylinder getAbstraction() {
-		return this.abstraction;
+	public static IsXYScaleLinkedState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected void setXZ( double xz ) {
-		this.radius.setValue( xz );
-	}
-	
-	@Override
-	protected double getXZ() {
-		return this.radius.getValue();
+	private IsXYScaleLinkedState() {
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ee9ab9ee-f84c-4508-adf5-81a42f5d1cb4" ), true );
 	}
 }

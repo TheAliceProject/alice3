@@ -134,12 +134,19 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		}
 	}
 
-	private org.lgna.croquet.CascadeBlankChild< InstanceFactory > createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > item, org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu ) {
+	private static org.lgna.croquet.CascadeBlankChild< InstanceFactory > createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > item, org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu ) {
 		if( subMenu != null ) {
 			return new org.lgna.croquet.CascadeItemMenuCombo< InstanceFactory >( item, subMenu );
 		} else {
 			return item;
 		}
+	}
+
+	/*package-private*/ static org.lgna.croquet.CascadeBlankChild< InstanceFactory > createFillInMenuComboIfNecessaryForField( org.alice.ide.ApiConfigurationManager apiConfigurationManager, org.lgna.project.ast.UserField field ) {
+		return createFillInMenuComboIfNecessary( 
+				InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) ), 
+				apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) 
+		);
 	}
 	
 	@Override
@@ -149,23 +156,45 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		org.lgna.project.ast.AbstractType< ?,?,? > type = getDeclaringType( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
 
 		rv.add( 
-				this.createFillInMenuComboIfNecessary( 
+				createFillInMenuComboIfNecessary( 
 						InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ), 
 						apiConfigurationManager.getInstanceFactorySubMenuForThis( type ) 
 				) 
 		);
 		if( type instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
-			for( org.lgna.project.ast.UserField field : namedUserType.getDeclaredFields() ) {
+			java.util.ArrayList<org.lgna.project.ast.UserField> fields = namedUserType.getDeclaredFields();
+			java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( org.lgna.project.ast.UserField field : fields ) {
 				if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-					rv.add( 
-							this.createFillInMenuComboIfNecessary( 
-									InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) ), 
-									apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) 
-							) 
-					);
+					filteredFields.add( field );
 				}
 			}
+			if( filteredFields.size() > 10 ) {
+				org.alice.ide.ast.fieldtree.RootNode root = org.alice.ide.ast.fieldtree.FieldTree.createTreeFor( 
+						filteredFields, 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Biped.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Quadruped.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Swimmer.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Flyer.class ), 
+						
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Prop.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Shape.class ),
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Entity.class ),
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( Object.class )
+				);
+				for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : root.getFieldNodes() ) {
+					rv.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, fieldNode.getDeclaration() ) );
+				}
+				for( org.alice.ide.ast.fieldtree.TypeNode typeNode : root.getTypeNodes() ) {
+					rv.add( new TypeCascadeMenuModel( typeNode, apiConfigurationManager ) );
+				}
+			} else {
+				for( org.lgna.project.ast.UserField field : filteredFields ) {
+					rv.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, field ) );
+				}
+			}
+
 			org.lgna.project.ast.AbstractCode code = ide.getFocusedCode();
 			if( code instanceof org.lgna.project.ast.UserCode ) {
 				org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)code;
@@ -173,7 +202,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( parameter.getValueType() ) ) {
 						rv.add( 
-								this.createFillInMenuComboIfNecessary( 
+								createFillInMenuComboIfNecessary( 
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessFactory.getInstance( parameter ) ), 
 										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter ) 
 								) 
@@ -184,7 +213,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				for( org.lgna.project.ast.UserLocal local : org.lgna.project.ProgramTypeUtilities.getLocals( userCode ) ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( local.getValueType() ) ) {
 						rv.add( 
-								this.createFillInMenuComboIfNecessary( 
+								createFillInMenuComboIfNecessary( 
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessFactory.getInstance( local ) ), 
 										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local ) 
 								) 

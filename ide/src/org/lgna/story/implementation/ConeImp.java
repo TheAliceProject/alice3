@@ -71,4 +71,10 @@ public class ConeImp extends AbstractCylinderImp {
 	protected void setXZ( double xz ) {
 		this.baseRadius.setValue( xz );
 	}
+	
+	@Override
+	protected double getXZ() {
+		return this.baseRadius.getValue();
+	}
+	
 }

@@ -60,7 +60,9 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getSize();
+			Dimension3 size = this.instance.getSize();
+			size = this.instance.getSize();
+			return size;
 		}
 		return null;
 	}

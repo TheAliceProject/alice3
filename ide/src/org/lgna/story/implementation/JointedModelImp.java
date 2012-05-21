@@ -239,6 +239,11 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		}
 	}
 	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		setScale(getScaleForSize(size));
+	}
+	
 	protected final org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		return this.factory.createJointImplementation( this, jointId );
 	}	

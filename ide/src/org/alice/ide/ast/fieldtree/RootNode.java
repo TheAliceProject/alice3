@@ -40,73 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast;
+
+package org.alice.ide.ast.fieldtree;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldValueTypeTree {
-	private static class Data {
-		private final java.util.Map< org.lgna.project.ast.AbstractType,TypeNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-		private final RootNode root = new RootNode();
-		public Data( Class<?>[] topLevelClses ) {
-			//map.put( null, this.root );
-			for( Class<?> cls : topLevelClses ) {
-				org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( cls );
-				TypeNode typeNode = new TypeNode( root, type );
-				map.put( type,  typeNode );
-			}
-		}
-		private TypeNode getTypeNode( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-			if( type != null ) {
-				TypeNode typeNode = map.get( type );
-				if( typeNode != null ) {
-					//pass
-				} else {
-					typeNode = new TypeNode( getTypeNode( type.getSuperType() ), type );
-				}
-				return typeNode;
-			} else {
-				return null;
-			}
-		}
-		public void insertField( org.lgna.project.ast.UserField field ) {
-			FieldNode fieldNode = new FieldNode( getTypeNode( field.getValueType() ), field );
-		}
-	}
-	private static class Node {
-		private final TypeNode parent;
-		public Node( TypeNode parent ) {
-			this.parent = parent;
-		}
-	}
-	private static class TypeNode extends Node {
-		private final org.lgna.project.ast.AbstractType<?,?,?> type;
-		private final java.util.List<TypeNode> typeNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List<FieldNode> fieldNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		public TypeNode( TypeNode parent, org.lgna.project.ast.AbstractType<?,?,?> type ) {
-			super( parent );
-			this.type = type;
-			parent.typeNodes.add( this );
-		}
-	}
-	private static class FieldNode extends Node {
-		private final org.lgna.project.ast.UserField field;
-		public FieldNode( TypeNode parent, org.lgna.project.ast.UserField field ) {
-			super( parent );
-			this.field = field;
-			parent.fieldNodes.add( this );
-		}
-	}
-	private static class RootNode extends TypeNode {
-		public RootNode() {
-			super( null, null );
-		}
-	}
-	public FieldValueTypeTree( org.lgna.project.ast.UserType<?> declaringType, Class<?>... topLevelClses ) {
-		Data data = new Data( topLevelClses );
-		for( org.lgna.project.ast.UserField field : declaringType.fields ) {
-			data.insertField( field );
-		}
+public class RootNode extends TypeNode {
+	public RootNode() {
+		super( null, null, Integer.MAX_VALUE, Integer.MAX_VALUE );
 	}
 }

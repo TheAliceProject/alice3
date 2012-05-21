@@ -96,6 +96,11 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 		return this.isShowing;
 	}
 	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		setScale(getScaleForSize(size));
+	}
+	
 	public void setShowing( Boolean isShowing ) {	
 		if (this.isShowing != isShowing)
 		{

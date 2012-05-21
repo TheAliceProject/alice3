@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.properties;
 
 import org.lgna.croquet.BooleanState;
 
-public class IsScaleLinkedState extends BooleanState 
+/**
+ * @author dculyba
+ *
+ */
+public class IsXZScaleLinkedState extends BooleanState 
 {
 	private static class SingletonHolder {
-		private static IsScaleLinkedState instance = new IsScaleLinkedState();
+		private static IsXZScaleLinkedState instance = new IsXZScaleLinkedState();
 	}
-	public static IsScaleLinkedState getInstance() {
+	public static IsXZScaleLinkedState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsScaleLinkedState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
+	private IsXZScaleLinkedState() {
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "14e9d2d1-50a4-4d49-85b3-52d6f457b288" ), true );
 	}
 }

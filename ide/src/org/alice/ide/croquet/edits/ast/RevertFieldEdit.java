@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+package org.alice.ide.croquet.edits.ast;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class CylinderImp extends AbstractCylinderImp {
-	private final org.lgna.story.Cylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
-	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
-		this.abstraction = abstraction;
+public class RevertFieldEdit extends org.lgna.croquet.edits.Edit {
+	private final org.lgna.project.ast.UserField field;
+	private final org.lgna.project.ast.BlockStatement redoStateCode;
+	public RevertFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserField field ) {
+		super( step );
+		this.field = field;
+		this.redoStateCode = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField(this.field);
 	}
-	@Override
-	public org.lgna.story.Cylinder getAbstraction() {
-		return this.abstraction;
+	public RevertFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
+		this.redoStateCode = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField(this.field);
 	}
-	@Override
-	protected void setXZ( double xz ) {
-		this.radius.setValue( xz );
+	
+	protected org.lgna.project.ast.UserField getField() {
+		return this.field;
 	}
 	
 	@Override
-	protected double getXZ() {
-		return this.radius.getValue();
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
+	}
+
+	@Override
+	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+		rv.append("declare:");
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, field);
+		return rv;
+	}
+	
+	@Override
+	public void doOrRedoInternal( boolean isDo ) {
+		org.lgna.project.ast.UserField field = this.getField();
+		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().revertFieldToInitialState(field);
+		}
+	}
+	@Override
+	public void undoInternal() {
+		org.lgna.project.ast.UserField field = this.getField();
+		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().setFieldToState(field, redoStateCode);
+		}
 	}
 }

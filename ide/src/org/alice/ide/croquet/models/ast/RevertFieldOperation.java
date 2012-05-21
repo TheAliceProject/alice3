@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+package org.alice.ide.croquet.models.ast;
+
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class CylinderImp extends AbstractCylinderImp {
-	private final org.lgna.story.Cylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
+public class RevertFieldOperation extends org.lgna.croquet.ActionOperation {
+	private static java.util.Map< org.lgna.project.ast.UserField, RevertFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RevertFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
+		RevertFieldOperation rv = map.get( field );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new RevertFieldOperation( field );
+			map.put( field, rv );
 		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
-	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
-		this.abstraction = abstraction;
-	}
-	@Override
-	public org.lgna.story.Cylinder getAbstraction() {
-		return this.abstraction;
-	}
-	@Override
-	protected void setXZ( double xz ) {
-		this.radius.setValue( xz );
+		return rv;
 	}
 	
+	private org.lgna.project.ast.UserField field;
+	public RevertFieldOperation( org.lgna.project.ast.UserField field ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "84645a6e-e17f-4d64-b4a1-8182fdc1a546" ) );
+		this.field = field;
+	}
+	public org.lgna.project.ast.UserField getField() {
+		return this.field;
+	}
 	@Override
-	protected double getXZ() {
-		return this.radius.getValue();
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.RevertFieldEdit( step, this.getField() ) );
 	}
 }

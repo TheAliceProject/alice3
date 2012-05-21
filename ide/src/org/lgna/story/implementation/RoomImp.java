@@ -213,7 +213,10 @@ public class RoomImp extends VisualScaleModelImp {
 		this.floor.setSize(width, depth, 0);
 	}
 	
-	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		internalSetSize((float)size.x, (float)size.y, (float)size.z);
+	}
 	
 	@Override
 	public org.lgna.story.Room getAbstraction() {

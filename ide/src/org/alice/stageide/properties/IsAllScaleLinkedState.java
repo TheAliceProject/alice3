@@ -40,39 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
 
-/**
- * @author Dennis Cosgrove
- */
-public class CylinderImp extends AbstractCylinderImp {
-	private final org.lgna.story.Cylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
-		}
-	};
-	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
-		this.abstraction = abstraction;
+package org.alice.stageide.properties;
+
+import org.lgna.croquet.BooleanState;
+
+public class IsAllScaleLinkedState extends BooleanState 
+{
+	private static class SingletonHolder {
+		private static IsAllScaleLinkedState instance = new IsAllScaleLinkedState();
 	}
-	@Override
-	public org.lgna.story.Cylinder getAbstraction() {
-		return this.abstraction;
+	public static IsAllScaleLinkedState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected void setXZ( double xz ) {
-		this.radius.setValue( xz );
-	}
-	
-	@Override
-	protected double getXZ() {
-		return this.radius.getValue();
+	private IsAllScaleLinkedState() {
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
 	}
 }

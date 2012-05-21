@@ -40,39 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.implementation;
+
+package org.alice.ide.instancefactory.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderImp extends AbstractCylinderImp {
-	private final org.lgna.story.Cylinder abstraction;
-	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
+public class TypeCascadeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
+	private final org.alice.ide.ast.fieldtree.TypeNode typeNode;
+	private final org.alice.ide.ApiConfigurationManager apiConfigurationManager;
+	public TypeCascadeMenuModel( org.alice.ide.ast.fieldtree.TypeNode typeNode, org.alice.ide.ApiConfigurationManager apiConfigurationManager ) {
+		super( java.util.UUID.fromString( "2c7247f3-d788-4155-9676-97f643d15f62" ) );
+		this.typeNode = typeNode;
+		this.apiConfigurationManager = apiConfigurationManager;
+	}
+	@Override
+	protected boolean isBackedByIconProxy() {
+		return false;
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory,org.alice.ide.instancefactory.InstanceFactory> node ) {
+		return org.alice.ide.common.TypeIcon.getInstance( this.typeNode.getDeclaration() );
+	}
+	@Override
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
+		for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : this.typeNode.getFieldNodes() ) {
+			rv.add( InstanceFactoryState.createFillInMenuComboIfNecessaryForField( this.apiConfigurationManager, fieldNode.getDeclaration() ) );
 		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
-			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
-			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
+		for( org.alice.ide.ast.fieldtree.TypeNode typeNode : this.typeNode.getTypeNodes() ) {
+			rv.add( new TypeCascadeMenuModel( typeNode, this.apiConfigurationManager ) );
 		}
-	};
-	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
-		this.abstraction = abstraction;
-	}
-	@Override
-	public org.lgna.story.Cylinder getAbstraction() {
-		return this.abstraction;
-	}
-	@Override
-	protected void setXZ( double xz ) {
-		this.radius.setValue( xz );
-	}
-	
-	@Override
-	protected double getXZ() {
-		return this.radius.getValue();
+		return rv;
 	}
 }
