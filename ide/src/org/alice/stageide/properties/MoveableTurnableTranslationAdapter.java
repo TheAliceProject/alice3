@@ -45,10 +45,7 @@ package org.alice.stageide.properties;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-import org.lgna.story.AnimationStyle;
-import org.lgna.story.Duration;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.PathStyle;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
