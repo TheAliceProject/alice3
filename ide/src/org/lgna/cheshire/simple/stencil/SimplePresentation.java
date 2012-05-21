@@ -338,7 +338,8 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 							if( applicationRecoveryTransaction != null ) {
 								this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
 							} else {
-								org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
+								//org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
+								edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to recover", transaction );
 							}
 						}
 					}

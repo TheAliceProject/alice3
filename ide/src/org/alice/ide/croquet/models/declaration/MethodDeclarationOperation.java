@@ -67,11 +67,15 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< o
 				null, false,
 				new org.alice.ide.name.validators.MethodNameValidator( initialDeclaringType )
 		);
-		
+
 		//<kjh/> looking glass will be entirely different.  contemplate meta context factories.
-		this.addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
-		// can be taken care of by searching the tabs 
-		this.addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
+		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			this.addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
+			this.addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
+		} else {
+			this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+		}
 	}
 
 	@Override

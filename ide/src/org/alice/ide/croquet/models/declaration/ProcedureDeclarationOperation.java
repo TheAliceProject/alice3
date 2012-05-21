@@ -76,8 +76,30 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 
 	public void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserMethod method ) {
 		org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)declaringType;
-		org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( namedUserType );
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
+
+		// Handle the contexts for this step
+		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( namedUserType );
+			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
+		} else {
+			// <kjh/> interesting problem. this context accepts several criteria... which we don't support currently. :(
+			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+			if ( sceneType == declaringType ) {
+				instanceFactory = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
+			} else {
+				instanceFactory = null;
+				for( org.lgna.project.ast.UserField field : sceneType.fields ) {
+					if( declaringType.isAssignableFrom( field.getValueType() ) ) {
+						instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
+					}
+				}
+			}
+			assert instanceFactory != null : method;
+			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
+			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( org.alice.ide.members.ProcedureTemplateComposite.getInstance() );
+		}
+
 		try {
 			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 
@@ -85,11 +107,11 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subTransactionHistory );
 
 			org.lgna.croquet.history.Transaction nameTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
-			org.lgna.croquet.history.StateChangeStep nameChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( nameTransaction, this.getNameState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance() );
+			org.lgna.croquet.history.StateChangeStep<String> nameChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( nameTransaction, this.getNameState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance() );
 			nameChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( nameChangeStep, "", method.getName() ) );
 
 			org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
-			org.lgna.croquet.history.CompletionStep commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, this.getCompleteOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), null );
+			org.lgna.croquet.history.CompletionStep<?> commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, this.getCompleteOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), null );
 			commitStep.finish();
 
 			org.lgna.croquet.history.CompletionStep completionStep = transaction.getCompletionStep();
@@ -97,8 +119,13 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 
 			org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, method.body.getValue() );
 		} finally {
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().popGeneratedValue();
-			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
+			if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().popGeneratedValue();
+				org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
+			} else {
+				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
+				org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();				
+			}
 		}
 	}
 
