@@ -317,12 +317,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 				org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
 
-				Iterable< ? extends org.lgna.croquet.PrepModel > prepModels = completionModel.getPotentialRootPrepModels();
-				assert prepModels != null : completionModel;
-				for( org.lgna.croquet.PrepModel prepModel : prepModels ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( prepModel );
-				}
-
 				// TODO: <kjh/> This should probably not be done here... this should probably be part of croquet contexts or something...
 
 				org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
@@ -339,18 +333,43 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 							this.handleChapterChanged( chapter );
 						}
 					} else {
-						transaction.setPrepSteps( prepSteps );
-						chapterPage.refreshNotes();
-						org.lgna.croquet.history.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
-						if( tabSelectionRecoveryTransaction != null ) {
-							this.insertRecoveryTransaction( tabSelectionRecoveryTransaction );
-						} else {
-							org.lgna.croquet.history.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
-							if( applicationRecoveryTransaction != null ) {
-								this.insertRecoveryTransaction( applicationRecoveryTransaction );
+						boolean isPrepModelSearchSuccessful = false;
+						Iterable< ? extends org.lgna.croquet.PrepModel > prepModels = completionModel.getPotentialRootPrepModels();
+						assert prepModels != null : completionModel;
+						for( org.lgna.croquet.PrepModel prepModel : prepModels ) {
+							//todo
+							if( prepModel instanceof org.lgna.croquet.PopupPrepModel ) {
+								org.lgna.croquet.PopupPrepModel popupPrepModel = (org.lgna.croquet.PopupPrepModel)prepModel;
+								org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, popupPrepModel, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
+								chapterPage.refreshNotes();
+								if( chapterPage.isGoodToGo() ) {
+									this.handleChapterChanged( chapter );
+									isPrepModelSearchSuccessful = true;
+								}
+							}
+							if( isPrepModelSearchSuccessful ) {
+								break;
 							} else {
-								//org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
-								edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to recover", transaction );
+								transaction.removeAllPrepSteps();
+							}
+						}
+
+						if( isPrepModelSearchSuccessful ) {
+							//pass
+						} else {
+							transaction.setPrepSteps( prepSteps );
+							chapterPage.refreshNotes();
+							org.lgna.croquet.history.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
+							if( tabSelectionRecoveryTransaction != null ) {
+								this.insertRecoveryTransaction( tabSelectionRecoveryTransaction );
+							} else {
+								org.lgna.croquet.history.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
+								if( applicationRecoveryTransaction != null ) {
+									this.insertRecoveryTransaction( applicationRecoveryTransaction );
+								} else {
+									//org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
+									edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to recover", transaction );
+								}
 							}
 						}
 					}
