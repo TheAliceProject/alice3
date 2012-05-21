@@ -887,15 +887,42 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	@Override
-	public org.lgna.project.ast.BlockStatement getCurrentStateCodeForField(org.lgna.project.ast.UserField field) {
+	public org.lgna.project.ast.Statement getCurrentStateCodeForField(org.lgna.project.ast.UserField field) {
+		Statement rv = null;
+		
 		org.lgna.project.ast.BlockStatement bs = new org.lgna.project.ast.BlockStatement();
 		
 		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
 		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
 		this.fillInAutomaticSetUpMethod( bs.statements, false, field );
 		this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
+		Statement setVehicleStatement = null;
+		for (Statement statement : bs.statements.getValue()) {
+			if (statement instanceof org.lgna.project.ast.ExpressionStatement) {
+				org.lgna.project.ast.Expression expression = ((org.lgna.project.ast.ExpressionStatement)statement).expression.getValue();
+				if (expression instanceof MethodInvocation) {
+					MethodInvocation mi = (MethodInvocation)expression;
+					org.lgna.project.ast.Method method = mi.method.getValue();
+					if (method.getName().equalsIgnoreCase("setVehicle")) {
+						setVehicleStatement = statement;
+						break;
+					}
+				}
+			}
+		}
+		if (setVehicleStatement != null) {
+			bs.statements.getValue().remove(setVehicleStatement);
+		}
+		org.lgna.project.ast.DoTogether dt = new org.lgna.project.ast.DoTogether(bs);
+		if (setVehicleStatement != null) {
+			org.lgna.project.ast.DoInOrder dio = new org.lgna.project.ast.DoInOrder(new org.lgna.project.ast.BlockStatement(setVehicleStatement, dt));
+			rv = dio;
+		}
+		else {
+			rv = dt;
+		}
 		
-		return bs;
+		return rv;
 	}
 	
 	@Override

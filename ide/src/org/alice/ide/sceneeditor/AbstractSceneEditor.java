@@ -42,6 +42,8 @@
  */
 package org.alice.ide.sceneeditor;
 
+import org.lgna.common.ComponentThread;
+import org.lgna.common.ThreadUtilities;
 import org.lgna.project.ast.Expression;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -54,7 +56,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	private java.util.Map< org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance > mapSceneFieldToInstance = new java.util.HashMap< org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance >();
 	private java.util.Map< org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField > mapSceneInstanceToField = new java.util.HashMap< org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField >();
 	
-	private java.util.Map< org.lgna.project.ast.UserField, org.lgna.project.ast.BlockStatement > mapSceneFieldToInitialCodeState = new java.util.HashMap< org.lgna.project.ast.UserField, org.lgna.project.ast.BlockStatement >();
+	private java.util.Map< org.lgna.project.ast.UserField, org.lgna.project.ast.Statement > mapSceneFieldToInitialCodeState = new java.util.HashMap< org.lgna.project.ast.UserField, org.lgna.project.ast.Statement >();
 	
 	private org.lgna.project.ast.NamedUserType programType;
 	private org.lgna.project.virtualmachine.UserInstance programInstance;
@@ -119,11 +121,11 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().addAndInvokeValueListener( this.perspectiveListener );
 	}
 	
-	protected void setInitialCodeStateForField(org.lgna.project.ast.UserField field, org.lgna.project.ast.BlockStatement code) {
+	protected void setInitialCodeStateForField(org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement code) {
 		this.mapSceneFieldToInitialCodeState.put(field, code);
 	}
 	
-	protected org.lgna.project.ast.BlockStatement getInitialCodeforField(org.lgna.project.ast.UserField field) {
+	protected org.lgna.project.ast.Statement getInitialCodeforField(org.lgna.project.ast.UserField field) {
 		return this.mapSceneFieldToInitialCodeState.get(field);
 	}
 	
@@ -227,19 +229,24 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		
 	}
 	
-	public abstract org.lgna.project.ast.BlockStatement getCurrentStateCodeForField(org.lgna.project.ast.UserField field);
+	public abstract org.lgna.project.ast.Statement getCurrentStateCodeForField(org.lgna.project.ast.UserField field);
 	
-	public void setFieldToState(org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements) {
-		this.executeStatements(statements);
+	public void setFieldToState(org.lgna.project.ast.UserField field, final org.lgna.project.ast.Statement... statements) {
+		new ComponentThread( new Runnable() {
+            public void run() {
+            	executeStatements(statements);
+	        }
+		}, "SetFieldToState("+field.getName()+")").start();
+		
 	}
 	
 	public void revertFieldToInitialState(org.lgna.project.ast.UserField field) {
-		org.lgna.project.ast.BlockStatement code = this.getInitialCodeforField(field);
+		org.lgna.project.ast.Statement code = this.getInitialCodeforField(field);
 		if (code == null) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("No initial state code found for field "+field);
 			return;
 		}
-		this.setFieldToState(field, code.statements.toArray(org.lgna.project.ast.Statement.class));
+		this.setFieldToState(field, code);
 	}
 	
 	public void removeField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){

@@ -48,7 +48,7 @@ package org.alice.ide.croquet.edits.ast;
  */
 public class RevertFieldEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.project.ast.UserField field;
-	private final org.lgna.project.ast.BlockStatement redoStateCode;
+	private final org.lgna.project.ast.Statement redoStateCode;
 	public RevertFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserField field ) {
 		super( step );
 		this.field = field;

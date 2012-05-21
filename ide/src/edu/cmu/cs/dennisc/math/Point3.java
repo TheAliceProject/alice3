@@ -99,13 +99,13 @@ public final class Point3 extends Tuple3 {
 		y = m.translation.y;
 		z = m.translation.z;
 	}
-	public static double calculateDistanceSquaredBetween( Point3 a, Point3 b ) {
+	public static double calculateDistanceSquaredBetween( Tuple3 a, Tuple3 b ) {
 		double xDelta = b.x - a.x;
 		double yDelta = b.y - a.y;
 		double zDelta = b.z - a.z;
 		return xDelta * xDelta + yDelta * yDelta + zDelta * zDelta;
 	}
-	public static double calculateDistanceBetween( Point3 a, Point3 b ) {
+	public static double calculateDistanceBetween( Tuple3 a, Tuple3 b ) {
 		return Math.sqrt( calculateDistanceSquaredBetween( a, b ) );
 	}
 }
