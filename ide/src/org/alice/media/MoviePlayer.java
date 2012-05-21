@@ -98,9 +98,11 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 			this.visualComponent = null;
 			this.controlComponent = null;
 		}
-		MediaLocator mediaLocator = createMediaLocator( "file://" + movieFile.getAbsolutePath() );
+
+		
 		try
 		{
+			MediaLocator mediaLocator = new MediaLocator( movieFile.toURL().toExternalForm() );
 			this.player = Manager.createPlayer( mediaLocator );
 		}
 		catch (Exception e)
