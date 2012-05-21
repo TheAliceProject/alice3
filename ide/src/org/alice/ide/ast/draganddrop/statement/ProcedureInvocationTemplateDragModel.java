@@ -64,6 +64,11 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		this.method = method;
 		assert this.method.isProcedure();
 		this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+//		if( isAlice ) {
+			this.addContextFactory( org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance() );
+//		} else {
+//			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+//		}
 	}
 	@Override
 	public boolean isAddEventListenerLikeSubstance() {

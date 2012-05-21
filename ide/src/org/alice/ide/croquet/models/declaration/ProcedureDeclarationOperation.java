@@ -98,6 +98,7 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 			assert instanceFactory != null : method;
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
 			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( org.alice.ide.members.ProcedureTemplateComposite.getInstance() );
+			assert false;
 		}
 
 		try {

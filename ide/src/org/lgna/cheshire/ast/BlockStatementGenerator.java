@@ -63,6 +63,7 @@ public class BlockStatementGenerator {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
 			StatementGenerator statementGenerator;
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
+			org.alice.ide.members.TemplateComposite templateComposite = null;
 			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
 				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
@@ -86,6 +87,20 @@ public class BlockStatementGenerator {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instanceExpression );
 					}
 					statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
+					//todo
+					if( method.isProcedure() ) {
+						if( method.getName().startsWith( "set" ) ) {
+							templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
+						} else {
+							templateComposite = org.alice.ide.members.ProcedureTemplateComposite.getInstance();
+						}
+					} else {
+						if( method.getName().startsWith( "get" ) || method.getName().startsWith( "is" ) ) {
+							templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
+						} else {
+							templateComposite = org.alice.ide.members.FunctionTemplateComposite.getInstance();
+						}
+					}
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( expression );
 					statementGenerator = null;
@@ -97,7 +112,13 @@ public class BlockStatementGenerator {
 				if( instanceFactory != null ) {
 					org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
 				}
+				if( templateComposite != null ) {
+					org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().pushGeneratedValue( templateComposite );
+				}
 				statementGenerator.generateAndAddStepsToTransaction( history, statement );
+				if( templateComposite != null ) {
+					org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
+				}
 				if( instanceFactory != null ) {
 					org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
 				}

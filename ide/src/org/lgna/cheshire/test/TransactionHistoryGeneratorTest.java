@@ -95,7 +95,8 @@ public class TransactionHistoryGeneratorTest {
 
 		org.lgna.project.ast.UserType<?> type;
 		if ( this.fieldName != null ) {
-			type = (org.lgna.project.ast.UserType<?>) sceneType.findField( this.fieldName ).getDeclaringType();
+			org.lgna.project.ast.UserField field = sceneType.getDeclaredField( this.fieldName );
+			type = (org.lgna.project.ast.UserType<?>)field.getValueType();
 		} else {
 			type = sceneType;
 		}
