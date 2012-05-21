@@ -126,6 +126,6 @@ public abstract class MovableTurnable extends Turnable {
 	
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public void setPositionRelativeToVehicle( Position position, MoveTo.Detail... details ) {
-		this.getImplementation().animatePositionOnly( org.lgna.story.implementation.AsSeenBy.SCENE.getActualEntityImplementation(this.getImplementation()), position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animatePositionOnly( this.getImplementation().getVehicle(), position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }
