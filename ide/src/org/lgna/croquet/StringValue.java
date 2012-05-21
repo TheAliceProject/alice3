@@ -53,6 +53,13 @@ public abstract class StringValue extends AbstractElement {
 	public javax.swing.text.PlainDocument getDocument() {
 		return this.document;
 	}
+	public String getText() {
+		try {
+			return this.document.getText( 0, this.document.getLength() );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
+		}
+	}
 	public void setText( String text ) {
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );

@@ -47,12 +47,8 @@ package org.lgna.story.implementation;
  */
 public abstract class VisualScaleModelImp extends ModelImp {
 	@Override
-	public void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener){
-		this.getSgVisuals()[0].scale.addPropertyListener(listener);
-	}
-	@Override
-	public void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener){
-		this.getSgVisuals()[0].scale.removePropertyListener(listener);
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.getSgVisuals()[ 0 ].scale };
 	}
 	
 	private edu.cmu.cs.dennisc.math.Matrix3x3 getSgVisualsScale() {

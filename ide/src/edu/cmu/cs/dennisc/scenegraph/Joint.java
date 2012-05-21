@@ -67,6 +67,8 @@ public class Joint extends Transformable
     public final Vector3fProperty oMinimumDampStrength = new Vector3fProperty(this, new Vector3f());
     public final Vector3fProperty oMaximumDampStrength = new Vector3fProperty(this, new Vector3f());
     
+    private SkeletonVisual parentVisual = null;
+    
 //    public static void printJointHierarchy(Joint s, String indent)
 //    {
 //        System.out.println(indent+s.getName()+" : "+s.getAbsoluteTransformation().translation.x+", "+s.getAbsoluteTransformation().translation.y+", "+s.getAbsoluteTransformation().translation.z);
@@ -112,22 +114,39 @@ public class Joint extends Transformable
         return getJoint(this, jointID);
     }
     
+    public void setParentVisual(SkeletonVisual parentVisual) {
+    	this.parentVisual = parentVisual;
+    }
     
-    public AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative)
+    private SkeletonVisual getParentVisual() {
+    	if (this.parentVisual == null && this.getParent() instanceof Joint) {
+    		this.parentVisual = ((Joint)this.getParent()).getParentVisual();
+    	}
+    	return this.parentVisual;
+    }
+    
+    
+    private AxisAlignedBox getBoundingBox(Composite c, AxisAlignedBox rv, AffineMatrix4x4 transform, boolean cumulative)
     {
         if (c == null)
         {
             return null;
         }
-        if (c instanceof AbstractTransformable)
-        {
-            transform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable)c).accessLocalTransformation());
-        }
         if (c instanceof Joint)
         {
             Joint j = (Joint)c;
-            Point3 localMin = j.boundingBox.getValue().getMinimum();
-            Point3 localMax = j.boundingBox.getValue().getMaximum();
+            
+            //We scale the local bounding box based on the scale of the SkeletonVisual base object
+            //We can do this here (in the local space of the joint) because we restrict the scale to be a uniform scale
+            AxisAlignedBox scaledBBox = new AxisAlignedBox(j.boundingBox.getValue());
+            SkeletonVisual sv = this.getParentVisual();
+            if (sv != null) {
+            	scaledBBox.scale(sv.scale.getValue());
+            }
+            
+            Point3 localMin = scaledBBox.getMinimum();
+            Point3 localMax = scaledBBox.getMaximum();
+            
             Point3 transformedMin = transform.createTransformed(localMin);
             Point3 transformedMax = transform.createTransformed(localMax);
             if (!transformedMin.isNaN()) {
@@ -143,7 +162,8 @@ public class Joint extends Transformable
 	            Component comp = c.getComponentAt(i);
 	            if (comp instanceof Composite)
 	            {
-	                getBoundingBox((Composite)comp, rv, transform, cumulative);
+	            	AffineMatrix4x4 childTransform = AffineMatrix4x4.createMultiplication(transform, ((AbstractTransformable)comp).accessLocalTransformation());
+	                getBoundingBox((Composite)comp, rv, childTransform, cumulative);
 	            }
 	        }
         }
@@ -161,12 +181,7 @@ public class Joint extends Transformable
     
     public AxisAlignedBox getBoundingBox(AxisAlignedBox rv, boolean cumulative)
     {
-        if (rv == null)
-        {
-            rv = new AxisAlignedBox();
-        }
-        getBoundingBox(this, rv, AffineMatrix4x4.createIdentity(), cumulative);
-        return rv;
+    	return getBoundingBox(rv, AffineMatrix4x4.createIdentity(), cumulative);
     }
     @Override
     protected void appendRepr(StringBuilder sb) {

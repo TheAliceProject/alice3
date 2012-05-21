@@ -17,6 +17,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	}
 	
 	protected edu.cmu.cs.dennisc.scenegraph.Composite sgParent;
+	protected edu.cmu.cs.dennisc.scenegraph.Visual associatedVisual;
 	
     public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
         Manager.initializeIfNecessary();
@@ -32,6 +33,10 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	public native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
 	public native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 
+	public void setVisual(edu.cmu.cs.dennisc.scenegraph.Visual visual) {
+		this.associatedVisual = visual;
+	}
+	
 	public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
 		this.sgParent = parent;
 	}
@@ -83,6 +88,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		double[] bboxData = new double[6];
 		getAxisAlignedBoundingBoxForJoint( joint, bboxData);
 		AxisAlignedBox bbox = new AxisAlignedBox(bboxData[0], bboxData[1], bboxData[2], bboxData[3], bboxData[4], bboxData[5]);
+		bbox.scale(this.associatedVisual.scale.getValue());
 		return bbox;
 	}
 	

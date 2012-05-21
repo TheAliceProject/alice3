@@ -46,8 +46,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlainDialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends DialogComposite<V>{
+public abstract class PlainDialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends DialogComposite<V> {
 	public PlainDialogComposite( java.util.UUID id, Group operationGroup ) {
 		super( id, operationGroup );
 	}
+	
 }

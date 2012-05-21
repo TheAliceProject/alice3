@@ -60,6 +60,9 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( resource );
 			//Set the texture data to be the texture info specified by the resource
 			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
+			if (this.sgSkeletonVisual.skeleton.getValue() != null) {
+				this.sgSkeletonVisual.skeleton.getValue().setParentVisual(this.sgSkeletonVisual);
+			}
 		}
 		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
 			return new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { (edu.cmu.cs.dennisc.scenegraph.SimpleAppearance)this.sgSkeletonVisual.frontFacingAppearance.getValue() };

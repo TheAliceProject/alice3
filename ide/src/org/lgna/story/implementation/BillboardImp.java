@@ -158,6 +158,11 @@ public class BillboardImp extends VisualScaleModelImp {
 		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
 	}
 
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		this.setScale(getScaleForSize(size));
+	}
+	
 	private void updateAspectRatio() {
 		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
 		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();

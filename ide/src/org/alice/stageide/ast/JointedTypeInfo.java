@@ -113,4 +113,20 @@ public class JointedTypeInfo {
 	public java.util.List< org.lgna.project.ast.AbstractMethod > getJointGetters() {
 		return this.jointGetters;
 	}
+	public static class Node {
+		private final Node parent;
+		private final org.lgna.project.ast.AbstractMethod method;
+		private final java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		public static Node createAndAddToParent( Node parent, org.lgna.project.ast.AbstractMethod method ) {
+			Node rv = new Node( parent, method );
+			if( parent != null ) {
+				parent.children.add( rv );
+			}
+			return rv;
+		}
+		private Node( Node parent, org.lgna.project.ast.AbstractMethod method ) {
+			this.parent = parent;
+			this.method = method;
+		}
+	}
 }

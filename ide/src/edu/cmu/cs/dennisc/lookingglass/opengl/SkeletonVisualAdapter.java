@@ -319,7 +319,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 }
                 
                 AffineMatrix4x4 oTransformationPre = new AffineMatrix4x4();
-                edu.cmu.cs.dennisc.math.Matrix3x3 inverseScale = m_element.scale.getValue();
+                edu.cmu.cs.dennisc.math.Matrix3x3 inverseScale = new edu.cmu.cs.dennisc.math.Matrix3x3(m_element.scale.getValue());
                 inverseScale.invert();
                 processWeightedMesh(this.currentSkeleton, oTransformationPre, inverseScale);
                 for (Entry<TexturedAppearanceAdapter, WeightedMeshControl[]> controlEntry : this.appearanceToMeshControllersMap.entrySet())

@@ -70,4 +70,8 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private FileMenuModel() {
 		super( java.util.UUID.fromString( "f35b5ea2-315e-487d-af62-52f99f1c6306" ), createMenuItemPrepModels() );
 	}
+	@Override
+	protected java.lang.Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
+		return org.alice.ide.croquet.models.menubar.FileMenuModel.class;
+	}
 }

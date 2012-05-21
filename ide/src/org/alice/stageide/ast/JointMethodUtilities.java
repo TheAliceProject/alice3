@@ -77,4 +77,9 @@ public class JointMethodUtilities {
 			return name;
 		}
 	}
+	
+//	public static org.lgna.project.ast.AbstractMethod getParentMethod( org.lgna.project.ast.AbstractMethod method ) {
+//		//todo
+//		return null;
+//	}
 }

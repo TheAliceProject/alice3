@@ -69,6 +69,10 @@ public class DiscImp extends ShapeImp {
 		return this.abstraction;
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgDisc.outerRadius };
+	}
+	@Override
 	public Resizer[] getResizers() {
 		return new Resizer[] { Resizer.XZ_PLANE };
 	}
@@ -88,5 +92,19 @@ public class DiscImp extends ShapeImp {
 		} else {
 			assert false : resizer;
 		}
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
+		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+	}
+	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		if (size.x != size.z) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Invalid size for "+this.getClass().getSimpleName()+": "+size);
+		}
+		this.outerRadius.setValue( size.x * .5 );
 	}
 }

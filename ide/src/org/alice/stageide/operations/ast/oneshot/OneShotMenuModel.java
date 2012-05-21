@@ -67,6 +67,7 @@ public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 					} else {
 						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 					}
+					models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance(field).getMenuItemPrepModel() );
 				}
 				rv = new OneShotMenuModel( instanceFactory, models );
 				map.put( instanceFactory, rv );

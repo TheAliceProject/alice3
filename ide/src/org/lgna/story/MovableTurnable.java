@@ -53,10 +53,6 @@ public abstract class MovableTurnable extends Turnable {
 	public Position getPositionRelativeToVehicle() {
 		return Position.createInstance( this.getImplementation().getLocalPosition() );
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setPositionRelativeToVehicle( Position position ) {
-		this.getImplementation().setLocalPosition( position.getInternal() );
-	}
 
 	@MethodTemplate()
 	public void move( MoveDirection direction, Number amount, Move.Detail... details ) {
@@ -126,5 +122,10 @@ public abstract class MovableTurnable extends Turnable {
 				Duration.getValue( details ), 
 				AnimationStyle.getValue( details ).getInternal() 
 		);
+	}
+	
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	public void setPositionRelativeToVehicle( Position position, MoveTo.Detail... details ) {
+		this.getImplementation().animatePositionOnly( this.getImplementation().getVehicle(), position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }
