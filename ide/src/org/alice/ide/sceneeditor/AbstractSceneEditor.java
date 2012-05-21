@@ -43,7 +43,6 @@
 package org.alice.ide.sceneeditor;
 
 import org.lgna.common.ComponentThread;
-import org.lgna.common.ThreadUtilities;
 import org.lgna.project.ast.Expression;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
