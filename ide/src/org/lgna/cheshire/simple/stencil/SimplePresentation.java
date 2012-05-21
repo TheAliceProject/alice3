@@ -233,7 +233,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				org.lgna.croquet.edits.Edit< ? > replacementCandidate = editCommittedEvent.getEdit();
 				book.handleEditCommitted( replacementCandidate );
 			}
-			
+
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.adjustIfNecessary( event );
 			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {
@@ -266,7 +266,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				} else {
 					org.lgna.croquet.history.Transaction[] recoveryTransactions = context.createRecoveryTransactions();
 					for( org.lgna.croquet.history.Transaction recoveryTransaction : recoveryTransactions ) {
-						this.insertRecoveryTransactionChapter( recoveryTransaction );
+						this.insertRecoveryTransaction( recoveryTransaction );
 					}
 					return;
 				}
@@ -332,11 +332,11 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 						chapterPage.refreshNotes();
 						org.lgna.croquet.history.Transaction tabSelectionRecoveryTransaction = this.createTabSelectionRecoveryTransactionIfAppropriate( transaction );
 						if( tabSelectionRecoveryTransaction != null ) {
-							this.insertRecoveryTransactionChapter( tabSelectionRecoveryTransaction );
+							this.insertRecoveryTransaction( tabSelectionRecoveryTransaction );
 						} else {
 							org.lgna.croquet.history.Transaction applicationRecoveryTransaction = this.getRecoverer().createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( transaction );
 							if( applicationRecoveryTransaction != null ) {
-								this.insertRecoveryTransactionChapter( applicationRecoveryTransaction );
+								this.insertRecoveryTransaction( applicationRecoveryTransaction );
 							} else {
 								//org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
 								edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to recover", transaction );
@@ -348,7 +348,8 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		}
 	}
 
-	private void insertRecoveryTransactionChapter( org.lgna.croquet.history.Transaction recoveryTransaction ) {
+	// TODO: <kjh/> you need this in order to update the tutorial...
+	private void insertRecoveryTransaction( org.lgna.croquet.history.Transaction recoveryTransaction ) {
 		org.lgna.cheshire.simple.Chapter recoveryChapter = new org.lgna.cheshire.simple.TransactionChapter( recoveryTransaction );
 		this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
 		this.handleChapterChanged( recoveryChapter );
