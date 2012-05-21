@@ -42,6 +42,7 @@
  */
 package org.alice.media;
 
+import java.awt.Component;
 import java.io.File;
 
 import org.alice.media.components.MoviePlayerView;
@@ -55,11 +56,11 @@ public class MoviePlayerComposite extends Composite<MoviePlayerView> {
 
 	private MoviePlayer player;
 
-	public MoviePlayerComposite( Project project ) {
+	public MoviePlayerComposite( File file ) {
 		super( java.util.UUID.fromString( "28ea7f67-1f3f-443f-a3fb-130676779b5f" ) );
-		player = new MoviePlayer( new File( "C:/Users/Matt/Desktop/videos/test.mov" ) );
+		player = new MoviePlayer();// new File( "C:/Users/Matt/Desktop/videos/test.mov" ) );
 		player.registerHack( this );
-		player.init();
+//		player.init();
 	}
 
 	@Override
@@ -67,16 +68,13 @@ public class MoviePlayerComposite extends Composite<MoviePlayerView> {
 		return new MoviePlayerView( this );
 	}
 
-	public java.awt.Component getPlayerVisualComponent() {
-		System.out.println( "visual: " + player.getVisualComponent() );
-		return player.getVisualComponent();
-	}
-	public java.awt.Component getPlayerControlComponent() {
-		System.out.println( "conrol: " + player.getControlComponent() );
-		return player.getControlComponent();
+	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
+		getView().handlePlayerRealized( visualComponent, controlComponent );
 	}
 
-	public void fireUpdated() {
-		getView().initialize();
+	public void setMovie( File file ) {
+		System.out.println("setMovie: " + file.getAbsolutePath());
+		player.setMovie( file );
+		player.init();
 	}
 }

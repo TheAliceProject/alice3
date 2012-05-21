@@ -423,6 +423,10 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 		}
 	}
 
+	public File getOutputFile() {
+		return this.outputFile;
+	}
+	
 	public void started( Animation animation ) {
 	}
 

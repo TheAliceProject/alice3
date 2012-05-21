@@ -216,7 +216,9 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 		    }
 		    this.player.prefetch();
 		    this.revalidate();
-		    
+			if(EPIC_HACK_moviePlayerComposite != null) {
+				EPIC_HACK_moviePlayerComposite.handlePlayerRealized(visualComponent,controlComponent);
+			}
 		} 
 		else if (event instanceof CachingControlEvent) 
 		{
@@ -256,13 +258,8 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 //			}
 //			this.revalidate();
 //		}
-		fireUpdated();
 	}
 	
-	private void fireUpdated() {
-		if(EPIC_HACK_moviePlayerComposite != null)
-		EPIC_HACK_moviePlayerComposite.fireUpdated();
-	}
 
 	public static void main( String[] args ) {
 		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {

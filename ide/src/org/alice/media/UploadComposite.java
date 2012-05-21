@@ -60,8 +60,6 @@ import org.lgna.project.Project;
  */
 public class UploadComposite extends WizardPageComposite<UploadView> {
 	
-	private MoviePlayer player = new MoviePlayer();
-	
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
 	private final StringValue username = this.createStringValue( this.createKey( "username" ) );
@@ -148,6 +146,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		player.setMovie( owner.getFile() );
+		System.out.println("preactivation");
+		getView().setMovie( owner.getFile() );
+//		player.init();
 	}
 }

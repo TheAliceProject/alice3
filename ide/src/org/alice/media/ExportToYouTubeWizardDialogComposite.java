@@ -97,4 +97,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 	public File getFile() {
 		return file;
 	}
+	public void setFile( File file ) {
+		this.file = file;
+	}
 }

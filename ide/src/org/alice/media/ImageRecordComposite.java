@@ -184,6 +184,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		this.setRecording( false );
 		programContext.cleanUpProgram();
+		owner.setFile( encoder.getOutputFile() );
 		super.handlePostDeactivation();
 	}
 

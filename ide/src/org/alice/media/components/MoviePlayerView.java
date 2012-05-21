@@ -43,6 +43,7 @@
 package org.alice.media.components;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import org.alice.media.MoviePlayerComposite;
 import org.lgna.croquet.components.BorderPanel;
@@ -50,7 +51,6 @@ import org.lgna.croquet.components.BorderPanel;
 /**
  * @author Matt May
  */
-@Deprecated
 public class MoviePlayerView extends BorderPanel {
 
 	private MoviePlayerComposite composite;
@@ -60,9 +60,10 @@ public class MoviePlayerView extends BorderPanel {
 		this.composite = composite;
 	}
 
-	public void initialize() {
-		this.getAwtComponent().add( composite.getPlayerVisualComponent(), BorderLayout.CENTER );
-		this.getAwtComponent().add( composite.getPlayerControlComponent(), BorderLayout.PAGE_END );
-		
+	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
+		assert visualComponent != null;
+		assert controlComponent != null;
+		this.getAwtComponent().add( visualComponent, BorderLayout.CENTER );
+		this.getAwtComponent().add( controlComponent, BorderLayout.PAGE_END );
 	}
 }
