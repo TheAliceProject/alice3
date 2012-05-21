@@ -43,6 +43,8 @@
 
 package org.alice.stageide.program;
 
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,6 +61,8 @@ public class VideoEncodingProgramContext extends ProgramContext {
 	}
 	//todo: add String[] args?
 	public void initializeInContainer( java.awt.Container container ) {
-		container.add( this.getProgramImp().getOnscreenLookingGlass().getAWTComponent() );
+		Component awtComponent = this.getProgramImp().getOnscreenLookingGlass().getAWTComponent();
+		awtComponent.setSize( 640, 360 );
+		container.add( awtComponent );
 	}
 }
