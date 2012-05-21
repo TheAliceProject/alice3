@@ -100,10 +100,21 @@ public class TransactionHistory extends TransactionNode< CompletionStep<?> > imp
 	}
 
 	public void addTransaction( Transaction transaction ) {
+		assert transaction != null;
+		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddTransactionEvent( transaction, this.transactions.size() );
+		this.fireChanging( e );
+		transaction.setOwner( this );
 		this.transactions.add( transaction );
+		this.fireChanged( e );
 	}
 	public void addTransaction( int index, Transaction transaction ) {
+		assert transaction != null;
+		assert index >= 0;
+		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddTransactionEvent( transaction, index );
+		this.fireChanging( e );
+		transaction.setOwner( this );
 		this.transactions.add( index, transaction );
+		this.fireChanged( e );
 	}
 
 	public java.util.Iterator< Transaction > iterator() {

@@ -170,6 +170,16 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		}
 	}
 
+	private final org.lgna.croquet.history.event.Listener transactionListener = new org.lgna.croquet.history.event.Listener() {
+		public void changing(org.lgna.croquet.history.event.Event<?> e) {
+		}
+		public void changed(org.lgna.croquet.history.event.Event<?> e) {
+			if( e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) {
+				SimplePresentation.this.insertRecoveryChapter( ((org.lgna.croquet.history.event.AddTransactionEvent) e).getTransaction(), ((org.lgna.croquet.history.event.AddTransactionEvent) e).getIndex() );
+			}
+		}
+	};
+
 	private BookComboBoxModel bookComboBoxModel;
 	private Stencil stencil;
 	final private org.lgna.croquet.Application application;
@@ -188,6 +198,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			org.lgna.cheshire.Recoverer recoverer,
 			org.lgna.croquet.Group[] groupsTrackedForRandomAccess) {
 		super.initializePresentation(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
+		this.originalTransactionHistory.addListener( this.transactionListener );
 		this.setRetargeter( new org.lgna.cheshire.simple.AstLiveRetargeter() );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
@@ -348,10 +359,23 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		}
 	}
 
-	// TODO: <kjh/> you need this in order to update the tutorial...
 	private void insertRecoveryTransaction( org.lgna.croquet.history.Transaction recoveryTransaction ) {
+		org.lgna.cheshire.simple.TransactionChapter chapter = (org.lgna.cheshire.simple.TransactionChapter)this.getBook().getSelectedChapter();
+		org.lgna.croquet.history.Transaction currentTransaction = chapter.getTransaction();
+		boolean insertedTransaction = false;
+		for ( int i = 0; i < this.originalTransactionHistory.getTransactionCount(); i++ ) {
+			if ( currentTransaction == this.originalTransactionHistory.getTransactionAt(i) ) {
+				originalTransactionHistory.addTransaction( i, recoveryTransaction);
+				insertedTransaction = true;
+				break;
+			}
+		}
+		assert insertedTransaction;
+	}
+
+	private void insertRecoveryChapter( org.lgna.croquet.history.Transaction recoveryTransaction, int recoveryIndex ) {
 		org.lgna.cheshire.simple.Chapter recoveryChapter = new org.lgna.cheshire.simple.TransactionChapter( recoveryTransaction );
-		this.getBook().addChapter( this.getBook().getSelectedIndex(), recoveryChapter );
+		this.getBook().addChapter( recoveryIndex, recoveryChapter );
 		this.handleChapterChanged( recoveryChapter );
 		this.stencil.revalidateAndRepaint();
 	}

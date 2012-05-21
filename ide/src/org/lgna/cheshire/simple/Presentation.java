@@ -57,6 +57,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	private boolean isResultOfNextOperation = false;
 	private org.lgna.project.history.ProjectHistory[] historyManagers;
 	private org.lgna.croquet.Retargeter retargeter;
+	protected org.lgna.croquet.history.TransactionHistory originalTransactionHistory;
 
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
@@ -88,6 +89,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 
 	public void initializePresentation( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager, Filterer filterer, Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
 		this.validateTransactionHistory( originalTransactionHistory );
+		this.originalTransactionHistory = originalTransactionHistory;
 
 		this.recoverer = recoverer;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
@@ -119,7 +121,9 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	public Recoverer getRecoverer() {
 		return this.recoverer;
 	}
+
 	protected abstract Chapter createChapter( org.lgna.croquet.history.Transaction transaction );
+
 	private Book generateDraft( ChapterAccessPolicy accessPolicy, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		Book rv = new Book();
 		rv.setAccessPolicy( accessPolicy );
