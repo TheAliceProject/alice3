@@ -63,7 +63,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 	
 	private org.lgna.project.Project project;
 	private EventScript script;
-	private File file = new File( "C:/Users/Matt/Desktop/videos/testOne.mov" );
+	private File file;
 	
 	private ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
@@ -77,6 +77,21 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 	public void setProject( org.lgna.project.Project project ) {
 		this.project = project;
 	}
+	public EventScript getScript() {
+		return this.script;
+	}
+	public void setScript( EventScript script ) {
+		this.script = script;
+	}
+	public File getFile() {
+		return this.file;
+	}
+	public void setFile( File file ) {
+		this.file = file;
+		if( this.file != null ) {
+			edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( this.file );
+		}
+	}
 	public static void main( final String[] args ) throws Exception {
 		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
 		final org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
@@ -87,17 +102,5 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 				System.exit( 0 );
 			}
 		} );
-	}
-	public EventScript getScript() {
-		return this.script;
-	}
-	public void setScript( EventScript script ) {
-		this.script = script;
-	}
-	public File getFile() {
-		return file;
-	}
-	public void setFile( File file ) {
-		this.file = file;
 	}
 }
