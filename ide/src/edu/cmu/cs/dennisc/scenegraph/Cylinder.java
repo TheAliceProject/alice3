@@ -105,6 +105,7 @@ public class Cylinder extends Shape {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, OriginAlignment value ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				Cylinder.this.boundsChanging();
 				super.setValue( owner, value );
 				Cylinder.this.fireBoundChange();
 			}
@@ -116,6 +117,7 @@ public class Cylinder extends Shape {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, BottomToTopAxis value ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				Cylinder.this.boundsChanging();
 				super.setValue( owner, value );
 				Cylinder.this.fireBoundChange();
 			}

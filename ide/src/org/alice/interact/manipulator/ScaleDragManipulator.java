@@ -49,8 +49,6 @@ import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
-
 /**
  * @author David Culyba
  */
@@ -61,36 +59,6 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	private double initialScale;
 	private double accumulatedScale = 1.0d;
 
-	protected static Dimension3 getInvertedScaleVector( Dimension3 scaleVector )
-	{
-		Dimension3 invertedScale = new Dimension3();
-		if (scaleVector.x != 0)
-		{
-			invertedScale.x = 1.0 / scaleVector.x;
-		}
-		else
-		{
-			invertedScale.x = 1;
-		}
-		if (scaleVector.y != 0)
-		{
-			invertedScale.y = 1.0 / scaleVector.y;
-		}
-		else
-		{
-			invertedScale.y = 1;
-		}
-		if (scaleVector.z != 0)
-		{
-			invertedScale.z = 1.0 / scaleVector.z;
-		}
-		else
-		{
-			invertedScale.z = 1;
-		}
-		return invertedScale;
-	}
-	
 	@Override
 	protected void initializeEventMessages()
 	{
@@ -126,9 +94,11 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		double scale = pullDif;
 		//Don't scale if the handles are pulled past their origin
 		if( newPull <= MIN_HANDLE_PULL ) {
-			scale = 0;
+			scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
 		}
-
+		if (this.initialScale + scale < ResizeDragManipulator.MIN_SCALE) {
+			scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
+		}
 		accumulatedScale = scale + this.initialScale;
 		
 		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );

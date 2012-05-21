@@ -97,8 +97,13 @@ public class JointRotationRingHandle extends RotationRingHandle {
 	}
 	
 	@Override
-	protected double getObjectScale() {
-		return super.getObjectScale() * 1.5;
+	protected double getMinTorusRadius() {
+		return super.getMinTorusRadius()*.8;
+	}
+	
+	@Override
+	protected double getMaxTorusRadius() {
+		return super.getMaxTorusRadius()*.8;
 	}
 	
 	@Override
@@ -107,13 +112,14 @@ public class JointRotationRingHandle extends RotationRingHandle {
 		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			double radius = boundingBox.getDiagonal();
+			double radius = boundingBox.getDiagonal()*.5;
 			if (Double.isNaN( radius ) || radius < JOINT_MIN_RADIUS)
 			{
 				radius = JOINT_MIN_RADIUS;
 			}
 			return radius;
 		}
+		this.getParentTransformable();
 		return JOINT_MIN_RADIUS;
 	}
 

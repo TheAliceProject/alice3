@@ -41,19 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.ast.fieldtree;
 
-import org.lgna.croquet.BooleanState;
-
-public class IsScaleLinkedState extends BooleanState 
-{
-	private static class SingletonHolder {
-		private static IsScaleLinkedState instance = new IsScaleLinkedState();
-	}
-	public static IsScaleLinkedState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IsScaleLinkedState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
+/**
+ * @author Dennis Cosgrove
+ */
+public class RootNode extends TypeNode {
+	public RootNode() {
+		super( null, null, Integer.MAX_VALUE, Integer.MAX_VALUE );
 	}
 }

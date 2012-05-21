@@ -40,24 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
 
-/**
- * @author Dennis Cosgrove
- */
-public class ShowWarningOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+package org.alice.stageide.properties;
+
+import org.lgna.croquet.BooleanState;
+
+public class IsAllScaleLinkedState extends BooleanState 
+{
 	private static class SingletonHolder {
-		private static ShowWarningOperation instance = new ShowWarningOperation();
+		private static IsAllScaleLinkedState instance = new IsAllScaleLinkedState();
 	}
-	public static ShowWarningOperation getInstance() {
+	public static IsAllScaleLinkedState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ShowWarningOperation() {
-		super( java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" ) );
-	}
-	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( true );
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( warningPane, "Alice3 is currently under development", org.lgna.croquet.MessageType.WARNING ); 
+	private IsAllScaleLinkedState() {
+		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
 	}
 }

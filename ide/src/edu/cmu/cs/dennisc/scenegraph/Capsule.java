@@ -70,6 +70,7 @@ public class Capsule extends Shape {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Axis value ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				Capsule.this.boundsChanging();
 				super.setValue( owner, value );
 				Capsule.this.fireBoundChange();
 			}

@@ -168,8 +168,7 @@ public class LinearScaleHandle extends LinearDragHandle{
 		Vector3 handleOffset;
 		if (bbox != null)
 		{
-			Vector3.createSubtraction(bbox.getMaximum(), bbox.getCenter());
-			handleOffset = new Vector3();
+			handleOffset = new Vector3(bbox.getMaximum());
 			handleOffset.z = 0;
 			handleOffset.x *= -1;
 		}

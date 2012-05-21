@@ -50,4 +50,5 @@ public abstract class PlainDialogComposite<V extends org.lgna.croquet.components
 	public PlainDialogComposite( java.util.UUID id, Group operationGroup ) {
 		super( id, operationGroup );
 	}
+	
 }
