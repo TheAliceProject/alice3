@@ -73,14 +73,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		private boolean isRecording = false;
 
 		public void perform( Transaction transaction, Trigger trigger ) {
-			if( programContext == null ) {
-				if( owner != null ) {
-					programContext = new RunProgramContext( owner.getProject().getProgramType() );
-				} else {
-					System.out.println( "program context is null (mmay)" );
-					return;
-				}
-			}
+			System.out.println( "play" );
+			System.out.println( programContext );
 			isRecording = !isRecording;
 			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + this.isRecording ) );
 			if( isRecording ) {
@@ -91,13 +85,12 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		}
 	}, this.createKey( "isRecording.false" ) );
 
-
 	private final ActionOperation restartRecording = this.createActionOperation( new Action() {
-		public void perform(Transaction transaction, Trigger trigger) {
+		public void perform( Transaction transaction, Trigger trigger ) {
 			lookingGlassContainer.removeAllComponents();
 			lookingGlassContainer = getView().getLookingGlassContainer();
 			programContext = new RunProgramContext( owner.getProject().getProgramType() );
-			programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
+			programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
 			programContext.getProgramImp().stopAnimator();
 			programContext.setActiveScene();
 			script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
@@ -109,12 +102,20 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		lookingGlassContainer = getView().getLookingGlassContainer();
-		programContext = new RunProgramContext( owner.getProject().getProgramType() );
-		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
-		programContext.getProgramImp().stopAnimator();
-		programContext.setActiveScene();
+		if( programContext == null ) {
+			programContext = new RunProgramContext( owner.getProject().getProgramType() );
+			programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
+			programContext.getProgramImp().stopAnimator();
+			programContext.setActiveScene();
+		}
 		script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
 		owner.setScript( script );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
+		System.out.println( programContext );
 	}
 
 	public ActionOperation getPlayRecordedOperation() {
