@@ -44,7 +44,6 @@ package org.alice.media.components;
 
 import java.io.File;
 
-import org.alice.media.MoviePlayer;
 import org.alice.media.MoviePlayerComposite;
 import org.alice.media.UploadComposite;
 import org.lgna.croquet.components.BorderPanel;
