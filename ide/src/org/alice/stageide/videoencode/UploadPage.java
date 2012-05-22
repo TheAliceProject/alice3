@@ -54,7 +54,7 @@ public class UploadPage extends org.lgna.croquet.WizardPageComposite< org.lgna.c
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "todo: upload" );
-		label.setPreferredSize( new java.awt.Dimension( 1000, 1000 ) );
+		label.setPreferredSize( new java.awt.Dimension( 800, 400 ) );
 		rv.addComponent( label, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		return rv;
 	}

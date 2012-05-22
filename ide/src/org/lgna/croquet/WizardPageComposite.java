@@ -50,9 +50,4 @@ public abstract class WizardPageComposite< V extends org.lgna.croquet.components
 	public WizardPageComposite( java.util.UUID id ) {
 		super( id );
 	}
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.getView().revalidateAndRepaint();
-	}
 }
