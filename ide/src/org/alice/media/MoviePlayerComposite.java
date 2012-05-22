@@ -47,7 +47,6 @@ import java.io.File;
 
 import org.alice.media.components.MoviePlayerView;
 import org.lgna.croquet.Composite;
-import org.lgna.project.Project;
 
 /**
  * @author Matt May
