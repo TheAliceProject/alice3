@@ -41,26 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.videoencode;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	private final org.lgna.croquet.StringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
-	private final org.lgna.croquet.BooleanState isRecording = this.createBooleanState( false, this.createKey( "isRecording" ) );
-	public RecordEventsPage() {
-		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
+public class FixedCenterPanel extends Panel {
+	public FixedCenterPanel( Component<?> centerPanel ) {
+		this.internalAddComponent( centerPanel );
 	}
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-
-		org.lgna.croquet.components.ImmutableTextArea immutableTextArea = this.gettysburgAddress.createImmutableTextArea();
-		immutableTextArea.setPreferredSize( new java.awt.Dimension( 640, 360 ) );
-		immutableTextArea.makeStandOut();
-		rv.addComponent( new org.lgna.croquet.components.FixedCenterPanel( immutableTextArea ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( this.isRecording.createToggleButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.LayoutManager() {
+			public void addLayoutComponent( String name, java.awt.Component comp ) {
+			}
+			public void removeLayoutComponent( java.awt.Component comp ) {
+			}
+			private java.awt.Dimension layoutSize( java.awt.Container parent ) {
+				if( parent.getComponentCount() > 0 ) {
+					return parent.getComponent( 0 ).getPreferredSize();
+				} else {
+					return new java.awt.Dimension();
+				}
+			}
+			public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+				return this.layoutSize( parent );
+			}
+			public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+				return this.layoutSize( parent );
+			}
+			public void layoutContainer( java.awt.Container parent ) {
+				if( parent.getComponentCount() > 0 ) {
+					java.awt.Dimension parentSize = parent.getSize();
+					java.awt.Component component = parent.getComponent( 0 );
+					java.awt.Dimension componentSize = component.getPreferredSize();
+					component.setLocation( ( parentSize.width - componentSize.width ) / 2, ( parentSize.height - componentSize.height ) / 2 );
+					component.setSize( componentSize );
+				}
+			}
+		};
 	}
+//	public static void main( String[] args ) {
+//		final java.awt.Dimension size = new java.awt.Dimension( 640, 360 ); 
+//		BorderPanel centerComponent = new BorderPanel();
+//		centerComponent.setPreferredSize( size );
+//		centerComponent.setBackgroundColor( java.awt.Color.RED );
+//		FixedCenterPanel panel = new FixedCenterPanel( centerComponent );
+//		
+//		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
+//		application.getFrame().getContentPanel().addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+//		application.getFrame().pack();
+//		application.getFrame().setVisible( true );
+//	}
 }

@@ -438,6 +438,19 @@ public abstract class VirtualMachine {
 		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
 		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+		
+		Class<?>[] parameterTypes = mthd.getParameterTypes();
+		int lastParameterIndex = parameterTypes.length-1;
+		if( lastParameterIndex == arguments.length ) {
+			if( mthd.isVarArgs() ) {
+				Object[] fixedArguments = new Object[ parameterTypes.length ];
+				System.arraycopy( arguments, 0, fixedArguments, 0, arguments.length );
+				assert parameterTypes[ lastParameterIndex ].isArray() : parameterTypes[ lastParameterIndex ];
+				fixedArguments[ lastParameterIndex ] = java.lang.reflect.Array.newInstance( parameterTypes[ lastParameterIndex ].getComponentType(), 0 );
+				arguments = fixedArguments;
+			}
+		}
+		
 		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( mthd ) ) {
 			Class< ? > adapterCls = mapAnonymousClsToAdapterCls.get( mthd.getDeclaringClass() );
 			assert adapterCls != null;
