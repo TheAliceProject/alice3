@@ -55,7 +55,11 @@ public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( this.gettysburgAddress.createImmutableTextArea(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+
+		org.lgna.croquet.components.ImmutableTextArea immutableTextArea = this.gettysburgAddress.createImmutableTextArea();
+		immutableTextArea.setPreferredSize( new java.awt.Dimension( 640, 360 ) );
+		immutableTextArea.makeStandOut();
+		rv.addComponent( new org.lgna.croquet.components.FixedCenterPanel( immutableTextArea ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		rv.addComponent( this.isRecording.createToggleButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		return rv;
 	}
