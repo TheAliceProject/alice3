@@ -42,8 +42,6 @@
  */
 package org.alice.media.components;
 
-import java.awt.Dimension;
-
 import org.alice.media.EventRecordComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.FixedCenterPanel;
