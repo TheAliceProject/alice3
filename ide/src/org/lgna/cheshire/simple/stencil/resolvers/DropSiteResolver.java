@@ -46,7 +46,7 @@ package org.lgna.cheshire.simple.stencil.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class DropSiteResolver implements org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > {
+public class DropSiteResolver extends TrackableShapeResolver {
 	private final org.lgna.croquet.history.Step<?> step;
 	public DropSiteResolver( org.lgna.croquet.history.Step<?> step ) {
 		this.step = step;
@@ -64,12 +64,19 @@ public class DropSiteResolver implements org.lgna.croquet.resolvers.RuntimeResol
 		}
 	}
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.step );
-		sb.append( "]" );
-		return sb.toString();
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		org.lgna.croquet.triggers.Trigger trigger = this.step.getTrigger();
+		if (trigger instanceof org.lgna.croquet.triggers.DropTrigger) {
+			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger) trigger;
+			org.lgna.croquet.DropSite dropSite = dropTrigger.getDropSite();
+			org.lgna.croquet.DropReceptor dropReceptor = dropSite.getOwningDropReceptor();
+			sb.append( "dropSite: " );
+			sb.append( dropSite );
+			sb.append( ";dropReceptor: " );
+			sb.append( dropReceptor );
+		} else {
+			sb.append( "NOT A DROP TRIGGER: " );
+			sb.append( trigger );
+		}
 	}
 }

@@ -63,19 +63,7 @@ public abstract class Note extends org.lgna.cheshire.simple.Note {
 	protected org.lgna.croquet.Operation getNextOperation() {
 		return NextStepOperation.getInstance();
 	}
-	public boolean isGoodToGo() {
-		boolean rv = false;
-		for( org.lgna.cheshire.simple.Feature feature : this.getFeatures() ) {
-			if( feature.isGoodToGo() ) {
-				//at least one feature
-				rv = true;
-			} else {
-				rv = false;
-				break;
-			}
-		}
-		return rv;
-	}
+	public abstract boolean isGoodToGo();
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
 		return isMouseEventInterceptedInAllCasesEvenPopups( e );
 	}

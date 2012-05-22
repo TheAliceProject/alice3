@@ -51,7 +51,7 @@ public class StepNoteFactory {
 	private StepNoteFactory() {
 		throw new AssertionError();
 	}
-	public static Note<?> createNote( org.lgna.croquet.history.Step< ? > step ) {
+	public static StepNote<?> createNote( org.lgna.croquet.history.Step< ? > step ) {
 		org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
 			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
@@ -91,7 +91,7 @@ public class StepNoteFactory {
 			}
 			String noteClsName = PACKAGE_NAME + "." + stepClsName;
 			try {
-				Class<? extends Note<?>> noteCls = (Class<? extends Note<?>>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( noteClsName );
+				Class<? extends StepNote<?>> noteCls = (Class<? extends StepNote<?>>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( noteClsName );
 				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( noteCls, new Class<?>[] { stepCls }, step );
 			} catch( ClassNotFoundException cnfe ) {
 				throw new RuntimeException( noteClsName, cnfe );

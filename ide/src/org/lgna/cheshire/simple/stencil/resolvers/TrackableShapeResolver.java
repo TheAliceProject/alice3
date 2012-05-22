@@ -41,52 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.cheshire.simple.stencil.stepnotes;
+package org.lgna.cheshire.simple.stencil.resolvers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note<S extends org.lgna.croquet.history.Step<?>> extends org.lgna.cheshire.simple.stencil.Note {
-	private final S step;
-	public Note( S step ) {
-		this.step = step;
-		this.addFeatures( this.step );
-	}
-	protected abstract void addFeatures( S step );
-	public S getStep() {
-		return this.step;
-	}
+public abstract class TrackableShapeResolver implements org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > {
+	protected abstract void appendRepr( StringBuilder sb );
 	@Override
-	protected String getText() {
-		org.lgna.croquet.history.Transaction transaction = this.step.getOwner();
-		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
-		return this.step.getTutorialNoteText( edit );
-	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
-		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
-			org.lgna.croquet.history.event.AddStepEvent stepAddedEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
-			if( this.getStep().getModel() == stepAddedEvent.getStep().getModel() ) {
-				return true;
-			} else {
-				//todo
-				if( stepAddedEvent.getStep().getModel() != null ) {
-					try {
-						if( this.getStep().getModel().getClass() == stepAddedEvent.getStep().getModel().getClass() ) {;
-							edu.cmu.cs.dennisc.java.util.logging.Logger.info( this.getStep().getModel() == stepAddedEvent.getStep().getModel(), this.getStep().getModel(), stepAddedEvent.getStep().getModel() );
-							return true;
-						} else {
-							return false;
-						}
-					} catch( NullPointerException npe ) {
-						return false;
-					}
-				} else {
-					return false;
-				}
-			}
-		} else {
-			return false;
-		}
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

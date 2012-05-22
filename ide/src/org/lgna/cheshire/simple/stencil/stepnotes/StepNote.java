@@ -46,23 +46,63 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionNote< S extends org.lgna.croquet.history.CompletionStep<?> > extends StepNote< S > {
-	public CompletionNote( S step ) {
-		super( step );
+public abstract class StepNote<S extends org.lgna.croquet.history.Step<?>> extends org.lgna.cheshire.simple.stencil.Note {
+	private final S step;
+	public StepNote( S step ) {
+		this.step = step;
+		this.addFeatures( this.step );
 	}
-//	@Override
-//	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
-//		edu.cmu.cs.dennisc.croquet.Edit< ? > edit = this.getStep().getEdit();
-//		if( edit != null ) {
-//			if( event instanceof org.lgna.cheshire.events.EditCommittedEvent ) {
-//				org.lgna.cheshire.events.EditCommittedEvent editCommittedEvent = (org.lgna.cheshire.events.EditCommittedEvent)event;
-//				//todo
-//				return editCommittedEvent != null;
-//			} else {
-//				return false; 
-//			}
-//		} else {
-//			return super.isWhatWeveBeenWaitingFor( event );
-//		}
-//	}
+	protected abstract void addFeatures( S step );
+	@Override
+	public final boolean isGoodToGo() {
+		boolean rv = false;
+		for( org.lgna.cheshire.simple.Feature feature : this.getFeatures() ) {
+			String status = feature.getStatus();
+			if( org.lgna.cheshire.simple.Feature.isGoodToGo( status ) ) {
+				//at least one feature
+				rv = true;
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( status );
+				rv = false;
+				break;
+			}
+		}
+		return rv;
+	}
+	public S getStep() {
+		return this.step;
+	}
+	@Override
+	protected String getText() {
+		org.lgna.croquet.history.Transaction transaction = this.step.getOwner();
+		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
+		return this.step.getTutorialNoteText( edit );
+	}
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
+		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+			org.lgna.croquet.history.event.AddStepEvent stepAddedEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
+			if( this.getStep().getModel() == stepAddedEvent.getStep().getModel() ) {
+				return true;
+			} else {
+				//todo
+				if( stepAddedEvent.getStep().getModel() != null ) {
+					try {
+						if( this.getStep().getModel().getClass() == stepAddedEvent.getStep().getModel().getClass() ) {;
+							edu.cmu.cs.dennisc.java.util.logging.Logger.info( this.getStep().getModel() == stepAddedEvent.getStep().getModel(), this.getStep().getModel(), stepAddedEvent.getStep().getModel() );
+							return true;
+						} else {
+							return false;
+						}
+					} catch( NullPointerException npe ) {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+	}
 }

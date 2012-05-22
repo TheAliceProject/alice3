@@ -90,15 +90,19 @@ public abstract class Feature {
 		this.connectionPreference = connectionPreference;
 	}
 
-	public boolean isGoodToGo() {
+	private static final String IS_GOOD_TO_GO = null;
+	public static boolean isGoodToGo( String status ) {
+		return status == IS_GOOD_TO_GO;
+	}
+	public String getStatus() {
 		org.lgna.croquet.components.TrackableShape trackableShape = this.trackableShapeResolver.getResolved();
 		if( trackableShape != null ) {
-			return true;//trackableShape.isInView();
+			return IS_GOOD_TO_GO;//trackableShape.isInView();
 		} else {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.trackableShapeResolver );
-			return false;
+			return "cannot resolve " + this.trackableShapeResolver;
 		}
-	}	
+	}
 	protected abstract boolean isPathRenderingDesired();
 
 	public java.awt.Rectangle getBoundsForRepaint( org.lgna.croquet.components.Component<?> asSeenBy ) {

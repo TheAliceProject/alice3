@@ -73,7 +73,7 @@ public class DropNoteUtilities {
 		}
 		return false;
 	}
-	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event< ? > event, Note<?> note ) {
+	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event< ? > event, StepNote<?> note ) {
 		org.lgna.croquet.history.Step<?> step = note.getStep();
 		org.lgna.croquet.Model desiredModel = step.getModel();
 		org.lgna.croquet.DropSite desiredDropSite = ((org.lgna.croquet.triggers.DropTrigger)step.getTrigger()).getDropSite();

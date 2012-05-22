@@ -64,4 +64,13 @@ public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lg
 			return null;
 		}
 	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.step.getModel() );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }
