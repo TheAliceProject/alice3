@@ -42,8 +42,11 @@
  */
 package org.alice.media.components;
 
+import java.awt.Dimension;
+
 import org.alice.media.EventRecordComposite;
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.FixedCenterPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;
 
@@ -55,7 +58,8 @@ public class EventRecordView extends BorderPanel {
 	private final BorderPanel lookingGlassContainer = new BorderPanel();
 
 	public EventRecordView( EventRecordComposite eventRecordComposite ) {
-		this.addComponent( this.lookingGlassContainer, Constraint.CENTER );
+		FixedCenterPanel fixedCenterPanel = new FixedCenterPanel( this.lookingGlassContainer );
+		this.addComponent( fixedCenterPanel, Constraint.CENTER );
 		GridPanel bottom = GridPanel.createGridPane( 1, 3 );
 		bottom.addComponent( eventRecordComposite.getPlayRecordedOperation().createButton() );
 		bottom.addComponent( new Label() );
@@ -66,5 +70,4 @@ public class EventRecordView extends BorderPanel {
 	public BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}
-
 }

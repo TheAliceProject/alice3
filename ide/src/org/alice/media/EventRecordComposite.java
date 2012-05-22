@@ -110,7 +110,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		super.handlePreActivation();
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		programContext = new RunProgramContext( owner.getProject().getProgramType() );
-		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
+		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
 		programContext.getProgramImp().stopAnimator();
 		programContext.setActiveScene();
 		script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
