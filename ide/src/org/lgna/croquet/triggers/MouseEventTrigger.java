@@ -56,6 +56,9 @@ public class MouseEventTrigger extends AbstractMouseEventTrigger {
 	public static MouseEventTrigger createGeneratorInstance() {
 		return new MouseEventTrigger( Origin.GENERATOR, null, null );
 	}
+	public static MouseEventTrigger createRecoveryInstance() {
+		return new MouseEventTrigger( Origin.RECOVERY, null, null );
+	}
 	private MouseEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
 		super( origin, viewController, mouseEvent );
 	}

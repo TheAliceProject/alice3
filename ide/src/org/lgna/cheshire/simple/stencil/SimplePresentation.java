@@ -340,7 +340,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 							//todo
 							if( prepModel instanceof org.lgna.croquet.PopupPrepModel ) {
 								org.lgna.croquet.PopupPrepModel popupPrepModel = (org.lgna.croquet.PopupPrepModel)prepModel;
-								org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, popupPrepModel, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
+								org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, popupPrepModel, org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance() );
 								chapterPage.refreshNotes();
 								if( chapterPage.isGoodToGo() ) {
 									this.handleChapterChanged( chapter );
