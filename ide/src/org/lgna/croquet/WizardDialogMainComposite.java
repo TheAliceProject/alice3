@@ -123,6 +123,10 @@ public abstract class WizardDialogMainComposite extends GatedCommitMainComposite
 			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 			controlLine.addComponent( trailingOkCancelButton );
 		}
+		@Override
+		public void handleIsGoodToGo( boolean isGoodToGo ) {
+			this.nextOperation.setEnabled( isGoodToGo );
+		}
 	}
 	private static class WizardDialogComposite extends GatedCommitDialogComposite<WizardDialogMainComposite,WizardDialogControlsComposite> {
 		private final WizardDialogControlsComposite controlsComposite = new WizardDialogControlsComposite( this );
@@ -278,7 +282,7 @@ public abstract class WizardDialogMainComposite extends GatedCommitMainComposite
 		return rv;
 	}
 	@Override
-	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return null;
 	}
