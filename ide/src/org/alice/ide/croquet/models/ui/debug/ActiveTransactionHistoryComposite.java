@@ -40,20 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.history;
 
-public class IsProjectHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+package org.alice.ide.croquet.models.ui.debug;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class ActiveTransactionHistoryComposite extends TransactionHistoryComposite {
 	private static class SingletonHolder {
-		private static IsProjectHistoryShowingState instance = new IsProjectHistoryShowingState();
+		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
 	}
-	public static IsProjectHistoryShowingState getInstance() {
+	public static ActiveTransactionHistoryComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsProjectHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false );
+	private ActiveTransactionHistoryComposite() {
+		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
 	}
 	@Override
-	protected java.awt.Component createPane() {
-		return new org.lgna.project.history.HistoryPane( org.alice.ide.IDE.PROJECT_GROUP );
+	protected void localize() {
+		super.localize();
+		// do not want to bother localizers with this composite
+		// todo: investigate why this doesn't work
+		this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+//				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
+//				ActiveTransactionHistoryComposite.this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
+//			}
+//		} );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
+		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
+		rv.setTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
+		return rv;
 	}
 }
