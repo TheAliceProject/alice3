@@ -52,7 +52,7 @@ public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainCo
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 	}
 	@Override
-	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep step ) {
+	protected org.lgna.croquet.GatedComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
 	protected abstract java.awt.Color getViewBackgroundColor();

@@ -45,10 +45,10 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitMainComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+public abstract class GatedCommitMainComposite<V extends org.lgna.croquet.components.View<?,?>> extends GatedComposite<V> {
 	public GatedCommitMainComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
-	protected abstract StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step );
 	public abstract GatedCommitDialogComposite getGatedCommitDialogComposite();
+	protected abstract Status getStatus( org.lgna.croquet.history.CompletionStep<?> step );
 }
