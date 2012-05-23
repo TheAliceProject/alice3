@@ -42,10 +42,13 @@
  */
 package org.alice.media.components;
 
+import java.awt.Dimension;
+
 import org.alice.media.ImageRecordComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.FixedCenterPanel;
 import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.PreserveAspectRatioPanel;
 
 /**
  * @author Matt May
@@ -56,9 +59,8 @@ public class ImageRecordView extends BorderPanel {
 
 	public ImageRecordView( ImageRecordComposite recordComposite ) {
 		super( recordComposite );
-		FixedCenterPanel fixedCenterPanel = new FixedCenterPanel( this.lookingGlassContainer );
-		this.addComponent( fixedCenterPanel, Constraint.CENTER );
-//		this.addComponent( this.lookingGlassContainer, Constraint.CENTER );
+		PreserveAspectRatioPanel panel = new PreserveAspectRatioPanel( this.lookingGlassContainer, new Dimension( 16, 9 ) );
+		this.addComponent( panel, Constraint.CENTER );
 		GridPanel bottomPanel = GridPanel.createGridPane( 1, 3 );
 		bottomPanel.addComponent( recordComposite.getRecordOperation().createButton() );
 		bottomPanel.addComponent( recordComposite.getFrameRate().createSpinner() );

@@ -40,39 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
+package org.lgna.croquet.components;
 
-import java.awt.Component;
-import java.io.File;
-
-import org.alice.media.components.MoviePlayerView;
-import org.lgna.croquet.Composite;
+import java.awt.Dimension;
 
 /**
  * @author Matt May
  */
-public class MoviePlayerComposite extends Composite<MoviePlayerView> {
+public class PreserveAspectRatioPanel extends Panel {
+	
+	private Dimension dimension;
 
-	private MoviePlayer player;
-
-	public MoviePlayerComposite( File file ) {
-		super( java.util.UUID.fromString( "28ea7f67-1f3f-443f-a3fb-130676779b5f" ) );
-		player = new MoviePlayer();
-		player.registerHack( this );
+	public PreserveAspectRatioPanel( Component<?> centerPanel, Dimension dimension ) {
+		this.dimension = dimension;
+		this.internalAddComponent( centerPanel );
 	}
-
 	@Override
-	protected MoviePlayerView createView() {
-		return new MoviePlayerView( this );
-	}
-
-	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
-		getView().handlePlayerRealized( visualComponent, controlComponent );
-		getView().revalidateAndRepaint();
-	}
-
-	public void setMovie( File file ) {
-		player.setMovie( file );
-		player.init();
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.LayoutManager() {
+			public void addLayoutComponent( String name, java.awt.Component comp ) {
+			}
+			public void removeLayoutComponent( java.awt.Component comp ) {
+			}
+			private java.awt.Dimension layoutSize( java.awt.Container parent ) {
+				if( parent.getComponentCount() > 0 ) {
+					return parent.getComponent( 0 ).getPreferredSize();
+				} else {
+					return new java.awt.Dimension();
+				}
+			}
+			public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+				return this.layoutSize( parent );
+			}
+			public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+				return this.layoutSize( parent );
+			}
+			public void layoutContainer( java.awt.Container parent ) {
+				if( parent.getComponentCount() > 0 ) {
+					java.awt.Dimension parentSize = parent.getSize();
+					java.awt.Component component = parent.getComponent( 0 );
+					Dimension properSize = getProperSize();
+					component.setSize( properSize );
+					component.setLocation( (parentSize.width - properSize.width) / 2, (parentSize.height - properSize.height) / 2 );
+				} 
+			}
+			private Dimension getProperSize() {
+				Dimension rv = new Dimension();
+				if(isTooFat()){
+					rv.width = (int)(getHeight()/dimension.getHeight()*dimension.getWidth());
+					rv.height = getHeight();
+				} else {
+					rv.width = getWidth();
+					rv.height = (int)(getWidth()/dimension.getWidth()*dimension.getHeight());
+				}
+				return rv;
+			}
+			private boolean isTooFat() {
+				return getWidth()/dimension.getWidth() > getHeight()/dimension.getHeight();
+			}
+		};
 	}
 }

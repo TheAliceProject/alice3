@@ -42,6 +42,7 @@
  */
 package org.alice.media.components;
 
+import java.awt.Dimension;
 import java.io.File;
 
 import org.alice.media.MoviePlayerComposite;
@@ -51,6 +52,7 @@ import org.lgna.croquet.components.CheckBox;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.PasswordField;
+import org.lgna.croquet.components.PreserveAspectRatioPanel;
 import org.lgna.croquet.components.TextField;
 
 /**
@@ -64,10 +66,11 @@ public class UploadView extends BorderPanel {
 		super( composite );
 		this.addComponent( new UserNameAndPasswordComponent( composite ), Constraint.PAGE_START );
 		moviePlayerComposite = new MoviePlayerComposite( composite.getFile() );
-		GridPanel gridPane = GridPanel.createGridPane( 1, 2 );
-		gridPane.addComponent( moviePlayerComposite.getView() );
-		gridPane.addComponent( new VideoInfoComponent( composite ) );
-		this.addComponent( gridPane, Constraint.CENTER );
+		BorderPanel bPanel = new BorderPanel();
+		MoviePlayerView panel = moviePlayerComposite.getView();
+		bPanel.addComponent( new PreserveAspectRatioPanel( panel, new Dimension( 16, 9 ) ), Constraint.CENTER );
+		bPanel.addComponent( new VideoInfoComponent( composite ), Constraint.LINE_END );
+		this.addComponent( bPanel, Constraint.CENTER );
 		this.addComponent( composite.getUploadOperation().createButton(), Constraint.PAGE_END );
 	}
 

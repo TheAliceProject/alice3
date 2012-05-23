@@ -166,6 +166,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRate.getValue() );
 				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
 
+				getView().revalidateAndRepaint();
+				
 				EventScript script = owner.getScript();
 
 				UserInstance programInstance = programContext.getProgramInstance();

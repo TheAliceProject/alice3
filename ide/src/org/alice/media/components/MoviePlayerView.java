@@ -44,6 +44,7 @@ package org.alice.media.components;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import org.alice.media.MoviePlayerComposite;
 import org.lgna.croquet.components.BorderPanel;
@@ -52,12 +53,9 @@ import org.lgna.croquet.components.BorderPanel;
  * @author Matt May
  */
 public class MoviePlayerView extends BorderPanel {
-
-	private MoviePlayerComposite composite;
-
 	public MoviePlayerView( MoviePlayerComposite composite ) {
-		super();
-		this.composite = composite;
+		super( composite );
+		this.setPreferredSize( new Dimension( 320+10, 180+30 ) );
 	}
 
 	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
