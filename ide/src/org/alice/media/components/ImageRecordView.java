@@ -46,7 +46,6 @@ import java.awt.Dimension;
 
 import org.alice.media.ImageRecordComposite;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.FixedCenterPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.PreserveAspectRatioPanel;
 

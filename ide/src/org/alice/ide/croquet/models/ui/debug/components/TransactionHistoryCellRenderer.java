@@ -41,77 +41,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.croquet.models.ui.debug.components;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractInstancePropertyAdapter;
-
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Point3;
-
-public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, org.lgna.story.implementation.ModelImp>
-{
-	public ModelSizeAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
-	{
-		super("Size", instance, null, expressionState);
-	}
-
+/**
+ * @author Dennis Cosgrove
+ */
+public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
 	@Override
-	public Dimension3 getValue() 
-	{
-		if (this.instance != null)
-		{
-			Dimension3 size = this.instance.getSize();
-			size = this.instance.getSize();
-			return size;
-		}
-		return null;
-	}
-	
-	@Override
-	public void setValue(Dimension3 value) 
-	{
-		Dimension3 currentValue = getValue();
-		super.setValue(value);
-		if (this.instance != null){
-			double dist = Point3.calculateDistanceBetween(currentValue, value);
-			double duration = 1;
-			if (dist < .02)
-			{
-				duration = 0;
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value instanceof org.lgna.croquet.history.Transaction ) {
+			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)value;
+			int i = transaction.getParent().getIndexOfTransaction( transaction );
+			StringBuilder sb = new StringBuilder();
+			sb.append( "<html>" );
+			sb.append( "transaction[" );
+			sb.append( i );
+			sb.append( "] " );
+			String title = transaction.getTitle( org.lgna.croquet.DefaultUserInformation.SINGLETON );
+			if( title != null ) {
+				sb.append( "<strong>" );
+				sb.append( title );
+				sb.append( "</strong>" );
 			}
-			else if (dist < .5)
-			{
-				duration = (dist - .02) / (.5 - .02);
+			sb.append( "</html>" );
+			rv.setText( sb.toString() );
+			rv.setIcon( null );
+		} else if( value instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
+			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)value;
+			String name;
+			if( completionStep.isPending() ) {
+				name = "pending";
+			} else {
+				if( completionStep.isSuccessfullyCompleted() ) {
+					name = "completed";
+				} else {
+					name = "canceled";
+				}
 			}
-			
-			
-			this.instance.animateSetSize(value, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+			rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
 		}
-	}
-
-	@Override
-	protected void addPropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.addScaleListener(propertyListener);
-		}	
-	}
-
-	@Override
-	protected void removePropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.removeScaleListener(propertyListener);
-		}	
-	}
-
-
-	@Override
-	public Class<Dimension3> getPropertyType() {
-		return Dimension3.class;
-	}
-
-	@Override
-	public Dimension3 getValueCopyIfMutable() {
-		return new Dimension3(this.getValue());
-	}
+		return rv;
+	}	
 }

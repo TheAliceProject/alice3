@@ -48,7 +48,8 @@ package org.lgna.story;
  */
 public enum PathStyle implements 
 		MoveTo.Detail, 
-		MoveAndOrientTo.Detail, 
+		MoveAndOrientTo.Detail,
+		SetPositionRelativeToVehicle.Detail,
 		Place.Detail 
 {
 	BEE_LINE( false ),

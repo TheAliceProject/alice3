@@ -41,77 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.ide.croquet.models.ui.debug;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractInstancePropertyAdapter;
-
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Point3;
-
-public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, org.lgna.story.implementation.ModelImp>
-{
-	public ModelSizeAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
-	{
-		super("Size", instance, null, expressionState);
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class TransactionHistoryComposite extends org.lgna.croquet.FrameComposite<org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView> {
+	public TransactionHistoryComposite( java.util.UUID id, org.lgna.croquet.Group booleanStateGroup ) {
+		super( id, booleanStateGroup );
 	}
-
 	@Override
-	public Dimension3 getValue() 
-	{
-		if (this.instance != null)
-		{
-			Dimension3 size = this.instance.getSize();
-			size = this.instance.getSize();
-			return size;
-		}
-		return null;
-	}
-	
-	@Override
-	public void setValue(Dimension3 value) 
-	{
-		Dimension3 currentValue = getValue();
-		super.setValue(value);
-		if (this.instance != null){
-			double dist = Point3.calculateDistanceBetween(currentValue, value);
-			double duration = 1;
-			if (dist < .02)
-			{
-				duration = 0;
-			}
-			else if (dist < .5)
-			{
-				duration = (dist - .02) / (.5 - .02);
-			}
-			
-			
-			this.instance.animateSetSize(value, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
-		}
-	}
-
-	@Override
-	protected void addPropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.addScaleListener(propertyListener);
-		}	
-	}
-
-	@Override
-	protected void removePropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.removeScaleListener(propertyListener);
-		}	
-	}
-
-
-	@Override
-	public Class<Dimension3> getPropertyType() {
-		return Dimension3.class;
-	}
-
-	@Override
-	public Dimension3 getValueCopyIfMutable() {
-		return new Dimension3(this.getValue());
+	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
+		return new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView( this );
 	}
 }

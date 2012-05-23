@@ -41,22 +41,38 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.videoencode;
+package org.alice.ide.croquet.models.ui.debug;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	private final org.lgna.croquet.StringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
-	private final org.lgna.croquet.BooleanState isRecording = this.createBooleanState( false, this.createKey( "isRecording" ) );
-	public RecordEventsPage() {
-		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
+public class ActiveTransactionHistoryComposite extends TransactionHistoryComposite {
+	private static class SingletonHolder {
+		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
+	}
+	public static ActiveTransactionHistoryComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ActiveTransactionHistoryComposite() {
+		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
 	}
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( this.gettysburgAddress.createImmutableTextArea(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( this.isRecording.createToggleButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+	protected void localize() {
+		super.localize();
+		// do not want to bother localizers with this composite
+		// todo: investigate why this doesn't work
+		this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+//				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
+//				ActiveTransactionHistoryComposite.this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
+//			}
+//		} );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
+		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
+		rv.setTransactionHistory( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory() );
 		return rv;
 	}
 }

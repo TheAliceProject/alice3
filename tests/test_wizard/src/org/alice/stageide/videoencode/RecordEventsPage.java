@@ -41,77 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.stageide.videoencode;
 
-import org.alice.ide.croquet.models.StandardExpressionState;
-import org.alice.ide.properties.adapter.AbstractInstancePropertyAdapter;
-
-import edu.cmu.cs.dennisc.math.Dimension3;
-import edu.cmu.cs.dennisc.math.Point3;
-
-public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, org.lgna.story.implementation.ModelImp>
-{
-	public ModelSizeAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
-	{
-		super("Size", instance, null, expressionState);
+/**
+ * @author Dennis Cosgrove
+ */
+public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
+	private final org.lgna.croquet.StringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
+	private final org.lgna.croquet.BooleanState isRecording = this.createBooleanState( false, this.createKey( "isRecording" ) );
+	public RecordEventsPage() {
+		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
 	}
-
 	@Override
-	public Dimension3 getValue() 
-	{
-		if (this.instance != null)
-		{
-			Dimension3 size = this.instance.getSize();
-			size = this.instance.getSize();
-			return size;
-		}
-		return null;
-	}
-	
-	@Override
-	public void setValue(Dimension3 value) 
-	{
-		Dimension3 currentValue = getValue();
-		super.setValue(value);
-		if (this.instance != null){
-			double dist = Point3.calculateDistanceBetween(currentValue, value);
-			double duration = 1;
-			if (dist < .02)
-			{
-				duration = 0;
-			}
-			else if (dist < .5)
-			{
-				duration = (dist - .02) / (.5 - .02);
-			}
-			
-			
-			this.instance.animateSetSize(value, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
-		}
-	}
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 
-	@Override
-	protected void addPropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.addScaleListener(propertyListener);
-		}	
-	}
-
-	@Override
-	protected void removePropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.removeScaleListener(propertyListener);
-		}	
-	}
-
-
-	@Override
-	public Class<Dimension3> getPropertyType() {
-		return Dimension3.class;
-	}
-
-	@Override
-	public Dimension3 getValueCopyIfMutable() {
-		return new Dimension3(this.getValue());
+		org.lgna.croquet.components.ImmutableTextArea immutableTextArea = this.gettysburgAddress.createImmutableTextArea();
+		immutableTextArea.setPreferredSize( new java.awt.Dimension( 640, 360 ) );
+		immutableTextArea.makeStandOut();
+		rv.addComponent( new org.lgna.croquet.components.FixedCenterPanel( immutableTextArea ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		rv.addComponent( this.isRecording.createToggleButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		return rv;
 	}
 }

@@ -40,20 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.croquet.models.history;
 
-public class IsProjectHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+/**
+ * @author dennisc
+ */
+public class UiHistoryComposite extends HistoryComposite {
 	private static class SingletonHolder {
-		private static IsProjectHistoryShowingState instance = new IsProjectHistoryShowingState();
+		private static UiHistoryComposite instance = new UiHistoryComposite();
 	}
-	public static IsProjectHistoryShowingState getInstance() {
+	public static UiHistoryComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsProjectHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false );
+	private UiHistoryComposite() {
+		super( java.util.UUID.fromString( "778fce77-1417-4461-ad89-84a7c139ceff" ), org.lgna.croquet.Application.UI_STATE_GROUP );
 	}
 	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( org.alice.ide.IDE.PROJECT_GROUP );
+	protected void localize() {
+		super.localize();
+		// do not want to bother localizers with this composite
+		this.getBooleanState().setTextForBothTrueAndFalse( "UI History" );
 	}
 }
