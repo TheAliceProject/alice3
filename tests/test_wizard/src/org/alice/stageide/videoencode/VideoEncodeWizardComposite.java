@@ -64,23 +64,11 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMai
 		this.addPage( this.uploadPage );
 	}
 	
-	@Override
-	protected org.lgna.croquet.StringValue getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
-	}
-	
-	public static void main( String[] args ) {
+	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
-			try {
-				javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-//				edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
-		
-		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "zh", "TW" ) );
 		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
 		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
 		composite.getGatedCommitDialogComposite().getOperation().fire();
