@@ -40,18 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.history;
+package org.lgna.croquet.undo;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectHistory {
+public class UndoHistory {
 
 	private java.util.Stack< org.lgna.croquet.edits.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private int insertionIndex = 0;
 	private org.lgna.croquet.Group group;
 
-	public ProjectHistory( org.lgna.croquet.Group group ) {
+	public UndoHistory( org.lgna.croquet.Group group ) {
 		this.group = group;
 	}
 	public org.lgna.croquet.Group getGroup() {
@@ -62,7 +62,7 @@ public class ProjectHistory {
 	}
 	public void push( org.lgna.croquet.edits.Edit<?> edit ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
-			org.lgna.project.history.event.HistoryPushEvent historyPushEvent = new org.lgna.project.history.event.HistoryPushEvent( this, edit );
+			org.lgna.croquet.undo.event.HistoryPushEvent historyPushEvent = new org.lgna.croquet.undo.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
 			this.stack.setSize( this.insertionIndex );
 			this.stack.push( edit );
@@ -121,7 +121,7 @@ public class ProjectHistory {
 	private int setInsertionIndex( int nextInsertionIndex, boolean isActionDesired ) {
 		if( nextInsertionIndex >= 0 && nextInsertionIndex <= this.stack.size() ) {
 			if( this.insertionIndex != nextInsertionIndex ) {
-				org.lgna.project.history.event.HistoryInsertionIndexEvent e = new org.lgna.project.history.event.HistoryInsertionIndexEvent( this, this.insertionIndex, nextInsertionIndex );
+				org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e = new org.lgna.croquet.undo.event.HistoryInsertionIndexEvent( this, this.insertionIndex, nextInsertionIndex );
 				this.fireInsertionIndexChanging( e );
 
 				final int N = Math.abs( nextInsertionIndex - this.insertionIndex );
@@ -153,57 +153,57 @@ public class ProjectHistory {
 		return this.setInsertionIndex( nextInsertionIndex, true );
 	}
 
-	private java.util.List< org.lgna.project.history.event.HistoryListener > historyListeners = new java.util.LinkedList< org.lgna.project.history.event.HistoryListener >();
+	private java.util.List< org.lgna.croquet.undo.event.HistoryListener > historyListeners = new java.util.LinkedList< org.lgna.croquet.undo.event.HistoryListener >();
 
-	public void addHistoryListener( org.lgna.project.history.event.HistoryListener l ) {
+	public void addHistoryListener( org.lgna.croquet.undo.event.HistoryListener l ) {
 		synchronized( this.historyListeners ) {
 			this.historyListeners.add( l );
 		}
 	}
-	public void removeHistoryListener( org.lgna.project.history.event.HistoryListener l ) {
+	public void removeHistoryListener( org.lgna.croquet.undo.event.HistoryListener l ) {
 		synchronized( this.historyListeners ) {
 			this.historyListeners.remove( l );
 		}
 	}
 
-	private void fireOperationPushing( org.lgna.project.history.event.HistoryPushEvent e ) {
+	private void fireOperationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
 				l.operationPushing( e );
 			}
 		}
 	}
-	private void fireOperationPushed( org.lgna.project.history.event.HistoryPushEvent e ) {
+	private void fireOperationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
 				l.operationPushed( e );
 			}
 		}
 	}
-	private void fireInsertionIndexChanging( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
+	private void fireInsertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
 				l.insertionIndexChanging( e );
 			}
 		}
 	}
-	private void fireInsertionIndexChanged( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
+	private void fireInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
 				l.insertionIndexChanged( e );
 			}
 		}
 	}
-	private void fireClearing( org.lgna.project.history.event.HistoryClearEvent e ) {
+	private void fireClearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
 				l.clearing( e );
 			}
 		}
 	}
-	private void fireCleared( org.lgna.project.history.event.HistoryClearEvent e ) {
+	private void fireCleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		synchronized( this.historyListeners ) {
-			for( org.lgna.project.history.event.HistoryListener l : this.historyListeners ) {
+			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
 				l.cleared( e );
 			}
 		}

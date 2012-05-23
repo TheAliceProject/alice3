@@ -55,7 +55,7 @@ public abstract class HistoryComposite extends org.lgna.croquet.FrameComposite {
 	@Override
 	protected final org.lgna.croquet.components.View createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.getAwtComponent().add( new org.lgna.project.history.HistoryPane( this.historyGroup ), java.awt.BorderLayout.CENTER );
+		rv.getAwtComponent().add( new org.lgna.croquet.undo.HistoryPane( this.historyGroup ), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
 }

@@ -40,16 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.history.event;
+package org.lgna.croquet.undo.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface HistoryListener {
-	public void operationPushing( HistoryPushEvent e );
-	public void operationPushed( HistoryPushEvent e );
-	public void insertionIndexChanging( HistoryInsertionIndexEvent e );
-	public void insertionIndexChanged( HistoryInsertionIndexEvent e );
-	public void clearing( HistoryClearEvent e );
-	public void cleared( HistoryClearEvent e );
+public abstract class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event< org.lgna.croquet.undo.UndoHistory > {
+	public HistoryEvent( org.lgna.croquet.undo.UndoHistory source ) {
+		super( source );
+	}
 }

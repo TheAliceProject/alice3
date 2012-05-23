@@ -40,11 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.history;
+package org.lgna.croquet.undo;
 
 class HistoryStackModel extends javax.swing.AbstractListModel {
-	private ProjectHistory projectHistory;
-	public HistoryStackModel( ProjectHistory historyManager ) {
+	private UndoHistory projectHistory;
+	public HistoryStackModel( UndoHistory historyManager ) {
 		this.projectHistory = historyManager;
 	}
 	public int getSize() {
@@ -57,7 +57,7 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 			return projectHistory.getStack().elementAt( index-1 );
 		}
 	}
-	public ProjectHistory getHistoryManager() {
+	public UndoHistory getHistoryManager() {
 		return this.projectHistory;
 	}
 	public void refresh() {
@@ -89,21 +89,21 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListC
 }
 
 public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
-	private org.lgna.project.history.event.HistoryListener historyListener = new org.lgna.project.history.event.HistoryListener() {
-		public void operationPushing( org.lgna.project.history.event.HistoryPushEvent e ) {
+	private org.lgna.croquet.undo.event.HistoryListener historyListener = new org.lgna.croquet.undo.event.HistoryListener() {
+		public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
-		public void operationPushed( org.lgna.project.history.event.HistoryPushEvent e ) {
+		public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
-		public void insertionIndexChanging( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
+		public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		}
-		public void insertionIndexChanged( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
+		public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( e.getNextIndex() );
 			HistoryPane.this.list.repaint();
 		}
-		public void clearing( org.lgna.project.history.event.HistoryClearEvent e ) {
+		public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		}
-		public void cleared( org.lgna.project.history.event.HistoryClearEvent e ) {
+		public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( 0 );
 		}
@@ -112,7 +112,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 	private org.lgna.croquet.Group group;
 	private javax.swing.JList list;
 	private HistoryStackModel historyStackModel;
-	private ProjectHistory projectHistory;
+	private UndoHistory projectHistory;
 	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
 			if( e.getValueIsAdjusting() ) {

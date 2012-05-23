@@ -40,13 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.history.event;
+package org.lgna.croquet.undo.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event< org.lgna.project.history.ProjectHistory > {
-	public HistoryEvent( org.lgna.project.history.ProjectHistory source ) {
+public class HistoryInsertionIndexEvent extends HistoryEvent {
+	private int prevIndex;
+	private int nextIndex;
+
+	public HistoryInsertionIndexEvent( org.lgna.croquet.undo.UndoHistory source, int prevIndex, int nextIndex ) {
 		super( source );
+		this.prevIndex = prevIndex;
+		this.nextIndex = nextIndex;
+	}
+	public int getPrevIndex() {
+		return prevIndex;
+	}
+	public int getNextIndex() {
+		return nextIndex;
 	}
 }

@@ -55,7 +55,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	private Recoverer recoverer;
 	private Book book;
 	private boolean isResultOfNextOperation = false;
-	private org.lgna.project.history.ProjectHistory[] historyManagers;
+	private org.lgna.croquet.undo.UndoHistory[] historyManagers;
 	private org.lgna.croquet.Retargeter retargeter;
 	protected org.lgna.croquet.history.TransactionHistory originalTransactionHistory;
 
@@ -99,7 +99,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		this.book.setSelectedIndex(0);
 
 		final int N = groupsTrackedForRandomAccess.length;
-		this.historyManagers = new org.lgna.project.history.ProjectHistory[ N+1 ];
+		this.historyManagers = new org.lgna.croquet.undo.UndoHistory[ N+1 ];
 		for( int i=0; i<N; i++ ) {
 			this.historyManagers[ i ] = org.alice.ide.IDE.getActiveInstance().getProjectHistory( groupsTrackedForRandomAccess[ i ] );
 		}

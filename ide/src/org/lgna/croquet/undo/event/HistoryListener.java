@@ -40,53 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.history;
+package org.lgna.croquet.undo.event;
 
 /**
- * @author Kyle J. Harms
+ * @author Dennis Cosgrove
  */
-public class ProjectHistoryManager {
-
-	private org.lgna.croquet.history.event.Listener listener;
-	private java.util.Map< org.lgna.croquet.Group, ProjectHistory > map;
-
-	public ProjectHistoryManager( org.lgna.project.Project project ) {
-		this.listener = new org.lgna.croquet.history.event.Listener() {
-			public void changing(org.lgna.croquet.history.event.Event<?> e) {
-			}
-			public void changed(org.lgna.croquet.history.event.Event<?> e) {
-				if( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-					org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)e;
-					ProjectHistoryManager.this.handleEditCommitted( editCommittedEvent.getEdit() );
-				}
-			}
-		};
-		project.getTransactionHistory().addListener( this.listener );
-		this.map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	}
-
-	public ProjectHistory getGroupHistory( org.lgna.croquet.Group group ) {
-		ProjectHistory rv;
-		if( group != null ) {
-			rv = this.map.get( group );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ProjectHistory( group );
-				this.map.put( group, rv );
-			}
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "group==null" );
-			rv = null;
-		}
-		return rv;
-	}
-
-	private void handleEditCommitted( org.lgna.croquet.edits.Edit<?> edit ) {
-		assert edit != null;
-		ProjectHistory projectHistory = this.getGroupHistory( edit.getGroup() );
-		if( projectHistory != null ) {
-			projectHistory.push( edit );
-		}
-	}
+public interface HistoryListener {
+	public void operationPushing( HistoryPushEvent e );
+	public void operationPushed( HistoryPushEvent e );
+	public void insertionIndexChanging( HistoryInsertionIndexEvent e );
+	public void insertionIndexChanged( HistoryInsertionIndexEvent e );
+	public void clearing( HistoryClearEvent e );
+	public void cleared( HistoryClearEvent e );
 }

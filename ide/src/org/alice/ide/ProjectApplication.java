@@ -56,21 +56,21 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), ProjectApplication.class );
 	}
 
-	private org.lgna.project.history.event.HistoryListener projectHistoryListener;
+	private org.lgna.croquet.undo.event.HistoryListener projectHistoryListener;
 	public ProjectApplication() {
-		this.projectHistoryListener = new org.lgna.project.history.event.HistoryListener() {
-			public void operationPushing( org.lgna.project.history.event.HistoryPushEvent e ) {
+		this.projectHistoryListener = new org.lgna.croquet.undo.event.HistoryListener() {
+			public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 			}
-			public void operationPushed( org.lgna.project.history.event.HistoryPushEvent e ) {
+			public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 			}
-			public void insertionIndexChanging( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
+			public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 			}
-			public void insertionIndexChanged( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
+			public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 				ProjectApplication.this.handleInsertionIndexChanged( e );
 			}
-			public void clearing( org.lgna.project.history.event.HistoryClearEvent e ) {
+			public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			}
-			public void cleared( org.lgna.project.history.event.HistoryClearEvent e ) {
+			public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			}
 		};
 	}
@@ -94,16 +94,16 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private void updateUndoRedoEnabled() {
-		org.lgna.project.history.ProjectHistory historyManager = this.getProjectHistory( org.alice.ide.IDE.PROJECT_GROUP );
+		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.alice.ide.IDE.PROJECT_GROUP );
 		int index = historyManager.getInsertionIndex();
 		int size = historyManager.getStack().size();
 		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( index > 0 );
 		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( index < size );
 	}
 
-	protected void handleInsertionIndexChanged( org.lgna.project.history.event.HistoryInsertionIndexEvent e ) {
+	protected void handleInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		this.updateTitle();
-		org.lgna.project.history.ProjectHistory source = e.getTypedSource();
+		org.lgna.croquet.undo.UndoHistory source = e.getTypedSource();
 		if( source.getGroup() == PROJECT_GROUP ) {
 			this.updateUndoRedoEnabled();
 		}
@@ -224,10 +224,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
-	public final org.lgna.project.history.ProjectHistory getProjectHistory() {
+	public final org.lgna.croquet.undo.UndoHistory getProjectHistory() {
 		return this.getProjectHistory( IDE.PROJECT_GROUP );
 	}
-	public final org.lgna.project.history.ProjectHistory getProjectHistory( org.lgna.croquet.Group group ) {
+	public final org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
 		return this.getProject().getProjectHistory( group );
 	}
 

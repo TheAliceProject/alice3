@@ -40,16 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.history.event;
+package org.alice.ide;
+
+import org.lgna.croquet.undo.UndoHistory;
+import org.lgna.project.Project;
 
 /**
- * @author Dennis Cosgrove
+ * @author Kyle J. Harms
  */
-public class HistoryClearEvent extends HistoryEvent {
-	private int prevIndex;
-	private int nextIndex;
+public class ProjectHistoryManager {
 
-	public HistoryClearEvent( org.lgna.project.history.ProjectHistory source ) {
-		super( source );
+	private org.lgna.croquet.history.event.Listener listener;
+	private java.util.Map< org.lgna.croquet.Group, UndoHistory > map;
+
+	public ProjectHistoryManager( org.lgna.project.Project project ) {
+		this.listener = new org.lgna.croquet.history.event.Listener() {
+			public void changing(org.lgna.croquet.history.event.Event<?> e) {
+			}
+			public void changed(org.lgna.croquet.history.event.Event<?> e) {
+				if( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+					org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)e;
+					ProjectHistoryManager.this.handleEditCommitted( editCommittedEvent.getEdit() );
+				}
+			}
+		};
+		project.getTransactionHistory().addListener( this.listener );
+		this.map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	}
+
+	public UndoHistory getGroupHistory( org.lgna.croquet.Group group ) {
+		UndoHistory rv;
+		if( group != null ) {
+			rv = this.map.get( group );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new UndoHistory( group );
+				this.map.put( group, rv );
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "group==null" );
+			rv = null;
+		}
+		return rv;
+	}
+
+	private void handleEditCommitted( org.lgna.croquet.edits.Edit<?> edit ) {
+		assert edit != null;
+		UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
+		if( projectHistory != null ) {
+			projectHistory.push( edit );
+		}
 	}
 }
