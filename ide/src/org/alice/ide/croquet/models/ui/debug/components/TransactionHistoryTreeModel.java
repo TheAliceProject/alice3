@@ -40,14 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.debug;
+
+package org.alice.ide.croquet.models.ui.debug.components;
 
 /**
  * @author Dennis Cosgrove
  */
-class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
+public class TransactionHistoryTreeModel  extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
 	private org.lgna.croquet.history.TransactionHistory root;
-	public TransactionTreeModel( org.lgna.croquet.history.TransactionHistory root ) {
+	public TransactionHistoryTreeModel( org.lgna.croquet.history.TransactionHistory root ) {
 		this.root = root;
 	}
 	public org.lgna.croquet.history.TransactionHistory getRoot() {
@@ -149,151 +150,5 @@ class TransactionTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.Abstrac
 		java.util.List< Object > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		updatePath( list, node );
 		return new javax.swing.tree.TreePath( list.toArray() );
-	}
-}
-
-class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
-	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value instanceof org.lgna.croquet.history.Transaction ) {
-			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)value;
-			int i = transaction.getParent().getIndexOfTransaction( transaction );
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>" );
-			sb.append( "transaction[" );
-			sb.append( i );
-			sb.append( "] " );
-			String title = transaction.getTitle( org.lgna.croquet.DefaultUserInformation.SINGLETON );
-			if( title != null ) {
-				sb.append( "<strong>" );
-				sb.append( title );
-				sb.append( "</strong>" );
-			}
-			sb.append( "</html>" );
-			rv.setText( sb.toString() );
-			rv.setIcon( null );
-		} else if( value instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
-			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)value;
-			String name;
-			if( completionStep.isPending() ) {
-				name = "pending";
-			} else {
-				if( completionStep.isSuccessfullyCompleted() ) {
-					name = "completed";
-				} else {
-					name = "canceled";
-				}
-			}
-			rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
-		}
-		return rv;
-	}	
-}
-
-/**
- * @author Dennis Cosgrove
- */
-public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
-	public static boolean IS_SIDE_DOCKING_DESIRED = false;
-	private static class SingletonHolder {
-		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory() ) {
-			@Override
-			protected javax.swing.JFrame createFrame() {
-				javax.swing.JFrame rv = super.createFrame();
-				if( IS_SIDE_DOCKING_DESIRED ) {
-					rv.setLocation( 1280, 0 );
-					rv.setSize( 280, 720 );
-				}
-				return rv;
-			}
-		};
-	}
-	public static IsTransactionHistoryShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	public static IsTransactionHistoryShowingState createInstance( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new IsTransactionHistoryShowingState( transactionHistory );
-	}
-	
-	private final org.lgna.croquet.history.TransactionHistory transactionHistory;
-	private IsTransactionHistoryShowingState( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
-		this.transactionHistory = transactionHistory;
-	}
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setTextForBothTrueAndFalse( "Transaction History" );
-	}
-	@Override
-	protected javax.swing.JFrame createFrame() {
-		javax.swing.JFrame rv = super.createFrame();
-		final int SCREEN_INDEX = 1;
-		java.awt.Rectangle bounds = edu.cmu.cs.dennisc.java.awt.GraphicsDeviceUtilities.getScreenDeviceDefaultConfigurationBounds( SCREEN_INDEX );
-		if( bounds != null ) {
-			rv.setBounds( bounds );
-		} else {
-			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-			if( application != null ) {
-				org.lgna.croquet.components.Frame frame = application.getFrame();
-				if( frame != null ) {
-					java.awt.Rectangle bounds2 = frame.getBounds();
-					bounds2.x += bounds2.width;
-					bounds2.width = 200;
-					rv.setBounds( bounds2 );
-				}
-			}
-		}
-		return rv;
-	}
-	@Override
-	protected java.awt.Component createPane() {
-		final TransactionTreeModel treeModel = new TransactionTreeModel( this.transactionHistory );
-		final javax.swing.JTree tree = new javax.swing.JTree( treeModel );
-
-		tree.setCellRenderer( new TransactionHistoryCellRenderer() );
-		for( int i = 0; i < tree.getRowCount(); i++ ) {
-			tree.expandRow( i );
-		}
-		tree.setRootVisible( false );
-		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tree );
-		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
-		scrollPane.getVerticalScrollBar().setBlockIncrement( 24 );
-		org.lgna.croquet.history.TransactionManager.getRootTransactionHistory().addListener( new org.lgna.croquet.history.event.Listener() {
-			private void reload() {
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-					public void run() {
-						treeModel.reload();
-						int childCount = treeModel.getChildCount( treeModel.getRoot() );
-						for( int i=0; i<tree.getRowCount(); i++ ) {
-							if( IS_SIDE_DOCKING_DESIRED==false && i<childCount-1 ) {
-								tree.collapseRow( i );
-							} else {
-								tree.expandRow( i );
-							}
-						}
-						tree.scrollRowToVisible( tree.getRowCount()-1 );
-						scrollPane.getHorizontalScrollBar().setValue( 0 );
-					}
-				} );
-			}
-			public void changing(org.lgna.croquet.history.event.Event<?> e) {
-				
-			}
-			public void changed(org.lgna.croquet.history.event.Event<?> e) {
-				if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
-					this.reload();
-				} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-					tree.repaint();
-				}
-			}
-		} );
-		return scrollPane;
-	}
-	@Override
-	protected void handleChanged( boolean value ) {
-		super.handleChanged( value );
-		//todo: remove listener
 	}
 }

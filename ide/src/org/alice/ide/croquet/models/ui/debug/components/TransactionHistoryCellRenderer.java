@@ -40,32 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package org.alice.ide.croquet.models.ui.debug.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
-	}
-	public static InternalTestingMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel()
-		);
-	}
+public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
+	@Override
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value instanceof org.lgna.croquet.history.Transaction ) {
+			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)value;
+			int i = transaction.getParent().getIndexOfTransaction( transaction );
+			StringBuilder sb = new StringBuilder();
+			sb.append( "<html>" );
+			sb.append( "transaction[" );
+			sb.append( i );
+			sb.append( "] " );
+			String title = transaction.getTitle( org.lgna.croquet.DefaultUserInformation.SINGLETON );
+			if( title != null ) {
+				sb.append( "<strong>" );
+				sb.append( title );
+				sb.append( "</strong>" );
+			}
+			sb.append( "</html>" );
+			rv.setText( sb.toString() );
+			rv.setIcon( null );
+		} else if( value instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
+			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)value;
+			String name;
+			if( completionStep.isPending() ) {
+				name = "pending";
+			} else {
+				if( completionStep.isSuccessfullyCompleted() ) {
+					name = "completed";
+				} else {
+					name = "canceled";
+				}
+			}
+			rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
+		}
+		return rv;
+	}	
 }

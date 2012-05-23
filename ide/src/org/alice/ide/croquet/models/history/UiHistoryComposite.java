@@ -40,32 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
 
+package org.alice.ide.croquet.models.history;
 
 /**
- * @author Dennis Cosgrove
+ * @author dennisc
  */
-public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class UiHistoryComposite extends HistoryComposite {
 	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+		private static UiHistoryComposite instance = new UiHistoryComposite();
 	}
-	public static InternalTestingMenuModel getInstance() {
+	public static UiHistoryComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel()
-		);
+	private UiHistoryComposite() {
+		super( java.util.UUID.fromString( "778fce77-1417-4461-ad89-84a7c139ceff" ), org.lgna.croquet.Application.UI_STATE_GROUP );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		// do not want to bother localizers with this composite
+		this.getBooleanState().setTextForBothTrueAndFalse( "UI History" );
 	}
 }

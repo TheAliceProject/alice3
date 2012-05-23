@@ -40,20 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.croquet.models.history;
 
-public class IsProjectHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
-	private static class SingletonHolder {
-		private static IsProjectHistoryShowingState instance = new IsProjectHistoryShowingState();
-	}
-	public static IsProjectHistoryShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IsProjectHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false );
+/**
+ * @author dennisc
+ */
+public abstract class HistoryComposite extends org.lgna.croquet.FrameComposite {
+	private final org.lgna.croquet.Group historyGroup;
+	public HistoryComposite( java.util.UUID id, org.lgna.croquet.Group historyGroup ) {
+		super( id, org.alice.ide.ProjectApplication.INFORMATION_GROUP );
+		this.historyGroup = historyGroup;
 	}
 	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( org.alice.ide.IDE.PROJECT_GROUP );
+	protected final org.lgna.croquet.components.View createView() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.getAwtComponent().add( new edu.cmu.cs.dennisc.history.HistoryPane( this.historyGroup ), java.awt.BorderLayout.CENTER );
+		return rv;
 	}
 }
