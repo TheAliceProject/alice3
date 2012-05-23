@@ -125,7 +125,7 @@ public abstract class MovableTurnable extends Turnable {
 	}
 	
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setPositionRelativeToVehicle( Position position, MoveTo.Detail... details ) {
+	public void setPositionRelativeToVehicle( Position position, SetPositionRelativeToVehicle.Detail... details ) {
 		this.getImplementation().animatePositionOnly( this.getImplementation().getVehicle(), position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }
