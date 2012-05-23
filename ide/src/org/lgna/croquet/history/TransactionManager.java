@@ -130,19 +130,12 @@ public class TransactionManager {
 		}
 	}
 
-	public static <E> Transaction createSimulatedTransaction( TransactionHistory transactionHistory, State< E > state, E prevValue, E nextValue ) {
+	@Deprecated
+	public static <E> Transaction createRecoveryTransaction( TransactionHistory transactionHistory, State< E > state, E prevValue, E nextValue ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
-		org.lgna.croquet.history.StateChangeStep< E > completionStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+		org.lgna.croquet.history.StateChangeStep< E > completionStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
 		org.lgna.croquet.edits.StateEdit< E > edit = new org.lgna.croquet.edits.StateEdit<E>( completionStep, prevValue, nextValue );
 		completionStep.setEdit( edit );
 		return rv;
 	}
-//
-//	public static <T> Transaction createSimulatedTransactionForCascade( TransactionHistory transactionHistory, Cascade<T> cascade ) {
-//		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
-//		org.lgna.croquet.history.CompletionStep< Cascade<T> > completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( rv, cascade, new org.lgna.croquet.triggers.SimulatedTrigger(), transactionHistory );
-//		org.lgna.croquet.edits.Edit edit = null; //todo
-//		completionStep.setEdit( edit );
-//		return rv;
-//	}
 }

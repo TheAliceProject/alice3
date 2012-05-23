@@ -379,6 +379,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	}
 
 	private void insertRecoveryTransaction( org.lgna.croquet.history.Transaction recoveryTransaction ) {
+		assert recoveryTransaction.getCompletionStep().getTrigger().getOrigin() == org.lgna.croquet.triggers.Trigger.Origin.RECOVERY : recoveryTransaction + " must have trigger origin of RECOVERY";
 		org.lgna.cheshire.simple.TransactionChapter chapter = (org.lgna.cheshire.simple.TransactionChapter)this.getBook().getSelectedChapter();
 		org.lgna.croquet.history.Transaction currentTransaction = chapter.getTransaction();
 		boolean insertedTransaction = false;
