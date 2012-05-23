@@ -40,26 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.croquet.models.history;
 
-/**
- * @author dennisc
- */
-public class UiHistoryComposite extends HistoryComposite {
+public class IsUIHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
 	private static class SingletonHolder {
-		private static UiHistoryComposite instance = new UiHistoryComposite();
+		private static IsUIHistoryShowingState instance = new IsUIHistoryShowingState();
 	}
-	public static UiHistoryComposite getInstance() {
+	public static IsUIHistoryShowingState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private UiHistoryComposite() {
-		super( java.util.UUID.fromString( "778fce77-1417-4461-ad89-84a7c139ceff" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+	private IsUIHistoryShowingState() {
+		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "6d294f89-9ddc-4cbf-9020-370e383d4ff3" ), false );
+		this.setTextForBothTrueAndFalse( "UI History" );
 	}
 	@Override
-	protected void localize() {
-		super.localize();
-		// do not want to bother localizers with this composite
-		this.getBooleanState().setTextForBothTrueAndFalse( "UI History" );
+	protected java.awt.Component createPane() {
+		return new org.lgna.project.history.HistoryPane( org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
 }

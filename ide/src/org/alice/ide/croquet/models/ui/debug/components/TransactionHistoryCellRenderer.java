@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui.debug.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
+class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
 	@Override
 	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		if( value instanceof org.lgna.croquet.history.Transaction ) {
@@ -57,7 +57,7 @@ public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swi
 			sb.append( "transaction[" );
 			sb.append( i );
 			sb.append( "] " );
-			String title = transaction.getTitle();
+			String title = transaction.getTitle( );
 			if( title != null ) {
 				sb.append( "<strong>" );
 				sb.append( title );

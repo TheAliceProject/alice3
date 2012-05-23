@@ -109,7 +109,7 @@ public abstract class BooleanState extends State< Boolean > {
 	
 	
 	public class SwingModel {
-		private final javax.swing.ButtonModel buttonModel;
+		private final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			@Override
 			public Object getValue(String key) {
@@ -131,8 +131,7 @@ public abstract class BooleanState extends State< Boolean > {
 				}
 			}
 		};
-		private SwingModel( javax.swing.ButtonModel buttonModel ) {
-			this.buttonModel = buttonModel;
+		private SwingModel() {
 		}
 		public javax.swing.ButtonModel getButtonModel() {
 			return this.buttonModel;
@@ -141,7 +140,7 @@ public abstract class BooleanState extends State< Boolean > {
 			return this.action;
 		}
 	}
-	private final SwingModel swingModel;
+	private final SwingModel swingModel = new SwingModel();
 	
 	private String trueText;
 	private String falseText;
@@ -154,14 +153,10 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 	};
 
-	public BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
+	public BooleanState( Group group, java.util.UUID id, boolean initialValue ) {
 		super( group, id, initialValue );
-		this.swingModel = new SwingModel( buttonModel );
 		this.swingModel.buttonModel.setSelected( initialValue );
 		this.swingModel.buttonModel.addItemListener( this.itemListener );
-	}
-	public BooleanState( Group group, java.util.UUID id, boolean initialValue ) {
-		this( group, id, initialValue, new javax.swing.JToggleButton.ToggleButtonModel() );
 	}
 
 	@Override

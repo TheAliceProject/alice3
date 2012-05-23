@@ -57,8 +57,9 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		}
 	}
 
-	private final W window;
-	private final LayeredPane layeredPane;
+	private W window;
+	private LayeredPane layeredPane;
+
 	public AbstractWindow( W window ) {
 		this.window = window;
 		this.layeredPane = new LayeredPane( getJLayeredPane() );
