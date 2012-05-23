@@ -63,4 +63,8 @@ public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.
 		rv.addComponent( this.isRecording.createToggleButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		return rv;
 	}
+	@Override
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return null;
+	}
 }
