@@ -53,6 +53,10 @@ public class ChangeEventTrigger extends EventObjectTrigger< javax.swing.event.Ch
 	public static ChangeEventTrigger createGeneratorInstance() {
 		return new ChangeEventTrigger( Origin.GENERATOR, null, null );
 	}
+	public static ChangeEventTrigger createRecoveryInstance() {
+		return new ChangeEventTrigger( Origin.RECOVERY, null, null );
+	}
+
 	private ChangeEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?,?> viewController, javax.swing.event.ChangeEvent changeEvent ) {
 		super( origin, viewController, changeEvent );
 	}
@@ -63,6 +67,7 @@ public class ChangeEventTrigger extends EventObjectTrigger< javax.swing.event.Ch
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+
 	@Override
 	public String getNoteText( ) {
 		return "Change";

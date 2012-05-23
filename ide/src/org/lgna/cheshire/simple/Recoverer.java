@@ -50,6 +50,7 @@ public class Recoverer implements org.lgna.cheshire.Recoverer {
 	public Recoverer() {
 	}
 	public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction ) {
+		// TODO: Make sure the origin is RECOVERY!!!
 //		edu.cmu.cs.dennisc.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
 //		if( model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation ) {
 //			org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();

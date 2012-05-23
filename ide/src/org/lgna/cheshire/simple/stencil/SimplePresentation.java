@@ -340,7 +340,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 							//todo
 							if( prepModel instanceof org.lgna.croquet.PopupPrepModel ) {
 								org.lgna.croquet.PopupPrepModel popupPrepModel = (org.lgna.croquet.PopupPrepModel)prepModel;
-								org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, popupPrepModel, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
+								org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, popupPrepModel, org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance() );
 								chapterPage.refreshNotes();
 								if( chapterPage.isGoodToGo() ) {
 									this.handleChapterChanged( chapter );
@@ -379,6 +379,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	}
 
 	private void insertRecoveryTransaction( org.lgna.croquet.history.Transaction recoveryTransaction ) {
+		assert recoveryTransaction.getCompletionStep().getTrigger().getOrigin() == org.lgna.croquet.triggers.Trigger.Origin.RECOVERY : recoveryTransaction + " must have trigger origin of RECOVERY";
 		org.lgna.cheshire.simple.TransactionChapter chapter = (org.lgna.cheshire.simple.TransactionChapter)this.getBook().getSelectedChapter();
 		org.lgna.croquet.history.Transaction currentTransaction = chapter.getTransaction();
 		boolean insertedTransaction = false;

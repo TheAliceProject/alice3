@@ -248,7 +248,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 					//pass
 				} else {
 					if( item.contains( model ) ) {
-						return org.lgna.croquet.history.TransactionManager.createSimulatedTransaction( transaction.getOwner(), tabSelectionState, tabSelectionState.getValue(), item );
+						return org.lgna.croquet.history.TransactionManager.createRecoveryTransaction( transaction.getOwner(), tabSelectionState, tabSelectionState.getValue(), item );
 					}
 				}
 			}

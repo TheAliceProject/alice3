@@ -73,14 +73,8 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	public org.lgna.croquet.StateContext< T > createContext( org.lgna.croquet.triggers.Trigger.Origin origin ) {
 		T value;
 		if( origin == org.lgna.croquet.triggers.Trigger.Origin.GENERATOR ) {
-			//todo: <kjh/> warn and not assert?
-			//assert this.generatorValueStack.isEmpty() : this;
-			if( this.generatorValueStack.isEmpty() ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-				value = this.getValue();
-			} else {
-				value = this.generatorValueStack.peek();
-			}
+			assert !this.generatorValueStack.isEmpty() : this;
+			value = this.generatorValueStack.peek();
 		} else {
 			value = this.getValue();
 		}

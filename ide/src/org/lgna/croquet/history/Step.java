@@ -191,7 +191,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 			rv.append( model );
 			rv.append( ";trigger=" );
 			org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
-			rv.append( trigger != null ? trigger.getNoteText( ) : null );
+			rv.append( trigger != null ? trigger.getNoteText( ) + "(" + trigger.getOrigin() + ")" : null );
 			rv.append( ";text=" );
 			rv.append( model.getTutorialNoteText( this, null, null ) );
 			rv.append( ";" );
