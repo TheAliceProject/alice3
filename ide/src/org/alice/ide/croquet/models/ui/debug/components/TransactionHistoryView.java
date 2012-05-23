@@ -49,7 +49,6 @@ package org.alice.ide.croquet.models.ui.debug.components;
 public class TransactionHistoryView extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.history.event.Listener historyListener = new org.lgna.croquet.history.event.Listener() {
 		private void reload() {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "reload" );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					treeModel.reload();
