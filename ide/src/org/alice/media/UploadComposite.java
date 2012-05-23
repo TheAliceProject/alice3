@@ -43,6 +43,7 @@
 package org.alice.media;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
@@ -55,17 +56,29 @@ import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.Project;
 
+import com.google.gdata.data.media.MediaFileSource;
+import com.google.gdata.data.media.mediarss.MediaCategory;
+import com.google.gdata.data.media.mediarss.MediaDescription;
+import com.google.gdata.data.media.mediarss.MediaGroup;
+import com.google.gdata.data.media.mediarss.MediaKeywords;
+import com.google.gdata.data.media.mediarss.MediaTitle;
+import com.google.gdata.data.youtube.VideoEntry;
+import com.google.gdata.data.youtube.YouTubeMediaGroup;
+import com.google.gdata.data.youtube.YouTubeNamespace;
+import com.google.gdata.util.AuthenticationException;
+
 /**
  * @author Matt May
  */
 public class UploadComposite extends WizardPageComposite<UploadView> {
-	
+
+	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
 	private final StringValue username = this.createStringValue( this.createKey( "username" ) );
 	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
 	private final StringValue passwordLabelValue = this.createStringValue( this.createKey( "passwordLabel" ) );
-	private final StringValue titleLabelValue= this.createStringValue( this.createKey( "titleLabel" ) );
+	private final StringValue titleLabelValue = this.createStringValue( this.createKey( "titleLabel" ) );
 	private final StringState titleState = this.createStringState( "Alice Video", this.createKey( "title" ) );
 	private final BooleanState isPrivateState = this.createBooleanState( true, this.createKey( "isPrivate" ) );
 	private final StringValue categoryValue = this.createStringValue( this.createKey( "category" ) );
@@ -76,10 +89,43 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final StringState tagState = this.createStringState( "", this.createKey( "tag" ) );
 	private final ActionOperation loginOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
+//			try {
+//				uploader.logIn( idState.getValue(), passwordState.getValue() );
+//			} catch( AuthenticationException e ) {
+//				e.printStackTrace();
+//			}
 		}
 	}, this.createKey( "login" ) );
 	private final ActionOperation uploadOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
+			VideoEntry entry = new VideoEntry();
+			MediaFileSource source = new MediaFileSource( owner.getFile(), "video/quicktime" );
+			entry.setMediaSource( source );
+			YouTubeMediaGroup mediaGroup = new YouTubeMediaGroup();
+
+			MediaTitle title = new MediaTitle();
+			title.setPlainTextContent( titleState.getValue().trim() );
+			mediaGroup.setTitle( title );//title
+
+			MediaDescription mediaDescription = new MediaDescription();
+			mediaDescription.setPlainTextContent( descriptionState.getValue().trim() );
+			mediaGroup.setDescription( mediaDescription );//description
+
+			MediaKeywords keywords = new MediaKeywords();
+			String[] arr = tagState.getValue().split( "," );
+			for( String s : arr ) {
+				keywords.addKeyword( s.trim() );
+			}
+			mediaGroup.setKeywords( keywords );//tags
+
+			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, videoCategoryState.getValue().toString() ) );//category
+
+			mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
+			try {
+				uploader.uploadVideo( entry );
+			} catch( IOException e ) {
+				e.printStackTrace();
+			}
 		}
 	}, this.createKey( "upload" ) );
 
@@ -146,8 +192,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		System.out.println("preactivation");
+		System.out.println( "preactivation" );
 		getView().setMovie( owner.getFile() );
-//		player.init();
+		//		player.init();
 	}
 }
