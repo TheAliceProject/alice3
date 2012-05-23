@@ -40,23 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.croquet.models.ui;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsMemoryUsageShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+public class MemoryUsageComposite extends org.lgna.croquet.FrameComposite<edu.cmu.cs.dennisc.memory.MemoryUsagePanel> {
 	private static class SingletonHolder {
-		private static IsMemoryUsageShowingState instance = new IsMemoryUsageShowingState();
+		private static MemoryUsageComposite instance = new MemoryUsageComposite();
 	}
-	public static IsMemoryUsageShowingState getInstance() {
+	public static MemoryUsageComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsMemoryUsageShowingState() {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false );
+	private MemoryUsageComposite() {
+		super( java.util.UUID.fromString( "1169c7f0-076e-43b8-85ae-41d466969db5" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
 	}
 	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel().getAwtComponent();
+	protected edu.cmu.cs.dennisc.memory.MemoryUsagePanel createView() {
+		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel();
 	}
 }

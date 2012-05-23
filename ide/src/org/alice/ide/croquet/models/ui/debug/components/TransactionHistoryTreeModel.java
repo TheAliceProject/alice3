@@ -46,7 +46,8 @@ package org.alice.ide.croquet.models.ui.debug.components;
 /**
  * @author Dennis Cosgrove
  */
-class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
+
+public class TransactionHistoryTreeModel  extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel< Object > {
 	private org.lgna.croquet.history.TransactionHistory root;
 	public TransactionHistoryTreeModel( org.lgna.croquet.history.TransactionHistory root ) {
 		this.root = root;
@@ -66,6 +67,7 @@ class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.
 			return transaction.getChildStepCount();
 		} else if( parent instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
 			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)parent;
+			//return completionStep.getTransactionHistory() != null ? 1 : 0;
 			org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
 			if( transactionHistory != null ) {
 				return transactionHistory.getTransactionCount();
@@ -91,6 +93,8 @@ class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.
 			} else {
 				return null;
 			}
+//			assert index == 0;
+//			return completionStep.getTransactionHistory();
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
@@ -114,12 +118,14 @@ class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.
 			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)parent;
 			org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
 			return transactionHistory.getIndexOfTransaction( (org.lgna.croquet.history.Transaction)child );
+//			assert child == completionStep.getTransactionHistory();
+//			return 0;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
 	}
 
-
+	
 	private java.util.List< Object > updatePath( java.util.List< Object > rv, Object node ) {
 		Object parent;
 		if( node instanceof org.lgna.croquet.history.Transaction ) {

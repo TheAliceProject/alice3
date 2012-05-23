@@ -40,59 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.croquet.models.ui.debug;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
-
-	private static class SingletonHolder {
-		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState();
+public abstract class TransactionHistoryComposite extends org.lgna.croquet.FrameComposite<org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView> {
+	public TransactionHistoryComposite( java.util.UUID id, org.lgna.croquet.Group booleanStateGroup ) {
+		super( id, booleanStateGroup );
 	}
-	public static IsTransactionHistoryShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel transactionHistoryPanel = new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryPanel();
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
-			org.lgna.croquet.history.TransactionHistory transactionHistory = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory();
-			IsTransactionHistoryShowingState.this.transactionHistoryPanel.setTransactionHistory( transactionHistory );
-		}
-	};
-
-	private IsTransactionHistoryShowingState( ) {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
-		org.alice.ide.project.ProjectState.getInstance().addAndInvokeValueListener( this.projectListener );
-	}
-
 	@Override
-	protected void localize() {
-		super.localize();
-		this.setTextForBothTrueAndFalse( "Transaction History" );
-	}
-
-	@Override
-	protected java.awt.Component createPane() {
-		return this.transactionHistoryPanel.getAwtComponent();
-	}
-
-	@Override
-	protected javax.swing.JFrame createFrame() {
-		javax.swing.JFrame rv = super.createFrame();
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-		if( application != null ) {
-			org.lgna.croquet.components.Frame frame = application.getFrame();
-			if( frame != null ) {
-				java.awt.Rectangle bounds2 = frame.getBounds();
-				bounds2.x += bounds2.width;
-				bounds2.width = 300;
-				rv.setBounds( bounds2 );
-			}
-		}
-		return rv;
+	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
+		return new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView( this );
 	}
 }
