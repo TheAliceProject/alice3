@@ -202,12 +202,12 @@ public abstract class Stencil extends Panel {
 		return null;
 	}
 
-	public boolean isShowing() {
+	public boolean isStencilShowing() {
 		return this.layeredPane.contains( this );
 	}
 
-	public void setShowing( boolean isShowing ) {
-		if ( this.isShowing() != isShowing ) {
+	public void setStencilShowing( boolean isShowing ) {
+		if ( this.isStencilShowing() != isShowing ) {
 			if ( isShowing ) {
 				this.addToLayeredPane();
 			} else {

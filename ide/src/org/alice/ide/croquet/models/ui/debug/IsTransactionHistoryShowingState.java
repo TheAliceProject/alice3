@@ -46,6 +46,7 @@ package org.alice.ide.croquet.models.ui.debug;
  * @author Dennis Cosgrove
  */
 public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+
 	private static class SingletonHolder {
 		private static IsTransactionHistoryShowingState instance = new IsTransactionHistoryShowingState();
 	}
@@ -62,19 +63,23 @@ public class IsTransactionHistoryShowingState extends org.alice.ide.croquet.mode
 			IsTransactionHistoryShowingState.this.transactionHistoryPanel.setTransactionHistory( transactionHistory );
 		}
 	};
+
 	private IsTransactionHistoryShowingState( ) {
 		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "a584d3f3-2fbd-4991-bbc6-98fb68c74e6f" ), false );
 		org.alice.ide.project.ProjectState.getInstance().addAndInvokeValueListener( this.projectListener );
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setTextForBothTrueAndFalse( "Transaction History" );
 	}
+
 	@Override
 	protected java.awt.Component createPane() {
 		return this.transactionHistoryPanel.getAwtComponent();
 	}
+
 	@Override
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = super.createFrame();

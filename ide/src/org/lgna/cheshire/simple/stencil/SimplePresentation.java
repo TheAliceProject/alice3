@@ -421,6 +421,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		}
 		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder( frameSpacer, 0, 0, 0 ) );
 
-		this.stencil.setShowing( isVisible );
+		this.stencil.setStencilShowing( isVisible );
 	}
 }

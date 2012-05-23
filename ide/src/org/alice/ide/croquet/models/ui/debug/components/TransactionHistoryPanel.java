@@ -52,13 +52,10 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 		public void changing(org.lgna.croquet.history.event.Event<?> e) {
 		}
 		public void changed(org.lgna.croquet.history.event.Event<?> e) {
-			// Do not bother to listen to this event, if we aren't displayed.
-			if ( TransactionHistoryPanel.this.isVisible() ) {
-				if( e instanceof org.lgna.croquet.history.event.AddStepEvent || e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) {
-					TransactionHistoryPanel.this.reload();
-				} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-					tree.repaint();
-				}
+			if( e instanceof org.lgna.croquet.history.event.AddStepEvent || e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) {
+				TransactionHistoryPanel.this.reload();
+			} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+				tree.repaint();
 			}
 		}
 	};
@@ -103,10 +100,27 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 	}
 
 	public void setTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		if( this.transactionHistory != null ) {
-			this.transactionHistory.removeListener( this.transactionListener );
-		}
+		this.removeTransactionListener();
 		this.transactionHistory = transactionHistory;
+
+		if ( this.isShowing() ) {
+			this.addTransactionListener();
+		}
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.addTransactionListener();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		this.removeTransactionListener();
+		super.handleUndisplayable();
+	}
+
+	private void addTransactionListener() {
 		if( this.transactionHistory != null ) {
 			TransactionHistoryTreeModel treeModel = new TransactionHistoryTreeModel( this.transactionHistory );
 			treeModel.reload();
@@ -115,6 +129,12 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 				this.tree.expandRow( i );
 			}
 			this.transactionHistory.addListener( this.transactionListener );
+		}
+	}
+
+	private void removeTransactionListener() {
+		if ( (this.transactionHistory != null) && (this.transactionHistory.isListening( this.transactionListener )) ) {
+			this.transactionHistory.removeListener( this.transactionListener );
 		}
 	}
 }

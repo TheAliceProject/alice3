@@ -43,10 +43,12 @@
 package org.alice.ide.croquet.models;
 
 public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState {
+
 	private javax.swing.JFrame frame;
+
 	public IsFrameShowingState( org.lgna.croquet.Group group, java.util.UUID individualId, boolean initialValue ) {
 		super( group, individualId, initialValue );
-		
+
 		this.addValueListener( new ValueListener<Boolean>() {
 			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
@@ -63,6 +65,7 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 			} );
 		}
 	}
+
 	protected javax.swing.JFrame createFrame() {
 		javax.swing.JFrame rv = new javax.swing.JFrame();
 		rv.setTitle( this.getTitle() );
@@ -86,7 +89,7 @@ public abstract class IsFrameShowingState extends org.lgna.croquet.BooleanState 
 			}
 		} );
 		rv.pack();
-		
+
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		if( application != null ) {
 			org.lgna.croquet.components.Frame frame = application.getFrame();

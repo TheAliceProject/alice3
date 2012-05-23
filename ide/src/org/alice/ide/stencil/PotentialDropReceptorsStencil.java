@@ -92,11 +92,11 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 		if( dropReceptors.size() > 0 ) {
 			this.holes = dropReceptors;
 			this.potentialDragSource = potentialDragSource;
-			this.setShowing( true );
+			this.setStencilShowing( true );
 		}
 	}
 	public void hideStencil() {
-		this.setShowing( false );
+		this.setStencilShowing( false );
 		this.holes = null;
 		this.potentialDragSource = null;
 	}

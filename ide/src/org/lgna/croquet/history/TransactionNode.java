@@ -47,7 +47,7 @@ package org.lgna.croquet.history;
  */
 public abstract class TransactionNode<P extends TransactionNode<?>> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
+
 	private P owner;
 	public TransactionNode( P owner ) {
 		this.setOwner( owner );
@@ -63,7 +63,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 	}
 
 	protected abstract void appendContexts( java.util.List< org.lgna.croquet.Context > out );
-	
+
 	private <N extends TransactionNode<?>> N findNodeAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		TransactionNode<?> rv;
 		if( isThisIncludedInSearch ) {
@@ -85,7 +85,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 	public final <N extends TransactionNode<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
 		return this.findNodeAssignableTo( cls, false );
 	}
-	
+
 	protected <S extends Step<? super M>, M extends org.lgna.croquet.Model> S findStepOfEquivalentModel( M model, Class<S> stepCls, boolean isThisIncludedInSearch ) {
 		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
 		if( step != null ) {
@@ -127,13 +127,17 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
 		return this.findStepOfModelAssignableTo( modelCls, stepCls, true );
 	}
-	
+
 	public void addListener( org.lgna.croquet.history.event.Listener listener ) {
 		this.listeners.add( listener );
 	}
 	public void removeListener( org.lgna.croquet.history.event.Listener listener ) {
 		this.listeners.remove( listener );
 	}
+	public boolean isListening( org.lgna.croquet.history.event.Listener listener ) {
+		return this.listeners.contains( listener );
+	}
+
 	protected void fireChanging( org.lgna.croquet.history.event.Event<?> e ) {
 		if( this.owner != null ) {
 			this.owner.fireChanging( e );
@@ -151,4 +155,3 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 		}
 	}
 }
-	
