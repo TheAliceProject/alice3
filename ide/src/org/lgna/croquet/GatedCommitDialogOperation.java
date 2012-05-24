@@ -57,7 +57,7 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 		}
 		@Override
 		protected InternalCompleteOperation getDirect( GatedCommitDialogOperation indirect ) {
-			return indirect.getCompleteOperation();
+			return indirect.completeOperation;
 		}
 	}
 	public static final class InternalCancelOperationResolver extends IndirectResolver< InternalCancelOperation, GatedCommitDialogOperation > {
@@ -69,7 +69,7 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 		}
 		@Override
 		protected InternalCancelOperation getDirect( GatedCommitDialogOperation indirect ) {
-			return indirect.getCancelOperation();
+			return indirect.cancelOperation;
 		}
 	}
 	private static abstract class InternalDialogOperation extends ActionOperation {
@@ -228,10 +228,10 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 	protected final boolean isClearedToClose( org.lgna.croquet.components.Dialog dialog ) {
 		return this.isClearedToClose( dialog, false ) && super.isClearedToClose( dialog );
 	}
-	protected final InternalCompleteOperation getCompleteOperation() {
+	public final Operation getCompleteOperation() {
 		return this.completeOperation;
 	}
-	protected final InternalCancelOperation getCancelOperation() {
+	public final Operation getCancelOperation() {
 		return this.cancelOperation;
 	}
 	
@@ -294,8 +294,8 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 			step.addListener( this.listener );
 			this.updateExplanation( step );
 
-			this.getCompleteOperation().setDialog( dialog );
-			this.getCancelOperation().setDialog( dialog );
+			this.completeOperation.setDialog( dialog );
+			this.cancelOperation.setDialog( dialog );
 			this.isCompleted = false;
 			return rv;
 		} else {

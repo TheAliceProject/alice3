@@ -123,8 +123,12 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 //	}
 	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit ) {
 		StringBuilder sb = new StringBuilder();
+//		sb.append( "trigger:" );
 		sb.append( triggerText );
+//		sb.append( ",bonus:" );
 		this.updateTutorialStepText( sb, step, edit );
+//		sb.append( ",this:" );
+//		sb.append( this );
 		return sb.toString();
 	}
 }
