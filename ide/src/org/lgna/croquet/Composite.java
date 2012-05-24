@@ -82,10 +82,6 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		}
 	}
 
-	protected static interface Action {
-		public void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
-	}
-		
 	private static class InternalStringState extends StringState {
 		private final Key key;
 		public InternalStringState( String initialValue, Key key ) {
@@ -158,6 +154,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		protected void localize() {
 		}
 	}
+	protected static interface Action {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) throws CancelException;
+	}
 	private static class InternalActionOperation extends ActionOperation {
 		private final Action action;
 		private final Key key;
@@ -175,8 +174,16 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		@Override
 		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			this.action.perform( transaction, trigger );
-			step.finish();
+			try {
+				org.lgna.croquet.edits.Edit edit = this.action.perform( transaction, trigger );
+				if( edit != null ) {
+					step.commitAndInvokeDo( edit );
+				} else {
+					step.finish();
+				}
+			} catch( CancelException ce ) {
+				step.cancel();
+			}
 		}
 	}
 	

@@ -88,16 +88,17 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final StringState tagState = this.createStringState( "", this.createKey( "tag" ) );
 	private Status status;
 	private final ActionOperation loginOperation = this.createActionOperation( new Action() {
-		public void perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 //			try {
 //				uploader.logIn( idState.getValue(), passwordState.getValue() );
 //			} catch( AuthenticationException e ) {
 //				e.printStackTrace();
 //			}
+			return null;
 		}
 	}, this.createKey( "login" ) );
 	private final ActionOperation uploadOperation = this.createActionOperation( new Action() {
-		public void perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 			VideoEntry entry = new VideoEntry();
 			MediaFileSource source = new MediaFileSource( owner.getFile(), "video/quicktime" );
 			entry.setMediaSource( source );
@@ -126,6 +127,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 			} catch( IOException e ) {
 				e.printStackTrace();
 			}
+			return null;
 		}
 	}, this.createKey( "upload" ) );
 

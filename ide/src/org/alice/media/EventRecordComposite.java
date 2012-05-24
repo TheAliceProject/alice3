@@ -76,7 +76,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
 
 
-		public void perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 			isRecording = !isRecording;
 			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
 			if( isRecording ) {
@@ -86,12 +86,12 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 				programContext.getProgramImp().stopAnimator();
 				status = IS_GOOD_TO_GO_STATUS;
 			}
-			
+			return null;
 		}
 	}, this.createKey( "isRecording.false" ) );
 
 	private final ActionOperation restartRecording = this.createActionOperation( new Action() {
-		public void perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 			lookingGlassContainer.removeAllComponents();
 			lookingGlassContainer = getView().getLookingGlassContainer();
 			programContext = new RunProgramContext( owner.getProject().getProgramType() );
@@ -102,6 +102,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			owner.setScript( script );
 			isRecording = false;
 			status = IS_GOOD_TO_GO_STATUS;
+			return null;
 		}
 	}, this.createKey( "restart" ) );
 

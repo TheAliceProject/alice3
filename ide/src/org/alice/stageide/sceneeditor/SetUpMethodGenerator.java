@@ -421,12 +421,12 @@ public class SetUpMethodGenerator {
 									org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.ImplementationAccessor.getImplementation(jointEntity);
 									edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
 									edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform = gottenJoint.getOriginalTransformation();
-									if (/*captureFullState || */!currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
+									if (captureFullState || !currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
 										try {
 											org.lgna.story.Orientation orientation = jointEntity.getOrientationRelativeToVehicle();
 											org.lgna.project.ast.ExpressionStatement orientationStatement = createStatement( 
 													org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", new Class< ? >[] { org.lgna.story.Orientation.class, org.lgna.story.SetOrientationRelativeToVehicle.Detail[].class },
-													SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( orientation ) 
+													getJointExpression, getExpressionCreator().createExpression( orientation ) 
 											);
 											statements.add(orientationStatement);
 										} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {

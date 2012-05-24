@@ -74,9 +74,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private Status status;
 
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
-		public void perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 			toggleRecording();
 			recordOperation.setName( ImageRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
+			return null;
 		}
 	}, this.createKey( "isRecording.false" ) );
 
