@@ -81,10 +81,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
 			if( isRecording ) {
 				programContext.getProgramImp().startAnimator();
-				status = cannotAdvanceBecauseRecording;
 			} else {
 				programContext.getProgramImp().stopAnimator();
-				status = IS_GOOD_TO_GO_STATUS;
 			}
 			return null;
 		}
@@ -101,7 +99,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
 			owner.setScript( script );
 			isRecording = false;
-			status = IS_GOOD_TO_GO_STATUS;
 			return null;
 		}
 	}, this.createKey( "restart" ) );
@@ -142,7 +139,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	@Override
 	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
-		Logger.errln( status );
-		return status;
+		return isRecording ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
 	}
 }

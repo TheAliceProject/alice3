@@ -71,7 +71,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
 	private ImagesToQuickTimeEncoder encoder;
-	private Status status;
+	private Status errorIsRecording = new ErrorStatus( this.createKey( "errorIsRecording" ) );
+	private Status errorHasNotYetRecorded = new ErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
 
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
 		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
@@ -198,13 +199,18 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private void handleImage( java.awt.image.BufferedImage image, int imageCount ) {
 		if( image != null ) {
 			encoder.addBufferedImage( image );
-		} else {
-			System.out.println( "NULL" );
 		}
 	}
 
 	@Override
 	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
-		return this.status;
+		if(isRecording) {
+			System.out.println("isRecording: " + errorIsRecording.getText());
+			return errorIsRecording;
+		} else if (encoder == null || encoder.getOutputFile() == null){
+			System.out.println( "no file found: " + errorHasNotYetRecorded.getText());
+			return errorHasNotYetRecorded;
+		}
+		return IS_GOOD_TO_GO_STATUS;
 	}
 }
