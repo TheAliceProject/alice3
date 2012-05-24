@@ -61,7 +61,7 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 				CodePerspectiveComposite otherComposite = CodePerspectiveComposite.getInstance();
 				org.lgna.croquet.components.SplitPane otherSplitPane = otherComposite.getView();
 				int prevValue = otherSplitPane.getDividerLocation();
-				int nextValue = (int)( (Integer)e.getNewValue()*16.0/9.0 );
+				int nextValue = (int)( (Integer)e.getNewValue()*org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
 				if( prevValue != nextValue ) {
 					otherComposite.incrementIgnoreDividerLocationChangeCount();
 					try {
