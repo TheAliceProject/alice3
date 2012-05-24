@@ -65,7 +65,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	protected static abstract class AbstractInternalStringValue extends StringValue {
 		private final Key key;
 		public AbstractInternalStringValue( java.util.UUID id, Key key ) {
-			super( java.util.UUID.fromString( "142b66a2-0b95-42d0-8ea4-a22a79c8ff8c" ) );
+			super( id );
 			this.key = key;
 		}
 		public Key getKey() {

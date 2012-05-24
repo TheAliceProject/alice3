@@ -93,6 +93,10 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 		}
 	}
 	public static void main( final String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
 		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
 		final org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
