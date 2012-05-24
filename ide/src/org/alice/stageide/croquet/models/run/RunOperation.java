@@ -126,7 +126,6 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		}
 	};
 	private final RestartAction restartAction = new RestartAction();
-	private boolean isDynamicLayoutActivePrevValue = false;
 	@Override
 	protected void localize() {
 		super.localize();
