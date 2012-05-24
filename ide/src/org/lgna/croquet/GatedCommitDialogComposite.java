@@ -380,7 +380,8 @@ public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComp
 	protected void updateExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String explanation;
 		boolean isGoodToGo;
-		if( step != null ) {
+//		assert step != null : this;
+//		if( step != null ) {
 			GatedCommitMainComposite.Status status = this.getMainComposite().getStatus( step );
 			if( status != null ) {
 				explanation = status.getText();
@@ -389,10 +390,10 @@ public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComp
 				explanation = NULL_EXPLANATION;
 				isGoodToGo = true;
 			}
-		} else {
-			explanation = NULL_STEP_EXPLANATION;
-			isGoodToGo = true;
-		}
+//		} else {
+//			explanation = NULL_STEP_EXPLANATION;
+//			isGoodToGo = true;
+//		}
 		this.getControlsComposite().explanationLabel.getAwtComponent().setText( explanation );
 		this.getControlsComposite().handleIsGoodToGo( isGoodToGo );
 	}
