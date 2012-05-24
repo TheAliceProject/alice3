@@ -59,6 +59,10 @@ public abstract class InputDialogMainComposite<V extends org.lgna.croquet.compon
 			return "OK";
 		}
 		@Override
+		public void handleIsGoodToGo( boolean isGoodToGo ) {
+			this.getCompleteOperation().setEnabled( isGoodToGo );
+		}
+		@Override
 		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
 			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
 			controlLine.addComponent( leadingOkCancelButton );

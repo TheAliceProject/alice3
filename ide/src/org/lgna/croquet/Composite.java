@@ -62,11 +62,14 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		}
 	}
 	
-	private static class InternalStringValue extends StringValue {
+	protected static class InternalStringValue extends StringValue {
 		private final Key key;
 		public InternalStringValue( Key key ) {
 			super( java.util.UUID.fromString( "142b66a2-0b95-42d0-8ea4-a22a79c8ff8c" ) );
 			this.key = key;
+		}
+		public Key getKey() {
+			return this.key;
 		}
 		@Override
 		protected void localize() {
@@ -83,6 +86,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue );
 			this.key = key;
 		}
+		public Key getKey() {
+			return this.key;
+		}
 		@Override
 		protected void localize() {
 		}
@@ -93,6 +99,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "5053e40f-9561-41c8-835d-069bd106723c" ), initialValue );
 			this.key = key;
 		}
+		public Key getKey() {
+			return this.key;
+		}
 		@Override
 		protected void localize() {
 		}
@@ -102,6 +111,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		public InternalListSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), codec, selectionIndex, data );
 			this.key = key;
+		}
+		public Key getKey() {
+			return this.key;
 		}
 		@Override
 		protected void localize() {
@@ -133,6 +145,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 			super( details );
 			this.key = key;
 		}
+		public Key getKey() {
+			return this.key;
+		}
 		@Override
 		protected void localize() {
 		}
@@ -144,6 +159,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "2c311356-2bf2-4a57-b06b-f6cdb39b0d78" ) );
 			this.action = action;
 			this.key = key;
+		}
+		public Key getKey() {
+			return this.key;
 		}
 		@Override
 		protected void localize() {
@@ -254,12 +272,16 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		return false;
 	}
 
+	protected void registerStringValue( InternalStringValue stringValue ) {
+		this.mapKeyToStringValue.put( stringValue.getKey(), stringValue );
+	}
+	
 	protected Key createKey( String localizationKey ) {
 		return new Key( this, localizationKey );
 	}
 	protected StringValue createStringValue( Key key ) {
 		InternalStringValue rv = new InternalStringValue( key );
-		this.mapKeyToStringValue.put( key, rv );
+		this.registerStringValue( rv );
 		return rv;
 	}
 	protected StringState createStringState( String initialValue, Key key ) {

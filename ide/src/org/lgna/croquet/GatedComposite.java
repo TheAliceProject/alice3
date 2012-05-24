@@ -41,32 +41,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.videoencode;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CaptureImagesPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > { 
-	private final ErrorStatus noFramesError = this.createErrorStatus( this.createKey( "noFramesError" ) );
-	private final org.lgna.croquet.StringState bogusStringState = this.createStringState( "", this.createKey( "bogusStringState" ) );
-	public CaptureImagesPage() {
-		super( java.util.UUID.fromString( "ae1152d7-4ff3-4137-b410-f83f7c089387" ) );
+public abstract class GatedComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+	public static final Status IS_GOOD_TO_GO_STATUS = null;
+	public static abstract class Status extends InternalStringValue {
+		public Status( Key key ) {
+			super( key );
+		}
+		public abstract boolean isGoodToGo();
 	}
-	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( this.bogusStringState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+	public static class WarningStatus extends Status {
+		public WarningStatus( Key key ) {
+			super( key );
+		}
+		@Override
+		public boolean isGoodToGo() {
+			return true;
+		}
+	}
+	public static class ErrorStatus extends Status {
+		public ErrorStatus( Key key ) {
+			super( key );
+		}
+		@Override
+		public boolean isGoodToGo() {
+			return false;
+		}
+	}
+	protected WarningStatus createWarningStatus( Key key ) {
+		WarningStatus rv = new WarningStatus( key );
+		this.registerStringValue( rv );
 		return rv;
 	}
-	public org.lgna.croquet.StringState getBogusStringState() {
-		return this.bogusStringState;
+	protected ErrorStatus createErrorStatus( Key key ) {
+		ErrorStatus rv = new ErrorStatus( key );
+		this.registerStringValue( rv );
+		return rv;
 	}
-	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.bogusStringState.getValue().length() > 0 ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.noFramesError;
-		}
+	public GatedComposite( java.util.UUID id ) {
+		super( id );
 	}
 }
