@@ -125,7 +125,8 @@ public abstract class WizardDialogMainComposite extends GatedCommitMainComposite
 		}
 		@Override
 		public void handleIsGoodToGo( boolean isGoodToGo ) {
-			this.nextOperation.setEnabled( isGoodToGo );
+			WizardDialogMainComposite mainComposite = (WizardDialogMainComposite)this.getGatedCommitDialogComposite().getMainComposite();
+			this.nextOperation.setEnabled( mainComposite.isNextPageAvailable() && isGoodToGo );
 		}
 	}
 	private static class WizardDialogComposite extends GatedCommitDialogComposite<WizardDialogMainComposite,WizardDialogControlsComposite> {
@@ -145,8 +146,8 @@ public abstract class WizardDialogMainComposite extends GatedCommitMainComposite
 		}
 		@Override
 		public void handleFiredEvent( org.lgna.croquet.history.event.Event< ? > event ) {
-			super.handleFiredEvent( event );
 			this.updateEnabled();
+			super.handleFiredEvent( event );
 		}
 		@Override
 		protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
@@ -283,8 +284,14 @@ public abstract class WizardDialogMainComposite extends GatedCommitMainComposite
 	}
 	@Override
 	protected final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		//todo
-		return null;
+		Composite<?> page = this.cardComposite.getShowingCard();
+		if( page instanceof WizardPageComposite ) {
+			return ((WizardPageComposite)page).getPageStatus( step );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( this, page );
+			//todo
+			return IS_GOOD_TO_GO_STATUS;
+		}
 	}
 	@Override
 	public GatedCommitDialogComposite getGatedCommitDialogComposite() {
