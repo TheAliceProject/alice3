@@ -53,7 +53,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	private final java.util.List< ValueListener<T> > valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private T prevValueForSkipCheck;
 	private final java.util.Stack<T> generatorValueStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	
+
 	public State( Group group, java.util.UUID id, T initialValue ) {
 		super(group, id);
 		this.prevValueForSkipCheck = initialValue;
@@ -80,7 +80,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		}
 		return new StateContext< T >( this, value );
 	}
-	
+
 	public void addValueListener( ValueListener<T> valueListener ) {
 		assert this.valueListeners.contains( valueListener ) == false : valueListener;
 		this.valueListeners.add( valueListener );
@@ -117,7 +117,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 			valueListener.changed( this, prevValue, nextValue, isAdjusting );
 		}
 	}
-	
+
 	@Override
 	public org.lgna.croquet.history.Step<?> fire(org.lgna.croquet.triggers.Trigger trigger) {
 		throw new UnsupportedOperationException();
@@ -149,7 +149,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		}
 		return rv;
 	}
-	
+
 	protected abstract void updateSwingModel( T nextValue );
 	private void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger, boolean isFromSwing ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValueForSkipCheck, nextValue ) ) {
@@ -167,12 +167,12 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 				this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
 			}
 			//todo?
-//			for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
-//				component.revalidateAndRepaint();
-//			}
+			//			for( org.lgna.croquet.components.JComponent< ? > component : this.getComponents() ) {
+			//				component.revalidateAndRepaint();
+			//			}
 			this.fireChanged( prevValue, nextValue, isAdjusting );
 		}
-		
+
 	}
 	protected final void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		this.changeValue( nextValue, isAdjusting, trigger, false );
@@ -180,7 +180,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	protected final void changeValueFromSwing( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		this.changeValue( nextValue, isAdjusting, trigger, true );
 	}
-	
+
 	private T prevValueForChanging;
 	private boolean isInTheMidstOfChanging = false;
 	protected abstract T getActualValue();

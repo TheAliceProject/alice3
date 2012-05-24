@@ -59,17 +59,20 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		return rv;
 	}
 	private org.lgna.project.ast.AbstractMethod method;
+
 	private ProcedureInvocationTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
 		this.method = method;
 		assert this.method.isProcedure();
+
 		this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
-//		if( isAlice ) {
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			this.addContextFactory( org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance() );
-//		} else {
-//			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
-//		}
+		} else {
+			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+		}
 	}
+
 	@Override
 	public boolean isAddEventListenerLikeSubstance() {
 		if( this.method instanceof org.lgna.project.ast.JavaMethod ) {

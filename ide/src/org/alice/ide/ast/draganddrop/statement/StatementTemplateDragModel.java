@@ -53,6 +53,12 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		super( id );
 		this.statementCls = statementCls;
 		this.possiblyIncompleteStatement = possiblyIncompleteStatement;
+
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			// pass
+		} else {
+			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+		}
 	}
 	public org.lgna.project.ast.Statement getPossiblyIncompleteStatement() {
 		return this.possiblyIncompleteStatement;

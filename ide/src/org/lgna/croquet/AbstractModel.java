@@ -60,9 +60,11 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		return this.contextFactories;
 	}
 	public void addContextFactory( ContextFactory<?> contextFactory ) {
+		assert contextFactory != null : this;
 		this.contextFactories.add( contextFactory );
 	}
 	public void removeContextFactory( ContextFactory<?> contextFactory ) {
+		assert contextFactory != null : this;
 		this.contextFactories.remove( contextFactory );
 	}
 

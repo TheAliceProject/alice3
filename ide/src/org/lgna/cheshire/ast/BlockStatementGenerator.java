@@ -71,7 +71,7 @@ public class BlockStatementGenerator {
 					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 
 					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-					
+
 					if( method instanceof org.lgna.project.ast.UserMethod ) {
 						org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
 						//todo: check to see if generation actually required
@@ -79,7 +79,7 @@ public class BlockStatementGenerator {
 					}
 
 					org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
-					
+
 					instanceFactory = org.alice.ide.instancefactory.InstanceFactoryUtilities.getInstanceFactoryForExpression( instanceExpression );
 					if( instanceFactory != null ) {
 						//pass
@@ -107,17 +107,30 @@ public class BlockStatementGenerator {
 				}
 			} else {
 				statementGenerator = mapStatementClassToGenerator.get( statement.getClass() );
+				if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+					// pass
+				} else {
+					templateComposite = org.alice.ide.controlflow.ControlFlowComposite.getInstance( /*todo*/null );
+				}
 			}
 			if( statementGenerator != null ) {
 				if( instanceFactory != null ) {
 					org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
 				}
 				if( templateComposite != null ) {
-					org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().pushGeneratedValue( templateComposite );
+					if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+						org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().pushGeneratedValue( templateComposite );
+					} else {
+						org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( templateComposite );
+					}
 				}
 				statementGenerator.generateAndAddStepsToTransaction( history, statement );
 				if( templateComposite != null ) {
-					org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
+					if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+						org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
+					} else {
+						org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();
+					}
 				}
 				if( instanceFactory != null ) {
 					org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
