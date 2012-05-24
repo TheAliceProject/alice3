@@ -67,6 +67,7 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 	}
 	
 	protected abstract void setXZ( double xz );
+	protected abstract double getXZ();
 	protected edu.cmu.cs.dennisc.scenegraph.Cylinder getSgCylinder() {
 		return this.sgCylinder;
 	}
@@ -104,5 +105,20 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 		} else {
 			assert false : resizer;
 		}
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
+		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+	}
+
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		if (size.x != size.z) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Invalid size for "+this.getClass().getSimpleName()+": "+size);
+		}
+		this.length.setValue( size.y );
+		this.setXZ( size.x * .5 );
 	}
 }

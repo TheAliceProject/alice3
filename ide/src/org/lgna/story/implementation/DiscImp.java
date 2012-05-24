@@ -93,4 +93,18 @@ public class DiscImp extends ShapeImp {
 			assert false : resizer;
 		}
 	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
+		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+	}
+	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		if (size.x != size.z) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Invalid size for "+this.getClass().getSimpleName()+": "+size);
+		}
+		this.outerRadius.setValue( size.x * .5 );
+	}
 }

@@ -102,8 +102,8 @@ public abstract class Turnable extends Entity {
 		return Orientation.createInstance( this.getImplementation().getLocalOrientation() );
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void setOrientationRelativeToVehicle( Orientation position ) {
-		this.getImplementation().setLocalOrientation( position.getInternal() );
+	public void setOrientationRelativeToVehicle( Orientation orientation, SetOrientationRelativeToVehicle.Detail... details ) {
+		this.getImplementation().animateOrientationOnly( this.getImplementation().getVehicle(), orientation.getInternal(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 	
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)

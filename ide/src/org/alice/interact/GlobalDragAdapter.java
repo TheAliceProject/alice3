@@ -241,7 +241,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		leftClickMouseRotateObjectLeftRight.setEnabled(false);
 		this.manipulators.add( leftClickMouseRotateObjectLeftRight );
 		
-		ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator(org.lgna.story.implementation.ModelImp.Resizer.UNIFORM) );
+		ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator(org.lgna.story.implementation.ModelImp.Resizer.UNIFORM, org.lgna.story.implementation.ModelImp.Resizer.XY_PLANE, org.lgna.story.implementation.ModelImp.Resizer.XZ_PLANE, org.lgna.story.implementation.ModelImp.Resizer.YZ_PLANE) );
 		leftClickMouseResizeObject.addCondition( leftClickResizableObjects );
 		//This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
 		leftClickMouseResizeObject.setEnabled(false);

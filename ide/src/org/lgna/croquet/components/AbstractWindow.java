@@ -57,7 +57,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		}
 	}
 
-	private W window;
+	private final W window;
 	public AbstractWindow( W window ) {
 		this.window = window;
 		this.getRootPane().setContentPane( this.contentPanel.getAwtComponent() );

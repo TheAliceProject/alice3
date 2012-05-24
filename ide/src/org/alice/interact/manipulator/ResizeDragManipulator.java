@@ -58,10 +58,11 @@ public class ResizeDragManipulator extends AbstractManipulator
 	private double accumulatedScale = 1d;
 	private static final double RESIZE_SCALE = .005;
 	public static final double MIN_SCALE = .1;
-	private final org.lgna.story.implementation.ModelImp.Resizer resizer;
+	private final org.lgna.story.implementation.ModelImp.Resizer[] resizers;
+	private org.lgna.story.implementation.ModelImp.Resizer activeResizer;
 	
-	public ResizeDragManipulator(org.lgna.story.implementation.ModelImp.Resizer resizer) {
-		this.resizer = resizer;
+	public ResizeDragManipulator(org.lgna.story.implementation.ModelImp.Resizer... resizers) {
+		this.resizers = resizers;
 	}
 	
 	@Override
@@ -100,15 +101,20 @@ public class ResizeDragManipulator extends AbstractManipulator
 		{
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
-				boolean isValid = false;
-				for (org.lgna.story.implementation.ModelImp.Resizer r : scalable.getResizers()) {
-					if (r == this.resizer) {
-						isValid = true;
+				this.activeResizer = null;
+				for (org.lgna.story.implementation.ModelImp.Resizer toUse : this.resizers) {
+					for (org.lgna.story.implementation.ModelImp.Resizer r : scalable.getResizers()) {
+						if (r == toUse) {
+							this.activeResizer = r;
+							break;
+						}
+					}
+					if (this.activeResizer != null) {
 						break;
 					}
 				}
-				if (isValid) {
-					initialScale = scalable.getValueForResizer(this.resizer);
+				if (this.activeResizer != null) {
+					initialScale = scalable.getValueForResizer(this.activeResizer);
 				}
 				else {
 					return false;
@@ -131,7 +137,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 				scaleAmount = MIN_SCALE - this.initialScale;
 			}
 			this.accumulatedScale=  this.initialScale + scaleAmount;
-			scalable.setValueForResizer(this.resizer, this.accumulatedScale);
+			scalable.setValueForResizer(this.activeResizer, this.accumulatedScale);
 		}
 	}
 
@@ -163,7 +169,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 				animator = null;
 			}
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, scalable, this.resizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, scalable, this.activeResizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
 			undoOperation.fire();
 		}
 	}

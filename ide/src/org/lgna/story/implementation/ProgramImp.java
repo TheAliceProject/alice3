@@ -173,8 +173,12 @@ public class ProgramImp {
 		this.restartAction = restartAction;
 	}
 	
-	protected javax.swing.JComponent createControlPanelIfDesired() {
-		return new ControlPanel();
+	private boolean isControlPanelDesired = true;
+	public boolean isControlPanelDesired() {
+		return this.isControlPanelDesired;
+	}
+	public void setControlPanelDesired( boolean isControlPanelDesired ) {
+		this.isControlPanelDesired = isControlPanelDesired;
 	}
 
 	public org.lgna.story.Program getAbstraction() {
@@ -271,39 +275,58 @@ public class ProgramImp {
 		}
 	}
 	
-	private void addComponents( java.awt.Container container ) {
-		synchronized( container.getTreeLock() ) {
-			java.awt.Component awtComponent = this.getOnscreenLookingGlass().getAWTComponent();
-			container.add( awtComponent );
-			javax.swing.JComponent controlPanel = this.createControlPanelIfDesired();
-			if( controlPanel != null ) {
-				container.add( controlPanel, java.awt.BorderLayout.PAGE_START );
+	private void addComponents( AwtContainerInitializer awtContainerInitializer ) {
+		java.awt.Component awtLgComponent = this.getOnscreenLookingGlass().getAWTComponent();
+		synchronized( awtLgComponent.getTreeLock() ) {
+			javax.swing.JPanel controlPanel;
+			if( this.isControlPanelDesired() ) {
+				controlPanel = new ControlPanel();
+			} else {
+				controlPanel = null;
 			}
-			if (container instanceof javax.swing.JComponent	) {
-				((javax.swing.JComponent)container).revalidate();
-			}
+			awtContainerInitializer.addComponents( onscreenLookingGlass, controlPanel );
 		}
 	}
 	
 	private void requestFocusInWindow() {
 		this.getOnscreenLookingGlass().getAWTComponent().requestFocusInWindow();
 	}
+	public static interface AwtContainerInitializer {
+		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel );
+	}
+	private static class DefaultAwtContainerInitializer implements AwtContainerInitializer {
+		private final java.awt.Container awtContainer;
+		public DefaultAwtContainerInitializer( java.awt.Container awtContainer ) {
+			this.awtContainer = awtContainer;
+		}
+		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
+			this.awtContainer.add( onscreenLookingGlass.getAWTComponent() );
+			if( controlPanel != null ) {
+				this.awtContainer.add( controlPanel, java.awt.BorderLayout.PAGE_START );
+			}
+			if (this.awtContainer instanceof javax.swing.JComponent	) {
+				((javax.swing.JComponent)this.awtContainer).revalidate();
+			}
+		}
+	}
 	
+	public void initializeInAwtContainer( AwtContainerInitializer awtContainerInitializer ) {
+		this.addComponents( awtContainerInitializer );
+		this.startAnimator();
+		this.requestFocusInWindow();
+	}
+	public void initializeInAwtContainer( java.awt.Container awtContainer ) {
+		this.initializeInAwtContainer( new DefaultAwtContainerInitializer( awtContainer ) );
+	}
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				ProgramImp.this.addComponents( frame.getContentPane() );
+				ProgramImp.this.addComponents( new DefaultAwtContainerInitializer( frame.getContentPane() ) );
 				frame.setVisible( true );
 				runnable.run();
 				requestFocusInWindow();
 			}
 		} );
-	}
-	public void initializeInAwtContainer( java.awt.Container container ) {
-		assert container.getLayout() instanceof java.awt.BorderLayout;
-		this.addComponents( container );
-		this.startAnimator();
-		this.requestFocusInWindow();
 	}
 	public void initializeInFrame( javax.swing.JFrame frame ) {
 		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
@@ -328,7 +351,7 @@ public class ProgramImp {
 		this.startAnimator();
 	}
 	public void initializeInApplet( javax.swing.JApplet applet ) {
-		this.addComponents( applet.getContentPane() );
+		this.addComponents( new DefaultAwtContainerInitializer( applet.getContentPane() ) );
 		this.startAnimator();
 	}
 	private boolean isProgramClosedExceptionDesired = false;

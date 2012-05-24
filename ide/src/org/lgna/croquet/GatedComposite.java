@@ -41,19 +41,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.videoencode;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UploadPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > { 
-	public UploadPage() {
-		super( java.util.UUID.fromString( "92fe0efa-60f6-4ed7-af7c-6f27389356ac" ) );
+public abstract class GatedComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+	public static final Status IS_GOOD_TO_GO_STATUS = null;
+	public static abstract class Status extends AbstractInternalStringValue {
+		public Status( java.util.UUID id, Key key ) {
+			super( id, key );
+		}
+		public abstract boolean isGoodToGo();
 	}
-	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( new org.lgna.croquet.components.Label( "todo: upload" ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+	public static final class WarningStatus extends Status {
+		public WarningStatus( Key key ) {
+			super( java.util.UUID.fromString( "a1375dce-1d5f-4717-87a1-7d9759a12862" ), key );
+		}
+		@Override
+		public boolean isGoodToGo() {
+			return true;
+		}
+	}
+	public static final class ErrorStatus extends Status {
+		public ErrorStatus( Key key ) {
+			super( java.util.UUID.fromString( "e966c721-1a6e-478d-a22f-92725d68552e" ), key );
+		}
+		@Override
+		public boolean isGoodToGo() {
+			return false;
+		}
+	}
+	protected WarningStatus createWarningStatus( Key key ) {
+		WarningStatus rv = new WarningStatus( key );
+		this.registerStringValue( rv );
 		return rv;
+	}
+	protected ErrorStatus createErrorStatus( Key key ) {
+		ErrorStatus rv = new ErrorStatus( key );
+		this.registerStringValue( rv );
+		return rv;
+	}
+	public GatedComposite( java.util.UUID id ) {
+		super( id );
 	}
 }

@@ -40,20 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.history;
 
-public class IsProjectHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
-	private static class SingletonHolder {
-		private static IsProjectHistoryShowingState instance = new IsProjectHistoryShowingState();
-	}
-	public static IsProjectHistoryShowingState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IsProjectHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "cf08f7ac-16b2-4121-9f36-9aca59db4cf7" ), false );
+package org.lgna.croquet.components;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class FixedAspectRatioPanel extends SingleComponentPanel {
+	private final double widthToHeightRatio/* = edu.cmu.cs.dennisc.math.GoldenRatio.PHI*/;
+	public FixedAspectRatioPanel( Component<?> centerPanel, double widthToHeightRatio ) {
+		super( centerPanel );
+		assert widthToHeightRatio != 0.0;
+		this.widthToHeightRatio = widthToHeightRatio;
 	}
 	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( org.alice.ide.IDE.PROJECT_GROUP );
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new SingleComponentLayoutManager() {
+			@Override
+			protected void layoutComponent( java.awt.Container parent, java.awt.Component component ) {
+				java.awt.Dimension parentSize = parent.getSize();
+				double parentWidthToHeightRatio = parentSize.width / (double)parentSize.height;
+				java.awt.Dimension componentSize;
+				//if( widthBasedSize.width * widthBasedSize.height > heightBasedSize.width * heightBasedSize.height ) {
+				if( parentWidthToHeightRatio < widthToHeightRatio ) {
+					componentSize = new java.awt.Dimension( parentSize.width, (int)(parentSize.width/widthToHeightRatio) );
+				} else {
+					componentSize = new java.awt.Dimension( (int)(parentSize.height*widthToHeightRatio), parentSize.height );
+				}
+				component.setLocation( ( parentSize.width - componentSize.width ) / 2, ( parentSize.height - componentSize.height ) / 2 );
+				component.setSize( componentSize );
+			}
+		};
 	}
+//	public static void main( String[] args ) {
+//		final java.awt.Dimension size = new java.awt.Dimension( 640, 360 ); 
+//		BorderPanel centerComponent = new BorderPanel();
+//		centerComponent.setPreferredSize( size );
+//		centerComponent.setBackgroundColor( java.awt.Color.BLUE );
+//		FixedAspectRatioPanel panel = new FixedAspectRatioPanel( centerComponent, 16.0/9.0 );
+//		panel.setBackgroundColor( java.awt.Color.BLACK );
+//		
+//		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
+//		application.getFrame().getContentPanel().addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+//		application.getFrame().pack();
+//		application.getFrame().setVisible( true );
+//	}
 }

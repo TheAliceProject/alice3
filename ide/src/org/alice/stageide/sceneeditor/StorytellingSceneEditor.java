@@ -737,6 +737,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				this.setSelectedObjectMarker(field);
 			}
 		}
+		setInitialCodeStateForField(field, getCurrentStateCodeForField(field));
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY ) ) {
 			if( field.getValueType().isAssignableTo( org.lgna.story.JointedModel.class ) ) {
 				org.lgna.story.JointedModel jointedModel = this.getInstanceInJavaVMForField( field, org.lgna.story.JointedModel.class );
@@ -838,6 +839,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ManagedCameraMarkerFieldState.getInstance((NamedUserType)sceneAliceInstance.getType()).addAndInvokeValueListener(this.cameraMarkerFieldSelectionObserver);
 		ManagedObjectMarkerFieldState.getInstance((NamedUserType)sceneAliceInstance.getType()).addAndInvokeValueListener(this.objectMarkerFieldSelectionObserver);
 		
+		for (org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields())
+		{
+			if( field instanceof UserField) 
+			{
+				UserField userField = (UserField)field;
+				if (userField.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED) {
+					this.setInitialCodeStateForField(userField, getCurrentStateCodeForField(userField));
+				}
+			}
+		}
+		
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( 1.0 );
 	}
 	
@@ -858,8 +870,59 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.onscreenLookingGlass.setRenderingEnabled(false);
 		}
 	}
-	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field) {
-		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField(field), this.getActiveSceneInstance() );
+	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, boolean getFullFieldState) {
+		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField(field), this.getActiveSceneInstance(), getFullFieldState );
+	}
+	
+	@Override
+	public void setFieldToState(org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements) {
+		org.lgna.story.implementation.EntityImp fieldImp = getImplementation(field);
+		AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation();
+		super.setFieldToState(field, statements);
+		if (fieldImp == this.sceneCameraImp && this.mainCameraMarkerList.getSelectedItem() != View.STARTING_CAMERA_VIEW) {
+			AffineMatrix4x4 revertedTransform = fieldImp.getAbsoluteTransformation();
+			this.openingSceneMarkerImp.setTransformation(this.openingSceneMarkerImp.getScene(), revertedTransform);
+			this.sceneCameraImp.setTransformation(this.sceneCameraImp.getScene(), originalTransform);
+		}
+	}
+	
+	@Override
+	public org.lgna.project.ast.Statement getCurrentStateCodeForField(org.lgna.project.ast.UserField field) {
+		Statement rv = null;
+		
+		org.lgna.project.ast.BlockStatement bs = new org.lgna.project.ast.BlockStatement();
+		
+		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
+		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
+		this.fillInAutomaticSetUpMethod( bs.statements, false, field, true );
+		this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
+		Statement setVehicleStatement = null;
+		for (Statement statement : bs.statements.getValue()) {
+			if (statement instanceof org.lgna.project.ast.ExpressionStatement) {
+				org.lgna.project.ast.Expression expression = ((org.lgna.project.ast.ExpressionStatement)statement).expression.getValue();
+				if (expression instanceof MethodInvocation) {
+					MethodInvocation mi = (MethodInvocation)expression;
+					org.lgna.project.ast.Method method = mi.method.getValue();
+					if (method.getName().equalsIgnoreCase("setVehicle")) {
+						setVehicleStatement = statement;
+						break;
+					}
+				}
+			}
+		}
+		if (setVehicleStatement != null) {
+			bs.statements.getValue().remove(setVehicleStatement);
+		}
+		org.lgna.project.ast.DoTogether dt = new org.lgna.project.ast.DoTogether(bs);
+		if (setVehicleStatement != null) {
+			org.lgna.project.ast.DoInOrder dio = new org.lgna.project.ast.DoInOrder(new org.lgna.project.ast.BlockStatement(setVehicleStatement, dt));
+			rv = dio;
+		}
+		else {
+			rv = dt;
+		}
+		
+		return rv;
 	}
 	
 	@Override
@@ -869,12 +932,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
 		
 		org.lgna.project.ast.AbstractField sceneField = this.getActiveSceneField();
-		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
+		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField, false );
 		for( org.lgna.project.ast.AbstractField field : this.getActiveSceneType().getDeclaredFields() ) {
 			if( field instanceof UserField ) {
 				UserField userField = (UserField)field;
 				if( userField.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-					this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
+					this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field, false );
 				}
 			}
 		}
@@ -922,7 +985,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	@Override
 	public org.lgna.project.ast.Statement[] getUndoStatementsForRemoveField(org.lgna.project.ast.UserField field) {
 		Object instance = this.getInstanceInJavaVMForField(field);
-		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance());
+		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance(), false);
 	}
 	
 	@Override

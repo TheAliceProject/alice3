@@ -40,21 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.history;
 
-public class IsUIHistoryShowingState extends org.alice.ide.croquet.models.IsFrameShowingState {
+package org.alice.ide.croquet.models.ui.debug;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class ActiveTransactionHistoryComposite extends TransactionHistoryComposite {
 	private static class SingletonHolder {
-		private static IsUIHistoryShowingState instance = new IsUIHistoryShowingState();
+		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
 	}
-	public static IsUIHistoryShowingState getInstance() {
+	public static ActiveTransactionHistoryComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsUIHistoryShowingState() {
-		super( org.alice.ide.ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "6d294f89-9ddc-4cbf-9020-370e383d4ff3" ), false );
-		this.setTextForBothTrueAndFalse( "UI History" );
+	private ActiveTransactionHistoryComposite() {
+		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
 	}
 	@Override
-	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( org.lgna.croquet.Application.UI_STATE_GROUP );
+	protected void localize() {
+		super.localize();
+		// do not want to bother localizers with this composite
+		// todo: investigate why this doesn't work
+		this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
+//				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
+//				ActiveTransactionHistoryComposite.this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
+//			}
+//		} );
+	}
+	@Override
+	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
+		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
+		rv.setTransactionHistory( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory() );
+		return rv;
 	}
 }

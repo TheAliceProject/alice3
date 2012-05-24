@@ -41,22 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.videoencode;
+package org.alice.ide.ast.fieldtree;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	private final org.lgna.croquet.StringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
-	private final org.lgna.croquet.BooleanState isRecording = this.createBooleanState( false, this.createKey( "isRecording" ) );
-	public RecordEventsPage() {
-		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
-	}
-	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( this.gettysburgAddress.createImmutableTextArea(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( this.isRecording.createToggleButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
+public class RootNode extends TypeNode {
+	public RootNode() {
+		super( null, null, Integer.MAX_VALUE, Integer.MAX_VALUE );
 	}
 }

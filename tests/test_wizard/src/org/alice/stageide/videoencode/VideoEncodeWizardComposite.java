@@ -41,19 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.properties;
+package org.alice.stageide.videoencode;
 
-import org.lgna.croquet.BooleanState;
-
-public class IsScaleLinkedState extends BooleanState 
-{
+/**
+ * @author Dennis Cosgrove
+ */
+public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMainComposite {
 	private static class SingletonHolder {
-		private static IsScaleLinkedState instance = new IsScaleLinkedState();
+		private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
 	}
-	public static IsScaleLinkedState getInstance() {
+	public static VideoEncodeWizardComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private IsScaleLinkedState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
+	
+	private final RecordEventsPage recordEventsPage = new RecordEventsPage();
+	private final CaptureImagesPage captureImagesPage = new CaptureImagesPage();
+	private final UploadPage uploadPage = new UploadPage();
+	private VideoEncodeWizardComposite() {
+		super( java.util.UUID.fromString( "cc531529-314d-457c-bb30-d707dfd2b8d8" ), org.alice.ide.IDE.EXPORT_GROUP );
+		this.addPage( this.recordEventsPage );
+		this.addPage( this.captureImagesPage );
+		this.addPage( this.uploadPage );
+	}
+	
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
+		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
+		composite.getGatedCommitDialogComposite().getOperation().fire();
+		System.exit( 0 );
 	}
 }
