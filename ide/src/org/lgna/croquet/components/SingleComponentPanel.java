@@ -46,32 +46,33 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class FixedCenterPanel extends SingleComponentPanel {
-	public FixedCenterPanel( Component<?> centerPanel ) {
-		super( centerPanel );
-	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new SingleComponentLayoutManager() {
-			@Override
-			protected void layoutComponent( java.awt.Container parent, java.awt.Component component ) {
-				java.awt.Dimension parentSize = parent.getSize();
-				java.awt.Dimension componentSize = component.getPreferredSize();
-				component.setLocation( ( parentSize.width - componentSize.width ) / 2, ( parentSize.height - componentSize.height ) / 2 );
-				component.setSize( componentSize );
+public abstract class SingleComponentPanel extends Panel {
+	protected static abstract class SingleComponentLayoutManager implements java.awt.LayoutManager {
+		public void addLayoutComponent( String name, java.awt.Component comp ) {
+		}
+		public void removeLayoutComponent( java.awt.Component comp ) {
+		}
+		private java.awt.Dimension layoutSize( java.awt.Container parent ) {
+			if( parent.getComponentCount() > 0 ) {
+				return parent.getComponent( 0 ).getPreferredSize();
+			} else {
+				return new java.awt.Dimension();
 			}
-		};
+		}
+		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+			return this.layoutSize( parent );
+		}
+		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+			return this.layoutSize( parent );
+		}
+		protected abstract void layoutComponent( java.awt.Container parent, java.awt.Component component );
+		public final void layoutContainer( java.awt.Container parent ) {
+			if( parent.getComponentCount() > 0 ) {
+				this.layoutComponent( parent, parent.getComponent( 0 ) );
+			}
+		}
 	}
-//	public static void main( String[] args ) {
-//		final java.awt.Dimension size = new java.awt.Dimension( 640, 360 ); 
-//		BorderPanel centerComponent = new BorderPanel();
-//		centerComponent.setPreferredSize( size );
-//		centerComponent.setBackgroundColor( java.awt.Color.RED );
-//		FixedCenterPanel panel = new FixedCenterPanel( centerComponent );
-//		
-//		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-//		application.getFrame().getContentPanel().addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-//		application.getFrame().pack();
-//		application.getFrame().setVisible( true );
-//	}
+	public SingleComponentPanel( Component<?> component ) {
+		this.internalAddComponent( component );
+	}
 }
