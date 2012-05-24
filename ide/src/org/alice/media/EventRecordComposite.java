@@ -46,6 +46,7 @@ import org.alice.media.components.EventRecordView;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.story.ImplementationAccessor;
@@ -57,11 +58,12 @@ import edu.cmu.cs.dennisc.matt.EventScript;
  * @author Matt May
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
+	
 	private final ExportToYouTubeWizardDialogComposite owner;
-
 	private RunProgramContext programContext;
 	private EventScript script;
 	org.lgna.croquet.components.BorderPanel lookingGlassContainer;
+	private Status status;
 
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
@@ -73,14 +75,14 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		private boolean isRecording = false;
 
 		public void perform( Transaction transaction, Trigger trigger ) {
-			System.out.println( "play" );
-			System.out.println( programContext );
 			isRecording = !isRecording;
 			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + this.isRecording ) );
 			if( isRecording ) {
 				programContext.getProgramImp().startAnimator();
+				status = new ErrorStatus( createKey( "cannotAdvanceBecauseRecording" ) );
 			} else {
 				programContext.getProgramImp().stopAnimator();
+				status = IS_GOOD_TO_GO_STATUS;
 			}
 		}
 	}, this.createKey( "isRecording.false" ) );
@@ -130,5 +132,10 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	@Override
 	protected EventRecordView createView() {
 		return new EventRecordView( this );
+	}
+
+	@Override
+	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+		return status;
 	}
 }

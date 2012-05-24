@@ -49,6 +49,7 @@ import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.UserField;
@@ -65,11 +66,12 @@ import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
  * @author Matt May
  */
 public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
+	
 	private final ExportToYouTubeWizardDialogComposite owner;
-
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
 	private ImagesToQuickTimeEncoder encoder;
+	private Status status;
 
 	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
@@ -198,5 +200,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		} else {
 			System.out.println( "NULL" );
 		}
+	}
+
+	@Override
+	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+		return this.status;
 	}
 }

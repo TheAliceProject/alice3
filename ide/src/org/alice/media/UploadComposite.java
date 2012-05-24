@@ -48,10 +48,12 @@ import java.io.IOException;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.GatedComposite.Status;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.Project;
@@ -59,13 +61,11 @@ import org.lgna.project.Project;
 import com.google.gdata.data.media.MediaFileSource;
 import com.google.gdata.data.media.mediarss.MediaCategory;
 import com.google.gdata.data.media.mediarss.MediaDescription;
-import com.google.gdata.data.media.mediarss.MediaGroup;
 import com.google.gdata.data.media.mediarss.MediaKeywords;
 import com.google.gdata.data.media.mediarss.MediaTitle;
 import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
-import com.google.gdata.util.AuthenticationException;
 
 /**
  * @author Matt May
@@ -87,6 +87,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final StringState descriptionState = this.createStringState( "", this.createKey( "description" ) );
 	private final StringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
 	private final StringState tagState = this.createStringState( "", this.createKey( "tag" ) );
+	private Status status;
 	private final ActionOperation loginOperation = this.createActionOperation( new Action() {
 		public void perform( Transaction transaction, Trigger trigger ) {
 //			try {
@@ -195,5 +196,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		System.out.println( "preactivation" );
 		getView().setMovie( owner.getFile() );
 		//		player.init();
+	}
+	@Override
+	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+		return this.status;
 	}
 }
