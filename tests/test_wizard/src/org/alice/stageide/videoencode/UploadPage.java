@@ -58,4 +58,8 @@ public class UploadPage extends org.lgna.croquet.WizardPageComposite< org.lgna.c
 		rv.addComponent( label, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		return rv;
 	}
+	@Override
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return null;
+	}
 }

@@ -63,6 +63,9 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	public void removeCard( Composite<?> card ) {
 		this.cards.remove( card );
 	}
+	public Composite<?> getShowingCard() {
+		return this.showingCard;
+	}
 	
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
