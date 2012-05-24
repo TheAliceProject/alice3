@@ -67,7 +67,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
 	private transient org.alice.stageide.program.RunProgramContext programContext;
-	private static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
+	public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
 	private static final int DEFAULT_WIDTH = 640;
 	private static final int DEFAULT_HEIGHT = (int)(DEFAULT_WIDTH/WIDTH_TO_HEIGHT_RATIO);
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
