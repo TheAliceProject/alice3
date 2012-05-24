@@ -128,7 +128,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	}
 	private static final class InternalBoundedIntegerState extends BoundedIntegerState {
 		private final Key key;
-		private InternalBoundedIntegerState( BoundedIntegerDetails details, Key key ) {
+		private InternalBoundedIntegerState( BoundedIntegerState.Details details, Key key ) {
 			super( details );
 			this.key = key;
 		}
@@ -143,7 +143,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	}
 	private static final class InternalBoundedDoubleState extends BoundedDoubleState {
 		private final Key key;
-		private InternalBoundedDoubleState( BoundedDoubleDetails details, Key key ) {
+		private InternalBoundedDoubleState( BoundedDoubleState.Details details, Key key ) {
 			super( details );
 			this.key = key;
 		}
