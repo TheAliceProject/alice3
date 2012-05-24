@@ -52,6 +52,7 @@ import org.lgna.croquet.triggers.Trigger;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.matt.EventScript;
 
 /**
@@ -64,7 +65,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	private EventScript script;
 	org.lgna.croquet.components.BorderPanel lookingGlassContainer;
 	private Status status;
-
+	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
+	private boolean isRecording = false;
+	
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
 		this.owner = owner;
@@ -72,18 +75,18 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
 
-		private boolean isRecording = false;
 
 		public void perform( Transaction transaction, Trigger trigger ) {
 			isRecording = !isRecording;
-			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + this.isRecording ) );
+			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
 			if( isRecording ) {
 				programContext.getProgramImp().startAnimator();
-				status = new ErrorStatus( createKey( "cannotAdvanceBecauseRecording" ) );
+				status = cannotAdvanceBecauseRecording;
 			} else {
 				programContext.getProgramImp().stopAnimator();
 				status = IS_GOOD_TO_GO_STATUS;
 			}
+			
 		}
 	}, this.createKey( "isRecording.false" ) );
 
@@ -97,6 +100,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			programContext.setActiveScene();
 			script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
 			owner.setScript( script );
+			isRecording = false;
+			status = IS_GOOD_TO_GO_STATUS;
 		}
 	}, this.createKey( "restart" ) );
 
@@ -136,6 +141,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	@Override
 	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+		Logger.errln( status );
 		return status;
 	}
 }
