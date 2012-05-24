@@ -62,9 +62,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		}
 	}
 	
-	protected static class InternalStringValue extends StringValue {
+	protected static abstract class AbstractInternalStringValue extends StringValue {
 		private final Key key;
-		public InternalStringValue( Key key ) {
+		public AbstractInternalStringValue( java.util.UUID id, Key key ) {
 			super( java.util.UUID.fromString( "142b66a2-0b95-42d0-8ea4-a22a79c8ff8c" ) );
 			this.key = key;
 		}
@@ -73,6 +73,12 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		}
 		@Override
 		protected void localize() {
+		}
+	}
+	
+	private static final class InternalStringValue extends AbstractInternalStringValue {
+		public InternalStringValue( Key key ) {
+			super( java.util.UUID.fromString( "142b66a2-0b95-42d0-8ea4-a22a79c8ff8c" ), key );
 		}
 	}
 
@@ -202,7 +208,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	public void handlePostDeactivation() {
 	}
 	
-	private java.util.Map<Key,InternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalListSelectionState> mapKeyToListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -212,7 +218,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
-			InternalStringValue stringValue = this.mapKeyToStringValue.get( key );
+			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
 			stringValue.setText( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
 		}
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
@@ -272,7 +278,7 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		return false;
 	}
 
-	protected void registerStringValue( InternalStringValue stringValue ) {
+	protected void registerStringValue( AbstractInternalStringValue stringValue ) {
 		this.mapKeyToStringValue.put( stringValue.getKey(), stringValue );
 	}
 	
