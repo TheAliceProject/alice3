@@ -302,40 +302,6 @@ public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComp
 		public abstract void handleIsGoodToGo( boolean isGoodToGo );
 	}
 
-	private static class InternalErrorValue extends StringValue {
-		private final Key key;
-		public InternalErrorValue( Key key ) {
-			super( java.util.UUID.fromString( "f53f9c5b-1ab0-4eb5-ac4f-7312a32d240e" ) );
-			this.key = key;
-		}
-		@Override
-		protected void localize() {
-		}
-	}
-	private static class InternalWarningValue extends StringValue {
-		private final Key key;
-		public InternalWarningValue( Key key ) {
-			super( java.util.UUID.fromString( "df9a6066-bbca-46ae-82d6-97d2392dca70" ) );
-			this.key = key;
-		}
-		@Override
-		protected void localize() {
-		}
-	}
-	
-	private java.util.Map<Key,InternalErrorValue> mapKeyToErrorValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private java.util.Map<Key,InternalWarningValue> mapKeyToWarningValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	protected StringValue createErrorValue( Key key ) {
-		InternalErrorValue rv = new InternalErrorValue( key );
-		this.mapKeyToErrorValue.put( key, rv );
-		return rv;
-	}
-	protected StringValue createWarningValue( Key key ) {
-		InternalWarningValue rv = new InternalWarningValue( key );
-		this.mapKeyToWarningValue.put( key, rv );
-		return rv;
-	}
-
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
@@ -351,18 +317,6 @@ public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComp
 	}
 	public MC getMainComposite() {
 		return this.mainComposite;
-	}
-	@Override
-	protected void localize() {
-		super.localize();
-		for( Key key : this.mapKeyToErrorValue.keySet() ) {
-			InternalErrorValue error = this.mapKeyToErrorValue.get( key );
-			error.setText( this.getLocalizedText( key.getLocalizationKey() ) );
-		}
-		for( Key key : this.mapKeyToWarningValue.keySet() ) {
-			InternalWarningValue warning = this.mapKeyToWarningValue.get( key );
-			warning.setText( this.getLocalizedText( key.getLocalizationKey() ) );
-		}
 	}
 	protected abstract CC getControlsComposite();
 	@Override

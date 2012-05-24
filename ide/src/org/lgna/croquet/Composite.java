@@ -77,14 +77,14 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	}
 	
 	private static final class InternalStringValue extends AbstractInternalStringValue {
-		public InternalStringValue( Key key ) {
+		private InternalStringValue( Key key ) {
 			super( java.util.UUID.fromString( "142b66a2-0b95-42d0-8ea4-a22a79c8ff8c" ), key );
 		}
 	}
 
-	private static class InternalStringState extends StringState {
+	private static final class InternalStringState extends StringState {
 		private final Key key;
-		public InternalStringState( String initialValue, Key key ) {
+		private InternalStringState( String initialValue, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ed65869f-8d26-48b1-8240-cf74ba403a2f" ), initialValue );
 			this.key = key;
 		}
@@ -95,9 +95,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		protected void localize() {
 		}
 	}
-	private static class InternalBooleanState extends BooleanState {
+	private static final class InternalBooleanState extends BooleanState {
 		private final Key key;
-		public InternalBooleanState( boolean initialValue, Key key ) {
+		private InternalBooleanState( boolean initialValue, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "5053e40f-9561-41c8-835d-069bd106723c" ), initialValue );
 			this.key = key;
 		}
@@ -108,9 +108,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		protected void localize() {
 		}
 	}
-	private static class InternalListSelectionState<T> extends DefaultListSelectionState<T> {
+	private static final class InternalListSelectionState<T> extends DefaultListSelectionState<T> {
 		private final Key key;
-		public InternalListSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
+		private InternalListSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), codec, selectionIndex, data );
 			this.key = key;
 		}
@@ -126,9 +126,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "3cb7dfc5-de8c-442c-9e9a-deab2eff38e8" ) );
 		}
 	}
-	private static class InternalBoundedIntegerState extends BoundedIntegerState {
+	private static final class InternalBoundedIntegerState extends BoundedIntegerState {
 		private final Key key;
-		public InternalBoundedIntegerState( BoundedIntegerDetails details, Key key ) {
+		private InternalBoundedIntegerState( BoundedIntegerDetails details, Key key ) {
 			super( details );
 			this.key = key;
 		}
@@ -141,9 +141,9 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "603d4a60-cc60-41df-b5a5-992966128b41" ) );
 		}
 	}
-	private static class InternalBoundedDoubleState extends BoundedDoubleState {
+	private static final class InternalBoundedDoubleState extends BoundedDoubleState {
 		private final Key key;
-		public InternalBoundedDoubleState( BoundedDoubleDetails details, Key key ) {
+		private InternalBoundedDoubleState( BoundedDoubleDetails details, Key key ) {
 			super( details );
 			this.key = key;
 		}
@@ -157,10 +157,10 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	protected static interface Action {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) throws CancelException;
 	}
-	private static class InternalActionOperation extends ActionOperation {
+	private static final class InternalActionOperation extends ActionOperation {
 		private final Action action;
 		private final Key key;
-		public InternalActionOperation( Action action, Key key ) {
+		private InternalActionOperation( Action action, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "2c311356-2bf2-4a57-b06b-f6cdb39b0d78" ) );
 			this.action = action;
 			this.key = key;
