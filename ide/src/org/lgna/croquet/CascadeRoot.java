@@ -118,7 +118,6 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		@Override
 		protected void appendRepr( StringBuilder sb ) {
 			super.appendRepr( sb );
-			sb.append( "root=" );
 			sb.append( this.root );
 		}
 	}
@@ -196,6 +195,11 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		} finally {
 			this.getPopupPrepModel().handleFinally();
 		}
+	}
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( this.getCompletionModel() );
 	}
 	//
 	//	public abstract void handleCompletion( CS completionStep, T[] values );
