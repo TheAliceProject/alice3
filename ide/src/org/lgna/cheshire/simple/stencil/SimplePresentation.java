@@ -367,8 +367,15 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 								if( applicationRecoveryTransaction != null ) {
 									this.insertRecoveryTransaction( applicationRecoveryTransaction );
 								} else {
-									//org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
-									edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to recover", transaction );
+									
+									final org.lgna.cheshire.simple.Chapter accessibleChapter = chapter;
+									javax.swing.SwingUtilities.invokeLater( new Runnable() {
+										public void run() {
+											org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
+											handleChapterChanged( accessibleChapter );
+										}
+									} );
+									//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to recover", transaction );
 								}
 							}
 						}

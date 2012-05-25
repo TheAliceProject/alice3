@@ -64,11 +64,12 @@ public class BlockStatementGenerator {
 			StatementGenerator statementGenerator;
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
 			org.alice.ide.members.TemplateComposite templateComposite = null;
+			org.lgna.project.ast.MethodInvocation methodInvocation = null;
 			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
 				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 				if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+					methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 
 					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 
@@ -137,6 +138,15 @@ public class BlockStatementGenerator {
 				}
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( statement );
+			}
+			if( methodInvocation != null ) {
+				org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade moreCascade = org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( methodInvocation.keyedArguments );
+				for( org.lgna.project.ast.JavaKeyedArgument argument : methodInvocation.keyedArguments ) {
+					org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
+					org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, moreCascade.getRoot().getPopupPrepModel(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
+					org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, moreCascade, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), null );
+					completionStep.setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
+				}
 			}
 			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;

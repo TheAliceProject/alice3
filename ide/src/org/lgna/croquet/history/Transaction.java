@@ -344,4 +344,17 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 			return false;
 		}
 	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		for( PrepStep prepStep : this.prepSteps ) {
+			sb.append( prepStep );
+			sb.append( "," );
+		}
+		sb.append( this.completionStep );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }
