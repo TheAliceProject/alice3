@@ -44,7 +44,9 @@ package org.alice.media;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import org.alice.media.YouTubeEvent.EventType;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -65,44 +67,56 @@ import com.google.gdata.data.media.mediarss.MediaTitle;
 import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
+import com.google.gdata.util.AuthenticationException;
 
 /**
  * @author Matt May
  */
-public class UploadComposite extends WizardPageComposite<UploadView> {
+public class UploadComposite extends WizardPageComposite<UploadView> implements YouTubeListener {
 
+	private static final Object DEFAULT = "";
 	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
-	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
+	private final StringState idState = this.createStringState( "may.matt08@gmail.com", this.createKey( "id" ) );
+//	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
 	private final StringValue username = this.createStringValue( this.createKey( "username" ) );
-	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
+	private final StringState passwordState = this.createStringState( "genoPass2much", this.createKey( "password" ) );
+//	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
 	private final StringValue passwordLabelValue = this.createStringValue( this.createKey( "passwordLabel" ) );
 	private final StringValue titleLabelValue = this.createStringValue( this.createKey( "titleLabel" ) );
 	private final StringState titleState = this.createStringState( "Alice Video", this.createKey( "title" ) );
 	private final BooleanState isPrivateState = this.createBooleanState( true, this.createKey( "isPrivate" ) );
 	private final StringValue categoryValue = this.createStringValue( this.createKey( "category" ) );
-	private final ListSelectionState<VideoCategory> videoCategoryState = this.createListSelectionState( VideoCategory.class, VideoCategory.SCIENCE_AND_TECHNOLOGY, this.createKey( "videoCategory" ) );
+	private List<MediaCategory> categories;
+	private final ListSelectionState<MediaCategory> videoCategoryState;// = this.createListSelectionState( categories, VideoCategory.SCIENCE_AND_TECHNOLOGY, this.createKey( "videoCategory" ) );
 	private final StringValue descriptionValue = this.createStringValue( this.createKey( "descriptionValue" ) );
-	private final StringState descriptionState = this.createStringState( "", this.createKey( "description" ) );
+	private final StringState descriptionState = this.createStringState( "Testing Alice's upload to Youtube", this.createKey( "description" ) );
+//	private final StringState descriptionState = this.createStringState( "", this.createKey( "description" ) );
 	private final StringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
-	private final StringState tagState = this.createStringState( "", this.createKey( "tag" ) );
-	private Status status;
+	private final StringState tagState = this.createStringState( "Alice3", this.createKey( "tag" ) );
+//	private final StringState tagState = this.createStringState( "", this.createKey( "tag" ) );
 	private final ActionOperation loginOperation = this.createActionOperation( new Action() {
 		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
-//			try {
-//				uploader.logIn( idState.getValue(), passwordState.getValue() );
-//			} catch( AuthenticationException e ) {
-//				e.printStackTrace();
-//			}
+			boolean blah = true;
+			try {
+				uploader.logIn( idState.getValue(), passwordState.getValue() );
+			} catch( AuthenticationException e ) {
+				e.printStackTrace();
+				blah = false;
+			}
+			if(blah){
+				isLoggedIn = true;
+			}
 			return null;
 		}
 	}, this.createKey( "login" ) );
 	private final ActionOperation uploadOperation = this.createActionOperation( new Action() {
 		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 			VideoEntry entry = new VideoEntry();
+			
 			MediaFileSource source = new MediaFileSource( owner.getFile(), "video/quicktime" );
 			entry.setMediaSource( source );
-			YouTubeMediaGroup mediaGroup = new YouTubeMediaGroup();
+			YouTubeMediaGroup mediaGroup = entry.getOrCreateMediaGroup();
 
 			MediaTitle title = new MediaTitle();
 			title.setPlainTextContent( titleState.getValue().trim() );
@@ -122,18 +136,32 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, videoCategoryState.getValue().toString() ) );//category
 
 			mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
+			boolean blah = true;
 			try {
 				uploader.uploadVideo( entry );
 			} catch( IOException e ) {
+				blah = false;
 				e.printStackTrace();
 			}
 			return null;
 		}
 	}, this.createKey( "upload" ) );
+	private Status errorNotLoggedIn = createErrorStatus( this.createKey( "errorNotLoggedIn" ) );
+	private boolean isLoggedIn = false;
 
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
 		this.owner = owner;
+		uploader.addYouTubeListener( this );
+		categories = new YouTubeMediaGroup().getCategories();
+		MediaCategory defaultCat;
+		for( MediaCategory cat : categories){
+			if(cat.getContent().equals( DEFAULT )){
+				defaultCat = cat;
+				break;
+			}
+		}
+		videoCategoryState = this.createListSelectionState( MediaCategory.class, defaultCat, this.createKey( "videoCategory" ) );
 	}
 	public StringState getIdState() {
 		return this.idState;
@@ -162,7 +190,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	public StringValue getCategoryValue() {
 		return this.categoryValue;
 	}
-	public ListSelectionState<VideoCategory> getVideoCategoryState() {
+	public ListSelectionState<MediaCategory> getVideoCategoryState() {
 		return this.videoCategoryState;
 	}
 	public StringValue getDescriptionValue() {
@@ -194,12 +222,20 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		System.out.println( "preactivation" );
 		getView().setMovie( owner.getFile() );
 		//		player.init();
 	}
 	@Override
 	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
-		return this.status;
+		if( !isLoggedIn  ) {
+			return errorNotLoggedIn;
+		} //else if( )
+		return IS_GOOD_TO_GO_STATUS;
+	}
+	public void youTubeEventTriggered( YouTubeEvent event ) {
+		System.out.println("event triggered: " + event.getType());
+		if(event.getType() == EventType.UPLOAD_FAILED){
+			System.out.println(event.getMoreInfo());
+		}
 	}
 }
