@@ -140,7 +140,7 @@ public class BlockStatementGenerator {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( statement );
 			}
 			if( methodInvocation != null ) {
-				org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade moreCascade = org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( methodInvocation.keyedArguments );
+				org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade moreCascade = org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( methodInvocation );
 				for( org.lgna.project.ast.JavaKeyedArgument argument : methodInvocation.keyedArguments ) {
 					org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 					org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, moreCascade.getRoot().getPopupPrepModel(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
