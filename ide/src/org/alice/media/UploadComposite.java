@@ -73,21 +73,21 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
-	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
+	private final StringState idState = this.createStringState( this.createKey( "id" ), "" );
 	private final StringValue username = this.createStringValue( this.createKey( "username" ) );
-	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
+	private final StringState passwordState = this.createStringState( this.createKey( "password" ), "" );
 	private final StringValue passwordLabelValue = this.createStringValue( this.createKey( "passwordLabel" ) );
 	private final StringValue titleLabelValue = this.createStringValue( this.createKey( "titleLabel" ) );
-	private final StringState titleState = this.createStringState( "Alice Video", this.createKey( "title" ) );
-	private final BooleanState isPrivateState = this.createBooleanState( true, this.createKey( "isPrivate" ) );
+	private final StringState titleState = this.createStringState( this.createKey( "title" ), "Alice Video" );
+	private final BooleanState isPrivateState = this.createBooleanState( this.createKey( "isPrivate" ), true );
 	private final StringValue categoryValue = this.createStringValue( this.createKey( "category" ) );
-	private final ListSelectionState<VideoCategory> videoCategoryState = this.createListSelectionState( VideoCategory.class, VideoCategory.SCIENCE_AND_TECHNOLOGY, this.createKey( "videoCategory" ) );
+	private final ListSelectionState<VideoCategory> videoCategoryState = this.createListSelectionStateForEnum( this.createKey( "videoCategory" ), VideoCategory.class, VideoCategory.SCIENCE_AND_TECHNOLOGY );
 	private final StringValue descriptionValue = this.createStringValue( this.createKey( "descriptionValue" ) );
-	private final StringState descriptionState = this.createStringState( "", this.createKey( "description" ) );
+	private final StringState descriptionState = this.createStringState( this.createKey( "description" ), "" );
 	private final StringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
-	private final StringState tagState = this.createStringState( "", this.createKey( "tag" ) );
+	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "" );
 	private Status status;
-	private final ActionOperation loginOperation = this.createActionOperation( new Action() {
+	private final ActionOperation loginOperation = this.createActionOperation( this.createKey( "login" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 //			try {
 //				uploader.logIn( idState.getValue(), passwordState.getValue() );
@@ -96,8 +96,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 //			}
 			return null;
 		}
-	}, this.createKey( "login" ) );
-	private final ActionOperation uploadOperation = this.createActionOperation( new Action() {
+	} );
+	private final ActionOperation uploadOperation = this.createActionOperation( this.createKey( "upload" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 			VideoEntry entry = new VideoEntry();
 			MediaFileSource source = new MediaFileSource( owner.getFile(), "video/quicktime" );
@@ -129,7 +129,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 			}
 			return null;
 		}
-	}, this.createKey( "upload" ) );
+	} );
 
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );

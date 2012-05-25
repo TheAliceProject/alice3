@@ -73,7 +73,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		this.owner = owner;
 	}
 
-	private final ActionOperation playRecordedOperation = this.createActionOperation( new Action() {
+	private final ActionOperation playRecordedOperation = this.createActionOperation( this.createKey( "isRecording.false" ), new Action() {
 
 
 		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
@@ -88,9 +88,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			}
 			return null;
 		}
-	}, this.createKey( "isRecording.false" ) );
+	} );
 
-	private final ActionOperation restartRecording = this.createActionOperation( new Action() {
+	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 			lookingGlassContainer.removeAllComponents();
 			lookingGlassContainer = getView().getLookingGlassContainer();
@@ -104,7 +104,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			status = IS_GOOD_TO_GO_STATUS;
 			return null;
 		}
-	}, this.createKey( "restart" ) );
+	} );
 
 	@Override
 	public void handlePreActivation() {

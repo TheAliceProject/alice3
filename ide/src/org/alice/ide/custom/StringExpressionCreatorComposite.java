@@ -53,7 +53,7 @@ public class StringExpressionCreatorComposite extends ExpressionCreatorComposite
 	public static StringExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringState literalValueState = this.createStringState( "", this.createKey( "literalValueState" ) );
+	private final org.lgna.croquet.StringState literalValueState = this.createStringState( this.createKey( "literalValueState" ), "" );
 	
 	private StringExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
