@@ -48,7 +48,7 @@ package org.alice.stageide.videoencode;
  */
 public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
 	private final org.lgna.croquet.StringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
-	private final org.lgna.croquet.BooleanState isRecording = this.createBooleanState( false, this.createKey( "isRecording" ) );
+	private final org.lgna.croquet.BooleanState isRecording = this.createBooleanState( this.createKey( "isRecording" ), false );
 	public RecordEventsPage() {
 		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
 	}

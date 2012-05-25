@@ -46,48 +46,22 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
-	private final Group group;
-	private int ignoreCount = 0;
-
-	public AbstractCompletionModel( Group group, java.util.UUID id ) {
+public abstract class AbstractPerspective extends AbstractElement implements Perspective {
+	private String name;
+	public AbstractPerspective( java.util.UUID id ) {
 		super( id );
-		this.group = group;
 	}
-	public Group getGroup() {
-		return this.group;
-	}
-
-	protected void pushIgnore() {
-		this.ignoreCount++;
-	}
-	protected void popIgnore() {
-		this.ignoreCount--;
-		assert this.ignoreCount >= 0;
-	}
-	protected boolean isAppropriateToComplete() {
-		return Manager.isInTheMidstOfUndoOrRedo()==false && this.ignoreCount == 0;
-	}
-	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step ) {
-		this.initializeIfNecessary();
-		org.lgna.croquet.edits.Edit< ? > edit = step.getEdit();
-		if( edit != null ) {
-			return edit.getTutorialTransactionTitle();
-		} else {
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			return this.getTutorialNoteText( step, trigger != null ? "" : "", edit );
-		}
-	}
-	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
-	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
-		return null;
-	}
-	public abstract Iterable< ? extends PrepModel > getPotentialRootPrepModels();
 	@Override
-	protected void appendRepr( StringBuilder sb ) {
+	protected void localize() {
+		this.name = this.getDefaultLocalizedText();
+	}
+	public String getName() {
+		this.initializeIfNecessary();
+		return this.name;
+	}
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );
-		sb.append( "group=" );
-		sb.append( this.getGroup() );
+		sb.append( this.getName() );
 	}
 }

@@ -94,8 +94,8 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 	private DefaultListSelectionState<UserMethod> listSelectionState;
 	private UserMethod dummy = new UserMethod();
 	private BorderPanel returnPanel = new BorderPanel();
-	private final BooleanState showFunctionsState = this.createBooleanState( true, this.createKey( "areFunctionsShowing" ) );
-	private final BooleanState showProceduresState = this.createBooleanState( true, this.createKey( "areProceduresShowing" ) );
+	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
+	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
 
 	private static class MethodCountPair {
 		private final AbstractMethod method;

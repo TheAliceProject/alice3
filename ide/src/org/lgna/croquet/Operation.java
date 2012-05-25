@@ -253,12 +253,10 @@ public abstract class Operation extends AbstractCompletionModel {
 			return rv;
 		}
 		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			super.appendRepr( rv );
-			rv.append( "[" );
-			rv.append( this.getOperation() );
-			rv.append( "]" );
-			return rv;
+		protected void appendRepr( StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( "operation=" );
+			sb.append( this.getOperation() );
 		}
 		@Override
 		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {

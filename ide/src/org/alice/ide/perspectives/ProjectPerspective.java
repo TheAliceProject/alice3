@@ -46,7 +46,7 @@ package org.alice.ide.perspectives;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectPerspective extends org.lgna.croquet.AbstractElement implements org.lgna.croquet.Perspective {
+public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspective {
 	private final org.lgna.croquet.Composite< ? > mainComposite;
 	private String name;
 	public ProjectPerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > mainComposite ) {
@@ -58,22 +58,6 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractElemen
 	}
 	public org.alice.ide.croquet.models.MenuBarComposite getMenuBarComposite() {
 		return org.alice.ide.croquet.models.MenuBarComposite.getInstance();
-	}
-	@Override
-	protected final void localize() {
-		this.name = this.getDefaultLocalizedText();
-	}
-	@Override
-	protected StringBuilder appendRepr( java.lang.StringBuilder rv ) {
-		//note: do not invoke super
-		//super.appendRepr( rv );
-		if( this.name != null ) {
-			//pass
-		} else {
-			this.localize();
-		}
-		rv.append( this.name );
-		return rv;
 	}
 	public abstract org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus();
 	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
@@ -95,5 +79,9 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractElemen
 			rv.add( dropReceptorComposite );
 		}
 		return rv;
+	}
+	@Override
+	protected String createRepr() {
+		return this.getName();
 	}
 }

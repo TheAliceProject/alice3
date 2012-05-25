@@ -111,10 +111,9 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		return this.value;
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( "value=" );
-		rv.append( this.value );
-		return rv;
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( "value=" );
+		sb.append( this.value );
 	}
 }
