@@ -60,6 +60,11 @@ public class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "addKeyValuePair recursive retarget" );
 			this.addBody( keyAbstractStatementWithBody.body.getValue(), valueAbstractStatementWithBody.body.getValue() );
 		}
+		if( key instanceof org.lgna.project.ast.ExpressionStatement ) {
+			org.lgna.project.ast.ExpressionStatement keyExpressionStatement = (org.lgna.project.ast.ExpressionStatement)key;
+			org.lgna.project.ast.ExpressionStatement valueExpressionStatement = (org.lgna.project.ast.ExpressionStatement)value;
+			this.map.put( keyExpressionStatement.expression.getValue(), valueExpressionStatement.expression.getValue() );
+		}
 		if( key instanceof org.lgna.project.ast.UserCode ) {
 			org.lgna.project.ast.UserCode keyUserCode = (org.lgna.project.ast.UserCode)key;
 			org.lgna.project.ast.UserCode valueUserCode = (org.lgna.project.ast.UserCode)key;
