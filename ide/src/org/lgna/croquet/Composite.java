@@ -299,27 +299,27 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 		this.registerStringValue( rv );
 		return rv;
 	}
-	protected StringState createStringState( String initialValue, Key key ) {
+	protected StringState createStringState( Key key, String initialValue ) {
 		InternalStringState rv = new InternalStringState( initialValue, key );
 		this.mapKeyToStringState.put( key, rv );
 		return rv;
 	}
-	protected BooleanState createBooleanState( boolean initialValue, Key key ) {
+	protected BooleanState createBooleanState( Key key, boolean initialValue ) {
 		InternalBooleanState rv = new InternalBooleanState( initialValue, key );
 		this.mapKeyToBooleanState.put( key, rv );
 		return rv;
 	}
-	protected BoundedIntegerState createBoundedIntegerState( BoundedIntegerDetails details, Key key ) {
+	protected BoundedIntegerState createBoundedIntegerState( Key key, BoundedIntegerDetails details ) {
 		InternalBoundedIntegerState rv = new InternalBoundedIntegerState( details, key );
 		this.mapKeyToBoundedIntegerState.put( key, rv );
 		return rv;
 	}
-	protected BoundedDoubleState createBoundedDoubleState( BoundedDoubleDetails details, Key key ) {
+	protected BoundedDoubleState createBoundedDoubleState( Key key, BoundedDoubleDetails details ) {
 		InternalBoundedDoubleState rv = new InternalBoundedDoubleState( details, key );
 		this.mapKeyToBoundedDoubleState.put( key, rv );
 		return rv;
 	}
-	protected ActionOperation createActionOperation( Action action, Key key ) {
+	protected ActionOperation createActionOperation( Key key, Action action ) {
 		InternalActionOperation rv = new InternalActionOperation( action, key );
 		this.mapKeyToActionOperation.put( key, rv );
 		return rv;
@@ -327,12 +327,14 @@ public abstract class Composite< V extends org.lgna.croquet.components.View< ?, 
 	
 	
 	
-	protected <T extends Enum<T>> ListSelectionState<T> createListSelectionState( Class<T> valueCls, T initialValue, Key key ) {
-		T[] constants = valueCls.getEnumConstants();
-		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
-		InternalListSelectionState<T> rv = new InternalListSelectionState<T>( edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), selectionIndex, constants, key );
+	protected <T> ListSelectionState<T> createListSelectionState( Key key, Class<T> valueCls, org.lgna.croquet.ItemCodec< T > codec, int selectionIndex, T... values ) {
+		InternalListSelectionState<T> rv = new InternalListSelectionState<T>( codec, selectionIndex, values, key );
 		this.mapKeyToListSelectionState.put( key, rv );
 		return rv;
 	}
-	
+	protected <T extends Enum<T>> ListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
+		T[] constants = valueCls.getEnumConstants();
+		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
+		return createListSelectionState( key, valueCls, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), selectionIndex, constants );
+	}
 }
