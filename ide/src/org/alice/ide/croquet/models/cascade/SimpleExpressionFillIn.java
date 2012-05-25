@@ -62,9 +62,8 @@ public class SimpleExpressionFillIn< E extends org.lgna.project.ast.Expression >
 		return this.transientValue;
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( this.transientValue );
-		return rv;
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( this.transientValue );
 	}
 }

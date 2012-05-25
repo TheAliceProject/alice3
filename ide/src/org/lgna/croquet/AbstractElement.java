@@ -252,14 +252,18 @@ public abstract class AbstractElement implements Element {
 		return (org.lgna.croquet.resolvers.Resolver< M >)this.resolver;
 	}
 	
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		rv.append( this.getClass().getName() );
-		return rv;
+	protected void appendRepr( StringBuilder sb ) {
+	}
+	protected String createRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
 	}
 	@Override
 	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		this.appendRepr( sb );
-		return sb.toString();
+		return this.createRepr();
 	}
 }

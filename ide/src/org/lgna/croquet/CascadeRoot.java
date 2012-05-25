@@ -115,6 +115,12 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			}
 			return rv;
 		}
+		@Override
+		protected void appendRepr( StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( "root=" );
+			sb.append( this.root );
+		}
 	}
 	private final InternalPopupPrepModel< T > popupPrepModel = new InternalPopupPrepModel< T >( this );
 

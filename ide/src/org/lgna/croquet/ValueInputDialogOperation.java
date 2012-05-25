@@ -97,12 +97,10 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		}
 		
 		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			super.appendRepr( rv );
-			rv.append( "[" );
-			rv.append( this.getInputDialogOperation() );
-			rv.append( "]" );
-			return rv;
+		protected void appendRepr( StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( "owner=" );
+			sb.append( this.getInputDialogOperation() );
 		}
 	}
 
