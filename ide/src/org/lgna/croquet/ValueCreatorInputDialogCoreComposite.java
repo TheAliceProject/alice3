@@ -46,9 +46,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardPageComposite< V extends org.lgna.croquet.components.View<?,?>> extends PotentiallyGatedComposite< V > {
-	public WizardPageComposite( java.util.UUID id ) {
-		super( id );
+public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends InputDialogCoreComposite<V> {
+	public ValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
-	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
 }

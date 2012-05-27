@@ -46,9 +46,15 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardPageComposite< V extends org.lgna.croquet.components.View<?,?>> extends PotentiallyGatedComposite< V > {
-	public WizardPageComposite( java.util.UUID id ) {
-		super( id );
+public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends InputDialogCoreComposite<V> {
+	private final Operation operation;
+	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
+		super( migrationId );
+		this.operation = new InternalOperation( operationGroup, this );
 	}
-	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract org.lgna.croquet.edits.Edit createEdit();
+	@Override
+	public org.lgna.croquet.Operation getModel() {
+		return this.operation;
+	}
 }

@@ -155,9 +155,9 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		}
 	}
 	protected static interface Action {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) throws CancelException;
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws CancelException;
 	}
-	private static final class InternalActionOperation extends ActionOperation {
+	protected static final class InternalActionOperation extends ActionOperation {
 		private final Action action;
 		private final Key key;
 		private InternalActionOperation( Action action, Key key ) {
@@ -175,7 +175,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			try {
-				org.lgna.croquet.edits.Edit edit = this.action.perform( transaction, trigger );
+				org.lgna.croquet.edits.Edit edit = this.action.perform( step, this );
 				if( edit != null ) {
 					step.commitAndInvokeDo( edit );
 				} else {

@@ -40,14 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface WizardStage {
-	public String getTitle();
-	public org.lgna.croquet.components.JComponent< ? > getComponent();
-	public String getExplanationIfProcedeButtonShouldBeDisabled();
-	public boolean isFinishPotentiallyEnabled();
+public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
+	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?>... wizardPages ) {
+		super( migrationId, wizardPages );
+	}
 }

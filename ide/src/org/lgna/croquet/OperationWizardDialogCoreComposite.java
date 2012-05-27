@@ -46,43 +46,16 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractComposite<V> {
-	public static final Status IS_GOOD_TO_GO_STATUS = null;
-	public static abstract class Status extends AbstractInternalStringValue {
-		private Status( java.util.UUID id, Key key ) {
-			super( id, key );
-		}
-		public abstract boolean isGoodToGo();
+public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite {
+	private final InternalOperation operation;
+
+	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
+		super( migrationId, wizardPages );
+		this.operation = new InternalOperation( operationGroup, this );
 	}
-	public static final class WarningStatus extends Status {
-		private WarningStatus( Key key ) {
-			super( java.util.UUID.fromString( "a1375dce-1d5f-4717-87a1-7d9759a12862" ), key );
-		}
-		@Override
-		public boolean isGoodToGo() {
-			return true;
-		}
-	}
-	public static final class ErrorStatus extends Status {
-		private ErrorStatus( Key key ) {
-			super( java.util.UUID.fromString( "e966c721-1a6e-478d-a22f-92725d68552e" ), key );
-		}
-		@Override
-		public boolean isGoodToGo() {
-			return false;
-		}
-	}
-	protected WarningStatus createWarningStatus( Key key ) {
-		WarningStatus rv = new WarningStatus( key );
-		this.registerStringValue( rv );
-		return rv;
-	}
-	protected ErrorStatus createErrorStatus( Key key ) {
-		ErrorStatus rv = new ErrorStatus( key );
-		this.registerStringValue( rv );
-		return rv;
-	}
-	public GatedComposite( java.util.UUID id ) {
-		super( id );
+	protected abstract org.lgna.croquet.edits.Edit createEdit();
+	@Override
+	public org.lgna.croquet.Operation getModel() {
+		return this.operation;
 	}
 }

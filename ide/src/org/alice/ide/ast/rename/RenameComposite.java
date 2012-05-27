@@ -45,14 +45,14 @@ package org.alice.ide.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainComposite<org.lgna.croquet.components.BorderPanel> {
+public abstract class RenameComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.lgna.croquet.components.BorderPanel> {
 	private final org.lgna.croquet.StringValue nameLabel = this.createStringValue( this.createKey( "nameLabel" ) );
 	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ), "" );
 	public RenameComposite( java.util.UUID migrationId ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 	}
 	@Override
-	protected org.lgna.croquet.GatedComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
 	protected abstract java.awt.Color getViewBackgroundColor();
@@ -64,5 +64,9 @@ public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainCo
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
 		rv.setBackgroundColor( this.getViewBackgroundColor() );
 		return rv;
+	}
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit() {
+		return null;
 	}
 }
