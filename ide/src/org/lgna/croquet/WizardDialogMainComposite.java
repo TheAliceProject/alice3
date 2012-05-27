@@ -168,7 +168,13 @@ public abstract class WizardDialogMainComposite extends GatedCommitMainComposite
 		this.listSelectionModel.setSelectionInterval( this.index, this.index );
 		String text;
 		if( this.index != -1 ) {
-			text = this.cardComposite.getCards().get( this.index ).getDefaultLocalizedText();
+			Composite<?> composite = this.cardComposite.getCards().get( this.index );
+			if( composite instanceof WizardPageComposite ) {
+				WizardPageComposite wizardPageComposite = (WizardPageComposite)composite;
+				text = wizardPageComposite.getDefaultLocalizedText();
+			} else {
+				text = null;
+			}
 		} else {
 			text = null;
 		}

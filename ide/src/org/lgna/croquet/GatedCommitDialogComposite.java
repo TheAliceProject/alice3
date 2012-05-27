@@ -52,7 +52,7 @@ public abstract class GatedCommitDialogComposite< MC extends GatedCommitMainComp
 	private static final String NULL_EXPLANATION = "good to go";
 	private static final String NULL_STEP_EXPLANATION = "null step";
 
-	protected static abstract class ControlsComposite extends Composite< org.lgna.croquet.components.GridBagPanel > {
+	protected static abstract class ControlsComposite extends AbstractComposite< org.lgna.croquet.components.GridBagPanel > {
 		public static final class InternalCompleteOperationResolver extends IndirectResolver< InternalCompleteOperation, ControlsComposite > {
 			private InternalCompleteOperationResolver( ControlsComposite indirect ) {
 				super( indirect );

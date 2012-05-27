@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+public abstract class DialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractComposite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "d4dfb949-2761-432e-9ad0-932ba0d6b4f6" ), "DIALOG_IMPLEMENTATION_GROUP" );
 
 	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>> implements org.lgna.croquet.dialog.DialogOwner<V> {

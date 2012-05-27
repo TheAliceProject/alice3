@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabComposite< V extends org.lgna.croquet.components.View<?,?> > extends Composite< V > {
+public abstract class TabComposite< V extends org.lgna.croquet.components.View<?,?> > extends AbstractComposite< V > {
 	private String titleText;
 	private javax.swing.Icon titleIcon;
 

@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+public abstract class GatedComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractComposite<V> {
 	public static final Status IS_GOOD_TO_GO_STATUS = null;
 	public static abstract class Status extends AbstractInternalStringValue {
 		private Status( java.util.UUID id, Key key ) {

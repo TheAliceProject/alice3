@@ -45,7 +45,7 @@ package org.alice.ide.perspectives.noproject;
 /**
  * @author Dennis Cosgrove
  */
-public class MainComposite extends org.lgna.croquet.Composite {
+public class MainComposite extends org.lgna.croquet.SimpleComposite {
 	private static class SingletonHolder {
 		private static MainComposite instance = new MainComposite();
 	}
