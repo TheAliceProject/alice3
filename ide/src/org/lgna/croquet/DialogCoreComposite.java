@@ -157,14 +157,8 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			DialogCoreComposite coreComposite = this.getDialogCoreComposite();
 			assert coreComposite != null : this;
-			Model initialModel = coreComposite.getInitialModel();
-			assert initialModel != null : coreComposite;
-			org.lgna.croquet.history.CompletionStep<?> dialogStep = step.getFirstAncestorStepOfEquivalentModel( initialModel, org.lgna.croquet.history.CompletionStep.class );
-			if( dialogStep != null ) {
-				//pass
-			} else {
-				dialogStep = transaction.getParent().getParent();
-			}
+			org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getParent().getParent();
+			assert dialogStep != null : transaction;
 			org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 			assert dialog != null : dialogStep;
 			dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
@@ -225,7 +219,6 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	public DialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
-	public abstract Model getInitialModel();
 	protected abstract CC getDialogContentComposite();
 	protected final Operation getCommitOperation() {
 		return this.commitOperation;

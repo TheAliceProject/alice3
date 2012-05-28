@@ -99,8 +99,7 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 		super( migrationId );
 	}
 	
-	@Override
-	public org.lgna.croquet.CascadeFillIn<T,Void> getInitialModel() {
+	public org.lgna.croquet.CascadeFillIn<T,Void> getFillIn() {
 		return this.fillIn;
 	}
 	public T getPreviewValue() {
