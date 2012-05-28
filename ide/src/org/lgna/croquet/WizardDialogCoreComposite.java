@@ -345,6 +345,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+		this.setIndex( 0 );
 		this.cardComposite.handlePreActivation();
 	}
 	@Override
