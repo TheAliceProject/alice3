@@ -74,13 +74,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
 	private Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
 
-	private final ActionOperation recordOperation = this.createActionOperation( new Action() {
+	private final ActionOperation recordOperation = this.createActionOperation( this.createKey( "isRecording.false" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
 			toggleRecording();
 			recordOperation.setName( ImageRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
 			return null;
 		}
-	}, this.createKey( "isRecording.false" ) );
+	} );
 
 	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
 

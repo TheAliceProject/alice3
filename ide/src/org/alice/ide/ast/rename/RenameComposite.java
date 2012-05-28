@@ -47,7 +47,7 @@ package org.alice.ide.ast.rename;
  */
 public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainComposite<org.lgna.croquet.components.BorderPanel> {
 	private final org.lgna.croquet.StringValue nameLabel = this.createStringValue( this.createKey( "nameLabel" ) );
-	private final org.lgna.croquet.StringState nameState = this.createStringState( "", this.createKey( "nameState" ) );
+	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ), "" );
 	public RenameComposite( java.util.UUID migrationId ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 	}

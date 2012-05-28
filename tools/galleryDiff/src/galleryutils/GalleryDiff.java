@@ -386,7 +386,8 @@ public class GalleryDiff {
 				{
 					org.lgna.story.resources.ModelResource[] enums = (org.lgna.story.resources.ModelResource[])cls.getEnumConstants();
 					for (org.lgna.story.resources.ModelResource resource : enums) {
-						symbols.add(cls.getName()+"."+resource.toString());
+						String resourceSymbol = resource.toString();
+						symbols.add(resourceSymbol);
 					}
 				}
 				symbols.add(cls.getName());
@@ -420,7 +421,8 @@ public class GalleryDiff {
 				{
 					org.lgna.story.resources.ModelResource[] enums = (org.lgna.story.resources.ModelResource[])cls.getEnumConstants();
 					for (org.lgna.story.resources.ModelResource resource : enums) {
-						symbols.add(cls.getName()+"."+resource.toString());
+						String resourceSymbol = resource.toString();
+						symbols.add(resourceSymbol);
 					}
 				}
 				symbols.add(cls.getName());
