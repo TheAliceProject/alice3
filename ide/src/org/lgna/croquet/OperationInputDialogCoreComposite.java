@@ -64,7 +64,6 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 				super.handlePostHideDialog( node );
 				org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)node;
 				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-				assert isCommited != null : completionStep;
 				if( isCommited ) {
 					try {
 						org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
