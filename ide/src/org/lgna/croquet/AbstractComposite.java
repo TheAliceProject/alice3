@@ -309,12 +309,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		this.mapKeyToBooleanState.put( key, rv );
 		return rv;
 	}
-	protected BoundedIntegerState createBoundedIntegerState( Key key, BoundedIntegerDetails details ) {
+	protected BoundedIntegerState createBoundedIntegerState( Key key, BoundedIntegerState.Details details ) {
 		InternalBoundedIntegerState rv = new InternalBoundedIntegerState( details, key );
 		this.mapKeyToBoundedIntegerState.put( key, rv );
 		return rv;
 	}
-	protected BoundedDoubleState createBoundedDoubleState( Key key, BoundedDoubleDetails details ) {
+	protected BoundedDoubleState createBoundedDoubleState( Key key, BoundedDoubleState.Details details ) {
 		InternalBoundedDoubleState rv = new InternalBoundedDoubleState( details, key );
 		this.mapKeyToBoundedDoubleState.put( key, rv );
 		return rv;
