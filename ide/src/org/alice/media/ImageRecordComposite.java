@@ -50,8 +50,6 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.ImplementationAccessor;
