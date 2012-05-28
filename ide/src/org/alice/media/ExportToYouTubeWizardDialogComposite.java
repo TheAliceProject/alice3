@@ -93,6 +93,10 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		}
 	}
 	@Override
+	protected boolean isGoldenRatioDesired() {
+		return false;
+	}
+	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}
