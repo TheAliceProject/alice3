@@ -56,4 +56,30 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 	public org.lgna.croquet.Operation getModel() {
 		return this.operation;
 	}
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+				super.handlePostHideDialog( node );
+				org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)node;
+				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
+				assert isCommited != null : completionStep;
+				if( isCommited ) {
+					try {
+						org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
+						if( edit != null ) {
+							completionStep.commitAndInvokeDo( edit );
+						} else {
+							completionStep.finish();
+						}
+					} catch( CancelException ce ) {
+						completionStep.cancel();
+					}
+				} else {
+					completionStep.cancel();
+				}
+			}
+		}, completionStep );
+	}
 }

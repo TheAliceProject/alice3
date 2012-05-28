@@ -64,10 +64,9 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.OperationWizard
 		this.addPage( this.uploadPage );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit() {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}
-	
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {

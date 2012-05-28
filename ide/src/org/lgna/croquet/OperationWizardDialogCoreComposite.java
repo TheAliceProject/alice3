@@ -56,4 +56,24 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	public org.lgna.croquet.Operation getModel() {
 		return this.operation;
 	}
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+				super.handlePostHideDialog( node );
+				org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)node;
+				try {
+					org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
+					if( edit != null ) {
+						completionStep.commitAndInvokeDo( edit );
+					} else {
+						completionStep.finish();
+					}
+				} catch( CancelException ce ) {
+					completionStep.cancel();
+				}
+			}
+		}, completionStep );
+	}
 }

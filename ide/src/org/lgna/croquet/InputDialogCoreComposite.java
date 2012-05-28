@@ -45,6 +45,7 @@ package org.lgna.croquet;
 /*package-private*/ final class InputDialogContentPanel extends GatedCommitDialogContentPanel<InputDialogContentComposite> {
 	public InputDialogContentPanel( InputDialogContentComposite composite ) {
 		super( composite );
+		this.getControlLine().addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
 		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
 		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
 	}

@@ -52,8 +52,9 @@ package org.lgna.croquet;
 		DialogCoreComposite coreComposite = composite.getCoreComposite();
 		this.commitButton = coreComposite.getCommitOperation().createButton();
 		this.cancelButton = coreComposite.getCancelOperation().createButton();
-		this.setBackgroundColor( null );
-		this.addComponent( coreComposite.getView(), Constraint.CENTER );
+		org.lgna.croquet.components.View<?,?> coreView = coreComposite.getView();
+		this.setBackgroundColor( coreView.getBackgroundColor() );
+		this.addComponent( coreView, Constraint.CENTER );
 	}
 	public org.lgna.croquet.components.Button getCommitButton() {
 		return this.commitButton;
@@ -104,7 +105,7 @@ package org.lgna.croquet;
  */
 public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>,CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends PotentiallyGatedComposite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
-	private static final org.lgna.croquet.history.Step.Key< Boolean > IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "GatedCommitDialogCoreComposite.IS_COMMITED_KEY" );
+	protected static final org.lgna.croquet.history.Step.Key< Boolean > IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 	public static final class InternalCommitOperationResolver extends IndirectResolver< InternalCommitOperation, DialogCoreComposite > {
 		private InternalCommitOperationResolver( DialogCoreComposite indirect ) {
 			super( indirect );
@@ -154,7 +155,12 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			org.lgna.croquet.history.CompletionStep<?> dialogStep = step.getFirstAncestorStepOfEquivalentModel( this.getDialogCoreComposite().getModel(), org.lgna.croquet.history.CompletionStep.class );
+			DialogCoreComposite coreComposite = this.getDialogCoreComposite();
+			assert coreComposite != null : this;
+			Model initialModel = coreComposite.getModel();
+			assert initialModel != null : coreComposite;
+			org.lgna.croquet.history.CompletionStep<?> dialogStep = step.getFirstAncestorStepOfEquivalentModel( initialModel, org.lgna.croquet.history.CompletionStep.class );
+			assert dialogStep != null : initialModel;
 			org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 			dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
 			dialog.setVisible( false );
@@ -298,7 +304,22 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 //		return rv;
 		return "";
 	}
+	protected boolean isGoldenRatioDesired() {
+		return true;
+	}
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		if( this.isGoldenRatioDesired() ) {
+			java.awt.Dimension size = dialog.getSize();
+			int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.width );
+			if( phiHeight > size.height ) {
+				dialog.setSize( size.width, phiHeight );
+			} else {
+				int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.height );
+				if( phiWidth > size.width ) {
+					dialog.setSize( phiWidth, size.height );
+				}
+			}
+		}
 	}
 	protected java.awt.Point getDesiredDialogLocation() {
 		return null;

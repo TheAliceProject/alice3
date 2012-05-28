@@ -52,22 +52,19 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		this.composite = composite;
 	}
 	@Override
+	protected void localize() {
+		//todo
+		//note: do not call super
+		this.setName( this.findLocalizedText( null, Composite.class ) );
+	}
+	@Override
 	protected java.lang.Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
 		return this.composite.getClass();
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger );
-		try {
-			org.lgna.croquet.edits.Edit edit = this.composite.createEdit( completionStep );
-			if( edit != null ) {
-				completionStep.commitAndInvokeDo( edit );
-			} else {
-				completionStep.finish();
-			}
-		} catch( CancelException ce ) {
-			completionStep.cancel();
-		}
+		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		this.composite.perform( completionStep );
 	}
 }
 
