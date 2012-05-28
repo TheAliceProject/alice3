@@ -46,12 +46,11 @@ import java.awt.Component;
 import java.io.File;
 
 import org.alice.media.components.MoviePlayerView;
-import org.lgna.croquet.Composite;
 
 /**
  * @author Matt May
  */
-public class MoviePlayerComposite extends Composite<MoviePlayerView> {
+public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<MoviePlayerView> {
 
 	private MoviePlayer player;
 

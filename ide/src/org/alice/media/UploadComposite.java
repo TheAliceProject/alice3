@@ -60,8 +60,6 @@ import org.lgna.croquet.StringState;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.Project;
 
 import com.google.gdata.data.media.MediaFileSource;
@@ -103,7 +101,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "Alice3" );
 	//	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "" );
 	private final ActionOperation loginOperation = this.createActionOperation( this.createKey( "login" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			boolean blah = true;
 			try {
 				uploader.logIn( idState.getValue(), passwordState.getValue() );
@@ -118,7 +116,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		}
 	} );
 	private final ActionOperation uploadOperation = this.createActionOperation( this.createKey( "upload" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation src ) throws org.lgna.croquet.CancelException {
 			VideoEntry entry = new VideoEntry();
 
 			MediaFileSource source = new MediaFileSource( owner.getFile(), "video/quicktime" );
@@ -248,7 +246,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		//		player.init();
 	}
 	@Override
-	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus( CompletionStep<?> step ) {
 		if( !isLoggedIn ) {
 			return errorNotLoggedIn;
 		} //else if( )

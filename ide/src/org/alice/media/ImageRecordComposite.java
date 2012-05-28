@@ -75,14 +75,14 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
 
 	private final ActionOperation recordOperation = this.createActionOperation( this.createKey( "isRecording.false" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			toggleRecording();
 			recordOperation.setName( ImageRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
 			return null;
 		}
 	} );
 
-	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ), this.createKey( "frameRate" ) );
+	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( this.createKey( "frameRate" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
 
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
@@ -203,7 +203,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	@Override
-	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus( CompletionStep<?> step ) {
 		if(isRecording) {
 			System.out.println("isRecording: " + errorIsRecording.getText());
 			return errorIsRecording;

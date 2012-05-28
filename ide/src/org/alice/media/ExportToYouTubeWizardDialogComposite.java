@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.matt.EventScript;
 /**
  * @author Dennis Cosgrove
  */
-public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.WizardDialogMainComposite {
+public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.OperationWizardDialogCoreComposite {
 	private static class SingletonHolder {
 		private static ExportToYouTubeWizardDialogComposite instance = new ExportToYouTubeWizardDialogComposite();
 	}
@@ -92,6 +92,10 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 			edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( this.file );
 		}
 	}
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
+	}
 	public static void main( final String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -102,7 +106,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Wizar
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				ExportToYouTubeWizardDialogComposite.getInstance().setProject( project );
-				ExportToYouTubeWizardDialogComposite.getInstance().getGatedCommitDialogComposite().getOperation().fire();
+				ExportToYouTubeWizardDialogComposite.getInstance().getModel().fire();
 				System.exit( 0 );
 			}
 		} );

@@ -47,8 +47,6 @@ import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
@@ -74,8 +72,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	private final ActionOperation playRecordedOperation = this.createActionOperation( this.createKey( "isRecording.false" ), new Action() {
 
-
-		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			isRecording = !isRecording;
 			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
 			if( isRecording ) {
@@ -88,7 +85,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	} );
 
 	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( Transaction transaction, Trigger trigger ) {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			lookingGlassContainer.removeAllComponents();
 			lookingGlassContainer = getView().getLookingGlassContainer();
 			programContext = new RunProgramContext( owner.getProject().getProgramType() );
@@ -137,7 +134,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	@Override
-	public org.lgna.croquet.GatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus( CompletionStep<?> step ) {
 		return isRecording ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
 	}
 }
