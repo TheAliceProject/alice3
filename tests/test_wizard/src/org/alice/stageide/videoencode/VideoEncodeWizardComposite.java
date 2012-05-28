@@ -46,7 +46,7 @@ package org.alice.stageide.videoencode;
 /**
  * @author Dennis Cosgrove
  */
-public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMainComposite {
+public class VideoEncodeWizardComposite extends org.lgna.croquet.OperationWizardDialogCoreComposite {
 	private static class SingletonHolder {
 		private static VideoEncodeWizardComposite instance = new VideoEncodeWizardComposite();
 	}
@@ -63,7 +63,10 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMai
 		this.addPage( this.captureImagesPage );
 		this.addPage( this.uploadPage );
 	}
-	
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
+	}
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -71,7 +74,7 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.WizardDialogMai
 		}
 		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
 		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
-		composite.getGatedCommitDialogComposite().getOperation().fire();
+		composite.getModel().fire();
 		System.exit( 0 );
 	}
 }

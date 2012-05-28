@@ -40,25 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.perspectives.noproject;
+
+package org.alice.ide.ast.rename.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NoProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	private static class SingletonHolder {
-		private static NoProjectPerspective instance = new NoProjectPerspective();
+public class RenamePanel extends org.lgna.croquet.components.BorderPanel {
+	private final org.lgna.croquet.components.TextField textField;
+	public RenamePanel( org.alice.ide.ast.rename.RenameComposite composite ) {
+		super( composite );
+		this.textField = composite.getNameState().createTextField();
+		org.lgna.croquet.components.BorderPanel line = new org.lgna.croquet.components.BorderPanel();
+		line.addComponent( composite.getNameLabel().createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		line.addComponent( this.textField, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		line.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
+		this.addComponent( line, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 	}
-	public static NoProjectPerspective getInstance() {
-		return SingletonHolder.instance;
-	}
-	private NoProjectPerspective() {
-		super( java.util.UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
-	}
-	public org.lgna.croquet.Composite< ? > getMainComposite() {
-		return MainComposite.getInstance();
-	}
-	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
-		return MenuBarComposite.getInstance();
+	public org.lgna.croquet.components.TextField getTextField() {
+		return this.textField;
 	}
 }

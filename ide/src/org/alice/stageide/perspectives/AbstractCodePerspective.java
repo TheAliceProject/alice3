@@ -40,25 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.perspectives.noproject;
+
+package org.alice.stageide.perspectives;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NoProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	private static class SingletonHolder {
-		private static NoProjectPerspective instance = new NoProjectPerspective();
+public abstract class AbstractCodePerspective extends org.alice.ide.perspectives.ProjectPerspective {
+	public AbstractCodePerspective( java.util.UUID id, org.lgna.croquet.Composite<?> mainComposite ) {
+		super( id, mainComposite );
 	}
-	public static NoProjectPerspective getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus() {
+		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance().getCodeDropReceptorInFocus();
 	}
-	private NoProjectPerspective() {
-		super( java.util.UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
-	}
-	public org.lgna.croquet.Composite< ? > getMainComposite() {
-		return MainComposite.getInstance();
-	}
-	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
-		return MenuBarComposite.getInstance();
+	@Override
+	protected void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+		org.alice.ide.declarationseditor.DeclarationComposite< ?, ? > declarationComposite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+		if( declarationComposite != null ) {
+			org.alice.ide.declarationseditor.components.DeclarationView declarationView = declarationComposite.getView();
+			declarationView.addPotentialDropReceptors( out, dragModel );
+		}
 	}
 }

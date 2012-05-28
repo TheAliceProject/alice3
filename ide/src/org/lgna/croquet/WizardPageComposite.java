@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardPageComposite< V extends org.lgna.croquet.components.View<?,?>> extends GatedComposite< V > {
+public abstract class WizardPageComposite< V extends org.lgna.croquet.components.View<?,?>> extends PotentiallyGatedComposite< V > {
 	public WizardPageComposite( java.util.UUID id ) {
 		super( id );
 	}

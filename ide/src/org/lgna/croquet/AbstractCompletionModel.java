@@ -85,11 +85,9 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	}
 	public abstract Iterable< ? extends PrepModel > getPotentialRootPrepModels();
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( "[" );
-		rv.append( this.getGroup() );
-		rv.append( "]" );
-		return rv;
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( "group=" );
+		sb.append( this.getGroup() );
 	}
 }

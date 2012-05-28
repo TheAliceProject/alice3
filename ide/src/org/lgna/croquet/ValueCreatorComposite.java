@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends Composite<V> {
+public abstract class ValueCreatorComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends AbstractComposite<V> {
 	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>,T> implements org.lgna.croquet.dialog.DialogOwner<V> {
 
 		private final ValueCreatorComposite<V,T> composite;

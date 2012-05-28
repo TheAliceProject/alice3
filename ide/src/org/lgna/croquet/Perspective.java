@@ -47,6 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface Perspective extends Element {
+	public String getName();
 	public Composite< ? > getMainComposite();
 	public MenuBarComposite getMenuBarComposite();
 }

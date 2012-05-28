@@ -45,23 +45,50 @@ package org.alice.ide.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite extends org.lgna.croquet.InputDialogMainComposite<org.lgna.croquet.components.BorderPanel> {
+public abstract class RenameComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.ide.ast.rename.components.RenamePanel> {
+	private final org.alice.ide.name.NameValidator nameValidator;
 	private final org.lgna.croquet.StringValue nameLabel = this.createStringValue( this.createKey( "nameLabel" ) );
 	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ), "" );
-	public RenameComposite( java.util.UUID migrationId ) {
+	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
+		this.nameValidator = nameValidator;
+	}
+	public org.lgna.croquet.StringValue getNameLabel() {
+		return this.nameLabel;
+	}
+	public org.lgna.croquet.StringState getNameState() {
+		return this.nameState;
 	}
 	@Override
-	protected org.lgna.croquet.GatedComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( nameValidator != null ) {
+			String candidate = this.nameState.getValue();
+			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+			if( explanation != null ) {
+				errorStatus.setText( explanation );
+				return errorStatus;
+			} else {
+				return IS_GOOD_TO_GO_STATUS;
+			}
+		} else {
+			return IS_GOOD_TO_GO_STATUS;
+		}
+	}
+	protected abstract String getInitialValue();
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+		super.handlePreShowDialog( node );
+		this.nameState.setValueTransactionlessly( this.getInitialValue() );
+		
+		org.alice.ide.ast.rename.components.RenamePanel view = this.getView();
+		view.getTextField().selectAll();
 	}
 	protected abstract java.awt.Color getViewBackgroundColor();
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( this );
-		rv.addComponent( this.nameLabel.createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		rv.addComponent( this.nameState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
+	protected org.alice.ide.ast.rename.components.RenamePanel createView() {
+		org.alice.ide.ast.rename.components.RenamePanel rv = new org.alice.ide.ast.rename.components.RenamePanel( this );
+		rv.setMinimumPreferredWidth( 320 );
 		rv.setBackgroundColor( this.getViewBackgroundColor() );
 		return rv;
 	}

@@ -40,25 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.perspectives.noproject;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NoProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	private static class SingletonHolder {
-		private static NoProjectPerspective instance = new NoProjectPerspective();
-	}
-	public static NoProjectPerspective getInstance() {
-		return SingletonHolder.instance;
-	}
-	private NoProjectPerspective() {
-		super( java.util.UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
-	}
-	public org.lgna.croquet.Composite< ? > getMainComposite() {
-		return MainComposite.getInstance();
-	}
-	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
-		return MenuBarComposite.getInstance();
-	}
+public interface OperationOwningComposite< V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
 }

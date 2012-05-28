@@ -115,6 +115,11 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			}
 			return rv;
 		}
+		@Override
+		protected void appendRepr( StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( this.root );
+		}
 	}
 	private final InternalPopupPrepModel< T > popupPrepModel = new InternalPopupPrepModel< T >( this );
 
@@ -190,6 +195,11 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		} finally {
 			this.getPopupPrepModel().handleFinally();
 		}
+	}
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( this.getCompletionModel() );
 	}
 	//
 	//	public abstract void handleCompletion( CS completionStep, T[] values );

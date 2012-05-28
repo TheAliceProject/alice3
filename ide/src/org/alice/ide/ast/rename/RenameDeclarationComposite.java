@@ -47,12 +47,20 @@ package org.alice.ide.ast.rename;
  */
 public abstract class RenameDeclarationComposite< N extends org.lgna.project.ast.AbstractDeclaration > extends RenameComposite {
 	private final N declaration;
-	public RenameDeclarationComposite( java.util.UUID migrationIde, N declaration ) {
-		super( migrationIde );
+	public RenameDeclarationComposite( java.util.UUID migrationIde, org.alice.ide.name.NameValidator nameValidator, N declaration ) {
+		super( migrationIde, nameValidator );
 		this.declaration = declaration;
 	}
 	@Override
 	protected java.awt.Color getViewBackgroundColor() {
 		return org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( this.declaration );
+	}
+	@Override
+	protected String getInitialValue() {
+		return this.declaration.getName();
+	}
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep ) {
+		return new org.alice.ide.croquet.edits.ast.rename.RenameDeclarationEdit( completionStep, declaration, this.declaration.getName(), this.getNameState().getValue() );
 	}
 }
