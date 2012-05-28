@@ -330,7 +330,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
 	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
-		this.handlePreActivation();
+		this.getDialogContentComposite().handlePreActivation();
 		org.lgna.croquet.components.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 		if( commitButton != null ) {
 			//todo
@@ -340,7 +340,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		}
 	}
 	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
-		this.handlePostDeactivation();
+		this.getDialogContentComposite().handlePostDeactivation();
 	}
 	protected void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
 	}
