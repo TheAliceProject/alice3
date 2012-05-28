@@ -71,11 +71,11 @@ public class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends 
 		this.transientValue = createInstanceCreation( constructor, field );
 	}
 	@Override
-	public org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > step ) {
+	public org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return createInstanceCreation( this.transientValue.constructor.getValue(), this.field );
 	}
 	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > step ) {
+	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > node ) {
 		return this.transientValue;
 	}
 }

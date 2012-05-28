@@ -123,8 +123,8 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		}
 		return rv;
 	}
-	public F createValue() {
-		return this.getElement().createValue( this.getNode() );
+	public F createValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return this.getElement().createValue( this.getNode(), completionStep );
 	}
 	protected boolean isLast() {
 		return this.getNextNode() == null;

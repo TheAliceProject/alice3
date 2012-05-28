@@ -63,11 +63,11 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 	public void select() {
 	}
 
-	protected T[] createValues( Class< T > componentType ) {
+	protected final T[] createValues( CS completionStep, Class< T > componentType ) {
 		RtBlank< T >[] rtBlanks = this.getBlankChildren();
 		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
 		for( int i = 0; i < rtBlanks.length; i++ ) {
-			rv[ i ] = rtBlanks[ i ].createValue();
+			rv[ i ] = rtBlanks[ i ].createValue( completionStep );
 		}
 		return rv;
 	}
@@ -81,7 +81,7 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 		CascadeRoot< T, CS > root = this.getElement();
 		CS completionStep = root.createCompletionStep( transaction, trigger );
 		try {
-			T[] values = this.createValues( root.getComponentType() );
+			T[] values = this.createValues( completionStep, root.getComponentType() );
 			root.handleCompletion( completionStep, values );
 		} catch( CancelException ce ) {
 			this.cancel( completionStep, trigger, ce );

@@ -74,7 +74,7 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.OperationWizard
 		}
 		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
 		VideoEncodeWizardComposite composite = new VideoEncodeWizardComposite();
-		composite.getModel().fire();
+		composite.getInitialModel().fire();
 		System.exit( 0 );
 	}
 }

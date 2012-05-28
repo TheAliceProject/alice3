@@ -53,7 +53,7 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
 	@Override
-	public org.lgna.croquet.Operation getModel() {
+	public org.lgna.croquet.Operation getInitialModel() {
 		return this.operation;
 	}
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );

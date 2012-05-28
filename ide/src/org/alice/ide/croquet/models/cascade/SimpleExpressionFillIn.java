@@ -54,11 +54,11 @@ public class SimpleExpressionFillIn< E extends org.lgna.project.ast.Expression >
 		this.transientValue = value;
 	}
 	@Override
-	public E createValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > step ) {
+	public E createValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return this.transientValue;
 	}
 	@Override
-	public E getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > step ) {
+	public E getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > node ) {
 		return this.transientValue;
 	}
 	@Override

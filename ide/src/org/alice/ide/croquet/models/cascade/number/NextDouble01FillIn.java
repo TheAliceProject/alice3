@@ -56,17 +56,17 @@ public class NextDouble01FillIn extends org.alice.ide.croquet.models.cascade.Exp
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 	private NextDouble01FillIn() {
 		super( java.util.UUID.fromString( "4d6ae280-3a3b-413b-b73e-437d513e9cc0" ) );
-		this.transientValue = this.createValue( null );
+		this.transientValue = this.createValue( null, null );
 	}
 	@Override
-	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation,Void > step ) {
+	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		final String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
 		org.lgna.project.ast.JavaType RANDOM_UTILITIES_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.common.RandomUtilities.class );
 		org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( RANDOM_UTILITIES_TYPE );
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( typeExpression, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new org.lgna.project.ast.DoubleLiteral( 0.0 ), new org.lgna.project.ast.DoubleLiteral( 1.0 ) );
 	}
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation,Void > step ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation,Void > node ) {
 		return this.transientValue;
 	}
 }

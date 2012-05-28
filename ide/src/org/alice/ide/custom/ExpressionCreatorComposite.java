@@ -46,8 +46,12 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorComposite<V extends org.lgna.croquet.components.View<?,?>> extends org.lgna.croquet.ValueCreatorComposite<V,org.lgna.project.ast.Expression>{
+public abstract class ExpressionCreatorComposite<V extends org.lgna.croquet.components.View<?,?>> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V,org.lgna.project.ast.Expression>{
 	public ExpressionCreatorComposite( java.util.UUID id ) {
 		super( id );
+	}
+	@Override
+	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( org.lgna.croquet.history.Node<?> node ) {
+		return null;
 	}
 }

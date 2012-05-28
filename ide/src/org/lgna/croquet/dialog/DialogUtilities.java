@@ -73,13 +73,7 @@ public class DialogUtilities {
 			}
 		}
 		final org.lgna.croquet.components.Dialog dialog = new org.lgna.croquet.components.Dialog( owner );
-		if( node instanceof org.lgna.croquet.history.Step<?> ) {
-			org.lgna.croquet.history.Step<?> step = (org.lgna.croquet.history.Step<?>)node;
-			step.putEphemeralDataFor( DIALOG_KEY, dialog );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( node, dialog );
-		}
-
+		node.putEphemeralDataFor( DIALOG_KEY, dialog );
 		class DialogWindowListener implements java.awt.event.WindowListener {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				dialogOwner.handleDialogOpened( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );

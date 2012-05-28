@@ -144,7 +144,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		return null;
 	}
 	@Override
-	public final T[] createValue( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
+	public final T[] createValue( org.lgna.croquet.cascade.ItemNode< ? super T[], T > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now

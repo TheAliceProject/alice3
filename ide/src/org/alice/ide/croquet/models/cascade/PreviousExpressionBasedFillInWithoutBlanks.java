@@ -76,11 +76,11 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 
 	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
 	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}
 	@Override
-	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
 		//todo?
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}

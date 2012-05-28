@@ -83,7 +83,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			return new javax.swing.JLabel( this.getTutorialItemText() );
 		}
 		@Override
-		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 			org.lgna.croquet.history.CompletionStep<?> inputDialogStep = this.valueInputDialogOperation.fire();
 			if( inputDialogStep.containsEphemeralDataFor( VALUE_KEY ) ) {
 				return (F)inputDialogStep.getEphemeralDataFor( VALUE_KEY );
@@ -92,7 +92,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			}
 		}
 		@Override
-		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
 			return null;
 		}
 		

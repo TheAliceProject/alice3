@@ -46,8 +46,74 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends InputDialogCoreComposite<V> {
+public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends InputDialogCoreComposite<V> {
+	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueCreatorInputDialogCoreComposite<?,F> > {
+		private InternalFillInResolver( ValueCreatorInputDialogCoreComposite<?,F> internal ) {
+			super( internal );
+		}
+		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected InternalFillIn<F> getDirect( ValueCreatorInputDialogCoreComposite<?,F> indirect ) {
+			return indirect.fillIn;
+		}
+	}
+	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
+		private final ValueCreatorInputDialogCoreComposite<?,F> composite;
+		private InternalFillIn( ValueCreatorInputDialogCoreComposite<?,F> composite ) {
+			super( java.util.UUID.fromString( "258797f2-c1b6-4887-b6fc-42702493d573" ) );
+			this.composite = composite;
+		}
+		public ValueCreatorInputDialogCoreComposite<?,F> getComposite() {
+			return this.composite;
+		}
+		@Override
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.composite.getClass();
+		}
+		@Override
+		protected InternalFillInResolver<F> createResolver() {
+			return new InternalFillInResolver<F>( this.composite );
+		}
+		@Override
+		protected String getTutorialItemText() {
+			return this.composite.getDefaultLocalizedText();
+		}
+		@Override
+		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+			return new javax.swing.JLabel( this.getTutorialItemText() );
+		}
+		@Override
+		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+			return this.composite.createValue( node, completionStep );
+		}
+		@Override
+		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
+			return null;
+		}
+	}
+
+	private InternalFillIn<T> fillIn = new InternalFillIn<T>( this );
 	public ValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
+	}
+	
+	@Override
+	public org.lgna.croquet.CascadeFillIn<T,Void> getInitialModel() {
+		return this.fillIn;
+	}
+	public T getPreviewValue() {
+		return this.createValue();
+	}
+	protected abstract T createValue();
+	private T createValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		throw new CancelException();
+//		org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+//		assert transactionHistory != null : completionStep;
+//		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( transactionHistory );
+//		org.lgna.croquet.history.CompletionStep subCompletionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, null, new org.lgna.croquet.triggers.SimulatedTrigger(), new org.lgna.croquet.history.TransactionHistory() );
+//		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ), subCompletionStep );
+//		return this.createValue();
 	}
 }

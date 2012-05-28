@@ -64,11 +64,11 @@ public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.ca
 		this.type = type;
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, java.lang.Void> step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node ) {
 		return org.alice.ide.common.TypeIcon.getInstance( type );
 	}
 	@Override
-	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > step ) {
+	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.lgna.project.ast.TypeExpression( this.type );
 //		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
 //		if( subStep.isValueCommitted() ) {
