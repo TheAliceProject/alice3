@@ -223,56 +223,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		return this.cancelOperation;
 	}
 
-	public static final class InternalOperationResolver extends IndirectResolver<InternalOperation,DialogCoreComposite> {
-		private InternalOperationResolver( DialogCoreComposite indirect ) {
-			super( indirect );
-		}
-		public InternalOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected InternalOperation getDirect( DialogCoreComposite indirect ) {
-			return (InternalOperation)indirect.getModel();
-		}
-	}
-	protected static final class InternalOperation extends ActionOperation {
-		private final DialogCoreComposite composite;
-
-		public InternalOperation( Group group, DialogCoreComposite composite ) {
-			super( group, java.util.UUID.fromString( "996e6478-a443-4f81-8976-61074d5c63b4" ) );
-			this.composite = composite;
-		}
-		@Override
-		protected void localize() {
-			//todo
-			//note: do not call super
-			this.setName( this.findLocalizedText( null, Composite.class ) );
-		}
-		@Override
-		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
-			return this.composite.getClassUsedForLocalization();
-		}
-		@Override
-		protected void initialize() {
-			super.initialize();
-			this.composite.initializeIfNecessary();
-		}
-		public DialogCoreComposite getComposite() {
-			return this.composite;
-		}
-		@Override
-		protected InternalOperationResolver createResolver() {
-			return new InternalOperationResolver( this.composite );
-		}
-		
-		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-			org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this.composite ), step );
-		}
-	}
-
-	private static class DialogOwner implements org.lgna.croquet.dialog.DialogOwner<org.lgna.croquet.components.View<?,?>> {
+	protected static class DialogOwner implements org.lgna.croquet.dialog.DialogOwner<org.lgna.croquet.components.View<?,?>> {
 		private final DialogCoreComposite<?,?> composite;
 		public DialogOwner( DialogCoreComposite<?,?> composite ) {
 			this.composite = composite;

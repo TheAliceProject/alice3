@@ -55,4 +55,8 @@ public abstract class RenameDeclarationComposite< N extends org.lgna.project.ast
 	protected java.awt.Color getViewBackgroundColor() {
 		return org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( this.declaration );
 	}
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep ) {
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ), completionStep );
+		return new org.alice.ide.croquet.edits.ast.rename.RenameDeclarationEdit( completionStep, declaration, this.declaration.getName(), this.getNameState().getValue() );
+	}
 }

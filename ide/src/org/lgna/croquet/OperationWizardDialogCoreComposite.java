@@ -46,14 +46,12 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	private final InternalOperation operation;
-
+public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.components.BorderPanel> {
+	private final Operation operation;
 	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
 		super( migrationId, wizardPages );
-		this.operation = new InternalOperation( operationGroup, this );
+		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
-	protected abstract org.lgna.croquet.edits.Edit createEdit();
 	@Override
 	public org.lgna.croquet.Operation getModel() {
 		return this.operation;

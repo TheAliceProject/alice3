@@ -51,6 +51,9 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 	public RenameComposite( java.util.UUID migrationId ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 	}
+	public org.lgna.croquet.StringState getNameState() {
+		return this.nameState;
+	}
 	@Override
 	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
@@ -64,9 +67,5 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
 		rv.setBackgroundColor( this.getViewBackgroundColor() );
 		return rv;
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit() {
-		return null;
 	}
 }

@@ -40,20 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final Operation operation;
-	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
-		super( migrationId );
-		this.operation = new OwnedByCompositeOperation( operationGroup, this );
-	}
-	@Override
-	public org.lgna.croquet.Operation getModel() {
-		return this.operation;
-	}
+public interface OperationOwningComposite< V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 }
