@@ -52,7 +52,6 @@ import org.lgna.croquet.triggers.Trigger;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.matt.EventScript;
 
 /**
