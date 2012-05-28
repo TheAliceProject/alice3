@@ -107,7 +107,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		return this.value;
 	}
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.instancefactory.InstanceFactory, java.lang.Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.instancefactory.InstanceFactory, java.lang.Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.value;
 	}
 	@Override

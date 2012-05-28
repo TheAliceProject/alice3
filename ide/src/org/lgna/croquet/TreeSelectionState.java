@@ -85,7 +85,7 @@ class TreeNodeFillIn<T> extends CascadeFillIn< T, Void > {
 		return this.node;
 	}
 	@Override
-	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.node;
 	}
 	@Override

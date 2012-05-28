@@ -178,9 +178,9 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		}
 	}
 
-	public B createValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public B createValue( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		if( this.rtSelectedFillIn != null ) {
-			return this.rtSelectedFillIn.createValue( completionStep );
+			return this.rtSelectedFillIn.createValue( transactionHistory );
 		} else {
 			throw new RuntimeException();
 		}

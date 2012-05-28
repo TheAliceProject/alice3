@@ -84,8 +84,8 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org
 		throw new AssertionError();
 	}
 	@Override
-	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( node, completionStep, org.lgna.project.ast.Expression.class );
+	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( node, transactionHistory, org.lgna.project.ast.Expression.class );
 		org.lgna.project.ast.JavaMethod keyMethod = this.transientValue.getKeyMethod();
 		return new org.lgna.project.ast.JavaKeyedArgument( 
 				this.transientValue.parameter.getValue(), 

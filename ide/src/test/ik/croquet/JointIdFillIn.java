@@ -81,7 +81,7 @@ public class JointIdFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.stor
 		return new javax.swing.JLabel( sb.toString() );
 	}
 	@Override
-	public org.lgna.story.resources.JointId createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public org.lgna.story.resources.JointId createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.jointId;
 	}
 	@Override

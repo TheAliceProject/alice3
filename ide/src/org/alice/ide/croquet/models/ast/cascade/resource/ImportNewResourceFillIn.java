@@ -54,7 +54,7 @@ public abstract class ImportNewResourceFillIn< E extends org.lgna.common.Resourc
 		super( id );
 	}
 	@Override
-	public org.lgna.project.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public org.lgna.project.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		try {
 			E resource = getResourcePrompter().promptUserForResource( ide.getFrame() );

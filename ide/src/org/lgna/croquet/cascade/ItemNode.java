@@ -50,5 +50,5 @@ public interface ItemNode<F,B> {
 	public int getBlankStepCount();
 	public BlankNode< B > getBlankStepAt( int index );
 	public F getTransientValue();
-	public F createValue( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory );
 }

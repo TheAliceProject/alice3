@@ -85,8 +85,8 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 			return new javax.swing.JLabel( this.getTutorialItemText() );
 		}
 		@Override
-		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-			return this.composite.createValue( node, completionStep );
+		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+			return this.composite.createValue( node, transactionHistory );
 		}
 		@Override
 		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
@@ -107,7 +107,7 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 		return this.createValue();
 	}
 	protected abstract T createValue();
-	private T createValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	private T createValue( org.lgna.croquet.cascade.ItemNode< ? super T,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		throw new CancelException();
 //		org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
 //		assert transactionHistory != null : completionStep;

@@ -20,7 +20,7 @@ public abstract class SourceFillIn<T extends org.lgna.common.Resource> extends o
 		return new org.lgna.project.ast.InstanceCreation( constructor, argument0 );
 	}
 	@Override
-	public final org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public final org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue();
 	}
 	@Override

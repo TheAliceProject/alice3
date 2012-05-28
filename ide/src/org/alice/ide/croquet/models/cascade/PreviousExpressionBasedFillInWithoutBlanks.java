@@ -76,7 +76,7 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 
 	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
 	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}
 	@Override

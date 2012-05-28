@@ -56,7 +56,7 @@ public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cas
 		return new org.lgna.project.ast.ArrayLength( this.createAccessExpression() );
 	}
 	@Override
-	public org.lgna.project.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ArrayLength, Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public org.lgna.project.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ArrayLength, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue();
 	}
 	@Override

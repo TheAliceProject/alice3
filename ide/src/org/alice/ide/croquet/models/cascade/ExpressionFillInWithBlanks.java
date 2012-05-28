@@ -54,8 +54,8 @@ public abstract class ExpressionFillInWithBlanks< F extends org.lgna.project.ast
 	}
 	protected abstract F createValue( B[] expressions );
 	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,B > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return this.createValue( this.createFromBlanks( node, completionStep, this.cls ) );
+	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,B > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		return this.createValue( this.createFromBlanks( node, transactionHistory, this.cls ) );
 	}
 //	protected abstract F getTransientValue( B[] expressions );
 //	@Override

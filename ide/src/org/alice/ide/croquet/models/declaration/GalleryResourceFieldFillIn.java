@@ -70,7 +70,7 @@ public class GalleryResourceFieldFillIn extends org.alice.ide.croquet.models.cas
 		);
 	}
 	@Override
-	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return createValue( this.transientValue.field.getValue() );
 	}
 	@Override

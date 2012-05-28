@@ -85,8 +85,8 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( this.transientValue.expression.getValue(), this.transientValue.method.getValue(), expressions );
 	}
 	@Override
-	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return this.createValue( this.createFromBlanks( node, completionStep, org.lgna.project.ast.Expression.class ) );
+	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		return this.createValue( this.createFromBlanks( node, transactionHistory, org.lgna.project.ast.Expression.class ) );
 	}
 	@Override
 	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node ) {
