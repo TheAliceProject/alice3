@@ -157,11 +157,10 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			DialogCoreComposite coreComposite = this.getDialogCoreComposite();
 			assert coreComposite != null : this;
-			Model initialModel = coreComposite.getModel();
-			assert initialModel != null : coreComposite;
-			org.lgna.croquet.history.CompletionStep<?> dialogStep = step.getFirstAncestorStepOfEquivalentModel( initialModel, org.lgna.croquet.history.CompletionStep.class );
-			assert dialogStep != null : initialModel;
+			org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getParent().getParent();
+			assert dialogStep != null : transaction;
 			org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+			assert dialog != null : dialogStep;
 			dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
 			dialog.setVisible( false );
 			step.finish();
@@ -220,7 +219,6 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	public DialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
-	public abstract Model getModel();
 	protected abstract CC getDialogContentComposite();
 	protected final Operation getCommitOperation() {
 		return this.commitOperation;
@@ -333,9 +331,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		this.getDialogContentComposite().handlePreActivation();
 		org.lgna.croquet.components.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 		if( commitButton != null ) {
-			//todo
-			org.lgna.croquet.history.CompletionStep<?> step = (org.lgna.croquet.history.CompletionStep<?>)node;
-			org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+			org.lgna.croquet.components.Dialog dialog = node.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 			dialog.setDefaultButton( commitButton );
 		}
 	}

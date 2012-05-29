@@ -64,7 +64,7 @@ public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.
 		return rv;
 	}
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.Node<?> node ) {
 		return null;
 	}
 }

@@ -62,7 +62,7 @@ public class CaptureImagesPage extends org.lgna.croquet.WizardPageComposite< org
 		return this.bogusStringState;
 	}
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.Node<?> node ) {
 		if( this.bogusStringState.getValue().length() > 0 ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {

@@ -46,8 +46,39 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends InputDialogCoreComposite<V> {
+public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends InputDialogCoreComposite<V> implements ValueCreatorOwningComposite<V,T> {
+	private final ValueCreator<T> valueCreator = new OwnedByCompositeValueCreator<T>( this );
 	public ValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
+	}
+	public ValueCreator<T> getValueCreator() {
+		return this.valueCreator;
+	}
+	protected abstract T createValue();
+	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		final Object[] buffer = { null };
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+				super.handlePostHideDialog( node );
+				org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)node;
+				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
+				if( isCommited != null ) { // close button condition
+					if( isCommited ) {
+						try {
+							buffer[ 0 ] = createValue();
+							completionStep.finish();
+						} catch( CancelException ce ) {
+							completionStep.cancel();
+						}
+					} else {
+						completionStep.cancel();
+					}
+				} else {
+					completionStep.cancel();
+				}
+			}
+		}, completionStep );
+		return (T)buffer[ 0 ];
 	}
 }

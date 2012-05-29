@@ -11,12 +11,12 @@ public abstract class LambdaExpressionFillIn extends org.alice.ide.croquet.model
 		this.transientValue = this.createValue();
 	}
 	@Override
-	public org.lgna.project.ast.LambdaExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super  org.lgna.project.ast.LambdaExpression,Void > step ) {
+	public org.lgna.project.ast.LambdaExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super  org.lgna.project.ast.LambdaExpression,Void > node ) {
 		return this.transientValue;
 	}
 	
 	@Override
-	public org.lgna.project.ast.LambdaExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.LambdaExpression,Void > step ) {
+	public org.lgna.project.ast.LambdaExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.LambdaExpression,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue();
 	}
 	@Override
