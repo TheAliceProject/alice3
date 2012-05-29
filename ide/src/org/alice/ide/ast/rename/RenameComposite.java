@@ -81,9 +81,7 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
 		super.handlePreShowDialog( node );
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		
-		org.alice.ide.ast.rename.components.RenamePanel view = this.getView();
-		view.getTextField().selectAll();
+		this.nameState.selectAll();
 	}
 	protected abstract java.awt.Color getViewBackgroundColor();
 	@Override
