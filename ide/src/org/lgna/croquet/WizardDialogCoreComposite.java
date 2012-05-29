@@ -286,6 +286,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 
 		org.lgna.croquet.components.PageAxisPanel mainView = this.createPageAxisPanel( this.stepLabel );
 		mainView.addComponent( this.cardComposite.getView() );
+		mainView.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
 
 		rv.addComponent( stepsView, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		rv.addComponent( mainView, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
