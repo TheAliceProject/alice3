@@ -129,8 +129,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 
 			MediaDescription mediaDescription = new MediaDescription();
 			mediaDescription.setPlainTextContent( descriptionState.getValue().trim() );
-			mediaGroup.setDescription( mediaDescription );//description
-
+			mediaGroup.setDescription( mediaDescription );//description]
+			
 			MediaKeywords keywords = new MediaKeywords();
 			String[] arr = tagState.getValue().split( "," );
 			for( String s : arr ) {
@@ -142,11 +142,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			System.out.println("cat: " + category);
 			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
 			mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
-			boolean blah = true;
 			try {
 				uploader.uploadVideo( entry );
 			} catch( IOException e ) {
-				blah = false;
 				e.printStackTrace();
 			}
 			return null;

@@ -43,6 +43,7 @@
 package org.alice.media;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.alice.media.components.ImageRecordView;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
@@ -136,7 +137,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				encoder.start();
-				encoder.setOutput( new File( "C:/Users/Matt/Desktop/videos/test.mov" ) );
+				try {
+					encoder.setOutput( File.createTempFile( "temp", ".mov" ) );
+				} catch( IOException e ) {
+					e.printStackTrace();
+				}
 			} else {
 				encoder.stop();
 				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
