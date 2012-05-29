@@ -133,7 +133,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.Node<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return isRecording ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
 	}
 }

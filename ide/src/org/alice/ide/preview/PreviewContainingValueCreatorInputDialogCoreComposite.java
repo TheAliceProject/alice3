@@ -41,14 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom.components;
+package org.alice.ide.preview;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleExpressionCreatorView extends NumberExpressionCreatorView {
-	public DoubleExpressionCreatorView( org.alice.ide.custom.DoubleExpressionCreatorComposite composite ) {
-		super( composite );
+public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V,T> {
+	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
+		super( id );
 	}
-
+	public T getPreviewValue() {
+		return this.createValue();
+	}
+	protected abstract void initializeToPreviousExpression( org.lgna.project.ast.Expression expression );
+	
+	@Override
+	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
+		super.handleFiredEvent( event );
+		this.getView().updatePreview();
+	}
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.getView().updatePreview();
+		super.handlePreShowDialog( step );
+	}
 }

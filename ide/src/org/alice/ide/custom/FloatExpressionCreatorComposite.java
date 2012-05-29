@@ -40,18 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FloatChooser extends AbstractNumberChooser<org.lgna.project.ast.FloatLiteral> {
-	public FloatChooser() {
-		super( org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() ); 
-//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-//		if( previousExpression instanceof org.lgna.project.ast.FloatLiteral ) {
-//			org.lgna.project.ast.FloatLiteral floatLiteral = (org.lgna.project.ast.FloatLiteral)previousExpression;
-//			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );
-//		}
+public class FloatExpressionCreatorComposite extends NumberExpressionCreatorComposite {
+	private static class SingletonHolder {
+		private static FloatExpressionCreatorComposite instance = new FloatExpressionCreatorComposite();
+	}
+	public static FloatExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private FloatExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() );
+	}
+	@Override
+	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text;
+		if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
+			org.lgna.project.ast.FloatLiteral floatLiteral = (org.lgna.project.ast.FloatLiteral)expression;
+			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( floatLiteral.value.getValue() );
+		} else {
+			text = "";
+		}
+		return text;
 	}
 }

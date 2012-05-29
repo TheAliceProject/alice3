@@ -46,8 +46,44 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberExpressionCreatorComposite<V extends org.alice.ide.custom.components.NumberExpressionCreatorView> extends ExpressionCreatorComposite<V> {
-	public NumberExpressionCreatorComposite( java.util.UUID id ) {
+public abstract class NumberExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.NumberExpressionCreatorView> {
+	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	private final org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
+	public NumberExpressionCreatorComposite( java.util.UUID id, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
 		super( id );
+		this.numberModel = numberModel;
+	}
+	@Override
+	protected org.alice.ide.custom.components.NumberExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.NumberExpressionCreatorView( this );
+	}
+	public org.alice.ide.croquet.models.numberpad.NumberModel getNumberModel() {
+		return this.numberModel;
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		return this.numberModel.getExpressionValue();
+	}
+	@Override
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
+		if( text != null ) {
+			this.errorStatus.setText( text );
+			return errorStatus;
+		} else {
+			return IS_GOOD_TO_GO_STATUS;
+		}
+	}
+	protected abstract String getTextForPreviousExpression( org.lgna.project.ast.Expression expression );
+	@Override
+	protected final void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text = this.getTextForPreviousExpression( expression );
+		this.numberModel.setText( text );
+		this.numberModel.selectAll();
+	}
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super.handlePreShowDialog( step );
+		this.numberModel.getTextField().requestFocusInWindow();
 	}
 }

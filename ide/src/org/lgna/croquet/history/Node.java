@@ -54,34 +54,7 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 	}
 	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
-
-	public static class Key<T> {
-		public static <T> Key<T> createInstance( String repr ) {
-			return new Key<T>( repr );
-		}
-		private final String repr;
-		private Key( String repr ) {
-			this.repr = repr;
-		}
-		@Override
-		public java.lang.String toString() {
-			return this.repr;
-		}
-	}
-	private final java.util.Map/*< Key<T>, T >*/ dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public <T> boolean containsEphemeralDataFor( Key<T> key ) {
-		return this.dataMap.containsKey( key );
-	}
-	public <T> T getEphemeralDataFor( Key<T> key ) {
-		return (T)this.dataMap.get( key );
-	}
-	public <T> void putEphemeralDataFor( Key<T> key, T value ) {
-		this.dataMap.put( key, value );
-	}
-	public <T> void removeEphemeralDataFor( Key<T> key ) {
-		this.dataMap.remove( key );
-	}
-
+	
 	public P getParent() {
 		return this.parent;
 	}

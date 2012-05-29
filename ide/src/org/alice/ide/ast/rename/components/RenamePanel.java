@@ -47,17 +47,12 @@ package org.alice.ide.ast.rename.components;
  * @author Dennis Cosgrove
  */
 public class RenamePanel extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.components.TextField textField;
 	public RenamePanel( org.alice.ide.ast.rename.RenameComposite composite ) {
 		super( composite );
-		this.textField = composite.getNameState().createTextField();
 		org.lgna.croquet.components.BorderPanel line = new org.lgna.croquet.components.BorderPanel();
 		line.addComponent( composite.getNameLabel().createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		line.addComponent( this.textField, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		line.addComponent( composite.getNameState().createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		line.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
 		this.addComponent( line, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-	}
-	public org.lgna.croquet.components.TextField getTextField() {
-		return this.textField;
 	}
 }

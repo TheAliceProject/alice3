@@ -245,7 +245,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		//		player.init();
 	}
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.Node<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( !isLoggedIn ) {
 			return errorNotLoggedIn;
 		} //else if( )

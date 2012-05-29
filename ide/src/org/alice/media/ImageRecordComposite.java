@@ -200,7 +200,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.Node<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if(isRecording) {
 			System.out.println("isRecording: " + errorIsRecording.getText());
 			return errorIsRecording;
