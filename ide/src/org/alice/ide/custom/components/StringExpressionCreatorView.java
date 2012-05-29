@@ -46,7 +46,7 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public class StringExpressionCreatorView extends ExpressionCreatorView {
+public class StringExpressionCreatorView extends RowBasedExpressionCreatorView {
 	public StringExpressionCreatorView( org.alice.ide.custom.StringExpressionCreatorComposite composite ) {
 		super( composite );
 	}

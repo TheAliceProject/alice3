@@ -69,6 +69,11 @@ public class StringExpressionCreatorComposite extends ExpressionCreatorComposite
 	protected org.lgna.project.ast.Expression createValue() {
 		return new org.lgna.project.ast.StringLiteral( this.literalValueState.getValue() );
 	}
+	@Override
+	protected Status getStatus( org.lgna.croquet.history.Node<?> node ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+	
 	
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {

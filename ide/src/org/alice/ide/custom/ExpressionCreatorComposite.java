@@ -51,11 +51,6 @@ public abstract class ExpressionCreatorComposite<V extends org.alice.ide.custom.
 		super( id );
 	}
 	@Override
-	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( org.lgna.croquet.history.Node<?> node ) {
-		//todo
-		return null;
-	}
-	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
 		this.initializeToPreviousExpression( org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression() );
 		super.handlePreShowDialog( node );
