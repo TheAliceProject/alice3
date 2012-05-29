@@ -138,9 +138,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			}
 			mediaGroup.setKeywords( keywords );//tags
 
-			System.out.println("cat: " + videoCategoryState.getValue().toString());
-			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, videoCategoryState.getValue().toString().split("\\s+")[0].trim() ) );//category
-			System.out.println(videoCategoryState.getValue().trim());
+			String category = videoCategoryState.getValue().toString().split("\\s")[0].trim();
+			System.out.println("cat: " + category);
+			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
 			mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
 			boolean blah = true;
 			try {
