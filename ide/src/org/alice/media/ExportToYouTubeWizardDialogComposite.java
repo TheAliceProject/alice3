@@ -93,6 +93,12 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		}
 	}
 	@Override
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		super.modifyPackedDialogSizeIfDesired( dialog );
+		final int WIDTH = 1000;
+		dialog.setSize( WIDTH, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH ) );
+	}
+	@Override
 	protected boolean isGoldenRatioDesired() {
 		return false;
 	}
