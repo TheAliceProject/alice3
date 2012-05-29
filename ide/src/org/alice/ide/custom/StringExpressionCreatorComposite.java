@@ -69,4 +69,17 @@ public class StringExpressionCreatorComposite extends ExpressionCreatorComposite
 	protected org.lgna.project.ast.Expression createValue() {
 		return new org.lgna.project.ast.StringLiteral( this.literalValueState.getValue() );
 	}
+	
+	@Override
+	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String value;
+		if( expression instanceof org.lgna.project.ast.StringLiteral ) {
+			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)expression;
+			value = stringLiteral.value.getValue();
+		} else {
+			value = "";
+		}
+		this.literalValueState.setValueTransactionlessly( value );
+		this.literalValueState.selectAll();
+	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberExpressionCreatorView extends org.lgna.croquet.components.BorderPanel {
+public abstract class NumberExpressionCreatorView extends ExpressionCreatorView {
 	public NumberExpressionCreatorView( org.alice.ide.custom.NumberExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}

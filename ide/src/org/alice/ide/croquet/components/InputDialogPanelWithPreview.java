@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogPanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.alice.ide.preview.PanelWithPreview {
+public abstract class InputDialogPanelWithPreview< M extends org.lgna.croquet.InputDialogOperation< ? > > extends org.alice.ide.preview.components.PanelWithPreview {
 	private M model;
 	public InputDialogPanelWithPreview( M model ) {
 		this.model = model;

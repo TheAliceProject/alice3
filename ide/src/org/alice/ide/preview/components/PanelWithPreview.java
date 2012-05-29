@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.preview;
+package org.alice.ide.preview.components;
 
 /**
  * @author Dennis Cosgrove

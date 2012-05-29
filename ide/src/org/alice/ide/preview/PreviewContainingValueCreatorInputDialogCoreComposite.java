@@ -40,56 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.preview;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( org.alice.ide.x.ImmutableAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
-		super( factory, property );
+public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V,T> {
+	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
+		super( id );
+	}
+	public T getPreviewValue() {
+		return this.createValue();
+	}
+	protected abstract void initializeToPreviousExpression( org.lgna.project.ast.Expression expression );
+	
+	@Override
+	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
+		super.handleFiredEvent( event );
+		this.getView().updatePreview();
 	}
 	@Override
-	protected boolean isComponentDesiredFor( org.lgna.project.ast.SimpleArgument argument, int i, int N ) {
-		if( i == 0 ) {
-			if( argument != null ) {
-				org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
-				if( parameter != null ) {
-					org.lgna.project.ast.Code code = parameter.getCode();
-					if( code instanceof org.lgna.project.ast.JavaMethod ) {
-						org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)code;
-						if( javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class ) ) {
-							org.lgna.project.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
-							if( parameterType != null ) {
-								if( parameterType.isInterface() ) {
-									//assume it is going to be a lambda
-									return parameterType.getDeclaredMethods().size() != 1;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return super.isComponentDesiredFor( argument, i, N );
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
-		org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
-		final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof org.lgna.project.ast.AbstractMethod;
-		if( IS_PARAMETER_NAME_DESIRED ) {
-			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( parameter );
-			if( parameterName != null && parameterName.length() > 0 ) {
-				org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
-				rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": " ) );
-				rv.addComponent( expressionComponent );
-				return rv;
-			} else {
-				return expressionComponent;
-			}
-		} else {
-			return expressionComponent;
-		}
+	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+		this.getView().updatePreview();
+		super.handlePreShowDialog( node );
 	}
 }

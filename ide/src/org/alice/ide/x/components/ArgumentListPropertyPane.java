@@ -40,32 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.custom;
+package org.alice.ide.x.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleExpressionCreatorComposite extends NumberExpressionCreatorComposite<org.alice.ide.custom.components.DoubleExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static DoubleExpressionCreatorComposite instance = new DoubleExpressionCreatorComposite();
-	}
-	public static DoubleExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private DoubleExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ) );
+public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
+	public ArgumentListPropertyPane( org.alice.ide.x.ImmutableAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
+		super( factory, property );
 	}
 	@Override
-	protected org.alice.ide.custom.components.DoubleExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.DoubleExpressionCreatorView( this );
+	protected boolean isComponentDesiredFor( org.lgna.project.ast.SimpleArgument argument, int i, int N ) {
+		if( i == 0 ) {
+			if( argument != null ) {
+				org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
+				if( parameter != null ) {
+					org.lgna.project.ast.Code code = parameter.getCode();
+					if( code instanceof org.lgna.project.ast.JavaMethod ) {
+						org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)code;
+						if( javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class ) ) {
+							org.lgna.project.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
+							if( parameterType != null ) {
+								if( parameterType.isInterface() ) {
+									//assume it is going to be a lambda
+									return parameterType.getDeclaredMethods().size() != 1;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return super.isComponentDesiredFor( argument, i, N );
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		return new org.lgna.project.ast.DoubleLiteral( edu.cmu.cs.dennisc.math.GoldenRatio.PHI );
-	}
-	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		throw new RuntimeException( "todo" );
+	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {
+		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
+		org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
+		final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof org.lgna.project.ast.AbstractMethod;
+		if( IS_PARAMETER_NAME_DESIRED ) {
+			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( parameter );
+			if( parameterName != null && parameterName.length() > 0 ) {
+				org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
+				rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": " ) );
+				rv.addComponent( expressionComponent );
+				return rv;
+			} else {
+				return expressionComponent;
+			}
+		} else {
+			return expressionComponent;
+		}
 	}
 }

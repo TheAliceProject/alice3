@@ -46,7 +46,7 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorView extends org.alice.ide.preview.PanelWithPreview {
+public abstract class ExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
 	public ExpressionCreatorView( org.alice.ide.custom.ExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}

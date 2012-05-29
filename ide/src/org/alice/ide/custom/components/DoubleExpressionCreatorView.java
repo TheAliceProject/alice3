@@ -50,5 +50,9 @@ public class DoubleExpressionCreatorView extends NumberExpressionCreatorView {
 	public DoubleExpressionCreatorView( org.alice.ide.custom.DoubleExpressionCreatorComposite composite ) {
 		super( composite );
 	}
+	@Override
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		return new org.lgna.croquet.components.Component<?>[] {};
+	}
 
 }
