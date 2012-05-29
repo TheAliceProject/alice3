@@ -299,8 +299,8 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		this.registerStringValue( rv );
 		return rv;
 	}
-	protected StringState createStringState( Key key, String initialValue ) {
-		InternalStringState rv = new InternalStringState( initialValue, key );
+	protected StringState createStringState( Key key ) {
+		InternalStringState rv = new InternalStringState( "", key );
 		this.mapKeyToStringState.put( key, rv );
 		return rv;
 	}
