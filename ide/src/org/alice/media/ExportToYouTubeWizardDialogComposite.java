@@ -110,7 +110,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				ExportToYouTubeWizardDialogComposite.getInstance().setProject( project );
-				ExportToYouTubeWizardDialogComposite.getInstance().getModel().fire();
+				ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire();
 				System.exit( 0 );
 			}
 		} );
