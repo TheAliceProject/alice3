@@ -62,7 +62,7 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 	}
 	
 	public abstract F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F,B> node );
-	public abstract F createValue( org.lgna.croquet.cascade.ItemNode<? super F,B> node );
+	public abstract F createValue( org.lgna.croquet.cascade.ItemNode<? super F,B> node, org.lgna.croquet.history.TransactionHistory transactionHistory );
 	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> node );
 	
 	@Override

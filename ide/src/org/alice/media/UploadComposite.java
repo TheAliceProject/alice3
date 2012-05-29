@@ -59,7 +59,6 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.WizardPageComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.Project;
 
 import com.google.gdata.data.media.MediaFileSource;
@@ -244,7 +243,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		//		player.init();
 	}
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( !isLoggedIn ) {
 			return errorNotLoggedIn;
 		} //else if( )

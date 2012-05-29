@@ -40,13 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleChooser extends AbstractNumberChooser< org.lgna.project.ast.DoubleLiteral > {
-	public DoubleChooser() {
-		super( org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() ); 
-	}
+public interface ValueCreatorOwningComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends Composite<V> {
+	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep );
 }

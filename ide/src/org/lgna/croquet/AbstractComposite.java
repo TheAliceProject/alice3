@@ -304,6 +304,9 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		this.mapKeyToStringState.put( key, rv );
 		return rv;
 	}
+	protected StringState createStringState( Key key ) {
+		return createStringState( key, "" );
+	}
 	protected BooleanState createBooleanState( Key key, boolean initialValue ) {
 		InternalBooleanState rv = new InternalBooleanState( initialValue, key );
 		this.mapKeyToBooleanState.put( key, rv );

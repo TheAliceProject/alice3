@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclarationPanel extends org.alice.ide.preview.PanelWithPreview {
+public class TypeDeclarationPanel extends org.alice.ide.preview.components.PanelWithPreview {
 	private final org.alice.ide.ast.declaration.TypeDeclarationOperation model;
 	public TypeDeclarationPanel( org.alice.ide.ast.declaration.TypeDeclarationOperation model ) {
 		this.model = model;

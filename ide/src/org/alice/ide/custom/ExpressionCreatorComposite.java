@@ -46,8 +46,13 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorComposite<V extends org.lgna.croquet.components.View<?,?>> extends org.lgna.croquet.ValueCreatorComposite<V,org.lgna.project.ast.Expression>{
+public abstract class ExpressionCreatorComposite<V extends org.alice.ide.custom.components.ExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V,org.lgna.project.ast.Expression> {
 	public ExpressionCreatorComposite( java.util.UUID id ) {
 		super( id );
+	}
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.initializeToPreviousExpression( org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression() );
+		super.handlePreShowDialog( step );
 	}
 }

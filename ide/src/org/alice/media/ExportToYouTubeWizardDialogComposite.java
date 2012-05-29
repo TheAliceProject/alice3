@@ -93,6 +93,12 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		}
 	}
 	@Override
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		super.modifyPackedDialogSizeIfDesired( dialog );
+		final int WIDTH = 1000;
+		dialog.setSize( WIDTH, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH ) );
+	}
+	@Override
 	protected boolean isGoldenRatioDesired() {
 		return false;
 	}
@@ -110,7 +116,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				ExportToYouTubeWizardDialogComposite.getInstance().setProject( project );
-				ExportToYouTubeWizardDialogComposite.getInstance().getModel().fire();
+				ExportToYouTubeWizardDialogComposite.getInstance().getOperation().fire();
 				System.exit( 0 );
 			}
 		} );

@@ -147,7 +147,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		this.updateIsGoodToGo( isGoodToGo );
 	}
 
-	private void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
+	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		org.lgna.croquet.history.CompletionStep<?> s = null;
 		if( event != null ) {
 			org.lgna.croquet.history.Node<?> node = event.getNode();
@@ -158,16 +158,14 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		this.updateStatus( s );
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
-		//todo
-		org.lgna.croquet.history.CompletionStep<?> step = (org.lgna.croquet.history.CompletionStep<?>)node;
-		node.addListener( this.listener );
-		this.updateStatus( step );
-		super.handlePreShowDialog( node );
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		completionStep.addListener( this.listener );
+		this.updateStatus( completionStep );
+		super.handlePreShowDialog( completionStep );
 	}
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
-		node.removeListener( this.listener );
-		super.handlePostHideDialog( node );
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		completionStep.removeListener( this.listener );
+		super.handlePostHideDialog( completionStep );
 	}
 }

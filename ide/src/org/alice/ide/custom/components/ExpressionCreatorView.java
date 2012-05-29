@@ -46,7 +46,7 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorView extends org.alice.ide.preview.PanelWithPreview {
+public abstract class ExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
 	public ExpressionCreatorView( org.alice.ide.custom.ExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
@@ -68,42 +68,5 @@ public abstract class ExpressionCreatorView extends org.alice.ide.preview.PanelW
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		return rv;
-	}
-	
-
-	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
-		return org.lgna.croquet.components.SpringUtilities.createTrailingLabel( text );
-	}
-	private static final String[] LABEL_TEXTS = { "value:" };
-	protected String[] getLabelTexts() {
-		return LABEL_TEXTS;
-	}
-	protected abstract org.lgna.croquet.components.Component< ? >[] getRowComponents();
-	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-		String[] labelTexts = this.getLabelTexts();
-		org.lgna.croquet.components.Component< ? >[] components = this.getRowComponents();
-		final int N = labelTexts.length;
-		for( int i=0; i<N; i++ ) {
-			rv.add( 
-					org.lgna.croquet.components.SpringUtilities.createRow( 
-						this.createLabel( labelTexts[ i ] ), 
-						new org.lgna.croquet.components.LineAxisPanel( 
-								components[ i ],
-								org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-						)
-					) 
-			);
-		}
-		return rv;
-	}
-	@Override
-	public org.lgna.croquet.components.RowsSpringPanel createMainComponent() {
-		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
-			@Override
-			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
-				return ExpressionCreatorView.this.updateRows( rv );
-			}
-		};
-		return rowsSpringPanel;
 	}
 }

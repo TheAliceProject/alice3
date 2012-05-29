@@ -46,7 +46,6 @@ import org.alice.media.components.EventRecordView;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.WizardPageComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
@@ -134,7 +133,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return isRecording ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
 	}
 }

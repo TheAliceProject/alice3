@@ -41,14 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom.components;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleExpressionCreatorView extends NumberExpressionCreatorView {
-	public DoubleExpressionCreatorView( org.alice.ide.custom.DoubleExpressionCreatorComposite composite ) {
-		super( composite );
+public final class IntegerExpressionCreatorComposite extends NumberExpressionCreatorComposite {
+	private static class SingletonHolder {
+		private static IntegerExpressionCreatorComposite instance = new IntegerExpressionCreatorComposite();
 	}
-
+	public static IntegerExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IntegerExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "a81686d4-eb5a-4bab-8d0b-6ae56ae67391" ), org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance() );
+	}
+	@Override
+	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text;
+		if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
+			org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)expression;
+			text = Integer.toString( integerLiteral.value.getValue() );
+		} else {
+			text = "";
+		}
+		return text;
+	}
 }

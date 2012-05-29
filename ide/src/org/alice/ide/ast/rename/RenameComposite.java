@@ -48,7 +48,7 @@ package org.alice.ide.ast.rename;
 public abstract class RenameComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.ide.ast.rename.components.RenamePanel> {
 	private final org.alice.ide.name.NameValidator nameValidator;
 	private final org.lgna.croquet.StringValue nameLabel = this.createStringValue( this.createKey( "nameLabel" ) );
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ), "" );
+	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
 	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
 	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
@@ -77,12 +77,10 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 	}
 	protected abstract String getInitialValue();
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
-		super.handlePreShowDialog( node );
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super.handlePreShowDialog( step );
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		
-		org.alice.ide.ast.rename.components.RenamePanel view = this.getView();
-		view.getTextField().selectAll();
+		this.nameState.selectAll();
 	}
 	protected abstract java.awt.Color getViewBackgroundColor();
 	@Override

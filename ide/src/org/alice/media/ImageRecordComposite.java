@@ -50,7 +50,6 @@ import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.WizardPageComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.ImplementationAccessor;
@@ -206,7 +205,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if(isRecording) {
 			System.out.println("isRecording: " + errorIsRecording.getText());
 			return errorIsRecording;

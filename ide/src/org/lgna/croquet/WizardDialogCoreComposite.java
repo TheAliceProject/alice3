@@ -175,6 +175,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			text = null;
 		}
 		this.stepLabel.setText( text );
+		this.updateEnabled();
 	}
 	private boolean isPrevPageAvailable() {
 		return this.index > 0;
@@ -286,6 +287,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 
 		org.lgna.croquet.components.PageAxisPanel mainView = this.createPageAxisPanel( this.stepLabel );
 		mainView.addComponent( this.cardComposite.getView() );
+		mainView.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
 
 		rv.addComponent( stepsView, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		rv.addComponent( mainView, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );

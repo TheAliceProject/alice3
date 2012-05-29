@@ -46,7 +46,7 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleExpressionCreatorComposite extends NumberExpressionCreatorComposite<org.alice.ide.custom.components.DoubleExpressionCreatorView> {
+public final class DoubleExpressionCreatorComposite extends NumberExpressionCreatorComposite {
 	private static class SingletonHolder {
 		private static DoubleExpressionCreatorComposite instance = new DoubleExpressionCreatorComposite();
 	}
@@ -54,10 +54,17 @@ public class DoubleExpressionCreatorComposite extends NumberExpressionCreatorCom
 		return SingletonHolder.instance;
 	}
 	private DoubleExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ) );
+		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() );
 	}
 	@Override
-	protected org.alice.ide.custom.components.DoubleExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.DoubleExpressionCreatorView( this );
+	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text;
+		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
+			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
+			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( doubleLiteral.value.getValue() );
+		} else {
+			text = "";
+		}
+		return text;
 	}
 }

@@ -40,48 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.choosers;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AngleChooser extends org.alice.ide.choosers.DoubleChooser {
-	public AngleChooser() {
-//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-//		//todo: handle other numbers
-//		if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
-//			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
-//			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
-//		}
+public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
+	private final ValueCreatorOwningComposite<?,T> composite;
+	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?,T> composite ) {
+		super( java.util.UUID.fromString( "d8315541-a441-4e09-b102-3e7730fbc960" ) );
+		this.composite = composite;
 	}
-
+	@Override
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		//todo
+		return ((AbstractComposite)this.composite).getClassUsedForLocalization();
+	}
+	@Override
+	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		T value = this.composite.createValue( completionStep );
+		if( completionStep.isCanceled() ) {
+			throw new CancelException();
+		} else {
+			return value;
+		}
+	}
 }
-//public class AngleChooser extends org.alice.ide.choosers.AbstractChooserWithTextField< org.lgna.project.ast.Expression > {
-//	public AngleChooser() {
-//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-//		//todo: handle other numbers
-//		if( previousExpression instanceof org.lgna.project.ast.DoubleLiteral ) {
-//			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)previousExpression;
-//			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
-//		}
-//	}
-//	public String getTitleDefault() {
-//		return "Enter Custom Angle";
-//	}
-//	@Override
-//	protected org.alice.apis.moveandturn.Angle valueOf( String text ) {
-//		double value = Double.valueOf( text );
-//		return new org.alice.apis.moveandturn.AngleInRevolutions( value );
-//	}
-//
-//	public org.lgna.project.ast.Expression getValue() {
-//		double value = this.slider.getValue() / 100.0;
-//		org.lgna.project.ast.DoubleLiteral doubleLiteral = new org.lgna.project.ast.DoubleLiteral( value );
-//		final boolean IS_LITERAL_DESIRED = true;
-//		if( IS_LITERAL_DESIRED ) {
-//			return doubleLiteral;
-//		} else {
-//			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.Portion.class, new Class<?>[] { Number.class }, doubleLiteral );
-//		}
-//	}
-//}
