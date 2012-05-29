@@ -290,17 +290,17 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	protected boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 		return true;
 	}
+	protected abstract String getName();
 	protected String getDialogTitle( org.lgna.croquet.history.Node<?> node ) {
-//		String rv = this.getName();
-//		if( rv != null ) {
-//			rv = rv.replaceAll( "<[a-z]*>", "" );
-//			rv = rv.replaceAll( "</[a-z]*>", "" );
-//			if( rv.endsWith( "..." ) ) {
-//				rv = rv.substring( 0, rv.length() - 3 );
-//			}
-//		}
-//		return rv;
-		return "";
+		String rv = this.getName();
+		if( rv != null ) {
+			rv = rv.replaceAll( "<[a-z]*>", "" );
+			rv = rv.replaceAll( "</[a-z]*>", "" );
+			if( rv.endsWith( "..." ) ) {
+				rv = rv.substring( 0, rv.length() - 3 );
+			}
+		}
+		return rv;
 	}
 	protected boolean isGoldenRatioDesired() {
 		return true;

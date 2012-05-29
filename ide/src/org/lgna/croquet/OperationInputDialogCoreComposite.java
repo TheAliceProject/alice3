@@ -55,6 +55,10 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 	public org.lgna.croquet.Operation getOperation() {
 		return this.operation;
 	}
+	@Override
+	protected String getName() {
+		return this.getOperation().getName();
+	}
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
