@@ -296,10 +296,10 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return rv;
 	}
 	@Override
-	protected final Status getStatus( org.lgna.croquet.history.Node<?> node ) {
+	protected final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Composite<?> page = this.cardComposite.getShowingCard();
 		if( page instanceof WizardPageComposite ) {
-			return ((WizardPageComposite)page).getPageStatus( node );
+			return ((WizardPageComposite)page).getPageStatus( step );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( this, page );
 			//todo

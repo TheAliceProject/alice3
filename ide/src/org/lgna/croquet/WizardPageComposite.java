@@ -50,5 +50,5 @@ public abstract class WizardPageComposite< V extends org.lgna.croquet.components
 	public WizardPageComposite( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract Status getPageStatus( org.lgna.croquet.history.Node<?> node );
+	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
 }

@@ -62,7 +62,7 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 		return this.nameState;
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.Node<?> node ) {
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( nameValidator != null ) {
 			String candidate = this.nameState.getValue();
 			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
@@ -78,8 +78,8 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 	}
 	protected abstract String getInitialValue();
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
-		super.handlePreShowDialog( node );
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super.handlePreShowDialog( step );
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
 		this.nameState.selectAll();
 	}

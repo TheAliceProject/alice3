@@ -63,9 +63,8 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
 			@Override
-			public void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
-				super.handlePostHideDialog( node );
-				org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)node;
+			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				super.handlePostHideDialog( completionStep );
 				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
 				if( isCommited != null ) { // close button condition
 					if( isCommited ) {

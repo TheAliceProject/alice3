@@ -65,7 +65,7 @@ public abstract class NumberExpressionCreatorComposite extends ExpressionCreator
 		return this.numberModel.getExpressionValue();
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.Node<?> node ) {
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
 		if( text != null ) {
 			this.errorStatus.setText( text );
@@ -82,8 +82,8 @@ public abstract class NumberExpressionCreatorComposite extends ExpressionCreator
 		this.numberModel.selectAll();
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
-		super.handlePreShowDialog( node );
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super.handlePreShowDialog( step );
 		this.numberModel.getTextField().requestFocusInWindow();
 	}
 }

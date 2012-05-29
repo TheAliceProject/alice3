@@ -232,16 +232,16 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		public DialogOwner( DialogCoreComposite<?,?> composite ) {
 			this.composite = composite;
 		}
-		public org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.Node<?> node ) {
-			return this.composite.allocateView( node );
+		public org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+			return this.composite.allocateView( step );
 		}
 
-		public void releaseView( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.View<?,?> view ) {
-			this.composite.releaseView( node, view );
+		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
+			this.composite.releaseView( step, view );
 		}
 
-		public String getDialogTitle( org.lgna.croquet.history.Node<?> node ) {
-			return this.composite.getDialogTitle( node );
+		public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+			return this.composite.getDialogTitle( step );
 		}
 
 		public java.awt.Point getDesiredDialogLocation() {
@@ -263,26 +263,26 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			this.composite.handleDialogClosed( trigger );
 		}
 
-		public void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
-			this.composite.handlePreShowDialog( node );
+		public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+			this.composite.handlePreShowDialog( step );
 		}
 
-		public void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
-			this.composite.handlePostHideDialog( node );
+		public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+			this.composite.handlePostHideDialog( step );
 		}
 
-		public void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
-			this.composite.handleFinally( node, dialog );
+		public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+			this.composite.handleFinally( step, dialog );
 		}
 	}
 	
 	//todo
-	private org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.Node<?> node ) {
+	private org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return this.getDialogContentComposite().getView();
 	}
 	//todo
-	private void releaseView( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.View<?,?> view ) {
+	private void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
 	}
 	
 	
@@ -291,7 +291,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		return true;
 	}
 	protected abstract String getName();
-	protected String getDialogTitle( org.lgna.croquet.history.Node<?> node ) {
+	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String rv = this.getName();
 		if( rv != null ) {
 			rv = rv.replaceAll( "<[a-z]*>", "" );
@@ -327,18 +327,18 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	}
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
-	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePreActivation();
 		org.lgna.croquet.components.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 		if( commitButton != null ) {
-			org.lgna.croquet.components.Dialog dialog = node.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+			org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 			dialog.setDefaultButton( commitButton );
 		}
 	}
-	protected void handlePostHideDialog( org.lgna.croquet.history.Node<?> node ) {
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePostDeactivation();
 	}
-	protected void handleFinally( org.lgna.croquet.history.Node<?> node, org.lgna.croquet.components.Dialog dialog ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 	}
 	
 }

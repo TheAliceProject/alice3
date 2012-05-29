@@ -61,8 +61,8 @@ public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V ex
 		this.getView().updatePreview();
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getView().updatePreview();
-		super.handlePreShowDialog( node );
+		super.handlePreShowDialog( step );
 	}
 }

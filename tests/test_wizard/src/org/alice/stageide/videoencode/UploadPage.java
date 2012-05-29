@@ -59,7 +59,7 @@ public class UploadPage extends org.lgna.croquet.WizardPageComposite< org.lgna.c
 		return rv;
 	}
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.Node<?> node ) {
+	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
 }
