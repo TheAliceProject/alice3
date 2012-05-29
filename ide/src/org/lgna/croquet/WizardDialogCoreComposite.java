@@ -175,6 +175,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			text = null;
 		}
 		this.stepLabel.setText( text );
+		this.updateEnabled();
 	}
 	private boolean isPrevPageAvailable() {
 		return this.index > 0;
