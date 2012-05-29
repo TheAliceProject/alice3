@@ -76,7 +76,7 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
 			rv.add( item );
 		} else {
 			rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
-			//rv.add( org.alice.ide.custom.DoubleExpressionCreatorComposite.getInstance().getInitialModel() );
+			//rv.add( org.alice.ide.custom.DoubleExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		}
 		return rv;
 	}

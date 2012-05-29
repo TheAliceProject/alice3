@@ -60,4 +60,8 @@ public class DoubleExpressionCreatorComposite extends NumberExpressionCreatorCom
 	protected org.alice.ide.custom.components.DoubleExpressionCreatorView createView() {
 		return new org.alice.ide.custom.components.DoubleExpressionCreatorView( this );
 	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		return new org.lgna.project.ast.DoubleLiteral( edu.cmu.cs.dennisc.math.GoldenRatio.PHI );
+	}
 }

@@ -54,4 +54,8 @@ public abstract class ExpressionCreatorComposite<V extends org.lgna.croquet.comp
 	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( org.lgna.croquet.history.Node<?> node ) {
 		return null;
 	}
+	
+	public org.lgna.project.ast.Expression getPreviewValue() {
+		return this.createValue();
+	}
 }

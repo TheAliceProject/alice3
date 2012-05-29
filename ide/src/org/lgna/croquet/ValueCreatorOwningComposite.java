@@ -41,13 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberExpressionCreatorComposite<V extends org.alice.ide.custom.components.NumberExpressionCreatorView> extends ExpressionCreatorComposite<V> {
-	public NumberExpressionCreatorComposite( java.util.UUID id ) {
-		super( id );
-	}
+public interface ValueCreatorOwningComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends Composite<V> {
+	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep );
 }

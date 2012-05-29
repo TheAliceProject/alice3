@@ -41,13 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberExpressionCreatorComposite<V extends org.alice.ide.custom.components.NumberExpressionCreatorView> extends ExpressionCreatorComposite<V> {
-	public NumberExpressionCreatorComposite( java.util.UUID id ) {
-		super( id );
+public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
+	private final ValueCreatorOwningComposite<?,T> composite;
+	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?,T> composite ) {
+		super( java.util.UUID.fromString( "d8315541-a441-4e09-b102-3e7730fbc960" ) );
+		this.composite = composite;
+	}
+	@Override
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		//todo
+		return ((AbstractComposite)this.composite).getClassUsedForLocalization();
+	}
+	@Override
+	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		T value = this.composite.createValue( completionStep );
+		if( completionStep.isCanceled() ) {
+			throw new CancelException();
+		} else {
+			return value;
+		}
 	}
 }
