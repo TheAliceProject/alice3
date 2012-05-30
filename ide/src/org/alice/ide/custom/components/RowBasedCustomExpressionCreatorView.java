@@ -46,8 +46,8 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowBasedExpressionCreatorView extends ExpressionCreatorView {
-	public RowBasedExpressionCreatorView( org.alice.ide.custom.ExpressionCreatorComposite<?> composite ) {
+public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
+	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
 	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
@@ -80,7 +80,7 @@ public abstract class RowBasedExpressionCreatorView extends ExpressionCreatorVie
 		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
 			@Override
 			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
-				return RowBasedExpressionCreatorView.this.updateRows( rv );
+				return RowBasedCustomExpressionCreatorView.this.updateRows( rv );
 			}
 		};
 		return rowsSpringPanel;

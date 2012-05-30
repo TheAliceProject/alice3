@@ -46,22 +46,22 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public final class DoubleExpressionCreatorComposite extends NumberExpressionCreatorComposite {
+public class FloatCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
 	private static class SingletonHolder {
-		private static DoubleExpressionCreatorComposite instance = new DoubleExpressionCreatorComposite();
+		private static FloatCustomExpressionCreatorComposite instance = new FloatCustomExpressionCreatorComposite();
 	}
-	public static DoubleExpressionCreatorComposite getInstance() {
+	public static FloatCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private DoubleExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() );
+	private FloatCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() );
 	}
 	@Override
 	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
 		String text;
-		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
-			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
-			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( doubleLiteral.value.getValue() );
+		if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
+			org.lgna.project.ast.FloatLiteral floatLiteral = (org.lgna.project.ast.FloatLiteral)expression;
+			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( floatLiteral.value.getValue() );
 		} else {
 			text = "";
 		}

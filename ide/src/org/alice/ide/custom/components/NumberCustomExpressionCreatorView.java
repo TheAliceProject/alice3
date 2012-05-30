@@ -46,13 +46,13 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public final class NumberExpressionCreatorView extends ExpressionCreatorView {
-	public NumberExpressionCreatorView( org.alice.ide.custom.NumberExpressionCreatorComposite composite ) {
+public final class NumberCustomExpressionCreatorView extends CustomExpressionCreatorView {
+	public NumberCustomExpressionCreatorView( org.alice.ide.custom.NumberCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.ide.custom.NumberExpressionCreatorComposite composite = (org.alice.ide.custom.NumberExpressionCreatorComposite)this.getComposite();
+		org.alice.ide.custom.NumberCustomExpressionCreatorComposite composite = (org.alice.ide.custom.NumberCustomExpressionCreatorComposite)this.getComposite();
 		org.alice.ide.croquet.models.numberpad.NumberModel numberModel = composite.getNumberModel();
 		javax.swing.JTextField view = numberModel.getTextField();
 		
@@ -65,6 +65,7 @@ public final class NumberExpressionCreatorView extends ExpressionCreatorView {
 		org.lgna.croquet.components.GridBagPanel gridBagPanel = new org.lgna.croquet.components.GridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.weighty = 0.0;
 		gbc.weightx = 1.0;
 		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( numberModel, (short)7 ).createButton(), gbc );
 		gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( numberModel, (short)8 ).createButton(), gbc );
@@ -93,8 +94,14 @@ public final class NumberExpressionCreatorView extends ExpressionCreatorView {
 			gbc.gridwidth = 2;
 			gridBagPanel.addComponent( org.alice.ide.croquet.models.numberpad.NumeralOperation.getInstance( numberModel, (short)0 ).createButton(), gbc );
 		}
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gridBagPanel.addComponent( plusMinusOperation.createButton(), gbc );
 
+		gbc.weighty = 1.0;
+		gridBagPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
+		
+		gridBagPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,  0, 0, 0 ) );
+		
 		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
 				new org.lgna.croquet.components.SwingAdapter( view ), 
 				org.alice.ide.croquet.models.numberpad.BackspaceOperation.getInstance( numberModel ).createButton()
@@ -103,8 +110,12 @@ public final class NumberExpressionCreatorView extends ExpressionCreatorView {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 		rv.addComponent( lineAxisPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 		rv.addComponent( gridBagPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+//		org.lgna.croquet.components.PageAxisPanel rv = new org.lgna.croquet.components.PageAxisPanel();
+//		rv.addComponent( lineAxisPanel );
+//		rv.addComponent( gridBagPanel );
+//		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
 
-		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridBagPanel.getFont(), 3.0f );
+		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridBagPanel.getFont(), 2.0f );
 		view.setFont( font );
 		for( org.lgna.croquet.components.Button button : org.lgna.croquet.components.HierarchyUtilities.findAllMatches( rv, org.lgna.croquet.components.Button.class ) ) {
 			button.setFont( font );

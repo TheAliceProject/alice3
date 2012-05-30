@@ -41,23 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.project.codecs;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ProjectCodec implements org.lgna.croquet.ItemCodec< org.lgna.project.Project >{
-	SINGLETON;
-	public org.lgna.project.Project decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+public class StringCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	public StringCustomExpressionCreatorView( org.alice.ide.custom.StringCustomExpressionCreatorComposite composite ) {
+		super( composite );
 	}
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.project.Project value ) {
-		throw new RuntimeException( "todo" );
-	}
-	public Class< org.lgna.project.Project > getValueClass() {
-		return org.lgna.project.Project.class;
-	}
-	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.project.Project value, java.util.Locale locale ) {
-		return rv;
+	@Override
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		return new org.lgna.croquet.components.Component<?>[] {
+				((org.alice.ide.custom.StringCustomExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createTextField()
+		};
 	}
 }

@@ -41,32 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom.components;
+package org.alice.ide.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
-	public ExpressionCreatorView( org.alice.ide.custom.ExpressionCreatorComposite<?> composite ) {
-		super( composite );
+public class ProjectDocumentState extends org.lgna.croquet.CustomItemState< org.alice.ide.ProjectDocument > {
+	private static class SingletonHolder {
+		private static ProjectDocumentState instance = new ProjectDocumentState();
 	}
-	
-	private org.lgna.project.ast.Expression createValue() {
-		org.alice.ide.custom.ExpressionCreatorComposite<?> composite = (org.alice.ide.custom.ExpressionCreatorComposite<?>)this.getComposite();
-		return composite.getPreviewValue();
+	public static ProjectDocumentState getInstance() {
+		return SingletonHolder.instance;
 	}
-	
+	private org.alice.ide.ProjectDocument value;
+	private ProjectDocumentState() {
+		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), org.alice.ide.project.codecs.ProjectDocumentCodec.SINGLETON );
+	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		org.lgna.project.ast.Expression expression;
-		try {
-			expression = this.createValue();
-		} catch( RuntimeException re ) {
-			//re.printStackTrace();
-			expression = new org.lgna.project.ast.NullLiteral();
-		}
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
+	protected void localize() {
+	}
+	@Override
+	protected void updateSwingModel( org.alice.ide.ProjectDocument nextValue ) {
+		this.value = nextValue;
+	}
+	@Override
+	protected org.alice.ide.ProjectDocument getActualValue() {
+		return this.value;
 	}
 }

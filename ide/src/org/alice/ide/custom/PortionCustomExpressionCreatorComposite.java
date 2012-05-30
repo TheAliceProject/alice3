@@ -41,23 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.custom;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomColorInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< org.lgna.project.ast.Expression > {
+public class PortionCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.PortionCustomExpressionCreatorView> {
 	private static class SingletonHolder {
-		private static CustomColorInputDialogOperation instance = new CustomColorInputDialogOperation();
+		private static PortionCustomExpressionCreatorComposite instance = new PortionCustomExpressionCreatorComposite();
 	}
-	public static CustomColorInputDialogOperation getInstance() {
+	public static PortionCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private CustomColorInputDialogOperation() {
-		super( java.util.UUID.fromString( "a3f1e6a7-89b7-4de3-9c54-ac1d3f65a571" ) );
+	private final org.lgna.croquet.BoundedIntegerState literalValueState = this.createBoundedIntegerState( this.createKey( "literalValueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
+	
+	private PortionCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.Expression > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.choosers.ColorChooser();
+	protected org.alice.ide.custom.components.PortionCustomExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.PortionCustomExpressionCreatorView( this );
+	}
+	public org.lgna.croquet.BoundedIntegerState getLiteralValueState() {
+		return this.literalValueState;
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		java.math.BigDecimal decimal = new java.math.BigDecimal( this.literalValueState.getValue() );
+		decimal = decimal.movePointLeft( 2 );
+		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
+	}
+	@Override
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	@Override
+	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		double value;
+		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
+			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
+			value = doubleLiteral.value.getValue();
+		} else {
+			value = Double.NaN;
+		}
+		if( Double.isNaN( value ) ) {
+			//pass
+		} else {
+			java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
+			decimal = decimal.movePointRight( 2 );
+			this.literalValueState.setValueTransactionlessly( decimal.intValue() );
+		}
 	}
 }

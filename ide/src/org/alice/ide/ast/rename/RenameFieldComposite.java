@@ -41,30 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FloatExpressionCreatorComposite extends NumberExpressionCreatorComposite {
-	private static class SingletonHolder {
-		private static FloatExpressionCreatorComposite instance = new FloatExpressionCreatorComposite();
-	}
-	public static FloatExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private FloatExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() );
-	}
-	@Override
-	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String text;
-		if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
-			org.lgna.project.ast.FloatLiteral floatLiteral = (org.lgna.project.ast.FloatLiteral)expression;
-			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( floatLiteral.value.getValue() );
+public class RenameFieldComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserField> {
+	private static java.util.Map< org.lgna.project.ast.UserField, RenameFieldComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
+		assert field != null;
+		RenameFieldComposite rv = map.get( field );
+		if( rv != null ) {
+			//pass
 		} else {
-			text = "";
+			rv = new RenameFieldComposite( field );
+			map.put( field, rv );
 		}
-		return text;
+		return rv;
+	}
+	private RenameFieldComposite( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "20163483-25a2-40b0-b1e5-330cb2d29414" ), new org.alice.ide.name.validators.FieldNameValidator( field ), field );
 	}
 }

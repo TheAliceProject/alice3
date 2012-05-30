@@ -40,23 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.custom;
+
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomPortionInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< org.lgna.project.ast.DoubleLiteral > {
-	private static class SingletonHolder {
-		private static CustomPortionInputDialogOperation instance = new CustomPortionInputDialogOperation();
-	}
-	public static CustomPortionInputDialogOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CustomPortionInputDialogOperation() {
-		super( java.util.UUID.fromString( "a200dbc2-5a16-4931-8a5d-2a793973e053" ) );
+public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.custom.components.CustomExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V,org.lgna.project.ast.Expression> {
+	public CustomExpressionCreatorComposite( java.util.UUID id ) {
+		super( id );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.choosers.PortionChooser();
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.initializeToPreviousExpression( org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression() );
+		super.handlePreShowDialog( step );
 	}
 }

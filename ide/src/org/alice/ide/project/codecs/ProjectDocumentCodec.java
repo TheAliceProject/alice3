@@ -41,50 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.alice.ide.project.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.StringExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static StringExpressionCreatorComposite instance = new StringExpressionCreatorComposite();
+public enum ProjectDocumentCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.ProjectDocument >{
+	SINGLETON;
+	public org.alice.ide.ProjectDocument decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
 	}
-	public static StringExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.ProjectDocument value ) {
+		throw new RuntimeException( "todo" );
 	}
-	private final org.lgna.croquet.StringState literalValueState = this.createStringState( this.createKey( "literalValueState" ) );
-	
-	private StringExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+	public Class< org.alice.ide.ProjectDocument > getValueClass() {
+		return org.alice.ide.ProjectDocument.class;
 	}
-	@Override
-	protected org.alice.ide.custom.components.StringExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.StringExpressionCreatorView( this );
-	}
-	public org.lgna.croquet.StringState getLiteralValueState() {
-		return this.literalValueState;
-	}
-	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		return new org.lgna.project.ast.StringLiteral( this.literalValueState.getValue() );
-	}
-	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
-	}
-	
-	
-	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String value;
-		if( expression instanceof org.lgna.project.ast.StringLiteral ) {
-			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)expression;
-			value = stringLiteral.value.getValue();
-		} else {
-			value = "";
-		}
-		this.literalValueState.setValueTransactionlessly( value );
-		this.literalValueState.selectAll();
+	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.ProjectDocument value, java.util.Locale locale ) {
+		rv.append( value );
+		return rv;
 	}
 }
