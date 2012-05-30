@@ -46,8 +46,8 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCustomCreatorComposite<V extends org.alice.ide.custom.components.CustomExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V,org.lgna.project.ast.Expression> {
-	public ExpressionCustomCreatorComposite( java.util.UUID id ) {
+public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.custom.components.CustomExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V,org.lgna.project.ast.Expression> {
+	public CustomExpressionCreatorComposite( java.util.UUID id ) {
 		super( id );
 	}
 	@Override

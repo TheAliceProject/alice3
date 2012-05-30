@@ -59,7 +59,7 @@ public class ColorFillerInner extends org.alice.ide.cascade.fillerinners.Express
  			}
  		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.custom.CustomColorInputDialogOperation.getInstance().getFillIn() );
+		rv.add( org.alice.stageide.custom.ColorCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
  		return rv;
 	}
 }

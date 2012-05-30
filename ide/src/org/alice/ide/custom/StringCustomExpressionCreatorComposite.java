@@ -46,7 +46,7 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class StringCustomExpressionCreatorComposite extends ExpressionCustomCreatorComposite<org.alice.ide.custom.components.StringCustomExpressionCreatorView> {
+public class StringCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.StringCustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
 	}

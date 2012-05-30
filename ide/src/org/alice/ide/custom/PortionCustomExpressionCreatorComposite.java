@@ -46,7 +46,7 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionCustomExpressionCreatorComposite extends ExpressionCustomCreatorComposite<org.alice.ide.custom.components.PortionCustomExpressionCreatorView> {
+public class PortionCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.PortionCustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static PortionCustomExpressionCreatorComposite instance = new PortionCustomExpressionCreatorComposite();
 	}

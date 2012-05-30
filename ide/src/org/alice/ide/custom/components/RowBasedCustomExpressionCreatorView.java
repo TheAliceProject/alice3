@@ -47,7 +47,7 @@ package org.alice.ide.custom.components;
  * @author Dennis Cosgrove
  */
 public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.ExpressionCustomCreatorComposite<?> composite ) {
+	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
 	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {

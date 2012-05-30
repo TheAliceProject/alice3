@@ -47,12 +47,12 @@ package org.alice.ide.custom.components;
  * @author Dennis Cosgrove
  */
 public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
-	public CustomExpressionCreatorView( org.alice.ide.custom.ExpressionCustomCreatorComposite<?> composite ) {
+	public CustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
 	
 	private org.lgna.project.ast.Expression createValue() {
-		org.alice.ide.custom.ExpressionCustomCreatorComposite<?> composite = (org.alice.ide.custom.ExpressionCustomCreatorComposite<?>)this.getComposite();
+		org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite = (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)this.getComposite();
 		return composite.getPreviewValue();
 	}
 	
