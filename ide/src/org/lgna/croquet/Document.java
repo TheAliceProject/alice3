@@ -41,23 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.project.codecs;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ProjectCodec implements org.lgna.croquet.ItemCodec< org.lgna.project.Project >{
-	SINGLETON;
-	public org.lgna.project.Project decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
-	}
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.project.Project value ) {
-		throw new RuntimeException( "todo" );
-	}
-	public Class< org.lgna.project.Project > getValueClass() {
-		return org.lgna.project.Project.class;
-	}
-	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.project.Project value, java.util.Locale locale ) {
-		return rv;
-	}
+public interface Document {
+	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory();
 }

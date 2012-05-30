@@ -40,44 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.simple;
+
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleApplication extends org.lgna.croquet.Application {
-	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
-		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
-			return this.transactionHistory;
-		}
-	};
-	@Override
-	public org.lgna.croquet.Document getDocument() {
-		return this.document;
+public class ProjectDocument implements org.lgna.croquet.Document {
+	private final org.lgna.project.Project project;
+	private final org.lgna.croquet.history.TransactionHistory rootTransactionHistory;
+	public ProjectDocument( org.lgna.project.Project project ) {
+		this.project = project;
+		//todo: get root transaction history from project property
+		this.rootTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
 	}
-	@Override
-	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	public org.lgna.project.Project getProject() {
+		return this.project;
 	}
-	@Override
-	protected void handleWindowOpened(java.awt.event.WindowEvent e) {
-	}
-	@Override
-	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-		System.exit( 0 );
-	}
-
-	@Override
-	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.Operation getAboutOperation() {
-		return null;
-	}
-	@Override
-	protected org.lgna.croquet.Operation getPreferencesOperation() {
-		return null;
+	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+		return this.rootTransactionHistory;
 	}
 }

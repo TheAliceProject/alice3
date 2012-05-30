@@ -61,11 +61,11 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	private org.lgna.project.virtualmachine.UserInstance programInstance;
 	private org.lgna.project.ast.UserField selectedField;
 	
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.ProjectDocument > projectListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.ProjectDocument >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
-			AbstractSceneEditor.this.handleProjectOpened( nextValue );
+		public void changed( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+			AbstractSceneEditor.this.handleProjectOpened( nextValue != null ? nextValue.getProject() : null );
 		}
 	};
 	
@@ -395,22 +395,22 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
 		if( EPIC_HACK_isFirstAddedTo ) {
-			org.lgna.project.Project project = org.alice.ide.ProjectApplication.getActiveInstance().getProject();
-			if( project != null ) {
-				this.projectListener.changed( null, null, project, false );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove firing changed", project );
+			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocument();
+			if( projectDocument != null ) {
+				this.projectListener.changed( null, null, projectDocument, false );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove firing changed", projectDocument );
 			}
 			EPIC_HACK_isFirstAddedTo = false;
 		}
 		this.initializeIfNecessary();
-		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectListener );
 		super.handleAddedTo( parent );
 	}
 	
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		super.handleRemovedFrom( parent );
-		org.alice.ide.project.ProjectState.getInstance().removeValueListener( this.projectListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().removeValueListener( this.projectListener );
 	}
 	
 	

@@ -40,44 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.simple;
+
+package org.alice.ide.project.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleApplication extends org.lgna.croquet.Application {
-	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
-		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
-			return this.transactionHistory;
-		}
-	};
-	@Override
-	public org.lgna.croquet.Document getDocument() {
-		return this.document;
+public enum ProjectDocumentCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.ProjectDocument >{
+	SINGLETON;
+	public org.alice.ide.ProjectDocument decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
 	}
-	@Override
-	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.ProjectDocument value ) {
+		throw new RuntimeException( "todo" );
 	}
-	@Override
-	protected void handleWindowOpened(java.awt.event.WindowEvent e) {
+	public Class< org.alice.ide.ProjectDocument > getValueClass() {
+		return org.alice.ide.ProjectDocument.class;
 	}
-	@Override
-	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-		System.exit( 0 );
-	}
-
-	@Override
-	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.Operation getAboutOperation() {
-		return null;
-	}
-	@Override
-	protected org.lgna.croquet.Operation getPreferencesOperation() {
-		return null;
+	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.ProjectDocument value, java.util.Locale locale ) {
+		rv.append( value );
+		return rv;
 	}
 }
