@@ -47,11 +47,82 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class Slider extends ViewController< javax.swing.JSlider, org.lgna.croquet.BoundedNumberState<?> > {
+	public static enum Orientation {
+		HORIZONTAL( javax.swing.SwingConstants.HORIZONTAL ),
+		VERTICAL( javax.swing.SwingConstants.VERTICAL );
+		private int internal;
+		private Orientation( int internal ) {
+			this.internal = internal;
+		}
+		private int getInternal() {
+			return this.internal;
+		}
+		public static Orientation valueOf( int swingConstant ) {
+			switch( swingConstant ) {
+			case javax.swing.SwingConstants.HORIZONTAL:
+				return HORIZONTAL;
+			case javax.swing.SwingConstants.VERTICAL:
+				return VERTICAL;
+			default:
+				return null;
+			}
+		}
+	};
 	public Slider( org.lgna.croquet.BoundedNumberState<?> model ) {
 		super( model );
 	}
 	@Override
 	protected javax.swing.JSlider createAwtComponent() {
 		return new javax.swing.JSlider( this.getModel().getSwingModel().getBoundedRangeModel() );
+	}
+	public Orientation getOrientation() {
+		return Orientation.valueOf( this.getAwtComponent().getOrientation() );
+	}
+	public void setOrientation( Orientation orientation ) {
+		this.getAwtComponent().setOrientation( orientation.getInternal() );
+	}
+	public boolean getInverted() {
+		return this.getAwtComponent().getInverted();
+	}
+	public void setInverted( boolean inverted ) {
+		this.getAwtComponent().setInverted( inverted );
+	}
+	public int getMinorTickSpacing() {
+		return this.getAwtComponent().getMinorTickSpacing();
+	}
+	public void setMinorTickSpacing( int minorTickSpacing ) {
+		this.getAwtComponent().setMinorTickSpacing( minorTickSpacing );
+	}
+	public int getMajorTickSpacing() {
+		return this.getAwtComponent().getMajorTickSpacing();
+	}
+	public void setMajorTickSpacing( int majorTickSpacing ) {
+		this.getAwtComponent().setMajorTickSpacing( majorTickSpacing );
+	}
+	public boolean getSnapToTicks() {
+		return this.getAwtComponent().getSnapToTicks();
+	}
+	public void setSnapToTicks( boolean snapToTicks ) {
+		this.getAwtComponent().setSnapToTicks( snapToTicks );
+	}
+	public boolean getPaintTicks() {
+		return this.getAwtComponent().getPaintTicks();
+	}
+	public void setPaintTicks( boolean paintTicks ) {
+		this.getAwtComponent().setPaintTicks( paintTicks );
+	}
+
+	public boolean getPaintLabels() {
+		return this.getAwtComponent().getPaintLabels();
+	}
+	public void setPaintLabels( boolean paintLabels ) {
+		this.getAwtComponent().setPaintLabels( paintLabels );
+	}
+	
+	public java.util.Dictionary<Integer,javax.swing.JComponent> getLabelTable() {
+		return this.getAwtComponent().getLabelTable();
+	}
+	public void setLabelTable( java.util.Dictionary<Integer,javax.swing.JComponent> labelTable ) {
+		this.getAwtComponent().setLabelTable( labelTable );
 	}
 }
