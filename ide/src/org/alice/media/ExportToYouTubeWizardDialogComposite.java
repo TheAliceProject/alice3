@@ -99,8 +99,8 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		dialog.setSize( WIDTH, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH ) );
 	}
 	@Override
-	protected boolean isGoldenRatioDesired() {
-		return false;
+	protected org.lgna.croquet.DialogCoreComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
+		return null;
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
