@@ -41,19 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom.components;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionExpressionCreatorView extends RowBasedExpressionCreatorView {
-	public PortionExpressionCreatorView( org.alice.ide.custom.PortionExpressionCreatorComposite composite ) {
-		super( composite );
+public final class DoubleCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
+	private static class SingletonHolder {
+		private static DoubleCustomExpressionCreatorComposite instance = new DoubleCustomExpressionCreatorComposite();
+	}
+	public static DoubleCustomExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DoubleCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
-		return new org.lgna.croquet.components.Component<?>[] {
-				((org.alice.ide.custom.PortionExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createSlider()
-		};
+	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text;
+		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
+			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
+			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( doubleLiteral.value.getValue() );
+		} else {
+			text = "";
+		}
+		return text;
 	}
 }

@@ -46,44 +46,45 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.NumberExpressionCreatorView> {
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	private final org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
-	public NumberExpressionCreatorComposite( java.util.UUID id, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
-		super( id );
-		this.numberModel = numberModel;
+public class StringCustomExpressionCreatorComposite extends ExpressionCustomCreatorComposite<org.alice.ide.custom.components.StringCustomExpressionCreatorView> {
+	private static class SingletonHolder {
+		private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
+	}
+	public static StringCustomExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final org.lgna.croquet.StringState literalValueState = this.createStringState( this.createKey( "literalValueState" ) );
+	
+	private StringCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
 	}
 	@Override
-	protected org.alice.ide.custom.components.NumberExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.NumberExpressionCreatorView( this );
+	protected org.alice.ide.custom.components.StringCustomExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.StringCustomExpressionCreatorView( this );
 	}
-	public org.alice.ide.croquet.models.numberpad.NumberModel getNumberModel() {
-		return this.numberModel;
+	public org.lgna.croquet.StringState getLiteralValueState() {
+		return this.literalValueState;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		return this.numberModel.getExpressionValue();
+		return new org.lgna.project.ast.StringLiteral( this.literalValueState.getValue() );
 	}
 	@Override
 	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
-		if( text != null ) {
-			this.errorStatus.setText( text );
-			return errorStatus;
+		return IS_GOOD_TO_GO_STATUS;
+	}
+	
+	
+	@Override
+	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String value;
+		if( expression instanceof org.lgna.project.ast.StringLiteral ) {
+			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)expression;
+			value = stringLiteral.value.getValue();
 		} else {
-			return IS_GOOD_TO_GO_STATUS;
+			value = "";
 		}
-	}
-	protected abstract String getTextForPreviousExpression( org.lgna.project.ast.Expression expression );
-	@Override
-	protected final void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String text = this.getTextForPreviousExpression( expression );
-		this.numberModel.setText( text );
-		this.numberModel.selectAll();
-	}
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
-		this.numberModel.getTextField().requestFocusInWindow();
+		this.literalValueState.setValueTransactionlessly( value );
+		this.literalValueState.selectAll();
 	}
 }

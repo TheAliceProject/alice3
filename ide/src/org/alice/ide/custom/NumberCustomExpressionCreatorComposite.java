@@ -46,51 +46,44 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class PortionExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.PortionExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static PortionExpressionCreatorComposite instance = new PortionExpressionCreatorComposite();
-	}
-	public static PortionExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private final org.lgna.croquet.BoundedIntegerState literalValueState = this.createBoundedIntegerState( this.createKey( "literalValueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
-	
-	private PortionExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+public abstract class NumberCustomExpressionCreatorComposite extends ExpressionCustomCreatorComposite<org.alice.ide.custom.components.NumberCustomExpressionCreatorView> {
+	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	private final org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
+	public NumberCustomExpressionCreatorComposite( java.util.UUID id, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
+		super( id );
+		this.numberModel = numberModel;
 	}
 	@Override
-	protected org.alice.ide.custom.components.PortionExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.PortionExpressionCreatorView( this );
+	protected org.alice.ide.custom.components.NumberCustomExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.NumberCustomExpressionCreatorView( this );
 	}
-	public org.lgna.croquet.BoundedIntegerState getLiteralValueState() {
-		return this.literalValueState;
+	public org.alice.ide.croquet.models.numberpad.NumberModel getNumberModel() {
+		return this.numberModel;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		java.math.BigDecimal decimal = new java.math.BigDecimal( this.literalValueState.getValue() );
-		decimal = decimal.movePointLeft( 2 );
-		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
+		return this.numberModel.getExpressionValue();
 	}
 	@Override
 	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
+		if( text != null ) {
+			this.errorStatus.setText( text );
+			return errorStatus;
+		} else {
+			return IS_GOOD_TO_GO_STATUS;
+		}
 	}
-
+	protected abstract String getTextForPreviousExpression( org.lgna.project.ast.Expression expression );
 	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		double value;
-		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
-			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
-			value = doubleLiteral.value.getValue();
-		} else {
-			value = Double.NaN;
-		}
-		if( Double.isNaN( value ) ) {
-			//pass
-		} else {
-			java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
-			decimal = decimal.movePointRight( 2 );
-			this.literalValueState.setValueTransactionlessly( decimal.intValue() );
-		}
+	protected final void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text = this.getTextForPreviousExpression( expression );
+		this.numberModel.setText( text );
+		this.numberModel.selectAll();
+	}
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super.handlePreShowDialog( step );
+		this.numberModel.getTextField().requestFocusInWindow();
 	}
 }

@@ -46,14 +46,14 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public class StringExpressionCreatorView extends RowBasedExpressionCreatorView {
-	public StringExpressionCreatorView( org.alice.ide.custom.StringExpressionCreatorComposite composite ) {
+public class StringCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	public StringCustomExpressionCreatorView( org.alice.ide.custom.StringCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 	@Override
 	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
 		return new org.lgna.croquet.components.Component<?>[] {
-				((org.alice.ide.custom.StringExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createTextField()
+				((org.alice.ide.custom.StringCustomExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createTextField()
 		};
 	}
 }

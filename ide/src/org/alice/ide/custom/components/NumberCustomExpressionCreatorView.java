@@ -46,13 +46,13 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public final class NumberExpressionCreatorView extends ExpressionCreatorView {
-	public NumberExpressionCreatorView( org.alice.ide.custom.NumberExpressionCreatorComposite composite ) {
+public final class NumberCustomExpressionCreatorView extends CustomExpressionCreatorView {
+	public NumberCustomExpressionCreatorView( org.alice.ide.custom.NumberCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.ide.custom.NumberExpressionCreatorComposite composite = (org.alice.ide.custom.NumberExpressionCreatorComposite)this.getComposite();
+		org.alice.ide.custom.NumberCustomExpressionCreatorComposite composite = (org.alice.ide.custom.NumberCustomExpressionCreatorComposite)this.getComposite();
 		org.alice.ide.croquet.models.numberpad.NumberModel numberModel = composite.getNumberModel();
 		javax.swing.JTextField view = numberModel.getTextField();
 		

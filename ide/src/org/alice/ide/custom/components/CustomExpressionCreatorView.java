@@ -41,30 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DoubleExpressionCreatorComposite extends NumberExpressionCreatorComposite {
-	private static class SingletonHolder {
-		private static DoubleExpressionCreatorComposite instance = new DoubleExpressionCreatorComposite();
+public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
+	public CustomExpressionCreatorView( org.alice.ide.custom.ExpressionCustomCreatorComposite<?> composite ) {
+		super( composite );
 	}
-	public static DoubleExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
+	
+	private org.lgna.project.ast.Expression createValue() {
+		org.alice.ide.custom.ExpressionCustomCreatorComposite<?> composite = (org.alice.ide.custom.ExpressionCustomCreatorComposite<?>)this.getComposite();
+		return composite.getPreviewValue();
 	}
-	private DoubleExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() );
-	}
+	
 	@Override
-	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String text;
-		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
-			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
-			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( doubleLiteral.value.getValue() );
-		} else {
-			text = "";
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.lgna.project.ast.Expression expression;
+		try {
+			expression = this.createValue();
+		} catch( RuntimeException re ) {
+			//re.printStackTrace();
+			expression = new org.lgna.project.ast.NullLiteral();
 		}
-		return text;
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		return rv;
 	}
 }

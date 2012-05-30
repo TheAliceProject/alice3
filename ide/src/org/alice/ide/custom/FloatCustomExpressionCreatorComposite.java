@@ -46,13 +46,25 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorComposite<V extends org.alice.ide.custom.components.ExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V,org.lgna.project.ast.Expression> {
-	public ExpressionCreatorComposite( java.util.UUID id ) {
-		super( id );
+public class FloatCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
+	private static class SingletonHolder {
+		private static FloatCustomExpressionCreatorComposite instance = new FloatCustomExpressionCreatorComposite();
+	}
+	public static FloatCustomExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private FloatCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() );
 	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.initializeToPreviousExpression( org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression() );
-		super.handlePreShowDialog( step );
+	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text;
+		if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
+			org.lgna.project.ast.FloatLiteral floatLiteral = (org.lgna.project.ast.FloatLiteral)expression;
+			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( floatLiteral.value.getValue() );
+		} else {
+			text = "";
+		}
+		return text;
 	}
 }
