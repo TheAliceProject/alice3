@@ -40,29 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameLocalOperation extends RenameDeclarationOperation< org.lgna.project.ast.UserLocal > {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, RenameLocalOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameLocalOperation getInstance( org.lgna.project.ast.UserLocal local ) {
-		RenameLocalOperation rv = map.get( local );
+public class RenameTypeComposite extends RenameDeclarationComposite<org.lgna.project.ast.NamedUserType> {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, RenameTypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameTypeComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		assert type != null;
+		RenameTypeComposite rv = map.get( type );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new RenameLocalOperation( local );
-			map.put( local, rv );
+			rv = new RenameTypeComposite( type );
+			map.put( type, rv );
 		}
 		return rv;
 	}
-
-	private RenameLocalOperation( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "b2998aa4-dcfc-4977-9070-449b0d587130" ), local, new org.alice.ide.name.validators.LocalNameValidator( local ) );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserLocal.class );
+	private RenameTypeComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new org.alice.ide.name.validators.TypeNameValidator( type ), type );
 	}
 }

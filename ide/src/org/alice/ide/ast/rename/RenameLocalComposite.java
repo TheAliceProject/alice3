@@ -40,29 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameMethodOperation extends RenameDeclarationOperation< org.lgna.project.ast.UserMethod > {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, RenameMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
-		assert method != null;
-		RenameMethodOperation rv = map.get( method );
+public class RenameLocalComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserLocal> {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, RenameLocalComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameLocalComposite getInstance( org.lgna.project.ast.UserLocal local ) {
+		assert local != null;
+		RenameLocalComposite rv = map.get( local );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new RenameMethodOperation( method );
-			map.put( method, rv );
+			rv = new RenameLocalComposite( local );
+			map.put( local, rv );
 		}
 		return rv;
 	}
-	private RenameMethodOperation( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method, new org.alice.ide.name.validators.MethodNameValidator( method ) );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserMethod.class );
+	private RenameLocalComposite( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "51ce6258-a1ac-4606-b4f8-faea8e732550" ), new org.alice.ide.name.validators.LocalNameValidator( local ), local );
 	}
 }

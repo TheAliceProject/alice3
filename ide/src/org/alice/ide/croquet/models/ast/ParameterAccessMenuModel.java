@@ -60,7 +60,7 @@ public class ParameterAccessMenuModel extends org.lgna.croquet.PredeterminedMenu
 
 	private ParameterAccessMenuModel( org.lgna.project.ast.UserParameter parameter ) {
 		super( java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ),
-				org.alice.ide.croquet.models.ast.rename.RenameParameterOperation.getInstance( parameter ).getMenuItemPrepModel() 
+				org.alice.ide.ast.rename.RenameParameterComposite.getInstance( parameter ).getOperation().getMenuItemPrepModel() 
 		);
 	}
 }
