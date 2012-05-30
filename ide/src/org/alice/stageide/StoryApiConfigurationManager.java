@@ -344,6 +344,9 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails ) {
 		if( valueDetails instanceof org.lgna.story.annotation.PortionDetails ) {
 			return org.alice.ide.custom.PortionCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
+		} else if( valueDetails instanceof org.lgna.story.annotation.VolumeLevelDetails ) {
+//			return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
+			return org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
 		} else {
 			return null;
 		}
