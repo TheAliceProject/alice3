@@ -54,6 +54,11 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 		this.numberModel = numberModel;
 	}
 	@Override
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		//return GoldenRatioPolicy.HEIGHT_LONG_SIDE;
+		return null;
+	}
+	@Override
 	protected org.alice.ide.custom.components.NumberCustomExpressionCreatorView createView() {
 		return new org.alice.ide.custom.components.NumberCustomExpressionCreatorView( this );
 	}
