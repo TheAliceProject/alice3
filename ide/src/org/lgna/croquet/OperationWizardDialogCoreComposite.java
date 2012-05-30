@@ -40,56 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogMainComposite<V extends org.lgna.croquet.components.View<?,?>> extends GatedCommitMainComposite<V> {
-	private static class InternalControlsComposite extends GatedCommitDialogComposite.ControlsComposite {
-		public InternalControlsComposite( InternalInputDialogComposite composite ) {
-			super( java.util.UUID.fromString( "d36cd73f-20dd-45ed-8151-163c44033f8b" ), composite );
-		}
-		@Override
-		protected String getCommitUiKey() {
-			return "OptionPane.okButtonText";
-		}
-		@Override
-		protected String getDefaultCommitText() {
-			return "OK";
-		}
-		@Override
-		public void handleIsGoodToGo( boolean isGoodToGo ) {
-			this.getCompleteOperation().setEnabled( isGoodToGo );
-		}
-		@Override
-		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
-			controlLine.addComponent( leadingOkCancelButton );
-			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ) );
-			controlLine.addComponent( trailingOkCancelButton );
-		}
+public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.components.BorderPanel> {
+	private final Operation operation;
+	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
+		super( migrationId, wizardPages );
+		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
-
-	private static class InternalInputDialogComposite extends GatedCommitDialogComposite<InputDialogMainComposite,InternalControlsComposite> {
-		private final InternalControlsComposite controlsComposite = new InternalControlsComposite( this );
-		public InternalInputDialogComposite( Group operationGroup, InputDialogMainComposite<?> mainComposite ) {
-			super( java.util.UUID.fromString( "d98ddc2f-b344-4b38-b4dd-e55a7b703054" ), operationGroup, mainComposite );
-		}
-		@Override
-		protected InternalControlsComposite getControlsComposite() {
-			assert this.controlsComposite != null : this;
-			return this.controlsComposite;
-		}
-	}
-
-	private final InternalInputDialogComposite gatedCommitDialogComposite;
-	public InputDialogMainComposite( java.util.UUID migrationId, Group operationGroup ) {
-		super( migrationId );
-		this.gatedCommitDialogComposite = new InternalInputDialogComposite( operationGroup, this );
+	public org.lgna.croquet.Operation getOperation() {
+		return this.operation;
 	}
 	@Override
-	public GatedCommitDialogComposite getGatedCommitDialogComposite() {
-		return this.gatedCommitDialogComposite;
+	protected String getName() {
+		return this.getOperation().getName();
+	}
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
+				if( isCommited != null ) { // close button condition
+					if( isCommited ) {
+						try {
+							org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
+							if( edit != null ) {
+								completionStep.commitAndInvokeDo( edit );
+							} else {
+								completionStep.finish();
+							}
+						} catch( CancelException ce ) {
+							completionStep.cancel();
+						}
+					} else {
+						completionStep.cancel();
+					}
+				} else {
+					completionStep.cancel();
+				}
+			}
+		}, completionStep );
 	}
 }

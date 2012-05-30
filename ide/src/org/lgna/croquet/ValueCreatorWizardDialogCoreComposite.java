@@ -40,23 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomFloatInputDialogOperation extends CustomNumberInputDialogOperation<org.lgna.project.ast.FloatLiteral> {
-	private static class SingletonHolder {
-		private static CustomFloatInputDialogOperation instance = new CustomFloatInputDialogOperation();
-	}
-	public static CustomFloatInputDialogOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CustomFloatInputDialogOperation() {
-		super( java.util.UUID.fromString( "6a04b351-ed30-44e0-a849-783945698720" ) );
+public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
+	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?>... wizardPages ) {
+		super( migrationId, wizardPages );
 	}
 	@Override
-	protected org.alice.ide.choosers.FloatChooser prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.ide.choosers.FloatChooser();
+	protected String getName() {
+		return null;
 	}
 }

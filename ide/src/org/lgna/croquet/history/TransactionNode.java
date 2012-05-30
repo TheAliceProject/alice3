@@ -54,7 +54,6 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 	}
 	public TransactionNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
-
 	public P getOwner() {
 		return this.owner;
 	}

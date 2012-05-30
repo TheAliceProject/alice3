@@ -40,18 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+
+package org.alice.ide.ast.rename.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerChooser extends AbstractNumberChooser<org.lgna.project.ast.Expression> {
-	public IntegerChooser() {
-		super( org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance() );
-		//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-		//		if( previousExpression instanceof org.lgna.project.ast.IntegerLiteral ) {
-		//			org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)previousExpression;
-		//			this.setAndSelectText( Integer.toString( integerLiteral.value.getValue() ) );
-		//		}
+public class RenamePanel extends org.lgna.croquet.components.BorderPanel {
+	public RenamePanel( org.alice.ide.ast.rename.RenameComposite composite ) {
+		super( composite );
+		org.lgna.croquet.components.BorderPanel line = new org.lgna.croquet.components.BorderPanel();
+		line.addComponent( composite.getNameLabel().createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		line.addComponent( composite.getNameState().createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		line.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
+		this.addComponent( line, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
 	}
 }

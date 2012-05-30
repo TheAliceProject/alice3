@@ -81,8 +81,6 @@ public class StepNoteFactory {
 					stepClsName = "PlainDialogCloseOperationNote";
 				} else if( model instanceof org.lgna.croquet.SerialOperation ) {
 					stepClsName = "SerialOperationNote";
-				} else if( model instanceof org.lgna.croquet.WizardDialogOperation ) {
-					stepClsName = "WizardDialogOperationNote";
 				} else if( model instanceof org.lgna.croquet.Cascade ) {
 					stepClsName = "CascadeCompletionNote";
 				} else {

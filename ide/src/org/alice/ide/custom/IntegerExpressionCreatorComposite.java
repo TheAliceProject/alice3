@@ -40,18 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FloatChooser extends AbstractNumberChooser<org.lgna.project.ast.FloatLiteral> {
-	public FloatChooser() {
-		super( org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() ); 
-//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-//		if( previousExpression instanceof org.lgna.project.ast.FloatLiteral ) {
-//			org.lgna.project.ast.FloatLiteral floatLiteral = (org.lgna.project.ast.FloatLiteral)previousExpression;
-//			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );
-//		}
+public final class IntegerExpressionCreatorComposite extends NumberExpressionCreatorComposite {
+	private static class SingletonHolder {
+		private static IntegerExpressionCreatorComposite instance = new IntegerExpressionCreatorComposite();
+	}
+	public static IntegerExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IntegerExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "a81686d4-eb5a-4bab-8d0b-6ae56ae67391" ), org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance() );
+	}
+	@Override
+	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text;
+		if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
+			org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)expression;
+			text = Integer.toString( integerLiteral.value.getValue() );
+		} else {
+			text = "";
+		}
+		return text;
 	}
 }

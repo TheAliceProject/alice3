@@ -46,37 +46,42 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueInputDialogOperation<T> extends InputDialogOperation< T > {
-	public static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueInputDialogOperation.VALUE_KEY" );
+public abstract class ValueCreator<T> extends AbstractCompletionModel {
+	//todo: edits are never created by value creators.  allow group specification anyways?
+	public static final org.lgna.croquet.Group VALUE_CREATOR_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "4bef663b-1474-40ec-9731-4e2a2cb49333" ), "VALUE_CREATOR_GROUP" );
 
-	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueInputDialogOperation<F> > {
-		private InternalFillInResolver( ValueInputDialogOperation<F> internal ) {
+	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueCreator<F> > {
+		private InternalFillInResolver( ValueCreator<F> internal ) {
 			super( internal );
 		}
 		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
 		@Override
-		protected InternalFillIn<F> getDirect( ValueInputDialogOperation<F> indirect ) {
-			return indirect.getFillIn();
+		protected InternalFillIn<F> getDirect( ValueCreator<F> indirect ) {
+			return indirect.fillIn;
 		}
 	}
 	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
-		private final ValueInputDialogOperation<F> valueInputDialogOperation;
-		private InternalFillIn( ValueInputDialogOperation<F> valueInputDialogOperation ) {
-			super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
-			this.valueInputDialogOperation = valueInputDialogOperation;
+		private final ValueCreator<F> valueCreator;
+		private InternalFillIn( ValueCreator<F> valueCreator ) {
+			super( java.util.UUID.fromString( "258797f2-c1b6-4887-b6fc-42702493d573" ) );
+			this.valueCreator = valueCreator;
 		}
-		public ValueInputDialogOperation<F> getInputDialogOperation() {
-			return this.valueInputDialogOperation;
+		public ValueCreator<F> getValueCreator() {
+			return this.valueCreator;
+		}
+		@Override
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.valueCreator.getClassUsedForLocalization();
 		}
 		@Override
 		protected InternalFillInResolver<F> createResolver() {
-			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
+			return new InternalFillInResolver<F>( this.valueCreator );
 		}
 		@Override
 		protected String getTutorialItemText() {
-			return this.valueInputDialogOperation.getDefaultLocalizedText();
+			return this.valueCreator.getDefaultLocalizedText();
 		}
 		@Override
 		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
@@ -84,9 +89,10 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		}
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-			org.lgna.croquet.history.CompletionStep<?> inputDialogStep = this.valueInputDialogOperation.fire();
-			if( inputDialogStep.containsEphemeralDataFor( VALUE_KEY ) ) {
-				return (F)inputDialogStep.getEphemeralDataFor( VALUE_KEY );
+			org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER );
+			org.lgna.croquet.history.Step<?> step = this.valueCreator.fire( trigger );
+			if( step != null ) {
+				return (F)step.getEphemeralDataFor( VALUE_KEY );
 			} else {
 				throw new CancelException();
 			}
@@ -95,39 +101,41 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
 			return null;
 		}
-		
-		@Override
-		protected void appendRepr( StringBuilder sb ) {
-			super.appendRepr( sb );
-			sb.append( "owner=" );
-			sb.append( this.getInputDialogOperation() );
-		}
 	}
 
-	public ValueInputDialogOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
-		super( group, id );
+	private InternalFillIn<T> fillIn = new InternalFillIn<T>( this );
+	public static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueCreator.VALUE_KEY" );
+	public ValueCreator( java.util.UUID migrationId ) {
+		super( VALUE_CREATOR_GROUP, migrationId );
 	}
-	private InternalFillIn<T> cascadeFillIn;
-	public synchronized InternalFillIn<T> getFillIn() {
-		if( this.cascadeFillIn != null ) {
-			//pass
-		} else {
-			this.cascadeFillIn = new InternalFillIn<T>( this );
-		}
-		return this.cascadeFillIn;
-	}
-	protected abstract T createValue( org.lgna.croquet.history.CompletionStep<?> step );
 	@Override
-	protected final void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit ) {
-		if( isCommit ) {
-			T value = this.createValue( step );
-			if( value != null ) {
-				step.putEphemeralDataFor( VALUE_KEY, value );
-			} else {
-				step.cancel();
-			}
-		} else {
-			step.cancel();
+	protected void localize() {
+	}
+	@Override
+	public java.lang.Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+	@Override
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
+		return false;
+	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		return rv;
+	}
+	public CascadeFillIn< T, Void > getFillIn() {
+		return this.fillIn;
+	}
+	protected abstract T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+	@Override
+	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		this.initializeIfNecessary();
+		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		T value = this.createValue( transaction, trigger );
+		org.lgna.croquet.history.CompletionStep<?> rv = transaction.getCompletionStep();
+		if( rv != null ) {
+			rv.putEphemeralDataFor( VALUE_KEY, value );
 		}
+		return rv;
 	}
 }

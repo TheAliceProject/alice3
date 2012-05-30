@@ -72,8 +72,9 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 				if( integerLiteralValues.contains( value ) ) {
 					fillIn = org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( value );
 				} else {
-					org.lgna.croquet.ValueInputDialogOperation operation = org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance();
-					fillIn = operation.getFillIn();
+					org.alice.ide.custom.NumberExpressionCreatorComposite composite = org.alice.ide.custom.IntegerExpressionCreatorComposite.getInstance();
+					org.lgna.croquet.ValueCreator valueCreator = composite.getValueCreator();
+					fillIn = valueCreator.getFillIn();
 					completionStepSubTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
 					
 					org.alice.ide.croquet.models.numberpad.NumberModel numberModel = org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance();
@@ -90,7 +91,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 						org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( subTransaction, subOperation, org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance(), null );
 					}
 					org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( completionStepSubTransactionHistory );
-					org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, operation.getCompleteOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance(), null );
+					org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, composite.getCommitOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance(), null );
 				}
 			} else if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
 				org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;

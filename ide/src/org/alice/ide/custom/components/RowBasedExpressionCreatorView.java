@@ -46,9 +46,43 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleExpressionCreatorView extends NumberExpressionCreatorView {
-	public DoubleExpressionCreatorView( org.alice.ide.custom.DoubleExpressionCreatorComposite composite ) {
+public abstract class RowBasedExpressionCreatorView extends ExpressionCreatorView {
+	public RowBasedExpressionCreatorView( org.alice.ide.custom.ExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
-
+	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
+		return org.lgna.croquet.components.SpringUtilities.createTrailingLabel( text );
+	}
+	private static final String[] LABEL_TEXTS = { "value:" };
+	protected String[] getLabelTexts() {
+		return LABEL_TEXTS;
+	}
+	protected abstract org.lgna.croquet.components.Component< ? >[] getRowComponents();
+	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+		String[] labelTexts = this.getLabelTexts();
+		org.lgna.croquet.components.Component< ? >[] components = this.getRowComponents();
+		final int N = labelTexts.length;
+		for( int i=0; i<N; i++ ) {
+			rv.add( 
+					org.lgna.croquet.components.SpringUtilities.createRow( 
+						this.createLabel( labelTexts[ i ] ), 
+						new org.lgna.croquet.components.LineAxisPanel( 
+								components[ i ],
+								org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
+						)
+					) 
+			);
+		}
+		return rv;
+	}
+	@Override
+	public org.lgna.croquet.components.RowsSpringPanel createMainComponent() {
+		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
+			@Override
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
+				return RowBasedExpressionCreatorView.this.updateRows( rv );
+			}
+		};
+		return rowsSpringPanel;
+	}
 }

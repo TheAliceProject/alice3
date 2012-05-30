@@ -41,40 +41,90 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.declaration.components;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclarationPanel extends org.alice.ide.preview.components.PanelWithPreview {
-	private final org.alice.ide.ast.declaration.TypeDeclarationOperation model;
-	public TypeDeclarationPanel( org.alice.ide.ast.declaration.TypeDeclarationOperation model ) {
-		this.model = model;
+public class StatusLabel extends JComponent<javax.swing.JLabel> {
+	private static final String TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS = "good to go";
+	
+	public StatusLabel() {
 	}
-	public org.alice.ide.ast.declaration.TypeDeclarationOperation getModel() {
-		return this.model;
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
-		return new TypeHeader( null );
-	}
-	//todo
-//	@Override
-//	protected TypeHeader createPreviewPanel() {
-//		return new TypeHeader( null );
-//	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
-			@Override
-			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-				org.alice.ide.ast.declaration.TypeDeclarationOperation model = TypeDeclarationPanel.this.getModel();
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getSuperTypeLabelText() + ":", new org.alice.ide.croquet.components.TypeDropDown( model.getSuperTypeState() ) ) );
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
-				return rv;
-			}
+	public void setStatus( org.lgna.croquet.PotentiallyGatedComposite.Status status ) {
+		String text;
+		if( org.lgna.croquet.PotentiallyGatedComposite.IS_GOOD_TO_GO_STATUS == status ) {
+			text = TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS;
+		} else {
+			text = status.getText();
 		}
-		DetailsPanel rv = new DetailsPanel();
+		this.getAwtComponent().setText( text );
+	}
+	@Override
+	protected javax.swing.JLabel createAwtComponent() {
+		javax.swing.JLabel rv = new javax.swing.JLabel( TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS ) {
+			@Override
+			protected void paintComponent( java.awt.Graphics g ) {
+				if( this.getText() == TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS ) {
+					//pass
+				} else {
+					super.paintComponent( g );
+				}
+			}
+		};
+
+		float f0 = 0.0f;
+		float fA = 0.333f;
+		float fB = 0.667f;
+		float f1 = 1.0f;
+
+		final int SCALE = 20;
+		final int OFFSET = 0;
+
+		f0 *= SCALE;
+		fA *= SCALE;
+		fB *= SCALE;
+		f1 *= SCALE;
+
+		final java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( fA, f0 );
+		path.lineTo( fB, f0 );
+		path.lineTo( f1, fA );
+		path.lineTo( f1, fB );
+		path.lineTo( fB, f1 );
+		path.lineTo( fA, f1 );
+		path.lineTo( f0, fB );
+		path.lineTo( f0, fA );
+		path.closePath();
+		rv.setIcon( new javax.swing.Icon() {
+			public int getIconWidth() {
+				return SCALE + OFFSET + OFFSET;
+			}
+			public int getIconHeight() {
+				return SCALE + OFFSET + OFFSET;
+			}
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				java.awt.geom.AffineTransform m = g2.getTransform();
+				java.awt.Font font = g2.getFont();
+				java.awt.Paint paint = g2.getPaint();
+				try {
+					g2.translate( OFFSET + x, OFFSET + y );
+					g2.fill( path );
+					g2.setPaint( java.awt.Color.WHITE );
+					g2.draw( path );
+					g2.setPaint( java.awt.Color.WHITE );
+					g2.setFont( new java.awt.Font( null, java.awt.Font.BOLD, 12 ) );
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+					final int FUDGE_X = 1;
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "X", FUDGE_X, 0, SCALE, SCALE );
+				} finally {
+					g2.setTransform( m );
+					g2.setPaint( paint );
+					g2.setFont( font );
+				}
+			}
+		} );
 		return rv;
 	}
 }

@@ -40,23 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomDoubleInputDialogOperation extends CustomNumberInputDialogOperation< org.lgna.project.ast.DoubleLiteral > {
-	private static class SingletonHolder {
-		private static CustomDoubleInputDialogOperation instance = new CustomDoubleInputDialogOperation();
+public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends InputDialogCoreComposite<V> implements ValueCreatorOwningComposite<V,T> {
+	private final ValueCreator<T> valueCreator = new OwnedByCompositeValueCreator<T>( this );
+	private String name;
+	public ValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
-	public static CustomDoubleInputDialogOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CustomDoubleInputDialogOperation() {
-		super( java.util.UUID.fromString( "0779ccae-00b6-4c8d-b8cf-9830983238a2" ) );
+	public ValueCreator<T> getValueCreator() {
+		return this.valueCreator;
 	}
 	@Override
-	protected org.alice.ide.choosers.DoubleChooser prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.ide.choosers.DoubleChooser();
+	protected void localize() {
+		super.localize();
+		this.name = this.getDefaultLocalizedText();
+	}
+	@Override
+	protected String getName() {
+		return this.name;
+	}
+	protected abstract T createValue();
+	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		final Object[] buffer = { null };
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
+				if( isCommited != null ) { // close button condition
+					if( isCommited ) {
+						try {
+							buffer[ 0 ] = createValue();
+							completionStep.finish();
+						} catch( CancelException ce ) {
+							completionStep.cancel();
+						}
+					} else {
+						completionStep.cancel();
+					}
+				} else {
+					completionStep.cancel();
+				}
+			}
+		}, completionStep );
+		return (T)buffer[ 0 ];
 	}
 }

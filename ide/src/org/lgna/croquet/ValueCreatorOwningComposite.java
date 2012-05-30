@@ -40,23 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.custom;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomAngleInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< org.lgna.project.ast.DoubleLiteral > {
-	private static class SingletonHolder {
-		private static CustomAngleInputDialogOperation instance = new CustomAngleInputDialogOperation();
-	}
-	public static CustomAngleInputDialogOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CustomAngleInputDialogOperation() {
-		super( java.util.UUID.fromString( "c8214788-57c8-4d1b-99df-1ab9b33b9d76" ) );
-	}
-	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.choosers.AngleChooser();
-	}
+public interface ValueCreatorOwningComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends Composite<V> {
+	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep );
 }

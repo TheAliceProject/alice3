@@ -176,4 +176,13 @@ public abstract class StringState extends State< String > {
 	public org.lgna.croquet.components.TextArea createTextArea() {
 		return new org.lgna.croquet.components.TextArea( this );
 	}
+	
+	public void selectAll() {
+		for( org.lgna.croquet.components.Component component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+			if( component instanceof org.lgna.croquet.components.TextComponent ) {
+				org.lgna.croquet.components.TextComponent textComponent = (org.lgna.croquet.components.TextComponent)component;
+				textComponent.selectAll();
+			}
+		}
+	}
 }

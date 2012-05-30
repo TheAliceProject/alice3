@@ -98,7 +98,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FrameComposite<V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+public abstract class FrameComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractComposite<V> {
 	public static final class InternalBooleanStateResolver extends IndirectResolver< InternalBooleanState, FrameComposite > {
 		private InternalBooleanStateResolver( FrameComposite indirect ) {
 			super( indirect );

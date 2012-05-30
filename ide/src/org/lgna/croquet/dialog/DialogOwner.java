@@ -47,16 +47,16 @@ package org.lgna.croquet.dialog;
  * @author Dennis Cosgrove
  */
 public interface DialogOwner<V extends org.lgna.croquet.components.JComponent<?>> {
-	public V allocateView( org.lgna.croquet.history.TransactionNode<?> node );
-	public void releaseView( org.lgna.croquet.history.TransactionNode<?> node, V view );
-	public String getDialogTitle( org.lgna.croquet.history.TransactionNode<?> node );
+	public V allocateView( org.lgna.croquet.history.CompletionStep<?> step );
+	public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, V view );
+	public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step );
 	public void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog );
 	public java.awt.Point getDesiredDialogLocation();
 	public void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger );
 	public void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger );
-	public void handlePreShowDialog( org.lgna.croquet.history.TransactionNode<?> node );
-	public void handlePostHideDialog( org.lgna.croquet.history.TransactionNode<?> node );
-	public void handleFinally( org.lgna.croquet.history.TransactionNode<?> node, org.lgna.croquet.components.Dialog dialog );
+	public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step );
+	public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step );
+	public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog );
 	public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger );
 }
 

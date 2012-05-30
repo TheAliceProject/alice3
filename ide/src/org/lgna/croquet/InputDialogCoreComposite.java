@@ -42,12 +42,47 @@
  */
 package org.lgna.croquet;
 
+/*package-private*/ final class InputDialogContentPanel extends GatedCommitDialogContentPanel<InputDialogContentComposite> {
+	public InputDialogContentPanel( InputDialogContentComposite composite ) {
+		super( composite );
+		this.getControlLine().addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+		this.getControlLine().addComponent( this.getLeadingCommitCancelButton() );
+		this.getControlLine().addComponent( this.getTrailingCommitCancelButton() );
+	}
+}
+
+/*package-private*/ final class InputDialogContentComposite extends GatedCommitDialogContentComposite<InputDialogContentPanel> {
+	public InputDialogContentComposite( InputDialogCoreComposite coreComposite ) {
+		super( java.util.UUID.fromString( "7cb5123b-293e-4ec8-bc99-a221f8a10d1b" ), coreComposite );
+	}
+	@Override
+	protected InputDialogContentPanel createView() {
+		return new InputDialogContentPanel( this );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
-public interface WizardStage {
-	public String getTitle();
-	public org.lgna.croquet.components.JComponent< ? > getComponent();
-	public String getExplanationIfProcedeButtonShouldBeDisabled();
-	public boolean isFinishPotentiallyEnabled();
+public abstract class InputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends GatedCommitDialogCoreComposite<V,InputDialogContentComposite> {
+	private final InputDialogContentComposite contentComposite = new InputDialogContentComposite( this );
+	public InputDialogCoreComposite( java.util.UUID migrationId ) {
+		super( migrationId );
+	}
+	@Override
+	protected InputDialogContentComposite getDialogContentComposite() {
+		return this.contentComposite;
+	}
+	@Override
+	protected String getCommitUiKey() {
+		return "OptionPane.okButtonText";
+	}
+	@Override
+	protected String getDefaultCommitText() {
+		return "OK";
+	}
+	@Override
+	protected void updateIsGoodToGo( boolean isGoodToGo ) {
+		this.getCommitOperation().setEnabled( isGoodToGo );
+	}
 }
