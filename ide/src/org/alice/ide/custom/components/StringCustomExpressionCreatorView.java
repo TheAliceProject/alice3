@@ -41,13 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.custom;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomNumberInputDialogOperation< E extends org.lgna.project.ast.Expression > extends CustomInputDialogOperation<E> {
-	public CustomNumberInputDialogOperation( java.util.UUID id ) {
-		super( id );
+public class StringCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	public StringCustomExpressionCreatorView( org.alice.ide.custom.StringCustomExpressionCreatorComposite composite ) {
+		super( composite );
+	}
+	@Override
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		return new org.lgna.croquet.components.Component<?>[] {
+				((org.alice.ide.custom.StringCustomExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createTextField()
+		};
 	}
 }

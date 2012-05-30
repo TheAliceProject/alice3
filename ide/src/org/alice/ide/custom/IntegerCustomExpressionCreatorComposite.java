@@ -40,29 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameFieldOperation extends RenameDeclarationOperation< org.lgna.project.ast.UserField > {
-	private static java.util.Map< org.lgna.project.ast.UserField, RenameFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
-		RenameFieldOperation rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameFieldOperation( field );
-			map.put( field, rv );
-		}
-		return rv;
+public final class IntegerCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
+	private static class SingletonHolder {
+		private static IntegerCustomExpressionCreatorComposite instance = new IntegerCustomExpressionCreatorComposite();
 	}
-
-	private RenameFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "acdff8cd-51f0-4708-92b7-c05827409ac8" ), field, new org.alice.ide.name.validators.FieldNameValidator( field ) );
+	public static IntegerCustomExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private IntegerCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "a81686d4-eb5a-4bab-8d0b-6ae56ae67391" ), org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance() );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameFieldOperation >( this, org.lgna.project.ast.UserField.class, this.getDeclaration() );
+	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text;
+		if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
+			org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)expression;
+			text = Integer.toString( integerLiteral.value.getValue() );
+		} else {
+			text = "";
+		}
+		return text;
 	}
 }

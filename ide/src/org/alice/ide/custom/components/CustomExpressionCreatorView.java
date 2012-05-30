@@ -41,31 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.project;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectState extends org.lgna.croquet.CustomItemState< org.lgna.project.Project > {
-	private static class SingletonHolder {
-		private static ProjectState instance = new ProjectState();
+public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
+	public CustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
+		super( composite );
 	}
-	public static ProjectState getInstance() {
-		return SingletonHolder.instance;
+	
+	private org.lgna.project.ast.Expression createValue() {
+		org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite = (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)this.getComposite();
+		return composite.getPreviewValue();
 	}
-	private org.lgna.project.Project value;
-	private ProjectState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), org.alice.ide.project.codecs.ProjectCodec.SINGLETON );
-	}
+	
 	@Override
-	protected void localize() {
-	}
-	@Override
-	protected void updateSwingModel( org.lgna.project.Project nextValue ) {
-		this.value = nextValue;
-	}
-	@Override
-	protected org.lgna.project.Project getActualValue() {
-		return this.value;
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.lgna.project.ast.Expression expression;
+		try {
+			expression = this.createValue();
+		} catch( RuntimeException re ) {
+			//re.printStackTrace();
+			expression = new org.lgna.project.ast.NullLiteral();
+		}
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		return rv;
 	}
 }

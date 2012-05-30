@@ -41,49 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.alice.ide.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.NumberExpressionCreatorView> {
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	private final org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
-	public NumberExpressionCreatorComposite( java.util.UUID id, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
-		super( id );
-		this.numberModel = numberModel;
+public class ProjectDocumentState extends org.lgna.croquet.CustomItemState< org.alice.ide.ProjectDocument > {
+	private static class SingletonHolder {
+		private static ProjectDocumentState instance = new ProjectDocumentState();
+	}
+	public static ProjectDocumentState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private org.alice.ide.ProjectDocument value;
+	private ProjectDocumentState() {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), org.alice.ide.project.codecs.ProjectDocumentCodec.SINGLETON );
 	}
 	@Override
-	protected org.alice.ide.custom.components.NumberExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.NumberExpressionCreatorView( this );
-	}
-	public org.alice.ide.croquet.models.numberpad.NumberModel getNumberModel() {
-		return this.numberModel;
+	protected void localize() {
 	}
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		return this.numberModel.getExpressionValue();
+	protected void updateSwingModel( org.alice.ide.ProjectDocument nextValue ) {
+		this.value = nextValue;
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
-		if( text != null ) {
-			this.errorStatus.setText( text );
-			return errorStatus;
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
-		}
-	}
-	protected abstract String getTextForPreviousExpression( org.lgna.project.ast.Expression expression );
-	@Override
-	protected final void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String text = this.getTextForPreviousExpression( expression );
-		this.numberModel.setText( text );
-		this.numberModel.selectAll();
-	}
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
-		this.numberModel.getTextField().requestFocusInWindow();
+	protected org.alice.ide.ProjectDocument getActualValue() {
+		return this.value;
 	}
 }

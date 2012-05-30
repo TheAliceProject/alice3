@@ -67,6 +67,8 @@ public abstract class Application {
 		org.lgna.croquet.history.TransactionManager.startListeningToMenuSelection();
 	}
 	
+	public abstract Document getDocument();
+	
 	public void pushWindow( org.lgna.croquet.components.AbstractWindow< ? > window ) {
 		this.stack.push( window );
 	}

@@ -41,23 +41,54 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.project.codecs;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ProjectCodec implements org.lgna.croquet.ItemCodec< org.lgna.project.Project >{
-	SINGLETON;
-	public org.lgna.project.Project decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		throw new RuntimeException( "todo" );
+public abstract class NumberCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.NumberCustomExpressionCreatorView> {
+	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+	private final org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
+	public NumberCustomExpressionCreatorComposite( java.util.UUID id, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
+		super( id );
+		this.numberModel = numberModel;
 	}
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.project.Project value ) {
-		throw new RuntimeException( "todo" );
+	@Override
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		//return GoldenRatioPolicy.HEIGHT_LONG_SIDE;
+		return null;
 	}
-	public Class< org.lgna.project.Project > getValueClass() {
-		return org.lgna.project.Project.class;
+	@Override
+	protected org.alice.ide.custom.components.NumberCustomExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.NumberCustomExpressionCreatorView( this );
 	}
-	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.project.Project value ) {
-		return rv;
+	public org.alice.ide.croquet.models.numberpad.NumberModel getNumberModel() {
+		return this.numberModel;
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		return this.numberModel.getExpressionValue();
+	}
+	@Override
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
+		if( text != null ) {
+			this.errorStatus.setText( text );
+			return errorStatus;
+		} else {
+			return IS_GOOD_TO_GO_STATUS;
+		}
+	}
+	protected abstract String getTextForPreviousExpression( org.lgna.project.ast.Expression expression );
+	@Override
+	protected final void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text = this.getTextForPreviousExpression( expression );
+		this.numberModel.setText( text );
+		this.numberModel.selectAll();
+	}
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super.handlePreShowDialog( step );
+		this.numberModel.getTextField().requestFocusInWindow();
 	}
 }

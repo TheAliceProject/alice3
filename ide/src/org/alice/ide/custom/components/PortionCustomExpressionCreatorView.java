@@ -41,50 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.StringExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static StringExpressionCreatorComposite instance = new StringExpressionCreatorComposite();
-	}
-	public static StringExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private final org.lgna.croquet.StringState literalValueState = this.createStringState( this.createKey( "literalValueState" ) );
-	
-	private StringExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+public class PortionCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	public PortionCustomExpressionCreatorView( org.alice.ide.custom.PortionCustomExpressionCreatorComposite composite ) {
+		super( composite );
 	}
 	@Override
-	protected org.alice.ide.custom.components.StringExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.StringExpressionCreatorView( this );
-	}
-	public org.lgna.croquet.StringState getLiteralValueState() {
-		return this.literalValueState;
-	}
-	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		return new org.lgna.project.ast.StringLiteral( this.literalValueState.getValue() );
-	}
-	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
-	}
-	
-	
-	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String value;
-		if( expression instanceof org.lgna.project.ast.StringLiteral ) {
-			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)expression;
-			value = stringLiteral.value.getValue();
-		} else {
-			value = "";
-		}
-		this.literalValueState.setValueTransactionlessly( value );
-		this.literalValueState.selectAll();
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		return new org.lgna.croquet.components.Component<?>[] {
+				((org.alice.ide.custom.PortionCustomExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createSlider()
+		};
 	}
 }

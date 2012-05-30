@@ -40,29 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameParameterOperation extends RenameDeclarationOperation< org.lgna.project.ast.UserParameter > {
-	private static java.util.Map< org.lgna.project.ast.UserParameter, RenameParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameParameterOperation getInstance( org.lgna.project.ast.UserParameter parameter ) {
-		RenameParameterOperation rv = map.get( parameter );
+public class RenameFieldComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserField> {
+	private static java.util.Map< org.lgna.project.ast.UserField, RenameFieldComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
+		assert field != null;
+		RenameFieldComposite rv = map.get( field );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new RenameParameterOperation( parameter );
-			map.put( parameter, rv );
+			rv = new RenameFieldComposite( field );
+			map.put( field, rv );
 		}
 		return rv;
 	}
-
-	private RenameParameterOperation( org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "a5ea865d-495f-4962-99a6-b481d4ca3eb9" ), parameter, new org.alice.ide.name.validators.ParameterNameValidator( parameter ) );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameParameterOperation >( this, org.lgna.project.ast.UserParameter.class, this.getDeclaration() );
+	private RenameFieldComposite( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "20163483-25a2-40b0-b1e5-330cb2d29414" ), new org.alice.ide.name.validators.FieldNameValidator( field ), field );
 	}
 }

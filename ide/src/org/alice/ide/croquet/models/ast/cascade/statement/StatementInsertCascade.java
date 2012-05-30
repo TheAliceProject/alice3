@@ -72,7 +72,7 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 				if( integerLiteralValues.contains( value ) ) {
 					fillIn = org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( value );
 				} else {
-					org.alice.ide.custom.NumberExpressionCreatorComposite composite = org.alice.ide.custom.IntegerExpressionCreatorComposite.getInstance();
+					org.alice.ide.custom.NumberCustomExpressionCreatorComposite composite = org.alice.ide.custom.IntegerCustomExpressionCreatorComposite.getInstance();
 					org.lgna.croquet.ValueCreator valueCreator = composite.getValueCreator();
 					fillIn = valueCreator.getFillIn();
 					completionStepSubTransactionHistory = new org.lgna.croquet.history.TransactionHistory();

@@ -40,29 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameLocalOperation extends RenameDeclarationOperation< org.lgna.project.ast.UserLocal > {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, RenameLocalOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameLocalOperation getInstance( org.lgna.project.ast.UserLocal local ) {
-		RenameLocalOperation rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameLocalOperation( local );
-			map.put( local, rv );
-		}
-		return rv;
+public final class DoubleCustomExpressionCreatorComposite extends NumberCustomExpressionCreatorComposite {
+	private static class SingletonHolder {
+		private static DoubleCustomExpressionCreatorComposite instance = new DoubleCustomExpressionCreatorComposite();
 	}
-
-	private RenameLocalOperation( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "b2998aa4-dcfc-4977-9070-449b0d587130" ), local, new org.alice.ide.name.validators.LocalNameValidator( local ) );
+	public static DoubleCustomExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DoubleCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation >( this, org.lgna.project.ast.UserLocal.class, this.getDeclaration() );
+	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String text;
+		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
+			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
+			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( doubleLiteral.value.getValue() );
+		} else {
+			text = "";
+		}
+		return text;
 	}
 }

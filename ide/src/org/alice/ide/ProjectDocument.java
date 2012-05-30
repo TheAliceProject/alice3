@@ -40,29 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameMethodOperation extends RenameDeclarationOperation< org.lgna.project.ast.UserMethod > {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, RenameMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
-		assert method != null;
-		RenameMethodOperation rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameMethodOperation( method );
-			map.put( method, rv );
-		}
-		return rv;
+public class ProjectDocument implements org.lgna.croquet.Document {
+	private final org.lgna.project.Project project;
+	private final org.lgna.croquet.history.TransactionHistory rootTransactionHistory;
+	public ProjectDocument( org.lgna.project.Project project ) {
+		this.project = project;
+		//todo: get root transaction history from project property
+		this.rootTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
 	}
-	private RenameMethodOperation( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+	public org.lgna.project.Project getProject() {
+		return this.project;
 	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation >( this, org.lgna.project.ast.UserMethod.class, this.getDeclaration() );
+	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+		return this.rootTransactionHistory;
 	}
 }

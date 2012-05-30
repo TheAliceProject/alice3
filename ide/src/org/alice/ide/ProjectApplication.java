@@ -274,11 +274,20 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.updateTitle();
 	}
 
+	@Override
+	public ProjectDocument getDocument() {
+		return org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
+	}
+	private void setDocument( ProjectDocument document ) {
+		org.alice.ide.project.ProjectDocumentState.getInstance().setValue( document );
+	}
+	
 	public org.lgna.project.Project getProject() {
-		return org.alice.ide.project.ProjectState.getInstance().getValue();
+		ProjectDocument document = this.getDocument();
+		return document != null ? document.getProject() : null;
 	}
 	public void setProject( org.lgna.project.Project project ) {
-		org.alice.ide.project.ProjectState.getInstance().setValue( project );
+		this.setDocument( new ProjectDocument( project ) );
 	}
 
 	public void loadDefaultProject() {

@@ -302,21 +302,50 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		}
 		return rv;
 	}
-	protected boolean isGoldenRatioDesired() {
-		return true;
-	}
-	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-		if( this.isGoldenRatioDesired() ) {
-			java.awt.Dimension size = dialog.getSize();
-			int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.width );
-			if( phiHeight > size.height ) {
-				dialog.setSize( size.width, phiHeight );
-			} else {
-				int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.height );
-				if( phiWidth > size.width ) {
-					dialog.setSize( phiWidth, size.height );
+	
+	protected static enum GoldenRatioPolicy {
+		WIDTH_LONG_SIDE {
+			@Override
+			public void adjustDialogSize( org.lgna.croquet.components.Dialog dialog ) {
+				java.awt.Dimension size = dialog.getSize();
+				int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.width );
+				if( phiHeight > size.height ) {
+					dialog.setSize( size.width, phiHeight );
+				} else {
+					int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.height );
+					if( phiWidth > size.width ) {
+						dialog.setSize( phiWidth, size.height );
+					}
 				}
 			}
+		},
+		HEIGHT_LONG_SIDE {
+			@Override
+			public void adjustDialogSize( org.lgna.croquet.components.Dialog dialog ) {
+				java.awt.Dimension size = dialog.getSize();
+				int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.width );
+				if( phiHeight > size.height ) {
+					dialog.setSize( size.width, phiHeight );
+				} else {
+					int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.height );
+					if( phiWidth > size.width ) {
+						dialog.setSize( phiWidth, size.height );
+					}
+				}
+			}
+		};
+		public abstract void adjustDialogSize( org.lgna.croquet.components.Dialog dialog );
+		
+	}
+	
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		return GoldenRatioPolicy.WIDTH_LONG_SIDE;
+	}
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		GoldenRatioPolicy goldenRatioPolicy = this.getGoldenRatioPolicy();
+		if( goldenRatioPolicy != null ) {
+			goldenRatioPolicy.adjustDialogSize( dialog );
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dialog.getWidth()/(double)dialog.getHeight(), edu.cmu.cs.dennisc.math.GoldenRatio.PHI );
 		}
 	}
 	protected java.awt.Point getDesiredDialogLocation() {

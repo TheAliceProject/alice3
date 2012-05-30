@@ -124,17 +124,17 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.ProjectDocument > projectListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.ProjectDocument >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
-			HistoryPane.this.initializeProjectHistory( state.getValue() );
+		public void changed( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+			HistoryPane.this.initializeProjectHistory( nextValue != null ? nextValue.getProject() : null );
 		}
 	};
 
 	public HistoryPane( org.lgna.croquet.Group group ) {
 		this.group = group;
-		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectListener );
 		this.list = new javax.swing.JList();
 		this.list.setCellRenderer( new HistoryCellRenderer() );
 		this.list.addListSelectionListener( this.listSelectionListener );

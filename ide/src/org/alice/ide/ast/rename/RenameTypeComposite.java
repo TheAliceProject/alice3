@@ -41,32 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom.components;
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
-	public ExpressionCreatorView( org.alice.ide.custom.ExpressionCreatorComposite<?> composite ) {
-		super( composite );
-	}
-	
-	private org.lgna.project.ast.Expression createValue() {
-		org.alice.ide.custom.ExpressionCreatorComposite<?> composite = (org.alice.ide.custom.ExpressionCreatorComposite<?>)this.getComposite();
-		return composite.getPreviewValue();
-	}
-	
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		org.lgna.project.ast.Expression expression;
-		try {
-			expression = this.createValue();
-		} catch( RuntimeException re ) {
-			//re.printStackTrace();
-			expression = new org.lgna.project.ast.NullLiteral();
+public class RenameTypeComposite extends RenameDeclarationComposite<org.lgna.project.ast.NamedUserType> {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, RenameTypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameTypeComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		assert type != null;
+		RenameTypeComposite rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new RenameTypeComposite( type );
+			map.put( type, rv );
 		}
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
 		return rv;
+	}
+	private RenameTypeComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new org.alice.ide.name.validators.TypeNameValidator( type ), type );
 	}
 }

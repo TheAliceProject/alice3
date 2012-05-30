@@ -54,7 +54,7 @@ public class StringFillerInner extends ConcatenationFillerInner {
 		rv.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		//rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
-		rv.add( org.alice.ide.custom.StringExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
+		rv.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		this.addConcatenationItems( rv, details, isTop, prevExpression );
 		return rv;
 	}

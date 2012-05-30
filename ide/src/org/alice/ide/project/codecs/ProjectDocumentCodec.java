@@ -41,30 +41,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.alice.ide.project.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FloatExpressionCreatorComposite extends NumberExpressionCreatorComposite {
-	private static class SingletonHolder {
-		private static FloatExpressionCreatorComposite instance = new FloatExpressionCreatorComposite();
+public enum ProjectDocumentCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.ProjectDocument >{
+	SINGLETON;
+	public org.alice.ide.ProjectDocument decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
 	}
-	public static FloatExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.ProjectDocument value ) {
+		throw new RuntimeException( "todo" );
 	}
-	private FloatExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() );
+	public Class< org.alice.ide.ProjectDocument > getValueClass() {
+		return org.alice.ide.ProjectDocument.class;
 	}
-	@Override
-	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String text;
-		if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
-			org.lgna.project.ast.FloatLiteral floatLiteral = (org.lgna.project.ast.FloatLiteral)expression;
-			text = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatInCurrentDefaultLocale( floatLiteral.value.getValue() );
-		} else {
-			text = "";
-		}
-		return text;
+	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.ProjectDocument value ) {
+		rv.append( value );
+		return rv;
 	}
 }
