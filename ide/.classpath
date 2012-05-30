@@ -12,8 +12,6 @@
 	<classpathentry kind="lib" path="lib/mail/mail.jar"/>
 	<classpathentry kind="lib" path="lib/rpc/xmlrpc-client-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/swingworker/swing-worker-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/youtube.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
 	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar"/>
@@ -22,5 +20,10 @@
 	<classpathentry kind="lib" path="lib/alice/nebulousModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
 	<classpathentry kind="lib" path="lib/quicktime/QuickTimeDemo2.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/gdata-youtube-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/guava-r07.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/gdata-client-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/gdata-core-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/gdata-media-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

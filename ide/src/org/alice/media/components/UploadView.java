@@ -44,16 +44,20 @@ package org.alice.media.components;
 
 import java.awt.Dimension;
 import java.io.File;
+import java.util.LinkedList;
 
 import org.alice.media.MoviePlayerComposite;
 import org.alice.media.UploadComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.CheckBox;
+import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.PasswordField;
 import org.lgna.croquet.components.PreserveAspectRatioPanel;
+import org.lgna.croquet.components.TextArea;
 import org.lgna.croquet.components.TextField;
+import org.lgna.croquet.components.ViewController;
 
 /**
  * @author Matt May
@@ -91,26 +95,35 @@ public class UploadView extends BorderPanel {
 			this.addComponent( top, Constraint.CENTER );
 		}
 	}
+	private LinkedList<ViewController> disableable = new LinkedList<ViewController>();
 
 	private class VideoInfoComponent extends BorderPanel {
+
 		public VideoInfoComponent( UploadComposite composite ) {
 			GridPanel titlePanel = GridPanel.createGridPane( 2, 1 );
 			titlePanel.addComponent( composite.getTitleLabelValue().createImmutableTextArea() );
 			TextField titleField = composite.getTitleState().createTextField();
 			titlePanel.addComponent( titleField );
+			disableable.add(titleField);
 			this.addComponent( titlePanel, Constraint.PAGE_START );
 			GridPanel detailPanel = GridPanel.createGridPane( 3, 1 );
 			detailPanel.addComponent( composite.getCategoryValue().createImmutableTextArea() );
-			detailPanel.addComponent( composite.getVideoCategoryState().createComboBox() );
+			ComboBox<String> categories = composite.getVideoCategoryState().createComboBox();
+			detailPanel.addComponent( categories );
+			disableable.add(categories);
 			CheckBox isPrivateBox = composite.getIsPrivateState().createCheckBox();
 			detailPanel.addComponent( isPrivateBox );
 			GridPanel middle = GridPanel.createGridPane( 2, 1 );
 			BorderPanel topBorder = new BorderPanel();
 			topBorder.addComponent( composite.getDescriptionValue().createImmutableTextArea(), Constraint.PAGE_START );
-			topBorder.addComponent( composite.getDescriptionState().createTextArea(), Constraint.CENTER );
+			TextArea description = composite.getDescriptionState().createTextArea();
+			disableable.add(description);
+			topBorder.addComponent( description, Constraint.CENTER );
 			BorderPanel bottomBorder = new BorderPanel();
 			bottomBorder.addComponent( composite.getTagLabel().createImmutableTextArea(), Constraint.PAGE_START );
-			bottomBorder.addComponent( composite.getTagState().createTextArea(), Constraint.CENTER );
+			TextArea tags = composite.getTagState().createTextArea();
+			disableable.add(tags);
+			bottomBorder.addComponent( tags, Constraint.CENTER );
 			middle.addComponent( topBorder );
 			middle.addComponent( bottomBorder );
 			this.addComponent( middle, Constraint.CENTER );

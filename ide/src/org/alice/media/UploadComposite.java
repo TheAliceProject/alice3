@@ -79,14 +79,11 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  */
 public class UploadComposite extends WizardPageComposite<UploadView> implements YouTubeListener {
 
-	private static final Object DEFAULT = "";
 	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
-	private final StringState idState = this.createStringState( this.createKey( "id" ), "may.matt08@gmail.com" );
-	//	private final StringState idState = this.createStringState( "", this.createKey( "id" ) );
+	private final StringState idState = this.createStringState( this.createKey( "id" ), "" );
 	private final StringValue username = this.createStringValue( this.createKey( "username" ) );
-	private final StringState passwordState = this.createStringState( this.createKey( "password" ), "genoPass2much" );
-	//	private final StringState passwordState = this.createStringState( "", this.createKey( "password" ) );
+	private final StringState passwordState = this.createStringState( this.createKey( "password" ), "" );
 	private final StringValue passwordLabelValue = this.createStringValue( this.createKey( "passwordLabel" ) );
 	private final StringValue titleLabelValue = this.createStringValue( this.createKey( "titleLabel" ) );
 	private final StringState titleState = this.createStringState( this.createKey( "title" ), "Alice Video" );
@@ -94,22 +91,16 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	private final StringValue categoryValue = this.createStringValue( this.createKey( "category" ) );
 	private final ListSelectionState<String> videoCategoryState;
 	private final StringValue descriptionValue = this.createStringValue( this.createKey( "descriptionValue" ) );
-	private final StringState descriptionState = this.createStringState( this.createKey( "description" ), "Testing Alice's upload to Youtube" );
-	//	private final StringState descriptionState = this.createStringState( "", this.createKey( "description" ) );
+	private final StringState descriptionState = this.createStringState( this.createKey( "description" ), "" );
 	private final StringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
 	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "Alice3" );
-	//	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "" );
 	private final ActionOperation loginOperation = this.createActionOperation( this.createKey( "login" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			boolean blah = true;
 			try {
 				uploader.logIn( idState.getValue(), passwordState.getValue() );
+				isLoggedIn = true;
 			} catch( AuthenticationException e ) {
 				e.printStackTrace();
-				blah = false;
-			}
-			if( blah ) {
-				isLoggedIn = true;
 			}
 			return null;
 		}
@@ -129,7 +120,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			MediaDescription mediaDescription = new MediaDescription();
 			mediaDescription.setPlainTextContent( descriptionState.getValue().trim() );
 			mediaGroup.setDescription( mediaDescription );//description]
-			
+
 			MediaKeywords keywords = new MediaKeywords();
 			String[] arr = tagState.getValue().split( "," );
 			for( String s : arr ) {
@@ -137,8 +128,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			}
 			mediaGroup.setKeywords( keywords );//tags
 
-			String category = videoCategoryState.getValue().toString().split("\\s")[0].trim();
-			System.out.println("cat: " + category);
+			String category = videoCategoryState.getValue().toString().split( "\\s" )[ 0 ].trim();
+			System.out.println( "cat: " + category );
 			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
 			mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
 			try {
@@ -151,6 +142,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	} );
 	private Status errorNotLoggedIn = createErrorStatus( this.createKey( "errorNotLoggedIn" ) );
 	private boolean isLoggedIn = false;
+	private Status noTittle = createErrorStatus( this.createKey( "errorNoTittle" ) );
+	private Status noDescriptions = createWarningStatus( this.createKey( "warningNoDescriptions" ) );
+	private Status noTags = createWarningStatus( this.createKey( "warningNoTags" ) );
 
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
@@ -178,7 +172,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			}
 
 		};
-		videoCategoryState = this.createListSelectionState( this.createKey( "videoCategory" ), String.class, codec, 0, categoryStrings.toArray(new String[0]) );
+		videoCategoryState = this.createListSelectionState( this.createKey( "videoCategory" ), String.class, codec, 0, categoryStrings.toArray( new String[ 0 ] ) );
 	}
 	public StringState getIdState() {
 		return this.idState;
@@ -244,15 +238,39 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	}
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		uploadOperation.setEnabled( false );
+		Status rv = IS_GOOD_TO_GO_STATUS;
 		if( !isLoggedIn ) {
+			setEnabled( false );
 			return errorNotLoggedIn;
-		} //else if( )
-		return IS_GOOD_TO_GO_STATUS;
+		} else {
+			setEnabled( true );
+			if( titleState.getValue().length() == 0 ) {
+				return noTittle;
+			} else if( descriptionState.getValue().length() == 0 ) {
+				rv = noDescriptions;
+			} else if( tagState.getValue().length() == 0 ) {
+				rv = noTags;
+			}
+		}
+		if( !(rv instanceof ErrorStatus) ) {
+			uploadOperation.setEnabled( true );
+		}
+		return rv;
 	}
+
+	private void setEnabled( boolean isEnabled ) {
+		titleState.setEnabled( isEnabled );
+		descriptionState.setEnabled( isEnabled );
+		tagState.setEnabled( isEnabled );
+		videoCategoryState.setEnabled( isEnabled );
+		isPrivateState.setEnabled( isEnabled );
+	}
+
 	public void youTubeEventTriggered( YouTubeEvent event ) {
 		System.out.println( "event triggered: " + event.getType() );
 		if( event.getType() == EventType.UPLOAD_FAILED ) {
-			System.out.println("why failed: ");
+			System.out.println( "why failed: " );
 			System.out.println( event.getMoreInfo() );
 		}
 	}
@@ -267,10 +285,11 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	private static final String LABEL_STRING = "label='";
 	private static final String TERM_PATTERN = "term='[^']*'";
 	private static final String LABEL_PATTERN = "label='[^']*'";
-	private static final String[] DEFAULT_TAGS = {"alice", "alice3"};
+	private static final String[] DEFAULT_TAGS = { "alice", "alice3" };
 	private static final String DEFAULT_CATEGORY = "tech";
 	private static List<String> categoryStrings;
 	private static List<String> termStrings;
+
 	private static boolean initializeCategories() {
 		try {
 			URL categoryURL = new URL( CATEGORY_URL );
