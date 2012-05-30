@@ -40,50 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameOperation extends org.lgna.croquet.InputDialogOperation<String> {
-	private org.alice.ide.name.NameValidator nameValidator;
-	public RenameOperation( org.lgna.croquet.Group group, java.util.UUID individualId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( group, individualId );
-		this.nameValidator = nameValidator;
-	}
-	protected abstract String getInitialText();
-	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<?> step, String nextValue );
-	
-	@Override
-	protected org.alice.ide.name.RenamePane prologue(org.lgna.croquet.history.CompletionStep<?> step) {
-		org.alice.ide.name.RenamePane renamePane = new org.alice.ide.name.RenamePane();
-		renamePane.setAndSelectNameText( this.getInitialText() );
-		return renamePane;
-	}
-	
-	@Override
-	protected void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isOk) {
-		if( isOk ) {
-			org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
-			String nextValue = renamePane.getNameText();
-			step.commitAndInvokeDo( this.createEdit( step, nextValue ) );
-		} else {
-			step.cancel();
-		}
-	}
-	
-	@Override
-	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-		dialog.setSize( 300, 150 );
-	}
-	@Override
-	protected String getInternalExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.name.RenamePane renamePane = (org.alice.ide.name.RenamePane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
-		String rv = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( renamePane.getNameText() );
+public class RenameLocalComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserLocal> {
+	private static java.util.Map< org.lgna.project.ast.UserLocal, RenameLocalComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameLocalComposite getInstance( org.lgna.project.ast.UserLocal local ) {
+		assert local != null;
+		RenameLocalComposite rv = map.get( local );
 		if( rv != null ) {
-			return rv;
+			//pass
 		} else {
-			return super.getInternalExplanation( step );
+			rv = new RenameLocalComposite( local );
+			map.put( local, rv );
 		}
+		return rv;
+	}
+	private RenameLocalComposite( org.lgna.project.ast.UserLocal local ) {
+		super( java.util.UUID.fromString( "51ce6258-a1ac-4606-b4f8-faea8e732550" ), new org.alice.ide.name.validators.LocalNameValidator( local ), local );
 	}
 }

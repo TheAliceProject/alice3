@@ -41,49 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.NumberExpressionCreatorView> {
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	private final org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
-	public NumberExpressionCreatorComposite( java.util.UUID id, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
-		super( id );
-		this.numberModel = numberModel;
-	}
-	@Override
-	protected org.alice.ide.custom.components.NumberExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.NumberExpressionCreatorView( this );
-	}
-	public org.alice.ide.croquet.models.numberpad.NumberModel getNumberModel() {
-		return this.numberModel;
-	}
-	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		return this.numberModel.getExpressionValue();
-	}
-	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
-		if( text != null ) {
-			this.errorStatus.setText( text );
-			return errorStatus;
+public class RenameTypeComposite extends RenameDeclarationComposite<org.lgna.project.ast.NamedUserType> {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, RenameTypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameTypeComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		assert type != null;
+		RenameTypeComposite rv = map.get( type );
+		if( rv != null ) {
+			//pass
 		} else {
-			return IS_GOOD_TO_GO_STATUS;
+			rv = new RenameTypeComposite( type );
+			map.put( type, rv );
 		}
+		return rv;
 	}
-	protected abstract String getTextForPreviousExpression( org.lgna.project.ast.Expression expression );
-	@Override
-	protected final void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String text = this.getTextForPreviousExpression( expression );
-		this.numberModel.setText( text );
-		this.numberModel.selectAll();
-	}
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
-		this.numberModel.getTextField().requestFocusInWindow();
+	private RenameTypeComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new org.alice.ide.name.validators.TypeNameValidator( type ), type );
 	}
 }

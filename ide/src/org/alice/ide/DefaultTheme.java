@@ -137,6 +137,14 @@ public class DefaultTheme implements Theme {
 					return new java.awt.Color( 0xfdf6c0 );
 				}
 			}
+		} else if( org.lgna.project.ast.AbstractField.class.isAssignableFrom( cls ) ){
+			return this.getFieldColor();
+		} else if( org.lgna.project.ast.AbstractParameter.class.isAssignableFrom( cls ) ) {
+			return this.getParameterColor();
+		} else if( org.lgna.project.ast.AbstractType.class.isAssignableFrom( cls ) ) {
+			return this.getTypeColor();
+		} else if( org.lgna.project.ast.UserLocal.class.isAssignableFrom( cls ) ) {
+			return this.getLocalColor();
 		} else {
 			return java.awt.Color.BLUE;
 		}

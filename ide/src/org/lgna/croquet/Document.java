@@ -40,23 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.custom;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomStringInputDialogOperation extends CustomInputDialogOperation< org.lgna.project.ast.StringLiteral > {
-	private static class SingletonHolder {
-		private static CustomStringInputDialogOperation instance = new CustomStringInputDialogOperation();
-	}
-	public static CustomStringInputDialogOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CustomStringInputDialogOperation() {
-		super( java.util.UUID.fromString( "5e6422df-8145-404b-a34d-e8fe9eea6e76" ) );
-	}
-	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.StringLiteral > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.ide.choosers.StringChooser();
-	}
+public interface Document {
+	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory();
 }

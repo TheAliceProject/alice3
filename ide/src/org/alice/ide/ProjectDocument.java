@@ -41,31 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.project;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectState extends org.lgna.croquet.CustomItemState< org.lgna.project.Project > {
-	private static class SingletonHolder {
-		private static ProjectState instance = new ProjectState();
+public class ProjectDocument implements org.lgna.croquet.Document {
+	private final org.lgna.project.Project project;
+	private final org.lgna.croquet.history.TransactionHistory rootTransactionHistory;
+	public ProjectDocument( org.lgna.project.Project project ) {
+		this.project = project;
+		//todo: get root transaction history from project property
+		this.rootTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
 	}
-	public static ProjectState getInstance() {
-		return SingletonHolder.instance;
+	public org.lgna.project.Project getProject() {
+		return this.project;
 	}
-	private org.lgna.project.Project value;
-	private ProjectState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), org.alice.ide.project.codecs.ProjectCodec.SINGLETON );
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	protected void updateSwingModel( org.lgna.project.Project nextValue ) {
-		this.value = nextValue;
-	}
-	@Override
-	protected org.lgna.project.Project getActualValue() {
-		return this.value;
+	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+		return this.rootTransactionHistory;
 	}
 }

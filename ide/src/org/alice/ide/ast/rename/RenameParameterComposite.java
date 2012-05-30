@@ -41,30 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom;
+package org.alice.ide.ast.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class IntegerExpressionCreatorComposite extends NumberExpressionCreatorComposite {
-	private static class SingletonHolder {
-		private static IntegerExpressionCreatorComposite instance = new IntegerExpressionCreatorComposite();
-	}
-	public static IntegerExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private IntegerExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "a81686d4-eb5a-4bab-8d0b-6ae56ae67391" ), org.alice.ide.croquet.models.numberpad.IntegerModel.getInstance() );
-	}
-	@Override
-	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String text;
-		if( expression instanceof org.lgna.project.ast.IntegerLiteral ) {
-			org.lgna.project.ast.IntegerLiteral integerLiteral = (org.lgna.project.ast.IntegerLiteral)expression;
-			text = Integer.toString( integerLiteral.value.getValue() );
+public class RenameParameterComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserParameter> {
+	private static java.util.Map< org.lgna.project.ast.UserParameter, RenameParameterComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameParameterComposite getInstance( org.lgna.project.ast.UserParameter parameter ) {
+		assert parameter != null;
+		RenameParameterComposite rv = map.get( parameter );
+		if( rv != null ) {
+			//pass
 		} else {
-			text = "";
+			rv = new RenameParameterComposite( parameter );
+			map.put( parameter, rv );
 		}
-		return text;
+		return rv;
+	}
+	private RenameParameterComposite( org.lgna.project.ast.UserParameter parameter ) {
+		super( java.util.UUID.fromString( "bab60447-570c-49ac-aadb-9cba8d01bb13" ), new org.alice.ide.name.validators.ParameterNameValidator( parameter ), parameter );
 	}
 }

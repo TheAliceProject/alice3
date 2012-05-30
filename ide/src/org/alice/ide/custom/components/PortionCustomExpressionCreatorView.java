@@ -40,29 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameMethodOperation extends RenameDeclarationOperation< org.lgna.project.ast.UserMethod > {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, RenameMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
-		assert method != null;
-		RenameMethodOperation rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameMethodOperation( method );
-			map.put( method, rv );
-		}
-		return rv;
-	}
-	private RenameMethodOperation( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "98b443d0-c7d3-4ff8-ba1b-b16d2695c618" ), method, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+public class PortionCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	public PortionCustomExpressionCreatorView( org.alice.ide.custom.PortionCustomExpressionCreatorComposite composite ) {
+		super( composite );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameMethodOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserMethod.class );
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		return new org.lgna.croquet.components.Component<?>[] {
+				((org.alice.ide.custom.PortionCustomExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createSlider()
+		};
 	}
 }

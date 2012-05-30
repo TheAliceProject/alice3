@@ -40,29 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.rename;
+
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameLocalOperation extends RenameDeclarationOperation< org.lgna.project.ast.UserLocal > {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, RenameLocalOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameLocalOperation getInstance( org.lgna.project.ast.UserLocal local ) {
-		RenameLocalOperation rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameLocalOperation( local );
-			map.put( local, rv );
-		}
-		return rv;
+public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.components.PanelWithPreview {
+	public CustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
+		super( composite );
 	}
-
-	private RenameLocalOperation( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "b2998aa4-dcfc-4977-9070-449b0d587130" ), local, new org.alice.ide.name.validators.LocalNameValidator( local ) );
+	
+	private org.lgna.project.ast.Expression createValue() {
+		org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite = (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)this.getComposite();
+		return composite.getPreviewValue();
 	}
+	
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< RenameLocalOperation >( this, this.getDeclaration(), org.lgna.project.ast.UserLocal.class );
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.lgna.project.ast.Expression expression;
+		try {
+			expression = this.createValue();
+		} catch( RuntimeException re ) {
+			//re.printStackTrace();
+			expression = new org.lgna.project.ast.NullLiteral();
+		}
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
+		return rv;
 	}
 }

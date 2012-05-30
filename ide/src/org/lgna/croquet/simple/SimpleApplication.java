@@ -46,6 +46,16 @@ package org.lgna.croquet.simple;
  * @author Dennis Cosgrove
  */
 public class SimpleApplication extends org.lgna.croquet.Application {
+	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
+		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+			return this.transactionHistory;
+		}
+	};
+	@Override
+	public org.lgna.croquet.Document getDocument() {
+		return this.document;
+	}
 	@Override
 	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
 	}

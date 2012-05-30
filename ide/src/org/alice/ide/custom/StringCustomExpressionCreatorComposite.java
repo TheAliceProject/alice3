@@ -41,21 +41,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.custom.components;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringExpressionCreatorView extends RowBasedExpressionCreatorView {
-	public StringExpressionCreatorView( org.alice.ide.custom.StringExpressionCreatorComposite composite ) {
-		super( composite );
+public class StringCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.StringCustomExpressionCreatorView> {
+	private static class SingletonHolder {
+		private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
 	}
+	public static StringCustomExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final org.lgna.croquet.StringState literalValueState = this.createStringState( this.createKey( "literalValueState" ) );
+	
+	private StringCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+	}
+	@Override
+	protected org.alice.ide.custom.components.StringCustomExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.StringCustomExpressionCreatorView( this );
+	}
+	public org.lgna.croquet.StringState getLiteralValueState() {
+		return this.literalValueState;
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		return new org.lgna.project.ast.StringLiteral( this.literalValueState.getValue() );
+	}
+	@Override
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+	
 	
 	@Override
-	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
-		return new org.lgna.croquet.components.Component<?>[] {
-				((org.alice.ide.custom.StringExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createTextField()
-		};
+	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		String value;
+		if( expression instanceof org.lgna.project.ast.StringLiteral ) {
+			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)expression;
+			value = stringLiteral.value.getValue();
+		} else {
+			value = "";
+		}
+		this.literalValueState.setValueTransactionlessly( value );
+		this.literalValueState.selectAll();
 	}
-	
 }
