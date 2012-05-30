@@ -40,23 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.custom;
+
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomPortionInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< org.lgna.project.ast.DoubleLiteral > {
+public class PortionExpressionCreatorComposite extends ExpressionCreatorComposite<org.alice.ide.custom.components.PortionExpressionCreatorView> {
 	private static class SingletonHolder {
-		private static CustomPortionInputDialogOperation instance = new CustomPortionInputDialogOperation();
+		private static PortionExpressionCreatorComposite instance = new PortionExpressionCreatorComposite();
 	}
-	public static CustomPortionInputDialogOperation getInstance() {
+	public static PortionExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private CustomPortionInputDialogOperation() {
-		super( java.util.UUID.fromString( "a200dbc2-5a16-4931-8a5d-2a793973e053" ) );
+	private final org.lgna.croquet.BoundedIntegerState literalValueState = this.createBoundedIntegerState( this.createKey( "literalValueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
+	
+	private PortionExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.DoubleLiteral > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.choosers.PortionChooser();
+	protected org.alice.ide.custom.components.PortionExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.PortionExpressionCreatorView( this );
+	}
+	public org.lgna.croquet.BoundedIntegerState getLiteralValueState() {
+		return this.literalValueState;
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		java.math.BigDecimal decimal = new java.math.BigDecimal( this.literalValueState.getValue() );
+		decimal = decimal.movePointLeft( 2 );
+		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
+	}
+	@Override
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	@Override
+	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		double value;
+		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
+			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
+			value = doubleLiteral.value.getValue();
+		} else {
+			value = Double.NaN;
+		}
+		if( Double.isNaN( value ) ) {
+			//pass
+		} else {
+			java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
+			decimal = decimal.movePointRight( 2 );
+			this.literalValueState.setValueTransactionlessly( decimal.intValue() );
+		}
 	}
 }

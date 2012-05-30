@@ -343,7 +343,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails ) {
 		if( valueDetails instanceof org.lgna.story.annotation.PortionDetails ) {
-			return org.alice.stageide.croquet.models.custom.CustomPortionInputDialogOperation.getInstance().getFillIn();
+			return org.alice.ide.custom.PortionExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
 		} else {
 			return null;
 		}
