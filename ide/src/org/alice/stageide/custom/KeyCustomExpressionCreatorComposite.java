@@ -40,60 +40,61 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.openprojectpane;
+package org.alice.stageide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
-	private final M state;
-	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			ListContentPanel.this.refreshState();
+public class KeyCustomExpressionCreatorComposite  extends org.alice.ide.custom.CustomExpressionCreatorComposite<org.alice.stageide.custom.components.KeyCustomExpressionCreatorView> {
+	private static class SingletonHolder {
+		private static KeyCustomExpressionCreatorComposite instance = new KeyCustomExpressionCreatorComposite();
+	}
+	public static KeyCustomExpressionCreatorComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final org.lgna.croquet.StringValue pressAnyKey = this.createStringValue( this.createKey( "pressAnyKey" ) ); 
+	
+	private org.lgna.story.Key key;
+	private KeyCustomExpressionCreatorComposite() {
+		super( java.util.UUID.fromString( "908ee2c1-97a9-4fb4-9716-7846cb206549" ) );
+	}
+	@Override
+	protected org.alice.stageide.custom.components.KeyCustomExpressionCreatorView createView() {
+		return new org.alice.stageide.custom.components.KeyCustomExpressionCreatorView( this );
+	}
+	public KeyState getValueState() {
+		return KeyState.getInstance();
+	}
+	public org.lgna.croquet.StringValue getPressAnyKeyLabel() {
+		return this.pressAnyKey;
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		if( this.key != null ) {
+			org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class );
+			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
+			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
+			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
+		} else {
+			return null;
 		}
-	};
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			if( quoteClickCountUnquote == 2 ) {
-				org.lgna.croquet.components.Button defaultButton = ListContentPanel.this.getRoot().getDefaultButton();
-				if( defaultButton != null ) {
-					defaultButton.doClick();
+	}
+	@Override
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	@Override
+	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+			org.lgna.project.ast.AbstractType<?,?,?> type = fieldAccess.getType();
+			if( type == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class ) ) {
+				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+				if( field != null ) {
+					this.key = Enum.valueOf( org.lgna.story.Key.class, field.getName() );
 				}
 			}
 		}
-	};
-	private void refreshState() {
-		this.state.refresh();
-		this.revalidateAndRepaint();
-	}
-	public ListContentPanel( org.lgna.croquet.TabComposite< ? > composite, M state ) {
-		super( composite );
-		this.state = state;
-		org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
-		list.setBackgroundColor( null );
-		list.setCellRenderer( this.createListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		list.addMouseListener( this.mouseAdapter );
-		list.addMouseMotionListener( this.mouseAdapter );
-		list.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.addComponent( list, Constraint.CENTER );
-	}
-	protected javax.swing.ListCellRenderer createListCellRenderer() {
-		return new ProjectSnapshotListCellRenderer();
-	}
-	protected M getState() {
-		return this.getState();
-	}
-	protected abstract String getTextForZeroProjects();
-	@Override
-	public java.net.URI getSelectedUri() {
-		return this.state.getSelectedItem();
 	}
 }
-
-
-
-

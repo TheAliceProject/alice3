@@ -50,22 +50,27 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
-	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
-		return org.lgna.croquet.components.SpringUtilities.createTrailingLabel( text );
+	@Override
+	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
+		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
 	}
-	private static final String[] LABEL_TEXTS = { "value:" };
-	protected String[] getLabelTexts() {
-		return LABEL_TEXTS;
+	protected org.lgna.croquet.components.Component<?> createImmutableTextField( org.lgna.croquet.StringValue stringValue ) {
+		org.lgna.croquet.components.ImmutableTextField rv = stringValue.createImmutableTextField();
+		rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
+		return rv;
+	}
+	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
+		return new org.lgna.croquet.StringValue[] { this.getComposite().getValueLabel() };
 	}
 	protected abstract org.lgna.croquet.components.Component< ? >[] getRowComponents();
 	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-		String[] labelTexts = this.getLabelTexts();
+		org.lgna.croquet.StringValue[] labelStringValues = this.getLabelStringValues();
 		org.lgna.croquet.components.Component< ? >[] components = this.getRowComponents();
-		final int N = labelTexts.length;
+		final int N = labelStringValues.length;
 		for( int i=0; i<N; i++ ) {
 			rv.add( 
 					org.lgna.croquet.components.SpringUtilities.createRow( 
-						this.createLabel( labelTexts[ i ] ), 
+						this.createImmutableTextField( labelStringValues[ i ] ), 
 						new org.lgna.croquet.components.LineAxisPanel( 
 								components[ i ],
 								org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
