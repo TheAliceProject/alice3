@@ -53,7 +53,7 @@ public class PortionCustomExpressionCreatorView extends RowBasedCustomExpression
 	@Override
 	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
 		return new org.lgna.croquet.components.Component<?>[] {
-				((org.alice.ide.custom.PortionCustomExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createSlider()
+				((org.alice.ide.custom.PortionCustomExpressionCreatorComposite)this.getComposite()).getValueState().createSlider()
 		};
 	}
 }

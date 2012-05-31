@@ -62,7 +62,7 @@ public class KeyCustomExpressionCreatorComposite  extends org.alice.ide.custom.C
 	protected org.alice.stageide.custom.components.KeyCustomExpressionCreatorView createView() {
 		return new org.alice.stageide.custom.components.KeyCustomExpressionCreatorView( this );
 	}
-	public KeyState getKeyState() {
+	public KeyState getValueState() {
 		return KeyState.getInstance();
 	}
 	public org.lgna.croquet.StringValue getPressAnyKeyLabel() {
