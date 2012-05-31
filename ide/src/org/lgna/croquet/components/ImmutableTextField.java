@@ -49,6 +49,12 @@ public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JText
 	public ImmutableTextField( org.lgna.croquet.StringValue value ) {
 		super( value );
 	}
+//	public HorizontalAlignment getHorizontalAlignment() {
+//		return HorizontalAlignment.valueOf( this.getAwtComponent().getHorizontalAlignment() );
+//	}
+	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
+		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
+	}
 	@Override
 	protected javax.swing.JTextField createAwtComponent() {
 		javax.swing.JTextField rv = new javax.swing.JTextField() {

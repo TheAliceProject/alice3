@@ -60,7 +60,7 @@ public class VolumeLevelCustomExpressionCreatorView extends org.alice.ide.custom
 		String normalText = composite.getNormalLabel().getText() + " (" + format.format( 1.0 ) + ")";
 		String louderText = composite.getLouderLabel().getText() + " (" + format.format( 2.0 ) + ")";
 		
-		org.lgna.croquet.components.Slider slider = composite.getLiteralValueState().createSlider();
+		org.lgna.croquet.components.Slider slider = composite.getValueState().createSlider();
 
 		slider.setOrientation( org.lgna.croquet.components.Slider.Orientation.VERTICAL );
 

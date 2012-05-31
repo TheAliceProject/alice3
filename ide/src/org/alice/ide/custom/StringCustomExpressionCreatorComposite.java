@@ -53,7 +53,7 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
 	public static StringCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringState literalValueState = this.createStringState( this.createKey( "literalValueState" ) );
+	private final org.lgna.croquet.StringState valueState = this.createStringState( this.createKey( "valueState" ) );
 	
 	private StringCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
@@ -62,12 +62,12 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
 	protected org.alice.ide.custom.components.StringCustomExpressionCreatorView createView() {
 		return new org.alice.ide.custom.components.StringCustomExpressionCreatorView( this );
 	}
-	public org.lgna.croquet.StringState getLiteralValueState() {
-		return this.literalValueState;
+	public org.lgna.croquet.StringState getValueState() {
+		return this.valueState;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		return new org.lgna.project.ast.StringLiteral( this.literalValueState.getValue() );
+		return new org.lgna.project.ast.StringLiteral( this.valueState.getValue() );
 	}
 	@Override
 	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
@@ -84,7 +84,7 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
 		} else {
 			value = "";
 		}
-		this.literalValueState.setValueTransactionlessly( value );
-		this.literalValueState.selectAll();
+		this.valueState.setValueTransactionlessly( value );
+		this.valueState.selectAll();
 	}
 }

@@ -53,7 +53,7 @@ public class StringCustomExpressionCreatorView extends RowBasedCustomExpressionC
 	@Override
 	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
 		return new org.lgna.croquet.components.Component<?>[] {
-				((org.alice.ide.custom.StringCustomExpressionCreatorComposite)this.getComposite()).getLiteralValueState().createTextField()
+				((org.alice.ide.custom.StringCustomExpressionCreatorComposite)this.getComposite()).getValueState().createTextField()
 		};
 	}
 }

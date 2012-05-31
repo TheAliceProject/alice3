@@ -40,60 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.openprojectpane;
+package org.alice.stageide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
-	private final M state;
-	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			ListContentPanel.this.refreshState();
-		}
-	};
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			if( quoteClickCountUnquote == 2 ) {
-				org.lgna.croquet.components.Button defaultButton = ListContentPanel.this.getRoot().getDefaultButton();
-				if( defaultButton != null ) {
-					defaultButton.doClick();
-				}
-			}
-		}
-	};
-	private void refreshState() {
-		this.state.refresh();
-		this.revalidateAndRepaint();
+public final class KeyState extends org.lgna.croquet.SimpleItemState< Integer > {
+	private static class SingletonHolder {
+		private static KeyState instance = new KeyState();
 	}
-	public ListContentPanel( org.lgna.croquet.TabComposite< ? > composite, M state ) {
-		super( composite );
-		this.state = state;
-		org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
-		list.setBackgroundColor( null );
-		list.setCellRenderer( this.createListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		list.addMouseListener( this.mouseAdapter );
-		list.addMouseMotionListener( this.mouseAdapter );
-		list.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.addComponent( list, Constraint.CENTER );
+	public static KeyState getInstance() {
+		return SingletonHolder.instance;
 	}
-	protected javax.swing.ListCellRenderer createListCellRenderer() {
-		return new ProjectSnapshotListCellRenderer();
+	private Integer value;
+	private KeyState() {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), java.awt.event.KeyEvent.VK_0, org.alice.ide.croquet.codecs.IntegerCodec.SINGLETON );
 	}
-	protected M getState() {
-		return this.getState();
-	}
-	protected abstract String getTextForZeroProjects();
 	@Override
-	public java.net.URI getSelectedUri() {
-		return this.state.getSelectedItem();
+	protected void localize() {
 	}
+	@Override
+	protected Integer getActualValue() {
+		return this.value;
+	}
+	@Override
+	protected void updateSwingModel( Integer nextValue ) {
+		this.value = nextValue;
+	}
+	@Override
+	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+	
+	public org.alice.stageide.custom.components.KeyViewController createViewController() {
+		return new org.alice.stageide.custom.components.KeyViewController( this );
+	}
+	
 }
-
-
-
-

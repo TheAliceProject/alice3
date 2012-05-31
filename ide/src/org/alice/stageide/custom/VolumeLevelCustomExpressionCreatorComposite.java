@@ -53,7 +53,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 	public static VolumeLevelCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.BoundedIntegerState literalValueState = this.createBoundedIntegerState( this.createKey( "literalValueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 200 ).initialValue( 100 ) );
+	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 200 ).initialValue( 100 ) );
 	private final org.lgna.croquet.StringValue silentLabel = this.createStringValue( this.createKey( "silentLabel" ) ); 
 	private final org.lgna.croquet.StringValue normalLabel = this.createStringValue( this.createKey( "normalLabel" ) ); 
 	private final org.lgna.croquet.StringValue louderLabel = this.createStringValue( this.createKey( "louderLabel" ) ); 
@@ -65,8 +65,8 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 	protected org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView createView() {
 		return new org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView( this );
 	}
-	public org.lgna.croquet.BoundedIntegerState getLiteralValueState() {
-		return this.literalValueState;
+	public org.lgna.croquet.BoundedIntegerState getValueState() {
+		return this.valueState;
 	}
 	public org.lgna.croquet.StringValue getLouderLabel() {
 		return this.louderLabel;
@@ -79,7 +79,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		java.math.BigDecimal decimal = new java.math.BigDecimal( this.literalValueState.getValue() );
+		java.math.BigDecimal decimal = new java.math.BigDecimal( this.valueState.getValue() );
 		decimal = decimal.movePointLeft( 2 );
 		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
 	}
@@ -102,7 +102,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 		} else {
 			java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
 			decimal = decimal.movePointRight( 2 );
-			this.literalValueState.setValueTransactionlessly( decimal.intValue() );
+			this.valueState.setValueTransactionlessly( decimal.intValue() );
 		}
 	}
 }

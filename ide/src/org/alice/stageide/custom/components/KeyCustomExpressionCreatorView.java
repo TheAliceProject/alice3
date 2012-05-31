@@ -40,60 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.openprojectpane;
+package org.alice.stageide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
-	private final M state;
-	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			ListContentPanel.this.refreshState();
-		}
-	};
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			if( quoteClickCountUnquote == 2 ) {
-				org.lgna.croquet.components.Button defaultButton = ListContentPanel.this.getRoot().getDefaultButton();
-				if( defaultButton != null ) {
-					defaultButton.doClick();
-				}
-			}
-		}
-	};
-	private void refreshState() {
-		this.state.refresh();
-		this.revalidateAndRepaint();
-	}
-	public ListContentPanel( org.lgna.croquet.TabComposite< ? > composite, M state ) {
+public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
+	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
 		super( composite );
-		this.state = state;
-		org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
-		list.setBackgroundColor( null );
-		list.setCellRenderer( this.createListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		list.addMouseListener( this.mouseAdapter );
-		list.addMouseMotionListener( this.mouseAdapter );
-		list.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.addComponent( list, Constraint.CENTER );
 	}
-	protected javax.swing.ListCellRenderer createListCellRenderer() {
-		return new ProjectSnapshotListCellRenderer();
-	}
-	protected M getState() {
-		return this.getState();
-	}
-	protected abstract String getTextForZeroProjects();
 	@Override
-	public java.net.URI getSelectedUri() {
-		return this.state.getSelectedItem();
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
+		
+		return new org.lgna.croquet.components.Component<?>[] {
+				composite.getPressAnyKeyLabel().createImmutableTextField()
+		};
 	}
 }
-
-
-
-

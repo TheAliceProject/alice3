@@ -53,7 +53,7 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 	public static PortionCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.BoundedIntegerState literalValueState = this.createBoundedIntegerState( this.createKey( "literalValueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
+	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
 	
 	private PortionCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
@@ -62,12 +62,12 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 	protected org.alice.ide.custom.components.PortionCustomExpressionCreatorView createView() {
 		return new org.alice.ide.custom.components.PortionCustomExpressionCreatorView( this );
 	}
-	public org.lgna.croquet.BoundedIntegerState getLiteralValueState() {
-		return this.literalValueState;
+	public org.lgna.croquet.BoundedIntegerState getValueState() {
+		return this.valueState;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		java.math.BigDecimal decimal = new java.math.BigDecimal( this.literalValueState.getValue() );
+		java.math.BigDecimal decimal = new java.math.BigDecimal( this.valueState.getValue() );
 		decimal = decimal.movePointLeft( 2 );
 		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
 	}
@@ -90,7 +90,7 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 		} else {
 			java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
 			decimal = decimal.movePointRight( 2 );
-			this.literalValueState.setValueTransactionlessly( decimal.intValue() );
+			this.valueState.setValueTransactionlessly( decimal.intValue() );
 		}
 	}
 }
