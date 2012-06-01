@@ -62,4 +62,8 @@ public class UploadPage extends org.lgna.croquet.WizardPageComposite< org.lgna.c
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
+//	@Override
+//	public boolean isOptional() {
+//		return true;
+//	}
 }

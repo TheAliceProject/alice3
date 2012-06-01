@@ -119,39 +119,6 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 	}
 
-	//	private static class WizardDialogControlsComposite extends GatedCommitDialogComposite.ControlsComposite {
-	//
-	//		public WizardDialogControlsComposite( WizardDialogComposite composite ) {
-	//			super( java.util.UUID.fromString( "56e28f65-6da2-4f25-a86b-16b7e3c4940c" ), composite );
-	//		}
-	//		@Override
-	//		protected void addComponentsToControlLine( org.lgna.croquet.components.LineAxisPanel controlLine, org.lgna.croquet.components.Button leadingOkCancelButton, org.lgna.croquet.components.Button trailingOkCancelButton ) {
-	//			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
-	//			controlLine.addComponent( this.prevOperation.createButton() );
-	//			controlLine.addComponent( this.nextOperation.createButton() );
-	//			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-	//			controlLine.addComponent( leadingOkCancelButton );
-	//			controlLine.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-	//			controlLine.addComponent( trailingOkCancelButton );
-	//		}
-	//		@Override
-	//		public void handleIsGoodToGo( boolean isGoodToGo ) {
-	//			WizardDialogCoreComposite mainComposite = (WizardDialogCoreComposite)this.getGatedCommitDialogComposite().getMainComposite();
-	//			this.nextOperation.setEnabled( mainComposite.isNextPageAvailable() && isGoodToGo );
-	//		}
-	//	}
-	//	private static class WizardDialogComposite extends GatedCommitDialogComposite<WizardDialogCoreComposite,WizardDialogControlsComposite> {
-	//		private final WizardDialogControlsComposite controlsComposite = new WizardDialogControlsComposite( this );
-	//		public WizardDialogComposite( Group operationGroup, WizardDialogCoreComposite mainComposite ) {
-	//			super( java.util.UUID.fromString( "fbff50c0-b0d3-48d1-bb10-348790b825b0" ), operationGroup, mainComposite );
-	//		}
-	//		@Override
-	//		protected WizardDialogControlsComposite getControlsComposite() {
-	//			assert this.controlsComposite != null : this;
-	//			return this.controlsComposite;
-	//		}
-	//	}
-
 	private final StringValue stepsLabel = this.createStringValue( this.createKey( "stepsLabel" ) );
 	private int index = 0;
 
@@ -327,23 +294,24 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.nextOperation.setEnabled( this.isNextPageAvailable() );
 		this.prevOperation.setEnabled( this.isPrevPageAvailable() );
 	}
-	//	@Override
-	//	public void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-	//		this.updateEnabled();
-	//		super.handleFiredEvent( event );
-	//	}
-	//	@Override
-	//	protected void handlePreShowDialog( org.lgna.croquet.history.Node<?> node ) {
-	//		this.getMainComposite().setIndex( 0 );
-	//		this.updateEnabled();
-	//		super.handlePreShowDialog( node );
-	//	}
-
 	@Override
 	public void updateIsGoodToGo( boolean isGoodToGo ) {
 		this.nextOperation.setEnabled( this.isNextPageAvailable() && isGoodToGo );
+		boolean isCommitEnabled = isGoodToGo;
+		if( isGoodToGo ) {
+			java.util.List<Composite<?>> cards = this.cardComposite.getCards();
+			for( int i=this.index+1; i<cards.size(); i++ ) {
+				WizardPageComposite page = (WizardPageComposite)cards.get( i );
+				if( page.isOptional() ) {
+					//pass
+				} else {
+					isCommitEnabled = false;
+					break;
+				}
+			}
+		}
+		this.getCommitOperation().setEnabled( isCommitEnabled );
 	}
-
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
