@@ -68,9 +68,8 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		Integer value = this.getValueState().getValue();
-		if( value != null ) {
-			org.lgna.story.Key key = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( value );
+		org.lgna.story.Key key = this.getValueState().getValue();
+		if( key != null ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class );
 			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, key.name() );
 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
@@ -91,17 +90,17 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		org.lgna.story.Key key = null;
 		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
 			org.lgna.project.ast.AbstractType<?,?,?> type = fieldAccess.getType();
 			if( type == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class ) ) {
 				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field != null ) {
-					org.lgna.story.Key key = Enum.valueOf( org.lgna.story.Key.class, field.getName() );
-					int keyCode = org.lgna.story.ImplementationAccessor.getKeyCodeFromKey( key );
-					this.getValueState().setValueTransactionlessly( keyCode );
+					key = Enum.valueOf( org.lgna.story.Key.class, field.getName() );
 				}
 			}
 		}
+		this.getValueState().setValueTransactionlessly( key );
 	}
 }
