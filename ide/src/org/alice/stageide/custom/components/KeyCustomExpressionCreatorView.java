@@ -45,16 +45,16 @@ package org.alice.stageide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
+public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
 	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
 		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		
-		return new org.lgna.croquet.components.Component<?>[] {
-				composite.getPressAnyKeyLabel().createImmutableTextField()
-		};
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+		rv.addComponent( composite.getPressAnyKeyLabel().createImmutableTextField(), Constraint.PAGE_START );
+		rv.addComponent( composite.getValueState().createViewController(), Constraint.CENTER );
+		return rv;
 	}
 }

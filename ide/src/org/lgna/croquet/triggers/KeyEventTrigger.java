@@ -40,56 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.custom;
+
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class KeyState extends org.lgna.croquet.SimpleItemState< Integer > {
-	private static class SingletonHolder {
-		private static KeyState instance = new KeyState();
+public class KeyEventTrigger extends ComponentEventTrigger<java.awt.event.KeyEvent> {
+	public KeyEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.KeyEvent keyEvent ) {
+		super( viewController, keyEvent );
 	}
-	public static KeyState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private static final int DEFAULT_VALUE = java.awt.event.KeyEvent.VK_0;
-	private Integer value = DEFAULT_VALUE;
-	private KeyState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), DEFAULT_VALUE, org.alice.ide.croquet.codecs.IntegerCodec.SINGLETON );
+	public KeyEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected void localize() {
+	protected java.awt.Point getPoint() {
+		return null;
 	}
-	@Override
-	protected Integer getActualValue() {
-		return this.value;
-	}
-	@Override
-	protected void updateSwingModel( Integer nextValue ) {
-		this.value = nextValue;
-		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
-			if( component instanceof org.alice.stageide.custom.components.KeyViewController ) {
-				org.alice.stageide.custom.components.KeyViewController keyViewController = (org.alice.stageide.custom.components.KeyViewController)component;
-				keyViewController.getAwtComponent().setText( org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( this.value ).toString() );
-			}
-		}
-	}
-	@Override
-	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
-		return java.util.Collections.emptyList();
-	}
-	public void handleKeyPressed( org.alice.stageide.custom.components.KeyViewController viewController, java.awt.event.KeyEvent e ) {
-		int keyCode = e.getKeyCode();
-		if( this.value != null && this.value == keyCode ) {
-			//pass
-		} else {
-			org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.KeyEventTrigger( viewController, e );
-			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
-			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger );
-			this.updateSwingModel( keyCode );
-		}
-	}
-	public org.alice.stageide.custom.components.KeyViewController createViewController() {
-		return new org.alice.stageide.custom.components.KeyViewController( this );
+	public String getNoteText( java.util.Locale locale ) {
+		return "Press";
 	}
 }
