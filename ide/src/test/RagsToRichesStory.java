@@ -96,7 +96,7 @@ class MyOgre extends MyBiped {
 
 class MyArmoire extends Prop {
 	public MyArmoire() {
-		super( org.lgna.story.resources.prop.Armoire.ARMOIRE_QUAINT__ARMOIRE_QUAINT_ARMOIR_LEAVES);
+		super( org.lgna.story.resources.prop.Armoire.LOFT__BLACK_TRIM);
 	}
 	public org.lgna.story.Joint getLeftDoor() {
 		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
@@ -110,7 +110,7 @@ class DesertScene extends Scene {
 	private final Sun sun = new Sun();
 	private final Ground desert = new Ground();
 	private final Sphere sphere = new Sphere();
-	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
+	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.Ogre.BROWN );
 	private final org.lgna.story.Billboard billboard = new org.lgna.story.Billboard();
 	private final Camera camera;
 	private final MyOgre ogre;
@@ -299,11 +299,11 @@ class SnowScene extends Scene {
 //			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 //			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 			this.ogre.delay(1);
-			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.ARMOIRE_LOFT__ARMOIRE_LOFT_TRIM_BLACK);
+			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.LOFT__BLACK_TRIM);
 			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			this.ogre.setResource(org.lgna.story.resources.biped.Alien.ALIEN);
 			this.ogre.delay(1);
-			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.ARMOIRE_QUAINT__ARMOIRE_QUAINT_ARMOIR_LEAVES);
+			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.LOFT__BLACK_TRIM);
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
 			this.ogre.setResource(new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(), BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ));
 			
@@ -335,7 +335,7 @@ class RagsToRichesStory extends Program {
 	private final Camera camera = new Camera();
 //	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(), BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ) );
 	private final MyBiped susan = new MyBiped( org.lgna.story.resources.biped.Alien.ALIEN );
-	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN_OGRE );
+	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 

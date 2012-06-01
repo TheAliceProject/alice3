@@ -271,22 +271,22 @@ public class AliceResourceUtilties {
 	
 	private static java.net.URL getThumbnailURLInternal(Class<?> modelResource, String resourceName) {
 		String thumbnailName = getThumbnailResourceName(modelResource, resourceName);
-		return getAliceResource(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator()+ thumbnailName);
+		return getAliceResource(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator(modelResource.getSimpleName())+ thumbnailName);
 	}
 	
 	public static URL getTextureURL(Object resource)
 	{
-		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator()+getTextureResourceName(resource));
+		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator(resource.getClass().getSimpleName())+getTextureResourceName(resource));
 	}
 	
 	public static URL getVisualURL(Object resource)
 	{
-		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator()+getVisualResourceName(resource));
+		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator(resource.getClass().getSimpleName())+getVisualResourceName(resource));
 	}
 	
 	public static URL getModelResourceURL(Object resource)
 	{
-		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator()+getTextureResourceName(resource));
+		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator(resource.getClass().getSimpleName())+getTextureResourceName(resource));
 	}
 	
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisual(Object resource)
@@ -441,6 +441,7 @@ public class AliceResourceUtilties {
 		URL resourceURL = getThumbnailURLInternal(modelResource, resourceName);
 		if (resourceURL == null) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", resourceName);
+			resourceURL = getThumbnailURLInternal(modelResource, resourceName);
 		}
 		if( resourceURL != null ) {
 			try {
@@ -498,7 +499,8 @@ public class AliceResourceUtilties {
 			if (!classToInfoMap.containsKey(parentKey)) {
 				String name = getName(modelResource);
 				try {
-					InputStream is = getAliceResourceAsStream(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator()+name+".xml");
+					//xml files are not referenced off the 
+					InputStream is = getAliceResourceAsStream(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator("")+name+".xml");
 					if (is != null) {
 						Document doc = XMLUtilities.read(is);
 						parentInfo = new ModelResourceInfo(doc);

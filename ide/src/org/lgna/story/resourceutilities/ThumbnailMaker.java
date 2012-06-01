@@ -45,8 +45,11 @@ package org.lgna.story.resourceutilities;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Hexahedron;
@@ -74,6 +77,9 @@ public class ThumbnailMaker {
 	
 	private static ThumbnailMaker instance;
 	
+	private File scratchSpace = null;
+	
+	
 	public static ThumbnailMaker getInstance() {
 		if (instance == null) {
 			instance = new ThumbnailMaker();
@@ -82,7 +88,9 @@ public class ThumbnailMaker {
 	}
 	
 	public static ThumbnailMaker getNewInstance() {
+		File oldScratchSpace = null;
 		if (instance != null) {
+			oldScratchSpace = instance.scratchSpace;
 			instance.release();
 			instance = null;
 			try { 
@@ -91,6 +99,7 @@ public class ThumbnailMaker {
 			} catch (Exception e){}
 		}
 		instance = new ThumbnailMaker();
+		instance.setScratchSpace(oldScratchSpace);
 		return instance;
 	}
 	
@@ -120,6 +129,10 @@ public class ThumbnailMaker {
 		if (this.world != null) {
 			this.world.getSgComposite().release();
 		}
+	}
+	
+	public void setScratchSpace(File scratchSpace) {
+		this.scratchSpace = scratchSpace;
 	}
 	
 	private void setUpCamera(edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass lookingGlass)
@@ -152,8 +165,44 @@ public class ThumbnailMaker {
 		setUpCamera(offscreenLookingGlass);
 	}
 	
+	public static File createTempDirectory() throws IOException {
+		final File temp;
+
+		temp = File.createTempFile("thumbnailTemp", Long.toString(System.nanoTime()));
+
+		if (!(temp.delete())) {
+			throw new IOException("Could not delete temp file: "
+					+ temp.getAbsolutePath());
+		}
+
+		if (!(temp.mkdir())) {
+			throw new IOException("Could not create temp directory: "
+					+ temp.getAbsolutePath());
+		}
+
+		return (temp);
+	}
+	
+	
 	private void initializeIfNecessary(int width, int height)
 	{
+		if (this.scratchSpace != null && !this.scratchSpace.exists())
+		{
+			if (this.scratchSpace != null) {
+				this.scratchSpace.mkdirs();
+			}
+		}
+		if (this.scratchSpace == null || !this.scratchSpace.exists()) 
+		{
+			try {
+				this.scratchSpace = createTempDirectory();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+				this.scratchSpace = null;
+			}
+		}
+		
 		boolean forceNew = this.width != width || this.height != height;
 		this.width = width;
 		this.height = height;
@@ -358,6 +407,9 @@ public class ThumbnailMaker {
 	
 	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int inputWidth, int inputHeight) throws Exception {
 		initializeIfNecessary(inputWidth, inputHeight);
+		if (this.scratchSpace == null) {
+			throw new IOException("Failed to find temp scratch space to write thumbnails to.");
+		}
 //		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
 		
 		edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageLG = testImageOffscreenLookingGlass;
@@ -372,7 +424,7 @@ public class ThumbnailMaker {
 		testImageLG.clearAndRenderOffscreen();
 		testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 		
-		ImageUtilities.write("C:/batchOutput/thumbnailTest/initial.png", testImage);
+		ImageUtilities.write(new File(this.scratchSpace, "initial.png"), testImage);
 		
 		Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation, bbox);
 		getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
@@ -394,7 +446,7 @@ public class ThumbnailMaker {
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 			
-			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
+			ImageUtilities.write(new File(this.scratchSpace, "test"+count+".png"), testImage);
 			
 			framed = isFullyFramed(testImage);
 			if (framed)
@@ -417,7 +469,7 @@ public class ThumbnailMaker {
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 			
-			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
+			ImageUtilities.write(new File(this.scratchSpace, "test"+count+".png"), testImage);
 			
 			framed = isFullyFramed(testImage);
 			if (framed)
@@ -439,7 +491,7 @@ public class ThumbnailMaker {
 		offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
 		
-		ImageUtilities.write("C:/batchOutput/thumbnailTest/final.png", rv);
+		ImageUtilities.write(new File(this.scratchSpace, "final.png"), rv);
 		
 		v.setParent(null);
 		

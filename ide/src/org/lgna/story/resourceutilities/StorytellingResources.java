@@ -333,6 +333,7 @@ public class StorytellingResources {
 					String separator = "\n   ";
 					for (File path : resourcePaths) {
 						sb.append(separator+"'"+path+"'");
+						this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
 					}
 					String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
 					sb.append("\nVerify that "+phrase+" and verify that Alice is properly installed.");

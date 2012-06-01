@@ -45,6 +45,7 @@ package org.lgna.story.resourceutilities;
 
 import java.awt.Image;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -53,6 +54,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,12 +91,13 @@ public class ModelResourceExporter {
 	
 	public static final String RESOURCE_SUB_DIR = "";
 	
-	public static String getResourceSubDirWithSeparator() {
+	public static String getResourceSubDirWithSeparator(String className) {
+		String classDir = className != null && className.length() > 0 ? className.toLowerCase()+"/" : "";
 		if (RESOURCE_SUB_DIR == null || RESOURCE_SUB_DIR.length() == 0) {
-			return "";
+			return classDir;
 		}
 		else {
-			return RESOURCE_SUB_DIR + "/";
+			return RESOURCE_SUB_DIR + "/"+classDir;
 		}
 	}
 	
@@ -118,7 +123,7 @@ public class ModelResourceExporter {
 	}
 	
 	private String resourceName;
-	private String name;
+	private String className;
 	private List<String> tags = new LinkedList<String>();
 	private Map<String, AxisAlignedBox> boundingBoxes = new HashMap<String, AxisAlignedBox>();
 	private File xmlFile;
@@ -126,6 +131,11 @@ public class ModelResourceExporter {
 	private Map<ModelSubResourceExporter, Image> thumbnails = new HashMap<ModelSubResourceExporter, Image>();
 	private Map<String, File> existingThumbnails = null;
 	private List<ModelSubResourceExporter> subResources = new LinkedList<ModelSubResourceExporter>();
+	private boolean isSims = false;
+	private boolean hasNewData = false;
+	private boolean forceRebuildCode = false;
+	private boolean forceRebuildXML = false;
+	private Date lastEdited = null;
 	
 	private String attributionName;
 	private String attributionYear;
@@ -135,43 +145,88 @@ public class ModelResourceExporter {
 	private ModelClassData classData;
 	private List<Tuple2<String, String>> jointList;
 	
-	public ModelResourceExporter(String name, String resourceName)
+	public ModelResourceExporter(String className) 
 	{
-		this.name = name;
-		if (Character.isLowerCase(this.name.charAt(0)))
+		this.className = className;
+		if (Character.isLowerCase(this.className.charAt(0)))
 		{
-			this.name = this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
+			this.className = this.className.substring(0, 1).toUpperCase() + this.className.substring(1);
 		}
+	}
+	
+	public ModelResourceExporter(String className, String resourceName)
+	{
+		this(className);
 		this.resourceName = resourceName;
 	}
 	
-	public ModelResourceExporter(String name, ModelClassData classData)
+	public ModelResourceExporter(String className, ModelClassData classData)
 	{
-		this(name, name);
+		this(className);
 		this.classData = classData;
 	}
 	
-	public ModelResourceExporter(String name, String resourceName, ModelClassData classData)
+	public ModelResourceExporter(String className, String resourceName, ModelClassData classData)
 	{
-		this(name, resourceName);
+		this(className, resourceName);
 		this.classData = classData;
 	}
 	
-	public ModelResourceExporter(String name, ModelClassData classData, Class<?> jointAndVisualFactoryClass)
+	public ModelResourceExporter(String className, ModelClassData classData, Class<?> jointAndVisualFactoryClass)
 	{
-		this(name, classData);
+		this(className, classData);
 		this.jointAndVisualFactory = jointAndVisualFactoryClass;
 	}
 	
-	public ModelResourceExporter(String name, String resourceName, ModelClassData classData, Class<?> jointAndVisualFactoryClass)
+	public ModelResourceExporter(String className, String resourceName, ModelClassData classData, Class<?> jointAndVisualFactoryClass)
 	{
-		this(name, resourceName, classData);
+		this(className, resourceName, classData);
 		this.jointAndVisualFactory = jointAndVisualFactoryClass;
 	}
 	
-	public void SetResourceName(String resourceName)
+	public void setResourceName(String resourceName)
 	{
 		this.resourceName = resourceName;
+	}
+	
+	public void setHasNewData(boolean hasNewData) {
+		this.hasNewData = hasNewData;
+	}
+	
+	public boolean hasNewData() {
+		return this.hasNewData;
+	}
+	
+	public void setLastEdited(Date lastEdited) {
+		this.lastEdited = lastEdited;
+	}
+	
+	public void addLastEditedDate(Date date) {
+		if (date == null) {
+			return;
+		}
+		if (this.lastEdited == null) {
+			this.lastEdited = date;
+		}
+		else if (date.after(this.lastEdited)) {
+			this.lastEdited = date;
+		}
+	}
+	
+	public static boolean isMoreRecentThan(Date dataDate, File file) {
+		if (dataDate == null) {
+			return false;
+		}
+		Date fileDate = new Date(file.lastModified());
+		boolean isNewer = dataDate.after(fileDate);
+		return isNewer;
+	}
+	
+	public static boolean isMoreRecentThan(Date dataData, Date otherDate) {
+		if (dataData == null) {
+			return false;
+		}
+		return dataData.after(otherDate);
 	}
 	
 	public String getResourceName()
@@ -182,6 +237,22 @@ public class ModelResourceExporter {
 	public ModelClassData getClassData()
 	{
 		return this.classData;
+	}
+	
+	public void setForceRebuildCode(boolean rebuildCode) {
+		this.forceRebuildCode = rebuildCode;
+	}
+	
+	public void setForceRebuildXML(boolean rebuildXML) {
+		this.forceRebuildXML = rebuildXML;
+	}
+	
+	public boolean getForceRebuildCode() {
+		return this.forceRebuildCode;
+	}
+	
+	public boolean getForceRebuildXML() {
+		return this.forceRebuildXML;
 	}
 	
 	public void setJointAndVisualFactory(Class<?> jointAndVisualFactoryClass)
@@ -214,6 +285,18 @@ public class ModelResourceExporter {
 		this.addSubResource(new ModelSubResourceExporter(modelName, textureName));
 	}
 	
+	public void addSubResourceTags(String modelName, String textureName, String... tags) {
+		if (tags != null && tags.length > 0) {
+			for (ModelSubResourceExporter subResource : this.subResources) {
+				if (subResource.getModelName().equalsIgnoreCase(modelName)) {
+					if (textureName == null || subResource.getTextureName().equalsIgnoreCase(textureName)) {
+						subResource.addTags(tags);
+					}
+				}
+			}
+		}
+	}
+	
 	public void addAttribution(String name, String year)
 	{
 		this.attributionName = name;
@@ -221,14 +304,24 @@ public class ModelResourceExporter {
 	}
 	
 	public void addTags(String... tags) {
-		for (String s : tags){
-			this.tags.add(s);
+		if (tags != null) {
+			for (String s : tags){
+				this.tags.add(s);
+			}
 		}
 	}
 	
-	public String getName()
+	public boolean isSims() {
+		return this.isSims;
+	}
+	
+	public void setIsSims(boolean isSims) {
+		this.isSims = isSims;
+	}
+	
+	public String getClassName()
 	{
-		return this.name;
+		return this.className;
 	}
 	
 	public String getPackageString()
@@ -297,10 +390,10 @@ public class ModelResourceExporter {
 		return tagsElement;
 	}
 	
-	private static org.w3c.dom.Element createSubResourceElement(Document doc, ModelSubResourceExporter subResource)
+	private static org.w3c.dom.Element createSubResourceElement(Document doc, ModelSubResourceExporter subResource, ModelResourceExporter parentMRE)
 	{
 		org.w3c.dom.Element resourceElement = doc.createElement("Resource");
-		resourceElement.setAttribute("name", subResource.getTextureName());
+		resourceElement.setAttribute("name", AliceResourceUtilties.makeEnumName(subResource.getTextureName()));
 		if (subResource.getModelName() != null) {
 			resourceElement.setAttribute("model", subResource.getModelName());
 		}
@@ -308,7 +401,15 @@ public class ModelResourceExporter {
 			resourceElement.appendChild(createBoundingBoxElement(doc, subResource.getBbox()));
 		}
 		if (subResource.getTags().size() > 0) {
-			resourceElement.appendChild(createTagsElement(doc, subResource.getTags()));
+			List<String> uniqueTags = new ArrayList<String>();
+			for (String t : subResource.getTags()) {
+				if (parentMRE.tags == null || !parentMRE.tags.contains(t)) {
+					uniqueTags.add(t);
+				}
+			}
+			if (!uniqueTags.isEmpty()) {
+				resourceElement.appendChild(createTagsElement(doc, uniqueTags));
+			}
 		}
 		return resourceElement;
 	}
@@ -319,7 +420,7 @@ public class ModelResourceExporter {
         {
             Document doc = XMLUtilities.createDocument();
             org.w3c.dom.Element modelRoot = doc.createElement("AliceModel");
-            modelRoot.setAttribute("name", this.name);
+            modelRoot.setAttribute("name", this.className);
             if (this.attributionName != null && this.attributionName.length() > 0)
             {
             	modelRoot.setAttribute("creator", this.attributionName);
@@ -329,21 +430,21 @@ public class ModelResourceExporter {
             	modelRoot.setAttribute("creationYear", this.attributionYear);
             }
             doc.appendChild(modelRoot);
-			if (this.boundingBoxes.get(this.name) == null) {
+			if (this.boundingBoxes.get(this.className) == null) {
 				AxisAlignedBox superBox = new AxisAlignedBox();
 				for (Entry<String, AxisAlignedBox> entry : this.boundingBoxes.entrySet()) {
 					superBox.union(entry.getValue());
 				}
-				this.boundingBoxes.put(this.name, superBox);
+				this.boundingBoxes.put(this.className, superBox);
 			}
-            modelRoot.appendChild(createBoundingBoxElement(doc, this.boundingBoxes.get(this.name)));
+            modelRoot.appendChild(createBoundingBoxElement(doc, this.boundingBoxes.get(this.className)));
             modelRoot.appendChild(createTagsElement(doc, this.tags));
             
             for (ModelSubResourceExporter subResource : this.subResources) {
-            	if (!subResource.getModelName().equalsIgnoreCase(this.name) && this.boundingBoxes.containsKey(subResource.getModelName())) {
+            	if (!subResource.getModelName().equalsIgnoreCase(this.className) && this.boundingBoxes.containsKey(subResource.getModelName())) {
             		subResource.setBbox(this.boundingBoxes.get(subResource.getModelName()));
             	}
-            	modelRoot.appendChild(createSubResourceElement(doc, subResource));
+            	modelRoot.appendChild(createSubResourceElement(doc, subResource, this));
             }
             
             return doc;
@@ -538,7 +639,7 @@ public class ModelResourceExporter {
 	}
 	
 	private String createResourceEnumName(String modelName, String textureName) {
-		if (modelName.equalsIgnoreCase(this.getName())) {
+		if (modelName.equalsIgnoreCase(this.getClassName())) {
 			return AliceResourceUtilties.makeEnumName(textureName);
 		}
 		else {
@@ -558,7 +659,7 @@ public class ModelResourceExporter {
 		sb.append("\n");
 		sb.append("package "+this.classData.packageString+";\n\n");
 		
-		sb.append("public enum "+this.name+" implements "+this.classData.superClass.getCanonicalName()+" {\n");
+		sb.append("public enum "+this.className+" implements "+this.classData.superClass.getCanonicalName()+" {\n");
 		for (int i=0; i<this.subResources.size(); i++)
 		{
 			ModelSubResourceExporter resource = this.subResources.get(i);
@@ -593,7 +694,7 @@ public class ModelResourceExporter {
 					rootJoints.add(jointString);
 					addedRoots = true;
 				}
-				sb.append("\tpublic static final org.lgna.story.resources.JointId "+jointString+" = new org.lgna.story.resources.JointId( "+parentString+", "+this.name+".class );\n");
+				sb.append("\tpublic static final org.lgna.story.resources.JointId "+jointString+" = new org.lgna.story.resources.JointId( "+parentString+", "+this.className+".class );\n");
 			}
 			
 			if (addedRoots)
@@ -614,7 +715,7 @@ public class ModelResourceExporter {
 			sb.append("\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){\n");
 			if (addedRoots)
 			{
-				sb.append("\t\treturn "+this.name+"."+ROOT_IDS_FIELD_NAME+";\n");
+				sb.append("\t\treturn "+this.className+"."+ROOT_IDS_FIELD_NAME+";\n");
 			}
 			else
 			{
@@ -722,10 +823,16 @@ public class ModelResourceExporter {
 		String packageDirectory = getDirectoryStringForPackage(this.classData.packageString);
 		return new File(root+packageDirectory);
 	}
+	
+	private File getJavaClassFile(String root)
+	{
+		String filename = getDirectoryStringForPackage(this.classData.packageString)+this.className+".class";
+		return new File(root+filename);
+	}
 
 	private File getJavaFile(String root)
 	{
-		String filename = getDirectoryStringForPackage(this.classData.packageString)+this.name+".java";
+		String filename = getDirectoryStringForPackage(this.classData.packageString)+this.className+".java";
 		return new File(root+filename);
 	}
 	
@@ -775,8 +882,8 @@ public class ModelResourceExporter {
 		if (!root.endsWith("/") && !root.endsWith("\\")) {
 			root += "/";
 		}
-		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
-        File xmlFile = new File(resourceDirectory, this.name+".xml");
+		String resourceDirectory = root + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator("");
+        File xmlFile = new File(resourceDirectory, this.className+".xml");
 		return xmlFile;
 	}
 
@@ -855,7 +962,7 @@ public class ModelResourceExporter {
 		if (!rootPath.endsWith("/") && !rootPath.endsWith("\\")) {
 			rootPath += "/";
 		}
-		String resourceDirectory = rootPath + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator();
+		String resourceDirectory = rootPath + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator(this.className);
 		return resourceDirectory+thumbnailName;
 	}
 
@@ -868,7 +975,7 @@ public class ModelResourceExporter {
 			for(Entry < String, File > entry : this.existingThumbnails.entrySet())
 			{
 				if (!gotBase) {
-					String thumbName = AliceResourceUtilties.getThumbnailResourceName(this.getName(), null);
+					String thumbName = AliceResourceUtilties.getThumbnailResourceName(this.getClassName(), null);
 					File thumb = new File(getThumbnailPath(root, thumbName));
 					try {
 						FileUtilities.copyFile(entry.getValue(), thumb);
@@ -895,7 +1002,7 @@ public class ModelResourceExporter {
 			if (!thumbnailsCreated.contains(entry.getKey())) {
 				if (!gotBase)
 				{
-					String thumbName = AliceResourceUtilties.getThumbnailResourceName(this.getName(), null);
+					String thumbName = AliceResourceUtilties.getThumbnailResourceName(this.getClassName(), null);
 					File f = saveImageToFile(getThumbnailPath(root, thumbName), entry.getValue());
 					if (f != null ){
 						thumbnailFiles.add(f);
@@ -913,13 +1020,13 @@ public class ModelResourceExporter {
         return thumbnailFiles;
 	}
 	
-	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile)
+	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile) throws IOException
 	{
 		if (!sourceDirectory.endsWith("/") && !sourceDirectory.endsWith("\\")) {
 			sourceDirectory += File.separator;
         }
 		xmlFile = getXMLFile(resourceDirectory);
-		if ((rebuildXmlFile || !xmlFile.exists() || xmlFile.length() == 0) && resourceJarStream != null) {
+		if ((rebuildXmlFile || !xmlFile.exists() || xmlFile.length() == 0 || isMoreRecentThan(this.lastEdited, xmlFile)) && resourceJarStream != null) {
 			xmlFile = createXMLFile(resourceDirectory, rebuildXmlFile);
 		}
 		boolean shouldAddResources = resourceJarStream != null;
@@ -931,8 +1038,7 @@ public class ModelResourceExporter {
 			List<File> thumbnailFiles = saveThumbnailsToDir(resourceDirectory);
 		}
 		else if (shouldAddResources){
-			System.err.println("FAILED TO MAKE XML FILE FOR "+this.getName()+"--NOT ADDING IT TO JARS.");
-			return false;
+			throw new IOException("FAILED TO MAKE XML FILE FOR "+this.getClassName()+"--NOT ADDING IT TO JARS.");
 		}
 		boolean addClassData = false;
 		File sourceDir = null;
@@ -940,23 +1046,26 @@ public class ModelResourceExporter {
 		if (shouldAddClassData) {
 			sourceDir = getJavaCodeDir(sourceDirectory);
 			javaFile = getJavaFile(sourceDirectory);
-			if (rebuildJavaFile || !javaFile.exists() || javaFile.length() == 0) {
+			File classFile = getJavaClassFile(sourceDirectory);
+			if (rebuildJavaFile || !javaFile.exists() || !classFile.exists() || javaFile.length() == 0 || isMoreRecentThan(this.lastEdited, javaFile)) {
 				try {
 					javaFile = createJavaCode(sourceDirectory);
 				}
 				catch (Exception e) {
-					System.err.println("FAILED TO MAKE JAVA FILE FOR "+this.getName()+"--NOT ADDING IT TO JARS.");
-					return false;
+					throw new IOException("FAILED TO MAKE JAVA FILE FOR "+this.getClassName()+"--NOT ADDING IT TO JARS.", e);
 				}
 			}
 			
 			String[] args = new String[]{javaFile.getAbsolutePath(), "-target", "1.5", "-classpath", System.getProperty("java.class.path")};
-			PrintWriter pw = new PrintWriter(System.out);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			PrintWriter pw = new PrintWriter(baos);
 			int status = com.sun.tools.javac.Main.compile(args, pw);
 			
+			String compileOutput = baos.toString("UTF-8");
 			if (status != 0)
 			{
-				System.out.println("BOOM!");
+				System.err.println(compileOutput);
+				throw new IOException("Java code for "+this.getClassName()+" failed to compile: "+ compileOutput);
 			}
 			else {
 				addClassData = true;
@@ -971,9 +1080,7 @@ public class ModelResourceExporter {
 			}
 			catch (Exception e)
 			{
-				System.err.println("FAILED ADDING RESROUCES TO RESOURCE JAR: ");
-				e.printStackTrace();
-				return false;
+				throw new IOException("FAILED ADDING RESROUCES TO RESOURCE JAR."+e);
 			}
 		}
 		if (shouldAddClassData && addClassData) {
@@ -984,20 +1091,18 @@ public class ModelResourceExporter {
 			}
 			catch (Exception e)
 			{
-				System.err.println("FAILED ADDING SOURCE TO SOURCE JAR: ");
-				e.printStackTrace();
-				return false;
+				throw new IOException("FAILED ADDING RESROUCES TO SOURCE JAR."+e);
 			}
 		}
 		return true;
 	}
 	
-	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos)
+	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos) throws IOException
 	{
 		return addToJar(sourceDirectory, resourceDirectory, jos, jos, true, true);
 	}
 
-	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles)
+	public boolean addToJar(String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles) throws IOException
 	{
 		return addToJar(sourceDirectory, resourceDirectory, jos, jos, rebuildFiles, rebuildFiles);
 	}
@@ -1005,7 +1110,7 @@ public class ModelResourceExporter {
 	public File export(String sourceDirectory, String resourceDirectory, String outputDir)
 	{
 		
-		File outputFile = new File(outputDir+this.name+".jar");
+		File outputFile = new File(outputDir+this.className+".jar");
 		try
 		{
 			FileUtilities.createParentDirectoriesIfNecessary(outputFile);

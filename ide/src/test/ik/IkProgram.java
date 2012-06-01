@@ -50,7 +50,7 @@ import org.lgna.story.*;
  */
 class IkProgram extends Program {
 	private final Camera camera = new Camera();
-	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
+	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN );
 	private final Sphere target = new Sphere();
 	private final IkScene scene = new IkScene( camera, ogre, target );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
