@@ -76,6 +76,7 @@ public class KeyViewController extends org.lgna.croquet.components.ViewControlle
 		};
 		rv.setFocusable( true );
 		rv.setFocusTraversalKeysEnabled( false );
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
 		return rv;
 	}
 

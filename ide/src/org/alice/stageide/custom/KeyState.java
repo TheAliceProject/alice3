@@ -64,15 +64,19 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState< Integer > 
 	protected Integer getActualValue() {
 		return this.value;
 	}
-	@Override
-	protected void updateSwingModel( Integer nextValue ) {
-		this.value = nextValue;
+	private void updateViewControllers() {
 		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
 			if( component instanceof org.alice.stageide.custom.components.KeyViewController ) {
 				org.alice.stageide.custom.components.KeyViewController keyViewController = (org.alice.stageide.custom.components.KeyViewController)component;
-				keyViewController.getAwtComponent().setText( org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( this.value ).toString() );
+				//org.lgna.story.Key key = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( this.value );
+				keyViewController.getAwtComponent().setText( java.awt.event.KeyEvent.getKeyText( this.value ) );
 			}
 		}
+	}
+	@Override
+	protected void updateSwingModel( Integer nextValue ) {
+		this.value = nextValue;
+		this.updateViewControllers();
 	}
 	@Override
 	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
@@ -84,9 +88,9 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState< Integer > 
 			//pass
 		} else {
 			org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.KeyEventTrigger( viewController, e );
-			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
-			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger );
-			this.updateSwingModel( keyCode );
+			this.value = keyCode;
+			this.changeValueFromSwing( this.value, false, trigger );
+			this.updateViewControllers();
 		}
 	}
 	public org.alice.stageide.custom.components.KeyViewController createViewController() {
