@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.media.animation;
 
+import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,6 +54,11 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 
 	private double startTime = 0;
 	
+	private static MediaPlayerObserver EPIC_HACK_mediaPlayerObserver;
+	public static void EPIC_HACK_setAnimationObserver( MediaPlayerObserver mediaPlayerObserver ) {
+		EPIC_HACK_mediaPlayerObserver = mediaPlayerObserver;
+	}
+	
 	public MediaPlayerAnimation( edu.cmu.cs.dennisc.media.Player player ) {
 		this.player = player;
 		this.isStarted = false;
@@ -60,15 +67,14 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 		this.isStarted = false;
 	}
 	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		boolean hasMediaObserver = animationObserver != null && animationObserver instanceof edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 		if( this.isStarted ) {
 			//pass
 		} else {
 			//this.player.prefetch();
 			this.isStarted = true;
-			if (hasMediaObserver)
-			{
-				((edu.cmu.cs.dennisc.animation.MediaPlayerObserver)animationObserver).playerStarted(this, tCurrent);
+			if (EPIC_HACK_mediaPlayerObserver != null) {
+				EPIC_HACK_mediaPlayerObserver.playerStarted(this, tCurrent);
+				this.player.start();
 				this.startTime = tCurrent;
 			}
 			else
@@ -78,7 +84,7 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 		}
 		
 		double timeRemaining = 0;
-		if (hasMediaObserver)
+		if (EPIC_HACK_mediaPlayerObserver != null)
 		{
 			if (this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player)
 			{

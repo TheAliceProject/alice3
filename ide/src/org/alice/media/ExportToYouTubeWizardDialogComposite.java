@@ -59,6 +59,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
+	private final VideoEditorComposite videoEditorComposite = new VideoEditorComposite( this );
 	private final UploadComposite uploadComposite = new UploadComposite( this );
 	
 	private org.lgna.project.Project project;
@@ -69,6 +70,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
 		this.addPage( this.eventRecordComposite );
 		this.addPage( this.imageRecordComposite );
+//		this.addPage( this.videoEditorComposite );
 		this.addPage( this.uploadComposite );
 	}
 	public org.lgna.project.Project getProject() {

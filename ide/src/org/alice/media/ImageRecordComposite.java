@@ -59,6 +59,7 @@ import org.lgna.story.implementation.SceneImp;
 import edu.cmu.cs.dennisc.matt.EventManager;
 import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
+import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 
 /**
  * @author Matt May
@@ -71,7 +72,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private ImagesToQuickTimeEncoder encoder;
 	private Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
 	private Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
-
+	
 	private final ActionOperation recordOperation = this.createActionOperation( this.createKey( "isRecording.false" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			toggleRecording();
@@ -129,12 +130,14 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		if( this.isRecording != isRecording ) {
 			if( this.isRecording ) {
 				programContext.getProgramImp().stopAnimator();
+				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
 			}
 			this.isRecording = isRecording;
 			if( this.isRecording ) {
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
+				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 				encoder.start();
 				try {
 					encoder.setOutput( File.createTempFile( "temp", ".mov" ) );

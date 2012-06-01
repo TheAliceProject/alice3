@@ -174,6 +174,7 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 	public void controllerUpdate( ControllerEvent event ) {
 		// If we're getting messages from a dead player, 
 		// just leave
+		System.out.println("event: " + event.getClass());
 		if (player == null)
 		{
 			return;

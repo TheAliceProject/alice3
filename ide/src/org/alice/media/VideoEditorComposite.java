@@ -42,37 +42,37 @@
  */
 package org.alice.media;
 
-import java.awt.Component;
 import java.io.File;
 
-import org.alice.media.components.MoviePlayerView;
+import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author Matt May
  */
-public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<MoviePlayerView> {
+public class VideoEditorComposite extends WizardPageComposite<VideoEditorView> {
 
-	private MoviePlayer player;
+	private ExportToYouTubeWizardDialogComposite owner;
+	private File videoFile;
 
-	public MoviePlayerComposite( File file ) {
-		super( java.util.UUID.fromString( "28ea7f67-1f3f-443f-a3fb-130676779b5f" ) );
-		player = new MoviePlayer();
-		player.registerHack( this );
+	public VideoEditorComposite( ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite ) {
+		super( java.util.UUID.fromString( "0c25182f-cb4f-4820-8144-53563f8f79f8" ) );
+		this.owner = exportToYouTubeWizardDialogComposite;
+		this.videoFile = owner.getFile();
 	}
 
 	@Override
-	protected MoviePlayerView createView() {
-		return new MoviePlayerView( this );
+	public org.lgna.croquet.PotentiallyGatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
 	}
 
-	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
-		System.out.println("bye");
-		getView().handlePlayerRealized( visualComponent, controlComponent );
-		getView().revalidateAndRepaint();
+	@Override
+	protected VideoEditorView createView() {
+		return new VideoEditorView( this );
 	}
 
-	public void setMovie( File file ) {
-		player.setMovie( file );
-		player.init();
+	public File getFile() {
+		return videoFile;
 	}
+
 }

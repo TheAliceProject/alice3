@@ -42,37 +42,17 @@
  */
 package org.alice.media;
 
-import java.awt.Component;
-import java.io.File;
-
-import org.alice.media.components.MoviePlayerView;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.Label;
 
 /**
  * @author Matt May
  */
-public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<MoviePlayerView> {
+public class VideoEditorView extends BorderPanel {
 
-	private MoviePlayer player;
-
-	public MoviePlayerComposite( File file ) {
-		super( java.util.UUID.fromString( "28ea7f67-1f3f-443f-a3fb-130676779b5f" ) );
-		player = new MoviePlayer();
-		player.registerHack( this );
+	public VideoEditorView( VideoEditorComposite videoEditorComposite ) {
+		this.addComponent( new MoviePlayerComposite( videoEditorComposite.getFile() ).createView(), Constraint.CENTER );
+		this.addComponent( new Label( "Hello, World!" ), Constraint.PAGE_END );
 	}
 
-	@Override
-	protected MoviePlayerView createView() {
-		return new MoviePlayerView( this );
-	}
-
-	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
-		System.out.println("bye");
-		getView().handlePlayerRealized( visualComponent, controlComponent );
-		getView().revalidateAndRepaint();
-	}
-
-	public void setMovie( File file ) {
-		player.setMovie( file );
-		player.init();
-	}
 }

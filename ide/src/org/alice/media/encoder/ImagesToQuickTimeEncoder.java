@@ -383,7 +383,6 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 	 * @see edu.cmu.cs.dennisc.movie.MovieEncoder#stop()
 	 */
 	public void stop() {
-		System.out.println( "STOP" );
 		this.isRunning = false;
 		boolean success = false;
 		File audioFile = null;
@@ -420,16 +419,11 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
 			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
 			this.audioStreams.add( audioStream );
+			System.out.println(audioStreams.size());
 		}
 	}
 
 	public File getOutputFile() {
 		return this.outputFile;
-	}
-	
-	public void started( Animation animation ) {
-	}
-
-	public void finished( Animation animation ) {
 	}
 }
