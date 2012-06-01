@@ -52,7 +52,8 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 	public static KeyCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringValue pressAnyKey = this.createStringValue( this.createKey( "pressAnyKey" ) ); 
+	private final org.lgna.croquet.StringValue pressAnyKeyLabel = this.createStringValue( this.createKey( "pressAnyKeyLabel" ) );
+	private final ErrorStatus keyRequiredError = this.createErrorStatus( this.createKey( "keyRequiredError" ) ); 
 	private KeyCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "908ee2c1-97a9-4fb4-9716-7846cb206549" ) );
 	}
@@ -60,11 +61,11 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 	protected org.alice.stageide.custom.components.KeyCustomExpressionCreatorView createView() {
 		return new org.alice.stageide.custom.components.KeyCustomExpressionCreatorView( this );
 	}
+	public org.lgna.croquet.StringValue getPressAnyKeyLabel() {
+		return this.pressAnyKeyLabel;
+	}
 	public KeyState getValueState() {
 		return KeyState.getInstance();
-	}
-	public org.lgna.croquet.StringValue getPressAnyKeyLabel() {
-		return this.pressAnyKey;
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
@@ -80,7 +81,11 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 	}
 	@Override
 	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+		if( this.getValueState().getValue() != null ) {
+			return IS_GOOD_TO_GO_STATUS;
+		} else {
+			return this.keyRequiredError;
+		}
 	}
 	
 	@Override
