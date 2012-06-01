@@ -380,6 +380,9 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.JavaType> rv) {
 		super.addSecondaryJavaTypes(rv);
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Entity.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ) );
