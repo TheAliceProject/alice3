@@ -40,23 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.codecs;
+
+package org.alice.stageide.apis.org.lgna.story.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum IntegerCodec implements org.lgna.croquet.ItemCodec< Integer > {
+public enum KeyCodec implements org.lgna.croquet.ItemCodec< org.lgna.story.Key > {
 	SINGLETON;
-	public Class< Integer > getValueClass() {
-		return Integer.class;
+	public Class< org.lgna.story.Key > getValueClass() {
+		return org.lgna.story.Key.class;
 	}
-	public Integer decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeInt();
+	public org.lgna.story.Key decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		boolean isNotNull = binaryDecoder.decodeBoolean();
+		if( isNotNull ) {
+			int keyCode = binaryDecoder.decodeInt();
+			return org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( keyCode );
+		}else {
+			return null;
+		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
-		binaryEncoder.encode( (int)value );
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.Key value ) {
+		if( value != null ) {
+			binaryEncoder.encode( true );
+			binaryEncoder.encode( org.lgna.story.ImplementationAccessor.getKeyCodeFromKey( value ) );
+		} else {
+			binaryEncoder.encode( false );
+		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, Integer value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, org.lgna.story.Key value, java.util.Locale locale) {
 		rv.append( value );
 		return rv;
 	}

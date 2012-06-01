@@ -40,26 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.custom.components;
+
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
-		super( composite );
+public class KeyEventTrigger extends ComponentEventTrigger<java.awt.event.KeyEvent> {
+	public KeyEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.KeyEvent keyEvent ) {
+		super( viewController, keyEvent );
+	}
+	public KeyEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		
-		org.lgna.croquet.components.ImmutableTextField pressAnyKeyLabel = composite.getPressAnyKeyLabel().createImmutableTextField();
-		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		pressAnyKeyLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-
-		rv.addComponent( pressAnyKeyLabel, Constraint.PAGE_START );
-		rv.addComponent( composite.getValueState().createViewController(), Constraint.CENTER );
-		return rv;
+	protected java.awt.Point getPoint() {
+		return null;
+	}
+	public String getNoteText( java.util.Locale locale ) {
+		return "Press";
 	}
 }
