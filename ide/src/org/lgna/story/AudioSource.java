@@ -114,27 +114,10 @@ public final class AudioSource {
 	public Double getVolume() {
 		return this.volume;
 	}
-	//	private void setVolume( Number volume ) {
-	//		this.volume = volume.doubleValue();
-	//	}
 	public Double getStartTime() {
 		return this.startTime;
 	}
-	//	private void setStartTime( Number startTime) {
-	//		if( startTime != null ) {
-	//			this.startTime = startTime.doubleValue();
-	//		} else {
-	//			this.startTime = Double.NaN;
-	//		}
-	//	}
 	public Double getStopTime() {
 		return this.stopTime;
 	}
-	//	private void setStopTime( Number stopTime) {
-	//		if( stopTime != null ) {
-	//			this.stopTime = stopTime.doubleValue();
-	//		} else {
-	//			this.stopTime = Double.NaN;
-	//		}
-	//	}
 }
