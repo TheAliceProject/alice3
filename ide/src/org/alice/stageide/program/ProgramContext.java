@@ -79,7 +79,10 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionStartListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionEndListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
-		this.programInstance = vm.ENTRY_POINT_createInstance( programType );
+		this.programInstance = this.createProgramInstance( programType );
+	}
+	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance( org.lgna.project.ast.NamedUserType programType ) {
+		return this.vm.ENTRY_POINT_createInstance( programType );
 	}
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachine() {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();

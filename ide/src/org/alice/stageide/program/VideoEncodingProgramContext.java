@@ -47,9 +47,22 @@ package org.alice.stageide.program;
  * @author Dennis Cosgrove
  */
 public class VideoEncodingProgramContext extends ProgramContext {
+	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
+		public FrameBasedProgramImp( org.lgna.story.Program abstraction ) {
+			super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass(), new edu.cmu.cs.dennisc.animation.FrameBasedAnimator() );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.animation.FrameBasedAnimator getAnimator() {
+			return (edu.cmu.cs.dennisc.animation.FrameBasedAnimator)super.getAnimator();
+		}
+	}
 	public VideoEncodingProgramContext( double frameRate ) {
 		super( getUpToDateProgramTypeFromActiveIde() );
-		this.getProgramImp().setFrameRate( frameRate );
+		this.getProgramImp().getAnimator().setFramesPerSecond( frameRate );
+	}
+	@Override
+	public FrameBasedProgramImp getProgramImp() {
+		return (FrameBasedProgramImp)super.getProgramImp();
 	}
 	public void initialize( java.awt.Container container ) {
 		container.add( this.getProgramImp().getOnscreenLookingGlass().getAWTComponent() );
