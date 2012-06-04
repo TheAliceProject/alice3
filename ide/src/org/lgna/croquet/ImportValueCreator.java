@@ -41,35 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.custom.components;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
-	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
-		super( composite );
+public abstract class ImportValueCreator<T> extends ValueCreator<T> {
+	public ImportValueCreator( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
+	protected abstract java.io.FilenameFilter createFilenameFilter();
+	protected abstract String getInitialFileText();
 	
+	protected abstract T createValue( java.io.File file );
 	@Override
-	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		return new org.lgna.croquet.StringValue[] {
-				composite.getResourceLabel(),
-				composite.getVolumeLabel(),
-				composite.getStartMarkerLabel(),
-				composite.getStopMarkerLabel()
-		};
-	}
-	
-	@Override
-	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		return new org.lgna.croquet.components.Component<?>[] {
-				composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ),
-				new VolumeLevelSlider( composite.getVolumeState() ),
-				composite.getStartMarkerState().createSlider(),
-				composite.getStopMarkerState().createSlider()
-		};
+	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		java.io.File initialDirectory = null;
+		T rv;
+		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		java.io.File file = org.alice.ide.IDE.getActiveInstance().showOpenFileDialog( initialDirectory, this.getInitialFileText(), edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath(), true );
+		if( file != null ) {
+			rv = this.createValue( file );
+		} else {
+			rv = null;
+		}
+		if( rv != null ) {
+			completionStep.finish();
+		} else {
+			completionStep.cancel();
+		}
+		return rv;
 	}
 }

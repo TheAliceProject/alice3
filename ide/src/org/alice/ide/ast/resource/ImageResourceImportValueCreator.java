@@ -41,35 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.custom.components;
+package org.alice.ide.ast.resource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
-	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
-		super( composite );
+public class ImageResourceImportValueCreator extends ResourceImportValueCreator<org.lgna.common.Resource> {
+	private static class SingletonHolder {
+		private static ImageResourceImportValueCreator instance = new ImageResourceImportValueCreator();
 	}
-	
-	@Override
-	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		return new org.lgna.croquet.StringValue[] {
-				composite.getResourceLabel(),
-				composite.getVolumeLabel(),
-				composite.getStartMarkerLabel(),
-				composite.getStopMarkerLabel()
-		};
+	public static ImageResourceImportValueCreator getInstance() {
+		return SingletonHolder.instance;
 	}
-	
+	private ImageResourceImportValueCreator() {
+		super( java.util.UUID.fromString( "644eb790-404f-40a0-b581-f05690b15f17" ), "png", "jpg", "gif", "bmp" );
+	}
 	@Override
-	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		return new org.lgna.croquet.components.Component<?>[] {
-				composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ),
-				new VolumeLevelSlider( composite.getVolumeState() ),
-				composite.getStartMarkerState().createSlider(),
-				composite.getStopMarkerState().createSlider()
-		};
+	protected java.io.FilenameFilter createFilenameFilter() {
+		return org.lgna.common.resources.AudioResource.createFilenameFilter( true );
+	}
+	@Override
+	protected String getInitialFileText() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			return "*.mp3;*.wav;*.au";
+		} else {
+			return null;
+		}
+	}
+	@Override
+	protected org.lgna.common.Resource createResourceFromFile( java.io.File file ) throws java.io.IOException {
+		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );
 	}
 }
