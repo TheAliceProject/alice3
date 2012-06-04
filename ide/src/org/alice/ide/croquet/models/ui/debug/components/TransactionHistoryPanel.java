@@ -46,6 +46,7 @@ package org.alice.ide.croquet.models.ui.debug.components;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderPanel {
 
 	private final org.lgna.croquet.history.event.Listener transactionListener = new org.lgna.croquet.history.event.Listener() {

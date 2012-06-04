@@ -47,6 +47,7 @@ package org.alice.ide.croquet.models.ui.debug.components;
  * @author Dennis Cosgrove
  */
 public class TransactionHistoryView extends org.lgna.croquet.components.BorderPanel {
+
 	private final org.lgna.croquet.history.event.Listener historyListener = new org.lgna.croquet.history.event.Listener() {
 		private void reload() {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -58,19 +59,22 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 				}
 			} );
 		}
-		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 
+		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
+
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
-			if( e instanceof org.lgna.croquet.history.event.AddStepEvent ) {
+			if( e instanceof org.lgna.croquet.history.event.AddStepEvent || e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) {
 				this.reload();
 			} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
 				tree.repaint();
 			}
 		}
 	};
+
 	private final org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane();
 	private final javax.swing.JTree tree = new javax.swing.JTree();
+	private org.lgna.croquet.history.TransactionHistory transactionHistory;
 	private boolean isCollapsingDesired = true;
 	private TransactionHistoryTreeModel treeModel;
 
@@ -81,6 +85,7 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 		this.tree.setCellRenderer( new TransactionHistoryCellRenderer() );
 		this.addComponent( this.scrollPane, Constraint.CENTER );
 	}
+
 	private void collapseDesiredRows() {
 		int childCount = treeModel.getChildCount( treeModel.getRoot() );
 		for( int i = 0; i < tree.getRowCount(); i++ ) {
@@ -91,27 +96,54 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 			}
 		}
 	}
+
 	public boolean isCollapsingDesired() {
 		return this.isCollapsingDesired;
 	}
+
 	public void setCollapsingDesired( boolean isCollapsingDesired ) {
 		this.isCollapsingDesired = isCollapsingDesired;
 		if( this.treeModel != null ) {
 			this.treeModel.reload();
 		}
 	}
+
 	public void setTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		assert transactionHistory != null : this;
-		if( this.treeModel != null ) {
-			this.treeModel.getRoot().removeListener( this.historyListener );
-		}
-		this.treeModel = new TransactionHistoryTreeModel( transactionHistory );
-		this.tree.setModel( this.treeModel );
-		this.revalidateAndRepaint();
-		this.treeModel.reload();
 
-		if( this.treeModel != null ) { // always
-			this.treeModel.getRoot().addListener( this.historyListener );
+		this.removeTransactionListener();
+		this.transactionHistory = transactionHistory;
+
+		if ( this.isShowing() ) {
+			this.addTransactionListener();
+		}
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.addTransactionListener();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		this.removeTransactionListener();
+		super.handleUndisplayable();
+	}
+
+	private void addTransactionListener() {
+		if( this.transactionHistory != null ) {
+			this.treeModel = new TransactionHistoryTreeModel( transactionHistory );
+			this.tree.setModel( this.treeModel );
+			this.revalidateAndRepaint();
+			this.treeModel.reload();
+			this.transactionHistory.addListener( this.historyListener );
+		}
+	}
+
+	private void removeTransactionListener() {
+		if ( (this.transactionHistory != null) && (this.transactionHistory.isListening( this.historyListener )) ) {
+			this.transactionHistory.removeListener( this.historyListener );
 		}
 	}
 }
