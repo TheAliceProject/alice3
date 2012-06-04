@@ -40,24 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.codecs;
+
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum IntegerCodec implements org.lgna.croquet.ItemCodec< Integer > {
-	SINGLETON;
-	public Class< Integer > getValueClass() {
-		return Integer.class;
+public class KeyEventTrigger extends ComponentEventTrigger<java.awt.event.KeyEvent> {
+
+	public static KeyEventTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.KeyEvent keyEvent ) {
+		return new KeyEventTrigger( Origin.USER, viewController, keyEvent );
 	}
-	public Integer decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeInt();
+	public static KeyEventTrigger createUserInstance( java.awt.event.KeyEvent keyEvent ) {
+		return createUserInstance( null, keyEvent );
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
-		binaryEncoder.encode( (int)value );
+	public static KeyEventTrigger createGeneratorInstance() {
+		return new KeyEventTrigger( Origin.GENERATOR, null, null );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, Integer value) {
-		rv.append( value );
-		return rv;
+	public static KeyEventTrigger createRecoveryInstance() {
+		return new KeyEventTrigger( Origin.RECOVERY, null, null );
+	}
+
+	private KeyEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.KeyEvent keyEvent ) {
+		super( origin, viewController, keyEvent );
+	}
+	public KeyEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	@Override
+	protected java.awt.Point getPoint() {
+		return null;
+	}
+	@Override
+	public String getNoteText() {
+		return "Press";
 	}
 }

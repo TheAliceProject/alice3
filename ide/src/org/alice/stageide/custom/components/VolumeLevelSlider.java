@@ -40,26 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		
-		org.lgna.croquet.components.ImmutableTextField pressAnyKeyLabel = composite.getPressAnyKeyLabel().createImmutableTextField();
-		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		pressAnyKeyLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+public class VolumeLevelSlider extends org.lgna.croquet.components.Slider {
+	public VolumeLevelSlider( org.lgna.croquet.BoundedNumberState<?> model ) {
+		super( model );
 
-		rv.addComponent( pressAnyKeyLabel, Constraint.PAGE_START );
-		rv.addComponent( composite.getValueState().createViewController(), Constraint.CENTER );
-		return rv;
+		org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite composite = org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite.getInstance();
+
+		java.text.NumberFormat format = java.text.NumberFormat.getNumberInstance();
+		format.setMinimumFractionDigits( 1 );
+		String silentText = composite.getSilentLabel().getText() + " (" + format.format( 0.0 ) + ")";
+		String normalText = composite.getNormalLabel().getText() + " (" + format.format( 1.0 ) + ")";
+		String louderText = composite.getLouderLabel().getText() + " (" + format.format( 2.0 ) + ")";
+		
+		this.setOrientation( org.lgna.croquet.components.Slider.Orientation.VERTICAL );
+
+		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
+		labels.put( 0, new javax.swing.JLabel( silentText ) );
+		labels.put( 100, new javax.swing.JLabel( normalText ) );
+		labels.put( 200, new javax.swing.JLabel( louderText ) );
+		this.setLabelTable( labels );
+		this.setPaintLabels( true );
+
+		this.setSnapToTicks( false );
+		this.setMinorTickSpacing( 10 );
+		this.setMajorTickSpacing( 100 );
+		this.setPaintTicks( true );
 	}
 }

@@ -45,16 +45,15 @@ package org.alice.stageide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorComposite  extends org.alice.ide.custom.CustomExpressionCreatorComposite<org.alice.stageide.custom.components.KeyCustomExpressionCreatorView> {
+public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.CustomExpressionCreatorComposite<org.alice.stageide.custom.components.KeyCustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static KeyCustomExpressionCreatorComposite instance = new KeyCustomExpressionCreatorComposite();
 	}
 	public static KeyCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringValue pressAnyKey = this.createStringValue( this.createKey( "pressAnyKey" ) ); 
-	
-	private org.lgna.story.Key key;
+	private final org.lgna.croquet.StringValue pressAnyKeyLabel = this.createStringValue( this.createKey( "pressAnyKeyLabel" ) );
+	private final ErrorStatus keyRequiredError = this.createErrorStatus( this.createKey( "keyRequiredError" ) ); 
 	private KeyCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "908ee2c1-97a9-4fb4-9716-7846cb206549" ) );
 	}
@@ -62,17 +61,18 @@ public class KeyCustomExpressionCreatorComposite  extends org.alice.ide.custom.C
 	protected org.alice.stageide.custom.components.KeyCustomExpressionCreatorView createView() {
 		return new org.alice.stageide.custom.components.KeyCustomExpressionCreatorView( this );
 	}
+	public org.lgna.croquet.StringValue getPressAnyKeyLabel() {
+		return this.pressAnyKeyLabel;
+	}
 	public KeyState getValueState() {
 		return KeyState.getInstance();
 	}
-	public org.lgna.croquet.StringValue getPressAnyKeyLabel() {
-		return this.pressAnyKey;
-	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		if( this.key != null ) {
+		org.lgna.story.Key key = this.getValueState().getValue();
+		if( key != null ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class );
-			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, this.key.name() );
+			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, key.name() );
 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
 			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
 		} else {
@@ -81,20 +81,31 @@ public class KeyCustomExpressionCreatorComposite  extends org.alice.ide.custom.C
 	}
 	@Override
 	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+		if( this.getValueState().getValue() != null ) {
+			return IS_GOOD_TO_GO_STATUS;
+		} else {
+			return this.keyRequiredError;
+		}
+	}
+	
+	@Override
+	protected boolean isDefaultButtonDesired() {
+		return false;
 	}
 
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		org.lgna.story.Key key = null;
 		if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
 			org.lgna.project.ast.AbstractType<?,?,?> type = fieldAccess.getType();
 			if( type == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class ) ) {
 				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field != null ) {
-					this.key = Enum.valueOf( org.lgna.story.Key.class, field.getName() );
+					key = Enum.valueOf( org.lgna.story.Key.class, field.getName() );
 				}
 			}
 		}
+		this.getValueState().setValueTransactionlessly( key );
 	}
 }

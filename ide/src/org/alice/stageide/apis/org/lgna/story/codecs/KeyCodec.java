@@ -40,26 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.custom.components;
+
+package org.alice.stageide.apis.org.lgna.story.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
-		super( composite );
+public enum KeyCodec implements org.lgna.croquet.ItemCodec< org.lgna.story.Key > {
+	SINGLETON;
+	public Class< org.lgna.story.Key > getValueClass() {
+		return org.lgna.story.Key.class;
 	}
-	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		
-		org.lgna.croquet.components.ImmutableTextField pressAnyKeyLabel = composite.getPressAnyKeyLabel().createImmutableTextField();
-		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		pressAnyKeyLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-
-		rv.addComponent( pressAnyKeyLabel, Constraint.PAGE_START );
-		rv.addComponent( composite.getValueState().createViewController(), Constraint.CENTER );
+	public org.lgna.story.Key decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		boolean isNotNull = binaryDecoder.decodeBoolean();
+		if( isNotNull ) {
+			int keyCode = binaryDecoder.decodeInt();
+			return org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( keyCode );
+		}else {
+			return null;
+		}
+	}
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.Key value ) {
+		if( value != null ) {
+			binaryEncoder.encode( true );
+			binaryEncoder.encode( org.lgna.story.ImplementationAccessor.getKeyCodeFromKey( value ) );
+		} else {
+			binaryEncoder.encode( false );
+		}
+	}
+	public StringBuilder appendRepresentation(StringBuilder rv, org.lgna.story.Key value) {
+		rv.append( value );
 		return rv;
 	}
 }

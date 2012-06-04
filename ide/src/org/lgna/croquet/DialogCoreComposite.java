@@ -356,12 +356,17 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	}
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
+	protected boolean isDefaultButtonDesired() {
+		return true;
+	}
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePreActivation();
-		org.lgna.croquet.components.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
-		if( commitButton != null ) {
-			org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
-			dialog.setDefaultButton( commitButton );
+		if( this.isDefaultButtonDesired() ) {
+			org.lgna.croquet.components.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
+			if( commitButton != null ) {
+				org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+				dialog.setDefaultButton( commitButton );
+			}
 		}
 	}
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {

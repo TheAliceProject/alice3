@@ -49,7 +49,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractRowsPaneChooser< 
 	//	private javax.swing.JLabel keyReceiver = zoot.ZLabel.acquire( "<press any key>", zoot.font.ZTextWeight.LIGHT );
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
-			KeyChooser.this.updateKey( org.lgna.story.Key.get( e ) );
+			KeyChooser.this.updateKey( org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) );
 		}
 		public void keyReleased( java.awt.event.KeyEvent e ) {
 		}
