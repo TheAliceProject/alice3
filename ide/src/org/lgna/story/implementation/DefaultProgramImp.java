@@ -41,43 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.program;
+package org.lgna.story.implementation;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VideoEncodingProgramContext extends ProgramContext {
-	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
-		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
-		public FrameBasedProgramImp( org.lgna.story.Program abstraction ) {
-			super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
-		}
-		@Override
-		public edu.cmu.cs.dennisc.animation.FrameBasedAnimator getAnimator() {
-			return this.animator;
-		}
-		public void setAnimator( edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator ) {
-			this.animator = animator;
-		}
-	}
-	public VideoEncodingProgramContext( org.lgna.project.ast.NamedUserType programType, double frameRate ) {
-		super( programType );
-		this.getProgramImp().getAnimator().setFramesPerSecond( frameRate );
-	}
-	public VideoEncodingProgramContext( double frameRate ) {
-		this( getUpToDateProgramTypeFromActiveIde(), frameRate );
+public class DefaultProgramImp extends ProgramImp {
+	private final edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	public DefaultProgramImp( org.lgna.story.Program abstraction ) {
+		super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
 	}
 	@Override
-	public FrameBasedProgramImp getProgramImp() {
-		return (FrameBasedProgramImp)super.getProgramImp();
-	}
-	@Override
-	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance( org.lgna.project.ast.NamedUserType programType ) {
-		org.lgna.story.implementation.ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( FrameBasedProgramImp.class );
-		return super.createProgramInstance( programType );
-	}
-
-	public void initialize( java.awt.Container container ) {
-		container.add( this.getProgramImp().getOnscreenLookingGlass().getAWTComponent() );
+	public edu.cmu.cs.dennisc.animation.ClockBasedAnimator getAnimator() {
+		return this.animator;
 	}
 }

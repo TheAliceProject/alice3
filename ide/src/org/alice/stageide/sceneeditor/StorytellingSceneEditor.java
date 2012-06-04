@@ -264,7 +264,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	public static class SceneEditorProgramImp extends ProgramImp {
 		public SceneEditorProgramImp( org.lgna.story.Program abstraction ) {
-			super( abstraction, StorytellingSceneEditor.getInstance().onscreenLookingGlass, StorytellingSceneEditor.getInstance().animator );
+			super( abstraction, StorytellingSceneEditor.getInstance().onscreenLookingGlass );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+			return StorytellingSceneEditor.getInstance().animator;
 		}
 	}
 	
