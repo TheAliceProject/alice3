@@ -40,60 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.custom;
+
+package org.alice.stageide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class KeyState extends org.lgna.croquet.SimpleItemState< org.lgna.story.Key > {
-	private static class SingletonHolder {
-		private static KeyState instance = new KeyState();
-	}
-	public static KeyState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private org.lgna.story.Key value;
-	private KeyState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), null, org.alice.stageide.apis.org.lgna.story.codecs.KeyCodec.SINGLETON );
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	protected org.lgna.story.Key getActualValue() {
-		return this.value;
-	}
-	private void updateViewControllers() {
-		String text;
-		if( this.value != null ) {
-			text = this.value.toString();
-		} else {
-			text = null;
-		}
-		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
-			if( component instanceof org.alice.stageide.custom.components.KeyViewController ) {
-				org.alice.stageide.custom.components.KeyViewController keyViewController = (org.alice.stageide.custom.components.KeyViewController)component;
-				keyViewController.getAwtComponent().setText( text );
-			}
-		}
-	}
-	@Override
-	protected void updateSwingModel( org.lgna.story.Key nextValue ) {
-		this.value = nextValue;
-		this.updateViewControllers();
-	}
-	@Override
-	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
-		return java.util.Collections.emptyList();
-	}
-	public void handleKeyPressed( org.alice.stageide.custom.components.KeyViewController viewController, java.awt.event.KeyEvent e ) {
-		org.lgna.story.Key nextValue = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
-		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.KeyEventTrigger( viewController, e );
-		this.value = nextValue;
-		this.changeValueFromSwing( this.value, false, trigger );
-		this.updateViewControllers();
-	}
-	public org.alice.stageide.custom.components.KeyViewController createViewController() {
-		return new org.alice.stageide.custom.components.KeyViewController( this );
+public class VolumeLevelSlider extends org.lgna.croquet.components.Slider {
+	public VolumeLevelSlider( org.lgna.croquet.BoundedNumberState<?> model ) {
+		super( model );
+
+		org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite composite = org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite.getInstance();
+
+		java.text.NumberFormat format = java.text.NumberFormat.getNumberInstance();
+		format.setMinimumFractionDigits( 1 );
+		String silentText = composite.getSilentLabel().getText() + " (" + format.format( 0.0 ) + ")";
+		String normalText = composite.getNormalLabel().getText() + " (" + format.format( 1.0 ) + ")";
+		String louderText = composite.getLouderLabel().getText() + " (" + format.format( 2.0 ) + ")";
+		
+		this.setOrientation( org.lgna.croquet.components.Slider.Orientation.VERTICAL );
+
+		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
+		labels.put( 0, new javax.swing.JLabel( silentText ) );
+		labels.put( 100, new javax.swing.JLabel( normalText ) );
+		labels.put( 200, new javax.swing.JLabel( louderText ) );
+		this.setLabelTable( labels );
+		this.setPaintLabels( true );
+
+		this.setSnapToTicks( false );
+		this.setMinorTickSpacing( 10 );
+		this.setMajorTickSpacing( 100 );
+		this.setPaintTicks( true );
 	}
 }

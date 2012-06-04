@@ -1,5 +1,14 @@
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -41,48 +50,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.program;
-
-import java.awt.Component;
-
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class VideoEncodingProgramContext extends ProgramContext {
-	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
-		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
-		public FrameBasedProgramImp( org.lgna.story.Program abstraction ) {
-			super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
+public class GalleryWebpageGenerator {
+
+	
+	public static String getResourcePath(Class<?> cls, String resourceString) {
+		return cls.getPackage().getName().replace(".", "/")+"/"+resourceString;
+	}
+	
+	public static void buildGalleryWebpage(java.io.File[] sourceJars, java.io.File[] resourceJars) {
+		
+		try {
+			URL[] urlArray = new URL[sourceJars.length + resourceJars.length];
+			for (int i=0; i<sourceJars.length; i++) {
+				urlArray[i] = sourceJars[i].toURI().toURL();
+			}
+			URLClassLoader sourceLoader = new URLClassLoader(urlArray);
+			org.lgna.story.resourceutilities.StorytellingResources.getInstance().initializeGalleryTreeWithJars(resourceJars);
 		}
-		@Override
-		public edu.cmu.cs.dennisc.animation.FrameBasedAnimator getAnimator() {
-			return this.animator;
-		}
-		public void setAnimator( edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator ) {
-			this.animator = animator;
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	public VideoEncodingProgramContext( org.lgna.project.ast.NamedUserType programType, double frameRate ) {
-		super( programType );
-		this.getProgramImp().getAnimator().setFramesPerSecond( frameRate );
-	}
-	public VideoEncodingProgramContext( double frameRate ) {
-		this( getUpToDateProgramTypeFromActiveIde(), frameRate );
-	}
-	@Override
-	public FrameBasedProgramImp getProgramImp() {
-		return (FrameBasedProgramImp)super.getProgramImp();
-	}
-	@Override
-	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance( org.lgna.project.ast.NamedUserType programType ) {
-		org.lgna.story.implementation.ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( FrameBasedProgramImp.class );
-		return super.createProgramInstance( programType );
+	
+	public static void main( String[] args ) throws Exception {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
+		
 	}
 
-	//todo: add String[] args?
-	public void initializeInContainer( java.awt.Container container ) {
-		Component awtComponent = this.getProgramImp().getOnscreenLookingGlass().getAWTComponent();
-		awtComponent.setSize( 640, 360 );
-		container.add( awtComponent );
-	}
 }

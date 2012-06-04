@@ -40,60 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.custom;
+
+package org.alice.stageide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class KeyState extends org.lgna.croquet.SimpleItemState< org.lgna.story.Key > {
-	private static class SingletonHolder {
-		private static KeyState instance = new KeyState();
+public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
+	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
+		super( composite );
 	}
-	public static KeyState getInstance() {
-		return SingletonHolder.instance;
-	}
-	private org.lgna.story.Key value;
-	private KeyState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), null, org.alice.stageide.apis.org.lgna.story.codecs.KeyCodec.SINGLETON );
-	}
+	
 	@Override
-	protected void localize() {
+	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
+		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
+		return new org.lgna.croquet.StringValue[] {
+				composite.getResourceLabel(),
+				composite.getVolumeLabel(),
+				composite.getStartMarkerLabel(),
+				composite.getStopMarkerLabel()
+		};
 	}
+	
 	@Override
-	protected org.lgna.story.Key getActualValue() {
-		return this.value;
-	}
-	private void updateViewControllers() {
-		String text;
-		if( this.value != null ) {
-			text = this.value.toString();
-		} else {
-			text = null;
-		}
-		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
-			if( component instanceof org.alice.stageide.custom.components.KeyViewController ) {
-				org.alice.stageide.custom.components.KeyViewController keyViewController = (org.alice.stageide.custom.components.KeyViewController)component;
-				keyViewController.getAwtComponent().setText( text );
-			}
-		}
-	}
-	@Override
-	protected void updateSwingModel( org.lgna.story.Key nextValue ) {
-		this.value = nextValue;
-		this.updateViewControllers();
-	}
-	@Override
-	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
-		return java.util.Collections.emptyList();
-	}
-	public void handleKeyPressed( org.alice.stageide.custom.components.KeyViewController viewController, java.awt.event.KeyEvent e ) {
-		org.lgna.story.Key nextValue = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
-		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.KeyEventTrigger( viewController, e );
-		this.value = nextValue;
-		this.changeValueFromSwing( this.value, false, trigger );
-		this.updateViewControllers();
-	}
-	public org.alice.stageide.custom.components.KeyViewController createViewController() {
-		return new org.alice.stageide.custom.components.KeyViewController( this );
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
+		return new org.lgna.croquet.components.Component<?>[] {
+				new org.alice.ide.croquet.components.ExpressionDropDown( composite.getAudioResourceExpressionState(), org.alice.ide.x.DialogAstI18nFactory.getInstance() ),
+				new VolumeLevelSlider( composite.getVolumeState() ),
+				composite.getStartMarkerState().createSlider(),
+				composite.getStopMarkerState().createSlider()
+		};
 	}
 }

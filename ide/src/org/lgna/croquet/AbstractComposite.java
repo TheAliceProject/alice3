@@ -121,7 +121,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		protected void localize() {
 		}
 	}
-	protected static class BoundedIntegerDetails extends BoundedIntegerState.Details {
+	public static class BoundedIntegerDetails extends BoundedIntegerState.Details {
 		public BoundedIntegerDetails() {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "3cb7dfc5-de8c-442c-9e9a-deab2eff38e8" ) );
 		}
@@ -136,7 +136,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		protected void localize() {
 		}
 	}
-	protected static class BoundedDoubleDetails extends BoundedDoubleState.Details {
+	public static class BoundedDoubleDetails extends BoundedDoubleState.Details {
 		public BoundedDoubleDetails() {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "603d4a60-cc60-41df-b5a5-992966128b41" ) );
 		}

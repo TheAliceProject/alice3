@@ -184,7 +184,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				Scene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, Scene.class );
 				SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
 				EventManager manager = sceneImp.getEventManager();
-				programContext.getProgramImp().ACCEPTABLE_HACK_FOR_VIDEO_RECORDER_setFrameBasedAnimator( new FrameBasedAnimatorWithEventScript( script, manager ) );
+				programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( script, manager ) );
 				programContext.setActiveScene();
 			}
 		}.start();
