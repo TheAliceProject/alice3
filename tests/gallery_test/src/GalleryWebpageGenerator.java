@@ -1,5 +1,14 @@
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +49,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.custom.components;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
-	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		
-		org.lgna.croquet.components.ImmutableTextField pressAnyKeyLabel = composite.getPressAnyKeyLabel().createImmutableTextField();
-		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		pressAnyKeyLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+public class GalleryWebpageGenerator {
 
-		rv.addComponent( pressAnyKeyLabel, Constraint.PAGE_START );
-		rv.addComponent( composite.getValueState().createViewController(), Constraint.CENTER );
-		return rv;
+	
+	public static String getResourcePath(Class<?> cls, String resourceString) {
+		return cls.getPackage().getName().replace(".", "/")+"/"+resourceString;
 	}
+	
+	public static void buildGalleryWebpage(java.io.File[] sourceJars, java.io.File[] resourceJars) {
+		
+		try {
+			URL[] urlArray = new URL[sourceJars.length + resourceJars.length];
+			for (int i=0; i<sourceJars.length; i++) {
+				urlArray[i] = sourceJars[i].toURI().toURL();
+			}
+			URLClassLoader sourceLoader = new URLClassLoader(urlArray);
+			org.lgna.story.resourceutilities.StorytellingResources.getInstance().initializeGalleryTreeWithJars(resourceJars);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main( String[] args ) throws Exception {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
+		
+	}
+
 }

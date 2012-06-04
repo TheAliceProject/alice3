@@ -46,12 +46,38 @@ package org.alice.stageide.custom.components;
  * @author Dennis Cosgrove
  */
 public class KeyViewController extends org.lgna.croquet.components.ViewController< javax.swing.JLabel, org.alice.stageide.custom.KeyState > {
+	private final java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
+		public void keyPressed( java.awt.event.KeyEvent e ) {
+			KeyViewController.this.getModel().handleKeyPressed( KeyViewController.this, e );
+		}
+		public void keyReleased( java.awt.event.KeyEvent e ) {
+		}
+		public void keyTyped( java.awt.event.KeyEvent e ) {
+		}
+	};
 	public KeyViewController( org.alice.stageide.custom.KeyState state ) {
 		super( state );
 	}
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
-		return new javax.swing.JLabel();
+		javax.swing.JLabel rv = new javax.swing.JLabel() {
+			@Override
+			public void addNotify() {
+				super.addNotify();
+				this.getRootPane().setDefaultButton( null );
+				this.requestFocusInWindow();
+				this.addKeyListener( keyListener );
+			}
+			@Override
+			public void removeNotify() {
+				this.removeKeyListener( keyListener );
+				super.removeNotify();
+			}
+		};
+		rv.setFocusable( true );
+		rv.setFocusTraversalKeysEnabled( false );
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
+		return rv;
 	}
 
 }

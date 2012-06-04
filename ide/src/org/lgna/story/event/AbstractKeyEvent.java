@@ -51,7 +51,7 @@ public abstract class AbstractKeyEvent extends AbstractEvent {
 		this.e = e;
 	}
 	public org.lgna.story.Key getKey() {
-		return org.lgna.story.Key.get( e );
+		return org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
 	}
 	public Boolean isKey( org.lgna.story.Key key ) {
 		return this.getKey() == key;

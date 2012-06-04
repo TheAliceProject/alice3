@@ -40,26 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.custom.components;
+
+package org.alice.stageide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
-		super( composite );
+public class AudioResourceExpressionState extends org.alice.ide.croquet.models.StandardExpressionState {
+	private static class SingletonHolder {
+		private static AudioResourceExpressionState instance = new AudioResourceExpressionState();
+	}
+	public static AudioResourceExpressionState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private AudioResourceExpressionState() {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "cb9c681f-3486-4be2-bdf3-f3ba8d663e3b" ), null );
 	}
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		
-		org.lgna.croquet.components.ImmutableTextField pressAnyKeyLabel = composite.getPressAnyKeyLabel().createImmutableTextField();
-		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		pressAnyKeyLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-
-		rv.addComponent( pressAnyKeyLabel, Constraint.PAGE_START );
-		rv.addComponent( composite.getValueState().createViewController(), Constraint.CENTER );
-		return rv;
+	protected org.lgna.project.annotations.ValueDetails<?> getValueDetails() {
+		return null;
+	}
+	@Override
+	protected org.lgna.project.ast.AbstractType<?,?,?> getType() {
+		return org.lgna.project.ast.JavaType.getInstance( org.lgna.common.resources.AudioResource.class );
 	}
 }

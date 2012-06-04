@@ -351,6 +351,10 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		this.programInstance = programInstance;
 	}
 	
+	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance() {
+		return getVM().ENTRY_POINT_createInstance(this.programType);
+	}
+	
 	protected void setProgramType( org.lgna.project.ast.NamedUserType programType ) {
 		if (this.programType != programType) {
 			if (this.programType != null) {
@@ -361,7 +365,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 			mapSceneFieldToInstance.clear();
 			mapSceneInstanceToField.clear();
 			if( this.programType != null ) {
-				setProgramInstance(getVM().ENTRY_POINT_createInstance(this.programType));
+				setProgramInstance(this.createProgramInstance());
 				for (org.lgna.project.ast.AbstractField programField : this.programType.getDeclaredFields())
 				{
 					if( programField.getValueType().isAssignableTo(org.lgna.story.Scene.class)) 

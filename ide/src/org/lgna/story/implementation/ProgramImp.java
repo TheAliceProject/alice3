@@ -46,18 +46,38 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class ProgramImp {
+public abstract class ProgramImp {
 	private final org.lgna.story.Program abstraction;
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
-
-	public static final Double CLOCK_BASED_FRAME_RATE = null;
-	private Double frameRate = CLOCK_BASED_FRAME_RATE;
-	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator;
-	private edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator;
+	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+	
+	private static Object ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock = new Object();
+	private static Class<? extends ProgramImp> ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
+	public static void ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( Class<? extends ProgramImp> classForNextInstance ) {
+		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
+			assert ACCEPTABLE_HACK_FOR_NOW_classForNextInstance == null: ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
+			ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = classForNextInstance;
+		}
+	}
+	
+	public static ProgramImp createInstance( org.lgna.story.Program abstraction ) {
+		ProgramImp rv;
+		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
+			if( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance != null ) {
+				java.lang.reflect.Constructor< ? extends ProgramImp > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance, org.lgna.story.Program.class );
+				assert cnstrctr != null : ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
+				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, abstraction );
+				ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = null;
+			} else {
+				rv = new DefaultProgramImp( abstraction );
+			}
+		}
+		return rv;
+	}
 	
 	private double simulationSpeedFactor = 1.0; 
-	public ProgramImp( org.lgna.story.Program abstraction ) {
+	protected ProgramImp( org.lgna.story.Program abstraction, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		this.abstraction = abstraction;
+		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
 	private final class ControlPanel extends javax.swing.JPanel {
@@ -185,64 +205,10 @@ public class ProgramImp {
 		return this.abstraction;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		if( this.onscreenLookingGlass != null ) {
-			//pass
-		} else {
-			this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass();
-			//this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenLookingGlass();
-		}
 		return this.onscreenLookingGlass;
 	}
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
-	}
 	
-	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator getClockBasedAnimator() {
-		if( this.clockBasedAnimator != null ) {
-			//pass
-		} else {
-			this.clockBasedAnimator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-		}
-		return this.clockBasedAnimator;
-	}
-	private edu.cmu.cs.dennisc.animation.FrameBasedAnimator getFrameBasedAnimator() {
-		if( this.frameBasedAnimator != null ) {
-			//pass
-		} else {
-			this.frameBasedAnimator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
-		}
-		return this.frameBasedAnimator;
-	}
-	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
-		if( this.frameRate == CLOCK_BASED_FRAME_RATE ) {
-			return this.getClockBasedAnimator();
-		} else {
-			return this.getFrameBasedAnimator();
-		}
-	}
-	
-	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator( edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator ) {
-		this.clockBasedAnimator = clockBasedAnimator;
-		this.frameRate = CLOCK_BASED_FRAME_RATE;
-	}
-	public void ACCEPTABLE_HACK_FOR_VIDEO_RECORDER_setFrameBasedAnimator( edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator ) {
-		this.frameBasedAnimator = frameBasedAnimator;
-		this.frameRate = this.frameBasedAnimator.getFramesPerSecond();
-	}
-
-	public Double getFrameRate() {
-		return this.frameRate;
-	}
-	public void setFrameRate( Double frameRate ) {
-		this.frameRate = frameRate;
-		if( this.frameRate == CLOCK_BASED_FRAME_RATE ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator = this.getFrameBasedAnimator();
-			frameBasedAnimator.setFramesPerSecond( frameRate );
-		}
-	}
-	
+	public abstract edu.cmu.cs.dennisc.animation.Animator getAnimator();
 	public double getSimulationSpeedFactor() {
 		return this.simulationSpeedFactor;
 	}

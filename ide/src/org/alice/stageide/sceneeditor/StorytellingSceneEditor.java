@@ -89,7 +89,6 @@ import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
-import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Marker;
@@ -263,13 +262,20 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	protected SnapGrid snapGrid;
 	
 	
+	public static class SceneEditorProgramImp extends ProgramImp {
+		public SceneEditorProgramImp( org.lgna.story.Program abstraction ) {
+			super( abstraction, StorytellingSceneEditor.getInstance().onscreenLookingGlass );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+			return StorytellingSceneEditor.getInstance().animator;
+		}
+	}
+	
 	@Override
-	protected void setProgramInstance(UserInstance programInstance) 
-	{
-		super.setProgramInstance(programInstance);
-		ProgramImp programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
-		programImplementation.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator(this.animator);
-		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
+	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance() {
+		ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( SceneEditorProgramImp.class );
+		return super.createProgramInstance();
 	}
 	
 	private void setSelectedFieldOnManipulator(UserField field)
@@ -754,7 +760,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		super.setActiveScene(sceneField);
 		
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
-		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
 
 		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
 		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getJavaInstance();

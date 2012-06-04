@@ -40,26 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.custom.components;
+
+package org.alice.stageide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
-		super( composite );
+public class VolumeLevelUtilities {
+	private static final int MINIMUM = 0;
+	private static final int INITIAL_VALUE = 100;
+	private static final int MAXIMUM = 200;
+	public static org.lgna.croquet.BoundedIntegerState.Details createDetails() {
+		return new org.lgna.croquet.AbstractComposite.BoundedIntegerDetails().initialValue( INITIAL_VALUE ).minimum( MINIMUM ).maximum( MAXIMUM );
 	}
-	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		
-		org.lgna.croquet.components.ImmutableTextField pressAnyKeyLabel = composite.getPressAnyKeyLabel().createImmutableTextField();
-		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		pressAnyKeyLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-
-		rv.addComponent( pressAnyKeyLabel, Constraint.PAGE_START );
-		rv.addComponent( composite.getValueState().createViewController(), Constraint.CENTER );
-		return rv;
+	public static double toDouble( int value ) {
+		java.math.BigDecimal decimal = new java.math.BigDecimal( value );
+		decimal = decimal.movePointLeft( 2 );
+		return decimal.doubleValue();
+	}
+	public static int toInt( double value ) {
+		java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
+		decimal = decimal.movePointRight( 2 );
+		return decimal.intValue();
 	}
 }

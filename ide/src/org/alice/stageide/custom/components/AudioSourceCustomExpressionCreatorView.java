@@ -40,26 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
+public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
+	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
+	
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		
-		org.lgna.croquet.components.ImmutableTextField pressAnyKeyLabel = composite.getPressAnyKeyLabel().createImmutableTextField();
-		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		pressAnyKeyLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-
-		rv.addComponent( pressAnyKeyLabel, Constraint.PAGE_START );
-		rv.addComponent( composite.getValueState().createViewController(), Constraint.CENTER );
-		return rv;
+	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
+		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
+		return new org.lgna.croquet.StringValue[] {
+				composite.getResourceLabel(),
+				composite.getVolumeLabel(),
+				composite.getStartMarkerLabel(),
+				composite.getStopMarkerLabel()
+		};
+	}
+	
+	@Override
+	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
+		return new org.lgna.croquet.components.Component<?>[] {
+				new org.alice.ide.croquet.components.ExpressionDropDown( composite.getAudioResourceExpressionState(), org.alice.ide.x.DialogAstI18nFactory.getInstance() ),
+				new VolumeLevelSlider( composite.getVolumeState() ),
+				composite.getStartMarkerState().createSlider(),
+				composite.getStopMarkerState().createSlider()
+		};
 	}
 }

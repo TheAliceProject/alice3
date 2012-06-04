@@ -56,7 +56,7 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
 		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.custom.CustomKeyInputDialogOperation.getInstance().getFillIn() );
+		rv.add( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		return rv;
 	}
 }

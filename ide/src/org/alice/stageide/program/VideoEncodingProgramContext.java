@@ -49,16 +49,36 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class VideoEncodingProgramContext extends ProgramContext {
+	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
+		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
+		public FrameBasedProgramImp( org.lgna.story.Program abstraction ) {
+			super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.animation.FrameBasedAnimator getAnimator() {
+			return this.animator;
+		}
+		public void setAnimator( edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator ) {
+			this.animator = animator;
+		}
+	}
 	public VideoEncodingProgramContext( org.lgna.project.ast.NamedUserType programType, double frameRate ) {
 		super( programType );
-		this.getProgramImp().setFrameRate( frameRate );
+		this.getProgramImp().getAnimator().setFramesPerSecond( frameRate );
 	}
 	public VideoEncodingProgramContext( double frameRate ) {
 		this( getUpToDateProgramTypeFromActiveIde(), frameRate );
 	}
-	public Double getFrameRate() {
-		return this.getProgramImp().getFrameRate();
+	@Override
+	public FrameBasedProgramImp getProgramImp() {
+		return (FrameBasedProgramImp)super.getProgramImp();
 	}
+	@Override
+	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance( org.lgna.project.ast.NamedUserType programType ) {
+		org.lgna.story.implementation.ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( FrameBasedProgramImp.class );
+		return super.createProgramInstance( programType );
+	}
+
 	//todo: add String[] args?
 	public void initializeInContainer( java.awt.Container container ) {
 		Component awtComponent = this.getProgramImp().getOnscreenLookingGlass().getAWTComponent();

@@ -45,35 +45,55 @@ package org.alice.stageide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public final class KeyState extends org.lgna.croquet.SimpleItemState< Integer > {
+public final class KeyState extends org.lgna.croquet.SimpleItemState< org.lgna.story.Key > {
 	private static class SingletonHolder {
 		private static KeyState instance = new KeyState();
 	}
 	public static KeyState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private Integer value;
+	private org.lgna.story.Key value;
 	private KeyState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), java.awt.event.KeyEvent.VK_0, org.alice.ide.croquet.codecs.IntegerCodec.SINGLETON );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), null, org.alice.stageide.apis.org.lgna.story.codecs.KeyCodec.SINGLETON );
 	}
 	@Override
 	protected void localize() {
 	}
 	@Override
-	protected Integer getActualValue() {
+	protected org.lgna.story.Key getActualValue() {
 		return this.value;
 	}
+	private void updateViewControllers() {
+		String text;
+		if( this.value != null ) {
+			text = this.value.toString();
+		} else {
+			text = null;
+		}
+		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+			if( component instanceof org.alice.stageide.custom.components.KeyViewController ) {
+				org.alice.stageide.custom.components.KeyViewController keyViewController = (org.alice.stageide.custom.components.KeyViewController)component;
+				keyViewController.getAwtComponent().setText( text );
+			}
+		}
+	}
 	@Override
-	protected void updateSwingModel( Integer nextValue ) {
+	protected void updateSwingModel( org.lgna.story.Key nextValue ) {
 		this.value = nextValue;
+		this.updateViewControllers();
 	}
 	@Override
 	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
 		return java.util.Collections.emptyList();
 	}
-	
+	public void handleKeyPressed( org.alice.stageide.custom.components.KeyViewController viewController, java.awt.event.KeyEvent e ) {
+		org.lgna.story.Key nextValue = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
+		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.KeyEventTrigger( viewController, e );
+		this.value = nextValue;
+		this.changeValueFromSwing( this.value, false, trigger );
+		this.updateViewControllers();
+	}
 	public org.alice.stageide.custom.components.KeyViewController createViewController() {
 		return new org.alice.stageide.custom.components.KeyViewController( this );
 	}
-	
 }
