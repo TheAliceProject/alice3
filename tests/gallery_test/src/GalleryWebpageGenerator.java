@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.lgna.story.resourceutilities.ModelResourceTreeNode;
+
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
@@ -57,27 +59,26 @@ import java.util.zip.ZipFile;
 public class GalleryWebpageGenerator {
 
 	
-	public static String getResourcePath(Class<?> cls, String resourceString) {
-		return cls.getPackage().getName().replace(".", "/")+"/"+resourceString;
+	public static String getResourcePath(Class<?> cls) {
+		return cls.getPackage().getName().replace(".", "/")+"/";
 	}
 	
-	public static void buildGalleryWebpage(java.io.File[] sourceJars, java.io.File[] resourceJars) {
+	private static void printTree(ModelResourceTreeNode currentNode, String depth) {
+		System.out.println(depth + currentNode.getName());
+		for (ModelResourceTreeNode childNode : currentNode.childrenList()) {
+			printTree(childNode, depth+"  ");
+		}
+	}
+	
+	public static void buildGalleryWebpage() {
 		
-		try {
-			URL[] urlArray = new URL[sourceJars.length + resourceJars.length];
-			for (int i=0; i<sourceJars.length; i++) {
-				urlArray[i] = sourceJars[i].toURI().toURL();
-			}
-			URLClassLoader sourceLoader = new URLClassLoader(urlArray);
-			org.lgna.story.resourceutilities.StorytellingResources.getInstance().initializeGalleryTreeWithJars(resourceJars);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		ModelResourceTreeNode galleryTree = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryTree();
+		printTree(galleryTree, "");
 	}
 	
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
+		GalleryWebpageGenerator.buildGalleryWebpage();
 		
 	}
 

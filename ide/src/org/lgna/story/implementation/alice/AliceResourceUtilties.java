@@ -59,6 +59,7 @@ import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
@@ -572,6 +573,35 @@ public class AliceResourceUtilties {
 		return getModelName(modelResource, null);
 	}
 	
+	public static String getJavaCode(Class<?> modelResource) {
+		String name = getName(modelResource);
+		InputStream is = null;
+		try {
+			is = getAliceResourceAsStream(modelResource, name+".java");
+			if (is != null) {
+				String javaCode = TextFileUtilities.read(is);
+				return javaCode;
+			}
+			else {
+				Logger.severe("Failed to find java file for "+name);
+			}
+		}
+		catch (Exception e)
+		{
+			Logger.severe("Failed to find java file for "+name);
+		}
+		finally {
+			if (is != null) {
+				try {
+					is.close();
+				}
+				catch (IOException ioe) {
+					
+				}
+			}
+		}
+		return null;
+	}
 	
 	public static String getCreator(Class<?> modelResource, String resourceName)
 	{
