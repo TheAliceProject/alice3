@@ -46,18 +46,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import org.alice.interact.MovementDirection;
 import org.alice.interact.PickHint;
 import org.alice.interact.PickUtilities;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
-import org.lgna.story.Entity;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -187,13 +184,17 @@ public class HandleManager implements ManipulationListener{
 		else if (handle instanceof LinearScaleHandle) {
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)handle;
 			if (objectPickHint.intersects(PickHint.PickType.RESIZABLE.pickHint())) {
-				Entity entity = PickUtilities.getEntityFromPickedObject(selectedObject);
-				if (entity instanceof org.lgna.story.Disc) {
-					if (scaleHandle.getMovementDescription().direction == MovementDirection.UP || scaleHandle.getMovementDescription().direction == MovementDirection.DOWN) {
-						return false;
+				org.lgna.story.implementation.EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject(selectedObject);
+				if (entityImp instanceof org.lgna.story.implementation.ModelImp) {
+					org.lgna.story.implementation.ModelImp modelImp = (org.lgna.story.implementation.ModelImp)entityImp;
+					org.lgna.story.implementation.ModelImp.Resizer[] resizers = modelImp.getResizers();
+					for (org.lgna.story.implementation.ModelImp.Resizer r : resizers) {
+						if (r == scaleHandle.getResizer()) {
+							return true;
+						}
 					}
 				}
-				else return true;
+				return false;
 			}
 			else {
 				return false;

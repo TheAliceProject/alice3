@@ -109,7 +109,7 @@ public abstract class BooleanState extends State< Boolean > {
 	
 	
 	public class SwingModel {
-		private final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
+		private final javax.swing.ButtonModel buttonModel;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			@Override
 			public Object getValue(String key) {
@@ -131,7 +131,8 @@ public abstract class BooleanState extends State< Boolean > {
 				}
 			}
 		};
-		private SwingModel() {
+		private SwingModel( javax.swing.ButtonModel buttonModel ) {
+			this.buttonModel = buttonModel;
 		}
 		public javax.swing.ButtonModel getButtonModel() {
 			return this.buttonModel;
@@ -140,7 +141,7 @@ public abstract class BooleanState extends State< Boolean > {
 			return this.action;
 		}
 	}
-	private final SwingModel swingModel = new SwingModel();
+	private final SwingModel swingModel;
 	
 	private String trueText;
 	private String falseText;
@@ -153,10 +154,14 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 	};
 
-	public BooleanState( Group group, java.util.UUID id, boolean initialValue ) {
+	public BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
 		super( group, id, initialValue );
+		this.swingModel = new SwingModel( buttonModel );
 		this.swingModel.buttonModel.setSelected( initialValue );
 		this.swingModel.buttonModel.addItemListener( this.itemListener );
+	}
+	public BooleanState( Group group, java.util.UUID id, boolean initialValue ) {
+		this( group, id, initialValue, new javax.swing.JToggleButton.ToggleButtonModel() );
 	}
 
 	@Override
@@ -343,6 +348,11 @@ public abstract class BooleanState extends State< Boolean > {
 	public org.lgna.croquet.components.CheckBox createCheckBox() {
 		return new org.lgna.croquet.components.CheckBox( this );
 	}
+	public org.lgna.croquet.components.ToggleButton createToggleButton() {
+		return new org.lgna.croquet.components.ToggleButton( this );
+	}
+	
+	@Deprecated
 	public org.lgna.croquet.components.PushButton createPushButton() {
 		return new org.lgna.croquet.components.PushButton( this );
 	}

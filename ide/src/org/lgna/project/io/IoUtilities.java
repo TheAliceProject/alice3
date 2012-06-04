@@ -61,17 +61,17 @@ public abstract class IoUtilities {
 	}
 	
 	
-	private static String PROPERTIES_ENTRY_NAME = "properties.bin";
-	private static String PROGRAM_TYPE_ENTRY_NAME = "programType.xml";
-	private static String VERSION_ENTRY_NAME = "version.txt";
-	private static String TYPE_ENTRY_NAME = "type.xml";
-	private static String RESOURCES_ENTRY_NAME = "resources.xml";
+	private static final String PROPERTIES_ENTRY_NAME = "properties.bin";
+	private static final String PROGRAM_TYPE_ENTRY_NAME = "programType.xml";
+	private static final String VERSION_ENTRY_NAME = "version.txt";
+	private static final String TYPE_ENTRY_NAME = "type.xml";
+	private static final String RESOURCES_ENTRY_NAME = "resources.xml";
 
-	private static String XML_RESOURCE_TAG_NAME = "resource";
+	private static final String XML_RESOURCE_TAG_NAME = "resource";
 
-	private static String XML_RESOURCE_CLASSNAME_ATTRIBUTE = "className";
-	private static String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
-	private static String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
+	private static final String XML_RESOURCE_CLASSNAME_ATTRIBUTE = "className";
+	private static final String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
+	private static final String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
 
 	private static interface ZipEntryContainer {
@@ -149,15 +149,23 @@ public abstract class IoUtilities {
 		}
 		return rv;
 	}
-	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException {
+	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName, org.lgna.project.Version version ) throws java.io.IOException {
 		assert zipEntryContainer != null;
 		java.io.InputStream is = zipEntryContainer.getInputStream( entryName );
+		if( org.lgna.project.Version.getCurrentVersion().compareTo( version ) == 0 ) {
+			//pass
+		} else {
+			String text = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
+			text = org.lgna.project.migration.MigrationManager.migrate( text, version );
+			is = new java.io.ByteArrayInputStream( text.getBytes() );
+		}
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 	}
 
 	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		String projectVersion = readVersion( zipEntryContainer );
-		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName );
+		org.lgna.project.Version version = new org.lgna.project.Version( projectVersion );
+		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, version );
 		return (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, projectVersion );
 	}
 	private static java.util.Set< org.lgna.common.Resource > readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {

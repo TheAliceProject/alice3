@@ -91,6 +91,21 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return new org.lgna.project.ast.NullLiteral();
 		}
 	}
+	
+	private org.lgna.project.ast.Expression createSizeExpression( org.lgna.story.Size size ) {
+		if( size != null ) {
+			Class< ? > cls = org.lgna.story.Size.class;
+			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation( 
+					constructor, 
+					this.createDoubleExpression( size.getLeftToRight(), MILLI_FORMAT ), 
+					this.createDoubleExpression( size.getBottomToTop(), MILLI_FORMAT ), 
+					this.createDoubleExpression( size.getFrontToBack(), MILLI_FORMAT ) 
+			);
+		} else {
+			return new org.lgna.project.ast.NullLiteral();
+		}
+	}
 
 	private org.lgna.project.ast.Expression createFontExpression( org.lgna.story.Font font ) throws CannotCreateExpressionException {
 		Class< ? > cls = org.lgna.story.Font.class;
@@ -177,6 +192,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createOrientationExpression( (org.lgna.story.Orientation)value );
 		} else if( value instanceof org.lgna.story.Scale ) {
 			return this.createScaleExpression( (org.lgna.story.Scale)value );
+		} else if( value instanceof org.lgna.story.Size ) {
+			return this.createSizeExpression( (org.lgna.story.Size)value );
 		} else if( value instanceof org.lgna.story.Paint ) {
 			return this.createPaintExpression( (org.lgna.story.Paint)value );
 		} else if( value instanceof org.lgna.story.Font ) {

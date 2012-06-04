@@ -1,4 +1,4 @@
-﻿package org.lgna.story.event;
+package org.lgna.story.event;
 
 public interface CollisionStartListener {
 

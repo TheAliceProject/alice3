@@ -57,14 +57,6 @@ public class MembersComposite extends org.lgna.croquet.SimpleComposite< org.alic
 		super( java.util.UUID.fromString( "10225a3f-f05d-42f3-baaf-f6bd0f8a7c68" ) );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return true;
-	}
-	@Override
 	protected org.alice.ide.members.components.MembersView createView() {
 		return new org.alice.ide.members.components.MembersView( this );
 	}

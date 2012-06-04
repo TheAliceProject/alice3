@@ -138,10 +138,10 @@ public abstract class VirtualMachine {
 		this.mapAnonymousClsToAdapterCls.put( anonymousCls, adapterCls );
 	}
 
-	private UserInstance createInstanceFromUserConstructor( org.lgna.project.ast.NamedUserConstructor constructor, Object[] arguments ) {
+	protected UserInstance createInstanceFromUserConstructor( org.lgna.project.ast.NamedUserConstructor constructor, Object[] arguments ) {
 		return UserInstance.createInstance( this, constructor, arguments );
 	}
-	private Object createInstanceFromConstructorDeclaredInJava( org.lgna.project.ast.JavaConstructor constructor, Object[] arguments ) {
+	protected Object createInstanceFromConstructorDeclaredInJava( org.lgna.project.ast.JavaConstructor constructor, Object[] arguments ) {
 		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( constructor.getConstructorReflectionProxy().getReification(), arguments );
 	}
@@ -344,7 +344,7 @@ public abstract class VirtualMachine {
 	protected Object getFieldDeclaredInJavaWithField( org.lgna.project.ast.JavaField field, Object instance ) {
 		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
-		assert fld != null : field;
+		assert fld != null : field.getFieldReflectionProxy();
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, instance );
 	}
 	protected void setFieldDeclaredInJavaWithField( org.lgna.project.ast.JavaField field, Object instance, Object value ) {
@@ -438,6 +438,19 @@ public abstract class VirtualMachine {
 		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
 		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+		
+		Class<?>[] parameterTypes = mthd.getParameterTypes();
+		int lastParameterIndex = parameterTypes.length-1;
+		if( lastParameterIndex == arguments.length ) {
+			if( mthd.isVarArgs() ) {
+				Object[] fixedArguments = new Object[ parameterTypes.length ];
+				System.arraycopy( arguments, 0, fixedArguments, 0, arguments.length );
+				assert parameterTypes[ lastParameterIndex ].isArray() : parameterTypes[ lastParameterIndex ];
+				fixedArguments[ lastParameterIndex ] = java.lang.reflect.Array.newInstance( parameterTypes[ lastParameterIndex ].getComponentType(), 0 );
+				arguments = fixedArguments;
+			}
+		}
+		
 		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( mthd ) ) {
 			Class< ? > adapterCls = mapAnonymousClsToAdapterCls.get( mthd.getDeclaringClass() );
 			assert adapterCls != null;
@@ -838,7 +851,7 @@ public abstract class VirtualMachine {
 					}
 				};
 			}
-			org.lgna.common.DoTogether.invokeAndWait( runnables );
+			org.lgna.common.ThreadUtilities.doTogether( runnables );
 		}
 	}
 	protected void executeExpressionStatement( org.lgna.project.ast.ExpressionStatement expressionStatement ) {
@@ -886,7 +899,7 @@ public abstract class VirtualMachine {
 			break;
 		default:
 			final Frame owner = this.getFrameForThread( Thread.currentThread() );
-			org.lgna.common.ForEachTogether.invokeAndWait( array, new org.lgna.common.ForEachRunnable< Object >() {
+			org.lgna.common.ThreadUtilities.eachInTogether( new org.lgna.common.EachInTogetherRunnable< Object >() {
 				public void run( Object value ) {
 					pushCurrentThread( owner );
 					try {
@@ -902,7 +915,7 @@ public abstract class VirtualMachine {
 						popCurrentThread();
 					}
 				}
-			} );
+			}, array );
 		}
 	}
 	protected void executeEachInArrayTogether( org.lgna.project.ast.EachInArrayTogether eachInArrayTogether ) throws ReturnException {

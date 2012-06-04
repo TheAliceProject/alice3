@@ -73,7 +73,7 @@ public abstract class FieldList extends MemberList< org.lgna.project.ast.UserFie
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
 		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
-		rv.addComponent( org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton() );
+		rv.addComponent( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( item ).getOperation().createButton() );
 		if( item.isDeletionAllowed.getValue() ) {
 			rv.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
 		} else {

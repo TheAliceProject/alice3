@@ -61,7 +61,7 @@ public class FloatModel extends NumberModel<org.lgna.project.ast.FloatLiteral> {
 	}
 	@Override
 	protected org.lgna.project.ast.FloatLiteral valueOf( String s ) {
-		float f = Float.parseFloat( s );
+		float f = (float)edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );
 		if( Float.isNaN( f ) ) {
 			return null;
 		} else {

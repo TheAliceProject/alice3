@@ -65,9 +65,15 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 	
 	public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
-			org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel)dragModel;
-			return ide.getFocusedCode() == this.getCode();
+		if( ide.getFocusedCode() == this.getCode() ) {
+			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
+				return true;
+			} else if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {
+				org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel expressionDragModel = (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)dragModel;
+				return expressionDragModel.isPotentialStatementCreator();
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -268,7 +274,7 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 		if( statementListPropertyPane != null ) {
 			final int index = statementListPropertyPane.calculateIndex( dragSource.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
 			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel ) {
-				if( org.alice.ide.croquet.models.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
+				if( org.alice.ide.preferences.recursion.IsRecursionAllowedState.getInstance().getValue() ) {
 					//pass
 				} else {
 					if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel ) {
@@ -343,6 +349,17 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 							}
 						}
 					}
+				}
+			} else if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {
+				if( this.currentUnder != null ) {
+					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+					BlockStatementIndexPair blockStatementIndexPair;
+					if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {
+						blockStatementIndexPair = new BlockStatementIndexPair( (org.lgna.project.ast.BlockStatement)propertyOwner, index );
+					} else {
+						blockStatementIndexPair = null;
+					}
+					rv = dragModel.getDropModel( step, blockStatementIndexPair );
 				}
 			}
 		}

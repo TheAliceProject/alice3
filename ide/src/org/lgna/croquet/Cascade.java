@@ -89,7 +89,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		}
 		@Override
 		public org.lgna.croquet.history.CompletionStep< Cascade<T> > createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			return transaction.createAndSetCompletionStep( this.cascade, trigger );
+			return transaction.createAndSetCompletionStep( this.cascade, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		}
 		@Override
 		protected org.lgna.croquet.edits.Edit createEdit(org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values) {

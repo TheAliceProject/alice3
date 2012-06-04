@@ -50,16 +50,20 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.alice.interact.operations.PredeterminedScaleActionOperation;
 
-import edu.cmu.cs.dennisc.math.Dimension3;
-
 public class ResizeDragManipulator extends AbstractManipulator
 {
 
 	protected Point initialPoint;
-	private Dimension3 initialScale = new Dimension3(1.0, 1.0, 1.0);
-	private Dimension3 accumulatedScaleVector = new Dimension3(1.0, 1.0, 1.0);
+	private double initialScale = 1d;
+	private double accumulatedScale = 1d;
 	private static final double RESIZE_SCALE = .005;
-	private static final double MIN_SCALE = .1;
+	public static final double MIN_SCALE = .1;
+	private final org.lgna.story.implementation.ModelImp.Resizer[] resizers;
+	private org.lgna.story.implementation.ModelImp.Resizer activeResizer;
+	
+	public ResizeDragManipulator(org.lgna.story.implementation.ModelImp.Resizer... resizers) {
+		this.resizers = resizers;
+	}
 	
 	@Override
 	public void doClickManipulator(InputState endInput, InputState previousInput) {
@@ -97,7 +101,24 @@ public class ResizeDragManipulator extends AbstractManipulator
 		{
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
-				initialScale = scalable.getScale();
+				this.activeResizer = null;
+				for (org.lgna.story.implementation.ModelImp.Resizer toUse : this.resizers) {
+					for (org.lgna.story.implementation.ModelImp.Resizer r : scalable.getResizers()) {
+						if (r == toUse) {
+							this.activeResizer = r;
+							break;
+						}
+					}
+					if (this.activeResizer != null) {
+						break;
+					}
+				}
+				if (this.activeResizer != null) {
+					initialScale = scalable.getValueForResizer(this.activeResizer);
+				}
+				else {
+					return false;
+				}
 			}
 			this.initManipulator( startInput );
 			return true;
@@ -112,17 +133,11 @@ public class ResizeDragManipulator extends AbstractManipulator
 	{
 		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 		if( scalable != null ) {
-			if (this.initialScale.x + scaleAmount < MIN_SCALE) {
-				scaleAmount = MIN_SCALE - this.initialScale.x;
+			if (this.initialScale + scaleAmount < MIN_SCALE) {
+				scaleAmount = MIN_SCALE - this.initialScale;
 			}
-			if (this.initialScale.y + scaleAmount < MIN_SCALE) {
-				scaleAmount = MIN_SCALE - this.initialScale.y;
-			}
-			if (this.initialScale.z + scaleAmount < MIN_SCALE) {
-				scaleAmount = MIN_SCALE - this.initialScale.z;
-			}
-			edu.cmu.cs.dennisc.math.Dimension3 scale = new edu.cmu.cs.dennisc.math.Dimension3( this.initialScale.x + scaleAmount, this.initialScale.y + scaleAmount, this.initialScale.z + scaleAmount );
-			scalable.setScale( scale );
+			this.accumulatedScale=  this.initialScale + scaleAmount;
+			scalable.setValueForResizer(this.activeResizer, this.accumulatedScale);
 		}
 	}
 
@@ -140,7 +155,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 
 	@Override
 	public void undoRedoBeginManipulation() {
-		accumulatedScaleVector = new Dimension3(this.initialScale);
+		accumulatedScale = this.initialScale;
 	}
 
 	@Override
@@ -153,7 +168,8 @@ public class ResizeDragManipulator extends AbstractManipulator
 			} else {
 				animator = null;
 			}
-			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, this.getManipulatedTransformable(), accumulatedScaleVector, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
+			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, scalable, this.activeResizer, this.initialScale, this.accumulatedScale, ManipulationHandle3D.NOT_3D_HANDLE_CRITERION, getUndoRedoDescription() );
 			undoOperation.fire();
 		}
 	}

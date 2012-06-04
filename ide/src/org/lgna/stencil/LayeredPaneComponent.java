@@ -65,6 +65,9 @@ public abstract class LayeredPaneComponent extends org.lgna.croquet.components.J
 		this.layeredPane = layeredPane;
 		this.menuPolicy = menuPolicy;
 	}
+	protected javax.swing.JLayeredPane getJLayeredPane() {
+		return this.layeredPane;
+	}
 	public MenuPolicy getMenuPolicy() {
 		return this.menuPolicy;
 	}

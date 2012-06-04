@@ -52,7 +52,10 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.SetValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 import org.alice.ide.properties.uicontroller.DoubleTextField;
-import org.alice.stageide.properties.IsScaleLinkedState;
+import org.alice.stageide.properties.IsAllScaleLinkedState;
+import org.alice.stageide.properties.IsXZScaleLinkedState;
+import org.alice.stageide.properties.IsYZScaleLinkedState;
+import org.alice.stageide.properties.IsXYScaleLinkedState;
 import org.alice.stageide.properties.LinkScaleButton;
 import org.alice.stageide.properties.ModelSizeAdapter;
 import org.lgna.croquet.components.BooleanStateButton;
@@ -66,6 +69,14 @@ import edu.cmu.cs.dennisc.math.Dimension3;
 
 public class ModelSizePropertyController extends AbstractAdapterController<Dimension3>
 {
+	
+	private org.lgna.croquet.State.ValueListener< Boolean > linkStateValueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			ModelSizePropertyController.this.updateUIFromLinkState(state, prevValue, nextValue);
+		}
+	};
 	
 	protected class SetSizeOperation extends SetValueOperation<Dimension3> {
 		public SetSizeOperation( AbstractPropertyAdapter <Dimension3, ?> propertyAdapter, Dimension3 value ) {
@@ -85,14 +96,29 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	
 	private Button resetButton;
 	
-	private BooleanStateButton<javax.swing.AbstractButton> linkButton;
+	private BooleanStateButton<javax.swing.AbstractButton> linkAllButton;
+	private BooleanStateButton<javax.swing.AbstractButton> linkXYButton;
+	private BooleanStateButton<javax.swing.AbstractButton> linkXZButton;
+	private BooleanStateButton<javax.swing.AbstractButton> linkYZButton;
 	
+	private boolean isUpdatingState = false;
 	private boolean doUpdateOnAdapter = true;
+	
+	private final int GLUE_X_POS = 8;
+	private final int RESET_X_POS = 7;
+	private final int SCALE_ALL_X_POS = 6;
+	private final int SCALE_XZ_X_POS = 5;
+	private final int SCALE_YZ_X_POS = 4;
+	private final int SCALE_XY_X_POS = 3;
 	
 	
 	public ModelSizePropertyController(ModelSizeAdapter propertyAdapter) 
 	{
 		super(propertyAdapter);
+		IsAllScaleLinkedState.getInstance().addValueListener(linkStateValueObserver);
+		IsXYScaleLinkedState.getInstance().addValueListener(linkStateValueObserver);
+		IsXZScaleLinkedState.getInstance().addValueListener(linkStateValueObserver);
+		IsYZScaleLinkedState.getInstance().addValueListener(linkStateValueObserver);
 	}
 	
 	
@@ -111,7 +137,6 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			public void actionPerformed(ActionEvent e) 
 			{
 				ModelSizePropertyController.this.updateAdapterFromUI(e);
-				
 			}
 		};
 		
@@ -128,7 +153,11 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		this.depthField = new DoubleTextField(3);
 		this.depthField.addActionListener(this.valueChangeListener);
 	
-		this.linkButton = new LinkScaleButton(IsScaleLinkedState.getInstance());
+		
+		this.linkXYButton = new LinkScaleButton(IsXYScaleLinkedState.getInstance(), IsXYScaleLinkedState.class.getResource("images/subScaleLinked.png"), IsXYScaleLinkedState.class.getResource("images/subScaleUnlinked.png"));
+		this.linkXZButton = new LinkScaleButton(IsXZScaleLinkedState.getInstance(), IsXZScaleLinkedState.class.getResource("images/subScaleLinked_long.png"), IsXZScaleLinkedState.class.getResource("images/subScaleUnlinked_long.png"));
+		this.linkYZButton = new LinkScaleButton(IsYZScaleLinkedState.getInstance(), IsYZScaleLinkedState.class.getResource("images/subScaleLinked.png"), IsYZScaleLinkedState.class.getResource("images/subScaleUnlinked.png"));
+		this.linkAllButton = new LinkScaleButton(IsAllScaleLinkedState.getInstance());
 		
 		this.addComponent( this.widthLabel, new GridBagConstraints( 
 			0, //gridX
@@ -208,21 +237,8 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			0, //ipadX
 			0 ) //ipadY
 		);
-		this.addComponent( this.linkButton, new GridBagConstraints( 
-			2, //gridX
-			0, //gridY
-			1, //gridWidth
-			3, //gridHeight
-			0.0, //weightX
-			0.0, //weightY
-			GridBagConstraints.WEST, //anchor 
-			GridBagConstraints.NONE, //fill
-			new Insets(2,2,2,2), //insets
-			0, //ipadX
-			0 ) //ipadY
-		);
 		this.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
-            4, //gridX
+			GLUE_X_POS, //gridX
             0, //gridY
             1, //gridWidth
             3, //gridHeight
@@ -242,6 +258,151 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	protected void updateUIFromNewAdapter() 
 	{
 		super.updateUIFromNewAdapter();
+		
+		this.removeComponent(this.linkAllButton);
+		this.removeComponent(this.linkXYButton);
+		this.removeComponent(this.linkXZButton);
+		this.removeComponent(this.linkYZButton);
+		
+		boolean hasLinkAll = false;
+		boolean hasLinkXY = false;
+		boolean hasLinkXZ = false;
+		boolean hasLinkYZ = false;
+		boolean hasX = false;
+		boolean hasY = false;
+		boolean hasZ = false;
+		boolean hasIndependentX = false;
+		boolean hasIndependentY = false;
+		boolean hasIndependentZ = false;
+		
+		if (this.propertyAdapter != null && this.propertyAdapter.getInstance() != null) {
+			ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
+			for (org.lgna.story.implementation.ModelImp.Resizer r : baseModel.getResizers()) {
+				if (r == org.lgna.story.implementation.ModelImp.Resizer.UNIFORM) {
+					hasLinkAll = true;
+					hasX = true;
+					hasY = true;
+					hasZ = true;
+				}
+				else if (r == org.lgna.story.implementation.ModelImp.Resizer.XY_PLANE) {
+					hasLinkXY = true;
+					hasX = true;
+					hasY = true;
+				}
+				else if (r == org.lgna.story.implementation.ModelImp.Resizer.XZ_PLANE) {
+					hasLinkXZ = true;
+					hasX = true;
+					hasZ = true;
+				}
+				else if (r == org.lgna.story.implementation.ModelImp.Resizer.YZ_PLANE) {
+					hasLinkYZ = true;
+					hasY = true;
+					hasZ = true;
+				}
+				else if (r == org.lgna.story.implementation.ModelImp.Resizer.X_AXIS) {
+					hasX = true;
+					hasIndependentX = true;
+				}
+				else if (r == org.lgna.story.implementation.ModelImp.Resizer.Y_AXIS) {
+					hasY = true;
+					hasIndependentY = true;
+				}
+				else if (r == org.lgna.story.implementation.ModelImp.Resizer.Z_AXIS) {
+					hasZ = true;
+					hasIndependentZ = true;
+				}
+			}
+		}
+		
+		if (hasLinkAll) {
+			this.addComponent( this.linkAllButton, new GridBagConstraints( 
+					SCALE_ALL_X_POS, //gridX
+					0, //gridY
+					1, //gridWidth
+					3, //gridHeight
+					0.0, //weightX
+					0.0, //weightY
+					GridBagConstraints.WEST, //anchor 
+					GridBagConstraints.NONE, //fill
+					new Insets(2,2,2,2), //insets
+					0, //ipadX
+					0 ) //ipadY
+				);
+		}
+		if (hasLinkXY) {
+			this.addComponent( this.linkXYButton, new GridBagConstraints( 
+					SCALE_XY_X_POS, //gridX
+					0, //gridY
+					1, //gridWidth
+					3, //gridHeight
+					0.0, //weightX
+					0.0, //weightY
+					GridBagConstraints.NORTHWEST, //anchor 
+					GridBagConstraints.NONE, //fill
+					new Insets(16,2,2,2), //insets //16
+					0, //ipadX
+					0 ) //ipadY
+				);
+		}
+		if (hasLinkXZ) {
+			this.addComponent( this.linkXZButton, new GridBagConstraints( 
+					SCALE_XZ_X_POS, //gridX
+					0, //gridY
+					1, //gridWidth
+					3, //gridHeight
+					0.0, //weightX
+					0.0, //weightY
+					GridBagConstraints.WEST, //anchor 
+					GridBagConstraints.NONE, //fill
+					new Insets(2,2,2,2), //insets
+					0, //ipadX
+					0 ) //ipadY
+				);
+		}
+		if (hasLinkYZ) {
+			this.addComponent( this.linkYZButton, new GridBagConstraints( 
+					SCALE_YZ_X_POS, //gridX
+					0, //gridY
+					1, //gridWidth
+					3, //gridHeight
+					0.0, //weightX
+					0.0, //weightY
+					GridBagConstraints.NORTHWEST, //anchor 
+					GridBagConstraints.NONE, //fill
+					new Insets(48,2,2,2), //insets
+					0, //ipadX
+					0 ) //ipadY
+				);
+		}
+		isUpdatingState = true;
+		
+		widthField.setEnabled(hasX);
+		widthField.setEditable(hasX);
+		heightField.setEnabled(hasY);
+		heightField.setEditable(hasY);
+		depthField.setEnabled(hasZ);
+		depthField.setEditable(hasZ);
+		
+		IsAllScaleLinkedState.getInstance().setValue(hasLinkAll);
+		boolean enableLinkAll = (hasIndependentX && hasLinkYZ) ||
+								(hasIndependentY && hasLinkXZ) ||
+								(hasIndependentZ && hasLinkXY) ||
+								(hasIndependentX && hasIndependentY && hasIndependentZ);
+		IsAllScaleLinkedState.getInstance().setEnabled(enableLinkAll);
+		
+		boolean enableXYLink = hasIndependentX && hasIndependentY;
+		IsXYScaleLinkedState.getInstance().setEnabled(enableXYLink);
+		IsXYScaleLinkedState.getInstance().setValue(hasLinkXY && (!hasLinkAll || !enableXYLink));
+		
+		boolean enableXZLink = hasIndependentX && hasIndependentZ;
+		IsXZScaleLinkedState.getInstance().setEnabled(enableXZLink);
+		IsXZScaleLinkedState.getInstance().setValue(hasLinkXZ && (!hasLinkAll || !enableXZLink));
+		
+		boolean enableYZLink = hasIndependentY && hasIndependentZ;
+		IsYZScaleLinkedState.getInstance().setEnabled(enableYZLink);
+		IsYZScaleLinkedState.getInstance().setValue(hasLinkYZ && (!hasLinkAll || !enableYZLink));
+		
+		isUpdatingState = false;
 		setResetButton();
 	}
 
@@ -259,9 +420,16 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			this.resetButton = setSize.createButton();
 			
 		}
-		if( this.resetButton != null ) {
+		boolean usesReset = false;
+		if (this.propertyAdapter != null && this.propertyAdapter.getInstance() != null) {
+			ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
+			if (baseModel instanceof org.lgna.story.implementation.JointedModelImp || baseModel instanceof org.lgna.story.implementation.BillboardImp) {
+				usesReset = true;
+			}
+		}
+		if( this.resetButton != null && usesReset) {
 			this.addComponent( this.resetButton, new GridBagConstraints( 
-					3, //gridX
+					RESET_X_POS, //gridX
 					0, //gridY
 					1, //gridWidth
 					3, //gridHeight
@@ -298,7 +466,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			this.doUpdateOnAdapter = false;
 			this.widthField.setValue(value.x);
 			this.heightField.setValue(value.y);
-			this.depthField.setValue(value.x);
+			this.depthField.setValue(value.z);
 			this.doUpdateOnAdapter = true;
 			return;
 		}
@@ -320,30 +488,87 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		double width = desiredWidth;
 		double height = desiredHeight;
 		double depth = desiredDepth;
-		if (source != null && IsScaleLinkedState.getInstance().getValue())
+		if (source != null)
 		{
 			Dimension3 size = this.getSize();
 			if (source == widthField)
 			{
 				double relativeXScale = width / size.x;
-				height = relativeXScale * size.y;
-				depth = relativeXScale * size.z;
+				if (IsAllScaleLinkedState.getInstance().getValue())
+				{
+					height = relativeXScale * size.y;
+					depth = relativeXScale * size.z;
+				}
+				else if (IsXYScaleLinkedState.getInstance().getValue()) {
+					height = relativeXScale * size.y;
+				}
+				else if (IsXZScaleLinkedState.getInstance().getValue()) {
+					depth = relativeXScale * size.z;
+				}
 			}
 			else if (source == heightField)
 			{
 				double relativeYScale = height / size.y;
-				width = relativeYScale * size.x;
-				depth = relativeYScale * size.z;
+				if (IsAllScaleLinkedState.getInstance().getValue())
+				{
+					width = relativeYScale * size.x;
+					depth = relativeYScale * size.z;
+				}
+				else if (IsXYScaleLinkedState.getInstance().getValue()) {
+					width = relativeYScale * size.x;
+				}
+				else if (IsYZScaleLinkedState.getInstance().getValue()) {
+					depth = relativeYScale * size.z;
+				}
 			}
 			else if (source == depthField)
 			{
 				double relativeZScale = depth / size.z;
-				width = relativeZScale * size.x;
-				height = relativeZScale * size.y;
+				if (IsAllScaleLinkedState.getInstance().getValue())
+				{
+					width = relativeZScale * size.x;
+					height = relativeZScale * size.y;
+				}
+				else if (IsXZScaleLinkedState.getInstance().getValue()) {
+					width = relativeZScale * size.x;
+				}
+				else if (IsYZScaleLinkedState.getInstance().getValue()) {
+					height = relativeZScale * size.y;
+				}
 			}
 		}
 		Dimension3 newSize = new Dimension3(width, height, depth);
 		return newSize;
+	}
+	
+	private void updateUIFromLinkState(org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue)
+	{
+		if (!isUpdatingState && nextValue != prevValue) {
+			isUpdatingState = true;
+			if (nextValue) {
+				if (state == IsAllScaleLinkedState.getInstance()) {
+					IsXYScaleLinkedState.getInstance().setValue(false || !IsXYScaleLinkedState.getInstance().isEnabled());
+					IsXZScaleLinkedState.getInstance().setValue(false || !IsXZScaleLinkedState.getInstance().isEnabled());
+					IsYZScaleLinkedState.getInstance().setValue(false || !IsYZScaleLinkedState.getInstance().isEnabled());
+				}
+				else if (state == IsXYScaleLinkedState.getInstance()) {
+					IsAllScaleLinkedState.getInstance().setValue(false || !IsAllScaleLinkedState.getInstance().isEnabled());
+					IsXZScaleLinkedState.getInstance().setValue(false || !IsXZScaleLinkedState.getInstance().isEnabled());
+					IsYZScaleLinkedState.getInstance().setValue(false || !IsYZScaleLinkedState.getInstance().isEnabled());
+				}
+				else if (state == IsXZScaleLinkedState.getInstance()) {
+					IsAllScaleLinkedState.getInstance().setValue(false || !IsAllScaleLinkedState.getInstance().isEnabled());
+					IsXYScaleLinkedState.getInstance().setValue(false || !IsXYScaleLinkedState.getInstance().isEnabled());
+					IsYZScaleLinkedState.getInstance().setValue(false || !IsYZScaleLinkedState.getInstance().isEnabled());
+				}
+				else if (state == IsYZScaleLinkedState.getInstance()) {
+					IsAllScaleLinkedState.getInstance().setValue(false || !IsAllScaleLinkedState.getInstance().isEnabled());
+					IsXZScaleLinkedState.getInstance().setValue(false || !IsXZScaleLinkedState.getInstance().isEnabled());
+					IsXYScaleLinkedState.getInstance().setValue(false || !IsXYScaleLinkedState.getInstance().isEnabled());
+				}
+			}
+			isUpdatingState = false;
+		}
 	}
 	
 	protected void updateAdapterFromUI(ActionEvent e)

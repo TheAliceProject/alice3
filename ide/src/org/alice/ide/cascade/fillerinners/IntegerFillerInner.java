@@ -70,7 +70,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 			rv.add( org.alice.ide.croquet.models.cascade.integer.MathCascadeMenu.getInstance() );
 		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.ide.croquet.models.custom.CustomIntegerInputDialogOperation.getInstance().getFillIn() );
+		rv.add( org.alice.ide.custom.IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
  		return rv;
 	}
 }

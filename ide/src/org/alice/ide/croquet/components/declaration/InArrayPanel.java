@@ -52,7 +52,7 @@ public abstract class InArrayPanel< S extends org.lgna.project.ast.Statement, M 
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( statementCls ) );
 	}
 	@Override
-	protected final org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+	public final org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
 		M model = this.getModel();
 		S statement = model.createPreviewDeclaration();
 		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );

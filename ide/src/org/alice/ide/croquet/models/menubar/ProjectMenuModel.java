@@ -42,6 +42,7 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,17 +50,17 @@ public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static ProjectMenuModel instance = new ProjectMenuModel();
 	}
+
 	public static ProjectMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
 	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				org.alice.ide.croquet.models.project.ManageResourcesOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.StatisticsOperation.getInstance().getMenuItemPrepModel()
-//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-//				org.alice.ide.IDE.getActiveInstance().getRunOperation().getMenuItemPrepModel()
-//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
-//				org.alice.ide.croquet.models.ast.TypeRootMenuModel.getInstance()
+		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ), org.alice.ide.croquet.models.project.ManageResourcesOperation.getInstance().getMenuItemPrepModel(), org.alice.ide.croquet.models.project.SearchOperation.getInstance()
+				.getMenuItemPrepModel(), org.alice.ide.croquet.models.project.StatisticsOperation.getInstance().getMenuItemPrepModel()
+		//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+		//				org.alice.ide.IDE.getActiveInstance().getRunOperation().getMenuItemPrepModel()
+		//				edu.cmu.cs.dennisc.croquet.MenuModel.SEPARATOR,
+		//				org.alice.ide.croquet.models.ast.TypeRootMenuModel.getInstance()
 		);
 	}
 }

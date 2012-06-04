@@ -54,7 +54,7 @@ public abstract class Node<P extends Node<?>> implements edu.cmu.cs.dennisc.code
 	}
 	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
-
+	
 	public P getParent() {
 		return this.parent;
 	}

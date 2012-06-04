@@ -50,14 +50,27 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		TestCroquet testCroquet = new TestCroquet();
 		testCroquet.initialize( args );
 		
-		class State extends org.lgna.croquet.BoundedIntegerState {
-			public State() {
-				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 3 ).initialValue( 50 ) );
+		class IntegerState extends org.lgna.croquet.BoundedIntegerState {
+			public IntegerState() {
+				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ) );
+			}
+		}
+		class DoubleState extends org.lgna.croquet.BoundedDoubleState {
+			public DoubleState() {
+				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ).stepSize( 10 ).minimum( 20 ) );
 			}
 		}
 		
-		State state = new State();
-		testCroquet.getFrame().getContentPanel().addComponent( state.createSlider(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		IntegerState integerState = new IntegerState();
+		DoubleState doubleState = new DoubleState();
+		
+		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 
+				4,  1, 
+				integerState.createSlider(), integerState.createSpinner(),
+				doubleState.createSlider(), doubleState.createSpinner()
+		);
+		
+		testCroquet.getFrame().getContentPanel().addComponent( gridPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );

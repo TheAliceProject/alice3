@@ -65,10 +65,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
 	}
 
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective > perspectiveListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.IdePerspective >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.ProjectPerspective > perspectiveListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.ProjectPerspective >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.ProjectPerspective > state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.IdePerspective > state, org.alice.ide.perspectives.IdePerspective prevValue, final org.alice.ide.perspectives.IdePerspective nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.ProjectPerspective > state, org.alice.ide.perspectives.ProjectPerspective prevValue, final org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
 //			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 //				public void run() {
 					IDE.this.setPerspective( nextValue );
@@ -78,13 +78,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	private final org.alice.ide.stencils.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
-			IDE.this.updateEnabled( nextValue );
-		}
-	};
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -98,27 +91,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		this.promptForLicenseAgreements();
-
+		
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueListener( this.isAlwaysShowingBlocksListener );
 
-		org.alice.ide.project.ProjectState.getInstance().addAndInvokeValueListener( this.projectListener );
-		
 		this.potentialDropReceptorsStencil = new org.alice.ide.stencils.PotentialDropReceptorsStencil( this.getFrame().getAwtComponent().getLayeredPane() );
 	}
 	
-	protected void updateEnabled( org.lgna.project.Project project ) {
-		getRunOperation().setEnabled( project != null );
-	}
-
 	public abstract ApiConfigurationManager getApiConfigurationManager();
 	
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
-		org.lgna.croquet.components.Frame frame = this.getFrame();
-		frame.setMenuBarModel( org.alice.ide.croquet.models.MenuBarComposite.getInstance() );
-		this.getPerspectiveState().addAndInvokeValueListener( this.perspectiveListener );
+		this.getPerspectiveState().addValueListener( this.perspectiveListener );
 	}
 	@Override
 	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
@@ -151,7 +136,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public org.lgna.croquet.Operation getPreferencesOperation() {
 		return null;
 	}
-	public abstract org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState();
+	public abstract org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.ProjectPerspective > getPerspectiveState();
 	public abstract org.lgna.croquet.Operation getRunOperation();
 	public abstract org.lgna.croquet.Operation getRestartOperation();
 
@@ -246,16 +231,17 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		updateBugReportSubmissionTitle( sb );
 		return sb.toString();
 	}
+
 	@Override
 	public String getApplicationName() {
 		return "Alice";
 	}
 	@Override
-	protected String getVersionText() {
+	public String getVersionText() {
 		return org.lgna.project.Version.getCurrentVersionText();
 	}
 	@Override
-	protected String getVersionAdornment() {
+	public String getVersionAdornment() {
 		return " 3 BETA ";
 	}
 
@@ -309,6 +295,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
+		
+		org.lgna.croquet.Perspective perspective = this.getPerspective();
+		if( perspective == null || perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
+			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
+		}
+		
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
 		try {
 			this.setRootField( this.getSceneField() );
@@ -348,6 +340,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.getUri() != null ) {
 			//pass
 		} else {
+			this.setPerspective( org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() );
 			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( new org.lgna.croquet.triggers.WindowEventTrigger( e ) );
 		}
 	}
@@ -426,7 +419,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 	
 	public org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus() {
-		org.alice.ide.perspectives.IdePerspective perspective = this.getPerspectiveState().getValue();
+		org.alice.ide.perspectives.ProjectPerspective perspective = this.getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getCodeDropReceptorInFocus();
 		} else {
@@ -507,7 +500,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	private static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class< E > cls ) {
+	protected static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class< E > cls ) {
 		org.lgna.project.ast.Node ancestor = node.getParent();
 		while( ancestor != null ) {
 			if( cls.isAssignableFrom( ancestor.getClass() ) ) {

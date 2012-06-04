@@ -67,8 +67,8 @@ public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFil
 	}
 	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions );
 	@Override
-	public MethodInvocationEditFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, org.lgna.project.ast.Expression > itemNode ) {
-		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( itemNode, org.lgna.project.ast.Expression.class );
+	public MethodInvocationEditFactory createValue( org.lgna.croquet.cascade.ItemNode< ? super MethodInvocationEditFactory, org.lgna.project.ast.Expression > itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( itemNode, transactionHistory, org.lgna.project.ast.Expression.class );
 		return this.createMethodInvocationEditFactory( this.instanceFactory, this.getMethod(), argumentExpressions );
 	}
 	@Override

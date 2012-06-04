@@ -46,7 +46,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectApplication extends org.lgna.croquet.Application {
+public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApplication {
 	public static final org.lgna.croquet.Group PROJECT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ), "PROJECT_GROUP" );
 	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
@@ -86,10 +86,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 			this.updateUndoRedoEnabled();
 		}
 	}
-	public abstract String getApplicationName();
-	protected abstract String getVersionText();
-	protected abstract String getVersionAdornment();
 
+	public abstract String getApplicationName();
+	public abstract String getVersionText();
+	public abstract String getVersionAdornment();
 	
 	private void showUnableToOpenFileDialog( java.io.File file, String message ) {
 		StringBuilder sb = new StringBuilder();
@@ -255,11 +255,20 @@ public abstract class ProjectApplication extends org.lgna.croquet.Application {
 	protected void restoreProjectProperties() {
 	}
 
+	@Override
+	public ProjectDocument getDocument() {
+		return org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
+	}
+	private void setDocument( ProjectDocument document ) {
+		org.alice.ide.project.ProjectDocumentState.getInstance().setValue( document );
+	}
+	
 	public org.lgna.project.Project getProject() {
-		return org.alice.ide.project.ProjectState.getInstance().getValue();
+		ProjectDocument document = this.getDocument();
+		return document != null ? document.getProject() : null;
 	}
 	public void setProject( org.lgna.project.Project project ) {
-		org.alice.ide.project.ProjectState.getInstance().setValue( project );
+		this.setDocument( new ProjectDocument( project ) );
 	}
 	
 	public void loadProjectFrom( java.net.URI uri ) {

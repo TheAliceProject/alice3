@@ -47,15 +47,18 @@ package org.alice.stageide.program;
  * @author Dennis Cosgrove
  */
 public class RunProgramContext extends ProgramContext {
+	public RunProgramContext( org.lgna.project.ast.NamedUserType programType ) {
+		super( programType );
+	}
 	public RunProgramContext() {
-		super( getUpToDateProgramTypeFromActiveIde() );
+		this( getUpToDateProgramTypeFromActiveIde() );
 	}
 	public void initializeInContainer( java.awt.Container container ) {
 		this.disableRendering();
 		this.getProgramImp().initializeInAwtContainer( container );
 	}
 	public java.awt.Container getContainer() {
-		return this.getProgramImp().getOnscreenLookingGlass().getAWTComponent().getParent();
+		return this.getOnscreenLookingGlass().getAWTComponent().getParent();
 	}
 	@Override
 	public void cleanUpProgram() {

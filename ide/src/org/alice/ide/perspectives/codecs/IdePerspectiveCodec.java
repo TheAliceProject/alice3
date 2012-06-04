@@ -46,19 +46,19 @@ package org.alice.ide.perspectives.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.perspectives.IdePerspective > {
+public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.perspectives.ProjectPerspective > {
 	SINGLETON;
-	public Class< org.alice.ide.perspectives.IdePerspective > getValueClass() {
-		return org.alice.ide.perspectives.IdePerspective.class;
+	public Class< org.alice.ide.perspectives.ProjectPerspective > getValueClass() {
+		return org.alice.ide.perspectives.ProjectPerspective.class;
 	}
-	public org.alice.ide.perspectives.IdePerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.Resolver< org.alice.ide.perspectives.IdePerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	public org.alice.ide.perspectives.ProjectPerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.lgna.croquet.resolvers.Resolver< org.alice.ide.perspectives.ProjectPerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return resolver.getResolved();
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.IdePerspective value ) {
+	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
 		binaryEncoder.encode( value.getResolver() );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.IdePerspective value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.ProjectPerspective value, java.util.Locale locale) {
 		rv.append( value );
 		return rv;
 	}

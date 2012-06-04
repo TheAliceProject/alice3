@@ -107,38 +107,38 @@ public class JavaField extends AbstractField {
 	@Override
 	public JavaType getValueType() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null;
+		assert fld != null : this.fieldReflectionProxy;
 		return JavaType.getInstance( fld.getType() );
 	}
 	
 	@Override
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null;
+		assert fld != null : this.fieldReflectionProxy;
 		return AccessLevel.get( fld.getModifiers() );
 	}	
 	@Override
 	public boolean isStatic() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null;
+		assert fld != null : this.fieldReflectionProxy;
 		return java.lang.reflect.Modifier.isStatic( fld.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null;
+		assert fld != null : this.fieldReflectionProxy;
 		return java.lang.reflect.Modifier.isFinal( fld.getModifiers() );
 	}
 	@Override
 	public boolean isVolatile() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null;
+		assert fld != null : this.fieldReflectionProxy;
 		return java.lang.reflect.Modifier.isVolatile( fld.getModifiers() );
 	}
 	@Override
 	public boolean isTransient() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null;
+		assert fld != null : this.fieldReflectionProxy;
 		return java.lang.reflect.Modifier.isTransient( fld.getModifiers() );
 	}
 	

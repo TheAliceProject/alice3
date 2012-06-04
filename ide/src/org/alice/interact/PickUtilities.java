@@ -100,6 +100,16 @@ public class PickUtilities {
 		return null;
 	}
 	
+	public static EntityImp getEntityImpFromPickedObject(edu.cmu.cs.dennisc.scenegraph.Component pickedObject) {
+		if (pickedObject != null)
+		{
+			edu.cmu.cs.dennisc.scenegraph.Component mainComponent = PickUtilities.getFirstClassFromComponent(pickedObject);
+			EntityImp entityImplementation = EntityImp.getInstance(mainComponent);
+			return entityImplementation;
+		}
+		return null;
+	}
+	
 	public static Entity getEntityFromPickedObject(edu.cmu.cs.dennisc.scenegraph.Component pickedObject) {
 		if (pickedObject != null)
 		{

@@ -261,10 +261,10 @@ public abstract class Presentation {
 		return null;
 	}
 	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > huntForInMenus( org.lgna.croquet.CompletionModel model ) {
-		org.lgna.croquet.MenuBarComposite menuBarModel = org.lgna.croquet.Application.getActiveInstance().getFrame().getMenuBarModel();
-		if( menuBarModel != null ) {
+		org.lgna.croquet.MenuBarComposite menuBarComposite = org.lgna.croquet.Application.getActiveInstance().getFrame().getMenuBarComposite();
+		if( menuBarComposite != null ) {
 			java.util.List< org.lgna.croquet.MenuItemPrepModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-			for( org.lgna.croquet.MenuItemPrepModel child : menuBarModel.getChildren() ) {
+			for( org.lgna.croquet.MenuItemPrepModel child : menuBarComposite.getChildren() ) {
 				org.lgna.croquet.Model found = this.huntForInMenus( rv, child, model );
 				if( found != null ) {
 					rv.add( 0, child );

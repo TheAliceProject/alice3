@@ -96,7 +96,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 			context.gl.glVertex3d( 0, 0, axisLength );
 			context.gl.glEnd();
 
-			final boolean IS_BOUNDING_BOX_DESIRED = false;
+			final boolean IS_BOUNDING_BOX_DESIRED = true;
 			if( IS_BOUNDING_BOX_DESIRED ) {
 				edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = joint.getAxisAlignedMinimumBoundingBox();
 				//              boundingBox = null;
@@ -238,6 +238,54 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		rc.gl.glEnable( GL_LIGHTING );
 		this.pushOffset( rc.gl );
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
+		
+		edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = implementation.getAxisAlignedMinimumBoundingBox();
+		//              boundingBox = null;
+		if( boundingBox != null ) {
+			rc.gl.glDisable( GL_LIGHTING );
+			rc.gl.glDisable( GL_TEXTURE_2D );
+			rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+			edu.cmu.cs.dennisc.math.Point3 min = boundingBox.getMinimum();
+			edu.cmu.cs.dennisc.math.Point3 max = boundingBox.getMaximum();
+
+			//Bottom
+			rc.gl.glBegin( GL_LINE_LOOP );
+			rc.gl.glVertex3d( min.x, min.y, min.z );
+			rc.gl.glVertex3d( min.x, min.y, max.z );
+			rc.gl.glVertex3d( max.x, min.y, max.z );
+			rc.gl.glVertex3d( max.x, min.y, min.z );
+			rc.gl.glEnd();
+
+			//Top
+			rc.gl.glBegin( GL_LINE_LOOP );
+			rc.gl.glVertex3d( min.x, max.y, min.z );
+			rc.gl.glVertex3d( min.x, max.y, max.z );
+			rc.gl.glVertex3d( max.x, max.y, max.z );
+			rc.gl.glVertex3d( max.x, max.y, min.z );
+			rc.gl.glEnd();
+
+			//Sides
+			rc.gl.glBegin( GL_LINES );
+			rc.gl.glVertex3d( min.x, min.y, min.z );
+			rc.gl.glVertex3d( min.x, max.y, min.z );
+			rc.gl.glEnd();
+
+			rc.gl.glBegin( GL_LINES );
+			rc.gl.glVertex3d( max.x, min.y, min.z );
+			rc.gl.glVertex3d( max.x, max.y, min.z );
+			rc.gl.glEnd();
+
+			rc.gl.glBegin( GL_LINES );
+			rc.gl.glVertex3d( min.x, min.y, max.z );
+			rc.gl.glVertex3d( min.x, max.y, max.z );
+			rc.gl.glEnd();
+
+			rc.gl.glBegin( GL_LINES );
+			rc.gl.glVertex3d( max.x, min.y, max.z );
+			rc.gl.glVertex3d( max.x, max.y, max.z );
+			rc.gl.glEnd();
+		}
+		
 		implementation.treeWalk( new RenderWalkObserver( rc, implementation ) );
 		this.popOffset( rc.gl );
 	}

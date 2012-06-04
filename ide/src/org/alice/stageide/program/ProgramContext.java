@@ -96,12 +96,19 @@ public abstract class ProgramContext {
 	public org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
 		return this.vm;
 	}
+	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		org.lgna.story.implementation.ProgramImp programImp = this.getProgramImp();
+		return programImp != null ? programImp.getOnscreenLookingGlass() : null;
+	}
 
 	private org.alice.ide.ReasonToDisableSomeAmountOfRendering rendering;
 
 	protected void disableRendering() {
 		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
-		org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( rendering );
+		org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getPerspectiveState().getValue().disableRendering( rendering );
+		}
 	}
 
 	public void setActiveScene() {
@@ -122,7 +129,10 @@ public abstract class ProgramContext {
 	public void cleanUpProgram() {
 		this.getProgramImp().shutDown();
 		if( this.rendering != null ) {
-			org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
+			org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
+			if( ide != null ) {
+				ide.getPerspectiveState().getValue().enableRendering();
+			}
 			this.rendering = null;
 		}
 	}

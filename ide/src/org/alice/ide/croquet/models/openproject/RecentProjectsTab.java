@@ -60,9 +60,4 @@ public class RecentProjectsTab extends ContentTab<org.alice.ide.openprojectpane.
 	protected org.alice.ide.openprojectpane.RecentPane createView() {
 		return new org.alice.ide.openprojectpane.RecentPane( this );
 	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 }

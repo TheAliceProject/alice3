@@ -80,7 +80,6 @@ public abstract class JointImp extends AbstractTransformableImp {
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
-	
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
 		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
 	}

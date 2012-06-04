@@ -178,7 +178,7 @@ public class RoomImp extends VisualScaleModelImp {
 				edu.cmu.cs.dennisc.scenegraph.Vertex bottomLeft = sgVertices[i*4 + 3];
 				bottomLeft.position.set(leftVals.x, 0, leftVals.z);
 				
-				System.out.println("Wall "+i+": "+topLeft.position+", "+bottomLeft.position+", "+bottomRight.position+", "+topRight.position);
+//				System.out.println("Wall "+i+": "+topLeft.position+", "+bottomLeft.position+", "+bottomRight.position+", "+topRight.position);
 			}
 		}
 	}
@@ -215,7 +215,10 @@ public class RoomImp extends VisualScaleModelImp {
 		this.floor.setSize(width, depth, 0);
 	}
 	
-	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		internalSetSize((float)size.x, (float)size.y, (float)size.z);
+	}
 	
 	@Override
 	public org.lgna.story.Room getAbstraction() {

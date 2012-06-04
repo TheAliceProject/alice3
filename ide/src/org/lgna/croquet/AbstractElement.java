@@ -198,7 +198,7 @@ public abstract class AbstractElement implements Element {
 		return getKeyCode( getLocalizedText( cls, "mnemonic" ) );
 	}
 	protected int getLocalizedMnemonicKey() {
-		return getLocalizedMnemonicKey( this.getClass() );
+		return getLocalizedMnemonicKey( this.getClassUsedForLocalization() );
 	}
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
@@ -234,7 +234,7 @@ public abstract class AbstractElement implements Element {
 		return null;
 	}
 	protected javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke() {
-		return getLocalizedAcceleratorKeyStroke( this.getClass() );
+		return getLocalizedAcceleratorKeyStroke( this.getClassUsedForLocalization() );
 	}
 	
 	protected abstract void localize();
@@ -252,14 +252,18 @@ public abstract class AbstractElement implements Element {
 		return (org.lgna.croquet.resolvers.Resolver< M >)this.resolver;
 	}
 	
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		rv.append( this.getClass().getName() );
-		return rv;
+	protected void appendRepr( StringBuilder sb ) {
+	}
+	protected String createRepr() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		return sb.toString();
 	}
 	@Override
 	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		this.appendRepr( sb );
-		return sb.toString();
+		return this.createRepr();
 	}
 }

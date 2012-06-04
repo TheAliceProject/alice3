@@ -89,6 +89,17 @@ public class ImplementationAccessor {
 	public static VantagePoint createVantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		return VantagePoint.createInstance( m );
 	}
+	
+	public static Key getKeyFromKeyCode( int keyCode ) {
+		return Key.getInstanceFromKeyCode( keyCode );
+	}
+	public static int getKeyCodeFromKey( Key key ) {
+		if( key != null ) {
+			return key.getInternal();
+		} else {
+			return -1;
+		}
+	}
 
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Paint paint, edu.cmu.cs.dennisc.color.Color4f defaultValue ) {
 		if( paint instanceof org.lgna.story.Color ) {

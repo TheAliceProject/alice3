@@ -77,7 +77,8 @@ public abstract class MethodList extends MemberList< org.lgna.project.ast.UserMe
 			return null;
 		} else {
 			return new org.lgna.croquet.components.LineAxisPanel(
-					org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton(),
+					//org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( item ).createButton(),
+					org.alice.ide.ast.rename.RenameMethodComposite.getInstance( item ).getOperation().createButton(),
 					org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( item ).createButton()
 			);
 		}

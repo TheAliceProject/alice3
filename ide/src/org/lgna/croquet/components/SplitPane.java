@@ -80,6 +80,19 @@ public abstract class SplitPane extends View< javax.swing.JSplitPane, org.lgna.c
 //		};
 	}
 	
+	public void addDividerLocationChangeListener( java.beans.PropertyChangeListener changeListener ) {
+		this.getAwtComponent().addPropertyChangeListener( "dividerLocation", changeListener );
+	}
+	public void removeDividerLocationChangeListener( java.beans.PropertyChangeListener changeListener ) {
+		this.getAwtComponent().removePropertyChangeListener( "dividerLocation", changeListener );
+	}
+	
+	public Component<?> getLeadingComponent() {
+		return Component.lookup( this.getAwtComponent().getLeftComponent() );
+	}
+	public Component<?> getTailingComponent() {
+		return Component.lookup( this.getAwtComponent().getRightComponent() );
+	}
 	public void setLeadingComponent( JComponent<?> component ) {
 		javax.swing.JComponent jComponent;
 		if( component != null ) {

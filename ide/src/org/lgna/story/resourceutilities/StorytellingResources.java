@@ -205,38 +205,58 @@ public class StorytellingResources {
 	}
 
 	
+	public static java.util.Map<File, List<String>> getClassNamesFromResources(File... resourceJars) {
+		java.util.HashMap<File, List<String>> rv = new java.util.HashMap<File, List<String>>();
+		for (File resourceJar : resourceJars) {
+			try
+			{
+				ZipFile zip = new ZipFile(resourceJar);
+				Enumeration<? extends ZipEntry> entries = zip.entries();
+				while (entries.hasMoreElements())
+				{
+					ZipEntry entry = entries.nextElement();
+					if (entry.getName().endsWith(".xml") && !entry.getName().contains("$"))
+					{
+						String className = entry.getName().replace('/', '.');
+						int lastDot = className.lastIndexOf(".");
+						String baseName = className.substring(0, lastDot);
+						if (baseName.startsWith(".")) {
+							baseName = baseName.substring(1);
+						}
+						if (!rv.containsKey(resourceJar)) {
+							rv.put(resourceJar, new LinkedList<String>());
+						}
+						rv.get(resourceJar).add(baseName);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return rv;
+	}
+	
 	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourceJarFile(File... resourceJars)
 	{
 		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+		
 		List<String> classNames = new LinkedList<String>();
 		LinkedList<URL> urls = new LinkedList<URL>();
-		for (File resourceJar : resourceJars) {
-				try
-				{
-					ZipFile zip = new ZipFile(resourceJar);
-					Enumeration<? extends ZipEntry> entries = zip.entries();
-					while (entries.hasMoreElements())
-					{
-						ZipEntry entry = entries.nextElement();
-						if (entry.getName().endsWith(".xml") && !entry.getName().contains("$"))
-						{
-							String className = entry.getName().replace('/', '.');
-							int lastDot = className.lastIndexOf(".");
-							String baseName = className.substring(0, lastDot);
-							if (baseName.startsWith(".")) {
-								baseName = baseName.substring(1);
-							}
-							
-							classNames.add(baseName);
-						}
-					}
-					urls.add(resourceJar.toURI().toURL());
+		
+		java.util.Map<File, List<String>> classNameMap = getClassNamesFromResources(resourceJars);
+		
+		for (java.util.Map.Entry<File, List<String>> entry : classNameMap.entrySet()) {
+			try {
+				urls.add(entry.getKey().toURI().toURL());
+				for (String className : entry.getValue()) {
+					classNames.add(className);
 				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-				
+			}
+			catch (java.net.MalformedURLException e) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Failed to load resources from jar: "+entry.getKey());
+			}
 		}
 		try
 		{
@@ -274,8 +294,13 @@ public class StorytellingResources {
 		{
 			if (modelPath.exists()) {
 				try {
-					File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
-					galleryClasses.addAll( this.loadResourceJarFile(jarFiles) );
+					if (modelPath.isDirectory()) {
+						File[] jarFiles = FileUtilities.listDescendants(modelPath, "jar");
+						galleryClasses.addAll( this.loadResourceJarFile(jarFiles) );
+					}
+					else {
+						galleryClasses.addAll( this.loadResourceJarFile(modelPath));
+					}
 				}
 				catch (Exception e)
 				{
@@ -304,6 +329,15 @@ public class StorytellingResources {
 //		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
 //	}
 	
+	private void buildGalleryTreeWithJars(File...resourceJars) {
+		java.util.ArrayList<File> jarFiles = new java.util.ArrayList<File>();
+		for (int i=0; i<resourceJars.length; i++) {
+			jarFiles.add(resourceJars[i]);
+		}
+		List< Class< ? extends org.lgna.story.resources.ModelResource >> modelResourceClasses = this.getAndLoadModelResourceClasses( jarFiles );
+		this.galleryTree = new ModelResourceTree( modelResourceClasses );
+	}
+	
 	public void findAndLoadAliceResourcesIfNecessary() {
 		if (this.aliceClassesLoaded == null) {
 			List< File > resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
@@ -311,7 +345,7 @@ public class StorytellingResources {
 				resourcePaths = findAliceResources();
 			}
 			this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
-			if( this.aliceClassesLoaded.size() == 0) {
+			if( aliceClassesLoaded.size() == 0) {
 				if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
 					setGalleryResourceDir(FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath());
 				}
@@ -333,7 +367,6 @@ public class StorytellingResources {
 					String separator = "\n   ";
 					for (File path : resourcePaths) {
 						sb.append(separator+"'"+path+"'");
-						this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
 					}
 					String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
 					sb.append("\nVerify that "+phrase+" and verify that Alice is properly installed.");
@@ -487,6 +520,10 @@ public class StorytellingResources {
 			}
 		}
 		return toReturn;
+	}
+	
+	public void initializeGalleryTreeWithJars(File... resourceJars) {
+		this.buildGalleryTreeWithJars(resourceJars);
 	}
 	
 	private ModelResourceTree getGalleryTreeInternal() {

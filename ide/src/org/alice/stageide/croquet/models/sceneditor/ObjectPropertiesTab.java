@@ -62,9 +62,4 @@ public class ObjectPropertiesTab extends org.lgna.croquet.TabComposite<org.alice
     public boolean isCloseable() {
     	return false;
     }
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 }

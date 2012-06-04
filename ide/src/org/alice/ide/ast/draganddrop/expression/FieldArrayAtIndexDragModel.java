@@ -68,6 +68,14 @@ public class FieldArrayAtIndexDragModel extends AbstractExpressionDragModel {
 		return this.field.getValueType().getComponentType();
 	}
 	@Override
+	public boolean isPotentialStatementCreator() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		throw new AssertionError();
+	}
+	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayAccessCascade.getInstance( this.field, expressionProperty );
 	}

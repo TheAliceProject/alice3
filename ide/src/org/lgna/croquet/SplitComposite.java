@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitComposite extends Composite< org.lgna.croquet.components.SplitPane >{
+public abstract class SplitComposite extends AbstractComposite< org.lgna.croquet.components.SplitPane >{
 	private Composite< ? > leadingComposite;
 	private Composite< ? > trailingComposite;
 	public SplitComposite( java.util.UUID id, Composite< ? > leadingComposite, Composite< ? > trailingComposite ) {
@@ -72,20 +72,21 @@ public abstract class SplitComposite extends Composite< org.lgna.croquet.compone
 	}
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
-		if( this.leadingComposite != null ) {
-			if( this.leadingComposite.contains( model ) ) {
-				return true;
+		if( super.contains( model ) ) {
+			return true;
+		} else {
+			if( this.leadingComposite != null ) {
+				if( this.leadingComposite.contains( model ) ) {
+					return true;
+				}
 			}
-		}
-		if( this.trailingComposite != null ) {
-			if( this.trailingComposite.contains( model ) ) {
-				return true;
+			if( this.trailingComposite != null ) {
+				if( this.trailingComposite.contains( model ) ) {
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
-	}
-	@Override
-	protected void localize() {
 	}
 	@Override
 	public void releaseView() {
@@ -114,13 +115,13 @@ public abstract class SplitComposite extends Composite< org.lgna.croquet.compone
 		}
 	}
 	@Override
-	public void handlePostDectivation() {
+	public void handlePostDeactivation() {
 		if( this.leadingComposite != null ) {
-			this.leadingComposite.handlePostDectivation();
+			this.leadingComposite.handlePostDeactivation();
 		}
 		if( this.trailingComposite != null ) {
-			this.trailingComposite.handlePostDectivation();
+			this.trailingComposite.handlePostDeactivation();
 		}
-		super.handlePostDectivation();
+		super.handlePostDeactivation();
 	}
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -233,7 +233,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.IdePerspective > getPerspectiveState() {
+	public org.lgna.croquet.ListSelectionState< org.alice.ide.perspectives.ProjectPerspective > getPerspectiveState() {
 		return org.alice.stageide.perspectives.PerspectiveState.getInstance();
 	}
 

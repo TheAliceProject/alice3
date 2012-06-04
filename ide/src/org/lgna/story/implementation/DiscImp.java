@@ -68,4 +68,43 @@ public class DiscImp extends ShapeImp {
 	public org.lgna.story.Disc getAbstraction() {
 		return this.abstraction;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgDisc.outerRadius };
+	}
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.XZ_PLANE };
+	}
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.XZ_PLANE ) {
+			return this.outerRadius.getValue();
+		} else {
+			assert false : resizer;
+			return Double.NaN;
+		}
+	}
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		if( resizer == Resizer.XZ_PLANE ) {
+			this.outerRadius.setValue( value );
+		} else {
+			assert false : resizer;
+		}
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
+		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+	}
+	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		if (size.x != size.z) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Invalid size for "+this.getClass().getSimpleName()+": "+size);
+		}
+		this.outerRadius.setValue( size.x * .5 );
+	}
 }

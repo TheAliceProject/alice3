@@ -46,38 +46,35 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class ConeImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
+public class ConeImp extends AbstractCylinderImp {
 	private final org.lgna.story.Cone abstraction;
 	public final DoubleProperty baseRadius = new DoubleProperty( ConeImp.this ) {
 		@Override
 		public Double getValue() {
-			return ConeImp.this.sgCylinder.bottomRadius.getValue();
+			return ConeImp.this.getSgCylinder().bottomRadius.getValue();
 		}
 		@Override
 		protected void handleSetValue( Double value ) {
-			ConeImp.this.sgCylinder.bottomRadius.setValue( value );
+			ConeImp.this.getSgCylinder().bottomRadius.setValue( value );
 		}
 	};
-	public final DoubleProperty length = new DoubleProperty( ConeImp.this ) {
-		@Override
-		public Double getValue() {
-			return ConeImp.this.sgCylinder.length.getValue();
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			ConeImp.this.sgCylinder.length.setValue( value );
-		}
-	};
-
 	public ConeImp( org.lgna.story.Cone abstraction ) {
 		this.abstraction = abstraction;
-		this.sgCylinder.topRadius.setValue( 0.0 );
-		this.sgCylinder.hasTopCap.setValue( false );
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
+		this.getSgCylinder().topRadius.setValue( 0.0 );
+		this.getSgCylinder().hasTopCap.setValue( false );
 	}
 	@Override
 	public org.lgna.story.Cone getAbstraction() {
 		return this.abstraction;
 	}
+	@Override
+	protected void setXZ( double xz ) {
+		this.baseRadius.setValue( xz );
+	}
+	
+	@Override
+	protected double getXZ() {
+		return this.baseRadius.getValue();
+	}
+	
 }
