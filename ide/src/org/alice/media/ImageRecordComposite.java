@@ -56,6 +56,7 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Scene;
 import org.lgna.story.implementation.SceneImp;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.matt.EventManager;
 import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
@@ -139,10 +140,14 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 				encoder.start();
-				try {
-					encoder.setOutput( File.createTempFile( "temp", ".mov" ) );
-				} catch( IOException e ) {
-					e.printStackTrace();
+				if( false ) {
+					try {
+						encoder.setOutput( File.createTempFile( "temp", ".mov" ) );
+					} catch( IOException e ) {
+						e.printStackTrace();
+					}
+				} else {
+					encoder.setOutput( new File( FileUtilities.getDefaultDirectory(), "test.mov" ) );
 				}
 			} else {
 				encoder.stop();

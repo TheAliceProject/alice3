@@ -79,7 +79,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 	//	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(22050f, 16, 1, true, false);
 	private static float RATE_22 = 22050f;
 	private static float RATE_44 = 44100f;
-	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
+	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.ALAW,8000,8,1,1,8000,false);//*/new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 	private static VideoFormat QUICKTIME_VIDEO_FORMAT = VideoFormat.JPG;
 
 	private double framesPerSecond;
