@@ -54,6 +54,7 @@ public abstract class StandardExpressionState extends ExpressionState {
 	protected abstract org.lgna.project.annotations.ValueDetails< ? > getValueDetails();
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+		org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.getValue(), null );
 		org.alice.ide.IDE.getActiveInstance().getCascadeManager().updateChildren( rv, blankNode, this.getType(), this.getValueDetails() );
 		return rv;
 	}

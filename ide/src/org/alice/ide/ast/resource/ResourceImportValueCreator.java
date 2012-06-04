@@ -41,35 +41,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.custom.components;
+package org.alice.ide.ast.resource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
-	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
-		super( composite );
+public abstract class ResourceImportValueCreator<R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<R> {
+	private final java.util.Set<String> lowerCaseExtensions;
+	public ResourceImportValueCreator( java.util.UUID migrationId, String... lowerCaseSupportedExtensions ) {
+		super( migrationId );
+		this.lowerCaseExtensions = java.util.Collections.unmodifiableSet( edu.cmu.cs.dennisc.java.util.Collections.newHashSet( lowerCaseSupportedExtensions ) );
 	}
-	
+	protected abstract R createResourceFromFile( java.io.File file ) throws java.io.IOException;
 	@Override
-	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		return new org.lgna.croquet.StringValue[] {
-				composite.getResourceLabel(),
-				composite.getVolumeLabel(),
-				composite.getStartMarkerLabel(),
-				composite.getStopMarkerLabel()
-		};
-	}
-	
-	@Override
-	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		return new org.lgna.croquet.components.Component<?>[] {
-				composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ),
-				new VolumeLevelSlider( composite.getVolumeState() ),
-				composite.getStartMarkerState().createSlider(),
-				composite.getStopMarkerState().createSlider()
-		};
+	protected R createValue( java.io.File file ) {
+		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
+		if( extension != null && this.lowerCaseExtensions.contains( extension.toLowerCase() ) ) {
+			try {
+				return this.createResourceFromFile( file );
+			} catch( java.io.IOException ioe ) {
+				//todo
+				throw new RuntimeException( file.getAbsolutePath(), ioe );
+			}
+		} else {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "File extension for \"" );
+			sb.append( file.getName() );
+			sb.append( "\" is not in the supported set: { " );
+			String prefix = "";
+			for( String s : this.lowerCaseExtensions ) {
+				sb.append( prefix );
+				sb.append( s );
+				prefix = ", ";
+			}
+			sb.append( " }." );
+			org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
+			return null;
+		}
 	}
 }
