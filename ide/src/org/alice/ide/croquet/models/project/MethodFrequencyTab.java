@@ -190,15 +190,16 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			List<MethodInvocation> invocations = crawler.getInvocationsFor( method );
 			for( MethodInvocation invocation : invocations ) {
 				UserMethod invocationOwner = invocation.getFirstAncestorAssignableTo( UserMethod.class );
-
 				InvocationCounts invocationCounts = this.mapMethodToInvocationCounts.get( invocationOwner );
-				if( invocationCounts != null ) {
-					//pass
-				} else {
-					invocationCounts = new InvocationCounts();
-					this.mapMethodToInvocationCounts.put( invocationOwner, invocationCounts );
+				if( !invocationOwner.getManagementLevel().isGenerated() && !invocationOwner.getDeclaringType().isAssignableTo( org.lgna.story.Program.class ) ) {
+					if( invocationCounts != null ) {
+						//pass
+					} else {
+						invocationCounts = new InvocationCounts();
+						this.mapMethodToInvocationCounts.put( invocationOwner, invocationCounts );
+					}
+					invocationCounts.addInvocation( invocation );
 				}
-				invocationCounts.addInvocation( invocation );
 			}
 		}
 
@@ -278,14 +279,12 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 				AbstractMethod method = methodInvocation.method.getValue();
-				if( !method.getDeclaringType().isAssignableTo( org.lgna.story.Program.class ) ) {
-					List<MethodInvocation> list = this.mapMethodToInvocations.get( method );
-					if( list != null ) {
-						list.add( methodInvocation );
-					} else {
-						list = Collections.newLinkedList( methodInvocation );
-						this.mapMethodToInvocations.put( method, list );
-					}
+				List<MethodInvocation> list = this.mapMethodToInvocations.get( method );
+				if( list != null ) {
+					list.add( methodInvocation );
+				} else {
+					list = Collections.newLinkedList( methodInvocation );
+					this.mapMethodToInvocations.put( method, list );
 				}
 			}
 		}
