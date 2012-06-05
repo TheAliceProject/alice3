@@ -41,23 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.components;
+package org.alice.stageide.ast.source;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceDropDown< R extends org.lgna.common.Resource, M extends org.lgna.croquet.CustomItemState< R > > extends org.lgna.croquet.components.ItemDropDown< R, M > {
-	public ResourceDropDown( M model ) {
-		super( model );
-		this.update( model.getValue() );
-		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+public class ImageSourceImportValueCreator extends SourceImportValueCreator<org.lgna.story.ImageSource,org.lgna.common.resources.ImageResource> {
+	private static class SingletonHolder {
+		private static ImageSourceImportValueCreator instance = new ImageSourceImportValueCreator();
 	}
-	private void update( R resource ) {
-		this.getAction().putValue( javax.swing.Action.NAME, resource );
+	public static ImageSourceImportValueCreator getInstance() {
+		return SingletonHolder.instance;
 	}
-
-	@Override
-	protected void handleChanged(org.lgna.croquet.State<R> state, R prevValue, R nextValue, boolean isAdjusting) {
-		this.update( nextValue );
+	private ImageSourceImportValueCreator() {
+		super( java.util.UUID.fromString( "cd545fef-0c4a-4e97-affb-dbf9388803cc" ), org.alice.ide.ast.importers.ImageResourceImporter.getInstance(), org.lgna.story.ImageSource.class, org.lgna.common.resources.ImageResource.class );
 	}
-};
+}

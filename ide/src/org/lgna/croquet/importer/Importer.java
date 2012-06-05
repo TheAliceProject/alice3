@@ -40,29 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.cascade.source;
+
+package org.lgna.croquet.importer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.lgna.story.ImageSource, org.lgna.common.resources.ImageResource > {
-	public ImportNewImageSourceFillIn() {
-		super( java.util.UUID.fromString( "dc0d114b-50c1-45d9-8ed5-9bdc0ea96326" ) );
+public abstract class Importer<T> {
+	private final java.util.UUID sharingId;
+	private final java.io.File initialDirectory;
+	private final String initialFileText;
+	private final java.io.FilenameFilter filenameFilter;
+	private final java.util.Set< String > lowerCaseExtensions;
+	public Importer( java.util.UUID sharingId, java.io.File initialDirectory, String initialFileText, java.io.FilenameFilter filenameFilter, String... lowerCaseExtensions ) {
+		this.sharingId = sharingId;
+		this.initialDirectory = initialDirectory;
+		this.initialFileText = initialFileText;
+		this.filenameFilter = filenameFilter;
+		this.lowerCaseExtensions = java.util.Collections.unmodifiableSet( edu.cmu.cs.dennisc.java.util.Collections.newHashSet( lowerCaseExtensions ) );
 	}
-	@Override
-	protected String getMenuText() {
-		return "Import New Image Source...";
-	}
-	@Override
-	protected org.alice.ide.resource.prompter.ResourcePrompter<org.lgna.common.resources.ImageResource> getResourcePrompter() {
-		return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
-	}
-	@Override
-	protected Class<org.lgna.common.resources.ImageResource> getResourceClass() {
-		return org.lgna.common.resources.ImageResource.class;
-	}
-	@Override
-	protected Class<org.lgna.story.ImageSource> getSourceClass() {
-		return org.lgna.story.ImageSource.class;
+	protected abstract T createFromFile( java.io.File file ) throws java.io.IOException;
+	public T createValue( String dialogTitle ) {
+		java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog( this.sharingId, dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
+		if( file != null ) {
+			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
+			if( extension != null && this.lowerCaseExtensions.contains( extension.toLowerCase() ) ) {
+				try {
+					return this.createFromFile( file );
+				} catch( java.io.IOException ioe ) {
+					ioe.printStackTrace();
+					StringBuilder sb = new StringBuilder();
+					sb.append( "Unable to import: " );
+					sb.append( file.getAbsolutePath() );
+					org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Exception Thrown", org.lgna.croquet.MessageType.ERROR );
+					return null;
+				}
+			} else {
+				StringBuilder sb = new StringBuilder();
+				sb.append( "File extension for \"" );
+				sb.append( file.getName() );
+				sb.append( "\" is not in the supported set: { " );
+				String prefix = "";
+				for( String s : this.lowerCaseExtensions ) {
+					sb.append( prefix );
+					sb.append( s );
+					prefix = ", ";
+				}
+				sb.append( " }." );
+				org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 }

@@ -46,22 +46,21 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImportValueCreator<T> extends ValueCreator<T> {
-	public ImportValueCreator( java.util.UUID migrationId ) {
+public abstract class ImportValueCreator<T,I> extends ValueCreator<T> {
+	private final org.lgna.croquet.importer.Importer<I> importer;
+	public ImportValueCreator( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<I> importer ) {
 		super( migrationId );
+		this.importer = importer;
 	}
-	protected abstract java.io.FilenameFilter createFilenameFilter();
-	protected abstract String getInitialFileText();
-	
-	protected abstract T createValue( java.io.File file );
+	protected abstract T createValueFromImportedValue( I importedValue );
 	@Override
 	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		java.io.File initialDirectory = null;
-		T rv;
 		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-		java.io.File file = org.alice.ide.IDE.getActiveInstance().showOpenFileDialog( initialDirectory, this.getInitialFileText(), edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath(), true );
-		if( file != null ) {
-			rv = this.createValue( file );
+		String dialogTitle = "Import";
+		T rv;
+		I importedValue = this.importer.createValue( dialogTitle );
+		if( importedValue != null ) {
+			rv = this.createValueFromImportedValue( importedValue );
 		} else {
 			rv = null;
 		}
@@ -69,6 +68,7 @@ public abstract class ImportValueCreator<T> extends ValueCreator<T> {
 			completionStep.finish();
 		} else {
 			completionStep.cancel();
+			throw new CancelException();
 		}
 		return rv;
 	}

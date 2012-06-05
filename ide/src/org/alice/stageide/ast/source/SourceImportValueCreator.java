@@ -41,46 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.resource;
+package org.alice.stageide.ast.source;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImportNewResourceFillIn< E extends org.lgna.common.Resource > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.ResourceExpression > {
-	protected abstract Class< E > getResourceClass();
-	protected abstract org.alice.ide.resource.prompter.ResourcePrompter<E> getResourcePrompter();
-	protected abstract String getMenuText();
-	public ImportNewResourceFillIn( java.util.UUID id ) {
-		super( id );
+public abstract class SourceImportValueCreator<S,R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<org.lgna.project.ast.InstanceCreation,R> {
+	private final Class<S> sourceCls;
+	private final Class<R> resourceCls;
+	public SourceImportValueCreator(java.util.UUID migrationId, org.lgna.croquet.importer.Importer<R> importer, Class<S> sourceCls, Class<R> resourceCls) {
+		super( migrationId, importer );
+		this.sourceCls = sourceCls;
+		this.resourceCls = resourceCls;
 	}
 	@Override
-	public org.lgna.project.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		try {
-			E resource = getResourcePrompter().promptUserForResource( ide.getFrame() );
-			if( resource != null ) {
-				org.lgna.project.Project project = ide.getProject();
-				if( project != null ) {
-					project.addResource( resource );
-				}
-				return new org.lgna.project.ast.ResourceExpression( getResourceClass(), resource );
-			} else {
-				throw new org.lgna.croquet.CancelException();
-			}
-		} catch( java.io.IOException ioe ) {
-			//todo
-			throw new org.lgna.croquet.CancelException();
-		}
+	protected org.lgna.project.ast.InstanceCreation createValueFromImportedValue( R importedValue ) {
+		org.lgna.project.ast.ResourceExpression resourceExpression = new org.lgna.project.ast.ResourceExpression( this.resourceCls, importedValue );
+		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( this.sourceCls, this.resourceCls );
+		org.lgna.project.ast.AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
+		org.lgna.project.ast.SimpleArgument argument0 = new org.lgna.project.ast.SimpleArgument( parameter0, resourceExpression );
+		return new org.lgna.project.ast.InstanceCreation( constructor, argument0 );
 	}
-	@Override
-	public org.lgna.project.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > node ) {
-		return null;
-	}
-//	@Override
-//	protected void addChildren() {
-//	}
-//	@Override
-//	protected javax.swing.JComponent createMenuProxy() {
-//		return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.getMenuText() );
-//	}
 }

@@ -46,37 +46,14 @@ package org.alice.ide.ast.resource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceImportValueCreator<R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<R> {
-	private final java.util.Set<String> lowerCaseExtensions;
-	public ResourceImportValueCreator( java.util.UUID migrationId, String... lowerCaseSupportedExtensions ) {
-		super( migrationId );
-		this.lowerCaseExtensions = java.util.Collections.unmodifiableSet( edu.cmu.cs.dennisc.java.util.Collections.newHashSet( lowerCaseSupportedExtensions ) );
+public abstract class ResourceImportValueCreator<R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<org.lgna.project.ast.ResourceExpression,R> {
+	private final Class<R> resourceCls;
+	public ResourceImportValueCreator( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<R> importer, Class<R> resourceCls ) {
+		super( migrationId, importer );
+		this.resourceCls = resourceCls;
 	}
-	protected abstract R createResourceFromFile( java.io.File file ) throws java.io.IOException;
 	@Override
-	protected R createValue( java.io.File file ) {
-		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
-		if( extension != null && this.lowerCaseExtensions.contains( extension.toLowerCase() ) ) {
-			try {
-				return this.createResourceFromFile( file );
-			} catch( java.io.IOException ioe ) {
-				//todo
-				throw new RuntimeException( file.getAbsolutePath(), ioe );
-			}
-		} else {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "File extension for \"" );
-			sb.append( file.getName() );
-			sb.append( "\" is not in the supported set: { " );
-			String prefix = "";
-			for( String s : this.lowerCaseExtensions ) {
-				sb.append( prefix );
-				sb.append( s );
-				prefix = ", ";
-			}
-			sb.append( " }." );
-			org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
-			return null;
-		}
+	protected org.lgna.project.ast.ResourceExpression createValueFromImportedValue( R importedValue ) {
+		return new org.lgna.project.ast.ResourceExpression( this.resourceCls, importedValue );
 	}
 }

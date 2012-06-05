@@ -41,31 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast.cascade.resource;
+package org.alice.stageide.ast.source;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewImageResourceFillIn extends ImportNewResourceFillIn<org.lgna.common.resources.ImageResource> {
+public class AudioSourceImportValueCreator extends SourceImportValueCreator<org.lgna.story.AudioSource,org.lgna.common.resources.AudioResource> {
 	private static class SingletonHolder {
-		private static ImportNewImageResourceFillIn instance = new ImportNewImageResourceFillIn();
+		private static AudioSourceImportValueCreator instance = new AudioSourceImportValueCreator();
 	}
-	public static ImportNewImageResourceFillIn getInstance() {
+	public static AudioSourceImportValueCreator getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ImportNewImageResourceFillIn() {
-		super( java.util.UUID.fromString( "f77c38e2-1e37-412d-bdb8-d2f617653b89" ) );
-	}
-	@Override
-	protected String getMenuText() {
-		return "Import New Image Resource...";
-	}
-	@Override
-	protected org.alice.ide.resource.prompter.ResourcePrompter<org.lgna.common.resources.ImageResource> getResourcePrompter() {
-		return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
-	}
-	@Override
-	protected Class<org.lgna.common.resources.ImageResource> getResourceClass() {
-		return org.lgna.common.resources.ImageResource.class;
+	private AudioSourceImportValueCreator() {
+		super( java.util.UUID.fromString( "96a6722d-6394-4be2-adba-f096067f09e1" ), org.alice.ide.ast.importers.AudioResourceImporter.getInstance(), org.lgna.story.AudioSource.class, org.lgna.common.resources.AudioResource.class );
 	}
 }

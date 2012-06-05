@@ -40,44 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.resource.prompter;
 
+package org.alice.ide.ast.importers;
 
-//todo: rename
 /**
  * @author Dennis Cosgrove
  */
-public class ImageResourcePrompter extends ResourcePrompter< org.lgna.common.resources.ImageResource> {
-	private static final java.util.Set< String > extensionSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "png", "jpg", "gif", "bmp" );
-	private static ImageResourcePrompter singleton = new ImageResourcePrompter();
-	public static ImageResourcePrompter getSingleton() {
-		return singleton;
+public final class ImageResourceImporter extends org.lgna.croquet.importer.Importer< org.lgna.common.resources.ImageResource > { 
+	private static class SingletonHolder {
+		private static ImageResourceImporter instance = new ImageResourceImporter();
 	}
-	private ImageResourcePrompter() {
+	public static ImageResourceImporter getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected java.io.FilenameFilter createFilenameFilter() {
-		return org.lgna.common.resources.ImageResource.createFilenameFilter( true );
-	}
-	@Override
-	protected String getInitialFileText() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			return "*.png;*.jpg;*.gif;*.bmp";
-		} else {
-			return null;
-		}
+	private ImageResourceImporter() {
+		super(
+				java.util.UUID.randomUUID(), 
+				edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), 
+				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.png;*.jpg;*.gif;*.bmp" : null,
+				org.lgna.common.resources.ImageResource.createFilenameFilter( true ),
+				"png", "jpg", "gif", "bmp"
+		);
 	}
 	@Override
-	protected java.util.Set< String > getLowercaseSupportedExtensions() {
-		return extensionSet;
-	}
-	@Override
-	protected String getFileDialogTitle() {
-		return "Select Image File To Import";
-	}
-	
-	@Override
-	protected org.lgna.common.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
+	protected org.lgna.common.resources.ImageResource createFromFile( java.io.File file ) throws java.io.IOException {
 		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );
 	}
 }
