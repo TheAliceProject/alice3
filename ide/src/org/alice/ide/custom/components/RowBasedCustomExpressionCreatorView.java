@@ -55,9 +55,13 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
 	}
 	protected org.lgna.croquet.components.Component<?> createImmutableTextField( org.lgna.croquet.StringValue stringValue ) {
-		org.lgna.croquet.components.ImmutableTextField rv = stringValue.createImmutableTextField();
-		rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
-		return rv;
+		if( stringValue != null ) {
+			org.lgna.croquet.components.ImmutableTextField rv = stringValue.createImmutableTextField();
+			rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
+			return rv;
+		} else {
+			return new org.lgna.croquet.components.Label();
+		}
 	}
 	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
 		return new org.lgna.croquet.StringValue[] { this.getComposite().getValueLabel() };

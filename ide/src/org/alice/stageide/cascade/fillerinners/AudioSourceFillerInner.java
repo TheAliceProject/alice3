@@ -62,8 +62,8 @@ public class AudioSourceFillerInner extends SourceFillerInner< org.lgna.common.r
 		super.addItems( rv, details, isTop, prevExpression );
 		if( org.alice.ide.IDE.getActiveInstance().getCascadeManager().isPreviousExpressionSet() ) {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
-//			rv.add( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
+//			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
+			rv.add( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		}
 		return rv;
 	}

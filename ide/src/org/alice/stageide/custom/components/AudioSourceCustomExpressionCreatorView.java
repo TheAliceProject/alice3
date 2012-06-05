@@ -58,7 +58,8 @@ public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom
 				composite.getResourceLabel(),
 				composite.getVolumeLabel(),
 				composite.getStartMarkerLabel(),
-				composite.getStopMarkerLabel()
+				composite.getStopMarkerLabel(),
+				null
 		};
 	}
 	
@@ -69,7 +70,8 @@ public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom
 				composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ),
 				new VolumeLevelSlider( composite.getVolumeState() ),
 				composite.getStartMarkerState().createSlider(),
-				composite.getStopMarkerState().createSlider()
+				composite.getStopMarkerState().createSlider(),
+				composite.getTestOperation().createButton()
 		};
 	}
 }
