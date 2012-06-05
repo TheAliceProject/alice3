@@ -252,6 +252,10 @@ public abstract class Application {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
 	}
 
+	public java.io.File showOpenFileDialog( java.util.UUID sharingId, String title, java.io.File initialDirectory, String initialFilename ) {
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( sharingId, this.peekWindow().getAwtComponent(), title, initialDirectory, initialFilename );
+	}
+
 	private boolean isDragInProgress = false;
 
 	@Deprecated

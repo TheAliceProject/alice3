@@ -46,22 +46,36 @@ package org.alice.ide.ast.resource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceImportValueCreator<R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<R> {
+public abstract class ResourceImportValueCreator<R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<org.lgna.project.ast.ResourceExpression> {
 	private final java.util.Set<String> lowerCaseExtensions;
-	public ResourceImportValueCreator( java.util.UUID migrationId, String... lowerCaseSupportedExtensions ) {
+	private final Class<R> resourceCls;
+	public ResourceImportValueCreator( java.util.UUID migrationId, Class<R> resourceCls, String... lowerCaseSupportedExtensions ) {
 		super( migrationId );
+		this.resourceCls = resourceCls;
 		this.lowerCaseExtensions = java.util.Collections.unmodifiableSet( edu.cmu.cs.dennisc.java.util.Collections.newHashSet( lowerCaseSupportedExtensions ) );
 	}
 	protected abstract R createResourceFromFile( java.io.File file ) throws java.io.IOException;
 	@Override
-	protected R createValue( java.io.File file ) {
+	protected org.lgna.project.ast.ResourceExpression createValue( java.io.File file ) {
 		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
 		if( extension != null && this.lowerCaseExtensions.contains( extension.toLowerCase() ) ) {
 			try {
-				return this.createResourceFromFile( file );
+				R resource = this.createResourceFromFile( file );
+				org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+				if( ide != null ) {
+					org.lgna.project.Project project = ide.getProject();
+					if( project != null ) {
+						project.addResource( resource );
+					}
+				}
+				return new org.lgna.project.ast.ResourceExpression( this.resourceCls, resource );
 			} catch( java.io.IOException ioe ) {
-				//todo
-				throw new RuntimeException( file.getAbsolutePath(), ioe );
+				ioe.printStackTrace();
+				StringBuilder sb = new StringBuilder();
+				sb.append( "Unable to create resource from: " );
+				sb.append( file.getAbsolutePath() );
+				org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Exception Thrown", org.lgna.croquet.MessageType.ERROR );
+				return null;
 			}
 		} else {
 			StringBuilder sb = new StringBuilder();

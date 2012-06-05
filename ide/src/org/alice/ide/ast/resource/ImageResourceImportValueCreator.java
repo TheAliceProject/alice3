@@ -46,7 +46,7 @@ package org.alice.ide.ast.resource;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageResourceImportValueCreator extends ResourceImportValueCreator<org.lgna.common.Resource> {
+public class ImageResourceImportValueCreator extends ResourceImportValueCreator<org.lgna.common.resources.ImageResource> {
 	private static class SingletonHolder {
 		private static ImageResourceImportValueCreator instance = new ImageResourceImportValueCreator();
 	}
@@ -54,22 +54,22 @@ public class ImageResourceImportValueCreator extends ResourceImportValueCreator<
 		return SingletonHolder.instance;
 	}
 	private ImageResourceImportValueCreator() {
-		super( java.util.UUID.fromString( "644eb790-404f-40a0-b581-f05690b15f17" ), "png", "jpg", "gif", "bmp" );
+		super( java.util.UUID.fromString( "644eb790-404f-40a0-b581-f05690b15f17" ), org.lgna.common.resources.ImageResource.class, "png", "jpg", "gif", "bmp" );
 	}
 	@Override
 	protected java.io.FilenameFilter createFilenameFilter() {
-		return org.lgna.common.resources.AudioResource.createFilenameFilter( true );
+		return org.lgna.common.resources.ImageResource.createFilenameFilter( true );
 	}
 	@Override
 	protected String getInitialFileText() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			return "*.mp3;*.wav;*.au";
+			return "*.png;*.jpg;*.gif;*.bmp";
 		} else {
 			return null;
 		}
 	}
 	@Override
-	protected org.lgna.common.Resource createResourceFromFile( java.io.File file ) throws java.io.IOException {
+	protected org.lgna.common.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
 		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );
 	}
 }
