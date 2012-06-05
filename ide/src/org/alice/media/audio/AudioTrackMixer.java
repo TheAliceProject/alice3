@@ -10,6 +10,8 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState;
+
 
 /**
  * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
@@ -130,6 +132,7 @@ public class AudioTrackMixer {
 	public void write(OutputStream out) throws IOException
 	{
 		AudioInputStream audioInputStream = createAudioStream();
+		System.out.println(AudioSystem.isFileTypeSupported( AudioFileFormat.Type.WAVE ));
 		AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, out);
 	}
 	

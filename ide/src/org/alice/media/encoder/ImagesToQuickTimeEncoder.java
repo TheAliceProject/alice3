@@ -54,17 +54,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFileFormat.Type;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.alice.media.audio.AudioResourceConverter;
 import org.alice.media.audio.AudioTrackMixer;
 import org.alice.media.audio.ScheduledAudioStream;
+import org.lgna.common.resources.AudioResource;
 
 import ch.randelshofer.media.mp3.MP3AudioInputStream;
 import ch.randelshofer.media.quicktime.QuickTimeWriter;
 import ch.randelshofer.media.quicktime.QuickTimeWriter.VideoFormat;
+import edu.cmu.cs.dennisc.animation.Animation;
 import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
@@ -78,7 +83,8 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 	//	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(22050f, 16, 1, true, false);
 	private static float RATE_22 = 22050f;
 	private static float RATE_44 = 44100f;
-	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(AudioFormat.Encoding.ALAW,8000,8,1,1,8000,false);//*/new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
+	public final static AudioFormat TARGET_FORMAT_ALAW = new AudioFormat(AudioFormat.Encoding.ULAW,8000f,8,1,1,8000f,false);
+	private static AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 	private static VideoFormat QUICKTIME_VIDEO_FORMAT = VideoFormat.JPG;
 
 	private double framesPerSecond;
@@ -345,12 +351,13 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 
 	private File createAudioFile() {
 		if( this.audioStreams.size() > 0 ) {
-			AudioTrackMixer mixer = new AudioTrackMixer( QUICKTIME_AUDIO_FORMAT, movieLength() );
+			AudioTrackMixer mixer = new AudioTrackMixer( TARGET_FORMAT_ALAW, movieLength() );
 			for( ScheduledAudioStream stream : this.audioStreams ) {
 				mixer.addScheduledStream( stream );
 			}
 			try {
-				File tempFile = File.createTempFile( "TEMP_soundTrack", ".wav" );
+				Type type = AudioFileFormat.Type.AU;
+				File tempFile = File.createTempFile( "TEMP_soundTrack", type.getExtension() );
 				FileOutputStream out = new FileOutputStream( tempFile );
 				mixer.write( out );
 				out.close();
