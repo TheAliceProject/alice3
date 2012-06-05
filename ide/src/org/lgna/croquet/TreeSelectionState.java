@@ -81,23 +81,23 @@ class TreeNodeFillIn<T> extends CascadeFillIn< T, Void > {
 		this.node = node;
 	}
 	@Override
-	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.node;
 	}
 	@Override
-	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.node;
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.model.getTextForNode( this.node );
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.model.getIconForNode( this.node );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		throw new AssertionError();
 	}
 	@Override

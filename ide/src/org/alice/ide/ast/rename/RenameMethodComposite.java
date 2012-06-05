@@ -59,6 +59,6 @@ public class RenameMethodComposite extends RenameDeclarationComposite<org.lgna.p
 		return rv;
 	}
 	private RenameMethodComposite( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "5ce5b309-8163-437b-b5ed-c1fbdd6cd763" ), method );
+		super( java.util.UUID.fromString( "5ce5b309-8163-437b-b5ed-c1fbdd6cd763" ), new org.alice.ide.name.validators.MethodNameValidator( method ), method );
 	}
 }

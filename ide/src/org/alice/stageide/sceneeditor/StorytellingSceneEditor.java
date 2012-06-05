@@ -89,7 +89,6 @@ import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
-import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Entity;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Marker;
@@ -263,13 +262,20 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	protected SnapGrid snapGrid;
 	
 	
+	public static class SceneEditorProgramImp extends ProgramImp {
+		public SceneEditorProgramImp( org.lgna.story.Program abstraction ) {
+			super( abstraction, StorytellingSceneEditor.getInstance().onscreenLookingGlass );
+		}
+		@Override
+		public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+			return StorytellingSceneEditor.getInstance().animator;
+		}
+	}
+	
 	@Override
-	protected void setProgramInstance(UserInstance programInstance) 
-	{
-		super.setProgramInstance(programInstance);
-		ProgramImp programImplementation = ImplementationAccessor.getImplementation(getProgramInstanceInJava());
-		programImplementation.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator(this.animator);
-		programImplementation.setOnscreenLookingGlass(this.onscreenLookingGlass);
+	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance() {
+		ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( SceneEditorProgramImp.class );
+		return super.createProgramInstance();
 	}
 	
 	private void setSelectedFieldOnManipulator(UserField field)
@@ -754,7 +760,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		super.setActiveScene(sceneField);
 		
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
-		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setOnscreenLookingGlass(this.onscreenLookingGlass);
 
 		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
 		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getJavaInstance();
@@ -870,8 +875,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			this.onscreenLookingGlass.setRenderingEnabled(false);
 		}
 	}
-	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field) {
-		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField(field), this.getActiveSceneInstance() );
+	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, boolean getFullFieldState) {
+		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField(field), this.getActiveSceneInstance(), getFullFieldState );
 	}
 	
 	@Override
@@ -894,7 +899,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		
 		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
 		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
-		this.fillInAutomaticSetUpMethod( bs.statements, false, field );
+		this.fillInAutomaticSetUpMethod( bs.statements, false, field, true );
 		this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
 		Statement setVehicleStatement = null;
 		for (Statement statement : bs.statements.getValue()) {
@@ -932,12 +937,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
 		
 		org.lgna.project.ast.AbstractField sceneField = this.getActiveSceneField();
-		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
+		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField, false );
 		for( org.lgna.project.ast.AbstractField field : this.getActiveSceneType().getDeclaredFields() ) {
 			if( field instanceof UserField ) {
 				UserField userField = (UserField)field;
 				if( userField.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-					this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
+					this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field, false );
 				}
 			}
 		}
@@ -985,7 +990,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	@Override
 	public org.lgna.project.ast.Statement[] getUndoStatementsForRemoveField(org.lgna.project.ast.UserField field) {
 		Object instance = this.getInstanceInJavaVMForField(field);
-		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance());
+		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance(false, instance, this.getActiveSceneInstance(), false);
 	}
 	
 	@Override

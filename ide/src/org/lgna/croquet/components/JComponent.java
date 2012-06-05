@@ -102,6 +102,38 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 	private void revalidate() {
 		this.getAwtComponent().revalidate();
 	}
+	
+	public static enum Condition {
+		WHEN_FOCUSED( javax.swing.JComponent.WHEN_FOCUSED ),
+		WHEN_IN_FOCUSED_WINDOW( javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW ),
+		WHEN_ANCESTOR_OF_FOCUSED_COMPONENT( javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
+		private int internal;
+		private Condition( int internal ) {
+			this.internal = internal;
+		}
+		private int getInternal() {
+			return this.internal;
+		}
+		public static Condition valueOf( int constant ) {
+			switch( constant ) {
+			case javax.swing.JComponent.WHEN_FOCUSED:
+				return WHEN_FOCUSED;
+			case javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW:
+				return WHEN_IN_FOCUSED_WINDOW;
+			case javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT:
+				return WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
+			default:
+				return null;
+			}
+		}
+	}
+	public void registerKeyboardAction( java.awt.event.ActionListener actionListener, javax.swing.KeyStroke keyStroke, Condition condition ) {
+		this.getAwtComponent().registerKeyboardAction( actionListener, keyStroke, condition.getInternal() );
+	}
+	public void unregisterKeyboardAction( javax.swing.KeyStroke keyStroke ) {
+		this.getAwtComponent().unregisterKeyboardAction( keyStroke );
+	}
+	
 
 	public void revalidateAndRepaint() {
 		this.revalidate();

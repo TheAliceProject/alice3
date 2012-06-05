@@ -343,7 +343,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public org.lgna.croquet.CascadeItem< ?, ? > getCustomFillInFor( org.lgna.project.annotations.ValueDetails< ? > valueDetails ) {
 		if( valueDetails instanceof org.lgna.story.annotation.PortionDetails ) {
-			return org.alice.stageide.croquet.models.custom.CustomPortionInputDialogOperation.getInstance().getFillIn();
+			return org.alice.ide.custom.PortionCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
+		} else if( valueDetails instanceof org.lgna.story.annotation.VolumeLevelDetails ) {
+//			return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
+			return org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
 		} else {
 			return null;
 		}
@@ -377,6 +380,9 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.JavaType> rv) {
 		super.addSecondaryJavaTypes(rv);
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Entity.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ) );

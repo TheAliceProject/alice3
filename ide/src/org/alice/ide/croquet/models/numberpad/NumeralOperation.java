@@ -76,7 +76,7 @@ public class NumeralOperation extends NumberPadOperation {
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		this.numberModel.append( this.numeral );
+		this.numberModel.replaceSelection( this.numeral );
 		step.finish();
 	}
 }

@@ -162,7 +162,7 @@ public class SetUpMethodGenerator {
 
 	public static org.lgna.project.ast.Statement createOrientationStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Orientation orientation, double duration ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
 		org.lgna.project.ast.ExpressionStatement orientationStatement = createStatement( 
-				org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", new Class< ? >[] { org.lgna.story.Orientation.class, org.lgna.story.OrientTo.Detail[].class },
+				org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", new Class< ? >[] { org.lgna.story.Orientation.class, org.lgna.story.SetOrientationRelativeToVehicle.Detail[].class },
 				SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( orientation ) 
 		);
 		if (duration != -1) {
@@ -179,7 +179,7 @@ public class SetUpMethodGenerator {
 	
 	public static org.lgna.project.ast.Statement createPositionStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Position position, double duration ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
 		org.lgna.project.ast.ExpressionStatement positionStatement = createStatement( 
-				org.lgna.story.MovableTurnable.class, "setPositionRelativeToVehicle", new Class< ? >[] { org.lgna.story.Position.class, org.lgna.story.MoveTo.Detail[].class },
+				org.lgna.story.MovableTurnable.class, "setPositionRelativeToVehicle", new Class< ? >[] { org.lgna.story.Position.class, org.lgna.story.SetPositionRelativeToVehicle.Detail[].class },
 				SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( position ) 
 		);
 		if (duration != -1) {
@@ -317,7 +317,7 @@ public class SetUpMethodGenerator {
 		return getJointMethod;
 	}
 	
-	public static org.lgna.project.ast.Statement[] getSetupStatementsForInstance(boolean isThis, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance)
+	public static org.lgna.project.ast.Statement[] getSetupStatementsForInstance(boolean isThis, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance, boolean captureFullState)
 	{
 		java.util.List< org.lgna.project.ast.Statement > statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
@@ -421,14 +421,14 @@ public class SetUpMethodGenerator {
 									org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.ImplementationAccessor.getImplementation(jointEntity);
 									edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = gottenJoint.getLocalTransformation();
 									edu.cmu.cs.dennisc.math.AffineMatrix4x4 originalTransform = gottenJoint.getOriginalTransformation();
-									if (!currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
+									if (captureFullState || !currentTransform.orientation.isWithinReasonableEpsilonOf(originalTransform.orientation)) {
 										try {
 											org.lgna.story.Orientation orientation = jointEntity.getOrientationRelativeToVehicle();
-											statements.add( 
-												createStatement( 
-														org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", org.lgna.story.Orientation.class, 
-														getJointExpression, getExpressionCreator().createExpression( orientation ) 
-												));
+											org.lgna.project.ast.ExpressionStatement orientationStatement = createStatement( 
+													org.lgna.story.Turnable.class, "setOrientationRelativeToVehicle", new Class< ? >[] { org.lgna.story.Orientation.class, org.lgna.story.SetOrientationRelativeToVehicle.Detail[].class },
+													getJointExpression, getExpressionCreator().createExpression( orientation ) 
+											);
+											statements.add(orientationStatement);
 										} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 											throw new RuntimeException( ccee );
 										}
@@ -445,14 +445,14 @@ public class SetUpMethodGenerator {
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statements, org.lgna.project.ast.Statement.class );
 	}
 	
-	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance ) {
+	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance, boolean getFullState ) {
 		if( instance != null ) {
 			if( instance instanceof org.lgna.story.Entity ) {
 				org.lgna.story.Entity entity = (org.lgna.story.Entity)instance;
 				entity.setName( field.getName() );
 			}
 			
-			org.lgna.project.ast.Statement[] setupStatements = getSetupStatementsForInstance(isThis, instance, sceneInstance);
+			org.lgna.project.ast.Statement[] setupStatements = getSetupStatementsForInstance(isThis, instance, sceneInstance, getFullState);
 			bodyStatementsProperty.add(setupStatements);
 		}
 	}

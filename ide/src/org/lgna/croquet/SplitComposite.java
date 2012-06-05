@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitComposite extends Composite< org.lgna.croquet.components.SplitPane >{
+public abstract class SplitComposite extends AbstractComposite< org.lgna.croquet.components.SplitPane >{
 	private Composite< ? > leadingComposite;
 	private Composite< ? > trailingComposite;
 	public SplitComposite( java.util.UUID id, Composite< ? > leadingComposite, Composite< ? > trailingComposite ) {

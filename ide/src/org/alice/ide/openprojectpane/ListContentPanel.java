@@ -78,7 +78,7 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 		list.setVisibleRowCount( -1 );
 		list.addMouseListener( this.mouseAdapter );
 		list.addMouseMotionListener( this.mouseAdapter );
-		list.getAwtComponent().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
+		list.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
 		this.addComponent( list, Constraint.CENTER );
 	}
 	protected javax.swing.ListCellRenderer createListCellRenderer() {

@@ -253,7 +253,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		this.stopIcon = new ImageIcon( VideoCapturePane.class.getResource( "images/stop_button.png" ));
 		this.recordButton.setIcon( this.recordIcon );
 		
-		this.pathLabel = new JLabel(getDefaultDirectory());
+		this.pathLabel = new JLabel(getDefaultDirectory().getAbsolutePath());
 		this.pathLabel.setFont(  this.getFont().deriveFont(Font.ITALIC) );
 		this.fileNameField = new JTextField(16);
 		this.fileNameField.setForeground( NEUTRAL_TEXT_COLOR );
@@ -774,9 +774,9 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		worker.execute();
 	}
 	
-	private String getDefaultDirectory()
+	private File getDefaultDirectory()
 	{
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath();
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
 	}
 	
 	private String getDefaultFilename()

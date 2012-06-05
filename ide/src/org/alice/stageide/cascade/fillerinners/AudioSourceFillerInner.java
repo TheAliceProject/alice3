@@ -51,7 +51,7 @@ public class AudioSourceFillerInner extends SourceFillerInner< org.lgna.common.r
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getImportFillIn() {
-		return new org.alice.stageide.croquet.models.cascade.source.ImportNewAudioSourceFillIn();
+		return org.alice.stageide.ast.source.AudioSourceImportValueCreator.getInstance().getFillIn();
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.lgna.common.resources.AudioResource resource ) {
@@ -63,6 +63,7 @@ public class AudioSourceFillerInner extends SourceFillerInner< org.lgna.common.r
 		if( org.alice.ide.IDE.getActiveInstance().getCascadeManager().isPreviousExpressionSet() ) {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
+//			rv.add( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		}
 		return rv;
 	}

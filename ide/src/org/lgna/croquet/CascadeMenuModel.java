@@ -72,8 +72,8 @@ public abstract class CascadeMenuModel< FB > extends CascadeBlankOwner< FB, FB >
 		return this.getSelectedFillInContext( itemNode ).getTransientValue();
 	}
 	@Override
-	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode ) {
-		return this.getSelectedFillInContext( itemNode ).createValue();
+	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		return this.getSelectedFillInContext( itemNode ).createValue( transactionHistory );
 	}
 	protected boolean isBackedByIconProxy() {
 		return true;

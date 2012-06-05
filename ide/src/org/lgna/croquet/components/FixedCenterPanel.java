@@ -46,38 +46,19 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class FixedCenterPanel extends Panel {
+public class FixedCenterPanel extends SingleComponentPanel {
 	public FixedCenterPanel( Component<?> centerPanel ) {
-		this.internalAddComponent( centerPanel );
+		super( centerPanel );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.LayoutManager() {
-			public void addLayoutComponent( String name, java.awt.Component comp ) {
-			}
-			public void removeLayoutComponent( java.awt.Component comp ) {
-			}
-			private java.awt.Dimension layoutSize( java.awt.Container parent ) {
-				if( parent.getComponentCount() > 0 ) {
-					return parent.getComponent( 0 ).getPreferredSize();
-				} else {
-					return new java.awt.Dimension();
-				}
-			}
-			public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
-				return this.layoutSize( parent );
-			}
-			public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
-				return this.layoutSize( parent );
-			}
-			public void layoutContainer( java.awt.Container parent ) {
-				if( parent.getComponentCount() > 0 ) {
-					java.awt.Dimension parentSize = parent.getSize();
-					java.awt.Component component = parent.getComponent( 0 );
-					java.awt.Dimension componentSize = component.getPreferredSize();
-					component.setLocation( ( parentSize.width - componentSize.width ) / 2, ( parentSize.height - componentSize.height ) / 2 );
-					component.setSize( componentSize );
-				}
+		return new SingleComponentLayoutManager() {
+			@Override
+			protected void layoutComponent( java.awt.Container parent, java.awt.Component component ) {
+				java.awt.Dimension parentSize = parent.getSize();
+				java.awt.Dimension componentSize = component.getPreferredSize();
+				component.setLocation( ( parentSize.width - componentSize.width ) / 2, ( parentSize.height - componentSize.height ) / 2 );
+				component.setSize( componentSize );
 			}
 		};
 	}

@@ -80,9 +80,9 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 			{
 				duration = 0;
 			}
-			else if (dist < .2)
+			else if (dist < .5)
 			{
-				duration = (dist - .02) / (.1 - .02);
+				duration = (dist - .02) / (.5 - .02);
 			}
 			
 			

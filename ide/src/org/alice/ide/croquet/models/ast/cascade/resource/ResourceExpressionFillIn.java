@@ -53,11 +53,11 @@ public abstract class ResourceExpressionFillIn<T extends org.lgna.common.Resourc
 		this.transientValue = new org.lgna.project.ast.ResourceExpression( resourceCls, resource );
 	}
 	@Override
-	public final org.lgna.project.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > step ) {
+	public final org.lgna.project.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.ResourceExpression( this.transientValue.getType(), this.transientValue.resource.getValue() );
 	}
 	@Override
-	public final org.lgna.project.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > step ) {
+	public final org.lgna.project.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > node ) {
 		return this.transientValue;
 	}
 }

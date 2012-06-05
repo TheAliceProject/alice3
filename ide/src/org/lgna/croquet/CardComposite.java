@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardComposite extends Composite< org.lgna.croquet.components.CardPanel > {
+public abstract class CardComposite extends AbstractComposite< org.lgna.croquet.components.CardPanel > {
 	private final java.util.List< Composite< ? > > cards;
 	private Composite<?> showingCard;
 	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
@@ -62,6 +62,9 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	}
 	public void removeCard( Composite<?> card ) {
 		this.cards.remove( card );
+	}
+	public Composite<?> getShowingCard() {
+		return this.showingCard;
 	}
 	
 	@Override
