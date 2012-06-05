@@ -77,6 +77,7 @@ import org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy;
 import org.lgna.croquet.components.View;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
@@ -198,7 +199,10 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 						invocationCounts = new InvocationCounts();
 						this.mapMethodToInvocationCounts.put( invocationOwner, invocationCounts );
 					}
-					invocationCounts.addInvocation( invocation );
+					Statement statement = invocation.getFirstAncestorAssignableTo( Statement.class );
+					if( statement.isEnabled.getValue() ) {
+						invocationCounts.addInvocation( invocation );
+					}
 				}
 			}
 		}
