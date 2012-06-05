@@ -257,10 +257,10 @@ public class FileDialogUtilities {
 		}
 		return rv;
 	}
-	public static java.io.File showOpenFileDialog( java.util.UUID sharingId, java.awt.Component component, String title, java.io.File initialDirectory, String initialFilename ) {
+	public static java.io.File showOpenFileDialog( java.util.UUID sharingId, java.awt.Component component, String title, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter ) {
 		return showFileDialog( java.awt.FileDialog.LOAD, sharingId, component, title, initialDirectory, initialFilename, null );
 	}
-	public static java.io.File showSaveFileDialog( java.util.UUID sharingId, java.awt.Component component, String title, java.io.File initialDirectory, String initialFilename, String extensionToAddIfMissing ) {
+	public static java.io.File showSaveFileDialog( java.util.UUID sharingId, java.awt.Component component, String title, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter, String extensionToAddIfMissing ) {
 		return showFileDialog( java.awt.FileDialog.SAVE, sharingId, component, title, initialDirectory, initialFilename, extensionToAddIfMissing );
 	}
 }

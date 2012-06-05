@@ -54,22 +54,6 @@ public final class AudioResourceImportValueCreator extends ResourceImportValueCr
 		return SingletonHolder.instance;
 	}
 	private AudioResourceImportValueCreator() {
-		super( java.util.UUID.fromString( "218690dc-9792-43ff-857c-1d51cd29d2ea" ), org.lgna.common.resources.AudioResource.class, "mp3", "wav", "au" );
-	}
-	@Override
-	protected java.io.FilenameFilter createFilenameFilter() {
-		return org.lgna.common.resources.AudioResource.createFilenameFilter( true );
-	}
-	@Override
-	protected String getInitialFileText() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			return "*.mp3;*.wav;*.au";
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected org.lgna.common.resources.AudioResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
-		return edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createAudioResource( file );
+		super( java.util.UUID.fromString( "218690dc-9792-43ff-857c-1d51cd29d2ea" ), org.alice.ide.ast.importers.AudioResourceImporter.getInstance(), org.lgna.common.resources.AudioResource.class );
 	}
 }

@@ -225,17 +225,9 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 					"Import Audio...", "Import Image..." }, null );
 			switch( result ) {
 			case javax.swing.JOptionPane.YES_OPTION:
-				try {
-					return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( frame );
-				} catch( java.io.IOException ioe ) {
-					throw new RuntimeException( ioe );
-				}
+				return org.alice.ide.ast.importers.AudioResourceImporter.getInstance().createValue( "Import Audio" );
 			case javax.swing.JOptionPane.NO_OPTION:
-				try {
-					return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( frame );
-				} catch( java.io.IOException ioe ) {
-					throw new RuntimeException( ioe );
-				}
+				return org.alice.ide.ast.importers.ImageResourceImporter.getInstance().createValue( "Import Image" );
 			default:
 				return null;
 			}
@@ -491,31 +483,23 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 				org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
 				if( resource instanceof org.lgna.common.resources.ImageResource ) {
 					org.lgna.common.resources.ImageResource prevImageResource = (org.lgna.common.resources.ImageResource)resource;
-					try {
-						org.lgna.common.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( frame );
-						if( nextImageResource != null ) {
-							prevCapsule = new ImageCapsule( prevImageResource );
-							nextCapsule = new ImageCapsule( nextImageResource );
-						} else {
-							prevCapsule = null;
-							nextCapsule = null;
-						}
-					} catch( java.io.IOException ioe ) {
-						throw new RuntimeException( ioe );
+					org.lgna.common.resources.ImageResource nextImageResource = org.alice.ide.ast.importers.ImageResourceImporter.getInstance().createValue( "Replace Image" );
+					if( nextImageResource != null ) {
+						prevCapsule = new ImageCapsule( prevImageResource );
+						nextCapsule = new ImageCapsule( nextImageResource );
+					} else {
+						prevCapsule = null;
+						nextCapsule = null;
 					}
 				} else if( resource instanceof org.lgna.common.resources.AudioResource ) {
 					org.lgna.common.resources.AudioResource prevAudioResource = (org.lgna.common.resources.AudioResource)resource;
-					try {
-						org.lgna.common.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( frame );
-						if( nextAudioResource != null ) {
-							prevCapsule = new AudioCapsule( prevAudioResource );
-							nextCapsule = new AudioCapsule( nextAudioResource );
-						} else {
-							prevCapsule = null;
-							nextCapsule = null;
-						}
-					} catch( java.io.IOException ioe ) {
-						throw new RuntimeException( ioe );
+					org.lgna.common.resources.AudioResource nextAudioResource = org.alice.ide.ast.importers.AudioResourceImporter.getInstance().createValue( "Replace Audio" );
+					if( nextAudioResource != null ) {
+						prevCapsule = new AudioCapsule( prevAudioResource );
+						nextCapsule = new AudioCapsule( nextAudioResource );
+					} else {
+						prevCapsule = null;
+						nextCapsule = null;
 					}
 				} else {
 					prevCapsule = null;

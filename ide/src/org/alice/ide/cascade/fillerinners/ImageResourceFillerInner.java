@@ -55,7 +55,6 @@ public class ImageResourceFillerInner extends ResourceFillerInner< org.lgna.comm
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getImportNewResourceFillIn() {
-		//return org.alice.ide.ast.resource.ImageResourceImportValueCreator.getInstance().getFillIn();
-		return org.alice.ide.croquet.models.ast.cascade.resource.ImportNewImageResourceFillIn.getInstance();
+		return org.alice.ide.ast.resource.ImageResourceImportValueCreator.getInstance().getFillIn();
 	}
 }

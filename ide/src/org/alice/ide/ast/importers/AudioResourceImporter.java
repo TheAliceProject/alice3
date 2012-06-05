@@ -40,57 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.resource.prompter;
 
-//todo: rename
+package org.alice.ide.ast.importers;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourcePrompter<E extends org.lgna.common.Resource> {
-	protected abstract String getInitialFileText();
-	protected abstract java.util.Set< String > getLowercaseSupportedExtensions();
-	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;
-	protected abstract String getFileDialogTitle();
-	protected abstract java.io.FilenameFilter createFilenameFilter();
-	public E promptUserForResource( org.lgna.croquet.components.Frame owner ) throws java.io.IOException {
-		java.io.File initialDirectory = null;
-		java.io.File file = org.alice.ide.IDE.getActiveInstance().showOpenFileDialog( initialDirectory, this.getInitialFileText(), edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath(), true );
-		if( file != null ) {
-			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
-			java.util.Set< String > set = this.getLowercaseSupportedExtensions();
-			if( extension != null && set.contains( extension ) ) {
-				return this.createResourceFromFile( file );
-			} else {
-				StringBuilder sb = new StringBuilder();
-				sb.append( "File extension for \"" );
-				sb.append( file.getName() );
-				sb.append( "\" is not in the supported set: { " );
-				String prefix = "";
-				for( String s : set ) {
-					sb.append( prefix );
-					sb.append( s );
-					prefix = ", ";
-				}
-				sb.append( " }." );
-				org.alice.ide.IDE.getActiveInstance().showMessageDialog( sb.toString(), "Content Type Not Supported", org.lgna.croquet.MessageType.ERROR );
-				return null;
-			}
-		} else {
-			return null;
-		}
-//		java.awt.FileDialog fileDialog = new java.awt.FileDialog( owner.getAwtComponent() );
-//		fileDialog.setTitle( this.getFileDialogTitle() );
-//		fileDialog.setFilenameFilter( this.createFilenameFilter() );
-//		fileDialog.setFile( this.getInitialFileText() );
-//		fileDialog.setMode( java.awt.FileDialog.LOAD );
-//		fileDialog.setVisible( true );
-//		String filename = fileDialog.getFile();
-//		if( filename != null ) {
-//			java.io.File directory = new java.io.File( fileDialog.getDirectory() );
-//			java.io.File file = new java.io.File( directory, filename );
-//			return this.createResourceFromFile( file );
-//		} else {
-//			return null;			
-//		}
+public class AudioResourceImporter extends org.lgna.croquet.importer.Importer< org.lgna.common.resources.AudioResource > { 
+	private static class SingletonHolder {
+		private static AudioResourceImporter instance = new AudioResourceImporter();
+	}
+	public static AudioResourceImporter getInstance() {
+		return SingletonHolder.instance;
+	}
+	private AudioResourceImporter() {
+		super(
+				java.util.UUID.randomUUID(), 
+				edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), 
+				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
+				org.lgna.common.resources.AudioResource.createFilenameFilter( true ),
+				"mp3", "wav", "au"
+		);
+	}
+	@Override
+	protected org.lgna.common.resources.AudioResource createFromFile( java.io.File file ) throws java.io.IOException {
+		return edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createAudioResource( file );
 	}
 }

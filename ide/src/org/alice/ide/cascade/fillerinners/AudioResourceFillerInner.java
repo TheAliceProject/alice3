@@ -55,7 +55,6 @@ public class AudioResourceFillerInner extends ResourceFillerInner< org.lgna.comm
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getImportNewResourceFillIn() {
-		//return org.alice.ide.ast.resource.AudioResourceImportValueCreator.getInstance().getFillIn();
-		return org.alice.ide.croquet.models.ast.cascade.resource.ImportNewAudioResourceFillIn.getInstance();
+		return org.alice.ide.ast.resource.AudioResourceImportValueCreator.getInstance().getFillIn();
 	}
 }
