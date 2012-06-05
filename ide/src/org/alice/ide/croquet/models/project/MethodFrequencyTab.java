@@ -278,13 +278,14 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 				AbstractMethod method = methodInvocation.method.getValue();
-
-				List<MethodInvocation> list = this.mapMethodToInvocations.get( method );
-				if( list != null ) {
-					list.add( methodInvocation );
-				} else {
-					list = Collections.newLinkedList( methodInvocation );
-					this.mapMethodToInvocations.put( method, list );
+				if( !method.getDeclaringType().isAssignableTo( org.lgna.story.Program.class ) ) {
+					List<MethodInvocation> list = this.mapMethodToInvocations.get( method );
+					if( list != null ) {
+						list.add( methodInvocation );
+					} else {
+						list = Collections.newLinkedList( methodInvocation );
+						this.mapMethodToInvocations.put( method, list );
+					}
 				}
 			}
 		}
