@@ -88,12 +88,11 @@ class TimeSlider extends javax.swing.JSlider {
 		this.setEnabled( Double.isNaN( this.duration )==false );
 		this.updateValue();
 	}
-	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	public double getTime() {
 		if( Double.isNaN( this.time ) ) {
 			return this.time;
 		} else {
-			return edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatAndParse( this.time, format, this.time );
+			return edu.cmu.cs.dennisc.java.lang.DoubleUtilities.round( this.time, 2 );
 		}
 	}
 	public void setTime( double time ) {
