@@ -47,9 +47,9 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCreator {
-	public static final java.text.DecimalFormat MILLI_FORMAT = new java.text.DecimalFormat( "#.###" ); 
-	public static final java.text.DecimalFormat MICRO_FORMAT = new java.text.DecimalFormat( "#.######" ); 
-	public static final java.text.DecimalFormat DEFAULT_FORMAT = MICRO_FORMAT; 
+	public static final int MILLI_DECIMAL_PLACES = 3; 
+	public static final int MICRO_DECIMAL_PLACES = 6; 
+	public static final int DEFAULT_DECIMAL_PLACES = MICRO_DECIMAL_PLACES; 
 
 	public static final class CannotCreateExpressionException extends Exception {
 		private final Object value;
@@ -70,14 +70,12 @@ public abstract class ExpressionCreator {
 			throw new RuntimeException( fld.toGenericString() );
 		}
 	}
-	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value, java.text.NumberFormat format ) {
-		if( format != null ) {
-			value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.formatAndParse( value, format, value );
-		}
+	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value, int decimalPlaces ) {
+		value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.round( value, decimalPlaces );
 		return new org.lgna.project.ast.DoubleLiteral( value );
 	}
 	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value ) {
-		return this.createDoubleExpression( value, DEFAULT_FORMAT );
+		return this.createDoubleExpression( value, DEFAULT_DECIMAL_PLACES );
 	}
 	protected final org.lgna.project.ast.Expression createIntegerExpression( Integer value ) {
 		return new org.lgna.project.ast.IntegerLiteral( value );
