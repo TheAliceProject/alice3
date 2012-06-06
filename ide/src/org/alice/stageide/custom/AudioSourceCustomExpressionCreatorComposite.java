@@ -65,6 +65,20 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
 	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
 
+	private org.lgna.croquet.State.ValueListener<Integer> startValueListiner = new org.lgna.croquet.State.ValueListener<Integer>() {
+		public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+			updateStopValueIfNecessary();
+		}
+	};
+	private org.lgna.croquet.State.ValueListener<Integer> stopValueListiner = new org.lgna.croquet.State.ValueListener<Integer>() {
+		public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+			updateStartValueIfNecessary();
+		}
+	};
 	private double toDouble( int markerValue, double defaultValue ) {
 		org.lgna.common.resources.AudioResource audioResource = this.getAudioResourceExpressionState().getAudioResource();
 		double duration;
@@ -81,6 +95,41 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 			return value;
 		}
 	}
+	
+	private boolean isIgnoringValueChanges;
+	private void updateStartValueIfNecessary() {
+		if( this.isIgnoringValueChanges ) {
+			//pass
+		} else {
+			int start = this.startMarkerState.getValue();
+			int stop = this.stopMarkerState.getValue();
+			if( start > stop ) {
+				this.isIgnoringValueChanges = true;
+				try {
+					this.startMarkerState.setValueTransactionlessly( stop );
+				} finally {
+					this.isIgnoringValueChanges = false;
+				}
+			}
+		}
+	}
+	private void updateStopValueIfNecessary() {
+		if( this.isIgnoringValueChanges ) {
+			//pass
+		} else {
+			int start = this.startMarkerState.getValue();
+			int stop = this.stopMarkerState.getValue();
+			if( start > stop ) {
+				this.isIgnoringValueChanges = true;
+				try {
+					this.stopMarkerState.setValueTransactionlessly( start );
+				} finally {
+					this.isIgnoringValueChanges = false;
+				}
+			}
+		}
+	}
+	
 	private double getStartMarkerTime() {
 		int value = this.startMarkerState.getValue();
 		return toDouble( value, 0.0 );
@@ -110,6 +159,8 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	
 	private AudioSourceCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "786280be-fdba-4135-bcc4-b0548ded2e50" ) ); 
+		this.startMarkerState.addValueListener( this.startValueListiner );
+		this.stopMarkerState.addValueListener( this.stopValueListiner );
 	}
 	
 	public org.lgna.croquet.StringValue getResourceLabel() {
