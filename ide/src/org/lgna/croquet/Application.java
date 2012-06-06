@@ -53,6 +53,8 @@ public abstract class Application {
 	public static final Group INFORMATION_GROUP = Group.getInstance( java.util.UUID.fromString( "c883259e-3346-49d0-a63f-52eeb3d9d805" ), "INFORMATION_GROUP" );
 	public static final Group INHERIT_GROUP = Group.getInstance( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
 
+	private final org.lgna.croquet.history.TransactionHistory transactionHistory;
+
 	private static Application singleton;
 	public static Application getActiveInstance() {
 		return singleton;
@@ -64,11 +66,16 @@ public abstract class Application {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
+		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		org.lgna.croquet.history.TransactionManager.startListeningToMenuSelection();
 	}
-	
+
+	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
+		return this.transactionHistory;
+	}
+
 	public abstract Document getDocument();
-	
+
 	public void pushWindow( org.lgna.croquet.components.AbstractWindow< ? > window ) {
 		this.stack.push( window );
 	}
