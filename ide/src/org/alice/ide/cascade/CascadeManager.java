@@ -271,9 +271,14 @@ public abstract class CascadeManager {
 //			edu.cmu.cs.dennisc.croquet.ModelContext<?> parent = step.getParent();
 //			boolean isRoot = parent instanceof edu.cmu.cs.dennisc.croquet.CascadeRootContext;
 			boolean isRoot = blankNode.isTop();
-			if( isRoot && this.isPreviousExpressionSet() ) {
-				rv.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+			if( isRoot && previousExpression != null ) {
+				if( type.isAssignableFrom( previousExpression.getType() ) ) {
+					rv.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
+					rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( previousExpression );
+				}
 			}
 			this.addCustomFillIns( rv, blankNode, type );
 			type = getTypeFor( type );
@@ -308,7 +313,7 @@ public abstract class CascadeManager {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			if( type.isArray() ) {
 				rv.add( org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( type.getComponentType() ).getFillIn() );
-				//rv.add( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( type.getComponentType() ).getValueCreator().getFillIn() );
+				//rv.add( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( type ).getValueCreator().getFillIn() );
 			}
 		} else {
 			//todo:
