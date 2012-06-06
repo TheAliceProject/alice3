@@ -23,7 +23,7 @@ public class IsShowingHackTutorialState extends BooleanState {
 							org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().setValue( true );
 							org.alice.ide.IDE.getActiveInstance().getSimplePresentation().showStencilsPresentation();
 						} else {
-							org.alice.ide.IDE.getActiveInstance().getSimplePresentation().showStencilsPresentation();
+							org.alice.ide.IDE.getActiveInstance().getSimplePresentation().hideStencilsPresentation();
 						}
 					}
 				});
