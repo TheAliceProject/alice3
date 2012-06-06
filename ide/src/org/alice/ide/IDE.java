@@ -322,12 +322,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.splashScreen != null ) {
 			this.splashScreen.setVisible( false );
 		}
-		// TODO: <kjh/> load default project? // TODO: Fix transaction history for application.
-		// I need to rethink this level of interaction...
-		if( (this.getProject() == null) && !this.isDefaultProjectLoaded() ) {
+		if( this.getUri() != null ) {
+			//pass
+		} else {
 			this.setPerspective( org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() );
-			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
-		} else if ( this.isDefaultProjectLoaded() ) {
 			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 		}
 	}

@@ -75,22 +75,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		};
 	}
 
-	private boolean isDefaultProjectLoaded = false;
-	public boolean isDefaultProjectLoaded() {
-		return this.isDefaultProjectLoaded;
-	}
-
 	@Override
 	public void initialize(java.lang.String[] args) {
 		super.initialize(args);
-
-		// Make sure we open the default project, if there isn't a project open.
-		org.lgna.project.Project project = this.getProject();
-		if ( project == null ) {
-			this.loadDefaultProject();
-		}
-
-		assert this.getProject() != null;
 	}
 
 	private void updateUndoRedoEnabled() {
@@ -112,7 +99,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	public abstract String getApplicationName();
 	public abstract String getVersionText();
 	public abstract String getVersionAdornment();
-	
+
 	private void showUnableToOpenFileDialog( java.io.File file, String message ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Unable to open file " );
@@ -132,7 +119,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		sb.append( ")" );
 		this.showUnableToOpenFileDialog( file, sb.toString() );
 	}
-	
+
 	private void showUnableToOpenProjectMessageDialog( java.io.File file, boolean isValidZip ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Look for files with an " );
@@ -208,7 +195,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			}
 			this.setProject( project );
 			this.uri = uri;
-			this.isDefaultProjectLoaded = false;
 			this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
 			try {
 				if( file != null && file.canWrite() ) {
@@ -281,7 +267,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	private void setDocument( ProjectDocument document ) {
 		org.alice.ide.project.ProjectDocumentState.getInstance().setValue( document );
 	}
-	
+
 	// TODO: <kjh/> Should these really be here anymore? It feels like not...
 	public org.lgna.project.Project getProject() {
 		ProjectDocument document = this.getDocument();
@@ -289,13 +275,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 	public void setProject( org.lgna.project.Project project ) {
 		this.setDocument( new ProjectDocument( project ) );
-	}
-
-	public void loadDefaultProject() {
-		// TODO: <kjh/> hack. hack. hack. 
-		this.isDefaultProjectLoaded = true;
-		this.loadProjectFrom( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS.getUri() );
-		this.isDefaultProjectLoaded = true;
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getProjectTransactionHistory() {
