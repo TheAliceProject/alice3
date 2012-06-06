@@ -52,9 +52,6 @@ public class Project {
 	private final java.util.Map/*< org.lgna.project.properties.PropertyKey< T >, T >*/ propertyMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 
-	private final org.lgna.croquet.history.TransactionHistory transactionHistory;
-	private final org.alice.ide.ProjectHistoryManager projectHistoryManager;
-
 	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.lgna.common.Resource > resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
@@ -62,19 +59,6 @@ public class Project {
 	}
 	public Project( org.lgna.project.ast.NamedUserType programType ) {
 		this.programType = programType;
-		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		this.projectHistoryManager = new org.alice.ide.ProjectHistoryManager( this );
-
-		// TODO: Once decoding and encoding work, enable it!
-		//this.putValueFor( org.lgna.croquet.history.TransactionHistory.INTERACTION_HISTORY_PROPERTY_KEY, this.transactionHistory );
-	}
-
-	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
-		return this.transactionHistory;
-	}
-
-	public org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
-		return this.projectHistoryManager.getGroupHistory( group );
 	}
 
 	public org.lgna.project.ast.NamedUserType getProgramType() {
@@ -93,7 +77,6 @@ public class Project {
 		return this.resources;
 	}
 
-	
 	public java.util.Set< org.lgna.project.properties.PropertyKey<Object> > getPropertyKeys() {
 		return this.propertyMap.keySet();
 	}
@@ -109,7 +92,7 @@ public class Project {
 	public <T> void removeValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
 		this.propertyMap.remove( key );
 	}
-	
+
 	public void addNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
 		if( this.namedUserTypes.contains( namedUserType ) ) {
 		} else {

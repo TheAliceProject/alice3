@@ -42,18 +42,15 @@
  */
 package org.alice.ide;
 
-import org.lgna.croquet.undo.UndoHistory;
-import org.lgna.project.Project;
-
 /**
  * @author Kyle J. Harms
  */
 public class ProjectHistoryManager {
 
 	private org.lgna.croquet.history.event.Listener listener;
-	private java.util.Map< org.lgna.croquet.Group, UndoHistory > map;
+	private java.util.Map< org.lgna.croquet.Group, org.lgna.croquet.undo.UndoHistory > map;
 
-	public ProjectHistoryManager( org.lgna.project.Project project ) {
+	public ProjectHistoryManager( ProjectDocument projectDocument ) {
 		this.listener = new org.lgna.croquet.history.event.Listener() {
 			public void changing(org.lgna.croquet.history.event.Event<?> e) {
 			}
@@ -64,18 +61,18 @@ public class ProjectHistoryManager {
 				}
 			}
 		};
-		project.getTransactionHistory().addListener( this.listener );
+		projectDocument.getTransactionHistory().addListener( this.listener );
 		this.map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	}
 
-	public UndoHistory getGroupHistory( org.lgna.croquet.Group group ) {
-		UndoHistory rv;
+	public org.lgna.croquet.undo.UndoHistory getGroupHistory( org.lgna.croquet.Group group ) {
+		org.lgna.croquet.undo.UndoHistory rv;
 		if( group != null ) {
 			rv = this.map.get( group );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new UndoHistory( group );
+				rv = new org.lgna.croquet.undo.UndoHistory( group );
 				this.map.put( group, rv );
 			}
 		} else {
@@ -87,7 +84,7 @@ public class ProjectHistoryManager {
 
 	private void handleEditCommitted( org.lgna.croquet.edits.Edit<?> edit ) {
 		assert edit != null;
-		UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
+		org.lgna.croquet.undo.UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
 		if( projectHistory != null ) {
 			projectHistory.push( edit );
 		}

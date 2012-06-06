@@ -48,7 +48,7 @@ package org.lgna.croquet.simple;
 public class SimpleApplication extends org.lgna.croquet.Application {
 	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
 		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+		public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
 			return this.transactionHistory;
 		}
 	};

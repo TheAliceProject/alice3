@@ -128,7 +128,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 		public void changing( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
-			HistoryPane.this.initializeProjectHistory( nextValue != null ? nextValue.getProject() : null );
+			HistoryPane.this.initializeProjectHistory( nextValue != null ? nextValue : null );
 		}
 	};
 
@@ -140,11 +140,11 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 		this.list.addListSelectionListener( this.listSelectionListener );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list );
 		this.add( scrollPane );
-		this.initializeProjectHistory( org.alice.ide.IDE.getActiveInstance().getProject() );
+		this.initializeProjectHistory( org.alice.ide.IDE.getActiveInstance().getDocument() );
 	}
 
-	public void initializeProjectHistory( org.lgna.project.Project project ) {
-		this.projectHistory = project.getProjectHistory( this.group );
+	public void initializeProjectHistory( org.alice.ide.ProjectDocument projectDocument ) {
+		this.projectHistory = projectDocument.getProjectHistory( this.group );
 		this.historyStackModel = new HistoryStackModel( this.projectHistory );
 		this.list.setModel( this.historyStackModel );
 		this.historyStackModel.getHistoryManager().addHistoryListener( this.historyListener );

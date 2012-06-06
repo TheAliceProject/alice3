@@ -228,7 +228,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return this.getProjectHistory( IDE.PROJECT_GROUP );
 	}
 	public final org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
-		return this.getProject().getProjectHistory( group );
+		return this.getDocument().getProjectHistory( group );
 	}
 
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
@@ -282,6 +282,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		org.alice.ide.project.ProjectDocumentState.getInstance().setValue( document );
 	}
 	
+	// TODO: <kjh/> Should these really be here anymore? It feels like not...
 	public org.lgna.project.Project getProject() {
 		ProjectDocument document = this.getDocument();
 		return document != null ? document.getProject() : null;
@@ -298,7 +299,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getProjectTransactionHistory() {
-		return this.getProject().getTransactionHistory();
+		return this.getDocument().getTransactionHistory();
 	}
 
 	public void loadProjectFrom( java.net.URI uri ) {
