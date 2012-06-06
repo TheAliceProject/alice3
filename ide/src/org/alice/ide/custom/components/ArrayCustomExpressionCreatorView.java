@@ -92,6 +92,6 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		rows.add( new Row( composite.getArrayTypeLabel(), new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ) ) );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new ExpressionList( composite.getValueState(), composite.getAddItemCascade().getRoot().getPopupPrepModel() ) );
 		scrollPane.setBorder( null );
-		rows.add( new Row( composite.getValueLabel(), scrollPane ) );
+		rows.add( new Row( composite.getValueLabel(), scrollPane, org.lgna.croquet.components.VerticalAlignment.TOP ) );
 	}
 }
