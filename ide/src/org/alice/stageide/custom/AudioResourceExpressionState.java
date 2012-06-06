@@ -64,4 +64,18 @@ public class AudioResourceExpressionState extends org.alice.ide.croquet.models.S
 	protected org.lgna.project.ast.AbstractType<?,?,?> getType() {
 		return org.lgna.project.ast.JavaType.getInstance( org.lgna.common.resources.AudioResource.class );
 	}
+	public org.lgna.common.resources.AudioResource getAudioResource() {
+		org.lgna.project.ast.Expression expression = this.getValue();
+		if( expression instanceof org.lgna.project.ast.ResourceExpression ) {
+			org.lgna.project.ast.ResourceExpression resourceExpression = (org.lgna.project.ast.ResourceExpression)expression;
+			org.lgna.common.Resource resource = resourceExpression.resource.getValue();
+			if( resource instanceof org.lgna.common.resources.AudioResource ) {
+				return (org.lgna.common.resources.AudioResource)resource;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
 }

@@ -123,6 +123,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 	}
 	private final InternalPopupPrepModel< T > popupPrepModel = new InternalPopupPrepModel< T >( this );
 
+	private String text;
 	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
 		if( blanks != null ) {
@@ -132,6 +133,13 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			}
 		}
 	}
+	
+	@Override
+	protected void localize() {
+		super.localize();
+		this.text = this.getDefaultLocalizedText();
+	}
+	
 	public InternalPopupPrepModel< T > getPopupPrepModel() {
 		return this.popupPrepModel;
 	}
@@ -159,7 +167,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 	}
 	@Override
 	public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
-		return this.getDefaultLocalizedText();
+		return this.text;
 	}
 	@Override
 	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {

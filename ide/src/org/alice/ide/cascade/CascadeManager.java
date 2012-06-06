@@ -308,11 +308,8 @@ public abstract class CascadeManager {
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			if( type.isArray() ) {
 				rv.add( org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( type.getComponentType() ).getFillIn() );
+				//rv.add( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( type.getComponentType() ).getValueCreator().getFillIn() );
 			}
-
-//			if( blank.isEmpty() ) {
-//				rv.add( org.alice.ide.croquet.models.cascade.NoFillInsFoundCancelFillIn.getInstance() );
-//			}
 		} else {
 			//todo:
 //			rv.add( org.alice.ide.croquet.models.cascade.TypeUnsetCancelFillIn.getInstance() );

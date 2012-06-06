@@ -76,6 +76,7 @@ import org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy;
 import org.lgna.croquet.components.View;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
@@ -189,15 +190,19 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			List<MethodInvocation> invocations = crawler.getInvocationsFor( method );
 			for( MethodInvocation invocation : invocations ) {
 				UserMethod invocationOwner = invocation.getFirstAncestorAssignableTo( UserMethod.class );
-
 				InvocationCounts invocationCounts = this.mapMethodToInvocationCounts.get( invocationOwner );
-				if( invocationCounts != null ) {
-					//pass
-				} else {
-					invocationCounts = new InvocationCounts();
-					this.mapMethodToInvocationCounts.put( invocationOwner, invocationCounts );
+				if( !invocationOwner.getManagementLevel().isGenerated() && !invocationOwner.getDeclaringType().isAssignableTo( org.lgna.story.Program.class ) ) {
+					if( invocationCounts != null ) {
+						//pass
+					} else {
+						invocationCounts = new InvocationCounts();
+						this.mapMethodToInvocationCounts.put( invocationOwner, invocationCounts );
+					}
+					Statement statement = invocation.getFirstAncestorAssignableTo( Statement.class );
+					if( statement.isEnabled.getValue() ) {
+						invocationCounts.addInvocation( invocation );
+					}
 				}
-				invocationCounts.addInvocation( invocation );
 			}
 		}
 
@@ -277,7 +282,6 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 				AbstractMethod method = methodInvocation.method.getValue();
-
 				List<MethodInvocation> list = this.mapMethodToInvocations.get( method );
 				if( list != null ) {
 					list.add( methodInvocation );

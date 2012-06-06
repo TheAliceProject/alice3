@@ -47,6 +47,32 @@ package org.alice.ide.custom.components;
  * @author Dennis Cosgrove
  */
 public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
+	protected static class Row {
+		private final org.lgna.croquet.StringValue labelStringValue;
+		private final org.lgna.croquet.components.JComponent< ? > component;
+		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
+			this.labelStringValue = labelStringValue;
+			this.component = component;
+		}
+		private org.lgna.croquet.components.Component<?> createImmutableTextField() {
+			if( this.labelStringValue != null ) {
+				org.lgna.croquet.components.ImmutableTextField rv = this.labelStringValue.createImmutableTextField();
+				rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
+				return rv;
+			} else {
+				return new org.lgna.croquet.components.Label();
+			}
+		}
+		public org.lgna.croquet.components.Component< ? >[] createComponentArray() {
+			return org.lgna.croquet.components.SpringUtilities.createRow( 
+				this.createImmutableTextField(), 
+				new org.lgna.croquet.components.LineAxisPanel( 
+						this.component,
+						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
+				)
+			);
+		}
+	}
 	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
@@ -54,38 +80,18 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
 		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
 	}
-	protected org.lgna.croquet.components.Component<?> createImmutableTextField( org.lgna.croquet.StringValue stringValue ) {
-		org.lgna.croquet.components.ImmutableTextField rv = stringValue.createImmutableTextField();
-		rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
-		return rv;
-	}
-	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
-		return new org.lgna.croquet.StringValue[] { this.getComposite().getValueLabel() };
-	}
-	protected abstract org.lgna.croquet.components.Component< ? >[] getRowComponents();
-	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-		org.lgna.croquet.StringValue[] labelStringValues = this.getLabelStringValues();
-		org.lgna.croquet.components.Component< ? >[] components = this.getRowComponents();
-		final int N = labelStringValues.length;
-		for( int i=0; i<N; i++ ) {
-			rv.add( 
-					org.lgna.croquet.components.SpringUtilities.createRow( 
-						this.createImmutableTextField( labelStringValues[ i ] ), 
-						new org.lgna.croquet.components.LineAxisPanel( 
-								components[ i ],
-								org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-						)
-					) 
-			);
-		}
-		return rv;
-	}
+	protected abstract void appendRows( java.util.List< Row > rows );
 	@Override
 	public org.lgna.croquet.components.RowsSpringPanel createMainComponent() {
 		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
 			@Override
 			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
-				return RowBasedCustomExpressionCreatorView.this.updateRows( rv );
+				java.util.List< Row > rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
+				for( Row row : rows ) {
+					rv.add( row.createComponentArray() ); 
+				}
+				return rv;
 			}
 		};
 		return rowsSpringPanel;

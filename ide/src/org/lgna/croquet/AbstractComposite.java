@@ -186,6 +186,35 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			}
 		}
 	}
+
+	protected static interface CascadeCustomizer<T> {
+		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode );
+		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values );
+	}
+	protected static final class InternalCascadeWithInternalBlank<T> extends CascadeWithInternalBlank<T> {
+		private final CascadeCustomizer customizer;
+		private final Key key;
+		private InternalCascadeWithInternalBlank( CascadeCustomizer customizer, Class< T > componentType, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "165e65a4-fd9b-4a09-921d-ecc3cc808de0" ), componentType );
+			this.customizer = customizer;
+			this.key = key;
+		}
+		public Key getKey() {
+			return this.key;
+		}
+		@Override
+		protected void localize() {
+		}
+		@Override
+		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
+			return this.customizer.createEdit( completionStep, values );
+		}
+		@Override
+		protected java.util.List< CascadeBlankChild > updateBlankChildren( java.util.List< CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
+			this.customizer.appendBlankChildren( rv, blankNode );
+			return rv;
+		}
+	}
 	
 	
 
@@ -224,6 +253,8 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	private java.util.Map<Key,InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
@@ -245,6 +276,10 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		for( Key key : this.mapKeyToActionOperation.keySet() ) {
 			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
 			operation.setName( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
+		}
+		for( Key key : this.mapKeyToCascade.keySet() ) {
+			InternalCascadeWithInternalBlank cascade = this.mapKeyToCascade.get( key );
+			cascade.getRoot().getPopupPrepModel().setName( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
 		}
 	}
 	public boolean contains( Model model ) {
@@ -281,6 +316,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		for( Key key : this.mapKeyToActionOperation.keySet() ) {
 			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
 			if( model == operation ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToCascade.keySet() ) {
+			InternalCascadeWithInternalBlank cascade = this.mapKeyToCascade.get( key );
+			if( model == cascade ) {
 				return true;
 			}
 		}
@@ -328,7 +369,11 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		return rv;
 	}
 	
-	
+	protected <T> Cascade<T> createCascadeWithInternalBlank( Key key, Class<T> cls, CascadeCustomizer< T > customizer ) {
+		InternalCascadeWithInternalBlank< T > rv = new InternalCascadeWithInternalBlank< T >( customizer, cls, key );
+		this.mapKeyToCascade.put( key, rv );
+		return rv;
+	}
 	
 	protected <T> ListSelectionState<T> createListSelectionState( Key key, Class<T> valueCls, org.lgna.croquet.ItemCodec< T > codec, int selectionIndex, T... values ) {
 		InternalListSelectionState<T> rv = new InternalListSelectionState<T>( codec, selectionIndex, values, key );
