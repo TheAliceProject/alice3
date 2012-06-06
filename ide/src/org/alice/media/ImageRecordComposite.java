@@ -48,7 +48,10 @@ import java.io.IOException;
 import org.alice.media.components.ImageRecordView;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
@@ -74,28 +77,26 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
 	private Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
 	
-	private final ActionOperation recordOperation = this.createActionOperation( this.createKey( "isRecording.false" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			toggleRecording();
-			recordOperation.setName( ImageRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
-			return null;
+	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-	} );
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			toggleRecording();
+		}
+	};
+	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
 
 	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( this.createKey( "frameRate" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
 
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 		this.owner = owner;
+		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
 	}
 
 	@Override
 	protected ImageRecordView createView() {
 		return new ImageRecordView( this );
-	}
-
-	public ActionOperation getRecordOperation() {
-		return this.recordOperation;
 	}
 
 	private java.awt.image.BufferedImage image;
@@ -193,10 +194,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext.setActiveScene();
 			}
 		}.start();
+		
+		this.isRecordingState.addValueListener( this.isRecordingListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
+		this.isRecordingState.removeValueListener( this.isRecordingListener );
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		this.setRecording( false );
 		programContext.cleanUpProgram();
@@ -222,5 +226,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			return errorHasNotYetRecorded;
 		}
 		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	public BooleanState getIsRecordingState() {
+		return this.isRecordingState;
 	}
 }

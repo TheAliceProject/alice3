@@ -45,7 +45,10 @@ package org.alice.media;
 import org.alice.media.components.EventRecordView;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.State;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.State.ValueListener;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
@@ -60,28 +63,27 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	private RunProgramContext programContext;
 	private EventScript script;
 	org.lgna.croquet.components.BorderPanel lookingGlassContainer;
-	private Status status;
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
-	private boolean isRecording = false;
 	
-	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
-		this.owner = owner;
-	}
+	private BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
 
-	private final ActionOperation playRecordedOperation = this.createActionOperation( this.createKey( "isRecording.false" ), new Action() {
-
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			isRecording = !isRecording;
-			playRecordedOperation.setName( EventRecordComposite.this.getLocalizedText( "isRecording." + isRecording ) );
-			if( isRecording ) {
+	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			if( isRecordingState.getValue() ) {
 				programContext.getProgramImp().startAnimator();
 			} else {
 				programContext.getProgramImp().stopAnimator();
 			}
-			return null;
 		}
-	} );
+	};
+	
+	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
+		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
+		this.owner = owner;
+		isRecordingState.addValueListener( isRecordingListener );
+	}
 
 	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
@@ -93,7 +95,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			programContext.setActiveScene();
 			script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
 			owner.setScript( script );
-			isRecording = false;
 			return null;
 		}
 	} );
@@ -118,8 +119,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		System.out.println( programContext );
 	}
 
-	public ActionOperation getPlayRecordedOperation() {
-		return this.playRecordedOperation;
+	public BooleanState getPlayRecordedOperation() {
+		return this.isRecordingState;
 	}
 	public ActionOperation getRestartRecording() {
 		return this.restartRecording;
@@ -134,6 +135,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return isRecording ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
+		return isRecordingState.getValue() ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
 	}
 }

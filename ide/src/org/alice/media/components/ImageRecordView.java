@@ -59,7 +59,8 @@ public class ImageRecordView extends BorderPanel {
 		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
 		this.addComponent( panel, Constraint.CENTER );
 		GridPanel bottomPanel = GridPanel.createGridPane( 1, 3 );
-		bottomPanel.addComponent( recordComposite.getRecordOperation().createButton() );
+		bottomPanel.addComponent( recordComposite.getIsRecordingState().createToggleButton() );
+//		bottomPanel.addComponent( recordComposite.getRecordOperation().createButton() );
 		bottomPanel.addComponent( recordComposite.getFrameRate().createSpinner() );
 		addComponent( bottomPanel, Constraint.PAGE_END );
 	}

@@ -40,32 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media.components;
+package org.alice.media;
 
-import org.alice.media.EventRecordComposite;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.Label;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
 
 /**
  * @author Matt May
  */
-public class EventRecordView extends BorderPanel {
-	
-	private final BorderPanel lookingGlassContainer = new BorderPanel();
-
-	public EventRecordView( EventRecordComposite eventRecordComposite ) {
-		//org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedAspectRatioPanel( lookingGlassContainer, org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
-		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer );
-		this.addComponent( panel, Constraint.CENTER );
-		GridPanel bottom = GridPanel.createGridPane( 1, 3 );
-		bottom.addComponent( eventRecordComposite.getPlayRecordedOperation().createToggleButton() );
-		bottom.addComponent( new Label() );
-		bottom.addComponent( new Label() );
-		bottom.addComponent( eventRecordComposite.getRestartRecording().createButton() );
-		this.addComponent( bottom, Constraint.PAGE_END );
+public class IsRecordingIcon implements Icon {
+	private static final int SIZE = 32;
+	public int getIconHeight() {
+		return SIZE;
 	}
-	public BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassContainer;
+	public int getIconWidth() {
+		return SIZE;
+	}
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		if( c instanceof AbstractButton ) {
+			AbstractButton button = (AbstractButton)c;
+			ButtonModel buttonModel = button.getModel();
+			g.setColor( Color.RED );
+			if( buttonModel.isSelected() ) {
+				g.fillOval( x, y, SIZE, SIZE );
+			} else {
+				g.fillRect( x, y, SIZE, SIZE );
+			}
+		}
 	}
 }
