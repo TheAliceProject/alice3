@@ -76,6 +76,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
 			assert values.length == 1;
 			valueState.addItem( values[ 0 ] );
+			getView().updatePreview();
 			return null;
 		}
 	} );
@@ -104,7 +105,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.arrayType );
+		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.arrayType, this.valueState.toArray() );
 	}
 	@Override
 	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
@@ -112,6 +113,16 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+		org.lgna.project.ast.Expression[] items = {};
+		int selectedIndex = -1;
+		if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
+			org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)expression;
+			if( this.arrayType.isAssignableFrom( arrayInstanceCreation.getType() ) ) {
+				items = arrayInstanceCreation.expressions.toArray( org.lgna.project.ast.Expression.class );
+			}
+		}
+		//todo: transactionlessly
+		this.valueState.setListData( selectedIndex, items );
 	}
 	@Override
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
@@ -122,6 +133,10 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 	
 	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
 		new org.alice.stageide.StageIDE();
 		try {
 			org.lgna.croquet.triggers.Trigger trigger = null;
@@ -129,5 +144,6 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}
+		System.exit( 0 );
 	}
 }
