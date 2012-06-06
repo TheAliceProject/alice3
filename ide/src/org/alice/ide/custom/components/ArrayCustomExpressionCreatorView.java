@@ -40,24 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.custom.components;
+package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
-	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
+public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	public ArrayCustomExpressionCreatorView( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
-	
 	@Override
 	protected void appendRows( java.util.List< Row > rows ) {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new Row( composite.getResourceLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ) ) );
-		rows.add( new Row( composite.getVolumeLabel(), new VolumeLevelSlider( composite.getVolumeState() ) ) );
-		rows.add( new Row( composite.getStartMarkerLabel(), composite.getStartMarkerState().createSlider() ) );
-		rows.add( new Row( composite.getStopMarkerLabel(), composite.getStopMarkerState().createSlider() ) );
-		rows.add( new Row( null, composite.getTestOperation().createButton() ) );
+		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
+		rows.add( new Row( composite.getValueLabel(), new org.lgna.croquet.components.Label( "todo" ) ) );
 	}
 }

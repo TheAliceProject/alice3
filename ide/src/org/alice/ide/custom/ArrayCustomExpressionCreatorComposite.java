@@ -40,24 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.custom.components;
+package org.alice.ide.custom;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
-	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
-		super( composite );
+public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.ArrayCustomExpressionCreatorView> {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, ArrayCustomExpressionCreatorComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ArrayCustomExpressionCreatorComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		synchronized( map ) {
+			ArrayCustomExpressionCreatorComposite rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ArrayCustomExpressionCreatorComposite( type );
+				map.put( type, rv );
+			}
+			return rv;
+		}
 	}
-	
+	private final org.lgna.project.ast.AbstractType<?,?,?> componentType;
+	private ArrayCustomExpressionCreatorComposite( org.lgna.project.ast.AbstractType<?,?,?> componentType ) {
+		super( java.util.UUID.fromString( "187d56c4-cc05-4157-a5fc-55943ca5b099" ) );
+		this.componentType = componentType;
+	}
+	public org.lgna.project.ast.AbstractType< ?, ?, ? > getComponentType() {
+		return this.componentType;
+	}
 	@Override
-	protected void appendRows( java.util.List< Row > rows ) {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new Row( composite.getResourceLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ) ) );
-		rows.add( new Row( composite.getVolumeLabel(), new VolumeLevelSlider( composite.getVolumeState() ) ) );
-		rows.add( new Row( composite.getStartMarkerLabel(), composite.getStartMarkerState().createSlider() ) );
-		rows.add( new Row( composite.getStopMarkerLabel(), composite.getStopMarkerState().createSlider() ) );
-		rows.add( new Row( null, composite.getTestOperation().createButton() ) );
+	protected org.alice.ide.custom.components.ArrayCustomExpressionCreatorView createView() {
+		return new org.alice.ide.custom.components.ArrayCustomExpressionCreatorView( this );
+	}
+	@Override
+	protected org.lgna.project.ast.Expression createValue() {
+		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.componentType.getArrayType() );
+	}
+	@Override
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+	@Override
+	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
 	}
 }
