@@ -42,26 +42,26 @@
  */
 package org.alice.media.encoder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Vector;
-
-import javax.media.CaptureDeviceInfo;
-import javax.media.CaptureDeviceManager;
-import javax.media.DataSink;
-import javax.media.Manager;
-import javax.media.MediaLocator;
-import javax.media.NoDataSinkException;
-import javax.media.NoProcessorException;
-import javax.media.Processor;
-import javax.media.format.AudioFormat;
-import javax.media.protocol.DataSource;
-
-import org.alice.media.audio.AudioResourceConverter;
-import org.alice.media.audio.ScheduledAudioStream;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
+//import java.util.Map;
+//import java.util.Vector;
+//
+//import javax.media.CaptureDeviceInfo;
+//import javax.media.CaptureDeviceManager;
+//import javax.media.DataSink;
+//import javax.media.Manager;
+//import javax.media.MediaLocator;
+//import javax.media.NoDataSinkException;
+//import javax.media.NoProcessorException;
+//import javax.media.Processor;
+//import javax.media.format.AudioFormat;
+//import javax.media.protocol.DataSource;
+//
+//import org.alice.media.audio.AudioResourceConverter;
+//import org.alice.media.audio.ScheduledAudioStream;
 
 /**
  * @author Matt May

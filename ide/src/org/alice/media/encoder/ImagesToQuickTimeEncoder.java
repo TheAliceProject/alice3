@@ -61,15 +61,12 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.alice.media.audio.AudioResourceConverter;
 import org.alice.media.audio.AudioTrackMixer;
 import org.alice.media.audio.ScheduledAudioStream;
-import org.lgna.common.resources.AudioResource;
 
 import ch.randelshofer.media.mp3.MP3AudioInputStream;
 import ch.randelshofer.media.quicktime.QuickTimeWriter;
 import ch.randelshofer.media.quicktime.QuickTimeWriter.VideoFormat;
-import edu.cmu.cs.dennisc.animation.Animation;
 import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
