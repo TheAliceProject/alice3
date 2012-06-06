@@ -120,4 +120,14 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( WIDTH );
 		dialog.setSize( WIDTH, HEIGHT );
 	}
+	
+	public static void main( String[] args ) throws Exception {
+		new org.alice.stageide.StageIDE();
+		try {
+			org.lgna.croquet.triggers.Trigger trigger = null;
+			ArrayCustomExpressionCreatorComposite.getInstance( org.lgna.project.ast.JavaType.getInstance( String[].class ) ).getValueCreator().fire( trigger );
+		} catch( org.lgna.croquet.CancelException ce ) {
+			//pass
+		}
+	}
 }
