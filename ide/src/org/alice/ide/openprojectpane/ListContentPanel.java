@@ -84,9 +84,6 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 	protected javax.swing.ListCellRenderer createListCellRenderer() {
 		return new ProjectSnapshotListCellRenderer();
 	}
-	protected M getState() {
-		return this.getState();
-	}
 	protected abstract String getTextForZeroProjects();
 	@Override
 	public java.net.URI getSelectedUri() {
