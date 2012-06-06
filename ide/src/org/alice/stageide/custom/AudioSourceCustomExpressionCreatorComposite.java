@@ -59,9 +59,12 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	private final org.lgna.croquet.StringValue startMarkerLabel = this.createStringValue( this.createKey( "startMarkerLabel" ) );
 	private final org.lgna.croquet.StringValue stopMarkerLabel = this.createStringValue( this.createKey( "stopMarkerLabel" ) );
 	
-	
 	private static final int MARKER_MAX = 1000;
-	
+
+	private final org.lgna.croquet.BoundedIntegerState volumeState = this.createBoundedIntegerState( this.createKey( "volume" ), VolumeLevelUtilities.createDetails() );
+	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
+	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
+
 	private double toDouble( int markerValue, double defaultValue ) {
 		org.lgna.common.resources.AudioResource audioResource = this.getAudioResourceExpressionState().getAudioResource();
 		double duration;
@@ -90,12 +93,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 			return toDouble( value, Double.NaN );
 		}
 	}
-	
-	
-	private final org.lgna.croquet.BoundedIntegerState volumeState = this.createBoundedIntegerState( this.createKey( "volume" ), VolumeLevelUtilities.createDetails() );
-	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
-	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
-	
+		
 	private final org.lgna.croquet.Operation testOperation = this.createActionOperation( this.createKey( "test" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.common.resources.AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();

@@ -46,12 +46,52 @@ package org.alice.ide.custom.components;
  * @author Dennis Cosgrove
  */
 public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	private static class ExpressionList extends org.lgna.croquet.components.MutableList< org.lgna.project.ast.Expression, org.lgna.croquet.components.Label, org.lgna.croquet.components.Label, org.lgna.croquet.components.Label > {
+		public ExpressionList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > state, org.lgna.croquet.PopupPrepModel popupPrepModel ) {
+			super( state, popupPrepModel );
+		}
+		@Override
+		protected org.lgna.croquet.components.Label createLeadingComponent() {
+			org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( "leading", 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			rv.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
+			return rv;
+		}
+		@Override
+		protected org.lgna.croquet.components.Label createMainComponent() {
+			org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( "main", 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			rv.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
+			return rv;
+		}
+		@Override
+		protected org.lgna.croquet.components.Label createTrailingComponent() {
+			return null;
+		}
+		@Override
+		protected void update( org.lgna.croquet.components.Label leadingComponent, org.lgna.croquet.components.Label mainComponent, org.lgna.croquet.components.Label trailingComponent, int index, org.lgna.project.ast.Expression item ) {
+			leadingComponent.setText( "[" + index + "]" );
+			org.lgna.project.ast.Expression expression = this.getModel().getItemAt( index );
+			String text = expression != null ? expression.getRepr( javax.swing.JComponent.getDefaultLocale() ) : "null";
+			mainComponent.setText( text );
+		}
+		@Override
+		protected void updateSelection( org.lgna.croquet.components.Label leadingComponent, org.lgna.croquet.components.Label mainComponent, org.lgna.croquet.components.Label trailingComponent, boolean isSelected ) {
+			java.awt.Color color = isSelected ? java.awt.Color.WHITE : java.awt.Color.BLACK;
+			leadingComponent.setForegroundColor( color );
+			mainComponent.setForegroundColor( color );
+		}
+	}
+
+	
 	public ArrayCustomExpressionCreatorView( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 	@Override
 	protected void appendRows( java.util.List< Row > rows ) {
 		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new Row( composite.getValueLabel(), new org.lgna.croquet.components.Label( "todo" ) ) );
+		rows.add( new Row( composite.getComponentTypeLabel(), new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getComponentType() ) ) ) );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new ExpressionList( composite.getValueState(), composite.getAddItemCascade().getRoot().getPopupPrepModel() ) );
+		scrollPane.setBorder( null );
+		rows.add( new Row( composite.getValueLabel(), scrollPane ) );
 	}
 }

@@ -47,19 +47,39 @@ package org.alice.ide.custom;
  */
 public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.ArrayCustomExpressionCreatorView> {
 	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, ArrayCustomExpressionCreatorComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ArrayCustomExpressionCreatorComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public static ArrayCustomExpressionCreatorComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> componentType ) {
 		synchronized( map ) {
-			ArrayCustomExpressionCreatorComposite rv = map.get( type );
+			ArrayCustomExpressionCreatorComposite rv = map.get( componentType );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ArrayCustomExpressionCreatorComposite( type );
-				map.put( type, rv );
+				rv = new ArrayCustomExpressionCreatorComposite( componentType );
+				map.put( componentType, rv );
 			}
 			return rv;
 		}
 	}
+	private final org.lgna.croquet.StringValue componentTypeLabel = this.createStringValue( this.createKey( "componentTypeLabel" ) ); 
 	private final org.lgna.project.ast.AbstractType<?,?,?> componentType;
+	
+	private final org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > valueState = this.createListSelectionState( 
+			this.createKey( "valueState" ), 
+			org.lgna.project.ast.Expression.class, 
+			org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), 
+			-1
+	);
+	private final org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > addItemCascade = this.createCascadeWithInternalBlank( this.createKey( "addItemCascade" ), org.lgna.project.ast.Expression.class, new CascadeCustomizer< org.lgna.project.ast.Expression >() {
+		public void appendBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+			ide.getCascadeManager().updateChildren( rv, blankNode, componentType, null );
+		}
+		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
+			assert values.length == 1;
+			valueState.addItem( values[ 0 ] );
+			return null;
+		}
+	} );
+	
 	private ArrayCustomExpressionCreatorComposite( org.lgna.project.ast.AbstractType<?,?,?> componentType ) {
 		super( java.util.UUID.fromString( "187d56c4-cc05-4157-a5fc-55943ca5b099" ) );
 		this.componentType = componentType;
@@ -67,6 +87,16 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getComponentType() {
 		return this.componentType;
 	}
+	public org.lgna.croquet.StringValue getComponentTypeLabel() {
+		return this.componentTypeLabel;
+	}
+	public org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > getValueState() {
+		return this.valueState;
+	}
+	public org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > getAddItemCascade() {
+		return this.addItemCascade;
+	}
+	
 	@Override
 	protected org.alice.ide.custom.components.ArrayCustomExpressionCreatorView createView() {
 		return new org.alice.ide.custom.components.ArrayCustomExpressionCreatorView( this );
@@ -81,5 +111,12 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	}
+	@Override
+	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
+		super.modifyPackedDialogSizeIfDesired( dialog );
+		final int WIDTH = 320;
+		final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( WIDTH );
+		dialog.setSize( WIDTH, HEIGHT );
 	}
 }
