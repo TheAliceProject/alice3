@@ -81,6 +81,9 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 		list.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
 		this.addComponent( list, Constraint.CENTER );
 	}
+	protected M getState() {
+		return this.state;
+	}
 	protected javax.swing.ListCellRenderer createListCellRenderer() {
 		return new ProjectSnapshotListCellRenderer();
 	}
