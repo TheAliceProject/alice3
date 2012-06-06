@@ -110,6 +110,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 				} finally {
 					this.isIgnoringValueChanges = false;
 				}
+				this.getView().updatePreview();
 			}
 		}
 	}
@@ -126,6 +127,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 				} finally {
 					this.isIgnoringValueChanges = false;
 				}
+				this.getView().updatePreview();
 			}
 		}
 	}
