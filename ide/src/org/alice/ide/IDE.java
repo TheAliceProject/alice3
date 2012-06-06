@@ -73,8 +73,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	private final org.lgna.cheshire.simple.stencil.SimplePresentation simplePresentation;
-	private final org.alice.ide.stencil.PotentialDropReceptorsStencil potentialDropReceptorsStencil;
+	private org.lgna.cheshire.simple.stencil.SimplePresentation simplePresentation = null;
+	private org.alice.ide.stencil.PotentialDropReceptorsStencil potentialDropReceptorsStencil = null;
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -88,38 +89,17 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		this.promptForLicenseAgreements();
-		
+
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueListener( this.isAlwaysShowingBlocksListener );
-
-		// Initialize the Stencils infrastructure
-		this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame() );
-		this.simplePresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
 	}
+
 	public abstract ApiConfigurationManager getApiConfigurationManager();
 
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
 		this.getPerspectiveState().addValueListener( this.perspectiveListener );
-
-		// TODO: <kjh/> Set this to false... remove it...
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.hackTutorial" ) ) {
-			final org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getColorCrazyGenerator();
-			IDE.this.loadProjectFrom( test.getProjectFile() );
-			test.generate( this.getProject() );
-			IDE.this.simplePresentation.initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, test.getReuseTransactionHistory(), null, null, new org.lgna.cheshire.simple.Recoverer(), new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
-			test.showTransactionHistory();
-			org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().setValue( true );
-
-			new Thread() {
-				@Override
-				public void run() {
-					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2500 );
-					IDE.this.simplePresentation.showStencilsPresentation();
-				}
-			}.start();
-		}
 	}
 
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
@@ -251,21 +231,24 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public org.alice.ide.stencil.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
+		if ( this.potentialDropReceptorsStencil == null ) {
+			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame() );
+		}
 		return this.potentialDropReceptorsStencil;
 	}
 
 	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		this.potentialDropReceptorsStencil.showStencilOver( potentialDragSource, type );
+		this.getPotentialDropReceptorsStencil().showStencilOver( potentialDragSource, type );
 	}
 	public void hideStencil() {
-		this.potentialDropReceptorsStencil.hideStencil();
+		this.getPotentialDropReceptorsStencil().hideStencil();
 	}
 
 	@Deprecated
 	@Override
 	public void setDragInProgress( boolean isDragInProgress ) {
 		super.setDragInProgress( isDragInProgress );
-		this.potentialDropReceptorsStencil.setDragInProgress( isDragInProgress );
+		this.getPotentialDropReceptorsStencil().setDragInProgress( isDragInProgress );
 	}
 
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
@@ -551,6 +534,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public org.lgna.cheshire.simple.stencil.SimplePresentation getSimplePresentation() {
+		if ( this.simplePresentation == null ) {
+			this.simplePresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
+		}
 		return simplePresentation;
 	}
 }
