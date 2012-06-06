@@ -50,14 +50,20 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 	protected static class Row {
 		private final org.lgna.croquet.StringValue labelStringValue;
 		private final org.lgna.croquet.components.JComponent< ? > component;
-		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
+		private final float alignmentY;
+		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, float alignmentY ) {
 			this.labelStringValue = labelStringValue;
 			this.component = component;
+			this.alignmentY = alignmentY;
 		}
-		private org.lgna.croquet.components.Component<?> createImmutableTextField() {
+		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
+			this( labelStringValue, component, 0.5f );
+		}
+		private org.lgna.croquet.components.JComponent<?> createImmutableTextField() {
 			if( this.labelStringValue != null ) {
 				org.lgna.croquet.components.ImmutableTextField rv = this.labelStringValue.createImmutableTextField();
 				rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
+				rv.setAlignmentY( this.alignmentY );
 				return rv;
 			} else {
 				return new org.lgna.croquet.components.Label();
