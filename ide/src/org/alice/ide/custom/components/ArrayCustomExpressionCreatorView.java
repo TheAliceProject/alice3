@@ -81,6 +81,16 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 			leadingComponent.setForegroundColor( color );
 			mainComponent.setForegroundColor( color );
 		}
+		@Override
+		protected void handleDisplayable() {
+			super.handleDisplayable();
+			this.registerKeyboardActions();
+		}
+		@Override
+		protected void handleUndisplayable() {
+			this.unregisterKeyboardActions();
+			super.handleUndisplayable();
+		}
 	}
 
 	

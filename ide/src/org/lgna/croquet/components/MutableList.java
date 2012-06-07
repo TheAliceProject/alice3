@@ -290,4 +290,44 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 		this.pageAxisPanel.addComponent( button );
 		return rv;
 	}
+
+	private static final javax.swing.KeyStroke DELETE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DELETE, 0 );
+	private static final javax.swing.KeyStroke BACK_SPACE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_BACK_SPACE, 0 );
+	//note: ups/downs do not seem to work
+	private static final javax.swing.KeyStroke UP_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_UP, 0 );
+	private static final javax.swing.KeyStroke KEYPAD_UP_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_KP_UP, 0 );
+	private static final javax.swing.KeyStroke DOWN_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DOWN, 0 );
+	private static final javax.swing.KeyStroke KEYPAD_DOWN_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_KP_DOWN, 0 );
+	private final java.awt.event.ActionListener removeSelectedListener = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			System.out.println( "removeSelectedItem" );
+			//MutableList.this.removeSelectedItem();
+		}
+	};
+	private final java.awt.event.ActionListener moveSelectionUpListener = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			System.out.println( "moveSelectionUp" );
+		}
+	};
+	private final java.awt.event.ActionListener moveSelectionDownListener = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			System.out.println( "moveSelectionDown" );
+		}
+	};
+	public void registerKeyboardActions() {
+		this.registerKeyboardAction( this.removeSelectedListener, DELETE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.registerKeyboardAction( this.removeSelectedListener, BACK_SPACE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.registerKeyboardAction( this.moveSelectionUpListener, UP_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.registerKeyboardAction( this.moveSelectionUpListener, KEYPAD_UP_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.registerKeyboardAction( this.moveSelectionDownListener, DOWN_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.registerKeyboardAction( this.moveSelectionDownListener, KEYPAD_DOWN_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+	}
+	public void unregisterKeyboardActions() {
+		this.unregisterKeyboardAction( KEYPAD_DOWN_KEY_STROKE );
+		this.unregisterKeyboardAction( DOWN_KEY_STROKE );
+		this.unregisterKeyboardAction( KEYPAD_UP_KEY_STROKE );
+		this.unregisterKeyboardAction( UP_KEY_STROKE );
+		this.unregisterKeyboardAction( BACK_SPACE_KEY_STROKE );
+		this.unregisterKeyboardAction( DELETE_KEY_STROKE );
+	}
 }
