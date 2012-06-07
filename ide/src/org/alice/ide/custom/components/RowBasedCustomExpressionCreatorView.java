@@ -50,27 +50,56 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 	protected static class Row {
 		private final org.lgna.croquet.StringValue labelStringValue;
 		private final org.lgna.croquet.components.JComponent< ? > component;
-		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
+		private final org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment;
+		private final boolean isFillHorizontal;
+		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
 			this.labelStringValue = labelStringValue;
 			this.component = component;
+			this.labelVerticalAlignment = labelVerticalAlignment;
+			this.isFillHorizontal = isFillHorizontal;
 		}
-		private org.lgna.croquet.components.Component<?> createImmutableTextField() {
+		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment ) {
+			this( labelStringValue, component, labelVerticalAlignment, false );
+		}
+		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
+			this( labelStringValue, component, org.lgna.croquet.components.VerticalAlignment.CENTER );
+		}
+		private org.lgna.croquet.components.JComponent<?> createImmutableTextField() {
 			if( this.labelStringValue != null ) {
-				org.lgna.croquet.components.ImmutableTextField rv = this.labelStringValue.createImmutableTextField();
-				rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
-				return rv;
+				org.lgna.croquet.components.ImmutableTextField textField = this.labelStringValue.createImmutableTextField();
+				textField.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
+				if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.CENTER ) {
+					return textField;
+				} else {
+					Constraint constraint;
+					if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.TOP ) {
+						constraint = Constraint.PAGE_START;
+					} else {
+						constraint = Constraint.PAGE_END;
+					}
+					org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+					rv.addComponent( textField, constraint );
+					rv.setMaximumSizeClampedToPreferredSize( true );
+					return rv;
+				}
 			} else {
 				return new org.lgna.croquet.components.Label();
 			}
 		}
-		public org.lgna.croquet.components.Component< ? >[] createComponentArray() {
-			return org.lgna.croquet.components.SpringUtilities.createRow( 
-				this.createImmutableTextField(), 
-				new org.lgna.croquet.components.LineAxisPanel( 
+		public org.lgna.croquet.components.JComponent< ? >[] createComponentArray() {
+			org.lgna.croquet.components.JComponent<?> trailingComponent;
+			if( this.isFillHorizontal ) {
+				trailingComponent = this.component;
+			} else {
+				trailingComponent = new org.lgna.croquet.components.LineAxisPanel( 
 						this.component,
 						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-				)
-			);
+				);
+			}
+			return new org.lgna.croquet.components.JComponent< ? >[] { 
+				this.createImmutableTextField(),
+				trailingComponent
+			};
 		}
 	}
 	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {

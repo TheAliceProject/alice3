@@ -58,7 +58,12 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	}
 
 	private final W window;
+
+	//<kjh/>
+	private Layer abovePopupLayer;
+	private Layer belowPopupLayer;
 	private final LayeredPane layeredPane;
+	
 	public AbstractWindow( W window ) {
 		this.window = window;
 		this.layeredPane = new LayeredPane( getJLayeredPane() );
@@ -70,7 +75,20 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public final W getAwtComponent() {
 		return this.window;
 	}
-
+	
+	public Layer getAbovePopupLayer() {
+		if( this.abovePopupLayer != null ) {
+			this.abovePopupLayer = new Layer( this, javax.swing.JLayeredPane.POPUP_LAYER+1 );
+		}
+		return this.abovePopupLayer;
+	}
+	public Layer getBelowPopupLayer() {
+		if( this.belowPopupLayer != null ) {
+			this.belowPopupLayer = new Layer( this, javax.swing.JLayeredPane.POPUP_LAYER-1 );
+		}
+		return this.belowPopupLayer;
+	}
+	
 	@Override
 	public org.lgna.croquet.components.AbstractWindow< ? > getRoot() {
 		return this;

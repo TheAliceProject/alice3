@@ -41,34 +41,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.choosers.array.components;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionList extends org.lgna.croquet.components.MutableList< org.lgna.project.ast.Expression, org.lgna.croquet.components.Label, org.lgna.croquet.components.Label, org.lgna.croquet.components.Label > {
-	public ExpressionList() {
-		super( org.alice.ide.choosers.array.ExpressionListSelectionState.getInstance(), org.alice.ide.choosers.array.AddExpressionCascade.getInstance().getRoot().getPopupPrepModel() );
+public final class Layer {
+	private final AbstractWindow<?> window;
+	private final Integer id;
+	private JComponent<?> component;
+	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
+		public void componentShown( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentHidden( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentMoved( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentResized( java.awt.event.ComponentEvent e ) {
+			Layer.this.updateComponentSize();
+		}
+	};
+	/*package-private*/ Layer( AbstractWindow<?> window, Integer id ) {
+		this.window = window;
+		this.id = id;
 	}
-	@Override
-	protected org.lgna.croquet.components.Label createLeadingComponent() {
-		return new org.lgna.croquet.components.Label( "leading" );
+	private void updateComponentSize() {
+		if( this.component != null ) {
+			this.component.getAwtComponent().setSize( this.window.getRootPane().getLayeredPane().getSize() );
+		}
 	}
-	@Override
-	protected org.lgna.croquet.components.Label createMainComponent() {
-		return new org.lgna.croquet.components.Label( "main" );
+	public JComponent<?> getComponent() {
+		return this.component;
 	}
-	@Override
-	protected org.lgna.croquet.components.Label createTrailingComponent() {
-		return new org.lgna.croquet.components.Label( "trailing" );
-	}
-	@Override
-	protected void update( org.lgna.croquet.components.Label leadingComponent, org.lgna.croquet.components.Label mainComponent, org.lgna.croquet.components.Label trailingComponent, int index, org.lgna.project.ast.Expression item ) {
-		leadingComponent.setText( "[" + index + "]" );
-		mainComponent.setText( "main: " + item.hashCode() );
-		trailingComponent.setText( ";" );
-	}
-	@Override
-	protected void updateSelection( org.lgna.croquet.components.Label leadingComponent, org.lgna.croquet.components.Label mainComponent, org.lgna.croquet.components.Label trailingComponent, boolean isSelected ) {
+	public void setComponent( JComponent<?> component ) {
+		if( this.component != component ) {
+			javax.swing.JLayeredPane jLayeredPane = this.window.getRootPane().getLayeredPane();
+			if( this.component != null ) {
+				jLayeredPane.removeComponentListener( this.componentListener );
+				jLayeredPane.remove( this.component.getAwtComponent() );
+			}
+			this.component = component;
+			if( this.component != null ) {
+				this.updateComponentSize();
+				jLayeredPane.add( this.component.getAwtComponent(), this.id );
+				jLayeredPane.addComponentListener( this.componentListener );
+			}
+			jLayeredPane.repaint();
+		}
 	}
 }
