@@ -42,13 +42,15 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import org.lgna.croquet.DialogComposite;
+import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author Matt May
  */
-public class ReportIssueComposite extends DialogComposite<ReportIssueView> {
+public class ReportIssueComposite extends OperationInputDialogCoreComposite<ReportIssueView> {
 
 	private static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
 	private StringState visibilityLabel = createStringState( this.createKey( "visibilityLabel" ) );
@@ -109,8 +111,27 @@ public class ReportIssueComposite extends DialogComposite<ReportIssueView> {
 	protected ReportIssueView createView() {
 		return new ReportIssueView( this );
 	}
-
-	public static void main( String[] args ) {
-		
+	@Override
+	protected Status getStatus( CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
+	}
+	@Override
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		return null;
+	}
+	
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		new org.alice.stageide.StageIDE();
+		try {
+			org.lgna.croquet.triggers.Trigger trigger = null;
+			new ReportIssueComposite().getOperation().fire( trigger );
+		} catch( org.lgna.croquet.CancelException ce ) {
+			//pass
+		}
+		System.exit( 0 );
 	}
 }
