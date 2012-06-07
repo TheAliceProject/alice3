@@ -210,17 +210,26 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
+	// TODO: Should this really be project history anymore? doesn't feel like it... <kjh/>
 	public final org.lgna.croquet.undo.UndoHistory getProjectHistory() {
 		return this.getProjectHistory( IDE.PROJECT_GROUP );
 	}
 	public final org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
-		return this.getDocument().getProjectHistory( group );
+		if ( this.getDocument() == null ) {
+			return null;
+		} else {
+			return this.getDocument().getProjectHistory( group );
+		}
 	}
 
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
 
 	private boolean isProjectChanged() {
-		return this.projectHistoryInsertionIndexOfCurrentFile != this.getProjectHistory().getInsertionIndex();
+		if ( this.getProjectHistory() == null ) {
+			return false;
+		} else {
+			return this.projectHistoryInsertionIndexOfCurrentFile != this.getProjectHistory().getInsertionIndex();
+		}
 	}
 
 	public boolean isProjectUpToDateWithFile() {

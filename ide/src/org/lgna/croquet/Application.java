@@ -74,6 +74,16 @@ public abstract class Application {
 		return this.transactionHistory;
 	}
 
+	// TODO: Fix this the right way... this is a hack for now... <kjh/>
+	@Deprecated
+	public org.lgna.croquet.history.TransactionHistory getActiveTransactionHistory() {
+		if ( this.getDocument() == null ) {
+			return this.getTransactionHistory();
+		} else {
+			return this.getDocument().getTransactionHistory();
+		}
+	}
+
 	public abstract Document getDocument();
 
 	public void pushWindow( org.lgna.croquet.components.AbstractWindow< ? > window ) {

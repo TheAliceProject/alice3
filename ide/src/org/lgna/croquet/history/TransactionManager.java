@@ -55,7 +55,7 @@ public class TransactionManager {
 
 	@Deprecated
 	private static TransactionHistory getActiveTransactionHistory() {
-		return org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getActiveTransactionHistory();
+		return org.alice.ide.IDE.getActiveInstance().getActiveTransactionHistory().getActiveTransactionHistory();
 	}
 
 	@Deprecated

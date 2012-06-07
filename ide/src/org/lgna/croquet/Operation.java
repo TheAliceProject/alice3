@@ -153,7 +153,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	public final org.lgna.croquet.history.CompletionStep<?> fire() {
 		return fire( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
 	}
-
+	
 	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
 	/*package-private*/ final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
@@ -161,18 +161,7 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.initializeIfNecessary();
 
 		// Create a Transaction
-		org.lgna.croquet.history.TransactionHistory transactionHistory;
-		org.lgna.croquet.history.Transaction transaction;
-		Group group = this.getGroup();
-		// TODO: Remove this statement: <kjh/>
-		System.err.println( "GROUP: " + group + " : " + this );
-		if ( group == Application.APPLICATION_UI_GROUP ) {
-			transactionHistory = Application.getActiveInstance().getTransactionHistory();
-		} else {
-			// TODO: <kjh/> dennis is this really correct? I can't be...
-			transactionHistory = Application.getActiveInstance().getDocument().getTransactionHistory();
-		}
-		transaction = transactionHistory.getActiveTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.Transaction transaction = Application.getActiveInstance().getActiveTransactionHistory().acquireActiveTransaction();
 
 		this.perform( transaction, trigger );
 		return transaction.getCompletionStep();
