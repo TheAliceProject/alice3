@@ -56,7 +56,7 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
 	private final org.lgna.croquet.StringState valueState = this.createStringState( this.createKey( "valueState" ) );
 	
 	private StringCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+		super( java.util.UUID.fromString( "cf6e1f22-d9f7-4027-b7e1-0c514afec0a3" ) );
 	}
 	@Override
 	protected org.alice.ide.custom.components.StringCustomExpressionCreatorView createView() {

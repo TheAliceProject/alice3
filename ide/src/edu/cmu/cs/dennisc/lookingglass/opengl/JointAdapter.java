@@ -71,8 +71,6 @@ public class JointAdapter extends TransformableAdapter< edu.cmu.cs.dennisc.scene
 			//pass
 		} else if( property == m_element.oMaximumDampRange ) {
 			//pass
-		} else if( property == m_element.oMaximumDampRange ) {
-			//pass
 		} else if( property == m_element.oMinimumDampStrength ) {
 			//pass
 		} else if( property == m_element.oMaximumDampStrength ) {

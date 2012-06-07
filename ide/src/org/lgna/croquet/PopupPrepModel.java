@@ -69,10 +69,10 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	public javax.swing.Action getAction() {
 		return this.action;
 	}
-	private String getName() {
+	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
 	}
-	private void setName( String name ) {
+	public void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
 	}
 	
