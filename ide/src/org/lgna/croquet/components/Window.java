@@ -84,9 +84,4 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 		assert jMenuBar == null;
 		// TODO: ???
 	}
-
-	@Override
-	protected javax.swing.JLayeredPane getJLayeredPane() {
-		return this.getAwtComponent().getLayeredPane();
-	}
 }

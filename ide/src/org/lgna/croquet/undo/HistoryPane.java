@@ -71,10 +71,7 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListC
 		if( index == 0 ) {
 			rv.setText( "---open project---" );
 		} else {
-			//todo
-			java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
-
-			String text = value.getPresentation( locale );
+			String text = value.getPresentation();
 			rv.setText( text );
 
 			int selectedIndex = list.getSelectedIndex();

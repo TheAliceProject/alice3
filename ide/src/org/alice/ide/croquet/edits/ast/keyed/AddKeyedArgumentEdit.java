@@ -71,7 +71,7 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice
 		this.getModel().getArgumentListProperty().remove( index );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "add: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.keyedArgument );
 		return rv;

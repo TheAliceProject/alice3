@@ -91,7 +91,7 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 		this.expressionProperty.setValue( this.prevExpression );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "set: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression );
 		rv.append( " ===> " );

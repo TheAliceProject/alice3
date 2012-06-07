@@ -86,7 +86,7 @@ public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croqu
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		rv.append( "delete:" );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement);

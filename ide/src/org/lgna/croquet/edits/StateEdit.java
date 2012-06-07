@@ -87,7 +87,7 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.cro
 		return rv;
 	}
 	@Override
-	protected final StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "select " );
 		org.lgna.croquet.State< T > state = this.getModel();
 		if( state != null ) {

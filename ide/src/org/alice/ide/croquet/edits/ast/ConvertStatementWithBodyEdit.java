@@ -95,7 +95,7 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		org.lgna.project.ast.AbstractStatementWithBody original = this.getModel().getOriginal();
 		rv.append( "convert:" );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, original);

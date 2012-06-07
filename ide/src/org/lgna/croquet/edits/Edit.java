@@ -138,25 +138,26 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 	}
 
-	protected abstract StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );
-	public final String getPresentation( java.util.Locale locale ) {
+	//<kjh/>
+	protected abstract StringBuilder updatePresentation( StringBuilder rv );
+	public final String getPresentation() {
 		StringBuilder sb = new StringBuilder();
-		this.updatePresentation( sb, locale );
+		this.updatePresentation( sb );
 		if( sb.length() == 0 ) {
 			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
 		}
 		return sb.toString();
 	}
-	public String getRedoPresentation( java.util.Locale locale ) {
+	public String getRedoPresentation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Redo:" );
-		this.updatePresentation( sb, locale );
+		this.updatePresentation( sb );
 		return sb.toString();
 	}
-	public String getUndoPresentation( java.util.Locale locale ) {
+	public String getUndoPresentation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Undo:" );
-		this.updatePresentation( sb, locale );
+		this.updatePresentation( sb );
 		return sb.toString();
 	}
 	public ReplacementAcceptability getReplacementAcceptability( Edit< ? > replacementCandidate ) {
@@ -194,7 +195,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
 		sb.append( ": " );
-		this.updatePresentation( sb, java.util.Locale.getDefault() );
+		this.updatePresentation( sb );
 		return sb.toString();
 	}
 }

@@ -95,7 +95,9 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	}
 
 	protected abstract javax.swing.JRootPane getRootPane();
-	protected abstract javax.swing.JLayeredPane getJLayeredPane();
+	protected final javax.swing.JLayeredPane getJLayeredPane() {
+		return this.getRootPane().getLayeredPane();
+	}
 
 	public LayeredPane getLayeredPane() {
 		return this.layeredPane;

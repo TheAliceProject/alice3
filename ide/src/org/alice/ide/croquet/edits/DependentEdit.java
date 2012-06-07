@@ -87,8 +87,8 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 	}
 	
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		return this.getResponsibleModel().updatePresentation( rv, locale );
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
+		return this.getResponsibleModel().updatePresentation( rv );
 	}
 	@Override
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {

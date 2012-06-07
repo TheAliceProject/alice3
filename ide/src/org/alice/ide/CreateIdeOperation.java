@@ -59,7 +59,7 @@ public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
 	}
 	private Class<? extends IDE> cls;
 	private CreateIdeOperation( Class<? extends IDE> cls ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
 		this.cls = cls;
 	}
 	@Override

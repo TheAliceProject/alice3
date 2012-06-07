@@ -83,7 +83,7 @@ public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edi
 		expressionListProperty.set( index, this.prevExpression );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "set: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression );
 		rv.append( " ===> " );

@@ -203,9 +203,4 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 		this.removeWindowListener( this.windowListener );
 		this.getAwtComponent().dispose();
 	}
-
-	@Override
-	protected javax.swing.JLayeredPane getJLayeredPane() {
-		return this.getAwtComponent().getLayeredPane();
-	}
 }

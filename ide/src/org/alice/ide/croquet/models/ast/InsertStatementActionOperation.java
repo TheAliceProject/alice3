@@ -120,7 +120,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 	
 	
-	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	public StringBuilder updatePresentation( StringBuilder rv ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "create: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement );

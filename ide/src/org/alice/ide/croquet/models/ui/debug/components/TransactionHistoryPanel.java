@@ -46,6 +46,7 @@ package org.alice.ide.croquet.models.ui.debug.components;
 /**
  * @author Dennis Cosgrove
  */
+//<kjh remove file/>
 @Deprecated
 public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderPanel {
 

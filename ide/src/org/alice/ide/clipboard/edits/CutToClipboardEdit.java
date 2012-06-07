@@ -86,7 +86,7 @@ public class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 		this.originalBlockStatement.statements.add( this.originalIndex, this.statement );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "cut to clipboard" );
 		return rv;
 	}

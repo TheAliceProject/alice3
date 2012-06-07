@@ -66,6 +66,8 @@ public class Project {
 	}
 	public void addResource( org.lgna.common.Resource resource ) {
 		if( this.resources.contains( resource ) ) {
+			//todo
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
 		} else {
 			this.resources.add( resource );
 		}
@@ -95,6 +97,8 @@ public class Project {
 
 	public void addNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
 		if( this.namedUserTypes.contains( namedUserType ) ) {
+			//todo
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains named user type:", namedUserType );
 		} else {
 			this.namedUserTypes.add( namedUserType );
 		}

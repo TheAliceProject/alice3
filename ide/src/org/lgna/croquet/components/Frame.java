@@ -99,9 +99,4 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
 		this.getAwtComponent().setJMenuBar( jMenuBar );
 	}
-
-	@Override
-	protected javax.swing.JLayeredPane getJLayeredPane() {
-		return this.getAwtComponent().getLayeredPane();
-	}
 }

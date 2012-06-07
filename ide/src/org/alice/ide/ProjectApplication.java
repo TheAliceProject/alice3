@@ -75,11 +75,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		};
 	}
 
-	@Override
-	public void initialize(java.lang.String[] args) {
-		super.initialize(args);
-	}
-
 	private void updateUndoRedoEnabled() {
 		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.alice.ide.IDE.PROJECT_GROUP );
 		int index = historyManager.getInsertionIndex();

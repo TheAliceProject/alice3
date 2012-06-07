@@ -107,6 +107,7 @@ public abstract class Application {
 		return this.frame;
 	}
 
+	//<kjh/>remove
 	public org.lgna.croquet.components.LayeredPane getLayeredPane() {
 		return this.frame.getLayeredPane();
 	}
@@ -188,7 +189,7 @@ public abstract class Application {
 		}
 	}
 
-	public java.util.Locale getLocale() {
+	public static java.util.Locale getLocale() {
 		return javax.swing.JComponent.getDefaultLocale();
 	}
 

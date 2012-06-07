@@ -98,7 +98,7 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
 		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 	}
-	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	public StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member);
 		return rv;

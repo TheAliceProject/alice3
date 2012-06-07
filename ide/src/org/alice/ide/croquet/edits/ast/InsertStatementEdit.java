@@ -136,7 +136,7 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 //	}
 	
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "drop: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement );
