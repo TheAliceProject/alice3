@@ -51,10 +51,15 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 		private final org.lgna.croquet.StringValue labelStringValue;
 		private final org.lgna.croquet.components.JComponent< ? > component;
 		private final org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment;
-		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment ) {
+		private final boolean isFillHorizontal;
+		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
 			this.labelStringValue = labelStringValue;
 			this.component = component;
 			this.labelVerticalAlignment = labelVerticalAlignment;
+			this.isFillHorizontal = isFillHorizontal;
+		}
+		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment ) {
+			this( labelStringValue, component, labelVerticalAlignment, false );
 		}
 		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
 			this( labelStringValue, component, org.lgna.croquet.components.VerticalAlignment.CENTER );
@@ -82,14 +87,19 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 			}
 		}
 		public org.lgna.croquet.components.JComponent< ? >[] createComponentArray() {
-			org.lgna.croquet.components.JComponent< ? >[] rv = { 
-				this.createImmutableTextField(),
-				new org.lgna.croquet.components.LineAxisPanel( 
+			org.lgna.croquet.components.JComponent<?> trailingComponent;
+			if( this.isFillHorizontal ) {
+				trailingComponent = this.component;
+			} else {
+				trailingComponent = new org.lgna.croquet.components.LineAxisPanel( 
 						this.component,
 						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-				)
+				);
+			}
+			return new org.lgna.croquet.components.JComponent< ? >[] { 
+				this.createImmutableTextField(),
+				trailingComponent
 			};
-			return rv;
 		}
 	}
 	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {

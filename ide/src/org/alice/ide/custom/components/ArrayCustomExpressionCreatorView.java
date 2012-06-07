@@ -49,6 +49,7 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 	private static class ExpressionList extends org.lgna.croquet.components.MutableList< org.lgna.project.ast.Expression, org.lgna.croquet.components.Label, org.lgna.croquet.components.Label, org.lgna.croquet.components.Label > {
 		public ExpressionList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > state, org.lgna.croquet.PopupPrepModel popupPrepModel ) {
 			super( state, popupPrepModel );
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		}
 		@Override
 		protected org.lgna.croquet.components.Label createLeadingComponent() {
@@ -92,6 +93,6 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		rows.add( new Row( composite.getArrayTypeLabel(), new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ) ) );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new ExpressionList( composite.getValueState(), composite.getAddItemCascade().getRoot().getPopupPrepModel() ) );
 		scrollPane.setBorder( null );
-		rows.add( new Row( composite.getValueLabel(), scrollPane, org.lgna.croquet.components.VerticalAlignment.TOP ) );
+		rows.add( new Row( composite.getValueLabel(), scrollPane, org.lgna.croquet.components.VerticalAlignment.TOP, true ) );
 	}
 }
