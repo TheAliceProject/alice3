@@ -1,11 +1,9 @@
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.components.Stencil.StencilLayer;
-
 /**
  * @author Kyle J. Harms
  */
-public abstract class Stencil extends Panel {
+public abstract class Stencil extends Panel implements LayeredPane.ResizeListener {
 
 	public enum StencilLayer {
 		ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
@@ -42,6 +40,7 @@ public abstract class Stencil extends Panel {
 
 	protected abstract void handleMouseMoved(java.awt.event.MouseEvent e);
 	protected abstract void redispatchMouseEvent(java.awt.event.MouseEvent e);
+
 	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
@@ -49,7 +48,6 @@ public abstract class Stencil extends Panel {
 	protected abstract StencilLayer getStencilsLayer();
 
 	private final class StencilRepaintManager extends javax.swing.RepaintManager {
-
 		private org.lgna.croquet.components.Stencil stencil;
 
 		public StencilRepaintManager( org.lgna.croquet.components.Stencil stencil ) {
@@ -222,5 +220,9 @@ public abstract class Stencil extends Panel {
 
 	private void removeFromLayeredPane() {
 		this.layeredPane.removeFromLayeredPane( this );
+	}
+
+	public void layeredPaneResized(int width, int height) {
+		this.getAwtComponent().setBounds(0, 0, width, height);
 	}
 }

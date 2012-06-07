@@ -8,11 +8,16 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 	private final java.awt.event.ComponentListener componentListener;
 	private final javax.swing.JLayeredPane layeredPane;
 
+	/*package-private*/ interface ResizeListener {
+		public void layeredPaneResized( int width, int height );
+	};
+	private final java.util.List< ResizeListener > resizeListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	/*package-private*/ LayeredPane( javax.swing.JLayeredPane layeredPane ) {
 		this.layeredPane = layeredPane;
 		this.componentListener = new java.awt.event.ComponentListener() {
 			public void componentResized( java.awt.event.ComponentEvent e ) {
-				LayeredPane.this.resizeStencils();
+				LayeredPane.this.fireResizeListeners();
 				LayeredPane.this.revalidateAndRepaint();
 			}
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
@@ -28,14 +33,20 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 		javax.swing.JLayeredPane layeredPane = this.getAwtComponent();
 		layeredPane.add( component.getAwtComponent() );
 		layeredPane.setLayer( component.getAwtComponent(), layer );
-		this.resizeStencils();
+		if ( component instanceof ResizeListener ) {
+			this.resizeListeners.add( (ResizeListener)component );
+		}
+		this.fireResizeListeners();
 		layeredPane.repaint();
 	}
 
 	public void removeFromLayeredPane( Component<?> component ) {
 		javax.swing.JLayeredPane layeredPane = this.getAwtComponent();
 		layeredPane.remove( component.getAwtComponent() );
-		this.resizeStencils();
+		if ( component instanceof ResizeListener ) {
+			this.resizeListeners.remove( (ResizeListener)component );
+		}
+		this.fireResizeListeners();
 		layeredPane.repaint();
 	}
 
@@ -48,11 +59,9 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 		return false;
 	}
 
-	private void resizeStencils() {
-		for( Component<?> component : this.getComponents() ) {
-			if( component instanceof Stencil ) {
-				component.getAwtComponent().setBounds(0, 0, this.layeredPane.getWidth(), this.layeredPane.getHeight());
-			}
+	private void fireResizeListeners() {
+		for( ResizeListener listener : this.resizeListeners ) {
+			listener.layeredPaneResized( this.layeredPane.getWidth(), this.layeredPane.getHeight() );
 		}
 	}
 
@@ -64,7 +73,7 @@ public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.resizeStencils();
+		this.fireResizeListeners();
 		this.layeredPane.addComponentListener( this.componentListener );
 	}
 
