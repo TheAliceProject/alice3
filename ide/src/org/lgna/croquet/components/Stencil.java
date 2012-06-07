@@ -118,7 +118,7 @@ public abstract class Stencil extends Panel {
 	};
 
 	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
-		// TODO: <kjh/> this seems wrong... this should also redispatch
+		//todo: this seems wrong... this should also redispatch
 		public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
 			java.awt.Point p = e.getPoint();
 			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent().getContentPane(), p.x, p.y);

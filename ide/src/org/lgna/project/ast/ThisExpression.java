@@ -56,8 +56,8 @@ public class ThisExpression extends Expression {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		}
 		return rv;
-//		//todo
-//		return TypeDeclaredInJava.OBJECT_TYPE;
+		//		//todo
+		//		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv ) {
@@ -68,13 +68,5 @@ public class ThisExpression extends Expression {
 	public boolean isValid() {
 		//todo
 		return true;
-	}
-	
-	//<kjh/> BAD BAD BAD
-	@Override
-	protected void handleMissingProperty( String propertyName, Object value ) {
-		if( "baseTypeName".equals( propertyName ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "handleMissingProperty:", propertyName, value );
-		}
 	}
 }

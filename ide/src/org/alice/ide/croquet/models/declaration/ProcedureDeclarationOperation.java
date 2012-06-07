@@ -82,7 +82,6 @@ public class ProcedureDeclarationOperation extends MethodDeclarationOperation {
 			org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( namedUserType );
 			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
 		} else {
-			// <kjh/> interesting problem. this context accepts several criteria... which we don't support currently. :(
 			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 			if ( sceneType == declaringType ) {

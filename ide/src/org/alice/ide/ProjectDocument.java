@@ -57,7 +57,7 @@ public class ProjectDocument implements org.lgna.croquet.Document {
 		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		this.projectHistoryManager = new org.alice.ide.ProjectHistoryManager( this );
 
-		// TODO: <kjh/> We need to store this transaction history as part of the profile file
+		// TODO: We need to store this transaction history as part of the profile file
 		//this.putValueFor( org.lgna.croquet.history.TransactionHistory.INTERACTION_HISTORY_PROPERTY_KEY, this.transactionHistory );
 	}
 

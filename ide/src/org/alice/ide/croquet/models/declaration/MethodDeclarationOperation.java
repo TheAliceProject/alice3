@@ -68,7 +68,7 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< o
 				new org.alice.ide.name.validators.MethodNameValidator( initialDeclaringType )
 		);
 
-		//<kjh/> looking glass will be entirely different.  contemplate meta context factories.
+		// <kjh/> Should we use meta-context factories instead?
 		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			this.addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
 			this.addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );

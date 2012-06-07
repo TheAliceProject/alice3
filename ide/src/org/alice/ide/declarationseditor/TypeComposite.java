@@ -64,16 +64,15 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Na
 	private TypeComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.NamedUserType.class );
 	}
+
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		if( super.contains( model ) ) {
 			return true;
 		} else {
-			//todo: <kjh/> this should really leverage Composite.contains and create sub composites and models
-			if( 
-					model == org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( this.getType() ) ||
-					model == org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( this.getType() )
-			) {
+			//todo: this should really leverage Composite.contains and create sub composites and models
+			if( model == org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( this.getType() ) ||
+					model == org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( this.getType() ) ) {
 				return true;
 			} else {
 				//todo
@@ -81,6 +80,7 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Na
 			}
 		}
 	}
+
 	@Override
 	public org.lgna.project.ast.UserType<?> getType() {
 		return this.getDeclaration();

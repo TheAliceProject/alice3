@@ -286,11 +286,11 @@ public abstract class Application {
 	private boolean isDragInProgress = false;
 
 	@Deprecated
-	public final boolean isDragInProgress() {
+	public final synchronized boolean isDragInProgress() {
 		return this.isDragInProgress;
 	}
 	@Deprecated
-	public void setDragInProgress( boolean isDragInProgress ) {
+	public synchronized void setDragInProgress( boolean isDragInProgress ) {
 		this.isDragInProgress = isDragInProgress;
 	}
 

@@ -317,8 +317,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
 				org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
 
-				// TODO: <kjh/> This should probably not be done here... this should probably be part of croquet contexts or something...
-
+				// TODO: This should probably not be done here... this should probably be part of croquet contexts or something...
 				org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
 				transaction.removeAllPrepSteps();
 				chapterPage.refreshNotes();
@@ -366,7 +365,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 								if( applicationRecoveryTransaction != null ) {
 									this.insertRecoveryTransaction( applicationRecoveryTransaction );
 								} else {
-									
+
 									final org.lgna.cheshire.simple.Chapter accessibleChapter = chapter;
 									javax.swing.SwingUtilities.invokeLater( new Runnable() {
 										public void run() {
