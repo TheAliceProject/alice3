@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet.history;
 
-import org.lgna.croquet.*;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -55,7 +53,7 @@ public class TransactionManager {
 
 	@Deprecated
 	private static TransactionHistory getActiveTransactionHistory() {
-		return org.alice.ide.IDE.getActiveInstance().getActiveTransactionHistory().getActiveTransactionHistory();
+		return org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
 	}
 
 	@Deprecated
@@ -63,79 +61,39 @@ public class TransactionManager {
 		return getActiveTransactionHistory().acquireActiveTransaction();
 	}
 
+	@Deprecated
 	public static void TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.Trigger trigger ) {
 		Transaction transaction = getActiveTransaction();
 		transaction.addPrepStep( new TODO_REMOVE_BogusStep( transaction, trigger ) );
 	}
 
-	private static void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
-		org.lgna.croquet.triggers.ChangeEventTrigger trigger = org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e );
-		MenuSelection menuSelection = new MenuSelection( trigger );
-		if( menuSelection.isValid() ) {
-			getActiveTransaction().addMenuSelection( menuSelection );
-		}
-	}
-
-	private static javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			handleMenuSelectionStateChanged( e );
-		}
-	};
-
-	public static void startListeningToMenuSelection() {
-		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( menuSelectionChangeListener );
-	}
-
-	public static void stopListeningToMenuSelection() {
-		javax.swing.MenuSelectionManager.defaultManager().removeChangeListener( menuSelectionChangeListener );
-	}
-
+	@Deprecated
 	public static void firePopupMenuResized( PopupPrepStep step ) {
 		step.fireChanged( new org.lgna.croquet.history.event.PopupMenuResizedEvent( step ) );
 	}
 
+	@Deprecated
 	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
-	public static CompletionStep<?> addOperationStep( org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
-		Transaction transaction = getActiveTransaction();
-		return CompletionStep.createAndAddToTransaction( transaction, model, trigger, transactionHistory ); 
-	}
-
-	public static CompletionStep<?> addOperationStep( org.lgna.croquet.Operation model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return addOperationStep( model, trigger, null ); 
-	}
-
+	@Deprecated
 	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
 		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );
 	}
 
+	@Deprecated
 	public static <T> StateChangeStep<T> addStateChangeStep( org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return StateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
+	@Deprecated
 	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.ListSelectionState.InternalPrepModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
+	@Deprecated
 	public static CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
-	}
-
-	public static void simulatedMenuTransaction( Transaction transaction, java.util.List< MenuItemPrepModel > menuItemPrepModels ) {
-		for( org.lgna.croquet.MenuItemPrepModel menuItemPrepModel : menuItemPrepModels ) {
-			System.err.println( "todo: add step for: " + menuItemPrepModel );
-			//org.lgna.croquet.steps.MenuItemPrepStep.createAndAddToTransaction( transaction, menuItemPrepModel, org.lgna.croquet.triggers.SimulatedTrigger.SINGLETON );
-		}
-	}
-
-	@Deprecated
-	public static <E> Transaction createRecoveryTransaction( TransactionHistory transactionHistory, State< E > state, E prevValue, E nextValue ) {
-		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
-		org.lgna.croquet.history.StateChangeStep< E > completionStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
-		org.lgna.croquet.edits.StateEdit< E > edit = new org.lgna.croquet.edits.StateEdit<E>( completionStep, prevValue, nextValue );
-		completionStep.setEdit( edit );
-		return rv;
 	}
 }

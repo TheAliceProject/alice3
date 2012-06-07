@@ -327,7 +327,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				} else {
 					java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
 					if( menuItemPrepModels != null ) {
-						org.lgna.croquet.history.TransactionManager.simulatedMenuTransaction( transaction, menuItemPrepModels );
 						chapterPage.refreshNotes();
 						if( chapterPage.isGoodToGo() ) {
 							this.handleChapterChanged( chapter );

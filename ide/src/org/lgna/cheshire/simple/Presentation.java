@@ -248,12 +248,20 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 					//pass
 				} else {
 					if( item.contains( model ) ) {
-						return org.lgna.croquet.history.TransactionManager.createRecoveryTransaction( transaction.getOwner(), tabSelectionState, tabSelectionState.getValue(), item );
+						return this.createRecoveryTransaction( transaction.getOwner(), tabSelectionState, tabSelectionState.getValue(), item );
 					}
 				}
 			}
 		}
 		return null;
+	}
+
+	private <E> org.lgna.croquet.history.Transaction createRecoveryTransaction( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.State< E > state, E prevValue, E nextValue ) {
+		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
+		org.lgna.croquet.history.StateChangeStep< E > completionStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
+		org.lgna.croquet.edits.StateEdit< E > edit = new org.lgna.croquet.edits.StateEdit<E>( completionStep, prevValue, nextValue );
+		completionStep.setEdit( edit );
+		return rv;
 	}
 
 	public org.lgna.croquet.Retargeter getRetargeter() {

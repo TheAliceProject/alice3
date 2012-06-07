@@ -215,7 +215,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	/*package-private*/void addMenuSelection( MenuSelection menuSelection ) {
+	public void addMenuSelection( MenuSelection menuSelection ) {
 		java.util.ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator( this.prepSteps.size() );
 		while( iterator.hasPrevious() ) {
 			PrepStep<?> prepStep = iterator.previous();

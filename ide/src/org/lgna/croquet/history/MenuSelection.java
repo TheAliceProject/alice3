@@ -46,7 +46,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-class MenuSelection {
+public class MenuSelection {
 	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
 		for( javax.swing.MenuElement menuElement : menuElements ) {
 			org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( menuElement.getComponent() );

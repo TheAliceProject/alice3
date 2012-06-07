@@ -54,6 +54,11 @@ public abstract class Application {
 	public static final Group INHERIT_GROUP = Group.getInstance( java.util.UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
 
 	private final org.lgna.croquet.history.TransactionHistory transactionHistory;
+	private final javax.swing.event.ChangeListener menuSelectionChangeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			handleMenuSelectionStateChanged( e );
+		}
+	};
 
 	private static Application singleton;
 	public static Application getActiveInstance() {
@@ -67,7 +72,7 @@ public abstract class Application {
 		assert Application.singleton == null;
 		Application.singleton = this;
 		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		org.lgna.croquet.history.TransactionManager.startListeningToMenuSelection();
+		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( this.menuSelectionChangeListener );
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
@@ -76,7 +81,7 @@ public abstract class Application {
 
 	// TODO: Fix this the right way... this is a hack for now... <kjh/>
 	@Deprecated
-	public org.lgna.croquet.history.TransactionHistory getActiveTransactionHistory() {
+	public org.lgna.croquet.history.TransactionHistory getApplicationOrDocumentTransactionHistory() {
 		if ( this.getDocument() == null ) {
 			return this.getTransactionHistory();
 		} else {
@@ -287,5 +292,15 @@ public abstract class Application {
 	@Deprecated
 	public void setDragInProgress( boolean isDragInProgress ) {
 		this.isDragInProgress = isDragInProgress;
+	}
+
+	private void handleMenuSelectionStateChanged( javax.swing.event.ChangeEvent e ) {
+		org.lgna.croquet.triggers.ChangeEventTrigger trigger = org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e );
+		org.lgna.croquet.history.MenuSelection menuSelection = new org.lgna.croquet.history.MenuSelection( trigger );
+		if( menuSelection.isValid() ) {
+			// TODO: This is probably not the best way to handle this... we should really have a document application and an non-document application.
+			// and then override this method.
+			this.getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction().addMenuSelection( menuSelection );
+		}
 	}
 }
