@@ -42,10 +42,16 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
+import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
 
 /**
  * @author Matt May
@@ -53,54 +59,76 @@ import org.lgna.croquet.history.CompletionStep;
 public class ReportIssueComposite extends OperationInputDialogCoreComposite<ReportIssueView> {
 
 	private static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
-	private StringState visibilityLabel = createStringState( this.createKey( "visibilityLabel" ) );
-	private StringState typeLabel = createStringState( this.createKey( "typeLabel" ) );
-	private StringState summaryLabel = createStringState( this.createKey( "summaryLabel" ) );
+	private StringValue visibilityLabel = createStringValue( this.createKey( "visibilityLabel" ) );
+	private BooleanState visibilityState = createBooleanState( this.createKey( "visibilityState" ), true );
+	private StringValue typeLabel = createStringValue( this.createKey( "typeLabel" ) );
+	private StringValue summaryLabel = createStringValue( this.createKey( "summaryLabel" ) );
 	private StringState summaryBlank = createStringState( this.createKey( "summaryBlank" ) );
-	private StringState descriptionLabel = createStringState( this.createKey( "descriptionLabel" ) );
+	private StringValue descriptionLabel = createStringValue( this.createKey( "descriptionLabel" ) );
 	private StringState descriptionBlank = createStringState( this.createKey( "descriptionBlank" ) );
-	private StringState stepsLabel = createStringState( this.createKey( "stepsLabel" ) );
-	private StringState stepsBlank= createStringState( this.createKey( "stepsBlank" ) );
-	private StringState environmentLabel = createStringState( this.createKey( "environmentLabel" ) );
+	private StringValue stepsLabel = createStringValue( this.createKey( "stepsLabel" ) );
+	private StringState stepsBlank = createStringState( this.createKey( "stepsBlank" ) );
+	private StringValue environmentLabel = createStringValue( this.createKey( "environmentLabel" ) );
 	private StringState environmentBlank = createStringState( this.createKey( "environmentBlank" ) );
-	private StringState attachmentLabel = createStringState( this.createKey( "attachmentLabel" ) );
-	private StringState attachmentBlank = createStringState( this.createKey( "attachmentBlank" ) );
-	
-	public StringState getVisibilityLabel() {
+	private StringValue attachmentLabel = createStringValue( this.createKey( "attachmentLabel" ) );
+	private BooleanState attachmentState = createBooleanState( this.createKey( "attachmentState" ), true );
+	private ActionOperation loginOperation = createActionOperation( this.createKey( "loginOperation" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			return null;
+		}
+	} );
+	private ActionOperation submitBugOperation = createActionOperation( this.createKey( "submitBugOperation" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			return null;
+		}
+	} );
+
+	public StringValue getVisibilityLabel() {
 		return this.visibilityLabel;
 	}
-	public StringState getTypeLabel() {
+	public BooleanState getVisibilityState() {
+		return this.visibilityState;
+	}
+	public StringValue getTypeLabel() {
 		return this.typeLabel;
 	}
-	public StringState getSummaryLabel() {
+	public StringValue getSummaryLabel() {
 		return this.summaryLabel;
 	}
 	public StringState getSummaryBlank() {
 		return this.summaryBlank;
 	}
-	public StringState getDescriptionLabel() {
+	public StringValue getDescriptionLabel() {
 		return this.descriptionLabel;
 	}
 	public StringState getDescriptionBlank() {
 		return this.descriptionBlank;
 	}
-	public StringState getStepsLabel() {
+	public StringValue getStepsLabel() {
 		return this.stepsLabel;
 	}
 	public StringState getStepsBlank() {
 		return this.stepsBlank;
 	}
-	public StringState getEnvironmentLabel() {
+	public StringValue getEnvironmentLabel() {
 		return this.environmentLabel;
 	}
 	public StringState getEnvironmentBlank() {
 		return this.environmentBlank;
 	}
-	public StringState getAttachmentLabel() {
+	public StringValue getAttachmentLabel() {
 		return this.attachmentLabel;
 	}
-	public StringState getAttachmentBlank() {
-		return this.attachmentBlank;
+	public BooleanState getAttachmentState() {
+		return this.attachmentState;
+	}
+	public ActionOperation getLoginOperation() {
+		return this.loginOperation;
+	}
+	public ActionOperation getSubmitBugOperation() {
+		return this.submitBugOperation;
 	}
 
 	public ReportIssueComposite() {
@@ -119,7 +147,7 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		return null;
 	}
-	
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {

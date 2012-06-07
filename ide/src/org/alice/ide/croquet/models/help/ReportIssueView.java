@@ -42,48 +42,77 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import java.awt.Color;
+
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.Label;
 
 /**
  * @author Matt May
  */
-public class ReportIssueView extends BorderPanel{
+public class ReportIssueView extends BorderPanel {
 
 	public ReportIssueView( ReportIssueComposite reportIssueComposite ) {
-		GridPanel centerComponent = GridPanel.createGridPane( 7, 1 );
+
+		BorderPanel header = new BorderPanel();
+		BorderPanel centerComponent = new BorderPanel();
 		
+		Label headerLabel = new Label();
+		header.setBackgroundColor( Color.BLACK );
+		headerLabel.setText( "Alice Bugs" );
+		headerLabel.setFontSize( 36 );
+		headerLabel.setForegroundColor( Color.YELLOW );
+//		headerLabel.setBackgroundColor( Color.BLACK );
+		header.addComponent( headerLabel, Constraint.CENTER );
+		header.addComponent( reportIssueComposite.getLoginOperation().createButton(), Constraint.LINE_END );
+
+		GridPanel topCenterComponent = GridPanel.createGridPane( 3, 1 );
+		GridPanel centerCenterComponent = GridPanel.createGridPane( 3, 1 );
+		GridPanel bottomCenterComponent = GridPanel.createGridPane( 1, 1 );
+
 		BorderPanel visibilityRow = new BorderPanel();
-		visibilityRow.addComponent( reportIssueComposite.getVisibilityLabel().createTextArea(), Constraint.LINE_START );
-		
+		visibilityRow.addComponent( reportIssueComposite.getVisibilityLabel().createImmutableTextArea(), Constraint.LINE_START );
+		visibilityRow.addComponent( reportIssueComposite.getVisibilityState().createCheckBox(), Constraint.CENTER );
+
 		BorderPanel typeRow = new BorderPanel();
-		typeRow.addComponent( reportIssueComposite.getTypeLabel().createTextArea(), Constraint.LINE_START );
-		
+		typeRow.addComponent( reportIssueComposite.getTypeLabel().createImmutableTextArea(), Constraint.LINE_START );
+
 		BorderPanel summaryRow = new BorderPanel();
-		summaryRow.addComponent( reportIssueComposite.getSummaryLabel().createTextArea(), Constraint.LINE_START );
+		summaryRow.addComponent( reportIssueComposite.getSummaryLabel().createImmutableTextArea(), Constraint.LINE_START );
 		summaryRow.addComponent( reportIssueComposite.getSummaryBlank().createTextField(), Constraint.CENTER );
-		
+
 		BorderPanel descriptionRow = new BorderPanel();
-		descriptionRow.addComponent( reportIssueComposite.getDescriptionLabel().createTextArea(), Constraint.LINE_START );
-		descriptionRow.addComponent( reportIssueComposite.getDescriptionBlank().createTextField(), Constraint.LINE_START );
-		
+		descriptionRow.addComponent( reportIssueComposite.getDescriptionLabel().createImmutableTextArea(), Constraint.LINE_START );
+		descriptionRow.addComponent( reportIssueComposite.getDescriptionBlank().createTextArea(), Constraint.CENTER );
+
 		BorderPanel stepsRow = new BorderPanel();
-		stepsRow.addComponent( reportIssueComposite.getStepsLabel().createTextArea(), Constraint.LINE_START );
-		
+		stepsRow.addComponent( reportIssueComposite.getStepsLabel().createImmutableTextArea(), Constraint.LINE_START );
+		stepsRow.addComponent( reportIssueComposite.getStepsBlank().createTextArea(), Constraint.CENTER );
+
 		BorderPanel environmentRow = new BorderPanel();
-		environmentRow.addComponent( reportIssueComposite.getEnvironmentLabel().createTextArea(), Constraint.LINE_START );
-		
+		environmentRow.addComponent( reportIssueComposite.getEnvironmentLabel().createImmutableTextArea(), Constraint.LINE_START );
+		environmentRow.addComponent( reportIssueComposite.getEnvironmentBlank().createTextArea(), Constraint.CENTER );
+
 		BorderPanel attachmentRow = new BorderPanel();
-		attachmentRow.addComponent( reportIssueComposite.getAttachmentLabel().createTextArea(), Constraint.LINE_START );
-		
-		centerComponent.addComponent( visibilityRow );
-		centerComponent.addComponent( typeRow );
-		centerComponent.addComponent( summaryRow );
-		centerComponent.addComponent( descriptionRow );
-		centerComponent.addComponent( stepsRow );
-		centerComponent.addComponent( environmentRow );
-		centerComponent.addComponent( attachmentRow );
+		attachmentRow.addComponent( reportIssueComposite.getAttachmentLabel().createImmutableTextArea(), Constraint.LINE_START );
+		attachmentRow.addComponent( reportIssueComposite.getAttachmentState().createCheckBox(), Constraint.CENTER );
+
+		topCenterComponent.addComponent( visibilityRow );
+		topCenterComponent.addComponent( typeRow );
+		topCenterComponent.addComponent( summaryRow );
+		centerCenterComponent.addComponent( descriptionRow );
+		centerCenterComponent.addComponent( stepsRow );
+		centerCenterComponent.addComponent( environmentRow );
+		bottomCenterComponent.addComponent( attachmentRow );
+
+		centerComponent.addComponent( topCenterComponent, Constraint.PAGE_START );
+		centerComponent.addComponent( centerCenterComponent, Constraint.CENTER );
+		centerComponent.addComponent( bottomCenterComponent, Constraint.PAGE_END );
+
+		this.addComponent( header, Constraint.PAGE_START );
 		this.addComponent( centerComponent, Constraint.CENTER );
+		this.addComponent( reportIssueComposite.getSubmitBugOperation().createButton(), Constraint.PAGE_END );
 	}
 
 }
