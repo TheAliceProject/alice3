@@ -65,11 +65,11 @@ public class ProjectDocument implements org.lgna.croquet.Document {
 		return this.project;
 	}
 
-	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
+	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
 		return this.transactionHistory;
 	}
 
-	public org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
+	public org.lgna.croquet.undo.UndoHistory getUndoHistory( org.lgna.croquet.Group group ) {
 		return this.projectHistoryManager.getGroupHistory( group );
 	}
 }

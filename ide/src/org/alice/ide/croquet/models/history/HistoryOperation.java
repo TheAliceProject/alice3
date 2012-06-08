@@ -53,7 +53,7 @@ public abstract class HistoryOperation extends org.lgna.croquet.ActionOperation 
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.lgna.croquet.undo.UndoHistory historyManager = org.alice.ide.ProjectApplication.getActiveInstance().getProjectHistory();
+		org.lgna.croquet.undo.UndoHistory historyManager = org.alice.ide.ProjectApplication.getActiveInstance().getDocument().getUndoHistory( org.alice.ide.IDE.PROJECT_GROUP );
 		this.performInternal(historyManager);
 		step.finish();
 	}

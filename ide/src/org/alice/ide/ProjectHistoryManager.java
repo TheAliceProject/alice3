@@ -61,7 +61,7 @@ public class ProjectHistoryManager {
 				}
 			}
 		};
-		projectDocument.getTransactionHistory().addListener( this.listener );
+		projectDocument.getRootTransactionHistory().addListener( this.listener );
 		this.map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	}
 

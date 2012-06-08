@@ -101,9 +101,9 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		final int N = groupsTrackedForRandomAccess.length;
 		this.historyManagers = new org.lgna.croquet.undo.UndoHistory[ N+1 ];
 		for( int i=0; i<N; i++ ) {
-			this.historyManagers[ i ] = org.alice.ide.IDE.getActiveInstance().getProjectHistory( groupsTrackedForRandomAccess[ i ] );
+			this.historyManagers[ i ] = org.alice.ide.IDE.getActiveInstance().getDocument().getUndoHistory( groupsTrackedForRandomAccess[ i ] );
 		}
-		this.historyManagers[ N ] = org.alice.ide.IDE.getActiveInstance().getProjectHistory( COMPLETION_GROUP );
+		this.historyManagers[ N ] = org.alice.ide.IDE.getActiveInstance().getDocument().getUndoHistory( COMPLETION_GROUP );
 
 		org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().addListener( this.listener );
 	}

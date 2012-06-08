@@ -237,10 +237,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.potentialDropReceptorsStencil;
 	}
 
-	public void showStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+	public void showDropReceptorsStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		this.getPotentialDropReceptorsStencil().showStencilOver( potentialDragSource, type );
 	}
-	public void hideStencil() {
+	public void hideDropReceptorsStencil() {
 		this.getPotentialDropReceptorsStencil().hideStencil();
 	}
 

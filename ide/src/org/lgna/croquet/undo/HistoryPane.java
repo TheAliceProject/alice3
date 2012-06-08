@@ -141,7 +141,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 	}
 
 	public void initializeProjectHistory( org.alice.ide.ProjectDocument projectDocument ) {
-		this.projectHistory = projectDocument.getProjectHistory( this.group );
+		this.projectHistory = projectDocument.getUndoHistory( this.group );
 		this.historyStackModel = new HistoryStackModel( this.projectHistory );
 		this.list.setModel( this.historyStackModel );
 		this.historyStackModel.getHistoryManager().addHistoryListener( this.historyListener );

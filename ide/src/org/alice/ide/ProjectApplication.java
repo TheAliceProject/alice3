@@ -205,15 +205,16 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
-	// TODO: Should this really be project history anymore? doesn't feel like it... <kjh/>
-	public final org.lgna.croquet.undo.UndoHistory getProjectHistory() {
+	@Deprecated
+	private final org.lgna.croquet.undo.UndoHistory getProjectHistory() {
 		return this.getProjectHistory( IDE.PROJECT_GROUP );
 	}
-	public final org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
+	@Deprecated
+	private final org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
 		if ( this.getDocument() == null ) {
 			return null;
 		} else {
-			return this.getDocument().getProjectHistory( group );
+			return this.getDocument().getUndoHistory( group );
 		}
 	}
 
@@ -272,7 +273,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		org.alice.ide.project.ProjectDocumentState.getInstance().setValue( document );
 	}
 
-	// TODO: <kjh/> Should these really be here anymore? It feels like not...
 	public org.lgna.project.Project getProject() {
 		ProjectDocument document = this.getDocument();
 		return document != null ? document.getProject() : null;
@@ -282,7 +282,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getProjectTransactionHistory() {
-		return this.getDocument().getTransactionHistory();
+		return this.getDocument().getRootTransactionHistory();
 	}
 
 	public void loadProjectFrom( java.net.URI uri ) {

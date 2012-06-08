@@ -138,7 +138,6 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 	}
 
-	//<kjh/>
 	protected abstract StringBuilder updatePresentation( StringBuilder rv );
 	public final String getPresentation() {
 		StringBuilder sb = new StringBuilder();

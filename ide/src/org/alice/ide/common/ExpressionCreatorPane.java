@@ -61,9 +61,9 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	public void setActive( boolean isActive ) {
 		super.setActive( isActive );
 		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
+			org.alice.ide.IDE.getActiveInstance().showDropReceptorsStencilOver( this, getExpressionType() );
 		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+			org.alice.ide.IDE.getActiveInstance().hideDropReceptorsStencil();
 		}
 	}
 }

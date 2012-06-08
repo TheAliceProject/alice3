@@ -85,7 +85,7 @@ public abstract class Application {
 		if ( this.getDocument() == null ) {
 			return this.getTransactionHistory();
 		} else {
-			return this.getDocument().getTransactionHistory();
+			return this.getDocument().getRootTransactionHistory();
 		}
 	}
 
@@ -105,11 +105,6 @@ public abstract class Application {
 
 	public org.lgna.croquet.components.Frame getFrame() {
 		return this.frame;
-	}
-
-	//<kjh/>remove
-	public org.lgna.croquet.components.LayeredPane getLayeredPane() {
-		return this.frame.getLayeredPane();
 	}
 
 	public void initialize( String[] args ) {

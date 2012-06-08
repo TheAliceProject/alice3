@@ -62,11 +62,11 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 	/*package-private*/ final void setId( java.util.UUID id ) {
 		this.id = id;
 	}
-	
+
 	public Node getParent() {
 		return this.parent;
 	}
-	
+
 	private void setParent( AbstractNode parent ) {
 		if( this.parent != parent ) {
 			if( this.parent != null ) {
@@ -78,7 +78,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		}
 	}
 
-	
+
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		Node rv;
 		if( isThisIncludedInSearch ) {
@@ -297,7 +297,9 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 				return getVisitMethod( crawler, cls.getSuperclass() );
 			}
 		} catch (SecurityException e) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(e);
 		} catch (IllegalArgumentException e) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(e);
 		}
 		return null;
 	}
@@ -314,12 +316,12 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 			for( Object item : collection ) {
 				rv.appendChild( encodeValue( item, xmlDocument, set ) );
 			}
-//		} else if( value instanceof org.alice.virtualmachine.Resource ) {
-//			org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
-//			rv = xmlDocument.createElement( "resource" );
-//			java.util.UUID uuid = resource.getUUID();
-//			assert uuid != null;
-//			rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, uuid.toString() );
+			//		} else if( value instanceof org.alice.virtualmachine.Resource ) {
+			//			org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
+			//			rv = xmlDocument.createElement( "resource" );
+			//			java.util.UUID uuid = resource.getUUID();
+			//			assert uuid != null;
+			//			rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, uuid.toString() );
 		} else {
 			rv = xmlDocument.createElement( "value" );
 			if( value != null ) {
@@ -363,12 +365,12 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 	}
 	private static org.w3c.dom.Element encodeMember( org.w3c.dom.Document xmlDocument, String nodeName, MemberReflectionProxy memberReflectionProxy ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( nodeName );
-//		String name = mmbr.getName();
-//		if( name == null ) {
-//			assert mmbr instanceof java.lang.reflect.Constructor< ? >;
-//		} else {
-//			rv.setAttribute( "name", name );
-//		}
+		//		String name = mmbr.getName();
+		//		if( name == null ) {
+		//			assert mmbr instanceof java.lang.reflect.Constructor< ? >;
+		//		} else {
+		//			rv.setAttribute( "name", name );
+		//		}
 		rv.appendChild( encodeDeclaringClass( xmlDocument, memberReflectionProxy ) );
 		return rv;
 	}
@@ -390,7 +392,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		rv.appendChild( encodeParameters( xmlDocument, methodReflectionProxy.getParameterClassReflectionProxies() ) );
 		return rv;
 	}
-	
+
 	//todo: reduce visibility?
 	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
@@ -415,11 +417,11 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 			org.w3c.dom.Element xmlLeafType = xmlDocument.createElement( "leafType" );
 			xmlLeafType.appendChild( encodeValue( userArrayType.getLeafType(), xmlDocument, set ) );
 			rv.appendChild( xmlLeafType );
-			
+
 			org.w3c.dom.Element xmlDimensionCount = xmlDocument.createElement( "dimensionCount" );
 			xmlDimensionCount.appendChild( xmlDocument.createTextNode( Integer.toString( userArrayType.getDimensionCount() ) ) );
 			rv.appendChild( xmlDimensionCount );
-		
+
 		} else if( this instanceof JavaConstructor ) {
 			JavaConstructor constructorDeclaredInJava = (JavaConstructor)this;
 			rv.appendChild( encodeConstructor( xmlDocument, "constructor", constructorDeclaredInJava.getConstructorReflectionProxy() ) );
@@ -456,7 +458,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		}
 		return rv;
 	}
-	
+
 	public final org.w3c.dom.Document encode( java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Document rv = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
 		org.w3c.dom.Element xmlElement = encode( rv, set );
@@ -540,7 +542,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		}
 		return rv;
 	}
-	
+
 	protected void handleMissingProperty( String propertyName, Object value ) {
 		throw new RuntimeException( propertyName );
 	}
@@ -548,7 +550,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.Property property, Object value ) {
 		return value;
 	}
-	
+
 	protected final void decodeNode( Decoder decoder, org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 		for( int i = 0; i < nodeList.getLength(); i++ ) {
@@ -593,54 +595,54 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 	public void assignUUIDs( java.util.Map< Integer, AbstractDeclaration > map ) {
 	}
 
-//	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
-//		sb.append( "name=" );
-//		sb.append( this.getName() );
-//		sb.append( ";" );
-//		sb.append( "@" );
-//		sb.append( this.hashCode() );
-//		sb.append( ";" );
-//		String separator = "";
-//		for( edu.cmu.cs.dennisc.property.Property< ? > property : getProperties() ) {
-//			sb.append( separator );
-//			sb.append( property.getName() );
-//			sb.append( "=" );
-//			Object value = property.getValue( this );
-//			if( value instanceof Node ) {
-//				Node node = (Node)value;
-//				if( set.contains( node ) ) {
-//					sb.append( "referenced@" );
-//					sb.append( node.hashCode() );
-//				} else {
-//					node.append( sb, set );
-//				}
-//			} else if( value instanceof java.util.Collection ) {
-//				java.util.Collection collection = (java.util.Collection)value;
-//				sb.append( "cls:" );
-//				sb.append( collection.getClass().getName() );
-//				sb.append( ";size:" );
-//				sb.append( collection.size() );
-//			} else {
-//				sb.append( value );
-//			}
-//			separator = ",";
-//		}
-//	}
+	//	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
+	//		sb.append( "name=" );
+	//		sb.append( this.getName() );
+	//		sb.append( ";" );
+	//		sb.append( "@" );
+	//		sb.append( this.hashCode() );
+	//		sb.append( ";" );
+	//		String separator = "";
+	//		for( edu.cmu.cs.dennisc.property.Property< ? > property : getProperties() ) {
+	//			sb.append( separator );
+	//			sb.append( property.getName() );
+	//			sb.append( "=" );
+	//			Object value = property.getValue( this );
+	//			if( value instanceof Node ) {
+	//				Node node = (Node)value;
+	//				if( set.contains( node ) ) {
+	//					sb.append( "referenced@" );
+	//					sb.append( node.hashCode() );
+	//				} else {
+	//					node.append( sb, set );
+	//				}
+	//			} else if( value instanceof java.util.Collection ) {
+	//				java.util.Collection collection = (java.util.Collection)value;
+	//				sb.append( "cls:" );
+	//				sb.append( collection.getClass().getName() );
+	//				sb.append( ";size:" );
+	//				sb.append( collection.size() );
+	//			} else {
+	//				sb.append( value );
+	//			}
+	//			separator = ",";
+	//		}
+	//	}
 
-//	protected void append( StringBuffer sb, java.util.Set< Node > set ) {
-//		set.add( this );
-//		sb.append( this.getClass().getName() );
-//		sb.append( "[" );
-//		appendInternal( sb, set );
-//		sb.append( "]" );
-//	}
-		
-//	@Override
-//	public String toString() {
-//		StringBuffer sb = new StringBuffer();
-//		append( sb, new java.util.HashSet< Node >() );
-//		return sb.toString();
-//	}
+	//	protected void append( StringBuffer sb, java.util.Set< Node > set ) {
+	//		set.add( this );
+	//		sb.append( this.getClass().getName() );
+	//		sb.append( "[" );
+	//		appendInternal( sb, set );
+	//		sb.append( "]" );
+	//	}
+
+	//	@Override
+	//	public String toString() {
+	//		StringBuffer sb = new StringBuffer();
+	//		append( sb, new java.util.HashSet< Node >() );
+	//		return sb.toString();
+	//	}
 
 	//todo: i18n
 	//protected abstract StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ); 
@@ -653,7 +655,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		this.appendRepr( sb );
 		return sb.toString();
 	}
-	
+
 	protected StringBuilder appendStringDetails( StringBuilder rv ) {
 		return rv;
 	}
