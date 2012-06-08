@@ -59,8 +59,8 @@ public class ExpressionStatement extends Statement {
 		this.expression.setValue( expression );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		NodeUtilities.safeAppendRepr( rv, this.expression.getValue() );
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		return rv;
 	}
 }

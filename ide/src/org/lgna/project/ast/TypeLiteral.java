@@ -61,7 +61,7 @@ public class TypeLiteral extends AbstractValueLiteral {
 		return JavaType.getInstance( value.getValue().getClass() );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
 	}

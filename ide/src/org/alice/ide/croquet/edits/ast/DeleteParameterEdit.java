@@ -73,7 +73,7 @@ public class DeleteParameterEdit extends ParameterEdit< org.alice.ide.operations
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

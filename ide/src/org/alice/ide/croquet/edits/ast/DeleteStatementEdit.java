@@ -89,7 +89,7 @@ public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croqu
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

@@ -97,14 +97,14 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "declare: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method, org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 	
 	@Override
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		rv.append( "declare " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 

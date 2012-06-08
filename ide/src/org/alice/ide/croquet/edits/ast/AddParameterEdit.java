@@ -72,7 +72,7 @@ public class AddParameterEdit extends ParameterEdit< org.alice.ide.croquet.model
 	@Override
 	protected StringBuilder updatePresentation(StringBuilder rv) {
 		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getParameter());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getParameter(), org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

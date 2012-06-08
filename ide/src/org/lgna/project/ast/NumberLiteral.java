@@ -57,7 +57,7 @@ public class NumberLiteral extends AbstractValueLiteral {
 		return JavaType.getInstance( Number.class );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
 	}

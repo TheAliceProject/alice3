@@ -64,10 +64,10 @@ public abstract class AbstractArgument extends AbstractNode {
 	
 	protected abstract AbstractType< ?,?,? > getExpressionTypeForParameterType( AbstractType< ?,?,? > parameterType );
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//return super.appendRepr( rv, locale );
 		//NodeUtilities.safeAppendRepr( rv, this.parameter.getValue(), locale );
-		NodeUtilities.safeAppendRepr( rv, this.expression.getValue() );
+		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		return rv;
 	}
 }

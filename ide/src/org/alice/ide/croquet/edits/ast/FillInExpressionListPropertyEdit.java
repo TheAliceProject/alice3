@@ -85,9 +85,9 @@ public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edi
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "set: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.prevExpression, org.lgna.croquet.Application.getLocale() );
 		rv.append( " ===> " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.nextExpression );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.nextExpression, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 }

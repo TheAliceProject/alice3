@@ -57,7 +57,7 @@ public class DoubleLiteral extends AbstractValueLiteral {
 		return JavaType.getInstance( Double.class );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
 	}

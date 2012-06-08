@@ -57,7 +57,7 @@ public class BooleanLiteral extends AbstractValueLiteral {
 		this.value.setValue( value );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
 	}

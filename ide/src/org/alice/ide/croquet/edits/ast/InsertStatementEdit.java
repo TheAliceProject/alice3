@@ -139,7 +139,7 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "drop: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 	@Override
@@ -185,7 +185,7 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 	@Override
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		rv.append( "insert " );
-		rv.append( this.statement.getRepr() );
+		rv.append( this.statement.getRepr( org.lgna.croquet.Application.getLocale() ) );
 		return rv;
 	}
 

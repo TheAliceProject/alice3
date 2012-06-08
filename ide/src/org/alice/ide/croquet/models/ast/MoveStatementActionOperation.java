@@ -118,7 +118,7 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 	public StringBuilder updatePresentation( StringBuilder rv ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "move: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 	

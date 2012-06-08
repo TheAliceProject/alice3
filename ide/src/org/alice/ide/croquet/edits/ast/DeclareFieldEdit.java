@@ -77,7 +77,7 @@ public abstract class DeclareFieldEdit< M extends org.alice.ide.croquet.models.d
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append("declare:");
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, field);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, field, org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

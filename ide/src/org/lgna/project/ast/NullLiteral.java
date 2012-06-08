@@ -52,9 +52,9 @@ public class NullLiteral extends AbstractLiteral {
 		return JavaType.OBJECT_TYPE;
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//todo
-		if( "java".equals( org.alice.ide.IDE.getActiveInstance().getLocale().getVariant() ) ) {
+		if( "java".equals( locale.getVariant() ) ) {
 			rv.append( "null" );
 		} else {
 			rv.append( "None" );

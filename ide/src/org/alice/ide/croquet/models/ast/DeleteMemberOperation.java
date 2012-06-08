@@ -100,7 +100,7 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 	}
 	public StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member, org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 	

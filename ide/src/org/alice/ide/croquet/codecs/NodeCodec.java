@@ -81,7 +81,7 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 		}
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, value );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, value, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 }

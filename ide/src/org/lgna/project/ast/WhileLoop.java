@@ -60,9 +60,9 @@ public class WhileLoop extends AbstractLoop {
 		this.conditional.setValue( conditional );
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "while " );
-		NodeUtilities.safeAppendRepr( rv, this.conditional.getValue() );
-		return super.appendRepr( rv );
+		NodeUtilities.safeAppendRepr( rv, this.conditional.getValue(), locale );
+		return super.appendRepr( rv, locale );
 	}
 }
