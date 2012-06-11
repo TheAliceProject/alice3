@@ -46,10 +46,12 @@ package org.lgna.project;
  * @author Dennis Cosgrove
  */
 public class Project {
+
 	private final org.lgna.project.ast.NamedUserType programType;
 	private final java.util.Set< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private final java.util.Map/*< org.lgna.project.properties.PropertyKey< T >, T >*/ propertyMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+
 	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.lgna.common.Resource > resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
@@ -58,6 +60,7 @@ public class Project {
 	public Project( org.lgna.project.ast.NamedUserType programType ) {
 		this.programType = programType;
 	}
+
 	public org.lgna.project.ast.NamedUserType getProgramType() {
 		return this.programType;
 	}
@@ -76,7 +79,6 @@ public class Project {
 		return this.resources;
 	}
 
-	
 	public java.util.Set< org.lgna.project.properties.PropertyKey<Object> > getPropertyKeys() {
 		return this.propertyMap.keySet();
 	}
@@ -92,7 +94,7 @@ public class Project {
 	public <T> void removeValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
 		this.propertyMap.remove( key );
 	}
-	
+
 	public void addNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
 		if( this.namedUserTypes.contains( namedUserType ) ) {
 			//todo

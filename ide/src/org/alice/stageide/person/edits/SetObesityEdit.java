@@ -59,7 +59,7 @@ public class SetObesityEdit extends org.lgna.croquet.edits.Edit {
 		throw new RuntimeException( "todo" );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "randomize" );
 		return rv;
 	}

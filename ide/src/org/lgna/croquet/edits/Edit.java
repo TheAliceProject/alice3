@@ -46,7 +46,6 @@ import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.Manager;
 import org.lgna.croquet.Retargeter;
-import org.lgna.croquet.UserInformation;
 
 /**
  * @author Dennis Cosgrove
@@ -126,45 +125,41 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 	}
 
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, UserInformation userInformation ) {
-		return rv;
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder title ) {
+		return title;
 	}
-	public final String getTutorialTransactionTitle( UserInformation userInformation ) {
+	public final String getTutorialTransactionTitle() {
 		StringBuilder sb = new StringBuilder();
-		this.updateTutorialTransactionTitle( sb, userInformation );
+		this.updateTutorialTransactionTitle( sb );
 		if( sb.length() == 0 ) {
-			//			sb.append( "TODO: " );
-			//			sb.append( this );
-			//			sb.append( "; " );
-			//			sb.append( edit );
 			return null;
 		} else {
 			return sb.toString();
 		}
 	}
 
-	protected abstract StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale );
-	public final String getPresentation( java.util.Locale locale ) {
+	protected abstract StringBuilder updatePresentation( StringBuilder rv );
+	public final String getPresentation() {
 		StringBuilder sb = new StringBuilder();
-		this.updatePresentation( sb, locale );
+		this.updatePresentation( sb );
 		if( sb.length() == 0 ) {
 			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
 		}
 		return sb.toString();
 	}
-	public String getRedoPresentation( java.util.Locale locale ) {
+	public String getRedoPresentation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Redo:" );
-		this.updatePresentation( sb, locale );
+		this.updatePresentation( sb );
 		return sb.toString();
 	}
-	public String getUndoPresentation( java.util.Locale locale ) {
+	public String getUndoPresentation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Undo:" );
-		this.updatePresentation( sb, locale );
+		this.updatePresentation( sb );
 		return sb.toString();
 	}
-	public ReplacementAcceptability getReplacementAcceptability( Edit< ? > replacementCandidate, UserInformation userInformation ) {
+	public ReplacementAcceptability getReplacementAcceptability( Edit< ? > replacementCandidate ) {
 		if( replacementCandidate != null ) {
 			return ReplacementAcceptability.PERFECT_MATCH;
 		} else {
@@ -199,7 +194,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
 		sb.append( ": " );
-		this.updatePresentation( sb, java.util.Locale.getDefault() );
+		this.updatePresentation( sb );
 		return sb.toString();
 	}
 }

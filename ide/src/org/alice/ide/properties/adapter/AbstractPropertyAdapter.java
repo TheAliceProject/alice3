@@ -92,7 +92,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 		return this.repr;
 	}
 
-	public String getUndoRedoDescription(java.util.Locale locale)
+	public String getUndoRedoDescription()
 	{
 		return getRepr();
 	}

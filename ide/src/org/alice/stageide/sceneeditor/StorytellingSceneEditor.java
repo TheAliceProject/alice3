@@ -593,7 +593,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			Entity entity = entityImp.getAbstraction();
 			UserField field = this.getFieldForInstanceInJavaVM(entity);
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickInput.getInputEvent() ) );
+			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
 		}
 	}
 	
@@ -1147,8 +1147,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 
 	public String getTutorialNoteText(org.lgna.croquet.Model model,
-			org.lgna.croquet.edits.Edit<?> edit,
-			org.lgna.croquet.UserInformation userInformation) {
+			org.lgna.croquet.edits.Edit<?> edit) {
 		return "Drop...";
 	}
 // ######### End implementation of org.lgna.croquet.DropReceptor

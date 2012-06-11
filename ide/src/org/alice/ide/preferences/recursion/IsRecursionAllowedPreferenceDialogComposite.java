@@ -57,7 +57,7 @@ public class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croque
 	private final int depth;
 	private IsRecursionAllowedPreferenceDialogComposite next;
 	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
-		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.UI_STATE_GROUP );
+		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 		this.depth = index;
 	}
 	@Override

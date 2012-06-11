@@ -229,7 +229,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 
 	class ConstrainInstanceNameToTextBooleanStateOperation extends org.lgna.croquet.BooleanState {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
-			super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
+			super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
 			this.setTextForBothTrueAndFalse( "constrain to text" );
 			this.addValueListener( new ValueListener<Boolean>() {
 				public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

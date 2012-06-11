@@ -102,7 +102,6 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		this.epilogue( step, isCompleted );
 	}
 
-	
 	protected String getInternalExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
@@ -116,7 +115,7 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 	public void setExternalCommitButtonDisabler( ExternalCommitButtonDisabler externalCommitButtonDisabler ) {
 		this.externalCommitButtonDisabler = externalCommitButtonDisabler;
 	}
-	
+
 	@Override
 	protected final String getExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String explanation = this.getInternalExplanation( step );
@@ -129,7 +128,7 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		return explanation;
 	}
 
-	public String getTutorialFinishNoteText( org.lgna.croquet.history.CompletionStep<?> step, UserInformation userInformation ) {
+	public String getTutorialFinishNoteText( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return "When finished press the <strong>OK</strong> button.";
 	}
 }

@@ -244,7 +244,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 					this.removeResource( resource );
 				}
 				@Override
-				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+				protected StringBuilder updatePresentation( StringBuilder rv ) {
 					rv.append( "add resource" );
 					rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( resource ) );
 					return rv;
@@ -274,7 +274,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 					this.addResource( resource );
 				}
 				@Override
-				protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+				protected StringBuilder updatePresentation( StringBuilder rv ) {
 					rv.append( "remove resource" );
 					rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( resource ) );
 					return rv;
@@ -397,7 +397,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 							ResourceManagerPane.this.table.repaint();
 						}
 						@Override
-						protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+						protected StringBuilder updatePresentation( StringBuilder rv ) {
 							rv.append( "rename resource: " );
 							rv.append( prevName );
 							rv.append( " ===> " );
@@ -516,7 +516,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 							prevCapsule.update( resource );
 						}
 						@Override
-						protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+						protected StringBuilder updatePresentation( StringBuilder rv ) {
 							rv.append( "reload content" );
 							return rv;
 						}

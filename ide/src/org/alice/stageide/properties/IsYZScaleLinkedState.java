@@ -57,6 +57,6 @@ public class IsYZScaleLinkedState extends BooleanState
 		return SingletonHolder.instance;
 	}
 	private IsYZScaleLinkedState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "c24bc5c2-dcdb-4c4f-b759-79256d9921ce" ), true );
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c24bc5c2-dcdb-4c4f-b759-79256d9921ce" ), true );
 	}
 }

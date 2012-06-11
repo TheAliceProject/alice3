@@ -60,9 +60,11 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		return this.contextFactories;
 	}
 	public void addContextFactory( ContextFactory<?> contextFactory ) {
+		assert contextFactory != null : this;
 		this.contextFactories.add( contextFactory );
 	}
 	public void removeContextFactory( ContextFactory<?> contextFactory ) {
+		assert contextFactory != null : this;
 		this.contextFactories.remove( contextFactory );
 	}
 
@@ -113,16 +115,20 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation );
+	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit );
 //	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
 //		rv.append( "TODO: override updateTutorialStepText " );
 //		rv.append( this );
 //		return rv;
 //	}
-	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
+	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit ) {
 		StringBuilder sb = new StringBuilder();
+//		sb.append( "trigger:" );
 		sb.append( triggerText );
-		this.updateTutorialStepText( sb, step, edit, userInformation );
+//		sb.append( ",bonus:" );
+		this.updateTutorialStepText( sb, step, edit );
+//		sb.append( ",this:" );
+//		sb.append( this );
 		return sb.toString();
 	}
 }

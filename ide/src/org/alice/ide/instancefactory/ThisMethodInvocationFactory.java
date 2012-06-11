@@ -72,7 +72,7 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.Resolver< ThisMethodInvocationFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisMethodInvocationFactory >( this, this.getMethod(), org.lgna.project.ast.AbstractMethod.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisMethodInvocationFactory >( this, org.lgna.project.ast.AbstractMethod.class, this.getMethod() );
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {

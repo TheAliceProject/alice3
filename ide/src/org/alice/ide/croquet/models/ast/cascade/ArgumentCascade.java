@@ -72,7 +72,7 @@ public class ArgumentCascade extends ProjectExpressionPropertyCascade {
 //	}
 	@Override
 	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade >( this, this.argument, org.lgna.project.ast.SimpleArgument.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade >( this, org.lgna.project.ast.SimpleArgument.class, this.argument );
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {

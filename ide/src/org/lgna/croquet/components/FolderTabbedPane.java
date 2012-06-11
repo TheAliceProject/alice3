@@ -341,7 +341,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 	//todo: PopupOperation
 	private class PopupOperation extends ActionOperation {
 		public PopupOperation() {
-			super( Application.UI_STATE_GROUP, java.util.UUID.fromString( "7923b4c8-6a9f-4c8b-99b5-909ae6c0889a" ) );
+			super( Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7923b4c8-6a9f-4c8b-99b5-909ae6c0889a" ) );
 		}
 		@Override
 		protected void localize() {

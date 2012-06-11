@@ -81,23 +81,23 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.cro
 	}
 	
 	@Override
-	public final StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
+	public final StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		rv.append( "select " );
-		this.getModel().appendRepresentation( rv, this.nextValue, userInformation.getLocale() );
+		this.getModel().appendRepresentation( rv, this.nextValue );
 		return rv;
 	}
 	@Override
-	protected final StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "select " );
 		org.lgna.croquet.State< T > state = this.getModel();
 		if( state != null ) {
-			state.appendRepresentation( rv, this.prevValue, locale );
+			state.appendRepresentation( rv, this.prevValue );
 		} else {
 			rv.append( this.prevValue );
 		}
 		rv.append( " ===> " );
 		if( state != null ) {
-			state.appendRepresentation( rv, this.nextValue, locale );
+			state.appendRepresentation( rv, this.nextValue );
 		} else {
 			rv.append( this.nextValue );
 		}

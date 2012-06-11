@@ -77,7 +77,7 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 	}
 
 	public CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
+		org.lgna.croquet.history.Transaction transaction = Application.getActiveInstance().getDocument().getRootTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		CascadeRoot< T, CS > root = this.getElement();
 		CS completionStep = root.createCompletionStep( transaction, trigger );
 		try {
@@ -89,7 +89,7 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 		return completionStep;
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		this.complete( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
+		this.complete( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 	}
 
 	public javax.swing.event.PopupMenuListener createPopupMenuListener( final org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
@@ -101,7 +101,7 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 				RtRoot.this.removeAll( menuItemContainer );
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				RtRoot.this.cancel( null, new org.lgna.croquet.triggers.PopupMenuEventTrigger( e ), null );
+				RtRoot.this.cancel( null, org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( e ), null );
 			}
 		};
 	}

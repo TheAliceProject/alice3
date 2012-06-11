@@ -122,7 +122,7 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > node, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > node, org.lgna.croquet.edits.Edit< ? > edit ) {
 		rv.append( " <strong>" );
 		rv.append( this.getTutorialItemText() );
 		rv.append( "</strong>." );

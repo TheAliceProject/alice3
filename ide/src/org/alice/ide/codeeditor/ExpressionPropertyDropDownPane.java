@@ -76,7 +76,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 //		return rv;	
 //	}
 
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return "Drop...";
 	}
 	
@@ -112,7 +112,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 			//pass
 		} else {
 //			source.hideDropProxyIfNecessary();
-			context.cancelTransaction();
+			context.cancelTransaction( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
 		}
 		return rv;
 	}

@@ -71,8 +71,8 @@ public abstract class ItemState<T> extends State<T> {
 		this.itemCodec.encodeValue( binaryEncoder, value );
 	}
 	@Override
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		return this.itemCodec.appendRepresentation( rv, value, locale );
+	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
+		return this.itemCodec.appendRepresentation( rv, value );
 	}
 	public ItemCodec< T > getItemCodec() {
 		return this.itemCodec;

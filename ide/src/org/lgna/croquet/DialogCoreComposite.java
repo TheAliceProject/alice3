@@ -157,7 +157,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			DialogCoreComposite coreComposite = this.getDialogCoreComposite();
 			assert coreComposite != null : this;
-			org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getParent().getParent();
+			org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
 			assert dialogStep != null : transaction;
 			org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 			assert dialog != null : dialogStep;
@@ -220,10 +220,10 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		super( migrationId );
 	}
 	protected abstract CC getDialogContentComposite();
-	protected final Operation getCommitOperation() {
+	public final Operation getCommitOperation() {
 		return this.commitOperation;
 	}
-	protected final Operation getCancelOperation() {
+	public final Operation getCancelOperation() {
 		return this.cancelOperation;
 	}
 

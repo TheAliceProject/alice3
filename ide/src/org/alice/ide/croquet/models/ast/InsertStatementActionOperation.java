@@ -58,31 +58,13 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		this.statement = statement;
 	}
 	
-	public static Object[] retargetArguments( Object[] rv, org.lgna.croquet.Retargeter retargeter ) {
-		assert rv != null;
-		assert rv.length == 3;
-		rv[ 0 ] = retargeter.retarget( rv[ 0 ] );
-		//todo: retarget index?
-		rv[ 2 ] = retargeter.retarget( rv[ 2 ] );
-		return rv;
+	public Object[] getArguments() {
+		return new Object[] {
+			this.blockStatement,
+			this.index,
+			this.statement
+		};
 	}
-	
-
-	public static Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		java.util.UUID blockStatementId = binaryDecoder.decodeId();
-		int index = binaryDecoder.decodeInt();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.BlockStatement blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), blockStatementId );
-		org.lgna.project.ast.Statement statement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
-		return new Object[] { blockStatement, index, statement };
-	}
-	public void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatement.getId() );
-		binaryEncoder.encode( this.index );
-		binaryEncoder.encode( this.statement.getId() );
-	}
-	
 	public void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
 	}
@@ -138,14 +120,14 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 	
 	
-	public StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	public StringBuilder updatePresentation( StringBuilder rv ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "create: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 	
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
 		if( replacementCandidate instanceof org.alice.ide.croquet.edits.DependentEdit ) {
 			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		} else {

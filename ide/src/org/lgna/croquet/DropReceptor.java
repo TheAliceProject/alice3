@@ -46,7 +46,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface DropReceptor {
-	public <R extends DropReceptor> org.lgna.croquet.resolvers.Resolver< DropReceptor > getResolver();
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( DropSite potentialDropSite );
 	
 	public boolean isPotentiallyAcceptingOf( DragModel dragModel );
@@ -60,9 +59,8 @@ public interface DropReceptor {
 	//todo: Dropped or Exited but not both?
 	public Model dragDropped( org.lgna.croquet.history.DragStep step );
 	public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient );
-	
-	
+
 	public void dragStopped( org.lgna.croquet.history.DragStep step );
 	
-	public String getTutorialNoteText( Model model, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation );
+	public String getTutorialNoteText( Model model, org.lgna.croquet.edits.Edit< ? > edit );
 }

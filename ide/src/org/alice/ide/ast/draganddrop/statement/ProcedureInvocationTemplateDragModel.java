@@ -59,12 +59,20 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		return rv;
 	}
 	private org.lgna.project.ast.AbstractMethod method;
+
 	private ProcedureInvocationTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
 		this.method = method;
 		assert this.method.isProcedure();
+
 		this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			this.addContextFactory( org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance() );
+		} else {
+			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+		}
 	}
+
 	@Override
 	public boolean isAddEventListenerLikeSubstance() {
 		if( this.method instanceof org.lgna.project.ast.JavaMethod ) {
@@ -79,7 +87,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel >( this, this.method, org.lgna.project.ast.AbstractMethod.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel >( this, org.lgna.project.ast.AbstractMethod.class, this.method );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

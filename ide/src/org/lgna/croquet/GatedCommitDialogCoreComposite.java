@@ -150,7 +150,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		org.lgna.croquet.history.CompletionStep<?> s = null;
 		if( event != null ) {
-			org.lgna.croquet.history.Node<?> node = event.getNode();
+			org.lgna.croquet.history.TransactionNode<?> node = event.getNode();
 			if( node != null ) {
 				s = node.getFirstStepOfModelAssignableTo( GatedCommitDialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
 			}

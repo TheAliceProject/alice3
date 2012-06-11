@@ -69,7 +69,7 @@ public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
 		this.setResource( this.prevResource );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "randomize" );
 		return rv;
 	}

@@ -55,7 +55,7 @@ public class GalleryTabState extends org.lgna.croquet.TabSelectionState< org.lgn
 	}
 	private GalleryTabState() {
 		super( 
-				org.alice.ide.IDE.UI_STATE_GROUP, 
+				org.alice.ide.IDE.DOCUMENT_UI_GROUP, 
 				java.util.UUID.fromString( "46bffcb8-9f19-4328-aae3-550b0fc72f43" ), 
 				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.TabComposite.class ), 
 				0,

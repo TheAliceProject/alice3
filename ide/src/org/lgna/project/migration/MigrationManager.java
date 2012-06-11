@@ -150,6 +150,10 @@ public class MigrationManager {
 		throw new AssertionError();
 	}
 	
+	public static boolean isDevoidOfVersionIndependentMigrations() {
+		return versionIndependentMigrations.size() == 0;
+	}
+	
 	public static String migrate( String source, org.lgna.project.Version version ) {
 		String rv = source;
 		for( TextMigration textMigration : textMigrations ) {

@@ -47,21 +47,11 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class ClassKeyedStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Class.class };
-	private Class<?> cls;
 	public ClassKeyedStaticGetInstanceKeyedResolver( T instance, Class<?> cls ) {
-		super( instance );
-		this.cls = cls;
+		super( instance, new Class[] { Class.class }, new Object[] { cls } );
 	}
 	public ClassKeyedStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -69,7 +59,8 @@ public class ClassKeyedStaticGetInstanceKeyedResolver<T> extends org.lgna.croque
 		return new Object[] { cls };
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		this.encodeClass( binaryEncoder, this.cls );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Object[] arguments ) {
+		Class<?> cls = (Class<?>)arguments[ 0 ];
+		this.encodeClass( binaryEncoder, cls );
 	}
 }

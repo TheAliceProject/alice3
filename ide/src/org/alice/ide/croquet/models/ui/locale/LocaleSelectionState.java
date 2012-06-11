@@ -54,7 +54,7 @@ public class LocaleSelectionState extends org.lgna.croquet.preferences.Preferenc
 	}
 	private LocaleSelectionState() {
 		super( 
-				org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
+				org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
 				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
 				0,
 				new java.util.Locale( "en", "US" ),

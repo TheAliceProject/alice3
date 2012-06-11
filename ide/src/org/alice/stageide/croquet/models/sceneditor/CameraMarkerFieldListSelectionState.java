@@ -55,6 +55,6 @@ public class CameraMarkerFieldListSelectionState extends org.lgna.croquet.Defaul
 		return SingletonHolder.instance;
 	}
 	private CameraMarkerFieldListSelectionState() {
-		super( org.alice.ide.ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserField.class ) );
+		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserField.class ) );
 	}
 }

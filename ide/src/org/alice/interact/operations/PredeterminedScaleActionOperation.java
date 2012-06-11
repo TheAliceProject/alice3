@@ -112,7 +112,7 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 				scale( redoScale, undoScale );
 			}
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+			protected StringBuilder updatePresentation( StringBuilder rv ) {
 				rv.append( editPresentationKey );
 				return rv;
 			}

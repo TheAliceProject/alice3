@@ -58,7 +58,7 @@ public enum InstanceFactoryCodec implements org.lgna.croquet.ItemCodec< org.alic
 	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.instancefactory.InstanceFactory value ) {
 		binaryEncoder.encode( value.getResolver() );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.instancefactory.InstanceFactory value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.instancefactory.InstanceFactory value) {
 		rv.append( value );
 		return rv;
 	}

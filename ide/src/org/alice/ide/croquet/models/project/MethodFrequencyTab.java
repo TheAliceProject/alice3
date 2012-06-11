@@ -50,7 +50,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
@@ -169,7 +168,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
 		//		StatementCountCrawler crawler = new StatementCountCrawler();
 		programType.crawl( crawler, true );
-		listSelectionState = new DefaultListSelectionState<UserMethod>( ProjectApplication.UI_STATE_GROUP, java.util.UUID.fromString( "06b77424-763b-4fdc-a1cb-1404eaefa1d2" ), new ItemCodec<UserMethod>() {
+		listSelectionState = new DefaultListSelectionState<UserMethod>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "06b77424-763b-4fdc-a1cb-1404eaefa1d2" ), new ItemCodec<UserMethod>() {
 
 			public Class<UserMethod> getValueClass() {
 				return UserMethod.class;
@@ -182,7 +181,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			public void encodeValue( BinaryEncoder binaryEncoder, UserMethod value ) {
 			}
 
-			public StringBuilder appendRepresentation( StringBuilder rv, UserMethod value, Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, UserMethod value ) {
 				return rv.append( value.getName() );
 			}
 		} );

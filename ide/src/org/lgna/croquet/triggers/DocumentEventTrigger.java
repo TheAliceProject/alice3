@@ -46,35 +46,33 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DocumentEventTrigger extends AbstractTrigger {
-	private final transient org.lgna.croquet.components.ViewController< ?, ? > viewController;
+public class DocumentEventTrigger extends Trigger {
+	public static DocumentEventTrigger createUserInstance( javax.swing.event.DocumentEvent documentEvent ) {
+		return new DocumentEventTrigger( Origin.USER, documentEvent );
+	}
+	public static DocumentEventTrigger createGeneratorInstance() {
+		return new DocumentEventTrigger( Origin.GENERATOR, null );
+	}
+
 	private final transient javax.swing.event.DocumentEvent documentEvent;
-	public DocumentEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.DocumentEvent documentEvent ) {
-		this.viewController = viewController;
+	private DocumentEventTrigger( Origin origin, javax.swing.event.DocumentEvent documentEvent ) {
+		super( origin );
 		this.documentEvent = documentEvent;
 	}
-	public DocumentEventTrigger( javax.swing.event.DocumentEvent documentEvent ) {
-		this( null, documentEvent );
-	}
 	public DocumentEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.viewController = null;
+		super( binaryDecoder );
 		this.documentEvent = null;
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
+	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
-		return this.viewController;
+		return null;
 	}
+	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
-		if( this.viewController != null ) {
-			java.awt.Component invoker = this.viewController.getAwtComponent();
-			java.awt.Point pt = new java.awt.Point( 0, invoker.getHeight() );
-			edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, pt );
-		} else {
-			throw new RuntimeException( "todo" );
-		}
+		throw new RuntimeException( "todo" );
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	@Override
+	public String getNoteText( ) {
 		return "Type";
 	}
 }

@@ -308,8 +308,7 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( null, blockStatementIndexPair );
 					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle finally" );
 				}
-			} else if( dragModel instanceof org.alice.ide.clipboard.ClipboardDragModel ) {
-				org.alice.ide.clipboard.ClipboardDragModel clipboardDragModel = (org.alice.ide.clipboard.ClipboardDragModel)dragModel;
+			} else if( dragModel == org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() ) {
 				if( this.currentUnder != null ) {
 					edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 					if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {

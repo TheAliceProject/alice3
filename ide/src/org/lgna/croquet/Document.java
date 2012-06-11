@@ -48,4 +48,5 @@ package org.lgna.croquet;
  */
 public interface Document {
 	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory();
+	public org.lgna.croquet.undo.UndoHistory getUndoHistory( org.lgna.croquet.Group group );
 }

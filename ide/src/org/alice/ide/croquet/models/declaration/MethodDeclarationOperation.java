@@ -67,8 +67,17 @@ public abstract class MethodDeclarationOperation extends DeclarationOperation< o
 				null, false,
 				new org.alice.ide.name.validators.MethodNameValidator( initialDeclaringType )
 		);
+
+		// <kjh/> Should we use meta-context factories instead?
+		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			this.addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
+			this.addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
+		} else {
+			this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+		}
 	}
-	
+
 	@Override
 	public org.lgna.project.ast.UserMethod createPreviewDeclaration() {
 		org.lgna.project.ast.UserMethod rv = new org.lgna.project.ast.UserMethod();

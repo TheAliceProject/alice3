@@ -49,7 +49,7 @@ package org.lgna.croquet;
 public abstract class PopupPrepModel extends AbstractPrepModel {
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			PopupPrepModel.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
+			PopupPrepModel.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 		}
 	};
 	public PopupPrepModel( java.util.UUID id ) {
@@ -102,7 +102,7 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return rv;
 	}
 	public org.lgna.croquet.components.PopupButton createPopupButton() {

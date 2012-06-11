@@ -72,7 +72,7 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 	@Override
 	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
 		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();
-		rv.setTransactionHistory( org.lgna.croquet.history.TransactionManager.getRootTransactionHistory() );
+		rv.setTransactionHistory( org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory() );
 		return rv;
 	}
 }

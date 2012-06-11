@@ -58,8 +58,8 @@ public abstract class NewInstanceKeyedResolver<T> extends KeyedResolver< T > {
 		sb.append( "\n" );
 		return sb.toString();
 	}
-	public NewInstanceKeyedResolver( T instance ) {
-		super( instance );
+	public NewInstanceKeyedResolver( T instance, Class<?>[] parameterTypes, Object[] arguments ) {
+		super( instance, parameterTypes, arguments );
 	}
 	public NewInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );

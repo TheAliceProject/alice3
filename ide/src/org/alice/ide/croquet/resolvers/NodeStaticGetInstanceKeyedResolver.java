@@ -47,37 +47,14 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
-	private org.lgna.project.ast.Node nodes[];
-	private Class< ? extends org.lgna.project.ast.Node > parameterTypes[];
-	
-	public NodeStaticGetInstanceKeyedResolver( T instance, org.lgna.project.ast.Node[] nodes, Class< ? extends org.lgna.project.ast.Node >[] parameterTypes ) {
-		super( instance );
-		assert nodes.length > 0;
-		assert nodes.length == parameterTypes.length;
-		this.nodes = nodes;
-		this.parameterTypes = parameterTypes;
+	public NodeStaticGetInstanceKeyedResolver( T instance,Class< ? extends org.lgna.project.ast.Node >[] parameterTypes, Object[] arguments ) {
+		super( instance, parameterTypes, arguments );
 	}
-	public NodeStaticGetInstanceKeyedResolver( T instance, org.lgna.project.ast.Node node, Class< ? extends org.lgna.project.ast.Node > parameterType ) {
-		this( instance, new org.lgna.project.ast.Node[]{ node }, new Class[] { parameterType } );
+	public NodeStaticGetInstanceKeyedResolver( T instance, Class< ? extends org.lgna.project.ast.Node > parameterType, org.lgna.project.ast.Node node ) {
+		this( instance, new Class[] { parameterType }, new Object[] { node } );
 	}
 	public NodeStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		final int N = binaryDecoder.decodeInt();
-		Class<?>[] rv = new Class<?>[ N ];
-		for( int i=0; i<N; i++ ) {
-			rv[ i ] = this.decodeClass( binaryDecoder );
-		}
-		return rv;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.parameterTypes.length );
-		for( Class< ? extends org.lgna.project.ast.Node > parameterType : parameterTypes ) {
-			this.encodeClass( binaryEncoder, parameterType );
-		}
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -92,9 +69,10 @@ public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.reso
 		return rv;
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.nodes.length );
-		for( org.lgna.project.ast.Node node : nodes ) {
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Object[] arguments ) {
+		binaryEncoder.encode( arguments.length );
+		for( Object argument : arguments ) {
+			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)argument;
 			binaryEncoder.encode( node.getId() );
 		}
 	}

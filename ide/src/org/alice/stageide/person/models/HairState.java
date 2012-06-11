@@ -63,7 +63,7 @@ public class HairState extends AbstractListSelectionState<org.lgna.story.resourc
 			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.Hair t ) {
 				throw new RuntimeException( "todo" );
 			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.Hair value, java.util.Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.Hair value ) {
 				rv.append( value );
 				return rv;
 			}

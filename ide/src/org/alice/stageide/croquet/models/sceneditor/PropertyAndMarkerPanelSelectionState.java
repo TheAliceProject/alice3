@@ -54,7 +54,7 @@ public class PropertyAndMarkerPanelSelectionState extends org.lgna.croquet.TabSe
     }
     private PropertyAndMarkerPanelSelectionState() {
         super( 
-                org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
+                org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, 
                 java.util.UUID.fromString( "96044656-6e0b-442a-ad4d-549dccc3e657" ), 
                 org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.TabComposite.class ), 
                 0,

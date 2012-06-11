@@ -62,11 +62,11 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 	/*package-private*/ final void setId( java.util.UUID id ) {
 		this.id = id;
 	}
-	
+
 	public Node getParent() {
 		return this.parent;
 	}
-	
+
 	private void setParent( AbstractNode parent ) {
 		if( this.parent != parent ) {
 			if( this.parent != null ) {
@@ -78,7 +78,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		}
 	}
 
-	
+
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		Node rv;
 		if( isThisIncludedInSearch ) {
@@ -221,63 +221,88 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		super.fireAdded( e );
 	}
 
-	private static void acceptIfCrawlable( java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > alreadyVisited, Object value, edu.cmu.cs.dennisc.pattern.Crawler crawler ) {
-		if( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
-			edu.cmu.cs.dennisc.pattern.Crawlable crawlable = (edu.cmu.cs.dennisc.pattern.Crawlable)value;
-			crawlable.accept( alreadyVisited, crawler );
-		}
+	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited ) {
+		accept( crawler, visited, false );
 	}
 
-	//todo
-	private static boolean isReferencedDeclarationPropertyInclusionDesired = false;
-	public void accept( java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > alreadyVisited, edu.cmu.cs.dennisc.pattern.Crawler crawler ) {
-		if( alreadyVisited.contains( this ) ) {
-			//pass
-		} else {
-			alreadyVisited.add( this );
-			crawler.visit( this );
+	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited, boolean followReferences ) {
+		if( !visited.contains( this ) ) {
+			visited.add( this );
+
+			// Find the visit method for this class
+			java.lang.reflect.Method visitMethod = getVisitMethod( crawler, this.getClass() );
+			if ( visitMethod != null) {
+				try {
+					visitMethod.invoke( crawler, new Object[] { this } );
+				} catch (IllegalArgumentException e) {
+					visitMethod = null;
+				} catch (IllegalAccessException e) {
+					visitMethod = null;
+				} catch (java.lang.reflect.InvocationTargetException e) {
+					visitMethod = null;
+				}
+			}
+			if ( visitMethod == null ) {
+				crawler.visit( this );
+			}
+
+			// Look through this nodes properties to see if any have anything to crawl
 			for( edu.cmu.cs.dennisc.property.Property< ? > property : this.getProperties() ) {
-				if( AbstractNode.isReferencedDeclarationPropertyInclusionDesired ) {
-					//pass
-				} else {
-					if( property instanceof DeclarationProperty< ? > ) {
-						DeclarationProperty< ? > declarationProperty = (DeclarationProperty< ? >)property;
-						if( declarationProperty.isReference() ) {
-							continue;
-						}
+				// Check if this is a reference
+				if ( !followReferences && property instanceof DeclarationProperty< ? > ) {
+					DeclarationProperty< ? > declarationProperty = (DeclarationProperty< ? >)property;
+					if( declarationProperty.isReference() ) {
+						continue;
 					}
 				}
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( property.getName() );
+
 				Object value = property.getValue( this );
 				if( value instanceof Iterable<?> ) {
 					Iterable<?> iterable = (Iterable<?>)value;
 					for( Object item : iterable ) {
-						acceptIfCrawlable( alreadyVisited, item, crawler );
+						this.acceptIfCrawlable( crawler, visited, item, followReferences );
 					}
 				} else if( value instanceof Object[] ) {
 					Object[] array = (Object[])value;
 					for( Object item : array ) {
-						acceptIfCrawlable( alreadyVisited, item, crawler );
+						this.acceptIfCrawlable( crawler, visited, item, followReferences );
 					}
 				} else {
-					acceptIfCrawlable( alreadyVisited, value, crawler );
+					this.acceptIfCrawlable( crawler, visited, value, followReferences );
 				}
 			}
 		}
 	}
-	
-	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean isReferencedDeclarationPropertyInclusionDesired ) {
-		AbstractNode.isReferencedDeclarationPropertyInclusionDesired = isReferencedDeclarationPropertyInclusionDesired;
-		accept( new java.util.HashSet< edu.cmu.cs.dennisc.pattern.Crawlable >(), crawler );
+
+	private void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited, Object value, boolean followReferences ) {
+		if ( value instanceof AbstractNode ) {
+			AbstractNode crawlable = (AbstractNode)value;
+			crawlable.accept( crawler, visited, followReferences );
+		} else if ( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
+			edu.cmu.cs.dennisc.pattern.Crawlable crawlable = (edu.cmu.cs.dennisc.pattern.Crawlable)value;
+			crawlable.accept( crawler, visited );
+		}
 	}
 
-	//	protected void crawl( java.util.Set< AbstractType > types, edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
-	//		visitor.visit( this );
-	//	}
-	//	public void crawl( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
-	//		java.util.Set< AbstractType > types = new java.util.HashSet< AbstractType >();
-	//		crawl( types, visitor );
-	//	}
+	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences ) {
+		accept( crawler, new java.util.HashSet< edu.cmu.cs.dennisc.pattern.Crawlable >(), followReferences );
+	}
+
+	private final java.lang.reflect.Method getVisitMethod( edu.cmu.cs.dennisc.pattern.Crawler crawler, Class<?> cls ) {
+		try {
+			return crawler.getClass().getMethod( "visit", new Class[]{ cls } );
+		} catch (NoSuchMethodException e) {
+			Class<?> superClass = cls.getSuperclass();
+			if ( edu.cmu.cs.dennisc.pattern.Crawler.class.isAssignableFrom(superClass) ) {
+				return getVisitMethod( crawler, cls.getSuperclass() );
+			}
+		} catch (SecurityException e) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(e);
+		} catch (IllegalArgumentException e) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(e);
+		}
+		return null;
+	}
 
 	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Element rv;
@@ -291,12 +316,12 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 			for( Object item : collection ) {
 				rv.appendChild( encodeValue( item, xmlDocument, set ) );
 			}
-//		} else if( value instanceof org.alice.virtualmachine.Resource ) {
-//			org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
-//			rv = xmlDocument.createElement( "resource" );
-//			java.util.UUID uuid = resource.getUUID();
-//			assert uuid != null;
-//			rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, uuid.toString() );
+			//		} else if( value instanceof org.alice.virtualmachine.Resource ) {
+			//			org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
+			//			rv = xmlDocument.createElement( "resource" );
+			//			java.util.UUID uuid = resource.getUUID();
+			//			assert uuid != null;
+			//			rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, uuid.toString() );
 		} else {
 			rv = xmlDocument.createElement( "value" );
 			if( value != null ) {
@@ -340,12 +365,12 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 	}
 	private static org.w3c.dom.Element encodeMember( org.w3c.dom.Document xmlDocument, String nodeName, MemberReflectionProxy memberReflectionProxy ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( nodeName );
-//		String name = mmbr.getName();
-//		if( name == null ) {
-//			assert mmbr instanceof java.lang.reflect.Constructor< ? >;
-//		} else {
-//			rv.setAttribute( "name", name );
-//		}
+		//		String name = mmbr.getName();
+		//		if( name == null ) {
+		//			assert mmbr instanceof java.lang.reflect.Constructor< ? >;
+		//		} else {
+		//			rv.setAttribute( "name", name );
+		//		}
 		rv.appendChild( encodeDeclaringClass( xmlDocument, memberReflectionProxy ) );
 		return rv;
 	}
@@ -367,7 +392,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		rv.appendChild( encodeParameters( xmlDocument, methodReflectionProxy.getParameterClassReflectionProxies() ) );
 		return rv;
 	}
-	
+
 	//todo: reduce visibility?
 	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
@@ -392,11 +417,11 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 			org.w3c.dom.Element xmlLeafType = xmlDocument.createElement( "leafType" );
 			xmlLeafType.appendChild( encodeValue( userArrayType.getLeafType(), xmlDocument, set ) );
 			rv.appendChild( xmlLeafType );
-			
+
 			org.w3c.dom.Element xmlDimensionCount = xmlDocument.createElement( "dimensionCount" );
 			xmlDimensionCount.appendChild( xmlDocument.createTextNode( Integer.toString( userArrayType.getDimensionCount() ) ) );
 			rv.appendChild( xmlDimensionCount );
-		
+
 		} else if( this instanceof JavaConstructor ) {
 			JavaConstructor constructorDeclaredInJava = (JavaConstructor)this;
 			rv.appendChild( encodeConstructor( xmlDocument, "constructor", constructorDeclaredInJava.getConstructorReflectionProxy() ) );
@@ -433,7 +458,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		}
 		return rv;
 	}
-	
+
 	public final org.w3c.dom.Document encode( java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Document rv = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
 		org.w3c.dom.Element xmlElement = encode( rv, set );
@@ -517,7 +542,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		}
 		return rv;
 	}
-	
+
 	protected void handleMissingProperty( String propertyName, Object value ) {
 		throw new RuntimeException( propertyName );
 	}
@@ -525,7 +550,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.Property property, Object value ) {
 		return value;
 	}
-	
+
 	protected final void decodeNode( Decoder decoder, org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 		for( int i = 0; i < nodeList.getLength(); i++ ) {
@@ -570,54 +595,54 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 	public void assignUUIDs( java.util.Map< Integer, AbstractDeclaration > map ) {
 	}
 
-//	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
-//		sb.append( "name=" );
-//		sb.append( this.getName() );
-//		sb.append( ";" );
-//		sb.append( "@" );
-//		sb.append( this.hashCode() );
-//		sb.append( ";" );
-//		String separator = "";
-//		for( edu.cmu.cs.dennisc.property.Property< ? > property : getProperties() ) {
-//			sb.append( separator );
-//			sb.append( property.getName() );
-//			sb.append( "=" );
-//			Object value = property.getValue( this );
-//			if( value instanceof Node ) {
-//				Node node = (Node)value;
-//				if( set.contains( node ) ) {
-//					sb.append( "referenced@" );
-//					sb.append( node.hashCode() );
-//				} else {
-//					node.append( sb, set );
-//				}
-//			} else if( value instanceof java.util.Collection ) {
-//				java.util.Collection collection = (java.util.Collection)value;
-//				sb.append( "cls:" );
-//				sb.append( collection.getClass().getName() );
-//				sb.append( ";size:" );
-//				sb.append( collection.size() );
-//			} else {
-//				sb.append( value );
-//			}
-//			separator = ",";
-//		}
-//	}
+	//	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
+	//		sb.append( "name=" );
+	//		sb.append( this.getName() );
+	//		sb.append( ";" );
+	//		sb.append( "@" );
+	//		sb.append( this.hashCode() );
+	//		sb.append( ";" );
+	//		String separator = "";
+	//		for( edu.cmu.cs.dennisc.property.Property< ? > property : getProperties() ) {
+	//			sb.append( separator );
+	//			sb.append( property.getName() );
+	//			sb.append( "=" );
+	//			Object value = property.getValue( this );
+	//			if( value instanceof Node ) {
+	//				Node node = (Node)value;
+	//				if( set.contains( node ) ) {
+	//					sb.append( "referenced@" );
+	//					sb.append( node.hashCode() );
+	//				} else {
+	//					node.append( sb, set );
+	//				}
+	//			} else if( value instanceof java.util.Collection ) {
+	//				java.util.Collection collection = (java.util.Collection)value;
+	//				sb.append( "cls:" );
+	//				sb.append( collection.getClass().getName() );
+	//				sb.append( ";size:" );
+	//				sb.append( collection.size() );
+	//			} else {
+	//				sb.append( value );
+	//			}
+	//			separator = ",";
+	//		}
+	//	}
 
-//	protected void append( StringBuffer sb, java.util.Set< Node > set ) {
-//		set.add( this );
-//		sb.append( this.getClass().getName() );
-//		sb.append( "[" );
-//		appendInternal( sb, set );
-//		sb.append( "]" );
-//	}
-		
-//	@Override
-//	public String toString() {
-//		StringBuffer sb = new StringBuffer();
-//		append( sb, new java.util.HashSet< Node >() );
-//		return sb.toString();
-//	}
+	//	protected void append( StringBuffer sb, java.util.Set< Node > set ) {
+	//		set.add( this );
+	//		sb.append( this.getClass().getName() );
+	//		sb.append( "[" );
+	//		appendInternal( sb, set );
+	//		sb.append( "]" );
+	//	}
+
+	//	@Override
+	//	public String toString() {
+	//		StringBuffer sb = new StringBuffer();
+	//		append( sb, new java.util.HashSet< Node >() );
+	//		return sb.toString();
+	//	}
 
 	//todo: i18n
 	//protected abstract StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ); 
@@ -630,7 +655,7 @@ public abstract class AbstractNode extends Element implements Node, edu.cmu.cs.d
 		this.appendRepr( sb, locale );
 		return sb.toString();
 	}
-	
+
 	protected StringBuilder appendStringDetails( StringBuilder rv ) {
 		return rv;
 	}

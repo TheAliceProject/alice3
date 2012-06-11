@@ -68,14 +68,14 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	protected boolean isAppropriateToComplete() {
 		return Manager.isInTheMidstOfUndoOrRedo()==false && this.ignoreCount == 0;
 	}
-	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step, UserInformation userInformation ) {
+	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step ) {
 		this.initializeIfNecessary();
 		org.lgna.croquet.edits.Edit< ? > edit = step.getEdit();
 		if( edit != null ) {
-			return edit.getTutorialTransactionTitle( userInformation );
+			return edit.getTutorialTransactionTitle();
 		} else {
 			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			return this.getTutorialNoteText( step, trigger != null ? trigger.getNoteText( userInformation.getLocale() ) : "", edit, userInformation );
+			return this.getTutorialNoteText( step, trigger != null ? "" : "", edit );
 		}
 	}
 	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );

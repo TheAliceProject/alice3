@@ -47,6 +47,7 @@ package org.alice.ide.controlflow;
  * @author Dennis Cosgrove
  */
 public class ControlFlowComposite extends org.alice.ide.members.TemplateComposite< org.alice.ide.controlflow.components.ControlFlowPanel > {
+
 	private static java.util.Map< org.lgna.project.ast.AbstractCode, ControlFlowComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ControlFlowComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
 		ControlFlowComposite rv = map.get( code );
@@ -60,36 +61,13 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 	}
 
 	private final java.util.List< org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final org.lgna.project.ast.AbstractCode code;
+
 	private ControlFlowComposite( org.lgna.project.ast.AbstractCode code ) {
 		super( java.util.UUID.fromString( "27ff6dfc-2519-4378-bb4f-d8c2c2fb19e9" ) );
-		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.models,  
-			org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
-			null,
-			org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),
-			org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance(),
-			org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance(),
-			null,
-			org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance(),
-			null,
-			org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance(),
-			org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(),
-			null,
-			org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
-			null,
-			org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance(),
-			null
-		);
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
-			if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
-				//pass
-			} else {
-				this.models.add( 
-						org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( method ) 
-				);
-			}
-		}
+		this.code = code;
 	}
+
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		if( super.contains( model ) ) {
@@ -98,15 +76,51 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 			return this.models.contains( model );
 		}
 	}
+
 	public java.util.List< org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > getModels() {
 		return this.models;
 	}
+
 	@Override
 	public boolean isCloseable() {
 		return false;
 	}
+
 	@Override
 	protected org.alice.ide.controlflow.components.ControlFlowPanel createView() {
 		return new org.alice.ide.controlflow.components.ControlFlowPanel( this );
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.models,  
+				org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
+				null,
+				org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),
+				org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance(),
+				org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance(),
+				null,
+				org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance(),
+				null,
+				org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance(),
+				org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(),
+				null,
+				org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
+				null,
+				org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance(),
+				null
+				);
+		if( code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+			if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
+				//pass
+			} else {
+				this.models.add( 
+						org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( method ) 
+						);
+			}
+		}
 	}
 }

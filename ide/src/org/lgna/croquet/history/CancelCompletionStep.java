@@ -51,13 +51,12 @@ public class CancelCompletionStep extends CompletionStep {
 	}
 	private CancelCompletionStep( Transaction parent, org.lgna.croquet.CompletionModel completionModel, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, completionModel, trigger, null );
-		TransactionManager.fireTransactionCanceled( parent );
 	}
 	public CancelCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override
-	public String getTutorialNoteText( org.lgna.croquet.edits.Edit edit, org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialNoteText( org.lgna.croquet.edits.Edit edit ) {
 		return "Cancel";
 	}
 	@Override

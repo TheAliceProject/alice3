@@ -71,9 +71,9 @@ public class DeleteParameterEdit extends ParameterEdit< org.alice.ide.operations
 		this.addParameter( this.index );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

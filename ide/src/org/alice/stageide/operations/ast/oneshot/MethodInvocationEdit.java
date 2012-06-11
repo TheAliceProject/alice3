@@ -88,7 +88,7 @@ public abstract class MethodInvocationEdit extends org.lgna.croquet.edits.Edit {
 		sceneEditor.executeStatements( statement );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "one shot " );
 		rv.append( this.method );
 		return rv;

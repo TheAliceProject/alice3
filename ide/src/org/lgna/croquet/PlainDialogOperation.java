@@ -66,7 +66,7 @@ public abstract class PlainDialogOperation extends DialogOperation {
 			this.plainDialogOperation = plainDialogOperation;
 		}
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 			rv.append( "Press the <strong>Close</strong> button when you are ready." );
 			return rv;
 		}
@@ -91,7 +91,7 @@ public abstract class PlainDialogOperation extends DialogOperation {
 	public synchronized InternalCloseOperation getCloseOperation() {
 		return this.closeOperation;
 	}
-	public String getTutorialCloseNoteText( org.lgna.croquet.history.CompletionStep<?> step, UserInformation userInformation ) {
+	public String getTutorialCloseNoteText( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return "When finished press the <strong>Close</strong> button.";
 	}
 	@Override
