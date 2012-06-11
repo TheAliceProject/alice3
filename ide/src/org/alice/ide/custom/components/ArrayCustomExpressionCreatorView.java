@@ -177,11 +177,11 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		super( composite );
 	}
 	@Override
-	protected void appendRows( java.util.List< Row > rows ) {
+	protected void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows ) {
 		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new Row( composite.getArrayTypeLabel(), new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ) ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getArrayTypeLabel(), new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ) ) );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new ExpressionList( composite.getValueState(), composite.getAddItemCascade().getRoot().getPopupPrepModel(), composite.getArrayType().getComponentType() ) );
 		scrollPane.setBorder( null );
-		rows.add( new Row( composite.getValueLabel(), scrollPane, org.lgna.croquet.components.VerticalAlignment.TOP, true ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), scrollPane, org.lgna.croquet.components.VerticalAlignment.TOP, true ) );
 	}
 }

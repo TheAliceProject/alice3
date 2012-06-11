@@ -90,7 +90,6 @@ public class SpringUtilities {
 		System.arraycopy( components, 0, rv, 1, components.length );
 		return createRow( rv );
 	}
-	
 	public static SpringPanel springItUpANotch( SpringPanel rv, java.util.List<Component< ? >[]> componentRows, int xPad, int yPad ) {
 		assert componentRows != null;
 		int rowCount = componentRows.size();

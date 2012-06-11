@@ -52,12 +52,12 @@ public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom
 	}
 	
 	@Override
-	protected void appendRows( java.util.List< Row > rows ) {
+	protected void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows ) {
 		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new Row( composite.getResourceLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ) ) );
-		rows.add( new Row( composite.getVolumeLabel(), new VolumeLevelSlider( composite.getVolumeState() ) ) );
-		rows.add( new Row( composite.getStartMarkerLabel(), composite.getStartMarkerState().createSlider() ) );
-		rows.add( new Row( composite.getStopMarkerLabel(), composite.getStopMarkerState().createSlider() ) );
-		rows.add( new Row( null, composite.getTestOperation().createButton() ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getResourceLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ) ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getVolumeLabel(), new VolumeLevelSlider( composite.getVolumeState() ) ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getStartMarkerLabel(), composite.getStartMarkerState().createSlider() ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getStopMarkerLabel(), composite.getStopMarkerState().createSlider() ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( null, composite.getTestOperation().createButton() ) );
 	}
 }

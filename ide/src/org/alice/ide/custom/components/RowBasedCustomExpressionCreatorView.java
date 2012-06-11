@@ -47,61 +47,6 @@ package org.alice.ide.custom.components;
  * @author Dennis Cosgrove
  */
 public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	protected static class Row {
-		private final org.lgna.croquet.StringValue labelStringValue;
-		private final org.lgna.croquet.components.JComponent< ? > component;
-		private final org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment;
-		private final boolean isFillHorizontal;
-		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
-			this.labelStringValue = labelStringValue;
-			this.component = component;
-			this.labelVerticalAlignment = labelVerticalAlignment;
-			this.isFillHorizontal = isFillHorizontal;
-		}
-		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment ) {
-			this( labelStringValue, component, labelVerticalAlignment, false );
-		}
-		public Row( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
-			this( labelStringValue, component, org.lgna.croquet.components.VerticalAlignment.CENTER );
-		}
-		private org.lgna.croquet.components.JComponent<?> createImmutableTextField() {
-			if( this.labelStringValue != null ) {
-				org.lgna.croquet.components.ImmutableTextField textField = this.labelStringValue.createImmutableTextField();
-				textField.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
-				if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.CENTER ) {
-					return textField;
-				} else {
-					Constraint constraint;
-					if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.TOP ) {
-						constraint = Constraint.PAGE_START;
-					} else {
-						constraint = Constraint.PAGE_END;
-					}
-					org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-					rv.addComponent( textField, constraint );
-					rv.setMaximumSizeClampedToPreferredSize( true );
-					return rv;
-				}
-			} else {
-				return new org.lgna.croquet.components.Label();
-			}
-		}
-		public org.lgna.croquet.components.JComponent< ? >[] createComponentArray() {
-			org.lgna.croquet.components.JComponent<?> trailingComponent;
-			if( this.isFillHorizontal ) {
-				trailingComponent = this.component;
-			} else {
-				trailingComponent = new org.lgna.croquet.components.LineAxisPanel( 
-						this.component,
-						org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-				);
-			}
-			return new org.lgna.croquet.components.JComponent< ? >[] { 
-				this.createImmutableTextField(),
-				trailingComponent
-			};
-		}
-	}
 	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
@@ -109,18 +54,13 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
 		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
 	}
-	protected abstract void appendRows( java.util.List< Row > rows );
+	protected abstract void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows );
 	@Override
-	public org.lgna.croquet.components.RowsSpringPanel createMainComponent() {
-		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
+	public org.lgna.croquet.components.RowSpringPanel createMainComponent() {
+		org.lgna.croquet.components.RowSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowSpringPanel() {
 			@Override
-			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
-				java.util.List< Row > rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
 				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
-				for( Row row : rows ) {
-					rv.add( row.createComponentArray() ); 
-				}
-				return rv;
 			}
 		};
 		return rowsSpringPanel;

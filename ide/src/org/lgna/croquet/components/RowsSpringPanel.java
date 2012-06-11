@@ -43,10 +43,10 @@
 
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public abstract class RowsSpringPanel extends SpringPanel {
 	private java.util.List< Component< ? >[] > componentRows;
 	private int xPad;

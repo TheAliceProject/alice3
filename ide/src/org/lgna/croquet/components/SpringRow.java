@@ -40,19 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.custom.components;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
-	public StringCustomExpressionCreatorView( org.alice.ide.custom.StringCustomExpressionCreatorComposite composite ) {
-		super( composite );
-	}
-	@Override
-	protected void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows ) {
-		org.alice.ide.custom.StringCustomExpressionCreatorComposite composite = (org.alice.ide.custom.StringCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), composite.getValueState().createTextField() ) );
-	}
+public interface SpringRow {
+	public Component<?>[] createComponentArray();
 }

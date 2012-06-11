@@ -40,19 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.custom.components;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
-	public StringCustomExpressionCreatorView( org.alice.ide.custom.StringCustomExpressionCreatorComposite composite ) {
+public abstract class RowSpringPanel extends SpringPanel {
+	private java.util.List<SpringRow> rows;
+	private final int xPad;
+	private final int yPad;
+
+	protected abstract void appendRows( java.util.List<SpringRow> rows );
+	public RowSpringPanel( org.lgna.croquet.Composite<?> composite ) {
+		this( composite, 12, 12 );
+	}
+	public RowSpringPanel( org.lgna.croquet.Composite<?> composite, int xPad, int yPad ) {
 		super( composite );
+		this.xPad = xPad;
+		this.yPad = yPad;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+	}
+	public RowSpringPanel() {
+		this( null );
+	}
+	public RowSpringPanel( int xPad, int yPad ) {
+		this( null, xPad, yPad );
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		if( this.rows != null ) {
+			//pass
+		} else {
+			this.rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.appendRows( this.rows );
+			java.util.List<Component<?>[]> components = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( rows.size() );
+			for( SpringRow row : rows ) {
+				components.add( row.createComponentArray() );
+			}
+			SpringUtilities.springItUpANotch( this, components, this.xPad, this.yPad );
+		}
 	}
 	@Override
-	protected void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows ) {
-		org.alice.ide.custom.StringCustomExpressionCreatorComposite composite = (org.alice.ide.custom.StringCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), composite.getValueState().createTextField() ) );
-	}
+	protected void handleUndisplayable() {
+		//todo?
+		super.handleUndisplayable();
+	};
 }
