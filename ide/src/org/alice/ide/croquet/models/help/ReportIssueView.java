@@ -74,10 +74,12 @@ public class ReportIssueView extends BorderPanel {
 
 		BorderPanel visibilityRow = new BorderPanel();
 		visibilityRow.addComponent( reportIssueComposite.getVisibilityLabel().createImmutableTextArea(), Constraint.LINE_START );
-		visibilityRow.addComponent( reportIssueComposite.getVisibilityState().createCheckBox(), Constraint.CENTER );
+		visibilityRow.addComponent( reportIssueComposite.getVisibilityList().createHorizontalDefaultRadioButtons(), Constraint.CENTER );
+//		visibilityRow.addComponent( reportIssueComposite.getVisibilityState().createCheckBox(), Constraint.CENTER );
 
 		BorderPanel typeRow = new BorderPanel();
 		typeRow.addComponent( reportIssueComposite.getTypeLabel().createImmutableTextArea(), Constraint.LINE_START );
+		typeRow.addComponent( reportIssueComposite.getTypeList().getPrepModel().createComboBox(), Constraint.CENTER );
 
 		BorderPanel summaryRow = new BorderPanel();
 		summaryRow.addComponent( reportIssueComposite.getSummaryLabel().createImmutableTextArea(), Constraint.LINE_START );
@@ -99,7 +101,7 @@ public class ReportIssueView extends BorderPanel {
 
 		BorderPanel attachmentRow = new BorderPanel();
 		attachmentRow.addComponent( reportIssueComposite.getAttachmentLabel().createImmutableTextArea(), Constraint.LINE_START );
-		attachmentRow.addComponent( reportIssueComposite.getAttachmentState().createCheckBox(), Constraint.CENTER );
+		attachmentRow.addComponent( reportIssueComposite.getAttachmentList().createVerticalDefaultRadioButtons(), Constraint.CENTER );
 
 		topCenterComponent.addComponent( visibilityRow );
 		topCenterComponent.addComponent( typeRow );
