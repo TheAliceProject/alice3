@@ -40,23 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RequestNewFeatureOperation extends PostIssueOperation {
-	private static class SingletonHolder {
-		private static RequestNewFeatureOperation instance = new RequestNewFeatureOperation();
-	}
-	public static RequestNewFeatureOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private RequestNewFeatureOperation() {
-		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ) );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE;
-	}
+public interface SpringRow {
+	public Component<?>[] createComponentArray();
 }
