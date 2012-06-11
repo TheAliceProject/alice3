@@ -170,6 +170,32 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 			this.unregisterKeyboardActions();
 			super.handleUndisplayable();
 		}
+		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+			return null;
+		}
+		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+			return false;
+		}
+		public org.lgna.croquet.components.JComponent<?> getViewController() {
+			return null;
+		}
+		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
+		}
+		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
+		}
+		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
+			return null;
+		}
+		public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
+			return null;
+		}
+		public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
+		}
+		public void dragStopped( org.lgna.croquet.history.DragStep step ) {
+		}
+		public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit<?> edit ) {
+			return null;
+		}
 	}
 
 	
@@ -184,4 +210,6 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		scrollPane.setBorder( null );
 		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), scrollPane, org.lgna.croquet.components.VerticalAlignment.TOP, true ) );
 	}
+	
+	
 }
