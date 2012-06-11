@@ -47,6 +47,8 @@ import java.awt.Color;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.TextArea;
+import org.lgna.croquet.components.TextField;
 
 /**
  * @author Matt May
@@ -63,7 +65,6 @@ public class ReportIssueView extends BorderPanel {
 		headerLabel.setText( "Alice Bugs" );
 		headerLabel.setFontSize( 36 );
 		headerLabel.setForegroundColor( Color.YELLOW );
-//		headerLabel.setBackgroundColor( Color.BLACK );
 		header.addComponent( headerLabel, Constraint.CENTER );
 		header.addComponent( reportIssueComposite.getLoginOperation().createButton(), Constraint.LINE_END );
 
@@ -80,7 +81,8 @@ public class ReportIssueView extends BorderPanel {
 
 		BorderPanel summaryRow = new BorderPanel();
 		summaryRow.addComponent( reportIssueComposite.getSummaryLabel().createImmutableTextArea(), Constraint.LINE_START );
-		summaryRow.addComponent( reportIssueComposite.getSummaryBlank().createTextField(), Constraint.CENTER );
+		TextField createTextField = reportIssueComposite.getSummaryBlank().createTextField();
+		summaryRow.addComponent( createTextField, Constraint.CENTER );
 
 		BorderPanel descriptionRow = new BorderPanel();
 		descriptionRow.addComponent( reportIssueComposite.getDescriptionLabel().createImmutableTextArea(), Constraint.LINE_START );
@@ -92,7 +94,8 @@ public class ReportIssueView extends BorderPanel {
 
 		BorderPanel environmentRow = new BorderPanel();
 		environmentRow.addComponent( reportIssueComposite.getEnvironmentLabel().createImmutableTextArea(), Constraint.LINE_START );
-		environmentRow.addComponent( reportIssueComposite.getEnvironmentBlank().createTextArea(), Constraint.CENTER );
+		TextArea createTextArea = reportIssueComposite.getEnvironmentBlank().createTextArea();
+		environmentRow.addComponent( createTextArea, Constraint.CENTER );
 
 		BorderPanel attachmentRow = new BorderPanel();
 		attachmentRow.addComponent( reportIssueComposite.getAttachmentLabel().createImmutableTextArea(), Constraint.LINE_START );

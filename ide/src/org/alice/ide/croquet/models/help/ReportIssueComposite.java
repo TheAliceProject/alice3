@@ -45,6 +45,7 @@ package org.alice.ide.croquet.models.help;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.StringValue;
@@ -62,6 +63,7 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 	private StringValue visibilityLabel = createStringValue( this.createKey( "visibilityLabel" ) );
 	private BooleanState visibilityState = createBooleanState( this.createKey( "visibilityState" ), true );
 	private StringValue typeLabel = createStringValue( this.createKey( "typeLabel" ) );
+	private ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> typeList = createListSelectionStateForEnum( createKey( "typeList" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.class, edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG );
 	private StringValue summaryLabel = createStringValue( this.createKey( "summaryLabel" ) );
 	private StringState summaryBlank = createStringState( this.createKey( "summaryBlank" ) );
 	private StringValue descriptionLabel = createStringValue( this.createKey( "descriptionLabel" ) );
@@ -93,6 +95,9 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 	}
 	public StringValue getTypeLabel() {
 		return this.typeLabel;
+	}
+	public ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> getTypeList() {
+		return this.typeList;
 	}
 	public StringValue getSummaryLabel() {
 		return this.summaryLabel;
