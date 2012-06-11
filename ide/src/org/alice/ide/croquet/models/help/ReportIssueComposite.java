@@ -62,6 +62,7 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 	private static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
 	private StringValue visibilityLabel = createStringValue( this.createKey( "visibilityLabel" ) );
 	private BooleanState visibilityState = createBooleanState( this.createKey( "visibilityState" ), true );
+	private ListSelectionState<BugSubmitVisibility> visibilityList= createListSelectionStateForEnum( this.createKey( "visibilityList" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
 	private StringValue typeLabel = createStringValue( this.createKey( "typeLabel" ) );
 	private ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> typeList = createListSelectionStateForEnum( createKey( "typeList" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.class, edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG );
 	private StringValue summaryLabel = createStringValue( this.createKey( "summaryLabel" ) );
@@ -73,6 +74,7 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 	private StringValue environmentLabel = createStringValue( this.createKey( "environmentLabel" ) );
 	private StringState environmentBlank = createStringState( this.createKey( "environmentBlank" ) );
 	private StringValue attachmentLabel = createStringValue( this.createKey( "attachmentLabel" ) );
+	private ListSelectionState<BugSubmitAttachment> attachmentList = createListSelectionStateForEnum( this.createKey( "attachmentList" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
 	private BooleanState attachmentState = createBooleanState( this.createKey( "attachmentState" ), true );
 	private ActionOperation loginOperation = createActionOperation( this.createKey( "loginOperation" ), new Action() {
 
@@ -92,6 +94,9 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 	}
 	public BooleanState getVisibilityState() {
 		return this.visibilityState;
+	}
+	public ListSelectionState<BugSubmitVisibility> getVisibilityList() {
+		return this.visibilityList;
 	}
 	public StringValue getTypeLabel() {
 		return this.typeLabel;
@@ -128,6 +133,9 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 	}
 	public BooleanState getAttachmentState() {
 		return this.attachmentState;
+	}
+	public ListSelectionState<BugSubmitAttachment> getAttachmentList() {
+		return this.attachmentList;
 	}
 	public ActionOperation getLoginOperation() {
 		return this.loginOperation;
