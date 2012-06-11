@@ -153,6 +153,9 @@ public abstract class StringState extends State< String > {
 	public String getTextForBlankCondition() {
 		return this.textForBlankCondition;
 	}
+	public void setTextForBlankCondition( String textForBlankCondition ) {
+		this.textForBlankCondition = textForBlankCondition;
+	}
 
 //	@Override
 //	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {

@@ -261,6 +261,10 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
 			stringValue.setText( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
 		}
+		for( Key key : this.mapKeyToStringState.keySet() ) {
+			InternalStringState stringState = this.mapKeyToStringState.get( key );
+			stringState.setTextForBlankCondition( this.findLocalizedText( key.getLocalizationKey() + ".textForBlankCondition", Composite.class ) );
+		}
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
 			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
 			//todo
