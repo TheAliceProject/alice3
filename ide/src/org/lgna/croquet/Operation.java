@@ -161,7 +161,7 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.initializeIfNecessary();
 
 		// Create a Transaction
-		org.lgna.croquet.history.Transaction transaction = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.Transaction transaction = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 
 		this.perform( transaction, trigger );
 		return transaction.getCompletionStep();
