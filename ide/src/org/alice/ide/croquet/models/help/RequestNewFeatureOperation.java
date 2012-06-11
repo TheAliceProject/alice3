@@ -57,6 +57,6 @@ public class RequestNewFeatureOperation extends PostIssueOperation {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEAURE;
+		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE;
 	}
 }
