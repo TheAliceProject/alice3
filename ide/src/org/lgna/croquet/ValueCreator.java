@@ -130,7 +130,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	@Override
 	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.initializeIfNecessary();
-		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		T value = this.createValue( transaction, trigger );
 		org.lgna.croquet.history.CompletionStep<?> rv = transaction.getCompletionStep();
 		if( rv != null ) {
