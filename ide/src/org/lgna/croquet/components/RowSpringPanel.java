@@ -40,23 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RequestNewFeatureOperation extends PostIssueOperation {
-	private static class SingletonHolder {
-		private static RequestNewFeatureOperation instance = new RequestNewFeatureOperation();
+public abstract class RowSpringPanel extends SpringPanel {
+	private java.util.List<SpringRow> rows;
+	private final int xPad;
+	private final int yPad;
+
+	protected abstract void appendRows( java.util.List<SpringRow> rows );
+	public RowSpringPanel( org.lgna.croquet.Composite<?> composite ) {
+		this( composite, 12, 12 );
 	}
-	public static RequestNewFeatureOperation getInstance() {
-		return SingletonHolder.instance;
+	public RowSpringPanel( org.lgna.croquet.Composite<?> composite, int xPad, int yPad ) {
+		super( composite );
+		this.xPad = xPad;
+		this.yPad = yPad;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
-	private RequestNewFeatureOperation() {
-		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ) );
+	public RowSpringPanel() {
+		this( null );
+	}
+	public RowSpringPanel( int xPad, int yPad ) {
+		this( null, xPad, yPad );
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		if( this.rows != null ) {
+			//pass
+		} else {
+			this.rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			this.appendRows( this.rows );
+			java.util.List<Component<?>[]> components = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( rows.size() );
+			for( SpringRow row : rows ) {
+				components.add( row.createComponentArray() );
+			}
+			SpringUtilities.springItUpANotch( this, components, this.xPad, this.yPad );
+		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE;
-	}
+	protected void handleUndisplayable() {
+		//todo?
+		super.handleUndisplayable();
+	};
 }

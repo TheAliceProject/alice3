@@ -51,8 +51,8 @@ public class PortionCustomExpressionCreatorView extends RowBasedCustomExpression
 		super( composite );
 	}
 	@Override
-	protected void appendRows( java.util.List< Row > rows ) {
+	protected void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows ) {
 		org.alice.ide.custom.PortionCustomExpressionCreatorComposite composite = (org.alice.ide.custom.PortionCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new Row( composite.getValueLabel(), composite.getValueState().createSlider() ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), composite.getValueState().createSlider() ) );
 	}
 }
