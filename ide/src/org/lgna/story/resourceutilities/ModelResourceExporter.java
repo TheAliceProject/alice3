@@ -1052,7 +1052,7 @@ public class ModelResourceExporter {
 					javaFile = createJavaCode(sourceDirectory);
 				}
 				catch (Exception e) {
-					throw new IOException("FAILED TO MAKE JAVA FILE FOR "+this.getClassName()+"--NOT ADDING IT TO JARS.", e);
+					throw new IOException("FAILED TO MAKE JAVA FILE FOR "+this.getClassName()+"--NOT ADDING IT TO JARS.\n"+e.toString());
 				}
 			}
 			

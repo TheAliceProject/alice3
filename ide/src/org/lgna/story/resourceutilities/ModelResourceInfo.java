@@ -132,15 +132,27 @@ public class ModelResourceInfo {
 		this.textureName = textureName;
 	}
 	
+	private static java.util.List<Element> getImmediateChildElementsByTagName(Element node, String tagName) {
+		java.util.List<Element> elements = new LinkedList<Element>();
+		NodeList children = node.getChildNodes();
+		for (int i=0; i<children.getLength(); i++) {
+			org.w3c.dom.Node child = children.item(i);
+			if (child instanceof Element && child.getNodeName().equals(tagName)) {
+				elements.add((Element)child);
+			}
+		}
+		return elements;
+	}
+	
 	public ModelResourceInfo(Document xmlDoc) {
 		Element modelElement = xmlDoc.getDocumentElement();
 		if (!modelElement.getNodeName().equals("AliceModel")) {
 			modelElement = XMLUtilities.getSingleChildElementByTagName(xmlDoc.getDocumentElement(), "AliceModel");
 		}
 		assert modelElement != null;
-		NodeList bboxNodeList = modelElement.getElementsByTagName("BoundingBox");
-		if (bboxNodeList.getLength() > 0) {
-			this.boundingBox = getBoundingBoxFromXML((Element)bboxNodeList.item(0));
+		java.util.List<Element> bboxNodeList = getImmediateChildElementsByTagName(modelElement, "BoundingBox");
+		if (bboxNodeList.size() > 0) {
+			this.boundingBox = getBoundingBoxFromXML(bboxNodeList.get(0));
 		}
 		else {
 			this.boundingBox = new AxisAlignedBox();
@@ -155,20 +167,23 @@ public class ModelResourceInfo {
 		this.creationYear = creationYearTemp;
 		
 		LinkedList<String> tagList = new LinkedList<String>();
-		NodeList tagNodeList = modelElement.getElementsByTagName("Tag");
-		for (int i=0; i<tagNodeList.getLength(); i++) {
-			tagList.add(tagNodeList.item(i).getTextContent());
+		java.util.List<Element> tagsElementList = getImmediateChildElementsByTagName(modelElement, "Tags");
+		for (Element tagsElement : tagsElementList) {
+			java.util.List<Element> tagElementList = getImmediateChildElementsByTagName(tagsElement, "Tag");
+			for (Element tagElement : tagElementList) {
+				tagList.add(tagElement.getTextContent());
+			}
 		}
 		this.tags = tagList.toArray(new String[tagList.size()]);
 		
-		NodeList subResourcesList = modelElement.getElementsByTagName("Resource");
-		for (int i=0; i<subResourcesList.getLength(); i++) {
-			ModelResourceInfo subResource = getSubResourceFromXML((Element)subResourcesList.item(i), this);
+		java.util.List<Element> subResourcesList = getImmediateChildElementsByTagName(modelElement, "Resource");
+		for (Element subResourceElement : subResourcesList) {
+			ModelResourceInfo subResource = getSubResourceFromXML(subResourceElement, this);
 			if (subResource != null) {
 				subResources.add(subResource);
 			}
 			else {
-				Logger.severe("Failed to make sub resource for "+tagNodeList.item(i));
+				Logger.severe("Failed to make sub resource for "+subResourceElement);
 			}
 		}
 		this.textureName = null;
