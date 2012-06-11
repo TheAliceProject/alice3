@@ -51,6 +51,10 @@ public class PasswordField extends TextComponent< javax.swing.JPasswordField > {
 	}
 	
 	@Override
+	public void updateTextForBlankCondition( String textForBlankCondition ) {
+		//todo
+	}
+	@Override
 	protected javax.swing.JPasswordField createAwtComponent() {
 		javax.swing.JPasswordField rv = new javax.swing.JPasswordField();
 		return rv;

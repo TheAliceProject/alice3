@@ -155,6 +155,12 @@ public abstract class StringState extends State< String > {
 	}
 	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
+		for( org.lgna.croquet.components.JComponent<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+			if( component instanceof org.lgna.croquet.components.TextComponent<?> ) {
+				org.lgna.croquet.components.TextComponent<?> textComponent = (org.lgna.croquet.components.TextComponent<?>)component;
+				textComponent.updateTextForBlankCondition( this.textForBlankCondition );
+			}
+		}
 	}
 
 //	@Override
