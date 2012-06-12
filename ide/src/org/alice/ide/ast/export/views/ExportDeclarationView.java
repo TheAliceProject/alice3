@@ -52,7 +52,7 @@ public abstract class ExportDeclarationView extends org.lgna.croquet.components.
 	private void addComponents( edu.cmu.cs.dennisc.tree.Node<org.alice.ide.ast.export.TypeInfo> node, int depth ) {
 		if( depth > 0 ) {
 			TypeInfoView view = new TypeInfoView( node.getValue() );
-			view.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, depth*16, 8, 0 ) );
+			view.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, depth*16, 32, 0 ) );
 			this.addComponent( view );
 		}
 		for( edu.cmu.cs.dennisc.tree.Node<org.alice.ide.ast.export.TypeInfo> child : node.getChildren() ) {
