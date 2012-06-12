@@ -49,6 +49,7 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 	private final java.util.Map<org.lgna.project.ast.UserConstructor,ConstructorInfo> constructorInfoMap;
 	private final java.util.Map<org.lgna.project.ast.UserMethod,MethodInfo> methodInfoMap;
 	private final java.util.Map<org.lgna.project.ast.UserField,FieldInfo> fieldInfoMap;
+
 	public TypeInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserType<?> type ) {
 		super( projectInfo, type );
 		java.util.Map<org.lgna.project.ast.UserConstructor,ConstructorInfo> mapC = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -66,6 +67,15 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 			mapF.put( field, new FieldInfo( projectInfo, field ) );
 		}
 		this.fieldInfoMap = java.util.Collections.unmodifiableMap( mapF );
+	}
+	
+	public TypeInfo getSuperTypeInfo() {
+		org.lgna.project.ast.AbstractType<?,?,?> superType = this.getDeclaration().getSuperType();
+		if( superType instanceof org.lgna.project.ast.UserType<?> ) { 
+			return this.getProjectInfo().getInfoForType( (org.lgna.project.ast.UserType<?>)superType );
+		} else {
+			return null;
+		}
 	}
 	public java.util.Collection<ConstructorInfo> getConstructorInfos() {
 		return this.constructorInfoMap.values();
@@ -85,8 +95,8 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 	public FieldInfo getInfoForField( org.lgna.project.ast.UserField field ) {
 		return this.fieldInfoMap.get( field );
 	}
-	
-	/*package-private*/ void updateDependencies() {
+
+	/*package-private*/void updateDependencies() {
 		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
 			info.updateDependencies();
 		}
@@ -95,6 +105,45 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 		}
 		for( FieldInfo info : this.fieldInfoMap.values() ) {
 			info.updateDependencies();
+		}
+	}
+	@Override
+	public void appendDesired( java.util.List<org.alice.ide.ast.export.DeclarationInfo<?>> desired ) {
+		super.appendDesired( desired );
+		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
+			info.appendDesired( desired );
+		}
+		for( MethodInfo info : this.methodInfoMap.values() ) {
+			info.appendDesired( desired );
+		}
+		for( FieldInfo info : this.fieldInfoMap.values() ) {
+			info.appendDesired( desired );
+		}
+	}
+	@Override
+	public void resetRequired() {
+		super.resetRequired();
+		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
+			info.resetRequired();
+		}
+		for( MethodInfo info : this.methodInfoMap.values() ) {
+			info.resetRequired();
+		}
+		for( FieldInfo info : this.fieldInfoMap.values() ) {
+			info.resetRequired();
+		}
+	}
+	@Override
+	public void updateSwing() {
+		super.updateSwing();
+		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
+			info.updateSwing();
+		}
+		for( MethodInfo info : this.methodInfoMap.values() ) {
+			info.updateSwing();
+		}
+		for( FieldInfo info : this.fieldInfoMap.values() ) {
+			info.updateSwing();
 		}
 	}
 }

@@ -50,9 +50,9 @@ public class TypeInfoView extends org.lgna.croquet.components.BorderPanel {
 		this.addComponent( new InfoCheckBox( typeInfo ), Constraint.PAGE_START );
 		
 		org.lgna.croquet.components.PageAxisPanel centerPanel = new org.lgna.croquet.components.PageAxisPanel();
-		for( org.alice.ide.ast.export.ConstructorInfo info : typeInfo.getConstructorInfos() ) {
-			centerPanel.addComponent( new InfoCheckBox( info ) );
-		}
+//		for( org.alice.ide.ast.export.ConstructorInfo info : typeInfo.getConstructorInfos() ) {
+//			centerPanel.addComponent( new InfoCheckBox( info ) );
+//		}
 		for( org.alice.ide.ast.export.MethodInfo info : typeInfo.getMethodInfos() ) {
 			centerPanel.addComponent( new InfoCheckBox( info ) );
 		}

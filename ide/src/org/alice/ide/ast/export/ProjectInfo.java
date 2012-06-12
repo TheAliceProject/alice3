@@ -47,6 +47,8 @@ package org.alice.ide.ast.export;
  */
 public class ProjectInfo {
 	private final java.util.Map<org.lgna.project.ast.UserType<?>,TypeInfo> typeInfoMap;
+	private final edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> root = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( null, TypeInfo.class );
+	private boolean isInTheMidstOfChange;
 	public ProjectInfo( org.lgna.project.Project project ) {
 		java.util.Set<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
 		java.util.Map<org.lgna.project.ast.UserType<?>,TypeInfo> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -55,14 +57,58 @@ public class ProjectInfo {
 		}
 		this.typeInfoMap = java.util.Collections.unmodifiableMap( map );
 		
-		for( TypeInfo typeInfo : this.typeInfoMap.values() ) {
+		java.util.Map<TypeInfo,edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo>> mapInfoToNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Collection<TypeInfo> typeInfos = this.getTypeInfos();
+		for( TypeInfo typeInfo : typeInfos ) {
 			typeInfo.updateDependencies();
+			mapInfoToNode.put( typeInfo, edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( typeInfo, TypeInfo.class ) );
 		}
+		mapInfoToNode.put( null, this.root );
+		for( TypeInfo typeInfo : typeInfos ) {
+			edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> node = mapInfoToNode.get( typeInfo );
+			edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> parent = mapInfoToNode.get( typeInfo.getSuperTypeInfo() );
+			parent.addChild( node );
+		}
+		
+		java.util.Collections.sort( this.root.getChildren(), new java.util.Comparator<edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo>>() {
+			public int compare( edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> o1, edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> o2 ) {
+				return o1.getValue().getDeclaration().getName().compareTo( o2.getValue().getDeclaration().getName() );
+			}
+		} );
 	}
+	
+	public edu.cmu.cs.dennisc.tree.Node<TypeInfo> getTypeInfosAsTree() {
+		return this.root;
+	}
+	
 	public java.util.Collection<TypeInfo> getTypeInfos() {
 		return this.typeInfoMap.values();
 	}
 	public TypeInfo getInfoForType( org.lgna.project.ast.UserType<?> type ) {
 		return this.typeInfoMap.get( type );
+	}
+	public boolean isInTheMidstOfChange() {
+		return this.isInTheMidstOfChange;
+	}
+	public void update() {
+		this.isInTheMidstOfChange = true;
+		try {
+			for( TypeInfo typeInfo : this.getTypeInfos() ) {
+				typeInfo.resetRequired();
+			}
+			java.util.List<DeclarationInfo<?>> desired = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( TypeInfo typeInfo : this.getTypeInfos() ) {
+				typeInfo.appendDesired( desired );
+			}
+			java.util.Set<DeclarationInfo<?>> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+			for( DeclarationInfo<?> declarationInfo : desired ) {
+				declarationInfo.updateRequired( set );
+			}
+			for( TypeInfo typeInfo : this.getTypeInfos() ) {
+				typeInfo.updateSwing();
+			}
+		} finally {
+			this.isInTheMidstOfChange = false;
+		}
 	}
 }
