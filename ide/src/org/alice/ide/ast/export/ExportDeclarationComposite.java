@@ -40,15 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.alice.ide.ast.export;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getId();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
-	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences );
+public abstract class ExportDeclarationComposite<V extends org.alice.ide.ast.export.views.ExportDeclarationView> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
+	public ExportDeclarationComposite( java.util.UUID migrationId ) {
+		super( migrationId, org.alice.ide.IDE.EXPORT_GROUP );
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return null;
+	}
 }

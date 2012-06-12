@@ -40,15 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.alice.ide.ast.export;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getId();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
-	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences );
+public class ExportTypeComposite extends ExportDeclarationComposite<org.alice.ide.ast.export.views.ExportTypeView> {
+	public ExportTypeComposite() {
+		super( java.util.UUID.fromString( "c71a02ae-ab84-4564-a4c3-ff69432019c1" ) );
+	}
+	@Override
+	protected org.alice.ide.ast.export.views.ExportTypeView createView() {
+		return new org.alice.ide.ast.export.views.ExportTypeView( this );
+	}
+//	@Override
+//	public void handlePreActivation() {
+//		super.handlePreActivation();
+//		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+//		ProjectInfo projectInfo = new ProjectInfo( project );
+//		this.getView().HACK_setProjectInfo( projectInfo );
+//	}
+//	@Override
+//	public void handlePostDeactivation() {
+//		super.handlePostDeactivation();
+//	}
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
+		//ide.loadProjectFrom( new java.io.File( args[ 0 ] ) );
+		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
+		
+		ExportTypeComposite composite = new ExportTypeComposite();
+		composite.getView().HACK_setProjectInfo( new ProjectInfo( project ) );
+
+		try {
+			org.lgna.croquet.triggers.Trigger trigger = null;
+			composite.getOperation().fire( trigger );
+		} catch( org.lgna.croquet.CancelException ce ) {
+			//pass
+		}
+		System.exit( 0 );
+	}
 }

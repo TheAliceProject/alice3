@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UserType<C extends AbstractConstructor> extends AbstractType<C, UserMethod, UserField> {
+public abstract class UserType<C extends UserConstructor> extends AbstractType<C, UserMethod, UserField> {
 	public DeclarationProperty< AbstractType<?,?,?> > superType = new DeclarationProperty< AbstractType<?,?,?> >( this ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?,?,?> value) {

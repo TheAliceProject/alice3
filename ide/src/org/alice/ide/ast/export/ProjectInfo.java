@@ -40,15 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.alice.ide.ast.export;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getId();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
-	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences );
+public class ProjectInfo {
+	private final java.util.Map<org.lgna.project.ast.UserType<?>,TypeInfo> typeInfoMap;
+	public ProjectInfo( org.lgna.project.Project project ) {
+		java.util.Set<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
+		java.util.Map<org.lgna.project.ast.UserType<?>,TypeInfo> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		for( org.lgna.project.ast.NamedUserType type : types ) {
+			map.put( type, new TypeInfo( this, type ) );
+		}
+		this.typeInfoMap = java.util.Collections.unmodifiableMap( map );
+		
+		for( TypeInfo typeInfo : this.typeInfoMap.values() ) {
+			typeInfo.updateDependencies();
+		}
+	}
+	public java.util.Collection<TypeInfo> getTypeInfos() {
+		return this.typeInfoMap.values();
+	}
+	public TypeInfo getInfoForType( org.lgna.project.ast.UserType<?> type ) {
+		return this.typeInfoMap.get( type );
+	}
 }

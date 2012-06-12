@@ -40,15 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.alice.ide.ast.export;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getId();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
-	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences );
+public class FieldInfo extends MemberInfo<org.lgna.project.ast.UserField> {
+	public FieldInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserField field ) {
+		super( projectInfo, field );
+	}
 }

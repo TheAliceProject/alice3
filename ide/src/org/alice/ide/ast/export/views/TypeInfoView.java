@@ -40,15 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.alice.ide.ast.export.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getId();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
-	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences );
+public class TypeInfoView extends org.lgna.croquet.components.BorderPanel {
+	public TypeInfoView( org.alice.ide.ast.export.TypeInfo typeInfo ) {
+		this.addComponent( new InfoCheckBox( typeInfo ), Constraint.PAGE_START );
+		
+		org.lgna.croquet.components.PageAxisPanel centerPanel = new org.lgna.croquet.components.PageAxisPanel();
+		for( org.alice.ide.ast.export.ConstructorInfo info : typeInfo.getConstructorInfos() ) {
+			centerPanel.addComponent( new InfoCheckBox( info ) );
+		}
+		for( org.alice.ide.ast.export.MethodInfo info : typeInfo.getMethodInfos() ) {
+			centerPanel.addComponent( new InfoCheckBox( info ) );
+		}
+		for( org.alice.ide.ast.export.FieldInfo info : typeInfo.getFieldInfos() ) {
+			centerPanel.addComponent( new InfoCheckBox( info ) );
+		}
+		
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ), Constraint.LINE_START );
+		this.addComponent( centerPanel, Constraint.CENTER );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+	}
 }

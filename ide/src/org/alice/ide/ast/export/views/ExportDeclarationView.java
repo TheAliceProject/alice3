@@ -40,15 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.alice.ide.ast.export.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner {
-	public java.util.UUID getId();
-	public Node getParent();
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
-	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
-	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences );
+public abstract class ExportDeclarationView extends org.lgna.croquet.components.PageAxisPanel {
+	public ExportDeclarationView( org.alice.ide.ast.export.ExportDeclarationComposite<?> composite ) {
+		super( composite );
+	}
+	public void HACK_setProjectInfo( org.alice.ide.ast.export.ProjectInfo projectInfo ) {
+		for( org.alice.ide.ast.export.TypeInfo typeInfo : projectInfo.getTypeInfos() ) {
+			this.addComponent( new TypeInfoView( typeInfo ) );
+		}
+	}
 }
