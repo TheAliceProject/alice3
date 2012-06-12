@@ -40,12 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.alice.ide.ast.export.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Member extends Declaration {
-	public AbstractType<?,?,?> getDeclaringType();
+public abstract class ExportDeclarationView extends org.lgna.croquet.components.PageAxisPanel {
+	public ExportDeclarationView( org.alice.ide.ast.export.ExportDeclarationComposite<?> composite ) {
+		super( composite );
+	}
+	private void addComponents( edu.cmu.cs.dennisc.tree.Node<org.alice.ide.ast.export.TypeInfo> node, int depth ) {
+		if( depth > 0 ) {
+			TypeInfoView view = new TypeInfoView( node.getValue() );
+			view.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, depth*16, 32, 0 ) );
+			this.addComponent( view );
+		}
+		for( edu.cmu.cs.dennisc.tree.Node<org.alice.ide.ast.export.TypeInfo> child : node.getChildren() ) {
+			this.addComponents( child, depth+1 );
+		}
+	}
+	public void HACK_setProjectInfo( org.alice.ide.ast.export.ProjectInfo projectInfo ) {
+		edu.cmu.cs.dennisc.tree.Node<org.alice.ide.ast.export.TypeInfo> root = projectInfo.getTypeInfosAsTree();
+		this.addComponents( root, 0 );
+	}
 }

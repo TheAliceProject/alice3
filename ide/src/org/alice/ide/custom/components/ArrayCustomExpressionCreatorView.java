@@ -184,4 +184,6 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		scrollPane.setBorder( null );
 		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), scrollPane, org.lgna.croquet.components.VerticalAlignment.TOP, true ) );
 	}
+	
+	
 }

@@ -40,12 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.alice.ide.ast.export;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Member extends Declaration {
-	public AbstractType<?,?,?> getDeclaringType();
+public class MethodInfo extends MemberInfo<org.lgna.project.ast.UserMethod>{
+	public MethodInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserMethod method ) {
+		super( projectInfo, method );
+	}
 }

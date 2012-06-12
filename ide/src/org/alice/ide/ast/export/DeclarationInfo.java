@@ -40,38 +40,73 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+package org.alice.ide.ast.export;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooserWithTextField<E extends org.lgna.project.ast.Expression> extends AbstractRowsPaneChooser<E> {
-	private org.lgna.croquet.StringState stringState = new org.lgna.croquet.StringState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "6213f5a4-b4b4-4c49-a5e3-2db644edb2cd" ), "" ) {};
-	private org.lgna.croquet.components.TextField textField = stringState.createTextField();
-	private org.lgna.croquet.components.Component< ? >[] components = { this.textField };
-
-	@Override
-	public org.lgna.croquet.components.Component< ? >[] getRowComponents() {
-		return this.components;
-	}
-	protected abstract E valueOf( String text );
-	@Override
-	public final E getValue() {
-		return this.valueOf( this.stringState.getValue() );
-	}
+public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration> {
+	private final ProjectInfo projectInfo;
+	private final D declaration;
+	private final javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		}
+	};
+	private final javax.swing.JCheckBox checkBox = new javax.swing.JCheckBox( this.action );
+	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+			handleItemStateChanged( e );
+		}
+	};
 	
-	@Override
-	public String getExplanationIfOkButtonShouldBeDisabled() {
-		try {
-			this.valueOf( this.stringState.getValue() );
-			return null;
-		} catch( RuntimeException re ) {
-			return "invalid value";
+	private boolean isDesired;
+	private boolean isRequired;
+	public DeclarationInfo( ProjectInfo projectInfo, D declaration ) {
+		this.projectInfo = projectInfo;
+		this.declaration = declaration;
+		this.action.putValue( javax.swing.Action.NAME, this.declaration.getName() );
+		this.checkBox.getModel().addItemListener( this.itemListener );
+	}
+	public ProjectInfo getProjectInfo() {
+		return this.projectInfo;
+	}
+	public D getDeclaration() {
+		return this.declaration;
+	}
+	public javax.swing.JCheckBox getCheckBox() {
+		return this.checkBox;
+	}
+	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+		if( this.projectInfo.isInTheMidstOfChange() ) {
+			//pass
+		} else {
+			this.isDesired = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+			this.projectInfo.update();
 		}
 	}
-
-	public void setAndSelectText( String text ) {
-		this.stringState.setValueTransactionlessly( text );
-		this.textField.selectAll();
+	
+	public void resetRequired() {
+		this.isRequired = false;
+	}
+	public void appendDesired( java.util.List<DeclarationInfo<?>> desired ) {
+		if( this.isDesired ) {
+			desired.add( this );
+		}
+	}
+	protected void addRequired( java.util.Set<DeclarationInfo<?>> visited ) {
+		visited.add( this );
+		this.isRequired = true;
+	}
+	public final void updateRequired( java.util.Set<DeclarationInfo<?>> visited ) {
+		if( visited.contains( this ) ) {
+			//pass
+		} else {
+			this.addRequired( visited );
+		}
+	}
+	public void updateSwing() {
+		javax.swing.ButtonModel buttonModel = this.checkBox.getModel();
+		buttonModel.setSelected( this.isDesired || this.isRequired );
+		buttonModel.setEnabled( this.isDesired || this.isRequired == false );
 	}
 }

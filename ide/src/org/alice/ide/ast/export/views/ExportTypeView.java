@@ -40,12 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.alice.ide.ast.export.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Member extends Declaration {
-	public AbstractType<?,?,?> getDeclaringType();
+public class ExportTypeView extends ExportDeclarationView {
+	public ExportTypeView( org.alice.ide.ast.export.ExportTypeComposite composite ) {
+		super( composite );
+	}
 }

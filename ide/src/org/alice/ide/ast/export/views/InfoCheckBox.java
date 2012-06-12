@@ -40,12 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.alice.ide.ast.export.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Member extends Declaration {
-	public AbstractType<?,?,?> getDeclaringType();
+public class InfoCheckBox extends org.lgna.croquet.components.JComponent< javax.swing.JCheckBox > {
+	private final org.alice.ide.ast.export.DeclarationInfo<?> info;
+	public InfoCheckBox( org.alice.ide.ast.export.DeclarationInfo<?> info ) {
+		this.info = info;
+	}
+	@Override
+	protected javax.swing.JCheckBox createAwtComponent() {
+		return this.info.getCheckBox();
+	}
 }

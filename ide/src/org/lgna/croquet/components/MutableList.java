@@ -84,10 +84,74 @@ package org.lgna.croquet.components;
 	}
 }
 
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableList<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemSelectablePanel<E,MutableListItemDetails<E,LC,MC,TC>> {
+public abstract class MutableList<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemSelectablePanel<E,MutableListItemDetails<E,LC,MC,TC>> implements org.lgna.croquet.DropReceptor {
+//	private class MutableListDragModel extends org.lgna.croquet.DragModel {
+//		public MutableListDragModel() {
+//			super( java.util.UUID.fromString( "a136b615-2e99-4481-a89d-a48d633a4080" ) );
+//		}
+//		@Override
+//		public final java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
+//			org.lgna.croquet.DropReceptor dropReceptor = MutableList.this;
+//			return java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( dropReceptor ) );
+//		}
+//		@Override
+//		public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
+//		}
+//		@Override
+//		public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
+//		}
+//		@Override
+//		public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
+//		}
+//		@Override
+//		public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
+//		}
+//		@Override
+//		public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+//			return null;
+//		}
+//	}
+//
+//	private class MutableListButton extends org.alice.ide.croquet.components.KnurlDragComponent< MutableListDragModel > {
+//		public MutableListButton( MutableListDragModel dragModel ) {
+//			super( dragModel );
+//		}
+//		@Override
+//		protected java.awt.Shape createShape( int x, int y, int width, int height ) {
+//			return null;
+//		}
+//		@Override
+//		protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+//		}
+//		@Override
+//		protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+//		}
+//		@Override
+//		protected int getInsetTop() {
+//			return 0;
+//		}
+//		@Override
+//		protected int getDockInsetLeft() {
+//			return 0;
+//		}
+//		@Override
+//		protected int getInternalInsetLeft() {
+//			return 0;
+//		}
+//		@Override
+//		protected int getInsetBottom() {
+//			return 0;
+//		}
+//		@Override
+//		protected int getInsetRight() {
+//			return 0;
+//		}
+//	}
+	
 	private class MutableListButton extends BooleanStateButton<javax.swing.AbstractButton> {
 		public MutableListButton( org.lgna.croquet.BooleanState booleanState ) {
 			super( booleanState );
@@ -285,7 +349,7 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 		MutableListButton mutableListButton = new MutableListButton( booleanState );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( booleanState );
 		MutableListItemDetails<E,LC,MC,TC> rv = new MutableListItemDetails<E,LC,MC,TC>( this, item, mutableListButton, this.createLeadingComponent(), this.createMainComponent(), this.createTrailingComponent(), actionListener );
-		AbstractButton<?,?> button = rv.getButton();
+		ViewController<?,?> button = rv.getButton();
 		button.setVisible( false );
 		this.pageAxisPanel.addComponent( button );
 		return rv;
@@ -329,5 +393,32 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 		this.unregisterKeyboardAction( UP_KEY_STROKE );
 		this.unregisterKeyboardAction( BACK_SPACE_KEY_STROKE );
 		this.unregisterKeyboardAction( DELETE_KEY_STROKE );
+	}
+
+	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		return null;
+	}
+	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+		return false;
+	}
+	public org.lgna.croquet.components.JComponent<?> getViewController() {
+		return null;
+	}
+	public void dragStarted( org.lgna.croquet.history.DragStep step ) {
+	}
+	public void dragEntered( org.lgna.croquet.history.DragStep step ) {
+	}
+	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
+		return null;
+	}
+	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
+		return null;
+	}
+	public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
+	}
+	public void dragStopped( org.lgna.croquet.history.DragStep step ) {
+	}
+	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit<?> edit ) {
+		return null;
 	}
 }

@@ -46,10 +46,6 @@ package edu.cmu.cs.dennisc.javax.swing.plaf;
  * @author Dennis Cosgrove
  */
 public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
-	//private static java.awt.Color ARMED_COLOR = java.awt.Color.RED;
-	private static java.awt.Color ROLLOVER_COLOR = java.awt.Color.BLUE.brighter();
-	private static java.awt.Color PRESSED_COLOR = ROLLOVER_COLOR.darker();
-	private static java.awt.Color DEFAULT_COLOR = java.awt.Color.BLACK;
 	private static java.awt.Color DISABLED_COLOR = java.awt.Color.LIGHT_GRAY;
 	private static HyperlinkUI hyperlinkUI = new HyperlinkUI();
 	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) { 
@@ -58,19 +54,27 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 	@Override
 	protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, String text ) {
 		javax.swing.ButtonModel model = b.getModel();
+		
+		java.awt.Color backgroundColor = b.getBackground();
+		java.awt.Color foregroundColor = b.getForeground();
+		
+		
 		java.awt.Color color;
 		if( b.isEnabled() ) {
 //			if( model.isArmed() ) {
 //				color = ARMED_COLOR;
 //			} else {
 				if( model.isRollover() ) {
+					float foregroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( foregroundColor );
+					float backgroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( backgroundColor );
+					boolean isForegroundBrighter = foregroundBrightness > backgroundBrightness;
 					if( model.isPressed() ) {
-						color = PRESSED_COLOR;
+						color = isForegroundBrighter ? foregroundColor.darker() : foregroundColor.brighter();
 					} else {
-						color = ROLLOVER_COLOR;
+						color = isForegroundBrighter ? foregroundColor.brighter() : foregroundColor.darker();
 					}
 				} else {
-					color = DEFAULT_COLOR;
+					color = foregroundColor;
 				}
 //			}
 		} else {

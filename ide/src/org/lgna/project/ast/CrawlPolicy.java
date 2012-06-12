@@ -40,12 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Member extends Declaration {
-	public AbstractType<?,?,?> getDeclaringType();
+public enum CrawlPolicy {
+	COMPLETE( true, true ),
+	INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL( true, false ),
+	EXCLUDE_REFERENCES_ENTIRELY( false, false );
+	private final boolean isReferenceIncluded;
+	private final boolean isReferenceTunneledInto;
+	private CrawlPolicy( boolean isReferenceIncluded, boolean isReferenceTunneledInto ) {
+		this.isReferenceIncluded = isReferenceIncluded;
+		this.isReferenceTunneledInto = isReferenceTunneledInto;
+	}
+	public boolean isReferenceIncluded() {
+		return this.isReferenceIncluded;
+	}
+	public boolean isReferenceTunneledInto() {
+		return this.isReferenceTunneledInto;
+	}
 }

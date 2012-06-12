@@ -46,12 +46,12 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ItemDetails<E,D extends ItemDetails<E,D,J>, J extends ItemSelectablePanel<E,D>>  {
+public class ItemDetails<E, D extends ItemDetails<E,D,J>, J extends ItemSelectablePanel<E,D>> {
 	private final J panel;
 	private final E item;
-	private final BooleanStateButton< ? extends javax.swing.AbstractButton > button;
+	private final ViewController<? extends javax.swing.AbstractButton,?> button;
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged(java.awt.event.ItemEvent e) {
+		public void itemStateChanged( java.awt.event.ItemEvent e ) {
 			if( ItemDetails.this.panel.getSwingComboBoxModel().getSelectedItem() != ItemDetails.this.item ) {
 				if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 					int index = ItemDetails.this.panel.getModel().indexOf( item );
@@ -60,7 +60,8 @@ public class ItemDetails<E,D extends ItemDetails<E,D,J>, J extends ItemSelectabl
 			}
 		}
 	};
-	public ItemDetails( J panel, E item, BooleanStateButton<? extends javax.swing.AbstractButton> button ) {
+
+	public ItemDetails( J panel, E item, ViewController<? extends javax.swing.AbstractButton,?> button ) {
 		this.panel = panel;
 		this.item = item;
 		this.button = button;
@@ -74,7 +75,7 @@ public class ItemDetails<E,D extends ItemDetails<E,D,J>, J extends ItemSelectabl
 	public TrackableShape getTrackableShape() {
 		return this.getButton();
 	}
-	public BooleanStateButton< ? extends javax.swing.AbstractButton > getButton() {
+	public ViewController<? extends javax.swing.AbstractButton,?> getButton() {
 		return this.button;
 	}
 	public void add( javax.swing.ButtonGroup buttonGroup ) {

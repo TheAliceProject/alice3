@@ -40,21 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.choosers;
+package org.alice.ide.ast.export;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringChooser extends AbstractChooserWithTextField< org.lgna.project.ast.StringLiteral > {
-	public StringChooser() {
-		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression instanceof org.lgna.project.ast.StringLiteral ) {
-			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)previousExpression;
-			this.setAndSelectText( stringLiteral.value.getValue() );
-		}
-	}
-	@Override
-	protected org.lgna.project.ast.StringLiteral valueOf( String text ) {
-		return new org.lgna.project.ast.StringLiteral( text );
+public class FieldInfo extends MemberInfo<org.lgna.project.ast.UserField> {
+	public FieldInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserField field ) {
+		super( projectInfo, field );
 	}
 }

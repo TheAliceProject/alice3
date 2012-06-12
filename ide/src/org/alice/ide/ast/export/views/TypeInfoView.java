@@ -40,23 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.custom;
+package org.alice.ide.ast.export.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomAudioSourceInputDialogOperation extends org.alice.ide.croquet.models.custom.CustomInputDialogOperation< org.lgna.project.ast.InstanceCreation > {
-	private static class SingletonHolder {
-		private static CustomAudioSourceInputDialogOperation instance = new CustomAudioSourceInputDialogOperation();
-	}
-	public static CustomAudioSourceInputDialogOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private CustomAudioSourceInputDialogOperation() {
-		super( java.util.UUID.fromString( "dadfcdb7-87a2-4e82-b8dd-72c38ec93ec6" ) );
-	}
-	@Override
-	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.InstanceCreation > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.choosers.AudioSourceChooser();
+public class TypeInfoView extends org.lgna.croquet.components.BorderPanel {
+	public TypeInfoView( org.alice.ide.ast.export.TypeInfo typeInfo ) {
+		this.addComponent( new InfoCheckBox( typeInfo ), Constraint.PAGE_START );
+		
+		org.lgna.croquet.components.PageAxisPanel centerPanel = new org.lgna.croquet.components.PageAxisPanel();
+//		for( org.alice.ide.ast.export.ConstructorInfo info : typeInfo.getConstructorInfos() ) {
+//			centerPanel.addComponent( new InfoCheckBox( info ) );
+//		}
+		for( org.alice.ide.ast.export.MethodInfo info : typeInfo.getMethodInfos() ) {
+			centerPanel.addComponent( new InfoCheckBox( info ) );
+		}
+		for( org.alice.ide.ast.export.FieldInfo info : typeInfo.getFieldInfos() ) {
+			centerPanel.addComponent( new InfoCheckBox( info ) );
+		}
+		
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ), Constraint.LINE_START );
+		this.addComponent( centerPanel, Constraint.CENTER );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 	}
 }
