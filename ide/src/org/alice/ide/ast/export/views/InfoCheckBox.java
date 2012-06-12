@@ -52,6 +52,8 @@ public class InfoCheckBox extends org.lgna.croquet.components.JComponent< javax.
 	}
 	@Override
 	protected javax.swing.JCheckBox createAwtComponent() {
-		return new javax.swing.JCheckBox( this.info.getDeclaration().getName() );
+		javax.swing.JCheckBox rv = new javax.swing.JCheckBox( this.info.getAction() );
+		rv.setModel( this.info.getButtonModel() );
+		return rv;
 	}
 }

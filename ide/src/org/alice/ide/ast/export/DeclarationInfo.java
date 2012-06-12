@@ -48,14 +48,27 @@ package org.alice.ide.ast.export;
 public class DeclarationInfo<D extends org.lgna.project.ast.Declaration> {
 	private final ProjectInfo projectInfo;
 	private final D declaration;
+	private final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
+	private final javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		}
+	};
 	public DeclarationInfo( ProjectInfo projectInfo, D declaration ) {
 		this.projectInfo = projectInfo;
 		this.declaration = declaration;
+		this.action.putValue( javax.swing.Action.NAME, this.declaration.getName() );
+		this.buttonModel.setSelected( true );
 	}
 	public ProjectInfo getProjectInfo() {
 		return this.projectInfo;
 	}
 	public D getDeclaration() {
 		return this.declaration;
+	}
+	public javax.swing.ButtonModel getButtonModel() {
+		return this.buttonModel;
+	}
+	public javax.swing.Action getAction() {
+		return this.action;
 	}
 }
