@@ -49,11 +49,12 @@ import javax.swing.Icon;
 
 import org.alice.ide.issue.HeaderPane;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.Hyperlink;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LabeledSpringRow;
+import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.PageAxisPanel;
+import org.lgna.croquet.components.FlowPanel;
 import org.lgna.croquet.components.RowSpringPanel;
 import org.lgna.croquet.components.SpringRow;
 import org.lgna.croquet.components.VerticalAlignment;
@@ -67,12 +68,14 @@ public class ReportIssueView extends BorderPanel {
 	private final static Icon headerIcon = IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) );
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
 
+		final org.lgna.croquet.components.ComboBox comboBox = reportIssueComposite.getTypeList().getPrepModel().createComboBox();
+		comboBox.setMaximumSizeClampedToPreferredSize( true );
 		BorderPanel header = new BorderPanel();
 		RowSpringPanel centerComponent = new RowSpringPanel() {
 			@Override
 			protected void appendRows( List<SpringRow> rows ) {
 				rows.add( new LabeledSpringRow( reportIssueComposite.getVisibilityLabel(), reportIssueComposite.getVisibilityList().createHorizontalDefaultRadioButtons() ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), reportIssueComposite.getTypeList().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), comboBox, VerticalAlignment.CENTER, false ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryLabel(), reportIssueComposite.getSummaryBlank().createTextField() ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionLabel(), reportIssueComposite.getDescriptionBlank().createTextArea(), VerticalAlignment.TOP ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsLabel(), reportIssueComposite.getStepsBlank().createTextArea(), VerticalAlignment.TOP ) );
@@ -81,26 +84,37 @@ public class ReportIssueView extends BorderPanel {
 			}
 		};
 
+		Color backgroundColor = Color.DARK_GRAY;
 		Label headerLabel = new Label();
 		headerLabel.setIcon( headerIcon );
 		headerLabel.setAlignmentX( 0.5f );
 		Hyperlink link = reportIssueComposite.getBrowserOperation().createHyperlink();
+		link.setForegroundColor( Color.LIGHT_GRAY );
+		link.getAwtComponent().setBackground( backgroundColor );
 		link.setAlignmentX( 0.5f );
 		
 		PageAxisPanel lineStartPanel = new PageAxisPanel( headerLabel, link );
 				
-		GridPanel rightOfHeaderPanel = GridPanel.createGridPane( 3, 1 );
-		rightOfHeaderPanel.addComponent( new Label() );
-		rightOfHeaderPanel.addComponent( reportIssueComposite.getLoginOperation().createButton() );
-		rightOfHeaderPanel.addComponent( new Label() );
-		
+		LineAxisPanel rightOfHeaderPanel = new LineAxisPanel( reportIssueComposite.getLoginOperation().createButton() );
+
 		header.addComponent( lineStartPanel, Constraint.LINE_START );
 		header.addComponent( rightOfHeaderPanel, Constraint.LINE_END );
-		header.setBackgroundColor( Color.BLACK );
-
+		header.setBackgroundColor( backgroundColor );
+		
+		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		centerComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		
+		org.lgna.croquet.components.Button submitButton = reportIssueComposite.getSubmitBugOperation().createButton();
+		submitButton.scaleFont( 1.6f );
+		submitButton.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		
+		FlowPanel pageEndPanel = new FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER );
+		pageEndPanel.addComponent( submitButton );
+		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 32, 0, 0, 0 ) );
+		
 		this.addComponent( header, Constraint.PAGE_START );
 		this.addComponent( centerComponent, Constraint.CENTER );
-		this.addComponent( reportIssueComposite.getSubmitBugOperation().createButton(), Constraint.PAGE_END );
+		this.addComponent( pageEndPanel, Constraint.PAGE_END );
 	}
 
 }
