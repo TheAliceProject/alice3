@@ -43,77 +43,60 @@
 package org.alice.ide.croquet.models.help;
 
 import java.awt.Color;
+import java.util.List;
 
+import javax.swing.Icon;
+
+import org.alice.ide.issue.HeaderPane;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.Hyperlink;
 import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.TextArea;
-import org.lgna.croquet.components.TextField;
+import org.lgna.croquet.components.LabeledSpringRow;
+import org.lgna.croquet.components.PageAxisPanel;
+import org.lgna.croquet.components.RowSpringPanel;
+import org.lgna.croquet.components.SpringRow;
+import org.lgna.croquet.components.VerticalAlignment;
+
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 
 /**
  * @author Matt May
  */
 public class ReportIssueView extends BorderPanel {
-
-	public ReportIssueView( ReportIssueComposite reportIssueComposite ) {
+	private final static Icon headerIcon = IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) );
+	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
 
 		BorderPanel header = new BorderPanel();
-		BorderPanel centerComponent = new BorderPanel();
-		
+		RowSpringPanel centerComponent = new RowSpringPanel() {
+			@Override
+			protected void appendRows( List<SpringRow> rows ) {
+				rows.add( new LabeledSpringRow( reportIssueComposite.getVisibilityLabel(), reportIssueComposite.getVisibilityList().createHorizontalDefaultRadioButtons() ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), reportIssueComposite.getTypeList().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryLabel(), reportIssueComposite.getSummaryBlank().createTextField() ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionLabel(), reportIssueComposite.getDescriptionBlank().createTextArea(), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsLabel(), reportIssueComposite.getStepsBlank().createTextArea(), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getEnvironmentLabel(), reportIssueComposite.getEnvironmentBlank().createTextArea(), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getAttachmentLabel(), reportIssueComposite.getAttachmentList().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
+			}
+		};
+
 		Label headerLabel = new Label();
+		headerLabel.setIcon( headerIcon );
+		headerLabel.setAlignmentX( 0.5f );
+		Hyperlink link = reportIssueComposite.getBrowserOperation().createHyperlink();
+		link.setAlignmentX( 0.5f );
+		
+		PageAxisPanel lineStartPanel = new PageAxisPanel( headerLabel, link );
+				
+		GridPanel rightOfHeaderPanel = GridPanel.createGridPane( 3, 1 );
+		rightOfHeaderPanel.addComponent( new Label() );
+		rightOfHeaderPanel.addComponent( reportIssueComposite.getLoginOperation().createButton() );
+		rightOfHeaderPanel.addComponent( new Label() );
+		
+		header.addComponent( lineStartPanel, Constraint.LINE_START );
+		header.addComponent( rightOfHeaderPanel, Constraint.LINE_END );
 		header.setBackgroundColor( Color.BLACK );
-		headerLabel.setText( "Alice Bugs" );
-		headerLabel.setFontSize( 36 );
-		headerLabel.setForegroundColor( Color.YELLOW );
-		header.addComponent( headerLabel, Constraint.CENTER );
-		header.addComponent( reportIssueComposite.getLoginOperation().createButton(), Constraint.LINE_END );
-
-		GridPanel topCenterComponent = GridPanel.createGridPane( 3, 1 );
-		GridPanel centerCenterComponent = GridPanel.createGridPane( 3, 1 );
-		GridPanel bottomCenterComponent = GridPanel.createGridPane( 1, 1 );
-
-		BorderPanel visibilityRow = new BorderPanel();
-		visibilityRow.addComponent( reportIssueComposite.getVisibilityLabel().createImmutableTextArea(), Constraint.LINE_START );
-		visibilityRow.addComponent( reportIssueComposite.getVisibilityList().createHorizontalDefaultRadioButtons(), Constraint.CENTER );
-//		visibilityRow.addComponent( reportIssueComposite.getVisibilityState().createCheckBox(), Constraint.CENTER );
-
-		BorderPanel typeRow = new BorderPanel();
-		typeRow.addComponent( reportIssueComposite.getTypeLabel().createImmutableTextArea(), Constraint.LINE_START );
-		typeRow.addComponent( reportIssueComposite.getTypeList().getPrepModel().createComboBox(), Constraint.CENTER );
-
-		BorderPanel summaryRow = new BorderPanel();
-		summaryRow.addComponent( reportIssueComposite.getSummaryLabel().createImmutableTextArea(), Constraint.LINE_START );
-		TextField createTextField = reportIssueComposite.getSummaryBlank().createTextField();
-		summaryRow.addComponent( createTextField, Constraint.CENTER );
-
-		BorderPanel descriptionRow = new BorderPanel();
-		descriptionRow.addComponent( reportIssueComposite.getDescriptionLabel().createImmutableTextArea(), Constraint.LINE_START );
-		descriptionRow.addComponent( reportIssueComposite.getDescriptionBlank().createTextArea(), Constraint.CENTER );
-
-		BorderPanel stepsRow = new BorderPanel();
-		stepsRow.addComponent( reportIssueComposite.getStepsLabel().createImmutableTextArea(), Constraint.LINE_START );
-		stepsRow.addComponent( reportIssueComposite.getStepsBlank().createTextArea(), Constraint.CENTER );
-
-		BorderPanel environmentRow = new BorderPanel();
-		environmentRow.addComponent( reportIssueComposite.getEnvironmentLabel().createImmutableTextArea(), Constraint.LINE_START );
-		TextArea createTextArea = reportIssueComposite.getEnvironmentBlank().createTextArea();
-		environmentRow.addComponent( createTextArea, Constraint.CENTER );
-
-		BorderPanel attachmentRow = new BorderPanel();
-		attachmentRow.addComponent( reportIssueComposite.getAttachmentLabel().createImmutableTextArea(), Constraint.LINE_START );
-		attachmentRow.addComponent( reportIssueComposite.getAttachmentList().createVerticalDefaultRadioButtons(), Constraint.CENTER );
-
-		topCenterComponent.addComponent( visibilityRow );
-		topCenterComponent.addComponent( typeRow );
-		topCenterComponent.addComponent( summaryRow );
-		centerCenterComponent.addComponent( descriptionRow );
-		centerCenterComponent.addComponent( stepsRow );
-		centerCenterComponent.addComponent( environmentRow );
-		bottomCenterComponent.addComponent( attachmentRow );
-
-		centerComponent.addComponent( topCenterComponent, Constraint.PAGE_START );
-		centerComponent.addComponent( centerCenterComponent, Constraint.CENTER );
-		centerComponent.addComponent( bottomCenterComponent, Constraint.PAGE_END );
 
 		this.addComponent( header, Constraint.PAGE_START );
 		this.addComponent( centerComponent, Constraint.CENTER );
