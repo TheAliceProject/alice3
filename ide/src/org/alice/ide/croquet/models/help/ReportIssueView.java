@@ -67,15 +67,12 @@ import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 public class ReportIssueView extends BorderPanel {
 	private final static Icon headerIcon = IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) );
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
-
-		final org.lgna.croquet.components.ComboBox comboBox = reportIssueComposite.getTypeList().getPrepModel().createComboBox();
-		comboBox.setMaximumSizeClampedToPreferredSize( true );
 		BorderPanel header = new BorderPanel();
 		RowSpringPanel centerComponent = new RowSpringPanel() {
 			@Override
 			protected void appendRows( List<SpringRow> rows ) {
 				rows.add( new LabeledSpringRow( reportIssueComposite.getVisibilityLabel(), reportIssueComposite.getVisibilityList().createHorizontalDefaultRadioButtons() ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), comboBox, VerticalAlignment.CENTER, false ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), reportIssueComposite.getTypeList().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryLabel(), reportIssueComposite.getSummaryBlank().createTextField() ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionLabel(), reportIssueComposite.getDescriptionBlank().createTextArea(), VerticalAlignment.TOP ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsLabel(), reportIssueComposite.getStepsBlank().createTextArea(), VerticalAlignment.TOP ) );
@@ -108,7 +105,7 @@ public class ReportIssueView extends BorderPanel {
 		submitButton.scaleFont( 1.6f );
 		submitButton.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		
-		FlowPanel pageEndPanel = new FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER );
+		FlowPanel pageEndPanel = new FlowPanel( FlowPanel.Alignment.CENTER );
 		pageEndPanel.addComponent( submitButton );
 		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 32, 0, 0, 0 ) );
 		
