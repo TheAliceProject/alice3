@@ -69,6 +69,7 @@ public class DefaultRadioButtons<E> extends AbstractRadioButtons< E > {
 	public DefaultRadioButtons( ListSelectionState< E > model, boolean isVertical ) {
 		super( model );
 		this.isVertical = isVertical;
+		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
