@@ -63,5 +63,6 @@ public class BugLoginView extends BorderPanel {
 			}
 		};
 		this.addComponent( centerComponent, Constraint.CENTER );
+		this.setMinimumPreferredHeight( 240 );
 	}
 }
