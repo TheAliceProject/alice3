@@ -73,13 +73,13 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		this.type = type;
 		initReportSubmissionConfiguration();
 		initAdapter();
-		environmentBlank.setEnabled( false );
+		environmentState.setEnabled( false );
 	}
 
 	private void initAdapter() {
-		summaryBlank.addValueListener( adapter );
-		descriptionBlank.addValueListener( adapter );
-		stepsBlank.addValueListener( adapter );
+		summaryState.addValueListener( adapter );
+		descriptionState.addValueListener( adapter );
+		stepsState.addValueListener( adapter );
 		adapter.changed( null, "", "", true );
 	}
 
@@ -89,15 +89,15 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		}
 
 		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			if( !(summaryBlank.getValue().length() > 0) ) {
+			if( !(summaryState.getValue().length() > 0) ) {
 				submitBugOperation.setEnabled( false );
 				return;
 			}
-			if( !(descriptionBlank.getValue().length() > 0) ) {
+			if( !(descriptionState.getValue().length() > 0) ) {
 				submitBugOperation.setEnabled( false );
 				return;
 			}
-			if( !(stepsBlank.getValue().length() > 0) ) {
+			if( !(stepsState.getValue().length() > 0) ) {
 				submitBugOperation.setEnabled( false );
 				return;
 			}
@@ -107,22 +107,13 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	};
 
 	public static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
-	private final StringValue visibilityLabel = createStringValue( this.createKey( "visibilityLabel" ) );
-	private final BooleanState visibilityState = createBooleanState( this.createKey( "visibilityState" ), true );
-	private final ListSelectionState<BugSubmitVisibility> visibilityList = createListSelectionStateForEnum( this.createKey( "visibilityList" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
-	private final StringValue typeLabel = createStringValue( this.createKey( "typeLabel" ) );
-	private final ListSelectionState<JIRAReport.Type> typeList = createListSelectionStateForEnum( createKey( "typeList" ), JIRAReport.Type.class, JIRAReport.Type.BUG );
-	private final StringValue summaryLabel = createStringValue( this.createKey( "summaryLabel" ) );
-	private final StringState summaryBlank = createStringState( this.createKey( "summaryBlank" ) );
-	private final StringValue descriptionLabel = createStringValue( this.createKey( "descriptionLabel" ) );
-	private final StringState descriptionBlank = createStringState( this.createKey( "descriptionBlank" ) );
-	private final StringValue stepsLabel = createStringValue( this.createKey( "stepsLabel" ) );
-	private final StringState stepsBlank = createStringState( this.createKey( "stepsBlank" ) );
-	private final StringValue environmentLabel = createStringValue( this.createKey( "environmentLabel" ) );
-	private final StringState environmentBlank = createStringState( this.createKey( "environmentBlank" ), environment );
-	private final StringValue attachmentLabel = createStringValue( this.createKey( "attachmentLabel" ) );
-	private final ListSelectionState<BugSubmitAttachment> attachmentList = createListSelectionStateForEnum( this.createKey( "attachmentList" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
-	private final BooleanState attachmentState = createBooleanState( this.createKey( "attachmentState" ), true );
+	private final ListSelectionState<BugSubmitVisibility> visibilityState = createListSelectionStateForEnum( this.createKey( "visibilityState" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
+	private final ListSelectionState<JIRAReport.Type> typeState = createListSelectionStateForEnum( createKey( "typeState" ), JIRAReport.Type.class, JIRAReport.Type.BUG );
+	private final StringState summaryState = createStringState( this.createKey( "summaryState" ) );
+	private final StringState descriptionState = createStringState( this.createKey( "descriptionState" ) );
+	private final StringState stepsState = createStringState( this.createKey( "stepsState" ) );
+	private final StringState environmentState = createStringState( this.createKey( "environmentState" ), environment );
+	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
 	private final BrowserOperation operation = new BrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ) ) {
 
 		@Override
@@ -138,7 +129,6 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	private final ActionOperation loginOperation = createActionOperation( this.createKey( "loginOperation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			System.out.println("login");
 			BugLoginComposite login = new BugLoginComposite();
 			login.getOperation().fire();
 			return null;
@@ -148,7 +138,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			JIRAReport report = createJIRAReport();
-			if( attachmentList.getSelectedItem().equals( BugSubmitAttachment.YES ) ) {
+			if( attachmentState.getSelectedItem().equals( BugSubmitAttachment.YES ) ) {
 				report.addAttachment( new CurrentProjectAttachment() );
 			}
 			boolean success = false;
@@ -171,53 +161,26 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 
 	private ReportSubmissionConfiguration reportSubmissionConfiguration;
 
-	public StringValue getVisibilityLabel() {
-		return this.visibilityLabel;
-	}
-	public BooleanState getVisibilityState() {
+	public ListSelectionState<BugSubmitVisibility> getVisibilityState() {
 		return this.visibilityState;
 	}
-	public ListSelectionState<BugSubmitVisibility> getVisibilityList() {
-		return this.visibilityList;
+	public ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> getTypeState() {
+		return this.typeState;
 	}
-	public StringValue getTypeLabel() {
-		return this.typeLabel;
+	public StringState getSummaryState() {
+		return this.summaryState;
 	}
-	public ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> getTypeList() {
-		return this.typeList;
+	public StringState getDescriptionState() {
+		return this.descriptionState;
 	}
-	public StringValue getSummaryLabel() {
-		return this.summaryLabel;
+	public StringState getStepsState() {
+		return this.stepsState;
 	}
-	public StringState getSummaryBlank() {
-		return this.summaryBlank;
+	public StringState getEnvironmentState() {
+		return this.environmentState;
 	}
-	public StringValue getDescriptionLabel() {
-		return this.descriptionLabel;
-	}
-	public StringState getDescriptionBlank() {
-		return this.descriptionBlank;
-	}
-	public StringValue getStepsLabel() {
-		return this.stepsLabel;
-	}
-	public StringState getStepsBlank() {
-		return this.stepsBlank;
-	}
-	public StringValue getEnvironmentLabel() {
-		return this.environmentLabel;
-	}
-	public StringState getEnvironmentBlank() {
-		return this.environmentBlank;
-	}
-	public StringValue getAttachmentLabel() {
-		return this.attachmentLabel;
-	}
-	public BooleanState getAttachmentState() {
+	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
-	}
-	public ListSelectionState<BugSubmitAttachment> getAttachmentList() {
-		return this.attachmentList;
 	}
 	public ActionOperation getLoginOperation() {
 		return this.loginOperation;
@@ -258,7 +221,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	}
 
 	protected String getJIRAProjectKey() {
-		if( this.getVisibilityList().getValue().equals( BugSubmitVisibility.PUBLIC ) ) {
+		if( this.getVisibilityState().getValue().equals( BugSubmitVisibility.PUBLIC ) ) {
 			return "AIII";
 		} else {
 			return "AIIIP";
@@ -267,11 +230,11 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	public JIRAReport createJIRAReport() {
 		JIRAReport rv = new JIRAReport();
 		rv.setProjectKey( getJIRAProjectKey() );
-		rv.setType( typeList.getSelectedItem() );
-		rv.setSummary( summaryBlank.getValue() );
-		rv.setDescription( descriptionBlank.getValue() );
-		rv.setEnvironment( environmentBlank.getValue() );
-		rv.setSteps( stepsBlank.getValue() );
+		rv.setType( typeState.getSelectedItem() );
+		rv.setSummary( summaryState.getValue() );
+		rv.setDescription( descriptionState.getValue() );
+		rv.setEnvironment( environmentState.getValue() );
+		rv.setSteps( stepsState.getValue() );
 		rv.setException( "" );
 		rv.setAffectsVersions( new String[] { org.lgna.project.Version.getCurrentVersionText() } );
 		return rv;
