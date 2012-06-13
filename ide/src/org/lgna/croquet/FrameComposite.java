@@ -44,7 +44,7 @@
 package org.lgna.croquet;
 
 /*package-private*/ class IsShowingButtonModel extends javax.swing.JToggleButton.ToggleButtonModel {
-	private final FrameComposite frameComposite;
+	private final FrameComposite<?> frameComposite;
 	private org.lgna.croquet.components.Frame frame;
 	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 		public void windowActivated( java.awt.event.WindowEvent e ) {
@@ -56,15 +56,17 @@ package org.lgna.croquet;
 		public void windowDeiconified( java.awt.event.WindowEvent e ) {
 		}
 		public void windowOpened( java.awt.event.WindowEvent e ) {
+			frameComposite.handlePreActivation();
 		}
 		public void windowClosing( java.awt.event.WindowEvent e ) {
+			frameComposite.handlePostDeactivation();
 			IsShowingButtonModel.this.setSelected( false );
 		}
 		public void windowClosed( java.awt.event.WindowEvent e ) {
 		}
 	};
 	
-	public IsShowingButtonModel( FrameComposite frameComposite ) {
+	public IsShowingButtonModel( FrameComposite<?> frameComposite ) {
 		this.frameComposite = frameComposite;
 	}
 	
@@ -75,6 +77,7 @@ package org.lgna.croquet;
 			this.frame = new org.lgna.croquet.components.Frame();
 			this.frame.getContentPanel().addComponent( this.frameComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 			this.frame.pack();
+			this.frameComposite.modifyPackedWindowSizeIfDesired( this.frame );
 			this.frame.addWindowListener( this.windowListener );
 		}
 		return this.frame;

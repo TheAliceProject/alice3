@@ -52,7 +52,6 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
@@ -65,12 +64,13 @@ import edu.cmu.cs.dennisc.jira.JIRAReport;
 /**
  * @author Matt May
  */
-public class ReportIssueComposite extends OperationInputDialogCoreComposite<ReportIssueView> {
-
+public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposite<ReportIssueView> {
+	private final edu.cmu.cs.dennisc.jira.JIRAReport.Type type;
 	private final String environment = getEnvironment();
 
-	public ReportIssueComposite() {
-		super( java.util.UUID.fromString( "31d2104a-c90c-4861-9082-3a0390527a04" ), ISSUE_GROUP );
+	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type type ) {
+		super( migrationId, ISSUE_GROUP );
+		this.type = type;
 		initReportSubmissionConfiguration();
 		initAdapter();
 	}
@@ -226,14 +226,6 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 	protected ReportIssueView createView() {
 		return new ReportIssueView( this );
 	}
-	@Override
-	protected Status getStatus( CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
-	}
-	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		return null;
-	}
 	public BrowserOperation getBrowserOperation() {
 		return this.operation;
 	}
@@ -261,20 +253,6 @@ public class ReportIssueComposite extends OperationInputDialogCoreComposite<Repo
 		return rv;
 	}
 
-	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-		new org.alice.stageide.StageIDE();
-		try {
-			org.lgna.croquet.triggers.Trigger trigger = null;
-			new ReportIssueComposite().getOperation().fire( trigger );
-		} catch( org.lgna.croquet.CancelException ce ) {
-			//pass
-		}
-		System.exit( 0 );
-	}
 	protected String getJIRAProjectKey() {
 		if( this.getVisibilityList().getValue().equals( BugSubmitVisibility.PUBLIC ) ) {
 			return "AIII";
