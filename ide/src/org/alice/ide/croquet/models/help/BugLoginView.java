@@ -64,6 +64,7 @@ public class BugLoginView extends BorderPanel {
 				rows.add( new LabeledSpringRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
 			}
 		};
+		this.addComponent( centerComponent, Constraint.CENTER );
 	}
 
 }

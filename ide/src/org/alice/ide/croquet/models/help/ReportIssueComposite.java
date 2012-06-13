@@ -73,6 +73,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		this.type = type;
 		initReportSubmissionConfiguration();
 		initAdapter();
+		environmentBlank.setEnabled( false );
 	}
 
 	private void initAdapter() {
