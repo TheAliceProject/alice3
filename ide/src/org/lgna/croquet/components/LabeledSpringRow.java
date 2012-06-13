@@ -57,7 +57,7 @@ public class LabeledSpringRow implements SpringRow {
 		this.isFillHorizontal = isFillHorizontal;
 	}
 	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment ) {
-		this( labelStringValue, component, labelVerticalAlignment, false );
+		this( labelStringValue, component, labelVerticalAlignment, true );
 	}
 	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
 		this( labelStringValue, component, org.lgna.croquet.components.VerticalAlignment.CENTER );
@@ -89,10 +89,9 @@ public class LabeledSpringRow implements SpringRow {
 		if( this.isFillHorizontal ) {
 			trailingComponent = this.component;
 		} else {
-			trailingComponent = new org.lgna.croquet.components.LineAxisPanel( 
-					this.component,
-					org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-			);
+			BorderPanel borderPanel = new BorderPanel();
+			borderPanel.addComponent( this.component, BorderPanel.Constraint.LINE_START );
+			trailingComponent = borderPanel;
 		}
 		return new org.lgna.croquet.components.JComponent< ? >[] { 
 			this.createImmutableTextField(),

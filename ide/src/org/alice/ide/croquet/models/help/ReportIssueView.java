@@ -66,6 +66,15 @@ import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
  */
 public class ReportIssueView extends BorderPanel {
 	private final static Icon headerIcon = IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) );
+	private static org.lgna.croquet.components.JComponent<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
+		org.lgna.croquet.components.TextArea textArea = stringState.createTextArea();
+		textArea.getAwtComponent().setLineWrap( true );
+		textArea.getAwtComponent().setWrapStyleWord( true );
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane( textArea );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setMinimumPreferredHeight( 128 );
+		return rv;
+	}
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
 		BorderPanel header = new BorderPanel();
 		RowSpringPanel centerComponent = new RowSpringPanel() {
@@ -74,8 +83,8 @@ public class ReportIssueView extends BorderPanel {
 				rows.add( new LabeledSpringRow( reportIssueComposite.getVisibilityLabel(), reportIssueComposite.getVisibilityList().createHorizontalDefaultRadioButtons() ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), reportIssueComposite.getTypeList().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryLabel(), reportIssueComposite.getSummaryBlank().createTextField() ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionLabel(), reportIssueComposite.getDescriptionBlank().createTextArea(), VerticalAlignment.TOP ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsLabel(), reportIssueComposite.getStepsBlank().createTextArea(), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionLabel(), createScrollPaneTextArea( reportIssueComposite.getDescriptionBlank() ), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsLabel(), createScrollPaneTextArea( reportIssueComposite.getStepsBlank() ), VerticalAlignment.TOP ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getEnvironmentLabel(), reportIssueComposite.getEnvironmentBlank().createTextArea(), VerticalAlignment.TOP ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getAttachmentLabel(), reportIssueComposite.getAttachmentList().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
 			}
