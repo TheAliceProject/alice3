@@ -58,20 +58,12 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 		super( java.util.UUID.fromString( "e73910c0-ee70-4e48-899d-52ca96d21c9f" ), ReportIssueComposite.ISSUE_GROUP );
 	}
 
-	private final StringValue userNameValue = createStringValue( createKey( "userNameValue" ) );
 	private final StringState userNameState = createStringState( createKey( "userNameState" ) );
-	private final StringValue passwordValue = createStringValue( createKey( "passwordValue" ) );
 	private final StringState passwordState = createStringState( createKey( "passwordState" ) );
 	private final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordValue" ), false );
 
-	public StringValue getUserNameValue() {
-		return this.userNameValue;
-	}
 	public StringState getUserNameState() {
 		return this.userNameState;
-	}
-	public StringValue getPasswordValue() {
-		return this.passwordValue;
 	}
 	public StringState getPasswordState() {
 		return this.passwordState;

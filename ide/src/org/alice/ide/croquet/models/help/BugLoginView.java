@@ -59,8 +59,8 @@ public class BugLoginView extends BorderPanel {
 		RowSpringPanel centerComponent = new RowSpringPanel() {
 			@Override
 			protected void appendRows( List<SpringRow> rows ) {
-				rows.add( new LabeledSpringRow( bugLoginComposite.getUserNameValue(), bugLoginComposite.getUserNameState().createTextField() ) );
-				rows.add( new LabeledSpringRow( bugLoginComposite.getPasswordValue(), bugLoginComposite.getPasswordState().createPasswordField() ) );
+				rows.add( new LabeledSpringRow( bugLoginComposite.getUserNameState().getSidekickLabel(), bugLoginComposite.getUserNameState().createTextField() ) );
+				rows.add( new LabeledSpringRow( bugLoginComposite.getPasswordState().getSidekickLabel(), bugLoginComposite.getPasswordState().createPasswordField() ) );
 				rows.add( new LabeledSpringRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
 			}
 		};

@@ -77,18 +77,18 @@ public class ReportIssueView extends BorderPanel {
 	}
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
 		BorderPanel header = new BorderPanel();
-		final org.lgna.croquet.components.TextArea environmentTextArea = reportIssueComposite.getEnvironmentBlank().createTextArea();
+		final org.lgna.croquet.components.TextArea environmentTextArea = reportIssueComposite.getEnvironmentState().createTextArea();
 		environmentTextArea.getAwtComponent().setEditable( false );
 		RowSpringPanel centerComponent = new RowSpringPanel() {
 			@Override
 			protected void appendRows( List<SpringRow> rows ) {
-				rows.add( new LabeledSpringRow( reportIssueComposite.getVisibilityLabel(), reportIssueComposite.getVisibilityList().createHorizontalDefaultRadioButtons() ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), reportIssueComposite.getTypeList().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryLabel(), reportIssueComposite.getSummaryBlank().createTextField() ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionLabel(), createScrollPaneTextArea( reportIssueComposite.getDescriptionBlank() ), VerticalAlignment.TOP ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsLabel(), createScrollPaneTextArea( reportIssueComposite.getStepsBlank() ), VerticalAlignment.TOP ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getEnvironmentLabel(), environmentTextArea, VerticalAlignment.TOP ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getAttachmentLabel(), reportIssueComposite.getAttachmentList().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getVisibilityState().getSidekickLabel(), reportIssueComposite.getVisibilityState().createHorizontalDefaultRadioButtons() ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeState().getSidekickLabel(), reportIssueComposite.getTypeState().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryState().getSidekickLabel(), reportIssueComposite.getSummaryState().createTextField() ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionState().getSidekickLabel(), createScrollPaneTextArea( reportIssueComposite.getDescriptionState() ), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsState().getSidekickLabel(), createScrollPaneTextArea( reportIssueComposite.getStepsState() ), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getEnvironmentState().getSidekickLabel(), environmentTextArea, VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getAttachmentState().getSidekickLabel(), reportIssueComposite.getAttachmentState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
 			}
 		};
 
