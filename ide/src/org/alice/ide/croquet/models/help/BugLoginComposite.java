@@ -86,4 +86,16 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 		return new BugLoginView( this );
 	}
 	
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		new org.alice.stageide.StageIDE();
+		try {
+			new BugLoginComposite().getOperation().fire();
+		} catch( org.lgna.croquet.CancelException ce ) {
+			//pass
+		}
+	}
 }

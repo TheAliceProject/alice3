@@ -40,38 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package edu.cmu.cs.dennisc.javax.swing.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PasswordField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField > {
-	public PasswordField( org.lgna.croquet.StringState model ) {
-		super( model );
+public class JSuggestivePasswordField extends javax.swing.JPasswordField {
+	private String textForBlankCondition;
+	public JSuggestivePasswordField( String text, String textForBlankCondition ) {
+//		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
+		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
+		if( text != null ) {
+			this.setText( text );
+		}
+		if( textForBlankCondition != null ) {
+			this.setTextForBlankCondition( textForBlankCondition );
+		}
 	}
-	
-	@Override
-	public void updateTextForBlankCondition( String textForBlankCondition ) {
-		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
+	public JSuggestivePasswordField( String text ) {
+		this( text, null );
 	}
-
+	public JSuggestivePasswordField() {
+		this( null, null );
+	}
+	public String getTextForBlankCondition() {
+		return this.textForBlankCondition;
+	}
+	public void setTextForBlankCondition(String textForBlankCondition) {
+		this.textForBlankCondition = textForBlankCondition;
+	}
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField() {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				if( PasswordField.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-		};
-		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
+	public java.awt.Dimension getMaximumSize() {
+		java.awt.Dimension rv = super.getMaximumSize();
+		java.awt.Dimension preferred = getPreferredSize();
+		rv.height = preferred.height;
 		return rv;
+	}
+	@Override
+	protected void paintComponent( java.awt.Graphics g ) {
+		super.paintComponent( g );
+		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}
 }

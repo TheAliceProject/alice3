@@ -49,7 +49,7 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
 
 	public JSuggestiveTextArea( String text, String textForBlankCondition ) {
-		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
+		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
 		this.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {

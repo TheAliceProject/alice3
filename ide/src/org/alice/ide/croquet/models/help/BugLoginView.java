@@ -53,9 +53,7 @@ import org.lgna.croquet.components.SpringRow;
  * @author Matt May
  */
 public class BugLoginView extends BorderPanel {
-
 	public BugLoginView( final BugLoginComposite bugLoginComposite ) {
-
 		RowSpringPanel centerComponent = new RowSpringPanel() {
 			@Override
 			protected void appendRows( List<SpringRow> rows ) {
@@ -66,5 +64,4 @@ public class BugLoginView extends BorderPanel {
 		};
 		this.addComponent( centerComponent, Constraint.CENTER );
 	}
-
 }
