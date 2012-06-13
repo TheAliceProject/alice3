@@ -125,11 +125,11 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		this.valueState.setListData( selectedIndex, items );
 	}
 	@Override
-	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-		super.modifyPackedDialogSizeIfDesired( dialog );
+	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		super.modifyPackedWindowSizeIfDesired( window );
 		final int WIDTH = 320;
 		final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( WIDTH );
-		dialog.setSize( WIDTH, HEIGHT );
+		window.setSize( WIDTH, HEIGHT );
 	}
 	
 	public static void main( String[] args ) throws Exception {
