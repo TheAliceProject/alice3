@@ -40,42 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.preferences.recursion;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
-	private static class SingletonHolder {
-		private static IsRecursionAllowedPreferenceDialogComposite instance = new IsRecursionAllowedPreferenceDialogComposite( 0 );
+public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
+	private final Operation operation;
+	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup ) {
+		super( migrationId );
+		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
-	public static IsRecursionAllowedPreferenceDialogComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private final org.lgna.croquet.StringValue descriptionText = this.createStringValue( this.createKey( "descriptionText" ) );
-	private final org.lgna.croquet.StringValue recursiveButtonText = this.createStringValue( this.createKey( "recursiveButtonText" ) );
-	private final int depth;
-	private IsRecursionAllowedPreferenceDialogComposite next;
-	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
-		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
-		this.depth = index;
+	public org.lgna.croquet.Operation getOperation() {
+		return this.operation;
 	}
 	@Override
-	protected org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView createView() {
-		return new org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView( this );
+	protected String getName() {
+		return this.getOperation().getName();
 	}
-	public org.lgna.croquet.StringValue getDescriptionText() {
-		return this.descriptionText;
+	@Override
+	protected org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		//todo
+		return this.getView();
 	}
-	public org.lgna.croquet.StringValue getRecursiveButtonText() {
-		return this.recursiveButtonText;
+	@Override
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
+		//todo
 	}
-	public IsRecursionAllowedPreferenceDialogComposite getNext() {
-		if( this.next != null ) {
-			//pass
-		} else {
-			this.next = new IsRecursionAllowedPreferenceDialogComposite( this.depth + 1 );
-		}
-		return this.next; 
+	
+	@Override
+	protected org.lgna.croquet.AbstractWindowComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
+		//todo
+		return null;
+	}
+	
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.handlePreActivation();
+	}
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.handlePostDeactivation();
+	}
+	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				super.handlePostHideDialog( completionStep );
+				completionStep.finish();
+			}
+		}, completionStep );
 	}
 }

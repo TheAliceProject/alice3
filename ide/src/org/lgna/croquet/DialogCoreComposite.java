@@ -103,7 +103,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>,CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends PotentiallyGatedComposite<V> {
+public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>,CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends AbstractDialogComposite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final org.lgna.croquet.history.Step.Key< Boolean > IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 	public static final class InternalCommitOperationResolver extends IndirectResolver< InternalCommitOperation, DialogCoreComposite > {
@@ -189,33 +189,6 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	private final InternalCommitOperation commitOperation = new InternalCommitOperation( this );
 	private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
 
-//	private static abstract class CommitOrCancelAction implements Action { 
-//		private final boolean isCommit;
-//		public CommitOrCancelAction( boolean isCommit ) {
-//			this.isCommit = isCommit;
-//		}
-//		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-//			DialogCoreComposite composite = (DialogCoreComposite)source.getKey().getComposite();
-//			org.lgna.croquet.history.CompletionStep<?> dialogStep = step.getFirstAncestorStepOfEquivalentModel( composite.getModel(), org.lgna.croquet.history.CompletionStep.class );
-//			org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
-//			dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
-//			dialog.setVisible( false );
-//			return null;
-//		}
-//	}
-//	private static final class CommitAction extends CommitOrCancelAction {
-//		public CommitAction() {
-//			super( true );
-//		}
-//	}
-//	private static final class CancelAction extends CommitOrCancelAction {
-//		public CancelAction() {
-//			super( true );
-//		}
-//	}
-//	private final Operation commitOperation = this.createActionOperation( this.createKey( "commit" ), new CommitAction() );
-//	private final Operation cancelOperation = this.createActionOperation( this.createKey( "cancel" ), new CancelAction() );
-
 	public DialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
@@ -227,90 +200,17 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		return this.cancelOperation;
 	}
 
-	protected static class DialogOwner implements org.lgna.croquet.dialog.DialogOwner<org.lgna.croquet.components.View<?,?>> {
-		private final DialogCoreComposite<?,?> composite;
-		public DialogOwner( DialogCoreComposite<?,?> composite ) {
-			this.composite = composite;
-		}
-		public org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
-			return this.composite.allocateView( step );
-		}
-
-		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
-			this.composite.releaseView( step, view );
-		}
-
-		public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
-			return this.composite.getDialogTitle( step );
-		}
-
-		public java.awt.Point getDesiredDialogLocation() {
-			return this.composite.getDesiredWindowLocation();
-		}
-		public void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-			this.composite.modifyPackedWindowSizeIfDesired( dialog );
-		}
-
-		public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
-			return this.composite.isWindowClosingEnabled( trigger );
-		}
-
-		public void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
-			this.composite.handleDialogOpened( trigger );
-		}
-
-		public void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
-			this.composite.handleDialogClosed( trigger );
-		}
-
-		public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-			this.composite.handlePreShowDialog( step );
-		}
-
-		public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-			this.composite.handlePostHideDialog( step );
-		}
-
-		public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
-			this.composite.handleFinally( step, dialog );
-		}
-	}
-	
-	//todo
-	private org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	@Override
+	protected org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return this.getDialogContentComposite().getView();
 	}
-	//todo
-	private void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
+	@Override
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
+		//todo
 	}
-	
-	
-	//todo: remove?
-	protected boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
-		return true;
-	}
-	protected abstract String getName();
-	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
-		String rv = this.getName();
-		if( rv != null ) {
-			rv = rv.replaceAll( "<[a-z]*>", "" );
-			rv = rv.replaceAll( "</[a-z]*>", "" );
-			if( rv.endsWith( "..." ) ) {
-				rv = rv.substring( 0, rv.length() - 3 );
-			}
-		}
-		return rv;
-	}
-	
-	private void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
-		//org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
-	}
-	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
-	}
-	protected boolean isDefaultButtonDesired() {
-		return true;
-	}
+
+	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePreActivation();
 		if( this.isDefaultButtonDesired() ) {
@@ -321,10 +221,8 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			}
 		}
 	}
+	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePostDeactivation();
 	}
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
-	}
-	
 }
