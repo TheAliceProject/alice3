@@ -54,7 +54,7 @@ public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperatio
 	}
 	private final org.lgna.croquet.StringValue descriptionText = this.createStringValue( this.createKey( "descriptionText" ) );
 	private WarningDialogComposite() {
-		super( java.util.UUID.randomUUID()/*java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" )*/, org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 	}
 	@Override
 	protected void localize() {

@@ -40,62 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
-
-import org.alice.ide.browser.BrowserOperation;
+package org.alice.ide.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HelpOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public final class HelpComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.help.views.HelpView> {
 	private static class SingletonHolder {
-		private static HelpOperation instance = new HelpOperation();
+		private static HelpComposite instance = new HelpComposite();
 	}
-	public static HelpOperation getInstance() {
+	public static HelpComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final HelpBrowserOperation browserOperation = new HelpBrowserOperation();
+	private final org.lgna.croquet.StringValue whereToFindHelpText = this.createStringValue( this.createKey( "whereToFindHelpText" ) );
+	private HelpComposite() {
+		super( java.util.UUID.fromString( "5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 
-	private static class HelpPanel extends org.lgna.croquet.components.BorderPanel {
-		public HelpPanel() {
-			BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ) ) {
-				@Override
-				protected java.net.URL getUrl() {
-					String path = "http://help.alice.org/";
-					try {
-						return new java.net.URL( path );
-					} catch( java.net.MalformedURLException murle ) {
-						throw new RuntimeException( path, murle );
-					}
-				}
-			};
-
-			org.lgna.croquet.components.Hyperlink hyperlink = browserOperation.createHyperlink();
-			org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( HelpPanel.class.getResource( "images/help.png" ) ) );
-			org.lgna.croquet.components.Label textLabel = new org.lgna.croquet.components.Label( "Help is available on the web:" );
-			
-			textLabel.scaleFont( 2.0f );
-			hyperlink.scaleFont( 2.0f );
-
-			org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel(
-					org.lgna.croquet.components.BoxUtilities.createVerticalGlue(),
-					textLabel,
-					hyperlink,
-					org.lgna.croquet.components.BoxUtilities.createVerticalGlue()
-			);
-			pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-			this.addComponent( iconLabel, Constraint.LINE_START );
-			this.addComponent( pageAxisPanel, Constraint.LINE_END );
-		}
+		//todo
+		this.getOperation().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
+		
 	}
-
-	private HelpOperation() {
-		super( java.util.UUID.fromString( "b478d150-03c2-4972-843a-a1e64dbd2b58" ) );
-		//this.setName( "Help..." );
-		//this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
+	public org.lgna.croquet.StringValue getWhereToFindHelpText() {
+		return this.whereToFindHelpText;
 	}
-
+	public HelpBrowserOperation getBrowserOperation() {
+		return this.browserOperation;
+	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( new HelpPanel(), "Help", org.lgna.croquet.MessageType.PLAIN );
+	protected org.alice.ide.help.views.HelpView createView() {
+		return new org.alice.ide.help.views.HelpView( this );
 	}
 }
