@@ -45,18 +45,14 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ReportBugOperation extends PostIssueOperation {
+public class RequestNewFeatureComposite extends ReportIssueComposite {
 	private static class SingletonHolder {
-		private static ReportBugOperation instance = new ReportBugOperation();
+		private static RequestNewFeatureComposite instance = new RequestNewFeatureComposite();
 	}
-	public static ReportBugOperation getInstance() {
+	public static RequestNewFeatureComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ReportBugOperation() {
-		super( java.util.UUID.fromString( "616fa02a-f9f4-4b94-ae69-1da9f8beb515" ) );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG;
+	private RequestNewFeatureComposite() {
+		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE );
 	}
 }

@@ -45,18 +45,26 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class RequestNewFeatureOperation extends PostIssueOperation {
+public class SuggestImprovementComposite extends ReportIssueComposite {
 	private static class SingletonHolder {
-		private static RequestNewFeatureOperation instance = new RequestNewFeatureOperation();
+		private static SuggestImprovementComposite instance = new SuggestImprovementComposite();
 	}
-	public static RequestNewFeatureOperation getInstance() {
+	public static SuggestImprovementComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private RequestNewFeatureOperation() {
-		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ) );
+	private SuggestImprovementComposite() {
+		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE;
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		new org.alice.stageide.StageIDE();
+		try {
+			SuggestImprovementComposite.getInstance().getBooleanState().setValue( true );
+		} catch( org.lgna.croquet.CancelException ce ) {
+			//pass
+		}
 	}
 }

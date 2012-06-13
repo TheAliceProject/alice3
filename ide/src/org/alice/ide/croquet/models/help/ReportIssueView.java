@@ -105,9 +105,11 @@ public class ReportIssueView extends BorderPanel {
 		submitButton.scaleFont( 1.6f );
 		submitButton.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		
-		FlowPanel pageEndPanel = new FlowPanel( FlowPanel.Alignment.CENTER );
-		pageEndPanel.addComponent( submitButton );
-		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 32, 0, 0, 0 ) );
+		FlowPanel submitPanel = new FlowPanel( FlowPanel.Alignment.CENTER );
+		submitPanel.addComponent( submitButton );
+
+		PageAxisPanel pageEndPanel = new PageAxisPanel( new org.lgna.croquet.components.HorizontalSeparator(), org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
+		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		
 		this.addComponent( header, Constraint.PAGE_START );
 		this.addComponent( centerComponent, Constraint.CENTER );
