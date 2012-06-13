@@ -42,11 +42,28 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import java.util.List;
+
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.LabeledSpringRow;
+import org.lgna.croquet.components.RowSpringPanel;
+import org.lgna.croquet.components.SpringRow;
 
 /**
  * @author Matt May
  */
 public class BugLoginView extends BorderPanel {
+
+	public BugLoginView( final BugLoginComposite bugLoginComposite ) {
+
+		RowSpringPanel centerComponent = new RowSpringPanel() {
+			@Override
+			protected void appendRows( List<SpringRow> rows ) {
+				rows.add( new LabeledSpringRow( bugLoginComposite.getUserNameValue(), bugLoginComposite.getUserNameState().createTextField() ) );
+				rows.add( new LabeledSpringRow( bugLoginComposite.getPasswordValue(), bugLoginComposite.getPasswordState().createPasswordField() ) );
+				rows.add( new LabeledSpringRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
+			}
+		};
+	}
 
 }

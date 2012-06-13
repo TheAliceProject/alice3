@@ -137,6 +137,9 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	private final ActionOperation loginOperation = createActionOperation( this.createKey( "loginOperation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			System.out.println("login");
+			BugLoginComposite login = new BugLoginComposite();
+			login.getOperation().fire();
 			return null;
 		}
 	} );
