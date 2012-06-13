@@ -103,7 +103,7 @@ public class ReportIssueView extends BorderPanel {
 		
 		PageAxisPanel lineStartPanel = new PageAxisPanel( headerLabel, link );
 				
-		LineAxisPanel rightOfHeaderPanel = new LineAxisPanel( reportIssueComposite.getLoginOperation().createButton() );
+		LineAxisPanel rightOfHeaderPanel = new LineAxisPanel( reportIssueComposite.getBugLoginComposite().getOperation().createButton() );
 
 		header.addComponent( lineStartPanel, Constraint.LINE_START );
 		header.addComponent( rightOfHeaderPanel, Constraint.LINE_END );
