@@ -40,26 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractComposite<V> {
-	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "d4dfb949-2761-432e-9ad0-932ba0d6b4f6" ), "DIALOG_IMPLEMENTATION_GROUP" );
-
-	private static class DialogOwner<V extends org.lgna.croquet.components.View<?,?>> implements org.lgna.croquet.dialog.DialogOwner<V> {
-
-		private final DialogComposite<V> composite;
-		public DialogOwner( DialogComposite<V> composite ) {
+public abstract class AbstractDialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractWindowComposite<V>{
+	protected static class DialogOwner implements org.lgna.croquet.dialog.DialogOwner<org.lgna.croquet.components.View<?,?>> {
+		private final AbstractDialogComposite<?> composite;
+		public DialogOwner( AbstractDialogComposite<?> composite ) {
 			this.composite = composite;
 		}
-		public V allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		public org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 			return this.composite.allocateView( step );
 		}
 
-		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, V view ) {
+		public void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
 			this.composite.releaseView( step, view );
 		}
 
@@ -68,10 +64,10 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 		}
 
 		public java.awt.Point getDesiredDialogLocation() {
-			return this.composite.getDesiredDialogLocation();
+			return this.composite.getDesiredWindowLocation();
 		}
 		public void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-			this.composite.modifyPackedDialogSizeIfDesired( dialog );
+			this.composite.modifyPackedWindowSizeIfDesired( dialog );
 		}
 
 		public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
@@ -97,113 +93,41 @@ public abstract class DialogComposite<V extends org.lgna.croquet.components.View
 		public void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 			this.composite.handleFinally( step, dialog );
 		}
-		
 	}
-	
-	public static final class InternalOperationResolver<V extends org.lgna.croquet.components.View<?,?>> extends IndirectResolver<InternalOperation<V>,DialogComposite<V>> {
-		private InternalOperationResolver( DialogComposite<V> indirect ) {
-			super( indirect );
-		}
-		public InternalOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected InternalOperation<V> getDirect( DialogComposite<V> indirect ) {
-			return indirect.operation;
-		}
-	}
-
-	
-	
-	private static final class InternalOperation<V extends org.lgna.croquet.components.View<?,?>> extends ActionOperation {
-		private final DialogComposite<V> composite;
-
-		private InternalOperation( Group group, DialogComposite<V> composite ) {
-			super( group, java.util.UUID.fromString( "57aa20b4-0d4b-4cbf-82ae-191ee681aa6f" ) );
-			this.composite = composite;
-		}
-		@Override
-		protected void localize() {
-			//todo
-			//note: do not call super
-			this.setName( this.findLocalizedText( null, Composite.class ) );
-		}
-		@Override
-		protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
-			return this.composite.getClassUsedForLocalization();
-		}
-		@Override
-		protected void initialize() {
-			super.initialize();
-			this.composite.initializeIfNecessary();
-		}
-		public DialogComposite<V> getComposite() {
-			return this.composite;
-		}
-		@Override
-		protected InternalOperationResolver<V> createResolver() {
-			return new InternalOperationResolver<V>( this.composite );
-		}
-		
-		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-			org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner<V>( this.composite ), step );
-		}
-	}
-
-	private final InternalOperation<V> operation;
-
-	public DialogComposite( java.util.UUID id, Group operationGroup ) {
-		super( id );
-		this.operation = new InternalOperation<V>( operationGroup, this );
-	}
-	public Operation getOperation() {
-		return this.operation;
-	}
-	
-	
-	//todo
-	private V allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return this.getView();
+	public AbstractDialogComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 	//todo
-	private void releaseView( org.lgna.croquet.history.CompletionStep<?> step, V view ) {
-	}
-	
-	
+	protected abstract org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view );
+
 	//todo: remove?
-	protected boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+	protected final boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 		return true;
 	}
+	protected abstract String getName();
 	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
-//		String rv = this.getName();
-//		if( rv != null ) {
-//			rv = rv.replaceAll( "<[a-z]*>", "" );
-//			rv = rv.replaceAll( "</[a-z]*>", "" );
-//			if( rv.endsWith( "..." ) ) {
-//				rv = rv.substring( 0, rv.length() - 3 );
-//			}
-//		}
-//		return rv;
-		return "";
+		String rv = this.getName();
+		if( rv != null ) {
+			rv = rv.replaceAll( "<[a-z]*>", "" );
+			rv = rv.replaceAll( "</[a-z]*>", "" );
+			if( rv.endsWith( "..." ) ) {
+				rv = rv.substring( 0, rv.length() - 3 );
+			}
+		}
+		return rv;
 	}
-	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-	}
-	protected java.awt.Point getDesiredDialogLocation() {
-		return null;
-	}
+	
 	private void handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 		//org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
 	}
 	private void handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
 	}
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.handlePreActivation();
+	protected boolean isDefaultButtonDesired() {
+		return true;
 	}
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.handlePostDeactivation();
-	}
+	protected abstract void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step );
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 	}
 }

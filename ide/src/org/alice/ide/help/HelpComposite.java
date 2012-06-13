@@ -40,15 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlainDialogComposite<V extends org.lgna.croquet.components.View<?,?>> extends DialogComposite<V> {
-	public PlainDialogComposite( java.util.UUID id, Group operationGroup ) {
-		super( id, operationGroup );
+public final class HelpComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.help.views.HelpView> {
+	private static class SingletonHolder {
+		private static HelpComposite instance = new HelpComposite();
 	}
-	
+	public static HelpComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final HelpBrowserOperation browserOperation = new HelpBrowserOperation();
+	private final org.lgna.croquet.StringValue whereToFindHelpText = this.createStringValue( this.createKey( "whereToFindHelpText" ) );
+	private HelpComposite() {
+		super( java.util.UUID.fromString( "5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+
+		//todo
+		this.getOperation().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
+		
+	}
+	public org.lgna.croquet.StringValue getWhereToFindHelpText() {
+		return this.whereToFindHelpText;
+	}
+	public HelpBrowserOperation getBrowserOperation() {
+		return this.browserOperation;
+	}
+	@Override
+	protected org.alice.ide.help.views.HelpView createView() {
+		return new org.alice.ide.help.views.HelpView( this );
+	}
 }

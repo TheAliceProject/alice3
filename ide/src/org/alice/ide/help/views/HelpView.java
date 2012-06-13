@@ -40,40 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.help.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.help.HelpComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ReportBugComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.SuggestImprovementComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.RequestNewFeatureComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.warning.WarningDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel()
-		);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.stageide.croquet.models.help.AboutOperation.getInstance().getMenuItemPrepModel());
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
+public class HelpView extends org.lgna.croquet.components.BorderPanel {
+	public HelpView( org.alice.ide.help.HelpComposite composite ) {
+		super( composite );
+		org.lgna.croquet.components.Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
+		org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( HelpView.class.getResource( "images/help.png" ) ) );
+		org.lgna.croquet.components.ImmutableTextField textLabel = composite.getWhereToFindHelpText().createImmutableTextField();
+		
+		textLabel.scaleFont( 2.0f );
+		textLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		hyperlink.scaleFont( 2.0f );
+		hyperlink.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 
-	private static class SingletonHolder {
-		private static HelpMenuModel instance = new HelpMenuModel();
-	}
-	public static HelpMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private HelpMenuModel() {
-		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), createMenuItemPrepModels() );
+		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel(
+				org.lgna.croquet.components.BoxUtilities.createVerticalGlue(),
+				textLabel,
+				hyperlink,
+				org.lgna.croquet.components.BoxUtilities.createVerticalGlue()
+		);
+		pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		this.addComponent( iconLabel, Constraint.LINE_START );
+		this.addComponent( pageAxisPanel, Constraint.LINE_END );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 	}
 }

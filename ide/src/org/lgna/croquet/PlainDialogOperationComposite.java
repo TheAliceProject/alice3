@@ -40,62 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
-
-import org.alice.ide.browser.BrowserOperation;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HelpOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static HelpOperation instance = new HelpOperation();
+public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
+	private final Operation operation;
+	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup ) {
+		super( migrationId );
+		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
-	public static HelpOperation getInstance() {
-		return SingletonHolder.instance;
+	public org.lgna.croquet.Operation getOperation() {
+		return this.operation;
 	}
-
-	private static class HelpPanel extends org.lgna.croquet.components.BorderPanel {
-		public HelpPanel() {
-			BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ) ) {
-				@Override
-				protected java.net.URL getUrl() {
-					String path = "http://help.alice.org/";
-					try {
-						return new java.net.URL( path );
-					} catch( java.net.MalformedURLException murle ) {
-						throw new RuntimeException( path, murle );
-					}
-				}
-			};
-
-			org.lgna.croquet.components.Hyperlink hyperlink = browserOperation.createHyperlink();
-			org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( HelpPanel.class.getResource( "images/help.png" ) ) );
-			org.lgna.croquet.components.Label textLabel = new org.lgna.croquet.components.Label( "Help is available on the web:" );
-			
-			textLabel.scaleFont( 2.0f );
-			hyperlink.scaleFont( 2.0f );
-
-			org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel(
-					org.lgna.croquet.components.BoxUtilities.createVerticalGlue(),
-					textLabel,
-					hyperlink,
-					org.lgna.croquet.components.BoxUtilities.createVerticalGlue()
-			);
-			pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-			this.addComponent( iconLabel, Constraint.LINE_START );
-			this.addComponent( pageAxisPanel, Constraint.LINE_END );
-		}
-	}
-
-	private HelpOperation() {
-		super( java.util.UUID.fromString( "b478d150-03c2-4972-843a-a1e64dbd2b58" ) );
-		//this.setName( "Help..." );
-		//this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
-	}
-
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( new HelpPanel(), "Help", org.lgna.croquet.MessageType.PLAIN );
+	protected String getName() {
+		return this.getOperation().getName();
+	}
+	@Override
+	protected org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+		//todo
+		return this.getView();
+	}
+	@Override
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
+		//todo
+	}
+	
+	@Override
+	protected org.lgna.croquet.AbstractWindowComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
+		//todo
+		return null;
+	}
+	
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.handlePreActivation();
+	}
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		this.handlePostDeactivation();
+	}
+	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+			@Override
+			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				super.handlePostHideDialog( completionStep );
+				completionStep.finish();
+			}
+		}, completionStep );
 	}
 }
