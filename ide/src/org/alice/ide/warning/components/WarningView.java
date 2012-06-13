@@ -47,7 +47,7 @@ public class WarningView extends org.lgna.croquet.components.PageAxisPanel {
 		super( composite );
 		this.addComponent( new org.lgna.croquet.components.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( WarningView.class.getResource( "images/toxic.png" ) ) ) );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
-		this.addComponent( composite.getDescriptionValue().createImmutableTextArea() );
+		this.addComponent( composite.getDescriptionText().createImmutableTextArea() );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
 		class FurtherInfoPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane {
 			public FurtherInfoPane() {

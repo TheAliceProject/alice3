@@ -83,7 +83,7 @@ public class ReportIssueView extends BorderPanel {
 			@Override
 			protected void appendRows( List<SpringRow> rows ) {
 				rows.add( new LabeledSpringRow( reportIssueComposite.getVisibilityLabel(), reportIssueComposite.getVisibilityList().createHorizontalDefaultRadioButtons() ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), reportIssueComposite.getTypeList().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeLabel(), reportIssueComposite.getTypeList().getPrepModel().createComboBox(), false ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryLabel(), reportIssueComposite.getSummaryBlank().createTextField() ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionLabel(), createScrollPaneTextArea( reportIssueComposite.getDescriptionBlank() ), VerticalAlignment.TOP ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsLabel(), createScrollPaneTextArea( reportIssueComposite.getStepsBlank() ), VerticalAlignment.TOP ) );

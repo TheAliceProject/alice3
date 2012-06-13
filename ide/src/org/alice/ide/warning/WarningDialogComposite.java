@@ -52,7 +52,7 @@ public class WarningDialogComposite extends org.lgna.croquet.PlainDialogComposit
 	public static WarningDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringValue descriptionValue = this.createStringValue( this.createKey( "description" ) );
+	private final org.lgna.croquet.StringValue descriptionText = this.createStringValue( this.createKey( "descriptionText" ) );
 	private WarningDialogComposite() {
 		super( java.util.UUID.randomUUID()/*java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" )*/, org.lgna.croquet.Application.INFORMATION_GROUP );
 	}
@@ -66,8 +66,8 @@ public class WarningDialogComposite extends org.lgna.croquet.PlainDialogComposit
 //		sb.append( "We welcome your feedback.\n" );
 //		this.descriptionValue.setText( sb.toString() );
 //	}
-	public org.lgna.croquet.StringValue getDescriptionValue() {
-		return this.descriptionValue;
+	public org.lgna.croquet.StringValue getDescriptionText() {
+		return this.descriptionText;
 	}
 	@Override
 	protected org.alice.ide.warning.components.WarningView createView() {
