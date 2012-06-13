@@ -77,6 +77,8 @@ public class ReportIssueView extends BorderPanel {
 	}
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
 		BorderPanel header = new BorderPanel();
+		final org.lgna.croquet.components.TextArea environmentTextArea = reportIssueComposite.getEnvironmentBlank().createTextArea();
+		environmentTextArea.getAwtComponent().setEditable( false );
 		RowSpringPanel centerComponent = new RowSpringPanel() {
 			@Override
 			protected void appendRows( List<SpringRow> rows ) {
@@ -85,7 +87,7 @@ public class ReportIssueView extends BorderPanel {
 				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryLabel(), reportIssueComposite.getSummaryBlank().createTextField() ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getDescriptionLabel(), createScrollPaneTextArea( reportIssueComposite.getDescriptionBlank() ), VerticalAlignment.TOP ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getStepsLabel(), createScrollPaneTextArea( reportIssueComposite.getStepsBlank() ), VerticalAlignment.TOP ) );
-				rows.add( new LabeledSpringRow( reportIssueComposite.getEnvironmentLabel(), reportIssueComposite.getEnvironmentBlank().createTextArea(), VerticalAlignment.TOP ) );
+				rows.add( new LabeledSpringRow( reportIssueComposite.getEnvironmentLabel(), environmentTextArea, VerticalAlignment.TOP ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getAttachmentLabel(), reportIssueComposite.getAttachmentList().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
 			}
 		};
