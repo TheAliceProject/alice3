@@ -53,7 +53,7 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.component
 		private final org.lgna.croquet.components.Button button;
 		private final org.lgna.croquet.components.CheckBox checkBox = org.alice.ide.preferences.recursion.IsRecursionAllowedState.getInstance().createCheckBox();
 		public RecursionAccessPanel( org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite composite ) {
-			this.label = composite.getRecursiveButtonLabelValue().createImmutableTextField();
+			this.label = composite.getRecursiveButtonText().createImmutableTextField();
 			this.label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 			this.button = composite.getNext().getOperation().createButton();
 			org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel(
@@ -140,7 +140,7 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.component
 		
 		org.lgna.croquet.components.CheckBox checkBox = org.alice.ide.preferences.recursion.IsAccessToRecursionPreferenceAllowedState.getInstance().createCheckBox(); 
 
-		org.lgna.croquet.components.ImmutableTextArea descriptionLabel = composite.getDescriptionValue().createImmutableTextArea();
+		org.lgna.croquet.components.ImmutableTextArea descriptionLabel = composite.getDescriptionText().createImmutableTextArea();
 		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 		pageAxisPanel.addComponent( descriptionLabel );
 		pageAxisPanel.addComponent( hyperlink );

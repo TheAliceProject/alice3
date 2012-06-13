@@ -75,9 +75,9 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 	protected abstract String getInitialValue();
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
 		this.nameState.selectAll();
+		super.handlePreShowDialog( step );
 	}
 	protected abstract java.awt.Color getViewBackgroundColor();
 	@Override

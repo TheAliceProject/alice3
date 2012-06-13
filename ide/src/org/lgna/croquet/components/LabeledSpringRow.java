@@ -59,6 +59,9 @@ public class LabeledSpringRow implements SpringRow {
 	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment ) {
 		this( labelStringValue, component, labelVerticalAlignment, true );
 	}
+	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, boolean isFillHorizontal ) {
+		this( labelStringValue, component, org.lgna.croquet.components.VerticalAlignment.CENTER, isFillHorizontal );
+	}
 	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
 		this( labelStringValue, component, org.lgna.croquet.components.VerticalAlignment.CENTER );
 	}

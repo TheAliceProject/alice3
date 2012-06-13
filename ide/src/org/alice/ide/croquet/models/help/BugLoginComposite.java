@@ -60,7 +60,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 
 	private final StringState userNameState = createStringState( createKey( "userNameState" ) );
 	private final StringState passwordState = createStringState( createKey( "passwordState" ) );
-	private final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordValue" ), false );
+	private final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
 
 	public StringState getUserNameState() {
 		return this.userNameState;

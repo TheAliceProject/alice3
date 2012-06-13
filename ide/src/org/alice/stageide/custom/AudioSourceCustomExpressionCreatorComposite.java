@@ -54,16 +54,12 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 		return SingletonHolder.instance;
 	}
 	
-	private final org.lgna.croquet.StringValue resourceLabel = this.createStringValue( this.createKey( "resourceLabel" ) ); 
-	private final org.lgna.croquet.StringValue volumeLabel = this.createStringValue( this.createKey( "volumeLabel" ) ); 
-	private final org.lgna.croquet.StringValue startMarkerLabel = this.createStringValue( this.createKey( "startMarkerLabel" ) );
-	private final org.lgna.croquet.StringValue stopMarkerLabel = this.createStringValue( this.createKey( "stopMarkerLabel" ) );
-	
 	private static final int MARKER_MAX = 1000;
 
-	private final org.lgna.croquet.BoundedIntegerState volumeState = this.createBoundedIntegerState( this.createKey( "volume" ), VolumeLevelUtilities.createDetails() );
-	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
-	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
+	private final org.lgna.croquet.StringValue resourceSidekickLabel = this.createStringValue( this.createKey( "resourceSidekickLabel" ) ); 
+	private final org.lgna.croquet.BoundedIntegerState volumeState = this.createBoundedIntegerState( this.createKey( "volumeState" ), VolumeLevelUtilities.createDetails() );
+	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarkerState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
+	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarkerState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
 
 	private org.lgna.croquet.State.ValueListener<Integer> startValueListiner = new org.lgna.croquet.State.ValueListener<Integer>() {
 		public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
@@ -165,19 +161,6 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 		this.stopMarkerState.addValueListener( this.stopValueListiner );
 	}
 	
-	public org.lgna.croquet.StringValue getResourceLabel() {
-		return this.resourceLabel;
-	}
-	public org.lgna.croquet.StringValue getVolumeLabel() {
-		return this.volumeLabel;
-	}
-	public org.lgna.croquet.StringValue getStartMarkerLabel() {
-		return this.startMarkerLabel;
-	}
-	public org.lgna.croquet.StringValue getStopMarkerLabel() {
-		return this.stopMarkerLabel;
-	}
-
 	public AudioResourceExpressionState getAudioResourceExpressionState() {
 		return AudioResourceExpressionState.getInstance();
 	}
@@ -193,6 +176,10 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	
 	public org.lgna.croquet.Operation getTestOperation() {
 		return this.testOperation;
+	}
+	
+	public org.lgna.croquet.StringValue getResourceSidekickLabel() {
+		return this.resourceSidekickLabel;
 	}
 	
 	@Override
