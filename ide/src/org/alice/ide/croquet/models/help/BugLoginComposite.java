@@ -42,12 +42,15 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+
+import edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane;
 
 /**
  * @author Matt May
@@ -61,7 +64,6 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	private final StringState userNameState = createStringState( createKey( "userNameState" ) );
 	private final StringState passwordState = createStringState( createKey( "passwordState" ) );
 	private final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
-
 	public StringState getUserNameState() {
 		return this.userNameState;
 	}
@@ -73,6 +75,27 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	}
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		try {
+			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
+			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
+			String username = userNameState.getValue();
+			try {
+				String password = passwordState.getValue();
+				String token = service.login( username, password );
+				try {
+					com.atlassian.jira.rpc.soap.client.RemoteUser remoteUser = service.getUser( token, username );
+					edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
+				} finally {
+					service.logout( token );
+				}
+//				javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
+			} catch( com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException rae ) {
+				javax.swing.JOptionPane.showMessageDialog( null, rae );
+				//edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
+			}
+		} catch( Exception e ) {
+			throw new RuntimeException( e );
+		}
 		return null;
 	}
 

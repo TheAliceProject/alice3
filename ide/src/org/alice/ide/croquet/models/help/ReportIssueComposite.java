@@ -126,14 +126,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 			}
 		}
 	};
-	private final ActionOperation loginOperation = createActionOperation( this.createKey( "loginOperation" ), new Action() {
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			BugLoginComposite login = new BugLoginComposite();
-			login.getOperation().fire();
-			return null;
-		}
-	} );
 	private ActionOperation submitBugOperation = createActionOperation( this.createKey( "submitBugOperation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
@@ -159,6 +152,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		}
 	} );
 
+	private final BugLoginComposite bugLoginComposite = new BugLoginComposite();
 	private ReportSubmissionConfiguration reportSubmissionConfiguration;
 
 	public ListSelectionState<BugSubmitVisibility> getVisibilityState() {
@@ -182,8 +176,8 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
-	public ActionOperation getLoginOperation() {
-		return this.loginOperation;
+	public BugLoginComposite getBugLoginComposite() {
+		return this.bugLoginComposite;
 	}
 	public ActionOperation getSubmitBugOperation() {
 		return this.submitBugOperation;
