@@ -83,6 +83,15 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		adapter.changed( null, "", "", true );
 	}
 
+	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>(){
+
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		
+	};
 	private final ValueListener<String> adapter = new ValueListener<String>() {
 
 		public void changing( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {

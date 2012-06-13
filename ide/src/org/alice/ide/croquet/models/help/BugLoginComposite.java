@@ -64,6 +64,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	private final StringState userNameState = createStringState( createKey( "userNameState" ) );
 	private final StringState passwordState = createStringState( createKey( "passwordState" ) );
 	private final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
+	private final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	public StringState getUserNameState() {
 		return this.userNameState;
 	}
@@ -72,6 +73,9 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	}
 	public BooleanState getDisplayPasswordValue() {
 		return this.displayPasswordValue;
+	}
+	public BooleanState getIsLoggedIn() {
+		return this.isLoggedIn;
 	}
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
@@ -85,6 +89,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 				try {
 					com.atlassian.jira.rpc.soap.client.RemoteUser remoteUser = service.getUser( token, username );
 					edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
+					isLoggedIn.setValue( true );
 				} finally {
 					service.logout( token );
 				}
