@@ -73,6 +73,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		this.type = type;
 		initReportSubmissionConfiguration();
 		initAdapter();
+		environmentBlank.setEnabled( false );
 	}
 
 	private void initAdapter() {
@@ -105,7 +106,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 
 	};
 
-	private static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
+	public static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
 	private final StringValue visibilityLabel = createStringValue( this.createKey( "visibilityLabel" ) );
 	private final BooleanState visibilityState = createBooleanState( this.createKey( "visibilityState" ), true );
 	private final ListSelectionState<BugSubmitVisibility> visibilityList = createListSelectionStateForEnum( this.createKey( "visibilityList" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
@@ -137,6 +138,9 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	private final ActionOperation loginOperation = createActionOperation( this.createKey( "loginOperation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			System.out.println("login");
+			BugLoginComposite login = new BugLoginComposite();
+			login.getOperation().fire();
 			return null;
 		}
 	} );
