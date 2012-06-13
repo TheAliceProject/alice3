@@ -60,11 +60,11 @@ public class VolumeLevelSlider extends org.lgna.croquet.components.Slider {
 		
 		this.setOrientation( org.lgna.croquet.components.Slider.Orientation.VERTICAL );
 
-		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
-		labels.put( 0, new javax.swing.JLabel( silentText ) );
-		labels.put( 100, new javax.swing.JLabel( normalText ) );
-		labels.put( 200, new javax.swing.JLabel( louderText ) );
-		this.setLabelTable( labels );
+		java.util.Dictionary<Integer, javax.swing.JComponent> labelTable = new java.util.Hashtable<Integer, javax.swing.JComponent>();
+		labelTable.put( 0, new javax.swing.JLabel( silentText ) );
+		labelTable.put( 100, new javax.swing.JLabel( normalText ) );
+		labelTable.put( 200, new javax.swing.JLabel( louderText ) );
+		this.setLabelTable( labelTable );
 		this.setPaintLabels( true );
 
 		this.setSnapToTicks( false );
