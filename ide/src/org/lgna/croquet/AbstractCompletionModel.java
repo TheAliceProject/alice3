@@ -49,6 +49,19 @@ package org.lgna.croquet;
 public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
 	private final Group group;
 	private int ignoreCount = 0;
+	
+	private static class SidekickLabel extends StringValue {
+		private final AbstractCompletionModel completionModel;
+		public SidekickLabel( AbstractCompletionModel completionModel ) {
+			super( java.util.UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
+			this.completionModel = completionModel;
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	
+	private SidekickLabel sidekickLabel;
 
 	public AbstractCompletionModel( Group group, java.util.UUID id ) {
 		super( id );
@@ -89,5 +102,17 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		super.appendRepr( sb );
 		sb.append( "group=" );
 		sb.append( this.getGroup() );
+	}
+	
+	public synchronized StringValue getSidekickLabel() {
+		if( this.sidekickLabel != null ) {
+			//pass
+		} else {
+			this.sidekickLabel = new SidekickLabel( this );
+		}
+		return this.sidekickLabel;
+	}
+	public StringValue peekSidekickLabel() {
+		return this.sidekickLabel;
 	}
 }

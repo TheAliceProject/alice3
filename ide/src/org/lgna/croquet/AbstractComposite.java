@@ -255,6 +255,19 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
+	private void localizeSidekicks( java.util.Map<Key,? extends AbstractCompletionModel>... maps ) {
+		for( java.util.Map<Key,? extends AbstractCompletionModel> map : maps ) {
+			for( Key key : map.keySet() ) {
+				AbstractCompletionModel model = map.get( key );
+				String text = this.findLocalizedText( key.getLocalizationKey() + ".sidekickLabel", Composite.class );
+				if( text != null ) {
+					StringValue sidekickLabel = model.getSidekickLabel();
+					sidekickLabel.setText( text );
+				}
+			}
+		}
+	}
+	
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
@@ -285,6 +298,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			InternalCascadeWithInternalBlank cascade = this.mapKeyToCascade.get( key );
 			cascade.getRoot().getPopupPrepModel().setName( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
 		}
+		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToListSelectionState, this.mapKeyToStringState );
 	}
 	public boolean contains( Model model ) {
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
