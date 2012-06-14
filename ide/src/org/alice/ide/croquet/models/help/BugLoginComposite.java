@@ -75,6 +75,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	private final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
 	private final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	private RemoteUser remoteUser;
+
 	public StringState getUserNameState() {
 		return this.userNameState;
 	}

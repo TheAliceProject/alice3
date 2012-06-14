@@ -74,4 +74,15 @@ public class PasswordField extends TextComponent< edu.cmu.cs.dennisc.javax.swing
 		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
 		return rv;
 	}
+	
+	private static final char EXPOSE_CHAR = 0;
+	
+	public boolean isExposed() {
+		return this.getAwtComponent().getEchoChar() != EXPOSE_CHAR;
+	}
+	public void setExposed( boolean isExposed ) {
+		char c = isExposed ? EXPOSE_CHAR : '*';
+		this.getAwtComponent().setEchoChar( c );
+	}
+	
 }
