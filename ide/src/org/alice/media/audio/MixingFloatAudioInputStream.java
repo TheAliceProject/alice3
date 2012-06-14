@@ -130,20 +130,9 @@ public class MixingFloatAudioInputStream extends AudioInputStream {
 	 */
 	@Override
 	public long getFrameLength() {
-		long lLengthInFrames = 0;
-		Iterator<ScheduledAudioStream> streamIterator = audioInputStreamList.iterator();
-		while (streamIterator.hasNext()) {
-			ScheduledAudioStream scheduledStream = (ScheduledAudioStream) streamIterator.next();
-			AudioInputStream stream = scheduledStream.getAudioStream();
-			long lLength = stream.getFrameLength();
-			if (lLength == AudioSystem.NOT_SPECIFIED) {
-				return AudioSystem.NOT_SPECIFIED;
-			} else {
-				lLengthInFrames = Math.max(lLengthInFrames, lLength);
-			}
-		}
-		return lLengthInFrames;
+		return this.totalBytes / this.format.getFrameSize();
 	}
+
 
 	@Override
 	public int read() throws IOException {
@@ -285,14 +274,8 @@ public class MixingFloatAudioInputStream extends AudioInputStream {
 	 */
 	@Override
 	public int available() throws IOException {
-		int nAvailable = 0;
-		Iterator<ScheduledAudioStream> streamIterator = audioInputStreamList.iterator();
-		while (streamIterator.hasNext()) {
-			ScheduledAudioStream scheduledStream = (ScheduledAudioStream) streamIterator.next();
-			AudioInputStream stream = scheduledStream.getAudioStream();
-			nAvailable = Math.min(nAvailable, stream.available());
-		}
-		return nAvailable;
+		int avail = (int)(this.totalBytes - this.bytesRead);
+		return avail;
 	}
 
 	@Override

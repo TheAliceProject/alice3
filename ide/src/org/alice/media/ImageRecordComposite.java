@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.alice.media.components.ImageRecordView;
+import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -141,7 +142,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 				encoder.start();
-				if( false ) {
+				if( true ) {
 					try {
 						encoder.setOutput( File.createTempFile( "temp", ".mov" ) );
 					} catch( IOException e ) {

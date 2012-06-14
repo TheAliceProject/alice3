@@ -80,7 +80,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 	//	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(22050f, 16, 1, true, false);
 	private static float RATE_22 = 22050f;
 	private static float RATE_44 = 44100f;
-	public final static AudioFormat TARGET_FORMAT_ALAW = new AudioFormat(AudioFormat.Encoding.ULAW,8000f,8,1,1,8000f,false);
+//	public final static AudioFormat TARGET_FORMAT_ALAW = new AudioFormat(AudioFormat.Encoding.ULAW,8000f,8,1,1,8000f,false);
 	private static AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 	private static VideoFormat QUICKTIME_VIDEO_FORMAT = VideoFormat.JPG;
 
@@ -143,6 +143,8 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 					audioIn = AudioSystem.getAudioInputStream( audioFile );
 				}
 				audioFormat = audioIn.getFormat();
+				
+//				audioFormat = this.QUICKTIME_AUDIO_FORMAT_PCM;
 				// Determine duration of a single audio sample
 				asDuration = (int)(audioFormat.getSampleRate() / audioFormat.getFrameRate());
 			}
@@ -348,7 +350,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 
 	private File createAudioFile() {
 		if( this.audioStreams.size() > 0 ) {
-			AudioTrackMixer mixer = new AudioTrackMixer( TARGET_FORMAT_ALAW, movieLength() );
+			AudioTrackMixer mixer = new AudioTrackMixer( QUICKTIME_AUDIO_FORMAT_PCM, movieLength() );
 			for( ScheduledAudioStream stream : this.audioStreams ) {
 				mixer.addScheduledStream( stream );
 			}
