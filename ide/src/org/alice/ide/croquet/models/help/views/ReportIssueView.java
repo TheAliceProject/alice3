@@ -40,13 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.croquet.models.help.views;
 
 import java.awt.Color;
 import java.util.List;
 
 import javax.swing.Icon;
 
+import org.alice.ide.croquet.models.help.ReportIssueComposite;
 import org.alice.ide.issue.HeaderPane;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.Hyperlink;

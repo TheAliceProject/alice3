@@ -46,6 +46,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.alice.ide.browser.BrowserOperation;
+import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.alice.ide.issue.CurrentProjectAttachment;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.stageide.typecontext.SceneTypeComposite;
@@ -297,6 +298,15 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		} else {
 			throw new Exception( "pass" );
 		}
+	}
+	
+	@Override
+	public void handlePreActivation() {
+		this.descriptionState.setValueTransactionlessly( "" );
+		this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
+		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
+		this.typeState.setValue( this.type );
+		super.handlePreActivation();
 	}
 
 	private void initReportSubmissionConfiguration() {

@@ -42,6 +42,7 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import org.alice.ide.croquet.models.help.views.BugLoginView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;

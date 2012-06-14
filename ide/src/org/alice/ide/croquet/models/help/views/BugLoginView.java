@@ -40,10 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.croquet.models.help.views;
 
 import java.util.List;
 
+import org.alice.ide.croquet.models.help.BugLoginComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.LabeledSpringRow;
 import org.lgna.croquet.components.RowSpringPanel;
