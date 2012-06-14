@@ -154,16 +154,18 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		}
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			DialogCoreComposite coreComposite = this.getDialogCoreComposite();
-			assert coreComposite != null : this;
-			org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
-			assert dialogStep != null : transaction;
-			org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
-			assert dialog != null : dialogStep;
-			dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
-			dialog.setVisible( false );
-			step.finish();
+			if( this.isCommit == false || this.getDialogCoreComposite().isClearedForCommit() ) {
+				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+				DialogCoreComposite coreComposite = this.getDialogCoreComposite();
+				assert coreComposite != null : this;
+				org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
+				assert dialogStep != null : transaction;
+				org.lgna.croquet.components.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+				assert dialog != null : dialogStep;
+				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
+				dialog.setVisible( false );
+				step.finish();
+			}
 		}
 		
 	}
@@ -210,6 +212,9 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		//todo
 	}
 
+	protected boolean isClearedForCommit() {
+		return true;
+	}
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePreActivation();

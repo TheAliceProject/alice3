@@ -90,30 +90,42 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	public RemoteUser getRemoteUser() {
 		return this.remoteUser;
 	}
+	
+	@Override
+	protected boolean isClearedForCommit() {
+		if( super.isClearedForCommit() ) {
+			try {
+				com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
+				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
+				String username = userNameState.getValue();
+				try {
+					String password = passwordState.getValue();
+					String token = service.login( username, password );
+					try {
+						remoteUser  = service.getUser( token, username );
+						edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
+						isLoggedIn.setValue( true );
+					} finally {
+						service.logout( token );
+					}
+					return true;
+//					javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
+				} catch( com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException rae ) {
+					javax.swing.JOptionPane.showMessageDialog( null, rae );
+					return false;
+//					edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
+				}
+			} catch( Exception e ) {
+				throw new RuntimeException( e );
+			}
+		} else {
+			return false;
+		}
+	}
+	
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		try {
-			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
-			String username = userNameState.getValue();
-			try {
-				String password = passwordState.getValue();
-				String token = service.login( username, password );
-				try {
-					remoteUser  = service.getUser( token, username );
-					edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
-					isLoggedIn.setValue( true );
-				} finally {
-					service.logout( token );
-				}
-//				javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
-			} catch( com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException rae ) {
-				javax.swing.JOptionPane.showMessageDialog( null, rae );
-//				edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
-			}
-		} catch( Exception e ) {
-			throw new RuntimeException( e );
-		}
+		//note: work is done in isClearedForCommit
 		return null;
 	}
 
