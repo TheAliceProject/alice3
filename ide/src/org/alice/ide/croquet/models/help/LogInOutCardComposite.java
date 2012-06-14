@@ -72,6 +72,7 @@ public final class LogInOutCardComposite extends org.lgna.croquet.CardComposite 
 	
 	private void updateCard() {
 		if( this.logInCard.getLoginDialogComposite().getIsLoggedIn().getValue() ) {
+			logOutCard.updateWelcomeString();
 			this.showCard( this.logOutCard );
 		} else {
 			this.showCard( this.logInCard );
