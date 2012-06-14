@@ -70,7 +70,6 @@ import edu.cmu.cs.dennisc.jira.JIRAReport;
 public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposite<ReportIssueView> {
 	private final edu.cmu.cs.dennisc.jira.JIRAReport.Type type;
 	private final String environment = getEnvironment();
-	private final BooleanState isLoggedIn;
 
 	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type type ) {
 		super( migrationId, ISSUE_GROUP );
@@ -78,7 +77,6 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		initReportSubmissionConfiguration();
 		initAdapter();
 		environmentState.setEnabled( false );
-		this.isLoggedIn = bugLoginComposite.getIsLoggedIn();
 	}
 
 	private void initAdapter() {
@@ -88,16 +86,6 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		adapter.changed( null, "", "", true );
 	}
 
-	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>(){
-
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			
-		}
-		
-	};
 	private final ValueListener<String> adapter = new ValueListener<String>() {
 
 		public void changing( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -167,17 +155,9 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		}
 	} );
 
-	private final BugLoginComposite bugLoginComposite = new BugLoginComposite();
 	private ReportSubmissionConfiguration reportSubmissionConfiguration;
 
-	private CardComposite cardComposite = new CardComposite( java.util.UUID.fromString( "a5094558-2b89-4fa2-8f7c-e8d6ec37c85c" ), bugLoginComposite ) {
-		@Override
-		public org.lgna.croquet.components.CardPanel createView() {
-			org.lgna.croquet.components.CardPanel rv = super.createView();
-			rv.showComposite( bugLoginComposite );
-			return rv;
-		}
-	};
+	private LogInOutCardComposite logInOutCardComposite = new LogInOutCardComposite();
 
 	public ListSelectionState<BugSubmitVisibility> getVisibilityState() {
 		return this.visibilityState;
@@ -200,8 +180,8 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
-	public CardComposite getCardComposite() {
-		return this.cardComposite;
+	public LogInOutCardComposite getLogInOutCardComposite() {
+		return this.logInOutCardComposite;
 	}
 	public ActionOperation getSubmitBugOperation() {
 		return this.submitBugOperation;
@@ -306,7 +286,13 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
 		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
 		this.typeState.setValue( this.type );
+		this.logInOutCardComposite.handlePreActivation();
 		super.handlePreActivation();
+	}
+	@Override
+	public void handlePostDeactivation() {
+		this.logInOutCardComposite.handlePostDeactivation();
+		super.handlePostDeactivation();
 	}
 
 	private void initReportSubmissionConfiguration() {

@@ -104,10 +104,8 @@ public class ReportIssueView extends BorderPanel {
 		
 		PageAxisPanel lineStartPanel = new PageAxisPanel( headerLabel, link );
 				
-		LineAxisPanel rightOfHeaderPanel = new LineAxisPanel( reportIssueComposite.getCardComposite() );
-
 		header.addComponent( lineStartPanel, Constraint.LINE_START );
-		header.addComponent( rightOfHeaderPanel, Constraint.LINE_END );
+		header.addComponent( reportIssueComposite.getLogInOutCardComposite().getView(), Constraint.LINE_END );
 		header.setBackgroundColor( backgroundColor );
 		
 		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
