@@ -48,9 +48,11 @@ import java.net.URL;
 import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.issue.CurrentProjectAttachment;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
+import org.alice.stageide.typecontext.SceneTypeComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.CardComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -67,6 +69,7 @@ import edu.cmu.cs.dennisc.jira.JIRAReport;
 public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposite<ReportIssueView> {
 	private final edu.cmu.cs.dennisc.jira.JIRAReport.Type type;
 	private final String environment = getEnvironment();
+	private final BooleanState isLoggedIn;
 
 	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type type ) {
 		super( migrationId, ISSUE_GROUP );
@@ -74,6 +77,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		initReportSubmissionConfiguration();
 		initAdapter();
 		environmentState.setEnabled( false );
+		this.isLoggedIn = bugLoginComposite.getIsLoggedIn();
 	}
 
 	private void initAdapter() {
@@ -89,6 +93,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		}
 
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			
 		}
 		
 	};
@@ -164,6 +169,15 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	private final BugLoginComposite bugLoginComposite = new BugLoginComposite();
 	private ReportSubmissionConfiguration reportSubmissionConfiguration;
 
+	private CardComposite cardComposite = new CardComposite( java.util.UUID.fromString( "a5094558-2b89-4fa2-8f7c-e8d6ec37c85c" ), bugLoginComposite ) {
+		@Override
+		public org.lgna.croquet.components.CardPanel createView() {
+			org.lgna.croquet.components.CardPanel rv = super.createView();
+			rv.showComposite( bugLoginComposite );
+			return rv;
+		}
+	};
+
 	public ListSelectionState<BugSubmitVisibility> getVisibilityState() {
 		return this.visibilityState;
 	}
@@ -185,8 +199,8 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
-	public BugLoginComposite getBugLoginComposite() {
-		return this.bugLoginComposite;
+	public CardComposite getCardComposite() {
+		return this.cardComposite;
 	}
 	public ActionOperation getSubmitBugOperation() {
 		return this.submitBugOperation;
