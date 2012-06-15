@@ -53,10 +53,10 @@ public final class FunctionTabComposite extends MemberTabComposite {
 		return SingletonHolder.instance;
 	}
 	private FunctionTabComposite() {
-		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ) );
+		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), new org.alice.ide.members.filters.FunctionFilter() );
 	}
 	@Override
 	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.MemberTabView( this );
+		return new org.alice.ide.member.views.FunctionTabView( this );
 	}
 }

@@ -53,10 +53,10 @@ public final class ProcedureTabComposite extends MemberTabComposite {
 		return SingletonHolder.instance;
 	}
 	private ProcedureTabComposite() {
-		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ) );
+		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ), new org.alice.ide.members.filters.ProcedureFilter() );
 	}
 	@Override
 	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.MemberTabView( this );
+		return new org.alice.ide.member.views.ProcedureTabView( this );
 	}
 }

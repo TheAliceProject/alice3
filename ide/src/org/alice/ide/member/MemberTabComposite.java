@@ -46,11 +46,16 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabComposite extends org.lgna.croquet.TabComposite<org.alice.ide.member.views.MemberTabView> {
-	public MemberTabComposite( java.util.UUID migrationId ) {
+	private final org.alice.ide.members.filters.MemberFilter memberFilter;
+	public MemberTabComposite( java.util.UUID migrationId, org.alice.ide.members.filters.MemberFilter memberFilter ) {
 		super( migrationId );
+		this.memberFilter = memberFilter;
 	}
 	@Override
 	public boolean isCloseable() {
 		return false;
+	}
+	public org.alice.ide.members.filters.MemberFilter getMemberFilter() {
+		return this.memberFilter;
 	}
 }

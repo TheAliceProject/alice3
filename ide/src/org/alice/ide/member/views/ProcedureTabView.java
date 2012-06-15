@@ -45,25 +45,9 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SearchMemberTabView extends MemberTabView {
-	private final org.lgna.croquet.components.TextField queryTextField;
-	public SearchMemberTabView( org.alice.ide.member.SearchTabComposite composite ) {
+public class ProcedureTabView extends MemberTabView {
+	public ProcedureTabView( org.alice.ide.member.ProcedureTabComposite composite ) {
 		super( composite );
-		
-		this.queryTextField = composite.getQueryState().createTextField();
-		org.lgna.croquet.components.BorderPanel searchPanel = new org.lgna.croquet.components.BorderPanel();
-		searchPanel.addComponent( this.queryTextField, Constraint.CENTER );
-		searchPanel.addComponent( composite.getClearQueryOperation().createButton(), Constraint.LINE_END );
-		this.addComponent( searchPanel, Constraint.PAGE_START );
-		this.setBackgroundColor( new java.awt.Color( 255, 224, 159 ) );
-	}
-	@Override
-	protected void handleDisplayable() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				queryTextField.requestFocus();
-			}
-		} );
-		super.handleDisplayable();
+		//this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
 }

@@ -45,9 +45,26 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MemberTabView extends org.lgna.croquet.components.BorderPanel {
+public abstract class MemberTabView extends org.lgna.croquet.components.BorderPanel {
+	private final java.util.Map<org.lgna.project.ast.Member,org.lgna.croquet.components.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public MemberTabView( org.alice.ide.member.MemberTabComposite composite ) {
 		super( composite );
 		this.addComponent( new org.lgna.croquet.components.Label( "todo" ), Constraint.CENTER );
+	}
+	
+	private static org.lgna.croquet.components.JComponent<?> createDragView( org.lgna.project.ast.Member member ) {
+		return new org.lgna.croquet.components.Label( member.getName() );
+	}
+	protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.lgna.project.ast.Member member ) {
+		synchronized( this.map ) {
+			org.lgna.croquet.components.JComponent<?> rv = this.map.get( member );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = createDragView( member );
+				this.map.put( member, rv );
+			}
+			return rv;
+		}
 	}
 }

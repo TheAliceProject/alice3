@@ -61,7 +61,7 @@ public final class SearchTabComposite extends MemberTabComposite {
 		}
 	} );
 	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
+		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ), new org.alice.ide.members.filters.PublicOrUserMemberFilter() );
 	}
 	public org.lgna.croquet.StringState getQueryState() {
 		return this.queryState;
