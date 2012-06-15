@@ -47,6 +47,76 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class BorderPanel extends Panel {
+	public static class Builder {
+		private org.lgna.croquet.Composite<?> composite;
+		private Component<?> pageStart;
+		private Component<?> pageEnd;
+		private Component<?> center;
+		private Component<?> lineStart;
+		private Component<?> lineEnd;
+		private int hgap;
+		private int vgap;
+		public Builder composite( org.lgna.croquet.Composite<?> composite ) {
+			assert this.composite == null : this.composite + " " + composite;
+			this.composite = composite;
+			return this;
+		}
+		public Builder center( Component<?> center ) {
+			assert this.center == null : this.center + " " + center;
+			this.center = center;
+			return this;
+		}
+		public Builder pageStart( Component<?> pageStart ) {
+			assert this.pageStart == null : this.pageStart + " " + pageStart;
+			this.pageStart = pageStart;
+			return this;
+		}
+		public Builder pageEnd( Component<?> pageEnd ) {
+			assert this.pageEnd == null : this.pageEnd + " " + pageEnd;
+			this.pageEnd = pageEnd;
+			return this;
+		}
+		public Builder lineStart( Component<?> lineStart ) {
+			assert this.lineStart == null : this.lineStart + " " + lineStart;
+			this.lineStart = lineStart;
+			return this;
+		}
+		public Builder lineEnd( Component<?> lineEnd ) {
+			assert this.lineEnd == null : this.lineEnd + " " + lineEnd;
+			this.lineEnd = lineEnd;
+			return this;
+		}
+		public Builder hgap( int hgap ) {
+			assert this.hgap == 0 : this.hgap + " " + hgap;
+			this.hgap = hgap;
+			return this;
+		}
+		public Builder vgap( int vgap ) {
+			assert this.vgap == 0 : this.vgap + " " + vgap;
+			this.vgap = vgap;
+			return this;
+		}
+		public BorderPanel build() {
+			BorderPanel rv = new BorderPanel( this.composite, this.hgap, this.vgap );
+			if( this.center != null ) {
+				rv.addComponent( this.center, Constraint.CENTER );
+			}
+			if( this.pageStart != null ) {
+				rv.addComponent( this.pageStart, Constraint.PAGE_START );
+			}
+			if( this.pageEnd != null ) {
+				rv.addComponent( this.pageEnd, Constraint.PAGE_END );
+			}
+			if( this.lineStart != null ) {
+				rv.addComponent( this.lineStart, Constraint.LINE_START );
+			}
+			if( this.lineEnd != null ) {
+				rv.addComponent( this.lineEnd, Constraint.LINE_END );
+			}
+			return rv;
+		}
+	}
+	
 	public enum Constraint {
 		CENTER( java.awt.BorderLayout.CENTER ),
 		
@@ -79,10 +149,10 @@ public class BorderPanel extends Panel {
 	public BorderPanel( int hgap, int vgap ) {
 		this( null, hgap, vgap );
 	}
-	public BorderPanel( org.lgna.croquet.Composite composite ) {
+	public BorderPanel( org.lgna.croquet.Composite<?> composite ) {
 		this( composite, 0, 0 );
 	}
-	public BorderPanel( org.lgna.croquet.Composite composite, int hgap, int vgap ) {
+	public BorderPanel( org.lgna.croquet.Composite<?> composite, int hgap, int vgap ) {
 		super( composite );
 		this.hgap = hgap;
 		this.vgap = vgap;
