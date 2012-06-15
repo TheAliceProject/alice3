@@ -456,7 +456,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 	}
 
 	public JComponent<?> getHeaderLeadingComponent() {
-		return (JComponent<?>)this.innerHeaderPanel.getComponent( BorderPanel.Constraint.LINE_START );
+		return (JComponent<?>)this.innerHeaderPanel.getLineStartComponent();
 	}
 	public void setHeaderLeadingComponent( JComponent< ? > component ) {
 		if( component != null ) {
@@ -468,7 +468,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.innerHeaderPanel.addLineStartComponent( component );
 		} else {
-			Component<?> prevComponent = this.innerHeaderPanel.getComponent( BorderPanel.Constraint.LINE_START );
+			Component<?> prevComponent = this.innerHeaderPanel.getLineStartComponent();
 			if( prevComponent != null ) {
 				this.innerHeaderPanel.removeComponent( prevComponent );
 			}
@@ -485,7 +485,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.innerHeaderPanel.addLineEndComponent( component );
 		} else {
-			Component<?> prevComponent = this.innerHeaderPanel.getComponent( BorderPanel.Constraint.LINE_END );
+			Component<?> prevComponent = this.innerHeaderPanel.getLineEndComponent();
 			if( prevComponent != null ) {
 				this.innerHeaderPanel.removeComponent( prevComponent );
 			}
@@ -502,7 +502,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.outerHeaderPanel.addLineEndComponent( component );
 		} else {
-			Component<?> prevComponent = this.outerHeaderPanel.getComponent( BorderPanel.Constraint.LINE_END );
+			Component<?> prevComponent = this.outerHeaderPanel.getLineEndComponent();
 			if( prevComponent != null ) {
 				this.outerHeaderPanel.removeComponent( prevComponent );
 			}

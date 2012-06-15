@@ -140,7 +140,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		this.setBackgroundColor( color );
 	}
 	public org.lgna.croquet.components.ScrollPane getScrollPane() {
-		return (org.lgna.croquet.components.ScrollPane)this.getComponent( Constraint.CENTER );
+		return (org.lgna.croquet.components.ScrollPane)this.getCenterComponent();
 	}
 
 	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
@@ -418,10 +418,10 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 			return NO_SUCH_PAGE;
 		} else {
 			org.lgna.croquet.components.ScrollPane scrollPane = this.getScrollPane();
-			org.lgna.croquet.components.Component<?> lineStart = this.getComponent( Constraint.LINE_START );
-			org.lgna.croquet.components.Component<?> lineEnd = this.getComponent( Constraint.LINE_END );
-			org.lgna.croquet.components.Component<?> pageStart = this.getComponent( Constraint.PAGE_START );
-			org.lgna.croquet.components.Component<?> pageEnd = this.getComponent( Constraint.PAGE_END );
+			org.lgna.croquet.components.Component<?> lineStart = this.getLineStartComponent();
+			org.lgna.croquet.components.Component<?> lineEnd = this.getLineEndComponent();
+			org.lgna.croquet.components.Component<?> pageStart = this.getPageStartComponent();
+			org.lgna.croquet.components.Component<?> pageEnd = this.getPageEndComponent();
 			
 			
 			//todo: this code will not suffice in the limit

@@ -188,4 +188,19 @@ public class BorderPanel extends Panel {
 		}
 		return null;
 	}
+	public Component< ? > getCenterComponent() {
+		return this.getComponent( Constraint.CENTER );
+	}
+	public Component< ? > getPageStartComponent() {
+		return this.getComponent( Constraint.PAGE_START );
+	}
+	public Component< ? > getPageEndComponent() {
+		return this.getComponent( Constraint.PAGE_END );
+	}
+	public Component< ? > getLineStartComponent() {
+		return this.getComponent( Constraint.LINE_START );
+	}
+	public Component< ? > getLineEndComponent() {
+		return this.getComponent( Constraint.LINE_END );
+	}
 }
