@@ -55,4 +55,8 @@ public final class FunctionTabComposite extends MemberTabComposite {
 	private FunctionTabComposite() {
 		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ) );
 	}
+	@Override
+	protected org.alice.ide.member.views.MemberTabView createView() {
+		return new org.alice.ide.member.views.MemberTabView( this );
+	}
 }

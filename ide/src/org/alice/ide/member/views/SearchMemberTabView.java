@@ -40,30 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.alice.ide.member.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberTabSelectionState extends org.lgna.croquet.TabSelectionState<MemberTabComposite> {
-	public MemberTabSelectionState() {
-		super( 
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ), 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( MemberTabComposite.class ), 
-				2,
-				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
-		);
+public class SearchMemberTabView extends MemberTabView {
+	private final org.lgna.croquet.components.TextField queryTextField;
+	public SearchMemberTabView( org.alice.ide.member.SearchTabComposite composite ) {
+		super( composite );
+		
+		this.queryTextField = composite.getQueryState().createTextField();
+		org.lgna.croquet.components.BorderPanel searchPanel = new org.lgna.croquet.components.BorderPanel();
+		searchPanel.addComponent( this.queryTextField, Constraint.CENTER );
+		searchPanel.addComponent( composite.getClearQueryOperation().createButton(), Constraint.LINE_END );
+		this.addComponent( searchPanel, Constraint.PAGE_START );
+		this.setBackgroundColor( java.awt.Color.GREEN );
 	}
-	public static void main( String[] args ) {
-		MemberTabSelectionState state = new MemberTabSelectionState();
-		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = application.getFrame();
-		frame.getContentPanel().addComponent( state.createFolderTabbedPane(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		frame.getContentPanel().setMinimumPreferredHeight( 800 );
-		frame.pack();
-		frame.setVisible( true );
+	@Override
+	protected void handleDisplayable() {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				queryTextField.requestFocus();
+			}
+		} );
+		super.handleDisplayable();
 	}
 }

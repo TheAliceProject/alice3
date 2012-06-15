@@ -55,4 +55,8 @@ public final class ProcedureTabComposite extends MemberTabComposite {
 	private ProcedureTabComposite() {
 		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ) );
 	}
+	@Override
+	protected org.alice.ide.member.views.MemberTabView createView() {
+		return new org.alice.ide.member.views.MemberTabView( this );
+	}
 }

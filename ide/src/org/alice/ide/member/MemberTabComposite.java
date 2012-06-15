@@ -53,8 +53,4 @@ public abstract class MemberTabComposite extends org.lgna.croquet.TabComposite<o
 	public boolean isCloseable() {
 		return false;
 	}
-	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.MemberTabView( this );
-	}
 }

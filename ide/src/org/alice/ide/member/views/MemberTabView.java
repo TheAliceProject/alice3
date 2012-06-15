@@ -48,5 +48,6 @@ package org.alice.ide.member.views;
 public class MemberTabView extends org.lgna.croquet.components.BorderPanel {
 	public MemberTabView( org.alice.ide.member.MemberTabComposite composite ) {
 		super( composite );
+		this.addComponent( new org.lgna.croquet.components.Label( "todo" ), Constraint.CENTER );
 	}
 }
