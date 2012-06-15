@@ -75,7 +75,7 @@ package org.lgna.croquet;
 			//pass
 		} else {
 			this.frame = new org.lgna.croquet.components.Frame();
-			this.frame.getContentPanel().addComponent( this.frameComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+			this.frame.getContentPanel().addCenterComponent( this.frameComposite.getView() );
 			this.frame.pack();
 			this.frameComposite.modifyPackedWindowSizeIfDesired( this.frame );
 			this.frame.addWindowListener( this.windowListener );

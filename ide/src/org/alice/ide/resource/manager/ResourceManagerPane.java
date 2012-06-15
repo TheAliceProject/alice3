@@ -567,7 +567,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		scrollPane.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 		//this.table.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		this.addCenterComponent( scrollPane );
 
 		org.lgna.croquet.components.Panel pane = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(  
 				this.addResourceOperation.createButton(),
@@ -576,7 +576,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 				this.renameResourceOperation.createButton(), 
 				this.replaceResourceOperation.createButton() 
 		);
-		this.addComponent( new org.lgna.croquet.components.PageAxisPanel( pane, org.lgna.croquet.components.BoxUtilities.createGlue() ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		this.addLineEndComponent( new org.lgna.croquet.components.PageAxisPanel( pane, org.lgna.croquet.components.BoxUtilities.createGlue() ) );
 		this.handleSelection();
 	}
 

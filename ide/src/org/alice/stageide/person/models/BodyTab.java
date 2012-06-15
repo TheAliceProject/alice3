@@ -66,16 +66,19 @@ public class BodyTab extends ContentTab<org.lgna.croquet.components.BorderPanel>
 		org.lgna.croquet.components.Slider slider = ObesityLevelState.getInstance().createSlider();
 		slider.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		
-		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel();
-		obesityLevelPane.addComponent( SetObesityToInShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		obesityLevelPane.addComponent( slider, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		obesityLevelPane.addComponent( SetObesityToOutOfShapeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel( 8, 8 );
-		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( obesityLevelPane, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
+		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( SetObesityToInShapeOperation.getInstance().createButton() )
+				.center( slider )
+				.lineEnd( SetObesityToOutOfShapeOperation.getInstance().createButton() )
+		.build();
+		
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
+			.hgap( 8 )
+			.vgap( 8 )
+			.center( scrollPane )
+			.pageEnd( obesityLevelPane )
+		.build();
 		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		rv.getAwtComponent().setOpaque( true );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		return rv;
 	}

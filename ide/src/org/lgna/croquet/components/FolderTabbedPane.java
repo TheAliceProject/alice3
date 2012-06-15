@@ -466,7 +466,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 				component.setBackgroundColor( this.getBackgroundColor() );
 			}
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
-			this.innerHeaderPanel.addComponent( component, BorderPanel.Constraint.LINE_START );
+			this.innerHeaderPanel.addLineStartComponent( component );
 		} else {
 			Component<?> prevComponent = this.innerHeaderPanel.getComponent( BorderPanel.Constraint.LINE_START );
 			if( prevComponent != null ) {
@@ -483,7 +483,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 				component.setBackgroundColor( this.getBackgroundColor() );
 			}
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
-			this.innerHeaderPanel.addComponent( component, BorderPanel.Constraint.LINE_END );
+			this.innerHeaderPanel.addLineEndComponent( component );
 		} else {
 			Component<?> prevComponent = this.innerHeaderPanel.getComponent( BorderPanel.Constraint.LINE_END );
 			if( prevComponent != null ) {
@@ -500,7 +500,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 				component.setBackgroundColor( this.getBackgroundColor() );
 			}
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
-			this.outerHeaderPanel.addComponent( component, BorderPanel.Constraint.LINE_END );
+			this.outerHeaderPanel.addLineEndComponent( component );
 		} else {
 			Component<?> prevComponent = this.outerHeaderPanel.getComponent( BorderPanel.Constraint.LINE_END );
 			if( prevComponent != null ) {
@@ -512,8 +512,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		this.innerHeaderPanel.addComponent( this.titlesPanel, BorderPanel.Constraint.CENTER );
-		this.outerHeaderPanel.addComponent( this.innerHeaderPanel, BorderPanel.Constraint.CENTER );
+		this.innerHeaderPanel.addCenterComponent( this.titlesPanel );
+		this.outerHeaderPanel.addCenterComponent( this.innerHeaderPanel );
 		rv.add( this.outerHeaderPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardComposite.getView().getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;

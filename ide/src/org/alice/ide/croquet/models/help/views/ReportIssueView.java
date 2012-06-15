@@ -77,7 +77,6 @@ public class ReportIssueView extends BorderPanel {
 		return rv;
 	}
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
-		BorderPanel header = new BorderPanel();
 		final org.lgna.croquet.components.TextArea environmentTextArea = reportIssueComposite.getEnvironmentState().createTextArea();
 		environmentTextArea.getAwtComponent().setEditable( false );
 		RowSpringPanel centerComponent = new RowSpringPanel() {
@@ -104,8 +103,10 @@ public class ReportIssueView extends BorderPanel {
 		
 		PageAxisPanel lineStartPanel = new PageAxisPanel( headerLabel, link );
 				
-		header.addComponent( lineStartPanel, Constraint.LINE_START );
-		header.addComponent( reportIssueComposite.getLogInOutCardComposite().getView(), Constraint.LINE_END );
+		BorderPanel header = new BorderPanel.Builder()
+			.lineStart( lineStartPanel )
+			.lineEnd( reportIssueComposite.getLogInOutCardComposite().getView() )
+		.build();
 		header.setBackgroundColor( backgroundColor );
 		
 		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
@@ -121,9 +122,9 @@ public class ReportIssueView extends BorderPanel {
 		PageAxisPanel pageEndPanel = new PageAxisPanel( new org.lgna.croquet.components.HorizontalSeparator(), org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
 		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		
-		this.addComponent( header, Constraint.PAGE_START );
-		this.addComponent( centerComponent, Constraint.CENTER );
-		this.addComponent( pageEndPanel, Constraint.PAGE_END );
+		this.addPageStartComponent( header );
+		this.addCenterComponent( centerComponent );
+		this.addPageEndComponent( pageEndPanel );
 	}
 
 }

@@ -87,14 +87,10 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class MethodFrequencyTab extends TabComposite<View<?,?>> {
-
-	View view;
+public class MethodFrequencyTab extends TabComposite<BorderPanel> {
 	private Map<UserMethod,InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
-
 	private DefaultListSelectionState<UserMethod> listSelectionState;
 	private UserMethod dummy = new UserMethod();
-	private BorderPanel returnPanel = new BorderPanel();
 	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
 	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
 
@@ -160,7 +156,25 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 
 	public MethodFrequencyTab() {
 		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ) );
-		final GridPanel rv = GridPanel.createGridPane( 2, 1 );
+	}
+
+	private void sort( List<? extends AbstractMethod> a ) {
+		java.util.Collections.sort( a, new Comparator<AbstractMethod>() {
+
+			public int compare( AbstractMethod o1, AbstractMethod o2 ) {
+				return o1.getName().compareTo( o2.getName() );
+			}
+		} );
+	}
+
+	@Override
+	public boolean isCloseable() {
+		return false;
+	}
+
+	@Override
+	protected BorderPanel createView() {
+		GridPanel gridPanel = GridPanel.createSingleColumnGridPane( 2, 1 );
 
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
@@ -221,38 +235,23 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		statsDisplay.setMaximum();
 		listSelectionState.addValueListener( statsDisplay );
 		listSelectionState.setSelectedIndex( 0 );
-		rv.addComponent( statsDisplay.getLayout() );
+		gridPanel.addComponent( statsDisplay.getLayout() );
 		list.setCellRenderer( new ListCellRenderer() );
 
 		ScrollPane scrollPane = new ScrollPane( list );
-		rv.addComponent( scrollPane );
+		gridPanel.addComponent( scrollPane );
 
 		scrollPane.setMaximumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
 		scrollPane.setMinimumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
 		statsDisplay.scroll.setMaximumPreferredHeight( StatisticsOperation.TOP_SIZE );
 		statsDisplay.scroll.setMinimumPreferredHeight( StatisticsOperation.TOP_SIZE );
 		statsDisplay.scroll.setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.NEVER );
-		returnPanel.addComponent( rv, Constraint.CENTER );
-		this.view = returnPanel;
-	}
 
-	private void sort( List<? extends AbstractMethod> a ) {
-		java.util.Collections.sort( a, new Comparator<AbstractMethod>() {
-
-			public int compare( AbstractMethod o1, AbstractMethod o2 ) {
-				return o1.getName().compareTo( o2.getName() );
-			}
-		} );
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-
-	@Override
-	protected View<?,?> createView() {
-		return view;
+		
+		return new BorderPanel.Builder()
+			.pageStart( statsDisplay.getShowMethodsLinePanel() )
+			.center( gridPanel )
+		.build();
 	}
 
 	private class ListCellRenderer extends DefaultListCellRenderer {
@@ -303,6 +302,7 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 
 	public class ControlDisplay implements ValueListener<UserMethod> {
 
+		private final LineAxisPanel showMethodsLinePanel;
 		private GridPanel gridPanel;
 		private Map<Integer,Map<Integer,Component>> componentMap = Collections.newHashMap();
 		private int numRows = 6;
@@ -323,16 +323,14 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 		};
 
 		public ControlDisplay( DefaultListSelectionState<UserMethod> listSelectionState ) {
+			this.showMethodsLinePanel = new LineAxisPanel( showProceduresState.createCheckBox(), showFunctionsState.createCheckBox() );
 			initGridPanel();
 			populateGridPanel();
 			this.gridPanel.setBackgroundColor( Color.WHITE );
 		}
 
 		private void initGridPanel() {
-			CheckBox hideFunctionsBox = showFunctionsState.createCheckBox();
-			LineAxisPanel child = new LineAxisPanel( hideFunctionsBox, showProceduresState.createCheckBox() );
 
-			returnPanel.addComponent( child, Constraint.PAGE_START );
 			this.gridPanel = GridPanel.createGridPane( minSize, numCols, 5, 5 );
 			for( int i = 0; i != minSize; ++i ) {
 				componentMap.put( i, new HashMap<Integer,Component>() );
@@ -351,6 +349,10 @@ public class MethodFrequencyTab extends TabComposite<View<?,?>> {
 			showFunctionsState.addValueListener( booleanListener );
 			showProceduresState.addValueListener( booleanListener );
 			scroll.setViewportView( gridPanel );
+		}
+
+		public LineAxisPanel getShowMethodsLinePanel() {
+			return this.showMethodsLinePanel;
 		}
 
 		public void setMaximum() {

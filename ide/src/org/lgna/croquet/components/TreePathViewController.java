@@ -66,8 +66,8 @@ public class TreePathViewController<T> extends PanelViewController< TreeSelectio
 			//initializer.configure( operation, treeNode );
 			Button button = operation.createButton();
 //			selectChildButton.getAwtComponent().putClientProperty("JComponent.sizeVariant", "small");
-			this.addComponent( button, Constraint.CENTER );
-			this.addComponent( selectChildButton, Constraint.LINE_END );
+			this.addCenterComponent( button );
+			this.addLineEndComponent( selectChildButton );
 			
 		}
 

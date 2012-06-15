@@ -61,7 +61,7 @@ package org.lgna.croquet;
 		pageEndPanel.addComponent( controlLine, gbc );
 		controlLine.setBackgroundColor( null );
 		
-		this.addComponent( pageEndPanel, Constraint.PAGE_END );
+		this.addPageEndComponent( pageEndPanel );
 	}
 	protected org.lgna.croquet.components.LineAxisPanel getControlLine() {
 		return this.controlLine;

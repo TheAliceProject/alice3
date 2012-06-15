@@ -49,7 +49,7 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 	private final java.util.Map<org.lgna.project.ast.Member,org.lgna.croquet.components.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public MemberTabView( org.alice.ide.member.MemberTabComposite composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( "todo" ), Constraint.CENTER );
+		this.addCenterComponent( new org.lgna.croquet.components.Label( "todo" ) );
 	}
 	
 	private static org.lgna.croquet.components.JComponent<?> createDragView( org.lgna.project.ast.Member member ) {

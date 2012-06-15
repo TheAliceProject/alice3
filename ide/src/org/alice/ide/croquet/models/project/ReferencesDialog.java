@@ -59,20 +59,16 @@ import org.lgna.project.ast.UserMethod;
 /**
  * @author Matt May
  */
-public class ReferencesDialog extends TabComposite implements ValueListener<SearchTreeNode> {
-
-	BorderPanel view;
-	private ReferencesDialogManager manager;
+public class ReferencesDialog extends TabComposite<BorderPanel> implements ValueListener<SearchTreeNode> {
+	private final ReferencesDialogManager manager;
+	private final Tree<SearchTreeNode> tree;
 
 	public ReferencesDialog( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
 		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
-		view = new BorderPanel();
-
 		manager = new ReferencesDialogManager( methodParentMap );
-		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+		tree = new Tree<SearchTreeNode>( manager );
 		tree.setRootVisible( false );
 		manager.setOwner( tree );
-		view.addComponent( new ScrollPane( tree ), Constraint.CENTER );
 	}
 
 	@Override
@@ -81,8 +77,10 @@ public class ReferencesDialog extends TabComposite implements ValueListener<Sear
 	}
 
 	@Override
-	protected View createView() {
-		return view;
+	protected BorderPanel createView() {
+		return new BorderPanel.Builder()
+			.center( new ScrollPane( tree ) )
+		.build();
 	}
 
 	public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {

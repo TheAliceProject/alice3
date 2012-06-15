@@ -106,7 +106,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		this.rootStatementListPropertyPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)this.code );
 		org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( this.rootStatementListPropertyPane );
 
-		this.addComponent( new org.lgna.croquet.components.ScrollPane(), Constraint.CENTER );
+		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane() );
 
 		org.lgna.croquet.components.ScrollPane scrollPane = this.getScrollPane();
 		scrollPane.setViewportView( bodyPane );
@@ -128,9 +128,9 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		} else {
 			throw new RuntimeException();
 		}
-		this.addComponent( header, Constraint.PAGE_START );
+		this.addPageStartComponent( header );
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			this.addComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView(), Constraint.PAGE_END );
+			this.addPageEndComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView() );
 		}
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );

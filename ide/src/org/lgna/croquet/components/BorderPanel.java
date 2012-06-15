@@ -62,26 +62,31 @@ public class BorderPanel extends Panel {
 			return this;
 		}
 		public Builder center( Component<?> center ) {
+			assert center != null;
 			assert this.center == null : this.center + " " + center;
 			this.center = center;
 			return this;
 		}
 		public Builder pageStart( Component<?> pageStart ) {
+			assert pageStart != null;
 			assert this.pageStart == null : this.pageStart + " " + pageStart;
 			this.pageStart = pageStart;
 			return this;
 		}
 		public Builder pageEnd( Component<?> pageEnd ) {
+			assert pageEnd != null;
 			assert this.pageEnd == null : this.pageEnd + " " + pageEnd;
 			this.pageEnd = pageEnd;
 			return this;
 		}
 		public Builder lineStart( Component<?> lineStart ) {
+			assert lineStart != null;
 			assert this.lineStart == null : this.lineStart + " " + lineStart;
 			this.lineStart = lineStart;
 			return this;
 		}
 		public Builder lineEnd( Component<?> lineEnd ) {
+			assert lineEnd != null;
 			assert this.lineEnd == null : this.lineEnd + " " + lineEnd;
 			this.lineEnd = lineEnd;
 			return this;
@@ -119,17 +124,9 @@ public class BorderPanel extends Panel {
 	
 	public enum Constraint {
 		CENTER( java.awt.BorderLayout.CENTER ),
-		
-		//NORTH( java.awt.BorderLayout.NORTH ),
 		PAGE_START( java.awt.BorderLayout.PAGE_START ),
-		
-		//SOUTH( java.awt.BorderLayout.SOUTH ),
 		PAGE_END( java.awt.BorderLayout.PAGE_END ),
-		
-		//WEST( java.awt.BorderLayout.WEST ),
 		LINE_START( java.awt.BorderLayout.LINE_START ),
-
-		//EAST( java.awt.BorderLayout.EAST ),
 		LINE_END( java.awt.BorderLayout.LINE_END );
 		
 		private String internal;
@@ -164,6 +161,22 @@ public class BorderPanel extends Panel {
 	public void addComponent( Component<?> child, Constraint constraint ) {
 		this.internalAddComponent( child, constraint.internal );
 	}
+	public void addCenterComponent( Component<?> child ) {
+		this.addComponent( child, Constraint.CENTER );
+	}
+	public void addPageStartComponent( Component<?> child ) {
+		this.addComponent( child, Constraint.PAGE_START );
+	}
+	public void addPageEndComponent( Component<?> child ) {
+		this.addComponent( child, Constraint.PAGE_END );
+	}
+	public void addLineStartComponent( Component<?> child ) {
+		this.addComponent( child, Constraint.LINE_START );
+	}
+	public void addLineEndComponent( Component<?> child ) {
+		this.addComponent( child, Constraint.LINE_END );
+	}
+	
 	public Component< ? > getComponent( Constraint constraint ) {
 		javax.swing.JPanel jPanel = this.getAwtComponent();
 		java.awt.BorderLayout borderLayout = (java.awt.BorderLayout)jPanel.getLayout();

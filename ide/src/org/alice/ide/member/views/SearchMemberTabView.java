@@ -51,10 +51,11 @@ public class SearchMemberTabView extends MemberTabView {
 		super( composite );
 		
 		this.queryTextField = composite.getQueryState().createTextField();
-		org.lgna.croquet.components.BorderPanel searchPanel = new org.lgna.croquet.components.BorderPanel();
-		searchPanel.addComponent( this.queryTextField, Constraint.CENTER );
-		searchPanel.addComponent( composite.getClearQueryOperation().createButton(), Constraint.LINE_END );
-		this.addComponent( searchPanel, Constraint.PAGE_START );
+		org.lgna.croquet.components.BorderPanel searchPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+			.center( this.queryTextField )
+			.lineEnd( composite.getClearQueryOperation().createButton() )
+		.build();
+		this.addPageStartComponent( searchPanel );
 		this.setBackgroundColor( new java.awt.Color( 255, 224, 159 ) );
 	}
 	@Override

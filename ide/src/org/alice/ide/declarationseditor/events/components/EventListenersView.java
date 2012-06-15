@@ -50,7 +50,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		scroll.setBothScrollBarIncrements( 12, 24 );
 		LineAxisPanel bottom = new LineAxisPanel( button );
 		final StickyBottomPanel panel = new StickyBottomPanel( scroll, bottom );
-		this.addComponent( panel, Constraint.CENTER );
+		this.addCenterComponent( panel );
 		scroll.getAwtComponent().getViewport().addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				Object src = e.getSource();
@@ -70,7 +70,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		java.awt.Color color = this.eventsPanel.getBackgroundColor();
 		this.setBackgroundColor( color );
 		scroll.setBackgroundColor( color );
-		this.addComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView(), Constraint.PAGE_END );
+		this.addPageEndComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView() );
 	}
 	
 	private void handleStatementsChanged( boolean isScrollDesired ) {

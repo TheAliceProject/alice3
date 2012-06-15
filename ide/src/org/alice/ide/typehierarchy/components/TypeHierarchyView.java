@@ -144,8 +144,8 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 		scrollPane.setBorder( null );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "type hierarchy", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getTypeColor() );
-		this.addComponent( label, Constraint.PAGE_START );
-		this.addComponent( scrollPane, Constraint.CENTER );
+		this.addPageStartComponent( label );
+		this.addCenterComponent( scrollPane );
 	}
 	
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {

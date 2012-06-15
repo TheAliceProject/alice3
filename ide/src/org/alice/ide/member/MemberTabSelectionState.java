@@ -59,11 +59,10 @@ public final class MemberTabSelectionState extends org.lgna.croquet.TabSelection
 	}
 	public static void main( String[] args ) {
 		MemberTabSelectionState state = new MemberTabSelectionState();
-
 		
 		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
 		org.lgna.croquet.components.Frame frame = application.getFrame();
-		frame.getContentPanel().addComponent( state.createFolderTabbedPane(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		frame.getContentPanel().addCenterComponent( state.createFolderTabbedPane() );
 		frame.getContentPanel().setMinimumPreferredHeight( 800 );
 		frame.pack();
 		frame.setVisible( true );

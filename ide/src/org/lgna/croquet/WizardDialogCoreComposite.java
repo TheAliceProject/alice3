@@ -234,7 +234,6 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 
 		org.lgna.croquet.components.ImmutableTextField stepsTextField = this.stepsLabel.createImmutableTextField();
 		javax.swing.JList list = new javax.swing.JList( this.listModel ) {
@@ -255,11 +254,14 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		org.lgna.croquet.components.PageAxisPanel mainView = this.createPageAxisPanel( this.stepLabel );
 		mainView.addComponent( this.cardComposite.getView() );
 
-		rv.addComponent( stepsView, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		rv.addComponent( mainView, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
+			.lineStart( stepsView )
+			.center( mainView )
+		.build();
 
 		//todo: remove
 		this.cardComposite.getView().setBackgroundColor( rv.getBackgroundColor() );
+
 		return rv;
 	}
 	@Override

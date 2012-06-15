@@ -68,7 +68,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			controlPanel.addComponent( SimplePresentation.this.prevOperation.createButton() );
 			controlPanel.addComponent( new BookComboBox( SimplePresentation.this.bookComboBoxModel, menuPolicy.isAboveStencil() ) );
 			controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
-			controlsPanel.addComponent( controlPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+			controlsPanel.addCenterComponent( controlPanel );
 			SimplePresentation.this.isPaintingStencil.setTextForBothTrueAndFalse( "stencil" );
 
 			org.lgna.croquet.components.CheckBox isInterceptingEventsCheckBox = SimplePresentation.this.isInterceptingEvents.createCheckBox();

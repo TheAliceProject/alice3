@@ -55,7 +55,7 @@ import org.lgna.croquet.components.SpringRow;
 /**
  * @author Matt May
  */
-public class BugLoginView extends BorderPanel {
+public class BugLoginView extends RowSpringPanel {
 	private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
 		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
@@ -64,19 +64,17 @@ public class BugLoginView extends BorderPanel {
 		}
 	};
 	private final org.lgna.croquet.components.PasswordField passwordField;
-	public BugLoginView( final BugLoginComposite bugLoginComposite ) {
+	public BugLoginView( BugLoginComposite bugLoginComposite ) {
 		super( bugLoginComposite );
 		this.passwordField = bugLoginComposite.getPasswordState().createPasswordField();
-		RowSpringPanel centerComponent = new RowSpringPanel() {
-			@Override
-			protected void appendRows( List<SpringRow> rows ) {
-				rows.add( new LabeledSpringRow( bugLoginComposite.getUserNameState().getSidekickLabel(), bugLoginComposite.getUserNameState().createTextField() ) );
-				rows.add( new LabeledSpringRow( bugLoginComposite.getPasswordState().getSidekickLabel(), passwordField ) );
-				rows.add( new LabeledSpringRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
-			}
-		};
-		this.addComponent( centerComponent, Constraint.CENTER );
 		this.setMinimumPreferredHeight( 240 );
+	}
+	@Override
+	protected void appendRows( List<SpringRow> rows ) {
+		BugLoginComposite bugLoginComposite = (BugLoginComposite)this.getComposite();
+		rows.add( new LabeledSpringRow( bugLoginComposite.getUserNameState().getSidekickLabel(), bugLoginComposite.getUserNameState().createTextField() ) );
+		rows.add( new LabeledSpringRow( bugLoginComposite.getPasswordState().getSidekickLabel(), passwordField ) );
+		rows.add( new LabeledSpringRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
 	}
 	@Override
 	protected void handleDisplayable() {

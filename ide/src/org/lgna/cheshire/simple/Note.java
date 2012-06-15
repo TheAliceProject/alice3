@@ -218,11 +218,13 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		rv.setCursor( java.awt.Cursor.getDefaultCursor() );
 		
 		//rv.setBackground( BASE_COLOR );
-		org.lgna.croquet.components.BorderPanel southPanel = new org.lgna.croquet.components.BorderPanel();
 
 		org.lgna.croquet.components.Hyperlink hyperlink = getNextOperation().createHyperlink();
 		hyperlink.scaleFont( 1.4f );
-		southPanel.addComponent( hyperlink, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+
+		org.lgna.croquet.components.BorderPanel southPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+			.lineEnd( hyperlink )
+		.build();
 
 		rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
 		final int X_BORDER_PAD = 16;

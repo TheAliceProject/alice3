@@ -49,10 +49,11 @@ package org.alice.ide.ast.rename.components;
 public class RenamePanel extends org.lgna.croquet.components.BorderPanel {
 	public RenamePanel( org.alice.ide.ast.rename.RenameComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.BorderPanel line = new org.lgna.croquet.components.BorderPanel();
-		line.addComponent( composite.getNameState().getSidekickLabel().createImmutableTextField(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		line.addComponent( composite.getNameState().createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		org.lgna.croquet.components.BorderPanel line = new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( composite.getNameState().getSidekickLabel().createImmutableTextField() )
+				.center( composite.getNameState().createTextField() )
+		.build();
 		line.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
-		this.addComponent( line, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+		this.addPageStartComponent( line );
 	}
 }

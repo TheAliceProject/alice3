@@ -97,8 +97,8 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 				super.internalRefresh();
 				this.forgetAndRemoveAllComponents();
 				org.lgna.project.ast.Expression expression = cascade.getState().getItemAt( cascade.getIndex() );
-				this.addComponent( factory.createExpressionPane( expression ), Constraint.LINE_START );
-				this.addComponent( new org.lgna.croquet.components.Label(), Constraint.CENTER );
+				this.addLineStartComponent( factory.createExpressionPane( expression ) );
+				this.addCenterComponent( new org.lgna.croquet.components.Label() );
 				this.revalidateAndRepaint();
 			}
 		};

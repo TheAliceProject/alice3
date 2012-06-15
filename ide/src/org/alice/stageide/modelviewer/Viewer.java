@@ -97,7 +97,7 @@ abstract class Viewer extends org.lgna.croquet.components.BorderPanel {
 			this.initialize();
 			this.isInitialized = true;
 		}
-		this.addComponent( this.adapter, Constraint.CENTER );
+		this.addCenterComponent( this.adapter );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}

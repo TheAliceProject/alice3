@@ -83,7 +83,7 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 		this.scrollPane.getAwtComponent().setViewportView( this.tree );
 		this.tree.setRootVisible( false );
 		this.tree.setCellRenderer( new TransactionHistoryCellRenderer() );
-		this.addComponent( this.scrollPane, Constraint.CENTER );
+		this.addCenterComponent( this.scrollPane );
 	}
 
 	private void collapseDesiredRows() {

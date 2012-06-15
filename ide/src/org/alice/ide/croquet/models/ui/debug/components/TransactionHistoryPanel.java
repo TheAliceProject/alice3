@@ -75,7 +75,7 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 		this.tree.setCellRenderer( new TransactionHistoryCellRenderer() );
 		this.scrollPane.getAwtComponent().setViewportView( this.tree );
 		this.scrollPane.setBothScrollBarIncrements( 12,  24 );
-		this.addComponent( scrollPane, Constraint.CENTER );
+		this.addCenterComponent( scrollPane );
 		this.tree.setRootVisible( false );
 		this.tree.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
 	}

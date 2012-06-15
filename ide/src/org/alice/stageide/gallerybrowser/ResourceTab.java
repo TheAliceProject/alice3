@@ -71,14 +71,15 @@ public class ResourceTab extends GalleryTab {
 			public ResourceView() {
 				super( PAD, 0 );
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD,PAD,PAD,PAD ) );
-				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
-				topPanel.addComponent( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
 				org.lgna.croquet.components.TextField filterTextField = FilterState.getInstance().createTextField();
 				filterTextField.setMinimumPreferredWidth( 320 );
 				filterTextField.setMaximumSizeClampedToPreferredSize( true );
 				filterTextField.scaleFont( 1.5f );
 
-				topPanel.addComponent( filterTextField, Constraint.LINE_END );
+				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+					.lineStart( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ) )
+					.lineEnd( filterTextField )
+				.build();
 
 				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new GalleryDirectoryViewController() ) {
 					@Override
@@ -104,16 +105,18 @@ public class ResourceTab extends GalleryTab {
 				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation.getInstance().createButton() );
 				gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
 				
-		        org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		        lineEndPanel.addComponent( gridPanel, Constraint.PAGE_START );
+		        org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+		        	.pageStart( gridPanel )
+		        .build();
 
-		        org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel( 0, PAD );
+		        org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
+		        	.vgap( PAD )
+		        	.pageStart( topPanel )
+		        	.center( scrollPane )
+		        .build();
 
-				panel.addComponent( topPanel, Constraint.PAGE_START );
-				panel.addComponent( scrollPane, Constraint.CENTER );
-
-				this.addComponent( panel, Constraint.CENTER );
-				this.addComponent( lineEndPanel, Constraint.LINE_END );
+		        this.addCenterComponent( panel );
+				this.addLineEndComponent( lineEndPanel );
 
 				//todo
 				panel.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );

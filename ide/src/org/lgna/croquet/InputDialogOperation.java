@@ -88,10 +88,11 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		JComponent< ? > child = this.prologue( step );
 		if( child != null ) {
 			step.putEphemeralDataFor( INPUT_PANEL_KEY, child );
-			BorderPanel rv = new BorderPanel();
+			BorderPanel rv = new BorderPanel.Builder()
+				.center( child )
+				.pageEnd( explanationLabel )
+			.build();
 			rv.setBackgroundColor( child.getBackgroundColor() );
-			rv.addComponent( child, BorderPanel.Constraint.CENTER );
-			rv.addComponent( explanationLabel, BorderPanel.Constraint.PAGE_END );
 			return rv;
 		} else {
 			return null;
