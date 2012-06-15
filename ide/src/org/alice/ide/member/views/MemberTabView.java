@@ -40,60 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.history;
+package org.alice.ide.member.views;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class TransactionManager {
-	private TransactionManager() {
-		throw new AssertionError();
-	}
-
-	@Deprecated
-	private static TransactionHistory getActiveTransactionHistory() {
-		return org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-	}
-
-	@Deprecated
-	private static Transaction getActiveTransaction() {
-		return getActiveTransactionHistory().acquireActiveTransaction();
-	}
-
-	@Deprecated
-	public static void TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		transaction.addPrepStep( new TODO_REMOVE_BogusStep( transaction, trigger ) );
-	}
-
-	@Deprecated
-	public static void firePopupMenuResized( PopupPrepStep step ) {
-		step.fireChanged( new org.lgna.croquet.history.event.PopupMenuResizedEvent( step ) );
-	}
-
-	@Deprecated
-	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
-	}
-
-	@Deprecated
-	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
-		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );
-	}
-
-	@Deprecated
-	public static <T> StateChangeStep<T> addStateChangeStep( org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return StateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
-	}
-
-	@Deprecated
-	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.ListSelectionState.InternalPrepModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
-	}
-
-	@Deprecated
-	public static CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
+public class MemberTabView extends org.lgna.croquet.components.BorderPanel {
+	public MemberTabView( org.alice.ide.member.MemberTabComposite composite ) {
+		super( composite );
 	}
 }
