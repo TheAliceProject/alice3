@@ -165,6 +165,8 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
 				dialog.setVisible( false );
 				step.finish();
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this );
 			}
 		}
 		
