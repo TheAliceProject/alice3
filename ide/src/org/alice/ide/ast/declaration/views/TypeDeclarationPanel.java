@@ -41,18 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.declaration.components;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeHeader extends org.lgna.croquet.components.FlowPanel {
-	public TypeHeader( org.lgna.project.ast.NamedUserType type ) {
-		super( Alignment.LEADING );
-		this.addComponent( new org.lgna.croquet.components.Label( "class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
-		this.addComponent( new org.lgna.croquet.components.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type != null ? type.getSuperType() : null ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
+public class TypeDeclarationPanel extends org.alice.ide.preview.components.PanelWithPreview {
+	private final org.alice.ide.ast.declaration.TypeDeclarationOperation model;
+	public TypeDeclarationPanel( org.alice.ide.ast.declaration.TypeDeclarationOperation model ) {
+		this.model = model;
+	}
+	public org.alice.ide.ast.declaration.TypeDeclarationOperation getModel() {
+		return this.model;
+	}
+	@Override
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+		return new TypeHeader( null );
+	}
+	//todo
+//	@Override
+//	protected TypeHeader createPreviewPanel() {
+//		return new TypeHeader( null );
+//	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
+			@Override
+			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+				org.alice.ide.ast.declaration.TypeDeclarationOperation model = TypeDeclarationPanel.this.getModel();
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getSuperTypeLabelText() + ":", new org.alice.ide.croquet.components.TypeDropDown( model.getSuperTypeState() ) ) );
+				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
+				return rv;
+			}
+		}
+		DetailsPanel rv = new DetailsPanel();
+		return rv;
 	}
 }

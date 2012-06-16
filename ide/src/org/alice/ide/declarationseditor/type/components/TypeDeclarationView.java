@@ -106,7 +106,7 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
         scrollPane.setBothScrollBarIncrements( 12, 24 );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 		
-		org.alice.ide.ast.declaration.components.TypeHeader typeHeader = new org.alice.ide.ast.declaration.components.TypeHeader( type );
+		org.alice.ide.ast.declaration.views.TypeHeader typeHeader = new org.alice.ide.ast.declaration.views.TypeHeader( type );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		this.addPageStartComponent( typeHeader );
 		this.addCenterComponent( scrollPane );
