@@ -92,12 +92,20 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 	
 //	public abstract boolean isEnabled();
 //	public abstract void setEnabled( boolean isEnabled );
+	private boolean isEnabled = true;
 	public boolean isEnabled() {
-		throw new RuntimeException( "todo" );
+		return this.isEnabled;
 	}
 	public void setEnabled( boolean isEnabled ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		this.isEnabled = isEnabled;
 	}
+//	public boolean isEnabled() {
+//		throw new RuntimeException( "todo" );
+//	}
+//	public void setEnabled( boolean isEnabled ) {
+//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+//	}
 	
 	
 	private String toolTipText = null;

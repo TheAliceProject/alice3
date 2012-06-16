@@ -40,27 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.preview;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V,T> {
-	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
-		super( id );
-	}
-	public T getPreviewValue() {
-		return this.createValue();
+public class StatementView extends DeclarationLikeSubstanceView {
+	public StatementView( org.alice.ide.ast.declaration.StatementInsertComposite<?> composite ) {
+		super( composite );
 	}
 	@Override
-	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-		super.handleFiredEvent( event );
-		this.getView().updatePreview();
-	}
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.getView().updatePreview();
-		super.handlePreShowDialog( step );
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.StatementInsertComposite<?> composite = (org.alice.ide.ast.declaration.StatementInsertComposite<?>)this.getComposite();
+		org.lgna.project.ast.Statement statement = composite.getPreviewValue();
+		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );
 	}
 }

@@ -40,19 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.preview;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V,T> {
-	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
-		super( id );
+public abstract class PreviewContainingOperationInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
+	public PreviewContainingOperationInputDialogCoreComposite( java.util.UUID id, org.lgna.croquet.Group operationMigrationId ) {
+		super( id, operationMigrationId );
 	}
-	public T getPreviewValue() {
-		return this.createValue();
-	}
+	public abstract T getPreviewValue();
 	@Override
 	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		super.handleFiredEvent( event );

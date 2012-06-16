@@ -40,27 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.preview;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V,T> {
-	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
-		super( id );
+public abstract class StatementInsertComposite<S extends org.lgna.project.ast.Statement> extends DeclarationLikeSubstanceComposite<S> {
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	public StatementInsertComposite( java.util.UUID migrationId, Details details, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( migrationId, details );
+		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
-	public T getPreviewValue() {
-		return this.createValue();
+	protected abstract S createStatement();
+	@Override
+	public S getPreviewValue() {
+		return this.createStatement();
 	}
 	@Override
-	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-		super.handleFiredEvent( event );
-		this.getView().updatePreview();
-	}
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.getView().updatePreview();
-		super.handlePreShowDialog( step );
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement() );
 	}
 }

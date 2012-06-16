@@ -40,27 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.preview;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V,T> {
-	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
-		super( id );
+public final class ForEachInArrayLoopComposite extends EachInArrayComposite< org.lgna.project.ast.ForEachInArrayLoop > {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ForEachInArrayLoopComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ForEachInArrayLoopComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		ForEachInArrayLoopComposite rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ForEachInArrayLoopComposite( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
+		return rv;
 	}
-	public T getPreviewValue() {
-		return this.createValue();
+	private ForEachInArrayLoopComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair );
 	}
 	@Override
-	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-		super.handleFiredEvent( event );
-		this.getView().updatePreview();
-	}
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.getView().updatePreview();
-		super.handlePreShowDialog( step );
+	protected org.lgna.project.ast.ForEachInArrayLoop createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
+		return new org.lgna.project.ast.ForEachInArrayLoop(
+				item,
+				initializer, 
+				new org.lgna.project.ast.BlockStatement() 
+		);
 	}
 }

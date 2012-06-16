@@ -40,27 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.preview;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V,T> {
-	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
-		super( id );
+public abstract class EachInArrayComposite<S extends org.lgna.project.ast.Statement> extends StatementInsertComposite<S> {
+	public EachInArrayComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( migrationId, new Details()
+			.valueComponentType( Status.APPLICABLE_AND_EDITBLE, null )
+			.valueIsArrayType( Status.APPLICABLE_BUT_NOT_EDITABLE, true )
+			.name( Status.APPLICABLE_AND_EDITBLE )
+			.initializer( Status.APPLICABLE_AND_EDITBLE, null ),
+		blockStatementIndexPair );
 	}
-	public T getPreviewValue() {
-		return this.createValue();
+	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
+	@Override
+	protected final S createStatement() {
+		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
+		return this.createStatement( item, this.getInitializer() );
 	}
 	@Override
-	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-		super.handleFiredEvent( event );
-		this.getView().updatePreview();
-	}
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.getView().updatePreview();
-		super.handlePreShowDialog( step );
+	protected org.alice.ide.ast.declaration.views.EachInArrayView createView() {
+		return new org.alice.ide.ast.declaration.views.EachInArrayView( this );
 	}
 }

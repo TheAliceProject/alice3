@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.project.ast.Node > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< Void > {
+public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.project.ast.Node > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< Void > implements InitializerStateOwner {
 	private final org.lgna.project.ast.UserType<?> initialDeclaringType;
 	private final org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType;
 	private final boolean initialIsArrayValueType;
@@ -92,12 +92,12 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		this.initialExpression = initialExpression;
 		
 		if( initialDeclaringType != null || isDeclaringTypeEditable ) {
-			this.declaringTypeState = new DeclaringTypeState( this, initialDeclaringType );
+			this.declaringTypeState = new DeclaringTypeState( initialDeclaringType );
 		} else {
 			this.declaringTypeState = null;
 		}
 		
-		this.valueComponentTypeState = new ValueComponentTypeState( this, initialValueComponentType );
+		this.valueComponentTypeState = new ValueComponentTypeState( initialValueComponentType );
 		this.isArrayValueTypeState = new IsArrayValueTypeState( this, initialIsArrayValueType );
 		
 		if( initialName != null || isNameEditable ) {

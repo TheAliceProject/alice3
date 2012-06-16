@@ -54,6 +54,7 @@ public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.c
 	public org.lgna.croquet.StringValue getValueLabel() {
 		return this.valueLabel;
 	}
+	protected abstract void initializeToPreviousExpression( org.lgna.project.ast.Expression expression );
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();

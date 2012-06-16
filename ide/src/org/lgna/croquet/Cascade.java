@@ -99,6 +99,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 
 	private final Class< T > componentType;
 	private final InternalRoot< T > root;
+	
 
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T >[] blanks ) {
 		super( group, id );
@@ -112,7 +113,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() );
 	}
-
+	
 	public InternalRoot< T > getRoot() {
 		return this.root;
 	}
