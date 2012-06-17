@@ -40,25 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.draganddrop.statement;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareLocalDragModel extends StatementTemplateDragModel {
-	private static class SingletonHolder {
-		private static DeclareLocalDragModel instance = new DeclareLocalDragModel();
+public class LocalDeclarationStatementComposite extends StatementInsertComposite<org.lgna.project.ast.LocalDeclarationStatement> {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalDeclarationStatementComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static LocalDeclarationStatementComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		synchronized( map ) {
+			LocalDeclarationStatementComposite rv = map.get( blockStatementIndexPair );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new LocalDeclarationStatementComposite( blockStatementIndexPair );
+				map.put( blockStatementIndexPair, rv );
+			}
+			return rv;
+		}
 	}
-	public static DeclareLocalDragModel getInstance() {
-		return SingletonHolder.instance;
-	}
-	private DeclareLocalDragModel() {
-		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ), org.lgna.project.ast.LocalDeclarationStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalDeclarationStatement() );
+	private LocalDeclarationStatementComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), new Details()
+			.valueComponentType( Status.APPLICABLE_AND_EDITBLE, null )
+			.valueIsArrayType( Status.APPLICABLE_AND_EDITBLE, false )
+			.name( Status.APPLICABLE_AND_EDITBLE )
+			.initializer( Status.APPLICABLE_AND_EDITBLE, null )
+		, blockStatementIndexPair );
 	}
 	@Override
-	public org.lgna.croquet.Operation getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.declaration.LocalDeclarationStatementOperation.getInstance( blockStatementIndexPair );
-//		return org.alice.ide.ast.declaration.LocalDeclarationStatementComposite.getInstance( blockStatementIndexPair ).getOperation();
+	protected org.lgna.project.ast.LocalDeclarationStatement createStatement() {
+		boolean isFinal = false;
+		org.lgna.project.ast.UserLocal variable = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueType(), isFinal );
+		return new org.lgna.project.ast.LocalDeclarationStatement( variable, this.getInitializer() );
+	}
+	@Override
+	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
+		return new org.alice.ide.ast.declaration.views.StatementView( this );
 	}
 }
