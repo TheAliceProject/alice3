@@ -63,7 +63,7 @@ public class LocalDeclarationStatementComposite extends StatementInsertComposite
 		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), new Details()
 			.valueComponentType( Status.APPLICABLE_AND_EDITBLE, null )
 			.valueIsArrayType( Status.APPLICABLE_AND_EDITBLE, false )
-			.name( Status.APPLICABLE_AND_EDITBLE )
+			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), Status.APPLICABLE_AND_EDITBLE )
 			.initializer( Status.APPLICABLE_AND_EDITBLE, null )
 		, blockStatementIndexPair );
 	}
@@ -76,5 +76,9 @@ public class LocalDeclarationStatementComposite extends StatementInsertComposite
 	@Override
 	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
 		return new org.alice.ide.ast.declaration.views.StatementView( this );
+	}
+	@Override
+	protected boolean isNullAllowedForInitializer() {
+		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers.getInstance().getValue();
 	}
 }

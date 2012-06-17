@@ -48,6 +48,7 @@ package org.alice.ide.ast.declaration.views;
 public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview.components.PanelWithPreview {
 	public DeclarationLikeSubstanceView( org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite ) {
 		super( composite );
+		this.setMinimumPreferredWidth( 480 );
 	}
 	
 	protected boolean isArrayCheckBoxDesired() {
@@ -56,7 +57,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
 		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
-		return new org.lgna.croquet.components.RowSpringPanel() {
+		org.lgna.croquet.components.RowSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowSpringPanel() {
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
 				org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
@@ -68,7 +69,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 							component 
 					) );
 				}
-
+		
 				org.alice.ide.croquet.models.declaration.ValueComponentTypeState valueComponentTypeState = composite.getValueComponentTypeState();
 				org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
 				if( valueComponentTypeState != null ) {
@@ -96,7 +97,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 							false 
 					) );
 				}
-
+		
 				org.lgna.croquet.StringState nameState = composite.getNameState();
 				if( nameState != null ) {
 					rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
@@ -122,5 +123,10 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 				
 			}
 		};
+
+		return new org.lgna.croquet.components.BorderPanel.Builder().
+				pageStart( rowsSpringPanel )
+		.build();
+		
 	}
 }

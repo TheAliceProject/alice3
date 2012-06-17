@@ -62,6 +62,8 @@ package org.lgna.croquet;
 		controlLine.setBackgroundColor( null );
 		
 		this.addPageEndComponent( pageEndPanel );
+		
+		this.statusLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 	protected org.lgna.croquet.components.LineAxisPanel getControlLine() {
 		return this.controlLine;

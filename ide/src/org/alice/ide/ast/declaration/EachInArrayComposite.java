@@ -50,7 +50,7 @@ public abstract class EachInArrayComposite<S extends org.lgna.project.ast.Statem
 		super( migrationId, new Details()
 			.valueComponentType( Status.APPLICABLE_AND_EDITBLE, null )
 			.valueIsArrayType( Status.APPLICABLE_BUT_NOT_EDITABLE, true )
-			.name( Status.APPLICABLE_AND_EDITBLE )
+			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), Status.APPLICABLE_AND_EDITBLE )
 			.initializer( Status.APPLICABLE_AND_EDITBLE, null ),
 		blockStatementIndexPair );
 	}
