@@ -104,6 +104,7 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 				//pass
 			} else {
 				this.addComponent( org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation.getInstance( method ).createButton() );
+				//this.addComponent( org.alice.ide.ast.declaration.ParameterDeclarationComposite.getInstance( method ).getOperation().createButton() );
 			}
 		}
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {

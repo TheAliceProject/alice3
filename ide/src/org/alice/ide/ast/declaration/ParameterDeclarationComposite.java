@@ -40,35 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.edits.ast;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteParameterEdit extends ParameterEdit {
-	private transient int index;
-	public DeleteParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
-		super( completionStep, code, parameter );
-	}
-	public DeleteParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			this.index = this.getParametersProperty().indexOf( this.getParameter() );
+public final class ParameterDeclarationComposite extends DeclarationComposite<org.lgna.project.ast.UserParameter> {
+	private static java.util.Map< org.lgna.project.ast.UserCode, ParameterDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ParameterDeclarationComposite getInstance( org.lgna.project.ast.UserCode code ) {
+		synchronized( map ) {
+			ParameterDeclarationComposite rv = map.get( code );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ParameterDeclarationComposite( code );
+				map.put( code, rv );
+			}
+			return rv;
 		}
-		this.removeParameter( this.index );
+	}
+	private final org.lgna.project.ast.UserCode code;
+	private ParameterDeclarationComposite( org.lgna.project.ast.UserCode code ) {
+		super( java.util.UUID.fromString( "628f8e97-84b5-480c-8f05-d69749a4203e" ), new Details()
+			.valueComponentType( Status.APPLICABLE_AND_EDITBLE, null )
+			.valueIsArrayType( Status.APPLICABLE_AND_EDITBLE, false )
+			.name( new org.alice.ide.name.validators.ParameterNameValidator( code ), Status.APPLICABLE_AND_EDITBLE )
+		);
+		this.code = code;
+	}
+
+	public org.lgna.project.ast.UserCode getCode() {
+		return this.code;
 	}
 	@Override
-	protected final void undoInternal() {
-		this.addParameter( this.index );
+	protected org.alice.ide.ast.declaration.views.ParameterDeclarationView createView() {
+		return new org.alice.ide.ast.declaration.views.ParameterDeclarationView( this );
+	}
+	private org.lgna.project.ast.UserParameter createParameter() {
+		return new org.lgna.project.ast.UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
-		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), org.lgna.croquet.Application.getLocale());
-		return rv;
+	public org.lgna.project.ast.UserParameter getPreviewValue() {
+		return this.createParameter();
+	}
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return new org.alice.ide.croquet.edits.ast.AddParameterEdit( completionStep, this.code, this.createParameter() );
 	}
 }

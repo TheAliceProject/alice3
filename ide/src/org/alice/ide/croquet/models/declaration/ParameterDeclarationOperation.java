@@ -91,6 +91,6 @@ public class ParameterDeclarationOperation extends DeclarationOperation< org.lgn
 		assert valueType != null;
 		assert declarationName != null;
 		assert initializer == null;
-		return new org.alice.ide.croquet.edits.ast.AddParameterEdit( step, new org.lgna.project.ast.UserParameter( declarationName, valueType ) );
+		return new org.alice.ide.croquet.edits.ast.AddParameterEdit( step, this.code, new org.lgna.project.ast.UserParameter( declarationName, valueType ) );
 	}
 }

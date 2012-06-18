@@ -46,6 +46,7 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview.components.PanelWithPreview {
+	private org.lgna.croquet.components.TextField nameTextField;
 	public DeclarationLikeSubstanceView( org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite ) {
 		super( composite );
 		this.setMinimumPreferredWidth( 480 );
@@ -100,9 +101,10 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 		
 				org.lgna.croquet.StringState nameState = composite.getNameState();
 				if( nameState != null ) {
+					nameTextField = nameState.createTextField();
 					rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
 							nameState.getSidekickLabel(), 
-							nameState.createTextField() 
+							nameTextField
 					) );
 				}
 				
@@ -128,5 +130,24 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 				pageStart( rowsSpringPanel )
 		.build();
 		
+	}
+	
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		if( this.nameTextField != null ) {
+			final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
+			final org.lgna.croquet.StringState nameState = composite.getNameState();
+			if( nameState != null ) {
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						nameState.selectAll();
+						nameTextField.requestFocus();
+					}
+				} );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			}
+		}
 	}
 }

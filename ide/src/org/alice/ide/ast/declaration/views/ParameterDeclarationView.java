@@ -40,35 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.edits.ast;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteParameterEdit extends ParameterEdit {
-	private transient int index;
-	public DeleteParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
-		super( completionStep, code, parameter );
-	}
-	public DeleteParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
+public class ParameterDeclarationView extends DeclarationView<org.lgna.project.ast.UserParameter> {
+	public ParameterDeclarationView( org.alice.ide.ast.declaration.ParameterDeclarationComposite composite ) {
+		super( composite );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getParameterColor() );
 	}
 	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			this.index = this.getParametersProperty().indexOf( this.getParameter() );
-		}
-		this.removeParameter( this.index );
-	}
-	@Override
-	protected final void undoInternal() {
-		this.addParameter( this.index );
-	}
-	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
-		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), org.lgna.croquet.Application.getLocale());
-		return rv;
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.ParameterDeclarationComposite composite = (org.alice.ide.ast.declaration.ParameterDeclarationComposite)this.getComposite();
+		org.lgna.project.ast.UserParameter parameter = composite.getPreviewValue();
+		return new org.alice.ide.codeeditor.TypedParameterPane( null, parameter );
 	}
 }
