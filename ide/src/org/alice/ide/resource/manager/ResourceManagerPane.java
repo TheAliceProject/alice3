@@ -42,244 +42,22 @@
  */
 package org.alice.ide.resource.manager;
 
-class ResourceTableModel extends javax.swing.table.AbstractTableModel {
-	public static final int IS_REFERENCED_COLUMN_INDEX = 2;
-	public static final int NAME_COLUMN_INDEX = 0;
-	public static final int TYPE_COLUMN_INDEX = 1;
-	private org.lgna.common.Resource[] resources;
-	private java.util.Set< org.lgna.common.Resource > referencedResources;
-
-	public ResourceTableModel( org.lgna.common.Resource[] resources, java.util.Set< org.lgna.common.Resource > referencedResources ) {
-		this.resources = resources;
-		this.referencedResources = referencedResources;
-	}
-	public int getColumnCount() {
-		return 3;
-	}
-	public int getRowCount() {
-		if( this.resources != null ) {
-			return this.resources.length;
-		} else {
-			return 0;
-		}
-	}
-	@Override
-	public String getColumnName( int columnIndex ) {
-		switch( columnIndex ) {
-		case IS_REFERENCED_COLUMN_INDEX:
-			return "is referenced?";
-		case NAME_COLUMN_INDEX:
-			return "name";
-		case TYPE_COLUMN_INDEX:
-			return "type";
-		default:
-			return null;
-		}
-	}
-	public Object getValueAt( int rowIndex, int columnIndex ) {
-		switch( columnIndex ) {
-		case IS_REFERENCED_COLUMN_INDEX:
-			return this.referencedResources.contains( this.resources[ rowIndex ] );
-		case NAME_COLUMN_INDEX:
-			return this.resources[ rowIndex ];
-		case TYPE_COLUMN_INDEX:
-			return this.resources[ rowIndex ].getClass();
-		default:
-			return null;
-		}
-	}
-}
-
-abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.TableCellRenderer< E > {
-	@Override
-	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
-		rv.setBorder( null );
-		return rv;
-	}
-}
-
-class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer< Boolean > {
-	@Override
-	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
-		String text;
-		java.awt.Color foreground;
-		if( value ) {
-			foreground = java.awt.Color.BLACK;
-			text = "yes";
-		} else {
-			foreground = new java.awt.Color( 255, 0, 0 );
-			text = "NO";
-		}
-		rv.setText( text );
-		rv.setForeground( foreground );
-		return rv;
-	}
-}
-
-class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? extends org.lgna.common.Resource >> {
-	@Override
-	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class< ? extends org.lgna.common.Resource > value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
-		String text;
-		java.awt.Color foreground;
-		if( value != null ) {
-			foreground = java.awt.Color.BLACK;
-			text = value.getSimpleName();
-			final String RESOURCE_TEXT = "Resource";
-			if( text.endsWith( RESOURCE_TEXT ) ) {
-				text = text.substring( 0, text.length() - RESOURCE_TEXT.length() );
-			}
-			//			text += " (";
-			//			text += value.getContentType();
-			//			text += ")";
-		} else {
-			foreground = new java.awt.Color( 255, 0, 0 );
-			text = "ERROR";
-		}
-		rv.setText( text );
-		rv.setForeground( foreground );
-		return rv;
-	}
-}
-
-class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.lgna.common.Resource > {
-	@Override
-	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, org.lgna.common.Resource value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
-		String text;
-		java.awt.Color foreground;
-		if( value != null ) {
-			foreground = java.awt.Color.BLACK;
-			text = value.getName();
-		} else {
-			foreground = new java.awt.Color( 255, 0, 0 );
-			text = "ERROR";
-		}
-		rv.setText( text );
-		rv.setForeground( foreground );
-		return rv;
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
 public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel {
-	abstract class ResourceOperation extends org.lgna.croquet.ActionOperation {
-		public ResourceOperation( java.util.UUID individualId ) {
-			super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
-		}
-		protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource );
-
-		//todo: better name
-		protected abstract org.lgna.common.Resource selectResource();
-		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			org.lgna.common.Resource resource = this.selectResource();
-			if( resource != null ) {
-				step.commitAndInvokeDo( this.createEdit( step, resource ) );
-			} else {
-				step.cancel();
-			}
-		}
-	}
-
-	abstract class AddOrRemoveResourceEdit extends org.alice.ide.ToDoEdit {
-		public AddOrRemoveResourceEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
-			super( step );
-		}
-		protected void addResource( org.lgna.common.Resource resource ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			if( ide != null ) {
-				org.lgna.project.Project project = ide.getProject();
-				if( project != null ) {
-					project.addResource( resource );
-					ResourceManagerPane.this.resetModel();
-				}
-			}
-		}
-		protected void removeResource( org.lgna.common.Resource resource ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			if( ide != null ) {
-				org.lgna.project.Project project = ide.getProject();
-				if( project != null ) {
-					project.removeResource( resource );
-					ResourceManagerPane.this.resetModel();
-				}
-			}
-		}
-	}
-
-	class ImportResourceOperation extends ResourceOperation {
-		public ImportResourceOperation() {
-			super( java.util.UUID.fromString( "bb2a56b9-9564-4daa-b349-d7d95d1529dd" ) );
-			this.setName( "Import..." );
-		}
-		@Override
-		public org.lgna.common.Resource selectResource() {
-			org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
-			int result = javax.swing.JOptionPane.showOptionDialog( frame.getAwtComponent(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
-					"Import Audio...", "Import Image..." }, null );
-			switch( result ) {
-			case javax.swing.JOptionPane.YES_OPTION:
-				return org.alice.ide.ast.importers.AudioResourceImporter.getInstance().createValue( "Import Audio" );
-			case javax.swing.JOptionPane.NO_OPTION:
-				return org.alice.ide.ast.importers.ImageResourceImporter.getInstance().createValue( "Import Image" );
-			default:
-				return null;
-			}
-		}
-		@Override
-		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, final org.lgna.common.Resource resource ) {
-			return new AddOrRemoveResourceEdit( step ) {
-				@Override
-				protected final void doOrRedoInternal( boolean isDo ) {
-					this.addResource( resource );
-				}
-				@Override
-				protected final void undoInternal() {
-					this.removeResource( resource );
-				}
-				@Override
-				protected StringBuilder updatePresentation( StringBuilder rv ) {
-					rv.append( "add resource" );
-					rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( resource ) );
-					return rv;
-				}
-			};
-		}
-	}
-
 	class RemoveResourceOperation extends ResourceOperation {
 		public RemoveResourceOperation() {
 			super( java.util.UUID.fromString( "a1df4e40-3d74-46b7-8d57-9b55d793cea6" ) );
 			this.setName( "Remove" );
 		}
 		@Override
-		public org.lgna.common.Resource selectResource() {
+		public org.lgna.common.Resource getResource() {
 			return ResourceManagerPane.this.getSelectedResource();
 		}
 		@Override
-		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, final org.lgna.common.Resource resource ) {
-			return new AddOrRemoveResourceEdit( step ) {
-				@Override
-				protected final void doOrRedoInternal( boolean isDo ) {
-					this.removeResource( resource );
-				}
-				@Override
-				protected final void undoInternal() {
-					this.addResource( resource );
-				}
-				@Override
-				protected StringBuilder updatePresentation( StringBuilder rv ) {
-					rv.append( "remove resource" );
-					rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( resource ) );
-					return rv;
-				}
-			};
+		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource ) {
+			return new org.alice.ide.resource.manager.edits.RemoveResourceEdit( step, resource );
 		}
 	}
 
@@ -540,10 +318,9 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			}
 		}
 	};
+	private RemoveResourceOperation removeResourceOperation = new RemoveResourceOperation();
 	private RenameResourceOperation renameResourceOperation = new RenameResourceOperation();
 	private ReloadResourceOperation replaceResourceOperation = new ReloadResourceOperation();
-	private ImportResourceOperation addResourceOperation = new ImportResourceOperation();
-	private RemoveResourceOperation removeResourceOperation = new RemoveResourceOperation();
 
 	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
@@ -553,6 +330,15 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 					renameResourceOperation.fire( e );
 				}
 			}
+		}
+	};
+	
+	private final org.lgna.project.event.ResourceListener resourceListener = new org.lgna.project.event.ResourceListener() {
+		public void resourceAdded(org.lgna.project.event.ResourceEvent e) {
+			resetModel();
+		}
+		public void resourceRemoved(org.lgna.project.event.ResourceEvent e) {
+			resetModel();
 		}
 	};
 
@@ -570,7 +356,8 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		this.addCenterComponent( scrollPane );
 
 		org.lgna.croquet.components.Panel pane = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(  
-				this.addResourceOperation.createButton(),
+				ImportAudioResourceOperation.getInstance().createButton(),
+				ImportImageResourceOperation.getInstance().createButton(),
 				this.removeResourceOperation.createButton(), 
 				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), 
 				this.renameResourceOperation.createButton(), 
@@ -588,6 +375,7 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 			return null;
 		}
 	}
+	
 	private void resetModel() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
@@ -639,19 +427,28 @@ public class ResourceManagerPane extends org.lgna.croquet.components.BorderPanel
 		this.table.addMouseListener( this.mouseAdapter );
 		this.table.addMouseMotionListener( this.mouseAdapter );
 		//this.table.getColumnModel().getSelectionModel().addListSelectionListener( this.listSelectionAdapter );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			org.lgna.project.Project project = ide.getUpToDateProject();
+			if( project != null ) {
+				project.addResourceListener( this.resourceListener );
+			}
+		}
 	}
 
 	@Override
 	protected void handleUndisplayable() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			org.lgna.project.Project project = ide.getUpToDateProject();
+			if( project != null ) {
+				project.removeResourceListener( this.resourceListener );
+			}
+		}
 		this.table.removeMouseMotionListener( this.mouseAdapter );
 		this.table.removeMouseListener( this.mouseAdapter );
 		this.table.getSelectionModel().removeListSelectionListener( this.listSelectionAdapter );
 		//this.table.getColumnModel().getSelectionModel().removeListSelectionListener( this.listSelectionAdapter );
 		super.handleUndisplayable();
 	}
-
-//	@Override
-//	public java.awt.Dimension getPreferredSize() {
-//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 400 );
-//	}
 }

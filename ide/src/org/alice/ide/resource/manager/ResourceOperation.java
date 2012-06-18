@@ -40,43 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.rename;
+
+package org.alice.ide.resource.manager;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
-
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
-		this.nameValidator = nameValidator;
+public abstract class ResourceOperation extends org.lgna.croquet.ActionOperation {
+	public ResourceOperation( java.util.UUID migrationId ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, migrationId );
 	}
-	public org.lgna.croquet.StringState getNameState() {
-		return this.nameState;
-	}
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource );
+	protected abstract org.lgna.common.Resource getResource();
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( nameValidator != null ) {
-			String candidate = this.nameState.getValue();
-			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-			if( explanation != null ) {
-				errorStatus.setText( explanation );
-				return errorStatus;
-			} else {
-				return IS_GOOD_TO_GO_STATUS;
-			}
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		org.lgna.common.Resource resource = this.getResource();
+		if( resource != null ) {
+			step.commitAndInvokeDo( this.createEdit( step, resource ) );
 		} else {
-			return IS_GOOD_TO_GO_STATUS;
+			step.cancel();
 		}
-	}
-	protected abstract String getInitialValue();
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
 	}
 }

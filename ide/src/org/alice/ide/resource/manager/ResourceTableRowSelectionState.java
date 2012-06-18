@@ -40,43 +40,68 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.rename;
+
+package org.alice.ide.resource.manager;
+
+class ResourceTableModel extends javax.swing.table.AbstractTableModel {
+	public static final int IS_REFERENCED_COLUMN_INDEX = 2;
+	public static final int NAME_COLUMN_INDEX = 0;
+	public static final int TYPE_COLUMN_INDEX = 1;
+	private org.lgna.common.Resource[] resources;
+	private java.util.Set< org.lgna.common.Resource > referencedResources;
+
+	public ResourceTableModel( org.lgna.common.Resource[] resources, java.util.Set< org.lgna.common.Resource > referencedResources ) {
+		this.resources = resources;
+		this.referencedResources = referencedResources;
+	}
+	public int getColumnCount() {
+		return 3;
+	}
+	public int getRowCount() {
+		if( this.resources != null ) {
+			return this.resources.length;
+		} else {
+			return 0;
+		}
+	}
+	@Override
+	public String getColumnName( int columnIndex ) {
+		switch( columnIndex ) {
+		case IS_REFERENCED_COLUMN_INDEX:
+			return "is referenced?";
+		case NAME_COLUMN_INDEX:
+			return "name";
+		case TYPE_COLUMN_INDEX:
+			return "type";
+		default:
+			return null;
+		}
+	}
+	public Object getValueAt( int rowIndex, int columnIndex ) {
+		switch( columnIndex ) {
+		case IS_REFERENCED_COLUMN_INDEX:
+			return this.referencedResources.contains( this.resources[ rowIndex ] );
+		case NAME_COLUMN_INDEX:
+			return this.resources[ rowIndex ];
+		case TYPE_COLUMN_INDEX:
+			return this.resources[ rowIndex ].getClass();
+		default:
+			return null;
+		}
+	}
+}
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
-
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
-		this.nameValidator = nameValidator;
+public class ResourceTableRowSelectionState extends org.lgna.croquet.TableRowSelectionState< org.lgna.common.Resource > {
+	private static class SingletonHolder {
+		private static ResourceTableRowSelectionState instance = new ResourceTableRowSelectionState();
 	}
-	public org.lgna.croquet.StringState getNameState() {
-		return this.nameState;
+	public static ResourceTableRowSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( nameValidator != null ) {
-			String candidate = this.nameState.getValue();
-			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-			if( explanation != null ) {
-				errorStatus.setText( explanation );
-				return errorStatus;
-			} else {
-				return IS_GOOD_TO_GO_STATUS;
-			}
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
-		}
-	}
-	protected abstract String getInitialValue();
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
+	private ResourceTableRowSelectionState() {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2b630438-6852-4b4d-b234-a1fba69f81f8" ), null, org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ), null, null, null );
 	}
 }

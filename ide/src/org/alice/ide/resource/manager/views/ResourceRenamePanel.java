@@ -40,43 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.rename;
+
+package org.alice.ide.resource.manager.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
-
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
-		this.nameValidator = nameValidator;
-	}
-	public org.lgna.croquet.StringState getNameState() {
-		return this.nameState;
-	}
-	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( nameValidator != null ) {
-			String candidate = this.nameState.getValue();
-			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-			if( explanation != null ) {
-				errorStatus.setText( explanation );
-				return errorStatus;
-			} else {
-				return IS_GOOD_TO_GO_STATUS;
-			}
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
-		}
-	}
-	protected abstract String getInitialValue();
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
+public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.RenamePanel {
+	public ResourceRenamePanel( org.alice.ide.resource.manager.RenameResourceComposite composite ) {
+		super( composite );
 	}
 }

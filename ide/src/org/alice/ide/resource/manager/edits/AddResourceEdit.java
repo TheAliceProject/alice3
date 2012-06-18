@@ -40,43 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.rename;
+
+package org.alice.ide.resource.manager.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
-
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
-		this.nameValidator = nameValidator;
-	}
-	public org.lgna.croquet.StringState getNameState() {
-		return this.nameState;
+public final class AddResourceEdit extends AddOrRemoveResourceEdit {
+	public AddResourceEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.common.Resource resource ) {
+		super( completionStep, resource );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( nameValidator != null ) {
-			String candidate = this.nameState.getValue();
-			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-			if( explanation != null ) {
-				errorStatus.setText( explanation );
-				return errorStatus;
-			} else {
-				return IS_GOOD_TO_GO_STATUS;
-			}
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
-		}
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.addResource();
 	}
-	protected abstract String getInitialValue();
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
+	protected final void undoInternal() {
+		this.removeResource();
+	}
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
+		rv.append( "add resource" );
+		rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( this.getResource() ) );
+		return rv;
 	}
 }

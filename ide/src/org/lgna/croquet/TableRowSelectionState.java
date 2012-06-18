@@ -40,43 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.rename;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
-
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
-		this.nameValidator = nameValidator;
-	}
-	public org.lgna.croquet.StringState getNameState() {
-		return this.nameState;
-	}
-	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( nameValidator != null ) {
-			String candidate = this.nameState.getValue();
-			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-			if( explanation != null ) {
-				errorStatus.setText( explanation );
-				return errorStatus;
-			} else {
-				return IS_GOOD_TO_GO_STATUS;
-			}
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
+public abstract class TableRowSelectionState<T> extends ItemState< T > {
+	public class SwingModel {
+		private final javax.swing.table.TableModel tableModel;
+		private final javax.swing.ListSelectionModel listSelectionModel;
+		private final javax.swing.table.TableColumnModel tableColumnModel;
+		private SwingModel( javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
+			this.tableModel = tableModel;
+			this.tableColumnModel = tableColumnModel;
+			this.listSelectionModel = listSelectionModel;
+		}
+		public javax.swing.table.TableModel getTableModel() {
+			return this.tableModel;
+		}
+		public javax.swing.table.TableColumnModel getTableColumnModel() {
+			return this.tableColumnModel;
+		}
+		public javax.swing.ListSelectionModel getListSelectionModel() {
+			return this.listSelectionModel;
 		}
 	}
-	protected abstract String getInitialValue();
+
+	private final SwingModel swingModel;
+	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec< T > itemCodec, javax.swing.table.DefaultTableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
+		super( group, migrationId, initialValue, itemCodec );
+		this.swingModel = new SwingModel( tableModel, tableColumnModel, listSelectionModel );
+	}
+	
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
+	protected void localize() {
+	}
+	@Override
+	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+	@Override
+	protected T getActualValue() {
+		return null;
+	}
+	@Override
+	protected void updateSwingModel(T nextValue) {
+	}
+	public SwingModel getSwingModel() {
+		return this.swingModel;
+	}
+	public org.lgna.croquet.components.Table< T > createTable() {
+		return new org.lgna.croquet.components.Table< T >( this );
 	}
 }

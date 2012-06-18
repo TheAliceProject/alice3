@@ -40,43 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.rename;
+
+package org.alice.ide.resource.manager;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
-
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
-		this.nameValidator = nameValidator;
+public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialogOperationComposite< org.alice.ide.resource.manager.ResourceManagerView > {
+	private static class SingletonHolder {
+		private static ResourceManagerComposite instance = new ResourceManagerComposite();
 	}
-	public org.lgna.croquet.StringState getNameState() {
-		return this.nameState;
+	public static ResourceManagerComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private ResourceManagerComposite() {
+		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+	}
+	public ResourceTableRowSelectionState getResourceState() { 
+		return ResourceTableRowSelectionState.getInstance();
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( nameValidator != null ) {
-			String candidate = this.nameState.getValue();
-			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-			if( explanation != null ) {
-				errorStatus.setText( explanation );
-				return errorStatus;
-			} else {
-				return IS_GOOD_TO_GO_STATUS;
-			}
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
+	protected org.alice.ide.resource.manager.ResourceManagerView createView() {
+		return new org.alice.ide.resource.manager.ResourceManagerView( this );
+	}
+	
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
-	}
-	protected abstract String getInitialValue();
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		ResourceManagerComposite.getInstance().getOperation().fire();
+		System.exit( 0 );
 	}
 }

@@ -40,43 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.rename;
+
+package org.alice.ide.resource.manager;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
-	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
-
-	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
-		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
-		this.nameValidator = nameValidator;
-	}
-	public org.lgna.croquet.StringState getNameState() {
-		return this.nameState;
-	}
-	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( nameValidator != null ) {
-			String candidate = this.nameState.getValue();
-			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-			if( explanation != null ) {
-				errorStatus.setText( explanation );
-				return errorStatus;
-			} else {
-				return IS_GOOD_TO_GO_STATUS;
-			}
+public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComposite<org.alice.ide.resource.manager.views.ResourceRenamePanel> {
+	private static java.util.Map< org.lgna.common.Resource, RenameResourceComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized RenameResourceComposite getInstance( org.lgna.common.Resource resource ) {
+		assert resource != null;
+		RenameResourceComposite rv = map.get( resource );
+		if( rv != null ) {
+			//pass
 		} else {
-			return IS_GOOD_TO_GO_STATUS;
+			rv = new RenameResourceComposite( resource );
+			map.put( resource, rv );
 		}
+		return rv;
 	}
-	protected abstract String getInitialValue();
+	private final org.lgna.common.Resource resource;
+	private RenameResourceComposite( org.lgna.common.Resource resource ) {
+		super( java.util.UUID.fromString( "52410415-1293-4857-9e35-4d52bc4f2a9d" ), null );
+		this.resource = resource;
+	}
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.nameState.setValueTransactionlessly( this.getInitialValue() );
-		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
+	protected String getInitialValue() {
+		return this.resource.getName();
+	}
+	@Override
+	protected org.alice.ide.resource.manager.views.ResourceRenamePanel createView() {
+		return new org.alice.ide.resource.manager.views.ResourceRenamePanel( this );
+	}
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep ) {
+		return null;
 	}
 }
