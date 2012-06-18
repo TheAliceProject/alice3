@@ -54,6 +54,9 @@ public abstract class RenameComposite<V extends org.alice.ide.ast.rename.compone
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 		this.nameValidator = nameValidator;
 	}
+	protected org.alice.ide.name.NameValidator getNameValidator() {
+		return this.nameValidator;
+	}
 	public org.lgna.croquet.StringState getNameState() {
 		return this.nameState;
 	}

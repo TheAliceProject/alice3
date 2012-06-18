@@ -47,7 +47,35 @@ package org.alice.ide.resource.manager.views;
  * @author Dennis Cosgrove
  */
 public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.RenamePanel {
+	private static final int SIZE = 128;
+	private final org.lgna.croquet.components.BorderPanel centerPanel = new org.lgna.croquet.components.BorderPanel();
+	private final edu.cmu.cs.dennisc.javax.swing.components.JImageView jImageView = new edu.cmu.cs.dennisc.javax.swing.components.JImageView( SIZE );
 	public ResourceRenamePanel( org.alice.ide.resource.manager.RenameResourceComposite composite ) {
 		super( composite );
+		this.centerPanel.setMinimumPreferredHeight( SIZE );
+		this.addCenterComponent( this.centerPanel );
+	}
+	public void setResource( org.lgna.common.Resource resource ) {
+		this.centerPanel.forgetAndRemoveAllComponents();
+		java.awt.Component awtComponent;
+		String constraint;
+		if( resource instanceof org.lgna.common.resources.ImageResource ) {
+			org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)resource;
+			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
+			jImageView.setBufferedImage(bufferedImage);
+			awtComponent = jImageView;
+			constraint = java.awt.BorderLayout.CENTER;
+		} else if( resource instanceof org.lgna.common.resources.AudioResource ) {
+			org.lgna.common.resources.AudioResource audioResource = (org.lgna.common.resources.AudioResource)resource;
+			edu.cmu.cs.dennisc.media.Player player = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createPlayer( audioResource );
+			awtComponent = player.getControlPanelComponent();
+			constraint = java.awt.BorderLayout.PAGE_START;
+		} else {
+			awtComponent = null;
+			constraint = null;
+		}
+		if( awtComponent != null ) {
+			this.centerPanel.getAwtComponent().add( awtComponent, constraint );
+		}
 	}
 }

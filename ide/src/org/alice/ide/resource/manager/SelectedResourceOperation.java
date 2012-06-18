@@ -40,74 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.name;
+package org.alice.ide.resource.manager;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameInputPane extends org.lgna.croquet.components.RowsSpringPanel {
-	private org.lgna.croquet.StringState nameState = new org.lgna.croquet.StringState(
-			org.lgna.croquet.Application.INHERIT_GROUP,
-			java.util.UUID.fromString( "482c237a-c2b3-48dc-a8e2-380edfdfffe3" ),
-			""
-	) {};
-	private org.lgna.croquet.components.TextField textField;
-//	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
-
-	public void setAndSelectNameText( String text ) {
-		if( text != null ) {
-			this.nameState.setValueTransactionlessly( text );
-			this.getTextField().selectAll();
-		}
+public abstract class SelectedResourceOperation extends ResourceOperation {
+	public SelectedResourceOperation( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
-
-	protected abstract String getExplanationIfOkButtonShouldBeDisabled( String name );
-
-	private org.lgna.croquet.components.TextField getTextField() {
-		if( this.textField != null ) {
-			//pass
-		} else {
-			this.textField = this.nameState.createTextField();
-		}
-		return this.textField;
-	}
-	public String getNameText() {
-		return this.nameState.getValue();
-	}
-//	@Override
-//	public boolean isOKButtonValid() {
-//		return super.isOKButtonValid() && this.isNameAcceptable( this.textField.getText() );
-//	}
 	@Override
-	protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
-//		assert this.textField != null;
-//		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-//			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
-//				javax.swing.text.Document document = e.getDocument();
-//				try {
-//					handleNameTextChange( document.getText( 0, document.getLength() ) );
-//				} catch( javax.swing.text.BadLocationException ble ) {
-//					throw new RuntimeException( ble );
-//				}
-//			}
-//			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-//				this.handleUpdate( e );
-//			}
-//			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-//				this.handleUpdate( e );
-//			}
-//			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-//				this.handleUpdate( e );
-//			}
-//		} );
-
-		rv.add( 
-				org.lgna.croquet.components.SpringUtilities.createRow( 
-						org.lgna.croquet.components.SpringUtilities.createTrailingLabel( "name:" ),
-						this.getTextField()
-				) 
-		);
-		return rv;
-	}	
-
+	protected final org.lgna.common.Resource getResource() {
+		return ResourceTableRowSelectionState.getInstance().getValue();
+	}
 }

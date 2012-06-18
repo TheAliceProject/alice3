@@ -47,26 +47,22 @@ package org.alice.ide.resource.manager;
  * @author Dennis Cosgrove
  */
 public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComposite<org.alice.ide.resource.manager.views.ResourceRenamePanel> {
-	private static java.util.Map< org.lgna.common.Resource, RenameResourceComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized RenameResourceComposite getInstance( org.lgna.common.Resource resource ) {
-		assert resource != null;
-		RenameResourceComposite rv = map.get( resource );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RenameResourceComposite( resource );
-			map.put( resource, rv );
-		}
-		return rv;
+	private static class SingletonHolder {
+		private static RenameResourceComposite instance = new RenameResourceComposite();
 	}
-	private final org.lgna.common.Resource resource;
-	private RenameResourceComposite( org.lgna.common.Resource resource ) {
-		super( java.util.UUID.fromString( "52410415-1293-4857-9e35-4d52bc4f2a9d" ), null );
-		this.resource = resource;
+	public static RenameResourceComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private RenameResourceComposite() {
+		super( java.util.UUID.fromString( "52410415-1293-4857-9e35-4d52bc4f2a9d" ), new org.alice.ide.name.validators.ResourceNameValidator() );
+	}
+	private org.lgna.common.Resource getResource() {
+		return ResourceTableRowSelectionState.getInstance().getValue();
 	}
 	@Override
 	protected String getInitialValue() {
-		return this.resource.getName();
+		org.lgna.common.Resource resource = this.getResource();
+		return resource != null ? resource.getName() : null;
 	}
 	@Override
 	protected org.alice.ide.resource.manager.views.ResourceRenamePanel createView() {
@@ -74,6 +70,18 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep ) {
-		return null;
+		org.lgna.common.Resource resource = this.getResource();
+		if( resource != null ) {
+			return new org.alice.ide.resource.manager.edits.RenameResourceEdit( completionStep, resource, resource.getName(), this.getNameState().getValue() );
+		} else {
+			return null;
+		}
+	}
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		org.lgna.common.Resource resource = ResourceTableRowSelectionState.getInstance().getValue(); 
+		((org.alice.ide.name.validators.ResourceNameValidator)this.getNameValidator()).setResource( resource );
+		this.getView().setResource( resource );
+		super.handlePreShowDialog( step );
 	}
 }

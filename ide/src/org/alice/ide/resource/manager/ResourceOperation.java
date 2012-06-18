@@ -57,7 +57,12 @@ public abstract class ResourceOperation extends org.lgna.croquet.ActionOperation
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.lgna.common.Resource resource = this.getResource();
 		if( resource != null ) {
-			step.commitAndInvokeDo( this.createEdit( step, resource ) );
+			org.lgna.croquet.edits.Edit edit = this.createEdit( step, resource );
+			if( edit != null ) {
+				step.commitAndInvokeDo( edit );
+			} else {
+				step.cancel();
+			}
 		} else {
 			step.cancel();
 		}

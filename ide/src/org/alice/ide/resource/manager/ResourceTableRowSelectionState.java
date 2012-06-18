@@ -44,16 +44,9 @@
 package org.alice.ide.resource.manager;
 
 class ResourceTableModel extends javax.swing.table.AbstractTableModel {
-	public static final int IS_REFERENCED_COLUMN_INDEX = 2;
-	public static final int NAME_COLUMN_INDEX = 0;
-	public static final int TYPE_COLUMN_INDEX = 1;
 	private org.lgna.common.Resource[] resources;
 	private java.util.Set< org.lgna.common.Resource > referencedResources;
 
-	public ResourceTableModel( org.lgna.common.Resource[] resources, java.util.Set< org.lgna.common.Resource > referencedResources ) {
-		this.resources = resources;
-		this.referencedResources = referencedResources;
-	}
 	public int getColumnCount() {
 		return 3;
 	}
@@ -67,11 +60,11 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	@Override
 	public String getColumnName( int columnIndex ) {
 		switch( columnIndex ) {
-		case IS_REFERENCED_COLUMN_INDEX:
+		case ResourceTableRowSelectionState.IS_REFERENCED_COLUMN_INDEX:
 			return "is referenced?";
-		case NAME_COLUMN_INDEX:
+		case ResourceTableRowSelectionState.NAME_COLUMN_INDEX:
 			return "name";
-		case TYPE_COLUMN_INDEX:
+		case ResourceTableRowSelectionState.TYPE_COLUMN_INDEX:
 			return "type";
 		default:
 			return null;
@@ -79,15 +72,29 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	}
 	public Object getValueAt( int rowIndex, int columnIndex ) {
 		switch( columnIndex ) {
-		case IS_REFERENCED_COLUMN_INDEX:
+		case ResourceTableRowSelectionState.IS_REFERENCED_COLUMN_INDEX:
 			return this.referencedResources.contains( this.resources[ rowIndex ] );
-		case NAME_COLUMN_INDEX:
+		case ResourceTableRowSelectionState.NAME_COLUMN_INDEX:
 			return this.resources[ rowIndex ];
-		case TYPE_COLUMN_INDEX:
+		case ResourceTableRowSelectionState.TYPE_COLUMN_INDEX:
 			return this.resources[ rowIndex ].getClass();
 		default:
 			return null;
 		}
+	}
+	public org.lgna.common.Resource[] getResources() {
+		return this.resources;
+	}
+	
+	public void reload( org.lgna.project.Project project ) {
+		if( project != null ) {
+			this.resources = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( project.getResources(), org.lgna.common.Resource.class, true );
+			this.referencedResources = org.lgna.project.ProgramTypeUtilities.getReferencedResources( project );
+		} else {
+			this.resources = new org.lgna.common.Resource[] {};
+			this.referencedResources = java.util.Collections.emptySet();
+		}
+		this.fireTableDataChanged();
 	}
 }
 
@@ -95,6 +102,9 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
  * @author Dennis Cosgrove
  */
 public class ResourceTableRowSelectionState extends org.lgna.croquet.TableRowSelectionState< org.lgna.common.Resource > {
+	public static final int NAME_COLUMN_INDEX = 0;
+	public static final int TYPE_COLUMN_INDEX = 1;
+	public static final int IS_REFERENCED_COLUMN_INDEX = 2;
 	private static class SingletonHolder {
 		private static ResourceTableRowSelectionState instance = new ResourceTableRowSelectionState();
 	}
@@ -102,6 +112,22 @@ public class ResourceTableRowSelectionState extends org.lgna.croquet.TableRowSel
 		return SingletonHolder.instance;
 	}
 	private ResourceTableRowSelectionState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2b630438-6852-4b4d-b234-a1fba69f81f8" ), null, org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ), null, null, null );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2b630438-6852-4b4d-b234-a1fba69f81f8" ), null, org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ), new ResourceTableModel() );
+	}
+	
+	@Override
+	protected org.lgna.common.Resource getActualValueAt( int selectionIndex ) {
+		ResourceTableModel resourceTableModel = (ResourceTableModel)this.getSwingModel().getTableModel();
+		return resourceTableModel.getResources()[ selectionIndex ];
+	}
+	@Override
+	protected void updateSwingModel(org.lgna.common.Resource nextValue) {
+		//todo
+	}
+	
+	
+	public void reloadTableModel( org.lgna.project.Project project ) {
+		ResourceTableModel resourceTableModel = (ResourceTableModel)this.getSwingModel().getTableModel();
+		resourceTableModel.reload( project );
 	}
 }

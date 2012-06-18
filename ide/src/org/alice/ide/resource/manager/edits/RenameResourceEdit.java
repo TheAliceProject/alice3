@@ -40,38 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.resource.manager.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ManageResourcesOperation extends org.lgna.croquet.InputDialogOperation<Void> {
-	private static class SingletonHolder {
-		private static ManageResourcesOperation instance = new ManageResourcesOperation();
+public final class RenameResourceEdit extends org.lgna.croquet.edits.Edit {
+	private final org.lgna.common.Resource resource;
+	private final String prevValue;
+	private final String nextValue;
+	public RenameResourceEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.common.Resource resource, String prevValue, String nextValue ) {
+		super( completionStep );
+		this.resource = resource;
+		this.prevValue = prevValue;
+		this.nextValue = nextValue;
 	}
-	public static ManageResourcesOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ManageResourcesOperation() {
-		super( ENCLOSING_DIALOG_GROUP, java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle cancel" );
+	public RenameResourceEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.resource = org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ).decodeValue( binaryDecoder );
+		this.prevValue = binaryDecoder.decodeString();
+		this.nextValue = binaryDecoder.decodeString();
 	}
 	@Override
-	protected org.alice.ide.resource.manager.ResourceManagerPane prologue(org.lgna.croquet.history.CompletionStep<?> step) {
-		return new org.alice.ide.resource.manager.ResourceManagerPane();
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ).encodeValue( binaryEncoder, this.resource );
+		binaryEncoder.encode( this.prevValue );
+		binaryEncoder.encode( this.nextValue );
+	}
+
+	@Override
+	protected final void doOrRedoInternal( boolean isDo ) {
+		resource.setName( this.nextValue );
+		//todo
+		org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getView().repaint();
 	}
 	@Override
-	protected void epilogue(org.lgna.croquet.history.CompletionStep<?> step, boolean isOk) {
-		if( isOk ) {
-			step.finish();
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle cancel" );
-			step.cancel();
-		}
+	protected final void undoInternal() {
+		resource.setName( this.prevValue );
+		//todo
+		org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getView().repaint();
 	}
-//	@Override
-//	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.util.EventObject e, edu.cmu.cs.dennisc.croquet.Component<?> component) {
-//		org.alice.ide.resource.manager.ResourceManagerPane resourcesPane = new org.alice.ide.resource.manager.ResourceManagerPane();
-//		this.getIDE().showMessageDialog( resourcesPane, "Project Resources", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN, null );
-//	}	
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
+		rv.append( "rename resource: " );
+		rv.append( this.prevValue );
+		rv.append( " ===> " );
+		rv.append( this.nextValue );
+		return rv;
+	}
 }

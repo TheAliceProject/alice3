@@ -67,25 +67,60 @@ public abstract class TableRowSelectionState<T> extends ItemState< T > {
 		}
 	}
 
+	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			handleListSelectionChanged( e );
+		}
+	};
 	private final SwingModel swingModel;
-	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec< T > itemCodec, javax.swing.table.DefaultTableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
+	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec< T > itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
 		super( group, migrationId, initialValue, itemCodec );
 		this.swingModel = new SwingModel( tableModel, tableColumnModel, listSelectionModel );
+		this.swingModel.getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+	}
+	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec< T > itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel ) {
+		this( group, migrationId, initialValue, itemCodec, tableModel, tableColumnModel, new javax.swing.DefaultListSelectionModel() );
+	}
+	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec< T > itemCodec, javax.swing.table.TableModel tableModel ) {
+		this( group, migrationId, initialValue, itemCodec, tableModel, null ); //new javax.swing.table.DefaultTableColumnModel() );
 	}
 	
+	private void handleListSelectionChanged( javax.swing.event.ListSelectionEvent e ) {
+		T prevValue = null;
+		T nextValue = this.getValue();
+		boolean isAdjusting = false;
+		org.lgna.croquet.triggers.Trigger trigger = null;
+		this.fireChanging( prevValue, nextValue, isAdjusting );
+		if( this.isAppropriateToComplete() ) {
+			this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+		}
+		this.fireChanged( prevValue, nextValue, isAdjusting );
+	}
 	@Override
 	protected void localize() {
 	}
+	
+	protected abstract T getActualValueAt( int selectionIndex );
+	@Override
+	protected final T getActualValue() {
+		javax.swing.ListSelectionModel listSelectionModel = this.getSwingModel().getListSelectionModel();
+		int selectionIndex = listSelectionModel.getLeadSelectionIndex();
+		if( selectionIndex < 0 ) {
+			return null;
+		} else {
+			final int N = this.swingModel.getTableModel().getRowCount();
+			if( selectionIndex < N ) {
+				return this.getActualValueAt( selectionIndex );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( selectionIndex, N, this );
+				return null;
+			}
+		}
+	}
+	
 	@Override
 	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
 		return java.util.Collections.emptyList();
-	}
-	@Override
-	protected T getActualValue() {
-		return null;
-	}
-	@Override
-	protected void updateSwingModel(T nextValue) {
 	}
 	public SwingModel getSwingModel() {
 		return this.swingModel;

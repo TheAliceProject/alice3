@@ -45,24 +45,26 @@ package org.alice.ide.name.validators;
 
 public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
 	private org.lgna.common.Resource resource;
-	public ResourceNameValidator( org.lgna.common.Resource resource ) {
-		this.resource = resource;
-	}
 	public org.lgna.common.Resource getResource() {
 		return this.resource;
 	}
+	public void setResource( org.lgna.common.Resource resource ) {
+		this.resource = resource;
+	}
 	@Override
 	protected boolean isNameAvailable( String name ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( ide != null ) {
-			org.lgna.project.Project project = ide.getProject();
-			if( project != null ) {
-				java.util.Set< org.lgna.common.Resource > resources = project.getResources();
-				if( resources != null ) {
-					for( org.lgna.common.Resource resource : resources ) {
-						if( resource != null && resource != this.resource ) {
-							if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( name, resource.getName(), edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE ) ) {
-								return false;
+		if( this.resource != null ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+			if( ide != null ) {
+				org.lgna.project.Project project = ide.getProject();
+				if( project != null ) {
+					java.util.Set< org.lgna.common.Resource > resources = project.getResources();
+					if( resources != null ) {
+						for( org.lgna.common.Resource resource : resources ) {
+							if( resource != null && resource != this.resource ) {
+								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( name, resource.getName(), edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE ) ) {
+									return false;
+								}
 							}
 						}
 					}

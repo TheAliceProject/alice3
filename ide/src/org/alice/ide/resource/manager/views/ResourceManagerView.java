@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.resource.manager;
+package org.alice.ide.resource.manager.views;
 
 abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.TableCellRenderer< E > {
 	@Override
@@ -50,6 +50,21 @@ abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swi
 		rv.setBorder( null );
 		return rv;
 	}
+	protected java.awt.Color getForegroundColor( boolean isGoodToGo, boolean isSelected ) {
+		if( isGoodToGo ) {
+			if( isSelected ) {
+				return java.awt.Color.WHITE;
+			} else {
+				return java.awt.Color.BLACK;
+			}
+		} else {
+			if( isSelected ) {
+				return new java.awt.Color( 255, 127, 127 );
+			} else {
+				return java.awt.Color.RED.darker();
+			}
+		}
+	}
 }
 
 class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer< Boolean > {
@@ -57,16 +72,13 @@ class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer< B
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
 		String text;
-		java.awt.Color foreground;
 		if( value ) {
-			foreground = java.awt.Color.BLACK;
 			text = "yes";
 		} else {
-			foreground = new java.awt.Color( 255, 0, 0 );
 			text = "NO";
 		}
 		rv.setText( text );
-		rv.setForeground( foreground );
+		rv.setForeground( this.getForegroundColor( value, isSelected ) );
 		return rv;
 	}
 }
@@ -76,9 +88,7 @@ class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? 
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class< ? extends org.lgna.common.Resource > value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
 		String text;
-		java.awt.Color foreground;
 		if( value != null ) {
-			foreground = java.awt.Color.BLACK;
 			text = value.getSimpleName();
 			final String RESOURCE_TEXT = "Resource";
 			if( text.endsWith( RESOURCE_TEXT ) ) {
@@ -88,11 +98,10 @@ class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? 
 			//			text += value.getContentType();
 			//			text += ")";
 		} else {
-			foreground = new java.awt.Color( 255, 0, 0 );
 			text = "ERROR";
 		}
 		rv.setText( text );
-		rv.setForeground( foreground );
+		rv.setForeground( this.getForegroundColor( value!=null, isSelected ) );
 		return rv;
 	}
 }
@@ -102,16 +111,13 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.lgna.
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, org.lgna.common.Resource value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
 		String text;
-		java.awt.Color foreground;
 		if( value != null ) {
-			foreground = java.awt.Color.BLACK;
 			text = value.getName();
 		} else {
-			foreground = new java.awt.Color( 255, 0, 0 );
 			text = "ERROR";
 		}
 		rv.setText( text );
-		rv.setForeground( foreground );
+		rv.setForeground( this.getForegroundColor( value!=null, isSelected ) );
 		return rv;
 	}
 }
@@ -120,9 +126,57 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.lgna.
  * @author Dennis Cosgrove
  */
 public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel {
+	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+		@Override
+		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
+			if( quoteClickUnquoteCount == 2 ) {
+				if( org.alice.ide.resource.manager.ResourceTableRowSelectionState.getInstance().getValue() != null ) {
+					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getOperation().fire( e );
+				}
+			}
+		}
+	};
+
+	private final org.lgna.croquet.components.Table<org.lgna.common.Resource> table;
 	public ResourceManagerView( org.alice.ide.resource.manager.ResourceManagerComposite composite ) {
-		super( composite );
-		this.addCenterComponent( composite.getResourceState().createTable() );
-		this.addLineEndComponent( new org.lgna.croquet.components.Label( "todo" ) );
+		super( composite, 8, 8 );
+
+		this.table = composite.getResourceState().createTable();
+		javax.swing.JTable jTable = this.table.getAwtComponent();
+		javax.swing.table.JTableHeader tableHeader = jTable.getTableHeader();
+		tableHeader.setReorderingAllowed( false );
+		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.IS_REFERENCED_COLUMN_INDEX ) ).setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
+		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.NAME_COLUMN_INDEX ) ).setCellRenderer( new ResourceNameTableCellRenderer() );
+		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.TYPE_COLUMN_INDEX ) ).setCellRenderer( new ResourceTypeTableCellRenderer() );
+
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.table );
+		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		this.addCenterComponent( scrollPane );
+
+		org.lgna.croquet.components.Panel lineEndPanel = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(  
+				org.alice.ide.resource.manager.ImportAudioResourceOperation.getInstance().createButton(),
+				org.alice.ide.resource.manager.ImportImageResourceOperation.getInstance().createButton(),
+				org.alice.ide.resource.manager.RemoveResourceOperation.getInstance().createButton(), 
+				new org.lgna.croquet.components.Label(),
+				org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getOperation().createButton(),
+				org.alice.ide.resource.manager.ReloadContentResourceOperation.getInstance().createButton()
+		);
+		this.addLineEndComponent( new org.lgna.croquet.components.BorderPanel.Builder()
+				.pageStart( lineEndPanel )
+		.build() );
+		
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.table.addMouseListener( this.mouseAdapter );
+		this.table.addMouseMotionListener( this.mouseAdapter );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		this.table.removeMouseMotionListener( this.mouseAdapter );
+		this.table.removeMouseListener( this.mouseAdapter );
+		super.handleUndisplayable();
 	}
 }
