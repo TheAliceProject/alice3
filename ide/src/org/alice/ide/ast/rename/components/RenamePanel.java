@@ -53,7 +53,7 @@ public class RenamePanel extends org.lgna.croquet.components.BorderPanel {
 				.lineStart( composite.getNameState().getSidekickLabel().createImmutableTextField() )
 				.center( composite.getNameState().createTextField() )
 		.build();
-		line.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
 		this.addPageStartComponent( line );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) ); 
 	}
 }
