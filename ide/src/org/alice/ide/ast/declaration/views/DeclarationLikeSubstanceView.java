@@ -52,10 +52,6 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 		this.setMinimumPreferredWidth( 480 );
 	}
 	
-	protected boolean isArrayCheckBoxDesired() {
-		return true;
-	}
-	
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
 		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
@@ -78,7 +74,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 					org.lgna.croquet.components.JComponent< ? > component;
 					if( valueComponentTypeState.isEnabled() ) {
 						org.alice.ide.croquet.components.TypeDropDown typeDropDown = new org.alice.ide.croquet.components.TypeDropDown( valueComponentTypeState );
-						if( isArrayCheckBoxDesired() ) {
+						if( composite.getValueIsArrayTypeStateIsDisplayed() ) {
 							component = new org.lgna.croquet.components.BorderPanel.Builder()
 								.center( typeDropDown )
 								.lineEnd( valueIsArrayTypeState.createCheckBox() )

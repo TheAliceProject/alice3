@@ -48,10 +48,10 @@ package org.alice.ide.ast.declaration;
 public abstract class EachInArrayComposite<S extends org.lgna.project.ast.Statement> extends StatementInsertComposite<S> {
 	public EachInArrayComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( migrationId, new Details()
-			.valueComponentType( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, null )
-			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_EDITABLE, true )
-			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), ApplicabilityStatus.APPLICABLE_AND_EDITBLE )
-			.initializer( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, null ),
+			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
+			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), ApplicabilityStatus.EDITABLE )
+			.initializer( ApplicabilityStatus.EDITABLE, null ),
 		blockStatementIndexPair );
 	}
 	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );

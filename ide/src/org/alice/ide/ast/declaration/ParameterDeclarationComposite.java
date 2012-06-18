@@ -65,9 +65,9 @@ public final class ParameterDeclarationComposite extends DeclarationComposite<or
 	private final org.lgna.project.ast.UserCode code;
 	private ParameterDeclarationComposite( org.lgna.project.ast.UserCode code ) {
 		super( java.util.UUID.fromString( "628f8e97-84b5-480c-8f05-d69749a4203e" ), new Details()
-			.valueComponentType( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, null )
-			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, false )
-			.name( new org.alice.ide.name.validators.ParameterNameValidator( code ), ApplicabilityStatus.APPLICABLE_AND_EDITBLE )
+			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
+			.name( new org.alice.ide.name.validators.ParameterNameValidator( code ), ApplicabilityStatus.EDITABLE )
 		);
 		this.code = code;
 	}

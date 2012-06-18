@@ -47,20 +47,22 @@ package org.alice.ide.ast.declaration;
  */
 public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.project.ast.Node> extends org.alice.ide.preview.PreviewContainingOperationInputDialogCoreComposite<org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView,N> implements org.alice.ide.croquet.models.declaration.InitializerStateOwner {
 	protected static enum ApplicabilityStatus {
-		APPLICABLE_AND_EDITBLE( true, true ),
-		APPLICABLE_BUT_NOT_EDITABLE( true, false ),
-		NOT_APPLICABLE( false, false );
-		private final boolean isApplicable;
-		private final boolean isEditable;
-		private ApplicabilityStatus( boolean isApplicable, boolean isEditable ) {
-			this.isApplicable = isApplicable;
-			this.isEditable = isEditable;
-		}
-		public boolean isApplicable() {
-			return this.isApplicable;
+		EDITABLE( 3 ),
+		DISPLAYED( 2 ),
+		APPLICABLE_BUT_NOT_DISPLAYED( 1 ),
+		NOT_APPLICABLE( 0 );
+		private final int value;
+		private ApplicabilityStatus( int value ) {
+			this.value = value;
 		}
 		public boolean isEditable() {
-			return this.isEditable;
+			return this.value >= 3;
+		}
+		public boolean isDisplayed() {
+			return this.value >= 2;
+		}
+		public boolean isApplicable() {
+			return this.value >= 1;
 		}
 	}
 	protected static class Details {
@@ -194,6 +196,9 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		return this.initializerState;
 	}
 	
+	public boolean getValueIsArrayTypeStateIsDisplayed() {
+		return details.valueIsArrayTypeStatus.isDisplayed();
+	}
 	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		if( this.declaringTypeState != null ) {
 			return this.declaringTypeState.getValue();

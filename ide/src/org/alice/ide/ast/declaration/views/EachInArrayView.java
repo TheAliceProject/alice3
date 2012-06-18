@@ -49,8 +49,4 @@ public class EachInArrayView extends StatementView {
 	public EachInArrayView( org.alice.ide.ast.declaration.EachInArrayComposite<?> composite ) {
 		super( composite );
 	}
-	@Override
-	protected boolean isArrayCheckBoxDesired() {
-		return false;
-	}
 }
