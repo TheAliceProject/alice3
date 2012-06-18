@@ -46,13 +46,13 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.project.ast.Node> extends org.alice.ide.preview.PreviewContainingOperationInputDialogCoreComposite<org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView,N> implements org.alice.ide.croquet.models.declaration.InitializerStateOwner {
-	protected static enum Status {
+	protected static enum ApplicabilityStatus {
 		APPLICABLE_AND_EDITBLE( true, true ),
 		APPLICABLE_BUT_NOT_EDITABLE( true, false ),
 		NOT_APPLICABLE( false, false );
 		private final boolean isApplicable;
 		private final boolean isEditable;
-		private Status( boolean isApplicable, boolean isEditable ) {
+		private ApplicabilityStatus( boolean isApplicable, boolean isEditable ) {
 			this.isApplicable = isApplicable;
 			this.isEditable = isEditable;
 		}
@@ -65,41 +65,41 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 	protected static class Details {
 		private org.alice.ide.name.NameValidator nameValidator;
-		private Status declarationTypeStatus = Status.NOT_APPLICABLE;
+		private ApplicabilityStatus declarationTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.UserType<?> declarationTypeInitialValue;
-		private Status valueComponentTypeStatus = Status.NOT_APPLICABLE;
+		private ApplicabilityStatus valueComponentTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.AbstractType<?,?,?> valueComponentTypeInitialValue;
-		private Status valueIsArrayTypeStatus = Status.NOT_APPLICABLE;
+		private ApplicabilityStatus valueIsArrayTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private boolean valueIsArrayTypeInitialValue;
-		private Status nameStatus = Status.NOT_APPLICABLE;
+		private ApplicabilityStatus nameStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private String nameInitialValue;
-		private Status initializerStatus = Status.NOT_APPLICABLE;
+		private ApplicabilityStatus initializerStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.Expression initializerInitialValue;
 
-		public Details declarationType( Status status, org.lgna.project.ast.UserType<?> initialValue ) {
+		public Details declarationType( ApplicabilityStatus status, org.lgna.project.ast.UserType<?> initialValue ) {
 			this.declarationTypeStatus = status;
 			this.declarationTypeInitialValue = initialValue;
 			return this;
 		}
-		public Details valueComponentType( Status status, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
+		public Details valueComponentType( ApplicabilityStatus status, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
 			this.valueComponentTypeStatus = status;
 			this.valueComponentTypeInitialValue = initialValue;
 			return this;
 		}
-		public Details valueIsArrayType( Status status, boolean initialValue ) {
+		public Details valueIsArrayType( ApplicabilityStatus status, boolean initialValue ) {
 			this.valueIsArrayTypeStatus = status;
 			this.valueIsArrayTypeInitialValue = initialValue;
 			return this;
 		}
-		public Details name( org.alice.ide.name.NameValidator nameValidator, Status status, String initialValue ) {
+		public Details name( org.alice.ide.name.NameValidator nameValidator, ApplicabilityStatus status, String initialValue ) {
 			this.nameStatus = status;
 			this.nameInitialValue = initialValue;
 			return this;
 		}
-		public Details name( org.alice.ide.name.NameValidator nameValidator, Status status ) {
+		public Details name( org.alice.ide.name.NameValidator nameValidator, ApplicabilityStatus status ) {
 			return this.name( nameValidator, status, "" );
 		}
-		public Details initializer( Status status, org.lgna.project.ast.Expression initialValue ) {
+		public Details initializer( ApplicabilityStatus status, org.lgna.project.ast.Expression initialValue ) {
 			this.initializerStatus = status;
 			this.initializerInitialValue = initialValue;
 			return this;

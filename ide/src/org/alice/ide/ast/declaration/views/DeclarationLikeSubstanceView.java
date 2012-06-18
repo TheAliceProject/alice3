@@ -55,8 +55,9 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 	protected boolean isArrayCheckBoxDesired() {
 		return true;
 	}
+	
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
+	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
 		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
 		org.lgna.croquet.components.RowSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowSpringPanel() {
 			@Override

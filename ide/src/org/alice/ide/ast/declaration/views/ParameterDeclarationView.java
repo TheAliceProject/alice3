@@ -46,8 +46,26 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public class ParameterDeclarationView extends DeclarationView<org.lgna.project.ast.UserParameter> {
+	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.components.BorderPanel warningPanel;
 	public ParameterDeclarationView( org.alice.ide.ast.declaration.ParameterDeclarationComposite composite ) {
 		super( composite );
+		org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
+		pane.addComponent( this.label );
+		pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+		pane.addComponent( new org.lgna.croquet.components.LineAxisPanel( new org.lgna.croquet.components.Label( "Tip: look for " ), org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( new org.lgna.project.ast.NullLiteral() ) ) );
+		pane.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+		pane.addComponent( composite.getIsRequirementToUpdateInvocationsUnderstoodState().createCheckBox() );
+
+		org.lgna.croquet.components.Label warningLabel = new org.lgna.croquet.components.Label();
+		warningLabel.setIcon( javax.swing.UIManager.getIcon( "OptionPane.warningIcon" ) );
+		this.warningPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+			.hgap( 32 )
+			.lineStart( warningLabel )
+			.center( pane )
+		.build();
+		
+		this.warningPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 32, 8, 32, 8 ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getParameterColor() );
 	}
 	@Override
@@ -55,5 +73,61 @@ public class ParameterDeclarationView extends DeclarationView<org.lgna.project.a
 		org.alice.ide.ast.declaration.ParameterDeclarationComposite composite = (org.alice.ide.ast.declaration.ParameterDeclarationComposite)this.getComposite();
 		org.lgna.project.ast.UserParameter parameter = composite.getPreviewValue();
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, parameter );
+	}
+	
+	@Override
+	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
+		org.lgna.croquet.components.BorderPanel rv = super.createMainComponent();
+		rv.addPageEndComponent( this.warningPanel );
+		return rv;
+	}
+	
+	@Override
+	protected void handleDisplayable() {
+		org.alice.ide.ast.declaration.ParameterDeclarationComposite composite = (org.alice.ide.ast.declaration.ParameterDeclarationComposite)this.getComposite();
+		org.lgna.project.ast.UserCode code = composite.getCode();
+		java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		final int N = argumentLists.size();
+		this.warningPanel.setVisible( N>0 );
+		if( this.warningPanel.isVisible() ) {
+			String codeText;
+			if( code instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)code;
+				if( method.isProcedure() ) {
+					codeText = "procedure";
+				} else {
+					codeText = "function";
+				}
+			} else {
+				codeText = "constructor";
+			}
+			
+			StringBuffer sb = new StringBuffer();
+			sb.append( "<html><body>There " );
+			if( N == 1 ) {
+				sb.append( "is 1 invocation" );
+			} else {
+				sb.append( "are " );
+				sb.append( N );
+				sb.append( " invocations" );
+			}
+			sb.append( " to this " );
+			sb.append( codeText );
+			sb.append( " in your program.<br>You will need to fill in " );
+			if( N == 1 ) {
+				sb.append( "a value" );
+			} else {
+				sb.append( "values" );
+			}
+			sb.append( " for the new " );
+			if( N == 1 ) {
+				sb.append( "argument at the" );
+			} else {
+				sb.append( "arguments at each" );
+			}
+			sb.append( " invocation.</body></html>" );
+			this.label.setText( sb.toString() );
+		}
+		super.handleDisplayable();
 	}
 }

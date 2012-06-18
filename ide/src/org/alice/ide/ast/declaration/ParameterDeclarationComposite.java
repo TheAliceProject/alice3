@@ -59,16 +59,42 @@ public final class ParameterDeclarationComposite extends DeclarationComposite<or
 			return rv;
 		}
 	}
+	
+	private final org.lgna.croquet.BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( this.createKey( "isRequirementToUpdateInvocationsUnderstoodState" ), false );
+	private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus( this.createKey( "hasNotAgreedToUpdateInvocationsStatus" ) );
 	private final org.lgna.project.ast.UserCode code;
 	private ParameterDeclarationComposite( org.lgna.project.ast.UserCode code ) {
 		super( java.util.UUID.fromString( "628f8e97-84b5-480c-8f05-d69749a4203e" ), new Details()
-			.valueComponentType( Status.APPLICABLE_AND_EDITBLE, null )
-			.valueIsArrayType( Status.APPLICABLE_AND_EDITBLE, false )
-			.name( new org.alice.ide.name.validators.ParameterNameValidator( code ), Status.APPLICABLE_AND_EDITBLE )
+			.valueComponentType( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, null )
+			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, false )
+			.name( new org.alice.ide.name.validators.ParameterNameValidator( code ), ApplicabilityStatus.APPLICABLE_AND_EDITBLE )
 		);
 		this.code = code;
 	}
-
+	
+	@Override
+	protected void localize() {
+		super.localize();
+		//todo
+		String codeText;
+		if( code instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)code;
+			if( method.isProcedure() ) {
+				codeText = "procedure";
+			} else {
+				codeText = "function";
+			}
+		} else {
+			codeText = "constructor";
+		}
+		String text = "I understand that I need to update the invocations to this " + codeText + ".";
+		this.isRequirementToUpdateInvocationsUnderstoodState.setTextForBothTrueAndFalse( text );
+		
+		this.hasNotAgreedToUpdateInvocationsStatus.setText( "You must agree to update the invocations." );
+	}
+	public org.lgna.croquet.BooleanState getIsRequirementToUpdateInvocationsUnderstoodState() {
+		return this.isRequirementToUpdateInvocationsUnderstoodState;
+	}
 	public org.lgna.project.ast.UserCode getCode() {
 		return this.code;
 	}
@@ -80,11 +106,30 @@ public final class ParameterDeclarationComposite extends DeclarationComposite<or
 		return new org.lgna.project.ast.UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 	@Override
+	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		Status rv = super.getStatus( step );
+		if( rv == IS_GOOD_TO_GO_STATUS ) {
+			if( this.isRequirementToUpdateInvocationsUnderstoodState.getValue() ) {
+				//pass
+			} else {
+				return this.hasNotAgreedToUpdateInvocationsStatus;
+			}
+		}
+		return rv;
+	}
+	@Override
 	public org.lgna.project.ast.UserParameter getPreviewValue() {
 		return this.createParameter();
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.alice.ide.croquet.edits.ast.AddParameterEdit( completionStep, this.code, this.createParameter() );
+	}
+	
+	@Override
+	public void handlePreActivation() {
+		java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		this.isRequirementToUpdateInvocationsUnderstoodState.setValue( argumentLists.size() == 0 );
+		super.handlePreActivation();
 	}
 }

@@ -61,10 +61,10 @@ public class LocalDeclarationStatementComposite extends StatementInsertComposite
 	}
 	private LocalDeclarationStatementComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), new Details()
-			.valueComponentType( Status.APPLICABLE_AND_EDITBLE, null )
-			.valueIsArrayType( Status.APPLICABLE_AND_EDITBLE, false )
-			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), Status.APPLICABLE_AND_EDITBLE )
-			.initializer( Status.APPLICABLE_AND_EDITBLE, null )
+			.valueComponentType( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, null )
+			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, false )
+			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), ApplicabilityStatus.APPLICABLE_AND_EDITBLE )
+			.initializer( ApplicabilityStatus.APPLICABLE_AND_EDITBLE, null )
 		, blockStatementIndexPair );
 	}
 	@Override

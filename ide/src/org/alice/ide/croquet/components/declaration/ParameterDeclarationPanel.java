@@ -63,7 +63,6 @@ public class ParameterDeclarationPanel extends DeclarationPanel< org.alice.ide.c
 		java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
 		final int N = argumentLists.size();
 		if( N > 0 ) {
-
 			String codeText;
 			if( code instanceof org.lgna.project.ast.AbstractMethod ) {
 				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)code;
