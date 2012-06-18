@@ -40,38 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeProceduresPane extends AbstractTypeMethodsPane {
-	public TypeProceduresPane(org.lgna.project.ast.AbstractType<?, ?, ?> type) {
-		super(type);
+public abstract class MethodDeclarationComposite extends DeclarationComposite< org.lgna.project.ast.UserMethod > {
+	public MethodDeclarationComposite( java.util.UUID migrationId, Details details ) {
+		super( migrationId, details );
 	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo(org.lgna.project.ast.NamedUserType type) {
-		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods };
+	private org.lgna.project.ast.UserMethod createMethod() {
+		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
-
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton(org.lgna.project.ast.NamedUserType type) {
-		return org.alice.ide.ast.declaration.ProcedureDeclarationComposite.getInstance( type ).getOperation().createButton();
+	public org.lgna.project.ast.UserMethod getPreviewValue() {
+		return this.createMethod();
 	}
-
 	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton(org.lgna.project.ast.NamedUserType type) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Component<?> createFunctionTemplate(org.lgna.project.ast.AbstractMethod method) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Component<?> createProcedureTemplate(org.lgna.project.ast.AbstractMethod method) {
-		return org.alice.ide.members.components.templates.TemplateFactory.getProcedureInvocationTemplate(method);
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, this.getDeclaringType(), this.createMethod() );
 	}
 }

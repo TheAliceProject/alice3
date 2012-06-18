@@ -40,38 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeProceduresPane extends AbstractTypeMethodsPane {
-	public TypeProceduresPane(org.lgna.project.ast.AbstractType<?, ?, ?> type) {
-		super(type);
+public final class ProcedureDeclarationComposite extends MethodDeclarationComposite {
+	private static java.util.Map< org.lgna.project.ast.UserType<?>, ProcedureDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static ProcedureDeclarationComposite getInstance( org.lgna.project.ast.UserType<?> declaratingType ) {
+		synchronized( map ) {
+			ProcedureDeclarationComposite rv = map.get( declaratingType );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ProcedureDeclarationComposite( declaratingType );
+				map.put( declaratingType, rv );
+			}
+			return rv;
+		}
 	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo(org.lgna.project.ast.NamedUserType type) {
-		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods };
+	private ProcedureDeclarationComposite( org.lgna.project.ast.UserType<?> declaratingType ) {
+		super( java.util.UUID.fromString( "1e7af2e9-2ce0-4c7e-9ddd-9af001601660" ), new Details()
+			.declarationType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, declaratingType )
+			.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, org.lgna.project.ast.JavaType.VOID_TYPE )
+			.name( new org.alice.ide.name.validators.MethodNameValidator( declaratingType ), ApplicabilityStatus.EDITABLE )
+		);
 	}
-
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton(org.lgna.project.ast.NamedUserType type) {
-		return org.alice.ide.ast.declaration.ProcedureDeclarationComposite.getInstance( type ).getOperation().createButton();
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton(org.lgna.project.ast.NamedUserType type) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Component<?> createFunctionTemplate(org.lgna.project.ast.AbstractMethod method) {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Component<?> createProcedureTemplate(org.lgna.project.ast.AbstractMethod method) {
-		return org.alice.ide.members.components.templates.TemplateFactory.getProcedureInvocationTemplate(method);
+	protected org.alice.ide.ast.declaration.views.ProcedureDeclarationView createView() {
+		return new org.alice.ide.ast.declaration.views.ProcedureDeclarationView( this );
 	}
 }

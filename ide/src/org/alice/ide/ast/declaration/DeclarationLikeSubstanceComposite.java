@@ -66,13 +66,13 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 	}
 	protected static class Details {
-		private org.alice.ide.name.NameValidator nameValidator;
 		private ApplicabilityStatus declarationTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.UserType<?> declarationTypeInitialValue;
 		private ApplicabilityStatus valueComponentTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.AbstractType<?,?,?> valueComponentTypeInitialValue;
 		private ApplicabilityStatus valueIsArrayTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private boolean valueIsArrayTypeInitialValue;
+		private org.alice.ide.name.NameValidator nameValidator;
 		private ApplicabilityStatus nameStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private String nameInitialValue;
 		private ApplicabilityStatus initializerStatus = ApplicabilityStatus.NOT_APPLICABLE;
@@ -94,6 +94,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			return this;
 		}
 		public Details name( org.alice.ide.name.NameValidator nameValidator, ApplicabilityStatus status, String initialValue ) {
+			this.nameValidator = nameValidator;
 			this.nameStatus = status;
 			this.nameInitialValue = initialValue;
 			return this;
@@ -196,9 +197,16 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		return this.initializerState;
 	}
 	
-	public boolean getValueIsArrayTypeStateIsDisplayed() {
+	public boolean isDeclarationTypeDisplayed() {
+		return details.declarationTypeStatus.isDisplayed();
+	}
+	public boolean isValueComponentTypeDisplayed() {
+		return details.valueComponentTypeStatus.isDisplayed();
+	}
+	public boolean isValueIsArrayTypeStateDisplayed() {
 		return details.valueIsArrayTypeStatus.isDisplayed();
 	}
+
 	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		if( this.declaringTypeState != null ) {
 			return this.declaringTypeState.getValue();
@@ -216,7 +224,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	public org.lgna.project.ast.AbstractType<?,?,?> getValueType() {
 		org.lgna.project.ast.AbstractType< ?,?,? > componentType = this.getValueComponentType();
 		if( componentType != null ) {
-			if( this.valueIsArrayTypeState.getValue() ) {
+			if( this.valueIsArrayTypeState != null && this.valueIsArrayTypeState.getValue() ) {
 				return componentType.getArrayType();
 			} else {
 				return componentType;

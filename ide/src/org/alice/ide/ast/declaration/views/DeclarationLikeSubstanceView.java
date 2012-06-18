@@ -59,41 +59,45 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
 				org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
-				org.alice.ide.croquet.models.declaration.DeclaringTypeState declaringTypeState = composite.getDeclaringTypeState();
-				if( declaringTypeState != null ) {
-					org.lgna.croquet.components.JComponent<?> component = new org.lgna.croquet.components.Label( "todo" );
-					rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
-							declaringTypeState.getSidekickLabel(), 
-							component 
-					) );
+				if( composite.isDeclarationTypeDisplayed() ) {
+					org.alice.ide.croquet.models.declaration.DeclaringTypeState declaringTypeState = composite.getDeclaringTypeState();
+					if( declaringTypeState != null ) {
+						org.lgna.croquet.components.JComponent<?> component = new org.lgna.croquet.components.Label( "todo" );
+						rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
+								declaringTypeState.getSidekickLabel(), 
+								component 
+						) );
+					}
 				}
 		
-				org.alice.ide.croquet.models.declaration.ValueComponentTypeState valueComponentTypeState = composite.getValueComponentTypeState();
-				org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
-				if( valueComponentTypeState != null ) {
-					org.lgna.croquet.components.JComponent< ? > component;
-					if( valueComponentTypeState.isEnabled() ) {
-						org.alice.ide.croquet.components.TypeDropDown typeDropDown = new org.alice.ide.croquet.components.TypeDropDown( valueComponentTypeState );
-						if( composite.getValueIsArrayTypeStateIsDisplayed() ) {
-							component = new org.lgna.croquet.components.BorderPanel.Builder()
-								.center( typeDropDown )
-								.lineEnd( valueIsArrayTypeState.createCheckBox() )
-							.build();
+				if( composite.isValueComponentTypeDisplayed() ) {
+					org.alice.ide.croquet.models.declaration.ValueComponentTypeState valueComponentTypeState = composite.getValueComponentTypeState();
+					org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
+					if( valueComponentTypeState != null ) {
+						org.lgna.croquet.components.JComponent< ? > component;
+						if( valueComponentTypeState.isEnabled() ) {
+							org.alice.ide.croquet.components.TypeDropDown typeDropDown = new org.alice.ide.croquet.components.TypeDropDown( valueComponentTypeState );
+							if( composite.isValueIsArrayTypeStateDisplayed() ) {
+								component = new org.lgna.croquet.components.BorderPanel.Builder()
+									.center( typeDropDown )
+									.lineEnd( valueIsArrayTypeState.createCheckBox() )
+								.build();
+							} else {
+								component = typeDropDown;
+							}
 						} else {
-							component = typeDropDown;
+							if( valueIsArrayTypeState.isEnabled() ) {
+								component = new org.lgna.croquet.components.Label( "todo" );
+							} else {
+								component = new org.alice.ide.croquet.components.TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
+							}
 						}
-					} else {
-						if( valueIsArrayTypeState.isEnabled() ) {
-							component = new org.lgna.croquet.components.Label( "todo" );
-						} else {
-							component = new org.alice.ide.croquet.components.TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
-						}
+						rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
+								valueComponentTypeState.getSidekickLabel(), 
+								component, 
+								false 
+						) );
 					}
-					rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
-							valueComponentTypeState.getSidekickLabel(), 
-							component, 
-							false 
-					) );
 				}
 		
 				org.lgna.croquet.StringState nameState = composite.getNameState();
