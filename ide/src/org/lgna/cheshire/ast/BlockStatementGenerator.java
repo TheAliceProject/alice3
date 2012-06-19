@@ -65,6 +65,7 @@ public class BlockStatementGenerator {
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
 			org.alice.ide.members.TemplateComposite templateComposite = null;
 			org.lgna.project.ast.MethodInvocation methodInvocation = null;
+			org.lgna.project.ast.Expression[] initialExpressions = {};
 			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
 				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
@@ -81,6 +82,11 @@ public class BlockStatementGenerator {
 
 					org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
 
+					final int N = methodInvocation.requiredArguments.size();
+					initialExpressions = new org.lgna.project.ast.Expression[ N ];
+					for( int i=0; i<N; i++ ) {
+						initialExpressions[ i ] = methodInvocation.requiredArguments.get( i ).expression.getValue();
+					}
 					instanceFactory = org.alice.ide.instancefactory.InstanceFactoryUtilities.getInstanceFactoryForExpression( instanceExpression );
 					if( instanceFactory != null ) {
 						//pass
@@ -103,7 +109,7 @@ public class BlockStatementGenerator {
 						}
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( expression );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle", expression );
 					statementGenerator = null;
 				}
 			} else {
@@ -125,7 +131,7 @@ public class BlockStatementGenerator {
 						org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( templateComposite );
 					}
 				}
-				statementGenerator.generateAndAddStepsToTransaction( history, statement );
+				statementGenerator.generateAndAddStepsToTransaction( history, statement, initialExpressions );
 				if( templateComposite != null ) {
 					if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 						org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();

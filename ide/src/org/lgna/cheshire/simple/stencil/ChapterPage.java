@@ -397,7 +397,7 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 	public org.lgna.croquet.components.JComponent< ? > getCard() {
 		return this.stepPanel;
 	}
-
+	
 	public void reset() {
 		java.awt.LayoutManager layoutManager = this.stepPanel.getAwtComponent().getLayout();
 		if( layoutManager instanceof PageLayoutManager ) {
@@ -409,5 +409,15 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 			note.reset();
 		}
 		this.setActiveNote( 0 );
+	}
+	
+	public String getDetailedReport() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getChapter().getTitle() );
+		sb.append( "\n" );
+		for( Note note : this.notes ) {
+			note.appendDetailedReport( sb );
+		}
+		return sb.toString();
 	}
 }

@@ -369,7 +369,7 @@ public class BootstrapUtilties {
 				ceilingPaintExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(ceilingAppearance);
 			}
 		} catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln(e);
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot create expression", e );
 		}
 		
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setFloorPaintMethod, floorPaintExpression ) );

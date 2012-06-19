@@ -533,4 +533,12 @@ public abstract class Feature {
 			g2.setPaint( prevPaint );
 		}
 	}
+	
+	public void appendDetailedReport( StringBuilder sb ) {
+		sb.append( "\t\t" );
+		sb.append( this.getClass().getName() );
+		sb.append( ": " );
+		sb.append( this.getStatus() );
+		sb.append( "\n" );
+	}
 }

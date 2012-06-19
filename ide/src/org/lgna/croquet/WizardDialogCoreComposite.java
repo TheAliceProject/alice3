@@ -270,7 +270,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		if( page instanceof WizardPageComposite ) {
 			return ((WizardPageComposite)page).getPageStatus( step );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( this, page );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this, page );
 			//todo
 			return IS_GOOD_TO_GO_STATUS;
 		}

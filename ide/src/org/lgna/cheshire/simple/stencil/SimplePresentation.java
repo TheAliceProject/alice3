@@ -367,6 +367,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 								} else {
 
 									final org.lgna.cheshire.simple.Chapter accessibleChapter = chapter;
+									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "detailed report:\n\n\n" + chapterPage.getDetailedReport() + "\n\n\n" );
 									javax.swing.SwingUtilities.invokeLater( new Runnable() {
 										public void run() {
 											org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
