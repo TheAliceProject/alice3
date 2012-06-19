@@ -50,6 +50,10 @@ public abstract class StringValue extends AbstractElement {
 	public StringValue( java.util.UUID id ) {
 		super( id );
 	}
+	@Override
+	protected void localize() {
+		this.setText( this.findDefaultLocalizedText() );
+	}
 	public javax.swing.text.PlainDocument getDocument() {
 		return this.document;
 	}

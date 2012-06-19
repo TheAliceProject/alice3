@@ -47,8 +47,17 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class WizardPageComposite< V extends org.lgna.croquet.components.View<?,?>> extends PotentiallyGatedComposite< V > {
+	private String name;
 	public WizardPageComposite( java.util.UUID id ) {
 		super( id );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.name = this.findDefaultLocalizedText();
+	}
+	public String getName() {
+		return this.name;
 	}
 	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
 	public boolean isOptional() {

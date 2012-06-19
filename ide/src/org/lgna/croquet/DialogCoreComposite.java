@@ -136,18 +136,12 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 			this.coreComposite = coreComposite;
 		}
-//		@Override
-//		protected void initialize() {
-//			super.initialize();
-//			this.coreComposite.initializeIfNecessary();
-//		}
 		public DialogCoreComposite getDialogCoreComposite() {
 			return this.coreComposite;
 		}
 		@Override
-		protected final void localize() {
-			//note: do not invoke super
-			//super.localize();
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.coreComposite.getClassUsedForLocalization();
 		}
 	}
 	
@@ -185,6 +179,29 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		protected InternalCommitOperationResolver createResolver() {
 			return new InternalCommitOperationResolver( this.getDialogCoreComposite() );
 		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return "commit";
+		}
+		@Override
+		protected String findDefaultLocalizedText() {
+			String rv = super.findDefaultLocalizedText();
+			if( rv != null ) {
+				//pass
+			} else {
+				java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
+				String commitUiKey = this.getDialogCoreComposite().getCommitUiKey();
+				if( commitUiKey != null ) {
+					rv = javax.swing.UIManager.getString( commitUiKey, locale );
+				}
+				if( rv != null ) {
+					//pass
+				} else {
+					rv = this.getDialogCoreComposite().getDefaultCommitText();
+				}
+			}
+			return rv;
+		}
 	}
 	private static final class InternalCancelOperation extends InternalFinishOperation {
 		private InternalCancelOperation( DialogCoreComposite coreComposite ) {
@@ -193,6 +210,26 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		@Override
 		protected InternalCancelOperationResolver createResolver() {
 			return new InternalCancelOperationResolver( this.getDialogCoreComposite() );
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return "cancel";
+		}
+		@Override
+		protected String findDefaultLocalizedText() {
+			String rv = super.findDefaultLocalizedText();
+			if( rv != null ) {
+				//pass
+			} else {
+				java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
+				rv = javax.swing.UIManager.getString( "OptionPane.cancelButtonText", locale );
+				if( rv != null ) {
+					//pass
+				} else {
+					rv = "Cancel";
+				}
+			}
+			return rv;
 		}
 	}
 	private final InternalCommitOperation commitOperation = new InternalCommitOperation( this );
@@ -208,6 +245,45 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	public final Operation getCancelOperation() {
 		return this.cancelOperation;
 	}
+	protected abstract String getDefaultCommitText();
+	protected abstract String getCommitUiKey();
+	protected String getCancelUiKey() {
+		return "OptionPane.cancelButtonText";
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		String commitText = this.findLocalizedText( "commit" );
+		if( commitText != null ) {
+			//pass
+		} else {
+			java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
+			String commitUiKey = this.getCommitUiKey();
+			if( commitUiKey != null ) {
+				commitText = javax.swing.UIManager.getString( commitUiKey, locale );
+			}
+			if( commitText != null ) {
+				//pass
+			} else {
+				commitText = this.getDefaultCommitText();
+			}
+		}
+		this.getCommitOperation().setName( commitText );
+		String cancelText = this.findLocalizedText( "cancel" );
+		if( cancelText != null ) {
+			//pass
+		} else {
+			java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
+			cancelText = javax.swing.UIManager.getString( "OptionPane.cancelButtonText", locale );
+			if( cancelText != null ) {
+				//pass
+			} else {
+				cancelText = "Cancel";
+			}
+		}
+		this.getCancelOperation().setName( cancelText );
+	}
+	
 
 	@Override
 	protected org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {

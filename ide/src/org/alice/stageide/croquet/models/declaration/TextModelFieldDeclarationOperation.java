@@ -66,7 +66,7 @@ public class TextModelFieldDeclarationOperation extends org.alice.ide.croquet.mo
 	@Override
 	protected void localize() {
 		super.localize();
-		this.valueLabelText = this.findLocalizedText( "valueLabel", TextModelFieldDeclarationOperation.class );
+		this.valueLabelText = this.findLocalizedText( "valueLabel" );
 	}
 
 	public String getValueLabelText() {

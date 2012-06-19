@@ -116,7 +116,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	@Override
 	protected void localize() {
 		super.localize();
-		this.colorFieldLabel = this.findLocalizedText( "colorFieldLabel", MarkerFieldDeclarationOperation.class );
+		this.colorFieldLabel = this.findLocalizedText( "colorFieldLabel" );
 	}
 	
 	

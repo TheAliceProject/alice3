@@ -238,8 +238,8 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 	@Override
 	protected void localize() {
 		super.localize();
-		this.completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogOperation.class ) );
-		this.cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogOperation.class ) );
+		this.completeOperation.setName( this.findLocalizedText( "commit" ) );
+		this.cancelOperation.setName( this.findLocalizedText( "cancel" ) );
 	}
 	protected abstract org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.JComponent< javax.swing.JLabel > explanationLabel );
 	protected abstract org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog );

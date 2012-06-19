@@ -72,7 +72,7 @@ public class ObjectMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 		MessageFormat formatter = new MessageFormat("");
 		formatter.setLocale(javax.swing.JComponent.getDefaultLocale());
 		formatter.applyPattern(unformattedName);
-		String defaultName = this.findLocalizedText( "defaultObjectName", ObjectMarkerFieldDeclarationOperation.class );
+		String defaultName = this.findLocalizedText( "defaultObjectName" );
 		String fieldNameParam = this.getSelectedField() == null ? defaultName : this.getSelectedField().getName();
 		String formattedName = formatter.format(new Object[]{fieldNameParam});
 		this.setName(formattedName);

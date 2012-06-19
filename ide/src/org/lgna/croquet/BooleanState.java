@@ -210,13 +210,13 @@ public abstract class BooleanState extends State< Boolean > {
 	}
 	@Override
 	protected void localize() {
-		String text = this.getDefaultLocalizedText();
+		String text = this.findDefaultLocalizedText();
 		if( text != null ) {
 			this.setTextForBothTrueAndFalse( text );
 		} else {
-			String trueText = this.getLocalizedText( "true" );
+			String trueText = this.findLocalizedText( "true" );
 			if( trueText != null ) {
-				String falseText = this.getLocalizedText( "false" );
+				String falseText = this.findLocalizedText( "false" );
 				if( falseText != null ) {
 					this.setTextForTrueAndTextForFalse( trueText, falseText );
 				} else {

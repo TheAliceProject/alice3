@@ -47,8 +47,14 @@ package org.alice.ide.croquet.models.cascade.cancels;
  * @author Dennis Cosgrove
  */
 /*package-private*/ abstract class CancelFillIn<F> extends org.lgna.croquet.CascadeCancel< F > {
+	private String menuItemText;
 	public CancelFillIn( java.util.UUID id ) {
 		super( id );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.menuItemText = this.findDefaultLocalizedText();
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
@@ -56,6 +62,6 @@ package org.alice.ide.croquet.models.cascade.cancels;
 	}
 	@Override
 	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
-		return this.getDefaultLocalizedText();
+		return this.menuItemText;
 	}
 }
