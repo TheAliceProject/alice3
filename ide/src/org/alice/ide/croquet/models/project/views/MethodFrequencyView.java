@@ -81,11 +81,9 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class MethodFrequencyView extends BorderPanel {
 
 	ListSelectionState<UserMethod> listSelectionState;
-	private MethodFrequencyTabComposite composite;
 	
 	public MethodFrequencyView( MethodFrequencyTabComposite composite ) {
 		
-		this.composite = composite;
 		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
 		listSelectionState = composite.getUserMethodList();
 		
@@ -156,8 +154,8 @@ public class MethodFrequencyView extends BorderPanel {
 		}
 
 		private void initGridPanel() {
-			CheckBox hideFunctionsBox = composite.getShowFunctionsState().createCheckBox();
-			LineAxisPanel child = new LineAxisPanel( hideFunctionsBox, composite.getShowProceduresState().createCheckBox() );
+			CheckBox hideFunctionsBox = ((MethodFrequencyTabComposite)getComposite()).getShowFunctionsState().createCheckBox();
+			LineAxisPanel child = new LineAxisPanel( hideFunctionsBox, ((MethodFrequencyTabComposite)getComposite()).getShowProceduresState().createCheckBox() );
 
 			MethodFrequencyView.this.addComponent( child, Constraint.PAGE_START );
 			this.gridPanel = GridPanel.createGridPane( minSize, numCols, 5, 5 );
@@ -175,21 +173,21 @@ public class MethodFrequencyView extends BorderPanel {
 					componentMap.get( i ).put( j, label );
 				}
 			}
-			composite.getShowFunctionsState().addValueListener( booleanListener );
-			composite.getShowProceduresState().addValueListener( booleanListener );
+			((MethodFrequencyTabComposite)getComposite()).getShowFunctionsState().addValueListener( booleanListener );
+			((MethodFrequencyTabComposite)getComposite()).getShowProceduresState().addValueListener( booleanListener );
 			scroll.setViewportView( gridPanel );
 		}
 
 		public void setMaximum() {
 			InvocationCounts invocationCounts = new InvocationCounts();
-			for( UserMethod method : composite.getMapMethodToInvocationCounts().keySet() ) {
-				for( MethodCountPair pair : composite.getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
+			for( UserMethod method : ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().keySet() ) {
+				for( MethodCountPair pair : ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
 					for( int i = 0; i != pair.getCount(); ++i ) {
 						invocationCounts.addMethod( pair.getMethod() );
 					}
 				}
 			}
-			composite.getMapMethodToInvocationCounts().put(MethodFrequencyTabComposite.dummy, invocationCounts );
+			((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().put(MethodFrequencyTabComposite.dummy, invocationCounts );
 			maximum = getCount( MethodFrequencyTabComposite.dummy, null );
 		}
 
@@ -257,7 +255,7 @@ public class MethodFrequencyView extends BorderPanel {
 		}
 
 		private void update( UserMethod selected ) {
-			setHeight( getSize( composite.getMapMethodToInvocationCounts().get( selected ) ) + 1 );
+			setHeight( getSize( ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( selected ) ) + 1 );
 			populateLeftCol( selected );
 			populateRightCol( selected );
 		}
@@ -269,11 +267,11 @@ public class MethodFrequencyView extends BorderPanel {
 
 		private void populateRightCol( UserMethod selected ) {
 			((Label)getCell( 0, 0 )).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
-			InvocationCounts invocationCount = composite.getMapMethodToInvocationCounts().get( selected );
+			InvocationCounts invocationCount = ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( selected );
 			int index = 1;
 			for( MethodCountPair pair : invocationCount.getMethodCountPairs() ) {
-				if( !pair.getMethod().isFunction() || composite.getShowFunctionsState().getValue() ) {
-					if( !pair.getMethod().isProcedure() || composite.getShowProceduresState().getValue() ) {
+				if( !pair.getMethod().isFunction() || ((MethodFrequencyTabComposite)getComposite()).getShowFunctionsState().getValue() ) {
+					if( !pair.getMethod().isProcedure() || ((MethodFrequencyTabComposite)getComposite()).getShowProceduresState().getValue() ) {
 						setCell( 1, index, getCount( selected, pair.getMethod() ) );
 						++index;
 					}
@@ -284,8 +282,8 @@ public class MethodFrequencyView extends BorderPanel {
 		private int getSize( InvocationCounts invocationCounts ) {
 			int count = 0;
 			for( MethodCountPair pair : invocationCounts.getMethodCountPairs() ) {
-				if( !pair.getMethod().isFunction() || composite.getShowFunctionsState().getValue() ) {
-					if( !pair.getMethod().isProcedure() || composite.getShowProceduresState().getValue() ) {
+				if( !pair.getMethod().isFunction() || ((MethodFrequencyTabComposite)getComposite()).getShowFunctionsState().getValue() ) {
+					if( !pair.getMethod().isProcedure() || ((MethodFrequencyTabComposite)getComposite()).getShowProceduresState().getValue() ) {
 						++count;
 					}
 				}
@@ -295,10 +293,10 @@ public class MethodFrequencyView extends BorderPanel {
 
 		private void populateLeftCol( UserMethod selected ) {
 			int index = 1;
-			InvocationCounts invocationsCount = composite.getMapMethodToInvocationCounts().get( selected );
+			InvocationCounts invocationsCount = ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( selected );
 			for( MethodCountPair pair : invocationsCount.getMethodCountPairs() ) {
-				if( !pair.getMethod().isFunction() || composite.getShowFunctionsState().getValue() ) {
-					if( !pair.getMethod().isProcedure() || composite.getShowProceduresState().getValue() ) {
+				if( !pair.getMethod().isFunction() || ((MethodFrequencyTabComposite)getComposite()).getShowFunctionsState().getValue() ) {
+					if( !pair.getMethod().isProcedure() || ((MethodFrequencyTabComposite)getComposite()).getShowProceduresState().getValue() ) {
 						setCell( 0, index, pair.getMethod().getName() );
 						++index;
 					}
@@ -327,10 +325,10 @@ public class MethodFrequencyView extends BorderPanel {
 		public int getCount( AbstractMethod method, AbstractMethod methodTwo ) {
 			int count = 0;
 			if( methodTwo != null ) {
-				count = composite.getMapMethodToInvocationCounts().get( method ).get( methodTwo ).getCount();
+				count = ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( method ).get( methodTwo ).getCount();
 			} else {
-				if( composite.getMapMethodToInvocationCounts().get( method ) != null ) {
-					for( MethodCountPair pair : composite.getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
+				if( ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( method ) != null ) {
+					for( MethodCountPair pair : ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
 						if( pair.getMethod() != MethodFrequencyTabComposite.dummy ) {
 							count += pair.getCount();
 						}
