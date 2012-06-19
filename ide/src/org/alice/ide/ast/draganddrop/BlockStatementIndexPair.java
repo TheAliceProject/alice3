@@ -88,7 +88,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 		if( this.blockStatement != replacementBlockStatement ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( replacementBlockStatement );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "creating replacement:", replacementBlockStatement );
 			return new BlockStatementIndexPair( replacementBlockStatement, this.index );
 		} else {
 			return this;

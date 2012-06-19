@@ -54,8 +54,15 @@ public class ModelFirstComponentResolver extends TrackableShapeResolver {
 	public org.lgna.croquet.components.Component<?> getResolved() {
 		org.lgna.croquet.Model model = this.step.getModel();
 		if( model != null ) {
-			return org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+			org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+			if( component != null ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
+			}
+			return component;
 		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", model );
 			return null;
 		}
 	}

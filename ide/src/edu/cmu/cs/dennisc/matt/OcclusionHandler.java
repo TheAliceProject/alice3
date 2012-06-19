@@ -128,7 +128,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 			} else if( occList instanceof OcclusionEndListener ) {
 				return wereOccluded.get( m ).get( changedEntity ) && !AabbOcclusionDetector.doesTheseOcclude( camera, m, changedEntity );
 			}
-			Logger.errln( "UNHANDLED CollisionListener TYPE " + occList.getClass() );
+			Logger.errln( "UNHANDLED OcclusionListener TYPE", occList.getClass() );
 			return false;
 		}
 

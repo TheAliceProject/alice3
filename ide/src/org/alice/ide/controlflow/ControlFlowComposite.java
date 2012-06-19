@@ -109,17 +109,15 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 				null,
 				org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
 				null,
-				org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance(),
-				null
-				);
+				org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance()
+		);
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
 			if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
 				//pass
 			} else {
-				this.models.add( 
-						org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( method ) 
-						);
+				this.models.add( null ); 
+				this.models.add( org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( method ) );
 			}
 		}
 	}

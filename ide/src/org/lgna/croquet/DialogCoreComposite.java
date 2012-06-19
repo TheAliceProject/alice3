@@ -136,6 +136,11 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 			this.coreComposite = coreComposite;
 		}
+//		@Override
+//		protected void initialize() {
+//			super.initialize();
+//			this.coreComposite.initializeIfNecessary();
+//		}
 		public DialogCoreComposite getDialogCoreComposite() {
 			return this.coreComposite;
 		}

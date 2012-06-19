@@ -81,24 +81,6 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	protected org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return originalEdit;
 	}
-
-//	private static org.lgna.project.ast.MethodInvocation getMethodInvocation( org.lgna.project.ast.Statement statement ) {
-//		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-//			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-//			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-//			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-//				return (org.lgna.project.ast.MethodInvocation)expression;
-//			}
-//		}
-//		return null;
-//	}
-//	private static org.lgna.project.ast.AbstractMethod getMethod( org.lgna.project.ast.Statement statement ) {
-//		org.lgna.project.ast.MethodInvocation methodInvocation = getMethodInvocation( statement );
-//		if( methodInvocation != null ) {
-//			return methodInvocation.method.getValue();
-//		}
-//		return null;
-//	}
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
 		InsertStatementActionOperation replacement = replacementEdit.getModel();

@@ -96,4 +96,15 @@ public abstract class Note extends org.lgna.cheshire.simple.Note {
 			return false;
 		}
 	}
+	
+	public void appendDetailedReport( StringBuilder sb ) {
+		sb.append( "\t" );
+		sb.append( this.getLabel() );
+		sb.append( ": " );
+		sb.append( this.isGoodToGo() );
+		sb.append( "\n" );
+		for( org.lgna.cheshire.simple.Feature feature : this.getFeatures() ) {
+			feature.appendDetailedReport( sb );
+		}
+	}
 }

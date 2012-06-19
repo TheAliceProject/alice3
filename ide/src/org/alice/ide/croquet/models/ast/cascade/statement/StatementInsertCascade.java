@@ -109,9 +109,9 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 			}
 			if( fillIn != null ) {
 				prepModels.add( fillIn );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: pass fill in to menu selection step ", fillIn );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: pass fill in to menu selection step ", fillIn );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle expression ", expression );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle expression ", expression );
 			}
 			org.lgna.croquet.MenuBarComposite menuBarComposite = null;
 			org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );

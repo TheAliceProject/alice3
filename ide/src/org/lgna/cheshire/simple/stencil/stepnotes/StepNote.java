@@ -62,7 +62,7 @@ public abstract class StepNote<S extends org.lgna.croquet.history.Step<?>> exten
 				//at least one feature
 				rv = true;
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( status );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "isGoodToGo:", status );
 				rv = false;
 				break;
 			}

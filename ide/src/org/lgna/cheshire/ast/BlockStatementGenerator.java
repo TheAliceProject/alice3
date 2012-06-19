@@ -103,7 +103,7 @@ public class BlockStatementGenerator {
 						}
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( expression );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle", expression );
 					statementGenerator = null;
 				}
 			} else {
