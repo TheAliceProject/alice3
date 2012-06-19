@@ -70,7 +70,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 				doubleState.createSlider(), doubleState.createSpinner()
 		);
 		
-		testCroquet.getFrame().getContentPanel().addComponent( gridPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		testCroquet.getFrame().getContentPanel().addCenterComponent( gridPanel );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );

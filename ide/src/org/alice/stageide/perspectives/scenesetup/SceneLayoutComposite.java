@@ -63,7 +63,7 @@ public class SceneLayoutComposite extends org.lgna.croquet.SimpleComposite< org.
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.getView().addComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		this.getView().addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
 	}
 	@Override
 	public void handlePostDeactivation() {

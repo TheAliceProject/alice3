@@ -299,7 +299,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 				this.mainComposite = mainComposite;
 				if( this.mainComposite != null ) {
 					this.mainComposite.handlePreActivation();
-					this.getContentPanel().addComponent( this.mainComposite.getView(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+					this.getContentPanel().addCenterComponent( this.mainComposite.getView() );
 				}
 			}
 			this.getContentPanel().revalidateAndRepaint();

@@ -52,6 +52,8 @@ public class Project {
 	private final java.util.Map/*< org.lgna.project.properties.PropertyKey< T >, T >*/ propertyMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 
+	private final java.util.List< org.lgna.project.event.ResourceListener > resourceListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
 	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.lgna.common.Resource > resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
@@ -64,16 +66,35 @@ public class Project {
 	public org.lgna.project.ast.NamedUserType getProgramType() {
 		return this.programType;
 	}
+	
+	public void addResourceListener( org.lgna.project.event.ResourceListener resourceListener ) {
+		this.resourceListeners.add( resourceListener );
+	}
+	public void removeResourceListener( org.lgna.project.event.ResourceListener resourceListener ) {
+		this.resourceListeners.remove( resourceListener );
+	}
 	public void addResource( org.lgna.common.Resource resource ) {
 		if( this.resources.contains( resource ) ) {
 			//todo
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
 		} else {
 			this.resources.add( resource );
+			if( this.resourceListeners.size() > 0 ) {
+				org.lgna.project.event.ResourceEvent e = new org.lgna.project.event.ResourceEvent( this, resource );
+				for( org.lgna.project.event.ResourceListener resourceListener : this.resourceListeners ) {
+					resourceListener.resourceAdded( e );
+				}
+			}
 		}
 	}
 	public void removeResource( org.lgna.common.Resource resource ) {
 		this.resources.remove( resource );
+		if( this.resourceListeners.size() > 0 ) {
+			org.lgna.project.event.ResourceEvent e = new org.lgna.project.event.ResourceEvent( this, resource );
+			for( org.lgna.project.event.ResourceListener resourceListener : this.resourceListeners ) {
+				resourceListener.resourceRemoved( e );
+			}
+		}
 	}
 	public java.util.Set< org.lgna.common.Resource > getResources() {
 		return this.resources;

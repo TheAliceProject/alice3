@@ -61,7 +61,7 @@ public class ExpressionDropDown< M extends org.lgna.project.ast.Expression > ext
 		protected void internalRefresh() {
 			super.internalRefresh();
 			this.forgetAndRemoveAllComponents();
-			this.addComponent( factory.createExpressionPane( this.expression ), Constraint.CENTER );
+			this.addCenterComponent( factory.createExpressionPane( this.expression ) );
 			this.revalidateAndRepaint();
 		}
 	};

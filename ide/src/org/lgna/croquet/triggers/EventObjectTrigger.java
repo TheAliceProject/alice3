@@ -68,7 +68,7 @@ public abstract class EventObjectTrigger< E extends java.util.EventObject > exte
 		if( this.viewController != null ) {
 			return this.viewController;
 		} else {
-			Object source = this.event.getSource();
+			Object source = this.event != null ? this.event.getSource() : null;
 			if( source instanceof java.awt.Component ) {
 				java.awt.Component awtComponent = (java.awt.Component)source;
 				org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( awtComponent );

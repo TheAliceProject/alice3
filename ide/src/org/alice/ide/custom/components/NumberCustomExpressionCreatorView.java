@@ -107,19 +107,17 @@ public final class NumberCustomExpressionCreatorView extends CustomExpressionCre
 				org.alice.ide.croquet.models.numberpad.BackspaceOperation.getInstance( numberModel ).createButton()
 		);
 
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( lineAxisPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-		rv.addComponent( gridBagPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-//		org.lgna.croquet.components.PageAxisPanel rv = new org.lgna.croquet.components.PageAxisPanel();
-//		rv.addComponent( lineAxisPanel );
-//		rv.addComponent( gridBagPanel );
-//		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
+			.pageStart( lineAxisPanel)
+			.center( gridBagPanel )
+		.build();
 
 		java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( gridBagPanel.getFont(), 2.0f );
 		view.setFont( font );
 		for( org.lgna.croquet.components.Button button : org.lgna.croquet.components.HierarchyUtilities.findAllMatches( rv, org.lgna.croquet.components.Button.class ) ) {
 			button.setFont( font );
 		}
+
 		return rv;
 	}
 }

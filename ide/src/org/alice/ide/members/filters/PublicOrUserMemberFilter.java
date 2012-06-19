@@ -46,7 +46,7 @@ package org.alice.ide.members.filters;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PublicOrUserMemberFilter implements MemberFilter {
+public class PublicOrUserMemberFilter implements MemberFilter {
 	public boolean isAcceptable( org.lgna.project.ast.AbstractMember member ) {
 		return member.isPublicAccess() || member.isUserAuthored();
 	}

@@ -46,18 +46,13 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteParameterEdit extends ParameterEdit< org.alice.ide.operations.ast.DeleteParameterOperation > {
+public class DeleteParameterEdit extends ParameterEdit {
 	private transient int index;
-	public DeleteParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
-		super( completionStep, parameter );
+	public DeleteParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
+		super( completionStep, code, parameter );
 	}
 	public DeleteParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-	}
-	
-	@Override
-	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > getParametersProperty() {
-		return this.getModel().getParametersProperty();
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {

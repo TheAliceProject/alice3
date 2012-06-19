@@ -478,7 +478,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void showLookingGlassPanel()
 	{
-		this.addComponent( this.mainPanel, Constraint.CENTER );
+		this.addCenterComponent( this.mainPanel );
 	}
 	
 	private void hideLookingGlassPanel()
@@ -498,7 +498,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
 				this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
 				this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
-				this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
+				this.mainPanel.addCenterComponent(this.propertiesSplitPane);
 				this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 
 				this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
@@ -509,7 +509,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			}
 			else
 			{
-				this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
+				this.mainPanel.addCenterComponent(this.lookingGlassPanel);
 				this.lookingGlassPanel.setNorthWestComponent( null );
 				this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
 				this.lookingGlassPanel.setSouthComponent(null);

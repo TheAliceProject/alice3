@@ -88,29 +88,31 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
 		org.lgna.croquet.components.JComponent< ? > backwardFowardComponent;
 		if( ARE_CASCADE_BUTTONS_DESIRED ) {
-			org.lgna.croquet.components.PopupButton backPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+			org.lgna.croquet.components.PopupButton backwardPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 			org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 			
-			backPopupButton.setBorder( border );
+			backwardPopupButton.setBorder( border );
 			forwardPopupButton.setBorder( border );
 
-			org.lgna.croquet.components.BorderPanel backPanel = new org.lgna.croquet.components.BorderPanel();
-			org.lgna.croquet.components.BorderPanel forwardPanel = new org.lgna.croquet.components.BorderPanel();
-			backPanel.addComponent( backwardButton, Constraint.CENTER );
-			forwardPanel.addComponent( forwardButton, Constraint.CENTER );
-			backPanel.addComponent( backPopupButton, Constraint.LINE_END );
-			forwardPanel.addComponent( forwardPopupButton, Constraint.LINE_END );
+			org.lgna.croquet.components.BorderPanel backwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+				.center( backwardButton )
+				.lineEnd( backwardPopupButton )
+			.build();
+				org.lgna.croquet.components.BorderPanel forwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+				.center( forwardButton )
+				.lineEnd( forwardPopupButton )
+			.build();
 
 			backwardFowardComponent = new org.lgna.croquet.components.LineAxisPanel(  
-					backPanel,
+					backwardPanel,
 					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 3 ),
 					forwardPanel
 			);
 		} else {
-			org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel();
-			borderPanel.addComponent( backwardButton, Constraint.CENTER );
-			borderPanel.addComponent( forwardButton, Constraint.LINE_END );
-			backwardFowardComponent = borderPanel;
+			backwardFowardComponent = new org.lgna.croquet.components.BorderPanel.Builder()
+				.center( backwardButton )
+				.lineEnd( forwardButton )
+			.build();;
 		}
 		
 
@@ -122,7 +124,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		this.tabbedPane = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().createFolderTabbedPane();
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
 		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
-		this.addComponent( tabbedPane, Constraint.CENTER );
+		this.addCenterComponent( tabbedPane );
 	}
 	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus() {
 		org.alice.ide.declarationseditor.DeclarationComposite item = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getSelectedItem();

@@ -66,7 +66,7 @@ public class BillboardFieldDeclarationPanel extends org.alice.ide.croquet.compon
 			}
 		}
 		SidePanel sidePanel = new SidePanel();
-		this.addComponent( sidePanel, Constraint.LINE_END );
+		this.addLineEndComponent( sidePanel );
 	}
 	@Override
 	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation model ) {

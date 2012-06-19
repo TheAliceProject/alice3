@@ -47,10 +47,8 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class ValueComponentTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.AbstractType > {
-	private final DeclarationLikeSubstanceOperation<?> owner;
-	public ValueComponentTypeState( DeclarationLikeSubstanceOperation<?> owner, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
+	public ValueComponentTypeState( org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "7b2413e0-a945-49d1-800b-4fba4f0bc741" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), initialValue );
-		this.owner = owner;
 	}
 	
 	protected static java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > node ) {

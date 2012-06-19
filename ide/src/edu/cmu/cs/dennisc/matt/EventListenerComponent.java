@@ -65,7 +65,7 @@ public class EventListenerComponent extends BorderPanel {
 
 	public EventListenerComponent( MethodInvocation methodInvocation ) {
 		int bottom = 0;
-		this.addComponent( createHeader( methodInvocation ), Constraint.PAGE_START );
+		this.addPageStartComponent( createHeader( methodInvocation ) );
 		if( methodInvocation.requiredArguments.size() > 0 ) {
 			SimpleArgument argument0 = methodInvocation.requiredArguments.get( 0 );
 			AbstractMethod singleAbstractMethod = argument0.parameter.getValue().getValueType().getDeclaredMethods().get( 0 );
@@ -83,14 +83,16 @@ public class EventListenerComponent extends BorderPanel {
 							new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda )
 					);
 
-					BorderPanel codeContainer = new BorderPanel();
 					StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
 					org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( putCodeHere );
+					
+					BorderPanel codeContainer = new BorderPanel.Builder()
+						.pageStart( singleAbstractMethodHeader )
+						.center( bodyPane )
+					.build();
 					codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
-					codeContainer.addComponent( bodyPane, Constraint.CENTER );
-					codeContainer.addComponent( singleAbstractMethodHeader, Constraint.PAGE_START );
 					codeContainer.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
-					this.addComponent( codeContainer, Constraint.CENTER );
+					this.addCenterComponent( codeContainer );
 					bottom = 8;
 				}
 			}

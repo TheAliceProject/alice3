@@ -60,27 +60,11 @@ import org.lgna.project.ast.UserMethod;
  * @author Matt May
  */
 public class SearchDialog extends TabComposite {
-
-	private View composite;
-	private SearchDialogManager manager;
+	private final SearchDialogManager manager;
 
 	public SearchDialog( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
 		super( java.util.UUID.fromString( "8f75a1e2-805d-4d9f-bef6-099204fe8d60" ) );
-
-		final BorderPanel rv = new BorderPanel();
 		manager = new SearchDialogManager( methodParentMap );
-		TextField textField = new TextField( manager.getStringState() );
-		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
-		rv.addComponent( textField, Constraint.PAGE_START );
-
-		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
-		manager.setOwner( tree );
-		rv.addComponent( new ScrollPane( tree ), Constraint.CENTER );
-
-		manager.refreshAll();
-		tree.setRootVisible( false );
-		tree.expandAllRows();
-		composite = rv;
 	}
 
 	@Override
@@ -90,7 +74,20 @@ public class SearchDialog extends TabComposite {
 
 	@Override
 	protected View createView() {
-		return composite;
+		TextField textField = new TextField( manager.getStringState() );
+		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
+
+		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+		manager.setOwner( tree );
+
+		manager.refreshAll();
+		tree.setRootVisible( false );
+		tree.expandAllRows();
+
+		return new BorderPanel.Builder()
+			.pageStart( textField )
+			.center( new ScrollPane( tree ) )
+		.build();
 	}
 
 	public void addSelectedListener( ValueListener<SearchTreeNode> listener ) {

@@ -92,9 +92,9 @@ public class LabeledSpringRow implements SpringRow {
 		if( this.isFillHorizontal ) {
 			trailingComponent = this.component;
 		} else {
-			BorderPanel borderPanel = new BorderPanel();
-			borderPanel.addComponent( this.component, BorderPanel.Constraint.LINE_START );
-			trailingComponent = borderPanel;
+			trailingComponent = new BorderPanel.Builder()
+				.lineStart( this.component )
+			.build();
 		}
 		return new org.lgna.croquet.components.JComponent< ? >[] { 
 			this.createImmutableTextField(),

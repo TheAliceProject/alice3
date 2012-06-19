@@ -148,8 +148,8 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.component
 		pageAxisPanel.addComponent( new RecursionAccessPanel( composite ) );
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
 		
-		this.addComponent( pageAxisPanel, Constraint.CENTER );
-		this.addComponent( new org.lgna.croquet.components.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IsRecursionAllowedPreferenceView.class.getResource( "images/AliceWithKeyAtDoor.png" ) ) ), Constraint.LINE_START );
+		this.addLineStartComponent( new org.lgna.croquet.components.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IsRecursionAllowedPreferenceView.class.getResource( "images/AliceWithKeyAtDoor.png" ) ) ) );
+		this.addCenterComponent( pageAxisPanel );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );

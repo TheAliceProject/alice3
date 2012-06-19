@@ -144,4 +144,20 @@ public class ImplementationAccessor {
 			return defaultValue;
 		}
 	}
+	
+	public static Object getKeyedArgumentValue( Object argumentValue ) {
+		try {
+			if( argumentValue != null ) {
+				Class<?> cls = argumentValue.getClass();
+				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getValue", Object[].class );
+				Object array = new Object[] { argumentValue };
+				return mthd.invoke( null, array );
+			} else {
+				return null;
+			}
+		} catch( Throwable t ) {
+			//t.printStackTrace();
+			return argumentValue;
+		}
+	}
 }

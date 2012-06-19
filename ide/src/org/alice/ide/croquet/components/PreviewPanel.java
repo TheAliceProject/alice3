@@ -67,6 +67,6 @@ public class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
 	protected void internalRefresh() {
 		super.internalRefresh();
 		this.internalForgetAndRemoveAllComponents();
-		this.addComponent( this.panelWithPreview.createPreviewSubComponent(), Constraint.CENTER );
+		this.addCenterComponent( this.panelWithPreview.createPreviewSubComponent() );
 	}
 }

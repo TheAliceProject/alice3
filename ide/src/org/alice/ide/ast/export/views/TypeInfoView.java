@@ -47,7 +47,7 @@ package org.alice.ide.ast.export.views;
  */
 public class TypeInfoView extends org.lgna.croquet.components.BorderPanel {
 	public TypeInfoView( org.alice.ide.ast.export.TypeInfo typeInfo ) {
-		this.addComponent( new InfoCheckBox( typeInfo ), Constraint.PAGE_START );
+		this.addPageStartComponent( new InfoCheckBox( typeInfo ) );
 		
 		org.lgna.croquet.components.PageAxisPanel centerPanel = new org.lgna.croquet.components.PageAxisPanel();
 //		for( org.alice.ide.ast.export.ConstructorInfo info : typeInfo.getConstructorInfos() ) {
@@ -60,8 +60,8 @@ public class TypeInfoView extends org.lgna.croquet.components.BorderPanel {
 			centerPanel.addComponent( new InfoCheckBox( info ) );
 		}
 		
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ), Constraint.LINE_START );
-		this.addComponent( centerPanel, Constraint.CENTER );
+		this.addLineStartComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ) );
+		this.addCenterComponent( centerPanel );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 	}
 }

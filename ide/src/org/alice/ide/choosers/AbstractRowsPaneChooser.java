@@ -56,9 +56,10 @@ public abstract class AbstractRowsPaneChooser<E extends org.lgna.project.ast.Exp
 			//re.printStackTrace();
 			expression = new org.lgna.project.ast.NullLiteral();
 		}
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
+		
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
+		.build();
 	}
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;

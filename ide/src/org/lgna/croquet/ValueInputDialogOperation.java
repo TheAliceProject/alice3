@@ -123,6 +123,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			T value = this.createValue( step );
 			if( value != null ) {
 				step.putEphemeralDataFor( VALUE_KEY, value );
+				step.finish();
 			} else {
 				step.cancel();
 			}

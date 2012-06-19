@@ -83,8 +83,8 @@ public class TypeDeclarationOperation extends org.lgna.croquet.InputDialogOperat
 	}
 	
 	@Override
-	protected org.alice.ide.ast.declaration.components.TypeDeclarationPanel prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.ide.ast.declaration.components.TypeDeclarationPanel( this );
+	protected org.alice.ide.ast.declaration.views.TypeDeclarationPanel prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return new org.alice.ide.ast.declaration.views.TypeDeclarationPanel( this );
 	}
 	@Override
 	protected void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit ) {

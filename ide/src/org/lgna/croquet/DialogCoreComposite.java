@@ -54,7 +54,7 @@ package org.lgna.croquet;
 		this.cancelButton = coreComposite.getCancelOperation().createButton();
 		org.lgna.croquet.components.View<?,?> coreView = coreComposite.getView();
 		this.setBackgroundColor( coreView.getBackgroundColor() );
-		this.addComponent( coreView, Constraint.CENTER );
+		this.addCenterComponent( coreView );
 	}
 	public org.lgna.croquet.components.Button getCommitButton() {
 		return this.commitButton;
@@ -165,6 +165,8 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
 				dialog.setVisible( false );
 				step.finish();
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this );
 			}
 		}
 		

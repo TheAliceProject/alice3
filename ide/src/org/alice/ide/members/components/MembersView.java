@@ -69,7 +69,7 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,0,4 ) );
 
-		this.addComponent( instancePanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+		this.addPageStartComponent( instancePanel );
 		org.alice.ide.members.TemplatesTabSelectionState tabState;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			tabState = org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance();
@@ -78,6 +78,6 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		}
 		org.lgna.croquet.components.AbstractTabbedPane<?,?,?> tabbedPane = tabState.createTabbedPane();
 
-		this.addComponent( tabbedPane, Constraint.CENTER );
+		this.addCenterComponent( tabbedPane );
 	}
 }

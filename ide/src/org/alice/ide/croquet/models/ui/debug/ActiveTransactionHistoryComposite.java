@@ -55,19 +55,15 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 	}
 	private ActiveTransactionHistoryComposite() {
 		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
+		//todo: investigate
+		this.initializeIfNecessary();
 	}
 	@Override
 	protected void localize() {
 		super.localize();
 		// do not want to bother localizers with this composite
-		// todo: investigate why this doesn't work
 		this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
-//				ActiveTransactionHistoryComposite.this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
-//			}
-//		} );
+		this.getBooleanState().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 ) );
 	}
 	@Override
 	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {

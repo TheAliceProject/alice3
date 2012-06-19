@@ -59,14 +59,7 @@ public class FixedAspectRatioPanel extends SingleComponentPanel {
 			@Override
 			protected void layoutComponent( java.awt.Container parent, java.awt.Component component ) {
 				java.awt.Dimension parentSize = parent.getSize();
-				double parentWidthToHeightRatio = parentSize.width / (double)parentSize.height;
-				java.awt.Dimension componentSize;
-				//if( widthBasedSize.width * widthBasedSize.height > heightBasedSize.width * heightBasedSize.height ) {
-				if( parentWidthToHeightRatio < widthToHeightRatio ) {
-					componentSize = new java.awt.Dimension( parentSize.width, (int)(parentSize.width/widthToHeightRatio) );
-				} else {
-					componentSize = new java.awt.Dimension( (int)(parentSize.height*widthToHeightRatio), parentSize.height );
-				}
+				java.awt.Dimension componentSize = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( parentSize, widthToHeightRatio );
 				component.setLocation( ( parentSize.width - componentSize.width ) / 2, ( parentSize.height - componentSize.height ) / 2 );
 				component.setSize( componentSize );
 			}

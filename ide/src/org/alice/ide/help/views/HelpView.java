@@ -64,8 +64,8 @@ public class HelpView extends org.lgna.croquet.components.BorderPanel {
 				org.lgna.croquet.components.BoxUtilities.createVerticalGlue()
 		);
 		pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-		this.addComponent( iconLabel, Constraint.LINE_START );
-		this.addComponent( pageAxisPanel, Constraint.LINE_END );
+		this.addLineStartComponent( iconLabel );
+		this.addLineEndComponent( pageAxisPanel );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 	}
 }

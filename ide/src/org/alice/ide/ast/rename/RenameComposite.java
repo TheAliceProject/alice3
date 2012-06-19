@@ -45,7 +45,7 @@ package org.alice.ide.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.ide.ast.rename.components.RenamePanel> {
+public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
 	private final org.alice.ide.name.NameValidator nameValidator;
 	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
 
@@ -53,6 +53,9 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 		this.nameValidator = nameValidator;
+	}
+	protected org.alice.ide.name.NameValidator getNameValidator() {
+		return this.nameValidator;
 	}
 	public org.lgna.croquet.StringState getNameState() {
 		return this.nameState;
@@ -78,13 +81,5 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
 		this.nameState.selectAll();
 		super.handlePreShowDialog( step );
-	}
-	protected abstract java.awt.Color getViewBackgroundColor();
-	@Override
-	protected org.alice.ide.ast.rename.components.RenamePanel createView() {
-		org.alice.ide.ast.rename.components.RenamePanel rv = new org.alice.ide.ast.rename.components.RenamePanel( this );
-		rv.setMinimumPreferredWidth( 320 );
-		rv.setBackgroundColor( this.getViewBackgroundColor() );
-		return rv;
 	}
 }

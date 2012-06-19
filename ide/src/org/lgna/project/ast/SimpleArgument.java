@@ -56,4 +56,9 @@ public class SimpleArgument extends AbstractArgument {
 	protected AbstractType< ?, ?, ? > getExpressionTypeForParameterType( AbstractType< ?, ?, ? > parameterType ) {
 		return parameterType;
 	}
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
+		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
+		return rv;
+	}
 }

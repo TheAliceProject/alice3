@@ -29,5 +29,14 @@ public class IsShowingHackTutorialState extends BooleanState {
 				});
 			}
 		});
+		
+		this.initializeIfNecessary();
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		//note: do not want to waste time localizing
+		this.setTextForBothTrueAndFalse( "Show Hack Tutorial" );
+		this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F3, 0 ) );
 	}
 }

@@ -53,7 +53,7 @@ public class TransactionManager {
 
 	@Deprecated
 	private static TransactionHistory getActiveTransactionHistory() {
-		return org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+		return org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
 	}
 
 	@Deprecated
