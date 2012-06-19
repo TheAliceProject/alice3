@@ -48,6 +48,14 @@ package org.alice.ide.ast.declaration;
 public abstract class MethodDeclarationComposite extends DeclarationComposite< org.lgna.project.ast.UserMethod > {
 	public MethodDeclarationComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
+		// <kjh/> Should we use meta-context factories instead?
+		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
+			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
+		} else {
+			this.getOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+			this.getOperation().addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+		}
 	}
 	private org.lgna.project.ast.UserMethod createMethod() {
 		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );

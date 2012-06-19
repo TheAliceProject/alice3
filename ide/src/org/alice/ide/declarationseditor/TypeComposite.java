@@ -71,8 +71,11 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Na
 			return true;
 		} else {
 			//todo: this should really leverage Composite.contains and create sub composites and models
-			if( model == org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( this.getType() ) ||
-					model == org.alice.ide.croquet.models.declaration.FunctionDeclarationOperation.getInstance( this.getType() ) ) {
+			if( 
+					model == org.alice.ide.ast.declaration.ProcedureDeclarationComposite.getInstance( this.getType() ).getOperation()
+						||
+					model == org.alice.ide.ast.declaration.FunctionDeclarationComposite.getInstance( this.getType() ).getOperation() 
+			) {
 				return true;
 			} else {
 				//todo
