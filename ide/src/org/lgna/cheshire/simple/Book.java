@@ -139,6 +139,7 @@ public class Book {
 	}
 
 	public void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( replacementCandidate );
 		Chapter chapter = this.getSelectedChapter();
 		if( chapter instanceof TransactionChapter ) {
 			TransactionChapter transactionChapter = (TransactionChapter)chapter;
@@ -151,6 +152,8 @@ public class Book {
 					org.lgna.croquet.Retargeter retargeter = org.alice.ide.IDE.getActiveInstance().getSimplePresentation().getRetargeter();
 					originalEdit.addKeyValuePairs( retargeter, replacementCandidate );
 					this.retargetForward( retargeter );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( replacementAcceptability, originalEdit, replacementCandidate );
 				}
 			} else {
 				System.err.println( "originalEdit is null.  original canceled?" );

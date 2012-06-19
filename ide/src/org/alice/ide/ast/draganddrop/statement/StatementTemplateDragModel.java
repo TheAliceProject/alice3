@@ -78,7 +78,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		return this.statementCls;
 	}
 	
-	public void generateAndAddStepsToTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement ) {
+	public void generateAndAddStepsToTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
 		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( history );
 		history.addTransaction( transaction );
 
@@ -102,7 +102,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		
 		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
 		if( completionStep != null ) {
-			completionStep.setEdit( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement ) );
+			completionStep.setEdit( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement, initialExpressions ) );
 		}
 		
 	}

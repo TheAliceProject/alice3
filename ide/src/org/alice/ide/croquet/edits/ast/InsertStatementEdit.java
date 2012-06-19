@@ -175,7 +175,7 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 				}
 				return rv;
 			} else {
-				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "expressions count not the same" ); 
+				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "initial expressions count not the same" );
 			}
 		} else {
 			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" ); 
