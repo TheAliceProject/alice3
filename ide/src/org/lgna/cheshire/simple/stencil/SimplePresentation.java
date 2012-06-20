@@ -146,9 +146,13 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		protected void handleDisplayable() {
 			super.handleDisplayable();
 			SimplePresentation.this.startListening();
-			SimplePresentation.this.handleChapterChanged( SimplePresentation.this.getBook().getSelectedChapter() );
 			this.addKeyListener( this.keyListener );
 			this.addMouseListener( this.mouseListener );
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					SimplePresentation.this.handleChapterChanged( SimplePresentation.this.getBook().getSelectedChapter() );
+				}
+			} );
 		}
 
 		@Override

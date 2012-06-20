@@ -80,13 +80,12 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		return this.features;
 	}
 	public java.awt.Point calculateLocation( org.lgna.croquet.components.Container< ? > container ) {
-		java.awt.Point rv = new java.awt.Point( 20, 20 );
+		java.awt.Point rv;
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
 			rv = feature.calculateNoteLocation( container, this );
 		} else {
-			rv.x = (container.getWidth()-this.getWidth())/2;
-			rv.y = 320;
+			rv = new java.awt.Point( (container.getWidth()-this.getWidth())/2, 320 );
 		}
 
 		System.err.println( "todo: remove text calculateLocation special case" );

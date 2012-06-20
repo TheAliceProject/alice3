@@ -107,54 +107,56 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 			return parent.getPreferredSize();
 		}
 		public void layoutContainer( java.awt.Container parent ) {
-			java.awt.Point prevLocation = null;
-			java.awt.Dimension prevSize = null;
 			java.awt.Dimension parentSize = parent.getSize();
-			for( java.awt.Component awtComponent : parent.getComponents() ) {
-				java.awt.Dimension childSize = awtComponent.getPreferredSize();
-				awtComponent.setSize( childSize );
-				if( set.contains( awtComponent ) ) {
-					//pass
-				} else {
-					java.awt.Point p;
-					if( prevLocation != null ) {
-						if( IS_NOTE_OVERLAPPING_DESIRED ) {
-							p = new java.awt.Point( prevLocation.x + 64, prevLocation.y - 33 );
-						} else {
-							p = new java.awt.Point( prevLocation.x + prevSize.width - 64, prevLocation.y - 33 );
-						}
+			if( parentSize.width > 0 && parentSize.height > 0 ) {
+				java.awt.Point prevLocation = null;
+				java.awt.Dimension prevSize = null;
+				for( java.awt.Component awtComponent : parent.getComponents() ) {
+					java.awt.Dimension childSize = awtComponent.getPreferredSize();
+					awtComponent.setSize( childSize );
+					if( set.contains( awtComponent ) ) {
+						//pass
 					} else {
-						if (awtComponent instanceof org.lgna.cheshire.simple.Note.JNote) {
-							if( ChapterPage.this.layoutHint != null ) {
-								p = ChapterPage.this.layoutHint;
-								if( p.x < 0 ) {
-									p.x = parentSize.width - childSize.width + p.x;
-								}
-								if( p.y < 0 ) {
-									p.y = parentSize.height - childSize.height + p.y;
-								}
+						java.awt.Point p;
+						if( prevLocation != null ) {
+							if( IS_NOTE_OVERLAPPING_DESIRED ) {
+								p = new java.awt.Point( prevLocation.x + 64, prevLocation.y - 33 );
 							} else {
-								p = new java.awt.Point( ChapterPage.this.calculateLocationOfFirstNote() );
+								p = new java.awt.Point( prevLocation.x + prevSize.width - 64, prevLocation.y - 33 );
 							}
 						} else {
-							p = new java.awt.Point( 10, 10 );
+							if (awtComponent instanceof org.lgna.cheshire.simple.Note.JNote) {
+								if( ChapterPage.this.layoutHint != null ) {
+									p = ChapterPage.this.layoutHint;
+									if( p.x < 0 ) {
+										p.x = parentSize.width - childSize.width + p.x;
+									}
+									if( p.y < 0 ) {
+										p.y = parentSize.height - childSize.height + p.y;
+									}
+								} else {
+									p = new java.awt.Point( ChapterPage.this.calculateLocationOfFirstNote() );
+								}
+							} else {
+								p = new java.awt.Point( 10, 10 );
+							}
 						}
-					}
-					
-					if( parentSize.width > 0 && parentSize.height > 0 ) {
-						final int BORDER = 32;
-						p.x = Math.max( p.x, BORDER );
-						p.x = Math.min( p.x, parentSize.width-childSize.width-BORDER );
-						p.y = Math.max( p.y, BORDER );
-						p.y = Math.min( p.y, parentSize.height-childSize.height-BORDER );
-					}
-					
-					awtComponent.setLocation( p );
+						
+						if( parentSize.width > 0 && parentSize.height > 0 ) {
+							final int BORDER = 32;
+							p.x = Math.max( p.x, BORDER );
+							p.x = Math.min( p.x, parentSize.width-childSize.width-BORDER );
+							p.y = Math.max( p.y, BORDER );
+							p.y = Math.min( p.y, parentSize.height-childSize.height-BORDER );
+						}
+						
+						awtComponent.setLocation( p );
 
-					set.add( awtComponent );
+						set.add( awtComponent );
+					}
+					prevLocation = awtComponent.getLocation();
+					prevSize = awtComponent.getSize();
 				}
-				prevLocation = awtComponent.getLocation();
-				prevSize = awtComponent.getSize();
 			}
 		}
 	}
