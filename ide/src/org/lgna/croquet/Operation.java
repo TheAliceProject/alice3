@@ -79,7 +79,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	
 	@Override
 	protected void localize() {
-		String name = this.getDefaultLocalizedText();
+		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
 			this.setName( name );
 			this.setMnemonicKey( this.getLocalizedMnemonicKey() );

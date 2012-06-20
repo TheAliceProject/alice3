@@ -76,7 +76,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		}
 		@Override
 		protected String getTutorialItemText() {
-			return this.valueInputDialogOperation.getDefaultLocalizedText();
+			return this.valueInputDialogOperation.getName();
 		}
 		@Override
 		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {

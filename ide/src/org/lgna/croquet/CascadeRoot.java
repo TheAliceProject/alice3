@@ -137,7 +137,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 	@Override
 	protected void localize() {
 		super.localize();
-		this.text = this.getDefaultLocalizedText();
+		this.text = this.findDefaultLocalizedText();
 	}
 	
 	public InternalPopupPrepModel< T > getPopupPrepModel() {

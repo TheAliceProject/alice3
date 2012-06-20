@@ -57,7 +57,8 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 			this.completionModel = completionModel;
 		}
 		@Override
-		protected void localize() {
+		protected String getSubKeyForLocalization() {
+			return "sidekickLabel";
 		}
 	}
 	

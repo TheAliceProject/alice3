@@ -200,6 +200,18 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 	}
 
 	public Integer getMaximum() {
+		if(maximum != null){
+			InvocationCounts invocationCounts = new InvocationCounts();
+			for( UserMethod method : getMapMethodToInvocationCounts().keySet() ) {
+				for( MethodCountPair pair : getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
+					for( int i = 0; i != pair.getCount(); ++i ) {
+						invocationCounts.addMethod( pair.getMethod() );
+					}
+				}
+			}
+			getMapMethodToInvocationCounts().put( MethodFrequencyTabComposite.dummy, invocationCounts );
+			maximum = getCount( MethodFrequencyTabComposite.dummy, null );
+		}
 		return this.maximum;
 	}
 
@@ -282,6 +294,19 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 			return this.mapMethodToInvocations.get( method );
 		}
 
+	}
+
+	public LinkedList<String> getLeftColVals( UserMethod selected ) {
+		LinkedList<String> rv = new LinkedList<String>();
+		InvocationCounts invocationsCount = getMapMethodToInvocationCounts().get( selected );
+		for( MethodCountPair pair : invocationsCount.getMethodCountPairs() ) {
+			if( !pair.getMethod().isFunction() || getShowFunctionsState().getValue() ) {
+				if( !pair.getMethod().isProcedure() || getShowProceduresState().getValue() ) {
+					rv.add( pair.getMethod().getName() );
+				}
+			}
+		}
+		return rv;
 	}
 
 	public List<Integer> getRightColVals( UserMethod selected ) {

@@ -84,15 +84,13 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  * @author Matt May
  */
 public class FlowControlFrequencyView extends BorderPanel {
-
-	private Map<UserMethod,List<Statement>> methodToConstructMap;
 	
 	public FlowControlFrequencyView( FlowControlFrequencyComposite composite ){
-		this.methodToConstructMap = composite.getMethodToConstructMap();
+		super(composite);
 		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
 		ListSelectionState<UserMethod> userMethodList = composite.getUserMethodList();
 		ControlDisplay statsDisplay = new ControlDisplay( userMethodList );
-		statsDisplay.setMaximum( methodToConstructMap );
+		statsDisplay.setMaximum();
 		userMethodList.setSelectedItem( FlowControlFrequencyComposite.dummy );
 		userMethodList.addValueListener( statsDisplay );
 		statsDisplay.update( FlowControlFrequencyComposite.dummy );
@@ -124,15 +122,8 @@ public class FlowControlFrequencyView extends BorderPanel {
 			this.gridPanel.setBackgroundColor( Color.WHITE );
 		}
 
-		public void setMaximum( Map<UserMethod,List<Statement>> methodToConstructMap ) {
-			int maxCount = 0;
-			for( Class cls : clsArr ) {
-				int count = getCount( FlowControlFrequencyComposite.dummy, cls );
-				if( count > maxCount ) {
-					maxCount = count;
-				}
-			}
-			maximum = maxCount;
+		public void setMaximum( /*Map<UserMethod,List<Statement>> methodToConstructMap*/ ) {
+			((FlowControlFrequencyComposite)getComposite()).getMaximum( clsArr );
 		}
 
 		private class BarLabel extends Label {
@@ -223,23 +214,7 @@ public class FlowControlFrequencyView extends BorderPanel {
 		}
 
 		public int getCount( UserMethod method, Class<? extends org.lgna.project.ast.Statement> cls ) {
-			int count = 0;
-			if( !method.equals( FlowControlFrequencyComposite.dummy ) ) {
-				for( Statement statement : methodToConstructMap.get( method ) ) {
-					if( statement.getClass().isAssignableFrom( cls ) ) {
-						++count;
-					}
-				}
-			} else {
-				for( UserMethod userMethod : methodToConstructMap.keySet() ) {
-					for( Statement statement : methodToConstructMap.get( userMethod ) ) {
-						if( statement.getClass().isAssignableFrom( cls ) ) {
-							++count;
-						}
-					}
-				}
-			}
-			return count;
+			return ((FlowControlFrequencyComposite) getComposite()).getCount( method, cls );
 		}
 
 		public void changing( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {

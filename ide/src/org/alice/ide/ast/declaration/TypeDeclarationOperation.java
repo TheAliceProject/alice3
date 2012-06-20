@@ -63,8 +63,9 @@ public class TypeDeclarationOperation extends org.lgna.croquet.InputDialogOperat
 	@Override
 	protected void localize() {
 		super.localize();
-		this.superTypeLabelText = this.findLocalizedText( "superTypeLabel", TypeDeclarationOperation.class );
-		this.nameLabelText = this.findLocalizedText( "nameLabel", TypeDeclarationOperation.class );
+		//todo: replace w/ sidekicks
+		this.superTypeLabelText = this.findLocalizedText( "superTypeLabel" );
+		this.nameLabelText = this.findLocalizedText( "nameLabel" );
 	}
 	
 	

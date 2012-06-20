@@ -47,6 +47,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +56,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import org.alice.ide.croquet.models.project.MethodFrequencyTabComposite;
-import org.alice.ide.croquet.models.project.MethodFrequencyTabComposite.InvocationCounts;
-import org.alice.ide.croquet.models.project.MethodFrequencyTabComposite.MethodCountPair;
 import org.alice.ide.croquet.models.project.StatisticsOperation;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
@@ -84,7 +83,7 @@ public class MethodFrequencyView extends BorderPanel {
 	ListSelectionState<UserMethod> listSelectionState;
 
 	public MethodFrequencyView( MethodFrequencyTabComposite composite ) {
-
+		super( composite );
 		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
 		listSelectionState = composite.getUserMethodList();
 
@@ -131,6 +130,8 @@ public class MethodFrequencyView extends BorderPanel {
 
 		private GridPanel gridPanel;
 		private Map<Integer,Map<Integer,Component>> componentMap = Collections.newHashMap();
+		private boolean showFunctions;
+		private boolean showProcedures;
 		private int numRows = 6;
 		private int numCols = 2;
 		private int maximum = 10;
@@ -180,16 +181,7 @@ public class MethodFrequencyView extends BorderPanel {
 		}
 
 		public void setMaximum() {
-			InvocationCounts invocationCounts = new InvocationCounts();
-			for( UserMethod method : ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().keySet() ) {
-				for( MethodCountPair pair : ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
-					for( int i = 0; i != pair.getCount(); ++i ) {
-						invocationCounts.addMethod( pair.getMethod() );
-					}
-				}
-			}
-			((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().put( MethodFrequencyTabComposite.dummy, invocationCounts );
-			maximum = getCount( MethodFrequencyTabComposite.dummy, null );
+			((MethodFrequencyTabComposite)getComposite()).getMaximum();
 		}
 
 		private class BarLabel extends Label {
@@ -230,8 +222,9 @@ public class MethodFrequencyView extends BorderPanel {
 		}
 
 		private void populateGridPanel() {
-			if( gridPanel != null )
+			if( gridPanel != null ) {
 				scroll.setViewportView( null );
+			}
 			this.gridPanel = GridPanel.createGridPane( numRows, numCols, 5, 5 );
 			for( int i = 0; i != numRows; ++i ) {
 				componentMap.put( i, new HashMap<Integer,Component>() );
@@ -278,14 +271,10 @@ public class MethodFrequencyView extends BorderPanel {
 
 		private void populateLeftCol( UserMethod selected ) {
 			int index = 1;
-			InvocationCounts invocationsCount = ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( selected );
-			for( MethodCountPair pair : invocationsCount.getMethodCountPairs() ) {
-				if( !pair.getMethod().isFunction() || ((MethodFrequencyTabComposite)getComposite()).getShowFunctionsState().getValue() ) {
-					if( !pair.getMethod().isProcedure() || ((MethodFrequencyTabComposite)getComposite()).getShowProceduresState().getValue() ) {
-						setCell( 0, index, pair.getMethod().getName() );
-						++index;
-					}
-				}
+			LinkedList<String> leftColVals = ((MethodFrequencyTabComposite)getComposite()).getLeftColVals( selected );
+			for( String str : leftColVals ){
+				setCell( 0, index, str );
+				++index;
 			}
 		}
 
@@ -308,19 +297,7 @@ public class MethodFrequencyView extends BorderPanel {
 		}
 
 		public int getCount( AbstractMethod method, AbstractMethod methodTwo ) {
-			int count = 0;
-			if( methodTwo != null ) {
-				count = ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( method ).get( methodTwo ).getCount();
-			} else {
-				if( ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( method ) != null ) {
-					for( MethodCountPair pair : ((MethodFrequencyTabComposite)getComposite()).getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
-						if( pair.getMethod() != MethodFrequencyTabComposite.dummy ) {
-							count += pair.getCount();
-						}
-					}
-				}
-			}
-			return count;
+			return ((MethodFrequencyTabComposite)getComposite()).getCount(method, methodTwo);
 		}
 
 		public void changing( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {

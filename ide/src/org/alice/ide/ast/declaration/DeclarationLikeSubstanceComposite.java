@@ -166,14 +166,14 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	protected void localize() {
 		super.localize();
 		if( this.valueComponentTypeState != null ) {
-			String text = this.findLocalizedText( "valueComponentTypeState.sidekickLabel", org.lgna.croquet.AbstractComposite.class );
+			String text = this.findLocalizedText( "valueComponentTypeState.sidekickLabel" );
 			if( text != null ) {
 				org.lgna.croquet.StringValue sidekickLabel = this.valueComponentTypeState.getSidekickLabel();
 				sidekickLabel.setText( text );
 			}
 		}
 		if( this.initializerState != null ) {
-			String text = this.findLocalizedText( "initializerState.sidekickLabel", org.lgna.croquet.AbstractComposite.class );
+			String text = this.findLocalizedText( "initializerState.sidekickLabel" );
 			if( text != null ) {
 				org.lgna.croquet.StringValue sidekickLabel = this.initializerState.getSidekickLabel();
 				sidekickLabel.setText( text );

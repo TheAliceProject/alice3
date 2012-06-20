@@ -87,47 +87,6 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		super( migrationId );
 	}
 	protected abstract Status getStatus( org.lgna.croquet.history.CompletionStep<?> step );
-
-	protected abstract String getDefaultCommitText();
-	protected abstract String getCommitUiKey();
-	protected String getCancelUiKey() {
-		return "OptionPane.cancelButtonText";
-	}
-	@Override
-	protected void localize() {
-		super.localize();
-
-		java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
-
-		String commitText = this.findLocalizedText( "commit", GatedCommitDialogCoreComposite.class );
-		if( commitText != null ) {
-			//pass
-		} else {
-			String commitUiKey = this.getCommitUiKey();
-			if( commitUiKey != null ) {
-				commitText = javax.swing.UIManager.getString( commitUiKey, locale );
-			}
-			if( commitText != null ) {
-				//pass
-			} else {
-				commitText = this.getDefaultCommitText();
-			}
-		}
-		this.getCommitOperation().setName( commitText );
-		String cancelText = this.findLocalizedText( "cancel", GatedCommitDialogCoreComposite.class );
-		if( cancelText != null ) {
-			//pass
-		} else {
-			cancelText = javax.swing.UIManager.getString( "OptionPane.cancelButtonText", locale );
-			if( commitText != null ) {
-				//pass
-			} else {
-				commitText = "Cancel";
-			}
-		}
-		this.getCancelOperation().setName( cancelText );
-	}
-
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}

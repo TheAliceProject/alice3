@@ -72,7 +72,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	
@@ -92,7 +97,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	private static final class InternalBooleanState extends BooleanState {
@@ -105,7 +115,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	private static final class InternalListSelectionState<T> extends DefaultListSelectionState<T> {
@@ -118,7 +133,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	public static class BoundedIntegerDetails extends BoundedIntegerState.Details {
@@ -133,7 +153,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			this.key = key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	public static class BoundedDoubleDetails extends BoundedDoubleState.Details {
@@ -151,7 +176,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	protected static interface Action {
@@ -169,7 +199,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 		@Override
 		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
@@ -203,7 +238,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 		@Override
 		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
@@ -215,10 +255,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return rv;
 		}
 	}
-	
-	
 
-	
 	public AbstractComposite( java.util.UUID id ) {
 		super( id );
 		Manager.registerComposite( this );
@@ -259,7 +296,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		for( java.util.Map<Key,? extends AbstractCompletionModel> map : maps ) {
 			for( Key key : map.keySet() ) {
 				AbstractCompletionModel model = map.get( key );
-				String text = this.findLocalizedText( key.getLocalizationKey() + ".sidekickLabel", Composite.class );
+				String text = this.findLocalizedText( key.getLocalizationKey() + ".sidekickLabel" );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
 					sidekickLabel.setText( text );
@@ -270,34 +307,34 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	
 	@Override
 	protected void localize() {
-		for( Key key : this.mapKeyToStringValue.keySet() ) {
-			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
-			stringValue.setText( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
-		}
-		for( Key key : this.mapKeyToStringState.keySet() ) {
-			InternalStringState stringState = this.mapKeyToStringState.get( key );
-			stringState.setTextForBlankCondition( this.findLocalizedText( key.getLocalizationKey() + ".textForBlankCondition", Composite.class ) );
-		}
-		for( Key key : this.mapKeyToBooleanState.keySet() ) {
-			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
-			//todo
-			String trueAndFalseText = this.findLocalizedText( key.getLocalizationKey(), Composite.class );
-			if( trueAndFalseText != null ) {
-				booleanState.setTextForBothTrueAndFalse( trueAndFalseText );
-			} else {
-				String trueText = this.findLocalizedText( key.getLocalizationKey() + ".true", Composite.class );
-				String falseText = this.findLocalizedText( key.getLocalizationKey() + ".false", Composite.class );
-				booleanState.setTextForTrueAndTextForFalse( trueText, falseText );
-			}
-		}
-		for( Key key : this.mapKeyToActionOperation.keySet() ) {
-			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
-			operation.setName( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
-		}
-		for( Key key : this.mapKeyToCascade.keySet() ) {
-			InternalCascadeWithInternalBlank cascade = this.mapKeyToCascade.get( key );
-			cascade.getRoot().getPopupPrepModel().setName( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
-		}
+//		for( Key key : this.mapKeyToStringValue.keySet() ) {
+//			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
+//			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
+//		}
+//		for( Key key : this.mapKeyToStringState.keySet() ) {
+//			InternalStringState stringState = this.mapKeyToStringState.get( key );
+//			stringState.setTextForBlankCondition( this.findLocalizedText( key.getLocalizationKey() + ".textForBlankCondition" ) );
+//		}
+//		for( Key key : this.mapKeyToBooleanState.keySet() ) {
+//			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
+//			//todo
+//			String trueAndFalseText = this.findLocalizedText( key.getLocalizationKey() );
+//			if( trueAndFalseText != null ) {
+//				booleanState.setTextForBothTrueAndFalse( trueAndFalseText );
+//			} else {
+//				String trueText = this.findLocalizedText( key.getLocalizationKey() + ".true" );
+//				String falseText = this.findLocalizedText( key.getLocalizationKey() + ".false" );
+//				booleanState.setTextForTrueAndTextForFalse( trueText, falseText );
+//			}
+//		}
+//		for( Key key : this.mapKeyToActionOperation.keySet() ) {
+//			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
+//			operation.setName( this.findLocalizedText( key.getLocalizationKey() ) );
+//		}
+//		for( Key key : this.mapKeyToCascade.keySet() ) {
+//			InternalCascadeWithInternalBlank cascade = this.mapKeyToCascade.get( key );
+//			cascade.getRoot().getPopupPrepModel().setName( this.findLocalizedText( key.getLocalizationKey() ) );
+//		}
 		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToListSelectionState, this.mapKeyToStringState );
 	}
 	public boolean contains( Model model ) {

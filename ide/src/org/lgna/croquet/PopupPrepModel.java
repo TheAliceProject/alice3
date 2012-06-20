@@ -58,7 +58,7 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	
 	@Override
 	protected final void localize() {
-		String name = this.getDefaultLocalizedText();
+		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
 			this.setName( name );
 //			this.setMnemonicKey( this.getLocalizedMnemonicKey() );

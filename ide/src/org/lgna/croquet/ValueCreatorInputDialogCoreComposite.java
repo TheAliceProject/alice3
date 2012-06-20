@@ -56,9 +56,14 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 		return this.valueCreator;
 	}
 	@Override
+	protected void initialize() {
+		super.initialize();
+		this.valueCreator.initializeIfNecessary();
+	}
+	@Override
 	protected void localize() {
 		super.localize();
-		this.name = this.getDefaultLocalizedText();
+		this.name = this.findDefaultLocalizedText();
 	}
 	@Override
 	protected String getName() {

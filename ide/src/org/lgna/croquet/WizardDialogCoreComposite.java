@@ -134,7 +134,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			Composite<?> composite = this.cardComposite.getCards().get( this.index );
 			if( composite instanceof WizardPageComposite ) {
 				WizardPageComposite wizardPageComposite = (WizardPageComposite)composite;
-				text = wizardPageComposite.getDefaultLocalizedText();
+				text = wizardPageComposite.getName();
 			} else {
 				text = null;
 			}
@@ -171,7 +171,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			StringBuilder sb = new StringBuilder();
 			sb.append( index + 1 );
 			sb.append( ".    " );
-			sb.append( value.getDefaultLocalizedText() );
+			sb.append( value.getName() );
 			if( isSelected ) {
 				//pass
 			} else {
@@ -286,8 +286,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	@Override
 	protected void localize() {
 		super.localize();
-		this.nextOperation.setName( this.findLocalizedText( "next", WizardDialogCoreComposite.class ) );
-		this.prevOperation.setName( this.findLocalizedText( "previous", WizardDialogCoreComposite.class ) );
+		this.nextOperation.setName( this.findLocalizedText( "next" ) );
+		this.prevOperation.setName( this.findLocalizedText( "previous" ) );
 	}
 
 	private void updateEnabled() {

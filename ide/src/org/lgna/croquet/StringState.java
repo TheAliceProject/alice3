@@ -147,7 +147,7 @@ public abstract class StringState extends State< String > {
 
 	@Override
 	protected void localize() {
-		this.textForBlankCondition = this.getLocalizedText( "textForBlankCondition" );
+		this.textForBlankCondition = this.findLocalizedText( "textForBlankCondition" );
 	}
 	
 	public String getTextForBlankCondition() {

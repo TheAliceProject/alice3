@@ -129,7 +129,7 @@ class TreeNodeMenu<T> extends CascadeMenuModel< T > {
 		this.node = node;
 	}
 	@Override
-	protected String getDefaultLocalizedText() {
+	protected String findDefaultLocalizedText() {
 		return null;
 	}
 	@Override
