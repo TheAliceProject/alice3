@@ -245,7 +245,11 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		for( PrepStep<?> prepStep : this.prepSteps ) {
 			prepStep.retarget( retargeter );
 		}
-		this.completionStep.retarget( retargeter );
+		if( this.completionStep != null ) {
+			this.completionStep.retarget( retargeter );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		}
 	}
 
 	public TransactionHistory getOwnerTransactionHistory() {
