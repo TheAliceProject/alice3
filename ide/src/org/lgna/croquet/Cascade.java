@@ -263,4 +263,8 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return rv;
 	}
+	@Override
+	public void appendUserRepr( java.lang.StringBuilder sb ) {
+		sb.append( this.getRoot().getPopupPrepModel().getName() );
+	}
 }

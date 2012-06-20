@@ -87,6 +87,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 		@Override
 		protected String getTutorialItemText() {
+			this.initializeIfNecessary();
 			return this.text;
 		}
 		@Override

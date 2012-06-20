@@ -120,6 +120,15 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			super.appendRepr( sb );
 			sb.append( this.root );
 		}
+		@Override
+		protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+			super.updateTutorialStepText( rv, step, edit );
+			rv.append( "<strong>" );
+			CompletionModel completionModel = this.root.getCompletionModel();
+			completionModel.appendUserRepr( rv );
+			rv.append( "</strong>" );
+			return rv;
+		}
 	}
 	private final InternalPopupPrepModel< T > popupPrepModel = new InternalPopupPrepModel< T >( this );
 
