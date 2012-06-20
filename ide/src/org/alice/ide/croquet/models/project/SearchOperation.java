@@ -99,7 +99,7 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 			StatementCountCrawler crawler = new StatementCountCrawler();
 			programType.crawl( crawler, true );
 			SearchComposite searchDialog = new SearchComposite( methodParentMap );
-			ReferencesDialog refDialog = new ReferencesDialog( methodParentMap );
+			ReferencesComposite refDialog = new ReferencesComposite( methodParentMap );
 			searchDialog.addSelectedListener( refDialog );
 			TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
 
