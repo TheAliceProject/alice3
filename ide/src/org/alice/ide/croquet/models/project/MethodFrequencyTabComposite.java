@@ -89,7 +89,6 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 	};
 	private final ListSelectionState<UserMethod> listSelectionState = createListSelectionState( this.createKey( "userMethodList" ), UserMethod.class, codec, -1 );
 	public static final UserMethod dummy = new UserMethod();
-	//	private BorderPanel returnPanel = new BorderPanel();
 	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
 	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
 	private Integer maximum;
@@ -156,15 +155,12 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 
 	public MethodFrequencyTabComposite() {
 		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ) );
-		final GridPanel rv = GridPanel.createGridPane( 2, 1 );
 
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 
 		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
-		//		StatementCountCrawler crawler = new StatementCountCrawler();
 		programType.crawl( crawler, true );
-		//		listSelectionState = new DefaultListSelectionState<UserMethod>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "06b77424-763b-4fdc-a1cb-1404eaefa1d2" ), codec );
 
 		for( AbstractMethod method : crawler.getMethods() ) {
 			List<MethodInvocation> invocations = crawler.getInvocationsFor( method );
@@ -209,7 +205,6 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 	}
 
 	public int getCount( AbstractMethod method, AbstractMethod methodTwo ) {
-		System.out.println( "( " + method + ", " + methodTwo + " )" );
 		int count = 0;
 		if( methodTwo != null ) {
 			count = getMapMethodToInvocationCounts().get( method ).get( methodTwo ).getCount();
