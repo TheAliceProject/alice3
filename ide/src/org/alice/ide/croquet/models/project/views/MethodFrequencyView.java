@@ -83,7 +83,7 @@ public class MethodFrequencyView extends BorderPanel {
 	ListSelectionState<UserMethod> listSelectionState;
 	
 	public MethodFrequencyView( MethodFrequencyTabComposite composite ) {
-		
+		super( composite );
 		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
 		listSelectionState = composite.getUserMethodList();
 		
