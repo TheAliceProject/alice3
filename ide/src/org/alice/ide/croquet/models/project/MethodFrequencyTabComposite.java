@@ -52,7 +52,6 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.View;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
@@ -68,6 +67,8 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 
+	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
+	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
 	private Map<UserMethod,InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
 
 	ItemCodec<UserMethod> codec = new ItemCodec<UserMethod>() {
@@ -89,8 +90,6 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 	};
 	private final ListSelectionState<UserMethod> listSelectionState = createListSelectionState( this.createKey( "userMethodList" ), UserMethod.class, codec, -1 );
 	public static final UserMethod dummy = new UserMethod();
-	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
-	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
 	private Integer maximum;
 
 	public static class MethodCountPair {
@@ -283,5 +282,31 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 			return this.mapMethodToInvocations.get( method );
 		}
 
+	}
+
+	public List<Integer> getRightColVals( UserMethod selected ) {
+		LinkedList<Integer> rv = new LinkedList<Integer>();
+		InvocationCounts invocationCount = getMapMethodToInvocationCounts().get( selected );
+		for( MethodCountPair pair : invocationCount.getMethodCountPairs() ) {
+			if( !pair.getMethod().isFunction() || getShowFunctionsState().getValue() ) {
+				if( !pair.getMethod().isProcedure() || getShowProceduresState().getValue() ) {
+					rv.add( getCount( selected, pair.getMethod() ) );
+				}
+			}
+		}
+		return rv;
+	}
+
+	public int getSize( UserMethod selected ) {
+		InvocationCounts invocationCounts = mapMethodToInvocationCounts.get( selected );
+		int count = 1;
+		for( MethodCountPair pair : invocationCounts.getMethodCountPairs() ) {
+			if( !pair.getMethod().isFunction() || getShowFunctionsState().getValue() ) {
+				if( !pair.getMethod().isProcedure() || getShowProceduresState().getValue() ) {
+					++count;
+				}
+			}
+		}
+		return count;
 	}
 }
