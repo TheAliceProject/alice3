@@ -46,6 +46,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.alice.ide.croquet.models.project.views.ReferencesView;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.BorderPanel.Constraint;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.Tree;
+import org.lgna.croquet.components.View;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
@@ -54,30 +63,64 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class ReferencesDialogManager extends SearchTreeManager {
+public class ReferencesComposite extends TabComposite<ReferencesView> implements ValueListener<SearchTreeNode> {
+	private final ReferencesDialogManager manager;
+	private final Tree<SearchTreeNode> tree;
 
-	public ReferencesDialogManager( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
-		super( java.util.UUID.fromString( "7b2c3b3d-062b-49ce-a746-13d2bba8f572" ), methodParentMap );
+	public ReferencesComposite( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
+		manager = new ReferencesDialogManager( methodParentMap );
+		tree = new Tree<SearchTreeNode>( manager );
+		getTree().setRootVisible( false );
+		manager.setOwner( getTree() );
 	}
 
-	public void update( SearchTreeNode newValue ) {
-		if( newValue != null ) {
-			hideAll();
-			ArrayList<SearchTreeNode> hiddenList2 = Collections.newArrayList( hiddenList );
-			for( SearchTreeNode node : hiddenList2 ) {
-				if( node.getContent().equals( newValue.getContent() ) && node.getDepth() <= SHOULD_BE_EXPANDED ) {
-					show( node );
-				}
-			}
-			crawl( root, 0 );
-			setProperExpandedLevels( root );
+	@Override
+	public boolean isCloseable() {
+		return false;
+	}
+
+	@Override
+	protected ReferencesView createView() {
+		return new ReferencesView( this );
+	}
+
+	public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+	}
+
+	public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+		manager.update( nextValue );
+	}
+	
+	public Tree<SearchTreeNode> getTree() {
+		return this.tree;
+	}
+
+	public class ReferencesDialogManager extends SearchTreeManager {
+
+		public ReferencesDialogManager( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+			super( java.util.UUID.fromString( "7b2c3b3d-062b-49ce-a746-13d2bba8f572" ), methodParentMap );
 		}
-	}
 
-	private void crawl( SearchTreeNode root, int depth ) {
-		System.out.println( root.getText() + " " + depth );
-		for( SearchTreeNode child : root.getChildren() ) {
-			crawl( child, depth + 1 );
+		public void update( SearchTreeNode newValue ) {
+			if( newValue != null ) {
+				hideAll();
+				ArrayList<SearchTreeNode> hiddenList2 = Collections.newArrayList( hiddenList );
+				for( SearchTreeNode node : hiddenList2 ) {
+					if( node.getContent().equals( newValue.getContent() ) && node.getDepth() <= SHOULD_BE_EXPANDED ) {
+						show( node );
+					}
+				}
+				crawl( root, 0 );
+				setProperExpandedLevels( root );
+			}
+		}
+
+		private void crawl( SearchTreeNode root, int depth ) {
+			System.out.println( root.getText() + " " + depth );
+			for( SearchTreeNode child : root.getChildren() ) {
+				crawl( child, depth + 1 );
+			}
 		}
 	}
 }

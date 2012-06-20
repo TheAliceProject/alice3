@@ -40,42 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
-
-import org.lgna.croquet.ItemCodec;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.croquet.models.project.SearchComposite;
+import org.alice.ide.croquet.models.project.SearchComposite.SearchDialogManager;
+import org.alice.ide.croquet.models.project.SearchTreeNode;
+import org.lgna.croquet.TreeSelectionState;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.TextField;
+import org.lgna.croquet.components.Tree;
 
 /**
  * @author Matt May
  */
-public class SearchCodec implements ItemCodec<SearchTreeNode> {
+public class SearchView extends BorderPanel {
+	
+	public SearchView( SearchComposite composite ) {
+		TextField textField = new TextField( composite.getStringState() );
+		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
 
-	private static SearchCodec instance = new SearchCodec();
+		SearchDialogManager manager = composite.getManager();
+		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
+		manager.setOwner( tree );
 
-	public static SearchCodec getSingleton() {
-		return instance;
-	}
-
-	public Class<SearchTreeNode> getValueClass() {
-		System.out.println( "getValueClass" );
-		return null;
-	}
-
-	public SearchTreeNode decodeValue( BinaryDecoder binaryDecoder ) {
-		System.out.println( "decodeValue" );
-		return null;
-	}
-
-	public void encodeValue( BinaryEncoder binaryEncoder, SearchTreeNode value ) {
-		System.out.println( "encodeValue" );
-	}
-
-	public StringBuilder appendRepresentation( StringBuilder rv, SearchTreeNode value ) {
-		System.out.println( "appendRepresentation" );
-		return null;
+		manager.refreshAll();
+		tree.setRootVisible( false );
+		tree.expandAllRows();
+		new BorderPanel.Builder().pageStart( textField ).center( new ScrollPane( tree ) ).build();
 	}
 
 }

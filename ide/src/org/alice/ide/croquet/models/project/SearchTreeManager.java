@@ -51,11 +51,14 @@ import javax.swing.Icon;
 
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CustomTreeSelectionState;
+import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.components.Tree;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
@@ -194,5 +197,29 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 			hide( node );
 		}
 		java.util.Collections.sort( hiddenList );
+	}
+	private static class SearchCodec implements ItemCodec<SearchTreeNode> {
+
+		private final static SearchCodec instance = new SearchCodec();
+
+		public static SearchCodec getSingleton() {
+			return instance;
+		}
+
+		public Class<SearchTreeNode> getValueClass() {
+			return null;
+		}
+
+		public SearchTreeNode decodeValue( BinaryDecoder binaryDecoder ) {
+			return null;
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, SearchTreeNode value ) {
+		}
+
+		public StringBuilder appendRepresentation( StringBuilder rv, SearchTreeNode value ) {
+			return null;
+		}
+
 	}
 }

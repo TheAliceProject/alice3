@@ -40,54 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
-import java.util.LinkedList;
-import java.util.Map;
-
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.TabComposite;
+import org.alice.ide.croquet.models.project.ReferencesComposite;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.Tree;
-import org.lgna.croquet.components.View;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserMethod;
 
 /**
  * @author Matt May
  */
-public class ReferencesDialog extends TabComposite<BorderPanel> implements ValueListener<SearchTreeNode> {
-	private final ReferencesDialogManager manager;
-	private final Tree<SearchTreeNode> tree;
+public class ReferencesView extends BorderPanel {
 
-	public ReferencesDialog( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
-		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
-		manager = new ReferencesDialogManager( methodParentMap );
-		tree = new Tree<SearchTreeNode>( manager );
-		tree.setRootVisible( false );
-		manager.setOwner( tree );
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-
-	@Override
-	protected BorderPanel createView() {
-		return new BorderPanel.Builder()
-			.center( new ScrollPane( tree ) )
-		.build();
-	}
-
-	public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
-	}
-
-	public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
-		manager.update( nextValue );
+	public ReferencesView( ReferencesComposite composite ) {
+		super( composite );
+		this.addComponent( new ScrollPane( composite.getTree() ), Constraint.CENTER );
 	}
 
 }

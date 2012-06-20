@@ -172,4 +172,35 @@ public class FlowControlFrequencyComposite extends TabComposite<View<?,?>> {
 		}
 	}
 
+	public int getCount( UserMethod method, Class<? extends Statement> cls ) {
+		int count = 0;
+		if( !method.equals( FlowControlFrequencyComposite.dummy ) ) {
+			for( Statement statement : methodToConstructMap.get( method ) ) {
+				if( statement.getClass().isAssignableFrom( cls ) ) {
+					++count;
+				}
+			}
+		} else {
+			for( UserMethod userMethod : methodToConstructMap.keySet() ) {
+				for( Statement statement : methodToConstructMap.get( userMethod ) ) {
+					if( statement.getClass().isAssignableFrom( cls ) ) {
+						++count;
+					}
+				}
+			}
+		}
+		return count;
+	}
+
+	public int getMaximum(Class[] clsArr) {
+		int maxCount = 0;
+		for( Class cls : clsArr ) {
+			int count = getCount( FlowControlFrequencyComposite.dummy, cls );
+			if( count > maxCount ) {
+				maxCount = count;
+			}
+		}
+		return maxCount;
+	}
+
 }
