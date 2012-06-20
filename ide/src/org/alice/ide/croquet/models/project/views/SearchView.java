@@ -40,57 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
-import java.util.LinkedList;
-import java.util.Map;
-
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.TabComposite;
+import org.alice.ide.croquet.models.project.SearchComposite;
+import org.alice.ide.croquet.models.project.SearchComposite.SearchDialogManager;
+import org.alice.ide.croquet.models.project.SearchTreeNode;
+import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.BorderPanel.Constraint;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
-import org.lgna.croquet.components.View;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserMethod;
 
 /**
  * @author Matt May
  */
-public class SearchDialog extends TabComposite {
-	private final SearchDialogManager manager;
-
-	public SearchDialog( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
-		super( java.util.UUID.fromString( "8f75a1e2-805d-4d9f-bef6-099204fe8d60" ) );
-		manager = new SearchDialogManager( methodParentMap );
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-
-	@Override
-	protected View createView() {
-		TextField textField = new TextField( manager.getStringState() );
+public class SearchView extends BorderPanel {
+	
+	public SearchView( SearchComposite composite ) {
+		TextField textField = new TextField( composite.getStringState() );
 		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
 
+		SearchDialogManager manager = composite.getManager();
 		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
 		manager.setOwner( tree );
 
 		manager.refreshAll();
 		tree.setRootVisible( false );
 		tree.expandAllRows();
-
-		return new BorderPanel.Builder()
-			.pageStart( textField )
-			.center( new ScrollPane( tree ) )
-		.build();
+		new BorderPanel.Builder().pageStart( textField ).center( new ScrollPane( tree ) ).build();
 	}
 
-	public void addSelectedListener( ValueListener<SearchTreeNode> listener ) {
-		manager.addValueListener( listener );
-	}
 }
