@@ -47,6 +47,9 @@ package org.lgna.cheshire.ast;
  * @author Dennis Cosgrove
  */
 public class BlockStatementGenerator {
+	private BlockStatementGenerator() {
+		throw new AssertionError();
+	}
 	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>,StatementGenerator> mapStatementClassToGenerator = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.Comment.class, org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
@@ -150,7 +153,27 @@ public class BlockStatementGenerator {
 				for( org.lgna.project.ast.JavaKeyedArgument argument : methodInvocation.keyedArguments ) {
 					org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 					org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, moreCascade.getRoot().getPopupPrepModel(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
-					org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, moreCascade, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), null );
+
+					java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					prepModels.add( org.alice.ide.croquet.models.ast.keyed.JavaKeyedArgumentFillIn.getInstance( argument.getKeyMethod() ) );
+
+					org.alice.ide.croquet.models.MenuBarComposite menuBarComposite = null;
+					org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );
+					org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+
+					org.lgna.croquet.history.TransactionHistory[] bufferForCompletionStepSubTransactionHistory = { null };
+					
+					org.lgna.project.ast.MethodInvocation keyedArgumentMethodInvocation = (org.lgna.project.ast.MethodInvocation)argument.expression.getValue();
+					
+					org.lgna.croquet.CascadeFillIn fillIn = ExpressionFillInGenerator.generateFillInForExpression( keyedArgumentMethodInvocation.requiredArguments.get( 0 ).expression.getValue(), bufferForCompletionStepSubTransactionHistory );
+					
+					if( fillIn != null ) {
+						prepModels.add( fillIn );
+						menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );
+						org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+					}
+					
+					org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, moreCascade, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), bufferForCompletionStepSubTransactionHistory[ 0 ] );
 					completionStep.setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
 				}
 			}
