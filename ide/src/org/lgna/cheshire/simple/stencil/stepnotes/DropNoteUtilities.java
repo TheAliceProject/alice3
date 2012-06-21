@@ -68,8 +68,15 @@ public class DropNoteUtilities {
 				if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
 					org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
 					return dropTrigger.getDropSite().equals( desiredDropSite );
+				} else if( trigger instanceof org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle automatic drop" );
+					return true;
 				}
 			}
+//		} else if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+//			org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
+//			org.lgna.croquet.edits.Edit edit = editCommittedEvent.getEdit();
+//			return edit.getCompletionStep().getTrigger() instanceof org.lgna.croquet.triggers.DropTrigger;
 		}
 		return false;
 	}

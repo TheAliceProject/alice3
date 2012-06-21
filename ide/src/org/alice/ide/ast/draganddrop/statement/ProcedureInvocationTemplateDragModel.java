@@ -68,6 +68,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			this.addContextFactory( org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance() );
+			this.addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
 		} else {
 			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
 		}

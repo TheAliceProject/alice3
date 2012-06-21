@@ -99,7 +99,7 @@ public class ExpressionFillInGenerator {
 			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)expression;
 			String value = stringLiteral.value.getValue();
 			if( stringLiteralValues.contains( value ) ) {
-				fillIn = org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( stringLiteral.value.getValue() );
+				fillIn = org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( value );
 			} else {
 				org.alice.ide.custom.StringCustomExpressionCreatorComposite composite = org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance();
 				fillIn = composite.getValueCreator().getFillIn();

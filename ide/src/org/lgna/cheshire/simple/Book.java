@@ -139,7 +139,7 @@ public class Book {
 	}
 
 	public void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( replacementCandidate );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "edit commited: " + replacementCandidate );
 		Chapter chapter = this.getSelectedChapter();
 		if( chapter instanceof TransactionChapter ) {
 			TransactionChapter transactionChapter = (TransactionChapter)chapter;

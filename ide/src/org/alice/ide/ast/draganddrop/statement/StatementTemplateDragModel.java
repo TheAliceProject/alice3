@@ -79,20 +79,20 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 	}
 	
 	public void generateAndAddStepsToTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statement );
+
 		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( history );
 		history.addTransaction( transaction );
 
 		org.lgna.croquet.history.DragStep dragStep = org.lgna.croquet.history.DragStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.DragTrigger.createGeneratorInstance() );
 
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statement );
-		
 		org.lgna.croquet.Model dropModel = this.getDropModel( dragStep, blockStatementIndexPair );
 		
 		org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair );
 		
 		if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade ) {
 			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade statementInsertCascade = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade)dropModel;
-			statementInsertCascade.generateAndAddPostDragStepsToTransaction( transaction, statement );
+			statementInsertCascade.generateAndAddPostDragStepsToTransaction( transaction, statement, blockStatementIndexPair );
 		} else if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation ) {
 			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation statementInsertOperation = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation)dropModel;
 			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, statementInsertOperation, dropTrigger, null );
