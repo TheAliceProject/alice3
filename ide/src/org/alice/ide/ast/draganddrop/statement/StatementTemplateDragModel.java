@@ -96,8 +96,20 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		} else if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation ) {
 			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation statementInsertOperation = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation)dropModel;
 			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, statementInsertOperation, dropTrigger, null );
+		} else if( dropModel instanceof org.lgna.croquet.OwnedByCompositeOperation ) {
+			org.lgna.croquet.OwnedByCompositeOperation ownedByCompositeOperation = (org.lgna.croquet.OwnedByCompositeOperation)dropModel;
+			org.lgna.croquet.OperationOwningComposite composite = ownedByCompositeOperation.getComposite();
+			if( composite instanceof org.alice.ide.ast.declaration.EachInArrayComposite ) {
+				org.alice.ide.ast.declaration.EachInArrayComposite eachInArrayComposite = (org.alice.ide.ast.declaration.EachInArrayComposite)composite;
+				//eachInArrayComposite.getInitializerState();
+				
+				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, ownedByCompositeOperation, dropTrigger, null );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropModel );
+			}
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropModel );
+//			assert false : dropModel;
 		}
 		
 		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();

@@ -135,10 +135,10 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 
 	private void preserveHistoryIndices( int transactionIndex ) {
 		Chapter chapter = this.book.getChapterAt( transactionIndex );
-		final int N = historyManagers.length;
+		final int N = this.historyManagers.length;
 		int[] indices = new int[ N ];
 		for( int i=0; i<N; i++ ) {
-			indices[ i ] = historyManagers[ i ].getInsertionIndex();
+			indices[ i ] = this.historyManagers[ i ].getInsertionIndex();
 		}
 		chapter.setHistoryIndices( indices );
 	}
@@ -146,8 +146,11 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		Chapter chapter = this.book.getChapterAt( transactionIndex );
 		final int N = historyManagers.length;
 		int[] indices = chapter.getHistoryIndices();
+		assert indices != null;
+		assert this.historyManagers != null;
 		for( int i=0; i<N; i++ ) {
-			historyManagers[ i ].setInsertionIndex( indices[ i ] );
+			assert this.historyManagers[ i ] != null : i;
+			this.historyManagers[ i ].setInsertionIndex( indices[ i ] );
 		}
 	}
 

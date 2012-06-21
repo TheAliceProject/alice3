@@ -360,7 +360,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 					java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
 					
 					int yMinimum;
-					if( yBounds.yMinimum != null ) {
+					if( yBounds.yMinimum != null && yBounds.y != null ) {
 						yMinimum = convertY( statementListPropertyPane, yBounds.yMinimum, CodeEditor.this.getAsSeenBy() );
 						int y = convertY( statementListPropertyPane, yBounds.y, CodeEditor.this.getAsSeenBy() );
 						yMinimum = capMinimum( yMinimum, y, statementListPropertyPaneInfos, index );
@@ -368,7 +368,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 						yMinimum = bounds.y;
 					}
 					int yMaximum;
-					if( yBounds.yMaximum != null ) {
+					if( yBounds.yMaximum != null && yBounds.yPlusHeight != null ) {
 						yMaximum = convertY( statementListPropertyPane, yBounds.yMaximum, CodeEditor.this.getAsSeenBy() );
 						int yPlusHeight = convertY( statementListPropertyPane, yBounds.yPlusHeight, CodeEditor.this.getAsSeenBy() );
 						yMaximum = capMaximum( yMaximum, yPlusHeight, statementListPropertyPaneInfos, index );
