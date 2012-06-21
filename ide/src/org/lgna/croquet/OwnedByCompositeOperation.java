@@ -51,6 +51,9 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
 		this.composite = composite;
 	}
+	public OperationOwningComposite getComposite() {
+		return this.composite;
+	}
 	@Override
 	protected java.lang.Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
 		return this.composite.getClass();

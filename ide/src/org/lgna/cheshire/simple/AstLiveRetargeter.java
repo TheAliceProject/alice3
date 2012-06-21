@@ -84,7 +84,6 @@ public class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
 			if( replacementBlockStatement != null ) {
 				return (N)new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( replacementBlockStatement, originalBlockStatementIndexPair.getIndex() );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "retarget", originalBlockStatementIndexPair.getOwningDropReceptor() );
 				return original;
 			}
 		} else if( original instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
