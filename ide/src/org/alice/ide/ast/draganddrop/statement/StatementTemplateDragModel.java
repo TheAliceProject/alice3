@@ -101,9 +101,44 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 			org.lgna.croquet.OperationOwningComposite composite = ownedByCompositeOperation.getComposite();
 			if( composite instanceof org.alice.ide.ast.declaration.EachInArrayComposite ) {
 				org.alice.ide.ast.declaration.EachInArrayComposite eachInArrayComposite = (org.alice.ide.ast.declaration.EachInArrayComposite)composite;
+				org.lgna.project.ast.ForEachInArrayLoop eachIn = (org.lgna.project.ast.ForEachInArrayLoop)statement;
+				org.lgna.croquet.history.TransactionHistory subTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
+
+				org.lgna.project.ast.AbstractType itemType = eachIn.item.getValue().getValueType();
+				org.alice.ide.croquet.models.declaration.ValueComponentTypeState itemState = eachInArrayComposite.getValueComponentTypeState();
+				org.lgna.croquet.history.Transaction itemTypeTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+				org.lgna.croquet.PopupPrepModel itemPopupPrepModel = itemState.getCascadeRoot().getPopupPrepModel();
+				org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( itemTypeTransaction, itemPopupPrepModel, org.lgna.croquet.triggers.PopupMenuEventTrigger.createGeneratorInstance() );
+				org.lgna.croquet.history.StateChangeStep<org.lgna.project.ast.AbstractType> itemTypeChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( itemTypeTransaction, itemState, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+				itemTypeChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<org.lgna.project.ast.AbstractType>( itemTypeChangeStep, null, itemType ) );
+				
+				org.lgna.croquet.history.Transaction nameTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+				org.lgna.croquet.history.StateChangeStep<String> nameChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( nameTransaction, eachInArrayComposite.getNameState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance() );
+				nameChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( nameChangeStep, "", eachIn.item.getValue().name.getValue() ) );
+
+				org.alice.ide.croquet.models.declaration.ValueComponentTypeState initializerState = eachInArrayComposite.getValueComponentTypeState();
+				org.lgna.croquet.history.Transaction initializerTypeTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+				org.lgna.croquet.PopupPrepModel initializerPopupPrepModel = initializerState.getCascadeRoot().getPopupPrepModel();
+				org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( initializerTypeTransaction, initializerPopupPrepModel, org.lgna.croquet.triggers.PopupMenuEventTrigger.createGeneratorInstance() );
+
+
+				org.lgna.croquet.history.TransactionHistory subSubTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
+
+				org.lgna.croquet.history.Transaction subCommitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+				org.lgna.croquet.history.CompletionStep<?> subCommitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( subCommitTransaction, org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( itemType ), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subSubTransactionHistory );
+				subCommitStep.finish();
+
+				org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)eachIn.array.getValue();
+				//todo generate for each expression in arrayInstanceCreation
+				
+				
+				org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+				org.lgna.croquet.history.CompletionStep<?> commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, eachInArrayComposite.getCommitOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), null );
+				commitStep.finish();
+				
 				//eachInArrayComposite.getInitializerState();
 				
-				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, ownedByCompositeOperation, dropTrigger, null );
+				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, ownedByCompositeOperation, dropTrigger, subTransactionHistory );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropModel );
 			}
