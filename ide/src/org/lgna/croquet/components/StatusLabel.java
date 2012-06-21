@@ -51,9 +51,9 @@ public class StatusLabel extends JComponent<javax.swing.JLabel> {
 	
 	public StatusLabel() {
 	}
-	public void setStatus( org.lgna.croquet.PotentiallyGatedComposite.Status status ) {
+	public void setStatus( org.lgna.croquet.AbstractSeverityStatusComposite.Status status ) {
 		String text;
-		if( org.lgna.croquet.PotentiallyGatedComposite.IS_GOOD_TO_GO_STATUS == status ) {
+		if( org.lgna.croquet.AbstractSeverityStatusComposite.IS_GOOD_TO_GO_STATUS == status ) {
 			text = TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS;
 		} else {
 			text = status.getText();

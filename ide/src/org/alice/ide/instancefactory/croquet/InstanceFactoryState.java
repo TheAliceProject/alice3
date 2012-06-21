@@ -132,6 +132,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		} else {
 			this.fallBackToDefaultFactory();
 		}
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 
 	private static org.lgna.croquet.CascadeBlankChild< InstanceFactory > createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > item, org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu ) {

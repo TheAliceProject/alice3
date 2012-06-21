@@ -46,21 +46,43 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardPageComposite< V extends org.lgna.croquet.components.View<?,?>> extends AbstractSeverityStatusComposite< V > {
-	private String name;
-	public WizardPageComposite( java.util.UUID id ) {
+public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractComposite<V> {
+	public static final Status IS_GOOD_TO_GO_STATUS = null;
+	public static abstract class Status extends AbstractInternalStringValue {
+		private Status( java.util.UUID id, Key key ) {
+			super( id, key );
+		}
+		public abstract boolean isGoodToGo();
+	}
+	public static final class WarningStatus extends Status {
+		private WarningStatus( Key key ) {
+			super( java.util.UUID.fromString( "a1375dce-1d5f-4717-87a1-7d9759a12862" ), key );
+		}
+		@Override
+		public boolean isGoodToGo() {
+			return true;
+		}
+	}
+	public static final class ErrorStatus extends Status {
+		private ErrorStatus( Key key ) {
+			super( java.util.UUID.fromString( "e966c721-1a6e-478d-a22f-92725d68552e" ), key );
+		}
+		@Override
+		public boolean isGoodToGo() {
+			return false;
+		}
+	}
+	protected WarningStatus createWarningStatus( Key key ) {
+		WarningStatus rv = new WarningStatus( key );
+		this.registerStringValue( rv );
+		return rv;
+	}
+	protected ErrorStatus createErrorStatus( Key key ) {
+		ErrorStatus rv = new ErrorStatus( key );
+		this.registerStringValue( rv );
+		return rv;
+	}
+	public AbstractSeverityStatusComposite( java.util.UUID id ) {
 		super( id );
-	}
-	@Override
-	protected void localize() {
-		super.localize();
-		this.name = this.findDefaultLocalizedText();
-	}
-	public String getName() {
-		return this.name;
-	}
-	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
-	public boolean isOptional() {
-		return false;
 	}
 }

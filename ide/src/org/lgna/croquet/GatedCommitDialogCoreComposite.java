@@ -98,7 +98,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
 	private void updateStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		boolean isGoodToGo;
-		PotentiallyGatedComposite.Status status = this.getStatus( step );
+		AbstractSeverityStatusComposite.Status status = this.getStatus( step );
 		if( status != null ) {
 			isGoodToGo = status.isGoodToGo();
 		} else {

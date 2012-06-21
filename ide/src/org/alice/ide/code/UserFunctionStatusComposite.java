@@ -40,27 +40,67 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardPageComposite< V extends org.lgna.croquet.components.View<?,?>> extends AbstractSeverityStatusComposite< V > {
-	private String name;
-	public WizardPageComposite( java.util.UUID id ) {
-		super( id );
+public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeverityStatusComposite<org.alice.ide.code.views.UserFunctionStatusView> {
+	private final org.lgna.project.ast.UserMethod method;
+	private final org.lgna.croquet.StringValue metaStringValue = new org.lgna.croquet.StringValue( java.util.UUID.fromString( "3b0da7b4-22da-450c-8dae-65ce0ac51a73" ) ) {
+		@Override
+		protected void localize() {
+			this.setText( "hello" );
+		}
+	};
+	private final ErrorStatus noReturnStatementError = this.createErrorStatus( this.createKey( "noReturnStatementError" ) );
+	private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus( this.createKey( "notAllPathsEndInReturnStatementError" ) );
+	private final ErrorStatus unreachableCodeError = this.createErrorStatus( this.createKey( "unreachableCodeError" ) );
+	
+	private ErrorStatus errorStatus;
+	public UserFunctionStatusComposite( org.lgna.project.ast.UserMethod method ) {
+		super( java.util.UUID.fromString( "5247e4d2-1de0-45b0-88f4-5a8667cfb60d" ) );
+		this.method = method;
+		this.getView().setVisible( false );
+	}
+	public org.lgna.croquet.StringValue getMetaStringValue() {
+		return this.metaStringValue;
+	}
+	
+	public ErrorStatus getNoReturnStatementError() {
+		return this.noReturnStatementError;
+	}
+	public ErrorStatus getNotAllPathsEndInReturnStatementError() {
+		return this.notAllPathsEndInReturnStatementError;
+	}
+	public ErrorStatus getUnreachableCodeError() {
+		return this.unreachableCodeError;
+	}
+	
+	public org.lgna.project.ast.UserMethod getMethod() {
+		return this.method;
+	}
+	
+	public ErrorStatus getErrorStatus() {
+		return this.errorStatus;
+	}
+	public void setErrorStatus( ErrorStatus errorStatus ) {
+		this.initializeIfNecessary();
+		if( this.errorStatus != errorStatus ) {
+			this.errorStatus = errorStatus;
+			String text;
+			if( errorStatus != null ) {
+				text = errorStatus.getText();
+			} else {
+				text = "This message should never be visible";
+			}
+			this.getView().setVisible( errorStatus != null );
+			this.metaStringValue.setText( text );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( text );
+		}
 	}
 	@Override
-	protected void localize() {
-		super.localize();
-		this.name = this.findDefaultLocalizedText();
-	}
-	public String getName() {
-		return this.name;
-	}
-	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
-	public boolean isOptional() {
-		return false;
+	protected org.alice.ide.code.views.UserFunctionStatusView createView() {
+		return new org.alice.ide.code.views.UserFunctionStatusView( this );
 	}
 }
