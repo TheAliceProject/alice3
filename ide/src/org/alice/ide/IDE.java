@@ -163,7 +163,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			return this.unacceptableFields.contains( fieldAccess.field.getValue() );
 		}
 	}
-	private StringBuilder reorganizeTypeFieldsIfNecessary( org.lgna.project.ast.NamedUserType namedUserType, int startIndex, java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields ) {
+	private String reorganizeTypeFieldsIfNecessary( org.lgna.project.ast.NamedUserType namedUserType, int startIndex, java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields ) {
 		java.util.List<org.lgna.project.ast.UserField> fields = namedUserType.fields.getValue().subList( startIndex, namedUserType.fields.size() );
 		java.util.Set<org.lgna.project.ast.UserField> unacceptableFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( fields );
 		org.lgna.project.ast.UserField fieldToMoveToTheEnd = null;
@@ -184,33 +184,35 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			if( alreadyMovedFields.contains( fieldToMoveToTheEnd ) ) {
 				//todo: better cycle detection?
 				StringBuilder sb = new StringBuilder();
-				sb.append( "Possible cycle detected.\nThe field " );
+				sb.append( "<html>Possible cycle detected.<br>The field <strong>\"" );
 				sb.append( fieldToMoveToTheEnd.getName() );
-				sb.append( " on type " );
+				sb.append( "\"</strong> on type <strong>\"" );
 				sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
-				sb.append( " is referencing: " );
-				String prefix = "";
+				sb.append( "\"</strong> is referencing: " );
+				String prefix = "<strong>\"";
 				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
 					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
 					sb.append( prefix );
 					sb.append( accessedField.getName() );
-					prefix = ", ";
+					prefix = "\"</strong>, <strong>\"";
 				}
-				sb.append( "\n" );
+				sb.append( "\"</strong><br>" );
 				sb.append( this.getApplicationName() );
 				sb.append( " already attempted to move it once." );
-				return sb;
+				sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
+				return sb.toString();
 			} else {
 				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
 					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
 					if( accessedField == fieldToMoveToTheEnd ) {
 						StringBuilder sb = new StringBuilder();
-						sb.append( "The field " );
+						sb.append( "<html>The field <strong>\"" );
 						sb.append( fieldToMoveToTheEnd.getName() );
-						sb.append( " on type " );
+						sb.append( "\"</strong> on type <strong>\"" );
 						sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
-						sb.append( " is referencing itself." );
-						return sb;
+						sb.append( "\"</strong> is referencing <strong>itself</strong>." );
+						sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
+						return sb.toString();
 					}
 				}
 				int prevIndex = namedUserType.fields.indexOf( fieldToMoveToTheEnd );
@@ -228,9 +230,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( project != null ) {
 			for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
 				java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-				StringBuilder message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
+				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
 				if( message != null ) {
-					message.append( "\n\nYour program may fail to run." );
 					this.showMessageDialog( message, "Unable to Recover", org.lgna.croquet.MessageType.ERROR );
 				}
 			}
