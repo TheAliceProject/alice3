@@ -53,20 +53,20 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
 		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		if( isTop && prevExpression != null ) {
 			if( prevExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
 				org.lgna.project.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (org.lgna.project.ast.ArithmeticInfixExpression)prevExpression;
 				org.lgna.project.ast.ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
 				for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
 					if( operator != prevOperator ) {
-						rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
+						items.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
 					}
 				}
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				rv.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				items.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
+				items.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
+				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
 		}
 	}
