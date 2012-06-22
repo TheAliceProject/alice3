@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.ast.cascade;
  */
 public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
-	private org.alice.ide.cascade.Context pushedContext;
+	private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
 	public ExpressionPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
 		super( group, id, org.lgna.project.ast.Expression.class, blanks );
 		this.expressionProperty = expressionProperty;

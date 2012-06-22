@@ -45,7 +45,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairContext implements Context {
+public class BlockStatementIndexPairContext implements ExpressionCascadeContext {
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 	public BlockStatementIndexPairContext( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		this.blockStatementIndexPair = blockStatementIndexPair;

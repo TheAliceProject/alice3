@@ -50,7 +50,7 @@ public abstract class CascadeManager {
 	private final java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private final org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner assumingStringConcatenationObjectFillerInner = new org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner();
 
-	private final java.util.Stack<Context> contextStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	
 	public CascadeManager() {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.DoubleFillerInner() );
@@ -71,7 +71,7 @@ public abstract class CascadeManager {
 		this.expressionFillerInners.add( expressionFillerInner );
 	}
 
-	private final Context NULL_CONTEXT = new Context() {
+	private final ExpressionCascadeContext NULL_CONTEXT = new ExpressionCascadeContext() {
 		public org.lgna.project.ast.Expression getPreviousExpression() {
 			return null;
 		}
@@ -79,25 +79,25 @@ public abstract class CascadeManager {
 			return null;
 		}
 	};
-	private Context safePeekContext() {
+	private ExpressionCascadeContext safePeekContext() {
 		if( this.contextStack.size() > 0 ) {
 			return this.contextStack.peek();
 		} else {
 			return NULL_CONTEXT;
 		}
 	}
-	public void pushContext( Context context ) {
+	public void pushContext( ExpressionCascadeContext context ) {
 		assert context != null;
 		if( this.contextStack.size() > 0 ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.contextStack );
 		}
 		this.contextStack.push( context );
 	}
-	public Context popContext() {
+	public ExpressionCascadeContext popContext() {
 		return this.contextStack.pop();
 	}
-	public Context popAndCheckContext( Context expectedContext ) {
-		Context poppedContext = this.popContext();
+	public ExpressionCascadeContext popAndCheckContext( ExpressionCascadeContext expectedContext ) {
+		ExpressionCascadeContext poppedContext = this.popContext();
 		if( poppedContext != expectedContext ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( poppedContext, expectedContext );
 		}
@@ -175,62 +175,62 @@ public abstract class CascadeManager {
 	}
 	protected abstract void addBonusFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.AbstractType<?,?,?> selectedType, org.lgna.project.ast.AbstractType<?,?,?> type );
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addExpressionBonusFillInsForType( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
-		if( codeInFocus != null ) {
-
-			org.lgna.project.ast.Expression prevExpression = this.safePeekContext().getPreviousExpression();
-			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = this.safePeekContext().getBlockStatementIndexPair();
-			java.util.List< org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn > arrayLengthFillIns;
-			if( blankNode.isTop() ) {
-				if( type == org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE || ( type.isAssignableFrom( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) && prevExpression != null ) ) {
-					arrayLengthFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				} else {
-					arrayLengthFillIns = null;
-				}
+		org.lgna.project.ast.Expression prevExpression = this.safePeekContext().getPreviousExpression();
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = this.safePeekContext().getBlockStatementIndexPair();
+		java.util.List< org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn > arrayLengthFillIns;
+		if( blankNode.isTop() ) {
+			if( type == org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE || ( type.isAssignableFrom( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) && prevExpression != null ) ) {
+				arrayLengthFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			} else {
 				arrayLengthFillIns = null;
 			}
-			
-			org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
-			if( type.isAssignableFrom( selectedType ) ) {
-				this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.ThisExpression(), selectedType, type );
+		} else {
+			arrayLengthFillIns = null;
+		}
+
+		org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+		if( type.isAssignableFrom( selectedType ) ) {
+			this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.ThisExpression(), selectedType, type );
+		}
+
+		this.addBonusFillIns( rv, selectedType, type );
+		
+		for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
+			org.lgna.project.ast.AbstractType<?,?,?> fieldType = field.getValueType();
+			if( type.isAssignableFrom( fieldType ) ) {
+				org.lgna.project.ast.Expression fieldAccess = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
+				this.addFillInAndPossiblyPartFillIns( rv, fieldAccess, fieldType, type );
 			}
-			
-			this.addBonusFillIns( rv, selectedType, type );
-			
-			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
-				org.lgna.project.ast.AbstractType<?,?,?> fieldType = field.getValueType();
-				if( type.isAssignableFrom( fieldType ) ) {
+			if( fieldType.isArray() ) {
+				org.lgna.project.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
+				if( type.isAssignableFrom( fieldComponentType ) ) {
 					org.lgna.project.ast.Expression fieldAccess = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
-					this.addFillInAndPossiblyPartFillIns( rv, fieldAccess, fieldType, type );
+					rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( fieldAccess ) );
 				}
-				if( fieldType.isArray() ) {
-					org.lgna.project.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
-					if( type.isAssignableFrom( fieldComponentType ) ) {
-						org.lgna.project.ast.Expression fieldAccess = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
-						rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( fieldAccess ) );
+				if( arrayLengthFillIns != null ) {
+					arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ThisFieldArrayLengthFillIn.getInstance( field ) );
+				}
+			}
+		}
+
+		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
+		if( codeInFocus != null ) {
+			for( org.lgna.project.ast.AbstractParameter parameter : codeInFocus.getRequiredParameters() ) {
+				org.lgna.project.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
+				if( type.isAssignableFrom( parameterType ) ) {
+					this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
+				}
+				if( parameterType.isArray() ) {
+					org.lgna.project.ast.AbstractType<?,?,?> parameterArrayComponentType = parameterType.getComponentType();
+					if( type.isAssignableFrom( parameterArrayComponentType ) ) {
+						rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.ParameterAccess( parameter ) ) );
 					}
 					if( arrayLengthFillIns != null ) {
-						arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ThisFieldArrayLengthFillIn.getInstance( field ) );
+						arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ParameterArrayLengthFillIn.getInstance( parameter ) );
 					}
 				}
 			}
 			if( blockStatementIndexPair != null ) {
-				for( org.lgna.project.ast.AbstractParameter parameter : codeInFocus.getRequiredParameters() ) {
-					org.lgna.project.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
-					if( type.isAssignableFrom( parameterType ) ) {
-						this.addFillInAndPossiblyPartFillIns( rv, new org.lgna.project.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
-					}
-					if( parameterType.isArray() ) {
-						org.lgna.project.ast.AbstractType<?,?,?> parameterArrayComponentType = parameterType.getComponentType();
-						if( type.isAssignableFrom( parameterArrayComponentType ) ) {
-							rv.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.ParameterAccess( parameter ) ) );
-						}
-						if( arrayLengthFillIns != null ) {
-							arrayLengthFillIns.add( org.alice.ide.croquet.models.cascade.array.ParameterArrayLengthFillIn.getInstance( parameter ) );
-						}
-					}
-				}
 				for( org.lgna.project.ast.UserLocal local : this.getAccessibleLocals( blockStatementIndexPair ) ) {
 					org.lgna.project.ast.AbstractType<?,?,?> localType = local.getValueType();
 					if( type.isAssignableFrom( localType ) ) {
@@ -249,12 +249,11 @@ public abstract class CascadeManager {
 					}
 				}
 			}
-			
-			if( arrayLengthFillIns != null ) {
-				if( arrayLengthFillIns.size() > 0 ) {
-					rv.add( org.alice.ide.croquet.models.cascade.array.ArrayLengthSeparator.getInstance() );
-					rv.addAll( arrayLengthFillIns );
-				}
+		}
+		if( arrayLengthFillIns != null ) {
+			if( arrayLengthFillIns.size() > 0 ) {
+				rv.add( org.alice.ide.croquet.models.cascade.array.ArrayLengthSeparator.getInstance() );
+				rv.addAll( arrayLengthFillIns );
 			}
 		}
 		return rv;
@@ -282,7 +281,7 @@ public abstract class CascadeManager {
 		if( type != null ) {
 			boolean isRoot = blankNode.isTop();
 			
-			Context context = this.safePeekContext();
+			ExpressionCascadeContext context = this.safePeekContext();
 			
 			org.lgna.project.ast.Expression prevExpression = context.getPreviousExpression();
 			if( isRoot && prevExpression != null ) {

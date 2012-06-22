@@ -54,7 +54,7 @@ import org.alice.ide.common.*;
 public abstract class CodeDropReceptor extends org.lgna.croquet.components.BorderPanel implements org.lgna.croquet.DropReceptor, java.awt.print.Printable {
 	protected StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	
-	private org.alice.ide.cascade.Context pushedContext;
+	private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
 	
 	public CodeDropReceptor( org.lgna.croquet.Composite< ? > composite ) {
 		super( composite );

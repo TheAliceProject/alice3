@@ -45,7 +45,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyContext implements Context {
+public class ExpressionPropertyContext implements ExpressionCascadeContext {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyContext( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		this.expressionProperty = expressionProperty;
