@@ -151,9 +151,96 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return rv;
 	}
+	
+	private static class UnacceptableFieldAccessCrawler extends edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > {
+		private final java.util.Set<org.lgna.project.ast.UserField> unacceptableFields;
+		public UnacceptableFieldAccessCrawler( java.util.Set<org.lgna.project.ast.UserField> unacceptableFields ) {
+			super( org.lgna.project.ast.FieldAccess.class );
+			this.unacceptableFields = unacceptableFields;
+		}
+		@Override
+		protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
+			return this.unacceptableFields.contains( fieldAccess.field.getValue() );
+		}
+	}
+	private StringBuilder reorganizeTypeFieldsIfNecessary( org.lgna.project.ast.NamedUserType namedUserType, int startIndex, java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields ) {
+		java.util.List<org.lgna.project.ast.UserField> fields = namedUserType.fields.getValue().subList( startIndex, namedUserType.fields.size() );
+		java.util.Set<org.lgna.project.ast.UserField> unacceptableFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( fields );
+		org.lgna.project.ast.UserField fieldToMoveToTheEnd = null;
+		java.util.List< org.lgna.project.ast.FieldAccess > accessesForFieldToMoveToTheEnd = null;
+		for( org.lgna.project.ast.UserField field : fields ) {
+			org.lgna.project.ast.Expression initializer = field.initializer.getValue();
+			UnacceptableFieldAccessCrawler crawler = new UnacceptableFieldAccessCrawler( unacceptableFields );
+			initializer.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+			java.util.List< org.lgna.project.ast.FieldAccess > fieldAccesses = crawler.getList();
+			if( fieldAccesses.size() > 0 ) {
+				fieldToMoveToTheEnd = field;
+				accessesForFieldToMoveToTheEnd = fieldAccesses;
+				break;
+			}
+			unacceptableFields.remove( field );
+		}
+		if( fieldToMoveToTheEnd != null ) {
+			if( alreadyMovedFields.contains( fieldToMoveToTheEnd ) ) {
+				//todo: better cycle detection?
+				StringBuilder sb = new StringBuilder();
+				sb.append( "Possible cycle detected.\nThe field " );
+				sb.append( fieldToMoveToTheEnd.getName() );
+				sb.append( " on type " );
+				sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
+				sb.append( " is referencing: " );
+				String prefix = "";
+				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
+					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
+					sb.append( prefix );
+					sb.append( accessedField.getName() );
+					prefix = ", ";
+				}
+				sb.append( "\n" );
+				sb.append( this.getApplicationName() );
+				sb.append( " already attempted to move it once." );
+				return sb;
+			} else {
+				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
+					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
+					if( accessedField == fieldToMoveToTheEnd ) {
+						StringBuilder sb = new StringBuilder();
+						sb.append( "The field " );
+						sb.append( fieldToMoveToTheEnd.getName() );
+						sb.append( " on type " );
+						sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
+						sb.append( " is referencing itself." );
+						return sb;
+					}
+				}
+				int prevIndex = namedUserType.fields.indexOf( fieldToMoveToTheEnd );
+				int nextIndex = namedUserType.fields.size() - 1;
+				namedUserType.fields.slide( prevIndex, nextIndex );
+				alreadyMovedFields.add( fieldToMoveToTheEnd );
+				return this.reorganizeTypeFieldsIfNecessary( namedUserType, prevIndex, alreadyMovedFields );
+			}
+		} else {
+			return null;
+		}
+	}
+	private void reorganizeFieldsIfNecessary() {
+		org.lgna.project.Project project = this.getProject();
+		if( project != null ) {
+			for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
+				java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+				StringBuilder message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
+				if( message != null ) {
+					message.append( "\n\nYour program may fail to run." );
+					this.showMessageDialog( message, "Unable to Recover", org.lgna.croquet.MessageType.ERROR );
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void ensureProjectCodeUpToDate() {
 		this.generateCodeForSceneSetUp();
+		this.reorganizeFieldsIfNecessary();
 	}
 	public org.lgna.project.ast.NamedUserType getUpToDateProgramType() {
 		org.lgna.project.Project project = this.getUpToDateProject();
