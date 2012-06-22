@@ -81,7 +81,7 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		@Override
 		protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			ide.getCascadeManager().appendItems( rv, blankNode, this.componentType, null );
+			ide.getExpressionCascadeManager().appendItems( rv, blankNode, this.componentType, null );
 			return rv;
 		}
 

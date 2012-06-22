@@ -307,7 +307,7 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 					rv = dragModel.getDropModel( step, blockStatementIndexPair );
 					
 					this.pushedContext = new org.alice.ide.cascade.BlockStatementIndexPairContext( blockStatementIndexPair );
-					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.pushedContext );
+					org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 				}
 			} else if( dragModel == org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() ) {
 				if( this.currentUnder != null ) {
@@ -373,7 +373,7 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 	}
 	public final void dragStopped( org.lgna.croquet.history.DragStep step ) {
 		if( this.pushedContext != null ) {
-			org.alice.ide.IDE.getActiveInstance().getCascadeManager().popAndCheckContext( this.pushedContext );
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
 			this.pushedContext = null;
 		}
 	}

@@ -205,7 +205,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
+	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );
 		this.updateTitlePrefix( rv );

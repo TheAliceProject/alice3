@@ -45,8 +45,8 @@ package org.alice.stageide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeManager extends org.alice.ide.cascade.CascadeManager {
-	public CascadeManager() {
+public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCascadeManager {
+	public ExpressionCascadeManager() {
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ImagePaintFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner() );
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner() );

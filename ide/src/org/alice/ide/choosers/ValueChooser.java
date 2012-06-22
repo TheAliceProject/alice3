@@ -49,7 +49,7 @@ public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> ex
 	protected org.lgna.project.ast.Expression getPreviousExpression() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			return ide.getCascadeManager().getPreviousExpression();
+			return ide.getExpressionCascadeManager().getPreviousExpression();
 		} else {
 			return null;
 		}
