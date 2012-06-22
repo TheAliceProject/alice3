@@ -52,7 +52,7 @@ public abstract class ResourceFillerInner< R extends org.lgna.common.Resource > 
 	protected abstract org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getResourceExpressionFillIn( R resource );
 	protected abstract org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getImportNewResourceFillIn();
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.util.Set< org.lgna.common.Resource > resources = ide.getResources();
 		if( resources != null && resources.isEmpty() == false ) {
@@ -66,6 +66,5 @@ public abstract class ResourceFillerInner< R extends org.lgna.common.Resource > 
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
 		rv.add( this.getImportNewResourceFillIn() );
-		return rv;
 	}
 }

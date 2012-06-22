@@ -53,7 +53,7 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
 		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		if( isTop && prevExpression != null ) {
 			if( prevExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
 				org.lgna.project.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (org.lgna.project.ast.ArithmeticInfixExpression)prevExpression;
@@ -69,6 +69,5 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
 		}
-		return rv;
 	}
 }

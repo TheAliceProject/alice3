@@ -40,53 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.lgna.project.ast.Expression > extends ExpressionFillInWithoutBlanks< F > {
-	public PreviousExpressionBasedFillInWithoutBlanks( java.util.UUID id ) {
-		super( id );
+public class BlockStatementIndexPairContext implements Context {
+	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	public BlockStatementIndexPairContext( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
-	private org.lgna.project.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
+	public org.lgna.project.ast.Expression getPreviousExpression() {
+		return null;
 	}
-	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
-		org.lgna.project.ast.Expression prevExpression = this.getPreviousExpression();
-		if( prevExpression != null ) {
-			return org.alice.ide.IDE.getActiveInstance().createCopy( prevExpression );
-		} else {
-			return null;
-		}
-	}
-//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
-//	@Override
-//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
-//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-//	}
-	private org.lgna.project.ast.Expression cleanExpression;
-	@Override
-	protected void markClean() {
-		super.markClean();
-		this.cleanExpression = this.getPreviousExpression();
-	}
-	@Override
-	protected boolean isDirty() {
-		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
-		return super.isDirty() || isPrevExpressionChanged;
-	}
-
-	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
-	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return this.createValue( this.createCopyOfPreviousExpression() );
-	}
-	@Override
-	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
-		//todo?
-		return this.createValue( this.createCopyOfPreviousExpression() );
+	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+		return this.blockStatementIndexPair;
 	}
 }

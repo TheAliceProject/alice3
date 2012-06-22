@@ -55,7 +55,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 	}
 
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		if( isTop && prevExpression instanceof org.lgna.project.ast.ConditionalInfixExpression ) {
 			// previous conditional
 			org.lgna.project.ast.ConditionalInfixExpression conditionalInfixExpression = (org.lgna.project.ast.ConditionalInfixExpression)prevExpression;
@@ -112,6 +112,5 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 			}
 			rv.add( org.alice.ide.croquet.models.cascade.string.StringComparisonCascadeMenu.getInstance() );
 		}
- 		return rv;
 	}
 }

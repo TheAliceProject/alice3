@@ -40,53 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade;
+package org.alice.ide.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.lgna.project.ast.Expression > extends ExpressionFillInWithoutBlanks< F > {
-	public PreviousExpressionBasedFillInWithoutBlanks( java.util.UUID id ) {
-		super( id );
+public class ExpressionPropertyContext implements Context {
+	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+	public ExpressionPropertyContext( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		this.expressionProperty = expressionProperty;
 	}
-	private org.lgna.project.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
+	public org.lgna.project.ast.Expression getPreviousExpression() {
+		return this.expressionProperty.getValue();
 	}
-	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
-		org.lgna.project.ast.Expression prevExpression = this.getPreviousExpression();
-		if( prevExpression != null ) {
-			return org.alice.ide.IDE.getActiveInstance().createCopy( prevExpression );
-		} else {
-			return null;
+	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
+		if( owner instanceof org.lgna.project.ast.Node ) {
+			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)owner;
+			org.lgna.project.ast.Statement statement = node.getFirstAncestorAssignableTo( org.lgna.project.ast.Statement.class, true );
+			if( statement != null ) {
+				org.lgna.project.ast.Node parent = statement.getParent();
+				if( parent instanceof org.lgna.project.ast.BlockStatement ) {
+					org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+					int index = blockStatement.statements.indexOf( statement );
+					return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
+				}
+			}
 		}
-	}
-//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
-//	@Override
-//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
-//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-//	}
-	private org.lgna.project.ast.Expression cleanExpression;
-	@Override
-	protected void markClean() {
-		super.markClean();
-		this.cleanExpression = this.getPreviousExpression();
-	}
-	@Override
-	protected boolean isDirty() {
-		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
-		return super.isDirty() || isPrevExpressionChanged;
-	}
-
-	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
-	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return this.createValue( this.createCopyOfPreviousExpression() );
-	}
-	@Override
-	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
-		//todo?
-		return this.createValue( this.createCopyOfPreviousExpression() );
+		return null;
 	}
 }

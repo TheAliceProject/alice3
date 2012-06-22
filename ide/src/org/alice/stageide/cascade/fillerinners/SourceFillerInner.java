@@ -55,7 +55,7 @@ public abstract class SourceFillerInner< R extends org.lgna.common.Resource > ex
 	protected abstract org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation,? > getResourceFillIn( R resource );
 	protected abstract org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation,? > getImportFillIn();
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.util.Set< org.lgna.common.Resource > resources = ide.getResources();
 		if( resources != null && resources.isEmpty() == false ) {
@@ -73,6 +73,5 @@ public abstract class SourceFillerInner< R extends org.lgna.common.Resource > ex
 			}
 		}
 		rv.add( this.getImportFillIn() );
-		return rv;
 	}
 }

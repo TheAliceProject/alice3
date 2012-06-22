@@ -51,7 +51,7 @@ public class ImagePaintFillerInner extends org.alice.ide.cascade.fillerinners.Ex
 		super( org.lgna.story.ImagePaint.class );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		if( details instanceof org.lgna.project.annotations.PublicStaticFieldValueDetails ) {
 			org.lgna.project.annotations.PublicStaticFieldValueDetails publicStaticFieldValueDetails = (org.lgna.project.annotations.PublicStaticFieldValueDetails)details;
 			java.lang.reflect.Field[] flds = publicStaticFieldValueDetails.getFlds();
@@ -59,6 +59,5 @@ public class ImagePaintFillerInner extends org.alice.ide.cascade.fillerinners.Ex
  	 			rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( fld ) );
 			}
 		}
- 		return rv;
 	}
 }

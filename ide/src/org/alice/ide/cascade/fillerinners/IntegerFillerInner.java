@@ -50,8 +50,8 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		super( Integer.class );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		super.addItems( rv, details, isTop, prevExpression );
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		super.appendItems( rv, details, isTop, prevExpression );
 		int[] literals;
 		if( details instanceof org.lgna.project.annotations.IntegerValueDetails ) {
 			literals = ((org.lgna.project.annotations.IntegerValueDetails)details).getLiterals();
@@ -71,6 +71,5 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		}
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( org.alice.ide.custom.IntegerCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
- 		return rv;
 	}
 }

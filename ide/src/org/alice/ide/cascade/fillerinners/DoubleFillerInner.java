@@ -51,8 +51,8 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
 		super( Double.class );
 	}
 	@Override
-	public final java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		super.addItems( rv, details, isTop, prevExpression );
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		super.appendItems( rv, details, isTop, prevExpression );
 		double[] literals;
 		if( details instanceof org.lgna.project.annotations.NumberValueDetails ) {
 			literals = ((org.lgna.project.annotations.NumberValueDetails)details).getLiterals();
@@ -77,6 +77,5 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
 		} else {
 			rv.add( org.alice.ide.custom.DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		}
-		return rv;
 	}
 }
