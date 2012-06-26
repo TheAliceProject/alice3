@@ -40,39 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.warning;
+
+package org.alice.stageide.about;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperationComposite< org.alice.ide.warning.components.WarningView > {
+public final class AboutComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.stageide.about.views.AboutView> {
 	private static class SingletonHolder {
-		private static WarningDialogComposite instance = new WarningDialogComposite();
+		private static AboutComposite instance = new AboutComposite();
 	}
-	public static WarningDialogComposite getInstance() {
+	public static AboutComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.PlainStringValue descriptionText;
-	private WarningDialogComposite() {
-		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	private final org.lgna.croquet.HtmlStringValue versionLabel = this.createUnlocalizedHtmlStringValue( "current version: " + org.lgna.project.Version.getCurrentVersionText() );
+	private final org.lgna.croquet.HtmlStringValue supportedByLabel;
+	private final org.lgna.croquet.HtmlStringValue dedicationLabel = this.createUnlocalizedHtmlStringValue( "Alice 3 is dedicated to Randy." );
+	private AboutComposite() {
+		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 		StringBuilder sb = new StringBuilder();
-		sb.append( "WARNING: Alice3 is not for the faint of heart.\n\n" );
-		sb.append( "Alice3 is currently under development.\n" );
-		sb.append( "We are working very hard to make this dialog box obsolete.\n" );
-		sb.append( "Thank you for your patience.\n" );
-		sb.append( "We welcome your feedback.\n" );
-		this.descriptionText = this.createUnlocalizedPlainStringValue( sb.toString() );
+		sb.append( "<html><strong>Alice 3</strong> is supported by:" );
+		sb.append( "<br>" );
+		sb.append( "<ul>" );
+		for( String sponsor : new String[] { "Sun Foundation", "Oracle", "Electronic Arts Foundation", "The National Science Foundation", "Defense Advanced Research Projects Agency", "Hearst Foundations", "Heinz Endowments", "Google", "Disney and Hyperion" } ) {
+			sb.append( "<li><strong>" );
+			sb.append( sponsor );
+			sb.append( "</strong></li>" );
+		}
+		sb.append( "</ul>" );
+		//sb.append( "<br>" );
+		sb.append( "<b>The Sims <sup>TM</sup> 2</b> Art Assets donated by <strong>Electronic Arts</strong>." );
+		sb.append( "</html>" );
+		this.supportedByLabel = this.createUnlocalizedHtmlStringValue( sb.toString() );
 	}
-	public org.lgna.croquet.PlainStringValue getDescriptionText() {
-		return this.descriptionText;
+	public org.lgna.croquet.HtmlStringValue getVersionLabel() {
+		return this.versionLabel;
+	}
+	public org.lgna.croquet.HtmlStringValue getSupportedByLabel() {
+		return this.supportedByLabel;
+	}
+	public org.lgna.croquet.HtmlStringValue getDedicationLabel() {
+		return this.dedicationLabel;
 	}
 	@Override
-	protected org.alice.ide.warning.components.WarningView createView() {
-		return new org.alice.ide.warning.components.WarningView( this );
+	protected org.alice.stageide.about.views.AboutView createView() {
+		return new org.alice.stageide.about.views.AboutView( this );
 	}
-	public static void main( String[] args ) {
+
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		WarningDialogComposite.getInstance().getOperation().fire();
+		AboutComposite.getInstance().getOperation().fire();
 		System.exit( 0 );
 	}
 }

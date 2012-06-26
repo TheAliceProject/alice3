@@ -119,7 +119,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 	}
 
-	private final StringValue stepsLabel = this.createStringValue( this.createKey( "stepsLabel" ) );
+	private final PlainStringValue stepsLabel = this.createStringValue( this.createKey( "stepsLabel" ) );
 	private int index = 0;
 
 	private int getIndex() {

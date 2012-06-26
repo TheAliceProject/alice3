@@ -47,7 +47,7 @@ package org.alice.ide.code;
  */
 public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeverityStatusComposite<org.alice.ide.code.views.UserFunctionStatusView> {
 	private static final String UNVIEWED_TEXT = "This message should never be visible";
-	private final org.lgna.croquet.StringValue metaStringValue = this.createUnlocalizedStringValue( UNVIEWED_TEXT );
+	private final org.lgna.croquet.PlainStringValue metaStringValue = this.createUnlocalizedPlainStringValue( UNVIEWED_TEXT );
 	private final ErrorStatus noReturnStatementError = this.createErrorStatus( this.createKey( "noReturnStatementError" ) );
 	private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus( this.createKey( "notAllPathsEndInReturnStatementError" ) );
 	private final ErrorStatus unreachableCodeError = this.createErrorStatus( this.createKey( "unreachableCodeError" ) );
@@ -59,7 +59,7 @@ public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeveri
 		this.method = method;
 		this.getView().setVisible( false );
 	}
-	public org.lgna.croquet.StringValue getMetaStringValue() {
+	public org.lgna.croquet.PlainStringValue getMetaStringValue() {
 		return this.metaStringValue;
 	}
 	

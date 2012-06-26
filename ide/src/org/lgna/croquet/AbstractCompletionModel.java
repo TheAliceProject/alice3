@@ -50,7 +50,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	private final Group group;
 	private int ignoreCount = 0;
 	
-	private static class SidekickLabel extends StringValue {
+	private static class SidekickLabel extends PlainStringValue {
 		private final AbstractCompletionModel completionModel;
 		public SidekickLabel( AbstractCompletionModel completionModel ) {
 			super( java.util.UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
@@ -105,7 +105,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		sb.append( this.getGroup() );
 	}
 	
-	public synchronized StringValue getSidekickLabel() {
+	public synchronized PlainStringValue getSidekickLabel() {
 		if( this.sidekickLabel != null ) {
 			//pass
 		} else {

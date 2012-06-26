@@ -47,11 +47,11 @@ package org.alice.ide.custom;
  * @author Dennis Cosgrove
  */
 public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.custom.components.CustomExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V,org.lgna.project.ast.Expression> {
-	private final org.lgna.croquet.StringValue valueLabel = this.createStringValue( this.createKey( "valueLabel" ) ); 
+	private final org.lgna.croquet.PlainStringValue valueLabel = this.createStringValue( this.createKey( "valueLabel" ) ); 
 	public CustomExpressionCreatorComposite( java.util.UUID id ) {
 		super( id );
 	}
-	public org.lgna.croquet.StringValue getValueLabel() {
+	public org.lgna.croquet.PlainStringValue getValueLabel() {
 		return this.valueLabel;
 	}
 	protected abstract void initializeToPreviousExpression( org.lgna.project.ast.Expression expression );

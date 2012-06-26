@@ -59,7 +59,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 			return rv;
 		}
 	}
-	private final org.lgna.croquet.StringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) ); 
+	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) ); 
 	private final org.lgna.project.ast.AbstractType<?,?,?> arrayType;
 	
 	private final org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > valueState = this.createListSelectionState( 
@@ -89,7 +89,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
 		return this.arrayType;
 	}
-	public org.lgna.croquet.StringValue getArrayTypeLabel() {
+	public org.lgna.croquet.PlainStringValue getArrayTypeLabel() {
 		return this.arrayTypeLabel;
 	}
 	public org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > getValueState() {

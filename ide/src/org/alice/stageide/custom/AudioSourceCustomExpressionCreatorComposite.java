@@ -56,7 +56,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	
 	private static final int MARKER_MAX = 1000;
 
-	private final org.lgna.croquet.StringValue resourceSidekickLabel = this.createStringValue( this.createKey( "resourceState.sidekickLabel" ) ); 
+	private final org.lgna.croquet.PlainStringValue resourceSidekickLabel = this.createStringValue( this.createKey( "resourceState.sidekickLabel" ) ); 
 	private final org.lgna.croquet.BoundedIntegerState volumeState = this.createBoundedIntegerState( this.createKey( "volumeState" ), VolumeLevelUtilities.createDetails() );
 	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarkerState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
 	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarkerState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
@@ -178,7 +178,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 		return this.testOperation;
 	}
 	
-	public org.lgna.croquet.StringValue getResourceSidekickLabel() {
+	public org.lgna.croquet.PlainStringValue getResourceSidekickLabel() {
 		return this.resourceSidekickLabel;
 	}
 	

@@ -61,9 +61,11 @@ public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextCom
 	public ImmutableTextComponent( org.lgna.croquet.StringValue value ) {
 		this.value = value;
 	}
+	public org.lgna.croquet.StringValue getValue() {
+		return this.value;
+	}
 	protected void initializeJComponent( javax.swing.text.JTextComponent component ) {
 		//component.setOpaque( false );
-		component.setDocument( this.value.getDocument() );
 		component.setEditable( false );
 		component.setCursor( null );
 		component.setFocusable( false );

@@ -62,8 +62,17 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		}
 	}
 	
-	private static final class UnlocalizedStringValue extends StringValue { 
-		public UnlocalizedStringValue( String text ) {
+	private static final class UnlocalizedPlainStringValue extends PlainStringValue { 
+		public UnlocalizedPlainStringValue( String text ) {
+			super( java.util.UUID.randomUUID() );
+			this.setText( text );
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	private static final class UnlocalizedHtmlStringValue extends HtmlStringValue { 
+		public UnlocalizedHtmlStringValue( String text ) {
 			super( java.util.UUID.randomUUID() );
 			this.setText( text );
 		}
@@ -72,7 +81,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		}
 	}
 	
-	protected static abstract class AbstractInternalStringValue extends StringValue {
+	protected static abstract class AbstractInternalStringValue extends PlainStringValue {
 		private final Key key;
 		public AbstractInternalStringValue( java.util.UUID id, Key key ) {
 			super( id );
@@ -376,13 +385,17 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	protected Key createKey( String localizationKey ) {
 		return new Key( this, localizationKey );
 	}
-	protected StringValue createStringValue( Key key ) {
+	protected PlainStringValue createStringValue( Key key ) {
 		InternalStringValue rv = new InternalStringValue( key );
 		this.registerStringValue( rv );
 		return rv;
 	}
-	protected StringValue createUnlocalizedStringValue( String text ) {
-		UnlocalizedStringValue rv = new UnlocalizedStringValue( text );
+	protected PlainStringValue createUnlocalizedPlainStringValue( String text ) {
+		UnlocalizedPlainStringValue rv = new UnlocalizedPlainStringValue( text );
+		return rv;
+	}
+	protected HtmlStringValue createUnlocalizedHtmlStringValue( String text ) {
+		UnlocalizedHtmlStringValue rv = new UnlocalizedHtmlStringValue( text );
 		return rv;
 	}
 	protected StringState createStringState( Key key, String initialValue ) {

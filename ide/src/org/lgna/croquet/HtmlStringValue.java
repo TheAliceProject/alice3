@@ -41,30 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.videoencode;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	private final org.lgna.croquet.PlainStringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
-	private final org.lgna.croquet.BooleanState isRecording = this.createBooleanState( this.createKey( "isRecording" ), false );
-	public RecordEventsPage() {
-		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
+public abstract class HtmlStringValue extends StringValue {
+	public HtmlStringValue( java.util.UUID migrationId ) {
+		super( migrationId, new javax.swing.text.html.HTMLDocument() );
 	}
-	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-
-		org.lgna.croquet.components.ImmutableTextArea immutableTextArea = this.gettysburgAddress.createImmutableTextArea();
-		immutableTextArea.setPreferredSize( new java.awt.Dimension( 640, 360 ) );
-		immutableTextArea.makeStandOut();
-		rv.addComponent( new org.lgna.croquet.components.FixedCenterPanel( immutableTextArea ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( this.isRecording.createToggleButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
-	}
-	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
+	public org.lgna.croquet.components.ImmutableEditorPane createImmutableEditorPane() {
+		return new org.lgna.croquet.components.ImmutableEditorPane( this );
 	}
 }

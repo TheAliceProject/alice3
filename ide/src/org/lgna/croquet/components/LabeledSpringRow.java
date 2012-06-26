@@ -46,23 +46,23 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class LabeledSpringRow implements SpringRow {
-	private final org.lgna.croquet.StringValue labelStringValue;
+	private final org.lgna.croquet.PlainStringValue labelStringValue;
 	private final org.lgna.croquet.components.JComponent< ? > component;
 	private final org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment;
 	private final boolean isFillHorizontal;
-	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
+	public LabeledSpringRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
 		this.labelStringValue = labelStringValue;
 		this.component = component;
 		this.labelVerticalAlignment = labelVerticalAlignment;
 		this.isFillHorizontal = isFillHorizontal;
 	}
-	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment ) {
+	public LabeledSpringRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment ) {
 		this( labelStringValue, component, labelVerticalAlignment, true );
 	}
-	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, boolean isFillHorizontal ) {
+	public LabeledSpringRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component, boolean isFillHorizontal ) {
 		this( labelStringValue, component, org.lgna.croquet.components.VerticalAlignment.CENTER, isFillHorizontal );
 	}
-	public LabeledSpringRow( org.lgna.croquet.StringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
+	public LabeledSpringRow( org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.components.JComponent< ? > component ) {
 		this( labelStringValue, component, org.lgna.croquet.components.VerticalAlignment.CENTER );
 	}
 	private org.lgna.croquet.components.JComponent<?> createImmutableTextField() {

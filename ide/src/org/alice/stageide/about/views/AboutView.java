@@ -41,30 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.videoencode;
+package org.alice.stageide.about.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecordEventsPage extends org.lgna.croquet.WizardPageComposite< org.lgna.croquet.components.BorderPanel > {
-	private final org.lgna.croquet.PlainStringValue gettysburgAddress = this.createStringValue( this.createKey( "gettysburgAddress" ) );
-	private final org.lgna.croquet.BooleanState isRecording = this.createBooleanState( this.createKey( "isRecording" ), false );
-	public RecordEventsPage() {
-		super( java.util.UUID.fromString( "cce21dcd-9ed2-4d42-865d-0bce0b02db37" ) );
-	}
-	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-
-		org.lgna.croquet.components.ImmutableTextArea immutableTextArea = this.gettysburgAddress.createImmutableTextArea();
-		immutableTextArea.setPreferredSize( new java.awt.Dimension( 640, 360 ) );
-		immutableTextArea.makeStandOut();
-		rv.addComponent( new org.lgna.croquet.components.FixedCenterPanel( immutableTextArea ), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		rv.addComponent( this.isRecording.createToggleButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
-	}
-	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return null;
+public class AboutView extends org.lgna.croquet.components.PageAxisPanel {
+	public AboutView( org.alice.stageide.about.AboutComposite composite ) {
+		super( composite );
+		this.addComponent( composite.getVersionLabel().createImmutableEditorPane() );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) );
+		this.addComponent( composite.getSupportedByLabel().createImmutableEditorPane() );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) );
+		this.addComponent( composite.getDedicationLabel().createImmutableEditorPane() );
+		
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16,16,16,16 ) );
 	}
 }
