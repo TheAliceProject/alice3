@@ -71,10 +71,15 @@ public abstract class ItemState<T> extends State<T> {
 		this.itemCodec.encodeValue( binaryEncoder, value );
 	}
 	@Override
-	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
+	public final StringBuilder appendRepresentation(StringBuilder rv, T value) {
 		return this.itemCodec.appendRepresentation( rv, value );
 	}
 	public ItemCodec< T > getItemCodec() {
 		return this.itemCodec;
 	}
+	@Override
+	public void appendUserRepr( java.lang.StringBuilder sb ) {
+		this.appendRepresentation( sb, this.getValue() );
+	}
+
 }

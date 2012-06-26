@@ -151,9 +151,97 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return rv;
 	}
+	
+	private static class UnacceptableFieldAccessCrawler extends edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > {
+		private final java.util.Set<org.lgna.project.ast.UserField> unacceptableFields;
+		public UnacceptableFieldAccessCrawler( java.util.Set<org.lgna.project.ast.UserField> unacceptableFields ) {
+			super( org.lgna.project.ast.FieldAccess.class );
+			this.unacceptableFields = unacceptableFields;
+		}
+		@Override
+		protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
+			return this.unacceptableFields.contains( fieldAccess.field.getValue() );
+		}
+	}
+	private String reorganizeTypeFieldsIfNecessary( org.lgna.project.ast.NamedUserType namedUserType, int startIndex, java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields ) {
+		java.util.List<org.lgna.project.ast.UserField> fields = namedUserType.fields.getValue().subList( startIndex, namedUserType.fields.size() );
+		java.util.Set<org.lgna.project.ast.UserField> unacceptableFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( fields );
+		org.lgna.project.ast.UserField fieldToMoveToTheEnd = null;
+		java.util.List< org.lgna.project.ast.FieldAccess > accessesForFieldToMoveToTheEnd = null;
+		for( org.lgna.project.ast.UserField field : fields ) {
+			org.lgna.project.ast.Expression initializer = field.initializer.getValue();
+			UnacceptableFieldAccessCrawler crawler = new UnacceptableFieldAccessCrawler( unacceptableFields );
+			initializer.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+			java.util.List< org.lgna.project.ast.FieldAccess > fieldAccesses = crawler.getList();
+			if( fieldAccesses.size() > 0 ) {
+				fieldToMoveToTheEnd = field;
+				accessesForFieldToMoveToTheEnd = fieldAccesses;
+				break;
+			}
+			unacceptableFields.remove( field );
+		}
+		if( fieldToMoveToTheEnd != null ) {
+			if( alreadyMovedFields.contains( fieldToMoveToTheEnd ) ) {
+				//todo: better cycle detection?
+				StringBuilder sb = new StringBuilder();
+				sb.append( "<html>Possible cycle detected.<br>The field <strong>\"" );
+				sb.append( fieldToMoveToTheEnd.getName() );
+				sb.append( "\"</strong> on type <strong>\"" );
+				sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
+				sb.append( "\"</strong> is referencing: " );
+				String prefix = "<strong>\"";
+				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
+					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
+					sb.append( prefix );
+					sb.append( accessedField.getName() );
+					prefix = "\"</strong>, <strong>\"";
+				}
+				sb.append( "\"</strong><br>" );
+				sb.append( this.getApplicationName() );
+				sb.append( " already attempted to move it once." );
+				sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
+				return sb.toString();
+			} else {
+				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
+					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
+					if( accessedField == fieldToMoveToTheEnd ) {
+						StringBuilder sb = new StringBuilder();
+						sb.append( "<html>The field <strong>\"" );
+						sb.append( fieldToMoveToTheEnd.getName() );
+						sb.append( "\"</strong> on type <strong>\"" );
+						sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
+						sb.append( "\"</strong> is referencing <strong>itself</strong>." );
+						sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
+						return sb.toString();
+					}
+				}
+				int prevIndex = namedUserType.fields.indexOf( fieldToMoveToTheEnd );
+				int nextIndex = namedUserType.fields.size() - 1;
+				namedUserType.fields.slide( prevIndex, nextIndex );
+				alreadyMovedFields.add( fieldToMoveToTheEnd );
+				return this.reorganizeTypeFieldsIfNecessary( namedUserType, prevIndex, alreadyMovedFields );
+			}
+		} else {
+			return null;
+		}
+	}
+	private void reorganizeFieldsIfNecessary() {
+		org.lgna.project.Project project = this.getProject();
+		if( project != null ) {
+			for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
+				java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
+				if( message != null ) {
+					this.showMessageDialog( message, "Unable to Recover", org.lgna.croquet.MessageType.ERROR );
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void ensureProjectCodeUpToDate() {
 		this.generateCodeForSceneSetUp();
+		this.reorganizeFieldsIfNecessary();
 	}
 	public org.lgna.project.ast.NamedUserType getUpToDateProgramType() {
 		org.lgna.project.Project project = this.getUpToDateProject();
@@ -205,7 +293,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
+	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );
 		this.updateTitlePrefix( rv );

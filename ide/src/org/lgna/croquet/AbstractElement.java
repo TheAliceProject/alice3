@@ -262,6 +262,14 @@ public abstract class AbstractElement implements Element {
 		sb.append( "]" );
 		return sb.toString();
 	}
+	
+	public void appendUserRepr( StringBuilder sb ) {
+		sb.append( "todo: override appendUserString\n" );
+		sb.append( this );
+		sb.append( "\n" );
+		sb.append( this.getClass().getName() );
+		sb.append( "\n" );
+	}
 	@Override
 	public final String toString() {
 		return this.createRepr();

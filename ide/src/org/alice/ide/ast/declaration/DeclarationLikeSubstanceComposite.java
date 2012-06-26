@@ -283,7 +283,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 
 	@Override
-	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		final String valueTypeText;
 		if( this.valueComponentTypeState != null ) {
 			valueTypeText = this.getValueTypeExplanation( this.getValueType() );

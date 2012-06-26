@@ -67,7 +67,7 @@ public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank< org
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		ide.getCascadeManager().updateChildren( rv, blankNode, this.valueType, this.details );
+		ide.getExpressionCascadeManager().appendItems( rv, blankNode, this.valueType, this.details );
 		return rv;
 	}
 }

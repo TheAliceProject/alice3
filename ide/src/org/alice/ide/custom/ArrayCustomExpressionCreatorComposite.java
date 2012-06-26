@@ -71,7 +71,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	private final org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > addItemCascade = this.createCascadeWithInternalBlank( this.createKey( "addItemCascade" ), org.lgna.project.ast.Expression.class, new CascadeCustomizer< org.lgna.project.ast.Expression >() {
 		public void appendBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			ide.getCascadeManager().updateChildren( rv, blankNode, arrayType.getComponentType(), null );
+			ide.getExpressionCascadeManager().appendItems( rv, blankNode, arrayType.getComponentType(), null );
 		}
 		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
 			assert values.length == 1;

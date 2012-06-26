@@ -53,7 +53,9 @@ public class DocumentEventTrigger extends Trigger {
 	public static DocumentEventTrigger createGeneratorInstance() {
 		return new DocumentEventTrigger( Origin.GENERATOR, null );
 	}
-
+	public static DocumentEventTrigger createRecoveryInstance() {
+		return new DocumentEventTrigger( Origin.RECOVERY, null );
+	}
 	private final transient javax.swing.event.DocumentEvent documentEvent;
 	private DocumentEventTrigger( Origin origin, javax.swing.event.DocumentEvent documentEvent ) {
 		super( origin );

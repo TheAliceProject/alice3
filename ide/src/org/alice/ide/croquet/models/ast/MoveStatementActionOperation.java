@@ -88,12 +88,14 @@ public class MoveStatementActionOperation extends org.lgna.croquet.ActionOperati
 		int toDelta = this.getToDelta();
 		this.fromBlockStatement.statements.remove( this.fromIndex );
 		this.toBlockStatement.statements.add( this.toIndex + toDelta, this.statement );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 
 	public void undoInternal() {
 		int toDelta = this.getToDelta();
 		this.toBlockStatement.statements.remove( this.toIndex + toDelta );
 		this.fromBlockStatement.statements.add( this.fromIndex, this.statement );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	
 	@Override

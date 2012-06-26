@@ -54,6 +54,8 @@ import org.alice.ide.common.*;
 public abstract class CodeDropReceptor extends org.lgna.croquet.components.BorderPanel implements org.lgna.croquet.DropReceptor, java.awt.print.Printable {
 	protected StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	
+	private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
+	
 	public CodeDropReceptor( org.lgna.croquet.Composite< ? > composite ) {
 		super( composite );
 	}
@@ -304,9 +306,8 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 					}
 					rv = dragModel.getDropModel( step, blockStatementIndexPair );
 					
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate pushContext" );
-					org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( null, blockStatementIndexPair );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle finally" );
+					this.pushedContext = new org.alice.ide.cascade.BlockStatementIndexPairContext( blockStatementIndexPair );
+					org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 				}
 			} else if( dragModel == org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() ) {
 				if( this.currentUnder != null ) {
@@ -371,5 +372,9 @@ public abstract class CodeDropReceptor extends org.lgna.croquet.components.Borde
 		this.repaint();
 	}
 	public final void dragStopped( org.lgna.croquet.history.DragStep step ) {
+		if( this.pushedContext != null ) {
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+			this.pushedContext = null;
+		}
 	}
 }

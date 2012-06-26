@@ -50,8 +50,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
 	private final org.lgna.croquet.Operation prevOperation = new PrevStepOperation( this );
-	private final org.lgna.croquet.BooleanState isInterceptingEvents = new PresentationBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
-	private final org.lgna.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
 
 	@Override
 	protected org.lgna.cheshire.simple.Chapter createChapter(org.lgna.croquet.history.Transaction transaction) {
@@ -69,17 +67,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			controlPanel.addComponent( new BookComboBox( SimplePresentation.this.bookComboBoxModel, menuPolicy.isAboveStencil() ) );
 			controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
 			controlsPanel.addCenterComponent( controlPanel );
-			SimplePresentation.this.isPaintingStencil.setTextForBothTrueAndFalse( "stencil" );
-
-			org.lgna.croquet.components.CheckBox isInterceptingEventsCheckBox = SimplePresentation.this.isInterceptingEvents.createCheckBox();
-			isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
-			org.lgna.croquet.components.CheckBox isPaintingStencilCheckBox = SimplePresentation.this.isPaintingStencil.createCheckBox();
-			isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
-
-			org.lgna.croquet.components.FlowPanel eastPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.TRAILING, 2, 0 );
-			eastPanel.addComponent( isInterceptingEventsCheckBox );
-			eastPanel.addComponent( isPaintingStencilCheckBox );
-			//controlsPanel.addComponent(eastPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END);
 			controlsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
 			for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( controlsPanel.getAwtComponent() ) ) {
@@ -93,6 +80,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			this.cardPanel.setBackgroundColor( null );
 			this.internalAddComponent( controlsPanel, java.awt.BorderLayout.PAGE_START );
 			this.internalAddComponent( this.cardPanel, java.awt.BorderLayout.CENTER );
+			this.addMouseWheelListener( this.mouseWheelListener );
 		}
 
 		@Override
@@ -139,6 +127,18 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				this.prevCursor = null;
 			}
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
+			}
+		};
+
+		// todo: I think this is a really bad way to allow scrolling in the stencil... do this better.
+		private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+			public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
+				java.awt.Point p = e.getPoint();
+				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
+				if (component != null) {
+					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
+					component.dispatchEvent(new java.awt.event.MouseWheelEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()));
+				}
 			}
 		};
 
@@ -206,24 +206,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		this.setRetargeter( new org.lgna.cheshire.simple.AstLiveRetargeter() );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
 		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
-
-		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
-			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				SimplePresentation.this.stencil.setEventInterceptEnabled( nextValue );
-			}
-		} );
-
-		this.isPaintingStencil.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
-			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				SimplePresentation.this.stencil.revalidateAndRepaint();
-				SimplePresentation.this.isInterceptingEvents.setValueTransactionlessly( nextValue );
-				SimplePresentation.this.isInterceptingEvents.setEnabled( nextValue );
-			}
-		} );
 	}
 
 	@Override

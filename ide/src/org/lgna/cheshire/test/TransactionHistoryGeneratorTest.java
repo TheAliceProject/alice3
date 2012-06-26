@@ -94,17 +94,21 @@ public class TransactionHistoryGeneratorTest {
 		assert sceneType.isAssignableTo( org.lgna.story.Scene.class ) : sceneType;
 
 		org.lgna.project.ast.UserType<?> type;
+		org.lgna.project.ast.UserField field;
 		if ( this.fieldName != null ) {
-			org.lgna.project.ast.UserField field = sceneType.getDeclaredField( this.fieldName );
+			field = sceneType.getDeclaredField( this.fieldName );
 			type = (org.lgna.project.ast.UserType<?>)field.getValueType();
 		} else {
 			type = sceneType;
+			field = null;
 		}
+
+		org.lgna.project.ast.UserMethod myFirstMethod = sceneType.getDeclaredMethod( "myFirstMethod" );
 
 		org.lgna.project.ast.UserMethod methodToGenerate = (org.lgna.project.ast.UserMethod)this.reuseMethod;
 		org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), methodToGenerate );
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
-		this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation );
+		this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation, myFirstMethod, field );
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getReuseTransactionHistory() {

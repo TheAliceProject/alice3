@@ -99,6 +99,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 			this.code = retargeter.retarget( this.code );
 		}
 	}
+	
+	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
 
 	public CodeEditor( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
@@ -129,18 +131,85 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 			throw new RuntimeException();
 		}
 		this.addPageStartComponent( header );
-		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			this.addPageEndComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView() );
+
+		
+		if( this.code instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.code;
+			if( method.isFunction() ) {
+				this.userFunctionStatusComposite = new org.alice.ide.code.UserFunctionStatusComposite( method );
+			} else {
+				this.userFunctionStatusComposite = null;
+			}
+		} else {
+			this.userFunctionStatusComposite = null;
 		}
 
+		org.lgna.croquet.components.JComponent<?> controlFlowComponent;
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			controlFlowComponent = org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView();
+		} else {
+			controlFlowComponent = null;
+		}
+
+		org.lgna.croquet.components.JComponent<?> pageEndComponent;
+		if( this.userFunctionStatusComposite != null ) {
+			if( controlFlowComponent != null ) {
+				pageEndComponent = new org.lgna.croquet.components.BorderPanel.Builder()
+					.center( this.userFunctionStatusComposite.getView() )
+					.pageEnd( controlFlowComponent )
+				.build();
+			} else {
+				pageEndComponent = this.userFunctionStatusComposite.getView();
+			}
+		} else {
+			if( controlFlowComponent != null ) {
+				pageEndComponent = controlFlowComponent;
+			} else {
+				pageEndComponent = null;
+			}
+		}
+
+		if( pageEndComponent != null ) {
+			this.addPageEndComponent( pageEndComponent );
+		}
+		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.awt.Color color = ide.getTheme().getCodeColor( this.code );
 		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
+		
+		this.handleAstChangeThatCouldBeOfInterest();
 	}
 	public org.lgna.croquet.components.ScrollPane getScrollPane() {
 		return (org.lgna.croquet.components.ScrollPane)this.getCenterComponent();
+	}
+	
+	public void handleAstChangeThatCouldBeOfInterest() {
+		if( this.userFunctionStatusComposite != null ) {
+			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus prevErrorStatus = this.userFunctionStatusComposite.getErrorStatus();
+			
+			org.lgna.croquet.AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.code;
+			if( org.lgna.project.ast.StaticAnalysisUtilities.containsUnreachableCode( method ) ) {
+				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
+			} else {
+				if( org.lgna.project.ast.StaticAnalysisUtilities.containsAtLeastOneEnabledReturnStatement( method ) ) {
+					if( org.lgna.project.ast.StaticAnalysisUtilities.containsAReturnForEveryPath( method ) ) {
+						nextErrorStatus = null;
+					} else {
+						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();
+					}
+				} else {
+					nextErrorStatus = this.userFunctionStatusComposite.getNoReturnStatementError();
+				}
+			}
+			if( prevErrorStatus != nextErrorStatus ) {
+				this.userFunctionStatusComposite.setErrorStatus( nextErrorStatus );
+				this.revalidateAndRepaint();
+			}
+			
+		}
 	}
 
 	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
@@ -360,7 +429,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 					java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
 					
 					int yMinimum;
-					if( yBounds.yMinimum != null ) {
+					if( yBounds.yMinimum != null && yBounds.y != null ) {
 						yMinimum = convertY( statementListPropertyPane, yBounds.yMinimum, CodeEditor.this.getAsSeenBy() );
 						int y = convertY( statementListPropertyPane, yBounds.y, CodeEditor.this.getAsSeenBy() );
 						yMinimum = capMinimum( yMinimum, y, statementListPropertyPaneInfos, index );
@@ -368,7 +437,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 						yMinimum = bounds.y;
 					}
 					int yMaximum;
-					if( yBounds.yMaximum != null ) {
+					if( yBounds.yMaximum != null && yBounds.yPlusHeight != null ) {
 						yMaximum = convertY( statementListPropertyPane, yBounds.yMaximum, CodeEditor.this.getAsSeenBy() );
 						int yPlusHeight = convertY( statementListPropertyPane, yBounds.yPlusHeight, CodeEditor.this.getAsSeenBy() );
 						yMaximum = capMaximum( yMaximum, yPlusHeight, statementListPropertyPaneInfos, index );

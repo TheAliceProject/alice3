@@ -48,19 +48,7 @@ package org.alice.ide.croquet.models.numberpad;
 public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /* extends edu.cmu.cs.dennisc.croquet.StringState */ {
 	@Deprecated
 	/*package-private*/ final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
-	
-	private static String getInitialText() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( ide != null ) {
-			org.lgna.project.ast.Expression previousExpression = ide.getCascadeManager().createCopyOfPreviousExpression();
-			if( previousExpression instanceof org.lgna.project.ast.AbstractValueLiteral ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle previous expression; replace selected text later." );
-//				org.lgna.project.ast.AbstractValueLiteral valueLiteral = (org.lgna.project.ast.AbstractValueLiteral)previousExpression;
-//				return valueLiteral.getValueProperty().getValue().toString();
-			}
-		}
-		return "";
-	}
+
 	private final javax.swing.text.PlainDocument document = new javax.swing.text.PlainDocument();
 	private final javax.swing.JTextField textField = new javax.swing.JTextField();
 	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
@@ -78,11 +66,6 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 		}
 	};
 	public NumberModel( org.lgna.croquet.Group group, java.util.UUID id ) {
-		try {
-			this.document.insertString(0, getInitialText(), null);
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
 		this.textField.setDocument( this.document );
 		this.document.addDocumentListener( this.documentListener );
 	}
