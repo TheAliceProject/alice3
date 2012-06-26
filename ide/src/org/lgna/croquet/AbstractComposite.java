@@ -62,6 +62,16 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		}
 	}
 	
+	private static final class UnlocalizedStringValue extends StringValue { 
+		public UnlocalizedStringValue( String text ) {
+			super( java.util.UUID.randomUUID() );
+			this.setText( text );
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	
 	protected static abstract class AbstractInternalStringValue extends StringValue {
 		private final Key key;
 		public AbstractInternalStringValue( java.util.UUID id, Key key ) {
@@ -369,6 +379,10 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	protected StringValue createStringValue( Key key ) {
 		InternalStringValue rv = new InternalStringValue( key );
 		this.registerStringValue( rv );
+		return rv;
+	}
+	protected StringValue createUnlocalizedStringValue( String text ) {
+		UnlocalizedStringValue rv = new UnlocalizedStringValue( text );
 		return rv;
 	}
 	protected StringState createStringState( Key key, String initialValue ) {
