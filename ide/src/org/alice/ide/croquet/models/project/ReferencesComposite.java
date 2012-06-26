@@ -110,6 +110,7 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 					}
 				}
 				crawl( root, 0 );
+				this.refresh( root );
 				setProperExpandedLevels( root );
 			}
 		}

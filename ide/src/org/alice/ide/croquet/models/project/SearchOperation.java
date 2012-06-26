@@ -120,6 +120,7 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 			} );
 			state.addItem( searchDialog );
 			state.addItem( refDialog );
+			state.setSelectedIndex( 0 );
 			return state.createFolderTabbedPane();
 		} else {
 			return new org.lgna.croquet.components.Label( "open a project first" );
