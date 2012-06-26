@@ -50,11 +50,7 @@ import org.alice.ide.croquet.models.project.views.ReferencesView;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.BorderPanel.Constraint;
-import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.Tree;
-import org.lgna.croquet.components.View;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
@@ -66,6 +62,8 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class ReferencesComposite extends TabComposite<ReferencesView> implements ValueListener<SearchTreeNode> {
 	private final ReferencesDialogManager manager;
 	private final Tree<SearchTreeNode> tree;
+//	private final ValueListener<String> stringListener = new ValueListener<String>() {
+//	};
 
 	public ReferencesComposite( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
 		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );

@@ -67,7 +67,8 @@ public class SearchView extends BorderPanel {
 		manager.refreshAll();
 		tree.setRootVisible( false );
 		tree.expandAllRows();
-		new BorderPanel.Builder().pageStart( textField ).center( new ScrollPane( tree ) ).build();
+		this.addComponent( textField, Constraint.PAGE_START );
+		this.addComponent( new ScrollPane( tree ), Constraint.CENTER );
 	}
 
 }
