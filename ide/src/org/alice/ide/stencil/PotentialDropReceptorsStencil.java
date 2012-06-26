@@ -182,10 +182,6 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 	}
 
 	@Override
-	protected void redispatchMouseEvent(java.awt.event.MouseEvent e) {
-	}
-
-	@Override
 	protected StencilLayer getStencilsLayer() {
 		return org.lgna.croquet.components.Stencil.StencilLayer.ABOVE_POPUP_LAYER;
 	}

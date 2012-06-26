@@ -14,22 +14,50 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 	private final org.lgna.cheshire.simple.ScrollRenderer scrollRenderer;
 	private Feature enteredFeature;
 
+	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		public void mouseClicked(java.awt.event.MouseEvent e) {
+			SimpleStencil.this.redispatchMouseEvent(e);
+		}
+		public void mouseEntered(java.awt.event.MouseEvent e) {
+			SimpleStencil.this.redispatchMouseEvent(e);
+		}
+		public void mouseExited(java.awt.event.MouseEvent e) {
+			SimpleStencil.this.redispatchMouseEvent(e);
+		}
+		public void mousePressed(java.awt.event.MouseEvent e) {
+			SimpleStencil.this.redispatchMouseEvent(e);
+		}
+		public void mouseReleased(java.awt.event.MouseEvent e) {
+			SimpleStencil.this.redispatchMouseEvent(e);
+		}
+	};
+
+	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+		public void mouseMoved(java.awt.event.MouseEvent e) {
+			SimpleStencil.this.redispatchMouseEvent(e);
+		}
+		public void mouseDragged(java.awt.event.MouseEvent e) {
+			SimpleStencil.this.redispatchMouseEvent(e);
+		}
+	};
+
 	public SimpleStencil( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		super( window );
 		this.scrollRenderer = new org.lgna.cheshire.simple.SimpleScrollRenderer();
 		this.stencilPaint = this.getStencilPaint();
+		this.addMouseListener( this.mouseListener );
+		this.addMouseMotionListener( this.mouseMotionListener );
 	}
 
 	protected abstract Page getCurrentPage();
 
-	@Override
-	protected void redispatchMouseEvent(java.awt.event.MouseEvent eSrc) {
+	protected void redispatchMouseEvent(java.awt.event.MouseEvent e) {
 		Page page = this.getCurrentPage();
 
-		boolean isInterceptable = page == null || page.isEventInterceptable( eSrc );
-		java.awt.Point pSrc = eSrc.getPoint();
-		java.awt.Component componentSrc = eSrc.getComponent();
-		if( isInterceptable && eSrc.getComponent().contains( pSrc.x, pSrc.y ) ) {
+		boolean isInterceptable = page == null || page.isEventInterceptable( e );
+		java.awt.Point pSrc = e.getPoint();
+		java.awt.Component componentSrc = e.getComponent();
+		if( isInterceptable && e.getComponent().contains( pSrc.x, pSrc.y ) ) {
 			// pass
 		} else {
 			javax.swing.MenuSelectionManager menuSelectionManager = javax.swing.MenuSelectionManager.defaultManager();
@@ -37,14 +65,14 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 				java.awt.Component componentDst = menuSelectionManager.componentForPoint( componentSrc, pSrc );
 				if( componentDst != null ) {
 					java.awt.Point pDst = javax.swing.SwingUtilities.convertPoint( componentSrc, pSrc, componentDst );
-					menuSelectionManager.processMouseEvent( eSrc );
+					menuSelectionManager.processMouseEvent( e );
 				}
 			} else {
 				javax.swing.JFrame jFrame = org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent();
 				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(jFrame.getContentPane(), pSrc.x, pSrc.y);
 				if (component != null) {
 					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(componentSrc, pSrc, component);
-					component.dispatchEvent(new java.awt.event.MouseEvent(component, eSrc.getID(), eSrc.getWhen(), eSrc.getModifiers() + eSrc.getModifiersEx(), pComponent.x, pComponent.y, eSrc.getClickCount(), eSrc.isPopupTrigger()));
+					component.dispatchEvent(new java.awt.event.MouseEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger()));
 				}
 			}
 		}
