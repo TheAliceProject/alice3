@@ -78,28 +78,27 @@ public class SearchOperation extends org.lgna.croquet.InformationDialogOperation
 	}
 	@Override
 	protected Container<?> createContentPane( CompletionStep<?> step, Dialog dialog ) {
-		final Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap = Collections.newHashMap();
+		final Map<UserMethod,LinkedList<MethodInvocation>> methodToParentMap = Collections.newHashMap();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 		if( programType != null ) {
 			class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-				private java.util.Map<Class<? extends org.lgna.project.ast.Statement>,Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 					if( crawlable instanceof MethodInvocation ) {
 						MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 						UserMethod method = methodInvocation.getFirstAncestorAssignableTo( UserMethod.class );
-						if( methodParentMap.get( method ) == null ) {
-							methodParentMap.put( method, new LinkedList<MethodInvocation>() );
+						if( methodToParentMap.get( method ) == null ) {
+							methodToParentMap.put( method, new LinkedList<MethodInvocation>() );
 						}
-						methodParentMap.get( method ).add( methodInvocation );
+						methodToParentMap.get( method ).add( methodInvocation );
 					}
 				}
 			}
 			StatementCountCrawler crawler = new StatementCountCrawler();
 			programType.crawl( crawler, true );
-			SearchComposite searchDialog = new SearchComposite( methodParentMap );
-			ReferencesComposite refDialog = new ReferencesComposite( methodParentMap );
+			SearchComposite searchDialog = new SearchComposite( methodToParentMap );
+			ReferencesComposite refDialog = new ReferencesComposite( methodToParentMap );
 			searchDialog.addSelectedListener( refDialog );
 			TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
 
