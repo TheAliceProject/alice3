@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -43,59 +43,14 @@
 package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public enum AnimationStyle implements 
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail, SetOrientationRelativeToVehicle.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail, SetPositionRelativeToVehicle.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail,
-		//Room
-		SetFloorPaint.Detail, SetWallPaint.Detail, SetCeilingPaint.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere
-		SetRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	BEGIN_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_ABRUPTLY ),
-	BEGIN_GENTLY_AND_END_ABRUPTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_GENTLY_AND_END_ABRUPTLY ),
-	BEGIN_ABRUPTLY_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY ),
-	BEGIN_AND_END_GENTLY( edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
-
-	private static final AnimationStyle DEFAULT_VALUE = AnimationStyle.BEGIN_AND_END_GENTLY;
-	private edu.cmu.cs.dennisc.animation.Style internal;
-	AnimationStyle( edu.cmu.cs.dennisc.animation.Style internal ) {
-		this.internal = internal;
+public class SetFloorPaint extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetFloorPaint.class )
+	public static interface Detail {
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.animation.Style getInternal() {
-		return this.internal;
-	}
-
-	private static AnimationStyle getValue( Object[] details, AnimationStyle defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof AnimationStyle ) {
-				AnimationStyle animationStyle = (AnimationStyle)detail;
-				return animationStyle;
-			}
-		}
-		return defaultValue;
-	}
-	/*package-private*/ static AnimationStyle getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	private SetFloorPaint() {
+		super();
 	}
 }
