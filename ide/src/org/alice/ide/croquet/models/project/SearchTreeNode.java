@@ -15,10 +15,16 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 	private List<SearchTreeNode> children = Collections.newLinkedList();
 	private SearchTreeNode parent;
 	private AbstractMethod content;
+	private boolean isGenerated;
 
 	public SearchTreeNode( SearchTreeNode parent, AbstractMethod content ) {
 		this.parent = parent;
 		this.content = content;
+		this.isGenerated = (content instanceof UserMethod) && ((UserMethod) content).getManagementLevel().isGenerated();
+	}
+	
+	public boolean getIsGenerated(){
+		return isGenerated;
 	}
 
 	public int getNumChildren() {
@@ -48,8 +54,6 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 		} else if( content instanceof JavaMethod ) {
 			JavaMethod javaMethod = (JavaMethod)content;
 			return javaMethod.getName();
-			//		} else if( content instanceof String ) {
-			//			return (String)content;
 		}
 		return "ERROR: (mmay) unhandledtype in tree: " + content.getClass();
 	}
@@ -59,6 +63,7 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 
 	public void addChild( SearchTreeNode searchTreeNode ) {
 		this.children.add( searchTreeNode );
+		java.util.Collections.sort(children);
 	}
 
 	@Override

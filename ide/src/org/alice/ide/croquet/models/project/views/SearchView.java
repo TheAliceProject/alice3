@@ -45,8 +45,8 @@ package org.alice.ide.croquet.models.project.views;
 import org.alice.ide.croquet.models.project.SearchComposite;
 import org.alice.ide.croquet.models.project.SearchComposite.SearchDialogManager;
 import org.alice.ide.croquet.models.project.SearchTreeNode;
-import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
@@ -57,17 +57,20 @@ import org.lgna.croquet.components.Tree;
 public class SearchView extends BorderPanel {
 	
 	public SearchView( SearchComposite composite ) {
-		TextField textField = new TextField( composite.getStringState() );
+		TextField textField = composite.getStringState().createTextField();
 		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
 
 		SearchDialogManager manager = composite.getManager();
 		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
 		manager.setOwner( tree );
+		manager.changed( composite.getStringState(), "", "", true );
 
 		manager.refreshAll();
 		tree.setRootVisible( false );
 		tree.expandAllRows();
-		this.addComponent( textField, Constraint.PAGE_START );
+		GridPanel panel = GridPanel.createGridPane( 1, 3, composite.getShowGenerated().createCheckBox(), composite.getShowFunctions().createCheckBox(), composite.getShowProcedure().createCheckBox() );
+		GridPanel stackedPanel = GridPanel.createGridPane( 2, 1, textField, panel );
+		this.addComponent( stackedPanel, Constraint.PAGE_START );
 		this.addComponent( new ScrollPane( tree ), Constraint.CENTER );
 	}
 

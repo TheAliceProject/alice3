@@ -50,18 +50,11 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.alice.ide.croquet.models.project.views.SearchView;
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.TreeSelectionState;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.BorderPanel.Constraint;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.TextField;
-import org.lgna.croquet.components.Tree;
-import org.lgna.croquet.components.View;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
@@ -71,14 +64,27 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 /**
  * @author Matt May
  */
-public class SearchComposite extends TabComposite {
+public class SearchComposite extends TabComposite<SearchView> {
 	
 	private StringState searchState = createStringState( createKey( "searchState" ) );
+	private BooleanState showGenerated = createBooleanState( createKey( "showGenerated" ), false );
+	private BooleanState showProcedure = createBooleanState( createKey( "showProcedure" ), true );
+	private BooleanState showFunctions = createBooleanState( createKey( "showFunctions" ), true );
 	private final SearchDialogManager manager;
 
 	public SearchComposite( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
 		super( java.util.UUID.fromString( "8f75a1e2-805d-4d9f-bef6-099204fe8d60" ) );
 		manager = new SearchDialogManager( methodParentMap );
+	}
+	
+	public BooleanState getShowGenerated() {
+		return this.showGenerated;
+	}
+	public BooleanState getShowProcedure() {
+		return this.showProcedure;
+	}
+	public BooleanState getShowFunctions() {
+		return this.showFunctions;
 	}
 
 	@Override
@@ -87,7 +93,7 @@ public class SearchComposite extends TabComposite {
 	}
 
 	@Override
-	protected View createView() {
+	protected SearchView createView() {
 		return new SearchView( this );
 	}
 
@@ -104,6 +110,23 @@ public class SearchComposite extends TabComposite {
 	}
 
 	public class SearchDialogManager extends SearchTreeManager implements ValueListener<String> {
+		
+		private ValueListener<Boolean> booleanListener = new ValueListener<Boolean>() {
+
+			public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				showFunctions = SearchComposite.this.showFunctions.getValue();
+				showProcedures = SearchComposite.this.showProcedure.getValue();
+				showGenerated = SearchComposite.this.showGenerated.getValue();
+				manager.changed( getStringState(), searchState.getValue(), searchState.getValue(), true );
+			}
+		};
+		
+		public ValueListener<Boolean> getBooleanListener() {
+			return this.booleanListener;
+		}
 
 		private ValueListener<SearchTreeNode> adapter = new ValueListener<SearchTreeNode>() {
 
@@ -126,6 +149,9 @@ public class SearchComposite extends TabComposite {
 
 			searchState.addValueListener( this );
 			this.addValueListener( adapter );
+			SearchComposite.this.showFunctions.addValueListener( booleanListener );
+			SearchComposite.this.showProcedure.addValueListener( booleanListener );
+			SearchComposite.this.showGenerated.addValueListener( booleanListener );
 		}
 		
 		public void changing( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {

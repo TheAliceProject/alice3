@@ -47,8 +47,10 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import org.alice.ide.croquet.models.project.views.ReferencesView;
+import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.StringValue;
 import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.components.Tree;
 import org.lgna.project.ast.MethodInvocation;
@@ -62,8 +64,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class ReferencesComposite extends TabComposite<ReferencesView> implements ValueListener<SearchTreeNode> {
 	private final ReferencesDialogManager manager;
 	private final Tree<SearchTreeNode> tree;
-//	private final ValueListener<String> stringListener = new ValueListener<String>() {
-//	};
+	private final PlainStringValue selectedMethod = createStringValue( this.createKey( "selectedMethod" ) );
 
 	public ReferencesComposite( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
 		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
@@ -71,6 +72,10 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 		tree = new Tree<SearchTreeNode>( manager );
 		getTree().setRootVisible( false );
 		manager.setOwner( getTree() );
+	}
+
+	public PlainStringValue getSelectedMethod() {
+		return this.selectedMethod;
 	}
 
 	@Override
@@ -88,8 +93,13 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 
 	public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
 		manager.update( nextValue );
+		if( nextValue != null ) {
+			selectedMethod.setText( "     " + nextValue.getContent().getName() );
+		} else {
+			selectedMethod.setText( "" );
+		}
 	}
-	
+
 	public Tree<SearchTreeNode> getTree() {
 		return this.tree;
 	}
@@ -116,7 +126,6 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 		}
 
 		private void crawl( SearchTreeNode root, int depth ) {
-			System.out.println( root.getText() + " " + depth );
 			for( SearchTreeNode child : root.getChildren() ) {
 				crawl( child, depth + 1 );
 			}

@@ -53,6 +53,7 @@ public class ReferencesView extends BorderPanel {
 
 	public ReferencesView( ReferencesComposite composite ) {
 		super( composite );
+		this.addComponent( composite.getSelectedMethod().createImmutableTextArea(), Constraint.PAGE_START );
 		this.addComponent( new ScrollPane( composite.getTree() ), Constraint.CENTER );
 	}
 

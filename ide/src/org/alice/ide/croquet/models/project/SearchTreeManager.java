@@ -71,6 +71,9 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	protected LinkedList<SearchTreeNode> hiddenList = Collections.newLinkedList();
 	protected Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap;
 	protected Tree<SearchTreeNode> owner;
+	protected static boolean showGenerated = false;
+	protected static boolean showFunctions = true;
+	protected static boolean showProcedures = true;
 
 	public SearchTreeManager( UUID id, Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
 		super( Application.INFORMATION_GROUP, id, SearchCodec.getSingleton(), null );
@@ -89,6 +92,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 				SearchTreeNode child = new SearchTreeNode( parent, abstractMethod );
 				children.add( child );
 			}
+			java.util.Collections.sort( children );
 		}
 	}
 
@@ -173,11 +177,20 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	}
 
 	protected void show( SearchTreeNode node ) {
-		if( hiddenList.contains( node ) ) {
-			show( node.getParent() );
-			node.getParent().addChild( node );
-			hiddenList.remove( node );
+		if( shouldShow( node ) ) {
+			if( hiddenList.contains( node ) ) {
+				show( node.getParent() );
+				node.getParent().addChild( node );
+				hiddenList.remove( node );
+			}
 		}
+	}
+
+	private boolean shouldShow( SearchTreeNode node ) {
+		boolean generated = showGenerated || !node.getIsGenerated();
+		boolean function = showFunctions || !node.getContent().isFunction();
+		boolean procedure = showProcedures || !node.getContent().isProcedure();
+		return generated && function && procedure;
 	}
 
 	protected void hide( SearchTreeNode node ) {
@@ -198,6 +211,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 		}
 		java.util.Collections.sort( hiddenList );
 	}
+
 	private static class SearchCodec implements ItemCodec<SearchTreeNode> {
 
 		private final static SearchCodec instance = new SearchCodec();
