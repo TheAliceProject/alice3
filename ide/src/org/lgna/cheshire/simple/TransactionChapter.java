@@ -47,8 +47,11 @@ package org.lgna.cheshire.simple;
  */
 public class TransactionChapter extends Chapter {
 	private final org.lgna.croquet.history.Transaction transaction;
+	private final Page page;
+
 	public TransactionChapter( org.lgna.croquet.history.Transaction transaction ) {
 		this.transaction = transaction;
+		this.page = new Page( this );
 	}
 	public org.lgna.croquet.history.Transaction getTransaction() {
 		return this.transaction;
@@ -70,21 +73,21 @@ public class TransactionChapter extends Chapter {
 				org.alice.ide.IDE.getActiveInstance().getSimplePresentation().retargetAll( retargeter );
 			}
 		}
-//		for( RetargetableNote note : this.notes ) {
-//			note.complete();
-//		}
+		//		for( RetargetableNote note : this.notes ) {
+		//			note.complete();
+		//		}
 	}
-	
+
 	@Override
 	public String getTitle() {
 		return "<strong>" + this.transaction.getTitle( ) + "</strong>";
 	}
-	
+
 	@Override
 	public boolean isAutoAdvanceDesired() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isAlreadyInTheDesiredState() {
 		org.lgna.croquet.history.Transaction transaction = this.getTransaction();
@@ -101,5 +104,10 @@ public class TransactionChapter extends Chapter {
 	@Override
 	public Iterable< org.lgna.croquet.Context > getAllContexts() {
 		return this.transaction.getAllContexts();
+	}
+
+	@Override
+	public org.lgna.cheshire.simple.Page getPage() {
+		return this.page;
 	}
 }

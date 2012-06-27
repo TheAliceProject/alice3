@@ -49,9 +49,12 @@ package org.lgna.cheshire.simple;
 public class MessageChapter extends Chapter {
 	private final String title;
 	private final String text;
+	private final Page page;
+
 	public MessageChapter( String title, String text ) {
 		this.title = title;
 		this.text = text;
+		this.page = new Page( this );
 	}
 	@Override
 	public String getTitle() {
@@ -77,5 +80,9 @@ public class MessageChapter extends Chapter {
 	@Override
 	public Iterable< org.lgna.croquet.Context > getAllContexts() {
 		return java.util.Collections.emptyList();
+	}
+	@Override
+	public org.lgna.cheshire.simple.Page getPage() {
+		return this.page;
 	}
 }
