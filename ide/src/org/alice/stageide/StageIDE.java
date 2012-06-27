@@ -265,7 +265,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public org.lgna.croquet.Operation getAboutOperation() {
-		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
+		return org.alice.stageide.about.AboutComposite.getInstance().getOperation();
 	}
 	@Override
 	public void setProject( org.lgna.project.Project project ) {

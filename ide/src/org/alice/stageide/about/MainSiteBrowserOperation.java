@@ -40,40 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+
+package org.alice.stageide.about;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.help.HelpComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ReportBugComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.SuggestImprovementComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.RequestNewFeatureComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.warning.WarningDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel()
-		);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.stageide.about.AboutComposite.getInstance().getOperation().getMenuItemPrepModel());
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
-
+public class MainSiteBrowserOperation extends org.alice.ide.browser.BrowserOperation {
 	private static class SingletonHolder {
-		private static HelpMenuModel instance = new HelpMenuModel();
+		private static MainSiteBrowserOperation instance = new MainSiteBrowserOperation();
 	}
-	public static HelpMenuModel getInstance() {
+	public static MainSiteBrowserOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	private HelpMenuModel() {
-		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), createMenuItemPrepModels() );
+	private MainSiteBrowserOperation() {
+		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ) );
+	}
+	@Override
+	protected java.net.URL getUrl() {
+		String path = "http://www.alice.org";
+		try {
+			return new java.net.URL( path );
+		} catch( java.net.MalformedURLException murle ) {
+			throw new RuntimeException( path, murle );
+		}
 	}
 }

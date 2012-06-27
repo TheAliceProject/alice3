@@ -50,11 +50,15 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	private final Group group;
 	private int ignoreCount = 0;
 	
-	private static class SidekickLabel extends PlainStringValue {
+	private static final class SidekickLabel extends PlainStringValue {
 		private final AbstractCompletionModel completionModel;
 		public SidekickLabel( AbstractCompletionModel completionModel ) {
 			super( java.util.UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
 			this.completionModel = completionModel;
+		}
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.completionModel.getClassUsedForLocalization();
 		}
 		@Override
 		protected String getSubKeyForLocalization() {
@@ -110,6 +114,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 			//pass
 		} else {
 			this.sidekickLabel = new SidekickLabel( this );
+			this.sidekickLabel.initializeIfNecessary();
 		}
 		return this.sidekickLabel;
 	}

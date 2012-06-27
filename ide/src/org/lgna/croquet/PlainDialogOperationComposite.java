@@ -69,7 +69,7 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 	}
 	
 	@Override
-	protected org.lgna.croquet.AbstractWindowComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
 		//todo
 		return null;
 	}

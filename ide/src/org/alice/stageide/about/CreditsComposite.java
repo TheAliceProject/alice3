@@ -40,40 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+
+package org.alice.stageide.about;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.help.HelpComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ReportBugComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.SuggestImprovementComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.RequestNewFeatureComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.warning.WarningDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel()
-		);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.stageide.about.AboutComposite.getInstance().getOperation().getMenuItemPrepModel());
-		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
-
+public class CreditsComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.lgna.croquet.components.Panel> {
 	private static class SingletonHolder {
-		private static HelpMenuModel instance = new HelpMenuModel();
+		private static CreditsComposite instance = new CreditsComposite();
 	}
-	public static HelpMenuModel getInstance() {
+	public static CreditsComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private HelpMenuModel() {
-		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), createMenuItemPrepModels() );
+	private final org.lgna.croquet.HtmlStringValue creditsLabel;
+	private CreditsComposite() {
+		super( java.util.UUID.fromString( "05cb2e31-928a-461a-9695-9e2783b651a4" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Alice 3 is designed and implemented by <strong>Dennis Cosgrove</strong>, <strong>David Culyba</strong>, and <strong>Matt May</strong>.<p>" );
+		sb.append( "It is inspired by many systems that have preceded it, most notably <strong>Caitlin Kelleher</strong>'s dissertation: Storytelling Alice.<p>" );
+		sb.append( "Great thanks are owed to the members of Caitlin Kelleher's Looking Glass Research Group, specifically:<br><strong>Kyle Harms</strong> for his work on the Croquet toolkit and <br><strong>Gazihan Alankus</strong> for his work on inverse kinematics.<p>" );
+		sb.append( "Many have created custom art assets including <strong>Laura Paoletti</strong> and <strong>John DeRiggi</strong>.<p>" );
+		sb.append( "Technical and administrative help provided by <strong>Gabe Yu</strong>, <strong>Cleah Schlueter</strong>, and <strong>5teve Audia</strong>.<p>" );
+		sb.append( "Songs should be written about the instructors who bravely adopted Alice 3 in the alpha and beta stages, specifically <strong>Wanda Dann</strong> and <strong>Don Slater</strong>.<p>" );
+		sb.append( "A special thank you to <strong>Steve Seabolt</strong> and <strong>JoAnn Covington</strong> for faciliating the donation of The Sims <sup>TM</sup> 2 Art Assets.<p>" );
+		this.creditsLabel = this.createUnlocalizedHtmlStringValue( sb.toString() );
+	}
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		org.lgna.croquet.components.ImmutableEditorPane creditsLabel = this.creditsLabel.createImmutableEditorPane();
+		org.lgna.croquet.components.Panel rv = new org.lgna.croquet.components.BorderPanel.Builder().center( creditsLabel ).build();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
+		return rv;
 	}
 }
