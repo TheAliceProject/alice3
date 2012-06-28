@@ -18,15 +18,15 @@ public class TransactionHistoryGenerator {
 
 		//cheshire cat does not recover since the procedure invocation drag model is found (albeit with the wrong state).  curses.
 		//so we manually place ide in correct configuration.
-		org.alice.ide.declarationseditor.TypeState typeState = org.alice.ide.declarationseditor.TypeState.getInstance();
-		typeState.addGeneratedStateChangeTransaction( history, null, (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
+		org.alice.ide.declarationseditor.TypeState.getInstance().addGeneratedStateChangeTransaction( history, null, (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
 		
+//		org.alice.ide.declarationseditor.TypeState typeState = org.alice.ide.declarationseditor.TypeState.getInstance();
 //		org.lgna.croquet.history.Transaction typeSetTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 //		org.lgna.croquet.history.CompletionStep typeChangeStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( typeSetTransaction, typeState, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), null );
 //		typeChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit( typeChangeStep, null, destinationMethod.getDeclaringType() ) );
 		
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationTabState.getInstance();
-		declarationTabState.addGeneratedStateChangeTransaction( history, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) );
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addGeneratedStateChangeTransaction( history, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) );
+//		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationTabState.getInstance();
 //		org.lgna.croquet.history.Transaction methodSetTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 //		org.lgna.croquet.history.CompletionStep methodChangeStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( methodSetTransaction, declarationTabState, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), null );
 //		methodChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit( methodChangeStep, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) ) );
