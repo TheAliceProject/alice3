@@ -63,4 +63,10 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		this.composite.perform( completionStep );
 	}
+	
+	@Override
+	public void addGeneratedTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
+		super.addGeneratedTransactions( generator, edit );
+		this.composite.addGeneratedTransactions( generator, edit );
+	}
 }

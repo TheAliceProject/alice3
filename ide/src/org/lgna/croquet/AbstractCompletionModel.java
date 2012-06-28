@@ -121,4 +121,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	public StringValue peekSidekickLabel() {
 		return this.sidekickLabel;
 	}
+	
+	public void addGeneratedTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
+	}
 }

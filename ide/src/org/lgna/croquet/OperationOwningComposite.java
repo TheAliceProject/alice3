@@ -47,4 +47,5 @@ package org.lgna.croquet;
  */
 public interface OperationOwningComposite< V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	public void addGeneratedTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit );
 }

@@ -70,6 +70,73 @@ public final class ProcedureDeclarationComposite extends MethodDeclarationCompos
 	protected org.alice.ide.ast.declaration.views.ProcedureDeclarationView createView() {
 		return new org.alice.ide.ast.declaration.views.ProcedureDeclarationView( this );
 	}
+	
+	@Override
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
+		super.addGeneratedSubTransactions( generator, edit );
+		
+		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : edit;
+		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
+		
+		
+		org.lgna.project.ast.UserType<?> declaringType = declareMethodEdit.getDeclaringType();
+		org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)declaringType;
+		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
+		
+		
+
+		// Handle the contexts for this step
+		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( namedUserType );
+			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
+		} else {
+			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+			if ( sceneType == declaringType ) {
+				instanceFactory = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
+			} else {
+				instanceFactory = null;
+				for( org.lgna.project.ast.UserField field : sceneType.fields ) {
+					if( declaringType.isAssignableFrom( field.getValueType() ) ) {
+						instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
+					}
+				}
+			}
+			assert instanceFactory != null : method;
+			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
+			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( org.alice.ide.members.ProcedureTemplateComposite.getInstance() );
+		}
+
+		try {
+			org.lgna.croquet.history.TransactionHistory history = generator.peekTransactionHistory();
+			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
+
+			org.lgna.croquet.history.TransactionHistory subTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
+			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this.getOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subTransactionHistory );
+
+			org.lgna.croquet.history.Transaction nameTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+			org.lgna.croquet.history.StateChangeStep<String> nameChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( nameTransaction, this.getNameState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance() );
+			nameChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( nameChangeStep, "", method.getName() ) );
+
+			org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
+			org.lgna.croquet.history.CompletionStep<?> commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, this.getCommitOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), null );
+			commitStep.finish();
+
+			org.lgna.croquet.history.CompletionStep completionStep = transaction.getCompletionStep();
+			completionStep.setEdit( new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, declaringType, method ) );
+
+			org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, method.body.getValue() );
+		} finally {
+			if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().popGeneratedValue();
+				org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
+			} else {
+				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
+				org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();				
+			}
+		}
+	}
+	
 	public void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.UserMethod method ) {
 		this.generateAndAddToTransactionHistory( history, method.getDeclaringType(), method );
 	}

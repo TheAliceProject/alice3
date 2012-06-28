@@ -129,4 +129,12 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		completionStep.removeListener( this.listener );
 		super.handlePostHideDialog( completionStep );
 	}
+	
+	//protected abstract void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit );
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
+	}
+	public final void addGeneratedTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
+		this.addGeneratedSubTransactions( generator, edit );
+		this.getCommitOperation().addGeneratedTransactions( generator, null );
+	}
 }

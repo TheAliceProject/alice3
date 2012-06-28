@@ -91,4 +91,7 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 			}
 		}, completionStep );
 	}
+	
+	public void addGeneratedTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
+	}
 }
