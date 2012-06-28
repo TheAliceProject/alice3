@@ -259,10 +259,10 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		return null;
 	}
 
-	private <E> org.lgna.croquet.history.Transaction createRecoveryTransaction( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.State< E > state, E prevValue, E nextValue ) {
+	private <T> org.lgna.croquet.history.Transaction createRecoveryTransaction( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.State< T > state, T prevValue, T nextValue ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
-		org.lgna.croquet.history.StateChangeStep< E > completionStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
-		org.lgna.croquet.edits.StateEdit< E > edit = new org.lgna.croquet.edits.StateEdit<E>( completionStep, prevValue, nextValue );
+		org.lgna.croquet.history.CompletionStep< org.lgna.croquet.State<T> > completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance(), null );
+		org.lgna.croquet.edits.StateEdit< T > edit = new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
 		completionStep.setEdit( edit );
 		return rv;
 	}

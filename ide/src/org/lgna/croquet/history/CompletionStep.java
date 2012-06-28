@@ -45,7 +45,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
+public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
 
 	private final TransactionHistory transactionHistory;
 	private org.lgna.croquet.edits.Edit<M> edit;

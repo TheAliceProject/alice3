@@ -83,17 +83,14 @@ public class TransactionManager {
 	}
 
 	@Deprecated
-	public static <T> StateChangeStep<T> addStateChangeStep( org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return StateChangeStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
-	}
-
-	@Deprecated
 	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.ListSelectionState.InternalPrepModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 
 	@Deprecated
-	public static CancelCompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return CancelCompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
+	public static CompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+		CompletionStep rv = CompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger, null );
+		rv.cancel();
+		return rv;
 	}
 }

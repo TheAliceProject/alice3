@@ -109,11 +109,11 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 				org.lgna.croquet.history.Transaction itemTypeTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
 				org.lgna.croquet.PopupPrepModel itemPopupPrepModel = itemState.getCascadeRoot().getPopupPrepModel();
 				org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( itemTypeTransaction, itemPopupPrepModel, org.lgna.croquet.triggers.PopupMenuEventTrigger.createGeneratorInstance() );
-				org.lgna.croquet.history.StateChangeStep<org.lgna.project.ast.AbstractType> itemTypeChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( itemTypeTransaction, itemState, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+				org.lgna.croquet.history.CompletionStep itemTypeChangeStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( itemTypeTransaction, itemState, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), null );
 				itemTypeChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<org.lgna.project.ast.AbstractType>( itemTypeChangeStep, null, itemType ) );
 				
 				org.lgna.croquet.history.Transaction nameTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
-				org.lgna.croquet.history.StateChangeStep<String> nameChangeStep = org.lgna.croquet.history.StateChangeStep.createAndAddToTransaction( nameTransaction, eachInArrayComposite.getNameState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance() );
+				org.lgna.croquet.history.CompletionStep nameChangeStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( nameTransaction, eachInArrayComposite.getNameState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance(), null );
 				nameChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( nameChangeStep, "", eachIn.item.getValue().name.getValue() ) );
 
 				org.alice.ide.croquet.models.declaration.ValueComponentTypeState initializerState = eachInArrayComposite.getValueComponentTypeState();
