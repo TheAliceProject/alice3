@@ -48,12 +48,11 @@ package org.alice.ide.perspectives;
  */
 public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspective {
 	private final org.lgna.croquet.Composite< ? > mainComposite;
-	private String name;
 	public ProjectPerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > mainComposite ) {
 		super( id );
 		this.mainComposite = mainComposite;
 	}
-	public org.lgna.croquet.Composite< ? > getMainComposite() {
+	public final org.lgna.croquet.Composite< ? > getMainComposite() {
 		return this.mainComposite;
 	}
 	public org.alice.ide.croquet.models.MenuBarComposite getMenuBarComposite() {
