@@ -46,11 +46,11 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class CancelCompletionNote extends CompletionNote< org.lgna.croquet.history.CompletionStep > {
+public class CancelCompletionNote extends CompletionNote<org.lgna.croquet.CompletionModel> {
 	public CancelCompletionNote( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures( org.lgna.croquet.history.CompletionStep step ) {
+	protected void addFeatures( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.CompletionModel> step ) {
 	}
 }

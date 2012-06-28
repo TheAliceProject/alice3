@@ -142,4 +142,12 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 	protected abstract void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step );
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 	}
+	
+	public boolean isSubTransactionHistoryRequired() {
+		return true;
+	}
+	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	}
+	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	}
 }

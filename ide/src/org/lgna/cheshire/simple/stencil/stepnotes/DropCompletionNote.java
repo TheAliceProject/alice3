@@ -46,12 +46,12 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class DropCompletionNote extends CompletionNote< org.lgna.croquet.history.CompletionStep<?> > {
-	public DropCompletionNote( org.lgna.croquet.history.CompletionStep<?> step ) {
+public class DropCompletionNote extends CompletionNote< org.lgna.croquet.CompletionModel > {
+	public DropCompletionNote( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void addFeatures( org.lgna.croquet.history.CompletionStep step ) {
 		this.addFeature( DropNoteUtilities.createHole( step ) );
 	}
 	

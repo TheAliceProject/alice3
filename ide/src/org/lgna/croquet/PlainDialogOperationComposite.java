@@ -92,6 +92,7 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 		}, completionStep );
 	}
 	
-	public void addGeneratedTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: generate close transaction" );
 	}
 }

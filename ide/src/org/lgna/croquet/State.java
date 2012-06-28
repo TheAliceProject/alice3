@@ -73,7 +73,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	public org.lgna.croquet.StateContext< T > createContext( org.lgna.croquet.triggers.Trigger.Origin origin ) {
 		T value;
 		if( origin == org.lgna.croquet.triggers.Trigger.Origin.GENERATOR ) {
-			assert !this.generatorValueStack.isEmpty() : this;
+			assert this.generatorValueStack.isEmpty()==false : this;
 			value = this.generatorValueStack.peek();
 		} else {
 			value = this.getValue();
@@ -226,5 +226,13 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep< State<T> > completionStep, T nextValue) {
 		T prevValue = this.getValue();
 		return new org.lgna.croquet.edits.StateEdit< T >( completionStep, prevValue, nextValue );
+	}
+	
+	@Override
+	protected org.lgna.croquet.triggers.Trigger createGeneratedTrigger() {
+		return org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance();
+	}
+	public void addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
+		this.addGeneratedTransaction( history, new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ) );
 	}
 }

@@ -289,4 +289,9 @@ public abstract class Operation extends AbstractCompletionModel {
 	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade< ? > cascade ) {
 		return new org.lgna.croquet.components.ButtonWithRightClickCascade( this, cascade );
 	}
+	
+	@Override
+	protected org.lgna.croquet.triggers.Trigger createGeneratedTrigger() {
+		return org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance();
+	}
 }

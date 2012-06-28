@@ -130,11 +130,8 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		super.handlePostHideDialog( completionStep );
 	}
 	
-	//protected abstract void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit );
-	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
-	}
-	public final void addGeneratedTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit ) {
-		this.addGeneratedSubTransactions( generator, edit );
-		this.getCommitOperation().addGeneratedTransactions( generator, null );
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+		org.lgna.croquet.edits.Edit<?> commitEdit = null;
+		this.getCommitOperation().addGeneratedTransaction( subTransactionHistory, commitEdit );
 	}
 }

@@ -48,9 +48,9 @@ package org.lgna.croquet;
  */
 public interface CompletionModel extends Model {
 	public Group getGroup();
-	public String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step );
-	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
-	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter );
-	public Iterable< ? extends PrepModel > getPotentialRootPrepModels();
-	public void addGeneratedTransactions( org.lgna.croquet.history.TransactionHistoryGenerator generator, org.lgna.croquet.edits.Edit edit );
+	public String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep<?> step );
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit );
+	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter );
+	public Iterable<? extends PrepModel> getPotentialRootPrepModels();
+	public void addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit );
 }

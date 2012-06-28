@@ -51,7 +51,7 @@ import org.lgna.croquet.Retargeter;
  * @author Dennis Cosgrove
  */
 public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private transient final org.lgna.croquet.history.CompletionStep< M > completionStep;
+	private transient org.lgna.croquet.history.CompletionStep< M > completionStep;
 	public Edit( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
 		this.completionStep = completionStep;
 	}
@@ -81,9 +81,10 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 	public org.lgna.croquet.history.CompletionStep< M > getCompletionStep() {
 		return this.completionStep;
 	}
-//	public void setCompletionStep( org.lgna.croquet.steps.CompletionStep< M > completionStep ) {
-//		this.completionStep = completionStep;
-//	}
+	public void setCompletionStep( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
+		assert this.completionStep == null : this.completionStep;
+		this.completionStep = completionStep;
+	}
 	public boolean canUndo() {
 		return true;
 	}

@@ -81,7 +81,10 @@ public class BlockStatementGenerator {
 						if( method instanceof org.lgna.project.ast.UserMethod ) {
 							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
 							//todo: check to see if generation actually required
-							org.alice.ide.ast.declaration.ProcedureDeclarationComposite.getInstance( userMethod.getDeclaringType() ).generateAndAddToTransactionHistory( history, userMethod );
+							
+							org.lgna.project.ast.UserType<?> declaringType = userMethod.getDeclaringType();
+							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethod );
+							org.alice.ide.ast.declaration.ProcedureDeclarationComposite.getInstance( userMethod.getDeclaringType() ).getOperation().addGeneratedTransaction( history, declareMethodEdit );
 						}
 
 						org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();

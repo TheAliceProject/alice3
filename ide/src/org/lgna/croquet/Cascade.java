@@ -274,4 +274,10 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	public void appendUserRepr( java.lang.StringBuilder sb ) {
 		sb.append( this.getRoot().getPopupPrepModel().getName() );
 	}
+	
+	@Override
+	protected org.lgna.croquet.triggers.Trigger createGeneratedTrigger() {
+		//todo: Drop?
+		return org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance();
+	}
 }
