@@ -42,9 +42,6 @@
  */
 package org.lgna.cheshire.simple.stencil;
 
-import org.lgna.cheshire.simple.Page;
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -88,7 +85,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 
 		@Override
 		protected org.lgna.cheshire.simple.Page getCurrentPage() {
-			return SimplePresentation.this.getBook().getSelectedChapter().getPage();
+			return ChapterPage.getInstance( SimplePresentation.this.getBook().getSelectedChapter() );
 		}
 
 		private java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
@@ -216,7 +213,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		this.restoreHistoryIndicesDueToCancel();
 		org.lgna.cheshire.simple.Chapter chapter = this.getBook().getSelectedChapter();
 		if( chapter != null ) {
-			Page chapterPage = (Page)chapter.getPage();
+			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.reset();
 		}
 	}
@@ -234,7 +231,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				book.handleEditCommitted( replacementCandidate );
 			}
 
-			Page chapterPage = (Page)chapter.getPage();
+			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.adjustIfNecessary( event );
 			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {
 				NextStepOperation.getInstance().setEnabled( true );
@@ -257,7 +254,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	protected void handleChapterChanged( org.lgna.cheshire.simple.Chapter chapter ) {
 		super.handleChapterChanged( chapter );
 		if( chapter != null ) {
-			Page chapterPage = (Page)chapter.getPage();
+			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.refreshNotes();
 			Iterable< org.lgna.croquet.Context > contexts = chapter.getAllContexts();
 			for( org.lgna.croquet.Context context : contexts ) {

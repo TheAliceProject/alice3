@@ -64,8 +64,6 @@ public abstract class Chapter {
 	public void setReplacementAcceptability( org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability ) {
 		this.replacementAcceptability = replacementAcceptability;
 	}
-	
-	public abstract Page getPage();
 
 	public abstract boolean isAutoAdvanceDesired();
 	public abstract boolean isAlreadyInTheDesiredState();
