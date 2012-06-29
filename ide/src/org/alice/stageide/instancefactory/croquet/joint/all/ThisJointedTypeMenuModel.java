@@ -47,21 +47,31 @@ package org.alice.stageide.instancefactory.croquet.joint.all;
  * @author Dennis Cosgrove
  */
 public class ThisJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ThisJointedTypeMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
-		synchronized( map ) {
-			ThisJointedTypeMenuModel rv = map.get( value );
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractType<?,?,?>, Integer, ThisJointedTypeMenuModel > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static ThisJointedTypeMenuModel getInstance( org.lgna.project.ast.AbstractType<?,?,?> value ) {
+		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( value );
+		return getInstance( value, jointedTypeInfos, 0 );
+	}
+	private static ThisJointedTypeMenuModel getInstance( org.lgna.project.ast.AbstractType<?,?,?> value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		synchronized( mapToMap ) {
+			ThisJointedTypeMenuModel rv = mapToMap.get( value, index );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisJointedTypeMenuModel( value );
-				map.put( value, rv );
+				rv = new ThisJointedTypeMenuModel( value, jointedTypeInfos, index );
+				mapToMap.put( value, index, rv );
 			}
 			return rv;
 		}
 	}
-	private ThisJointedTypeMenuModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
+	private final org.lgna.project.ast.AbstractType<?,?,?> type;
+	private ThisJointedTypeMenuModel( org.lgna.project.ast.AbstractType<?,?,?> type, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), jointedTypeInfos, index );
+		this.type = type;
+	}
+	@Override
+	protected org.alice.stageide.instancefactory.croquet.joint.all.JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		return getInstance( this.type, jointedTypeInfos, index );
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
@@ -72,5 +82,34 @@ public class ThisJointedTypeMenuModel extends JointedTypeMenuModel {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no instance factory for", method );
 			return null;
 		}
+//		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( this.type, method ) );
 	}
+
+	
+//	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//	public static ThisJointedTypeMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
+//		synchronized( map ) {
+//			ThisJointedTypeMenuModel rv = map.get( value );
+//			if( rv != null ) {
+//				//pass
+//			} else {
+//				rv = new ThisJointedTypeMenuModel( value );
+//				map.put( value, rv );
+//			}
+//			return rv;
+//		}
+//	}
+//	private ThisJointedTypeMenuModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+//		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
+//	}
+//	@Override
+//	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+//		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method );
+//		if( instanceFactory != null ) {
+//			return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( instanceFactory );
+//		} else {
+//			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no instance factory for", method );
+//			return null;
+//		}
+//	}
 }
