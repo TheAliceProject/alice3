@@ -4,30 +4,6 @@ package org.lgna.croquet.components;
  * @author Kyle J. Harms
  */
 public abstract class Stencil extends Panel implements LayeredPane.ResizeListener {
-
-	public enum StencilLayer {
-		ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
-		BELOW_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
-
-		private int stencilLayer;
-
-		private StencilLayer( int stencilLayer ) {
-			this.stencilLayer = stencilLayer;
-		}
-
-		public int getLayer() {
-			return this.stencilLayer;
-		}
-
-		public boolean isAboveStencil() {
-			return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
-		}
-
-		public boolean isBelowStencil() {
-			return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
-		}
-	}
-
 	private final LayeredPane layeredPane;
 	private boolean isEventInterceptEnabled;
 	private javax.swing.RepaintManager repaintManager;
@@ -109,7 +85,7 @@ public abstract class Stencil extends Panel implements LayeredPane.ResizeListene
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
 	protected abstract boolean contains( int x, int y, boolean superContains );
-	protected abstract StencilLayer getStencilsLayer();
+	protected abstract LayerId getStencilsLayer();
 
 	@Override
 	protected javax.swing.JPanel createJPanel() {

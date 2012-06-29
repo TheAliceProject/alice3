@@ -134,4 +134,6 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		org.lgna.croquet.edits.Edit<?> commitEdit = null;
 		this.getCommitOperation().addGeneratedTransaction( subTransactionHistory, commitEdit );
 	}
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	}
 }

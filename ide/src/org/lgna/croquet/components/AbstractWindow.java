@@ -78,12 +78,16 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	
 	public Layer getAbovePopupLayer() {
 		if( this.abovePopupLayer != null ) {
+			//pass
+		} else {
 			this.abovePopupLayer = new Layer( this, javax.swing.JLayeredPane.POPUP_LAYER+1 );
 		}
 		return this.abovePopupLayer;
 	}
 	public Layer getBelowPopupLayer() {
 		if( this.belowPopupLayer != null ) {
+			//pass
+		} else {
 			this.belowPopupLayer = new Layer( this, javax.swing.JLayeredPane.POPUP_LAYER-1 );
 		}
 		return this.belowPopupLayer;

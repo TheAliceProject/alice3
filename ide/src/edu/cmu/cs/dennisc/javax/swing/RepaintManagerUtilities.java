@@ -40,53 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class OwnedByCompositeOperation extends ActionOperation {
-	private final OperationOwningComposite composite;
+public class RepaintManagerUtilities {
+	private static javax.swing.RepaintManager originalRepaintManager;
+	private static java.util.Stack< javax.swing.JComponent > stencils = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	
+	private static class StencilRepaintManager extends javax.swing.RepaintManager {
+		@Override
+		public void addDirtyRegion(javax.swing.JComponent c, int x, int y, int w, int h) {
+			super.addDirtyRegion(c, x, y, w, h);
+			final javax.swing.JComponent jStencil = stencils.peek();
+			if( jStencil == c || jStencil.isAncestorOf( c ) ) {
+				//pass
+			} else {
+				java.awt.Component srcRoot = javax.swing.SwingUtilities.getRoot( c );
+				java.awt.Component dstRoot = javax.swing.SwingUtilities.getRoot( jStencil );
 
-	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
-		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
-		this.composite = composite;
+				if( srcRoot != null && srcRoot == dstRoot ) {
+					java.awt.Rectangle rect = new java.awt.Rectangle(x,y,w,h);
+					java.awt.Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
+					if( visibleRect.width != 0 && visibleRect.height != 0 ) {
+						final java.awt.Rectangle rectAsSeenByStencil = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( c, visibleRect, jStencil );
+						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								StencilRepaintManager.super.addDirtyRegion( jStencil, rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height);
+								//jStencil.repaint( rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
+							}
+						} );
+					}
+				}
+			}
+		}
 	}
-	public OperationOwningComposite getComposite() {
-		return this.composite;
+	private RepaintManagerUtilities() {
+		throw new AssertionError();
 	}
-	@Override
-	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
-		return this.composite.getClass();
+	public static void pushStencil( javax.swing.JComponent jStencil ) {
+		if( stencils.size() > 0 ) {
+			//pass
+		} else {
+			originalRepaintManager = javax.swing.RepaintManager.currentManager( jStencil );
+			javax.swing.RepaintManager.setCurrentManager( new StencilRepaintManager() );
+		}
+		stencils.push( jStencil );
 	}
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-		this.composite.perform( completionStep );
-	}
-
-	@Override
-	protected boolean isSubTransactionHistoryRequired() {
-		return this.composite.isSubTransactionHistoryRequired();
-	}
-	@Override
-	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
-		super.pushGeneratedContexts( edit );
-		this.composite.pushGeneratedContexts( edit );
-	}
-	@Override
-	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
-		this.composite.popGeneratedContexts( edit );
-		super.popGeneratedContexts( edit );
-	}
-	@Override
-	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
-		this.composite.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
-	}
-	@Override
-	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
-		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
-		this.composite.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+	
+	public static javax.swing.JComponent popStencil() {
+		javax.swing.JComponent rv = stencils.pop();
+		if( stencils.size() > 0 ) {
+			//pass
+		} else {
+			javax.swing.RepaintManager.setCurrentManager( originalRepaintManager );
+		}
+		return rv;
 	}
 }

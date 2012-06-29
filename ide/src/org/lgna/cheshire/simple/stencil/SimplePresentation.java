@@ -58,7 +58,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 
 	public class Stencil extends org.lgna.cheshire.simple.SimpleStencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
-		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, StencilLayer menuPolicy ) {
+		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, org.lgna.croquet.components.LayerId menuPolicy ) {
 			super( window );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			controlsPanel.setOpaque( false );
@@ -164,8 +164,8 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		}
 
 		@Override
-		protected StencilLayer getStencilsLayer() {
-			return org.lgna.croquet.components.Stencil.StencilLayer.ABOVE_POPUP_LAYER;
+		protected org.lgna.croquet.components.LayerId getStencilsLayer() {
+			return org.lgna.croquet.components.LayerId.ABOVE_POPUP_LAYER;
 		}
 
 		@Override
@@ -205,7 +205,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		this.originalTransactionHistory.addListener( this.transactionListener );
 		this.setRetargeter( new org.lgna.cheshire.simple.AstLiveRetargeter() );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
+		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.LayerId.BELOW_POPUP_LAYER );
 	}
 
 	@Override

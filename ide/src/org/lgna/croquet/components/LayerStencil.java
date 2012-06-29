@@ -40,53 +40,82 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class OwnedByCompositeOperation extends ActionOperation {
-	private final OperationOwningComposite composite;
+public abstract class LayerStencil extends Panel {
+	@Deprecated
+	protected abstract LayerId getStencilsLayer();
 
-	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
-		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
-		this.composite = composite;
+	private final AbstractWindow<?> window;
+	private final Layer layer;
+	public LayerStencil( AbstractWindow<?> window ) {
+		this.window = window;
+		this.layer = this.window.getBelowPopupLayer();
 	}
-	public OperationOwningComposite getComposite() {
-		return this.composite;
+	public Layer getLayer() {
+		return this.layer;
 	}
+	protected abstract void handleMouseMoved(java.awt.event.MouseEvent e);
+
+	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
+	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
+	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
+	protected abstract boolean contains( int x, int y, boolean superContains );
 	@Override
-	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
-		return this.composite.getClass();
+	protected javax.swing.JPanel createJPanel() {
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
+			@Override
+			protected void paintComponent(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				java.awt.Paint prevPaint = g2.getPaint();
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				try {
+					LayerStencil.this.paintComponentPrologue( g2 );
+					super.paintComponent( g2 );
+					LayerStencil.this.paintComponentEpilogue( g2 );
+				} finally {
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+					g2.setPaint( prevPaint );
+				}
+			}
+
+			@Override
+			public void paint(java.awt.Graphics g) {
+				super.paint(g);
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				LayerStencil.this.paintEpilogue( g2 );
+			}
+
+			@Override
+			public boolean contains(int x, int y) {
+				return LayerStencil.this.contains( x, y, super.contains( x, y ) );
+			}
+		};
+		rv.setOpaque( false );
+		return rv;
 	}
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-		this.composite.perform( completionStep );
+	public boolean isStencilShowing() {
+		return this.layer.getComponent() == this;
+	}
+
+	public void setStencilShowing( boolean isShowing ) {
+		this.layer.setComponent( isShowing ? this : null );
 	}
 
 	@Override
-	protected boolean isSubTransactionHistoryRequired() {
-		return this.composite.isSubTransactionHistoryRequired();
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		edu.cmu.cs.dennisc.javax.swing.RepaintManagerUtilities.pushStencil( this.getAwtComponent() );
 	}
+
 	@Override
-	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
-		super.pushGeneratedContexts( edit );
-		this.composite.pushGeneratedContexts( edit );
-	}
-	@Override
-	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
-		this.composite.popGeneratedContexts( edit );
-		super.popGeneratedContexts( edit );
-	}
-	@Override
-	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
-		this.composite.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
-	}
-	@Override
-	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
-		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
-		this.composite.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+	protected void handleUndisplayable() {
+		edu.cmu.cs.dennisc.javax.swing.RepaintManagerUtilities.popStencil();
+		super.handleUndisplayable();
 	}
 }

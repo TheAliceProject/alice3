@@ -128,6 +128,8 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	}
 	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 	}
+	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	}
 	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
@@ -153,6 +155,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 				edit.setCompletionStep( completionStep );
 			}
 			completionStep.setEdit( edit );
+			this.addGeneratedPostTransactions( ownerTransactionHistory, edit );
 		} finally {
 			this.popGeneratedContexts( edit );
 		}

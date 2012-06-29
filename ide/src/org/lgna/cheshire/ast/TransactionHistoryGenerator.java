@@ -12,7 +12,6 @@ public class TransactionHistoryGenerator {
 		
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, method );
 		org.alice.ide.ast.declaration.ProcedureDeclarationComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, declareMethodEdit );
-		
 
 		//cheshire cat does not recover since the procedure invocation drag model is found (albeit with the wrong state).  curses.
 		//so we manually place ide in correct configuration.
@@ -41,12 +40,12 @@ public class TransactionHistoryGenerator {
 			destinationMethod.body.getValue().statements.add( invocationStatement );
 			org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( method ).generateAndAddStepsToTransaction( history, invocationStatement, argumentExpressions );
 			destinationMethod.body.getValue().statements.remove( index );
+
 		} finally {
 			org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
 			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		}
-		
 		
 		org.alice.stageide.croquet.models.run.RunOperation runOperation = org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 		// Call run

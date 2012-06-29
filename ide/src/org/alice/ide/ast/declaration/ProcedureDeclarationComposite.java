@@ -124,4 +124,12 @@ public final class ProcedureDeclarationComposite extends MethodDeclarationCompos
 
 		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 	}
+	@Override
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : edit;
+		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
+		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
+		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( ownerTransactionHistory, method.body.getValue() );
+	}
 }

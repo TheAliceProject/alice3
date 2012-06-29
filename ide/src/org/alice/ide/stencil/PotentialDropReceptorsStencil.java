@@ -42,8 +42,6 @@
  */
 package org.alice.ide.stencil;
 
-import org.lgna.croquet.components.Stencil.StencilLayer;
-
 /**
  * @author Dennis Cosgrove
  *
@@ -182,7 +180,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 	}
 
 	@Override
-	protected StencilLayer getStencilsLayer() {
-		return org.lgna.croquet.components.Stencil.StencilLayer.ABOVE_POPUP_LAYER;
+	protected org.lgna.croquet.components.LayerId getStencilsLayer() {
+		return org.lgna.croquet.components.LayerId.ABOVE_POPUP_LAYER;
 	}
 }
