@@ -77,27 +77,4 @@ public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
 	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
 	}
-
-//	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-//	public static ThisFieldAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserField value ) {
-//		synchronized( map ) {
-//			ThisFieldAccessJointedTypeMenuModel rv = map.get( value );
-//			if( rv != null ) {
-//				//pass
-//			} else {
-//				rv = new ThisFieldAccessJointedTypeMenuModel( value );
-//				map.put( value, rv );
-//			}
-//			return rv;
-//		}
-//	}
-//	private final org.lgna.project.ast.UserField field;
-//	private ThisFieldAccessJointedTypeMenuModel( org.lgna.project.ast.UserField field ) {
-//		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
-//		this.field = field;
-//	}
-//	@Override
-//	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-//		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory.getInstance( this.field, method ) );
-//	}
 }

@@ -77,28 +77,4 @@ public class ParameterAccessJointedTypeMenuModel extends JointedTypeMenuModel {
 	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( this.parameter, method ) );
 	}
-
-	
-//	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-//	public static ParameterAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserParameter value ) {
-//		synchronized( map ) {
-//			ParameterAccessJointedTypeMenuModel rv = map.get( value );
-//			if( rv != null ) {
-//				//pass
-//			} else {
-//				rv = new ParameterAccessJointedTypeMenuModel( value );
-//				map.put( value, rv );
-//			}
-//			return rv;
-//		}
-//	}
-//	private final org.lgna.project.ast.UserParameter parameter;
-//	private ParameterAccessJointedTypeMenuModel( org.lgna.project.ast.UserParameter parameter ) {
-//		super( java.util.UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), parameter.getValueType() );
-//		this.parameter = parameter;
-//	}
-//	@Override
-//	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-//		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( this.parameter, method ) );
-//	}
 }

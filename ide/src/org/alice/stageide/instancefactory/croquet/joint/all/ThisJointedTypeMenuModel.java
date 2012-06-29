@@ -75,6 +75,7 @@ public class ThisJointedTypeMenuModel extends JointedTypeMenuModel {
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+		//todo: use this.type?
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method );
 		if( instanceFactory != null ) {
 			return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( instanceFactory );
@@ -82,34 +83,5 @@ public class ThisJointedTypeMenuModel extends JointedTypeMenuModel {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no instance factory for", method );
 			return null;
 		}
-//		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( this.type, method ) );
 	}
-
-	
-//	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ThisJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-//	public static ThisJointedTypeMenuModel getInstance( org.lgna.project.ast.AbstractType< ?,?,? > value ) {
-//		synchronized( map ) {
-//			ThisJointedTypeMenuModel rv = map.get( value );
-//			if( rv != null ) {
-//				//pass
-//			} else {
-//				rv = new ThisJointedTypeMenuModel( value );
-//				map.put( value, rv );
-//			}
-//			return rv;
-//		}
-//	}
-//	private ThisJointedTypeMenuModel( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-//		super( java.util.UUID.fromString( "f6e1f5de-56d7-45ea-a9b3-f8585cf2d01c" ), type );
-//	}
-//	@Override
-//	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-//		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisMethodInvocationFactory.getInstance( method );
-//		if( instanceFactory != null ) {
-//			return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( instanceFactory );
-//		} else {
-//			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no instance factory for", method );
-//			return null;
-//		}
-//	}
 }
