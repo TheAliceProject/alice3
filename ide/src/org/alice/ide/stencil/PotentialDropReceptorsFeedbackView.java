@@ -59,7 +59,6 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 	}
 
 	public void showStencilOver( org.lgna.croquet.components.DragComponent<?,?> potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "showStencilOver" );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.perspectives.ProjectPerspective idePerspective = (org.alice.ide.perspectives.ProjectPerspective)ide.getPerspective();
 		java.util.List< org.lgna.croquet.DropReceptor > dropReceptors = idePerspective.createListOfPotentialDropReceptors( (org.alice.ide.croquet.models.IdeDragModel)potentialDragSource.getModel() );
@@ -73,7 +72,6 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 		this.window.getAbovePopupLayer().setComponent( null );
 		this.holes = null;
 		this.potentialDragSource = null;
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "hideStencil" );
 	}
 
 	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
@@ -83,10 +81,8 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 		}
 	}
 	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "entered" );
 	}
 	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "exited" );
 		this.currentDropReceptorComponent = null;
 		if( this.holes != null ) {
 			this.repaint();
