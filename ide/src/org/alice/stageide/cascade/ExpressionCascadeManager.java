@@ -96,48 +96,22 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 			return super.areEnumConstantsDesired( enumType );
 		}
 	}
+	
 	@Override
-	protected void addBonusFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.AbstractType< ?, ?, ? > selectedType, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-//		if( type.isAssignableFrom( org.lgna.story.Joint.class ) ) {
-//			rv.add( new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn( new org.lgna.project.ast.TypeLiteral( type ) ) );
-//		}
-	}
-
-	@Override
-	protected org.lgna.croquet.CascadeBlankChild createBlankChildForFillInAndPossiblyPartFillIns( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractType< ?, ?, ? > type2 ) {
-		org.lgna.croquet.CascadeFillIn fillIn = (org.lgna.croquet.CascadeFillIn)super.createBlankChildForFillInAndPossiblyPartFillIns( expression, type, type2 );
-		if( type.isAssignableTo( org.lgna.story.JointedModel.class ) ) {
-			if( type2.isAssignableFrom( org.lgna.story.Joint.class ) ) {
-				if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
-					java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( type );
-					return new org.lgna.croquet.CascadeItemMenuCombo( fillIn, new JointExpressionMenuModel( expression, jointedTypeInfos, 0 ) );
+	protected org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> createPartMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType< ?, ?, ? > desiredType, org.lgna.project.ast.AbstractType< ?, ?, ? > expressionType, boolean isOwnedByCascadeItemMenuCombo ) {
+		if( expressionType.isAssignableTo( org.lgna.story.JointedModel.class ) ) {
+			if( desiredType.isAssignableFrom( org.lgna.story.Joint.class ) ) {
+				if( org.alice.stageide.ast.JointedTypeInfo.isJointed( expressionType ) ) {
+					java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( expressionType );
+					return new JointExpressionMenuModel( expression, jointedTypeInfos, 0, isOwnedByCascadeItemMenuCombo );
 				}
 			}
 		}
-		return fillIn;
+		return null;
 	}
-	//	@Override
-	//	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addFillInAndPossiblyPartFillIns(  java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.AbstractType<?,?,?> type2 ) {
-	//		super.addFillInAndPossiblyPartFillIns( rv, expression, type, type2 );
-	//		if( type.isAssignableTo( org.lookingglassandalice.storytelling.PolygonalModel.class ) ) {
-	//			org.lgna.project.ast.TypeDeclaredInJava typeInJava = null;
-	//			Class< ? > paramCls = null;
-	//			if( type2.isAssignableFrom( org.lookingglassandalice.storytelling.Model.class ) ) {
-	//				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-	//				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
-	//				for( Class innerCls : cls.getDeclaredClasses() ) {
-	//					if( innerCls.getSimpleName().equals( "Part" ) ) {
-	//						paramCls = innerCls;
-	//					}
-	//				}
-	//			}
-	//			if( paramCls != null ) {
-	//				org.lgna.project.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
-	//				if( getPartMethod != null ) {
-	//					rv.add( new org.alice.ide.croquet.models.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
-	//				}
-	//			}
-	//		}
-	//		return rv;
-	//	}
+	
+	@Override
+	protected boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
+		return expressionType.isAssignableTo( org.lgna.story.JointedModel.class ) || desiredType.isAssignableTo( org.lgna.story.Joint.class );
+	}
 }
