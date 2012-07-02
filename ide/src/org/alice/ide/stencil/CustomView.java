@@ -40,49 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models;
+package org.alice.ide.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends org.lgna.croquet.DragModel {
-	public IdeDragModel( java.util.UUID id ) {
-		super( id );
-	}
+public abstract class CustomView extends org.lgna.croquet.components.JComponent< javax.swing.JPanel > {
+	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
+	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
+	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
+	protected abstract boolean contains( int x, int y, boolean superContains );
 	@Override
-	public final java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-		org.lgna.croquet.Perspective perspective = org.alice.ide.IDE.getActiveInstance().getPerspective();
-		if( perspective instanceof org.alice.ide.perspectives.ProjectPerspective ) {
-			org.alice.ide.perspectives.ProjectPerspective idePerspective = (org.alice.ide.perspectives.ProjectPerspective)perspective;
-			return idePerspective.createListOfPotentialDropReceptors( this );
-		} else {
-			return java.util.Collections.emptyList();
-		}
-	}
-	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsStencil() {
-		return org.alice.ide.IDE.getActiveInstance().getPotentialDropReceptorsFeedbackView();
-	}
-	@Override
-	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStarted( step );
-//		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
-//		if( (step.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
-//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
-//		} else {
-//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
-//		}
-//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
-	@Override
-	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor( step );
-	}
-	@Override
-	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor( step );
-	}
-	@Override
-	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStopped( step );
+	protected javax.swing.JPanel createAwtComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
+			@Override
+			protected void paintComponent(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				java.awt.Paint prevPaint = g2.getPaint();
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				try {
+					CustomView.this.paintComponentPrologue( g2 );
+					super.paintComponent( g2 );
+					CustomView.this.paintComponentEpilogue( g2 );
+				} finally {
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+					g2.setPaint( prevPaint );
+				}
+			}
+
+			@Override
+			public void paint(java.awt.Graphics g) {
+				super.paint(g);
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				CustomView.this.paintEpilogue( g2 );
+			}
+
+			@Override
+			public boolean contains(int x, int y) {
+				return CustomView.this.contains( x, y, super.contains( x, y ) );
+			}
+		};
+		rv.setOpaque( false );
+		return rv;
 	}
 }
