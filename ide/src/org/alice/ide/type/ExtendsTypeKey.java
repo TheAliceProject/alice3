@@ -46,41 +46,8 @@ package org.alice.ide.type;
 /**
  * @author Dennis Cosgrove
  */
-public class ExtendsTypeWithSuperArgumentFieldCriterion  extends AbstractExtendsTypeCriterion {
-	private final org.lgna.project.ast.AbstractField superArgumentField;
-	public ExtendsTypeWithSuperArgumentFieldCriterion( org.lgna.project.ast.AbstractType< ?,?,? > superType, org.lgna.project.ast.AbstractField superArgumentField ) {
+public final class ExtendsTypeKey extends AbstractExtendsTypeKey {
+	public ExtendsTypeKey( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
 		super( superType );
-		assert superArgumentField != null;
-		this.superArgumentField = superArgumentField;
-	}
-	@Override
-	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
-		if( super.accept( userType ) ) {
-			org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructor();
-			if( constructor != null ) {
-				org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
-				if( constructorInvocationStatement instanceof org.lgna.project.ast.SuperConstructorInvocationStatement ) {
-					if( constructorInvocationStatement.requiredArguments.size() == 1 ) {
-						org.lgna.project.ast.Expression argumentExpression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
-						if( argumentExpression instanceof org.lgna.project.ast.FieldAccess ) {
-							org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)argumentExpression;
-							return fieldAccess.field.getValue() == this.superArgumentField;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-	@Override
-	public int hashCode() {
-		int rv = super.hashCode();
-		rv = 37*rv + this.superArgumentField.hashCode();
-		return rv;
-	}
-	@Override
-	protected boolean contentEquals( org.alice.ide.type.TypeCriterion other ) {
-		// super class's equals methods ensures this.getClass() == other.getClass()
-		return super.contentEquals( other ) && this.superArgumentField == ((ExtendsTypeWithSuperArgumentFieldCriterion)other).superArgumentField;
 	}
 }

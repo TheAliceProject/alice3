@@ -46,36 +46,25 @@ package org.alice.ide.type;
 /**
  * @author Dennis Cosgrove
  */
-public final class ExtendsTypeWithConstructorParameterTypeCriterion extends AbstractExtendsTypeCriterion {
-	private final org.lgna.project.ast.AbstractType< ?,?,? > parameterType;
-	public ExtendsTypeWithConstructorParameterTypeCriterion( org.lgna.project.ast.AbstractType< ?,?,? > superType, org.lgna.project.ast.AbstractType< ?,?,? > parameterType ) {
-		super( superType );
-		assert parameterType != null;
-		this.parameterType = parameterType;
+public abstract class TypeKey {
+	public final org.lgna.project.ast.NamedUserType createType() {
+		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
+		//todo
+		return rv;
 	}
 	@Override
-	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
-		if( super.accept( userType ) ) {
-			org.lgna.project.ast.AbstractConstructor constructor = userType.getDeclaredConstructor( this.parameterType );
-			if( constructor != null ) {
-				org.lgna.project.ast.AbstractParameter parameter0 = constructor.getRequiredParameters().get( 0 );
-				return parameter0.getValueType() == this.parameterType;
+	public abstract int hashCode();
+	protected abstract boolean contentEquals( TypeKey other );
+	@Override
+	public final boolean equals( Object other ) {
+		if( other != null ) {
+			if( this.getClass() == other.getClass() ) {
+				return this.contentEquals( (TypeKey)other );
 			} else {
 				return false;
 			}
 		} else {
 			return false;
 		}
-	}
-	@Override
-	public int hashCode() {
-		int rv = super.hashCode();
-		rv = 37*rv + this.parameterType.hashCode();
-		return rv;
-	}
-	@Override
-	protected boolean contentEquals( org.alice.ide.type.TypeCriterion other ) {
-		// super class's equals methods ensures this.getClass() == other.getClass()
-		return super.contentEquals( other ) && this.parameterType == ((ExtendsTypeWithConstructorParameterTypeCriterion)other).parameterType;
 	}
 }

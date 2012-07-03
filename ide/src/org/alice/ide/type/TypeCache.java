@@ -48,12 +48,12 @@ package org.alice.ide.type;
  */
 public class TypeCache {
 	private final org.lgna.project.Project project;
-	private final java.util.Map<TypeCriterion,org.lgna.project.ast.NamedUserType> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<TypeKey,org.lgna.project.ast.NamedUserType> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public TypeCache( org.lgna.project.Project project ) {
 		this.project = project;
 		this.seed();
 	}
-	private TypeCriterion createCriterionForType( org.lgna.project.ast.NamedUserType type ) {
+	private TypeKey createKeyForType( org.lgna.project.ast.NamedUserType type ) {
 		org.lgna.project.ast.AbstractType<?,?,?> superType = type.getSuperType();
 		java.util.ArrayList<org.lgna.project.ast.NamedUserConstructor> constructors = type.getDeclaredConstructors();
 		final int CONSTRUCTOR_COUNT = constructors.size();
@@ -68,12 +68,12 @@ public class TypeCache {
 				final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
 				switch( SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT ) {
 				case 0:
-					return new ExtendsTypeCriterion( superType );
+					return new ExtendsTypeKey( superType );
 				case 1:
 					org.lgna.project.ast.Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
 					if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 						org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
-						return new ExtendsTypeWithSuperArgumentFieldCriterion( superType, fieldAccess.field.getValue() );
+						return new ExtendsTypeWithSuperArgumentFieldKey( superType, fieldAccess.field.getValue() );
 					} else {
 						throw new AssertionError( type + " " + expression );
 					}
@@ -82,7 +82,7 @@ public class TypeCache {
 				}
 			case 1:
 				org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
-				return new ExtendsTypeWithConstructorParameterTypeCriterion( superType, parameter0.getValueType() );
+				return new ExtendsTypeWithConstructorParameterTypeKey( superType, parameter0.getValueType() );
 			default:
 				throw new AssertionError( type );
 			}
@@ -92,20 +92,20 @@ public class TypeCache {
 	}
 	private void seed() {
 		for( org.lgna.project.ast.NamedUserType type : this.project.getNamedUserTypes() ) {
-			TypeCriterion criterion = this.createCriterionForType( type );
-			if( criterion != null ) {
-				this.map.put( criterion, type );
+			TypeKey key = this.createKeyForType( type );
+			if( key != null ) {
+				this.map.put( key, type );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( type );
 			}
 		}
 	}
-	public org.lgna.project.ast.NamedUserType getTypeFor( TypeCriterion criterion ) {
+	public org.lgna.project.ast.NamedUserType getTypeFor( TypeKey key ) {
 		synchronized( this.map ) {
-			org.lgna.project.ast.NamedUserType rv = this.map.get( criterion );
+			org.lgna.project.ast.NamedUserType rv = this.map.get( key );
 			if( rv != null ) {
-				rv = criterion.createType();
-				this.map.put( criterion, rv );
+				rv = key.createType();
+				this.map.put( key, rv );
 			}
 			return rv;
 		}

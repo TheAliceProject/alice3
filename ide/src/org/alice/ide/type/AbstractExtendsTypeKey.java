@@ -46,9 +46,9 @@ package org.alice.ide.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractExtendsTypeCriterion extends TypeCriterion {
+public abstract class AbstractExtendsTypeKey extends TypeKey {
 	private final org.lgna.project.ast.AbstractType< ?,?,? > superType;
-	public AbstractExtendsTypeCriterion( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
+	public AbstractExtendsTypeKey( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
 		assert superType != null;
 		this.superType = superType;
 	}
@@ -61,12 +61,12 @@ public abstract class AbstractExtendsTypeCriterion extends TypeCriterion {
 		rv = 37*rv + this.getSuperType().hashCode();
 		return rv;
 	}
-	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
-		return userType.superType.getValue() == this.superType;
-	}
+//	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+//		return userType.superType.getValue() == this.superType;
+//	}
 	@Override
-	protected boolean contentEquals( org.alice.ide.type.TypeCriterion other ) {
+	protected boolean contentEquals( org.alice.ide.type.TypeKey other ) {
 		// super class's equals methods ensures this.getClass() == other.getClass()
-		return this.superType == ((AbstractExtendsTypeCriterion)other).superType;
+		return this.superType == ((AbstractExtendsTypeKey)other).superType;
 	}
 }
