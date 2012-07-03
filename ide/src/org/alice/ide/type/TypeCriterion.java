@@ -47,6 +47,11 @@ package org.alice.ide.type;
  * @author Dennis Cosgrove
  */
 public abstract class TypeCriterion implements edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.NamedUserType> {
+	public final org.lgna.project.ast.NamedUserType createType() {
+		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
+		//todo
+		return rv;
+	}
 	@Override
 	public abstract int hashCode();
 	protected abstract boolean contentEquals( TypeCriterion other );

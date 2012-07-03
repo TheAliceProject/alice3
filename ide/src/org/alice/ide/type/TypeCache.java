@@ -100,14 +100,11 @@ public class TypeCache {
 			}
 		}
 	}
-	private org.lgna.project.ast.NamedUserType createTypeFor( TypeCriterion criterion ) {
-		return null;
-	}
 	public org.lgna.project.ast.NamedUserType getTypeFor( TypeCriterion criterion ) {
 		synchronized( this.map ) {
 			org.lgna.project.ast.NamedUserType rv = this.map.get( criterion );
 			if( rv != null ) {
-				rv = this.createTypeFor( criterion );
+				rv = criterion.createType();
 				this.map.put( criterion, rv );
 			}
 			return rv;
