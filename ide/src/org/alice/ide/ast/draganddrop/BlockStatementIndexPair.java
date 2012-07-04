@@ -97,7 +97,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		org.lgna.project.ast.AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodeDropReceptor();
+		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
 	}
 	
 	@Override

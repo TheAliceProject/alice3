@@ -40,28 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
-	}
-	public static SetupScenePerspective getInstance() {
-		return SingletonHolder.instance;
-	}
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance() );
-	}
-	
-	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return null;
-	}
-	@Override
-	protected void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-	}
+public interface DropRejector {
+	public boolean isRejected( org.lgna.croquet.history.DragStep step );
 }

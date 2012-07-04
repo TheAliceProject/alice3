@@ -48,7 +48,7 @@ import org.alice.ide.x.components.StatementListPropertyView;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
+public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
 	private static class RootStatementListPropertyPane extends StatementListPropertyView {
 		private final org.lgna.croquet.components.Component< ? > superInvocationComponent;
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
@@ -77,28 +77,31 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 	//private final org.lgna.croquet.components.ScrollPane scrollPane;
 	private final RootStatementListPropertyPane rootStatementListPropertyPane;
 
-	@Deprecated
-	public static class Resolver implements org.lgna.croquet.resolvers.Resolver< CodeEditor > {
-		private org.lgna.project.ast.AbstractCode code;
-		public Resolver( org.lgna.project.ast.AbstractCode code ) {
-			this.code = code;
-		}
-		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			java.util.UUID id = binaryDecoder.decodeId();
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			this.code = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
-		}
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			// TODO Auto-generated method stub
-			binaryEncoder.encode( this.code.getId() );
-		}
-		public org.alice.ide.codeeditor.CodeEditor getResolved() {
-			return (org.alice.ide.codeeditor.CodeEditor)((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( this.code ).getView()).getCodeDropReceptor();
-		}
-		public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-			this.code = retargeter.retarget( this.code );
-		}
-	}
+//	@Deprecated
+//	public static class Resolver implements org.lgna.croquet.resolvers.Resolver< CodeEditor > {
+//		private org.lgna.project.ast.AbstractCode code;
+//		public Resolver( org.lgna.project.ast.AbstractCode code ) {
+//			this.code = code;
+//		}
+//		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//			java.util.UUID id = binaryDecoder.decodeId();
+//			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+//			this.code = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
+//		}
+//		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+//			// TODO Auto-generated method stub
+//			binaryEncoder.encode( this.code.getId() );
+//		}
+//		public org.alice.ide.codeeditor.CodeEditor getResolved() {
+//			return (org.alice.ide.codeeditor.CodeEditor)((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( this.code ).getView()).getCodeDropReceptor();
+//		}
+//		public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+//			this.code = retargeter.retarget( this.code );
+//		}
+//	}
+//	public org.lgna.croquet.resolvers.Resolver< CodeEditor > getResolver() {
+//		return new Resolver( this.code );
+//	}
 	
 	private final org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite;
 
@@ -212,13 +215,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 		}
 	}
 
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
-		return "Drop...";
-	}
-	
-	public org.lgna.croquet.resolvers.Resolver< CodeEditor > getResolver() {
-		return new Resolver( this.code );
-	}
+	@Override
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		if( potentialDropSite instanceof BlockStatementIndexPair ) {
 			BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair)potentialDropSite;
@@ -233,9 +230,6 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 	@Override
 	public org.lgna.project.ast.AbstractCode getCode() {
 		return this.code;
-	}
-	public org.lgna.croquet.components.JComponent<?> getViewController() {
-		return this;
 	}
 
 	@Override
@@ -253,7 +247,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 						for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : CodeEditor.this.statementListPropertyPaneInfos ) {
 							if( statementListPropertyPaneInfo != null ) {
 								java.awt.Color color;
-								if( CodeEditor.this.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
+								if( CodeEditor.this.dropReceptor.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
 									color = new java.awt.Color( 0, 0, 0, 127 );
 								} else {
 									color = null;
@@ -419,7 +413,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodeDropReceptor {
 			org.lgna.croquet.components.Container< ? > arbitrarilyChosenSource = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 			org.lgna.croquet.DragModel dragModel = null;
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( dragModel );
-			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.createStatementListPropertyPaneInfos( dragModel, arbitrarilyChosenSource );
+			StatementListPropertyPaneInfo[] statementListPropertyPaneInfos = this.dropReceptor.createStatementListPropertyPaneInfos( dragModel, arbitrarilyChosenSource );
 			final int N = statementListPropertyPaneInfos.length;
 			for( int i=0; i<N; i++ ) {
 				StatementListPropertyPaneInfo statementListPropertyPaneInfo = statementListPropertyPaneInfos[ i ];

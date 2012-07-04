@@ -74,7 +74,7 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)this.expressionProperty.getOwner();
 		org.lgna.project.ast.AbstractCode code = node.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodeDropReceptor();
+		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
 	}
 
 	@Override

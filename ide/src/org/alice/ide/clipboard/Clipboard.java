@@ -67,7 +67,7 @@ public enum Clipboard {
 			return obj instanceof ClipboardDropSite;
 		}
 		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
-			return Clipboard.SINGLETON.dragReceptor;
+			return Clipboard.SINGLETON.dragComponent.getDropReceptor();
 		}
 		public ClipboardDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 			return this;
@@ -110,10 +110,13 @@ public enum Clipboard {
 	private final java.util.Stack< org.lgna.project.ast.AbstractNode > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private final ClipboardDropSite dropSite = new ClipboardDropSite();
 	private final ClipboardDragModel dragModel = new ClipboardDragModel();
-	private final org.alice.ide.clipboard.components.ClipboardDragComponent dragReceptor = new org.alice.ide.clipboard.components.ClipboardDragComponent( dragModel );
+	private final org.alice.ide.clipboard.components.ClipboardDragComponent dragComponent = new org.alice.ide.clipboard.components.ClipboardDragComponent( dragModel );
 
-	public org.alice.ide.clipboard.components.ClipboardDragComponent getDropReceptor() {
-		return this.dragReceptor;
+	public org.lgna.croquet.components.DragComponent getDragComponent() {
+		return this.dragComponent;
+	}
+	public org.lgna.croquet.DropReceptor getDropReceptor() {
+		return this.dragComponent.getDropReceptor();
 	}
 	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
@@ -137,11 +140,11 @@ public enum Clipboard {
 	}
 	public void push( org.lgna.project.ast.AbstractNode node ) {
 		this.stack.push( node );
-		this.dragReceptor.refresh();
+		this.dragComponent.refresh();
 	}
 	public org.lgna.project.ast.AbstractNode pop() {
 		org.lgna.project.ast.AbstractNode rv = this.stack.pop();
-		this.dragReceptor.refresh();
+		this.dragComponent.refresh();
 		return rv;
 	}
 }
