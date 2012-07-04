@@ -83,10 +83,33 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>, CC extends GatedCommitDialogContentComposite<? extends GatedCommitDialogContentPanel<?>>> extends DialogCoreComposite<V,CC> {
+	private final java.util.List< CommitRejector > commitRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
 	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
-	protected abstract Status getStatus( org.lgna.croquet.history.CompletionStep<?> step );
+
+	public void addCommitRejector( CommitRejector commitRejector ) {
+		this.commitRejectors.add( commitRejector );
+	}
+	public void removeCommitRejector( CommitRejector commitRejector ) {
+		this.commitRejectors.remove( commitRejector );
+	}
+	protected abstract Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step );
+	public final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		Status status = this.getStatusPreRejectorCheck( step );
+		if( status == IS_GOOD_TO_GO_STATUS ) {
+			for( CommitRejector rejector : this.commitRejectors ) {
+				status = rejector.getRejectionStatus( step );
+				if( status == IS_GOOD_TO_GO_STATUS ) {
+					//pass
+				} else {
+					return status;
+				}
+			}
+		}
+		return status;
+	}
+	
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}

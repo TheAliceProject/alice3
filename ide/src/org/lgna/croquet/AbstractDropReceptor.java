@@ -55,8 +55,8 @@ public abstract class AbstractDropReceptor implements DropReceptor {
 	}
 	protected abstract Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step );
 	public final Model dragDropped( org.lgna.croquet.history.DragStep step ) {
-		for( DropRejector interceptor : this.dropRejectors ) {
-			if( interceptor.isRejected( step ) ) {
+		for( DropRejector rejector : this.dropRejectors ) {
+			if( rejector.isRejected( step ) ) {
 				return null;
 			}
 		}

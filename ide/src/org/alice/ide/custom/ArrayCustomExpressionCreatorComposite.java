@@ -108,7 +108,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.arrayType, this.valueState.toArray() );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 	@Override
