@@ -208,8 +208,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.LayerId.BELOW_POPUP_LAYER );
 	}
 
-	@Override
-	protected void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
+	protected void handleTransactionCanceled() {
 		this.restoreHistoryIndicesDueToCancel();
 		org.lgna.cheshire.simple.Chapter chapter = this.getBook().getSelectedChapter();
 		if( chapter != null ) {
@@ -217,10 +216,14 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			chapterPage.reset();
 		}
 	}
+
 	@Override
 	protected void handleEvent( org.lgna.croquet.history.event.Event<?> event ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "event: ", event );
 		if( this.isIgnoringEvents ) {
 			//pass
+		} else if ( event instanceof org.lgna.croquet.history.event.CancelEvent ) {
+			this.handleTransactionCanceled();
 		} else {
 			org.lgna.cheshire.simple.Book book = getBook();
 			org.lgna.cheshire.simple.Chapter chapter = book.getSelectedChapter();
