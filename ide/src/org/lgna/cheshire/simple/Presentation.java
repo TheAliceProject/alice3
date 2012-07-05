@@ -108,7 +108,6 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().addListener( this.listener );
 	}
 
-	protected abstract void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction );
 	protected abstract void handleEvent( org.lgna.croquet.history.event.Event<?> event );
 
 	protected void startListening() {

@@ -146,8 +146,11 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 	}
 	public void cancel() {
 		this.isSuccessfullyCompleted = false;
+		org.lgna.croquet.history.event.CancelEvent e = new org.lgna.croquet.history.event.CancelEvent( this );
+		this.fireChanging( e );
 		this.edit = null;
 		this.isPending = false;
+		this.fireChanged( e );
 	}
 
 	public String getTutorialTransactionTitle() {
