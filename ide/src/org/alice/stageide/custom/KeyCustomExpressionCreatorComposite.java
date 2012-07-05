@@ -80,7 +80,7 @@ public class KeyCustomExpressionCreatorComposite extends org.alice.ide.custom.Cu
 		}
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( this.getValueState().getValue() != null ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {

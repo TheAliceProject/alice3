@@ -49,7 +49,7 @@ import org.lgna.project.ast.MethodInvocation;
 /**
  * @author Matt May
  */
-public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor {
+public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
 	private static class RootStatementListPropertyPane extends org.alice.ide.x.components.StatementListPropertyView {
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
 			super( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements );
@@ -104,20 +104,9 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodeDropReceptor 
 	protected org.lgna.croquet.components.Component< ? > getAsSeenBy() {
 		return this;
 	}
-	public org.lgna.croquet.components.JComponent< ? > getViewController() {
-		//todo
-		return this;
-	}
-	public <R extends org.lgna.croquet.DropReceptor> org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.DropReceptor > getResolver() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
-		return null;
-	}
+	@Override
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( potentialDropSite );
-		return null;
-	}
-	public java.lang.String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model, edit );
 		return null;
 	}
 	public int print( java.awt.Graphics graphics, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {

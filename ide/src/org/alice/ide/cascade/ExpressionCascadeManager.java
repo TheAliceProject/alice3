@@ -94,7 +94,13 @@ public abstract class ExpressionCascadeManager {
 		this.contextStack.push( context );
 	}
 	public ExpressionCascadeContext popContext() {
-		return this.contextStack.pop();
+		if( this.contextStack.size() > 0 ) {
+			return this.contextStack.pop();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			//todo?
+			return NULL_CONTEXT;
+		}
 	}
 	public ExpressionCascadeContext popAndCheckContext( ExpressionCascadeContext expectedContext ) {
 		ExpressionCascadeContext poppedContext = this.popContext();

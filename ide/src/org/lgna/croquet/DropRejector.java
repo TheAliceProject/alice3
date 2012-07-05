@@ -40,51 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.custom;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.StringCustomExpressionCreatorView> {
-	private static class SingletonHolder {
-		private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
-	}
-	public static StringCustomExpressionCreatorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private final org.lgna.croquet.StringState valueState = this.createStringState( this.createKey( "valueState" ) );
-	
-	private StringCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "cf6e1f22-d9f7-4027-b7e1-0c514afec0a3" ) );
-	}
-	@Override
-	protected org.alice.ide.custom.components.StringCustomExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.StringCustomExpressionCreatorView( this );
-	}
-	public org.lgna.croquet.StringState getValueState() {
-		return this.valueState;
-	}
-	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		return new org.lgna.project.ast.StringLiteral( this.valueState.getValue() );
-	}
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
-	}
-	
-	
-	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		String value;
-		if( expression instanceof org.lgna.project.ast.StringLiteral ) {
-			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)expression;
-			value = stringLiteral.value.getValue();
-		} else {
-			value = "";
-		}
-		this.valueState.setValueTransactionlessly( value );
-		this.valueState.selectAll();
-	}
+public interface DropRejector {
+	public boolean isRejected( org.lgna.croquet.history.DragStep step );
 }

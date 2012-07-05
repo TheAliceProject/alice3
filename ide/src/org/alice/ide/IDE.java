@@ -493,7 +493,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
 	}
 
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus() {
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeEditorInFocus() {
 		org.alice.ide.perspectives.ProjectPerspective perspective = this.getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getCodeDropReceptorInFocus();

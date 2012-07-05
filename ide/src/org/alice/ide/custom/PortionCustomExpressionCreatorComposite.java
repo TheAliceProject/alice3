@@ -72,7 +72,7 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

@@ -123,7 +123,7 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 
 				if( isFauxStencilDesired() ) {
 					for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
-						org.lgna.croquet.components.Component< ? > component = (org.lgna.croquet.components.Component< ? >)dropReceptor;
+						org.lgna.croquet.components.JComponent< ? > component = dropReceptor.getViewController();
 						java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
 						area.subtract( new java.awt.geom.Area( holeBounds ) );
 					}
@@ -137,7 +137,7 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 				g2.setStroke( THICK_STROKE );
 				final int BUFFER = 6;
 				for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
-					org.lgna.croquet.components.Component< ? > component = (org.lgna.croquet.components.Component< ? >)dropReceptor;
+					org.lgna.croquet.components.JComponent< ? > component = dropReceptor.getViewController();
 					java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
 					holeBounds.x -= BUFFER;
 					holeBounds.y -= BUFFER;
