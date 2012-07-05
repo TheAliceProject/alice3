@@ -268,6 +268,43 @@ public class ModelResourceExporter {
 		return this.jointList;
 	}
 
+	private boolean hasParent(List<Tuple2<String, String>> listToCheck, String parent) {
+		if (parent == null || parent.length() == 0) {
+			return true;
+		}
+		for (Tuple2<String, String> entry : listToCheck) {
+			if (entry.getA().equalsIgnoreCase(parent)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private List<Tuple2<String, String>> makeCodeReadyTree(List<Tuple2<String, String>> sourceList) {
+		if (sourceList != null) {
+			List<Tuple2<String, String>> cleaned = new ArrayList<Tuple2<String,String>>();
+			for (Tuple2<String, String> entry : sourceList) {
+				if (entry.getA().equalsIgnoreCase("root") && (entry.getB() == null || entry.getB().length() == 0) ){
+					continue;
+				}
+				else if (entry.getB() != null && entry.getB().equalsIgnoreCase("root")) {
+					entry.setB(null);
+				}
+				cleaned.add(entry);
+			}
+			List<Tuple2<String, String>> sorted = new ArrayList<Tuple2<String,String>>();
+			while (sorted.size() != cleaned.size()){
+				for (Tuple2<String, String> entry : cleaned) {
+					if (!sorted.contains(entry) && hasParent(sorted, entry.getB())) {
+						sorted.add(entry);
+					}
+				}
+			}
+			return sorted;
+		}
+		return null;
+	}
+	
 	public void setJointMap(List<Tuple2<String, String>> jointList)
 	{
 		this.jointList = jointList;
@@ -643,7 +680,7 @@ public class ModelResourceExporter {
 			return AliceResourceUtilties.makeEnumName(textureName);
 		}
 		else {
-			return AliceResourceUtilties.makeEnumName(modelName) + "__" + AliceResourceUtilties.makeEnumName(textureName);
+			return AliceResourceUtilties.makeEnumName(modelName) + "_" + AliceResourceUtilties.makeEnumName(textureName);
 		}
 	}
 	
@@ -676,11 +713,12 @@ public class ModelResourceExporter {
 		}
 		List<String> existingIds = getExistingJointIds(this.classData.superClass);
 		boolean addedRoots = false;
-		if (this.jointList != null)
+		List<Tuple2<String, String>> trimmedSkeleton = makeCodeReadyTree(this.jointList);
+		if (trimmedSkeleton != null)
 		{
 			List<String> rootJoints = new LinkedList<String>();
 			sb.append("\n");
-			for (Tuple2<String, String> entry : this.jointList)
+			for (Tuple2<String, String> entry : trimmedSkeleton)
 			{
 				String jointString = entry.getA();
 				String parentString = entry.getB();
@@ -688,7 +726,7 @@ public class ModelResourceExporter {
 				{
 					continue;
 				}
-				if (parentString == null)
+				if (parentString == null || parentString.length() == 0)
 				{
 					parentString = "null";
 					rootJoints.add(jointString);
@@ -975,7 +1013,7 @@ public class ModelResourceExporter {
 			for(Entry < String, File > entry : this.existingThumbnails.entrySet())
 			{
 				if (!gotBase) {
-					String thumbName = AliceResourceUtilties.getThumbnailResourceName(this.getClassName(), null);
+					String thumbName = AliceResourceUtilties.getThumbnailResourceFileName(this.getClassName(), null);
 					File thumb = new File(getThumbnailPath(root, thumbName));
 					try {
 						FileUtilities.copyFile(entry.getValue(), thumb);
@@ -1002,14 +1040,14 @@ public class ModelResourceExporter {
 			if (!thumbnailsCreated.contains(entry.getKey())) {
 				if (!gotBase)
 				{
-					String thumbName = AliceResourceUtilties.getThumbnailResourceName(this.getClassName(), null);
+					String thumbName = AliceResourceUtilties.getThumbnailResourceFileName(this.getClassName(), null);
 					File f = saveImageToFile(getThumbnailPath(root, thumbName), entry.getValue());
 					if (f != null ){
 						thumbnailFiles.add(f);
 					}
 					gotBase = true;
 				}
-				String thumbnailName = AliceResourceUtilties.getThumbnailResourceName(entry.getKey().getModelName(), entry.getKey().getTextureName());
+				String thumbnailName = AliceResourceUtilties.getThumbnailResourceFileName(entry.getKey().getModelName(), entry.getKey().getTextureName());
 				File f = saveImageToFile(getThumbnailPath(root, thumbnailName), entry.getValue());
 				if (f != null ){
 					thumbnailsCreated.add(thumbnailName);

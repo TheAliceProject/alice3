@@ -80,6 +80,45 @@ public class AliceResourceUtilties {
 	private static Map<URL, TexturedAppearance[]> urlToTextureMap = new HashMap<URL, TexturedAppearance[]>();
 	private static Map<String, org.lgna.story.resourceutilities.ModelResourceInfo> classToInfoMap = new HashMap<String, org.lgna.story.resourceutilities.ModelResourceInfo>();
 	
+	private static Map<ResourceIdentifier, ResourceNames> resourceIdentifierToResourceNamesMap = new HashMap<ResourceIdentifier, ResourceNames>();
+	
+	private static class ResourceNames {
+		public final String visualName;
+		public final String textureName;
+		
+		public ResourceNames(String visualName, String textureName) {
+			this.visualName = visualName;
+			this.textureName = textureName;
+		}
+	}
+	
+	private static class ResourceIdentifier{
+		public final Class<?> resourceClass;
+		public final String resourceName;
+		
+		private final String key;
+		
+		public ResourceIdentifier(Class<?> resourceClass, String resourceName) {
+			this.resourceClass = resourceClass;
+			this.resourceName = resourceName;
+			this.key = this.resourceClass.getName()+this.resourceName;
+		}
+		
+		@Override
+		public boolean equals(Object arg0) {
+			if (arg0 != null && arg0 instanceof ResourceIdentifier) {
+				return this.key.equals(((ResourceIdentifier)arg0).key);
+			}
+			return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return this.key.hashCode();
+		}
+		
+	}
+	
 	private AliceResourceUtilties() {
 	}
 	
@@ -195,55 +234,161 @@ public class AliceResourceUtilties {
 		}
 	}
 	
-	private static String getModelNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
-		String modelName = resourceClass.getSimpleName();
-		if (resourceName != null && resourceName.contains("__")) {
-			String[] splitName = resourceName.split("__");
-			modelName = enumToCamelCase(splitName[0]);
+	public static String arrayToCamelCase(String[] nameArray, int start, int end) {
+		StringBuilder sb = new StringBuilder();
+		boolean isFirst = true;
+		for (int i=start; i<end; i++) {
+			if (nameArray[i].length() > 0) {
+				if (isFirst) {
+					sb.append(nameArray[i].toLowerCase());
+					isFirst = false;
+				}
+				else {
+					sb.append(nameArray[i].substring(0, 1).toUpperCase() + nameArray[i].substring(1).toLowerCase());
+				}
+			}
 		}
-		return modelName;
+		return sb.toString();
 	}
 	
-	private static String getTextureNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
+	public static String arrayToEnum(String[] nameArray, int start, int end) {
+		StringBuilder sb = new StringBuilder();
+		boolean isFirst = true;
+		for (int i=start; i<end; i++) {
+			if (nameArray[i].length() > 0) {
+				if (isFirst) {
+					isFirst = false;
+				}
+				else {
+					sb.append("_");
+				}
+				sb.append(nameArray[i].toUpperCase());
+			}
+		}
+		return sb.toString();
+	}
+	
+	//Check to see if a thumbnail exists for the given visual name and texture name
+	private static boolean checkVisualAndTextureName(Class<?> resourceClass, String visualName, String textureName) {
+		String thubmnailFileName = getThumbnailResourceFileName(visualName, textureName);
+		return  getThumbnailURLInternalFromFilename(resourceClass, thubmnailFileName) != null;
+	}
+	
+	/**Visual and Texture info is encoded into the enumeration like this:
+		public enum BaseVisualName {
+			TEXTURE_NAME_1,
+			TEXTURE_NAME_2,
+			DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1,
+			DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2
+		}
+		
+		Both 'BaseVisualName' and DIFFERENT_VISUAL_NAME are potentially the names of visual resources.
+		If the resource uses the base visual, then the enum name is just the name of the texture 
+		  (like the entries TEXTURE_NAME_1 and TEXTURE_NAME_2)
+		If the resource uses a different visual resource, then the visual resource name is the first half of the enum constant
+		 (like the entries DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1 and DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2)
+	**/
+	
+	private static void findAndStoreResourceNames(Class<?> resourceClass, String resourceName) {
+		String[] splitName = resourceName.split("_");
+		StringBuilder modelName = new StringBuilder();
+		//Set up to try the simple approach first (that the visual is the class name and the texture is the resource name)
+		String visualName = resourceClass.getSimpleName();
 		String textureName = resourceName;
-		if (resourceName != null && resourceName.contains("__")) {
-			String[] splitName = resourceName.split("__");
-			textureName = splitName[1];
+		
+		//Check the simple case and if it fails, iterate through the resource name to find a visual name that resolves to a valid url
+		//Use that as the visual name and the remaining name as the texture name
+		boolean found = false;
+		if (checkVisualAndTextureName(resourceClass, visualName, textureName)) {
+			found = true;
 		}
-		return textureName;
+		else {
+			for (int i=0; i<splitName.length; i++) {
+				if (splitName[i].length() > 0) {
+					if (i != 0) {
+						modelName.append("_");
+					}
+					modelName.append(splitName[i]);
+					visualName = enumToCamelCase(modelName.toString());
+					textureName = arrayToEnum(splitName, i+1, splitName.length);
+					if (checkVisualAndTextureName(resourceClass, visualName, textureName)) {
+						found = true;
+						break;
+					}
+				}
+			}
+		}
+		if (!found) {
+			Logger.severe("Failed to find resource names for '"+resourceClass+"' and '"+resourceName+"'");
+			return;
+		}
+		ResourceIdentifier identifier = new ResourceIdentifier(resourceClass, resourceName);
+		resourceIdentifierToResourceNamesMap.put(identifier, new ResourceNames(visualName, textureName));
 	}
 	
-	public static String getTextureResourceName(Class<?> resourceClass, String resourceName) {
+	public static String getModelNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
+		//If we're just using the class as a lookup, return the class name directly
+		if (resourceName == null) {
+			return resourceClass.getSimpleName();
+		}
+		ResourceIdentifier identifier = new ResourceIdentifier(resourceClass, resourceName);
+		if (!resourceIdentifierToResourceNamesMap.containsKey(identifier)) {
+			findAndStoreResourceNames(resourceClass, resourceName);
+		}
+		return resourceIdentifierToResourceNamesMap.get(identifier).visualName;
+	}
+	
+	public static String getTextureNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
+		//If we're just using the class as a lookup, return null since the class name only distinguishes visuals
+		if (resourceName == null) {
+			return null;
+		}
+		ResourceIdentifier identifier = new ResourceIdentifier(resourceClass, resourceName);
+		if (!resourceIdentifierToResourceNamesMap.containsKey(identifier)) {
+			findAndStoreResourceNames(resourceClass, resourceName);
+		}
+		return resourceIdentifierToResourceNamesMap.get(identifier).textureName;
+	}
+	
+	public static String getTextureResourceFileName(Class<?> resourceClass, String resourceName) {
 		String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
 		String textureName = getTextureNameFromClassAndResource(resourceClass, resourceName);
-		return getTextureResourceName(modelName, textureName);
+		return getTextureResourceFileName(modelName, textureName);
 	}
 	
-	public static String getTextureResourceName(Object resource)
+	public static String getTextureResourceFileName(Object resource)
 	{
-		return getTextureResourceName(resource.getClass(), resource.toString());
+		return getTextureResourceFileName(resource.getClass(), resource.toString());
 	}
 	
-	public static String getVisualResourceName(Class<?> resourceClass, String resourceName)
+	public static String getVisualResourceFileName(Class<?> resourceClass, String resourceName)
 	{
 		String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
-		return getVisualResourceName(modelName);
+		return getVisualResourceFileNameFromModelName(modelName);
 	}
 	
-	public static String getVisualResourceName(Object resource)
+	public static String getVisualResourceName(Object resource) {
+		return getModelNameFromClassAndResource(resource.getClass(), resource.toString());
+	}
+	
+	public static String getTextureResourceName(Object resource) {
+		return getTextureNameFromClassAndResource(resource.getClass(), resource.toString());
+	}
+	
+	public static String getVisualResourceFileName(Object resource)
 	{
-		return getVisualResourceName(resource.getClass(), resource.toString());
+		return getVisualResourceFileName(resource.getClass(), resource.toString());
 	}
 	
-	public static String getThumbnailResourceName(Class<?> resourceClass, String resourceName) {
+	public static String getThumbnailResourceFileName(Class<?> resourceClass, String resourceName) {
 		String modelName = getModelNameFromClassAndResource(resourceClass, resourceName);
 		String textureName = getTextureNameFromClassAndResource(resourceClass, resourceName);
-		return getThumbnailResourceName(modelName, textureName);
+		return getThumbnailResourceFileName(modelName, textureName);
 	}
 	
-	public static String getThumbnailResourceName(Object resource)
+	public static String getThumbnailResourceFileName(Object resource)
 	{
-		return getThumbnailResourceName(resource.getClass(), resource.toString());
+		return getThumbnailResourceFileName(resource.getClass(), resource.toString());
 	}
 	
 	private static String createTextureBaseName(String modelName, String textureName) {
@@ -256,38 +401,47 @@ public class AliceResourceUtilties {
 		return modelName.toLowerCase() + textureName;
 	}
 	
-	public static String getThumbnailResourceName(String modelName, String textureName) {
+	public static String getThumbnailResourceFileName(String modelName, String textureName) {
 		return createTextureBaseName(modelName, textureName) + ".png";
 	}
 	
-	public static String getTextureResourceName(String modelName, String textureName)
+	public static String getTextureResourceFileName(String modelName, String textureName)
 	{
 		return createTextureBaseName(modelName, textureName)+"."+TEXTURE_RESOURCE_EXTENSION;
 	}
 
-	public static String getVisualResourceName(String modelName)
+	public static String getVisualResourceFileNameFromModelName(String modelName)
 	{
 		return modelName.toLowerCase()+"."+MODEL_RESOURCE_EXTENSION;
 	}
 	
 	private static java.net.URL getThumbnailURLInternal(Class<?> modelResource, String resourceName) {
-		String thumbnailName = getThumbnailResourceName(modelResource, resourceName);
-		return getAliceResource(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator(modelResource.getSimpleName())+ thumbnailName);
+		String thumbnailName = getThumbnailResourceFileName(modelResource, resourceName);
+		return getThumbnailURLInternalFromFilename(modelResource, thumbnailName);
+	}
+	
+	private static java.net.URL getThumbnailURLInternalFromFilename(Class<?> modelResource, String thumbnailFilename) {
+		return getAliceResource(modelResource, ModelResourceExporter.getResourceSubDirWithSeparator(modelResource.getSimpleName())+ thumbnailFilename);
 	}
 	
 	public static URL getTextureURL(Object resource)
 	{
-		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator(resource.getClass().getSimpleName())+getTextureResourceName(resource));
+		return getTextureURL(resource.getClass(), getTextureResourceFileName(resource));
+	}
+	
+	public static URL getTextureURL(Class<?> resourceClass, String visualResourceFileName)
+	{
+		return getAliceResource(resourceClass, ModelResourceExporter.getResourceSubDirWithSeparator(resourceClass.getSimpleName())+visualResourceFileName);
 	}
 	
 	public static URL getVisualURL(Object resource)
 	{
-		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator(resource.getClass().getSimpleName())+getVisualResourceName(resource));
+		return getVisualURL(resource.getClass(), getVisualResourceFileName(resource));
 	}
 	
-	public static URL getModelResourceURL(Object resource)
+	public static URL getVisualURL(Class<?> resourceClass, String visualResourceFileName)
 	{
-		return getAliceResource(resource.getClass(), ModelResourceExporter.getResourceSubDirWithSeparator(resource.getClass().getSimpleName())+getTextureResourceName(resource));
+		return getAliceResource(resourceClass, ModelResourceExporter.getResourceSubDirWithSeparator(resourceClass.getSimpleName())+visualResourceFileName);
 	}
 	
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisual(Object resource)

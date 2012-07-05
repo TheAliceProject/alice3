@@ -43,8 +43,13 @@
 
 package org.lgna.story.implementation.alice;
 
-import org.lgna.story.resources.JointedModelResource;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resourceutilities.ThumbnailMaker;
+
+import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 /**
@@ -63,7 +68,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			//Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
 			this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( resource );
 			//Set the texture data to be the texture info specified by the resource
-			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
+			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);			
 			if (this.sgSkeletonVisual.skeleton.getValue() != null) {
 				this.sgSkeletonVisual.skeleton.getValue().setParentVisual(this.sgSkeletonVisual);
 			}
