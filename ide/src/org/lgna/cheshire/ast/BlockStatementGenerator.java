@@ -101,15 +101,17 @@ public class BlockStatementGenerator {
 							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instanceExpression );
 						}
 						statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
+						
+						boolean isFieldTemplateCompositeValid = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue();
 						//todo
 						if( method.isProcedure() ) {
-							if( method.getName().startsWith( "set" ) ) {
+							if( isFieldTemplateCompositeValid && method.getName().startsWith( "set" ) ) {
 								templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
 							} else {
 								templateComposite = org.alice.ide.members.ProcedureTemplateComposite.getInstance();
 							}
 						} else {
-							if( method.getName().startsWith( "get" ) || method.getName().startsWith( "is" ) ) {
+							if( isFieldTemplateCompositeValid && ( method.getName().startsWith( "get" ) || method.getName().startsWith( "is" ) ) ) {
 								templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
 							} else {
 								templateComposite = org.alice.ide.members.FunctionTemplateComposite.getInstance();

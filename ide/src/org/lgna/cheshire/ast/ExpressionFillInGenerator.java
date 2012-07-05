@@ -70,7 +70,8 @@ public class ExpressionFillInGenerator {
 		return completionStepSubTransactionHistory;
 	}
 	private final static java.util.Collection< Integer > integerLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 1,2,3 );
-	private final static java.util.Collection< Double > doubleLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 0.25, 0.5, 1.0, 2.0, 10.0 ); //todo: handle portion, and others
+	private final static java.util.Collection< Double > doubleLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 0.25, 0.5, 1.0, 2.0, 10.0 );
+	private final static java.util.Collection< Double > opacityLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 ); //org.lgna.story.annotation.PortionDetails.SINGLETON.getLiterals() ); //todo: handle portion, and others more gracefully
 	private final static java.util.Collection< String > stringLiteralValues = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "hello" );
 	
 	public static org.lgna.croquet.CascadeFillIn generateFillInForExpression( org.lgna.project.ast.Expression expression, org.lgna.croquet.history.TransactionHistory[] bufferForCompletionStepSubTransactionHistory ) {
@@ -88,7 +89,7 @@ public class ExpressionFillInGenerator {
 		} else if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
 			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
 			double value = doubleLiteral.value.getValue();
-			if( doubleLiteralValues.contains( value ) ) {
+			if( doubleLiteralValues.contains( value ) || opacityLiteralValues.contains( value ) ) {
 				fillIn = org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn.getInstance( value );
 			} else {
 				org.alice.ide.custom.NumberCustomExpressionCreatorComposite composite = org.alice.ide.custom.DoubleCustomExpressionCreatorComposite.getInstance();
