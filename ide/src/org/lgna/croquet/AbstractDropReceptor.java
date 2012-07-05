@@ -53,6 +53,12 @@ public abstract class AbstractDropReceptor implements DropReceptor {
 	public void removeDropRejector( DropRejector dropRejector ) {
 		this.dropRejectors.remove( dropRejector );
 	}
+	public void clearDropRejectors() {
+		this.dropRejectors.clear();
+	}
+	public java.util.List<org.lgna.croquet.DropRejector> getDropRejectors() {
+		return java.util.Collections.unmodifiableList( this.dropRejectors );
+	}
 	protected abstract Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step );
 	public final Model dragDropped( org.lgna.croquet.history.DragStep step ) {
 		for( DropRejector rejector : this.dropRejectors ) {

@@ -108,6 +108,12 @@ public class DropNoteUtilities {
 			public boolean isRejected( org.lgna.croquet.history.DragStep step ) {
 				org.lgna.croquet.DropSite dropSite = step.getCurrentPotentialDropSite();
 				boolean areEquivalent = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( desiredDropSite, dropSite );
+//				if( areEquivalent ) {
+//					//pass
+//				} else {
+//					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "rejecting", desiredDropSite.hashCode(), dropSite.hashCode() );
+//					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( desiredDropSite, dropSite );
+//				}
 				return areEquivalent == false;
 			}
 		};

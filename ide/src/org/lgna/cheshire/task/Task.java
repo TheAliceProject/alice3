@@ -41,52 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.triggers;
+package org.lgna.cheshire.task;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropTrigger extends AbstractMouseEventTrigger {
-	public static DropTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( Origin.USER, viewController, mouseEvent, dropSite );
+public class Task {
+	private final java.util.List<org.lgna.croquet.history.Transaction> transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.ListIterator<org.lgna.croquet.history.Transaction> transactionIterator = transactions.listIterator();
+	public Task( org.lgna.croquet.history.Transaction transaction ) {
+		this.transactions.add( transaction );
 	}
-	public static DropTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return createUserInstance( null, mouseEvent, dropSite );
-	}
-	public static DropTrigger createGeneratorInstance( org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( Origin.GENERATOR, null, null, dropSite );
-	}
-
-	private org.lgna.croquet.DropSite dropSite;
-	private DropTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
-		super( origin, viewController, e );
-		this.dropSite = dropSite;
-	}
-	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-	@Override
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		super.encode(binaryEncoder);
-		binaryEncoder.encode( this.dropSite );
-	}
-	public org.lgna.croquet.DropSite getDropSite() {
-		return this.dropSite;
-	}
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.dropSite = this.dropSite.createReplacement( retargeter );
-	}
-	@Override
-	public String getNoteText( ) {
-		return "Drop";
-	}
-	@Override
-	protected void appendReprInternal( StringBuilder repr ) {
-		super.appendReprInternal( repr );
-		repr.append( ";dropSite=" );
-		repr.append( this.dropSite );
+	public void insertRecoveryTransaction( org.lgna.croquet.history.Transaction transaction ) {
+		this.transactionIterator.add( transaction );
 	}
 }

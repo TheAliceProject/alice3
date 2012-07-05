@@ -103,7 +103,7 @@ public class FlowControlFrequencyComposite extends TabComposite<View<?,?>> {
 		}
 
 		public StringBuilder appendRepresentation( StringBuilder rv, UserMethod value ) {
-			return rv.append( value.getName() );
+			return rv.append( value != null ? value.getName() : null );
 		}
 	};
 	private final ListSelectionState<UserMethod> userMethodList = createListSelectionState( createKey( "userMethodList" ), UserMethod.class, codec, -1 );

@@ -73,4 +73,14 @@ public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 	public abstract String getNoteText();
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
+	
+	protected void appendReprInternal( StringBuilder repr ) {
+	}
+	public void appendRepr( StringBuilder repr ) {
+		repr.append( this.getClass().getSimpleName() );
+		repr.append( "[origin=" );
+		repr.append( this.origin );
+		this.appendReprInternal( repr );
+		repr.append( "]" );
+	}
 }

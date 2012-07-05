@@ -41,52 +41,47 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.triggers;
+package org.lgna.cheshire.task.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropTrigger extends AbstractMouseEventTrigger {
-	public static DropTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( Origin.USER, viewController, mouseEvent, dropSite );
+public final class PresentationComposite extends org.lgna.croquet.SimpleComposite<org.lgna.cheshire.task.stencil.views.PresentationView> {
+	private static final class PrevAction implements Action {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			return null;
+		}
 	}
-	public static DropTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return createUserInstance( null, mouseEvent, dropSite );
+	private static final class NextAction implements Action {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			return null;
+		}
 	}
-	public static DropTrigger createGeneratorInstance( org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( Origin.GENERATOR, null, null, dropSite );
+	private final org.lgna.croquet.Operation prevOperation = this.createActionOperation( this.createKey( "prev" ), new PrevAction() );
+	private final org.lgna.croquet.Operation nextOperation = this.createActionOperation( this.createKey( "next" ), new NextAction() );
+	
+	private final org.lgna.croquet.components.AbstractWindow<?> window;
+	private final org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel;
+	public PresentationComposite( org.lgna.croquet.components.AbstractWindow<?> window, org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel ) {
+		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
+		this.window = window;
+		this.taskComboBoxModel = taskComboBoxModel;
 	}
-
-	private org.lgna.croquet.DropSite dropSite;
-	private DropTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
-		super( origin, viewController, e );
-		this.dropSite = dropSite;
+	
+	public org.lgna.croquet.components.AbstractWindow<?> getWindow() {
+		return this.window;
 	}
-	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
+	public org.lgna.cheshire.task.TaskComboBoxModel getTaskComboBoxModel() {
+		return this.taskComboBoxModel;
 	}
-	@Override
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		super.encode(binaryEncoder);
-		binaryEncoder.encode( this.dropSite );
+	public org.lgna.croquet.Operation getPrevOperation() {
+		return this.prevOperation;
 	}
-	public org.lgna.croquet.DropSite getDropSite() {
-		return this.dropSite;
-	}
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.dropSite = this.dropSite.createReplacement( retargeter );
-	}
-	@Override
-	public String getNoteText( ) {
-		return "Drop";
+	public org.lgna.croquet.Operation getNextOperation() {
+		return this.nextOperation;
 	}
 	@Override
-	protected void appendReprInternal( StringBuilder repr ) {
-		super.appendReprInternal( repr );
-		repr.append( ";dropSite=" );
-		repr.append( this.dropSite );
+	protected org.lgna.cheshire.task.stencil.views.PresentationView createView() {
+		return new org.lgna.cheshire.task.stencil.views.PresentationView( this );
 	}
 }

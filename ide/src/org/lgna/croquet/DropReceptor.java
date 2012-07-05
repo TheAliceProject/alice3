@@ -66,4 +66,6 @@ public interface DropReceptor {
 	
 	public void addDropRejector( DropRejector dropRejector );
 	public void removeDropRejector( DropRejector dropRejector );
+	public void clearDropRejectors();
+	public java.util.List<DropRejector> getDropRejectors();
 }

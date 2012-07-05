@@ -41,52 +41,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.triggers;
+package org.lgna.cheshire.task.stencil.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropTrigger extends AbstractMouseEventTrigger {
-	public static DropTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( Origin.USER, viewController, mouseEvent, dropSite );
-	}
-	public static DropTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
-		return createUserInstance( null, mouseEvent, dropSite );
-	}
-	public static DropTrigger createGeneratorInstance( org.lgna.croquet.DropSite dropSite ) {
-		return new DropTrigger( Origin.GENERATOR, null, null, dropSite );
-	}
-
-	private org.lgna.croquet.DropSite dropSite;
-	private DropTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
-		super( origin, viewController, e );
-		this.dropSite = dropSite;
-	}
-	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
+public class PresentationView extends org.lgna.croquet.components.LayerStencil {
+	public PresentationView( org.lgna.cheshire.task.stencil.PresentationComposite composite ) {
+		super( composite.getWindow() );
+		org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
+		controlPanel.addComponent( composite.getPrevOperation().createButton() );
+		controlPanel.addComponent( new TaskComboBox( composite.getTaskComboBoxModel(), this.getStencilsLayer().isAboveStencil() ) );
+		controlPanel.addComponent( composite.getNextOperation().createButton() );
+		
+		this.internalAddComponent( controlPanel, java.awt.BorderLayout.PAGE_START );
 	}
 	@Override
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		super.encode(binaryEncoder);
-		binaryEncoder.encode( this.dropSite );
-	}
-	public org.lgna.croquet.DropSite getDropSite() {
-		return this.dropSite;
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.BorderLayout();
 	}
 	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.dropSite = this.dropSite.createReplacement( retargeter );
+	@java.lang.Deprecated
+	protected org.lgna.croquet.components.LayerId getStencilsLayer() {
+		return org.lgna.croquet.components.LayerId.ABOVE_POPUP_LAYER;
 	}
 	@Override
-	public String getNoteText( ) {
-		return "Drop";
+	protected boolean contains( int x, int y, boolean superContains ) {
+		return false;
 	}
 	@Override
-	protected void appendReprInternal( StringBuilder repr ) {
-		super.appendReprInternal( repr );
-		repr.append( ";dropSite=" );
-		repr.append( this.dropSite );
+	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
+	}
+	@Override
+	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
+	}
+	@Override
+	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
+	}
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
 	}
 }
