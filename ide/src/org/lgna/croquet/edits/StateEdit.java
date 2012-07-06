@@ -48,7 +48,7 @@ package org.lgna.croquet.edits;
 public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.croquet.State<T>> {
 	private T prevValue;
 	private T nextValue;
-	public StateEdit( org.lgna.croquet.history.StateChangeStep< T > completionStep, T prevValue, T nextValue ) {
+	public StateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.State<T> > completionStep, T prevValue, T nextValue ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;

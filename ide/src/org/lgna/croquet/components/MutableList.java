@@ -88,7 +88,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableList<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemSelectablePanel<E,MutableListItemDetails<E,LC,MC,TC>> implements org.lgna.croquet.DropReceptor {
+public abstract class MutableList<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemSelectablePanel<E,MutableListItemDetails<E,LC,MC,TC>> {
 //	private class MutableListDragModel extends org.lgna.croquet.DragModel {
 //		public MutableListDragModel() {
 //			super( java.util.UUID.fromString( "a136b615-2e99-4481-a89d-a48d633a4080" ) );
@@ -393,32 +393,5 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 		this.unregisterKeyboardAction( UP_KEY_STROKE );
 		this.unregisterKeyboardAction( BACK_SPACE_KEY_STROKE );
 		this.unregisterKeyboardAction( DELETE_KEY_STROKE );
-	}
-
-	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
-		return null;
-	}
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-		return false;
-	}
-	public org.lgna.croquet.components.JComponent<?> getViewController() {
-		return null;
-	}
-	public void dragStarted( org.lgna.croquet.history.DragStep step ) {
-	}
-	public void dragEntered( org.lgna.croquet.history.DragStep step ) {
-	}
-	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
-		return null;
-	}
-	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
-		return null;
-	}
-	public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
-	}
-	public void dragStopped( org.lgna.croquet.history.DragStep step ) {
-	}
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit<?> edit ) {
-		return null;
 	}
 }

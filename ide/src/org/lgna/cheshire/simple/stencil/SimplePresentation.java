@@ -58,7 +58,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 
 	public class Stencil extends org.lgna.cheshire.simple.SimpleStencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
-		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, StencilLayer menuPolicy ) {
+		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, org.lgna.croquet.components.LayerId menuPolicy ) {
 			super( window );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			controlsPanel.setOpaque( false );
@@ -164,8 +164,8 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		}
 
 		@Override
-		protected StencilLayer getStencilsLayer() {
-			return org.lgna.croquet.components.Stencil.StencilLayer.ABOVE_POPUP_LAYER;
+		protected org.lgna.croquet.components.LayerId getStencilsLayer() {
+			return org.lgna.croquet.components.LayerId.ABOVE_POPUP_LAYER;
 		}
 
 		@Override
@@ -205,11 +205,10 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		this.originalTransactionHistory.addListener( this.transactionListener );
 		this.setRetargeter( new org.lgna.cheshire.simple.AstLiveRetargeter() );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
+		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.LayerId.BELOW_POPUP_LAYER );
 	}
 
-	@Override
-	protected void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
+	protected void handleTransactionCanceled() {
 		this.restoreHistoryIndicesDueToCancel();
 		org.lgna.cheshire.simple.Chapter chapter = this.getBook().getSelectedChapter();
 		if( chapter != null ) {
@@ -217,10 +216,14 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			chapterPage.reset();
 		}
 	}
+
 	@Override
 	protected void handleEvent( org.lgna.croquet.history.event.Event<?> event ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "event: ", event );
 		if( this.isIgnoringEvents ) {
 			//pass
+		} else if ( event instanceof org.lgna.croquet.history.event.CancelEvent ) {
+			this.handleTransactionCanceled();
 		} else {
 			org.lgna.cheshire.simple.Book book = getBook();
 			org.lgna.cheshire.simple.Chapter chapter = book.getSelectedChapter();
@@ -356,8 +359,13 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "detailed report:\n\n\n" + chapterPage.getDetailedReport() + "\n\n\n" );
 									javax.swing.SwingUtilities.invokeLater( new Runnable() {
 										public void run() {
-											org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
-											handleChapterChanged( accessibleChapter );
+											javax.swing.Icon icon = null;
+											String tryAgain = "try again";
+											String giveUp = "give up";
+											Object o = org.lgna.croquet.Application.getActiveInstance().showOptionDialog( "unable to recover", "Unable to Recover", org.lgna.croquet.MessageType.ERROR, icon, tryAgain, giveUp, 0 );
+											if( o == tryAgain ) {
+												handleChapterChanged( accessibleChapter );
+											}
 										}
 									} );
 									//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to recover", transaction );

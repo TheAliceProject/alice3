@@ -74,7 +74,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	private org.lgna.cheshire.simple.stencil.SimplePresentation simplePresentation = null;
-	private org.alice.ide.stencil.PotentialDropReceptorsStencil potentialDropReceptorsStencil = null;
+	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil = null;
 
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
@@ -318,25 +318,25 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return " 3 BETA ";
 	}
 
-	public org.alice.ide.stencil.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
+	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
 		if ( this.potentialDropReceptorsStencil == null ) {
-			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame() );
+			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getFrame() );
 		}
 		return this.potentialDropReceptorsStencil;
 	}
 
 	public void showDropReceptorsStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		this.getPotentialDropReceptorsStencil().showStencilOver( potentialDragSource, type );
+		this.getPotentialDropReceptorsFeedbackView().showStencilOver( potentialDragSource, type );
 	}
 	public void hideDropReceptorsStencil() {
-		this.getPotentialDropReceptorsStencil().hideStencil();
+		this.getPotentialDropReceptorsFeedbackView().hideStencil();
 	}
 
 	@Deprecated
 	@Override
 	public void setDragInProgress( boolean isDragInProgress ) {
 		super.setDragInProgress( isDragInProgress );
-		this.getPotentialDropReceptorsStencil().setDragInProgress( isDragInProgress );
+		this.getPotentialDropReceptorsFeedbackView().setDragInProgress( isDragInProgress );
 	}
 
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
@@ -493,7 +493,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
 	}
 
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus() {
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeEditorInFocus() {
 		org.alice.ide.perspectives.ProjectPerspective perspective = this.getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getCodeDropReceptorInFocus();

@@ -40,13 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration.views;
+package org.alice.ide.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayView extends StatementView {
-	public EachInArrayView( org.alice.ide.ast.declaration.EachInArrayComposite<?> composite ) {
-		super( composite );
+public abstract class CustomView extends org.lgna.croquet.components.JComponent< javax.swing.JPanel > {
+	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
+	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
+	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
+	protected abstract boolean contains( int x, int y, boolean superContains );
+	@Override
+	protected javax.swing.JPanel createAwtComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
+			@Override
+			protected void paintComponent(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				java.awt.Paint prevPaint = g2.getPaint();
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				try {
+					CustomView.this.paintComponentPrologue( g2 );
+					super.paintComponent( g2 );
+					CustomView.this.paintComponentEpilogue( g2 );
+				} finally {
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+					g2.setPaint( prevPaint );
+				}
+			}
+
+			@Override
+			public void paint(java.awt.Graphics g) {
+				super.paint(g);
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+				CustomView.this.paintEpilogue( g2 );
+			}
+
+			@Override
+			public boolean contains(int x, int y) {
+				return CustomView.this.contains( x, y, super.contains( x, y ) );
+			}
+		};
+		rv.setOpaque( false );
+		return rv;
 	}
 }

@@ -40,31 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.declaration;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SuperTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.AbstractType > {
-	private final TypeDeclarationOperation owner;
-	public SuperTypeState( TypeDeclarationOperation owner, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "5a410cd3-a005-4471-8015-446d184a450f" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), initialValue );
-		this.owner = owner;
-	}
-	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-//		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-//		for( org.lgna.project.ast.JavaType javaType : apiConfigurationManager.getTopLevelGalleryTypes() ) {
-//			org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( javaType );
-//			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( namedUserType ) );
-//		}
-		org.lgna.project.Project project = ide.getProject();
-		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : types ) {
-			rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
-		}
-		return rv;
-	}
+public interface DropRejector {
+	public boolean isRejected( org.lgna.croquet.history.DragStep step );
 }

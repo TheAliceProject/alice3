@@ -47,6 +47,7 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
  * @author Dennis Cosgrove
  */
 public class DropPrepNote extends PrepNote< org.lgna.croquet.history.PrepStep > {
+	private org.lgna.croquet.DropRejector dropRejector;
 	public DropPrepNote( org.lgna.croquet.history.PrepStep step ) {
 		super( step );
 	}
@@ -57,5 +58,22 @@ public class DropPrepNote extends PrepNote< org.lgna.croquet.history.PrepStep > 
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
 		return DropNoteUtilities.isWhatWeveBeenWaitingFor( event, this );
+	}
+	@Override
+	public void setActive( boolean isActive ) {
+		super.setActive( isActive );
+		org.lgna.croquet.DropSite dropSite = DropNoteUtilities.getDropSite( this );
+		org.lgna.croquet.DropReceptor dropReceptor = dropSite.getOwningDropReceptor();
+		if( isActive ) {
+			this.dropRejector = DropNoteUtilities.createDropRejector( dropSite );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: we must clear the drop rejectors since final notes do not (as yet) get setActive( false ) notification." ); 
+			dropReceptor.clearDropRejectors();
+			dropReceptor.addDropRejector( this.dropRejector );
+		} else {
+			if( this.dropRejector != null ) {
+				dropReceptor.removeDropRejector( this.dropRejector );
+				this.dropRejector = null;
+			}
+		}
 	}
 }

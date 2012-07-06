@@ -41,40 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.declaration.views;
+package org.alice.ide.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclarationPanel extends org.alice.ide.preview.components.PanelWithPreview {
-	private final org.alice.ide.ast.declaration.TypeDeclarationOperation model;
-	public TypeDeclarationPanel( org.alice.ide.ast.declaration.TypeDeclarationOperation model ) {
-		this.model = model;
-	}
-	public org.alice.ide.ast.declaration.TypeDeclarationOperation getModel() {
-		return this.model;
-	}
-	@Override
-	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
-		return new TypeHeader( null );
-	}
-	//todo
-//	@Override
-//	protected TypeHeader createPreviewPanel() {
-//		return new TypeHeader( null );
-//	}
-	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createMainComponent() {
-		class DetailsPanel extends org.lgna.croquet.components.RowsSpringPanel {
-			@Override
-			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
-				org.alice.ide.ast.declaration.TypeDeclarationOperation model = TypeDeclarationPanel.this.getModel();
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getSuperTypeLabelText() + ":", new org.alice.ide.croquet.components.TypeDropDown( model.getSuperTypeState() ) ) );
-				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getNameLabelText() + ":", model.getNameState().createTextField() ) );
-				return rv;
-			}
-		}
-		DetailsPanel rv = new DetailsPanel();
-		return rv;
+public final class ExtendsTypeKey extends AbstractExtendsTypeKey {
+	public ExtendsTypeKey( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
+		super( superType );
 	}
 }

@@ -47,6 +47,7 @@ package org.lgna.croquet;
  */
 public final class OwnedByCompositeOperation extends ActionOperation {
 	private final OperationOwningComposite composite;
+
 	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
 		this.composite = composite;
@@ -55,12 +56,37 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		return this.composite;
 	}
 	@Override
-	protected java.lang.Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
+	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return this.composite.getClass();
 	}
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		this.composite.perform( completionStep );
+	}
+
+	@Override
+	protected boolean isSubTransactionHistoryRequired() {
+		return this.composite.isSubTransactionHistoryRequired();
+	}
+	@Override
+	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+		super.pushGeneratedContexts( edit );
+		this.composite.pushGeneratedContexts( edit );
+	}
+	@Override
+	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+		this.composite.popGeneratedContexts( edit );
+		super.popGeneratedContexts( edit );
+	}
+	@Override
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
+		this.composite.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
+	}
+	@Override
+	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+		this.composite.addGeneratedPostTransactions( ownerTransactionHistory, edit );
 	}
 }

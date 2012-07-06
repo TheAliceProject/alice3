@@ -85,7 +85,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		}
 	}
 	@Override
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
 		return this.eventsPanel;
 	}
 	@Override

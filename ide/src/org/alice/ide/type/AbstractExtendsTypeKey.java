@@ -40,29 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.history;
+
+package org.alice.ide.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class StateChangeStep< T > extends CompletionStep< org.lgna.croquet.State< T > > {
-	public static <T> StateChangeStep<T> createAndAddToTransaction( Transaction transaction, org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new StateChangeStep<T>( transaction, model, trigger );
+public abstract class AbstractExtendsTypeKey extends TypeKey {
+	private final org.lgna.project.ast.AbstractType< ?,?,? > superType;
+	public AbstractExtendsTypeKey( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
+		assert superType != null;
+		this.superType = superType;
 	}
-	private StateChangeStep( Transaction parent, org.lgna.croquet.State< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, model, trigger, null );
+	public org.lgna.project.ast.AbstractType<?,?,?> getSuperType() {
+		return this.superType;
 	}
-	public StateChangeStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		rv = 37*rv + this.getSuperType().hashCode();
+		return rv;
 	}
-	public final T getItem() {
-		org.lgna.croquet.edits.Edit< ? > edit = this.getEdit();
-		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
-			org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)edit;
-			return stateEdit.getNextValue();
-		} else {
-			//todo: throw Exception?
-			return null;
-		}
+//	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+//		return userType.superType.getValue() == this.superType;
+//	}
+	@Override
+	protected boolean contentEquals( org.alice.ide.type.TypeKey other ) {
+		// super class's equals methods ensures this.getClass() == other.getClass()
+		return this.superType == ((AbstractExtendsTypeKey)other).superType;
 	}
 }

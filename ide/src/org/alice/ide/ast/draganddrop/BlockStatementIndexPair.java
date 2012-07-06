@@ -88,8 +88,10 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 		if( this.blockStatement != replacementBlockStatement ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "creating replacement:", replacementBlockStatement );
-			return new BlockStatementIndexPair( replacementBlockStatement, this.index );
+			BlockStatementIndexPair rv = new BlockStatementIndexPair( replacementBlockStatement, this.index );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "original:", this, this.hashCode() );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacement:", rv, rv.hashCode() );
+			return rv;
 		} else {
 			return this;
 		}
@@ -97,7 +99,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		org.lgna.project.ast.AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodeDropReceptor();
+		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
 	}
 	
 	@Override
@@ -129,6 +131,8 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		sb.append( this.blockStatement );
 		sb.append( ";index=" );
 		sb.append( this.index );
+		sb.append( ";parent=" );
+		sb.append( this.blockStatement != null ? this.blockStatement.getParent() : null );
 		sb.append( "]" );
 		return sb.toString();
 	}

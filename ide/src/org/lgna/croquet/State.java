@@ -73,7 +73,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	public org.lgna.croquet.StateContext< T > createContext( org.lgna.croquet.triggers.Trigger.Origin origin ) {
 		T value;
 		if( origin == org.lgna.croquet.triggers.Trigger.Origin.GENERATOR ) {
-			assert !this.generatorValueStack.isEmpty() : this;
+			assert this.generatorValueStack.isEmpty()==false : this;
 			value = this.generatorValueStack.peek();
 		} else {
 			value = this.getValue();
@@ -124,7 +124,8 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	protected org.lgna.croquet.edits.StateEdit< T > commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.StateChangeStep< T > step = org.lgna.croquet.history.TransactionManager.addStateChangeStep( this, trigger );
+		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.CompletionStep< State<T> > step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
 		org.lgna.croquet.edits.StateEdit< T > edit = new org.lgna.croquet.edits.StateEdit( step, prevValue, nextValue );
 		step.commitAndInvokeDo( edit );
 		return edit;
@@ -222,8 +223,12 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		}
 	}
 
-	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.StateChangeStep< T > completionStep, T nextValue) {
+	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep< State<T> > completionStep, T nextValue) {
 		T prevValue = this.getValue();
 		return new org.lgna.croquet.edits.StateEdit< T >( completionStep, prevValue, nextValue );
+	}
+	
+	public void addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
+		this.addGeneratedTransaction( history, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ) );
 	}
 }

@@ -108,6 +108,8 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 		}
 		public void layoutContainer( java.awt.Container parent ) {
 			java.awt.Dimension parentSize = parent.getSize();
+			final int X_OFFSET = 64;
+			final int Y_OFFSET = 33;
 			if( parentSize.width > 0 && parentSize.height > 0 ) {
 				java.awt.Point prevLocation = null;
 				java.awt.Dimension prevSize = null;
@@ -117,12 +119,13 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 					if( set.contains( awtComponent ) ) {
 						//pass
 					} else {
+						final int BORDER = 16;
 						java.awt.Point p;
 						if( prevLocation != null ) {
 							if( IS_NOTE_OVERLAPPING_DESIRED ) {
-								p = new java.awt.Point( prevLocation.x + 64, prevLocation.y - 33 );
+								p = new java.awt.Point( prevLocation.x + X_OFFSET, prevLocation.y - Y_OFFSET );
 							} else {
-								p = new java.awt.Point( prevLocation.x + prevSize.width - 64, prevLocation.y - 33 );
+								p = new java.awt.Point( prevLocation.x + prevSize.width - X_OFFSET, prevLocation.y - Y_OFFSET );
 							}
 						} else {
 							if (awtComponent instanceof org.lgna.cheshire.simple.Note.JNote) {
@@ -135,7 +138,14 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 										p.y = parentSize.height - childSize.height + p.y;
 									}
 								} else {
-									p = new java.awt.Point( ChapterPage.this.calculateLocationOfFirstNote() );
+									final boolean IS_BASED_ON_FRAME_SIZE = true;
+									if( IS_BASED_ON_FRAME_SIZE ) {
+										int x = parentSize.width - BORDER - X_OFFSET*(parent.getComponentCount()-1) - childSize.width;
+										int y = parentSize.height - BORDER - childSize.height;
+										p = new java.awt.Point( x, y );
+									} else {
+										p = new java.awt.Point( ChapterPage.this.calculateLocationOfFirstNote() );
+									}
 								}
 							} else {
 								p = new java.awt.Point( 10, 10 );
@@ -143,7 +153,6 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 						}
 						
 						if( parentSize.width > 0 && parentSize.height > 0 ) {
-							final int BORDER = 32;
 							p.x = Math.max( p.x, BORDER );
 							p.x = Math.min( p.x, parentSize.width-childSize.width-BORDER );
 							p.y = Math.max( p.y, BORDER );
@@ -278,9 +287,9 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 		}
 	}
 	
-	protected java.awt.Point calculateLocationForNoteAt( org.lgna.croquet.components.Container< ? > container, int index ) {
-		return this.notes.get( 0 ).calculateLocation( container );
-	}
+//	protected java.awt.Point calculateLocationForNoteAt( org.lgna.croquet.components.Container< ? > container, int index ) {
+//		return this.notes.get( 0 ).calculateLocation( container );
+//	}
 
 	public void adjustIfNecessary( org.lgna.croquet.history.event.Event<?> event ) {
 //		Note note = this.getFirstActiveNote();
@@ -340,7 +349,7 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 //	}
 
 	protected java.awt.Point calculateLocationOfFirstNote( org.lgna.croquet.components.Container< ? > container ) {
-		return this.calculateLocationForNoteAt( container, 0 );
+		return this.notes.get( 0 ).calculateLocation( container );
 	}
 
 	private java.awt.Point calculateLocationOfFirstNote() {

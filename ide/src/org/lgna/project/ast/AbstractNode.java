@@ -221,21 +221,6 @@ public abstract class AbstractNode extends Element implements Node {
 		super.fireAdded( e );
 	}
 
-	private static final java.lang.reflect.Method getVisitMethod( edu.cmu.cs.dennisc.pattern.Crawler crawler, Class<?> cls ) {
-		try {
-			return crawler.getClass().getMethod( "visit", new Class[]{ cls } );
-		} catch (NoSuchMethodException e) {
-			Class<?> superClass = cls.getSuperclass();
-			if ( edu.cmu.cs.dennisc.pattern.Crawler.class.isAssignableFrom(superClass) ) {
-				return getVisitMethod( crawler, cls.getSuperclass() );
-			}
-		} catch (SecurityException e) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(e);
-		} catch (IllegalArgumentException e) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(e);
-		}
-		return null;
-	}
 	private static void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited, Object value, CrawlPolicy crawlPolicy ) {
 		if ( value instanceof AbstractNode ) {
 			AbstractNode crawlable = (AbstractNode)value;
@@ -255,23 +240,7 @@ public abstract class AbstractNode extends Element implements Node {
 			//pass
 		} else {
 			visited.add( this );
-
-			// Find the visit method for this class
-			java.lang.reflect.Method visitMethod = getVisitMethod( crawler, this.getClass() );
-			if ( visitMethod != null) {
-				try {
-					visitMethod.invoke( crawler, new Object[] { this } );
-				} catch (IllegalArgumentException e) {
-					visitMethod = null;
-				} catch (IllegalAccessException e) {
-					visitMethod = null;
-				} catch (java.lang.reflect.InvocationTargetException e) {
-					visitMethod = null;
-				}
-			}
-			if ( visitMethod == null ) {
-				crawler.visit( this );
-			}
+			crawler.visit( this );
 
 			// Look through this nodes properties to see if any have anything to crawl
 			for( edu.cmu.cs.dennisc.property.Property< ? > property : this.getProperties() ) {

@@ -45,11 +45,71 @@ package org.alice.ide.clipboard.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ClipboardDragComponent extends org.lgna.croquet.components.DragComponent< javax.swing.AbstractButton, org.lgna.croquet.DragModel > implements org.lgna.croquet.DropReceptor {
-	private org.lgna.croquet.components.FlowPanel subject = new org.lgna.croquet.components.FlowPanel();
+public class ClipboardDragComponent extends org.lgna.croquet.components.DragComponent< javax.swing.AbstractButton, org.lgna.croquet.DragModel > {
+	private static enum DragReceptorState {
+		IDLE( java.awt.Color.ORANGE.darker() ),
+		STARTED( java.awt.Color.YELLOW ),
+		ENTERED( java.awt.Color.GREEN );
+		private final java.awt.Paint paint;
+		private DragReceptorState( java.awt.Paint paint ) {
+			this.paint = paint;
+		}
+		public java.awt.Paint getPaint() {
+			return this.paint;
+		}
+	};
+	private class ClipboardDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+		private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
+		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+			return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+		}
+		private void setDragReceptorState( DragReceptorState dragReceptorState ) {
+			this.dragReceptorState = dragReceptorState;
+			ClipboardDragComponent.this.repaint();
+		}
+		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
+			this.setDragReceptorState( DragReceptorState.STARTED );
+		}
+		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
+			this.setDragReceptorState( DragReceptorState.ENTERED );
+//			step.getDragSource().hideDragProxy();
+		}
+		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
+			return org.alice.ide.clipboard.Clipboard.SINGLETON.getDropSite();
+		}
+		@Override
+		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck(org.lgna.croquet.history.DragStep step) {
+			org.alice.ide.common.AbstractStatementPane pane = (org.alice.ide.common.AbstractStatementPane)step.getDragSource();
+			org.lgna.project.ast.Statement statement = pane.getStatement();
+			boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
+			if( isCopy ) {
+				return org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement );
+			} else {
+				return org.alice.ide.clipboard.CutToClipboardOperation.getInstance( statement );
+			}
+		}
+		public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
+//			step.getDragSource().showDragProxy();
+			this.setDragReceptorState( DragReceptorState.STARTED );
+		}
+		public void dragStopped( org.lgna.croquet.history.DragStep step ) {
+			this.setDragReceptorState( DragReceptorState.IDLE );
+		}
+		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+			return ClipboardDragComponent.this;
+		}
+		public org.lgna.croquet.components.JComponent< ? > getViewController() {
+			return ClipboardDragComponent.this;
+		}
+	}
+	private final ClipboardDropReceptor dropReceptor = new ClipboardDropReceptor(); 
+	private final org.lgna.croquet.components.FlowPanel subject = new org.lgna.croquet.components.FlowPanel();
 	public ClipboardDragComponent( org.lgna.croquet.DragModel dragModel ) {
 		super( dragModel );
 		this.setMinimumPreferredWidth( 40 );
+	}
+	public org.lgna.croquet.DropReceptor getDropReceptor() {
+		return this.dropReceptor;
 	}
 	@Override
 	protected boolean isMouseListeningDesired() {
@@ -79,65 +139,6 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		}
 		this.repaint();
 	}
-	
-	
-	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
-		return this;
-	}
-	public org.lgna.croquet.components.JComponent< ? > getViewController() {
-		return this;
-	}
-	private static enum DragReceptorState {
-		IDLE( java.awt.Color.ORANGE.darker() ),
-		STARTED( java.awt.Color.YELLOW ),
-		ENTERED( java.awt.Color.GREEN );
-		private final java.awt.Paint paint;
-		private DragReceptorState( java.awt.Paint paint ) {
-			this.paint = paint;
-		}
-		public java.awt.Paint getPaint() {
-			return this.paint;
-		}
-	};
-	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
-	private void setDragReceptorState( DragReceptorState dragReceptorState ) {
-		this.dragReceptorState = dragReceptorState;
-		this.repaint();
-	}
-	public void dragStarted( org.lgna.croquet.history.DragStep step ) {
-		this.setDragReceptorState( DragReceptorState.STARTED );
-	}
-	public void dragEntered( org.lgna.croquet.history.DragStep step ) {
-		this.setDragReceptorState( DragReceptorState.ENTERED );
-//		step.getDragSource().hideDragProxy();
-	}
-	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
-		return org.alice.ide.clipboard.Clipboard.SINGLETON.getDropSite();
-	}
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-		return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
-	}
-	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
-		org.alice.ide.common.AbstractStatementPane pane = (org.alice.ide.common.AbstractStatementPane)step.getDragSource();
-		org.lgna.project.ast.Statement statement = pane.getStatement();
-		boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
-		if( isCopy ) {
-			return org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement );
-		} else {
-			return org.alice.ide.clipboard.CutToClipboardOperation.getInstance( statement );
-		}
-	}
-	public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
-//		step.getDragSource().showDragProxy();
-		this.setDragReceptorState( DragReceptorState.STARTED );
-	}
-	public void dragStopped( org.lgna.croquet.history.DragStep step ) {
-		this.setDragReceptorState( DragReceptorState.IDLE );
-	}
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
-		return "clipboard";
-	}
-	
 	
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > getSubject() {
@@ -227,7 +228,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		java.awt.geom.RoundRectangle2D board = new java.awt.geom.RoundRectangle2D.Float( 0.025f*width, 0.1f*height, 0.95f*width, 0.875f*height, round, round );
 		java.awt.Shape clip = createClip( 0.2f*width, 0.01f*height, 0.6f*width, 0.2f*height, 0.02f*height );
 		
-		g2.setPaint( this.dragReceptorState.getPaint() );
+		g2.setPaint( this.dropReceptor.dragReceptorState.getPaint() );
 		g2.fill( board );
 		g2.setPaint( java.awt.Color.BLACK );
 		g2.draw( board );
@@ -246,7 +247,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 			java.awt.geom.Rectangle2D.Float paper = new java.awt.geom.Rectangle2D.Float( 0, 0, w, h );
 			
 			final boolean IS_SIMPLE = true;
-			if( IS_SIMPLE || this.dragReceptorState != DragReceptorState.IDLE ) {
+			if( IS_SIMPLE || this.dropReceptor.dragReceptorState != DragReceptorState.IDLE ) {
 				g2.setPaint( new java.awt.GradientPaint( x,y, java.awt.Color.LIGHT_GRAY, x+w, y+h, java.awt.Color.WHITE ) );
 				g2.fill( paper );
 				

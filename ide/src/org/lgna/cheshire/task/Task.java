@@ -41,58 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.declaration;
+package org.lgna.cheshire.task;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclarationOperation extends org.lgna.croquet.InputDialogOperation< org.lgna.project.ast.NamedUserType > {
-	private static class SingletonHolder {
-		private static TypeDeclarationOperation instance = new TypeDeclarationOperation();
+public class Task {
+	private final java.util.List<org.lgna.croquet.history.Transaction> transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.ListIterator<org.lgna.croquet.history.Transaction> transactionIterator = transactions.listIterator();
+	public Task( org.lgna.croquet.history.Transaction transaction ) {
+		this.transactions.add( transaction );
 	}
-	public static TypeDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private final NameState nameState = new NameState( this, "" );
-	private final SuperTypeState superTypeState = new SuperTypeState( this, null );
-	private String superTypeLabelText; 
-	private String nameLabelText; 
-	private TypeDeclarationOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "773ed5cf-0922-47d5-b845-20fcf0d9de60" ) );
-	}
-	@Override
-	protected void localize() {
-		super.localize();
-		//todo: replace w/ sidekicks
-		this.superTypeLabelText = this.findLocalizedText( "superTypeLabel" );
-		this.nameLabelText = this.findLocalizedText( "nameLabel" );
-	}
-	
-	
-	public NameState getNameState() {
-		return this.nameState;
-	}
-	public SuperTypeState getSuperTypeState() {
-		return this.superTypeState;
-	}
-	
-	public String getSuperTypeLabelText() {
-		return this.superTypeLabelText;
-	}
-	public String getNameLabelText() {
-		return this.nameLabelText;
-	}
-	
-	@Override
-	protected org.alice.ide.ast.declaration.views.TypeDeclarationPanel prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.ide.ast.declaration.views.TypeDeclarationPanel( this );
-	}
-	@Override
-	protected void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit ) {
-		if( isCommit ) {
-			step.finish();
-		} else {
-			step.cancel();
-		}
+	public void insertRecoveryTransaction( org.lgna.croquet.history.Transaction transaction ) {
+		this.transactionIterator.add( transaction );
 	}
 }

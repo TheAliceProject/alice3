@@ -61,7 +61,7 @@ public abstract class RenameComposite<V extends org.alice.ide.ast.rename.compone
 		return this.nameState;
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( nameValidator != null ) {
 			String candidate = this.nameState.getValue();
 			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );

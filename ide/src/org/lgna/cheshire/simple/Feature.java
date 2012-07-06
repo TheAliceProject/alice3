@@ -538,7 +538,8 @@ public abstract class Feature {
 		sb.append( "\t\t" );
 		sb.append( this.getClass().getName() );
 		sb.append( ": " );
-		sb.append( this.getStatus() );
+		String status = this.getStatus();
+		sb.append( status != null ? status : "IS_GOOD_TO_GO" );
 		sb.append( "\n" );
 	}
 }

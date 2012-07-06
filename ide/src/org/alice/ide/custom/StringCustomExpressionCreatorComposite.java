@@ -70,7 +70,7 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
 		return new org.lgna.project.ast.StringLiteral( this.valueState.getValue() );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 	

@@ -41,15 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.declaration;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NameState extends org.lgna.croquet.StringState {
-	private final TypeDeclarationOperation owner;
-	public NameState( TypeDeclarationOperation owner, String initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ae0210ac-2d48-4fec-8f1a-2227f0a20010" ), initialValue );
-		this.owner = owner;
-	}
+public interface EachInArrayStatement extends EachInStatement {
+	public ExpressionProperty getArrayProperty();
 }

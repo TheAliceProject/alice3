@@ -47,7 +47,7 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
  * @author Dennis Cosgrove
  */
 public abstract class SingleThreadOperationNote extends OperationNote {
-	public SingleThreadOperationNote( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public SingleThreadOperationNote( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
 	}
 }

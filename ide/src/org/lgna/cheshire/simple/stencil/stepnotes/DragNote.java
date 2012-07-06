@@ -56,9 +56,13 @@ public class DragNote extends PrepNote< org.lgna.croquet.history.DragStep > {
 		org.lgna.croquet.history.Transaction transaction = step.getOwner();
 		int i = transaction.getIndexOfChildStep( step );
 		org.lgna.croquet.history.Step< ? > siblingStep = transaction.getChildStepAt( i+1 );
-		org.lgna.croquet.triggers.Trigger trigger = siblingStep.getTrigger();
-		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
-			this.addFeature( DropNoteUtilities.createPreviewHole( siblingStep ) );
+		if( siblingStep != null ) {
+			org.lgna.croquet.triggers.Trigger trigger = siblingStep.getTrigger();
+			if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+				this.addFeature( DropNoteUtilities.createPreviewHole( siblingStep ) );
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "no sibling step for", step );
 		}
 	}
 }

@@ -342,7 +342,7 @@ public class BootstrapUtilties {
 		};
 		java.util.ArrayList<org.lgna.project.ast.ExpressionStatement> setupStatements = new java.util.ArrayList<org.lgna.project.ast.ExpressionStatement>();
 
-		org.lgna.project.ast.JavaMethod setFloorPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+		org.lgna.project.ast.JavaMethod setFloorPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetFloorPaint.Detail[].class );
 		org.lgna.project.ast.Expression floorPaintExpression = null;
 		org.lgna.project.ast.Expression wallPaintExpression = null;
 		org.lgna.project.ast.Expression ceilingPaintExpression = null;
@@ -373,9 +373,9 @@ public class BootstrapUtilties {
 		}
 		
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setFloorPaintMethod, floorPaintExpression ) );
-		org.lgna.project.ast.JavaMethod setWallPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setWallPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+		org.lgna.project.ast.JavaMethod setWallPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setWallPaint", org.lgna.story.Paint.class, org.lgna.story.SetWallPaint.Detail[].class );
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setWallPaintMethod, wallPaintExpression ) );
-		org.lgna.project.ast.JavaMethod setCeilingPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+		org.lgna.project.ast.JavaMethod setCeilingPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetCeilingPaint.Detail[].class );
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setCeilingPaintMethod, ceilingPaintExpression ) );
 		
 		return createProgramType(modelFields, setupStatements.toArray(new org.lgna.project.ast.ExpressionStatement[setupStatements.size()]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor);

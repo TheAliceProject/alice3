@@ -106,8 +106,8 @@ public final class ParameterDeclarationComposite extends DeclarationComposite<or
 		return new org.lgna.project.ast.UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		Status rv = super.getStatus( step );
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		Status rv = super.getStatusPreRejectorCheck( step );
 		if( rv == IS_GOOD_TO_GO_STATUS ) {
 			if( this.isRequirementToUpdateInvocationsUnderstoodState.getValue() ) {
 				//pass

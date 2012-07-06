@@ -243,7 +243,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 		}
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
 	

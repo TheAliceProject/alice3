@@ -115,7 +115,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 		return this.leftButtonPressedEvent;
 	}
 
-	public void handleMousePressed( java.awt.event.MouseEvent e ) {
+	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
 //		java.awt.event.MouseEvent prevMousePressedEvent = this.mousePressedEvent;
 		this.isWithinClickThreshold = true;
 		this.mousePressedEvent = e;
@@ -136,10 +136,10 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 //			}
 		}
 	}
-	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
+	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setPressed( false );
 	}
-	public void handleMouseClicked( java.awt.event.MouseEvent e ) {
+	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
 		switch( e.getClickCount() ) {
 		case 1:
 			if( this.leftButtonClickModel != null ) {
@@ -153,14 +153,14 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 			break;
 		}
 	}
-	public void handleMouseEntered( java.awt.event.MouseEvent e ) {
+	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
 		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( true );
 		}
 	}
-	public void handleMouseExited( java.awt.event.MouseEvent e ) {
+	protected void handleMouseExited( java.awt.event.MouseEvent e ) {
 		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			//pass
 		} else {
@@ -168,7 +168,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 		}
 	}
 
-	public void handleMouseMoved( java.awt.event.MouseEvent e ) {
+	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
 	}
 
 	private float clickThreshold = 5.0f;
@@ -185,7 +185,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		this.isWithinClickThreshold = false;
 	}
-	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
+	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		if( this.isWithinClickThreshold ) {
 			int dx = e.getX() - this.mousePressedEvent.getX();
 			int dy = e.getY() - this.mousePressedEvent.getY();

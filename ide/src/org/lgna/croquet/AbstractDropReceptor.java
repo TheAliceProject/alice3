@@ -40,31 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.history;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CancelCompletionStep extends CompletionStep {
-	public static CancelCompletionStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.CompletionModel completionModel, org.lgna.croquet.triggers.Trigger trigger ) {
-		return new CancelCompletionStep( parent, completionModel, trigger );
+public abstract class AbstractDropReceptor implements DropReceptor {
+	private final java.util.List< DropRejector > dropRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public void addDropRejector( DropRejector dropRejector ) {
+		this.dropRejectors.add( dropRejector );
 	}
-	private CancelCompletionStep( Transaction parent, org.lgna.croquet.CompletionModel completionModel, org.lgna.croquet.triggers.Trigger trigger ) {
-		super( parent, completionModel, trigger, null );
+	public void removeDropRejector( DropRejector dropRejector ) {
+		this.dropRejectors.remove( dropRejector );
 	}
-	public CancelCompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	public void clearDropRejectors() {
+		this.dropRejectors.clear();
 	}
-	@Override
-	public String getTutorialNoteText( org.lgna.croquet.edits.Edit edit ) {
-		return "Cancel";
+	public java.util.List<org.lgna.croquet.DropRejector> getDropRejectors() {
+		return java.util.Collections.unmodifiableList( this.dropRejectors );
 	}
-	@Override
-	public boolean isPending() {
-		return false;
+	protected abstract Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step );
+	public final Model dragDropped( org.lgna.croquet.history.DragStep step ) {
+		for( DropRejector rejector : this.dropRejectors ) {
+			if( rejector.isRejected( step ) ) {
+				return null;
+			}
+		}
+		return this.dragDroppedPostRejectorCheck( step );
 	}
-	@Override
-	public boolean isSuccessfullyCompleted() {
-		return false;
+	public final String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
+		return "Drop...";
 	}
 }
