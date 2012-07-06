@@ -107,7 +107,7 @@ public final class ParameterDeclarationComposite extends DeclarationComposite<or
 	}
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		Status rv = super.getStatus( step );
+		Status rv = super.getStatusPreRejectorCheck( step );
 		if( rv == IS_GOOD_TO_GO_STATUS ) {
 			if( this.isRequirementToUpdateInvocationsUnderstoodState.getValue() ) {
 				//pass
