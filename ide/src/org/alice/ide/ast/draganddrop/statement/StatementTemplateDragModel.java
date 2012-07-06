@@ -92,7 +92,8 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		
 		if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade ) {
 			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade statementInsertCascade = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade)dropModel;
-			statementInsertCascade.generateAndAddPostDragStepsToTransaction( transaction, statement, blockStatementIndexPair );
+			java.util.List<org.lgna.project.ast.Expression> expressionList = statementInsertCascade.generateAndAddPostDragStepsToTransaction( transaction, statement, blockStatementIndexPair );
+			initialExpressions = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( expressionList, org.lgna.project.ast.Expression.class );
 		} else if( dropModel instanceof org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation ) {
 			org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation statementInsertOperation = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation)dropModel;
 			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, statementInsertOperation, dropTrigger, null );
