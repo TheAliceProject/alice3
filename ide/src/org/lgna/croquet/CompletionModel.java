@@ -52,5 +52,5 @@ public interface CompletionModel extends Model {
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit );
 	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter );
 	public Iterable<? extends PrepModel> getPotentialRootPrepModels();
-	public void addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit );
+	public org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit );
 }

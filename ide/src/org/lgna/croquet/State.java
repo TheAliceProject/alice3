@@ -228,11 +228,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return new org.lgna.croquet.edits.StateEdit< T >( completionStep, prevValue, nextValue );
 	}
 	
-	@Override
-	protected org.lgna.croquet.triggers.Trigger createGeneratedTrigger() {
-		return org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance();
-	}
 	public void addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
-		this.addGeneratedTransaction( history, new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ) );
+		this.addGeneratedTransaction( history, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ) );
 	}
 }

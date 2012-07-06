@@ -146,8 +146,4 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 		return rv;
 	}
-	@Override
-	protected org.lgna.croquet.triggers.Trigger createGeneratedTrigger() {
-		return org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance();
-	}
 }

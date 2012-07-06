@@ -81,4 +81,17 @@ public class LocalDeclarationStatementComposite extends StatementInsertComposite
 	protected boolean isNullAllowedForInitializer() {
 		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers.getInstance().getValue();
 	}
+	
+	@Override
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit< ? > ownerEdit ) {
+		org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)ownerEdit;
+		org.lgna.project.ast.Statement statement = insertStatementEdit.getStatement();
+		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = (org.lgna.project.ast.LocalDeclarationStatement)statement;
+		
+		this.getValueComponentTypeState().addGeneratedStateChangeTransaction( subTransactionHistory, null, localDeclarationStatement.local.getValue().getValueType() );
+		this.getNameState().addGeneratedStateChangeTransaction( subTransactionHistory, "", localDeclarationStatement.local.getValue().name.getValue() );
+		this.getInitializerState().addGeneratedStateChangeTransaction( subTransactionHistory, null, localDeclarationStatement.initializer.getValue() );
+		
+		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
+	}
 }
