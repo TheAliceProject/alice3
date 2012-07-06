@@ -61,6 +61,7 @@ public class BlockStatementGenerator {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.ForEachInArrayLoop.class, org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance() );
 		//mapStatementClassToGenerator.put( org.lgna.project.ast.ReturnStatement.class, org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance() );
 		mapStatementClassToGenerator.put( org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.LocalDeclarationStatement.class, org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
 	}
 	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
@@ -118,7 +119,7 @@ public class BlockStatementGenerator {
 							}
 						}
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle", expression );
+						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: handle expression " + expression );
 						statementGenerator = null;
 					}
 				} else {
@@ -152,7 +153,7 @@ public class BlockStatementGenerator {
 						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( statement );
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: handle statement " + statement );
 				}
 				if( methodInvocation != null ) {
 					org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade moreCascade = org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( methodInvocation );
