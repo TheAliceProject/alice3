@@ -40,13 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration.views;
+
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EachInArrayView extends StatementView {
-	public EachInArrayView( org.alice.ide.ast.declaration.EachInArrayComposite<?> composite ) {
-		super( composite );
-	}
+public interface EachInArrayStatement extends EachInStatement {
+	public ExpressionProperty getArrayProperty();
 }

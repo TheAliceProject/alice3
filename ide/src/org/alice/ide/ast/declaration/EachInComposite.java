@@ -40,26 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EachInArrayComposite<S extends org.lgna.project.ast.Statement> extends EachInComposite<S> {
-	public EachInArrayComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, blockStatementIndexPair );
+public abstract class EachInComposite<S extends org.lgna.project.ast.Statement> extends StatementInsertComposite<S> {
+	public EachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( migrationId, new Details()
+			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
+			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), ApplicabilityStatus.EDITABLE )
+			.initializer( ApplicabilityStatus.EDITABLE, null ),
+		blockStatementIndexPair );
+	}
+	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
+	@Override
+	protected final S createStatement() {
+		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
+		return this.createStatement( item, this.getInitializer() );
 	}
 	@Override
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit< ? > ownerEdit ) {
-		org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)ownerEdit;
-		org.lgna.project.ast.Statement statement = insertStatementEdit.getStatement();
-		org.lgna.project.ast.EachInArrayStatement eachInArrayStatement = (org.lgna.project.ast.EachInArrayStatement)statement;
-		
-		org.lgna.project.ast.UserLocal local = eachInArrayStatement.getItemProperty().getValue();
-		this.getValueComponentTypeState().addGeneratedStateChangeTransaction( subTransactionHistory, null, local.getValueType() );
-		this.getNameState().addGeneratedStateChangeTransaction( subTransactionHistory, "", local.name.getValue() );
-		this.getInitializerState().addGeneratedStateChangeTransaction( subTransactionHistory, null, eachInArrayStatement.getArrayProperty().getValue() );
-		
-		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
+	protected org.alice.ide.ast.declaration.views.StatementView createView() {
+		return new org.alice.ide.ast.declaration.views.StatementView( this );
 	}
 }
