@@ -40,29 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+public class SearchDialogReferenceFirstComposite extends SearchDialogComposite {
+
+	public static SearchDialogReferenceFirstComposite getInstance( UserMethod method ) {
+		return new SearchDialogReferenceFirstComposite( method );
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.SearchDialogReferenceFirstComposite.getInstance( method ).getOperation().getMenuItemPrepModel()
-		);
+	private UserMethod targeted;
+
+	private SearchDialogReferenceFirstComposite(UserMethod method) {
+		super( java.util.UUID.fromString( "69aa64a2-4faa-407d-b6e8-b0fa99b2a5df" ) );
+		this.targeted = method;
+	}
+
+	public UserMethod getTarget() {
+		return this.targeted;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		searchComposite.setJumpDesired(false);
+		searchComposite.setSelected( getTarget() );
+		searchComposite.setJumpDesired(true);
+		this.state.setSelectedIndex( 1 );
+		super.handlePreActivation();
 	}
 }

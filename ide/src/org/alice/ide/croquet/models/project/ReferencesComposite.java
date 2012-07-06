@@ -46,8 +46,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 
+import javax.media.rtp.event.NewReceiveStreamEvent;
+
 import org.alice.ide.croquet.models.project.views.ReferencesView;
 import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
@@ -65,13 +68,37 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 	private final ReferencesDialogManager manager;
 	private final Tree<SearchTreeNode> tree;
 	private final PlainStringValue selectedMethod = createStringValue( this.createKey( "selectedMethod" ) );
+	private boolean isJumpDesired = true;
 
-	public ReferencesComposite( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+	private ValueListener<SearchTreeNode> adapter = new ValueListener<SearchTreeNode>() {
+
+		public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+			if( state.getValue() != prevValue ) {
+				SearchTreeNode selection = state.getValue();
+				if( selection != null && isJumpDesired ) {
+					selection.invokeOperation();
+				}
+			}
+		}
+
+	};
+//	private static class SingletonHolder {
+//		public static ReferencesComposite instance = new ReferencesComposite();
+//	}
+//
+//	public static ReferencesComposite getInstance() {
+//		return SingletonHolder.instance;
+//	}
+	public ReferencesComposite( SearchComposite item ) {
 		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
-		manager = new ReferencesDialogManager( methodParentMap );
+		manager = new ReferencesDialogManager();
 		tree = new Tree<SearchTreeNode>( manager );
 		getTree().setRootVisible( false );
 		manager.setOwner( getTree() );
+		item.addSelectedListener( this );
 	}
 
 	public PlainStringValue getSelectedMethod() {
@@ -106,8 +133,9 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 
 	public class ReferencesDialogManager extends SearchTreeManager {
 
-		public ReferencesDialogManager( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
-			super( java.util.UUID.fromString( "7b2c3b3d-062b-49ce-a746-13d2bba8f572" ), methodParentMap );
+		public ReferencesDialogManager() {
+			super( java.util.UUID.fromString( "7b2c3b3d-062b-49ce-a746-13d2bba8f572" ) );
+			this.addValueListener( adapter );
 		}
 
 		public void update( SearchTreeNode newValue ) {
@@ -130,5 +158,9 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 				crawl( child, depth + 1 );
 			}
 		}
+	}
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
 	}
 }

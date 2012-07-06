@@ -40,29 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project;
 
+import java.util.UUID;
+
+import org.alice.ide.ProjectApplication;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.PlainDialogOperationComposite;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.TabSelectionState;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
+public abstract class SearchDialogComposite extends PlainDialogOperationComposite<SearchDialogView> {//org.lgna.croquet.InformationDialogOperation {
+
+	TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
+
+		public Class<TabComposite<?>> getValueClass() {
+			return null;
 		}
-		return rv;
+
+		public TabComposite<?> decodeValue( BinaryDecoder binaryDecoder ) {
+			return null;
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, TabComposite<?> value ) {
+		}
+
+		public StringBuilder appendRepresentation( StringBuilder rv, TabComposite<?> value ) {
+			return null;
+		}
+	} );
+	
+	protected SearchComposite searchComposite;
+	private ReferencesComposite referencesComposite;
+	private FieldSearchCompsoite fieldSearchComposite;
+
+	protected SearchDialogComposite( UUID uuid ) {
+		super( uuid, ProjectApplication.PROJECT_GROUP );
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.SearchDialogReferenceFirstComposite.getInstance( method ).getOperation().getMenuItemPrepModel()
-		);
+	@Override
+	protected final SearchDialogView createView() {
+		searchComposite = new SearchComposite();
+		referencesComposite = new ReferencesComposite( searchComposite );
+		fieldSearchComposite = new FieldSearchCompsoite();
+		state.addItem( searchComposite );
+		state.addItem( referencesComposite );
+		state.addItem( fieldSearchComposite );
+		return new SearchDialogView( this );
 	}
 }

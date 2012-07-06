@@ -40,29 +40,77 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project;
 
+import javax.swing.Icon;
+
+import org.alice.ide.ProjectApplication;
+import org.lgna.croquet.CustomTreeSelectionState;
+import org.lgna.project.ast.FieldAccess;
+
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldReferenceSearchTreeNode> {
+
+	private FieldReferenceSearchTreeNode root = FieldReferenceSearchTreeNode.getRoot();
+
+	public InstanceSearchTreeManager( FieldReferenceSearchTreeNode initialSelection ) {
+		super( ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "d8242fe1-3ca6-444f-8608-3e593043b18e" ), FieldReferenceSearchTreeNode.getNewItemCodec(), initialSelection );
+		refresh();
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.SearchDialogReferenceFirstComposite.getInstance( method ).getOperation().getMenuItemPrepModel()
-		);
+	public void refresh() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		final org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
+		if( programType != null ) {
+			IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
+			programType.crawl( crawler, true );
+			FieldReferenceSearchTreeNode.initFields(ide.getSceneField());
+		}
 	}
+
+	@Override
+	protected int getChildCount( FieldReferenceSearchTreeNode parent ) {
+		return parent.getNumChildren();
+	}
+
+	@Override
+	protected FieldReferenceSearchTreeNode getChild( FieldReferenceSearchTreeNode parent, int index ) {
+		return parent.getChild( index );
+	}
+
+	@Override
+	protected int getIndexOfChild( FieldReferenceSearchTreeNode parent, FieldReferenceSearchTreeNode child ) {
+		return parent.getChildIndex( child );
+	}
+
+	@Override
+	protected FieldReferenceSearchTreeNode getRoot() {
+		return root.getChild( 0 );
+	}
+
+	@Override
+	protected FieldReferenceSearchTreeNode getParent( FieldReferenceSearchTreeNode node ) {
+		return node.getParent();
+	}
+
+	@Override
+	public boolean isLeaf( FieldReferenceSearchTreeNode node ) {
+		return node.getNumChildren() == 0;
+	}
+
+	@Override
+	protected String getTextForNode( FieldReferenceSearchTreeNode node ) {
+		return node.toString();
+	}
+
+	@Override
+	protected Icon getIconForNode( FieldReferenceSearchTreeNode node ) {
+		return node.getIcon();
+	}
+
 }
