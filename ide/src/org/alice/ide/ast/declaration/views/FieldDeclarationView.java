@@ -41,17 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.declarationseditor.type.components;
-
-import org.alice.ide.declarationseditor.type.UnmanagedFieldState;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnmanagedFieldList extends FieldList {
-	public UnmanagedFieldList( org.lgna.project.ast.NamedUserType type ) {
-		//super( UnmanagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ) );
-		super( UnmanagedFieldState.getInstance( type ), org.alice.ide.ast.declaration.UnmanagedFieldDeclarationComposite.getInstance( type ).getOperation() );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+public class FieldDeclarationView extends DeclarationView<org.lgna.project.ast.UserField> {
+	public FieldDeclarationView( org.alice.ide.ast.declaration.FieldDeclarationComposite composite ) {
+		super( composite );
+	}
+	@Override
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.FieldDeclarationComposite composite = (org.alice.ide.ast.declaration.FieldDeclarationComposite)this.getComposite();
+		org.lgna.project.ast.UserField field = composite.getPreviewValue();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
+	}
+	@Override
+	protected boolean isPreviewDesired() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
 	}
 }

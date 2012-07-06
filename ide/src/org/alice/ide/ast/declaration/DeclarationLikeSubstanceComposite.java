@@ -206,6 +206,9 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	public boolean isValueIsArrayTypeStateDisplayed() {
 		return details.valueIsArrayTypeStatus.isDisplayed();
 	}
+	public boolean isInitializerDisplayed() {
+		return details.initializerStatus.isDisplayed();
+	}
 
 	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
 		if( this.declaringTypeState != null ) {

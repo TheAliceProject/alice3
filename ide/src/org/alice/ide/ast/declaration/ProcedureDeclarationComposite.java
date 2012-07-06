@@ -47,23 +47,23 @@ package org.alice.ide.ast.declaration;
  */
 public final class ProcedureDeclarationComposite extends MethodDeclarationComposite {
 	private static java.util.Map< org.lgna.project.ast.UserType<?>, ProcedureDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ProcedureDeclarationComposite getInstance( org.lgna.project.ast.UserType<?> declaratingType ) {
+	public static ProcedureDeclarationComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		synchronized( map ) {
-			ProcedureDeclarationComposite rv = map.get( declaratingType );
+			ProcedureDeclarationComposite rv = map.get( declaringType );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ProcedureDeclarationComposite( declaratingType );
-				map.put( declaratingType, rv );
+				rv = new ProcedureDeclarationComposite( declaringType );
+				map.put( declaringType, rv );
 			}
 			return rv;
 		}
 	}
-	private ProcedureDeclarationComposite( org.lgna.project.ast.UserType<?> declaratingType ) {
+	private ProcedureDeclarationComposite( org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "1e7af2e9-2ce0-4c7e-9ddd-9af001601660" ), new Details()
-			.declarationType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, declaratingType )
+			.declarationType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, declaringType )
 			.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, org.lgna.project.ast.JavaType.VOID_TYPE )
-			.name( new org.alice.ide.name.validators.MethodNameValidator( declaratingType ), ApplicabilityStatus.EDITABLE )
+			.name( new org.alice.ide.name.validators.MethodNameValidator( declaringType ), ApplicabilityStatus.EDITABLE )
 		);
 	}
 	@Override

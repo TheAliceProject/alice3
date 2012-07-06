@@ -41,17 +41,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.declarationseditor.type.components;
-
-import org.alice.ide.declarationseditor.type.UnmanagedFieldState;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnmanagedFieldList extends FieldList {
-	public UnmanagedFieldList( org.lgna.project.ast.NamedUserType type ) {
-		//super( UnmanagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ) );
-		super( UnmanagedFieldState.getInstance( type ), org.alice.ide.ast.declaration.UnmanagedFieldDeclarationComposite.getInstance( type ).getOperation() );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+public class UnmanagedFieldDeclarationComposite extends FieldDeclarationComposite {
+	private static java.util.Map< org.lgna.project.ast.UserType< ? >, UnmanagedFieldDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static UnmanagedFieldDeclarationComposite getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
+		synchronized( map ) {
+			UnmanagedFieldDeclarationComposite rv = map.get( declarationType );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new UnmanagedFieldDeclarationComposite( declarationType );
+				map.put( declarationType, rv );
+			}
+			return rv;
+		}
+	}
+	private UnmanagedFieldDeclarationComposite( org.lgna.project.ast.UserType< ? > declarationType ) {
+		super( 
+				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
+				declarationType, 
+				ApplicabilityStatus.EDITABLE, false, 
+				ApplicabilityStatus.EDITABLE, null 
+		);
+	}
+	@Override
+	protected boolean isFieldFinal() {
+		return false;
+	}
+	@Override
+	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
+		return org.lgna.project.ast.ManagementLevel.NONE;
+	}
+	@Override
+	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
+		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
 	}
 }
