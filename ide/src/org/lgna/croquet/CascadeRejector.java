@@ -40,73 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuItem extends ViewController< javax.swing.JMenuItem, org.lgna.croquet.CascadeItem< ?,? > > {
-	private final org.lgna.croquet.CascadeRoot<?,?> cascadeRoot;
-	private boolean isIconSet;
-	private javax.swing.Icon setIcon;
-	public CascadeMenuItem( org.lgna.croquet.CascadeItem< ?,? > model, org.lgna.croquet.CascadeRoot<?,?> cascadeRoot ) {
-		super( model );
-		this.cascadeRoot = cascadeRoot;
-	}
-	protected javax.swing.Icon getSetIcon() {
-		return this.setIcon;
-	}
-	public boolean isIconSet() {
-		return this.isIconSet;
-	}
-	public void setIconSet( boolean isIconSet ) {
-		this.isIconSet = isIconSet;
-	}
-	public javax.swing.Icon getIcon() {
-		return this.getAwtComponent().getIcon();
-	}
-	public void setIcon( javax.swing.Icon icon ) {
-		this.setIconSet( true );
-		this.setIcon = icon;
-	}
-	@Override
-	protected javax.swing.JMenuItem createAwtComponent() {
-		return new javax.swing.JMenuItem() {
-			@Override
-			public javax.swing.Icon getIcon() {
-				//note: much of the cascading menu system leverages icons
-//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
-					if( CascadeMenuItem.this.isIconSet() ) {
-						return CascadeMenuItem.this.getSetIcon();
-					} else {
-						return super.getIcon();
-					}
-//				} else {
-//					return null;
-//				}
-			}
-//			@Override
-//			protected void processMouseEvent( java.awt.event.MouseEvent e ) {
-//				int id = e.getID();
-//				boolean isRejected = false;
-//				if( cascadeRoot != null ) {
-//					if( cascadeRoot.getCascadeRejectorCount() > 0 ) {
-//						if( id == java.awt.event.MouseEvent.MOUSE_PRESSED || id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
-//							isRejected = //todo;
-//						}
-//					}
-//				}
-//				if( isRejected ) {
-//					if( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
-//						edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( e.getComponent(), java.awt.dnd.DragSource.DefaultMoveNoDrop );
-//					} else {
-//						edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
-//					}
-//				} else {
-//					super.processMouseEvent( e );
-//				}
-//			}
-		};
-	}
+public interface CascadeRejector {
+	public boolean isRejected( org.lgna.croquet.edits.Edit edit );
 }

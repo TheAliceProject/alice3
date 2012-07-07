@@ -131,7 +131,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		}
 	}
 	private final InternalPopupPrepModel< T > popupPrepModel = new InternalPopupPrepModel< T >( this );
-
+	private final java.util.List<CascadeRejector> cascadeRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private String text;
 	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
@@ -148,6 +148,23 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		super.localize();
 		this.text = this.findDefaultLocalizedText();
 	}
+	
+	public final int getCascadeRejectorCount() {
+		return this.cascadeRejectors.size();
+	}
+	public void addCascadeRejector( CascadeRejector cascadeRejector ) {
+		this.cascadeRejectors.add( cascadeRejector );
+	}
+	public void removeCascadeRejector( CascadeRejector cascadeRejector ) {
+		this.cascadeRejectors.remove( cascadeRejector );
+	}
+	public void clearCascadeRejectors() {
+		this.cascadeRejectors.clear();
+	}
+	public java.util.List<org.lgna.croquet.CascadeRejector> getCascadeRejectors() {
+		return java.util.Collections.unmodifiableList( this.cascadeRejectors );
+	}
+	
 	
 	public InternalPopupPrepModel< T > getPopupPrepModel() {
 		return this.popupPrepModel;
