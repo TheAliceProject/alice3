@@ -101,7 +101,10 @@ public class CascadeMenuItem extends ViewController< javax.swing.JMenuItem, org.
 //					}
 //				} else if( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
 //					if( this.pushedCursor != null ) {
-//						edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
+//						java.awt.Cursor poppedCursor = edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
+//						if( this.pushedCursor != poppedCursor ) {
+//							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.pushedCursor, poppedCursor );
+//						}
 //						this.pushedCursor = null;
 //						isSuperRequired = false;
 //					}

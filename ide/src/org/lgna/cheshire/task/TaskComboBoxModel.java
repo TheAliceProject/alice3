@@ -62,7 +62,11 @@ public class TaskComboBoxModel extends edu.cmu.cs.dennisc.javax.swing.models.Abs
 	}
 
 	public Task getSelectedItem() {
-		return this.tasks.get( this.index );
+		if( this.index >= 0 ) {
+			return this.tasks.get( this.index );
+		} else {
+			return null;
+		}
 	}
 	public void setSelectedItem(Object item) {
 		assert item == null || item instanceof Task : item;
