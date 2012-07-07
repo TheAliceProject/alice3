@@ -187,7 +187,6 @@ public abstract class ExpressionCascadeManager {
 		if( this.isApplicableForFillIn( desiredType, expressionType ) ) {
 			expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn< org.lgna.project.ast.Expression >( expression );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( desiredType, expressionType );
 			expressionFillIn = null;
 		}
 		if( this.isApplicableForPartFillIn( desiredType, expressionType ) ) {
