@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> extends CascadeBlankOwner< T[], T > {
+public abstract class CascadeRoot<T,CM extends CompletionModel> extends CascadeBlankOwner< T[], T > {
 	public static final class InternalPopupPrepModelResolver<T> extends IndirectResolver< InternalPopupPrepModel<T>, CascadeRoot<T,?> > {
 		private InternalPopupPrepModelResolver( CascadeRoot<T,?> indirect ) {
 			super( indirect );
@@ -202,12 +202,12 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 
 	public abstract CompletionModel getCompletionModel();
 	public abstract Class< T > getComponentType();
-	public abstract CS createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
-	protected abstract org.lgna.croquet.edits.Edit createEdit( CS completionStep, T[] values );
+	public abstract org.lgna.croquet.history.CompletionStep< CM > createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< CM > completionStep, T[] values );
 
 	public abstract void prologue();
 	public abstract void epilogue();
-	public final void handleCompletion( CS completionStep, T[] values ) {
+	public final void handleCompletion( org.lgna.croquet.history.CompletionStep< CM > completionStep, T[] values ) {
 		try {
 			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep, values );
 			if( edit != null ) {
@@ -219,7 +219,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			this.getPopupPrepModel().handleFinally();
 		}
 	}
-	public final void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+	public final void handleCancel( org.lgna.croquet.history.CompletionStep< CM > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {
 			if( completionStep != null ) {
 				completionStep.cancel();

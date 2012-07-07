@@ -47,12 +47,12 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class CascadeMenuItem extends ViewController< javax.swing.JMenuItem, org.lgna.croquet.CascadeItem< ?,? > > {
-	private final org.lgna.croquet.CascadeRoot<?,?> cascadeRoot;
+	private final org.lgna.croquet.cascade.RtRoot<?,?> rtRoot;
 	private boolean isIconSet;
 	private javax.swing.Icon setIcon;
-	public CascadeMenuItem( org.lgna.croquet.CascadeItem< ?,? > model, org.lgna.croquet.CascadeRoot<?,?> cascadeRoot ) {
+	public CascadeMenuItem( org.lgna.croquet.CascadeItem< ?,? > model, org.lgna.croquet.cascade.RtRoot<?,?> rtRoot ) {
 		super( model );
-		this.cascadeRoot = cascadeRoot;
+		this.rtRoot = rtRoot;
 	}
 	protected javax.swing.Icon getSetIcon() {
 		return this.setIcon;
@@ -73,6 +73,7 @@ public class CascadeMenuItem extends ViewController< javax.swing.JMenuItem, org.
 	@Override
 	protected javax.swing.JMenuItem createAwtComponent() {
 		return new javax.swing.JMenuItem() {
+			private java.awt.Cursor pushedCursor;
 			@Override
 			public javax.swing.Icon getIcon() {
 				//note: much of the cascading menu system leverages icons
@@ -89,21 +90,23 @@ public class CascadeMenuItem extends ViewController< javax.swing.JMenuItem, org.
 //			@Override
 //			protected void processMouseEvent( java.awt.event.MouseEvent e ) {
 //				int id = e.getID();
-//				boolean isRejected = false;
-//				if( cascadeRoot != null ) {
-//					if( cascadeRoot.getCascadeRejectorCount() > 0 ) {
-//						if( id == java.awt.event.MouseEvent.MOUSE_PRESSED || id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
-//							isRejected = //todo;
+//				boolean isSuperRequired = true;
+//				if( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
+//					if( rtRoot != null ) {
+//						if( rtRoot.getElement().getCascadeRejectorCount() > 0 ) {
+//							this.pushedCursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
+//							edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( e.getComponent(), this.pushedCursor );
+//							isSuperRequired = false;
 //						}
 //					}
-//				}
-//				if( isRejected ) {
-//					if( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
-//						edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( e.getComponent(), java.awt.dnd.DragSource.DefaultMoveNoDrop );
-//					} else {
+//				} else if( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
+//					if( this.pushedCursor != null ) {
 //						edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
+//						this.pushedCursor = null;
+//						isSuperRequired = false;
 //					}
-//				} else {
+//				}
+//				if( isSuperRequired ) {
 //					super.processMouseEvent( e );
 //				}
 //			}
