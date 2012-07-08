@@ -205,7 +205,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		this.originalTransactionHistory.addListener( this.transactionListener );
 		this.setRetargeter( new org.lgna.cheshire.simple.AstLiveRetargeter() );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.LayerId.BELOW_POPUP_LAYER );
+		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.LayerId.ABOVE_POPUP_LAYER );
 	}
 
 	protected void handleTransactionCanceled() {
