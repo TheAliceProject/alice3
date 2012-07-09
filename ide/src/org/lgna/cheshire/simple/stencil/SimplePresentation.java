@@ -328,12 +328,16 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 								org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, popupPrepModel, org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance() );
 								chapterPage.refreshNotes();
 								if( chapterPage.isGoodToGo() ) {
-									if( completionModel instanceof org.alice.ide.declarationseditor.TypeState ) {
-										org.lgna.croquet.edits.Edit edit = completionStep.getEdit();
-										if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
-											org.lgna.croquet.edits.StateEdit stateEdit = (org.lgna.croquet.edits.StateEdit)edit;
+									org.lgna.croquet.edits.Edit edit = completionStep.getEdit();
+									if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
+										org.lgna.croquet.edits.StateEdit stateEdit = (org.lgna.croquet.edits.StateEdit)edit;
+										if( completionModel instanceof org.alice.ide.declarationseditor.TypeState ) {
 											org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)stateEdit.getNextValue();
 											org.lgna.croquet.MenuItemPrepModel[] stateValueMenuItemPrepModels = { org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) };
+											org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, null, stateValueMenuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
+										} else if( completionModel instanceof org.alice.ide.instancefactory.croquet.InstanceFactoryState ) {
+											org.alice.ide.instancefactory.InstanceFactory instanceFactory = (org.alice.ide.instancefactory.InstanceFactory)stateEdit.getNextValue();
+											org.lgna.croquet.MenuItemPrepModel[] stateValueMenuItemPrepModels = { org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( instanceFactory ) };
 											org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, null, stateValueMenuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
 										}
 									}
