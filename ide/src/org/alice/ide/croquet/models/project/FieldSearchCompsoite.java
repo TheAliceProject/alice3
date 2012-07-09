@@ -40,29 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project;
 
+import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.components.SplitPane;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
+public class FieldSearchCompsoite extends TabComposite<FieldSearchView> {
+	
+	public FieldSearchCompsoite() {
+		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
+	}
+	private FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
+	private FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
+
+	@Override
+	public boolean isCloseable() {
+		return false;
+	}
+	private SplitComposite splitComposite = new SplitComposite( java.util.UUID.fromString( "1d84857a-06b6-4b86-9169-33129731400c" ), treeComposite, referenceComposite ) {
+
+		@Override
+		protected SplitPane createView() {
+			return new SplitPane( this, 1 ) {
+			};
 		}
-		return rv;
+	};
+
+	@Override
+	protected org.alice.ide.croquet.models.project.FieldSearchView createView() {
+		return new FieldSearchView( this );
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.SearchDialogReferenceFirstComposite.getInstance( method ).getOperation().getMenuItemPrepModel()
-		);
+	public SplitComposite getSplitComposite() {
+		return this.splitComposite;
 	}
+
+	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
+		treeComposite.addListener( listener );
+	}
+
 }

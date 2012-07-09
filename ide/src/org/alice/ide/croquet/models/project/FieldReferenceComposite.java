@@ -40,29 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
+import org.lgna.project.ast.FieldAccess;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
+public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView> implements ValueListener<FieldReferenceSearchTreeNode> {
+
+	private ListSelectionState<FieldAccess> references = createListSelectionState( createKey( "references" ), FieldAccess.class, new ItemCodec<FieldAccess>() {
+
+		public Class<FieldAccess> getValueClass() {
+			return FieldAccess.class;
 		}
-		return rv;
+
+		public FieldAccess decodeValue( BinaryDecoder binaryDecoder ) {
+			return null;
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, FieldAccess value ) {
+		}
+
+		public StringBuilder appendRepresentation( StringBuilder rv, FieldAccess value ) {
+			rv.append( value );
+			return rv;
+		}
+
+	}, -1 );
+
+	public FieldReferenceComposite( FieldSearchCompsoite fieldSearchCompsoite ) {
+		super( java.util.UUID.fromString( "50a45fd7-6ec1-4549-8131-1da15ddac7fb" ) );
+		fieldSearchCompsoite.addListener( this );
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.SearchDialogReferenceFirstComposite.getInstance( method ).getOperation().getMenuItemPrepModel()
-		);
+	public void changing( State<FieldReferenceSearchTreeNode> state, FieldReferenceSearchTreeNode prevValue, FieldReferenceSearchTreeNode nextValue, boolean isAdjusting ) {
 	}
+
+	public void changed( State<FieldReferenceSearchTreeNode> state, FieldReferenceSearchTreeNode prevValue, FieldReferenceSearchTreeNode nextValue, boolean isAdjusting ) {
+		List<FieldAccess> nextReferences = nextValue.getReferences();
+		Logger.outln( Arrays.toString( nextReferences.toArray() ) );
+		this.references.setListData( -1, nextReferences );
+	}
+
+	@Override
+	protected FieldReferenceView createView() {
+		return new FieldReferenceView( this );
+	}
+
+	public ListSelectionState<FieldAccess> getReferences() {
+		return this.references;
+	}
+
 }

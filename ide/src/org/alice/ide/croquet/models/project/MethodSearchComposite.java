@@ -40,29 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project;
 
+import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.components.SplitPane;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+public class MethodSearchComposite extends TabComposite<MethodSearchView> {
+
+	SearchComposite searchComposite = new SearchComposite();
+	ReferencesComposite referencesComposite = new ReferencesComposite( searchComposite );
+
+	public MethodSearchComposite() {
+		super( java.util.UUID.fromString( "46b72f34-c4db-4139-b430-8f4385d599d1" ) );
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.SearchDialogReferenceFirstComposite.getInstance( method ).getOperation().getMenuItemPrepModel()
-		);
+	@Override
+	public boolean isCloseable() {
+		return false;
 	}
+
+	private SplitComposite splitComposite = new SplitComposite( java.util.UUID.fromString( "ceca399e-d894-4d38-90cc-a48a3f567759" ), searchComposite, referencesComposite ) {
+
+		@Override
+		protected SplitPane createView() {
+			return new SplitPane( this, 1 ) {
+			};
+		}
+	};
+
+	@Override
+	protected MethodSearchView createView() {
+		return new MethodSearchView( this );
+	}
+
+	public SplitComposite getSplitComposite() {
+		return this.splitComposite;
+	}
+
 }

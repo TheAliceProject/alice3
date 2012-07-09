@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.lgna.croquet.ItemCodec;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.UserMethod;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class SearchTreeNode implements Comparable<SearchTreeNode> {
@@ -20,10 +23,10 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 	public SearchTreeNode( SearchTreeNode parent, AbstractMethod content ) {
 		this.parent = parent;
 		this.content = content;
-		this.isGenerated = (content instanceof UserMethod) && ((UserMethod) content).getManagementLevel().isGenerated();
+		this.isGenerated = (content instanceof UserMethod) && ((UserMethod)content).getManagementLevel().isGenerated();
 	}
-	
-	public boolean getIsGenerated(){
+
+	public boolean getIsGenerated() {
 		return isGenerated;
 	}
 
@@ -63,7 +66,7 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 
 	public void addChild( SearchTreeNode searchTreeNode ) {
 		this.children.add( searchTreeNode );
-		java.util.Collections.sort(children);
+		java.util.Collections.sort( children );
 	}
 
 	@Override
@@ -114,5 +117,39 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 			return new Integer( getDepth() ).compareTo( new Integer( o.getDepth() ) );
 		}
 		return content.getName().compareTo( o.getContent().getName() );
+	}
+
+	public SearchTreeNode find( UserMethod method ) {
+		if( this.content.equals( method ) ) {
+			return this;
+		}
+		for( SearchTreeNode child : children ) {
+			SearchTreeNode find = child.find( method );
+			if( find != null ) {
+				return find;
+			}
+		}
+		return null;
+	}
+
+	public static ItemCodec<SearchTreeNode> getNewItemCodec() {
+		return new ItemCodec<SearchTreeNode>(){
+
+			public Class<SearchTreeNode> getValueClass() {
+				return null;
+			}
+
+			public SearchTreeNode decodeValue( BinaryDecoder binaryDecoder ) {
+				return null;
+			}
+
+			public void encodeValue( BinaryEncoder binaryEncoder, SearchTreeNode value ) {
+			}
+
+			public StringBuilder appendRepresentation( StringBuilder rv, SearchTreeNode value ) {
+				return null;
+			}
+			
+		};
 	}
 }

@@ -43,8 +43,6 @@
 package org.alice.ide.croquet.models.project;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -55,7 +53,6 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.TabComposite;
-import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -65,18 +62,26 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
  * @author Matt May
  */
 public class SearchComposite extends TabComposite<SearchView> {
-	
+
 	private StringState searchState = createStringState( createKey( "searchState" ) );
 	private BooleanState showGenerated = createBooleanState( createKey( "showGenerated" ), false );
 	private BooleanState showProcedure = createBooleanState( createKey( "showProcedure" ), true );
 	private BooleanState showFunctions = createBooleanState( createKey( "showFunctions" ), true );
 	private final SearchDialogManager manager;
+	private boolean isJumpDesired = true;
 
-	public SearchComposite( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
+//	private static class SingletonHolder{
+//		public static SearchComposite instance = new SearchComposite();
+//	}
+//
+//	public static SearchComposite getInstance() {
+//		return SingletonHolder.instance;
+//	}
+	public SearchComposite() {
 		super( java.util.UUID.fromString( "8f75a1e2-805d-4d9f-bef6-099204fe8d60" ) );
-		manager = new SearchDialogManager( methodParentMap );
+		manager = new SearchDialogManager();
 	}
-	
+
 	public BooleanState getShowGenerated() {
 		return this.showGenerated;
 	}
@@ -100,7 +105,7 @@ public class SearchComposite extends TabComposite<SearchView> {
 	public void addSelectedListener( ValueListener<SearchTreeNode> listener ) {
 		manager.addValueListener( listener );
 	}
-	
+
 	public StringState getStringState() {
 		return this.searchState;
 	}
@@ -110,7 +115,7 @@ public class SearchComposite extends TabComposite<SearchView> {
 	}
 
 	public class SearchDialogManager extends SearchTreeManager implements ValueListener<String> {
-		
+
 		private ValueListener<Boolean> booleanListener = new ValueListener<Boolean>() {
 
 			public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -123,7 +128,7 @@ public class SearchComposite extends TabComposite<SearchView> {
 				manager.changed( getStringState(), searchState.getValue(), searchState.getValue(), true );
 			}
 		};
-		
+
 		public ValueListener<Boolean> getBooleanListener() {
 			return this.booleanListener;
 		}
@@ -136,7 +141,7 @@ public class SearchComposite extends TabComposite<SearchView> {
 			public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
 				if( state.getValue() != prevValue ) {
 					SearchTreeNode selection = state.getValue();
-					if( selection != null ) {
+					if( selection != null && isJumpDesired ) {
 						selection.invokeOperation();
 					}
 				}
@@ -144,8 +149,8 @@ public class SearchComposite extends TabComposite<SearchView> {
 
 		};
 
-		public SearchDialogManager( Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap ) {
-			super( java.util.UUID.fromString( "bb4777b7-20df-4d8d-b214-92acd390fdde" ), methodParentMap );
+		public SearchDialogManager() {
+			super( java.util.UUID.fromString( "bb4777b7-20df-4d8d-b214-92acd390fdde" ) );
 
 			searchState.addValueListener( this );
 			this.addValueListener( adapter );
@@ -153,7 +158,7 @@ public class SearchComposite extends TabComposite<SearchView> {
 			SearchComposite.this.showProcedure.addValueListener( booleanListener );
 			SearchComposite.this.showGenerated.addValueListener( booleanListener );
 		}
-		
+
 		public void changing( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
 		}
 
@@ -183,5 +188,15 @@ public class SearchComposite extends TabComposite<SearchView> {
 			this.refreshAll();
 			setProperExpandedLevels( root );
 		}
+	}
+
+	public SearchTreeNode setSelected( UserMethod method ) {
+		SearchTreeNode find = manager.root.find(method);
+		manager.setValue( find );
+		return find;
+	}
+
+	public void setJumpDesired( boolean b ) {
+		this.isJumpDesired= b;
 	}
 }

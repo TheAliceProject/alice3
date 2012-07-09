@@ -40,29 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project;
 
+import org.alice.ide.croquet.models.project.views.FieldReferenceTreeView;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.State.ValueListener;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+public class FieldReferenceTreeComposite extends SimpleComposite<FieldReferenceTreeView> {
+
+	private InstanceSearchTreeManager manager = new InstanceSearchTreeManager( null );
+
+	public FieldReferenceTreeComposite() {
+		super( java.util.UUID.fromString( "dbddb7d3-59f4-4128-9168-442570945410" ) );
+	}
+	
+	public InstanceSearchTreeManager getManager() {
+		return this.manager;
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.SearchDialogReferenceFirstComposite.getInstance( method ).getOperation().getMenuItemPrepModel()
-		);
+	@Override
+	protected FieldReferenceTreeView createView() {
+		return new FieldReferenceTreeView( this );
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		manager.refresh();
+	}
+
+	public void addListener( ValueListener<FieldReferenceSearchTreeNode> fieldReferenceComposite ) {
+		manager.addValueListener( fieldReferenceComposite );
 	}
 }
