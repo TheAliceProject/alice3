@@ -116,4 +116,11 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		sb.append( "value=" );
 		sb.append( this.value );
 	}
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.Edit<?> edit ) {
+		rv.append( "<strong>" );
+		rv.append( this.value );
+		rv.append( "</strong>" );
+		return rv;
+	}
 }

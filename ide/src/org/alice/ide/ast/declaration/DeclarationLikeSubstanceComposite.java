@@ -125,35 +125,45 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		
 		if( details.declarationTypeStatus.isApplicable() ) {
 			this.declaringTypeState = new org.alice.ide.croquet.models.declaration.DeclaringTypeState( details.declarationTypeInitialValue );
-			this.declaringTypeState.setEnabled( details.declarationTypeStatus.isEditable() );
+			if( details.declarationTypeStatus.isDisplayed() ) {
+				this.declaringTypeState.setEnabled( details.declarationTypeStatus.isEditable() );
+			}
 		} else {
 			this.declaringTypeState = null;
 		}
 
 		if( details.valueComponentTypeStatus.isApplicable() ) {
 			this.valueComponentTypeState = new org.alice.ide.croquet.models.declaration.ValueComponentTypeState( details.valueComponentTypeInitialValue );
-			this.valueComponentTypeState.setEnabled( details.valueComponentTypeStatus.isEditable() );
+			if( details.valueComponentTypeStatus.isDisplayed() ) {
+				this.valueComponentTypeState.setEnabled( details.valueComponentTypeStatus.isEditable() );
+			}
 		} else {
 			this.valueComponentTypeState = null;
 		}
 
 		if( details.valueIsArrayTypeStatus.isApplicable() ) {
 			this.valueIsArrayTypeState = this.createBooleanState( this.createKey( "valueIsArrayTypeState" ), details.valueIsArrayTypeInitialValue );
-			this.valueIsArrayTypeState.setEnabled( details.valueIsArrayTypeStatus.isEditable() );
+			if( details.valueIsArrayTypeStatus.isDisplayed() ) {
+				this.valueIsArrayTypeState.setEnabled( details.valueIsArrayTypeStatus.isEditable() );
+			}
 		} else {
 			this.valueIsArrayTypeState = null;
 		}
 		
 		if( details.nameStatus.isApplicable() ) {
 			this.nameState = this.createStringState( this.createKey( "nameState" ), details.nameInitialValue );
-			this.nameState.setEnabled( details.nameStatus.isEditable() );
+			if( details.nameStatus.isDisplayed() ) {
+				this.nameState.setEnabled( details.nameStatus.isEditable() );
+			}
 		} else {
 			this.nameState = null;
 		}
 
 		if( details.initializerStatus.isApplicable() ) {
 			this.initializerState = this.createInitializerState( details.initializerInitialValue );
-			this.initializerState.setEnabled( details.initializerStatus.isEditable() );
+			if( details.initializerStatus.isDisplayed() ) {
+				this.initializerState.setEnabled( details.initializerStatus.isEditable() );
+			}
 		} else {
 			this.initializerState = null;
 		}
@@ -205,6 +215,9 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 	public boolean isValueIsArrayTypeStateDisplayed() {
 		return details.valueIsArrayTypeStatus.isDisplayed();
+	}
+	public boolean isInitializerDisplayed() {
+		return details.initializerStatus.isDisplayed();
 	}
 
 	public org.lgna.project.ast.UserType< ? > getDeclaringType() {

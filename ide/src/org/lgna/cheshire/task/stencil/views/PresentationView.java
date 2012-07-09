@@ -47,10 +47,28 @@ package org.lgna.cheshire.task.stencil.views;
  * @author Dennis Cosgrove
  */
 public class PresentationView extends org.lgna.croquet.components.LayerStencil {
+	private static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
+	private static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
+	private static java.awt.Paint createStencilPaint() {
+		int width = 8;
+		int height = 8;
+		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
+		g2.setColor( STENCIL_BASE_COLOR );
+		g2.fillRect( 0, 0, width, height );
+		g2.setColor( STENCIL_LINE_COLOR );
+		g2.drawLine( 0, height, width, 0 );
+		g2.fillRect( 0, 0, 1, 1 );
+		g2.dispose();
+		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+	}
+	private static final java.awt.Paint stencilPaint = createStencilPaint();
+
 	public PresentationView( org.lgna.cheshire.task.stencil.PresentationComposite composite ) {
 		super( composite.getWindow() );
 		org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
-		controlPanel.addComponent( composite.getPrevOperation().createButton() );
+		controlPanel.addComponent( composite.getPreviousOperation().createButton() );
 		controlPanel.addComponent( new TaskComboBox( composite.getTaskComboBoxModel(), this.getStencilsLayer().isAboveStencil() ) );
 		controlPanel.addComponent( composite.getNextOperation().createButton() );
 		
@@ -67,13 +85,15 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 	}
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {
-		return false;
+		return superContains;
 	}
 	@Override
 	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
 	}
 	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
+		g2.setPaint( stencilPaint );
+		g2.fill( g2.getClip() );
 	}
 	@Override
 	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {

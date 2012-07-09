@@ -47,24 +47,24 @@ package org.alice.ide.ast.declaration;
  */
 public final class FunctionDeclarationComposite extends MethodDeclarationComposite {
 	private static java.util.Map< org.lgna.project.ast.UserType<?>, FunctionDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FunctionDeclarationComposite getInstance( org.lgna.project.ast.UserType<?> declaratingType ) {
+	public static FunctionDeclarationComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		synchronized( map ) {
-			FunctionDeclarationComposite rv = map.get( declaratingType );
+			FunctionDeclarationComposite rv = map.get( declaringType );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new FunctionDeclarationComposite( declaratingType );
-				map.put( declaratingType, rv );
+				rv = new FunctionDeclarationComposite( declaringType );
+				map.put( declaringType, rv );
 			}
 			return rv;
 		}
 	}
-	private FunctionDeclarationComposite( org.lgna.project.ast.UserType<?> declaratingType ) {
+	private FunctionDeclarationComposite( org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
-			.declarationType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, declaratingType )
+			.declarationType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, declaringType )
 			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-			.name( new org.alice.ide.name.validators.MethodNameValidator( declaratingType ), ApplicabilityStatus.EDITABLE )
+			.name( new org.alice.ide.name.validators.MethodNameValidator( declaringType ), ApplicabilityStatus.EDITABLE )
 		);
 	}
 	@Override

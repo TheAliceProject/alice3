@@ -109,21 +109,22 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 					) );
 				}
 				
-				org.alice.ide.croquet.models.ExpressionState initializerState = composite.getInitializerState();
-				if( initializerState != null ) {
-					org.lgna.croquet.components.JComponent< ? > component;
-					if( initializerState.isEnabled() ) {
-						component = initializerState.createEditor( factory );
-					} else {
-						component = initializerState.createView( factory );
+				if( composite.isInitializerDisplayed() ) {
+					org.alice.ide.croquet.models.ExpressionState initializerState = composite.getInitializerState();
+					if( initializerState != null ) {
+						org.lgna.croquet.components.JComponent< ? > component;
+						if( initializerState.isEnabled() ) {
+							component = initializerState.createEditor( factory );
+						} else {
+							component = initializerState.createView( factory );
+						}
+						rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
+								initializerState.getSidekickLabel(), 
+								component,
+								false
+						) );
 					}
-					rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
-							initializerState.getSidekickLabel(), 
-							component,
-							false
-					) );
 				}
-				
 			}
 		};
 

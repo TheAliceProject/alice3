@@ -100,7 +100,6 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	public void setEnabled( boolean isEnabled ) {
 		this.action.setEnabled( isEnabled );
 	}
-	
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return rv;

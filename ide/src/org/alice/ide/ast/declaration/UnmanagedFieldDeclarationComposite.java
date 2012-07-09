@@ -41,71 +41,43 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomItemState< T > extends ItemState< T > {
-	public static class InternalRootResolver<T> extends IndirectResolver< InternalRoot<T>, CustomItemState<T> > {
-		private InternalRootResolver( CustomItemState<T> indirect ) {
-			super( indirect );
-		}
-		public InternalRootResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-		@Override
-		protected InternalRoot<T> getDirect( CustomItemState<T> indirect ) {
-			return indirect.getCascadeRoot();
-		}
-	}
-
-	public static class InternalRoot< T > extends org.lgna.croquet.CascadeRoot< T, CustomItemState<T> > {
-		private final CustomItemState< T > state;
-		private InternalRoot( CustomItemState< T > state, CascadeBlank< T >... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
-			this.state = state;
-		}
-		@Override
-		protected InternalRootResolver<T> createResolver() {
-			return new InternalRootResolver<T>( this.state );
-		}
-		@Override
-		public org.lgna.croquet.history.CompletionStep< CustomItemState<T> > createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this.state, trigger, null ); 
-		}
-		@Override
-		public Class< T > getComponentType() {
-			return this.state.getItemCodec().getValueClass();
-		}
-		@Override
-		public CustomItemState< T > getCompletionModel() {
-			return this.state;
-		}
-		@Override
-		public void prologue() {
-		}
-		@Override
-		public void epilogue() {
-		}
-		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values) {
-			return this.state.createEdit( completionStep, values[ 0 ] );
+public class UnmanagedFieldDeclarationComposite extends FieldDeclarationComposite {
+	private static java.util.Map< org.lgna.project.ast.UserType< ? >, UnmanagedFieldDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static UnmanagedFieldDeclarationComposite getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
+		synchronized( map ) {
+			UnmanagedFieldDeclarationComposite rv = map.get( declarationType );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new UnmanagedFieldDeclarationComposite( declarationType );
+				map.put( declarationType, rv );
+			}
+			return rv;
 		}
 	}
-	private final InternalRoot<T> root;
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > itemCodec, CascadeBlank< T >... blanks ) {
-		super( group, id, null, itemCodec );
-		this.root = new InternalRoot<T>( this, blanks );
-	}
-	public InternalRoot<T> getCascadeRoot() {
-		return this.root;
+	private UnmanagedFieldDeclarationComposite( org.lgna.project.ast.UserType< ? > declarationType ) {
+		super( 
+				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
+				declarationType, 
+				ApplicabilityStatus.EDITABLE, false, 
+				ApplicabilityStatus.EDITABLE, null 
+		);
 	}
 	@Override
-	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() );
+	protected boolean isFieldFinal() {
+		return false;
 	}
 	@Override
-	protected void localize() {
+	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
+		return org.lgna.project.ast.ManagementLevel.NONE;
+	}
+	@Override
+	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
+		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
 	}
 }

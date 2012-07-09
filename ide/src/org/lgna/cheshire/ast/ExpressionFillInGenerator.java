@@ -112,6 +112,9 @@ public class ExpressionFillInGenerator {
 				org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( bufferForCompletionStepSubTransactionHistory[ 0 ] );
 				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, composite.getCommitOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance(), null );
 			}
+		} else if( expression instanceof org.lgna.project.ast.BooleanLiteral ) {
+			org.lgna.project.ast.BooleanLiteral booleanLiteral = (org.lgna.project.ast.BooleanLiteral)expression;
+			fillIn = org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( booleanLiteral.value.getValue() );
 		} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();

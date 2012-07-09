@@ -48,8 +48,8 @@ package org.lgna.croquet.components;
  */
 @Deprecated
 public enum LayerId {
-	ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
-	BELOW_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
+	BELOW_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
+	ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
 
 	private int stencilLayer;
 
