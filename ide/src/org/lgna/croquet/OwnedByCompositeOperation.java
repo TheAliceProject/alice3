@@ -46,6 +46,19 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class OwnedByCompositeOperation extends ActionOperation {
+	public static final class Resolver extends IndirectResolver< OwnedByCompositeOperation, OperationOwningComposite<?> > {
+		private Resolver( OperationOwningComposite<?> indirect ) {
+			super( indirect );
+		}
+		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected OwnedByCompositeOperation getDirect( OperationOwningComposite<?> indirect ) {
+			return indirect.getOperation();
+		}
+	}
+
 	private final OperationOwningComposite composite;
 
 	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
@@ -88,5 +101,9 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
 		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
 		this.composite.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+	}
+	@Override
+	protected Resolver createResolver() {
+		return new Resolver( this.composite );
 	}
 }

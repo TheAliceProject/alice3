@@ -71,24 +71,7 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
 	private Map<UserMethod,InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
 
-	ItemCodec<UserMethod> codec = new ItemCodec<UserMethod>() {
-
-		public Class<UserMethod> getValueClass() {
-			return UserMethod.class;
-		}
-
-		public UserMethod decodeValue( BinaryDecoder binaryDecoder ) {
-			return null;
-		}
-
-		public void encodeValue( BinaryEncoder binaryEncoder, UserMethod value ) {
-		}
-
-		public StringBuilder appendRepresentation( StringBuilder rv, UserMethod value ) {
-			return rv.append( value.getName() );
-		}
-	};
-	private final ListSelectionState<UserMethod> listSelectionState = createListSelectionState( this.createKey( "userMethodList" ), UserMethod.class, codec, -1 );
+	private final ListSelectionState<UserMethod> listSelectionState = createListSelectionState( this.createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static final UserMethod dummy = new UserMethod();
 	private Integer maximum;
 

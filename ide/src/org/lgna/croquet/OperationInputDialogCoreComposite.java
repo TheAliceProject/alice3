@@ -47,12 +47,12 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final Operation operation;
+	private final OwnedByCompositeOperation operation;
 	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId );
 		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
-	public org.lgna.croquet.Operation getOperation() {
+	public OwnedByCompositeOperation getOperation() {
 		return this.operation;
 	}
 	@Override

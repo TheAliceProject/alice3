@@ -132,4 +132,8 @@ public final class ProcedureDeclarationComposite extends MethodDeclarationCompos
 		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
 		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( ownerTransactionHistory, method.body.getValue() );
 	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationComposite > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationComposite >( this, org.lgna.project.ast.UserType.class, this.getDeclaringType() );
+	}
 }

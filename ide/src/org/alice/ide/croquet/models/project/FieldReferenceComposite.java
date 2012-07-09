@@ -59,25 +59,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  */
 public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView> implements ValueListener<FieldReferenceSearchTreeNode> {
 
-	private ListSelectionState<FieldAccess> references = createListSelectionState( createKey( "references" ), FieldAccess.class, new ItemCodec<FieldAccess>() {
-
-		public Class<FieldAccess> getValueClass() {
-			return FieldAccess.class;
-		}
-
-		public FieldAccess decodeValue( BinaryDecoder binaryDecoder ) {
-			return null;
-		}
-
-		public void encodeValue( BinaryEncoder binaryEncoder, FieldAccess value ) {
-		}
-
-		public StringBuilder appendRepresentation( StringBuilder rv, FieldAccess value ) {
-			rv.append( value );
-			return rv;
-		}
-
-	}, -1 );
+	private ListSelectionState<FieldAccess> references = createListSelectionState( createKey( "references" ), FieldAccess.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.FieldAccess.class ), -1 );
 
 	public FieldReferenceComposite( FieldSearchCompsoite fieldSearchCompsoite ) {
 		super( java.util.UUID.fromString( "50a45fd7-6ec1-4549-8131-1da15ddac7fb" ) );
