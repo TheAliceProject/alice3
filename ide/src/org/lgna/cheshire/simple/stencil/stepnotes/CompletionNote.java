@@ -50,19 +50,24 @@ public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel>
 	public CompletionNote( org.lgna.croquet.history.CompletionStep<M> step ) {
 		super( step );
 	}
-//	@Override
-//	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
-//		//todo
-//		if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-//			org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
-//			org.lgna.croquet.Model candidateModel = editCommittedEvent.getNode().getModel();
-//			return this.isCorrectModel( candidateModel ) || this.isCorrectModelClass( candidateModel );
-//		} else if( event instanceof org.lgna.croquet.history.event.FinishedEvent ) {
-//			org.lgna.croquet.history.event.FinishedEvent finishedEvent = (org.lgna.croquet.history.event.FinishedEvent)event;
-//			org.lgna.croquet.Model candidateModel = finishedEvent.getNode().getModel();
-//			return this.isCorrectModel( candidateModel ) || this.isCorrectModelClass( candidateModel );
-//		} else {
-//			return false;
-//		}
-//	}
+	@Override
+	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
+		org.lgna.croquet.history.CompletionStep<?> completionStep = this.getStep();
+		org.lgna.croquet.history.TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
+		if( subTransactionHistory != null ) {
+			return super.isWhatWeveBeenWaitingFor( event );
+		} else {
+			if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+				org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
+				org.lgna.croquet.Model candidateModel = editCommittedEvent.getNode().getModel();
+				return this.isCorrectModel( candidateModel ) || this.isCorrectModelClass( candidateModel );
+			} else if( event instanceof org.lgna.croquet.history.event.FinishedEvent ) {
+				org.lgna.croquet.history.event.FinishedEvent finishedEvent = (org.lgna.croquet.history.event.FinishedEvent)event;
+				org.lgna.croquet.Model candidateModel = finishedEvent.getNode().getModel();
+				return this.isCorrectModel( candidateModel ) || this.isCorrectModelClass( candidateModel );
+			} else {
+				return false;
+			}
+		}
+	}
 }
