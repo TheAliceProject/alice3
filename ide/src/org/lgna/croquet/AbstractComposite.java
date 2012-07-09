@@ -47,18 +47,79 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractComposite< V extends org.lgna.croquet.components.View< ?, ? > > extends AbstractElement implements Composite<V> {
-	protected static class Key {
-		private final Composite<?> composite;
+	protected static final class Key {
+		private final AbstractComposite<?> composite;
 		private final String localizationKey;
-		public Key( Composite<?> composite, String localizationKey ) {
+		private Key( AbstractComposite<?> composite, String localizationKey ) {
 			this.composite = composite;
 			this.localizationKey = localizationKey;
 		}
-		public Composite<?> getComposite() {
+		public AbstractComposite<?> getComposite() {
 			return this.composite;
 		}
 		public String getLocalizationKey() {
 			return this.localizationKey;
+		}
+		@Override
+		public boolean equals( Object o ) {
+			if( o == this )
+				return true;
+			if( o instanceof Key ) {
+				Key key = (Key)o;
+				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.composite, key.composite ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.localizationKey, key.localizationKey );
+			} else {
+				return false;
+			}
+		}
+		@Override
+		public int hashCode() {
+			int rv = 17;
+			if( this.composite != null ) {
+				rv = 37*rv + this.composite.hashCode();
+			}
+			if( this.localizationKey != null ) {
+				rv = 37*rv + this.localizationKey.hashCode();
+			}
+			return rv;
+		}
+	}
+
+	public static abstract class KeyResolver<M extends Model> implements org.lgna.croquet.resolvers.Resolver<M> {
+		private org.lgna.croquet.resolvers.Resolver<AbstractComposite<?>> compositeResolver;
+		private final String localizationKey;
+		public KeyResolver( Key key ) {
+			this.compositeResolver = key.composite.getResolver();
+			this.localizationKey = key.localizationKey;
+		}
+		public KeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			this.compositeResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			this.localizationKey = binaryDecoder.decodeString();
+		}
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			binaryEncoder.encode( this.compositeResolver );
+			binaryEncoder.encode( this.localizationKey );
+		}
+		protected abstract M getResolved( Key key );
+		public final M getResolved() {
+			AbstractComposite<?> composite = this.compositeResolver.getResolved();
+			Key key = new Key( composite, this.localizationKey );
+			return this.getResolved( key );
+		}
+		public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+			this.compositeResolver.retarget( retargeter );
+		}
+	}
+	
+	public static final class StringStateKeyResolver extends KeyResolver<StringState> {
+		public StringStateKeyResolver( Key key ) {
+			super( key );
+		}
+		public StringStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected org.lgna.croquet.StringState getResolved( org.lgna.croquet.AbstractComposite.Key key ) {
+			return key.getComposite().mapKeyToStringState.get( key );
 		}
 	}
 	
@@ -122,6 +183,10 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+		@Override
+		protected StringStateKeyResolver createResolver() {
+			return new StringStateKeyResolver( this.getKey() );
 		}
 	}
 	private static final class InternalBooleanState extends BooleanState {

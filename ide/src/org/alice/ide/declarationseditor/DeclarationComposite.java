@@ -57,7 +57,7 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 			if( declaration != null ) {
 				throw new RuntimeException( "todo " + declaration );
 			} else {
-				throw new NullPointerException();
+				return null;
 			}
 		}
 	}

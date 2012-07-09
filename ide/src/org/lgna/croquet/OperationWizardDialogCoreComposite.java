@@ -47,12 +47,12 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.components.BorderPanel> {
-	private final Operation operation;
+	private final OwnedByCompositeOperation operation;
 	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
 		super( migrationId, wizardPages );
 		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
-	public org.lgna.croquet.Operation getOperation() {
+	public OwnedByCompositeOperation getOperation() {
 		return this.operation;
 	}
 	@Override

@@ -49,6 +49,13 @@ package org.lgna.cheshire.task;
 public class TaskComboBoxModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel<Task> implements javax.swing.ComboBoxModel {
 	private final java.util.List<Task> tasks = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private int index = -1;
+	public TaskComboBoxModel() {
+		org.lgna.croquet.history.TransactionHistory history = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( org.lgna.cheshire.test.TransactionHistoryGeneratorTest.TEMPORARY_HACK_lastGeneratedTransactionHistoryFile, org.lgna.croquet.history.TransactionHistory.class );
+		for( org.lgna.croquet.history.Transaction transaction : history ) {
+			tasks.add( new Task( transaction ) );
+		}
+		this.index = 0;
+	}
 	public void insertRecoveryTransaction( org.lgna.croquet.history.Transaction transaction ) {
 		Task currentTask = this.getSelectedItem();
 		currentTask.insertRecoveryTransaction( transaction );

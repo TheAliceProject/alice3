@@ -46,6 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface OperationOwningComposite< V extends org.lgna.croquet.components.View<?,?>> extends Composite<V> {
+	public OwnedByCompositeOperation getOperation();
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
 	public boolean isSubTransactionHistoryRequired();
 	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );

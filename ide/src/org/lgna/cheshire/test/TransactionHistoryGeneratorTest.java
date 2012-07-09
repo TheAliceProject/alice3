@@ -88,6 +88,9 @@ public class TransactionHistoryGeneratorTest {
 		return method;
 	}
 
+	
+	public static final java.io.File TEMPORARY_HACK_lastGeneratedTransactionHistoryFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "lastGeneratedTransactionHistory.bin" );
+	
 	public void generate( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
@@ -109,6 +112,12 @@ public class TransactionHistoryGeneratorTest {
 		org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), methodToGenerate );
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
 		this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation, myFirstMethod, field );
+
+		try {
+			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.reuseTransactionHistory, TEMPORARY_HACK_lastGeneratedTransactionHistoryFile );
+		} catch( Throwable t ) {
+			t.printStackTrace();
+		}
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getReuseTransactionHistory() {
