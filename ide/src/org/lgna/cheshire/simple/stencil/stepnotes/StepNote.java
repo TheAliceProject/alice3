@@ -78,28 +78,37 @@ public abstract class StepNote<S extends org.lgna.croquet.history.Step<?>> exten
 		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
 		return this.step.getTutorialNoteText( edit );
 	}
+	protected boolean isCorrectModel( org.lgna.croquet.Model candidateModel ) {
+		org.lgna.croquet.Model correctModel = this.getStep().getModel();
+		return correctModel == candidateModel;
+	}
+	protected boolean isCorrectModelClass( org.lgna.croquet.Model candidateModel ) {
+		org.lgna.croquet.Model correctModel = this.getStep().getModel();
+		if( correctModel != null ) {
+			if( candidateModel != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "correct model class", correctModel, candidateModel );
+				return correctModel.getClass() == candidateModel.getClass();
+			} else {
+				return false;
+			}
+		} else {
+			if( candidateModel != null ) {
+				return false;
+			} else {
+				//todo?
+				return true;
+			}
+		}
+	}
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
 		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {
 			org.lgna.croquet.history.event.AddStepEvent stepAddedEvent = (org.lgna.croquet.history.event.AddStepEvent)event;
-			if( this.getStep().getModel() == stepAddedEvent.getStep().getModel() ) {
+			org.lgna.croquet.Model candidateModel = stepAddedEvent.getStep().getModel();
+			if( this.isCorrectModel( candidateModel ) ) {
 				return true;
 			} else {
-				//todo
-				if( stepAddedEvent.getStep().getModel() != null ) {
-					try {
-						if( this.getStep().getModel().getClass() == stepAddedEvent.getStep().getModel().getClass() ) {;
-							edu.cmu.cs.dennisc.java.util.logging.Logger.info( this.getStep().getModel() == stepAddedEvent.getStep().getModel(), this.getStep().getModel(), stepAddedEvent.getStep().getModel() );
-							return true;
-						} else {
-							return false;
-						}
-					} catch( NullPointerException npe ) {
-						return false;
-					}
-				} else {
-					return false;
-				}
+				return this.isCorrectModelClass( candidateModel );
 			}
 		} else {
 			return false;

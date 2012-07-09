@@ -92,13 +92,6 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 		return this.local.getValueType();
 	}
 	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "this." );
-//		sb.append( "<strong>" );
-		sb.append( this.local.getName() );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
+		return this.local.getValidName();
 	}
 }

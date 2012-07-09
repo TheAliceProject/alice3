@@ -50,15 +50,19 @@ public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel>
 	public CompletionNote( org.lgna.croquet.history.CompletionStep<M> step ) {
 		super( step );
 	}
-	@Override
-	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
-		//todo
-		if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
-			return true;
-		} else if( event instanceof org.lgna.croquet.history.event.FinishedEvent ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+//	@Override
+//	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
+//		//todo
+//		if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+//			org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
+//			org.lgna.croquet.Model candidateModel = editCommittedEvent.getNode().getModel();
+//			return this.isCorrectModel( candidateModel ) || this.isCorrectModelClass( candidateModel );
+//		} else if( event instanceof org.lgna.croquet.history.event.FinishedEvent ) {
+//			org.lgna.croquet.history.event.FinishedEvent finishedEvent = (org.lgna.croquet.history.event.FinishedEvent)event;
+//			org.lgna.croquet.Model candidateModel = finishedEvent.getNode().getModel();
+//			return this.isCorrectModel( candidateModel ) || this.isCorrectModelClass( candidateModel );
+//		} else {
+//			return false;
+//		}
+//	}
 }
