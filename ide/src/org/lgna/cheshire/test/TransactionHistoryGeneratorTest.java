@@ -88,8 +88,10 @@ public class TransactionHistoryGeneratorTest {
 		return method;
 	}
 
-	
+
+	private static final boolean TEMPORARY_HACK_isStoringDesired = false;
 	public static final java.io.File TEMPORARY_HACK_lastGeneratedTransactionHistoryFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "lastGeneratedTransactionHistory.bin" );
+	public static final java.io.File TEMPORARY_HACK_lastGeneratedProjectFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "lastGeneratedProject.a3p" );
 	
 	public void generate( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
@@ -113,10 +115,13 @@ public class TransactionHistoryGeneratorTest {
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
 		this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation, myFirstMethod, field );
 
-		try {
-			edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.reuseTransactionHistory, TEMPORARY_HACK_lastGeneratedTransactionHistoryFile );
-		} catch( Throwable t ) {
-			t.printStackTrace();
+		if( TEMPORARY_HACK_isStoringDesired ) {
+			try {
+				org.lgna.project.io.IoUtilities.writeProject( TEMPORARY_HACK_lastGeneratedProjectFile, project );
+				edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.reuseTransactionHistory, TEMPORARY_HACK_lastGeneratedTransactionHistoryFile );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
 		}
 	}
 

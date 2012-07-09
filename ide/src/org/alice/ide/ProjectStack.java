@@ -40,48 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.codecs;
+
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.croquet.ItemCodec< T > {
-	private static java.util.Map< Class<?>, NodeCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends org.lgna.project.ast.Node > NodeCodec< T > getInstance( Class< T > cls ) {
-		NodeCodec< ? > rv = map.get( cls );
-		if( rv != null ) {
-			//pass
+public class ProjectStack {
+	private ProjectStack() {
+		throw new AssertionError();
+	}
+	private static final java.util.Stack<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	
+	public static org.lgna.project.Project peekProject() {
+		if( projectStack.size() > 0 ) {
+			return projectStack.peek();
 		} else {
-			rv = new NodeCodec< T >( cls );
-		}
-		return (NodeCodec< T >)rv;
-	}
-	private Class<T> valueCls;
-	private NodeCodec( Class<T> valueCls ) {
-		this.valueCls = valueCls;
-	}
-	public Class< T > getValueClass() {
-		return this.valueCls;
-	}
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			java.util.UUID id = binaryDecoder.decodeId();
-			org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-			return org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
-		} else {
-			return null;
+			return IDE.getActiveInstance().getProject();
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getId() );
-		}
+	public static void pushProject( org.lgna.project.Project project ) {
+		projectStack.push( project );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, value, org.lgna.croquet.Application.getLocale() );
-		return rv;
+	public static org.lgna.project.Project popProject() {
+		return projectStack.pop();
+	}
+	public static org.lgna.project.Project popAndCheckProject( org.lgna.project.Project expectedProject ) {
+		org.lgna.project.Project poppedProject = popProject();
+		if( poppedProject != expectedProject ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( poppedProject, expectedProject );
+		}
+		return poppedProject;
 	}
 }

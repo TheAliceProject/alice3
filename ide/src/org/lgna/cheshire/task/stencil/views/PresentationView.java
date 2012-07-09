@@ -81,7 +81,7 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 	@Override
 	@java.lang.Deprecated
 	protected org.lgna.croquet.components.LayerId getStencilsLayer() {
-		return org.lgna.croquet.components.LayerId.ABOVE_POPUP_LAYER;
+		return org.lgna.croquet.components.LayerId.BELOW_POPUP_LAYER;
 	}
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {

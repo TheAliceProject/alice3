@@ -94,6 +94,7 @@ public final class PresentationComposite extends org.lgna.croquet.SimpleComposit
 
 		final org.alice.stageide.StageIDE app = new org.alice.stageide.StageIDE();
 		app.initialize( args );
+		
 		app.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p" ) );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -102,7 +103,7 @@ public final class PresentationComposite extends org.lgna.croquet.SimpleComposit
 				frame.setSize( 1280, 800 );
 				org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel = new org.lgna.cheshire.task.TaskComboBoxModel();
 				PresentationComposite composite = new PresentationComposite( frame, taskComboBoxModel );
-				frame.getAbovePopupLayer().setComponent( composite.getView() );
+				frame.getBelowPopupLayer().setComponent( composite.getView() );
 				
 				//frame.setMainComposite( composite );
 				frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );

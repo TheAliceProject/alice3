@@ -66,8 +66,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		this.index = index;
 	}
 	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		java.util.UUID id = binaryDecoder.decodeId();
 		this.blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
 		assert this.blockStatement != null;
@@ -89,8 +88,8 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
 		if( this.blockStatement != replacementBlockStatement ) {
 			BlockStatementIndexPair rv = new BlockStatementIndexPair( replacementBlockStatement, this.index );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "original:", this, this.hashCode() );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacement:", rv, rv.hashCode() );
+//			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "original:", this, this.hashCode() );
+//			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacement:", rv, rv.hashCode() );
 			return rv;
 		} else {
 			return this;
