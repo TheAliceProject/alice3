@@ -40,21 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.views;
+package org.alice.ide.croquet.models.project;
 
-import org.alice.ide.croquet.models.project.FieldReferenceSearchTreeNode;
-import org.alice.ide.croquet.models.project.FieldSearchCompsoite;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Tree;
 
 /**
  * @author Matt May
  */
-public class FieldSearchView extends BorderPanel {
+public class MethodSearchView extends BorderPanel {
 
-	public FieldSearchView( FieldSearchCompsoite composite ) {
-		Tree<FieldReferenceSearchTreeNode> tree = composite.getManager().createTree();
-		this.addCenterComponent( tree );
+	public MethodSearchView( MethodSearchComposite composite ) {
+		super( composite );
+		this.addCenterComponent( composite.getSplitComposite().getView() );
 	}
 
+	
+	
 }

@@ -42,46 +42,37 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import org.lgna.croquet.SplitComposite;
+import org.alice.ide.croquet.models.project.views.FieldReferenceTreeView;
+import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.components.SplitPane;
 
 /**
  * @author Matt May
  */
-public class FieldSearchCompsoite extends TabComposite<FieldSearchView> {
+public class FieldReferenceTreeComposite extends SimpleComposite<FieldReferenceTreeView> {
+
+	private InstanceSearchTreeManager manager = new InstanceSearchTreeManager( null );
+
+	public FieldReferenceTreeComposite() {
+		super( java.util.UUID.fromString( "dbddb7d3-59f4-4128-9168-442570945410" ) );
+	}
 	
-	public FieldSearchCompsoite() {
-		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
+	public InstanceSearchTreeManager getManager() {
+		return this.manager;
 	}
-	private FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
-	private FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
 
 	@Override
-	public boolean isCloseable() {
-		return false;
+	protected FieldReferenceTreeView createView() {
+		return new FieldReferenceTreeView( this );
 	}
-	private SplitComposite splitComposite = new SplitComposite( java.util.UUID.fromString( "1d84857a-06b6-4b86-9169-33129731400c" ), treeComposite, referenceComposite ) {
-
-		@Override
-		protected SplitPane createView() {
-			return new SplitPane( this, 1 ) {
-			};
-		}
-	};
 
 	@Override
-	protected org.alice.ide.croquet.models.project.FieldSearchView createView() {
-		return new FieldSearchView( this );
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		manager.refresh();
 	}
 
-	public SplitComposite getSplitComposite() {
-		return this.splitComposite;
+	public void addListener( ValueListener<FieldReferenceSearchTreeNode> fieldReferenceComposite ) {
+		manager.addValueListener( fieldReferenceComposite );
 	}
-
-	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
-		treeComposite.addListener( listener );
-	}
-
 }

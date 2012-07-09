@@ -50,6 +50,8 @@ import org.lgna.croquet.PlainDialogOperationComposite;
 import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.TabSelectionState;
 
+import com.sun.media.CreateTimedThreadAction;
+
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
@@ -79,6 +81,7 @@ public abstract class SearchDialogComposite extends PlainDialogOperationComposit
 	protected SearchComposite searchComposite;
 	private ReferencesComposite referencesComposite;
 	private FieldSearchCompsoite fieldSearchComposite;
+	private MethodSearchComposite methodSearchComposite;
 
 	protected SearchDialogComposite( UUID uuid ) {
 		super( uuid, ProjectApplication.PROJECT_GROUP );
@@ -89,8 +92,10 @@ public abstract class SearchDialogComposite extends PlainDialogOperationComposit
 		searchComposite = new SearchComposite();
 		referencesComposite = new ReferencesComposite( searchComposite );
 		fieldSearchComposite = new FieldSearchCompsoite();
-		state.addItem( searchComposite );
-		state.addItem( referencesComposite );
+		methodSearchComposite = new MethodSearchComposite();
+//		state.addItem( searchComposite );
+//		state.addItem( referencesComposite );
+		state.addItem( methodSearchComposite );
 		state.addItem( fieldSearchComposite );
 		return new SearchDialogView( this );
 	}

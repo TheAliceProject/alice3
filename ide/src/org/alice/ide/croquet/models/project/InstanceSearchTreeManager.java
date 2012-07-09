@@ -42,11 +42,14 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.util.List;
+
 import javax.swing.Icon;
 
 import org.alice.ide.ProjectApplication;
 import org.lgna.croquet.CustomTreeSelectionState;
 import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.UserField;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
@@ -70,6 +73,12 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 			IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
 			programType.crawl( crawler, true );
 			FieldReferenceSearchTreeNode.initFields(ide.getSceneField());
+			List<FieldAccess> fieldAccesses = crawler.getList();
+			for( FieldAccess access : fieldAccesses ) {
+				if( access.field.getValue() instanceof UserField ) {
+					root.find( (UserField) access.field.getValue() ).addReference( access );
+				}
+			}
 		}
 	}
 

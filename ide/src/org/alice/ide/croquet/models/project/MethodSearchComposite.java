@@ -43,26 +43,27 @@
 package org.alice.ide.croquet.models.project;
 
 import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.components.SplitPane;
 
 /**
  * @author Matt May
  */
-public class FieldSearchCompsoite extends TabComposite<FieldSearchView> {
-	
-	public FieldSearchCompsoite() {
-		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
+public class MethodSearchComposite extends TabComposite<MethodSearchView> {
+
+	SearchComposite searchComposite = new SearchComposite();
+	ReferencesComposite referencesComposite = new ReferencesComposite( searchComposite );
+
+	public MethodSearchComposite() {
+		super( java.util.UUID.fromString( "46b72f34-c4db-4139-b430-8f4385d599d1" ) );
 	}
-	private FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
-	private FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
 
 	@Override
 	public boolean isCloseable() {
 		return false;
 	}
-	private SplitComposite splitComposite = new SplitComposite( java.util.UUID.fromString( "1d84857a-06b6-4b86-9169-33129731400c" ), treeComposite, referenceComposite ) {
+
+	private SplitComposite splitComposite = new SplitComposite( java.util.UUID.fromString( "ceca399e-d894-4d38-90cc-a48a3f567759" ), searchComposite, referencesComposite ) {
 
 		@Override
 		protected SplitPane createView() {
@@ -72,16 +73,12 @@ public class FieldSearchCompsoite extends TabComposite<FieldSearchView> {
 	};
 
 	@Override
-	protected org.alice.ide.croquet.models.project.FieldSearchView createView() {
-		return new FieldSearchView( this );
+	protected MethodSearchView createView() {
+		return new MethodSearchView( this );
 	}
 
 	public SplitComposite getSplitComposite() {
 		return this.splitComposite;
-	}
-
-	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
-		treeComposite.addListener( listener );
 	}
 
 }

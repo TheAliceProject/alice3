@@ -42,46 +42,67 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import org.lgna.croquet.SplitComposite;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.components.SplitPane;
+import org.lgna.project.ast.FieldAccess;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Matt May
  */
-public class FieldSearchCompsoite extends TabComposite<FieldSearchView> {
-	
-	public FieldSearchCompsoite() {
-		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
-	}
-	private FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
-	private FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
+public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView> implements ValueListener<FieldReferenceSearchTreeNode> {
 
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-	private SplitComposite splitComposite = new SplitComposite( java.util.UUID.fromString( "1d84857a-06b6-4b86-9169-33129731400c" ), treeComposite, referenceComposite ) {
+	private ListSelectionState<FieldAccess> references = createListSelectionState( createKey( "references" ), FieldAccess.class, new ItemCodec<FieldAccess>() {
 
-		@Override
-		protected SplitPane createView() {
-			return new SplitPane( this, 1 ) {
-			};
+		public Class<FieldAccess> getValueClass() {
+			return FieldAccess.class;
 		}
-	};
+
+		public FieldAccess decodeValue( BinaryDecoder binaryDecoder ) {
+			return null;
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, FieldAccess value ) {
+		}
+
+		public StringBuilder appendRepresentation( StringBuilder rv, FieldAccess value ) {
+			rv.append( value );
+			return rv;
+		}
+
+	}, -1 );
+
+	public FieldReferenceComposite( FieldSearchCompsoite fieldSearchCompsoite ) {
+		super( java.util.UUID.fromString( "50a45fd7-6ec1-4549-8131-1da15ddac7fb" ) );
+		fieldSearchCompsoite.addListener( this );
+	}
+
+	public void changing( State<FieldReferenceSearchTreeNode> state, FieldReferenceSearchTreeNode prevValue, FieldReferenceSearchTreeNode nextValue, boolean isAdjusting ) {
+	}
+
+	public void changed( State<FieldReferenceSearchTreeNode> state, FieldReferenceSearchTreeNode prevValue, FieldReferenceSearchTreeNode nextValue, boolean isAdjusting ) {
+		List<FieldAccess> nextReferences = nextValue.getReferences();
+		Logger.outln( Arrays.toString( nextReferences.toArray() ) );
+		this.references.setListData( -1, nextReferences );
+	}
 
 	@Override
-	protected org.alice.ide.croquet.models.project.FieldSearchView createView() {
-		return new FieldSearchView( this );
+	protected FieldReferenceView createView() {
+		return new FieldReferenceView( this );
 	}
 
-	public SplitComposite getSplitComposite() {
-		return this.splitComposite;
-	}
-
-	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
-		treeComposite.addListener( listener );
+	public ListSelectionState<FieldAccess> getReferences() {
+		return this.references;
 	}
 
 }

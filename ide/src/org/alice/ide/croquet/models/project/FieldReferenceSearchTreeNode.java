@@ -48,9 +48,10 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.lgna.croquet.ItemCodec;
-import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -65,22 +66,25 @@ public class FieldReferenceSearchTreeNode {
 	private List<FieldReferenceSearchTreeNode> children = Collections.newLinkedList();
 	private UserField field;
 	private NodeType type;
+	private FieldAccess refernce;
+	private final List<FieldAccess> references = Collections.newLinkedList();
 	private static FieldReferenceSearchTreeNode root = new FieldReferenceSearchTreeNode( null );
 
 	public enum NodeType {
-		REFERENCE, FIELD, HEADER_REFERENCE, HEADER_FIELD, ROOT;
+		/*REFERENCE,*/ FIELD, /*HEADER_REFERENCE,*/ HEADER_FIELD, ROOT;
 	}
 
 	public static FieldReferenceSearchTreeNode getRoot() {
 		return root;
 	}
 
-	public static FieldReferenceSearchTreeNode createReferenceNode( FieldReferenceSearchTreeNode parent, Object reference ) {
-		FieldReferenceSearchTreeNode rv = new FieldReferenceSearchTreeNode( parent );
-		parent.addChild( rv );
-		rv.type = NodeType.REFERENCE;
-		return rv;
-	}
+//	public static FieldReferenceSearchTreeNode createReferenceNode( FieldReferenceSearchTreeNode parent, FieldAccess reference ) {
+//		FieldReferenceSearchTreeNode rv = new FieldReferenceSearchTreeNode( parent );
+//		rv.refernce = reference;
+//		rv.type = NodeType.REFERENCE;
+//		parent.addChild( rv );
+//		return rv;
+//	}
 	public static FieldReferenceSearchTreeNode createFieldNode( FieldReferenceSearchTreeNode parent, UserField field ) {
 		FieldReferenceSearchTreeNode rv = new FieldReferenceSearchTreeNode( parent );
 		rv.type = NodeType.FIELD;
@@ -104,23 +108,23 @@ public class FieldReferenceSearchTreeNode {
 	}
 
 	private void addChild( FieldReferenceSearchTreeNode child ) {
-		assert type != NodeType.REFERENCE;
+//		assert type != NodeType.REFERENCE;
 		if( !(type == NodeType.ROOT) ) {
 			if( type == NodeType.FIELD ) {
-				if( child.type == NodeType.REFERENCE ) {
+				/*if( child.type == NodeType.REFERENCE ) {
 					getReferences().addChild( child );
-				} else if( child.type == NodeType.FIELD ) {
+				} else*/ if( child.type == NodeType.FIELD ) {
 					getFields().addChild( child );
 				} else {
-					assert child.type == NodeType.HEADER_FIELD || child.type == NodeType.HEADER_REFERENCE;
+					assert child.type == NodeType.HEADER_FIELD;// || child.type == NodeType.HEADER_REFERENCE;
 					children.add( child );
 				}
 			} else if( type == NodeType.HEADER_FIELD ) {
 				assert child.type == NodeType.FIELD;
 				this.children.add( child );
-			} else if( type == NodeType.HEADER_REFERENCE ) {
-				assert child.type == NodeType.REFERENCE;
-				this.children.add( child );
+//			} else if( type == NodeType.HEADER_REFERENCE ) {
+//				assert child.type == NodeType.REFERENCE;
+//				this.children.add( child );
 			}
 		} else {
 			children.add( child );
@@ -141,22 +145,20 @@ public class FieldReferenceSearchTreeNode {
 		return null;
 	}
 
-	private FieldReferenceSearchTreeNode getReferences() {
-		if( this.type == NodeType.HEADER_REFERENCE ) {
-			return this;
-		} else if( this.type.equals( NodeType.FIELD ) ) {
-			for( FieldReferenceSearchTreeNode child : children ) {
-				if( child.type.equals( NodeType.HEADER_REFERENCE ) ) {
-					return child;
-				} else {
-					System.out.println( "is not: " + NodeType.HEADER_REFERENCE + " but is: " + child.type );
-				}
-			}
-			FieldReferenceSearchTreeNode newHeader = createHeaderNodeNode( this, NodeType.HEADER_REFERENCE );
-			return newHeader;
-		}
-		return null;
-	}
+//	private FieldReferenceSearchTreeNode getReferences() {
+//		if( this.type == NodeType.HEADER_REFERENCE ) {
+//			return this;
+//		} else if( this.type.equals( NodeType.FIELD ) ) {
+//			for( FieldReferenceSearchTreeNode child : children ) {
+//				if( child.type.equals( NodeType.HEADER_REFERENCE ) ) {
+//					return child;
+//				}
+//			}
+//			FieldReferenceSearchTreeNode newHeader = createHeaderNodeNode( this, NodeType.HEADER_REFERENCE );
+//			return newHeader;
+//		}
+//		return null;
+//	}
 
 	public FieldReferenceSearchTreeNode getChild( int index ) {
 		return children.get( index );
@@ -198,7 +200,7 @@ public class FieldReferenceSearchTreeNode {
 		};
 	}
 
-	private FieldReferenceSearchTreeNode find( UserField value ) {
+	public FieldReferenceSearchTreeNode find( UserField value ) {
 		return findHelper( value, new LinkedList<FieldReferenceSearchTreeNode>() );
 	}
 
@@ -224,7 +226,6 @@ public class FieldReferenceSearchTreeNode {
 				if( node.field.getValueType() == child.field.getValueType() ) {
 					if( node.field.getName() == child.field.getName() ) {
 						if( node.field.getDeclaringType() == child.field.getDeclaringType() ) {
-							System.out.println("true " + node);
 							return true;
 						}
 					}
@@ -259,12 +260,22 @@ public class FieldReferenceSearchTreeNode {
 			return "root";
 		case HEADER_FIELD:
 			return "Fields (" + getNumChildren() + "):";
-		case HEADER_REFERENCE:
-			return "References (" + getNumChildren() + "):";
+//		case HEADER_REFERENCE:
+//			return "References (" + getNumChildren() + "):";
 		case FIELD:
 			return field.getValueType().getName() + " " + field.getName();
+//		case REFERENCE:
+//			return refernce.getParent().getFirstAncestorAssignableTo( UserMethod.class ).getName();//expression.getValue().toString();
 		default:
 			return "UNHANDLED NODE TYPE";
 		}
+	}
+
+	public void addReference( FieldAccess access ) {
+		this.references.add( access );
+	}
+	
+	public List<FieldAccess> getReferences(){
+		return this.references;
 	}
 }
