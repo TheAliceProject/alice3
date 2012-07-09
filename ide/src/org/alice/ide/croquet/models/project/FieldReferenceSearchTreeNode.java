@@ -66,25 +66,17 @@ public class FieldReferenceSearchTreeNode {
 	private List<FieldReferenceSearchTreeNode> children = Collections.newLinkedList();
 	private UserField field;
 	private NodeType type;
-	private FieldAccess refernce;
 	private final List<FieldAccess> references = Collections.newLinkedList();
 	private static FieldReferenceSearchTreeNode root = new FieldReferenceSearchTreeNode( null );
 
 	public enum NodeType {
-		/*REFERENCE,*/ FIELD, /*HEADER_REFERENCE,*/ HEADER_FIELD, ROOT;
+		FIELD, HEADER_FIELD, ROOT;
 	}
 
 	public static FieldReferenceSearchTreeNode getRoot() {
 		return root;
 	}
 
-//	public static FieldReferenceSearchTreeNode createReferenceNode( FieldReferenceSearchTreeNode parent, FieldAccess reference ) {
-//		FieldReferenceSearchTreeNode rv = new FieldReferenceSearchTreeNode( parent );
-//		rv.refernce = reference;
-//		rv.type = NodeType.REFERENCE;
-//		parent.addChild( rv );
-//		return rv;
-//	}
 	public static FieldReferenceSearchTreeNode createFieldNode( FieldReferenceSearchTreeNode parent, UserField field ) {
 		FieldReferenceSearchTreeNode rv = new FieldReferenceSearchTreeNode( parent );
 		rv.type = NodeType.FIELD;
@@ -108,12 +100,9 @@ public class FieldReferenceSearchTreeNode {
 	}
 
 	private void addChild( FieldReferenceSearchTreeNode child ) {
-//		assert type != NodeType.REFERENCE;
 		if( !(type == NodeType.ROOT) ) {
 			if( type == NodeType.FIELD ) {
-				/*if( child.type == NodeType.REFERENCE ) {
-					getReferences().addChild( child );
-				} else*/ if( child.type == NodeType.FIELD ) {
+				 if( child.type == NodeType.FIELD ) {
 					getFields().addChild( child );
 				} else {
 					assert child.type == NodeType.HEADER_FIELD;// || child.type == NodeType.HEADER_REFERENCE;
@@ -122,9 +111,6 @@ public class FieldReferenceSearchTreeNode {
 			} else if( type == NodeType.HEADER_FIELD ) {
 				assert child.type == NodeType.FIELD;
 				this.children.add( child );
-//			} else if( type == NodeType.HEADER_REFERENCE ) {
-//				assert child.type == NodeType.REFERENCE;
-//				this.children.add( child );
 			}
 		} else {
 			children.add( child );
@@ -144,21 +130,6 @@ public class FieldReferenceSearchTreeNode {
 		}
 		return null;
 	}
-
-//	private FieldReferenceSearchTreeNode getReferences() {
-//		if( this.type == NodeType.HEADER_REFERENCE ) {
-//			return this;
-//		} else if( this.type.equals( NodeType.FIELD ) ) {
-//			for( FieldReferenceSearchTreeNode child : children ) {
-//				if( child.type.equals( NodeType.HEADER_REFERENCE ) ) {
-//					return child;
-//				}
-//			}
-//			FieldReferenceSearchTreeNode newHeader = createHeaderNodeNode( this, NodeType.HEADER_REFERENCE );
-//			return newHeader;
-//		}
-//		return null;
-//	}
 
 	public FieldReferenceSearchTreeNode getChild( int index ) {
 		return children.get( index );
@@ -260,12 +231,8 @@ public class FieldReferenceSearchTreeNode {
 			return "root";
 		case HEADER_FIELD:
 			return "Fields (" + getNumChildren() + "):";
-//		case HEADER_REFERENCE:
-//			return "References (" + getNumChildren() + "):";
 		case FIELD:
-			return field.getValueType().getName() + " " + field.getName();
-//		case REFERENCE:
-//			return refernce.getParent().getFirstAncestorAssignableTo( UserMethod.class ).getName();//expression.getValue().toString();
+			return field.getValueType().getName() + " " + field.getName() + " (" + references.size() + ")";
 		default:
 			return "UNHANDLED NODE TYPE";
 		}

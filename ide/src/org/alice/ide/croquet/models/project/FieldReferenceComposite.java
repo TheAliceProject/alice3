@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 import org.lgna.croquet.ItemCodec;
@@ -55,7 +53,6 @@ import org.lgna.project.ast.FieldAccess;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Matt May
@@ -92,7 +89,6 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 
 	public void changed( State<FieldReferenceSearchTreeNode> state, FieldReferenceSearchTreeNode prevValue, FieldReferenceSearchTreeNode nextValue, boolean isAdjusting ) {
 		List<FieldAccess> nextReferences = nextValue.getReferences();
-		Logger.outln( Arrays.toString( nextReferences.toArray() ) );
 		this.references.setListData( -1, nextReferences );
 	}
 
