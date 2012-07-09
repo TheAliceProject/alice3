@@ -207,9 +207,9 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key.localizationKey;
 		}
 	}
-	private static final class InternalListSelectionState<T> extends DefaultListSelectionState<T> {
+	private static final class InternalDefaultListSelectionState<T> extends DefaultListSelectionState<T> {
 		private final Key key;
-		private InternalListSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
+		private InternalDefaultListSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), codec, selectionIndex, data );
 			this.key = key;
 		}
@@ -370,7 +370,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	private java.util.Map<Key,AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private java.util.Map<Key,InternalListSelectionState> mapKeyToListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalDefaultListSelectionState> mapKeyToListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -411,7 +411,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			}
 		}
 		for( Key key : this.mapKeyToListSelectionState.keySet() ) {
-			InternalListSelectionState state = this.mapKeyToListSelectionState.get( key );
+			InternalDefaultListSelectionState state = this.mapKeyToListSelectionState.get( key );
 			if( model == state ) {
 				return true;
 			}
@@ -499,7 +499,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	}
 	
 	protected <T> ListSelectionState<T> createListSelectionState( Key key, Class<T> valueCls, org.lgna.croquet.ItemCodec< T > codec, int selectionIndex, T... values ) {
-		InternalListSelectionState<T> rv = new InternalListSelectionState<T>( codec, selectionIndex, values, key );
+		InternalDefaultListSelectionState<T> rv = new InternalDefaultListSelectionState<T>( codec, selectionIndex, values, key );
 		this.mapKeyToListSelectionState.put( key, rv );
 		return rv;
 	}

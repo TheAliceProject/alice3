@@ -48,9 +48,9 @@ import org.lgna.croquet.components.BorderPanel;
  * @author Matt May
  */
 public class FieldReferenceView extends BorderPanel {
-
 	public FieldReferenceView( FieldReferenceComposite composite ) {
-		this.addCenterComponent( composite.getReferences().createList() );
+		org.lgna.croquet.components.List<org.lgna.project.ast.FieldAccess> list = composite.getReferences().createList();
+		list.setCellRenderer( new javax.swing.DefaultListCellRenderer() );
+		this.addCenterComponent( list );
 	}
-
 }

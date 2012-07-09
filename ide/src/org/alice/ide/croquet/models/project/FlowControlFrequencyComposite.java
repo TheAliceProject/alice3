@@ -89,24 +89,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class FlowControlFrequencyComposite extends TabComposite<View<?,?>> {
 	private Map<UserMethod,List<Statement>> methodToConstructMap;
-	ItemCodec<UserMethod> codec = new ItemCodec<UserMethod>() {
-
-		public Class<UserMethod> getValueClass() {
-			return UserMethod.class;
-		}
-
-		public UserMethod decodeValue( BinaryDecoder binaryDecoder ) {
-			return null;
-		}
-
-		public void encodeValue( BinaryEncoder binaryEncoder, UserMethod value ) {
-		}
-
-		public StringBuilder appendRepresentation( StringBuilder rv, UserMethod value ) {
-			return rv.append( value != null ? value.getName() : null );
-		}
-	};
-	private final ListSelectionState<UserMethod> userMethodList = createListSelectionState( createKey( "userMethodList" ), UserMethod.class, codec, -1 );
+	private final ListSelectionState<UserMethod> userMethodList = createListSelectionState( createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static UserMethod dummy = new UserMethod();
 
 	public FlowControlFrequencyComposite() {
