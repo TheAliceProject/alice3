@@ -236,6 +236,7 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 		//rv.setBackground(edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(230));
 		rv.setBackground( new java.awt.Color( 230, 230, 230, 127 ) );
 		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder( 1, insetLeft, 1, 5 + AFFORDANCE_WIDTH));
+		rv.setFocusable( false );
 		return rv;
 	}
 
