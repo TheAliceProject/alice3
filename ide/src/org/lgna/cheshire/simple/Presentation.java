@@ -132,24 +132,29 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		return rv;
 	}
 
+	private final boolean IS_PRESERVE_AND_RESTORE_INDICES_WORKING = false;
 	private void preserveHistoryIndices( int transactionIndex ) {
-		Chapter chapter = this.book.getChapterAt( transactionIndex );
-		final int N = this.historyManagers.length;
-		int[] indices = new int[ N ];
-		for( int i=0; i<N; i++ ) {
-			indices[ i ] = this.historyManagers[ i ].getInsertionIndex();
+		if( IS_PRESERVE_AND_RESTORE_INDICES_WORKING ) {
+			Chapter chapter = this.book.getChapterAt( transactionIndex );
+			final int N = this.historyManagers.length;
+			int[] indices = new int[ N ];
+			for( int i=0; i<N; i++ ) {
+				indices[ i ] = this.historyManagers[ i ].getInsertionIndex();
+			}
+			chapter.setHistoryIndices( indices );
 		}
-		chapter.setHistoryIndices( indices );
 	}
 	private void restoreHistoryIndices( int transactionIndex ) {
-		Chapter chapter = this.book.getChapterAt( transactionIndex );
-		final int N = historyManagers.length;
-		int[] indices = chapter.getHistoryIndices();
-		assert indices != null;
-		assert this.historyManagers != null;
-		for( int i=0; i<N; i++ ) {
-			assert this.historyManagers[ i ] != null : i;
-			this.historyManagers[ i ].setInsertionIndex( indices[ i ] );
+		if( IS_PRESERVE_AND_RESTORE_INDICES_WORKING ) {
+			Chapter chapter = this.book.getChapterAt( transactionIndex );
+			final int N = historyManagers.length;
+			int[] indices = chapter.getHistoryIndices();
+			assert indices != null : transactionIndex;
+			assert this.historyManagers != null : transactionIndex;
+			for( int i=0; i<N; i++ ) {
+				assert this.historyManagers[ i ] != null : i;
+				this.historyManagers[ i ].setInsertionIndex( indices[ i ] );
+			}
 		}
 	}
 

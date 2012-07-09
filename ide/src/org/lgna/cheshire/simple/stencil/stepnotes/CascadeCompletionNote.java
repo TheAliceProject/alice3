@@ -52,6 +52,17 @@ public class CascadeCompletionNote extends CompletionNote<org.lgna.croquet.Casca
 	}
 	@Override
 	protected void addFeatures( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade<?> > step ) {
+		org.lgna.croquet.history.Step previousStep = step.getPreviousStep();
+		if( previousStep instanceof org.lgna.croquet.history.MenuItemSelectStep ) {
+			org.lgna.croquet.history.MenuItemSelectStep menuItemSelectStep = (org.lgna.croquet.history.MenuItemSelectStep)previousStep;
+			this.addFeature( new org.lgna.cheshire.simple.stencil.features.MenuHole( 
+					new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( menuItemSelectStep ), 
+					org.lgna.cheshire.simple.Feature.ConnectionPreference.NORTH_SOUTH,
+					true,
+					true,
+					false
+			) );
+		}
 	}
 //	@Override
 //	public boolean isWhatWeveBeenWaitingFor( org.lgna.cheshire.events.Event event ) {
