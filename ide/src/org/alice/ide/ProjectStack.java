@@ -41,31 +41,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.components;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public enum LayerId {
-	BELOW_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
-	ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
-
-	private int stencilLayer;
-
-	private LayerId( int stencilLayer ) {
-		this.stencilLayer = stencilLayer;
+public class ProjectStack {
+	private ProjectStack() {
+		throw new AssertionError();
 	}
-
-	public int getLayer() {
-		return this.stencilLayer;
+	private static final java.util.Stack<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	
+	public static org.lgna.project.Project peekProject() {
+		if( projectStack.size() > 0 ) {
+			return projectStack.peek();
+		} else {
+			return IDE.getActiveInstance().getProject();
+		}
 	}
-
-	public boolean isAboveStencil() {
-		return this.stencilLayer < javax.swing.JLayeredPane.POPUP_LAYER;
+	public static void pushProject( org.lgna.project.Project project ) {
+		projectStack.push( project );
 	}
-
-	public boolean isBelowStencil() {
-		return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
+	public static org.lgna.project.Project popProject() {
+		return projectStack.pop();
+	}
+	public static org.lgna.project.Project popAndCheckProject( org.lgna.project.Project expectedProject ) {
+		org.lgna.project.Project poppedProject = popProject();
+		if( poppedProject != expectedProject ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( poppedProject, expectedProject );
+		}
+		return poppedProject;
 	}
 }

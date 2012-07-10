@@ -50,11 +50,32 @@ public class TaskComboBoxModel extends edu.cmu.cs.dennisc.javax.swing.models.Abs
 	private final java.util.List<Task> tasks = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private int index = -1;
 	public TaskComboBoxModel() {
-		org.lgna.croquet.history.TransactionHistory history = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( org.lgna.cheshire.test.TransactionHistoryGeneratorTest.TEMPORARY_HACK_lastGeneratedTransactionHistoryFile, org.lgna.croquet.history.TransactionHistory.class );
+		org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getColorCrazyGenerator();
+		test.generate( test.getProject() );
+		org.lgna.croquet.history.TransactionHistory history = test.getReuseTransactionHistory();
 		for( org.lgna.croquet.history.Transaction transaction : history ) {
 			tasks.add( new Task( transaction ) );
 		}
 		this.index = 0;
+//		
+//
+//		try {
+//			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( org.lgna.cheshire.test.TransactionHistoryGeneratorTest.TEMPORARY_HACK_lastGeneratedProjectFile );
+//			org.alice.ide.ProjectStack.pushProject( project );
+//			try {
+//				org.lgna.croquet.history.TransactionHistory history = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( org.lgna.cheshire.test.TransactionHistoryGeneratorTest.TEMPORARY_HACK_lastGeneratedTransactionHistoryFile, org.lgna.croquet.history.TransactionHistory.class );
+//				for( org.lgna.croquet.history.Transaction transaction : history ) {
+//					tasks.add( new Task( transaction ) );
+//				}
+//				this.index = 0;
+//			} finally {
+//				org.alice.ide.ProjectStack.popAndCheckProject( project );
+//			}
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( ioe );
+//		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+//			throw new RuntimeException( vnse );
+//		}
 	}
 	public void insertRecoveryTransaction( org.lgna.croquet.history.Transaction transaction ) {
 		Task currentTask = this.getSelectedItem();
@@ -68,6 +89,9 @@ public class TaskComboBoxModel extends edu.cmu.cs.dennisc.javax.swing.models.Abs
 		return this.tasks.size();
 	}
 
+	public int getSelectedIndex() {
+		return this.index;
+	}
 	public Task getSelectedItem() {
 		if( this.index >= 0 ) {
 			return this.tasks.get( this.index );
@@ -78,5 +102,10 @@ public class TaskComboBoxModel extends edu.cmu.cs.dennisc.javax.swing.models.Abs
 	public void setSelectedItem(Object item) {
 		assert item == null || item instanceof Task : item;
 		this.index = this.tasks.indexOf( item );
+	}
+	
+	public boolean isIndexAccessible( int index ) {
+		//todo
+		return true;
 	}
 }

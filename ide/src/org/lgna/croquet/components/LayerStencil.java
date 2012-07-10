@@ -47,14 +47,26 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class LayerStencil extends Panel {
-	@Deprecated
-	protected abstract LayerId getStencilsLayer();
-
+	protected static enum LayerId {
+		BELOW_POPUP_MENU() {
+			@Override
+			public Layer getLayer( AbstractWindow<?> window ) {
+				return window.getBelowPopupLayer();
+			}
+		},
+		ABOVE_POPUP_MENU() {
+			@Override
+			public Layer getLayer( AbstractWindow<?> window ) {
+				return window.getAbovePopupLayer();
+			}
+		};
+		public abstract Layer getLayer( AbstractWindow<?> window ); 
+	};
 	private final AbstractWindow<?> window;
 	private final Layer layer;
-	public LayerStencil( AbstractWindow<?> window ) {
+	public LayerStencil( AbstractWindow<?> window, LayerId layerId ) {
 		this.window = window;
-		this.layer = this.window.getBelowPopupLayer();
+		this.layer = layerId.getLayer( this.window );
 	}
 	public Layer getLayer() {
 		return this.layer;

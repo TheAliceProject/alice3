@@ -159,8 +159,13 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 	public String getTutorialNoteText( org.lgna.croquet.edits.Edit< ? > edit ) {
 		org.lgna.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
-			org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
-			String triggerText = trigger != null ? trigger.getNoteText( ) : null;
+			String triggerText;
+			if( model instanceof org.lgna.croquet.StringState ) {
+				triggerText = "Type";
+			} else {
+				org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
+				triggerText = trigger != null ? trigger.getNoteText( ) : null;
+			}
 			return model.getTutorialNoteText( this, triggerText, edit );
 		} else {
 			return null;
@@ -187,7 +192,6 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		org.lgna.croquet.Model model = this.getModel();
 		if( model != null ) {
-			java.util.Locale locale = null;
 			rv.append( "model=" );
 			rv.append( model );
 			rv.append( ";trigger=" );

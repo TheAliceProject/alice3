@@ -180,7 +180,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 	}
 
 	@Override
-	protected org.lgna.croquet.components.LayerId getStencilsLayer() {
-		return org.lgna.croquet.components.LayerId.ABOVE_POPUP_LAYER;
+	protected LayerId getStencilsLayer() {
+		return LayerId.ABOVE_POPUP_LAYER;
 	}
 }

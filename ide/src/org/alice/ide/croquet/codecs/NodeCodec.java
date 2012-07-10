@@ -67,8 +67,8 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			return org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
+			org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+			return org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
 		} else {
 			return null;
 		}

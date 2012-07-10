@@ -47,15 +47,16 @@ package org.lgna.cheshire.task.stencil.views;
  * @author Dennis Cosgrove
  */
 public class TaskComboBox extends org.lgna.croquet.components.JComponent< javax.swing.JComboBox > {
-	private org.lgna.cheshire.task.TaskComboBoxModel comboBoxModel;
-	private boolean isLightWeightPopupEnabled;
-	public TaskComboBox( org.lgna.cheshire.task.TaskComboBoxModel comboBoxModel, boolean isLightWeightPopupEnabled ) {
-		this.comboBoxModel = comboBoxModel;
-		this.isLightWeightPopupEnabled = isLightWeightPopupEnabled;
+	/*package-private*/static final java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
+	private final org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel;
+	private final org.lgna.croquet.components.Layer layer;
+	public TaskComboBox( org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel, org.lgna.croquet.components.Layer layer ) {
+		this.taskComboBoxModel = taskComboBoxModel;
+		this.layer = layer;
 	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
-		javax.swing.JComboBox rv = new javax.swing.JComboBox( this.comboBoxModel ) {
+		javax.swing.JComboBox rv = new javax.swing.JComboBox( this.taskComboBoxModel ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
@@ -90,13 +91,13 @@ public class TaskComboBox extends org.lgna.croquet.components.JComponent< javax.
 		} );
 
 		rv.setMaximumRowCount( 20 );
-		if( this.isLightWeightPopupEnabled ) {
+		if( this.layer.isAbovePopupLayer() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.javax.swing.PopupFactoryUtilities.forceHeavyWeightPopups( rv );
 		}
-//		ChapterCellRenderer stepCellRenderer = new ChapterCellRenderer( this.comboBoxModel.getTransactionsModel(), SimplePresentation.CONTROL_COLOR );
-//		rv.setRenderer( stepCellRenderer );
+		rv.setRenderer( new TaskCellRenderer( taskComboBoxModel, CONTROL_COLOR ) );
+//		this.setBackgroundColor( CONTROL_COLOR );
 		return rv;
 	}
 };
