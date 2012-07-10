@@ -40,16 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
+import org.alice.ide.croquet.models.project.FieldSearchCompsoite;
 import org.lgna.croquet.components.BorderPanel;
 
 /**
  * @author Matt May
  */
-public class SearchDialogView extends BorderPanel {
+public class FieldSearchView extends BorderPanel{
 
-	public SearchDialogView( SearchDialogComposite composite ) {
-		this.addCenterComponent( composite.state.createFolderTabbedPane() );
+	public FieldSearchView( FieldSearchCompsoite composite ) {
+		this.addCenterComponent( composite.getSplitComposite().getView() );
 	}
+
 }

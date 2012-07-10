@@ -70,7 +70,7 @@ public class SearchDialogReferenceFirstComposite extends SearchDialogComposite {
 		searchComposite.setJumpDesired(false);
 		searchComposite.setSelected( getTarget() );
 		searchComposite.setJumpDesired(true);
-		this.state.setSelectedIndex( 1 );
+		this.getState().setSelectedIndex( 1 );
 		super.handlePreActivation();
 	}
 }

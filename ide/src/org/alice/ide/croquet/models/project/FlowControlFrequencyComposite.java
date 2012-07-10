@@ -87,7 +87,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class FlowControlFrequencyComposite extends TabComposite<View<?,?>> {
+public class FlowControlFrequencyComposite extends TabComposite<FlowControlFrequencyView> {
 	private Map<UserMethod,List<Statement>> methodToConstructMap;
 	private final ListSelectionState<UserMethod> userMethodList = createListSelectionState( createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static UserMethod dummy = new UserMethod();
@@ -124,7 +124,7 @@ public class FlowControlFrequencyComposite extends TabComposite<View<?,?>> {
 	}
 
 	@Override
-	protected View<?,?> createView() {
+	protected FlowControlFrequencyView createView() {
 		return new FlowControlFrequencyView( this );
 	}
 

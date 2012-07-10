@@ -60,7 +60,7 @@ public class SearchDialogSearchFirstComposite extends SearchDialogComposite {
 	}
 	@Override
 	public void handlePreActivation() {
-		this.state.setSelectedIndex( 0 );
+		this.getState().setSelectedIndex( 0 );
 		super.handlePreActivation();
 	}
 }

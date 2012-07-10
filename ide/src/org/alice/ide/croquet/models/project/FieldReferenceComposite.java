@@ -44,15 +44,18 @@ package org.alice.ide.croquet.models.project;
 
 import java.util.List;
 
-import org.lgna.croquet.ItemCodec;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.alice.ide.croquet.models.project.views.FieldReferenceView;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.project.ast.FieldAccess;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.project.ast.UserMethod;
 
 /**
  * @author Matt May
@@ -60,10 +63,28 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView> implements ValueListener<FieldReferenceSearchTreeNode> {
 
 	private ListSelectionState<FieldAccess> references = createListSelectionState( createKey( "references" ), FieldAccess.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.FieldAccess.class ), -1 );
+	private boolean isJumpDesired = true;
+	private ValueListener<FieldAccess> adapter = new ValueListener<FieldAccess>() {
+
+		public void changing( State<FieldAccess> state, FieldAccess prevValue, FieldAccess nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<FieldAccess> state, FieldAccess prevValue, FieldAccess nextValue, boolean isAdjusting ) {
+//			if( state.getValue() != prevValue ) {
+				FieldAccess selection = state.getValue();
+				if( selection != null && isJumpDesired ) {
+					UserMethod ancestor = selection.getParent().getFirstAncestorAssignableTo( UserMethod.class );
+					System.out.println("hello please CHange: " + ancestor );
+					org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ancestor ) );
+				}
+			}
+//		}
+	};
 
 	public FieldReferenceComposite( FieldSearchCompsoite fieldSearchCompsoite ) {
 		super( java.util.UUID.fromString( "50a45fd7-6ec1-4549-8131-1da15ddac7fb" ) );
 		fieldSearchCompsoite.addListener( this );
+		references.addValueListener( adapter );
 	}
 
 	public void changing( State<FieldReferenceSearchTreeNode> state, FieldReferenceSearchTreeNode prevValue, FieldReferenceSearchTreeNode nextValue, boolean isAdjusting ) {

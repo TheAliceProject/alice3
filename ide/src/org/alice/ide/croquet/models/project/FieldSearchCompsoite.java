@@ -42,6 +42,7 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import org.alice.ide.croquet.models.project.views.FieldSearchView;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.TabComposite;
@@ -72,7 +73,7 @@ public class FieldSearchCompsoite extends TabComposite<FieldSearchView> {
 	};
 
 	@Override
-	protected org.alice.ide.croquet.models.project.FieldSearchView createView() {
+	protected org.alice.ide.croquet.models.project.views.FieldSearchView createView() {
 		return new FieldSearchView( this );
 	}
 

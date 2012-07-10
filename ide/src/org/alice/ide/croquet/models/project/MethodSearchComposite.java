@@ -42,6 +42,7 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import org.alice.ide.croquet.models.project.views.MethodSearchView;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.components.SplitPane;

@@ -45,6 +45,7 @@ package org.alice.ide.croquet.models.project;
 import java.util.UUID;
 
 import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.models.project.views.SearchDialogView;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.PlainDialogOperationComposite;
 import org.lgna.croquet.TabComposite;
@@ -60,7 +61,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  */
 public abstract class SearchDialogComposite extends PlainDialogOperationComposite<SearchDialogView> {//org.lgna.croquet.InformationDialogOperation {
 
-	TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
+	private TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
 
 		public Class<TabComposite<?>> getValueClass() {
 			return null;
@@ -79,7 +80,7 @@ public abstract class SearchDialogComposite extends PlainDialogOperationComposit
 	} );
 	
 	protected SearchComposite searchComposite;
-	private ReferencesComposite referencesComposite;
+//	private ReferencesComposite referencesComposite;
 	private FieldSearchCompsoite fieldSearchComposite;
 	private MethodSearchComposite methodSearchComposite;
 
@@ -89,14 +90,16 @@ public abstract class SearchDialogComposite extends PlainDialogOperationComposit
 
 	@Override
 	protected final SearchDialogView createView() {
-		searchComposite = new SearchComposite();
-		referencesComposite = new ReferencesComposite( searchComposite );
+//		searchComposite = new SearchComposite();
+//		referencesComposite = new ReferencesComposite( searchComposite );
 		fieldSearchComposite = new FieldSearchCompsoite();
 		methodSearchComposite = new MethodSearchComposite();
-//		state.addItem( searchComposite );
-//		state.addItem( referencesComposite );
-		state.addItem( methodSearchComposite );
-		state.addItem( fieldSearchComposite );
+		getState().addItem( methodSearchComposite );
+		getState().addItem( fieldSearchComposite );
 		return new SearchDialogView( this );
+	}
+
+	public TabSelectionState<TabComposite<?>> getState() {
+		return this.state;
 	}
 }

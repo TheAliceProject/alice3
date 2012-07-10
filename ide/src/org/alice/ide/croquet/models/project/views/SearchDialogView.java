@@ -40,17 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
+import org.alice.ide.croquet.models.project.SearchDialogComposite;
 import org.lgna.croquet.components.BorderPanel;
 
 /**
  * @author Matt May
  */
-public class FieldReferenceView extends BorderPanel {
-	public FieldReferenceView( FieldReferenceComposite composite ) {
-		org.lgna.croquet.components.List<org.lgna.project.ast.FieldAccess> list = composite.getReferences().createList();
-		list.setCellRenderer( new javax.swing.DefaultListCellRenderer() );
-		this.addCenterComponent( list );
+public class SearchDialogView extends BorderPanel {
+
+	public SearchDialogView( SearchDialogComposite composite ) {
+		this.addCenterComponent( composite.getState().createFolderTabbedPane() );
 	}
 }

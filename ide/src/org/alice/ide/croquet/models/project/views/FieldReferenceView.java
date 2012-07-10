@@ -40,17 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
+import java.awt.Color;
+import java.awt.Component;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+
+import org.alice.ide.croquet.models.project.FieldReferenceComposite;
+import org.alice.ide.croquet.models.project.FlowControlFrequencyComposite;
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.Label;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.UserMethod;
+
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 
 /**
  * @author Matt May
  */
-public class FieldSearchView extends BorderPanel{
-
-	public FieldSearchView( FieldSearchCompsoite composite ) {
-		this.addCenterComponent( composite.getSplitComposite().getView() );
+public class FieldReferenceView extends BorderPanel {
+	public FieldReferenceView( FieldReferenceComposite composite ) {
+		org.lgna.croquet.components.List<org.lgna.project.ast.FieldAccess> list = composite.getReferences().createList();
+		list.setCellRenderer( new ListCellRenderer() );
+		this.addCenterComponent( list );
 	}
 
+	private class ListCellRenderer extends DefaultListCellRenderer {
+		@Override
+		public java.awt.Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+			assert value instanceof FieldAccess;
+			FieldAccess access = (FieldAccess) value;
+			Label rv = new Label();
+			if( isSelected ) {
+				rv.setBackgroundColor( Color.BLUE );
+				rv.setForegroundColor( Color.WHITE );
+			}
+			rv.setText( access.getParent().getFirstAncestorAssignableTo( UserMethod.class ).getName() );
+			return rv.getAwtComponent();
+		}
+	}
 }
