@@ -47,11 +47,11 @@ package org.lgna.cheshire.task.stencil.views;
  * @author Dennis Cosgrove
  */
 public class TaskComboBox extends org.lgna.croquet.components.JComponent< javax.swing.JComboBox > {
-	private org.lgna.cheshire.task.TaskComboBoxModel comboBoxModel;
-	private boolean isLightWeightPopupEnabled;
-	public TaskComboBox( org.lgna.cheshire.task.TaskComboBoxModel comboBoxModel, boolean isLightWeightPopupEnabled ) {
+	private final org.lgna.cheshire.task.TaskComboBoxModel comboBoxModel;
+	private final org.lgna.croquet.components.Layer layer;
+	public TaskComboBox( org.lgna.cheshire.task.TaskComboBoxModel comboBoxModel, org.lgna.croquet.components.Layer layer ) {
 		this.comboBoxModel = comboBoxModel;
-		this.isLightWeightPopupEnabled = isLightWeightPopupEnabled;
+		this.layer = layer;
 	}
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
@@ -90,7 +90,7 @@ public class TaskComboBox extends org.lgna.croquet.components.JComponent< javax.
 		} );
 
 		rv.setMaximumRowCount( 20 );
-		if( this.isLightWeightPopupEnabled ) {
+		if( this.layer.isAbovePopupLayer() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.javax.swing.PopupFactoryUtilities.forceHeavyWeightPopups( rv );

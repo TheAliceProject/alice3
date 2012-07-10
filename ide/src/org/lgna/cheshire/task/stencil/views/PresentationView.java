@@ -66,10 +66,11 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 	private static final java.awt.Paint stencilPaint = createStencilPaint();
 
 	public PresentationView( org.lgna.cheshire.task.stencil.PresentationComposite composite ) {
-		super( composite.getWindow() );
+		super( composite.getWindow(), LayerId.ABOVE_POPUP_MENU );
+		org.lgna.croquet.components.Layer layer = this.getLayer();
 		org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
 		controlPanel.addComponent( composite.getPreviousOperation().createButton() );
-		controlPanel.addComponent( new TaskComboBox( composite.getTaskComboBoxModel(), this.getStencilsLayer().isAboveStencil() ) );
+		controlPanel.addComponent( new TaskComboBox( composite.getTaskComboBoxModel(), layer ) );
 		controlPanel.addComponent( composite.getNextOperation().createButton() );
 		
 		this.internalAddComponent( controlPanel, java.awt.BorderLayout.PAGE_START );
@@ -77,11 +78,6 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
-	}
-	@Override
-	@java.lang.Deprecated
-	protected org.lgna.croquet.components.LayerId getStencilsLayer() {
-		return org.lgna.croquet.components.LayerId.BELOW_POPUP_LAYER;
 	}
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {
