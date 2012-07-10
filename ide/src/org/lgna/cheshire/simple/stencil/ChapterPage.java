@@ -322,7 +322,7 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 		activeNoteIndex = Math.max( activeNoteIndex, 0 );
 		if( activeNoteIndex < NOTE_COUNT ) {
 			Note activeNote = this.notes.get( activeNoteIndex );
-			try {
+//			try {
 				if( activeNote.isWhatWeveBeenWaitingFor( event ) ) {
 					activeNoteIndex ++;
 					if( activeNoteIndex == NOTE_COUNT ) {
@@ -331,10 +331,10 @@ public class ChapterPage implements org.lgna.cheshire.simple.Page {
 						this.setActiveNote( activeNoteIndex );
 					}
 				}
-			} catch( org.lgna.croquet.CancelException ce ) {
-				org.alice.ide.IDE.getActiveInstance().getSimplePresentation().restoreHistoryIndicesDueToCancel();
-				this.reset();
-			}
+//			} catch( org.lgna.croquet.CancelException ce ) {
+//				org.alice.ide.IDE.getActiveInstance().getSimplePresentation().restoreHistoryIndicesDueToCancel();
+//				this.reset();
+//			}
 		}
 		return false;
 	}
