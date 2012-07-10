@@ -46,21 +46,14 @@ import java.util.UUID;
 
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.croquet.models.project.views.SearchDialogView;
-import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.PlainDialogOperationComposite;
+import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.TabSelectionState;
-
-import com.sun.media.CreateTimedThreadAction;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SearchDialogComposite extends PlainDialogOperationComposite<SearchDialogView> {//org.lgna.croquet.InformationDialogOperation {
+public abstract class SearchDialogComposite extends FrameComposite<SearchDialogView> {
 	protected FieldSearchCompsoite fieldSearchComposite;
 	protected MethodSearchComposite methodSearchComposite;
 	private TabSelectionState<SimpleTabComposite> tabState;
