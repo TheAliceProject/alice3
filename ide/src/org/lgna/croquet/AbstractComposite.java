@@ -225,10 +225,10 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key.localizationKey;
 		}
 	}
-	private static final class InternalTabSelectionState<T extends TabComposite<?>> extends TabSelectionState<T> {
+	private static final class InternalTabSelectionState<T extends SimpleTabComposite<?>> extends SimpleTabSelectionState<T> {
 		private final Key key;
-		public InternalTabSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), codec, selectionIndex, data );
+		public InternalTabSelectionState( Class<T> cls, int selectionIndex, T[] data, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), cls, selectionIndex, data );
 			this.key = key;
 		}
 		public Key getKey() {
@@ -555,8 +555,8 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		return createListSelectionState( key, valueCls, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), selectionIndex, constants );
 	}
 	
-	protected <T extends TabComposite<?>> TabSelectionState<T> createTabSelectionState( Key key, ItemCodec< T > codec, int selectionIndex, T... tabComposites ) {
-		InternalTabSelectionState<T> rv = new InternalTabSelectionState<T>( codec, selectionIndex, tabComposites, key );
+	protected <C extends SimpleTabComposite<?>> TabSelectionState<C> createTabSelectionState( Key key, Class<C> cls, int selectionIndex, C... tabComposites ) {
+		InternalTabSelectionState<C> rv = new InternalTabSelectionState<C>( cls, selectionIndex, tabComposites, key );
 		return rv;
 	}
 
