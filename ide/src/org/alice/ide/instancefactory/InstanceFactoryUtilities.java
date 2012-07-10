@@ -88,6 +88,9 @@ public class InstanceFactoryUtilities {
 				} else {
 					rv = null;
 				}
+			} else if( methodInvocationInstanceExpression instanceof org.lgna.project.ast.LocalAccess ) {
+				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)methodInvocationInstanceExpression;
+				rv = LocalAccessMethodInvocationFactory.getInstance( localAccess.local.getValue(), method );
 			} else {
 				rv = null;
 			}
