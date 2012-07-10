@@ -46,6 +46,7 @@ package org.alice.ide.stencil;
  * @author Dennis Cosgrove
  */
 public class PotentialDropReceptorsFeedbackView extends CustomView {
+	private static final Integer LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER - 1;
 	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
 	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );
 
@@ -65,11 +66,11 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 		if( dropReceptors.size() > 0 ) {
 			this.holes = dropReceptors;
 			this.potentialDragSource = potentialDragSource;
-			this.window.getAbovePopupLayer().setComponent( this );
+			this.window.getLayer(LAYER_ID).setComponent( this );
 		}
 	}
 	public void hideStencil() {
-		this.window.getAbovePopupLayer().setComponent( null );
+		this.window.getLayer(LAYER_ID).setComponent( null );
 		this.holes = null;
 		this.potentialDragSource = null;
 	}

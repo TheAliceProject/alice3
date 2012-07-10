@@ -51,13 +51,13 @@ public abstract class LayerStencil extends Panel {
 		BELOW_POPUP_MENU() {
 			@Override
 			public Layer getLayer( AbstractWindow<?> window ) {
-				return window.getBelowPopupLayer();
+				return window.getLayer( javax.swing.JLayeredPane.POPUP_LAYER - 1 );
 			}
 		},
 		ABOVE_POPUP_MENU() {
 			@Override
 			public Layer getLayer( AbstractWindow<?> window ) {
-				return window.getAbovePopupLayer();
+				return window.getLayer( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
 			}
 		};
 		public abstract Layer getLayer( AbstractWindow<?> window ); 
