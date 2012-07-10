@@ -40,46 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
-import java.util.UUID;
-
-import org.alice.ide.ProjectApplication;
-import org.alice.ide.croquet.models.project.views.SearchDialogView;
-import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.PlainDialogOperationComposite;
-import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.TabSelectionState;
-
-import com.sun.media.CreateTimedThreadAction;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.croquet.models.project.StatisticsComposite;
+import org.lgna.croquet.components.BorderPanel;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public abstract class SearchDialogComposite extends PlainDialogOperationComposite<SearchDialogView> {//org.lgna.croquet.InformationDialogOperation {
-	protected FieldSearchCompsoite fieldSearchComposite;
-	protected MethodSearchComposite methodSearchComposite;
-	private TabSelectionState<SimpleTabComposite> tabState;
+public class StatisticsView extends BorderPanel {
 
-	protected SearchDialogComposite( UUID uuid ) {
-		super( uuid, ProjectApplication.PROJECT_GROUP );
-	}
-
-	@Override
-	protected final SearchDialogView createView() {
-		methodSearchComposite = new MethodSearchComposite();
-		fieldSearchComposite = new FieldSearchCompsoite();
-		tabState = this.createTabSelectionState( this.createKey( "tabState" ), SimpleTabComposite.class, 0, methodSearchComposite, fieldSearchComposite );
-		getState().addItem( methodSearchComposite );
-		getState().addItem( fieldSearchComposite );
-		return new SearchDialogView( this );
-	}
-
-	public TabSelectionState<SimpleTabComposite> getState() {
-		return this.tabState;
+	public StatisticsView( StatisticsComposite composite ) {
+		super(composite);
+		composite.getTabState().createFolderTabbedPane();
 	}
 }

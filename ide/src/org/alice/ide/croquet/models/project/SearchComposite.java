@@ -118,24 +118,19 @@ public class SearchComposite extends TabComposite<SearchView> {
 				manager.changed( getStringState(), searchState.getValue(), searchState.getValue(), true );
 			}
 		};
+		
+		@Override
+		protected void show( SearchTreeNode node ) {
+			if( showGenerated.getValue() || !node.getIsGenerated() ){	
+				super.show( node );
+			}
+		}
 
 		@Override
 		protected boolean shouldShow( SearchTreeNode node ) {
 			boolean generated = showGenerated.getValue() || !node.getIsGenerated();
 			boolean function = showFunctions.getValue() || !node.getContent().isFunction();
 			boolean procedure = showProcedures.getValue() || !node.getContent().isProcedure();
-			if(node.getText().equals("getJoint")){
-			System.out.println( node.getText() + ": ( " + generated + ", " + function + ", " + procedure + " )" );
-			System.out.println( showGenerated.getValue() + "   " + !node.getIsGenerated() );
-			}
-			boolean shouldShowThis = generated && function && procedure;
-			if( !shouldShowThis ) {
-				for( SearchTreeNode child : node.getChildren() ) {
-					if( shouldShow( child ) ) {
-						return true;
-					}
-				}
-			}
 			return generated && function && procedure;
 		}
 
@@ -184,7 +179,9 @@ public class SearchComposite extends TabComposite<SearchView> {
 					Matcher matcher = pattern.matcher( hiddenNode.getContent().getName().toLowerCase() );
 					if( matcher.find() ) {
 						if( check.length() == 0 || hiddenNode.getDepth() <= SHOULD_BE_EXPANDED ) {
-							show( hiddenNode );
+							if( shouldShow( hiddenNode ) ) {
+								show( hiddenNode );
+							}
 						}
 					}
 				}

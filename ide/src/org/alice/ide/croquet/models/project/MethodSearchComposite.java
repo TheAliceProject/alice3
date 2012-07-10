@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.project;
 
 import org.alice.ide.croquet.models.project.views.MethodSearchView;
+import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.components.SplitPane;
@@ -50,7 +51,7 @@ import org.lgna.croquet.components.SplitPane;
 /**
  * @author Matt May
  */
-public class MethodSearchComposite extends TabComposite<MethodSearchView> {
+public class MethodSearchComposite extends SimpleTabComposite<MethodSearchView> {
 
 	SearchComposite searchComposite = new SearchComposite();
 	ReferencesComposite referencesComposite = new ReferencesComposite( searchComposite );
@@ -64,14 +65,7 @@ public class MethodSearchComposite extends TabComposite<MethodSearchView> {
 		return false;
 	}
 
-	private SplitComposite splitComposite = new SplitComposite( java.util.UUID.fromString( "ceca399e-d894-4d38-90cc-a48a3f567759" ), searchComposite, referencesComposite ) {
-
-		@Override
-		protected SplitPane createView() {
-			return new SplitPane( this, 1 ) {
-			};
-		}
-	};
+	private final SplitComposite splitComposite = this.createHorizontalSplitComposite( searchComposite, referencesComposite, 0.5 );
 
 	@Override
 	protected MethodSearchView createView() {

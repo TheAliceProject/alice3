@@ -55,7 +55,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import org.alice.ide.croquet.models.project.FlowControlFrequencyComposite;
-import org.alice.ide.croquet.models.project.StatisticsOperation;
+import org.alice.ide.croquet.models.project.StatisticsComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -100,10 +100,10 @@ public class FlowControlFrequencyView extends BorderPanel {
 
 		ScrollPane scrollPane = new ScrollPane( list );
 		gridPanel.addComponent( scrollPane );
-		scrollPane.setMaximumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
-		scrollPane.setMinimumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
-		statsDisplay.gridPanel.setMaximumPreferredHeight( StatisticsOperation.TOP_SIZE );
-		statsDisplay.gridPanel.setMinimumPreferredHeight( StatisticsOperation.TOP_SIZE );
+		scrollPane.setMaximumPreferredHeight( StatisticsComposite.BOTTOM_SIZE );
+		scrollPane.setMinimumPreferredHeight( StatisticsComposite.BOTTOM_SIZE );
+		statsDisplay.gridPanel.setMaximumPreferredHeight( StatisticsComposite.TOP_SIZE );
+		statsDisplay.gridPanel.setMinimumPreferredHeight( StatisticsComposite.TOP_SIZE );
 		this.addComponent( gridPanel, Constraint.CENTER );
 	}
 	public class ControlDisplay implements ValueListener<UserMethod> {

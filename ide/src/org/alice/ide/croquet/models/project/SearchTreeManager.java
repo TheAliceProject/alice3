@@ -191,21 +191,15 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	}
 
 	protected void show( SearchTreeNode node ) {
-		if( shouldShow( node ) ) {
-			if( hiddenList.contains( node ) ) {
-				show( node.getParent() );
-				node.getParent().addChild( node );
-				hiddenList.remove( node );
-			}
+		if( hiddenList.contains( node ) ) {
+			show( node.getParent() );
+			node.getParent().addChild( node );
+			hiddenList.remove( node );
 		}
 	}
 
 	protected boolean shouldShow( SearchTreeNode node ) {
 		return true;
-//		boolean generated = showGenerated || !node.getIsGenerated();
-//		boolean function = showFunctions || !node.getContent().isFunction();
-//		boolean procedure = showProcedures || !node.getContent().isProcedure();
-//		return generated && function && procedure;
 	}
 
 	protected void hide( SearchTreeNode node ) {

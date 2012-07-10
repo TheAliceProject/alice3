@@ -49,23 +49,19 @@ import java.util.Map;
 
 import org.alice.ide.croquet.models.project.views.MethodFrequencyView;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.components.View;
+import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
+public class MethodFrequencyTabComposite extends SimpleTabComposite<MethodFrequencyView> {
 
 	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
 	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
@@ -229,7 +225,7 @@ public class MethodFrequencyTabComposite extends TabComposite<View<?,?>> {
 	}
 
 	@Override
-	protected View<?,?> createView() {
+	protected MethodFrequencyView createView() {
 		return new MethodFrequencyView( this );
 	}
 

@@ -44,65 +44,42 @@ package org.alice.ide.croquet.models.project;
 
 
 import org.alice.ide.ProjectApplication;
-import org.lgna.croquet.InformationDialogOperation;
-import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.TabComposite;
+import org.alice.ide.croquet.models.project.views.StatisticsView;
+import org.lgna.croquet.PlainDialogOperationComposite;
+import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.croquet.TabSelectionState;
-import org.lgna.croquet.components.Container;
-import org.lgna.croquet.components.Dialog;
-import org.lgna.croquet.history.CompletionStep;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 /**
  * @author Matt May
  */
-public class StatisticsOperation extends InformationDialogOperation {
+public class StatisticsComposite extends PlainDialogOperationComposite<StatisticsView> {
 
 	public static final Integer TOP_SIZE = 250;
 	public static final Integer BOTTOM_SIZE = 100;
+	private TabSelectionState<SimpleTabComposite> tabState;
 
-	public StatisticsOperation() {
-		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ) );
+	public StatisticsComposite() {
+		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.PROJECT_GROUP );
 	}
 
 	private static class SingletonHolder {
-		private static StatisticsOperation instance = new StatisticsOperation();
+		private static StatisticsComposite instance = new StatisticsComposite();
 
 	}
 
-	public static StatisticsOperation getInstance() {
+	public static StatisticsComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
 	@Override
-	protected Container<?> createContentPane( CompletionStep<?> step, Dialog dialog ) {
+	protected StatisticsView createView() {
 		FlowControlFrequencyComposite flowControlFrequencyTab = new FlowControlFrequencyComposite();
 		MethodFrequencyTabComposite methodTab = new MethodFrequencyTabComposite();
-		TabSelectionState<TabComposite<?>> state = new TabSelectionState<TabComposite<?>>( ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6f6d1d21-dcd3-4c79-a2f8-7b9b7677f64d" ), new ItemCodec<TabComposite<?>>() {
-
-			public Class<TabComposite<?>> getValueClass() {
-				return null;
-			}
-
-			public TabComposite<?> decodeValue( BinaryDecoder binaryDecoder ) {
-				return null;
-			}
-
-			public void encodeValue( BinaryEncoder binaryEncoder, TabComposite<?> value ) {
-			}
-
-			public StringBuilder appendRepresentation( StringBuilder rv, TabComposite<?> value ) {
-				return null;
-			}
-		} );
-		state.addItem( flowControlFrequencyTab );
-		state.addItem( methodTab );
-		state.setSelectedIndex( 0 );
-		return state.createFolderTabbedPane();
+		tabState = this.createTabSelectionState( this.createKey( "tabState" ), SimpleTabComposite.class, 0, flowControlFrequencyTab, methodTab );
+		return new StatisticsView( this );
 	}
-	@Override
-	protected void releaseContentPane( CompletionStep<?> step, Dialog dialog, Container<?> contentPane ) {
+
+	public TabSelectionState<SimpleTabComposite> getTabState() {
+		return this.tabState;
 	}
 }

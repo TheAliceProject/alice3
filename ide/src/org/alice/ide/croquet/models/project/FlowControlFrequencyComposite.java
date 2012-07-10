@@ -42,52 +42,20 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-
 import org.alice.ide.croquet.models.project.views.FlowControlFrequencyView;
-import org.lgna.croquet.DefaultListSelectionState;
-import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.HorizontalAlignment;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.View;
-import org.lgna.project.ast.AbstractEachInTogether;
-import org.lgna.project.ast.AbstractForEachLoop;
-import org.lgna.project.ast.ConditionalStatement;
-import org.lgna.project.ast.CountLoop;
-import org.lgna.project.ast.DoInOrder;
-import org.lgna.project.ast.DoTogether;
-import org.lgna.project.ast.LocalDeclarationStatement;
-import org.lgna.project.ast.ReturnStatement;
+import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.WhileLoop;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class FlowControlFrequencyComposite extends TabComposite<FlowControlFrequencyView> {
+public class FlowControlFrequencyComposite extends SimpleTabComposite<FlowControlFrequencyView> {
 	private Map<UserMethod,List<Statement>> methodToConstructMap;
 	private final ListSelectionState<UserMethod> userMethodList = createListSelectionState( createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static UserMethod dummy = new UserMethod();
