@@ -66,7 +66,7 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 	private static final java.awt.Paint stencilPaint = createStencilPaint();
 
 	public PresentationView( org.lgna.cheshire.task.stencil.PresentationComposite composite ) {
-		super( composite.getWindow(), LayerId.ABOVE_POPUP_MENU );
+		super( composite.getWindow(), LayerId.BELOW_POPUP_MENU );
 		org.lgna.croquet.components.Layer layer = this.getLayer();
 		org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
 		controlPanel.addComponent( composite.getPreviousOperation().createButton() );

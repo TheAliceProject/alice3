@@ -55,4 +55,11 @@ public class Task {
 	public void insertRecoveryTransaction( org.lgna.croquet.history.Transaction transaction ) {
 		this.transactionIterator.add( transaction );
 	}
+	public String getTitle() {
+		return this.transactions.get( 0 ).getTitle();
+	}
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
+		//todo
+		return null;
+	}
 }

@@ -89,6 +89,9 @@ public class TaskComboBoxModel extends edu.cmu.cs.dennisc.javax.swing.models.Abs
 		return this.tasks.size();
 	}
 
+	public int getSelectedIndex() {
+		return this.index;
+	}
 	public Task getSelectedItem() {
 		if( this.index >= 0 ) {
 			return this.tasks.get( this.index );
@@ -99,5 +102,10 @@ public class TaskComboBoxModel extends edu.cmu.cs.dennisc.javax.swing.models.Abs
 	public void setSelectedItem(Object item) {
 		assert item == null || item instanceof Task : item;
 		this.index = this.tasks.indexOf( item );
+	}
+	
+	public boolean isIndexAccessible( int index ) {
+		//todo
+		return true;
 	}
 }
