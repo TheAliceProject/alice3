@@ -56,7 +56,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import org.alice.ide.croquet.models.project.MethodFrequencyTabComposite;
-import org.alice.ide.croquet.models.project.StatisticsOperation;
+import org.alice.ide.croquet.models.project.StatisticsComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -98,10 +98,10 @@ public class MethodFrequencyView extends BorderPanel {
 		ScrollPane scrollPane = new ScrollPane( list );
 		gridPanel.addComponent( scrollPane );
 
-		scrollPane.setMaximumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
-		scrollPane.setMinimumPreferredHeight( StatisticsOperation.BOTTOM_SIZE );
-		statsDisplay.scroll.setMaximumPreferredHeight( StatisticsOperation.TOP_SIZE );
-		statsDisplay.scroll.setMinimumPreferredHeight( StatisticsOperation.TOP_SIZE );
+		scrollPane.setMaximumPreferredHeight( StatisticsComposite.BOTTOM_SIZE );
+		scrollPane.setMinimumPreferredHeight( StatisticsComposite.BOTTOM_SIZE );
+		statsDisplay.scroll.setMaximumPreferredHeight( StatisticsComposite.TOP_SIZE );
+		statsDisplay.scroll.setMinimumPreferredHeight( StatisticsComposite.TOP_SIZE );
 		statsDisplay.scroll.setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.NEVER );
 		this.addComponent( gridPanel, Constraint.CENTER );
 	}

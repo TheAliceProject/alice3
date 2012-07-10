@@ -43,15 +43,15 @@
 package org.alice.ide.croquet.models.project;
 
 import org.alice.ide.croquet.models.project.views.FieldSearchView;
+import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.components.SplitPane;
 
 /**
  * @author Matt May
  */
-public class FieldSearchCompsoite extends TabComposite<FieldSearchView> {
+public class FieldSearchCompsoite extends SimpleTabComposite<FieldSearchView> {
 	
 	public FieldSearchCompsoite() {
 		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
@@ -63,14 +63,8 @@ public class FieldSearchCompsoite extends TabComposite<FieldSearchView> {
 	public boolean isCloseable() {
 		return false;
 	}
-	private SplitComposite splitComposite = new SplitComposite( java.util.UUID.fromString( "1d84857a-06b6-4b86-9169-33129731400c" ), treeComposite, referenceComposite ) {
-
-		@Override
-		protected SplitPane createView() {
-			return new SplitPane( this, 1 ) {
-			};
-		}
-	};
+	
+	private SplitComposite splitComposite = createHorizontalSplitComposite( treeComposite, referenceComposite, .5 );
 
 	@Override
 	protected org.alice.ide.croquet.models.project.views.FieldSearchView createView() {

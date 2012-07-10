@@ -65,18 +65,11 @@ public class SearchComposite extends TabComposite<SearchView> {
 
 	private StringState searchState = createStringState( createKey( "searchState" ) );
 	private BooleanState showGenerated = createBooleanState( createKey( "showGenerated" ), false );
-	private BooleanState showProcedure = createBooleanState( createKey( "showProcedure" ), true );
+	private BooleanState showProcedures = createBooleanState( createKey( "showProcedure" ), true );
 	private BooleanState showFunctions = createBooleanState( createKey( "showFunctions" ), true );
 	private final SearchDialogManager manager;
 	private boolean isJumpDesired = true;
 
-//	private static class SingletonHolder{
-//		public static SearchComposite instance = new SearchComposite();
-//	}
-//
-//	public static SearchComposite getInstance() {
-//		return SingletonHolder.instance;
-//	}
 	public SearchComposite() {
 		super( java.util.UUID.fromString( "8f75a1e2-805d-4d9f-bef6-099204fe8d60" ) );
 		manager = new SearchDialogManager();
@@ -86,7 +79,7 @@ public class SearchComposite extends TabComposite<SearchView> {
 		return this.showGenerated;
 	}
 	public BooleanState getShowProcedure() {
-		return this.showProcedure;
+		return this.showProcedures;
 	}
 	public BooleanState getShowFunctions() {
 		return this.showFunctions;
@@ -122,12 +115,24 @@ public class SearchComposite extends TabComposite<SearchView> {
 			}
 
 			public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				showFunctions = SearchComposite.this.showFunctions.getValue();
-				showProcedures = SearchComposite.this.showProcedure.getValue();
-				showGenerated = SearchComposite.this.showGenerated.getValue();
 				manager.changed( getStringState(), searchState.getValue(), searchState.getValue(), true );
 			}
 		};
+		
+		@Override
+		protected void show( SearchTreeNode node ) {
+			if( showGenerated.getValue() || !node.getIsGenerated() ){	
+				super.show( node );
+			}
+		}
+
+		@Override
+		protected boolean shouldShow( SearchTreeNode node ) {
+			boolean generated = showGenerated.getValue() || !node.getIsGenerated();
+			boolean function = showFunctions.getValue() || !node.getContent().isFunction();
+			boolean procedure = showProcedures.getValue() || !node.getContent().isProcedure();
+			return generated && function && procedure;
+		}
 
 		public ValueListener<Boolean> getBooleanListener() {
 			return this.booleanListener;
@@ -155,7 +160,7 @@ public class SearchComposite extends TabComposite<SearchView> {
 			searchState.addValueListener( this );
 			this.addValueListener( adapter );
 			SearchComposite.this.showFunctions.addValueListener( booleanListener );
-			SearchComposite.this.showProcedure.addValueListener( booleanListener );
+			SearchComposite.this.showProcedures.addValueListener( booleanListener );
 			SearchComposite.this.showGenerated.addValueListener( booleanListener );
 		}
 
@@ -174,7 +179,9 @@ public class SearchComposite extends TabComposite<SearchView> {
 					Matcher matcher = pattern.matcher( hiddenNode.getContent().getName().toLowerCase() );
 					if( matcher.find() ) {
 						if( check.length() == 0 || hiddenNode.getDepth() <= SHOULD_BE_EXPANDED ) {
-							show( hiddenNode );
+							if( shouldShow( hiddenNode ) ) {
+								show( hiddenNode );
+							}
 						}
 					}
 				}
@@ -191,12 +198,12 @@ public class SearchComposite extends TabComposite<SearchView> {
 	}
 
 	public SearchTreeNode setSelected( UserMethod method ) {
-		SearchTreeNode find = manager.root.find(method);
+		SearchTreeNode find = manager.root.find( method );
 		manager.setValue( find );
 		return find;
 	}
 
 	public void setJumpDesired( boolean b ) {
-		this.isJumpDesired= b;
+		this.isJumpDesired = b;
 	}
 }

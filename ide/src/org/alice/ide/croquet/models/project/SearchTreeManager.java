@@ -71,9 +71,6 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	protected LinkedList<SearchTreeNode> hiddenList = Collections.newLinkedList();
 	protected Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap = Collections.newHashMap();
 	protected Tree<SearchTreeNode> owner;
-	protected static boolean showGenerated = false;
-	protected static boolean showFunctions = true;
-	protected static boolean showProcedures = true;
 
 	public SearchTreeManager( UUID id ) {
 		super( Application.INFORMATION_GROUP, id, SearchCodec.getSingleton(), null );
@@ -194,20 +191,15 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	}
 
 	protected void show( SearchTreeNode node ) {
-		if( shouldShow( node ) ) {
-			if( hiddenList.contains( node ) ) {
-				show( node.getParent() );
-				node.getParent().addChild( node );
-				hiddenList.remove( node );
-			}
+		if( hiddenList.contains( node ) ) {
+			show( node.getParent() );
+			node.getParent().addChild( node );
+			hiddenList.remove( node );
 		}
 	}
 
-	private boolean shouldShow( SearchTreeNode node ) {
-		boolean generated = showGenerated || !node.getIsGenerated();
-		boolean function = showFunctions || !node.getContent().isFunction();
-		boolean procedure = showProcedures || !node.getContent().isProcedure();
-		return generated && function && procedure;
+	protected boolean shouldShow( SearchTreeNode node ) {
+		return true;
 	}
 
 	protected void hide( SearchTreeNode node ) {

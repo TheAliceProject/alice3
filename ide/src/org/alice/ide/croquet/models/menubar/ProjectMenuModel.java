@@ -58,7 +58,7 @@ public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ), 
 				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(), 
 				org.alice.ide.croquet.models.project.SearchDialogSearchFirstComposite.getInstance().getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.StatisticsOperation.getInstance().getMenuItemPrepModel()
+				org.alice.ide.croquet.models.project.StatisticsComposite.getInstance().getOperation().getMenuItemPrepModel()
 		);
 	}
 }

@@ -40,35 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
-import org.lgna.project.ast.UserMethod;
+import org.alice.ide.croquet.models.project.StatisticsComposite;
+import org.lgna.croquet.components.BorderPanel;
 
 /**
  * @author Matt May
  */
-public class SearchDialogReferenceFirstComposite extends SearchDialogComposite {
+public class StatisticsView extends BorderPanel {
 
-	public static SearchDialogReferenceFirstComposite getInstance( UserMethod method ) {
-		return new SearchDialogReferenceFirstComposite( method );
-	}
-
-	private UserMethod targeted;
-
-	private SearchDialogReferenceFirstComposite(UserMethod method) {
-		super( java.util.UUID.fromString( "69aa64a2-4faa-407d-b6e8-b0fa99b2a5df" ) );
-		this.targeted = method;
-	}
-
-	public UserMethod getTarget() {
-		return this.targeted;
-	}
-
-	@Override
-	public void handlePreActivation() {
-		methodSearchComposite.searchComposite.setJumpDesired(false);
-		methodSearchComposite.searchComposite.setSelected( getTarget() );
-		methodSearchComposite.searchComposite.setJumpDesired(true);
-		super.handlePreActivation();
+	public StatisticsView( StatisticsComposite composite ) {
+		super(composite);
+		composite.getTabState().createFolderTabbedPane();
 	}
 }
