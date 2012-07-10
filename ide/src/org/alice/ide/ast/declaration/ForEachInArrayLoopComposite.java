@@ -69,4 +69,7 @@ public final class ForEachInArrayLoopComposite extends EachInArrayComposite< org
 				new org.lgna.project.ast.BlockStatement() 
 		);
 	}
+	
+	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) ); 
+	
 }
