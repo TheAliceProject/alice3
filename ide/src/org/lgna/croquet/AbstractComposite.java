@@ -559,6 +559,9 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		InternalTabSelectionState<C> rv = new InternalTabSelectionState<C>( cls, selectionIndex, tabComposites, key );
 		return rv;
 	}
+	protected TabSelectionState<SimpleTabComposite> createTabSelectionState( Key key, int selectionIndex, SimpleTabComposite... tabComposites ) {
+		return this.createTabSelectionState( key, SimpleTabComposite.class, selectionIndex, tabComposites );
+	}
 
 	protected SplitComposite createHorizontalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
 		return new InternalSplitComposite( leadingComposite, trailingComposite, true, resizeWeight );
