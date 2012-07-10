@@ -221,7 +221,17 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		if( this.isIgnoringEvents ) {
 			//pass
 		} else if( event instanceof org.lgna.croquet.history.event.CancelEvent ) {
-			this.handleTransactionCanceled();
+			org.lgna.croquet.history.event.CancelEvent cancelEvent = (org.lgna.croquet.history.event.CancelEvent)event;
+			try {
+				org.lgna.croquet.history.TransactionHistory history = cancelEvent.getNode().getOwnerTransaction().getOwnerTransactionHistory();
+				if( history.getOwner() != null ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "ignoring", cancelEvent );
+				} else {
+					this.handleTransactionCanceled();
+				}
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
 		} else {
 			org.lgna.cheshire.simple.Book book = getBook();
 			org.lgna.cheshire.simple.Chapter chapter = book.getSelectedChapter();
