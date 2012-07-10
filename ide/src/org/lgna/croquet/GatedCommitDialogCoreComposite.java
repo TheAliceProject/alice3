@@ -94,6 +94,9 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	public void removeCommitRejector( CommitRejector commitRejector ) {
 		this.commitRejectors.remove( commitRejector );
 	}
+	public void clearCommitRejectors() {
+		this.commitRejectors.clear();
+	}
 	protected abstract Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step );
 	public final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Status status = this.getStatusPreRejectorCheck( step );

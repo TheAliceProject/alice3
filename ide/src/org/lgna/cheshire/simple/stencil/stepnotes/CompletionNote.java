@@ -67,6 +67,7 @@ public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel>
 					org.lgna.project.ast.Statement statement = insertStatementEdit.getStatement();
 					if( statement instanceof org.lgna.project.ast.ForEachInArrayLoop ) {
 						final org.lgna.project.ast.ForEachInArrayLoop forEachInArrayLoop = (org.lgna.project.ast.ForEachInArrayLoop)statement;
+						forEachInArrayLoopComposite.clearCommitRejectors();
 						forEachInArrayLoopComposite.addCommitRejector( new org.lgna.croquet.CommitRejector() {
 							public org.lgna.croquet.AbstractSeverityStatusComposite.Status getRejectionStatus(org.lgna.croquet.history.CompletionStep<?> step) {
 								StringBuilder sb = new StringBuilder();
