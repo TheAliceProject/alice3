@@ -91,12 +91,30 @@ public class InstanceFactoryUtilities {
 			} else if( methodInvocationInstanceExpression instanceof org.lgna.project.ast.LocalAccess ) {
 				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)methodInvocationInstanceExpression;
 				rv = LocalAccessMethodInvocationFactory.getInstance( localAccess.local.getValue(), method );
+			} else if( methodInvocationInstanceExpression instanceof org.lgna.project.ast.ParameterAccess ) {
+				org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)methodInvocationInstanceExpression;
+				org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
+				if( parameter instanceof org.lgna.project.ast.UserParameter ) {
+					org.lgna.project.ast.UserParameter userParameter = (org.lgna.project.ast.UserParameter)parameter;
+					rv = ParameterAccessMethodInvocationFactory.getInstance( userParameter, method );
+				} else {
+					rv = null;
+				}
 			} else {
 				rv = null;
 			}
 		} else if( instanceExpression instanceof org.lgna.project.ast.LocalAccess ) {
 			org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)instanceExpression;
 			rv = LocalAccessFactory.getInstance( localAccess.local.getValue() );
+		} else if( instanceExpression instanceof org.lgna.project.ast.ParameterAccess ) {
+			org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)instanceExpression;
+			org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
+			if( parameter instanceof org.lgna.project.ast.UserParameter ) {
+				org.lgna.project.ast.UserParameter userParameter = (org.lgna.project.ast.UserParameter)parameter;
+				rv = ParameterAccessFactory.getInstance( userParameter );
+			} else {
+				rv = null;
+			}
 		} else {
 			rv = null;
 		}
