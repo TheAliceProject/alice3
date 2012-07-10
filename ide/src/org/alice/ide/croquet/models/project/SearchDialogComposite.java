@@ -79,10 +79,8 @@ public abstract class SearchDialogComposite extends PlainDialogOperationComposit
 		}
 	} );
 	
-	protected SearchComposite searchComposite;
-//	private ReferencesComposite referencesComposite;
-	private FieldSearchCompsoite fieldSearchComposite;
-	private MethodSearchComposite methodSearchComposite;
+	protected FieldSearchCompsoite fieldSearchComposite;
+	protected MethodSearchComposite methodSearchComposite;
 
 	protected SearchDialogComposite( UUID uuid ) {
 		super( uuid, ProjectApplication.PROJECT_GROUP );
@@ -90,10 +88,8 @@ public abstract class SearchDialogComposite extends PlainDialogOperationComposit
 
 	@Override
 	protected final SearchDialogView createView() {
-//		searchComposite = new SearchComposite();
-//		referencesComposite = new ReferencesComposite( searchComposite );
-		fieldSearchComposite = new FieldSearchCompsoite();
 		methodSearchComposite = new MethodSearchComposite();
+		fieldSearchComposite = new FieldSearchCompsoite();
 		getState().addItem( methodSearchComposite );
 		getState().addItem( fieldSearchComposite );
 		return new SearchDialogView( this );

@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.UserMethod;
 
 /**
@@ -67,10 +66,9 @@ public class SearchDialogReferenceFirstComposite extends SearchDialogComposite {
 
 	@Override
 	public void handlePreActivation() {
-		searchComposite.setJumpDesired(false);
-		searchComposite.setSelected( getTarget() );
-		searchComposite.setJumpDesired(true);
-		this.getState().setSelectedIndex( 1 );
+		methodSearchComposite.searchComposite.setJumpDesired(false);
+		methodSearchComposite.searchComposite.setSelected( getTarget() );
+		methodSearchComposite.searchComposite.setJumpDesired(true);
 		super.handlePreActivation();
 	}
 }
