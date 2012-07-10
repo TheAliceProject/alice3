@@ -225,6 +225,24 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key.localizationKey;
 		}
 	}
+	private static final class InternalTabSelectionState<T extends TabComposite<?>> extends TabSelectionState<T> {
+		private final Key key;
+		public InternalTabSelectionState( ItemCodec< T > codec, int selectionIndex, T[] data, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), codec, selectionIndex, data );
+			this.key = key;
+		}
+		public Key getKey() {
+			return this.key;
+		}
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+	}
 	public static class BoundedIntegerDetails extends BoundedIntegerState.Details {
 		public BoundedIntegerDetails() {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "3cb7dfc5-de8c-442c-9e9a-deab2eff38e8" ) );
@@ -340,6 +358,27 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		}
 	}
 
+	private static final class InternalSplitComposite extends SplitComposite {
+		private final boolean isHorizontal;
+		private final double resizeWeight;
+		private InternalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, boolean isHorizontal, double resizeWeight ) {
+			super( java.util.UUID.fromString( "0a7dee81-a213-4168-b71c-99b9e364dcf3" ), leadingComposite, trailingComposite );
+			this.isHorizontal = isHorizontal;
+			this.resizeWeight = resizeWeight;
+		}
+		@Override
+		protected org.lgna.croquet.components.SplitPane createView() {
+			org.lgna.croquet.components.SplitPane rv;
+			if( this.isHorizontal ) {
+				rv = this.createHorizontalSplitPane();
+			} else {
+				rv = this.createVerticalSplitPane();
+			}
+			rv.setResizeWeight( this.resizeWeight );
+			return rv;
+		}
+	}
+	
 	public AbstractComposite( java.util.UUID id ) {
 		super( id );
 		Manager.registerComposite( this );
@@ -371,6 +410,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	private java.util.Map<Key,InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalDefaultListSelectionState> mapKeyToListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalTabSelectionState> mapKeyToTabSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -395,7 +435,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
 			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
 		}
-		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToListSelectionState, this.mapKeyToStringState );
+		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToListSelectionState, this.mapKeyToTabSelectionState, this.mapKeyToStringState );
 	}
 	public boolean contains( Model model ) {
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
@@ -416,13 +456,19 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 				return true;
 			}
 		}
-		for( Key key : this.mapKeyToListSelectionState.keySet() ) {
+		for( Key key : this.mapKeyToTabSelectionState.keySet() ) {
+			InternalTabSelectionState state = this.mapKeyToTabSelectionState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToBoundedIntegerState.keySet() ) {
 			InternalBoundedIntegerState state = this.mapKeyToBoundedIntegerState.get( key );
 			if( model == state ) {
 				return true;
 			}
 		}
-		for( Key key : this.mapKeyToListSelectionState.keySet() ) {
+		for( Key key : this.mapKeyToBoundedDoubleState.keySet() ) {
 			InternalBoundedDoubleState state = this.mapKeyToBoundedDoubleState.get( key );
 			if( model == state ) {
 				return true;
@@ -507,5 +553,17 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		T[] constants = valueCls.getEnumConstants();
 		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
 		return createListSelectionState( key, valueCls, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), selectionIndex, constants );
+	}
+	
+	protected <T extends TabComposite<?>> TabSelectionState<T> createTabSelectionState( Key key, ItemCodec< T > codec, int selectionIndex, T... tabComposites ) {
+		InternalTabSelectionState<T> rv = new InternalTabSelectionState<T>( codec, selectionIndex, tabComposites, key );
+		return rv;
+	}
+
+	protected SplitComposite createHorizontalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
+		return new InternalSplitComposite( leadingComposite, trailingComposite, true, resizeWeight );
+	}
+	protected SplitComposite createVerticalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
+		return new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight );
 	}
 }
