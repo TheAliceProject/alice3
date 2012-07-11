@@ -47,39 +47,26 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class LayerStencil extends Panel {
-	protected static enum LayerId {
-		BELOW_POPUP_MENU() {
-			@Override
-			public Layer getLayer( AbstractWindow<?> window ) {
-				return window.getLayer( javax.swing.JLayeredPane.POPUP_LAYER - 1 );
-			}
-		},
-		ABOVE_POPUP_MENU() {
-			@Override
-			public Layer getLayer( AbstractWindow<?> window ) {
-				return window.getLayer( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
-			}
-		};
-		public abstract Layer getLayer( AbstractWindow<?> window ); 
-	};
 	private final AbstractWindow<?> window;
 	private final Layer layer;
-	public LayerStencil( AbstractWindow<?> window, LayerId layerId ) {
+	public LayerStencil( AbstractWindow<?> window, Integer layerId ) {
 		this.window = window;
-		this.layer = layerId.getLayer( this.window );
+		this.layer = this.window.getLayer( layerId );
 	}
 	public Layer getLayer() {
 		return this.layer;
 	}
-	protected abstract void handleMouseMoved(java.awt.event.MouseEvent e);
-
+	protected abstract void processMouseEvent( java.awt.event.MouseEvent e );
 	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
 	protected abstract boolean contains( int x, int y, boolean superContains );
 	@Override
 	protected javax.swing.JPanel createJPanel() {
-		javax.swing.JPanel rv = new javax.swing.JPanel() {
+		class JStencil extends javax.swing.JPanel {
+			public JStencil() {
+				this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK );
+			}
 			@Override
 			protected void paintComponent(java.awt.Graphics g) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
@@ -107,7 +94,13 @@ public abstract class LayerStencil extends Panel {
 			public boolean contains(int x, int y) {
 				return LayerStencil.this.contains( x, y, super.contains( x, y ) );
 			}
-		};
+			@Override
+			protected void processMouseEvent( java.awt.event.MouseEvent e ) {
+				super.processMouseEvent( e );
+				LayerStencil.this.processMouseEvent( e );
+			}
+		}
+		JStencil rv = new JStencil();
 		rv.setOpaque( false );
 		return rv;
 	}

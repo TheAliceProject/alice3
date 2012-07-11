@@ -66,7 +66,7 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 	private static final java.awt.Paint stencilPaint = createStencilPaint();
 
 	public PresentationView( org.lgna.cheshire.task.stencil.PresentationComposite composite ) {
-		super( composite.getWindow(), LayerId.BELOW_POPUP_MENU );
+		super( composite.getWindow(), javax.swing.JLayeredPane.POPUP_LAYER-1 );
 		org.lgna.croquet.components.Layer layer = this.getLayer();
 		org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
 		controlPanel.addComponent( composite.getPreviousOperation().createButton() );
@@ -84,9 +84,6 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 		return superContains;
 	}
 	@Override
-	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
-	}
-	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
 		g2.setPaint( stencilPaint );
 		g2.fill( g2.getClip() );
@@ -96,5 +93,8 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 	}
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
+	}
+	@Override
+	protected void processMouseEvent( java.awt.event.MouseEvent e ) {
 	}
 }

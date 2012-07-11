@@ -73,7 +73,6 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	public SwingModel getSwingModel() {
-		this.initializeIfNecessary();
 		return this.swingModel;
 	}
 	

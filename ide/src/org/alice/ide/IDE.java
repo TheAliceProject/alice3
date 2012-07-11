@@ -625,4 +625,39 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return simplePresentation;
 	}
+
+	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
+	private org.alice.ide.highlight.HighlightStencil highlightStencil;
+	private org.alice.ide.highlight.HighlightStencil getHighlightStencil() {
+		if( this.highlightStencil != null ) {
+			//pass
+		} else {
+			this.highlightStencil = new org.alice.ide.highlight.HighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
+		}
+		return this.highlightStencil;
+	}
+	public void showHighlightStencil( org.lgna.project.ast.Expression expression, String text ) {
+		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
+		highlightStencil.setStencilShowing( true );
+	}
+	public void showHighlightStencil( final org.lgna.croquet.Model model, String noteText ) {
+		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
+		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+					if( model != null ) {
+					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+					if( component != null ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
+					}
+					return component;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", model );
+					return null;
+				}
+			}
+		}, noteText );
+	}
+	
 }
