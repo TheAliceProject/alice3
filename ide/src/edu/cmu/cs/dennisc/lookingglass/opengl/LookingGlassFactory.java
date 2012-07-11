@@ -112,7 +112,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	public static LookingGlassFactory getInstance() {
 		return SingletonHolder.instance;
 	}
-	
+
+	private static final java.util.Map< javax.media.opengl.GLDrawable, java.awt.Dimension > drawableSizeMap = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
+
 	private final java.util.List<LightweightOnscreenLookingGlass> lightweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List<HeavyweightOnscreenLookingGlass> heavyweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List<OffscreenLookingGlass> offscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -217,7 +219,14 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		if (glDrawableFactory.canCreateGLPbuffer()) {
-			return glDrawableFactory.createGLPbuffer(createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share);
+			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer(createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share);
+
+			// This is a work around for Linux users.
+			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will 
+			// return 0 for information about a drawable, include getWidth and getHeight even though the drawable is the correct size.
+			this.drawableSizeMap.put( buffer, new java.awt.Dimension( width, height ) );
+
+			return buffer;
 		} else {
 			return null;
 		}
@@ -416,5 +425,23 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 	public Iterable< ? extends edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass > getOffscreenLookingGlasses() {
 		return this.offscreenLookingGlasses;
+	}
+
+	public static int getGLPbufferWidth( javax.media.opengl.GLDrawable drawable ) {
+		// Bug in linux opengl, getWidth ALWAYS returns 0
+		int width = drawable.getWidth();
+		if ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() && ( width == 0 ) ) {
+			width = (int)drawableSizeMap.get( drawable ).getWidth();
+		}
+		return width;
+	}
+
+	public static int getGLPbufferHeight( javax.media.opengl.GLDrawable drawable ) {
+		// Bug in linux opengl, getHeight ALWAYS returns 0
+		int height = drawable.getHeight();
+		if ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() && ( height == 0 ) ) {
+			height = (int)drawableSizeMap.get( drawable ).getHeight();
+		}
+		return height;
 	}
 }

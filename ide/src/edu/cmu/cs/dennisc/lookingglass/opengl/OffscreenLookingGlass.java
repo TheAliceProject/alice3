@@ -57,7 +57,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 
 	public java.awt.Dimension getSize(java.awt.Dimension rv) {
 		if (this.glPbuffer != null) {
-			rv.setSize(this.glPbuffer.getWidth(), this.glPbuffer.getHeight());
+			rv.setSize( LookingGlassFactory.getGLPbufferWidth( this.glPbuffer ), LookingGlassFactory.getGLPbufferHeight( this.glPbuffer ) );
 		} else {
 			rv.setSize(0, 0);
 		}
@@ -68,7 +68,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 		assert width > 0;
 		assert height > 0;
 		if (this.glPbuffer != null) {
-			if (width != this.glPbuffer.getWidth() || height != this.glPbuffer.getHeight()) {
+			if (width != LookingGlassFactory.getGLPbufferWidth( this.glPbuffer ) || height != LookingGlassFactory.getGLPbufferHeight( this.glPbuffer )) {
 				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
 				this.glPbuffer.destroy();
 				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );

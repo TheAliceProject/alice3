@@ -364,10 +364,10 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( this.width != this.drawable.getWidth() || this.height != this.drawable.getHeight() ) {
+			if( this.width != LookingGlassFactory.getGLPbufferWidth( this.drawable ) || this.height != LookingGlassFactory.getGLPbufferHeight( this.drawable ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
-				this.width = this.drawable.getWidth();
-				this.height = this.drawable.getHeight();
+				this.width = LookingGlassFactory.getGLPbufferWidth( this.drawable );
+				this.height = LookingGlassFactory.getGLPbufferHeight( this.drawable );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
@@ -480,7 +480,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		
 		this.renderContext.setGL( gl );
 		this.pickContext.setGL( gl );
-		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, this.drawable.getWidth(), this.drawable.getHeight() ) );
+		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, LookingGlassFactory.getGLPbufferWidth( this.drawable ), LookingGlassFactory.getGLPbufferHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
