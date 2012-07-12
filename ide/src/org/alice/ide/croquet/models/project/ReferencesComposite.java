@@ -85,13 +85,6 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 		}
 
 	};
-//	private static class SingletonHolder {
-//		public static ReferencesComposite instance = new ReferencesComposite();
-//	}
-//
-//	public static ReferencesComposite getInstance() {
-//		return SingletonHolder.instance;
-//	}
 	public ReferencesComposite( SearchComposite item ) {
 		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
 		manager = new ReferencesDialogManager();

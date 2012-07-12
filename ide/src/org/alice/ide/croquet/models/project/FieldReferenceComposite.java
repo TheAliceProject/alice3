@@ -44,17 +44,13 @@ package org.alice.ide.croquet.models.project;
 
 import java.util.List;
 
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import org.alice.ide.croquet.models.project.views.FieldReferenceView;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
 
 /**
@@ -70,15 +66,17 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 		}
 
 		public void changed( State<FieldAccess> state, FieldAccess prevValue, FieldAccess nextValue, boolean isAdjusting ) {
-//			if( state.getValue() != prevValue ) {
-				FieldAccess selection = state.getValue();
-				if( selection != null && isJumpDesired ) {
-					UserMethod ancestor = selection.getParent().getFirstAncestorAssignableTo( UserMethod.class );
-					System.out.println("hello please CHange: " + ancestor );
+			FieldAccess selection = state.getValue();
+			if( selection != null && isJumpDesired ) {
+				UserMethod ancestor = selection.getParent().getFirstAncestorAssignableTo( UserMethod.class );
+				if(ancestor == null){
+					NamedUserType type = selection.getFirstAncestorAssignableTo( NamedUserType.class );
+					org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( type ) );
+				} else {
 					org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ancestor ) );
 				}
 			}
-//		}
+		}
 	};
 
 	public FieldReferenceComposite( FieldSearchCompsoite fieldSearchCompsoite ) {

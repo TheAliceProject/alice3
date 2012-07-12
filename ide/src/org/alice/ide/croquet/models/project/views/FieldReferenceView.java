@@ -54,6 +54,7 @@ import org.alice.ide.croquet.models.project.FlowControlFrequencyComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
@@ -78,7 +79,13 @@ public class FieldReferenceView extends BorderPanel {
 				rv.setBackgroundColor( Color.BLUE );
 				rv.setForegroundColor( Color.WHITE );
 			}
-			rv.setText( access.getParent().getFirstAncestorAssignableTo( UserMethod.class ).getName() );
+			UserMethod userMethod = access.getParent().getFirstAncestorAssignableTo( UserMethod.class );
+			if( userMethod != null ) {
+				rv.setText( userMethod.getName() );
+			} else {
+				NamedUserType type = access.getParent().getFirstAncestorAssignableTo( NamedUserType.class );
+				rv.setText( type.getName() );
+			}
 			return rv.getAwtComponent();
 		}
 	}

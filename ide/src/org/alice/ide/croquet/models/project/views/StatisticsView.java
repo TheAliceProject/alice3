@@ -52,6 +52,6 @@ public class StatisticsView extends BorderPanel {
 
 	public StatisticsView( StatisticsComposite composite ) {
 		super(composite);
-		composite.getTabState().createFolderTabbedPane();
+		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
 	}
 }

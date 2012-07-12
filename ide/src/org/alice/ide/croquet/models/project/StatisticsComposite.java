@@ -45,14 +45,14 @@ package org.alice.ide.croquet.models.project;
 
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.croquet.models.project.views.StatisticsView;
-import org.lgna.croquet.PlainDialogOperationComposite;
+import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.croquet.TabSelectionState;
 
 /**
  * @author Matt May
  */
-public class StatisticsComposite extends PlainDialogOperationComposite<StatisticsView> {
+public class StatisticsComposite extends FrameComposite<StatisticsView> {
 
 	public static final Integer TOP_SIZE = 250;
 	public static final Integer BOTTOM_SIZE = 100;
