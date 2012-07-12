@@ -431,7 +431,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		// Bug in linux opengl, getWidth ALWAYS returns 0
 		int width = drawable.getWidth();
 		if ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() && ( width == 0 ) ) {
-			width = (int)drawableSizeMap.get( drawable ).getWidth();
+			width = drawableSizeMap.get( drawable ).width;
 		}
 		return width;
 	}
@@ -440,7 +440,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		// Bug in linux opengl, getHeight ALWAYS returns 0
 		int height = drawable.getHeight();
 		if ( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() && ( height == 0 ) ) {
-			height = (int)drawableSizeMap.get( drawable ).getHeight();
+			height = drawableSizeMap.get( drawable ).height;
 		}
 		return height;
 	}
