@@ -40,18 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.views;
+package org.alice.ide.croquet.models.project;
 
-import org.alice.ide.croquet.models.project.StatisticsComposite;
-import org.lgna.croquet.components.BorderPanel;
+import org.lgna.project.ast.UserMethod;
 
 /**
  * @author Matt May
  */
-public class StatisticsView extends BorderPanel {
+public class FindReferencesFrameComposite extends FindFrameComposite {
 
-	public StatisticsView( StatisticsComposite composite ) {
-		super(composite);
-		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
+	public static FindReferencesFrameComposite getInstance( UserMethod method ) {
+		return new FindReferencesFrameComposite( method );
+	}
+
+	private UserMethod targeted;
+
+	private FindReferencesFrameComposite(UserMethod method) {
+		super( java.util.UUID.fromString( "69aa64a2-4faa-407d-b6e8-b0fa99b2a5df" ) );
+		this.targeted = method;
+	}
+
+	public UserMethod getTarget() {
+		return this.targeted;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		methodSearchComposite.searchComposite.setJumpDesired(false);
+		methodSearchComposite.searchComposite.setSelected( getTarget() );
+		methodSearchComposite.searchComposite.setJumpDesired(true);
+		super.handlePreActivation();
 	}
 }

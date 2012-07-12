@@ -44,6 +44,7 @@ package org.alice.ide.croquet.models.project;
 
 import java.util.List;
 
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
 import org.alice.ide.croquet.models.project.views.FieldReferenceView;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
@@ -79,7 +80,7 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 		}
 	};
 
-	public FieldReferenceComposite( FieldSearchCompsoite fieldSearchCompsoite ) {
+	public FieldReferenceComposite( FieldSearchTabCompsoite fieldSearchCompsoite ) {
 		super( java.util.UUID.fromString( "50a45fd7-6ec1-4549-8131-1da15ddac7fb" ) );
 		fieldSearchCompsoite.addListener( this );
 		references.addValueListener( adapter );

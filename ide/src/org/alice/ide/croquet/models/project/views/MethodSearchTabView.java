@@ -42,19 +42,19 @@
  */
 package org.alice.ide.croquet.models.project.views;
 
-import org.alice.ide.croquet.models.project.ReferencesComposite;
+import org.alice.ide.croquet.models.project.MethodSearchTabComposite;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.ScrollPane;
 
 /**
  * @author Matt May
  */
-public class ReferencesView extends BorderPanel {
+public class MethodSearchTabView extends BorderPanel {
 
-	public ReferencesView( ReferencesComposite composite ) {
+	public MethodSearchTabView( MethodSearchTabComposite composite ) {
 		super( composite );
-		this.addComponent( composite.getSelectedMethod().createImmutableTextArea(), Constraint.PAGE_START );
-		this.addComponent( new ScrollPane( composite.getTree() ), Constraint.CENTER );
+		this.addCenterComponent( composite.getSplitComposite().getView() );
 	}
 
+	
+	
 }

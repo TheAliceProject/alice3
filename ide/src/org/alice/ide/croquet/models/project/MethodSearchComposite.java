@@ -42,38 +42,165 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchTreeManager;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchTreeNode;
 import org.alice.ide.croquet.models.project.views.MethodSearchView;
-import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.TabComposite;
-import org.lgna.croquet.components.SplitPane;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.StringState;
+import org.lgna.project.ast.UserMethod;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
  * @author Matt May
  */
-public class MethodSearchComposite extends SimpleTabComposite<MethodSearchView> {
+public class MethodSearchComposite extends SimpleComposite<MethodSearchView> {
 
-	SearchComposite searchComposite = new SearchComposite();
-	ReferencesComposite referencesComposite = new ReferencesComposite( searchComposite );
+	private StringState searchState = createStringState( createKey( "searchState" ) );
+	private BooleanState showGenerated = createBooleanState( createKey( "showGenerated" ), false );
+	private BooleanState showProcedures = createBooleanState( createKey( "showProcedure" ), true );
+	private BooleanState showFunctions = createBooleanState( createKey( "showFunctions" ), true );
+	private final SearchDialogManager manager;
+	private boolean isJumpDesired = true;
 
 	public MethodSearchComposite() {
-		super( java.util.UUID.fromString( "46b72f34-c4db-4139-b430-8f4385d599d1" ) );
+		super( java.util.UUID.fromString( "8f75a1e2-805d-4d9f-bef6-099204fe8d60" ) );
+		manager = new SearchDialogManager();
 	}
 
-	@Override
-	public boolean isCloseable() {
-		return false;
+	public BooleanState getShowGenerated() {
+		return this.showGenerated;
 	}
-
-	private final SplitComposite splitComposite = this.createHorizontalSplitComposite( searchComposite, referencesComposite, 0.5 );
+	public BooleanState getShowProcedure() {
+		return this.showProcedures;
+	}
+	public BooleanState getShowFunctions() {
+		return this.showFunctions;
+	}
 
 	@Override
 	protected MethodSearchView createView() {
 		return new MethodSearchView( this );
 	}
 
-	public SplitComposite getSplitComposite() {
-		return this.splitComposite;
+	public void addSelectedListener( ValueListener<SearchTreeNode> listener ) {
+		manager.addValueListener( listener );
 	}
 
+	public StringState getStringState() {
+		return this.searchState;
+	}
+
+	public SearchDialogManager getManager() {
+		return manager;
+	}
+
+	public class SearchDialogManager extends SearchTreeManager implements ValueListener<String> {
+
+		private ValueListener<Boolean> booleanListener = new ValueListener<Boolean>() {
+
+			public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				manager.changed( getStringState(), searchState.getValue(), searchState.getValue(), true );
+			}
+		};
+		
+		@Override
+		protected void show( SearchTreeNode node ) {
+			if( showGenerated.getValue() || !node.getIsGenerated() ){	
+				super.show( node );
+			}
+		}
+
+		@Override
+		protected boolean shouldShow( SearchTreeNode node ) {
+			boolean generated = showGenerated.getValue() || !node.getIsGenerated();
+			boolean function = showFunctions.getValue() || !node.getContent().isFunction();
+			boolean procedure = showProcedures.getValue() || !node.getContent().isProcedure();
+			return generated && function && procedure;
+		}
+
+		public ValueListener<Boolean> getBooleanListener() {
+			return this.booleanListener;
+		}
+
+		private ValueListener<SearchTreeNode> adapter = new ValueListener<SearchTreeNode>() {
+
+			public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
+				if( state.getValue() != prevValue ) {
+					SearchTreeNode selection = state.getValue();
+					if( selection != null && isJumpDesired ) {
+						selection.invokeOperation();
+					}
+				}
+			}
+
+		};
+
+		public SearchDialogManager() {
+			super( java.util.UUID.fromString( "bb4777b7-20df-4d8d-b214-92acd390fdde" ) );
+
+			searchState.addValueListener( this );
+			this.addValueListener( adapter );
+			MethodSearchComposite.this.showFunctions.addValueListener( booleanListener );
+			MethodSearchComposite.this.showProcedures.addValueListener( booleanListener );
+			MethodSearchComposite.this.showGenerated.addValueListener( booleanListener );
+		}
+
+		public void changing( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+			hideAll();
+			String check = state.getValue();
+			check = check.replaceAll( "\\*", ".*" );
+			String errorMessage;
+			try {
+				Pattern pattern = Pattern.compile( check.toLowerCase() );
+				ArrayList<SearchTreeNode> iterateList = Collections.newArrayList( hiddenList );
+				for( SearchTreeNode hiddenNode : iterateList ) {
+					Matcher matcher = pattern.matcher( hiddenNode.getContent().getName().toLowerCase() );
+					if( matcher.find() ) {
+						if( check.length() == 0 || hiddenNode.getDepth() <= SHOULD_BE_EXPANDED ) {
+							if( shouldShow( hiddenNode ) ) {
+								show( hiddenNode );
+							}
+						}
+					}
+				}
+				errorMessage = null;
+			} catch( PatternSyntaxException pse ) {
+				errorMessage = "bad pattern";
+			}
+			if( errorMessage != null ) {
+				Logger.todo( "update label", errorMessage );
+			}
+			this.refreshAll();
+			setProperExpandedLevels( root );
+		}
+	}
+
+	public SearchTreeNode setSelected( UserMethod method ) {
+		SearchTreeNode find = manager.getRoot().find( method );
+		manager.setValue( find );
+		return find;
+	}
+
+	public void setJumpDesired( boolean b ) {
+		this.isJumpDesired = b;
+	}
 }

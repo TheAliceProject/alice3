@@ -40,18 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.views;
+package org.alice.ide.croquet.models.project;
 
-import org.alice.ide.croquet.models.project.FieldSearchCompsoite;
-import org.lgna.croquet.components.BorderPanel;
+import org.alice.ide.croquet.models.project.views.MethodSearchTabView;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.SplitComposite;
 
 /**
  * @author Matt May
  */
-public class FieldSearchView extends BorderPanel{
+public class MethodSearchTabComposite extends SimpleTabComposite<MethodSearchTabView> {
 
-	public FieldSearchView( FieldSearchCompsoite composite ) {
-		this.addCenterComponent( composite.getSplitComposite().getView() );
+	MethodSearchComposite searchComposite = new MethodSearchComposite();
+	MethodReferencesComposite referencesComposite = new MethodReferencesComposite( searchComposite );
+
+	public MethodSearchTabComposite() {
+		super( java.util.UUID.fromString( "46b72f34-c4db-4139-b430-8f4385d599d1" ) );
+	}
+
+	@Override
+	public boolean isCloseable() {
+		return false;
+	}
+
+	private final SplitComposite splitComposite = this.createHorizontalSplitComposite( searchComposite, referencesComposite, 0.5 );
+
+	@Override
+	protected MethodSearchTabView createView() {
+		return new MethodSearchTabView( this );
+	}
+
+	public SplitComposite getSplitComposite() {
+		return this.splitComposite;
 	}
 
 }

@@ -42,44 +42,41 @@
  */
 package org.alice.ide.croquet.models.project;
 
-
-import org.alice.ide.ProjectApplication;
-import org.alice.ide.croquet.models.project.views.StatisticsView;
-import org.lgna.croquet.FrameComposite;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
+import org.alice.ide.croquet.models.project.views.FieldSearchTabView;
 import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.TabSelectionState;
+import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.State.ValueListener;
 
 /**
  * @author Matt May
  */
-public class StatisticsComposite extends FrameComposite<StatisticsView> {
-
-	public static final Integer TOP_SIZE = 250;
-	public static final Integer BOTTOM_SIZE = 100;
-	private TabSelectionState<SimpleTabComposite> tabState;
-
-	public StatisticsComposite() {
-		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.PROJECT_GROUP );
+public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabView> {
+	
+	public FieldSearchTabCompsoite() {
+		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
 	}
-
-	private static class SingletonHolder {
-		private static StatisticsComposite instance = new StatisticsComposite();
-
-	}
-
-	public static StatisticsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
+	private FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
+	private FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
 
 	@Override
-	protected StatisticsView createView() {
-		FlowControlFrequencyComposite flowControlFrequencyTab = new FlowControlFrequencyComposite();
-		MethodFrequencyTabComposite methodTab = new MethodFrequencyTabComposite();
-		tabState = this.createTabSelectionState( this.createKey( "tabState" ), SimpleTabComposite.class, 0, flowControlFrequencyTab, methodTab );
-		return new StatisticsView( this );
+	public boolean isCloseable() {
+		return false;
+	}
+	
+	private SplitComposite splitComposite = createHorizontalSplitComposite( treeComposite, referenceComposite, .5 );
+
+	@Override
+	protected org.alice.ide.croquet.models.project.views.FieldSearchTabView createView() {
+		return new FieldSearchTabView( this );
 	}
 
-	public TabSelectionState<SimpleTabComposite> getTabState() {
-		return this.tabState;
+	public SplitComposite getSplitComposite() {
+		return this.splitComposite;
 	}
+
+	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
+		treeComposite.addListener( listener );
+	}
+
 }

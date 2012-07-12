@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.InstanceSearchTreeManager;
 import org.alice.ide.croquet.models.project.views.FieldReferenceTreeView;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;

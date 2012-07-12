@@ -40,27 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
+import org.alice.ide.croquet.models.project.FindFrameComposite;
+import org.lgna.croquet.components.BorderPanel;
 
 /**
  * @author Matt May
  */
-public class SearchDialogSearchFirstComposite extends SearchDialogComposite {
+public class FindFrameView extends BorderPanel {
 
-	private static class SingletonHolder {
-		public static SearchDialogSearchFirstComposite instance = new SearchDialogSearchFirstComposite();
-	}
-
-	public static SearchDialogSearchFirstComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	public SearchDialogSearchFirstComposite(){
-		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
-	}
-	@Override
-	public void handlePreActivation() {
-		this.getState().setSelectedIndex( 0 );
-		super.handlePreActivation();
+	public FindFrameView( FindFrameComposite composite ) {
+		this.addCenterComponent( composite.getState().createFolderTabbedPane() );
 	}
 }

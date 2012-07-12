@@ -40,17 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.views;
+package org.alice.ide.croquet.models.project;
 
-import org.alice.ide.croquet.models.project.SearchDialogComposite;
-import org.lgna.croquet.components.BorderPanel;
+import java.util.UUID;
+
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.models.project.views.FindFrameView;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.TabSelectionState;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class SearchDialogView extends BorderPanel {
+public abstract class FindFrameComposite extends FrameComposite<FindFrameView> {
+	protected FieldSearchTabCompsoite fieldSearchComposite;
+	protected MethodSearchTabComposite methodSearchComposite;
+	private TabSelectionState<SimpleTabComposite> tabState;
 
-	public SearchDialogView( SearchDialogComposite composite ) {
-		this.addCenterComponent( composite.getState().createFolderTabbedPane() );
+	protected FindFrameComposite( UUID uuid ) {
+		super( uuid, ProjectApplication.PROJECT_GROUP );
+	}
+
+	@Override
+	protected final FindFrameView createView() {
+		methodSearchComposite = new MethodSearchTabComposite();
+		fieldSearchComposite = new FieldSearchTabCompsoite();
+		tabState = this.createTabSelectionState( this.createKey( "tabState" ), SimpleTabComposite.class, 0, methodSearchComposite, fieldSearchComposite );
+		getState().addItem( methodSearchComposite );
+		getState().addItem( fieldSearchComposite );
+		return new FindFrameView( this );
+	}
+
+	public TabSelectionState<SimpleTabComposite> getState() {
+		return this.tabState;
 	}
 }

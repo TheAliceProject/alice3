@@ -43,28 +43,22 @@
 package org.alice.ide.croquet.models.project;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Map;
 
-import javax.media.rtp.event.NewReceiveStreamEvent;
-
-import org.alice.ide.croquet.models.project.views.ReferencesView;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchTreeManager;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchTreeNode;
+import org.alice.ide.croquet.models.project.views.MethodReferencesView;
 import org.lgna.croquet.PlainStringValue;
-import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.StringValue;
-import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.components.Tree;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class ReferencesComposite extends TabComposite<ReferencesView> implements ValueListener<SearchTreeNode> {
+public class MethodReferencesComposite extends SimpleComposite<MethodReferencesView> implements ValueListener<SearchTreeNode> {
 	private final ReferencesDialogManager manager;
 	private final Tree<SearchTreeNode> tree;
 	private final PlainStringValue selectedMethod = createStringValue( this.createKey( "selectedMethod" ) );
@@ -85,7 +79,8 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 		}
 
 	};
-	public ReferencesComposite( SearchComposite item ) {
+
+	public MethodReferencesComposite( MethodSearchComposite item ) {
 		super( java.util.UUID.fromString( "bddb8484-a469-4617-9dac-b066b65d4c64" ) );
 		manager = new ReferencesDialogManager();
 		tree = new Tree<SearchTreeNode>( manager );
@@ -99,13 +94,8 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 	}
 
 	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-
-	@Override
-	protected ReferencesView createView() {
-		return new ReferencesView( this );
+	protected MethodReferencesView createView() {
+		return new MethodReferencesView( this );
 	}
 
 	public void changing( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
@@ -152,6 +142,7 @@ public class ReferencesComposite extends TabComposite<ReferencesView> implements
 			}
 		}
 	}
+
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();

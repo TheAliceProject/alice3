@@ -42,8 +42,8 @@
  */
 package org.alice.ide.croquet.models.project.views;
 
-import org.alice.ide.croquet.models.project.FieldReferenceSearchTreeNode;
 import org.alice.ide.croquet.models.project.FieldReferenceTreeComposite;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.Tree;

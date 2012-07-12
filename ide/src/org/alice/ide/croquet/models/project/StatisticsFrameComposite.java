@@ -42,84 +42,44 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import java.util.List;
-
-import javax.swing.Icon;
 
 import org.alice.ide.ProjectApplication;
-import org.lgna.croquet.CustomTreeSelectionState;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.UserField;
-
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.alice.ide.croquet.models.project.views.StatisticsFrameView;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.TabSelectionState;
 
 /**
  * @author Matt May
  */
-public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldReferenceSearchTreeNode> {
+public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView> {
 
-	private FieldReferenceSearchTreeNode root = FieldReferenceSearchTreeNode.getRoot();
+	public static final Integer TOP_SIZE = 250;
+	public static final Integer BOTTOM_SIZE = 100;
+	private TabSelectionState<SimpleTabComposite> tabState;
 
-	public InstanceSearchTreeManager( FieldReferenceSearchTreeNode initialSelection ) {
-		super( ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "d8242fe1-3ca6-444f-8608-3e593043b18e" ), FieldReferenceSearchTreeNode.getNewItemCodec(), initialSelection );
-		refresh();
+	public StatisticsFrameComposite() {
+		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.PROJECT_GROUP );
 	}
 
-	public void refresh() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		final org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
-		if( programType != null ) {
-			IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
-			programType.crawl( crawler, true );
-			FieldReferenceSearchTreeNode.initFields(ide.getSceneField());
-			List<FieldAccess> fieldAccesses = crawler.getList();
-			for( FieldAccess access : fieldAccesses ) {
-				if( access.field.getValue() instanceof UserField ) {
-					root.find( (UserField) access.field.getValue() ).addReference( access );
-				}
-			}
-		}
+	private static class SingletonHolder {
+		private static StatisticsFrameComposite instance = new StatisticsFrameComposite();
+
+	}
+
+	public static StatisticsFrameComposite getInstance() {
+		return SingletonHolder.instance;
 	}
 
 	@Override
-	protected int getChildCount( FieldReferenceSearchTreeNode parent ) {
-		return parent.getNumChildren();
+	protected StatisticsFrameView createView() {
+		StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
+		StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
+		tabState = this.createTabSelectionState( this.createKey( "tabState" ), SimpleTabComposite.class, 0, flowControlFrequencyTab, methodTab );
+		return new StatisticsFrameView( this );
 	}
 
-	@Override
-	protected FieldReferenceSearchTreeNode getChild( FieldReferenceSearchTreeNode parent, int index ) {
-		return parent.getChild( index );
+	public TabSelectionState<SimpleTabComposite> getTabState() {
+		return this.tabState;
 	}
-
-	@Override
-	protected int getIndexOfChild( FieldReferenceSearchTreeNode parent, FieldReferenceSearchTreeNode child ) {
-		return parent.getChildIndex( child );
-	}
-
-	@Override
-	protected FieldReferenceSearchTreeNode getRoot() {
-		return root.getChild( 0 );
-	}
-
-	@Override
-	protected FieldReferenceSearchTreeNode getParent( FieldReferenceSearchTreeNode node ) {
-		return node.getParent();
-	}
-
-	@Override
-	public boolean isLeaf( FieldReferenceSearchTreeNode node ) {
-		return node.getNumChildren() == 0;
-	}
-
-	@Override
-	protected String getTextForNode( FieldReferenceSearchTreeNode node ) {
-		return node.toString();
-	}
-
-	@Override
-	protected Icon getIconForNode( FieldReferenceSearchTreeNode node ) {
-		return node.getIcon();
-	}
-
 }

@@ -40,43 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.views;
 
-import org.alice.ide.croquet.models.project.views.FieldSearchView;
-import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.components.SplitPane;
+import org.alice.ide.croquet.models.project.MethodReferencesComposite;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.ScrollPane;
 
 /**
  * @author Matt May
  */
-public class FieldSearchCompsoite extends SimpleTabComposite<FieldSearchView> {
-	
-	public FieldSearchCompsoite() {
-		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
-	}
-	private FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
-	private FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
+public class MethodReferencesView extends BorderPanel {
 
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-	
-	private SplitComposite splitComposite = createHorizontalSplitComposite( treeComposite, referenceComposite, .5 );
-
-	@Override
-	protected org.alice.ide.croquet.models.project.views.FieldSearchView createView() {
-		return new FieldSearchView( this );
-	}
-
-	public SplitComposite getSplitComposite() {
-		return this.splitComposite;
-	}
-
-	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
-		treeComposite.addListener( listener );
+	public MethodReferencesView( MethodReferencesComposite composite ) {
+		super( composite );
+		this.addComponent( composite.getSelectedMethod().createImmutableTextArea(), Constraint.PAGE_START );
+		this.addComponent( new ScrollPane( composite.getTree() ), Constraint.CENTER );
 	}
 
 }

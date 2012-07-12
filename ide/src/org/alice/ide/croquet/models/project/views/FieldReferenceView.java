@@ -50,7 +50,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import org.alice.ide.croquet.models.project.FieldReferenceComposite;
-import org.alice.ide.croquet.models.project.FlowControlFrequencyComposite;
+import org.alice.ide.croquet.models.project.StatisticsFlowControlFrequencyComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.project.ast.FieldAccess;

@@ -1,4 +1,4 @@
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.TreeNodesAndManagers;
 
 import java.util.List;
 

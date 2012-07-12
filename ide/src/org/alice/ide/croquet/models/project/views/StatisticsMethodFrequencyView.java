@@ -55,8 +55,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import org.alice.ide.croquet.models.project.MethodFrequencyTabComposite;
-import org.alice.ide.croquet.models.project.StatisticsComposite;
+import org.alice.ide.croquet.models.project.StatisticsMethodFrequencyTabComposite;
+import org.alice.ide.croquet.models.project.StatisticsFrameComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -78,11 +78,11 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class MethodFrequencyView extends BorderPanel {
+public class StatisticsMethodFrequencyView extends BorderPanel {
 
 	ListSelectionState<UserMethod> listSelectionState;
 
-	public MethodFrequencyView( MethodFrequencyTabComposite composite ) {
+	public StatisticsMethodFrequencyView( StatisticsMethodFrequencyTabComposite composite ) {
 		super( composite );
 		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
 		listSelectionState = composite.getUserMethodList();
@@ -98,10 +98,10 @@ public class MethodFrequencyView extends BorderPanel {
 		ScrollPane scrollPane = new ScrollPane( list );
 		gridPanel.addComponent( scrollPane );
 
-		scrollPane.setMaximumPreferredHeight( StatisticsComposite.BOTTOM_SIZE );
-		scrollPane.setMinimumPreferredHeight( StatisticsComposite.BOTTOM_SIZE );
-		statsDisplay.scroll.setMaximumPreferredHeight( StatisticsComposite.TOP_SIZE );
-		statsDisplay.scroll.setMinimumPreferredHeight( StatisticsComposite.TOP_SIZE );
+		scrollPane.setMaximumPreferredHeight( StatisticsFrameComposite.BOTTOM_SIZE );
+		scrollPane.setMinimumPreferredHeight( StatisticsFrameComposite.BOTTOM_SIZE );
+		statsDisplay.scroll.setMaximumPreferredHeight( StatisticsFrameComposite.TOP_SIZE );
+		statsDisplay.scroll.setMinimumPreferredHeight( StatisticsFrameComposite.TOP_SIZE );
 		statsDisplay.scroll.setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy.NEVER );
 		this.addComponent( gridPanel, Constraint.CENTER );
 	}
@@ -114,7 +114,7 @@ public class MethodFrequencyView extends BorderPanel {
 				rv.setBackgroundColor( Color.BLUE );
 				rv.setForegroundColor( Color.WHITE );
 			}
-			if( !value.equals( MethodFrequencyTabComposite.dummy ) ) {
+			if( !value.equals( StatisticsMethodFrequencyTabComposite.dummy ) ) {
 				if( value instanceof AbstractMethod ) {
 					AbstractMethod userMethod = (AbstractMethod)value;
 					rv.setText( userMethod.getName() );
@@ -171,17 +171,17 @@ public class MethodFrequencyView extends BorderPanel {
 					componentMap.get( i ).put( j, label );
 				}
 			}
-			((MethodFrequencyTabComposite)getComposite()).getShowFunctionsState().addValueListener( booleanListener );
-			((MethodFrequencyTabComposite)getComposite()).getShowProceduresState().addValueListener( booleanListener );
+			((StatisticsMethodFrequencyTabComposite)getComposite()).getShowFunctionsState().addValueListener( booleanListener );
+			((StatisticsMethodFrequencyTabComposite)getComposite()).getShowProceduresState().addValueListener( booleanListener );
 			scroll.setViewportView( gridPanel );
-			CheckBox hideFunctionsBox = ((MethodFrequencyTabComposite)getComposite()).getShowFunctionsState().createCheckBox();
-			LineAxisPanel child = new LineAxisPanel( hideFunctionsBox, ((MethodFrequencyTabComposite)getComposite()).getShowProceduresState().createCheckBox() );
+			CheckBox hideFunctionsBox = ((StatisticsMethodFrequencyTabComposite)getComposite()).getShowFunctionsState().createCheckBox();
+			LineAxisPanel child = new LineAxisPanel( hideFunctionsBox, ((StatisticsMethodFrequencyTabComposite)getComposite()).getShowProceduresState().createCheckBox() );
 
-			MethodFrequencyView.this.addComponent( child, Constraint.PAGE_START );
+			StatisticsMethodFrequencyView.this.addComponent( child, Constraint.PAGE_START );
 		}
 
 		public void setMaximum() {
-			((MethodFrequencyTabComposite)getComposite()).getMaximum();
+			((StatisticsMethodFrequencyTabComposite)getComposite()).getMaximum();
 		}
 
 		private class BarLabel extends Label {
@@ -249,7 +249,7 @@ public class MethodFrequencyView extends BorderPanel {
 		}
 
 		private void update( UserMethod selected ) {
-			setHeight( ((MethodFrequencyTabComposite)getComposite()).getSize( selected ) );
+			setHeight( ((StatisticsMethodFrequencyTabComposite)getComposite()).getSize( selected ) );
 			populateLeftCol( selected );
 			populateRightCol( selected );
 		}
@@ -261,7 +261,7 @@ public class MethodFrequencyView extends BorderPanel {
 
 		private void populateRightCol( UserMethod selected ) {
 			((Label)getCell( 0, 0 )).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
-			List<Integer> rightColVals = ((MethodFrequencyTabComposite)getComposite()).getRightColVals( selected );
+			List<Integer> rightColVals = ((StatisticsMethodFrequencyTabComposite)getComposite()).getRightColVals( selected );
 			int index = 1;
 			for( Integer i : rightColVals ) {
 				setCell( 1, index, i );
@@ -271,7 +271,7 @@ public class MethodFrequencyView extends BorderPanel {
 
 		private void populateLeftCol( UserMethod selected ) {
 			int index = 1;
-			LinkedList<String> leftColVals = ((MethodFrequencyTabComposite)getComposite()).getLeftColVals( selected );
+			LinkedList<String> leftColVals = ((StatisticsMethodFrequencyTabComposite)getComposite()).getLeftColVals( selected );
 			for( String str : leftColVals ){
 				setCell( 0, index, str );
 				++index;
@@ -297,7 +297,7 @@ public class MethodFrequencyView extends BorderPanel {
 		}
 
 		public int getCount( AbstractMethod method, AbstractMethod methodTwo ) {
-			return ((MethodFrequencyTabComposite)getComposite()).getCount(method, methodTwo);
+			return ((StatisticsMethodFrequencyTabComposite)getComposite()).getCount(method, methodTwo);
 		}
 
 		public void changing( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {

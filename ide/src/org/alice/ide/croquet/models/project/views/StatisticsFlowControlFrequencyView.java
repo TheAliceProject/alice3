@@ -54,8 +54,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import org.alice.ide.croquet.models.project.FlowControlFrequencyComposite;
-import org.alice.ide.croquet.models.project.StatisticsComposite;
+import org.alice.ide.croquet.models.project.StatisticsFlowControlFrequencyComposite;
+import org.alice.ide.croquet.models.project.StatisticsFrameComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -83,27 +83,27 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class FlowControlFrequencyView extends BorderPanel {
+public class StatisticsFlowControlFrequencyView extends BorderPanel {
 	
-	public FlowControlFrequencyView( FlowControlFrequencyComposite composite ){
+	public StatisticsFlowControlFrequencyView( StatisticsFlowControlFrequencyComposite composite ){
 		super(composite);
 		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
 		ListSelectionState<UserMethod> userMethodList = composite.getUserMethodList();
 		ControlDisplay statsDisplay = new ControlDisplay( userMethodList );
 		statsDisplay.setMaximum();
-		userMethodList.setSelectedItem( FlowControlFrequencyComposite.dummy );
+		userMethodList.setSelectedItem( StatisticsFlowControlFrequencyComposite.dummy );
 		userMethodList.addValueListener( statsDisplay );
-		statsDisplay.update( FlowControlFrequencyComposite.dummy );
+		statsDisplay.update( StatisticsFlowControlFrequencyComposite.dummy );
 		gridPanel.addComponent( statsDisplay.getLayout() );
 		org.lgna.croquet.components.List<UserMethod> list = new org.lgna.croquet.components.List<UserMethod>( userMethodList );
 		list.setCellRenderer( new ListCellRenderer() );
 
 		ScrollPane scrollPane = new ScrollPane( list );
 		gridPanel.addComponent( scrollPane );
-		scrollPane.setMaximumPreferredHeight( StatisticsComposite.BOTTOM_SIZE );
-		scrollPane.setMinimumPreferredHeight( StatisticsComposite.BOTTOM_SIZE );
-		statsDisplay.gridPanel.setMaximumPreferredHeight( StatisticsComposite.TOP_SIZE );
-		statsDisplay.gridPanel.setMinimumPreferredHeight( StatisticsComposite.TOP_SIZE );
+		scrollPane.setMaximumPreferredHeight( StatisticsFrameComposite.BOTTOM_SIZE );
+		scrollPane.setMinimumPreferredHeight( StatisticsFrameComposite.BOTTOM_SIZE );
+		statsDisplay.gridPanel.setMaximumPreferredHeight( StatisticsFrameComposite.TOP_SIZE );
+		statsDisplay.gridPanel.setMinimumPreferredHeight( StatisticsFrameComposite.TOP_SIZE );
 		this.addComponent( gridPanel, Constraint.CENTER );
 	}
 	public class ControlDisplay implements ValueListener<UserMethod> {
@@ -123,7 +123,7 @@ public class FlowControlFrequencyView extends BorderPanel {
 		}
 
 		public void setMaximum( /*Map<UserMethod,List<Statement>> methodToConstructMap*/ ) {
-			((FlowControlFrequencyComposite)getComposite()).getMaximum( clsArr );
+			((StatisticsFlowControlFrequencyComposite)getComposite()).getMaximum( clsArr );
 		}
 
 		private class BarLabel extends Label {
@@ -214,7 +214,7 @@ public class FlowControlFrequencyView extends BorderPanel {
 		}
 
 		public int getCount( UserMethod method, Class<? extends org.lgna.project.ast.Statement> cls ) {
-			return ((FlowControlFrequencyComposite) getComposite()).getCount( method, cls );
+			return ((StatisticsFlowControlFrequencyComposite) getComposite()).getCount( method, cls );
 		}
 
 		public void changing( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {
@@ -233,7 +233,7 @@ public class FlowControlFrequencyView extends BorderPanel {
 				rv.setBackgroundColor( Color.BLUE );
 				rv.setForegroundColor( Color.WHITE );
 			}
-			if( !value.equals(FlowControlFrequencyComposite.dummy ) ) {
+			if( !value.equals(StatisticsFlowControlFrequencyComposite.dummy ) ) {
 				if( value instanceof UserMethod ) {
 					UserMethod userMethod = (UserMethod)value;
 					rv.setText( userMethod.getName() );

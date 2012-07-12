@@ -40,38 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.views;
+package org.alice.ide.croquet.models.project;
 
-import org.alice.ide.croquet.models.project.SearchComposite;
-import org.alice.ide.croquet.models.project.SearchComposite.SearchDialogManager;
-import org.alice.ide.croquet.models.project.SearchTreeNode;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.TextField;
-import org.lgna.croquet.components.Tree;
 
 /**
  * @author Matt May
  */
-public class SearchView extends BorderPanel {
-	
-	public SearchView( SearchComposite composite ) {
-		TextField textField = composite.getStringState().createTextField();
-		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );
+public class FindMethodsFrameComposite extends FindFrameComposite {
 
-		SearchDialogManager manager = composite.getManager();
-		Tree<SearchTreeNode> tree = new Tree<SearchTreeNode>( manager );
-		manager.setOwner( tree );
-		manager.changed( composite.getStringState(), "", "", true );
-
-		manager.refreshAll();
-		tree.setRootVisible( false );
-		tree.expandAllRows();
-		GridPanel panel = GridPanel.createGridPane( 1, 3, composite.getShowGenerated().createCheckBox(), composite.getShowFunctions().createCheckBox(), composite.getShowProcedure().createCheckBox() );
-		GridPanel stackedPanel = GridPanel.createGridPane( 2, 1, textField, panel );
-		this.addComponent( stackedPanel, Constraint.PAGE_START );
-		this.addComponent( new ScrollPane( tree ), Constraint.CENTER );
+	private static class SingletonHolder {
+		public static FindMethodsFrameComposite instance = new FindMethodsFrameComposite();
 	}
 
+	public static FindMethodsFrameComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	public FindMethodsFrameComposite(){
+		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
+	}
+	@Override
+	public void handlePreActivation() {
+		this.getState().setSelectedIndex( 0 );
+		super.handlePreActivation();
+	}
 }

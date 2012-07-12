@@ -47,7 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.alice.ide.croquet.models.project.views.MethodFrequencyView;
+import org.alice.ide.croquet.models.project.views.StatisticsMethodFrequencyView;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleTabComposite;
@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class MethodFrequencyTabComposite extends SimpleTabComposite<MethodFrequencyView> {
+public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<StatisticsMethodFrequencyView> {
 
 	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
 	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
@@ -131,7 +131,7 @@ public class MethodFrequencyTabComposite extends SimpleTabComposite<MethodFreque
 		}
 	}
 
-	public MethodFrequencyTabComposite() {
+	public StatisticsMethodFrequencyTabComposite() {
 		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ) );
 
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -188,8 +188,8 @@ public class MethodFrequencyTabComposite extends SimpleTabComposite<MethodFreque
 					}
 				}
 			}
-			getMapMethodToInvocationCounts().put( MethodFrequencyTabComposite.dummy, invocationCounts );
-			maximum = getCount( MethodFrequencyTabComposite.dummy, null );
+			getMapMethodToInvocationCounts().put( StatisticsMethodFrequencyTabComposite.dummy, invocationCounts );
+			maximum = getCount( StatisticsMethodFrequencyTabComposite.dummy, null );
 		}
 		return this.maximum;
 	}
@@ -225,8 +225,8 @@ public class MethodFrequencyTabComposite extends SimpleTabComposite<MethodFreque
 	}
 
 	@Override
-	protected MethodFrequencyView createView() {
-		return new MethodFrequencyView( this );
+	protected StatisticsMethodFrequencyView createView() {
+		return new StatisticsMethodFrequencyView( this );
 	}
 
 	public ListSelectionState<UserMethod> getUserMethodList() {

@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.project.TreeNodesAndManagers;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -126,7 +126,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	}
 
 	@Override
-	final protected SearchTreeNode getRoot() {
+	final public SearchTreeNode getRoot() {
 		return root;
 	}
 

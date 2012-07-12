@@ -47,7 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.alice.ide.croquet.models.project.views.FlowControlFrequencyView;
+import org.alice.ide.croquet.models.project.views.StatisticsFlowControlFrequencyView;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.project.ast.Statement;
@@ -55,12 +55,12 @@ import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class FlowControlFrequencyComposite extends SimpleTabComposite<FlowControlFrequencyView> {
+public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
 	private Map<UserMethod,List<Statement>> methodToConstructMap;
 	private final ListSelectionState<UserMethod> userMethodList = createListSelectionState( createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static UserMethod dummy = new UserMethod();
 
-	public FlowControlFrequencyComposite() {
+	public StatisticsFlowControlFrequencyComposite() {
 		super( java.util.UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ) );
 		methodToConstructMap = Collections.newHashMap();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -92,8 +92,8 @@ public class FlowControlFrequencyComposite extends SimpleTabComposite<FlowContro
 	}
 
 	@Override
-	protected FlowControlFrequencyView createView() {
-		return new FlowControlFrequencyView( this );
+	protected StatisticsFlowControlFrequencyView createView() {
+		return new StatisticsFlowControlFrequencyView( this );
 	}
 
 	public Map<UserMethod,List<Statement>> getMethodToConstructMap() {
@@ -125,7 +125,7 @@ public class FlowControlFrequencyComposite extends SimpleTabComposite<FlowContro
 
 	public int getCount( UserMethod method, Class<? extends Statement> cls ) {
 		int count = 0;
-		if( !method.equals( FlowControlFrequencyComposite.dummy ) ) {
+		if( !method.equals( StatisticsFlowControlFrequencyComposite.dummy ) ) {
 			for( Statement statement : methodToConstructMap.get( method ) ) {
 				if( statement.getClass().isAssignableFrom( cls ) ) {
 					++count;
@@ -146,7 +146,7 @@ public class FlowControlFrequencyComposite extends SimpleTabComposite<FlowContro
 	public int getMaximum(Class[] clsArr) {
 		int maxCount = 0;
 		for( Class cls : clsArr ) {
-			int count = getCount( FlowControlFrequencyComposite.dummy, cls );
+			int count = getCount( StatisticsFlowControlFrequencyComposite.dummy, cls );
 			if( count > maxCount ) {
 				maxCount = count;
 			}
