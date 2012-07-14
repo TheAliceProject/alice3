@@ -60,7 +60,7 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 			this.forgetAndRemoveAllComponents();
 			this.addCenterComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null ) );
 			if( nextValue != null ) {
-				javax.swing.Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( nextValue.getValueType() );
+				javax.swing.Icon icon = nextValue.getSmallIcon();
 				if( icon != null ) {
 					this.addLineStartComponent( new org.lgna.croquet.components.Label( icon ) );
 				}

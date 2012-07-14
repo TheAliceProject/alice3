@@ -92,6 +92,21 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.field.getValueType();
 	}
+	@Override
+	public javax.swing.Icon getSmallIcon() {
+		javax.swing.Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( this.field );
+		if( icon != null ) {
+			//pass
+		} else {
+			icon = super.getSmallIcon();
+			if( icon != null ) {
+				//pass
+			} else {
+				icon = org.alice.stageide.gallerybrowser.ResourceManager.NULL_SMALL_ICON;
+			}
+		}
+		return icon;
+	}
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );

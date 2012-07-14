@@ -53,5 +53,6 @@ public interface InstanceFactory {
 	public org.lgna.project.ast.Expression createTransientExpression();
 	public org.lgna.project.ast.Expression createExpression();
 	public String getRepr();
+	public javax.swing.Icon getSmallIcon();
 	public edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest();
 }

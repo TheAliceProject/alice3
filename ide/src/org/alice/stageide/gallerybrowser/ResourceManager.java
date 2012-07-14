@@ -49,6 +49,8 @@ public class ResourceManager {
 	private static final int SMALL_ICON_SIZE = 24;
 	private static final String PACKAGE_NAME_PREFIX = ResourceManager.class.getPackage().getName();
 	private static java.util.Map< org.lgna.project.ast.JavaType, javax.swing.Icon > typeToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+	public static final javax.swing.Icon NULL_SMALL_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, SMALL_ICON_SIZE - 8, SMALL_ICON_SIZE - 8 ), java.awt.Color.LIGHT_GRAY, java.awt.Color.DARK_GRAY, 4, 4, 4, 4 );
 
 	private ResourceManager() {
 	}
@@ -64,8 +66,7 @@ public class ResourceManager {
 			//return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( ((javax.swing.ImageIcon)largeIcon).getImage(), SMALL_ICON_SIZE, SMALL_ICON_SIZE );
 			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( largeIcon, SMALL_ICON_SIZE, SMALL_ICON_SIZE );
 		} else {
-			//todo
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, SMALL_ICON_SIZE - 8, SMALL_ICON_SIZE - 8 ), java.awt.Color.LIGHT_GRAY, java.awt.Color.DARK_GRAY, 4, 4, 4, 4 );
+			return NULL_SMALL_ICON;
 		}
 	}
 	private static java.net.URL getLargeIconResource( edu.cmu.cs.dennisc.javax.swing.models.TreeNode< String > treeNode ) {
@@ -216,35 +217,15 @@ public class ResourceManager {
 		return null;
 	}
 	public static javax.swing.Icon getSmallIconForField( org.lgna.project.ast.AbstractField field ) {
+		if( field != null ) {
+			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
+			if( type != null ) {
+				org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+				if( typeToIconMap.containsKey( javaType ) ) {
+					return typeToIconMap.get( javaType );
+				}
+			}
+		}
 		return getSmallIconFor( getLargeIconForField( field ) );
 	}
-
-//	public static javax.swing.Icon getLargeIconForImplementation( org.lgna.story.implementation.EntityImp imp ) {
-//		if( imp != null ) {
-//			if( imp instanceof org.lgna.story.implementation.JointedModelImp< ?, ? > ) {
-//				org.lgna.story.implementation.JointedModelImp< ?, ? > jointedImp = (org.lgna.story.implementation.JointedModelImp< ?, ? >)imp;
-//				Class< ? > resourceCls = jointedImp.getResource().getClass();
-//				if( resourceCls.isEnum() ) {
-//					String instanceName = null;
-//					for( Object e : resourceCls.getEnumConstants() ) {
-//						System.out.println( "Resource: " + e );
-//						if( e == jointedImp.getResource() ) {
-//							instanceName = e.toString();
-//						}
-//					}
-//					return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ModelResourceUtilities.getThumbnailURL( resourceCls, instanceName ) );
-//				} else {
-//					return null;
-//				}
-//			} else {
-//				return getLargeIconForType( org.lgna.project.ast.JavaType.getInstance( imp.getAbstraction().getClass() ) );
-//			}
-//		}
-//		return null;
-//	}
-//
-//	public static javax.swing.Icon getSmallIconForImplementation( org.lgna.story.implementation.EntityImp imp ) {
-//		return getSmallIconFor( getLargeIconForImplementation( imp ) );
-//	}
-
 }
