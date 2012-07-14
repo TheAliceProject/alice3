@@ -87,7 +87,196 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
-		final int SMALL_ICON_SIZE = 24;
+		final int SMALL_ICON_SIZE = org.alice.stageide.gallerybrowser.ResourceManager.NULL_SMALL_ICON.getIconWidth();
+		final java.awt.Paint FILL_PAINT = new java.awt.Color( 191, 191, 255 );
+		abstract class AbstractSmallIcon implements javax.swing.Icon {
+			private final static int PAD = 2;
+			
+			public int getIconWidth() {
+				return SMALL_ICON_SIZE;
+			}
+			public int getIconHeight() {
+				return SMALL_ICON_SIZE;
+			}
+			protected abstract void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
+			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+				int xOffset = x+PAD;
+				int yOffset = y+PAD;
+				int width = this.getIconWidth()-PAD-PAD;
+				int height = this.getIconHeight()-PAD-PAD;
+				
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				java.awt.Paint prevPaint = g2.getPaint();
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				g2.translate( xOffset, yOffset );
+				this.paintIcon( g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
+				g2.translate( -xOffset, -yOffset );
+				g2.setPaint( prevPaint );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+			}
+		}
+		class CylinderIcon extends AbstractSmallIcon {
+			@Override
+			protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+				float capHeight = height * 0.2f;
+				float x = 0.1f*width;
+				float w = 0.8f*width;
+				java.awt.geom.Ellipse2D topCap = new java.awt.geom.Ellipse2D.Float( x, 0, w, capHeight);
+				java.awt.geom.Ellipse2D bottomCap = new java.awt.geom.Ellipse2D.Float( x, height-capHeight, w, capHeight);
+				java.awt.geom.Rectangle2D core = new java.awt.geom.Rectangle2D.Float( x, capHeight*0.5f, w, height-capHeight );
+				java.awt.geom.Area area = new java.awt.geom.Area( core );
+				area.add( new java.awt.geom.Area( bottomCap ) );
+
+				g2.setPaint( fillPaint );
+				g2.fill( area );
+				g2.setPaint( drawPaint );
+				g2.draw( area );
+				
+				g2.setPaint( fillPaint );
+				g2.fill( topCap );
+				g2.setPaint( drawPaint );
+				g2.draw( topCap );
+			}
+		}
+		class ConeIcon extends AbstractSmallIcon {
+			@Override
+			protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+				float capHeight = height * 0.2f;
+				float x = 0.1f*width;
+				float w = 0.8f*width;
+				java.awt.geom.Ellipse2D bottomCap = new java.awt.geom.Ellipse2D.Float( x, height-capHeight, w, capHeight);
+				java.awt.geom.GeneralPath core = new java.awt.geom.GeneralPath();
+				core.moveTo( width*0.5f, 0 );
+				core.lineTo( width*0.9f, height-capHeight*0.5f );
+				core.lineTo( width*0.1f, height-capHeight*0.5f );
+				core.closePath();
+				java.awt.geom.Area area = new java.awt.geom.Area( core );
+				area.add( new java.awt.geom.Area( bottomCap ) );
+
+				g2.setPaint( fillPaint );
+				g2.fill( area );
+				g2.setPaint( drawPaint );
+				g2.draw( area );
+				
+				if( height > 128 ) {
+					g2.setStroke( new java.awt.BasicStroke( 0.0f, java.awt.BasicStroke.CAP_SQUARE, java.awt.BasicStroke.JOIN_MITER, 1.0f, new float[]{ height*0.05f }, 0.0f ) );
+					g2.draw( bottomCap );
+				}
+			}
+		}
+
+		class DiscIcon extends AbstractSmallIcon {
+			@Override
+			protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+				float x = 0.1f*width;
+				float w = 0.8f*width;
+				java.awt.geom.Ellipse2D bottomCap = new java.awt.geom.Ellipse2D.Float( x, height*0.4f, w, height*0.2f);
+				g2.setPaint( fillPaint );
+				g2.fill( bottomCap );
+				g2.setPaint( drawPaint );
+				g2.draw( bottomCap );
+			}
+		}
+		
+		class SphereIcon extends AbstractSmallIcon {
+			@Override
+			protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+				java.awt.geom.Ellipse2D core = new java.awt.geom.Ellipse2D.Float( 0, 0, width, height);
+				java.awt.geom.Ellipse2D slice = new java.awt.geom.Ellipse2D.Float( 0, height*0.35f, width, height*0.3f);
+
+				g2.setPaint( fillPaint );
+				g2.fill( core );
+				
+				g2.setPaint( java.awt.Color.GRAY );
+				g2.draw( slice );
+
+				g2.setPaint( drawPaint );
+				g2.draw( core );
+			}
+		}
+
+		class AxesIcon extends AbstractSmallIcon {
+			private void drawLine( java.awt.Graphics2D g2, java.awt.Paint paint, float x0, float y0, float x1, float y1 ) {
+				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+				path.moveTo( x0, y0 );
+				path.lineTo( x1, y1 );
+				g2.setPaint( paint );
+				g2.draw( path );
+			}
+			@Override
+			protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+				float offsetOriginY = height * 0.2f;
+				float originX = width*0.4f;
+				this.drawLine( g2, java.awt.Color.GREEN, originX, offsetOriginY, originX, height-offsetOriginY );
+				this.drawLine( g2, java.awt.Color.RED, 0.0f, height, originX, height-offsetOriginY );
+				this.drawLine( g2, java.awt.Color.BLUE, 0.0f, height-offsetOriginY*2.0f, originX, height-offsetOriginY );
+				this.drawLine( g2, java.awt.Color.GRAY, width, height, originX, height-offsetOriginY );
+			}
+		}
+
+		class TextModelIcon extends AbstractSmallIcon {
+			private final java.awt.Font font = new java.awt.Font( null, java.awt.Font.ITALIC, 22 );
+			@Override
+			protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+				java.awt.Font prevFont = g2.getFont();
+				g2.setFont( font );
+				
+				
+				String text = "A";
+				java.awt.FontMetrics fm = g2.getFontMetrics();
+				int messageWidth = fm.stringWidth( text );
+			    int ascent = fm.getMaxAscent();
+			    int descent = fm.getMaxDescent();
+				int x = width/2-messageWidth/2;
+				int y = height/2+ascent/2-descent/2;;
+
+				java.awt.font.GlyphVector glyphVector = font.createGlyphVector( g2.getFontRenderContext(), text );
+				java.awt.Shape outline = glyphVector.getOutline( x, y );
+				g2.setPaint( drawPaint );
+				g2.draw( outline );
+
+				g2.setPaint( fillPaint );
+				g2.fill( outline );
+//				g2.drawString( text, x, y );
+				
+				g2.setFont( prevFont );
+			}
+		}
+		
+		class BillboardIcon extends AbstractSmallIcon {
+			@Override
+			protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+				float h = width/(float)edu.cmu.cs.dennisc.math.GoldenRatio.PHI;
+				java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( 0, (height-h)*0.5f, width, h );
+				g2.setPaint( fillPaint );
+				g2.fill( shape );
+				g2.setPaint( drawPaint );
+				g2.draw( shape );
+			}
+		}
+
+		class GroundIcon extends AbstractSmallIcon {
+			@Override
+			protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+				java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( 0, 0, width, height );
+				g2.setPaint( fillPaint );
+				g2.fill( shape );
+				//g2.setPaint( drawPaint );
+				//g2.draw( shape );
+			}
+		}
+
+
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Cylinder.class, new CylinderIcon() );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Cone.class, new ConeIcon() );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Disc.class, new DiscIcon() );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Sphere.class, new SphereIcon() );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Axes.class, new AxesIcon() );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.TextModel.class, new TextModelIcon() );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Billboard.class, new BillboardIcon() );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Ground.class, new GroundIcon() );
+		
 		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Sun.class, new javax.swing.Icon() {
 
 			public int getIconWidth() {
@@ -135,19 +324,6 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			}
 		} );
 		
-		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Ground.class, new javax.swing.Icon() {
-			public int getIconWidth() {
-				return SMALL_ICON_SIZE;
-			}
-			public int getIconHeight() {
-				return SMALL_ICON_SIZE;
-			}
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				g.setColor( java.awt.Color.DARK_GRAY );
-				g.drawRect( x+2, y+2, SMALL_ICON_SIZE-5, SMALL_ICON_SIZE-5 );
-			}
-		} );
-
 		final java.awt.Stroke BONE_STROKE = new java.awt.BasicStroke( 3.0f );
 		final java.awt.Stroke JOINT_OUTLINE_STROKE = new java.awt.BasicStroke( 1.0f );
 		final int INSET_X = 6;
