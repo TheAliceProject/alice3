@@ -45,29 +45,15 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class FunctionDeclarationComposite extends MethodDeclarationComposite {
-	private static java.util.Map< org.lgna.project.ast.UserType<?>, FunctionDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FunctionDeclarationComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
-		synchronized( map ) {
-			FunctionDeclarationComposite rv = map.get( declaringType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new FunctionDeclarationComposite( declaringType );
-				map.put( declaringType, rv );
-			}
-			return rv;
-		}
+public abstract class PredeterminedValueTypeManagedFieldDeclarationComposite extends ManagedFieldDeclarationComposite {
+	public PredeterminedValueTypeManagedFieldDeclarationComposite( java.util.UUID migrationId, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
+		super( migrationId, new FieldDetailsBuilder()
+				.valueComponentType( ApplicabilityStatus.DISPLAYED, valueType )
+				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
+				.initializer( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.AstUtilities.createInstanceCreation( valueType ) )
+		.build() );
 	}
-	private FunctionDeclarationComposite( org.lgna.project.ast.UserType<?> declaringType ) {
-		super( java.util.UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
-			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-			.name( new org.alice.ide.name.validators.MethodNameValidator( declaringType ), ApplicabilityStatus.EDITABLE )
-		, declaringType );
-	}
-	@Override
-	protected org.alice.ide.ast.declaration.views.FunctionDeclarationView createView() {
-		return new org.alice.ide.ast.declaration.views.FunctionDeclarationView( this );
+	public PredeterminedValueTypeManagedFieldDeclarationComposite( java.util.UUID migrationId, Class<?> valueCls ) {
+		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
 	}
 }

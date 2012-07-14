@@ -73,6 +73,11 @@ public final class ParameterDeclarationComposite extends DeclarationComposite<or
 	}
 	
 	@Override
+	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+		return null;
+	}
+	
+	@Override
 	protected void localize() {
 		super.localize();
 		//todo

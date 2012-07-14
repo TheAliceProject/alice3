@@ -45,29 +45,14 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class FunctionDeclarationComposite extends MethodDeclarationComposite {
-	private static java.util.Map< org.lgna.project.ast.UserType<?>, FunctionDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static FunctionDeclarationComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
-		synchronized( map ) {
-			FunctionDeclarationComposite rv = map.get( declaringType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new FunctionDeclarationComposite( declaringType );
-				map.put( declaringType, rv );
-			}
-			return rv;
-		}
+public final class ConeManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
+	private static class SingletonHolder {
+		private static ConeManagedFieldDeclarationComposite instance = new ConeManagedFieldDeclarationComposite();
 	}
-	private FunctionDeclarationComposite( org.lgna.project.ast.UserType<?> declaringType ) {
-		super( java.util.UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
-			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-			.name( new org.alice.ide.name.validators.MethodNameValidator( declaringType ), ApplicabilityStatus.EDITABLE )
-		, declaringType );
+	public static ConeManagedFieldDeclarationComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected org.alice.ide.ast.declaration.views.FunctionDeclarationView createView() {
-		return new org.alice.ide.ast.declaration.views.FunctionDeclarationView( this );
+	private ConeManagedFieldDeclarationComposite() {
+		super( java.util.UUID.fromString( "c3df5655-242d-4580-aeb9-b1b0e23f7e00" ),	org.lgna.story.Cone.class );
 	}
 }

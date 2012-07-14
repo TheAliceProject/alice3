@@ -59,16 +59,16 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
 				org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
-				if( composite.isDeclarationTypeDisplayed() ) {
-					org.alice.ide.croquet.models.declaration.DeclaringTypeState declaringTypeState = composite.getDeclaringTypeState();
-					if( declaringTypeState != null ) {
-						org.lgna.croquet.components.JComponent<?> component = new org.lgna.croquet.components.Label( "todo" );
-						rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
-								declaringTypeState.getSidekickLabel(), 
-								component 
-						) );
-					}
-				}
+//				if( composite.isDeclarationTypeDisplayed() ) {
+//					org.alice.ide.croquet.models.declaration.DeclaringTypeState declaringTypeState = composite.getDeclaringTypeState();
+//					if( declaringTypeState != null ) {
+//						org.lgna.croquet.components.JComponent<?> component = new org.lgna.croquet.components.Label( "todo" );
+//						rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
+//								declaringTypeState.getSidekickLabel(), 
+//								component 
+//						) );
+//					}
+//				}
 		
 				if( composite.isValueComponentTypeDisplayed() ) {
 					org.alice.ide.croquet.models.declaration.ValueComponentTypeState valueComponentTypeState = composite.getValueComponentTypeState();

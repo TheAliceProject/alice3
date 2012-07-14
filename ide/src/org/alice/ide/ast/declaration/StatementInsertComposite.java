@@ -64,4 +64,8 @@ public abstract class StatementInsertComposite<S extends org.lgna.project.ast.St
 	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
+	@Override
+	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+		return null;
+	}
 }

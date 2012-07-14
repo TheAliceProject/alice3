@@ -66,8 +66,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 	}
 	protected static class Details {
-		private ApplicabilityStatus declarationTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
-		private org.lgna.project.ast.UserType<?> declarationTypeInitialValue;
 		private ApplicabilityStatus valueComponentTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.AbstractType<?,?,?> valueComponentTypeInitialValue;
 		private ApplicabilityStatus valueIsArrayTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
@@ -78,11 +76,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		private ApplicabilityStatus initializerStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.Expression initializerInitialValue;
 
-		public Details declarationType( ApplicabilityStatus status, org.lgna.project.ast.UserType<?> initialValue ) {
-			this.declarationTypeStatus = status;
-			this.declarationTypeInitialValue = initialValue;
-			return this;
-		}
 		public Details valueComponentType( ApplicabilityStatus status, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
 			this.valueComponentTypeStatus = status;
 			this.valueComponentTypeInitialValue = initialValue;
@@ -108,7 +101,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			return this;
 		}
 	}
-	private final org.alice.ide.croquet.models.declaration.DeclaringTypeState declaringTypeState;
 	private final org.alice.ide.croquet.models.declaration.ValueComponentTypeState valueComponentTypeState;
 	private final org.lgna.croquet.BooleanState valueIsArrayTypeState;
 	private final org.lgna.croquet.StringState nameState;
@@ -123,15 +115,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 		this.details = details;
 		
-		if( details.declarationTypeStatus.isApplicable() ) {
-			this.declaringTypeState = new org.alice.ide.croquet.models.declaration.DeclaringTypeState( details.declarationTypeInitialValue );
-			if( details.declarationTypeStatus.isDisplayed() ) {
-				this.declaringTypeState.setEnabled( details.declarationTypeStatus.isEditable() );
-			}
-		} else {
-			this.declaringTypeState = null;
-		}
-
 		if( details.valueComponentTypeStatus.isApplicable() ) {
 			this.valueComponentTypeState = new org.alice.ide.croquet.models.declaration.ValueComponentTypeState( details.valueComponentTypeInitialValue );
 			if( details.valueComponentTypeStatus.isDisplayed() ) {
@@ -191,9 +174,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 	}
 
-	public org.alice.ide.croquet.models.declaration.DeclaringTypeState getDeclaringTypeState() {
-		return this.declaringTypeState;
-	}
 	public org.alice.ide.croquet.models.declaration.ValueComponentTypeState getValueComponentTypeState() {
 		return this.valueComponentTypeState;
 	}
@@ -207,9 +187,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		return this.initializerState;
 	}
 	
-	public boolean isDeclarationTypeDisplayed() {
-		return details.declarationTypeStatus.isDisplayed();
-	}
 	public boolean isValueComponentTypeDisplayed() {
 		return details.valueComponentTypeStatus.isDisplayed();
 	}
@@ -220,13 +197,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		return details.initializerStatus.isDisplayed();
 	}
 
-	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
-		if( this.declaringTypeState != null ) {
-			return this.declaringTypeState.getValue();
-		} else {
-			return null;
-		}
-	}
+	public abstract org.lgna.project.ast.UserType< ? > getDeclaringType();
 	public org.lgna.project.ast.AbstractType<?,?,?> getValueComponentType() {
 		if( this.valueComponentTypeState != null ) {
 			return this.valueComponentTypeState.getValue();
@@ -335,9 +306,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 	}
 	
-	private boolean isDeclaringTypeEditable() {
-		return this.declaringTypeState != null ? this.declaringTypeState.isEnabled() : false;
-	}
 	private boolean isValueComponentTypeEditable() {
 		return this.valueComponentTypeState != null ? this.valueComponentTypeState.isEnabled() : false;
 	}
@@ -397,9 +365,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	
 	@Override
 	public void handlePreActivation() {
-		if( this.declaringTypeState != null ) {
-			this.declaringTypeState.setValueTransactionlessly( this.details.declarationTypeInitialValue );
-		}
 		if( this.valueComponentTypeState != null ) {
 			this.valueComponentTypeState.setValueTransactionlessly( this.getInitialValueComponentType() );
 		}
