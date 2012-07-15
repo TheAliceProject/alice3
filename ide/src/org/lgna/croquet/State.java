@@ -153,9 +153,10 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return rv;
 	}
 
+	private static final boolean IS_ADJUSTING_IGNORED = true; //todo
 	protected abstract void updateSwingModel( T nextValue );
 	private void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger, boolean isFromSwing ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValueForSkipCheck, nextValue ) && isAdjusting == this.prevIsAdjustingForSkipCheck ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValueForSkipCheck, nextValue ) && ( IS_ADJUSTING_IGNORED || ( isAdjusting == this.prevIsAdjustingForSkipCheck ) ) ) {
 			//pass
 		} else {
 			T prevValue = this.prevValueForSkipCheck;

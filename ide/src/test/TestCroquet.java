@@ -64,6 +64,14 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		IntegerState integerState = new IntegerState();
 		DoubleState doubleState = new DoubleState();
 		
+		integerState.addValueListener( new org.lgna.croquet.State.ValueListener<Integer>() {
+			public void changing( org.lgna.croquet.State<java.lang.Integer> state, java.lang.Integer prevValue, java.lang.Integer nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State<java.lang.Integer> state, java.lang.Integer prevValue, java.lang.Integer nextValue, boolean isAdjusting ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue, isAdjusting );
+			}
+		} );
+		
 		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 
 				4,  1, 
 				integerState.createSlider(), integerState.createSpinner(),
