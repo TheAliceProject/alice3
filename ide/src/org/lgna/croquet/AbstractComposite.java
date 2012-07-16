@@ -118,8 +118,20 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			super( binaryDecoder );
 		}
 		@Override
-		protected org.lgna.croquet.StringState getResolved( org.lgna.croquet.AbstractComposite.Key key ) {
+		protected StringState getResolved( Key key ) {
 			return key.getComposite().mapKeyToStringState.get( key );
+		}
+	}
+	public static final class ItemStateKeyResolver<T> extends KeyResolver<ItemState<T>> {
+		public ItemStateKeyResolver( Key key ) {
+			super( key );
+		}
+		public ItemStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected ItemState<T> getResolved( Key key ) {
+			return key.getComposite().mapKeyToItemState.get( key );
 		}
 	}
 	
@@ -329,9 +341,9 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values );
 	}
 	protected static final class InternalCascadeWithInternalBlank<T> extends CascadeWithInternalBlank<T> {
-		private final CascadeCustomizer customizer;
+		private final CascadeCustomizer<T> customizer;
 		private final Key key;
-		private InternalCascadeWithInternalBlank( CascadeCustomizer customizer, Class< T > componentType, Key key ) {
+		private InternalCascadeWithInternalBlank( CascadeCustomizer<T> customizer, Class< T > componentType, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "165e65a4-fd9b-4a09-921d-ecc3cc808de0" ), componentType );
 			this.customizer = customizer;
 			this.key = key;
@@ -355,6 +367,31 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		protected java.util.List< CascadeBlankChild > updateBlankChildren( java.util.List< CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
 			this.customizer.appendBlankChildren( rv, blankNode );
 			return rv;
+		}
+	}
+	
+	protected static interface ItemStateCustomizer<T> {
+		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode );
+	}
+	protected static final class InternalCustomItemState<T> extends DefaultCustomItemState<T> {
+		private final ItemStateCustomizer<T> customizer;
+		private final Key key;
+		private InternalCustomItemState( ItemStateCustomizer<T> customizer, ItemCodec< T > itemCodec, T initialValue, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "eac974ec-8b09-4f1a-9a4c-7bae8f0780f1" ), itemCodec, initialValue );
+			this.customizer = customizer;
+			this.key = key;
+		}
+		public Key getKey() {
+			return this.key;
+		}
+		@Override
+		protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
+			this.customizer.appendBlankChildren( rv, blankNode );
+			return rv;
+		}
+		@Override
+		protected ItemStateKeyResolver<T> createResolver() {
+			return new ItemStateKeyResolver<T>( this.getKey() );
 		}
 	}
 
@@ -415,6 +452,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	private java.util.Map<Key,InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private void localizeSidekicks( java.util.Map<Key,? extends AbstractCompletionModel>... maps ) {
 		for( java.util.Map<Key,? extends AbstractCompletionModel> map : maps ) {
@@ -435,7 +473,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
 			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
 		}
-		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToListSelectionState, this.mapKeyToTabSelectionState, this.mapKeyToStringState );
+		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToItemState, this.mapKeyToListSelectionState, this.mapKeyToTabSelectionState, this.mapKeyToStringState );
 	}
 	public boolean contains( Model model ) {
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
@@ -483,6 +521,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		for( Key key : this.mapKeyToCascade.keySet() ) {
 			InternalCascadeWithInternalBlank cascade = this.mapKeyToCascade.get( key );
 			if( model == cascade ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToItemState.keySet() ) {
+			InternalCustomItemState itemState = this.mapKeyToItemState.get( key );
+			if( model == itemState ) {
 				return true;
 			}
 		}
@@ -544,6 +588,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		return rv;
 	}
 	
+	protected <T> CustomItemState<T> createCustomItemState( Key key, ItemCodec<T> itemCodec, T initialValue, ItemStateCustomizer< T > customizer ) {
+		InternalCustomItemState< T > rv = new InternalCustomItemState< T >( customizer, itemCodec, initialValue, key );
+		this.mapKeyToItemState.put( key, rv );
+		return rv;
+	}
+
 	protected <T> ListSelectionState<T> createListSelectionState( Key key, Class<T> valueCls, org.lgna.croquet.ItemCodec< T > codec, int selectionIndex, T... values ) {
 		InternalDefaultListSelectionState<T> rv = new InternalDefaultListSelectionState<T>( codec, selectionIndex, values, key );
 		this.mapKeyToListSelectionState.put( key, rv );

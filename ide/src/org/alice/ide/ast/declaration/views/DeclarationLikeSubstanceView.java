@@ -71,7 +71,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 //				}
 		
 				if( composite.isValueComponentTypeDisplayed() ) {
-					org.alice.ide.croquet.models.declaration.ValueComponentTypeState valueComponentTypeState = composite.getValueComponentTypeState();
+					org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
 					org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
 					if( valueComponentTypeState != null ) {
 						org.lgna.croquet.components.JComponent< ? > component;
