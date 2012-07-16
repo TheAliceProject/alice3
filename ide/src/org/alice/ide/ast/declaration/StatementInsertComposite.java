@@ -47,9 +47,12 @@ package org.alice.ide.ast.declaration;
  */
 public abstract class StatementInsertComposite<S extends org.lgna.project.ast.Statement> extends DeclarationLikeSubstanceComposite<S> {
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	//todo: remove
+	private final org.alice.ide.name.validators.LocalNameValidator nameValidator;
 	public StatementInsertComposite( java.util.UUID migrationId, Details details, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( migrationId, details );
 		this.blockStatementIndexPair = blockStatementIndexPair;
+		this.nameValidator = new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair );
 	}
 	protected abstract S createStatement();
 	@Override
@@ -67,5 +70,13 @@ public abstract class StatementInsertComposite<S extends org.lgna.project.ast.St
 	@Override
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return null;
+	}
+	@Override
+	protected boolean isNameAvailable( String name ) {
+		return this.nameValidator.isNameAvailable( name );
+	}
+	@Override
+	protected boolean isNameValid( String name ) {
+		return this.nameValidator.isNameValid( name );
 	}
 }

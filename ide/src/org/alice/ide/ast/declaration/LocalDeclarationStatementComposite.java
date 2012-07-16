@@ -63,7 +63,7 @@ public class LocalDeclarationStatementComposite extends StatementInsertComposite
 		super( java.util.UUID.fromString( "1c257483-36c6-41d8-9d65-4a49bfa11009" ), new Details()
 			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), ApplicabilityStatus.EDITABLE )
+			.name( ApplicabilityStatus.EDITABLE )
 			.initializer( ApplicabilityStatus.EDITABLE, null )
 		, blockStatementIndexPair );
 	}

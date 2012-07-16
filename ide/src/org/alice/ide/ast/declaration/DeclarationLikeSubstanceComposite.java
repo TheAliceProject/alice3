@@ -70,7 +70,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		private org.lgna.project.ast.AbstractType<?,?,?> valueComponentTypeInitialValue;
 		private ApplicabilityStatus valueIsArrayTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private boolean valueIsArrayTypeInitialValue;
-		private org.alice.ide.name.NameValidator nameValidator;
 		private ApplicabilityStatus nameStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private String nameInitialValue;
 		private ApplicabilityStatus initializerStatus = ApplicabilityStatus.NOT_APPLICABLE;
@@ -86,14 +85,13 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			this.valueIsArrayTypeInitialValue = initialValue;
 			return this;
 		}
-		public Details name( org.alice.ide.name.NameValidator nameValidator, ApplicabilityStatus status, String initialValue ) {
-			this.nameValidator = nameValidator;
+		public Details name( ApplicabilityStatus status, String initialValue ) {
 			this.nameStatus = status;
 			this.nameInitialValue = initialValue;
 			return this;
 		}
-		public Details name( org.alice.ide.name.NameValidator nameValidator, ApplicabilityStatus status ) {
-			return this.name( nameValidator, status, "" );
+		public Details name( ApplicabilityStatus status ) {
+			return this.name( status, "" );
 		}
 		public Details initializer( ApplicabilityStatus status, org.lgna.project.ast.Expression initialValue ) {
 			this.initializerStatus = status;
@@ -239,17 +237,18 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			return this.valueComponentTypeState.getSidekickLabel().getText().replaceAll( ":", "" ) + " must be set";
 		}
 	}
+	protected abstract boolean isNameValid( String name );
+	protected abstract boolean isNameAvailable( String name );
 	protected String getNameExplanation( String declarationName ) {
 		if( declarationName.length() > 0 ) {
-			if( this.details.nameValidator != null ) {
-				//todo
-				if( this.details.nameValidator instanceof org.alice.ide.name.validators.MemberNameValidator ) {
-					org.alice.ide.name.validators.MemberNameValidator memberNameValidator = (org.alice.ide.name.validators.MemberNameValidator)this.details.nameValidator;
-					memberNameValidator.setType( this.getDeclaringType() );
+			if( this.isNameValid( declarationName ) ) {
+				if( this.isNameAvailable( declarationName ) ) {
+					return null;
+				} else {
+					return "\"" + declarationName + "\"" + " is not available.";
 				}
-				return this.details.nameValidator.getExplanationIfOkButtonShouldBeDisabled( declarationName );
 			} else {
-				return null;
+				return "\"" + declarationName + "\"" + " is not a valid name.";
 			}
 		} else {
 			return "\"" + declarationName + "\" is not a valid " + this.nameState.getSidekickLabel().getText().replaceAll( ":", "" );
@@ -274,7 +273,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		} else {
 			valueTypeText = null;
 		}
-		final String nameText = this.getNameExplanation( this.nameState.getValue() );
+		final String nameText;
+		if( this.isNameEditable() ) {
+			nameText = this.getNameExplanation( this.nameState.getValue() );
+		} else {
+			nameText = null;
+		}
 		final String initializerText;
 		if( this.initializerState != null ) {
 			initializerText = this.getInitializerExplanation( initializerState.getValue() );

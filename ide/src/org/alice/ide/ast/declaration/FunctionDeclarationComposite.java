@@ -63,7 +63,7 @@ public final class FunctionDeclarationComposite extends MethodDeclarationComposi
 		super( java.util.UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
 			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-			.name( new org.alice.ide.name.validators.MethodNameValidator( declaringType ), ApplicabilityStatus.EDITABLE )
+			.name( ApplicabilityStatus.EDITABLE )
 		, declaringType );
 	}
 	@Override

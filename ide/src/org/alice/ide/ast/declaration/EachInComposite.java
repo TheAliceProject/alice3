@@ -51,7 +51,7 @@ public abstract class EachInComposite<S extends org.lgna.project.ast.Statement> 
 		super( migrationId, new Details()
 			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
-			.name( new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair ), ApplicabilityStatus.EDITABLE )
+			.name( ApplicabilityStatus.EDITABLE )
 			.initializer( ApplicabilityStatus.EDITABLE, null ),
 		blockStatementIndexPair );
 	}

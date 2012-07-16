@@ -77,13 +77,7 @@ public abstract class FieldDeclarationComposite extends DeclarationComposite< or
 			return new Details()
 				.valueComponentType( this.valueComponentTypeStatus, this.valueComponentTypeInitialValue )
 				.valueIsArrayType( this.valueIsArrayTypeStatus, this.valueIsArrayTypeInitialValue )
-				.name( new org.alice.ide.name.validators.FieldNameValidator( (org.lgna.project.ast.UserType<?>)null ) {
-					@Override
-					public org.lgna.project.ast.UserType<?> getType() {
-						//todo
-						return null;
-					}
-				}, ApplicabilityStatus.EDITABLE )
+				.name( ApplicabilityStatus.EDITABLE )
 				.initializer( this.initializerStatus, this.initializerInitialValue );
 		}
 	}
@@ -126,5 +120,10 @@ public abstract class FieldDeclarationComposite extends DeclarationComposite< or
 	@Override
 	protected org.alice.ide.ast.declaration.views.FieldDeclarationView createView() {
 		return new org.alice.ide.ast.declaration.views.FieldDeclarationView( this );
+	}
+	
+	@Override
+	protected boolean isNameAvailable( String name ) {
+		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, this.getDeclaringType() );
 	}
 }

@@ -40,19 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.ast.declaration;
 
-package org.alice.ide.name.validators;
-
-public abstract class NodeNameValidator extends org.alice.ide.name.NameValidator {
-	private org.lgna.project.ast.Node node;
-	public NodeNameValidator( org.lgna.project.ast.Node node ) {
-		this.node = node;
+/**
+ * @author Dennis Cosgrove
+ */
+public class SphereManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
+	private static class SingletonHolder {
+		private static SphereManagedFieldDeclarationComposite instance = new SphereManagedFieldDeclarationComposite();
 	}
-	public org.lgna.project.ast.Node getNode() {
-		return this.node;
+	public static SphereManagedFieldDeclarationComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public final boolean isNameValid( String name ) {
-		return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
+	private SphereManagedFieldDeclarationComposite() {
+		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ),	org.lgna.story.Sphere.class );
 	}
 }
