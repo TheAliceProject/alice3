@@ -99,11 +99,10 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			return this;
 		}
 	}
-	//private final org.alice.ide.croquet.models.declaration.ValueComponentTypeState valueComponentTypeState;
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState;
 	private final org.lgna.croquet.BooleanState valueIsArrayTypeState;
 	private final org.lgna.croquet.StringState nameState;
-	private final org.alice.ide.croquet.models.ExpressionState initializerState;
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initializerState;
 	
 	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
 
@@ -140,6 +139,14 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 				rv.add( otherTypesMenuModel );
 			}
+		}
+	}
+	
+	private class InitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+			org.lgna.project.annotations.ValueDetails valueDetails = null;
+			org.lgna.project.ast.AbstractType<?,?,?> type = DeclarationLikeSubstanceComposite.this.getValueType();
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( rv, blankNode, type, valueDetails );
 		}
 	}
 	
@@ -184,27 +191,8 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			this.initializerState = null;
 		}
 	}
-	protected org.alice.ide.croquet.models.ExpressionState createInitializerState( org.lgna.project.ast.Expression initialValue ) {
-		return new org.alice.ide.croquet.models.declaration.InitializerState( this, initialValue );
-	}
-	
-	@Override
-	protected void localize() {
-		super.localize();
-		if( this.valueComponentTypeState != null ) {
-			String text = this.findLocalizedText( "valueComponentTypeState.sidekickLabel" );
-			if( text != null ) {
-				org.lgna.croquet.StringValue sidekickLabel = this.valueComponentTypeState.getSidekickLabel();
-				sidekickLabel.setText( text );
-			}
-		}
-		if( this.initializerState != null ) {
-			String text = this.findLocalizedText( "initializerState.sidekickLabel" );
-			if( text != null ) {
-				org.lgna.croquet.StringValue sidekickLabel = this.initializerState.getSidekickLabel();
-				sidekickLabel.setText( text );
-			}
-		}
+	protected final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitializerState( org.lgna.project.ast.Expression initialValue ) {
+		return this.createCustomItemState( this.createKey( "initializerState" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue, new InitializerCustomizer() );
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> getValueComponentTypeState() {
@@ -216,7 +204,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	public org.lgna.croquet.StringState getNameState() {
 		return this.nameState;
 	}
-	public org.alice.ide.croquet.models.ExpressionState getInitializerState() {
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getInitializerState() {
 		return this.initializerState;
 	}
 	
