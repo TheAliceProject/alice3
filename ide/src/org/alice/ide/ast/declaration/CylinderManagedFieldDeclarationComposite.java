@@ -40,19 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.instancefactory;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface InstanceFactory {
-	public < F extends InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > getResolver();
-	public boolean isValid();
-	public org.lgna.project.ast.AbstractType< ?,?,? > getValueType(); 
-	public org.lgna.project.ast.Expression createTransientExpression();
-	public org.lgna.project.ast.Expression createExpression();
-	public String getRepr();
-	public javax.swing.Icon getSmallIcon();
-	public edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest();
+public class CylinderManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
+	private static class SingletonHolder {
+		private static CylinderManagedFieldDeclarationComposite instance = new CylinderManagedFieldDeclarationComposite();
+	}
+	public static CylinderManagedFieldDeclarationComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private CylinderManagedFieldDeclarationComposite() {
+		super( java.util.UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ),	org.lgna.story.Cylinder.class );
+	}
 }

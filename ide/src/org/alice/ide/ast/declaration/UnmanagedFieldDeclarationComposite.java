@@ -60,13 +60,21 @@ public class UnmanagedFieldDeclarationComposite extends FieldDeclarationComposit
 			return rv;
 		}
 	}
-	private UnmanagedFieldDeclarationComposite( org.lgna.project.ast.UserType< ? > declarationType ) {
+	private final org.lgna.project.ast.UserType<?> declaringType;
+	private UnmanagedFieldDeclarationComposite( org.lgna.project.ast.UserType< ? > declaringType ) {
 		super( 
 				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
-				declarationType, 
-				ApplicabilityStatus.EDITABLE, false, 
-				ApplicabilityStatus.EDITABLE, null 
+				new FieldDetailsBuilder()
+					.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+					.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
+					.initializer( ApplicabilityStatus.EDITABLE, null )
+				.build()
 		);
+		this.declaringType = declaringType;
+	}
+	@Override
+	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+		return this.declaringType;
 	}
 	@Override
 	protected boolean isFieldFinal() {

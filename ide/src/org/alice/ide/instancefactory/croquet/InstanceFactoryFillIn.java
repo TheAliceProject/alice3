@@ -94,13 +94,14 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		org.lgna.project.ast.Expression expression = this.value.createTransientExpression();
 		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 
+		javax.swing.Icon icon = this.value.getSmallIcon();
 		javax.swing.JPanel rv = new javax.swing.JPanel();
 		rv.setLayout( new java.awt.BorderLayout() );
-		
-		rv.add( new javax.swing.JLabel( org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( this.value.getValueType() ) ), java.awt.BorderLayout.LINE_START );
+		rv.add( new javax.swing.JLabel( icon ), java.awt.BorderLayout.LINE_START );
 		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
 		rv.setOpaque( false );
 		return rv;
+		
 	}
 	@Override
 	public final org.alice.ide.instancefactory.InstanceFactory getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.instancefactory.InstanceFactory, Void > node ) {

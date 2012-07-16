@@ -61,10 +61,9 @@ public final class ProcedureDeclarationComposite extends MethodDeclarationCompos
 	}
 	private ProcedureDeclarationComposite( org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "1e7af2e9-2ce0-4c7e-9ddd-9af001601660" ), new Details()
-			.declarationType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, declaringType )
 			.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, org.lgna.project.ast.JavaType.VOID_TYPE )
-			.name( new org.alice.ide.name.validators.MethodNameValidator( declaringType ), ApplicabilityStatus.EDITABLE )
-		);
+			.name( ApplicabilityStatus.EDITABLE )
+		, declaringType );
 	}
 	@Override
 	protected org.alice.ide.ast.declaration.views.ProcedureDeclarationView createView() {

@@ -40,19 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.instancefactory;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface InstanceFactory {
-	public < F extends InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > getResolver();
-	public boolean isValid();
-	public org.lgna.project.ast.AbstractType< ?,?,? > getValueType(); 
-	public org.lgna.project.ast.Expression createTransientExpression();
-	public org.lgna.project.ast.Expression createExpression();
-	public String getRepr();
-	public javax.swing.Icon getSmallIcon();
-	public edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest();
+public class DiscManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
+	private static class SingletonHolder {
+		private static DiscManagedFieldDeclarationComposite instance = new DiscManagedFieldDeclarationComposite();
+	}
+	public static DiscManagedFieldDeclarationComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private DiscManagedFieldDeclarationComposite() {
+		super( java.util.UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ),	org.lgna.story.Disc.class );
+	}
+	@Override
+	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		try {
+			//todo: better z-fighting avoidance
+			rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement( false, field, new org.lgna.story.Position( 0.0, 0.01, 0.0 ) ) );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ccee );
+		}
+		return rv;
+	}
 }

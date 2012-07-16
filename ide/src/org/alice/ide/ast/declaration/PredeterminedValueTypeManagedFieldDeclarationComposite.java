@@ -40,19 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.instancefactory;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface InstanceFactory {
-	public < F extends InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > getResolver();
-	public boolean isValid();
-	public org.lgna.project.ast.AbstractType< ?,?,? > getValueType(); 
-	public org.lgna.project.ast.Expression createTransientExpression();
-	public org.lgna.project.ast.Expression createExpression();
-	public String getRepr();
-	public javax.swing.Icon getSmallIcon();
-	public edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest();
+public abstract class PredeterminedValueTypeManagedFieldDeclarationComposite extends ManagedFieldDeclarationComposite {
+	public PredeterminedValueTypeManagedFieldDeclarationComposite( java.util.UUID migrationId, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
+		super( migrationId, new FieldDetailsBuilder()
+				.valueComponentType( ApplicabilityStatus.DISPLAYED, valueType )
+				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
+				.initializer( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.AstUtilities.createInstanceCreation( valueType ) )
+		.build() );
+	}
+	public PredeterminedValueTypeManagedFieldDeclarationComposite( java.util.UUID migrationId, Class<?> valueCls ) {
+		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
+	}
 }

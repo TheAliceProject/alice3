@@ -47,14 +47,43 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class FieldDeclarationComposite extends DeclarationComposite< org.lgna.project.ast.UserField > {
-	public FieldDeclarationComposite( java.util.UUID migrationId, org.lgna.project.ast.UserType<?> declaringType, ApplicabilityStatus valueIsArrayTypeStatus, boolean valueIsArrayTypeInitialValue, ApplicabilityStatus initializerStatus, org.lgna.project.ast.Expression initializerInitialValue ) {
-		super( migrationId, new Details()
-			.declarationType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, declaringType )
-			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-			.valueIsArrayType( valueIsArrayTypeStatus, valueIsArrayTypeInitialValue )
-			.name( new org.alice.ide.name.validators.FieldNameValidator( declaringType ), ApplicabilityStatus.EDITABLE )
-			.initializer( initializerStatus, initializerInitialValue )
-		);
+	protected static class FieldDetailsBuilder {
+		private ApplicabilityStatus valueComponentTypeStatus;
+		private org.lgna.project.ast.AbstractType<?,?,?> valueComponentTypeInitialValue;
+		private ApplicabilityStatus valueIsArrayTypeStatus;
+		private boolean valueIsArrayTypeInitialValue;
+		private ApplicabilityStatus initializerStatus;
+		private org.lgna.project.ast.Expression initializerInitialValue;
+
+		public FieldDetailsBuilder valueComponentType( ApplicabilityStatus status, org.lgna.project.ast.AbstractType<?,?,?> initialValue ) {
+			this.valueComponentTypeStatus = status;
+			this.valueComponentTypeInitialValue = initialValue;
+			return this;
+		}
+		public FieldDetailsBuilder valueIsArrayType( ApplicabilityStatus status, boolean initialValue ) {
+			this.valueIsArrayTypeStatus = status;
+			this.valueIsArrayTypeInitialValue = initialValue;
+			return this;
+		}
+		public FieldDetailsBuilder initializer( ApplicabilityStatus status, org.lgna.project.ast.Expression initialValue ) {
+			this.initializerStatus = status;
+			this.initializerInitialValue = initialValue;
+			return this;
+		}
+		public Details build() {
+			assert this.valueComponentTypeStatus != null : this;
+			assert this.valueIsArrayTypeStatus != null : this;
+			assert this.initializerStatus != null : this;
+			return new Details()
+				.valueComponentType( this.valueComponentTypeStatus, this.valueComponentTypeInitialValue )
+				.valueIsArrayType( this.valueIsArrayTypeStatus, this.valueIsArrayTypeInitialValue )
+				.name( ApplicabilityStatus.EDITABLE )
+				.initializer( this.initializerStatus, this.initializerInitialValue );
+		}
+	}
+
+	public FieldDeclarationComposite( java.util.UUID migrationId, Details details ) {
+		super( migrationId, details );
 	}
 	protected abstract org.lgna.project.ast.ManagementLevel getManagementLevel();
 	protected abstract boolean isFieldFinal();
@@ -91,5 +120,10 @@ public abstract class FieldDeclarationComposite extends DeclarationComposite< or
 	@Override
 	protected org.alice.ide.ast.declaration.views.FieldDeclarationView createView() {
 		return new org.alice.ide.ast.declaration.views.FieldDeclarationView( this );
+	}
+	
+	@Override
+	protected boolean isNameAvailable( String name ) {
+		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, this.getDeclaringType() );
 	}
 }

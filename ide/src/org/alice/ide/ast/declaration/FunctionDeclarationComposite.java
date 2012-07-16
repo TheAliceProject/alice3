@@ -61,11 +61,10 @@ public final class FunctionDeclarationComposite extends MethodDeclarationComposi
 	}
 	private FunctionDeclarationComposite( org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
-			.declarationType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, declaringType )
 			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-			.name( new org.alice.ide.name.validators.MethodNameValidator( declaringType ), ApplicabilityStatus.EDITABLE )
-		);
+			.name( ApplicabilityStatus.EDITABLE )
+		, declaringType );
 	}
 	@Override
 	protected org.alice.ide.ast.declaration.views.FunctionDeclarationView createView() {

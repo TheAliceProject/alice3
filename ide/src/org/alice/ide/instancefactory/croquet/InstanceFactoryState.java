@@ -171,7 +171,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					filteredFields.add( field );
 				}
 			}
-			if( filteredFields.size() > 10 ) {
+			if( filteredFields.size() > 16 ) {
 				org.alice.ide.ast.fieldtree.RootNode root = org.alice.ide.ast.fieldtree.FieldTree.createTreeFor( 
 						filteredFields, 
 						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Biped.class ), 

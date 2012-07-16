@@ -40,19 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.instancefactory;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface InstanceFactory {
-	public < F extends InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > getResolver();
-	public boolean isValid();
-	public org.lgna.project.ast.AbstractType< ?,?,? > getValueType(); 
-	public org.lgna.project.ast.Expression createTransientExpression();
-	public org.lgna.project.ast.Expression createExpression();
-	public String getRepr();
-	public javax.swing.Icon getSmallIcon();
-	public edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest();
+public class AxesManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
+	private static class SingletonHolder {
+		private static AxesManagedFieldDeclarationComposite instance = new AxesManagedFieldDeclarationComposite();
+	}
+	public static AxesManagedFieldDeclarationComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private AxesManagedFieldDeclarationComposite() {
+		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ),	org.lgna.story.Axes.class );
+	}
 }
