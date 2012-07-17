@@ -47,12 +47,12 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public class FieldDeclarationView extends DeclarationView<org.lgna.project.ast.UserField> {
-	public FieldDeclarationView( org.alice.ide.ast.declaration.FieldDeclarationComposite composite ) {
+	public FieldDeclarationView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
 		super( composite );
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.FieldDeclarationComposite composite = (org.alice.ide.ast.declaration.FieldDeclarationComposite)this.getComposite();
+		org.alice.ide.ast.declaration.AddFieldComposite composite = (org.alice.ide.ast.declaration.AddFieldComposite)this.getComposite();
 		org.lgna.project.ast.UserField field = composite.getPreviewValue();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
 	}

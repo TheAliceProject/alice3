@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldDeclarationComposite extends DeclarationComposite< org.lgna.project.ast.UserField > {
+public abstract class AddFieldComposite extends AddDeclarationComposite< org.lgna.project.ast.UserField > {
 	protected static class FieldDetailsBuilder {
 		private ApplicabilityStatus valueComponentTypeStatus;
 		private org.lgna.project.ast.AbstractType<?,?,?> valueComponentTypeInitialValue;
@@ -82,7 +82,7 @@ public abstract class FieldDeclarationComposite extends DeclarationComposite< or
 		}
 	}
 
-	public FieldDeclarationComposite( java.util.UUID migrationId, Details details ) {
+	public AddFieldComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
 	protected abstract org.lgna.project.ast.ManagementLevel getManagementLevel();

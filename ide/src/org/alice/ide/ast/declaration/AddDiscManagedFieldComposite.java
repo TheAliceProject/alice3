@@ -45,14 +45,25 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
+public class AddDiscManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
 	private static class SingletonHolder {
-		private static CylinderManagedFieldDeclarationComposite instance = new CylinderManagedFieldDeclarationComposite();
+		private static AddDiscManagedFieldComposite instance = new AddDiscManagedFieldComposite();
 	}
-	public static CylinderManagedFieldDeclarationComposite getInstance() {
+	public static AddDiscManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private CylinderManagedFieldDeclarationComposite() {
-		super( java.util.UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ),	org.lgna.story.Cylinder.class );
+	private AddDiscManagedFieldComposite() {
+		super( java.util.UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ),	org.lgna.story.Disc.class );
+	}
+	@Override
+	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		try {
+			//todo: better z-fighting avoidance
+			rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement( false, field, new org.lgna.story.Position( 0.0, 0.01, 0.0 ) ) );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ccee );
+		}
+		return rv;
 	}
 }

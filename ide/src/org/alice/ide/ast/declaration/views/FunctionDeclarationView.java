@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public class FunctionDeclarationView extends MethodDeclarationView {
-	public FunctionDeclarationView( org.alice.ide.ast.declaration.FunctionDeclarationComposite composite ) {
+	public FunctionDeclarationView( org.alice.ide.ast.declaration.AddFunctionComposite composite ) {
 		super( composite );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}

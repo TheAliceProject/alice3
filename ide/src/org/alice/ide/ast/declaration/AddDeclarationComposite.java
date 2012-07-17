@@ -45,14 +45,12 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class AxesManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
-	private static class SingletonHolder {
-		private static AxesManagedFieldDeclarationComposite instance = new AxesManagedFieldDeclarationComposite();
+public abstract class AddDeclarationComposite<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceComposite<N> {
+	public AddDeclarationComposite( java.util.UUID migrationId, Details details ) {
+		super( migrationId, details );
 	}
-	public static AxesManagedFieldDeclarationComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private AxesManagedFieldDeclarationComposite() {
-		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ),	org.lgna.story.Axes.class );
+	@Override
+	protected boolean isNameValid( String name ) {
+		return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
 	}
 }

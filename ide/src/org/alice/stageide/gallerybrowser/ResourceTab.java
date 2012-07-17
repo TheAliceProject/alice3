@@ -93,17 +93,17 @@ public class ResourceTab extends GalleryTab {
 				
 				org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 0,  2 );
 				
-				gridPanel.addComponent( org.alice.ide.ast.declaration.DiscManagedFieldDeclarationComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.ide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation().createButton() );
 				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation.getInstance().createButton() );
 				
 				
-				gridPanel.addComponent( org.alice.ide.ast.declaration.ConeManagedFieldDeclarationComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.ide.ast.declaration.AddConeManagedFieldComposite.getInstance().getOperation().createButton() );
 				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton() );
 				
-				gridPanel.addComponent( org.alice.ide.ast.declaration.CylinderManagedFieldDeclarationComposite.getInstance().getOperation().createButton() );
-				gridPanel.addComponent( org.alice.ide.ast.declaration.AxesManagedFieldDeclarationComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.ide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.ide.ast.declaration.AddAxesManagedFieldComposite.getInstance().getOperation().createButton() );
 				
-				gridPanel.addComponent( org.alice.ide.ast.declaration.SphereManagedFieldDeclarationComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.ide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
 				gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
 				
 		        org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()

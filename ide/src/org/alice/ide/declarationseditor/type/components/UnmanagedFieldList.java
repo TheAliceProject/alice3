@@ -51,7 +51,7 @@ import org.alice.ide.declarationseditor.type.UnmanagedFieldState;
 public class UnmanagedFieldList extends FieldList {
 	public UnmanagedFieldList( org.lgna.project.ast.NamedUserType type ) {
 		//super( UnmanagedFieldState.getInstance( type ), org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ) );
-		super( UnmanagedFieldState.getInstance( type ), org.alice.ide.ast.declaration.UnmanagedFieldDeclarationComposite.getInstance( type ).getOperation() );
+		super( UnmanagedFieldState.getInstance( type ), org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation() );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
 }

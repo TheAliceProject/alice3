@@ -45,8 +45,8 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ManagedFieldDeclarationComposite extends FieldDeclarationComposite {
-	public ManagedFieldDeclarationComposite( java.util.UUID migrationId, Details details ) {
+public abstract class AddManagedFieldComposite extends AddFieldComposite {
+	public AddManagedFieldComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
 	@Override

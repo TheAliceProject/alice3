@@ -45,12 +45,14 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationComposite<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceComposite<N> {
-	public DeclarationComposite( java.util.UUID migrationId, Details details ) {
-		super( migrationId, details );
+public final class AddConeManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddConeManagedFieldComposite instance = new AddConeManagedFieldComposite();
 	}
-	@Override
-	protected boolean isNameValid( String name ) {
-		return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
+	public static AddConeManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private AddConeManagedFieldComposite() {
+		super( java.util.UUID.fromString( "c3df5655-242d-4580-aeb9-b1b0e23f7e00" ),	org.lgna.story.Cone.class );
 	}
 }

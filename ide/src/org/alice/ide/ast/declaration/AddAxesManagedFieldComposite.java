@@ -45,14 +45,14 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class ConeManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
+public class AddAxesManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
 	private static class SingletonHolder {
-		private static ConeManagedFieldDeclarationComposite instance = new ConeManagedFieldDeclarationComposite();
+		private static AddAxesManagedFieldComposite instance = new AddAxesManagedFieldComposite();
 	}
-	public static ConeManagedFieldDeclarationComposite getInstance() {
+	public static AddAxesManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private ConeManagedFieldDeclarationComposite() {
-		super( java.util.UUID.fromString( "c3df5655-242d-4580-aeb9-b1b0e23f7e00" ),	org.lgna.story.Cone.class );
+	private AddAxesManagedFieldComposite() {
+		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ),	org.lgna.story.Axes.class );
 	}
 }

@@ -40,52 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnmanagedFieldDeclarationComposite extends FieldDeclarationComposite {
-	private static java.util.Map< org.lgna.project.ast.UserType< ? >, UnmanagedFieldDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static UnmanagedFieldDeclarationComposite getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
+public final class AddFunctionComposite extends AddMethodComposite {
+	private static java.util.Map< org.lgna.project.ast.UserType<?>, AddFunctionComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static AddFunctionComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		synchronized( map ) {
-			UnmanagedFieldDeclarationComposite rv = map.get( declarationType );
+			AddFunctionComposite rv = map.get( declaringType );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new UnmanagedFieldDeclarationComposite( declarationType );
-				map.put( declarationType, rv );
+				rv = new AddFunctionComposite( declaringType );
+				map.put( declaringType, rv );
 			}
 			return rv;
 		}
 	}
-	private final org.lgna.project.ast.UserType<?> declaringType;
-	private UnmanagedFieldDeclarationComposite( org.lgna.project.ast.UserType< ? > declaringType ) {
-		super( 
-				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
-				new FieldDetailsBuilder()
-					.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-					.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-					.initializer( ApplicabilityStatus.EDITABLE, null )
-				.build()
-		);
-		this.declaringType = declaringType;
+	private AddFunctionComposite( org.lgna.project.ast.UserType<?> declaringType ) {
+		super( java.util.UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
+			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
+			.name( ApplicabilityStatus.EDITABLE )
+		, declaringType );
 	}
 	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return this.declaringType;
-	}
-	@Override
-	protected boolean isFieldFinal() {
-		return false;
-	}
-	@Override
-	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
-		return org.lgna.project.ast.ManagementLevel.NONE;
-	}
-	@Override
-	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
+	protected org.alice.ide.ast.declaration.views.FunctionDeclarationView createView() {
+		return new org.alice.ide.ast.declaration.views.FunctionDeclarationView( this );
 	}
 }

@@ -45,9 +45,9 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodDeclarationComposite extends DeclarationComposite< org.lgna.project.ast.UserMethod > {
+public abstract class AddMethodComposite extends AddDeclarationComposite< org.lgna.project.ast.UserMethod > {
 	private final org.lgna.project.ast.UserType<?> declaringType;
-	public MethodDeclarationComposite( java.util.UUID migrationId, Details details, org.lgna.project.ast.UserType<?> declaringType ) {
+	public AddMethodComposite( java.util.UUID migrationId, Details details, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( migrationId, details );
 		// <kjh/> Should we use meta-context factories instead?
 		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {

@@ -45,15 +45,14 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedValueTypeManagedFieldDeclarationComposite extends ManagedFieldDeclarationComposite {
-	public PredeterminedValueTypeManagedFieldDeclarationComposite( java.util.UUID migrationId, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
-		super( migrationId, new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, valueType )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.AstUtilities.createInstanceCreation( valueType ) )
-		.build() );
+public class AddSphereManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddSphereManagedFieldComposite instance = new AddSphereManagedFieldComposite();
 	}
-	public PredeterminedValueTypeManagedFieldDeclarationComposite( java.util.UUID migrationId, Class<?> valueCls ) {
-		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
+	public static AddSphereManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private AddSphereManagedFieldComposite() {
+		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ),	org.lgna.story.Sphere.class );
 	}
 }

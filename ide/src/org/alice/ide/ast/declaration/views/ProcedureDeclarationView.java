@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public class ProcedureDeclarationView extends MethodDeclarationView {
-	public ProcedureDeclarationView( org.alice.ide.ast.declaration.ProcedureDeclarationComposite composite ) {
+	public ProcedureDeclarationView( org.alice.ide.ast.declaration.AddProcedureComposite composite ) {
 		super( composite );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}

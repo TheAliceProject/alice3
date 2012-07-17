@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public abstract class DeclarationView<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceView {
-	public DeclarationView( org.alice.ide.ast.declaration.DeclarationComposite<N> composite ) {
+	public DeclarationView( org.alice.ide.ast.declaration.AddDeclarationComposite<N> composite ) {
 		super( composite );
 	}
 }

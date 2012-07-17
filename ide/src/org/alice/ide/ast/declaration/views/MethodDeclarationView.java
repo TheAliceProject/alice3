@@ -46,12 +46,12 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public abstract class MethodDeclarationView extends DeclarationView<org.lgna.project.ast.UserMethod> {
-	public MethodDeclarationView( org.alice.ide.ast.declaration.MethodDeclarationComposite composite ) {
+	public MethodDeclarationView( org.alice.ide.ast.declaration.AddMethodComposite composite ) {
 		super( composite );
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.MethodDeclarationComposite composite = (org.alice.ide.ast.declaration.MethodDeclarationComposite)this.getComposite();
+		org.alice.ide.ast.declaration.AddMethodComposite composite = (org.alice.ide.ast.declaration.AddMethodComposite)this.getComposite();
 		return new org.alice.ide.codeeditor.MethodHeaderPane( composite.getPreviewValue(), null, true, composite.getDeclaringType() );
 	}
 }
