@@ -94,20 +94,6 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.resources, org.lgna.common.Resource.class );
 		}
 	}
-
-	
-	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
-		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
-		rv.addUndoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false));
-		return rv;
-	}
-	@Override
-	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
-		EditCustomization customization = new EditCustomization();
-		this.customize( completionStep, declaringType, field, customization );
-		return new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( completionStep, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
-	}
-
 	private static class InitialPropertyValueExpressionCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
 		private final org.lgna.project.ast.JavaMethod setter;
 		public InitialPropertyValueExpressionCustomizer( org.lgna.project.ast.JavaMethod setter ) {
@@ -124,7 +110,29 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 
 			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( rv, blankNode, valueType, valueDetails );
 		}
+		
+		public void appendDoStatements( EditCustomization editCustomization, org.lgna.project.ast.UserField field, org.lgna.project.ast.Expression expression ) {
+			editCustomization.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( false, field, setter, expression ) );
+		}
 	}	
+
+	
+	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
+		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
+		rv.addUndoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false));
+		
+		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initialPropertyValueExpressionState : this.initialPropertyValueExpressionStates ) {
+			InitialPropertyValueExpressionCustomizer customizer = (InitialPropertyValueExpressionCustomizer)((InternalCustomItemState<org.lgna.project.ast.Expression>)initialPropertyValueExpressionState).getCustomizer();
+			customizer.appendDoStatements( rv, field, initialPropertyValueExpressionState.getValue() );
+		}
+		return rv;
+	}
+	@Override
+	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
+		EditCustomization customization = new EditCustomization();
+		this.customize( completionStep, declaringType, field, customization );
+		return new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( completionStep, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
+	}
 	
 	protected <T> org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitialPropertyValueExpressionState( Key key, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls ) {
 		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, setterName, valueCls, variableLengthCls );

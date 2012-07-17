@@ -385,6 +385,9 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		public Key getKey() {
 			return this.key;
 		}
+		public ItemStateCustomizer<T> getCustomizer() {
+			return this.customizer;
+		}
 		@Override
 		public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction(org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue) {
 			org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
