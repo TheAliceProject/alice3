@@ -40,19 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddSphereManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
-	private static class SingletonHolder {
-		private static AddSphereManagedFieldComposite instance = new AddSphereManagedFieldComposite();
+public abstract class AddModelManagedFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> paintState = this.createExpressionState( this.createKey( "paintState" ), org.lgna.story.Color.WHITE, org.lgna.story.Paint.class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> opacityState = this.createExpressionState( this.createKey( "opacityState" ), 1.0, Number.class, org.lgna.story.annotation.PortionDetails.SINGLETON );
+	public AddModelManagedFieldComposite( java.util.UUID id, Class<? extends org.lgna.story.Model> cls ) {
+		super( id,	cls );
 	}
-	public static AddSphereManagedFieldComposite getInstance() {
-		return SingletonHolder.instance;
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getPaintState() {
+		return this.paintState;
 	}
-	private AddSphereManagedFieldComposite() {
-		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ),	org.lgna.story.Sphere.class );
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getOpacityState() {
+		return this.opacityState;
 	}
 }

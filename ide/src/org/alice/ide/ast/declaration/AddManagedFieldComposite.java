@@ -46,9 +46,18 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class AddManagedFieldComposite extends AddFieldComposite {
+	private final org.lgna.croquet.BooleanState initialPropertyValuesExpandedState = this.createBooleanState( this.createKey( "initialPropertyValuesExpandedState" ), true );
+	private java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> initialPropertyValueExpressionStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	public AddManagedFieldComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
+	public org.lgna.croquet.BooleanState getInitialPropertyValuesExpandedState() {
+		return this.initialPropertyValuesExpandedState;
+	}
+	public java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> getInitialPropertyValueExpressionStates() {
+		return this.initialPropertyValueExpressionStates;
+	}
+	
 	@Override
 	protected boolean isFieldFinal() {
 		return false;
@@ -97,5 +106,45 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		EditCustomization customization = new EditCustomization();
 		this.customize( completionStep, declaringType, field, customization );
 		return new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( completionStep, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
+	}
+
+	private static class ExpressionCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
+		private final org.lgna.project.ast.AbstractType<?,?,?> type;
+		private org.lgna.project.annotations.ValueDetails valueDetails;
+		public ExpressionCustomizer( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.annotations.ValueDetails valueDetails ) {
+			this.type = type;
+			this.valueDetails = valueDetails;
+		}
+		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
+			//todo
+			return null;
+		}
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( rv, blankNode, this.type, this.valueDetails );
+		}
+	}	
+	protected org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createExpressionState( Key key, org.lgna.project.ast.Expression initialValue, org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.annotations.ValueDetails valueDetails ) {
+		org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> rv = this.createCustomItemState( key, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue, new ExpressionCustomizer( type, valueDetails ) );
+		this.initialPropertyValueExpressionStates.add( rv );
+		return rv;
+	}
+	protected org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createExpressionState( Key key, org.lgna.project.ast.Expression initialValue, org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		return this.createExpressionState( key, initialValue, type, null );
+	}
+	protected <T> org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createExpressionState( Key key, T initialValue, Class<T> cls, org.lgna.project.annotations.ValueDetails<T> valueDetails ) {
+		org.alice.ide.ast.ExpressionCreator expressionCreator = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
+		try {
+			org.lgna.project.ast.Expression expression = expressionCreator.createExpression( initialValue );
+			return this.createExpressionState( key, expression, org.lgna.project.ast.JavaType.getInstance( cls ), valueDetails );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			throw new RuntimeException( ccee );
+		}
+	}	
+	protected <T> org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createExpressionState( Key key, T initialValue, Class<T> cls ) {
+		return this.createExpressionState( key, initialValue, cls, null );
+	}	
+	@Override
+	protected org.alice.ide.ast.declaration.views.AddManagedFieldView createView() {
+		return new org.alice.ide.ast.declaration.views.AddManagedFieldView( this );
 	}
 }

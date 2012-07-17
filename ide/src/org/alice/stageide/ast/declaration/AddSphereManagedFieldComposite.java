@@ -40,56 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.ast.declaration;
 
-package org.alice.ide.ast.declaration;
+import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddUnmanagedFieldComposite extends AddFieldComposite {
-	private static java.util.Map< org.lgna.project.ast.UserType< ? >, AddUnmanagedFieldComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static AddUnmanagedFieldComposite getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
-		synchronized( map ) {
-			AddUnmanagedFieldComposite rv = map.get( declarationType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new AddUnmanagedFieldComposite( declarationType );
-				map.put( declarationType, rv );
-			}
-			return rv;
-		}
+public class AddSphereManagedFieldComposite extends AddModelManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddSphereManagedFieldComposite instance = new AddSphereManagedFieldComposite();
 	}
-	private final org.lgna.project.ast.UserType<?> declaringType;
-	private AddUnmanagedFieldComposite( org.lgna.project.ast.UserType< ? > declaringType ) {
-		super( 
-				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
-				new FieldDetailsBuilder()
-					.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-					.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-					.initializer( ApplicabilityStatus.EDITABLE, null )
-				.build()
-		);
-		this.declaringType = declaringType;
+	public static AddSphereManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return this.declaringType;
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createExpressionState( this.createKey( "radiusState" ), 1.0, Number.class );
+	private AddSphereManagedFieldComposite() {
+		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ),	org.lgna.story.Sphere.class );
 	}
-	@Override
-	protected boolean isFieldFinal() {
-		return false;
-	}
-	@Override
-	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
-		return org.lgna.project.ast.ManagementLevel.NONE;
-	}
-	@Override
-	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
-	}
-	@Override
-	protected org.alice.ide.ast.declaration.views.AddFieldView createView() {
-		return new org.alice.ide.ast.declaration.views.AddFieldView( this );
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {
+		return this.radiusState;
 	}
 }

@@ -117,10 +117,6 @@ public abstract class AddFieldComposite extends AddDeclarationComposite< org.lgn
 	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return this.createEdit( completionStep, this.getDeclaringType(), this.createField() );
 	}
-	@Override
-	protected org.alice.ide.ast.declaration.views.AddFieldView createView() {
-		return new org.alice.ide.ast.declaration.views.AddFieldView( this );
-	}
 	
 	@Override
 	protected boolean isNameAvailable( String name ) {

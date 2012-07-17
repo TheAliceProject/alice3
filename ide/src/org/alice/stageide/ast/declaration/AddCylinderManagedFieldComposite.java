@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddCylinderManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
+public class AddCylinderManagedFieldComposite extends AddModelManagedFieldComposite {
 	private static class SingletonHolder {
 		private static AddCylinderManagedFieldComposite instance = new AddCylinderManagedFieldComposite();
 	}
