@@ -52,8 +52,12 @@ public class AddDiscManagedFieldComposite extends AddModelManagedFieldComposite 
 	public static AddDiscManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( this.createKey( "radiusState" ), 0.5, org.lgna.story.Disc.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
 	private AddDiscManagedFieldComposite() {
 		super( java.util.UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ),	org.lgna.story.Disc.class );
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {
+		return this.radiusState;
 	}
 	@Override
 	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
