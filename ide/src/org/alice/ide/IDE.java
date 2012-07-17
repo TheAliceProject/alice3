@@ -636,15 +636,36 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return this.highlightStencil;
 	}
-	public void showHighlightStencil( org.lgna.project.ast.Expression expression, String text ) {
+	public void showHighlightStencil( final org.lgna.project.ast.Expression expression, String noteText ) {
 		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
-		highlightStencil.setStencilShowing( true );
+		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				if( expression != null ) {
+					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					if( composite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+						if( view instanceof org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView ) {
+							org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView codeView = (org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView)view;
+							org.alice.ide.codedrop.CodePanelWithDropReceptor codePanel = codeView.getCodePanelWithDropReceptor();
+
+							org.lgna.project.ast.Statement statement = expression.getFirstAncestorAssignableTo( org.lgna.project.ast.Statement.class );
+							org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statement );
+							return codePanel.getTrackableShape( blockStatementIndexPair );
+						}
+					}
+					return null;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", expression );
+					return null;
+				}
+			}
+		}, noteText );
 	}
 	public void showHighlightStencil( final org.lgna.croquet.Model model, String noteText ) {
 		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
 		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
 			public org.lgna.croquet.components.TrackableShape getResolved() {
-					if( model != null ) {
+				if( model != null ) {
 					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
 					if( component != null ) {
 						//pass
