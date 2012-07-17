@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.awt.event.ActionListener;
+
 import org.alice.ide.croquet.models.project.views.MethodSearchTabView;
 import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.croquet.SplitComposite;
@@ -56,7 +58,16 @@ public class MethodSearchTabComposite extends SimpleTabComposite<MethodSearchTab
 
 	public MethodSearchTabComposite() {
 		super( java.util.UUID.fromString( "46b72f34-c4db-4139-b430-8f4385d599d1" ) );
+		this.getView().getAwtComponent().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
 	}
+
+	private final ActionListener refreshListener = new java.awt.event.ActionListener() {
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			searchComposite.refresh();
+			referencesComposite.refresh();
+			referencesComposite.changed( searchComposite.getManager(), searchComposite.getManager().getSelectedNode(), searchComposite.getManager().getSelectedNode(), true );
+		}
+	};
 
 	@Override
 	public boolean isCloseable() {

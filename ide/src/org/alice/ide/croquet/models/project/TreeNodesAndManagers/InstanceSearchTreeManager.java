@@ -69,6 +69,7 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		final org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
 		if( programType != null ) {
+			root.removeAllChildren();
 			IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
 			programType.crawl( crawler, true );
 			FieldReferenceSearchTreeNode.initFields(ide.getSceneField());
@@ -79,6 +80,7 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 				}
 			}
 		}
+		refreshAll();
 	}
 
 	@Override
@@ -98,7 +100,7 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 
 	@Override
 	protected FieldReferenceSearchTreeNode getRoot() {
-		return root.getChild( 0 );
+		return root;
 	}
 
 	@Override

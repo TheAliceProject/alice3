@@ -71,7 +71,12 @@ public class FieldReferenceTreeComposite extends SimpleComposite<FieldReferenceT
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+		this.refresh();
+	}
+
+	public void refresh() {
 		manager.refresh();
+		getView().refresh();
 	}
 
 	public void addListener( ValueListener<FieldReferenceSearchTreeNode> fieldReferenceComposite ) {

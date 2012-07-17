@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.awt.event.ActionListener;
+
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
 import org.alice.ide.croquet.models.project.views.FieldSearchTabView;
 import org.lgna.croquet.SimpleTabComposite;
@@ -55,7 +57,16 @@ public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabVi
 	
 	public FieldSearchTabCompsoite() {
 		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
+		this.getView().getAwtComponent().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
 	}
+
+	private final ActionListener refreshListener = new java.awt.event.ActionListener() {
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			treeComposite.refresh();
+			referenceComposite.refresh();
+			referenceComposite.changed( treeComposite.getManager(), treeComposite.getManager().getSelectedNode(), treeComposite.getManager().getSelectedNode(), true );
+		}
+	};
 	private FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
 	private FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
 

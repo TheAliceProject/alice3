@@ -115,10 +115,10 @@ public class MethodSearchComposite extends SimpleComposite<MethodSearchView> {
 				manager.changed( getStringState(), searchState.getValue(), searchState.getValue(), true );
 			}
 		};
-		
+
 		@Override
 		protected void show( SearchTreeNode node ) {
-			if( showGenerated.getValue() || !node.getIsGenerated() ){	
+			if( showGenerated.getValue() || !node.getIsGenerated() ) {
 				super.show( node );
 			}
 		}
@@ -192,6 +192,14 @@ public class MethodSearchComposite extends SimpleComposite<MethodSearchView> {
 			this.refreshAll();
 			setProperExpandedLevels( root );
 		}
+
+		@Override
+		public void refresh() {
+			super.refresh();
+			if( booleanListener != null ) {
+				booleanListener.changed( null, null, null, false );
+			}
+		}
 	}
 
 	public SearchTreeNode setSelected( UserMethod method ) {
@@ -202,5 +210,9 @@ public class MethodSearchComposite extends SimpleComposite<MethodSearchView> {
 
 	public void setJumpDesired( boolean b ) {
 		this.isJumpDesired = b;
+	}
+
+	public void refresh() {
+		manager.refresh();
 	}
 }

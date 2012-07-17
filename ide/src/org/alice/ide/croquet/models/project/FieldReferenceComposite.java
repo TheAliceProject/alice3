@@ -71,7 +71,7 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 			FieldAccess selection = state.getValue();
 			if( selection != null && isJumpDesired ) {
 				UserMethod ancestor = selection.getParent().getFirstAncestorAssignableTo( UserMethod.class );
-				if(ancestor == null){
+				if( ancestor == null ) {
 					NamedUserType type = selection.getFirstAncestorAssignableTo( NamedUserType.class );
 					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( type ) );
 					IDE.getActiveInstance().showHighlightStencil( nextValue.expression.getValue(), "Hello, World!" );
@@ -93,8 +93,10 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 	}
 
 	public void changed( State<FieldReferenceSearchTreeNode> state, FieldReferenceSearchTreeNode prevValue, FieldReferenceSearchTreeNode nextValue, boolean isAdjusting ) {
-		List<FieldAccess> nextReferences = nextValue.getReferences();
-		this.references.setListData( -1, nextReferences );
+		if( nextValue != null ) {
+			List<FieldAccess> nextReferences = nextValue.getReferences();
+			this.references.setListData( -1, nextReferences );
+		}
 	}
 
 	@Override
@@ -104,6 +106,9 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 
 	public ListSelectionState<FieldAccess> getReferences() {
 		return this.references;
+	}
+
+	public void refresh() {
 	}
 
 }

@@ -122,8 +122,8 @@ public class MethodReferencesComposite extends SimpleComposite<MethodReferencesV
 		}
 
 		public void update( SearchTreeNode newValue ) {
+			hideAll();
 			if( newValue != null ) {
-				hideAll();
 				ArrayList<SearchTreeNode> hiddenList2 = Collections.newArrayList( hiddenList );
 				for( SearchTreeNode node : hiddenList2 ) {
 					if( node.getContent().equals( newValue.getContent() ) && node.getDepth() <= SHOULD_BE_EXPANDED ) {
@@ -131,9 +131,9 @@ public class MethodReferencesComposite extends SimpleComposite<MethodReferencesV
 					}
 				}
 				crawl( root, 0 );
-				this.refresh( root );
-				setProperExpandedLevels( root );
 			}
+			this.refresh( root );
+			setProperExpandedLevels( root );
 		}
 
 		private void crawl( SearchTreeNode root, int depth ) {
@@ -141,10 +141,21 @@ public class MethodReferencesComposite extends SimpleComposite<MethodReferencesV
 				crawl( child, depth + 1 );
 			}
 		}
+		
+		@Override
+		public void setOwner( Tree<SearchTreeNode> tree ) {
+			//this is sorta hacky sorry (mmay)
+			super.setOwner( tree );
+			update( null );
+		}
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+	}
+
+	public void refresh() {
+		manager.refresh();
 	}
 }

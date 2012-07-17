@@ -51,7 +51,6 @@ import org.lgna.croquet.ItemCodec;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -102,7 +101,7 @@ public class FieldReferenceSearchTreeNode {
 	private void addChild( FieldReferenceSearchTreeNode child ) {
 		if( !(type == NodeType.ROOT) ) {
 			if( type == NodeType.FIELD ) {
-				 if( child.type == NodeType.FIELD ) {
+				if( child.type == NodeType.FIELD ) {
 					getFields().addChild( child );
 				} else {
 					assert child.type == NodeType.HEADER_FIELD;// || child.type == NodeType.HEADER_REFERENCE;
@@ -239,10 +238,15 @@ public class FieldReferenceSearchTreeNode {
 	}
 
 	public void addReference( FieldAccess access ) {
-		this.references.add( access );
+		if( !this.references.contains( access ) )
+			this.references.add( access );
 	}
-	
-	public List<FieldAccess> getReferences(){
+
+	public List<FieldAccess> getReferences() {
 		return this.references;
+	}
+
+	public void removeAllChildren() {
+		this.children.removeAll( this.children );
 	}
 }

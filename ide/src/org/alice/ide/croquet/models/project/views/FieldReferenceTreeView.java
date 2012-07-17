@@ -53,9 +53,16 @@ import org.lgna.croquet.components.Tree;
  */
 public class FieldReferenceTreeView extends BorderPanel {
 
+	private Tree<FieldReferenceSearchTreeNode> tree;
+
 	public FieldReferenceTreeView( FieldReferenceTreeComposite composite ) {
-		Tree<FieldReferenceSearchTreeNode> tree = composite.getManager().createTree();
+		tree = composite.getManager().createTree();
 		this.addCenterComponent( new ScrollPane( tree ) );
+		tree.setRootVisible( false );
+		tree.expandEachRowOnce();
+	}
+
+	public void refresh() {
 		tree.expandEachRowOnce();
 	}
 
