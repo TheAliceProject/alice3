@@ -108,6 +108,7 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	@Override
 	protected void localize() {
 	}
+	
 	@Override
 	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction(org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue) {
 		org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );

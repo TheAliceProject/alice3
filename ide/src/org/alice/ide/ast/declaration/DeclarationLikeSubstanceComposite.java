@@ -108,12 +108,15 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 	private final Details details;
 
-	private static class ValueComponentTypeCustomizer implements ItemStateCustomizer<org.lgna.project.ast.AbstractType> { 
-		private static void appendBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > node ) {
+	private static class ValueComponentTypeCustomizer implements ItemStateCustomizer<org.lgna.project.ast.AbstractType> {
+		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.AbstractType type ) {
+			return org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type );
+		}
+		private void appendBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > node ) {
 			org.lgna.project.ast.NamedUserType type = node.getValue();
 			if( type != null ) {
 				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || type != programType ) {
-					rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+					rv.add( this.getFillInFor( type ) );
 				}
 			}
 			for( edu.cmu.cs.dennisc.tree.DefaultNode< org.lgna.project.ast.NamedUserType > child : node.getChildren() ) {
@@ -123,7 +126,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
 			for( org.lgna.project.ast.JavaType type : org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes() ) {
-				rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
+				rv.add( this.getFillInFor( type ) );
 			}
 			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
@@ -143,6 +146,14 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 	
 	private class InitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
+		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
+			if( value instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
+				org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)value;
+				return org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( arrayInstanceCreation.getType().getComponentType() ).getFillIn();
+			} else {
+				return null;
+			}
+		}
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.annotations.ValueDetails valueDetails = null;
 			org.lgna.project.ast.AbstractType<?,?,?> type = DeclarationLikeSubstanceComposite.this.getValueType();

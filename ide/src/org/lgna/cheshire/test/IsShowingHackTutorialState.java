@@ -18,7 +18,28 @@ public class IsShowingHackTutorialState extends BooleanState {
 							final org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getColorCrazyGenerator();
 							org.alice.ide.IDE.getActiveInstance().loadProjectFrom( test.getProjectFile() );
 							test.generate( org.alice.ide.IDE.getActiveInstance().getProject() );
-							org.alice.ide.IDE.getActiveInstance().getSimplePresentation().initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, test.getReuseTransactionHistory(), null, null, new org.lgna.cheshire.simple.Recoverer(), new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+							
+							org.lgna.cheshire.simple.stencil.SimplePresentation presentation = org.alice.ide.IDE.getActiveInstance().getSimplePresentation();
+							
+							presentation.initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy.ALLOW_ACCESS_TO_ALL_CHAPTERS, test.getReuseTransactionHistory(), null, null, new org.lgna.cheshire.simple.Recoverer(), new org.lgna.croquet.Group[] { org.alice.ide.IDE.PROJECT_GROUP, org.alice.ide.IDE.DOCUMENT_UI_GROUP } );
+
+							
+							org.lgna.project.Project originalProject = test.getReuseProject();
+							org.lgna.project.Project replacementProject = org.alice.ide.IDE.getActiveInstance().getProject();
+							
+							org.lgna.croquet.Retargeter retargeter = presentation.getRetargeter();
+							
+							java.util.Set<org.lgna.project.ast.NamedUserType> originalTypes = originalProject.getNamedUserTypes();
+							java.util.Set<org.lgna.project.ast.NamedUserType> replacementTypes = replacementProject.getNamedUserTypes();
+							
+							for( org.lgna.project.ast.NamedUserType originalType : originalTypes ) {
+								for( org.lgna.project.ast.NamedUserType replacementType : replacementTypes ) {
+									if( originalType.getName().equals( replacementType.getName() ) ) {
+										retargeter.addKeyValuePair( originalType, replacementType );
+									}
+								}
+							}
+							
 							test.showTransactionHistory();
 							org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().setValue( true );
 							org.alice.ide.IDE.getActiveInstance().getSimplePresentation().showStencilsPresentation();

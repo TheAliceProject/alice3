@@ -371,6 +371,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	}
 	
 	protected static interface ItemStateCustomizer<T> {
+		public CascadeFillIn<T,?> getFillInFor( T value );
 		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode );
 	}
 	protected static final class InternalCustomItemState<T> extends DefaultCustomItemState<T> {
@@ -383,6 +384,17 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		}
 		public Key getKey() {
 			return this.key;
+		}
+		@Override
+		public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction(org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue) {
+			org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
+			CascadeFillIn<T,?> fillIn = this.customizer.getFillInFor( nextValue );
+			if( fillIn != null ) {
+				org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( rv, null, new MenuItemPrepModel[] { fillIn }, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot find fillin for", nextValue );
+			}
+			return rv;
 		}
 		@Override
 		protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {

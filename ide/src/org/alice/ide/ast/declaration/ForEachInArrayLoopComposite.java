@@ -71,5 +71,4 @@ public final class ForEachInArrayLoopComposite extends EachInArrayComposite< org
 	}
 	
 	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) ); 
-	
 }

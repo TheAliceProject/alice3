@@ -19,6 +19,7 @@ public class TransactionHistoryGeneratorTest {
 
 	private org.lgna.project.ast.AbstractNode reuseMethod;
 	private org.lgna.croquet.history.TransactionHistory reuseTransactionHistory;
+	private org.lgna.project.Project reuseProject;
 
 	public TransactionHistoryGeneratorTest( String testName, String reuseType ) {
 		this( testName, reuseType, null, null );
@@ -59,7 +60,11 @@ public class TransactionHistoryGeneratorTest {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public org.lgna.project.Project getReuseProject() {
+		return this.reuseProject;
+	}
+	
 	private org.lgna.project.ast.AbstractNode loadReuseLgp( java.io.File file ) throws java.io.IOException {
 		org.lgna.project.Version BAD_BAD_BAD_madeUpVersion = new org.lgna.project.Version( "3.1" );
 		java.io.FileInputStream fis = new java.io.FileInputStream( file );
@@ -73,12 +78,11 @@ public class TransactionHistoryGeneratorTest {
 	}
 
 	private org.lgna.project.ast.AbstractNode loadReuseA3p( java.io.File file, String fieldName, String methodName ) throws java.io.IOException {
-		org.lgna.project.Project project;
 		org.lgna.project.ast.AbstractMethod method = null;
 		try {
-			project = org.lgna.project.io.IoUtilities.readProject( file );
+			this.reuseProject = org.lgna.project.io.IoUtilities.readProject( file );
 
-			org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
+			org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)this.reuseProject.getProgramType().fields.get( 0 ).getValueType();
 			org.lgna.project.ast.AbstractField alienField = sceneType.findField( fieldName );
 
 			method = alienField.getValueType().findMethod( methodName );
@@ -87,6 +91,7 @@ public class TransactionHistoryGeneratorTest {
 		}
 		return method;
 	}
+	
 
 
 	private static final boolean TEMPORARY_HACK_isStoringDesired = false;
