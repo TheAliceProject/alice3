@@ -44,9 +44,9 @@ package org.alice.ide.croquet.models.project;
 
 import java.util.List;
 
+import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
 import org.alice.ide.croquet.models.project.views.FieldReferenceView;
-import org.lgna.cheshire.simple.stencil.SimplePresentation.Stencil;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State;
@@ -73,9 +73,11 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 				UserMethod ancestor = selection.getParent().getFirstAncestorAssignableTo( UserMethod.class );
 				if(ancestor == null){
 					NamedUserType type = selection.getFirstAncestorAssignableTo( NamedUserType.class );
-					org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( type ) );
+					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( type ) );
+					IDE.getActiveInstance().showHighlightStencil( nextValue.expression.getValue(), "Hello, World!" );
 				} else {
-					org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ancestor ) );
+					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ancestor ) );
+					IDE.getActiveInstance().showHighlightStencil( nextValue.expression.getValue(), "Hello, World!" );
 				}
 			}
 		}
