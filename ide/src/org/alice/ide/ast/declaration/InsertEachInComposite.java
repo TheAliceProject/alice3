@@ -40,20 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration.views;
+
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StatementView extends DeclarationLikeSubstanceView {
-	public StatementView( org.alice.ide.ast.declaration.StatementInsertComposite<?> composite ) {
-		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.Statement.class ) );
+public abstract class InsertEachInComposite<S extends org.lgna.project.ast.Statement> extends InsertStatementComposite<S> {
+	public InsertEachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( migrationId, new Details()
+			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
+			.name( ApplicabilityStatus.EDITABLE )
+			.initializer( ApplicabilityStatus.EDITABLE, null ),
+		blockStatementIndexPair );
 	}
+	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
 	@Override
-	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.StatementInsertComposite<?> composite = (org.alice.ide.ast.declaration.StatementInsertComposite<?>)this.getComposite();
-		org.lgna.project.ast.Statement statement = composite.getPreviewValue();
-		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );
+	protected final S createStatement() {
+		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
+		return this.createStatement( item, this.getInitializer() );
 	}
 }

@@ -45,10 +45,10 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterDeclarationView extends DeclarationView<org.lgna.project.ast.UserParameter> {
+public class AddParameterView extends AddDeclarationView<org.lgna.project.ast.UserParameter> {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.BorderPanel warningPanel;
-	public ParameterDeclarationView( org.alice.ide.ast.declaration.ParameterDeclarationComposite composite ) {
+	public AddParameterView( org.alice.ide.ast.declaration.AddParameterComposite composite ) {
 		super( composite );
 		org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
 		pane.addComponent( this.label );
@@ -70,7 +70,7 @@ public class ParameterDeclarationView extends DeclarationView<org.lgna.project.a
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.ParameterDeclarationComposite composite = (org.alice.ide.ast.declaration.ParameterDeclarationComposite)this.getComposite();
+		org.alice.ide.ast.declaration.AddParameterComposite composite = (org.alice.ide.ast.declaration.AddParameterComposite)this.getComposite();
 		org.lgna.project.ast.UserParameter parameter = composite.getPreviewValue();
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, parameter );
 	}
@@ -84,7 +84,7 @@ public class ParameterDeclarationView extends DeclarationView<org.lgna.project.a
 	
 	@Override
 	protected void handleDisplayable() {
-		org.alice.ide.ast.declaration.ParameterDeclarationComposite composite = (org.alice.ide.ast.declaration.ParameterDeclarationComposite)this.getComposite();
+		org.alice.ide.ast.declaration.AddParameterComposite composite = (org.alice.ide.ast.declaration.AddParameterComposite)this.getComposite();
 		org.lgna.project.ast.UserCode code = composite.getCode();
 		java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
 		final int N = argumentLists.size();

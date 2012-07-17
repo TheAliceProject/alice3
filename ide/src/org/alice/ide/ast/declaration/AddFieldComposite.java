@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldDeclarationComposite extends DeclarationComposite< org.lgna.project.ast.UserField > {
+public abstract class AddFieldComposite extends AddDeclarationComposite< org.lgna.project.ast.UserField > {
 	protected static class FieldDetailsBuilder {
 		private ApplicabilityStatus valueComponentTypeStatus;
 		private org.lgna.project.ast.AbstractType<?,?,?> valueComponentTypeInitialValue;
@@ -82,7 +82,7 @@ public abstract class FieldDeclarationComposite extends DeclarationComposite< or
 		}
 	}
 
-	public FieldDeclarationComposite( java.util.UUID migrationId, Details details ) {
+	public AddFieldComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
 	protected abstract org.lgna.project.ast.ManagementLevel getManagementLevel();
@@ -116,10 +116,6 @@ public abstract class FieldDeclarationComposite extends DeclarationComposite< or
 	@Override
 	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return this.createEdit( completionStep, this.getDeclaringType(), this.createField() );
-	}
-	@Override
-	protected org.alice.ide.ast.declaration.views.FieldDeclarationView createView() {
-		return new org.alice.ide.ast.declaration.views.FieldDeclarationView( this );
 	}
 	
 	@Override

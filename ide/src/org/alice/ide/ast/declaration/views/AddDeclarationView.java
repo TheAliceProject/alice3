@@ -45,9 +45,8 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionDeclarationView extends MethodDeclarationView {
-	public FunctionDeclarationView( org.alice.ide.ast.declaration.FunctionDeclarationComposite composite ) {
+public abstract class AddDeclarationView<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceView {
+	public AddDeclarationView( org.alice.ide.ast.declaration.AddDeclarationComposite<N> composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 }

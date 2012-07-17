@@ -45,37 +45,30 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodDeclarationComposite extends DeclarationComposite< org.lgna.project.ast.UserMethod > {
-	private final org.lgna.project.ast.UserType<?> declaringType;
-	public MethodDeclarationComposite( java.util.UUID migrationId, Details details, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( migrationId, details );
-		// <kjh/> Should we use meta-context factories instead?
-		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
-			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
+public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayComposite< org.lgna.project.ast.ForEachInArrayLoop > {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized InsertForEachInArrayLoopComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		InsertForEachInArrayLoopComposite rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
 		} else {
-			this.getOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
-			this.getOperation().addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+			rv = new InsertForEachInArrayLoopComposite( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
 		}
-		this.declaringType = declaringType;
+		return rv;
 	}
-	private org.lgna.project.ast.UserMethod createMethod() {
-		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
-	}
-	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return this.declaringType;
+	private InsertForEachInArrayLoopComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair );
 	}
 	@Override
-	public org.lgna.project.ast.UserMethod getPreviewValue() {
-		return this.createMethod();
+	protected org.lgna.project.ast.ForEachInArrayLoop createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
+		return new org.lgna.project.ast.ForEachInArrayLoop(
+				item,
+				initializer, 
+				new org.lgna.project.ast.BlockStatement() 
+		);
 	}
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, this.getDeclaringType(), this.createMethod() );
-	}
-	@Override
-	protected boolean isNameAvailable( java.lang.String name ) {
-		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableMethodName( name, this.getDeclaringType() );
-	}
+	
+	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) ); 
 }

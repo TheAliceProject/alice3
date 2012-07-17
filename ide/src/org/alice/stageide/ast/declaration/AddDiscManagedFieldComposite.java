@@ -40,19 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AxesManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
+public class AddDiscManagedFieldComposite extends AddModelManagedFieldComposite {
 	private static class SingletonHolder {
-		private static AxesManagedFieldDeclarationComposite instance = new AxesManagedFieldDeclarationComposite();
+		private static AddDiscManagedFieldComposite instance = new AddDiscManagedFieldComposite();
 	}
-	public static AxesManagedFieldDeclarationComposite getInstance() {
+	public static AddDiscManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private AxesManagedFieldDeclarationComposite() {
-		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ),	org.lgna.story.Axes.class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( this.createKey( "radiusState" ), 0.5, org.lgna.story.Disc.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
+	private AddDiscManagedFieldComposite() {
+		super( java.util.UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ),	org.lgna.story.Disc.class );
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {
+		return this.radiusState;
+	}
+	@Override
+	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		try {
+			//todo: better z-fighting avoidance
+			rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement( false, field, new org.lgna.story.Position( 0.0, 0.01, 0.0 ) ) );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ccee );
+		}
+		return rv;
 	}
 }

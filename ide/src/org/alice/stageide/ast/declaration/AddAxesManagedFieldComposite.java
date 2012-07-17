@@ -40,43 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertComposite<S extends org.lgna.project.ast.Statement> extends DeclarationLikeSubstanceComposite<S> {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
-	//todo: remove
-	private final org.alice.ide.name.validators.LocalNameValidator nameValidator;
-	public StatementInsertComposite( java.util.UUID migrationId, Details details, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, details );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-		this.nameValidator = new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair );
+public class AddAxesManagedFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddAxesManagedFieldComposite instance = new AddAxesManagedFieldComposite();
 	}
-	protected abstract S createStatement();
-	@Override
-	public S getPreviewValue() {
-		return this.createStatement();
+	public static AddAxesManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement() );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
-	}
-	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return null;
-	}
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		return this.nameValidator.isNameAvailable( name );
-	}
-	@Override
-	protected boolean isNameValid( String name ) {
-		return this.nameValidator.isNameValid( name );
+	private AddAxesManagedFieldComposite() {
+		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ),	org.lgna.story.Axes.class );
 	}
 }

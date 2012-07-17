@@ -58,7 +58,7 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 	@Override
 	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
 		//return org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ).createButton();
-		return org.alice.ide.ast.declaration.UnmanagedFieldDeclarationComposite.getInstance( type ).getOperation().createButton();
+		return org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().createButton();
 	}
 	@Override
 	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {

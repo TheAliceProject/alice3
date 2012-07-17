@@ -40,52 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UnmanagedFieldDeclarationComposite extends FieldDeclarationComposite {
-	private static java.util.Map< org.lgna.project.ast.UserType< ? >, UnmanagedFieldDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static UnmanagedFieldDeclarationComposite getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
-		synchronized( map ) {
-			UnmanagedFieldDeclarationComposite rv = map.get( declarationType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new UnmanagedFieldDeclarationComposite( declarationType );
-				map.put( declarationType, rv );
-			}
-			return rv;
+public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayComposite< org.lgna.project.ast.EachInArrayTogether > {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized InsertEachInArrayTogetherComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		InsertEachInArrayTogetherComposite rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InsertEachInArrayTogetherComposite( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
 		}
+		return rv;
 	}
-	private final org.lgna.project.ast.UserType<?> declaringType;
-	private UnmanagedFieldDeclarationComposite( org.lgna.project.ast.UserType< ? > declaringType ) {
-		super( 
-				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
-				new FieldDetailsBuilder()
-					.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-					.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-					.initializer( ApplicabilityStatus.EDITABLE, null )
-				.build()
+	private InsertEachInArrayTogetherComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair );
+	}
+	@Override
+	protected org.lgna.project.ast.EachInArrayTogether createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
+		return new org.lgna.project.ast.EachInArrayTogether(
+				item,
+				initializer, 
+				new org.lgna.project.ast.BlockStatement() 
 		);
-		this.declaringType = declaringType;
-	}
-	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return this.declaringType;
-	}
-	@Override
-	protected boolean isFieldFinal() {
-		return false;
-	}
-	@Override
-	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
-		return org.lgna.project.ast.ManagementLevel.NONE;
-	}
-	@Override
-	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
 	}
 }

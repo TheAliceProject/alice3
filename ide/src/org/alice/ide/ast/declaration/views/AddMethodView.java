@@ -40,30 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DiscManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
-	private static class SingletonHolder {
-		private static DiscManagedFieldDeclarationComposite instance = new DiscManagedFieldDeclarationComposite();
-	}
-	public static DiscManagedFieldDeclarationComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private DiscManagedFieldDeclarationComposite() {
-		super( java.util.UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ),	org.lgna.story.Disc.class );
+public abstract class AddMethodView extends AddDeclarationView<org.lgna.project.ast.UserMethod> {
+	public AddMethodView( org.alice.ide.ast.declaration.AddMethodComposite composite ) {
+		super( composite );
 	}
 	@Override
-	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		try {
-			//todo: better z-fighting avoidance
-			rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement( false, field, new org.lgna.story.Position( 0.0, 0.01, 0.0 ) ) );
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ccee );
-		}
-		return rv;
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.AddMethodComposite composite = (org.alice.ide.ast.declaration.AddMethodComposite)this.getComposite();
+		return new org.alice.ide.codeeditor.MethodHeaderPane( composite.getPreviewValue(), null, true, composite.getDeclaringType() );
 	}
 }

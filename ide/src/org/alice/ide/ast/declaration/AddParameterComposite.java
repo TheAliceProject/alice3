@@ -45,15 +45,15 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class ParameterDeclarationComposite extends DeclarationComposite<org.lgna.project.ast.UserParameter> {
-	private static java.util.Map< org.lgna.project.ast.UserCode, ParameterDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ParameterDeclarationComposite getInstance( org.lgna.project.ast.UserCode code ) {
+public final class AddParameterComposite extends AddDeclarationComposite<org.lgna.project.ast.UserParameter> {
+	private static java.util.Map< org.lgna.project.ast.UserCode, AddParameterComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static AddParameterComposite getInstance( org.lgna.project.ast.UserCode code ) {
 		synchronized( map ) {
-			ParameterDeclarationComposite rv = map.get( code );
+			AddParameterComposite rv = map.get( code );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ParameterDeclarationComposite( code );
+				rv = new AddParameterComposite( code );
 				map.put( code, rv );
 			}
 			return rv;
@@ -65,7 +65,7 @@ public final class ParameterDeclarationComposite extends DeclarationComposite<or
 	private final org.lgna.project.ast.UserCode code;
 	//todo: remove
 	private final org.alice.ide.name.validators.ParameterNameValidator parameterNameValidator;
-	private ParameterDeclarationComposite( org.lgna.project.ast.UserCode code ) {
+	private AddParameterComposite( org.lgna.project.ast.UserCode code ) {
 		super( java.util.UUID.fromString( "628f8e97-84b5-480c-8f05-d69749a4203e" ), new Details()
 			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
@@ -107,8 +107,8 @@ public final class ParameterDeclarationComposite extends DeclarationComposite<or
 		return this.code;
 	}
 	@Override
-	protected org.alice.ide.ast.declaration.views.ParameterDeclarationView createView() {
-		return new org.alice.ide.ast.declaration.views.ParameterDeclarationView( this );
+	protected org.alice.ide.ast.declaration.views.AddParameterView createView() {
+		return new org.alice.ide.ast.declaration.views.AddParameterView( this );
 	}
 	private org.lgna.project.ast.UserParameter createParameter() {
 		return new org.lgna.project.ast.UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );

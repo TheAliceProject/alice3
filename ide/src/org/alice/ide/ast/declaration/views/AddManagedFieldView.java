@@ -45,8 +45,35 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationView<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceView {
-	public DeclarationView( org.alice.ide.ast.declaration.DeclarationComposite<N> composite ) {
+public class AddManagedFieldView extends AddFieldView {
+	public AddManagedFieldView( org.alice.ide.ast.declaration.AddManagedFieldComposite composite ) {
 		super( composite );
+	}
+	@Override
+	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
+		org.lgna.croquet.components.BorderPanel rv = super.createMainComponent();
+		org.alice.ide.ast.declaration.AddManagedFieldComposite composite = (org.alice.ide.ast.declaration.AddManagedFieldComposite)this.getComposite();
+		final java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> states = composite.getInitialPropertyValueExpressionStates();
+		if( states.size() > 0 ) {
+			final org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
+			org.lgna.croquet.components.RowSpringPanel propertiesPanel = new org.lgna.croquet.components.RowSpringPanel() {
+				@Override
+				protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+					for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state : states ) { 
+						rows.add( new org.lgna.croquet.components.LabeledSpringRow( state.getSidekickLabel(), new org.alice.ide.croquet.components.ExpressionDropDown( state, factory ) ) );
+					}
+				}
+			};
+			
+			
+			org.lgna.croquet.components.ToolPalette toolPalette = composite.getInitialPropertyValuesExpandedState().createToolPalette( propertiesPanel );
+			//java.awt.Color innerColor = new java.awt.Color( 191, 191, 255 );
+			//java.awt.Color outerColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( innerColor, 0.0, 0.0, 0.1 );
+			//propertiesPanel.setBackgroundColor( innerColor );
+			//toolPalette.setBackgroundColor( outerColor );
+
+			rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPalette ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
+		}
+		return rv;
 	}
 }

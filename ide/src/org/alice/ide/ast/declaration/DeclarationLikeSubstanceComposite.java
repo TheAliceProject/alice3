@@ -147,6 +147,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	
 	private class InitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
 		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
+			//todo
 			if( value instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 				org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)value;
 				return org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( arrayInstanceCreation.getType().getComponentType() ).getFillIn();

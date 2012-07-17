@@ -58,8 +58,8 @@ public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel>
 		if( model instanceof org.lgna.croquet.OwnedByCompositeOperation ) {
 			org.lgna.croquet.OwnedByCompositeOperation ownedByCompositeOperation = (org.lgna.croquet.OwnedByCompositeOperation)model;
 			org.lgna.croquet.OperationOwningComposite operationOwningComposite = ownedByCompositeOperation.getComposite();
-			if( operationOwningComposite instanceof org.alice.ide.ast.declaration.ForEachInArrayLoopComposite ) {
-				final org.alice.ide.ast.declaration.ForEachInArrayLoopComposite forEachInArrayLoopComposite = (org.alice.ide.ast.declaration.ForEachInArrayLoopComposite)operationOwningComposite;
+			if( operationOwningComposite instanceof org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite ) {
+				final org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite forEachInArrayLoopComposite = (org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite)operationOwningComposite;
 				
 				org.lgna.croquet.edits.Edit edit = step.getEdit();
 				if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {

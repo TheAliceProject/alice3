@@ -50,7 +50,7 @@ import org.alice.ide.declarationseditor.type.FunctionState;
  */
 public class FunctionList extends MethodList {
 	public FunctionList( org.lgna.project.ast.NamedUserType type ) {
-		super( FunctionState.getInstance( type ), org.alice.ide.ast.declaration.FunctionDeclarationComposite.getInstance( type ).getOperation() );
+		super( FunctionState.getInstance( type ), org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation() );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 }

@@ -45,53 +45,20 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalDeclarationStatementComposite extends StatementInsertComposite<org.lgna.project.ast.LocalDeclarationStatement> {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalDeclarationStatementComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static LocalDeclarationStatementComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		synchronized( map ) {
-			LocalDeclarationStatementComposite rv = map.get( blockStatementIndexPair );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new LocalDeclarationStatementComposite( blockStatementIndexPair );
-				map.put( blockStatementIndexPair, rv );
-			}
-			return rv;
-		}
+public abstract class InsertEachInArrayComposite<S extends org.lgna.project.ast.Statement> extends InsertEachInComposite<S> {
+	public InsertEachInArrayComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( migrationId, blockStatementIndexPair );
 	}
-	private LocalDeclarationStatementComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "1c257483-36c6-41d8-9d65-4a49bfa11009" ), new Details()
-			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-			.name( ApplicabilityStatus.EDITABLE )
-			.initializer( ApplicabilityStatus.EDITABLE, null )
-		, blockStatementIndexPair );
-	}
-	@Override
-	protected org.lgna.project.ast.LocalDeclarationStatement createStatement() {
-		boolean isFinal = false;
-		org.lgna.project.ast.UserLocal variable = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueType(), isFinal );
-		return new org.lgna.project.ast.LocalDeclarationStatement( variable, this.getInitializer() );
-	}
-	@Override
-	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
-		return new org.alice.ide.ast.declaration.views.StatementView( this );
-	}
-	@Override
-	protected boolean isNullAllowedForInitializer() {
-		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers.getInstance().getValue();
-	}
-	
 	@Override
 	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit< ? > ownerEdit ) {
 		org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)ownerEdit;
 		org.lgna.project.ast.Statement statement = insertStatementEdit.getStatement();
-		org.lgna.project.ast.LocalDeclarationStatement localDeclarationStatement = (org.lgna.project.ast.LocalDeclarationStatement)statement;
-
-		org.lgna.project.ast.UserLocal local = localDeclarationStatement.local.getValue();
+		org.lgna.project.ast.EachInArrayStatement eachInArrayStatement = (org.lgna.project.ast.EachInArrayStatement)statement;
+		
+		org.lgna.project.ast.UserLocal local = eachInArrayStatement.getItemProperty().getValue();
 		this.getValueComponentTypeState().addGeneratedStateChangeTransaction( subTransactionHistory, null, local.getValueType() );
 		this.getNameState().addGeneratedStateChangeTransaction( subTransactionHistory, "", local.name.getValue() );
-		this.getInitializerState().addGeneratedStateChangeTransaction( subTransactionHistory, null, localDeclarationStatement.initializer.getValue() );
+		this.getInitializerState().addGeneratedStateChangeTransaction( subTransactionHistory, null, eachInArrayStatement.getArrayProperty().getValue() );
 		
 		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 	}

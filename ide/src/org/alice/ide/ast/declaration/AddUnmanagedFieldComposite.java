@@ -40,26 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EachInArrayComposite<S extends org.lgna.project.ast.Statement> extends EachInComposite<S> {
-	public EachInArrayComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, blockStatementIndexPair );
+public class AddUnmanagedFieldComposite extends AddFieldComposite {
+	private static java.util.Map< org.lgna.project.ast.UserType< ? >, AddUnmanagedFieldComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static AddUnmanagedFieldComposite getInstance( org.lgna.project.ast.UserType< ? > declarationType ) {
+		synchronized( map ) {
+			AddUnmanagedFieldComposite rv = map.get( declarationType );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new AddUnmanagedFieldComposite( declarationType );
+				map.put( declarationType, rv );
+			}
+			return rv;
+		}
+	}
+	private final org.lgna.project.ast.UserType<?> declaringType;
+	private AddUnmanagedFieldComposite( org.lgna.project.ast.UserType< ? > declaringType ) {
+		super( 
+				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ), 
+				new FieldDetailsBuilder()
+					.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+					.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
+					.initializer( ApplicabilityStatus.EDITABLE, null )
+				.build()
+		);
+		this.declaringType = declaringType;
 	}
 	@Override
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit< ? > ownerEdit ) {
-		org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)ownerEdit;
-		org.lgna.project.ast.Statement statement = insertStatementEdit.getStatement();
-		org.lgna.project.ast.EachInArrayStatement eachInArrayStatement = (org.lgna.project.ast.EachInArrayStatement)statement;
-		
-		org.lgna.project.ast.UserLocal local = eachInArrayStatement.getItemProperty().getValue();
-		this.getValueComponentTypeState().addGeneratedStateChangeTransaction( subTransactionHistory, null, local.getValueType() );
-		this.getNameState().addGeneratedStateChangeTransaction( subTransactionHistory, "", local.name.getValue() );
-		this.getInitializerState().addGeneratedStateChangeTransaction( subTransactionHistory, null, eachInArrayStatement.getArrayProperty().getValue() );
-		
-		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
+	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+		return this.declaringType;
+	}
+	@Override
+	protected boolean isFieldFinal() {
+		return false;
+	}
+	@Override
+	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
+		return org.lgna.project.ast.ManagementLevel.NONE;
+	}
+	@Override
+	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field ) {
+		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
+	}
+	@Override
+	protected org.alice.ide.ast.declaration.views.AddFieldView createView() {
+		return new org.alice.ide.ast.declaration.views.AddFieldView( this );
 	}
 }

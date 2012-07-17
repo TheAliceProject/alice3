@@ -40,33 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class EachInArrayTogetherComposite extends EachInArrayComposite< org.lgna.project.ast.EachInArrayTogether > {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, EachInArrayTogetherComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized EachInArrayTogetherComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		EachInArrayTogetherComposite rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new EachInArrayTogetherComposite( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
-	private EachInArrayTogetherComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair );
+public class InsertStatementView extends DeclarationLikeSubstanceView {
+	public InsertStatementView( org.alice.ide.ast.declaration.InsertStatementComposite<?> composite ) {
+		super( composite );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.Statement.class ) );
 	}
 	@Override
-	protected org.lgna.project.ast.EachInArrayTogether createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
-		return new org.lgna.project.ast.EachInArrayTogether(
-				item,
-				initializer, 
-				new org.lgna.project.ast.BlockStatement() 
-		);
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.InsertStatementComposite<?> composite = (org.alice.ide.ast.declaration.InsertStatementComposite<?>)this.getComposite();
+		org.lgna.project.ast.Statement statement = composite.getPreviewValue();
+		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );
 	}
 }

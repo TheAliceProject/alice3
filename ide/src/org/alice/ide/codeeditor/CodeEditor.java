@@ -365,9 +365,14 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		}
 		
 		public java.awt.Shape getShape( org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets ) {
-			java.awt.Rectangle rv = CodeEditor.this.getAsSeenBy().convertRectangle( this.boundsAtIndex, asSeenBy );
-			//note: ignore insets
-			return rv;
+			org.lgna.croquet.components.Component<?> src = CodeEditor.this.getAsSeenBy();
+			if( src != null ) {
+				java.awt.Rectangle rv = src.convertRectangle( this.boundsAtIndex, asSeenBy );
+				//note: ignore insets
+				return rv;
+			} else {
+				return null;
+			}
 		}
 		public java.awt.Shape getVisibleShape( org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets ) {
 			org.lgna.croquet.components.Component<?> src = CodeEditor.this.getAsSeenBy();

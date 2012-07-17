@@ -40,38 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components;
+
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFunctionsPane extends AbstractTypeMethodsPane {
-	public TypeFunctionsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( type );
+public class AddFieldView extends AddDeclarationView<org.lgna.project.ast.UserField> {
+	public AddFieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
+		super( composite );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
-		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.AddFieldComposite composite = (org.alice.ide.ast.declaration.AddFieldComposite)this.getComposite();
+		org.lgna.project.ast.UserField field = composite.getPreviewValue();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
 	}
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
-		return org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation().createButton();
-	}
-	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
-		if( constructor != null ) {
-			return org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( constructor ).createButton();
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createProcedureTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		return null;
+	protected boolean isPreviewDesired() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
 	}
 }

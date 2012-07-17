@@ -40,14 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration.views;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureDeclarationView extends MethodDeclarationView {
-	public ProcedureDeclarationView( org.alice.ide.ast.declaration.ProcedureDeclarationComposite composite ) {
-		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
+public class AddCylinderManagedFieldComposite extends AddModelManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddCylinderManagedFieldComposite instance = new AddCylinderManagedFieldComposite();
+	}
+	public static AddCylinderManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( this.createKey( "radiusState" ), 0.5, org.lgna.story.Cylinder.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> lengthState = this.createInitialPropertyValueExpressionState( this.createKey( "lengthState" ), 1.0, org.lgna.story.Cylinder.class, "setLength", Number.class, org.lgna.story.SetLength.Detail[].class );
+	private AddCylinderManagedFieldComposite() {
+		super( java.util.UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ),	org.lgna.story.Cylinder.class );
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {
+		return this.radiusState;
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getLengthState() {
+		return this.lengthState;
 	}
 }

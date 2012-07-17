@@ -40,35 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ForEachInArrayLoopComposite extends EachInArrayComposite< org.lgna.project.ast.ForEachInArrayLoop > {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ForEachInArrayLoopComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ForEachInArrayLoopComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		ForEachInArrayLoopComposite rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ForEachInArrayLoopComposite( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+public class AddSphereManagedFieldComposite extends AddModelManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddSphereManagedFieldComposite instance = new AddSphereManagedFieldComposite();
 	}
-	private ForEachInArrayLoopComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair );
+	public static AddSphereManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected org.lgna.project.ast.ForEachInArrayLoop createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
-		return new org.lgna.project.ast.ForEachInArrayLoop(
-				item,
-				initializer, 
-				new org.lgna.project.ast.BlockStatement() 
-		);
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( this.createKey( "radiusState" ), 0.5, org.lgna.story.Sphere.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
+	private AddSphereManagedFieldComposite() {
+		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ),	org.lgna.story.Sphere.class );
 	}
-	
-	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) ); 
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {
+		return this.radiusState;
+	}
 }

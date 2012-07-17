@@ -45,14 +45,29 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
-	private static class SingletonHolder {
-		private static CylinderManagedFieldDeclarationComposite instance = new CylinderManagedFieldDeclarationComposite();
+public final class AddFunctionComposite extends AddMethodComposite {
+	private static java.util.Map< org.lgna.project.ast.UserType<?>, AddFunctionComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static AddFunctionComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
+		synchronized( map ) {
+			AddFunctionComposite rv = map.get( declaringType );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new AddFunctionComposite( declaringType );
+				map.put( declaringType, rv );
+			}
+			return rv;
+		}
 	}
-	public static CylinderManagedFieldDeclarationComposite getInstance() {
-		return SingletonHolder.instance;
+	private AddFunctionComposite( org.lgna.project.ast.UserType<?> declaringType ) {
+		super( java.util.UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
+			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
+			.name( ApplicabilityStatus.EDITABLE )
+		, declaringType );
 	}
-	private CylinderManagedFieldDeclarationComposite() {
-		super( java.util.UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ),	org.lgna.story.Cylinder.class );
+	@Override
+	protected org.alice.ide.ast.declaration.views.AddFunctionView createView() {
+		return new org.alice.ide.ast.declaration.views.AddFunctionView( this );
 	}
 }

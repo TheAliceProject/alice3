@@ -40,24 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.declaration.views;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationView extends DeclarationView<org.lgna.project.ast.UserField> {
-	public FieldDeclarationView( org.alice.ide.ast.declaration.FieldDeclarationComposite composite ) {
-		super( composite );
+public final class AddConeManagedFieldComposite extends AddModelManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddConeManagedFieldComposite instance = new AddConeManagedFieldComposite();
 	}
-	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.FieldDeclarationComposite composite = (org.alice.ide.ast.declaration.FieldDeclarationComposite)this.getComposite();
-		org.lgna.project.ast.UserField field = composite.getPreviewValue();
-		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
+	public static AddConeManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	@Override
-	protected boolean isPreviewDesired() {
-		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> baseRadiusState = this.createInitialPropertyValueExpressionState( this.createKey( "baseRadiusState" ), 0.5, org.lgna.story.Cone.class, "setBaseRadius", Number.class, org.lgna.story.SetBaseRadius.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> lengthState = this.createInitialPropertyValueExpressionState( this.createKey( "lengthState" ), 1.0, org.lgna.story.Cone.class, "setLength", Number.class, org.lgna.story.SetLength.Detail[].class );
+	private AddConeManagedFieldComposite() {
+		super( java.util.UUID.fromString( "c3df5655-242d-4580-aeb9-b1b0e23f7e00" ),	org.lgna.story.Cone.class );
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getBaseRadiusState() {
+		return this.baseRadiusState;
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getLengthState() {
+		return this.lengthState;
 	}
 }

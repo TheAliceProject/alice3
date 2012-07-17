@@ -40,38 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFunctionsPane extends AbstractTypeMethodsPane {
-	public TypeFunctionsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		super( type );
+public abstract class AddModelManagedFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> paintState = this.createInitialPropertyValueExpressionState( this.createKey( "paintState" ), org.lgna.story.Color.WHITE, org.lgna.story.Model.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> opacityState = this.createInitialPropertyValueExpressionState( this.createKey( "opacityState" ), 1.0, org.lgna.story.Model.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
+	public AddModelManagedFieldComposite( java.util.UUID id, Class<? extends org.lgna.story.Model> cls ) {
+		super( id,	cls );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
-		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getPaintState() {
+		return this.paintState;
 	}
-	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
-		return org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation().createButton();
-	}
-	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
-		if( constructor != null ) {
-			return org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( constructor ).createButton();
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
-	}
-	@Override
-	protected org.lgna.croquet.components.Component< ? > createProcedureTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		return null;
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getOpacityState() {
+		return this.opacityState;
 	}
 }

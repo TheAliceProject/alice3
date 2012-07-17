@@ -40,19 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SphereManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
-	private static class SingletonHolder {
-		private static SphereManagedFieldDeclarationComposite instance = new SphereManagedFieldDeclarationComposite();
-	}
-	public static SphereManagedFieldDeclarationComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private SphereManagedFieldDeclarationComposite() {
-		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ),	org.lgna.story.Sphere.class );
+public class AddFunctionView extends AddMethodView {
+	public AddFunctionView( org.alice.ide.ast.declaration.AddFunctionComposite composite ) {
+		super( composite );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 }

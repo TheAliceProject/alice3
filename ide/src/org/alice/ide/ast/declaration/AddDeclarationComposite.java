@@ -45,15 +45,12 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PredeterminedValueTypeManagedFieldDeclarationComposite extends ManagedFieldDeclarationComposite {
-	public PredeterminedValueTypeManagedFieldDeclarationComposite( java.util.UUID migrationId, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
-		super( migrationId, new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, valueType )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.AstUtilities.createInstanceCreation( valueType ) )
-		.build() );
+public abstract class AddDeclarationComposite<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceComposite<N> {
+	public AddDeclarationComposite( java.util.UUID migrationId, Details details ) {
+		super( migrationId, details );
 	}
-	public PredeterminedValueTypeManagedFieldDeclarationComposite( java.util.UUID migrationId, Class<?> valueCls ) {
-		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
+	@Override
+	protected boolean isNameValid( String name ) {
+		return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
 	}
 }

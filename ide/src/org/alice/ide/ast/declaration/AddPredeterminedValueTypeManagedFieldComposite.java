@@ -45,14 +45,15 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class ConeManagedFieldDeclarationComposite extends PredeterminedValueTypeManagedFieldDeclarationComposite {
-	private static class SingletonHolder {
-		private static ConeManagedFieldDeclarationComposite instance = new ConeManagedFieldDeclarationComposite();
+public abstract class AddPredeterminedValueTypeManagedFieldComposite extends AddManagedFieldComposite {
+	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
+		super( migrationId, new FieldDetailsBuilder()
+				.valueComponentType( ApplicabilityStatus.DISPLAYED, valueType )
+				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
+				.initializer( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.AstUtilities.createInstanceCreation( valueType ) )
+		.build() );
 	}
-	public static ConeManagedFieldDeclarationComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ConeManagedFieldDeclarationComposite() {
-		super( java.util.UUID.fromString( "c3df5655-242d-4580-aeb9-b1b0e23f7e00" ),	org.lgna.story.Cone.class );
+	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, Class<?> valueCls ) {
+		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
 	}
 }

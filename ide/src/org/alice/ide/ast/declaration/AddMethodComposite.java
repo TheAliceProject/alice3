@@ -40,29 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EachInComposite<S extends org.lgna.project.ast.Statement> extends StatementInsertComposite<S> {
-	public EachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, new Details()
-			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
-			.name( ApplicabilityStatus.EDITABLE )
-			.initializer( ApplicabilityStatus.EDITABLE, null ),
-		blockStatementIndexPair );
+public abstract class AddMethodComposite extends AddDeclarationComposite< org.lgna.project.ast.UserMethod > {
+	private final org.lgna.project.ast.UserType<?> declaringType;
+	public AddMethodComposite( java.util.UUID migrationId, Details details, org.lgna.project.ast.UserType<?> declaringType ) {
+		super( migrationId, details );
+		// <kjh/> Should we use meta-context factories instead?
+		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
+			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
+		} else {
+			this.getOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+			this.getOperation().addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+		}
+		this.declaringType = declaringType;
 	}
-	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
-	@Override
-	protected final S createStatement() {
-		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
-		return this.createStatement( item, this.getInitializer() );
+	private org.lgna.project.ast.UserMethod createMethod() {
+		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 	@Override
-	protected org.alice.ide.ast.declaration.views.StatementView createView() {
-		return new org.alice.ide.ast.declaration.views.StatementView( this );
+	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+		return this.declaringType;
+	}
+	@Override
+	public org.lgna.project.ast.UserMethod getPreviewValue() {
+		return this.createMethod();
+	}
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, this.getDeclaringType(), this.createMethod() );
+	}
+	@Override
+	protected boolean isNameAvailable( java.lang.String name ) {
+		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableMethodName( name, this.getDeclaringType() );
 	}
 }

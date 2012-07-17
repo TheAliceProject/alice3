@@ -45,29 +45,29 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class ProcedureDeclarationComposite extends MethodDeclarationComposite {
-	private static java.util.Map< org.lgna.project.ast.UserType<?>, ProcedureDeclarationComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ProcedureDeclarationComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
+public final class AddProcedureComposite extends AddMethodComposite {
+	private static java.util.Map< org.lgna.project.ast.UserType<?>, AddProcedureComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static AddProcedureComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		synchronized( map ) {
-			ProcedureDeclarationComposite rv = map.get( declaringType );
+			AddProcedureComposite rv = map.get( declaringType );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ProcedureDeclarationComposite( declaringType );
+				rv = new AddProcedureComposite( declaringType );
 				map.put( declaringType, rv );
 			}
 			return rv;
 		}
 	}
-	private ProcedureDeclarationComposite( org.lgna.project.ast.UserType<?> declaringType ) {
+	private AddProcedureComposite( org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "1e7af2e9-2ce0-4c7e-9ddd-9af001601660" ), new Details()
 			.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, org.lgna.project.ast.JavaType.VOID_TYPE )
 			.name( ApplicabilityStatus.EDITABLE )
 		, declaringType );
 	}
 	@Override
-	protected org.alice.ide.ast.declaration.views.ProcedureDeclarationView createView() {
-		return new org.alice.ide.ast.declaration.views.ProcedureDeclarationView( this );
+	protected org.alice.ide.ast.declaration.views.AddProcedureView createView() {
+		return new org.alice.ide.ast.declaration.views.AddProcedureView( this );
 	}
 	
 	@Override
@@ -132,7 +132,7 @@ public final class ProcedureDeclarationComposite extends MethodDeclarationCompos
 		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( ownerTransactionHistory, method.body.getValue() );
 	}
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationComposite > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureDeclarationComposite >( this, org.lgna.project.ast.UserType.class, this.getDeclaringType() );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< AddProcedureComposite > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< AddProcedureComposite >( this, org.lgna.project.ast.UserType.class, this.getDeclaringType() );
 	}
 }
