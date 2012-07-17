@@ -59,7 +59,7 @@ public abstract class FindFrameComposite extends FrameComposite<FindFrameView> {
 	private TabSelectionState<SimpleTabComposite> tabState;
 
 	protected FindFrameComposite( UUID uuid ) {
-		super( uuid, ProjectApplication.PROJECT_GROUP );
+		super( uuid, ProjectApplication.INFORMATION_GROUP );
 	}
 
 	@Override

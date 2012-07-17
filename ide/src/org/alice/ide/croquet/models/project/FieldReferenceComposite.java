@@ -46,6 +46,7 @@ import java.util.List;
 
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
 import org.alice.ide.croquet.models.project.views.FieldReferenceView;
+import org.lgna.cheshire.simple.stencil.SimplePresentation.Stencil;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State;

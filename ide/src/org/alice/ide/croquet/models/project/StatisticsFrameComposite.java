@@ -58,8 +58,8 @@ public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView
 	public static final Integer BOTTOM_SIZE = 100;
 	private TabSelectionState<SimpleTabComposite> tabState;
 
-	public StatisticsFrameComposite() {
-		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.PROJECT_GROUP );
+	private StatisticsFrameComposite() {
+		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.INFORMATION_GROUP );
 	}
 
 	private static class SingletonHolder {
