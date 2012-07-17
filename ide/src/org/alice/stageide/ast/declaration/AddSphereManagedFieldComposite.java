@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.ast.declaration;
 
-import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +52,7 @@ public class AddSphereManagedFieldComposite extends AddModelManagedFieldComposit
 	public static AddSphereManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createExpressionState( this.createKey( "radiusState" ), 1.0, Number.class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( this.createKey( "radiusState" ), 1.0, org.lgna.story.Sphere.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
 	private AddSphereManagedFieldComposite() {
 		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ),	org.lgna.story.Sphere.class );
 	}
