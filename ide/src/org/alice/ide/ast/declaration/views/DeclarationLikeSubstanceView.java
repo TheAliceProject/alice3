@@ -71,7 +71,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 //				}
 		
 				if( composite.isValueComponentTypeDisplayed() ) {
-					org.alice.ide.croquet.models.declaration.ValueComponentTypeState valueComponentTypeState = composite.getValueComponentTypeState();
+					org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
 					org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
 					if( valueComponentTypeState != null ) {
 						org.lgna.croquet.components.JComponent< ? > component;
@@ -110,13 +110,13 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 				}
 				
 				if( composite.isInitializerDisplayed() ) {
-					org.alice.ide.croquet.models.ExpressionState initializerState = composite.getInitializerState();
+					org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initializerState = composite.getInitializerState();
 					if( initializerState != null ) {
 						org.lgna.croquet.components.JComponent< ? > component;
 						if( initializerState.isEnabled() ) {
-							component = initializerState.createEditor( factory );
+							component = new org.alice.ide.croquet.components.ExpressionDropDown( initializerState, factory );
 						} else {
-							component = initializerState.createView( factory );
+							component = factory.createExpressionPane( initializerState.getValue() );
 						}
 						rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
 								initializerState.getSidekickLabel(), 

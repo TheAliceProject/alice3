@@ -95,7 +95,12 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
 			return null;
 		}
-		
+
+		@Override
+		protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.Edit<?> edit ) {
+			rv.append( this.getTutorialItemText() );
+			return rv;
+		}
 		@Override
 		protected void appendRepr( StringBuilder sb ) {
 			super.appendRepr( sb );

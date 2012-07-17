@@ -56,10 +56,6 @@ public final class HelpComposite extends org.lgna.croquet.PlainDialogOperationCo
 	private final org.lgna.croquet.PlainStringValue whereToFindHelpText = this.createStringValue( this.createKey( "whereToFindHelpText" ) );
 	private HelpComposite() {
 		super( java.util.UUID.fromString( "5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62" ), org.lgna.croquet.Application.INFORMATION_GROUP );
-
-		//todo
-		this.getOperation().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
-		
 	}
 	public org.lgna.croquet.PlainStringValue getWhereToFindHelpText() {
 		return this.whereToFindHelpText;
