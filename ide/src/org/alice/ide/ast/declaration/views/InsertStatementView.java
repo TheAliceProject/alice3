@@ -45,9 +45,15 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureDeclarationView extends MethodDeclarationView {
-	public ProcedureDeclarationView( org.alice.ide.ast.declaration.AddProcedureComposite composite ) {
+public class InsertStatementView extends DeclarationLikeSubstanceView {
+	public InsertStatementView( org.alice.ide.ast.declaration.InsertStatementComposite<?> composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.Statement.class ) );
+	}
+	@Override
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.InsertStatementComposite<?> composite = (org.alice.ide.ast.declaration.InsertStatementComposite<?>)this.getComposite();
+		org.lgna.project.ast.Statement statement = composite.getPreviewValue();
+		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );
 	}
 }

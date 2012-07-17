@@ -45,9 +45,9 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionDeclarationView extends MethodDeclarationView {
-	public FunctionDeclarationView( org.alice.ide.ast.declaration.AddFunctionComposite composite ) {
+public class AddProcedureView extends AddMethodView {
+	public AddProcedureView( org.alice.ide.ast.declaration.AddProcedureComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
 }

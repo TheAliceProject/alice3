@@ -45,15 +45,13 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class StatementView extends DeclarationLikeSubstanceView {
-	public StatementView( org.alice.ide.ast.declaration.StatementInsertComposite<?> composite ) {
+public abstract class AddMethodView extends AddDeclarationView<org.lgna.project.ast.UserMethod> {
+	public AddMethodView( org.alice.ide.ast.declaration.AddMethodComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.Statement.class ) );
 	}
 	@Override
 	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.StatementInsertComposite<?> composite = (org.alice.ide.ast.declaration.StatementInsertComposite<?>)this.getComposite();
-		org.lgna.project.ast.Statement statement = composite.getPreviewValue();
-		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );
+		org.alice.ide.ast.declaration.AddMethodComposite composite = (org.alice.ide.ast.declaration.AddMethodComposite)this.getComposite();
+		return new org.alice.ide.codeeditor.MethodHeaderPane( composite.getPreviewValue(), null, true, composite.getDeclaringType() );
 	}
 }

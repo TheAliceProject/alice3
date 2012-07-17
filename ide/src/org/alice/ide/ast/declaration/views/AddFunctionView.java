@@ -40,43 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertComposite<S extends org.lgna.project.ast.Statement> extends DeclarationLikeSubstanceComposite<S> {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
-	//todo: remove
-	private final org.alice.ide.name.validators.LocalNameValidator nameValidator;
-	public StatementInsertComposite( java.util.UUID migrationId, Details details, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, details );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-		this.nameValidator = new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair );
-	}
-	protected abstract S createStatement();
-	@Override
-	public S getPreviewValue() {
-		return this.createStatement();
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement() );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
-	}
-	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return null;
-	}
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		return this.nameValidator.isNameAvailable( name );
-	}
-	@Override
-	protected boolean isNameValid( String name ) {
-		return this.nameValidator.isNameValid( name );
+public class AddFunctionView extends AddMethodView {
+	public AddFunctionView( org.alice.ide.ast.declaration.AddFunctionComposite composite ) {
+		super( composite );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 }

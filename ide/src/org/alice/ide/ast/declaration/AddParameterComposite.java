@@ -107,8 +107,8 @@ public final class AddParameterComposite extends AddDeclarationComposite<org.lgn
 		return this.code;
 	}
 	@Override
-	protected org.alice.ide.ast.declaration.views.ParameterDeclarationView createView() {
-		return new org.alice.ide.ast.declaration.views.ParameterDeclarationView( this );
+	protected org.alice.ide.ast.declaration.views.AddParameterView createView() {
+		return new org.alice.ide.ast.declaration.views.AddParameterView( this );
 	}
 	private org.lgna.project.ast.UserParameter createParameter() {
 		return new org.lgna.project.ast.UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );

@@ -66,8 +66,8 @@ public final class AddProcedureComposite extends AddMethodComposite {
 		, declaringType );
 	}
 	@Override
-	protected org.alice.ide.ast.declaration.views.ProcedureDeclarationView createView() {
-		return new org.alice.ide.ast.declaration.views.ProcedureDeclarationView( this );
+	protected org.alice.ide.ast.declaration.views.AddProcedureView createView() {
+		return new org.alice.ide.ast.declaration.views.AddProcedureView( this );
 	}
 	
 	@Override

@@ -45,10 +45,10 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterDeclarationView extends DeclarationView<org.lgna.project.ast.UserParameter> {
+public class AddParameterView extends AddDeclarationView<org.lgna.project.ast.UserParameter> {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.BorderPanel warningPanel;
-	public ParameterDeclarationView( org.alice.ide.ast.declaration.AddParameterComposite composite ) {
+	public AddParameterView( org.alice.ide.ast.declaration.AddParameterComposite composite ) {
 		super( composite );
 		org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
 		pane.addComponent( this.label );

@@ -40,33 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class EachInArrayTogetherComposite extends EachInArrayComposite< org.lgna.project.ast.EachInArrayTogether > {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, EachInArrayTogetherComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized EachInArrayTogetherComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		EachInArrayTogetherComposite rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new EachInArrayTogetherComposite( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
+public abstract class InsertEachInComposite<S extends org.lgna.project.ast.Statement> extends InsertStatementComposite<S> {
+	public InsertEachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( migrationId, new Details()
+			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
+			.name( ApplicabilityStatus.EDITABLE )
+			.initializer( ApplicabilityStatus.EDITABLE, null ),
+		blockStatementIndexPair );
 	}
-	private EachInArrayTogetherComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair );
-	}
+	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
 	@Override
-	protected org.lgna.project.ast.EachInArrayTogether createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
-		return new org.lgna.project.ast.EachInArrayTogether(
-				item,
-				initializer, 
-				new org.lgna.project.ast.BlockStatement() 
-		);
+	protected final S createStatement() {
+		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
+		return this.createStatement( item, this.getInitializer() );
 	}
 }

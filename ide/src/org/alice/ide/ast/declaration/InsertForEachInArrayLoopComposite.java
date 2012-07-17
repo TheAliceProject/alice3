@@ -40,29 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EachInComposite<S extends org.lgna.project.ast.Statement> extends StatementInsertComposite<S> {
-	public EachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, new Details()
-			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
-			.name( ApplicabilityStatus.EDITABLE )
-			.initializer( ApplicabilityStatus.EDITABLE, null ),
-		blockStatementIndexPair );
+public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayComposite< org.lgna.project.ast.ForEachInArrayLoop > {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized InsertForEachInArrayLoopComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		InsertForEachInArrayLoopComposite rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InsertForEachInArrayLoopComposite( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
+		return rv;
 	}
-	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
+	private InsertForEachInArrayLoopComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair );
+	}
 	@Override
-	protected final S createStatement() {
-		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
-		return this.createStatement( item, this.getInitializer() );
+	protected org.lgna.project.ast.ForEachInArrayLoop createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
+		return new org.lgna.project.ast.ForEachInArrayLoop(
+				item,
+				initializer, 
+				new org.lgna.project.ast.BlockStatement() 
+		);
 	}
-	@Override
-	protected org.alice.ide.ast.declaration.views.StatementView createView() {
-		return new org.alice.ide.ast.declaration.views.StatementView( this );
-	}
+	
+	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) ); 
 }

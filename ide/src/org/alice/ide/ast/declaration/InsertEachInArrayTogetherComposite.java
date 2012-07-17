@@ -40,24 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.declaration.views;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationView extends DeclarationView<org.lgna.project.ast.UserField> {
-	public FieldDeclarationView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
-		super( composite );
+public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayComposite< org.lgna.project.ast.EachInArrayTogether > {
+	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized InsertEachInArrayTogetherComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		assert blockStatementIndexPair != null;
+		InsertEachInArrayTogetherComposite rv = map.get( blockStatementIndexPair );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InsertEachInArrayTogetherComposite( blockStatementIndexPair );
+			map.put( blockStatementIndexPair, rv );
+		}
+		return rv;
+	}
+	private InsertEachInArrayTogetherComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair );
 	}
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.AddFieldComposite composite = (org.alice.ide.ast.declaration.AddFieldComposite)this.getComposite();
-		org.lgna.project.ast.UserField field = composite.getPreviewValue();
-		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
-	}
-	@Override
-	protected boolean isPreviewDesired() {
-		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
+	protected org.lgna.project.ast.EachInArrayTogether createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
+		return new org.lgna.project.ast.EachInArrayTogether(
+				item,
+				initializer, 
+				new org.lgna.project.ast.BlockStatement() 
+		);
 	}
 }

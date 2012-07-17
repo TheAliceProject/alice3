@@ -40,35 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ForEachInArrayLoopComposite extends EachInArrayComposite< org.lgna.project.ast.ForEachInArrayLoop > {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ForEachInArrayLoopComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ForEachInArrayLoopComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		assert blockStatementIndexPair != null;
-		ForEachInArrayLoopComposite rv = map.get( blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ForEachInArrayLoopComposite( blockStatementIndexPair );
-			map.put( blockStatementIndexPair, rv );
-		}
-		return rv;
-	}
-	private ForEachInArrayLoopComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair );
+public class AddFieldView extends AddDeclarationView<org.lgna.project.ast.UserField> {
+	public AddFieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
+		super( composite );
 	}
 	@Override
-	protected org.lgna.project.ast.ForEachInArrayLoop createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
-		return new org.lgna.project.ast.ForEachInArrayLoop(
-				item,
-				initializer, 
-				new org.lgna.project.ast.BlockStatement() 
-		);
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.AddFieldComposite composite = (org.alice.ide.ast.declaration.AddFieldComposite)this.getComposite();
+		org.lgna.project.ast.UserField field = composite.getPreviewValue();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
 	}
-	
-	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) ); 
+	@Override
+	protected boolean isPreviewDesired() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
+	}
 }

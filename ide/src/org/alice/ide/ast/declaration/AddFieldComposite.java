@@ -118,8 +118,8 @@ public abstract class AddFieldComposite extends AddDeclarationComposite< org.lgn
 		return this.createEdit( completionStep, this.getDeclaringType(), this.createField() );
 	}
 	@Override
-	protected org.alice.ide.ast.declaration.views.FieldDeclarationView createView() {
-		return new org.alice.ide.ast.declaration.views.FieldDeclarationView( this );
+	protected org.alice.ide.ast.declaration.views.AddFieldView createView() {
+		return new org.alice.ide.ast.declaration.views.AddFieldView( this );
 	}
 	
 	@Override
