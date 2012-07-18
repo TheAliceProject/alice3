@@ -79,6 +79,15 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 		super( model );
 		this.setMainComponent( this.mainComponent );
 		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+		this.setBackgroundColor( new java.awt.Color( 127, 127, 191 ) );
+	}
+	@Override
+	protected int getAffordanceHalfHeight() {
+		return super.getAffordanceHalfHeight() * 2;
+	}
+	@Override
+	protected int getAffordanceWidth() {
+		return super.getAffordanceWidth() * 2;
 	}
 	@Override
 	protected void handleChanged( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {

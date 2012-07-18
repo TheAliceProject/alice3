@@ -47,8 +47,8 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton,M> {
-	private static final int AFFORDANCE_WIDTH = 6;
-	private static final int AFFORDANCE_HALF_HEIGHT = 5;
+	private static final int DEFAULT_AFFORDANCE_WIDTH = 6;
+	private static final int DEFAULT_AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(191);
 
 	private org.lgna.croquet.components.Component<?> prefixComponent;
@@ -96,6 +96,13 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 	protected abstract javax.swing.Action getAction();
 	protected boolean isInactiveFeedbackDesired() {
 		return true;
+	}
+	
+	protected int getAffordanceWidth() {
+		return DEFAULT_AFFORDANCE_WIDTH;
+	}
+	protected int getAffordanceHalfHeight() {
+		return DEFAULT_AFFORDANCE_HALF_HEIGHT;
 	}
 
 //	@Override
@@ -153,6 +160,9 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 
 				super.paint( g );
 				
+				int AFFORDANCE_WIDTH = getAffordanceWidth();
+				int AFFORDANCE_HALF_HEIGHT = getAffordanceHalfHeight();
+				
 				float x0 = x + width - 4 - AFFORDANCE_WIDTH;
 				float x1 = x0 + AFFORDANCE_WIDTH;
 				float xC = (x0 + x1) / 2;
@@ -198,13 +208,12 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 					g2.setColor( java.awt.Color.BLACK );
 					g2.drawLine( x, yMax, xMax, yMax );
 					g2.drawLine( xMax, yMax, xMax, y );
-					
 				} else {
 					if (DropDown.this.isInactiveFeedbackDesired()) {
 						g2.setColor(java.awt.Color.WHITE);
 						//g2.drawRect( x, y, width-1, height-1 );
-						g2.drawLine(x + 1, y + 1, x + width - 4, y + 1);
-						g2.drawLine(x + 1, y + 1, x + 1, y + height - 4);
+						g2.drawLine(x, y, x + width, y);
+						g2.drawLine(x, y, x, y + height);
 					}
 				}
 
@@ -235,7 +244,7 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 		rv.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.DEFAULT_CURSOR));
 		//rv.setBackground(edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(230));
 		rv.setBackground( new java.awt.Color( 230, 230, 230, 127 ) );
-		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder( 1, insetLeft, 1, 5 + AFFORDANCE_WIDTH));
+		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder( 1, insetLeft, 1, 5 + getAffordanceWidth()));
 		rv.setFocusable( false );
 		return rv;
 	}
