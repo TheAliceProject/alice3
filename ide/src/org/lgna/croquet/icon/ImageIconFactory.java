@@ -40,14 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.lgna.croquet.icon;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextModelIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+public class ImageIconFactory extends CachingIconFactory {
+	private final javax.swing.ImageIcon imageIcon;
+	public ImageIconFactory( java.net.URL resource ) {
+		this.imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource );
+	}
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new TextModelIcon( size );
+		if( this.imageIcon.getIconWidth() == size.width && this.imageIcon.getIconHeight() == size.height ) {
+			return this.imageIcon;
+		} else {
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( this.imageIcon, size.width, size.height );
+		}
+	}
+	public java.awt.Dimension getDefaultSize() {
+		return new java.awt.Dimension( this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );
 	}
 }

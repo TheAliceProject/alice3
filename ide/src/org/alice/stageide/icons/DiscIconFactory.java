@@ -45,7 +45,7 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class DiscIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+public class DiscIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new DiscIcon( size );

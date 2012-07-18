@@ -97,38 +97,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Ground.class, new org.alice.stageide.icons.GroundIconFactory() );
 		
 		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Joint.class, new org.alice.stageide.icons.JointIconFactory() );
-		final javax.swing.Icon cameraIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/camera-video.png" ) ); 
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Camera.class, new org.lgna.croquet.icon.IconFactory() {
-			public javax.swing.Icon getIcon( java.awt.Dimension size ) {
-				//todo
-				return cameraIcon;
-			}
-		} );
-//		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lookingglassandalice.storytelling.Camera.class, new javax.swing.Icon() {
-//			public int getIconWidth() {
-//				return SMALL_ICON_SIZE;
-//			}
-//			public int getIconHeight() {
-//				return SMALL_ICON_SIZE;
-//			}
-//			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-//				path.moveTo( 4,4 );
-//				path.lineTo( 20, 4 );
-//				path.lineTo( 20, 12 );
-//				path.lineTo( 28, 8 );
-//				path.lineTo( 28, 20 );
-//				path.lineTo( 20, 16 );
-//				path.lineTo( 20, 24 );
-//				path.lineTo( 4, 24 );
-//				path.closePath();
-//				g2.setColor( java.awt.Color.GRAY );
-//				g2.fill( path );
-//				g2.setColor( java.awt.Color.BLACK );
-//				g2.draw( path );
-//			}
-//		} );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Camera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/camera-video.png" ) ) );
 	}
 	@Override
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
