@@ -93,28 +93,19 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		return this.field.getValueType();
 	}
 	@Override
-	public javax.swing.Icon getSmallIcon() {
-		javax.swing.Icon icon = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( this.field );
-		if( icon != null ) {
-			//pass
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForField( this.field );
+		javax.swing.Icon icon;
+		if( iconFactory != null && iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) {
+			return iconFactory;
 		} else {
-			icon = super.getSmallIcon();
-			if( icon != null ) {
-				//pass
-			} else {
-				icon = org.alice.stageide.gallerybrowser.ResourceManager.NULL_SMALL_ICON;
-			}
+			return super.getIconFactory();
 		}
-		return icon;
 	}
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
 		sb.append( "this." );
-//		sb.append( "<strong>" );
 		sb.append( this.field.getName() );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
 		return sb.toString();
 	}
 }

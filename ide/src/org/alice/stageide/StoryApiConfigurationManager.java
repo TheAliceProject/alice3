@@ -97,7 +97,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Ground.class, new org.alice.stageide.icons.GroundIconFactory() );
 		
 		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Joint.class, new org.alice.stageide.icons.JointIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Camera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/camera-video.png" ) ) );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Camera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 	}
 	@Override
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {

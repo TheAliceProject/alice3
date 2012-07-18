@@ -45,13 +45,12 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageIconFactory extends CachingIconFactory {
+public class ImageIconFactory implements IconFactory {
 	private final javax.swing.ImageIcon imageIcon;
 	public ImageIconFactory( java.net.URL resource ) {
 		this.imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource );
 	}
-	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+	public javax.swing.Icon getIcon( java.awt.Dimension size ) {
 		if( this.imageIcon.getIconWidth() == size.width && this.imageIcon.getIconHeight() == size.height ) {
 			return this.imageIcon;
 		} else {

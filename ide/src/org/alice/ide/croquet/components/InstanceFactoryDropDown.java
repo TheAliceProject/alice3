@@ -47,6 +47,7 @@ package org.alice.ide.croquet.components;
  * @author Dennis Cosgrove
  */	
 public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState< org.alice.ide.instancefactory.InstanceFactory > > extends org.lgna.croquet.components.ItemDropDown< org.alice.ide.instancefactory.InstanceFactory, M > {
+	public static final java.awt.Dimension DEFAULT_ICON_SIZE = new java.awt.Dimension( 40, 30 );
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
 		private org.alice.ide.instancefactory.InstanceFactory nextValue;
 		private void handleChanged( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
@@ -60,7 +61,7 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 			this.forgetAndRemoveAllComponents();
 			this.addCenterComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null ) );
 			if( nextValue != null ) {
-				javax.swing.Icon icon = nextValue.getSmallIcon();
+				javax.swing.Icon icon = nextValue.getIconFactory().getIcon( DEFAULT_ICON_SIZE );
 				if( icon != null ) {
 					this.addLineStartComponent( new org.lgna.croquet.components.Label( icon ) );
 				}

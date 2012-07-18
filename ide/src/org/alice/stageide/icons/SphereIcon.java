@@ -51,8 +51,11 @@ public class SphereIcon extends ShapeIcon {
 	}
 	@Override
 	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		java.awt.geom.Ellipse2D core = new java.awt.geom.Ellipse2D.Float( 0, 0, width, height);
-		java.awt.geom.Ellipse2D slice = new java.awt.geom.Ellipse2D.Float( 0, height*0.35f, width, height*0.3f);
+		int diameter = Math.min( width, height );
+		int x = (width - diameter) / 2;
+		int y = (height - diameter) / 2;
+		java.awt.geom.Ellipse2D core = new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter);
+		java.awt.geom.Ellipse2D slice = new java.awt.geom.Ellipse2D.Float( x, y + diameter*0.35f, diameter, diameter*0.3f);
 
 		g2.setPaint( fillPaint );
 		g2.fill( core );
