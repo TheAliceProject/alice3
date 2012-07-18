@@ -40,45 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade.literals;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.IntegerLiteral > {
-	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IntegerLiteralFillIn getInstance( int value ) {
-		synchronized( map ) {
-			IntegerLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IntegerLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class JointIcon extends ShapeIcon {
+
+	private static final java.awt.Stroke BONE_STROKE = new java.awt.BasicStroke( 3.0f );
+	private static final java.awt.Stroke JOINT_OUTLINE_STROKE = new java.awt.BasicStroke( 1.0f );
+	private static final int JOINT_WIDTH = 6;
+	private static final int JOINT_HEIGHT = 6;
+
+	public JointIcon( java.awt.Dimension size ) {
+		super( size );
+	}
+	private void drawJoint( java.awt.Graphics2D g2, int x, int y, java.awt.Paint fillPaint, java.awt.Paint outlinePaint ) {
+		if( fillPaint != null ) {
+			g2.setPaint( fillPaint );
+			g2.fillOval( x - 4, y - 4, JOINT_WIDTH, JOINT_HEIGHT );
 		}
-	}
-	private final org.lgna.project.ast.IntegerLiteral transientValue;
-	private IntegerLiteralFillIn( int value ) {
-		super( java.util.UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
-		this.transientValue = new org.lgna.project.ast.IntegerLiteral( value );
-	}
-	@Override
-	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node ) {
-		return this.transientValue;
+		if( outlinePaint != null ) {
+			g2.setPaint( outlinePaint );
+			g2.drawOval( x - 4, y - 4, JOINT_WIDTH, JOINT_HEIGHT );
+		}
+
 	}
 	@Override
-	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
-	}
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.value.getValue().toString();
+	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		final int INSET_X = 6;
+		final int INSET_Y = 6;
+		final int JOINT_A_X = INSET_X;
+		final int JOINT_A_Y = INSET_Y;
+		final int JOINT_B_X = 3 * width / 4;
+		final int JOINT_B_Y = 2 * width / 5;
+		final int JOINT_C_X = width / 2;
+		final int JOINT_C_Y = height - INSET_Y;
+
+		java.awt.Stroke prevStroke = g2.getStroke();
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		try {
+			g2.setStroke( BONE_STROKE );
+			g2.drawLine( JOINT_A_X, JOINT_A_Y, JOINT_B_X, JOINT_B_Y );
+			g2.drawLine( JOINT_B_X, JOINT_B_Y, JOINT_C_X, JOINT_C_Y );
+			g2.setStroke( JOINT_OUTLINE_STROKE );
+			this.drawJoint( g2, JOINT_B_X, JOINT_B_Y, java.awt.Color.RED, java.awt.Color.BLACK );
+			this.drawJoint( g2, JOINT_A_X, JOINT_A_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
+			this.drawJoint( g2, JOINT_C_X, JOINT_C_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
+		} finally {
+			g2.setStroke( prevStroke );
+		}
 	}
 }

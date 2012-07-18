@@ -40,45 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade.literals;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.IntegerLiteral > {
-	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IntegerLiteralFillIn getInstance( int value ) {
-		synchronized( map ) {
-			IntegerLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IntegerLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
-	private final org.lgna.project.ast.IntegerLiteral transientValue;
-	private IntegerLiteralFillIn( int value ) {
-		super( java.util.UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
-		this.transientValue = new org.lgna.project.ast.IntegerLiteral( value );
-	}
+public class ConeIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
 	@Override
-	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node ) {
-		return this.transientValue;
-	}
-	@Override
-	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
-	}
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.value.getValue().toString();
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new ConeIcon( size );
 	}
 }

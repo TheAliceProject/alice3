@@ -40,45 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade.literals;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.IntegerLiteral > {
-	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IntegerLiteralFillIn getInstance( int value ) {
-		synchronized( map ) {
-			IntegerLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IntegerLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+public class AxesIcon extends ShapeIcon {
+	public AxesIcon( java.awt.Dimension size ) {
+		super( size );
 	}
-	private final org.lgna.project.ast.IntegerLiteral transientValue;
-	private IntegerLiteralFillIn( int value ) {
-		super( java.util.UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
-		this.transientValue = new org.lgna.project.ast.IntegerLiteral( value );
+	private static void drawLine( java.awt.Graphics2D g2, java.awt.Paint paint, float x0, float y0, float x1, float y1 ) {
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( x0, y0 );
+		path.lineTo( x1, y1 );
+		g2.setPaint( paint );
+		g2.draw( path );
 	}
 	@Override
-	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node ) {
-		return this.transientValue;
-	}
-	@Override
-	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
-	}
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.value.getValue().toString();
+	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		float offsetOriginY = height * 0.2f;
+		float portion = 0.4f;
+		float originX = width*portion;
+		drawLine( g2, java.awt.Color.GREEN, originX, offsetOriginY, originX, height-offsetOriginY );
+		drawLine( g2, java.awt.Color.RED, 0.0f, height, originX, height-offsetOriginY );
+		drawLine( g2, java.awt.Color.BLUE, 0.0f, height-offsetOriginY-offsetOriginY*(portion/(1-portion)), originX, height-offsetOriginY );
+		drawLine( g2, java.awt.Color.GRAY, width, height, originX, height-offsetOriginY );
 	}
 }

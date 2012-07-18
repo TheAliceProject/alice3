@@ -40,45 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade.literals;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.IntegerLiteral > {
-	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IntegerLiteralFillIn getInstance( int value ) {
-		synchronized( map ) {
-			IntegerLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IntegerLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
-	}
-	private final org.lgna.project.ast.IntegerLiteral transientValue;
-	private IntegerLiteralFillIn( int value ) {
-		super( java.util.UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
-		this.transientValue = new org.lgna.project.ast.IntegerLiteral( value );
+public class TextModelIcon extends ShapeIcon {
+	private final java.awt.Font font;
+	public TextModelIcon( java.awt.Dimension size ) {
+		super( size );
+		this.font = new java.awt.Font( null, java.awt.Font.ITALIC, (size.height*4)/5 );
 	}
 	@Override
-	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node ) {
-		return this.transientValue;
-	}
-	@Override
-	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
-	}
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.value.getValue().toString();
+	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		java.awt.Font prevFont = g2.getFont();
+		g2.setFont( font );
+		
+		
+		String text = "A";
+		java.awt.FontMetrics fm = g2.getFontMetrics();
+		int messageWidth = fm.stringWidth( text );
+	    int ascent = fm.getMaxAscent();
+	    int descent = fm.getMaxDescent();
+		int x = width/2-messageWidth/2;
+		int y = height/2+ascent/2-descent/2;;
+
+		java.awt.font.GlyphVector glyphVector = font.createGlyphVector( g2.getFontRenderContext(), text );
+		java.awt.Shape outline = glyphVector.getOutline( x, y );
+		g2.setPaint( drawPaint );
+		g2.draw( outline );
+
+		g2.setPaint( fillPaint );
+		g2.fill( outline );
+//		g2.drawString( text, x, y );
+		
+		g2.setFont( prevFont );
 	}
 }

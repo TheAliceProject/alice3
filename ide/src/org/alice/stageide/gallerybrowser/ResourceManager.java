@@ -48,17 +48,18 @@ package org.alice.stageide.gallerybrowser;
 public class ResourceManager {
 	private static final int SMALL_ICON_SIZE = 24;
 	private static final String PACKAGE_NAME_PREFIX = ResourceManager.class.getPackage().getName();
-	private static java.util.Map< org.lgna.project.ast.JavaType, javax.swing.Icon > typeToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
+//	private static java.util.Map< org.lgna.project.ast.JavaType, javax.swing.Icon > typeToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static final javax.swing.Icon NULL_SMALL_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, SMALL_ICON_SIZE - 8, SMALL_ICON_SIZE - 8 ), java.awt.Color.LIGHT_GRAY, java.awt.Color.DARK_GRAY, 4, 4, 4, 4 );
 
+	private static java.util.Map< org.lgna.project.ast.JavaType, org.lgna.croquet.icon.IconFactory > mapTypeToIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
 	private ResourceManager() {
 	}
-	public static void registerSmallIcon( org.lgna.project.ast.JavaType javaType, javax.swing.Icon icon ) {
-		typeToIconMap.put( javaType, icon );
+	public static void registerIconFactory( org.lgna.project.ast.JavaType javaType, org.lgna.croquet.icon.IconFactory iconFactory ) {
+		mapTypeToIconFactory.put( javaType, iconFactory );
 	}
-	public static void registerSmallIcon( Class< ? > cls, javax.swing.Icon icon ) {
-		registerSmallIcon( org.lgna.project.ast.JavaType.getInstance( cls ), icon );
+	public static void registerIconFactory( Class< ? > cls, org.lgna.croquet.icon.IconFactory iconFactory ) {
+		registerIconFactory( org.lgna.project.ast.JavaType.getInstance( cls ), iconFactory );
 	}
 
 	private static javax.swing.Icon getSmallIconFor( javax.swing.Icon largeIcon ) {
@@ -178,8 +179,8 @@ public class ResourceManager {
 	public static javax.swing.Icon getSmallIconForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
 		if( type != null ) {
 			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
-			if( typeToIconMap.containsKey( javaType ) ) {
-				return typeToIconMap.get( javaType );
+			if( mapTypeToIconFactory.containsKey( javaType ) ) {
+				return mapTypeToIconFactory.get( javaType ).getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() );
 			} else {
 				return getSmallIconFor( getLargeIconForType( type ) );
 			}
@@ -221,8 +222,8 @@ public class ResourceManager {
 			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
 			if( type != null ) {
 				org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
-				if( typeToIconMap.containsKey( javaType ) ) {
-					return typeToIconMap.get( javaType );
+				if( mapTypeToIconFactory.containsKey( javaType ) ) {
+					return mapTypeToIconFactory.get( javaType ).getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() );
 				}
 			}
 		}

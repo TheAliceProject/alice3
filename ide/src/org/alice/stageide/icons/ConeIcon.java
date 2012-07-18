@@ -40,45 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade.literals;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.IntegerLiteral > {
-	private static java.util.Map< Integer, IntegerLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static IntegerLiteralFillIn getInstance( int value ) {
-		synchronized( map ) {
-			IntegerLiteralFillIn rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new IntegerLiteralFillIn( value );
-				map.put( value, rv );
-			}
-			return rv;
+public class ConeIcon extends ShapeIcon {
+	public ConeIcon( java.awt.Dimension size ) {
+		super( size );
+	}
+	@Override
+	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		float capHeight = height * 0.2f;
+		float x = 0.1f*width;
+		float w = 0.8f*width;
+		java.awt.geom.Ellipse2D bottomCap = new java.awt.geom.Ellipse2D.Float( x, height-capHeight, w, capHeight);
+		java.awt.geom.GeneralPath core = new java.awt.geom.GeneralPath();
+		core.moveTo( width*0.5f, 0 );
+		core.lineTo( width*0.9f, height-capHeight*0.5f );
+		core.lineTo( width*0.1f, height-capHeight*0.5f );
+		core.closePath();
+		java.awt.geom.Area area = new java.awt.geom.Area( core );
+		area.add( new java.awt.geom.Area( bottomCap ) );
+
+		g2.setPaint( fillPaint );
+		g2.fill( area );
+		g2.setPaint( drawPaint );
+		g2.draw( area );
+		
+		if( height > 128 ) {
+			g2.setStroke( new java.awt.BasicStroke( 0.0f, java.awt.BasicStroke.CAP_SQUARE, java.awt.BasicStroke.JOIN_MITER, 1.0f, new float[]{ height*0.05f }, 0.0f ) );
+			g2.draw( bottomCap );
 		}
-	}
-	private final org.lgna.project.ast.IntegerLiteral transientValue;
-	private IntegerLiteralFillIn( int value ) {
-		super( java.util.UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
-		this.transientValue = new org.lgna.project.ast.IntegerLiteral( value );
-	}
-	@Override
-	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node ) {
-		return this.transientValue;
-	}
-	@Override
-	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
-	}
-	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.PrimitiveIntegerStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
-	}
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.value.getValue().toString();
 	}
 }
