@@ -67,19 +67,63 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 			
 			this.addCenterComponent( expressionPane );
 			if( nextValue != null ) {
-				javax.swing.Icon icon = nextValue.getIconFactory().getIcon( DEFAULT_ICON_SIZE );
-				if( icon != null ) {
-					this.addLineStartComponent( new org.lgna.croquet.components.Label( icon ) );
+				org.lgna.croquet.icon.IconFactory iconFactory = nextValue.getIconFactory();
+				if( iconFactory != null && iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) {
+					javax.swing.Icon icon = iconFactory.getIcon( DEFAULT_ICON_SIZE );
+					if( icon != null ) {
+						this.addLineStartComponent( new org.lgna.croquet.components.Label( icon ) );
+					}
 				}
 			}
 		}
 	};
-	private final MainComponent mainComponent = new MainComponent();
+	
+	private class DropDownIcon implements javax.swing.Icon {
+		public int getIconWidth() {
+			return 24;
+		}
+		public int getIconHeight() {
+			return 24;
+		}
+		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+			final int OFFSET = 4;
+			int width = this.getIconWidth();
+			int height = this.getIconHeight();
+			
+			javax.swing.AbstractButton jButton = InstanceFactoryDropDown.this.getAwtComponent();
+			javax.swing.ButtonModel buttonModel = jButton.getModel();
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Paint fillPaint;
+			java.awt.Paint drawPaint;
+			if( buttonModel.isPressed() ) {
+				fillPaint = java.awt.Color.WHITE;
+				drawPaint = java.awt.Color.BLACK;
+			} else {
+				if( buttonModel.isRollover() || buttonModel.isArmed() ) {
+					fillPaint = java.awt.Color.GRAY;
+				} else {
+					fillPaint = java.awt.Color.BLACK;
+				}
+				drawPaint = null;
+			}
+			if( fillPaint != null ) {
+				g2.setPaint( fillPaint );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+OFFSET, y+OFFSET, width-OFFSET-OFFSET, height-OFFSET-OFFSET );
+			}
+			if( drawPaint != null ) {
+				g2.setPaint( drawPaint );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+OFFSET, y+OFFSET, width-OFFSET-OFFSET, height-OFFSET-OFFSET );
+			}
+		}
+	}
+	
 	public InstanceFactoryDropDown( M model ) {
 		super( model );
-		this.setMainComponent( this.mainComponent );
+		this.setPrefixComponent( new MainComponent() );
+		this.setMainComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
+		this.setPostfixComponent( new org.lgna.croquet.components.Label( new DropDownIcon() ) );
 		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		this.setBackgroundColor( new java.awt.Color( 127, 127, 191 ) );
+		//this.setBackgroundColor( new java.awt.Color( 127, 127, 191 ) );
 	}
 	@Override
 	protected int getAffordanceHalfHeight() {
@@ -90,7 +134,14 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 		return super.getAffordanceWidth() * 2;
 	}
 	@Override
+	protected javax.swing.JButton createJButton() {
+		javax.swing.JButton rv = new javax.swing.JButton();
+//		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+//		rv.setIcon( new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, 64, 64 ) );
+		return rv;
+	}
+	@Override
 	protected void handleChanged( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		this.mainComponent.handleChanged( nextValue );
+		((MainComponent)this.getPrefixComponent()).handleChanged( nextValue );
 	}
 };

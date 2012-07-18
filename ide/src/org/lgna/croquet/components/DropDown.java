@@ -71,7 +71,7 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 	public void setPrefixComponent( org.lgna.croquet.components.Component< ? > prefixComponent ) {
 		if( this.prefixComponent != prefixComponent ) {
 			this.prefixComponent = prefixComponent;
-			this.revalidateAndRepaint();
+//			this.revalidateAndRepaint();
 		}
 	}
 	public org.lgna.croquet.components.Component<?> getMainComponent() {
@@ -80,7 +80,7 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 	public void setMainComponent( org.lgna.croquet.components.Component< ? > mainComponent ) {
 		if( this.mainComponent != mainComponent ) {
 			this.mainComponent = mainComponent;
-			this.revalidateAndRepaint();
+//			this.revalidateAndRepaint();
 		}
 	}
 	public org.lgna.croquet.components.Component< ? > getPostfixComponent() {
@@ -89,7 +89,7 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 	public void setPostfixComponent( org.lgna.croquet.components.Component< ? > postfixComponent ) {
 		if( this.postfixComponent != postfixComponent ) {
 			this.postfixComponent = postfixComponent;
-			this.revalidateAndRepaint();
+//			this.revalidateAndRepaint();
 		}
 	}
 
@@ -114,13 +114,11 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 //			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
 //		}
 //	}
-	
-	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
+
+	protected javax.swing.JButton createJButton() {
 		class JPopupMenuButton extends javax.swing.JButton {
 			public JPopupMenuButton() {
 				this.setRolloverEnabled(true);
-				this.setAction( DropDown.this.getAction() );
 			}
 			@Override
 			public void updateUI() {
@@ -220,32 +218,34 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 				g2.setPaint(prevPaint);
 			}
 		};
-
-		javax.swing.AbstractButton rv = new JPopupMenuButton();
-
-		int insetLeft = 3;
-		if (this.prefixComponent != null || this.mainComponent != null || this.postfixComponent != null) {
-			//			rv.setModel( new javax.swing.DefaultButtonModel() );
-			rv.setLayout(new javax.swing.BoxLayout(rv, javax.swing.BoxLayout.LINE_AXIS));
-			if (this.prefixComponent != null) {
-				rv.add(this.prefixComponent.getAwtComponent());
-			}
-			if (this.mainComponent != null) {
-				rv.add(this.mainComponent.getAwtComponent());
-			}
-			if (this.postfixComponent != null) {
-				rv.add(this.postfixComponent.getAwtComponent());
-			}
-		} else {
-			insetLeft += 3;
-		}
+		javax.swing.JButton rv = new JPopupMenuButton();
 		rv.setRolloverEnabled(true);
 		rv.setOpaque(false);
 		rv.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.DEFAULT_CURSOR));
 		//rv.setBackground(edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(230));
 		rv.setBackground( new java.awt.Color( 230, 230, 230, 127 ) );
-		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder( 1, insetLeft, 1, 5 + getAffordanceWidth()));
 		rv.setFocusable( false );
+		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 5 + getAffordanceWidth()));
+		return rv;
+	}
+	@Override
+	protected javax.swing.AbstractButton createAwtComponent() {
+		javax.swing.AbstractButton rv = this.createJButton();
+		rv.setAction( DropDown.this.getAction() );
+		if (this.prefixComponent != null || this.mainComponent != null || this.postfixComponent != null) {
+			//			rv.setModel( new javax.swing.DefaultButtonModel() );
+			//rv.setLayout(new javax.swing.BoxLayout(rv, javax.swing.BoxLayout.LINE_AXIS));
+			rv.setLayout(new java.awt.BorderLayout());
+			if (this.prefixComponent != null) {
+				rv.add(this.prefixComponent.getAwtComponent(), java.awt.BorderLayout.LINE_START);
+			}
+			if (this.mainComponent != null) {
+				rv.add(this.mainComponent.getAwtComponent(), java.awt.BorderLayout.CENTER);
+			}
+			if (this.postfixComponent != null) {
+				rv.add(this.postfixComponent.getAwtComponent(), java.awt.BorderLayout.LINE_END);
+			}
+		}
 		return rv;
 	}
 
