@@ -46,15 +46,12 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class AxesIcon extends ShapeIcon {
+	private static void drawLine( java.awt.Graphics2D g2, java.awt.Paint paint, float x0, float y0, float x1, float y1 ) {
+		g2.setPaint( paint );
+		drawLine( g2, x0, y0, x1, y1 );
+	}
 	public AxesIcon( java.awt.Dimension size ) {
 		super( size );
-	}
-	private static void drawLine( java.awt.Graphics2D g2, java.awt.Paint paint, float x0, float y0, float x1, float y1 ) {
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo( x0, y0 );
-		path.lineTo( x1, y1 );
-		g2.setPaint( paint );
-		g2.draw( path );
 	}
 	@Override
 	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {

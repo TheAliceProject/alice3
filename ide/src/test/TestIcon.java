@@ -42,45 +42,6 @@
  */
 package test;
 
-abstract class AbstractSmallIcon implements javax.swing.Icon {
-	private final static int SIZE = org.alice.stageide.gallerybrowser.ResourceManager.NULL_SMALL_ICON.getIconWidth();
-	private final static int PAD = 2;
-	
-	public int getIconWidth() {
-		return SIZE;
-	}
-	public int getIconHeight() {
-		return SIZE;
-	}
-	protected abstract void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
-	public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-		int xOffset = x+PAD;
-		int yOffset = y+PAD;
-		int width = this.getIconWidth()-PAD-PAD;
-		int height = this.getIconHeight()-PAD-PAD;
-		
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Paint prevPaint = g2.getPaint();
-		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		g2.translate( xOffset, yOffset );
-		this.paintIcon( g2, width, height, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
-		g2.translate( -xOffset, -yOffset );
-		g2.setPaint( prevPaint );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-	}
-}
-
-class TextIcon extends AbstractSmallIcon {
-	private static final java.awt.Font font = new java.awt.Font( null, java.awt.Font.ITALIC, 20 );
-	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		g2.setFont( font );
-		g2.setPaint( fillPaint );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "a", 0, 0, width, height );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -89,9 +50,12 @@ public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
 		TestCroquet testCroquet = new TestCroquet();
 		testCroquet.initialize( args );
 
-		javax.swing.Icon icon = new TextIcon();
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( icon );
-		testCroquet.getFrame().getContentPanel().addCenterComponent( label );
+		org.lgna.croquet.components.FlowPanel flowPanel = new org.lgna.croquet.components.FlowPanel();
+		for( org.lgna.croquet.icon.IconSize iconSize : org.lgna.croquet.icon.IconSize.values() ) {
+			javax.swing.Icon icon = new org.alice.stageide.icons.JointIconFactory().getIcon( iconSize.getSize() );
+			flowPanel.addComponent( new org.lgna.croquet.components.Label( icon ) );
+		}
+		testCroquet.getFrame().getContentPanel().addCenterComponent( flowPanel );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );

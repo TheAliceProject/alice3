@@ -46,44 +46,47 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class JointIcon extends ShapeIcon {
-
-	private static final java.awt.Stroke BONE_STROKE = new java.awt.BasicStroke( 3.0f );
-	private static final java.awt.Stroke JOINT_OUTLINE_STROKE = new java.awt.BasicStroke( 1.0f );
-	private static final int JOINT_WIDTH = 6;
-	private static final int JOINT_HEIGHT = 6;
-
+	private final java.awt.Stroke boneStroke;
+	private final java.awt.Stroke jointOutlineStroke;
+	private final float jointWidth;
+	private final float jointHeight;
 	public JointIcon( java.awt.Dimension size ) {
 		super( size );
+		int n = Math.max( size.width, size.height );
+		boneStroke = new java.awt.BasicStroke( n/12.0f );
+		jointOutlineStroke = new java.awt.BasicStroke( 1.0f );
+		jointWidth = n * 0.25f;
+		jointHeight = jointWidth;
 	}
-	private void drawJoint( java.awt.Graphics2D g2, int x, int y, java.awt.Paint fillPaint, java.awt.Paint outlinePaint ) {
+	private void drawJoint( java.awt.Graphics2D g2, float x, float y, java.awt.Paint fillPaint, java.awt.Paint outlinePaint ) {
+		java.awt.geom.Ellipse2D.Float ellipse = new java.awt.geom.Ellipse2D.Float( x-this.jointWidth*0.5f, y-this.jointHeight*0.5f, this.jointWidth, this.jointHeight );
 		if( fillPaint != null ) {
 			g2.setPaint( fillPaint );
-			g2.fillOval( x - 4, y - 4, JOINT_WIDTH, JOINT_HEIGHT );
+			g2.fill( ellipse );
 		}
 		if( outlinePaint != null ) {
 			g2.setPaint( outlinePaint );
-			g2.drawOval( x - 4, y - 4, JOINT_WIDTH, JOINT_HEIGHT );
+			g2.draw( ellipse );
 		}
-
 	}
 	@Override
 	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		final int INSET_X = 6;
-		final int INSET_Y = 6;
-		final int JOINT_A_X = INSET_X;
-		final int JOINT_A_Y = INSET_Y;
-		final int JOINT_B_X = 3 * width / 4;
-		final int JOINT_B_Y = 2 * width / 5;
-		final int JOINT_C_X = width / 2;
-		final int JOINT_C_Y = height - INSET_Y;
+		final float INSET_X = this.jointWidth;
+		final float INSET_Y = this.jointHeight;
+		final float JOINT_A_X = INSET_X;
+		final float JOINT_A_Y = INSET_Y;
+		final float JOINT_B_X = width * 0.75f;
+		final float JOINT_B_Y = height * 0.4f;
+		final float JOINT_C_X = width * 0.5f;
+		final float JOINT_C_Y = height - INSET_Y;
 
 		java.awt.Stroke prevStroke = g2.getStroke();
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		try {
-			g2.setStroke( BONE_STROKE );
-			g2.drawLine( JOINT_A_X, JOINT_A_Y, JOINT_B_X, JOINT_B_Y );
-			g2.drawLine( JOINT_B_X, JOINT_B_Y, JOINT_C_X, JOINT_C_Y );
-			g2.setStroke( JOINT_OUTLINE_STROKE );
+			g2.setStroke( boneStroke );
+			drawLine( g2, JOINT_A_X, JOINT_A_Y, JOINT_B_X, JOINT_B_Y );
+			drawLine( g2, JOINT_B_X, JOINT_B_Y, JOINT_C_X, JOINT_C_Y );
+			g2.setStroke( jointOutlineStroke );
 			this.drawJoint( g2, JOINT_B_X, JOINT_B_Y, java.awt.Color.RED, java.awt.Color.BLACK );
 			this.drawJoint( g2, JOINT_A_X, JOINT_A_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
 			this.drawJoint( g2, JOINT_C_X, JOINT_C_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );

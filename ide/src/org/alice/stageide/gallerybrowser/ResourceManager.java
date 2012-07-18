@@ -189,6 +189,7 @@ public class ResourceManager {
 		}
 	}
 
+	private static final java.awt.Dimension SIZE_24 = new java.awt.Dimension( 24, 24 );
 	public static javax.swing.Icon getLargeIconForField( org.lgna.project.ast.AbstractField field ) {
 		if( field instanceof org.lgna.project.ast.UserField ) {
 			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
@@ -223,7 +224,7 @@ public class ResourceManager {
 			if( type != null ) {
 				org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
 				if( mapTypeToIconFactory.containsKey( javaType ) ) {
-					return mapTypeToIconFactory.get( javaType ).getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() );
+					return mapTypeToIconFactory.get( javaType ).getIcon( SIZE_24 );
 				}
 			}
 		}
