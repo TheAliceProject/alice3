@@ -295,7 +295,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	private SidePane sidePanel = new SidePane();
-	private org.lgna.croquet.components.HorizontalSplitPane propertiesSplitPane = new HorizontalSplitPane();
+	private javax.swing.JSplitPane propertiesSplitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
@@ -567,9 +567,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			if (isExpanded)
 			{
 				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
-				this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
-				this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
-				this.mainPanel.addCenterComponent(this.propertiesSplitPane);
+				this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel.getAwtComponent());
+				this.propertiesSplitPane.setRightComponent(this.sidePanel.getAwtComponent());
+				this.mainPanel.getAwtComponent().add(this.propertiesSplitPane, java.awt.BorderLayout.CENTER);
 				this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 
 				this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);

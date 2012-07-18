@@ -40,14 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VerticalSplitPane extends SplitPane {
-	public VerticalSplitPane( org.lgna.croquet.SplitComposite splitComposite ) {
-		super( splitComposite, javax.swing.JSplitPane.VERTICAL_SPLIT );
+public abstract class MutableSplitPane extends AbstractSplitPane<org.lgna.croquet.MutableSplitComposite> {
+	private final GridPanel leadingPanel = GridPanel.createGridPane( 1, 1 );
+	private final GridPanel trailingPanel = GridPanel.createGridPane( 1, 1 );
+	protected MutableSplitPane( org.lgna.croquet.MutableSplitComposite composite, int orientation ) {
+		super( composite, orientation );
+	}
+	@Override
+	protected javax.swing.JSplitPane createJSplitPane( int orientation ) {
+		return new javax.swing.JSplitPane( orientation, this.leadingPanel.getAwtComponent(), this.trailingPanel.getAwtComponent() );
+	}
+	public void setLeadingComponent( Component<?> component ) {
+		this.leadingPanel.removeAllComponents();
+		if( component != null ) {
+			this.leadingPanel.addComponent( component );
+		}
+		this.revalidateAndRepaint();
+	}
+	public void setTrailingComponent( Component<?> component ) {
+		this.trailingPanel.removeAllComponents();
+		if( component != null ) {
+			this.trailingPanel.addComponent( component );
+		}
+		this.revalidateAndRepaint();
 	}
 }

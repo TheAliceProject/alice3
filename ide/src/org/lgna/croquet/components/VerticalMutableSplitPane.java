@@ -40,14 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VerticalSplitPane extends SplitPane {
-	public VerticalSplitPane( org.lgna.croquet.SplitComposite splitComposite ) {
+public class VerticalMutableSplitPane extends MutableSplitPane {
+	public VerticalMutableSplitPane( org.lgna.croquet.MutableSplitComposite splitComposite ) {
 		super( splitComposite, javax.swing.JSplitPane.VERTICAL_SPLIT );
 	}
 }
