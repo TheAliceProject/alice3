@@ -62,15 +62,32 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 	@Override
 	protected Component< ? > createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog ) {
 		Button okButton = this.getCompleteOperation().createButton();
+		Button cancelButton; 
+		if( this.isCancelDesired() ) {
+			cancelButton = this.getCancelOperation().createButton();
+		} else {
+			cancelButton = null;
+		}
+		
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
-		rv.addComponent( okButton );
 		
-		if(isCancelDesired()) {
+		if( cancelButton != null ) {
+			Button leadingButton;
+			Button trailingButton;
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				leadingButton = okButton;
+				trailingButton = cancelButton;
+			} else {
+				leadingButton = cancelButton;
+				trailingButton = okButton;
+			}
+			rv.addComponent( leadingButton );
 			rv.addComponent( BoxUtilities.createHorizontalSliver( 4 ) );
-			rv.addComponent( this.getCancelOperation().createButton() );
+			rv.addComponent( trailingButton );
+		} else {
+			rv.addComponent( okButton );
 		}
-
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 		dialog.setDefaultButton( okButton );
 		return rv;
