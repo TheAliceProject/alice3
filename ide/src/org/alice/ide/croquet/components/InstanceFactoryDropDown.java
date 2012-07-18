@@ -59,7 +59,13 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 		protected void internalRefresh() {
 			super.internalRefresh();
 			this.forgetAndRemoveAllComponents();
-			this.addCenterComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null ) );
+			org.lgna.croquet.components.JComponent<?> expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null );
+			
+			for( javax.swing.JLabel label : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( expressionPane.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS, javax.swing.JLabel.class ) ) {
+				edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 2.0f );
+			}
+			
+			this.addCenterComponent( expressionPane );
 			if( nextValue != null ) {
 				javax.swing.Icon icon = nextValue.getIconFactory().getIcon( DEFAULT_ICON_SIZE );
 				if( icon != null ) {

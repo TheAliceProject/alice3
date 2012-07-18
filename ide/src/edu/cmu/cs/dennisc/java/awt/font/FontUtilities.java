@@ -81,6 +81,8 @@ public class FontUtilities {
 	}
 	public static void setFontToScaledFont( java.awt.Component component, float scaleFactor ) {
 		java.awt.Font font = component.getFont();
-		component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
+		if( font != null ) {
+			component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
+		}
 	}
 }
