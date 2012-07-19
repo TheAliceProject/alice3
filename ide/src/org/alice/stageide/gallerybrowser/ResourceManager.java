@@ -156,6 +156,8 @@ public class ResourceManager {
 
 	private static java.util.Map< org.lgna.project.ast.JavaType, org.lgna.croquet.icon.IconFactory > mapTypeToIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static java.util.Map< ResourceDeclaration, org.lgna.croquet.icon.IconFactory > mapResourceDeclarationToIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< org.lgna.story.Color, org.lgna.croquet.icon.IconFactory > mapColorToCameraMarkerIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< org.lgna.story.Color, org.lgna.croquet.icon.IconFactory > mapColorToObjectMarkerIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private ResourceManager() {
 	}
@@ -389,5 +391,28 @@ public class ResourceManager {
 			}
 		}
 		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+	}
+	
+	public static org.lgna.croquet.icon.IconFactory getIconFactoryForCameraMarker( org.lgna.story.Color color ) {
+		org.lgna.croquet.icon.IconFactory rv = mapColorToCameraMarkerIconFactory.get( color );
+		if( rv != null ) {
+			//pass
+		} else {
+			javax.swing.ImageIcon imageIcon = null; //todo
+			rv = new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
+			mapColorToCameraMarkerIconFactory.put( color, rv );
+		}
+		return rv;
+	}
+	public static org.lgna.croquet.icon.IconFactory getIconFactoryForObjectMarker( org.lgna.story.Color color ) {
+		org.lgna.croquet.icon.IconFactory rv = mapColorToObjectMarkerIconFactory.get( color );
+		if( rv != null ) {
+			//pass
+		} else {
+			javax.swing.ImageIcon imageIcon = null; //todo
+			rv = new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
+			mapColorToObjectMarkerIconFactory.put( color, rv );
+		}
+		return rv;
 	}
 }
