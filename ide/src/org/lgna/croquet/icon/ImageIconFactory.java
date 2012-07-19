@@ -47,8 +47,14 @@ package org.lgna.croquet.icon;
  */
 public class ImageIconFactory implements IconFactory {
 	private final javax.swing.ImageIcon imageIcon;
+	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
+		this.imageIcon = imageIcon;
+	}
 	public ImageIconFactory( java.net.URL resource ) {
-		this.imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource );
+		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
+	}
+	public ImageIconFactory( java.awt.Image image ) {
+		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
 	}
 	public javax.swing.Icon getIcon( java.awt.Dimension size ) {
 		if( this.imageIcon.getIconWidth() == size.width && this.imageIcon.getIconHeight() == size.height ) {

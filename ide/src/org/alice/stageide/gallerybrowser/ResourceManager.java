@@ -124,13 +124,18 @@ public class ResourceManager {
 	}
 	
 	private static final class ResourceInstance implements ResourceDeclaration {
-		private final org.lgna.story.resources.ModelResource instance;
-		public ResourceInstance( org.lgna.story.resources.ModelResource instance ) {
+		private final org.lgna.story.resources.sims2.PersonResource instance;
+		public ResourceInstance( org.lgna.story.resources.sims2.PersonResource instance ) {
 			assert instance != null;
 			this.instance = instance;
 		}
 		public org.lgna.croquet.icon.IconFactory createIconFactory() {
-			return new org.alice.stageide.icons.ConeIconFactory();
+			try {
+				java.awt.image.BufferedImage image = org.lgna.story.resourceutilities.ThumbnailMaker.getInstance().createThumbnailFromPersonResource( this.instance );
+				return new org.lgna.croquet.icon.ImageIconFactory( image );
+			} catch( Exception e ) {
+				return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+			}
 		}
 		@Override
 		public boolean equals( Object obj ) {

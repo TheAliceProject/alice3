@@ -464,7 +464,7 @@ public class ThumbnailMaker {
 		return returnImage;
 	}
 	
-	public java.awt.image.BufferedImage createThumbnailFromPersonResource(org.lgna.story.resources.sims2.PersonResource resource) throws Exception{
+	public java.awt.image.BufferedImage createThumbnailFromPersonResource(org.lgna.story.resources.sims2.PersonResource resource) throws Exception {
 		return createThumbnailFromPersonResource(resource, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
 	}
 	
