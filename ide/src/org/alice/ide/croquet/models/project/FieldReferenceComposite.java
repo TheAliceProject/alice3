@@ -74,10 +74,10 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 				if( ancestor == null ) {
 					NamedUserType type = selection.getFirstAncestorAssignableTo( NamedUserType.class );
 					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( type ) );
-					IDE.getActiveInstance().showHighlightStencil( nextValue.expression.getValue(), "Hello, World!" );
+					IDE.getActiveInstance().showHighlightStencil( nextValue.expression.getValue(), null );
 				} else {
 					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ancestor ) );
-					IDE.getActiveInstance().showHighlightStencil( nextValue.expression.getValue(), "Hello, World!" );
+					IDE.getActiveInstance().showHighlightStencil( nextValue.expression.getValue(), null );
 				}
 			}
 		}

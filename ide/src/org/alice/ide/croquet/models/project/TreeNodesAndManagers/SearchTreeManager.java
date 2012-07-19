@@ -104,12 +104,12 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 
 
 				for( UserMethod method : methodParentMap.keySet() ) {
-					SearchTreeNode parent = addNode( root, method );
+					SearchTreeNode parent = addParentNode( root, method );
 					addTunnelling( parent );
 					List<SearchTreeNode> children = Collections.newLinkedList();
 					for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
 						AbstractMethod abstractMethod = methodInvocation.method.getValue();
-						SearchTreeNode child = new SearchTreeNode( parent, abstractMethod );
+						SearchTreeNode child = new SearchTreeNode( parent, methodInvocation );
 						children.add( child );
 					}
 					java.util.Collections.sort( children );
@@ -117,6 +117,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 			}
 		refreshAll();
 	}
+
 	@Override
 	final protected int getChildCount( SearchTreeNode parent ) {
 		return parent.getChildren().size();
@@ -157,12 +158,21 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 		return node.getIcon();
 	}
 
-	public SearchTreeNode addNode( SearchTreeNode parent, AbstractMethod content ) {
+	public SearchTreeNode addNode( SearchTreeNode parent, MethodInvocation invocation ) {
 		SearchTreeNode rv;
 		if( parent != null ) {
-			parent.addChild( rv = new SearchTreeNode( parent, content ) );
+			parent.addChild( rv = new SearchTreeNode( parent, invocation ) );
 		} else {
-			getRoot().addChild( rv = new SearchTreeNode( getRoot(), content ) );
+			getRoot().addChild( rv = new SearchTreeNode( getRoot(), invocation ) );
+		}
+		return rv;
+	}
+	private SearchTreeNode addParentNode( SearchTreeNode parent, UserMethod method ) {
+		SearchTreeNode rv;
+		if( parent != null ) {
+			parent.addChild( rv = new SearchTreeNode( parent, method ) );
+		} else {
+			getRoot().addChild( rv = new SearchTreeNode( getRoot(), method ) );
 		}
 		return rv;
 	}
@@ -175,8 +185,8 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 		AbstractMethod parentMethod = parent.getContent();
 		if( methodParentMap.get( parentMethod ) != null ) {
 			for( MethodInvocation methodInvocation : methodParentMap.get( parentMethod ) ) {
-				AbstractMethod childMethod = (AbstractMethod)methodInvocation.method.getValue();
-				SearchTreeNode node = addNode( parent, childMethod );
+//				AbstractMethod childMethod = (AbstractMethod)methodInvocation.method.getValue();
+				SearchTreeNode node = addNode( parent, methodInvocation );
 				addTunnelling( node );
 			}
 		}
