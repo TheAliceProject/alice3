@@ -51,7 +51,77 @@ public class ResourceManager {
 ////	private static java.util.Map< org.lgna.project.ast.JavaType, javax.swing.Icon > typeToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 //	public static final javax.swing.Icon NULL_SMALL_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, SMALL_ICON_SIZE - 8, SMALL_ICON_SIZE - 8 ), java.awt.Color.LIGHT_GRAY, java.awt.Color.DARK_GRAY, 4, 4, 4, 4 );
 //
+	private static abstract class ResourceDeclaration {
+		protected abstract Class< ? extends org.lgna.story.resources.ModelResource > getModelResourceClass();
+		protected abstract String getModelResourceName();
+		public final org.lgna.croquet.icon.IconFactory createIconFactory() {
+			return new org.lgna.croquet.icon.ImageIconFactory( org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( this.getModelResourceClass(), this.getModelResourceName() ) );
+		}
+	}
+	private static final class ResourceEnumConstant extends ResourceDeclaration {
+		private final Enum< ? extends org.lgna.story.resources.ModelResource > enm;
+		public ResourceEnumConstant( Enum< ? extends org.lgna.story.resources.ModelResource > enm ) {
+			assert enm != null;
+			this.enm = enm;
+		}
+		@Override
+		protected Class<? extends org.lgna.story.resources.ModelResource> getModelResourceClass() {
+			//todo?
+			return (Class< ? extends org.lgna.story.resources.ModelResource >)this.enm.getClass();
+		}
+		@Override
+		protected String getModelResourceName() {
+			return this.enm.name();
+		}
+		@Override
+		public boolean equals( Object obj ) {
+			if( this == obj ) {
+				return true;
+			}
+			if( obj instanceof ResourceEnumConstant ) {
+				ResourceEnumConstant other = (ResourceEnumConstant)obj;
+				return this.enm.equals( other.enm );
+			}
+			return false;
+		}
+		@Override
+		public int hashCode() {
+			return this.enm.hashCode();
+		}
+	}
+	private static final class ResourceType extends ResourceDeclaration {
+		private final Class< ? extends org.lgna.story.resources.ModelResource > cls;
+		public ResourceType( Class< ? extends org.lgna.story.resources.ModelResource > cls ) {
+			assert cls != null;
+			this.cls = cls;
+		}
+		@Override
+		protected Class<? extends org.lgna.story.resources.ModelResource> getModelResourceClass() {
+			return this.cls;
+		}
+		@Override
+		protected String getModelResourceName() {
+			return null;
+		}
+		@Override
+		public boolean equals( Object obj ) {
+			if( this == obj ) {
+				return true;
+			}
+			if( obj instanceof ResourceType ) {
+				ResourceType other = (ResourceType)obj;
+				return this.cls.equals( other.cls );
+			}
+			return false;
+		}
+		@Override
+		public int hashCode() {
+			return this.cls.hashCode();
+		}
+	}
+
 	private static java.util.Map< org.lgna.project.ast.JavaType, org.lgna.croquet.icon.IconFactory > mapTypeToIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< ResourceDeclaration, org.lgna.croquet.icon.IconFactory > mapResourceDeclarationToIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private ResourceManager() {
 	}
@@ -201,6 +271,40 @@ public class ResourceManager {
 //		}
 //		return getSmallIconFor( getLargeIconForField( field ) );
 //	}
+	
+	private static ResourceDeclaration createResourceDeclarationFromInstanceCreation( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
+		if( argumentField != null ) {
+			if( argumentField.isStatic() ) {
+				java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
+				try {
+					Object o = fld.get( null );
+					if( o != null ) {
+						if( o instanceof org.lgna.story.resources.ModelResource ) {
+							if( o.getClass().isEnum() ) {
+								Enum< ? extends org.lgna.story.resources.ModelResource > e = (Enum< ? extends org.lgna.story.resources.ModelResource >)o;
+								return new ResourceEnumConstant( e );
+							}
+						}
+					}
+				} catch( IllegalAccessException iae ) {
+					iae.printStackTrace();
+					return null;
+				}
+			}
+		}
+		return null;
+	}
+
+	private static ResourceDeclaration createResourceDeclarationFromField( org.lgna.project.ast.UserField userField ) {
+		org.lgna.project.ast.Expression initializer = userField.initializer.getValue();
+		if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+			return createResourceDeclarationFromInstanceCreation( instanceCreation );
+		}
+		return null;
+	}
+	
 	private static org.lgna.croquet.icon.IconFactory getRegisteredIconFactory( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
@@ -225,31 +329,19 @@ public class ResourceManager {
 			}
 			if( field instanceof org.lgna.project.ast.UserField ) {
 				org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-				org.lgna.project.ast.Expression initializer = userField.initializer.getValue();
-				if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
-					org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
-					if( argumentField != null ) {
-						if( argumentField.isStatic() ) {
-							java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
-							try {
-								Object o = fld.get( null );
-								if( o != null ) {
-									if( o.getClass().isEnum() ) {
-										Enum< ? > e = (Enum< ? >)o;
-										return new org.lgna.croquet.icon.ImageIconFactory( org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( e.getClass(), e.name() ) );
-									}
-								}
-							} catch( IllegalAccessException iae ) {
-								iae.printStackTrace();
-								return null;
-							}
-						}
+				ResourceDeclaration resourceDeclaration = createResourceDeclarationFromField( userField );
+				if( resourceDeclaration != null ) {
+					iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
+					if( iconFactory != null ) {
+						//pass
+					} else {
+						iconFactory = resourceDeclaration.createIconFactory();
+						mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
 					}
+					return iconFactory;
 				}
 			}
 		}
 		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
-		
 	}
 }
