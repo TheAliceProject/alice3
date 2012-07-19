@@ -40,49 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.instancefactory;
+package org.alice.ide.ast.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThisInstanceFactory extends AbstractInstanceFactory {
-	private static class SingletonHolder {
-		private static ThisInstanceFactory instance = new ThisInstanceFactory();
+public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory {
+	SINGLETON;
+	public javax.swing.Icon getIcon( final java.awt.Dimension size ) {
+		return new javax.swing.Icon() {
+			public int getIconWidth() {
+				return size.width;
+			}
+			public int getIconHeight() {
+				return size.height;
+			}
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				org.lgna.project.ast.AbstractType<?,?,?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+				if( type != null ) {
+					org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForType( type );
+					if( iconFactory != null ) {
+						javax.swing.Icon typeIcon = iconFactory.getIcon( size );
+						if( typeIcon != null ) {
+							typeIcon.paintIcon( c, g, x, y );
+						}
+					}
+				}
+			}
+		};
 	}
-	public static ThisInstanceFactory getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ThisInstanceFactory() {
-	}
-	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
-		return type != null;
-	}
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver< ThisInstanceFactory > createResolver() {
-		return new org.lgna.croquet.resolvers.SingletonResolver< ThisInstanceFactory >( this );
-	}
-	public org.lgna.project.ast.Expression createTransientExpression() {
-		return createTransientThisExpression();
-	}
-	public org.lgna.project.ast.Expression createExpression() {
-		return createThisExpression();
-	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
-		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
-	}
-	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.ide.ast.icons.ThisInstanceIconFactory.SINGLETON;
-	}
-	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-//		sb.append( "<strong>" );
-		sb.append( "this" );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
+	public java.awt.Dimension getDefaultSize() {
+		return null;
 	}
 }
