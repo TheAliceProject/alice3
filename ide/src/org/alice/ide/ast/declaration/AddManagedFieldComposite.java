@@ -60,7 +60,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	
 	@Override
 	protected boolean isFieldFinal() {
-		return false;
+		return true;
 	}
 	@Override
 	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
