@@ -51,14 +51,17 @@ public class ResourceManager {
 ////	private static java.util.Map< org.lgna.project.ast.JavaType, javax.swing.Icon > typeToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 //	public static final javax.swing.Icon NULL_SMALL_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ShapeIcon( new java.awt.geom.Ellipse2D.Float( 0, 0, SMALL_ICON_SIZE - 8, SMALL_ICON_SIZE - 8 ), java.awt.Color.LIGHT_GRAY, java.awt.Color.DARK_GRAY, 4, 4, 4, 4 );
 //
-	private static abstract class ResourceDeclaration {
+	private static interface ResourceDeclaration {
+		public org.lgna.croquet.icon.IconFactory createIconFactory();
+	}
+	private static abstract class UrlResourceDeclaration implements ResourceDeclaration {
 		protected abstract Class< ? extends org.lgna.story.resources.ModelResource > getModelResourceClass();
 		protected abstract String getModelResourceName();
 		public final org.lgna.croquet.icon.IconFactory createIconFactory() {
 			return new org.lgna.croquet.icon.ImageIconFactory( org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( this.getModelResourceClass(), this.getModelResourceName() ) );
 		}
 	}
-	private static final class ResourceEnumConstant extends ResourceDeclaration {
+	private static final class ResourceEnumConstant extends UrlResourceDeclaration {
 		private final Enum< ? extends org.lgna.story.resources.ModelResource > enm;
 		public ResourceEnumConstant( Enum< ? extends org.lgna.story.resources.ModelResource > enm ) {
 			assert enm != null;
@@ -89,7 +92,7 @@ public class ResourceManager {
 			return this.enm.hashCode();
 		}
 	}
-	private static final class ResourceType extends ResourceDeclaration {
+	private static final class ResourceType extends UrlResourceDeclaration {
 		private final Class< ? extends org.lgna.story.resources.ModelResource > cls;
 		public ResourceType( Class< ? extends org.lgna.story.resources.ModelResource > cls ) {
 			assert cls != null;
@@ -117,6 +120,32 @@ public class ResourceManager {
 		@Override
 		public int hashCode() {
 			return this.cls.hashCode();
+		}
+	}
+	
+	private static final class ResourceInstance implements ResourceDeclaration {
+		private final org.lgna.story.resources.ModelResource instance;
+		public ResourceInstance( org.lgna.story.resources.ModelResource instance ) {
+			assert instance != null;
+			this.instance = instance;
+		}
+		public org.lgna.croquet.icon.IconFactory createIconFactory() {
+			return new org.alice.stageide.icons.ConeIconFactory();
+		}
+		@Override
+		public boolean equals( Object obj ) {
+			if( this == obj ) {
+				return true;
+			}
+			if( obj instanceof ResourceInstance ) {
+				ResourceInstance other = (ResourceInstance)obj;
+				return this.instance.equals( other.instance );
+			}
+			return false;
+		}
+		@Override
+		public int hashCode() {
+			return this.instance.hashCode();
 		}
 	}
 
@@ -273,6 +302,17 @@ public class ResourceManager {
 //	}
 	
 	private static ResourceDeclaration createResourceDeclarationFromInstanceCreation( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		if( instanceCreation.requiredArguments.size() == 1 ) {
+			org.lgna.project.ast.SimpleArgument arg0 = instanceCreation.requiredArguments.get( 0 );
+			org.lgna.project.ast.Expression expression0 = arg0.expression.getValue();
+			if( expression0 instanceof org.lgna.project.ast.InstanceCreation ) {
+				Object instance = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression0 );
+				if( instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
+					org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)instance;
+					return new ResourceInstance( personResource );
+				}
+			}
+		}
 		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
 		if( argumentField != null ) {
 			if( argumentField.isStatic() ) {
@@ -293,6 +333,7 @@ public class ResourceManager {
 				}
 			}
 		}
+
 		return null;
 	}
 
