@@ -322,7 +322,11 @@ public class AliceResourceUtilties {
 	
 	public static java.net.URL getThumbnailURL(Class<?> modelResource, String instanceName)
 	{
-		return getThumbnailURLInternal(modelResource, getName(modelResource)+"_"+instanceName);
+		if( instanceName != null ) {
+			return getThumbnailURLInternal(modelResource, getName(modelResource)+"_"+instanceName);
+		} else {
+			return getThumbnailURL( modelResource );
+		}
 	}
 	
 	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo(Class<?> modelResource) {

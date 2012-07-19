@@ -58,7 +58,23 @@ public class ResourceManager {
 		protected abstract Class< ? extends org.lgna.story.resources.ModelResource > getModelResourceClass();
 		protected abstract String getModelResourceName();
 		public final org.lgna.croquet.icon.IconFactory createIconFactory() {
-			return new org.lgna.croquet.icon.ImageIconFactory( org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( this.getModelResourceClass(), this.getModelResourceName() ) );
+			Class< ? extends org.lgna.story.resources.ModelResource > modelResourceCls = this.getModelResourceClass();
+			String modelResourceName = this.getModelResourceName();
+			if( modelResourceName != null ) {
+				//pass
+			} else {
+				if( org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
+					javax.swing.ImageIcon imageIcon = org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getIcon( modelResourceCls );
+					return new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
+				}
+			}
+			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
+			if( url != null ) {
+				return new org.lgna.croquet.icon.ImageIconFactory( url ); 
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
+				return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+			}
 		}
 	}
 	private static final class ResourceEnumConstant extends UrlResourceDeclaration {
@@ -308,9 +324,9 @@ public class ResourceManager {
 //		return getSmallIconFor( getLargeIconForField( field ) );
 //	}
 	
-	private static ResourceDeclaration createResourceDeclarationFromInstanceCreation( org.lgna.project.ast.InstanceCreation instanceCreation ) {
-		if( instanceCreation.requiredArguments.size() == 1 ) {
-			org.lgna.project.ast.SimpleArgument arg0 = instanceCreation.requiredArguments.get( 0 );
+	private static ResourceDeclaration createResourceDeclarationFromRequiredArguments( org.lgna.project.ast.SimpleArgumentListProperty requiredArguments ) {
+		if( requiredArguments.size() == 1 ) {
+			org.lgna.project.ast.SimpleArgument arg0 = requiredArguments.get( 0 );
 			org.lgna.project.ast.Expression expression0 = arg0.expression.getValue();
 			if( expression0 instanceof org.lgna.project.ast.InstanceCreation ) {
 				Object instance = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression0 );
@@ -320,7 +336,7 @@ public class ResourceManager {
 				}
 			}
 		}
-		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
+		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getField( requiredArguments );
 		if( argumentField != null ) {
 			if( argumentField.isStatic() ) {
 				java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
@@ -343,12 +359,11 @@ public class ResourceManager {
 
 		return null;
 	}
-
 	private static ResourceDeclaration createResourceDeclarationFromField( org.lgna.project.ast.UserField userField ) {
 		org.lgna.project.ast.Expression initializer = userField.initializer.getValue();
 		if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
 			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
-			return createResourceDeclarationFromInstanceCreation( instanceCreation );
+			return createResourceDeclarationFromRequiredArguments( instanceCreation.requiredArguments );
 		}
 		return null;
 	}
@@ -366,6 +381,39 @@ public class ResourceManager {
 		org.lgna.croquet.icon.IconFactory iconFactory = getRegisteredIconFactory( type );
 		if( iconFactory != null ) {
 			return iconFactory;
+		} else {
+			ResourceDeclaration resourceDeclaration = null;
+			org.lgna.project.ast.AbstractConstructor constructor0 = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0( type );
+			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor0.getRequiredParameters();
+			switch( parameters.size() ) {
+			case 0:
+				if( constructor0 instanceof org.lgna.project.ast.UserConstructor ) {
+					org.lgna.project.ast.NamedUserConstructor userConstructor0 = (org.lgna.project.ast.NamedUserConstructor)constructor0;
+					org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = userConstructor0.body.getValue().constructorInvocationStatement.getValue();
+					resourceDeclaration = createResourceDeclarationFromRequiredArguments( constructorInvocationStatement.requiredArguments );
+				}
+				break;
+			case 1:
+				org.lgna.project.ast.AbstractParameter parameter0 = parameters.get( 0 );
+				org.lgna.project.ast.AbstractType<?,?,?> parameter0Type = parameter0.getValueType();
+				if( parameter0Type != null ) {
+					if( parameter0Type.isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
+						Class<? extends org.lgna.story.resources.ModelResource> cls = (Class<? extends org.lgna.story.resources.ModelResource>)parameter0Type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+						resourceDeclaration = new ResourceType( cls );
+					}
+				}
+				break;
+			}
+			if( resourceDeclaration != null ) {
+				iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
+				if( iconFactory != null ) {
+					//pass
+				} else {
+					iconFactory = resourceDeclaration.createIconFactory();
+					mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
+				}
+				return iconFactory;
+			}
 		}
 		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
 	}

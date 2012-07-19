@@ -57,13 +57,21 @@ public class ImageIconFactory implements IconFactory {
 		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
 	}
 	public javax.swing.Icon getIcon( java.awt.Dimension size ) {
-		if( this.imageIcon.getIconWidth() == size.width && this.imageIcon.getIconHeight() == size.height ) {
-			return this.imageIcon;
+		if( imageIcon != null ) {
+			if( this.imageIcon.getIconWidth() == size.width && this.imageIcon.getIconHeight() == size.height ) {
+				return this.imageIcon;
+			} else {
+				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( this.imageIcon, size.width, size.height );
+			}
 		} else {
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( this.imageIcon, size.width, size.height );
+			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
 		}
 	}
 	public java.awt.Dimension getDefaultSize() {
-		return new java.awt.Dimension( this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );
+		if( this.imageIcon != null ) {
+			return new java.awt.Dimension( this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );
+		} else {
+			return null;
+		}
 	}
 }
