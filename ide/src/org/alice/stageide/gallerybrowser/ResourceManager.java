@@ -446,7 +446,7 @@ public class ResourceManager {
 		if( rv != null ) {
 			//pass
 		} else {
-			javax.swing.ImageIcon imageIcon = null; //todo
+			javax.swing.ImageIcon imageIcon = org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getCameraMarkIconForColor(color); //todo
 			rv = new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
 			mapColorToCameraMarkerIconFactory.put( color, rv );
 		}
@@ -457,7 +457,7 @@ public class ResourceManager {
 		if( rv != null ) {
 			//pass
 		} else {
-			javax.swing.ImageIcon imageIcon = null; //todo
+			javax.swing.ImageIcon imageIcon = org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getObjectMarkIconForColor(color);; //todo
 			rv = new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
 			mapColorToObjectMarkerIconFactory.put( color, rv );
 		}
