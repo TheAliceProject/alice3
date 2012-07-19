@@ -106,6 +106,13 @@ public class ResourceTab extends GalleryTab {
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
 				gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
 				
+				for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
+					if( awtComponent instanceof javax.swing.JButton ) {
+						javax.swing.JButton jButton = (javax.swing.JButton)awtComponent;
+						jButton.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+					}
+				}
+				
 		        org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
 		        	.pageStart( gridPanel )
 		        .build();
