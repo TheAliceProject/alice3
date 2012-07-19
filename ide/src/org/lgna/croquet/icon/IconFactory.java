@@ -47,5 +47,5 @@ package org.lgna.croquet.icon;
  */
 public interface IconFactory {
 	public javax.swing.Icon getIcon( java.awt.Dimension size );
-	public java.awt.Dimension getDefaultSize();
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent );
 }

@@ -67,11 +67,11 @@ public class ImageIconFactory implements IconFactory {
 			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
 		}
 	}
-	public java.awt.Dimension getDefaultSize() {
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		if( this.imageIcon != null ) {
 			return new java.awt.Dimension( this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );
 		} else {
-			return null;
+			return sizeIfResolutionIndependent;
 		}
 	}
 }

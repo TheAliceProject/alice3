@@ -332,11 +332,11 @@ public class MarkerUtilities {
 		return cameraToIconMap.get(camera).getB();
 	}
 	
-	
+	private static final java.awt.Dimension DEFAULT_SIZE_IF_NULL = org.lgna.croquet.icon.IconSize.MEDIUM.getSize();
 	public static javax.swing.Icon getIconForCameraMarkerImp(CameraMarkerImp camera) {
 		if (camera != null) {
 			org.lgna.croquet.icon.IconFactory factory = getIconFactoryForCameraMarker(camera.getAbstraction());
-			return factory.getIcon(factory.getDefaultSize());
+			return factory.getIcon(factory.getDefaultSize( DEFAULT_SIZE_IF_NULL ));
 		}
 		return null;
 	}
@@ -344,7 +344,7 @@ public class MarkerUtilities {
 	public static javax.swing.Icon getHighlightedIconForCameraMarkerImp(CameraMarkerImp camera) {
 		if (camera != null) {
 			org.lgna.croquet.icon.IconFactory factory = getHighlightedIconFactoryForCameraMarker(camera.getAbstraction());
-			return factory.getIcon(factory.getDefaultSize());
+			return factory.getIcon(factory.getDefaultSize( DEFAULT_SIZE_IF_NULL ));
 		}
 		return null;
 	}

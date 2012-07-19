@@ -69,7 +69,7 @@ public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory
 			}
 		};
 	}
-	public java.awt.Dimension getDefaultSize() {
-		return null;
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		return sizeIfResolutionIndependent;
 	}
 }
