@@ -88,9 +88,11 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 		}
 		return this.isValid( type, code );
 	}
-	public javax.swing.Icon getSmallIcon() {
-		return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( this.getValueType() );
+	
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForType( this.getValueType() );
 	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

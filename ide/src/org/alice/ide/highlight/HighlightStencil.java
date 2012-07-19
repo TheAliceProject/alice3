@@ -133,15 +133,17 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		g2.setPaint( stencilPaint );
 		g2.fill( shape );
 		
-		g2.setClip(shape);
-		java.awt.Paint paint = HIGHLIGHT_WITH_PATH_PAINT;
-		g2.setPaint(paint);
-		for (java.awt.Stroke stroke : HIGHLIGHT_STROKES) {
-			g2.setStroke(stroke);
-			g2.draw(visibleShape);
+		if( visibleShape != null ) {
+			g2.setClip(shape);
+			java.awt.Paint paint = HIGHLIGHT_WITH_PATH_PAINT;
+			g2.setPaint(paint);
+			for (java.awt.Stroke stroke : HIGHLIGHT_STROKES) {
+				g2.setStroke(stroke);
+				g2.draw(visibleShape);
+			}
+			g2.setClip(prevClip);
 		}
 		
-		g2.setClip(prevClip);
 		if (visibleShape instanceof java.awt.Rectangle) {
 			java.awt.Rectangle rect = (java.awt.Rectangle) visibleShape;
 		

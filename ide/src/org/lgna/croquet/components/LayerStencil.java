@@ -110,6 +110,7 @@ public abstract class LayerStencil extends Panel {
 
 	public void setStencilShowing( boolean isShowing ) {
 		this.layer.setComponent( isShowing ? this : null );
+		this.repaint();
 	}
 
 	@Override

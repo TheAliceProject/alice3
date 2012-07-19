@@ -73,7 +73,7 @@ import org.lgna.croquet.Operation;
  */
 public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane< E, FolderTabItemDetails<E>, FolderTabbedPane<E> > {
 	private static final int TRAILING_TAB_PAD = 32;
-	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
+	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
 		@Override
 		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {

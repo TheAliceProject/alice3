@@ -40,14 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.lgna.croquet.icon;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextModelIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
-	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new TextModelIcon( size );
+public class ImageIconFactory implements IconFactory {
+	private final javax.swing.ImageIcon imageIcon;
+	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
+		this.imageIcon = imageIcon;
+	}
+	public ImageIconFactory( java.net.URL resource ) {
+		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
+	}
+	public ImageIconFactory( java.awt.Image image ) {
+		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
+	}
+	public javax.swing.Icon getIcon( java.awt.Dimension size ) {
+		if( this.imageIcon.getIconWidth() == size.width && this.imageIcon.getIconHeight() == size.height ) {
+			return this.imageIcon;
+		} else {
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( this.imageIcon, size.width, size.height );
+		}
+	}
+	public java.awt.Dimension getDefaultSize() {
+		return new java.awt.Dimension( this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );
 	}
 }

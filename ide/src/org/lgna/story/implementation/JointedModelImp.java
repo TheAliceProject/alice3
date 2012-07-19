@@ -56,7 +56,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	public static interface JointImplementationAndVisualDataFactory< R extends org.lgna.story.resources.JointedModelResource > {
 		public R getResource();
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
-		public VisualData createVisualData( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation );
+		public VisualData createVisualData();
 		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId );
 		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId );
 	}
@@ -71,7 +71,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	public JointedModelImp( A abstraction, JointImplementationAndVisualDataFactory< R > factory ) {
 		this.abstraction = abstraction;
 		this.factory = factory;
-		this.visualData = this.factory.createVisualData( this );
+		this.visualData = this.factory.createVisualData( );
 
 		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
 		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;

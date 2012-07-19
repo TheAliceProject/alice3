@@ -76,10 +76,10 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		edu.cmu.cs.dennisc.nebulous.Model nebModel = ((NebulousVisualData<edu.cmu.cs.dennisc.nebulous.Model>)jointedModelImplementation.getVisualData()).getNebModel();
 		return new JointImplementation( jointedModelImplementation, new NebulousJoint( nebModel, jointId ) );
 	}
-	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( org.lgna.story.implementation.JointedModelImp jointedModelImplementation ) {
+	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( ) {
 		try {
 			if( this.resource instanceof org.lgna.story.resources.sims2.PersonResource ) {
-				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.resource;
+				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.resource;			
 				return NebulousPersonVisualData.createInstance( personResource );
 			} else {
 				return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Thing( this.resource, this.resource ) );

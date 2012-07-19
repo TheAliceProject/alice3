@@ -45,7 +45,7 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class AxesIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+public class AxesIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new AxesIcon( size );
