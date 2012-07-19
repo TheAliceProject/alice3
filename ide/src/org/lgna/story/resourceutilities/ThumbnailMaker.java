@@ -57,8 +57,8 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 public class ThumbnailMaker {
-	private static final int THUMBNAIL_WIDTH = 160;
-	private static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH * 3 / 4;
+	public static final int THUMBNAIL_WIDTH = 160;
+	public static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH * 3 / 4;
 	private static final int ANTI_ALIAS_FACTOR = 4;
 	private static final double SEARCH_FACTOR = .25;
 	
@@ -191,6 +191,17 @@ public class ThumbnailMaker {
 	
 	private edu.cmu.cs.dennisc.scenegraph.Transformable getSGCameraVehicle() {
 		return m_sgCameraVehicle;
+	}
+	
+	private AffineMatrix4x4 getThumbnailCameraOrientationForPerson(org.lgna.story.resources.sims2.PersonResource personResource) {
+		if (personResource.getLifeStage() == org.lgna.story.resources.sims2.LifeStage.ADULT ||
+			personResource.getLifeStage() == org.lgna.story.resources.sims2.LifeStage.ELDER ||
+			personResource.getLifeStage() == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+				return getThumbnailCameraOrientation(new AxisAlignedBox(-.4, 0, -.4, .4, 1.6, .5));
+		}
+		else {
+			return getThumbnailCameraOrientation(new AxisAlignedBox(-.2, 0, -.2, .2, 1.1, .2));
+		}
 	}
 	
 	private AffineMatrix4x4 getThumbnailCameraOrientation(AxisAlignedBox bbox)
@@ -356,9 +367,29 @@ public class ThumbnailMaker {
 		return testPosition;
 	}
 	
-	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int inputWidth, int inputHeight) throws Exception {
+	private synchronized java.awt.image.BufferedImage takePicture(AffineMatrix4x4 cameraTransform, int inputWidth, int inputHeight) throws Exception { 
 		initializeIfNecessary(inputWidth, inputHeight);
-//		this.setSize((int)(inputWidth*SEARCH_FACTOR), (int)(inputHeight*SEARCH_FACTOR));
+		getSGCameraVehicle().setLocalTransformation(cameraTransform);
+		this.setSize( inputWidth*ANTI_ALIAS_FACTOR, inputHeight*ANTI_ALIAS_FACTOR );
+		offscreenLookingGlass.clearAndRenderOffscreen();
+		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
+		Image returnImage = rv.getScaledInstance(inputWidth, inputHeight, Image.SCALE_SMOOTH);
+		if (returnImage instanceof java.awt.image.BufferedImage)
+		{
+			return (java.awt.image.BufferedImage)returnImage;
+		}
+		else if (returnImage != null)
+		{
+			return ImageUtilities.createBufferedImage(returnImage, BufferedImage.TYPE_INT_ARGB);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public synchronized java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, int inputWidth, int inputHeight) throws Exception {
+		initializeIfNecessary(inputWidth, inputHeight);
 		
 		edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageLG = testImageOffscreenLookingGlass;
 		
@@ -371,8 +402,6 @@ public class ThumbnailMaker {
 		
 		testImageLG.clearAndRenderOffscreen();
 		testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
-		
-		ImageUtilities.write("C:/batchOutput/thumbnailTest/initial.png", testImage);
 		
 		Point3 testPosition = getRecenterPositionBasedOnImage(testImage, cameraTransform.translation, bbox);
 		getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
@@ -394,8 +423,6 @@ public class ThumbnailMaker {
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
 			
-			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
-			
 			framed = isFullyFramed(testImage);
 			if (framed)
 			{
@@ -416,9 +443,6 @@ public class ThumbnailMaker {
 			getSGCameraVehicle().setTranslationOnly(testPosition, world.getSgReferenceFrame());
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer(testImage, depthBuffer);
-			
-			ImageUtilities.write("C:/batchOutput/thumbnailTest/test"+count+".png", testImage);
-			
 			framed = isFullyFramed(testImage);
 			if (framed)
 			{
@@ -431,31 +455,32 @@ public class ThumbnailMaker {
 		if (limitCount > COUNT_LIMIT) {
 			System.err.println("hit thumbnail limit count");
 		}
-		System.out.println(v.getName()+": framed: "+framed+", distance to edge: "+distanceToEdge+", t: "+currentT+", near clip: "+getSGCamera().nearClippingPlaneDistance.getValue());
 		getSGCameraVehicle().setTranslationOnly(lastGoodPosition, world.getSgReferenceFrame());
 		
-		this.setSize( inputWidth*ANTI_ALIAS_FACTOR, inputHeight*ANTI_ALIAS_FACTOR );
-		
-		offscreenLookingGlass.clearAndRenderOffscreen();
-		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
-		
-		ImageUtilities.write("C:/batchOutput/thumbnailTest/final.png", rv);
-		
+		AffineMatrix4x4 finalCameraTransform = getSGCameraVehicle().getLocalTransformation();
+		v.setParent(this.sgModelTransformable);
+		java.awt.image.BufferedImage returnImage = takePicture(finalCameraTransform, inputWidth, inputHeight);
 		v.setParent(null);
-		
-		Image returnImage = rv.getScaledInstance(inputWidth, inputHeight, Image.SCALE_SMOOTH);
-		if (returnImage instanceof java.awt.image.BufferedImage)
-		{
-			return (java.awt.image.BufferedImage)returnImage;
+		return returnImage;
+	}
+	
+	public java.awt.image.BufferedImage createThumbnailFromPersonResource(org.lgna.story.resources.sims2.PersonResource resource) throws Exception{
+		return createThumbnailFromPersonResource(resource, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+	}
+	
+	public synchronized java.awt.image.BufferedImage createThumbnailFromPersonResource(org.lgna.story.resources.sims2.PersonResource resource, int width, int height) throws Exception{
+		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
+		org.lgna.story.implementation.JointedModelImp.VisualData visualData = factory.createVisualData();
+		visualData.setSGParent( this.sgModelTransformable );
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual :visualData.getSgVisuals() ) {
+			sgVisual.setParent( this.sgModelTransformable );
 		}
-		else if (returnImage != null)
-		{
-			return ImageUtilities.createBufferedImage(returnImage, BufferedImage.TYPE_INT_ARGB);
+		java.awt.image.BufferedImage returnImage = takePicture(getThumbnailCameraOrientationForPerson(resource), width, height);
+		visualData.setSGParent( null );
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual :visualData.getSgVisuals() ) {
+			sgVisual.setParent( null );
 		}
-		else
-		{
-			return null;
-		}
+		return returnImage;
 	}
 	
 	public java.awt.image.BufferedImage createThumbnail(edu.cmu.cs.dennisc.scenegraph.Visual v) throws Exception {
