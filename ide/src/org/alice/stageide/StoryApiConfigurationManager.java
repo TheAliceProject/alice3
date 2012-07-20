@@ -87,18 +87,18 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Scene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Cylinder.class, new org.alice.stageide.icons.CylinderIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Cone.class, new org.alice.stageide.icons.ConeIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Disc.class, new org.alice.stageide.icons.DiscIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Sphere.class, new org.alice.stageide.icons.SphereIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Axes.class, new org.alice.stageide.icons.AxesIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.TextModel.class, new org.alice.stageide.icons.TextModelIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Billboard.class, new org.alice.stageide.icons.BillboardIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Ground.class, new org.alice.stageide.icons.GroundIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Scene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Cylinder.class, new org.alice.stageide.icons.CylinderIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Cone.class, new org.alice.stageide.icons.ConeIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Disc.class, new org.alice.stageide.icons.DiscIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Sphere.class, new org.alice.stageide.icons.SphereIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Axes.class, new org.alice.stageide.icons.AxesIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.TextModel.class, new org.alice.stageide.icons.TextModelIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Billboard.class, new org.alice.stageide.icons.BillboardIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Ground.class, new org.alice.stageide.icons.GroundIconFactory() );
 		
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Joint.class, new org.alice.stageide.icons.JointIconFactory() );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Camera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Joint.class, new org.alice.stageide.icons.JointIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Camera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 	}
 	@Override
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {

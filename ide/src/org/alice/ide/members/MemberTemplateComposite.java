@@ -63,12 +63,12 @@ public abstract class MemberTemplateComposite<V extends org.lgna.croquet.compone
 				org.lgna.croquet.icon.IconFactory rv = null;
 				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
 					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					rv = org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForField( thisFieldAccessFactory.getField() );
+					rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( thisFieldAccessFactory.getField() );
 				} 
 				if( rv != null ) {
 					//pass
 				} else {
-					rv = org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForType( instanceFactory.getValueType() );
+					rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( instanceFactory.getValueType() );
 				}
 				return rv;
 			} else {

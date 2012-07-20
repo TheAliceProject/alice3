@@ -58,7 +58,7 @@ public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				org.lgna.project.ast.AbstractType<?,?,?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 				if( type != null ) {
-					org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForType( type );
+					org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( type );
 					if( iconFactory != null ) {
 						javax.swing.Icon typeIcon = iconFactory.getIcon( size );
 						if( typeIcon != null ) {

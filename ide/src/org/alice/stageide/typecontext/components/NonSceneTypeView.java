@@ -66,7 +66,7 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 		String snapshotText = null;
 		javax.swing.Icon snapshotIcon = null;
 		if( nextValue != null ) {
-			org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForType( nextValue );
+			org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextValue );
 			if( iconFactory != null ) {
 				snapshotIcon = iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
 			}

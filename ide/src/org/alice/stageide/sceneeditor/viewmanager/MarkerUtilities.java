@@ -254,7 +254,7 @@ public class MarkerUtilities {
 	{
 		if (marker != null) {
 			org.lgna.story.Color markerColor = getColorForMarkerField(marker);
-			return org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForObjectMarker(markerColor);
+			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForObjectMarker(markerColor);
 		}
 		return null;
 	}
@@ -263,7 +263,7 @@ public class MarkerUtilities {
 	{
 		if (marker != null) {
 			org.lgna.story.Color markerColor = getColorForMarkerField(marker);
-			return org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForCameraMarker(markerColor);
+			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForCameraMarker(markerColor);
 		}
 		return null;
 	}
