@@ -47,7 +47,6 @@ package org.alice.ide.croquet.components;
  * @author Dennis Cosgrove
  */	
 public class InstanceFactoryPopupButton extends org.lgna.croquet.components.CustomItemStatePopupButton< org.alice.ide.instancefactory.InstanceFactory > {
-	public static final java.awt.Dimension DEFAULT_ICON_SIZE = new java.awt.Dimension( 40, 30 );
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
 		private org.alice.ide.instancefactory.InstanceFactory nextValue;
 		private void handleChanged( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
@@ -68,7 +67,7 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 			if( nextValue != null ) {
 				org.lgna.croquet.icon.IconFactory iconFactory = nextValue.getIconFactory();
 				if( iconFactory != null && iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) {
-					javax.swing.Icon icon = iconFactory.getIcon( DEFAULT_ICON_SIZE );
+					javax.swing.Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE );
 					if( icon != null ) {
 						this.addLineStartComponent( new org.lgna.croquet.components.Label( icon ) );
 					}

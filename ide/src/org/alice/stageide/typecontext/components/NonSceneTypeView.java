@@ -63,34 +63,12 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	}
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		this.typeLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( nextValue ) );
-		
-		java.awt.image.BufferedImage thumbnail = null;
 		String snapshotText = null;
 		javax.swing.Icon snapshotIcon = null;
 		if( nextValue != null ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > snapshotType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( nextValue );
-			
-			if( snapshotType != null ) {
-				if( snapshotType instanceof org.lgna.project.ast.JavaType ) {
-					org.lgna.project.ast.JavaType snapShotJavaType = (org.lgna.project.ast.JavaType)snapshotType;
-					thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(snapShotJavaType.getClassReflectionProxy().getReification());
-				}
-				if( thumbnail != null ) {
-					snapshotIcon = new javax.swing.ImageIcon(thumbnail);
-				} else {
-					snapshotIcon = org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getIcon( snapshotType );
-				}
-				//snapshotIcon = org.alice.stageide.gallerybrowser.ResourceManager.getLargeIconForType( snapshotType );
-				//snapshotText = snapshotType.toString();
-			} else {
-				org.lgna.project.ast.JavaField field = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( nextValue.getDeclaredConstructors().get( 0 ) );
-				if( field != null ) {
-					thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(field.getValueType().getClassReflectionProxy().getReification());
-					//snapshotText = field.toString();
-					if( thumbnail != null ) {
-						snapshotIcon = new javax.swing.ImageIcon(thumbnail);
-					}
-				}
+			org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForType( nextValue );
+			if( iconFactory != null ) {
+				snapshotIcon = iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
 			}
 		}
 		this.snapshotLabel.setText( snapshotText );
@@ -113,7 +91,7 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 	private static javax.swing.Icon BACK_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( NonSceneTypeView.class.getResource( "images/24/back.png" ) );
 	private final org.lgna.croquet.components.Label thumbnailLabel = new org.lgna.croquet.components.Label( 
-			new edu.cmu.cs.dennisc.javax.swing.icons.AlphaIcon( org.alice.stageide.icons.SceneIconFactory.getInstance().getIcon( org.alice.ide.croquet.components.InstanceFactoryPopupButton.DEFAULT_ICON_SIZE ), 0.5f )
+			new edu.cmu.cs.dennisc.javax.swing.icons.AlphaIcon( org.alice.stageide.icons.SceneIconFactory.getInstance().getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ), 0.5f )
 	);
 	private final org.lgna.croquet.components.Label typeIconLabel = new org.lgna.croquet.components.Label();
 	public ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation operation ) {
