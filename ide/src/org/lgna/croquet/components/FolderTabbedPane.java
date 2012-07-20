@@ -460,11 +460,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 	}
 	public void setHeaderLeadingComponent( JComponent< ? > component ) {
 		if( component != null ) {
-			if( component.isOpaque() ) {
-				//pass
-			} else {
-				component.setBackgroundColor( this.getBackgroundColor() );
-			}
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.innerHeaderPanel.addLineStartComponent( component );
 		} else {

@@ -40,50 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.javax.swing.icons;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropDownArrowIcon extends AbstractArrowIcon {
-	public DropDownArrowIcon( int size ) {
-		super( size );
+public abstract class CustomItemStatePopupButton<T> extends PopupButton {
+	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+		}
+		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+			CustomItemStatePopupButton.this.handleChanged( state, prevValue, nextValue, isAdjusting );
+		}
+	};
+	public CustomItemStatePopupButton( org.lgna.croquet.CustomItemState<T> itemState ) {
+		super( itemState.getCascadeRoot().getPopupPrepModel() );
 	}
-	protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
-		javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-		return button.getModel();
+	public org.lgna.croquet.CustomItemState<T> getCustomItemState() {
+		org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model = (org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T>)this.getModel();
+		org.lgna.croquet.CustomItemState.InternalRoot<T> root = (org.lgna.croquet.CustomItemState.InternalRoot<T>)model.getCascadeRoot();
+		return root.getCompletionModel();
 	}
-	public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-		javax.swing.ButtonModel buttonModel = this.getButtonModel( c );
-		java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-
-		java.awt.Paint fillPaint;
-		java.awt.Paint drawPaint;
-		if( buttonModel.isEnabled() ) {
-			if( buttonModel.isPressed() ) {
-				fillPaint = java.awt.Color.WHITE;
-				drawPaint = java.awt.Color.BLACK;
-			} else {
-				if( buttonModel.isRollover() || buttonModel.isArmed() ) {
-					fillPaint = java.awt.Color.GRAY;
-				} else {
-					fillPaint = java.awt.Color.BLACK;
-				}
-				drawPaint = null;
-			}
-		} else {
-			fillPaint = java.awt.Color.LIGHT_GRAY;
-			drawPaint = null;
-		}
-		if( fillPaint != null ) {
-			g2.setPaint( fillPaint );
-			g2.fill( path );
-		}
-		if( drawPaint != null ) {
-			g2.setPaint( drawPaint );
-			g2.draw( path );
-		}
+	
+	protected abstract void handleChanged( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting );
+	
+	@Override
+	protected void handleDisplayable() {
+		this.getCustomItemState().addAndInvokeValueListener( valueListener );
+		super.handleDisplayable();
+	}
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.getCustomItemState().removeValueListener( valueListener );
 	}
 }

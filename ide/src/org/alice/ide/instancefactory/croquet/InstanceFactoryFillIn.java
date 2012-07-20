@@ -106,10 +106,18 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 
 		javax.swing.Icon icon = this.value.getIconFactory().getIcon( org.alice.ide.croquet.components.InstanceFactoryDropDown.DEFAULT_ICON_SIZE );
+		javax.swing.JLabel label = new javax.swing.JLabel( icon );
+		
+		expressionPane.setAlignmentY( 0.5f );
+		label.setAlignmentY( 0.5f );
+		
 		javax.swing.JPanel rv = new javax.swing.JPanel();
-		rv.setLayout( new java.awt.BorderLayout() );
-		rv.add( new javax.swing.JLabel( icon ), java.awt.BorderLayout.LINE_START );
-		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
+//		rv.setLayout( new java.awt.BorderLayout() );
+//		rv.add( label, java.awt.BorderLayout.LINE_START );
+//		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
+		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
+		rv.add( label );
+		rv.add( expressionPane );
 		rv.setOpaque( false );
 		return rv;
 		
