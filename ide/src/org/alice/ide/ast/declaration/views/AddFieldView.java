@@ -47,7 +47,7 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public class AddFieldView extends AddDeclarationView<org.lgna.project.ast.UserField> {
-	private final org.lgna.croquet.components.Label typeIconView = new org.lgna.croquet.components.Label();
+	private final org.lgna.croquet.components.Label typeIconView = new org.lgna.croquet.components.Label( org.lgna.croquet.icon.EmptyIconFactory.SINGLETON.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
 	public AddFieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
 		super( composite );
 	}

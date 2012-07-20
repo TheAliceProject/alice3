@@ -70,6 +70,14 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
+	@Override
+	public boolean isValueComponentTypeDisplayed() {
+		return super.isValueComponentTypeDisplayed() && org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
+	}	
+	@Override
+	public boolean isInitializerDisplayed() {
+		return super.isInitializerDisplayed() && org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
+	}
 	protected static class EditCustomization {
 		private final java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private final java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

@@ -103,14 +103,6 @@ public abstract class AddFieldComposite extends AddDeclarationComposite< org.lgn
 	public org.lgna.project.ast.UserField getPreviewValue() {
 		return this.createField();
 	}
-	@Override
-	public boolean isValueComponentTypeDisplayed() {
-		return super.isValueComponentTypeDisplayed() && org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
-	}	
-	@Override
-	public boolean isInitializerDisplayed() {
-		return super.isInitializerDisplayed() && org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
-	}
 
 	protected abstract org.alice.ide.croquet.edits.ast.DeclareFieldEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field );
 	@Override
