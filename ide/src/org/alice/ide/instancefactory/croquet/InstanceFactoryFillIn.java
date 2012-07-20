@@ -105,7 +105,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		org.lgna.project.ast.Expression expression = this.value.createTransientExpression();
 		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 
-		javax.swing.Icon icon = this.value.getIconFactory().getIcon( org.alice.ide.croquet.components.InstanceFactoryDropDown.DEFAULT_ICON_SIZE );
+		javax.swing.Icon icon = this.value.getIconFactory().getIcon( org.alice.ide.croquet.components.InstanceFactoryPopupButton.DEFAULT_ICON_SIZE );
 		javax.swing.JLabel label = new javax.swing.JLabel( icon );
 		
 		expressionPane.setAlignmentY( 0.5f );
