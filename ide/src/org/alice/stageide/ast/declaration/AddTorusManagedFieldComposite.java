@@ -40,56 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail, SetOrientationRelativeToVehicle.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail, SetPositionRelativeToVehicle.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
-		//Room
-		SetFloorPaint.Detail, SetWallPaint.Detail, SetCeilingPaint.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere,Disc
-		SetRadius.Detail, 
-		//Torus
-		SetInnerRadius.Detail, SetOuterRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+public class AddTorusManagedFieldComposite extends AddModelManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddTorusManagedFieldComposite instance = new AddTorusManagedFieldComposite();
 	}
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
-			}
-		}
-		return defaultValue;
+	public static AddTorusManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> innerRadiusState = this.createInitialPropertyValueExpressionState( this.createKey( "innerRadiusState" ), 0.25, org.lgna.story.Torus.class, "setInnerRadius", Number.class, org.lgna.story.SetInnerRadius.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> outerRadiusState = this.createInitialPropertyValueExpressionState( this.createKey( "outerRadiusState" ), 0.5, org.lgna.story.Torus.class, "setOuterRadius", Number.class, org.lgna.story.SetOuterRadius.Detail[].class );
+	private AddTorusManagedFieldComposite() {
+		super( java.util.UUID.fromString( "c840fcdc-3a3e-4fd1-b0ad-a66c7e8fb2a8" ),	org.lgna.story.Torus.class );
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getInnerRadiusState() {
+		return this.innerRadiusState;
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getOuterRadiusState() {
+		return this.outerRadiusState;
 	}
 }

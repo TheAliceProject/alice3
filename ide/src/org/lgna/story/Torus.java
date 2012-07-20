@@ -40,56 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story;
+
+import org.lgna.project.annotations.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail, SetOrientationRelativeToVehicle.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail, SetPositionRelativeToVehicle.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
-		//Room
-		SetFloorPaint.Detail, SetWallPaint.Detail, SetCeilingPaint.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere,Disc
-		SetRadius.Detail, 
-		//Torus
-		SetInnerRadius.Detail, SetOuterRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+public class Torus extends Shape {
+	private final org.lgna.story.implementation.TorusImp implementation = new org.lgna.story.implementation.TorusImp( this );
+	@Override
+	/*package-private*/ org.lgna.story.implementation.TorusImp getImplementation() {
+		return this.implementation;
 	}
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
-			}
-		}
-		return defaultValue;
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getInnerRadius() {
+		return this.implementation.innerRadius.getValue();
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	@MethodTemplate()
+	public void setInnerRadius( Number innerRadius, SetInnerRadius.Detail... details ) {
+		this.implementation.innerRadius.animateValue( innerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getOuterRadius() {
+		return this.implementation.outerRadius.getValue();
+	}
+	@MethodTemplate()
+	public void setOuterRadius( Number outerRadius, SetOuterRadius.Detail... details ) {
+		this.implementation.outerRadius.animateValue( outerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

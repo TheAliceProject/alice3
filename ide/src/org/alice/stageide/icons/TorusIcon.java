@@ -40,56 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.story;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Duration implements
-		//Turnable
-		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail, SetOrientationRelativeToVehicle.Detail,
-		//MoveableTurnable
-		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail, SetPositionRelativeToVehicle.Detail,
-		Place.Detail,
-		//Visual
-		SetPaint.Detail, SetOpacity.Detail,
-		//Resizable
-		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
-		//JointedModel
-		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
-		//Room
-		SetFloorPaint.Detail, SetWallPaint.Detail, SetCeilingPaint.Detail,
-		//Billboard
-		SetBackPaint.Detail,
-		//Camera,
-		MoveAndOrientToAGoodVantagePointOf.Detail,
-		//Scene
-		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere,Disc
-		SetRadius.Detail, 
-		//Torus
-		SetInnerRadius.Detail, SetOuterRadius.Detail,
-		//Cone
-		SetBaseRadius.Detail, SetLength.Detail
-{
-	private static final double DEFAULT_VALUE = 1.0;
-	private final double value;
-	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+public class TorusIcon extends ShapeIcon {
+	public TorusIcon( java.awt.Dimension size ) {
+		super( size );
 	}
-	private static double getValue( Object[] details, double defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof Duration ) {
-				Duration duration = (Duration)detail;
-				return duration.value;
-			}
+	private static java.awt.geom.Ellipse2D.Float createEllipse( float portion, int width, int height ) {
+		float diameter = Math.min( width, height ) * portion;
+		float x = (width - diameter) / 2;
+		float y = (height - diameter) / 2;
+		return new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter);
+	}
+	private static void paint( java.awt.Graphics2D g2, float outerPortion, float innerPortion, int width, int height, java.awt.Paint fillPaint, java.awt.Paint outerDrawPaint, java.awt.Paint innerDrawPaint ) {
+		java.awt.geom.Ellipse2D outer = createEllipse( outerPortion, width, height );
+		java.awt.geom.Ellipse2D inner = createEllipse( innerPortion, width, height );
+		java.awt.geom.Area area = new java.awt.geom.Area( outer );
+		area.subtract( new java.awt.geom.Area( inner ) );
+		if( fillPaint != null ) {
+			g2.setPaint( fillPaint );
+			g2.fill( area );
 		}
-		return defaultValue;
+		if( outerDrawPaint != null ) {
+			g2.setPaint( outerDrawPaint );
+			g2.draw( outer );
+		}
+		if( innerDrawPaint != null ) {
+			g2.setPaint( innerDrawPaint );
+			g2.draw( inner );
+		}
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
-		return getValue( details, DEFAULT_VALUE );
+	
+	@Override
+	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		paint( g2, 1.0f, 0.5f, width, height, fillPaint, drawPaint, java.awt.Color.GRAY );
+		if( height > 64 ) {
+			paint( g2, 0.825f, 0.675f, width, height, new java.awt.Color( 255, 255, 255, 63 ), null, null );
+			paint( g2, 0.9f, 0.6f, width, height, new java.awt.Color( 255, 255, 255, 63 ), null, null );
+		} else {
+			paint( g2, 0.825f, 0.675f, width, height, new java.awt.Color( 255, 255, 255, 127 ), null, null );
+		}
 	}
 }

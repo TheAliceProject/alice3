@@ -51,10 +51,14 @@ public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
 		testCroquet.initialize( args );
 
 		org.lgna.croquet.components.FlowPanel flowPanel = new org.lgna.croquet.components.FlowPanel();
+		org.lgna.croquet.icon.IconFactory iconFactory = new org.alice.stageide.icons.TorusIconFactory(); 
 		for( org.lgna.croquet.icon.IconSize iconSize : org.lgna.croquet.icon.IconSize.values() ) {
-			javax.swing.Icon icon = new org.alice.stageide.icons.CylinderIconFactory().getIcon( iconSize.getSize() );
+			javax.swing.Icon icon = iconFactory.getIcon( iconSize.getSize() );
 			flowPanel.addComponent( new org.lgna.croquet.components.Label( icon ) );
 		}
+		flowPanel.addComponent( new org.lgna.croquet.components.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) ) );
+		flowPanel.addComponent( new org.lgna.croquet.components.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+
 		testCroquet.getFrame().getContentPanel().addCenterComponent( flowPanel );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
