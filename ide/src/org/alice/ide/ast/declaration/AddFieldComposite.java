@@ -122,4 +122,68 @@ public abstract class AddFieldComposite extends AddDeclarationComposite< org.lgn
 	protected boolean isNameAvailable( String name ) {
 		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, this.getDeclaringType() );
 	}
+	
+	protected org.lgna.project.ast.InstanceCreation getInstanceCreationFromInitializer() {
+		org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initializerState = this.getInitializerState();
+		if( initializerState != null ) {
+			org.lgna.project.ast.Expression expression = initializerState.getValue();
+			if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+				return (org.lgna.project.ast.InstanceCreation)expression;
+			}
+		}
+		return null;
+	}
+	protected java.lang.reflect.Field getFldFromInstanceCreationInitializer( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		if( instanceCreation != null ) {
+			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( instanceCreation );
+			if( argumentField != null ) {
+				java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
+				return fld;
+			}
+		}
+		return null;
+	}
+	
+	private String generateNameFromInitializer() {
+		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
+		if( instanceCreation != null ) {
+			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
+			if( fld != null ) {
+				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
+			} else {
+				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				org.lgna.project.ast.AbstractType< ?,?,? > abstractType = constructor.getDeclaringType();
+				String typeName = abstractType.getName();
+				if( typeName != null ) {
+					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
+				} else {
+					return "";
+				}
+			}
+		} else {
+			return "";
+		}
+	}
+	protected void updateNameTextField() {
+		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
+			String name = generateNameFromInitializer();
+			this.getNameState().setValueTransactionlessly( name );
+			this.getNameState().selectAll();
+//			javax.swing.JTextField jTextField = this.nameTextField.getAwtComponent();
+//			if( jTextField.getSelectionStart() == 0 && jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) {
+//				String name = generateNameFromInitializer();
+//				model.getNameState().setValue( name );
+//				this.nameTextField.requestFocus();
+//				this.nameTextField.selectAll();
+//				this.nameTextField.repaint();
+//			}
+		}
+	}
+	
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.updateNameTextField();
+	}
+	
 }
