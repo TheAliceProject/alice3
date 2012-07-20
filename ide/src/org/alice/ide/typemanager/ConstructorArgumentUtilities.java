@@ -46,6 +46,7 @@ package org.alice.ide.typemanager;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class ConstructorArgumentUtilities {
 	private ConstructorArgumentUtilities() {
 		throw new AssertionError();
