@@ -40,25 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.icon;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CachingIconFactory implements IconFactory {
-	private final java.util.Map<java.awt.Dimension,javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	protected java.util.Map<java.awt.Dimension,javax.swing.Icon> getMap() {
-		return this.map;
+public class SceneIcon extends org.lgna.croquet.icon.AbstractIcon {
+	public SceneIcon( java.awt.Dimension size ) {
+		super( size );
 	}
-	protected abstract javax.swing.Icon createIcon( java.awt.Dimension size );
-	public final javax.swing.Icon getIcon( java.awt.Dimension size ) {
-		javax.swing.Icon rv = this.map.get( size );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.createIcon( size );
-			this.map.put( size, rv );
+	private boolean isDirty = true;
+	private java.awt.image.BufferedImage image = null;
+	/*package-private*/ void markDirty() {
+		this.image = null;
+		this.isDirty = true;
+	}
+	@Override
+	protected void paintIcon( java.awt.Graphics2D g2 ) {
+		if( this.isDirty ) {
+			try {
+				this.image = org.alice.stageide.sceneeditor.ThumbnailGenerator.createThumbnail( this.getIconWidth(), this.getIconHeight() );
+			} catch( Throwable t ) {
+				this.image = null;
+				t.printStackTrace();
+			}
+//			if( this.image != null ) {
+//				this.image = edu.cmu.cs.dennisc.image.ImageUtilities.createAlphaMaskedImage( this.image, new edu.cmu.cs.dennisc.java.awt.Painter() {
+//					public void paint( java.awt.Graphics2D g2, int width, int height ) {
+//						final int N = 15;
+//						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+//						g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 1.0f/N ) );
+//						g2.setColor( java.awt.Color.BLACK );
+//						for( int i=0; i<N; i++ ) {
+//							g2.fillRoundRect( N-i, N-i, width-(N-i)*2+1, height-(N-i)*2+1, N-i, N-i );
+//						}
+//					}
+//				} );
+//			}
+			this.isDirty = false;
 		}
-		return rv;
+		if( this.image != null ) {
+			g2.drawImage( this.image, 0, 0, null );
+		} else {
+			int w = this.getIconWidth();
+			int h = this.getIconHeight()/2;
+			g2.setColor( java.awt.Color.BLUE );
+			g2.fillRect( 0, 0, w, h );
+			g2.setColor( java.awt.Color.GREEN );
+			g2.fillRect( 0, 0+h, w, h );
+		}
 	}
 }

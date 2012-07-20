@@ -368,7 +368,7 @@ public class ResourceManager {
 		return null;
 	}
 	
-	private static org.lgna.croquet.icon.IconFactory getRegisteredIconFactory( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public static org.lgna.croquet.icon.IconFactory getRegisteredIconFactory( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
 			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
 			if( mapTypeToIconFactory.containsKey( javaType ) ) {

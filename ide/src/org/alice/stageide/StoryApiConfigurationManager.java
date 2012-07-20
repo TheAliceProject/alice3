@@ -87,6 +87,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
+		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Scene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
 		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Cylinder.class, new org.alice.stageide.icons.CylinderIconFactory() );
 		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Cone.class, new org.alice.stageide.icons.ConeIconFactory() );
 		org.alice.stageide.gallerybrowser.ResourceManager.registerIconFactory( org.lgna.story.Disc.class, new org.alice.stageide.icons.DiscIconFactory() );

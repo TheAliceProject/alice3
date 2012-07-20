@@ -40,25 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.icon;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CachingIconFactory implements IconFactory {
-	private final java.util.Map<java.awt.Dimension,javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	protected java.util.Map<java.awt.Dimension,javax.swing.Icon> getMap() {
-		return this.map;
+public class SceneIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static SceneIconFactory instance = new SceneIconFactory();
 	}
-	protected abstract javax.swing.Icon createIcon( java.awt.Dimension size );
-	public final javax.swing.Icon getIcon( java.awt.Dimension size ) {
-		javax.swing.Icon rv = this.map.get( size );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.createIcon( size );
-			this.map.put( size, rv );
+	public static SceneIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SceneIconFactory() {
+	}
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new SceneIcon( size );
+	}
+	
+	public void markAllIconsDirty() {
+		for( javax.swing.Icon icon : this.getMap().values() ) {
+			if( icon instanceof SceneIcon ) {
+				SceneIcon sceneIcon = (SceneIcon)icon;
+				sceneIcon.markDirty();
+			}
 		}
-		return rv;
 	}
 }
