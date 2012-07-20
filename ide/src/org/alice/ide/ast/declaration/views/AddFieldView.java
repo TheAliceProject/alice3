@@ -47,6 +47,7 @@ package org.alice.ide.ast.declaration.views;
  * @author Dennis Cosgrove
  */
 public class AddFieldView extends AddDeclarationView<org.lgna.project.ast.UserField> {
+	private final org.lgna.croquet.components.Label typeIconView = new org.lgna.croquet.components.Label();
 	public AddFieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
 		super( composite );
 	}
@@ -57,7 +58,22 @@ public class AddFieldView extends AddDeclarationView<org.lgna.project.ast.UserFi
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
 	}
 	@Override
+	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
+			.center( super.createPageStartComponent() )
+			.lineEnd( this.typeIconView )
+		.build();
+		return rv;
+	}
+	@Override
 	protected boolean isPreviewDesired() {
 		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
+	}
+	@Override
+	public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?,?,?> nextType ) {
+		super.handleValueTypeChanged( nextType );
+		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextType );
+		this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+		this.typeIconView.revalidateAndRepaint();
 	}
 }
