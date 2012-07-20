@@ -112,60 +112,9 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 
 class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 	private static javax.swing.Icon BACK_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( NonSceneTypeView.class.getResource( "images/24/back.png" ) );
-//	private static class ThumbnailIcon implements javax.swing.Icon {
-//		private static final int WIDTH = 64;
-//		private static final int HEIGHT = (WIDTH*3)/4;
-//
-//		private boolean isDirty = true;
-//		private java.awt.image.BufferedImage image = null;
-//		public void markDirty() {
-//			this.image = null;
-//			this.isDirty = true;
-//		}
-//		public int getIconWidth() {
-//			return WIDTH;
-//		}
-//		public int getIconHeight() {
-//			return HEIGHT;
-//		}
-//		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-//			if( this.isDirty ) {
-//				//Thread.dumpStack();
-//				try {
-//					this.image = org.alice.stageide.sceneeditor.ThumbnailGenerator.createThumbnail( WIDTH, HEIGHT );
-//				} catch( Throwable t ) {
-//					this.image = null;
-//					t.printStackTrace();
-//				}
-//				if( this.image != null ) {
-//					this.image = edu.cmu.cs.dennisc.image.ImageUtilities.createAlphaMaskedImage( this.image, new edu.cmu.cs.dennisc.java.awt.Painter() {
-//						public void paint( java.awt.Graphics2D g2, int width, int height ) {
-//							final int N = 15;
-//							g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-//							g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 1.0f/N ) );
-//							g2.setColor( java.awt.Color.BLACK );
-//							for( int i=0; i<N; i++ ) {
-//								g2.fillRoundRect( N-i, N-i, width-(N-i)*2+1, height-(N-i)*2+1, N-i, N-i );
-//							}
-//						}
-//					} );
-//				}
-//				this.isDirty = false;
-//			}
-//			if( this.image != null ) {
-//				g.drawImage( this.image, 0, 0, null );
-//			} else {
-//				int w = this.getIconWidth();
-//				int h = this.getIconHeight()/2;
-//				g.setColor( java.awt.Color.BLUE );
-//				g.fillRect( x, y, w, h );
-//				g.setColor( java.awt.Color.GREEN );
-//				g.fillRect( x, y+h, w, h );
-//			}
-//		}
-//	};
-
-	private final org.lgna.croquet.components.Label thumbnailLabel = new org.lgna.croquet.components.Label( org.alice.stageide.icons.SceneIconFactory.getInstance().getIcon( org.alice.ide.croquet.components.InstanceFactoryPopupButton.DEFAULT_ICON_SIZE ) );
+	private final org.lgna.croquet.components.Label thumbnailLabel = new org.lgna.croquet.components.Label( 
+			new edu.cmu.cs.dennisc.javax.swing.icons.AlphaIcon( org.alice.stageide.icons.SceneIconFactory.getInstance().getIcon( org.alice.ide.croquet.components.InstanceFactoryPopupButton.DEFAULT_ICON_SIZE ), 0.5f )
+	);
 	private final org.lgna.croquet.components.Label typeIconLabel = new org.lgna.croquet.components.Label();
 	public ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation operation ) {
 		super( operation );
@@ -173,9 +122,9 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 		jButton.setLayout( new javax.swing.BoxLayout( jButton, javax.swing.BoxLayout.LINE_AXIS ) );
 		this.internalAddComponent( new org.lgna.croquet.components.Label( BACK_ICON ) );
 		this.internalAddComponent( new org.lgna.croquet.components.Label( "back to:" ) );
-		this.internalAddComponent( this.typeIconLabel );
 		this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.internalAddComponent( this.thumbnailLabel );
+		this.internalAddComponent( this.typeIconLabel );
 	}
 	@Override
 	protected void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
@@ -185,6 +134,7 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 		//todo:
 		org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
 		this.typeIconLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( sceneType ) );
+		this.revalidateAndRepaint();
 	}
 }
 
@@ -194,9 +144,6 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPanel {
 	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
 		super( composite );
-//		org.lgna.croquet.components.Button button = org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance().createButton();
-//		button.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-//		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.setSouthWestComponent( new ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance() ) );
 		this.setNorthWestComponent( new SelectedTypeView() );
 		this.setNorthEastComponent( org.alice.stageide.croquet.models.run.RunOperation.getInstance().createButton() );
