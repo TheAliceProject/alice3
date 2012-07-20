@@ -271,35 +271,37 @@ public class IconFactoryManager {
 		} else {
 			ResourceDeclaration resourceDeclaration = null;
 			org.lgna.project.ast.AbstractConstructor constructor0 = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0( type );
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor0.getRequiredParameters();
-			switch( parameters.size() ) {
-			case 0:
-				if( constructor0 instanceof org.lgna.project.ast.UserConstructor ) {
-					org.lgna.project.ast.NamedUserConstructor userConstructor0 = (org.lgna.project.ast.NamedUserConstructor)constructor0;
-					org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = userConstructor0.body.getValue().constructorInvocationStatement.getValue();
-					resourceDeclaration = createResourceDeclarationFromRequiredArguments( constructorInvocationStatement.requiredArguments );
-				}
-				break;
-			case 1:
-				org.lgna.project.ast.AbstractParameter parameter0 = parameters.get( 0 );
-				org.lgna.project.ast.AbstractType<?,?,?> parameter0Type = parameter0.getValueType();
-				if( parameter0Type != null ) {
-					if( parameter0Type.isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
-						Class<? extends org.lgna.story.resources.ModelResource> cls = (Class<? extends org.lgna.story.resources.ModelResource>)parameter0Type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
-						resourceDeclaration = new ResourceType( cls );
+			if( constructor0 != null ) {
+				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor0.getRequiredParameters();
+				switch( parameters.size() ) {
+				case 0:
+					if( constructor0 instanceof org.lgna.project.ast.UserConstructor ) {
+						org.lgna.project.ast.NamedUserConstructor userConstructor0 = (org.lgna.project.ast.NamedUserConstructor)constructor0;
+						org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = userConstructor0.body.getValue().constructorInvocationStatement.getValue();
+						resourceDeclaration = createResourceDeclarationFromRequiredArguments( constructorInvocationStatement.requiredArguments );
 					}
+					break;
+				case 1:
+					org.lgna.project.ast.AbstractParameter parameter0 = parameters.get( 0 );
+					org.lgna.project.ast.AbstractType<?,?,?> parameter0Type = parameter0.getValueType();
+					if( parameter0Type != null ) {
+						if( parameter0Type.isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
+							Class<? extends org.lgna.story.resources.ModelResource> cls = (Class<? extends org.lgna.story.resources.ModelResource>)parameter0Type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+							resourceDeclaration = new ResourceType( cls );
+						}
+					}
+					break;
 				}
-				break;
-			}
-			if( resourceDeclaration != null ) {
-				iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
-				if( iconFactory != null ) {
-					//pass
-				} else {
-					iconFactory = resourceDeclaration.createIconFactory();
-					mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
+				if( resourceDeclaration != null ) {
+					iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
+					if( iconFactory != null ) {
+						//pass
+					} else {
+						iconFactory = resourceDeclaration.createIconFactory();
+						mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
+					}
+					return iconFactory;
 				}
-				return iconFactory;
 			}
 		}
 		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
