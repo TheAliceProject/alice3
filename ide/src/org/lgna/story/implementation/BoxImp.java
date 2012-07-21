@@ -45,66 +45,37 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class TorusImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Torus sgTorus = new edu.cmu.cs.dennisc.scenegraph.Torus();
-	private final org.lgna.story.Torus abstraction;
-	
-	private static final double MINIMUM_VALUE = 0.01; //todo
-	public final DoubleProperty innerRadius = new DoubleProperty( TorusImp.this ) {
-		private double value = 0.25;
-		@Override
-		public Double getValue() {
-			return this.value;
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			this.value = value;
-			double outerRadius = TorusImp.this.outerRadius.getValue();
-			double minorDiameter = Math.max( outerRadius - value, MINIMUM_VALUE );
-			double minorRadius = minorDiameter * 0.5;
-			double majorRadius = Math.max( outerRadius - minorRadius, MINIMUM_VALUE );
-			sgTorus.minorRadius.setValue( minorRadius );
-			sgTorus.majorRadius.setValue( majorRadius );
-		}
-	};
-	public final DoubleProperty outerRadius = new DoubleProperty( TorusImp.this ) {
-		private double value = 0.5;
-		@Override
-		public Double getValue() {
-			return this.value;
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			this.value = value;
-			double majorRadius = Math.max( value - sgTorus.minorRadius.getValue(), MINIMUM_VALUE );
-			sgTorus.majorRadius.setValue( majorRadius );
-		}
-	};
-
-	public TorusImp( org.lgna.story.Torus abstraction ) {
-		this.sgTorus.majorRadius.setValue( 0.375 );
-		this.sgTorus.minorRadius.setValue( 0.125 );
+public class BoxImp extends ShapeImp {
+	private final edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
+	private final org.lgna.story.Box abstraction;
+	public BoxImp( org.lgna.story.Box abstraction ) {
 		this.abstraction = abstraction;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgTorus } );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgBox } );
+		this.sgBox.yMinimum.setValue( 0.0 );
+		this.sgBox.yMaximum.setValue( 1.0 );
 	}
 	@Override
-	public org.lgna.story.Torus getAbstraction() {
+	public org.lgna.story.Box getAbstraction() {
 		return this.abstraction;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
-		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgTorus.majorRadius, this.sgTorus.minorRadius };
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgBox.xMaximum, this.sgBox.yMaximum, this.sgBox.zMaximum };
 	}
 	@Override
 	public Resizer[] getResizers() {
-		return new Resizer[] { Resizer.XZ_PLANE, Resizer.Y_AXIS };
+		return new Resizer[] { Resizer.UNIFORM, Resizer.X_AXIS, Resizer.Y_AXIS, Resizer.Z_AXIS };
 	}
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
-		if( resizer == Resizer.XZ_PLANE ) {
-			return this.outerRadius.getValue();
+		if( resizer == Resizer.UNIFORM ) {
+			return this.sgBox.yMaximum.getValue();
+		} else if( resizer == Resizer.X_AXIS ) {
+			return this.sgBox.xMaximum.getValue();
 		} else if( resizer == Resizer.Y_AXIS ) {
-			return this.sgTorus.minorRadius.getValue();
+			return this.sgBox.yMaximum.getValue();
+		} else if( resizer == Resizer.Z_AXIS ) {
+			return this.sgBox.zMaximum.getValue();
 		} else {
 			assert false : resizer;
 			return Double.NaN;
@@ -112,12 +83,32 @@ public class TorusImp extends ShapeImp {
 	}
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
-		if( resizer == Resizer.XZ_PLANE ) {
-			this.outerRadius.setValue( value );
-		} else if( resizer == Resizer.Y_AXIS ) {
-			this.sgTorus.minorRadius.setValue( value );
+		if( value > 0.0 ) {
+			if( resizer == Resizer.UNIFORM ) {
+				double prevValue = this.sgBox.yMaximum.getValue();
+				double ratio = value / prevValue;
+				double x = this.sgBox.xMaximum.getValue() * ratio;
+				double z = this.sgBox.zMaximum.getValue() * ratio;
+				
+				this.sgBox.yMaximum.setValue( value );
+				this.sgBox.xMaximum.setValue( x );
+				this.sgBox.xMinimum.setValue( -x );
+				this.sgBox.zMaximum.setValue( z );
+				this.sgBox.zMinimum.setValue( -z );
+				
+			} else if( resizer == Resizer.X_AXIS ) {
+				this.sgBox.xMaximum.setValue( value );
+				this.sgBox.xMinimum.setValue( -value );
+			} else if( resizer == Resizer.Y_AXIS ) {
+				this.sgBox.yMaximum.setValue( value );
+			} else if( resizer == Resizer.Z_AXIS ) {
+				this.sgBox.zMaximum.setValue( value );
+				this.sgBox.zMinimum.setValue( -value );
+			} else {
+				assert false : resizer;
+			}
 		} else {
-			assert false : resizer;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, value );
 		}
 	}
 	
@@ -129,7 +120,12 @@ public class TorusImp extends ShapeImp {
 	
 	@Override
 	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "setSize", size, this );
-		this.outerRadius.setValue( size.x * .5 );
+		double x = size.x * 0.5;
+		double z = size.z * 0.5;
+		this.sgBox.xMinimum.setValue( -x );
+		this.sgBox.xMaximum.setValue( +x );
+		this.sgBox.yMaximum.setValue( size.y );
+		this.sgBox.zMinimum.setValue( -z );
+		this.sgBox.zMaximum.setValue( +z );
 	}
 }

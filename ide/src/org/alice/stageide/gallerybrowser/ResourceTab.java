@@ -105,6 +105,9 @@ public class ResourceTab extends GalleryTab {
 				
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation().createButton() );
+
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
 				
 				for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
 					if( awtComponent instanceof javax.swing.JButton ) {

@@ -96,6 +96,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Axes.class, new org.alice.stageide.icons.AxesIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.TextModel.class, new org.alice.stageide.icons.TextModelIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Billboard.class, new org.alice.stageide.icons.BillboardIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Box.class, new org.alice.stageide.icons.BoxIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Ground.class, new org.alice.stageide.icons.GroundIconFactory() );
 		
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Joint.class, new org.alice.stageide.icons.JointIconFactory() );

@@ -40,33 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
-	protected static void drawLine( java.awt.Graphics2D g2, float x0, float y0, float x1, float y1 ) {
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo( x0, y0 );
-		path.lineTo( x1, y1 );
-		g2.draw( path );
-	}
-
-	private static final int PAD = 2;
-	protected static final java.awt.Color FILL_PAINT = new java.awt.Color( 191, 191, 255 );
-	public ShapeIcon( java.awt.Dimension size ) {
-		super( size );
-	}
-	protected abstract void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
+public class Box extends Shape {
+	private final org.lgna.story.implementation.BoxImp implementation = new org.lgna.story.implementation.BoxImp( this );
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2 ) {
-		int xOffset = PAD;
-		int yOffset = PAD;
-		int width = this.getIconWidth()-PAD-PAD;
-		int height = this.getIconHeight()-PAD-PAD;
-		g2.translate( xOffset, yOffset );
-		this.paintIcon( g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
-		g2.translate( -xOffset, -yOffset );
+	/*package-private*/ org.lgna.story.implementation.BoxImp getImplementation() {
+		return this.implementation;
 	}
 }

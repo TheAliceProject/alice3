@@ -40,33 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
-	protected static void drawLine( java.awt.Graphics2D g2, float x0, float y0, float x1, float y1 ) {
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo( x0, y0 );
-		path.lineTo( x1, y1 );
-		g2.draw( path );
+public class AddBoxManagedFieldComposite extends AddModelManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddBoxManagedFieldComposite instance = new AddBoxManagedFieldComposite();
 	}
-
-	private static final int PAD = 2;
-	protected static final java.awt.Color FILL_PAINT = new java.awt.Color( 191, 191, 255 );
-	public ShapeIcon( java.awt.Dimension size ) {
-		super( size );
+	public static AddBoxManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	protected abstract void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
-	@Override
-	protected void paintIcon( java.awt.Graphics2D g2 ) {
-		int xOffset = PAD;
-		int yOffset = PAD;
-		int width = this.getIconWidth()-PAD-PAD;
-		int height = this.getIconHeight()-PAD-PAD;
-		g2.translate( xOffset, yOffset );
-		this.paintIcon( g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
-		g2.translate( -xOffset, -yOffset );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> widthState = this.createInitialPropertyValueExpressionState( this.createKey( "widthState" ), 1.0, org.lgna.story.Model.class, "setWidth", Number.class, org.lgna.story.SetWidth.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> heightState = this.createInitialPropertyValueExpressionState( this.createKey( "heightState" ), 1.0, org.lgna.story.Model.class, "setHeight", Number.class, org.lgna.story.SetHeight.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> depthState = this.createInitialPropertyValueExpressionState( this.createKey( "depthState" ), 1.0, org.lgna.story.Model.class, "setDepth", Number.class, org.lgna.story.SetDepth.Detail[].class );
+	private AddBoxManagedFieldComposite() {
+		super( java.util.UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ),	org.lgna.story.Box.class );
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getWidthState() {
+		return this.widthState;
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getHeightState() {
+		return this.heightState;
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getDepthState() {
+		return this.depthState;
 	}
 }
