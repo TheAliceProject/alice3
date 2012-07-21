@@ -81,6 +81,11 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	private static void addPrimitiveToWrapper( Class<?> primitiveCls, Class<?> wrapperCls ) {
 		mapPrimitiveToWrapper.put( JavaType.getInstance( primitiveCls ), JavaType.getInstance( wrapperCls ) );
 	}
+	
+	public static boolean isWrapperType( AbstractType<?,?,?> type ) {
+		return mapPrimitiveToWrapper.containsValue( type );
+	}
+	
 	/*package-private*/ static AbstractType< ?,?,? > getWrapperTypeIfNecessary( AbstractType< ?,?,? > type ) {
 		if( type instanceof JavaType ) {
 			JavaType javaType = (JavaType)type;

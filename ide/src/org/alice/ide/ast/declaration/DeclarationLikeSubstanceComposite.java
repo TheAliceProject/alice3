@@ -289,11 +289,27 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			return "\"" + declarationName + "\" is not a valid " + this.nameState.getSidekickLabel().getText().replaceAll( ":", "" );
 		}
 	}
+	private boolean isNullAllowedForInitializerUnderAnyCircumstances() {
+		org.lgna.project.ast.AbstractType<?,?,?> type = this.getValueType();
+		if( type != null ) {
+			if( type.isArray() ) {
+				return false;
+			} else {
+				if( type.isPrimitive() || org.lgna.project.ast.JavaType.isWrapperType( type ) ) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		} else {
+			return false;
+		}
+	}
 	protected boolean isNullAllowedForInitializer() {
 		return false;
 	}
 	protected String getInitializerExplanation( org.lgna.project.ast.Expression initializer ) {
-		if( initializer != null || this.isNullAllowedForInitializer() ) {
+		if( initializer != null || ( this.isNullAllowedForInitializerUnderAnyCircumstances() && this.isNullAllowedForInitializer() ) ) {
 			return null;
 		} else {
 			return this.initializerState.getSidekickLabel().getText().replaceAll( ":", "" ) + " must be set";
@@ -404,8 +420,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 
 	
+	protected String getInitialNameValue() {
+		return this.details.nameInitialValue;
+	}
+	
 	@Override
-	public void handlePreActivation() {
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( this.valueComponentTypeState != null ) {
 			this.valueComponentTypeState.setValueTransactionlessly( this.getInitialValueComponentType() );
 		}
@@ -413,7 +433,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			this.valueIsArrayTypeState.setValueTransactionlessly( this.details.valueIsArrayTypeInitialValue );
 		}
 		if( this.nameState != null ) {
-			this.nameState.setValueTransactionlessly( this.details.nameInitialValue );
+			this.nameState.setValueTransactionlessly( this.getInitialNameValue() );
 		}
 		if( this.initializerState != null ) {
 			//todo
@@ -430,11 +450,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		this.mapTypeToInitializer.clear();
 
 		this.getView().handleValueTypeChanged( this.getValueType() );
-		super.handlePreActivation();
+		super.handlePreShowDialog( step );
 	}
+	
 	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
 		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
 			if( this.isValueIsArrayTypeEditable() ) {
 				this.valueIsArrayTypeState.removeValueListener( this.isArrayValueTypeListener );

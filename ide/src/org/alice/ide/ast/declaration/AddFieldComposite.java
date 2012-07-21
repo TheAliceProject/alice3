@@ -156,26 +156,28 @@ public abstract class AddFieldComposite extends AddDeclarationComposite< org.lgn
 			return "";
 		}
 	}
-	protected void updateNameTextField() {
-		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
-			String name = generateNameFromInitializer();
-			this.getNameState().setValueTransactionlessly( name );
-			this.getNameState().selectAll();
-//			javax.swing.JTextField jTextField = this.nameTextField.getAwtComponent();
-//			if( jTextField.getSelectionStart() == 0 && jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) {
-//				String name = generateNameFromInitializer();
-//				model.getNameState().setValue( name );
-//				this.nameTextField.requestFocus();
-//				this.nameTextField.selectAll();
-//				this.nameTextField.repaint();
-//			}
-		}
-	}
+//	protected void updateNameTextField() {
+//		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
+//			String name = generateNameFromInitializer();
+//			this.getNameState().setValueTransactionlessly( name );
+//			this.getNameState().selectAll();
+////			javax.swing.JTextField jTextField = this.nameTextField.getAwtComponent();
+////			if( jTextField.getSelectionStart() == 0 && jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) {
+////				String name = generateNameFromInitializer();
+////				model.getNameState().setValue( name );
+////				this.nameTextField.requestFocus();
+////				this.nameTextField.selectAll();
+////				this.nameTextField.repaint();
+////			}
+//		}
+//	}
 	
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.updateNameTextField();
+	protected java.lang.String getInitialNameValue() {
+		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
+			return generateNameFromInitializer();
+		} else {
+			return super.getInitialNameValue();
+		}
 	}
-	
 }
