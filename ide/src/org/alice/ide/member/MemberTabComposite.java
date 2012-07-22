@@ -45,7 +45,7 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTabComposite extends org.lgna.croquet.TabComposite<org.alice.ide.member.views.MemberTabView> {
+public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.member.views.MemberTabView> {
 	private final org.alice.ide.members.filters.MemberFilter memberFilter;
 	public MemberTabComposite( java.util.UUID migrationId, org.alice.ide.members.filters.MemberFilter memberFilter ) {
 		super( migrationId );

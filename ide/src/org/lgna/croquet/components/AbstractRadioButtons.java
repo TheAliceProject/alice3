@@ -43,22 +43,15 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/ class RadioButtonItemDetails<E> extends ItemDetails<E, RadioButtonItemDetails<E>, AbstractRadioButtons<E>> {
-	public RadioButtonItemDetails( AbstractRadioButtons< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRadioButtons< E > extends ItemSelectablePanel< E, RadioButtonItemDetails<E> > {
+public abstract class AbstractRadioButtons< E > extends ItemSelectablePanel< E, ItemDetails<E> > {
 	/*package-private*/ AbstractRadioButtons( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
-	protected abstract BooleanStateButton<?> createBooleanStateButton( E item, org.lgna.croquet.BooleanState booleanState );
 	@Override
-	protected final RadioButtonItemDetails<E> createItemDetails( E item, org.lgna.croquet.BooleanState booleanState ) {
-		return new RadioButtonItemDetails<E>( this, item, this.createBooleanStateButton( item, booleanState ) );
-	};
+	protected final ItemDetails<E> createItemDetails( E item ) {
+		return new ItemDetails<E>( this.getModel(), item, this );
+	}
 }

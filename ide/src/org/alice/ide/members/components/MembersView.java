@@ -76,7 +76,7 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		} else {
 			tabState = org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance();
 		}
-		org.lgna.croquet.components.AbstractTabbedPane<?,?,?> tabbedPane = tabState.createTabbedPane();
+		org.lgna.croquet.components.AbstractTabbedPane<?,?> tabbedPane = tabState.createTabbedPane();
 
 		this.addCenterComponent( tabbedPane );
 	}

@@ -43,38 +43,40 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/ class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite< ? >> extends TabItemDetails<E, ToolPaletteTabItemDetails<E>, ToolPaletteTabbedPane<E>> {
-	public ToolPaletteTabItemDetails( ToolPaletteTabbedPane< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, ScrollPane scrollPane ) {
-		super( panel, item, button, scrollPane );
+/*package-private*/ class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite< ? >> extends TabItemDetails<E> {
+	private final ToolPaletteTabbedPane< E > toolPaletteTabbedPane;
+	public ToolPaletteTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, ToolPaletteTabbedPane< E > toolPaletteTabbedPane, ScrollPane scrollPane ) {
+		super( state, item, toolPaletteTabbedPane, scrollPane );
+		this.toolPaletteTabbedPane = toolPaletteTabbedPane;
 	}
 	@Override
 	public void setSelected(boolean isSelected) {
 		super.setSelected(isSelected);
-		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.getPanel().getAllItemDetails() ) {
+		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.toolPaletteTabbedPane.getAllItemDetails() ) {
 			tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
 		}
-		this.getPanel().revalidateAndRepaint();
+		this.toolPaletteTabbedPane.revalidateAndRepaint();
 	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>, ToolPaletteTabbedPane<E>> {
+public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>> {
 	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
 
 	@Override
-	protected BooleanStateButton< ? extends javax.swing.AbstractButton > createTitleButton( org.lgna.croquet.BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
-		return new ToolPaletteTitle( booleanState );
+	protected BooleanStateButton< ? extends javax.swing.AbstractButton > createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
+		return new ToolPaletteTitle( itemSelectedState );
 	}
 	@Override
-	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, ScrollPane scrollPane ) {
+	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item, ScrollPane scrollPane ) {
 		if( scrollPane != null ) {
 			scrollPane.setVisible( false );
 		}
-		return new ToolPaletteTabItemDetails<E>( this, item, button, scrollPane );
+		return new ToolPaletteTabItemDetails<E>( this.getModel(), item, this, scrollPane );
 	};
 	
 	@Override

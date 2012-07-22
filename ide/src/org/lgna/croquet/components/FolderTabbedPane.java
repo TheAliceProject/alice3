@@ -49,11 +49,13 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 
-/*package-private*/ class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite< ? >> extends TabItemDetails<E, FolderTabItemDetails<E>, FolderTabbedPane<E>> {
+/*package-private*/ class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite< ? >> extends TabItemDetails<E> {
 	private final CardPanel.Key cardPanelKey;
-	public FolderTabItemDetails( FolderTabbedPane< E > panel, E item, BooleanStateButton< ? extends javax.swing.AbstractButton > button, ScrollPane scrollPane ) {
-		super( panel, item, button, scrollPane );
-		this.cardPanelKey = panel.getCardPanel().createKey( this.getRootComponent(), this.getTabId() );
+	private final FolderTabbedPane< E > folderTabbedPane;
+	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane< E > folderTabbedPane, ScrollPane scrollPane ) {
+		super( state, item, folderTabbedPane, scrollPane );
+		this.folderTabbedPane = folderTabbedPane;
+		this.cardPanelKey = folderTabbedPane.getCardPanel().createKey( this.getRootComponent(), this.getTabId() );
 	}
 	public CardPanel.Key getCardPanelKey() {
 		return this.cardPanelKey;
@@ -62,8 +64,8 @@ import org.lgna.croquet.Operation;
 	public void setSelected(boolean isSelected) {
 		super.setSelected(isSelected);
 		if( isSelected ) {
-			this.getPanel().getCardPanel().showKey( this.cardPanelKey );
-			this.getPanel().getCardPanel().revalidateAndRepaint();
+			this.folderTabbedPane.getCardPanel().showKey( this.cardPanelKey );
+			this.folderTabbedPane.getCardPanel().revalidateAndRepaint();
 		}
 	}
 }
@@ -71,7 +73,7 @@ import org.lgna.croquet.Operation;
 /**
  * @author Dennis Cosgrove
  */
-public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane< E, FolderTabItemDetails<E>, FolderTabbedPane<E> > {
+public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane< E, FolderTabItemDetails<E> > {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
@@ -519,12 +521,12 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 	}
 
 	@Override
-	protected BooleanStateButton< ? extends javax.swing.AbstractButton > createTitleButton( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
-		return new FolderTabTitle( booleanState, closeButtonActionListener );
+	protected BooleanStateButton< ? extends javax.swing.AbstractButton > createTitleButton( E item, BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
+		return new FolderTabTitle( itemSelectedState, closeButtonActionListener );
 	}
 	@Override
-	protected FolderTabItemDetails<E> createTabItemDetails( E item, BooleanStateButton< ? extends javax.swing.AbstractButton > titleButton, ScrollPane scrollPane ) {
-		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this, item, titleButton, scrollPane );
+	protected FolderTabItemDetails<E> createTabItemDetails( E item, ScrollPane scrollPane ) {
+		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this.getModel(), item, this, scrollPane );
 		rv.getRootComponent().setVisible( false );
 		return rv;
 	};

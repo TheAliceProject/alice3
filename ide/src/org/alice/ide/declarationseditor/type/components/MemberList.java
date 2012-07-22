@@ -43,19 +43,10 @@
 
 package org.alice.ide.declarationseditor.type.components;
 
-/*package-private*/ class MemberItemDetails<E> extends org.lgna.croquet.components.ItemDetails<E,MemberItemDetails<E>,MemberList<E>> {
-	public MemberItemDetails( MemberList<E> panel, E item, org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > button ) {
-		super( panel, item, button );
-	}
-	public org.lgna.croquet.components.Component< ? > getComponent() {
-		return this.getButton();
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSelectablePanel< E, MemberItemDetails<E> > {
+public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSelectablePanel< E, org.lgna.croquet.components.ItemDetails<E> > {
 	protected final float NAME_FONT_SCALE = 1.5f;
 	protected class MemberButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > {
 		public MemberButton( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.JComponent< ? > lineStart, org.lgna.croquet.components.JComponent< ? > center, org.lgna.croquet.components.JComponent< ? > lineEnd ) {
@@ -137,22 +128,29 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 	protected abstract org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( E item );
 	
 	@Override
-	protected final MemberItemDetails<E> createItemDetails(E item, org.lgna.croquet.BooleanState booleanState) {
-		MemberButton memberButton = new MemberButton( booleanState,
+	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
+		MemberButton memberButton = new MemberButton( itemSelectedState,
 				this.createButtonLineStart( item ),
 				this.createButtonCenter( item ),
 				this.createButtonLineEnd( item )
 		);
-		MemberItemDetails<E> rv = new MemberItemDetails< E >( this, item, memberButton );
-		rv.getComponent().setVisible( false );
-		this.pageAxisPanel.addComponent( rv.getComponent() );
+		return memberButton;
+	}
+	@Override
+	protected final org.lgna.croquet.components.ItemDetails<E> createItemDetails(E item) {
+		org.lgna.croquet.components.ItemDetails<E> rv = new org.lgna.croquet.components.ItemDetails<E>( this.getModel(), item, this );
+		
+		org.lgna.croquet.components.AbstractButton<?,?> button = rv.getButton();
+		//button.getAwtComponent().removeAll();
+		button.setVisible( false );
+		this.pageAxisPanel.addComponent( button );
 		return rv;
 	}
 
 	@Override
 	protected void removeAllDetails() {
-		for( MemberItemDetails<E> details : this.getAllItemDetails() ) {
-			details.getComponent().setVisible( false );
+		for( org.lgna.croquet.components.ItemDetails<E> details : this.getAllItemDetails() ) {
+			details.getButton().setVisible( false );
 		}
 	}
 
@@ -162,14 +160,14 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 	protected void addPrologue( int count ) {
 		//this.pageAxisPanel.internalRemoveAllComponents();
 		this.index = 0;
-		for( MemberItemDetails<E> details : this.getAllItemDetails() ) {
-			details.getComponent().setVisible( false );
+		for( org.lgna.croquet.components.ItemDetails<E> details : this.getAllItemDetails() ) {
+			details.getButton().setVisible( false );
 		}
 	}
 	@Override
-	protected void addItem( MemberItemDetails<E> itemDetails ) {
+	protected void addItem( org.lgna.croquet.components.ItemDetails<E> details ) {
 		this.index++;
-		itemDetails.getComponent().setVisible( true );
+		details.getButton().setVisible( true );
 	}
 	@Override
 	protected void addEpilogue() {

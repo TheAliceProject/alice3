@@ -165,19 +165,17 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
 		Label handleLabel = new org.lgna.croquet.components.Label( resourceBundle.getString("handleStyleTitle"), 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
 		DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> handleRadioButtons = new DefaultRadioButtons<HandleStyle>(org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance(), false){
-            @Override 
-            protected BooleanStateButton<?> createBooleanStateButton(
-                    HandleStyle item, BooleanState booleanState)
-            {
+			@Override
+			protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.sceneeditor.HandleStyle item, org.lgna.croquet.BooleanState itemSelectedState ) {
                 if (item.getIcon() != null)
                 {
-                    booleanState.setIconForBothTrueAndFalse( item.getIcon() );
+                	itemSelectedState.setIconForBothTrueAndFalse( item.getIcon() );
                 }
                 if (item.getToolTipText() != null)
                 {
-                    booleanState.setToolTipText(item.getToolTipText());
+                	itemSelectedState.setToolTipText(item.getToolTipText());
                 }
-                PushButton b = booleanState.createPushButton();
+                PushButton b = itemSelectedState.createPushButton();
                 b.setSelectedColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
                 b.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor());
                 return b;
