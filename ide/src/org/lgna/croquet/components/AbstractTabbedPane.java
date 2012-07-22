@@ -110,7 +110,7 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 		if( item.isCloseable() ) {
 			closeButtonActionListener = new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					AbstractTabbedPane.this.getModel().removeItem( item );
+					AbstractTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement( item );
 				}
 			};
 		} else {

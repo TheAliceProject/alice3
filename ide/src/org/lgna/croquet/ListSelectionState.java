@@ -381,6 +381,16 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.popAtomic();
 		}
 	}
+	public final void removeItemAndSelectAppropriateReplacement( T item ) {
+		T prevSelection = this.getValue();
+		this.removeItem( item );
+		if( prevSelection == item ) {
+			//todo:
+			if( this.getItemCount() > 0 ) {
+				this.setValueTransactionlessly( this.getItemAt( 0 ) );
+			}
+		}
+	}
 
 	public final void setItems( java.util.Collection< T > items ) {
 		this.pushAtomic();
