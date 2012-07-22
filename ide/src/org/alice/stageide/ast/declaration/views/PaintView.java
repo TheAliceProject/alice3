@@ -41,12 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.components.declaration;
+package org.alice.stageide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PaintView extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.ide.croquet.models.StandardExpressionState > {
+public class PaintView extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > > {
 	private org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression >() {
 		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
@@ -54,7 +54,7 @@ public class PaintView extends org.lgna.croquet.components.ViewController< javax
 			PaintView.this.repaint();
 		}
 	};
-	public PaintView( org.alice.ide.croquet.models.StandardExpressionState model ) {
+	public PaintView( org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > model ) {
 		super( model );
 	}
 	@Override

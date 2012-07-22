@@ -41,13 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.components.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AxesFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation > {
-	public AxesFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation model ) {
-		super( model );
+public class AddBillboardManagedFieldComposite extends AddModelManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddBillboardManagedFieldComposite instance = new AddBillboardManagedFieldComposite();
+	}
+	public static AddBillboardManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> backPaintState = this.createInitialPropertyValueExpressionState( this.createKey( "backPaintState" ), null, org.lgna.story.Billboard.class, "setBackPaint", org.lgna.story.Paint.class, org.lgna.story.SetBackPaint.Detail[].class );
+	private AddBillboardManagedFieldComposite() {
+		super( java.util.UUID.fromString( "bba3fc83-4db4-4be4-87d4-5111dbda4f60" ),	org.lgna.story.Billboard.class );
+	}
+	public org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > getBackPaintState() {
+		return this.backPaintState;
+	}
+	@Override
+	protected org.alice.ide.ast.declaration.views.AddManagedFieldView createView() {
+		return new org.alice.stageide.ast.declaration.views.AddBillboardManagedFieldView( this );
 	}
 }

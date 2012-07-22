@@ -143,7 +143,12 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	}
 	
 	protected <T> org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitialPropertyValueExpressionState( Key key, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls ) {
-		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, setterName, valueCls, variableLengthCls );
+		java.lang.reflect.Method mthd;
+		if( variableLengthCls != null ) {
+			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, setterName, valueCls, variableLengthCls );
+		} else {
+			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, setterName, valueCls );
+		}
 		org.lgna.project.ast.JavaMethod method = org.lgna.project.ast.JavaMethod.getInstance( mthd );
 		org.alice.ide.ast.ExpressionCreator expressionCreator = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
 		try {

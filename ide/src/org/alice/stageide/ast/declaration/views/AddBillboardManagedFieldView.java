@@ -41,19 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.components.declaration;
+package org.alice.stageide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextModelFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation > {
-	public TextModelFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation model ) {
-		super( model );
+public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.views.AddManagedFieldView {
+	public AddBillboardManagedFieldView( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
+		super( composite );
 	}
 	@Override
-	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation model ) {
-		super.updateComponentRows( rv, model );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueLabelText()+":", model.getValueState().createEditor( this.getFactory() ) ) );
-		return rv;
+	protected org.lgna.croquet.components.JComponent< ? > createPropertiesSidePanel() {
+		final org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite = (org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite)this.getComposite();
+		class SidePanel extends org.lgna.croquet.components.GridBagPanel {
+			public SidePanel() {
+				java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+				gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+				gbc.weighty = 0.0;
+				gbc.fill = java.awt.GridBagConstraints.BOTH;
+				gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
+				this.addComponent( composite.getPaintState().getSidekickLabel().createImmutableTextField(), gbc );
+				this.addComponent( new PaintView( composite.getPaintState() ), gbc );
+				this.addComponent( composite.getBackPaintState().getSidekickLabel().createImmutableTextField(), gbc );
+				this.addComponent( new PaintView( composite.getBackPaintState() ), gbc );
+				gbc.weighty = 1.0;
+				this.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 32, 0, 0 ) );
+			}
+		}
+		return new SidePanel();
 	}
 }

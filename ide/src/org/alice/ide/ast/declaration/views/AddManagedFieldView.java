@@ -49,6 +49,9 @@ public class AddManagedFieldView extends AddFieldView {
 	public AddManagedFieldView( org.alice.ide.ast.declaration.AddManagedFieldComposite composite ) {
 		super( composite );
 	}
+	protected org.lgna.croquet.components.JComponent<?> createPropertiesSidePanel() {
+		return null;
+	}
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
 		org.lgna.croquet.components.BorderPanel rv = super.createMainComponent();
@@ -65,13 +68,16 @@ public class AddManagedFieldView extends AddFieldView {
 				}
 			};
 			
+			org.lgna.croquet.components.JComponent<?> propertiesSidePanel = this.createPropertiesSidePanel();
 			
-			org.lgna.croquet.components.ToolPalette toolPalette = composite.getInitialPropertyValuesExpandedState().createToolPalette( propertiesPanel );
-			//java.awt.Color innerColor = new java.awt.Color( 191, 191, 255 );
-			//java.awt.Color outerColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( innerColor, 0.0, 0.0, 0.1 );
-			//propertiesPanel.setBackgroundColor( innerColor );
-			//toolPalette.setBackgroundColor( outerColor );
-
+			org.lgna.croquet.components.JComponent<?> component;
+			if( propertiesSidePanel != null ) {
+				component = new org.lgna.croquet.components.BorderPanel.Builder().center( propertiesPanel ).lineEnd( propertiesSidePanel ).build();
+			} else {
+				component = propertiesPanel;
+			}
+			org.lgna.croquet.components.ToolPalette toolPalette = composite.getInitialPropertyValuesExpandedState().createToolPalette( component );
+			
 			rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPalette ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
 		}
 		return rv;

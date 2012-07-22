@@ -41,56 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextModelFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+public class AddTextModelManagedFieldOperationComposite extends AddModelManagedFieldComposite {
 	private static class SingletonHolder {
-		private static TextModelFieldDeclarationOperation instance = new TextModelFieldDeclarationOperation();
+		private static AddTextModelManagedFieldOperationComposite instance = new AddTextModelManagedFieldOperationComposite();
 	}
-	public static TextModelFieldDeclarationOperation getInstance() {
+	public static AddTextModelManagedFieldOperationComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private String valueLabelText;
-	private TextModelFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "d22b663b-966a-4a8e-a2ef-ca43523b4c1e" ), 
-				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TextModel.class ), false, 
-				false, false, 
-				"", true, 
-				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.TextModel.class ), false 
-		);
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> valueState = this.createInitialPropertyValueExpressionState( this.createKey( "valueState" ), "hello", org.lgna.story.TextModel.class, "setValue", String.class, null );
+	private AddTextModelManagedFieldOperationComposite() {
+		super( java.util.UUID.fromString( "d82699ca-eb75-4db2-ab9e-b2c18d957f25" ),	org.lgna.story.TextModel.class );
 	}
-	@Override
-	protected void localize() {
-		super.localize();
-		this.valueLabelText = this.findLocalizedText( "valueLabel" );
-	}
-
-	public String getValueLabelText() {
-		return this.valueLabelText;
-	}
-	
-	public org.alice.ide.croquet.models.ast.PropertyState getValueState() {
-		return this.getStateForGetter( org.lgna.story.TextModel.class, "getValue" );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		org.alice.ide.croquet.models.ast.PropertyState valueState = this.getValueState();
-		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
-				false, field, 
-				valueState.getSetter(), 
-				valueState.getValue()
-		) );
-		return rv;
-	}
-	
-	@Override
-	protected org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.getValueState().setValue( new org.lgna.project.ast.StringLiteral( "" ) );
-		return new org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel( this );
+	public org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > getValueState() {
+		return this.valueState;
 	}
 }

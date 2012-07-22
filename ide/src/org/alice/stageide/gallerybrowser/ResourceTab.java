@@ -94,11 +94,10 @@ public class ResourceTab extends GalleryTab {
 				org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 0,  2 );
 				
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation().createButton() );
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation.getInstance().createButton() );
-				
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite.getInstance().getOperation().createButton() );
 				
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getOperation().createButton() );
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton() );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite.getInstance().getOperation().createButton() );
 				
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation().createButton() );
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddAxesManagedFieldComposite.getInstance().getOperation().createButton() );
@@ -107,7 +106,7 @@ public class ResourceTab extends GalleryTab {
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation().createButton() );
 
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getOperation().createButton() );
-				gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
+				//gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
 				
 				for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
 					if( awtComponent instanceof javax.swing.JButton ) {
