@@ -289,7 +289,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "reboot required" );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "restart required" );
 		}
 	};
 
