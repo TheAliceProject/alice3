@@ -126,6 +126,15 @@ public abstract class MovableTurnable extends Turnable {
 	
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public void setPositionRelativeToVehicle( Position position, SetPositionRelativeToVehicle.Detail... details ) {
-		this.getImplementation().animatePositionOnly( this.getImplementation().getVehicle(), position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		org.lgna.story.implementation.EntityImp vehicle = this.getImplementation().getVehicle();
+		if( vehicle != null ) {
+			this.getImplementation().animatePositionOnly( vehicle, position.getInternal(), PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		} else {
+			edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
+			m.translation.set( position.getInternal() );
+			sgTransformable.setLocalTransformation( m );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		}
 	}
 }

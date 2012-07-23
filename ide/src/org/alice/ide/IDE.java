@@ -674,28 +674,31 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					if( composite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
 
-						java.util.List<org.lgna.croquet.components.DropDown.JPopupMenuButton> jPopupMenuButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), org.lgna.croquet.components.DropDown.JPopupMenuButton.class );
-						for( org.lgna.croquet.components.DropDown.JPopupMenuButton jPopupMenuButton : jPopupMenuButtons ) {
-							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPopupMenuButton );
+						
+						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
+						for( javax.swing.AbstractButton jButton : jButtons ) {
+							org.lgna.project.ast.Expression candidate = null;
+							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jButton );
 							if( component instanceof org.alice.ide.codeeditor.ExpressionPropertyDropDownPane ) {
 								org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (org.alice.ide.codeeditor.ExpressionPropertyDropDownPane)component;
-								org.lgna.project.ast.Expression candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
-								if( candidate == expression ) {
-									return component;
-								}
+								candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
 							} else if( component instanceof org.alice.ide.croquet.components.ExpressionDropDown ) {
 								org.alice.ide.croquet.components.ExpressionDropDown<org.lgna.project.ast.Expression> expressionDropDown = (org.alice.ide.croquet.components.ExpressionDropDown<org.lgna.project.ast.Expression>)component;
 								org.lgna.croquet.CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
 								if( completionModel instanceof org.lgna.croquet.CustomItemState ) {
 									org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state = (org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>)completionModel;
-									org.lgna.project.ast.Expression candidate = state.getValue();
-									if( candidate == expression ) {
-										return component;
-									}
+									candidate = state.getValue();
 								}
+							} else if( component instanceof org.alice.ide.x.components.AbstractExpressionView ) {
+								org.alice.ide.x.components.AbstractExpressionView expressionView = (org.alice.ide.x.components.AbstractExpressionView)component;
+								candidate = expressionView.getExpression();
+							}
+							if( candidate == expression ) {
+								return component;
+							} else {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
 							}
 						}
-						;
 					}
 					return null;
 				}
