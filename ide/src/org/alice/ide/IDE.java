@@ -636,15 +636,44 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return this.highlightStencil;
 	}
-	public void showHighlightStencil( final org.lgna.project.ast.Expression expression, String noteText ) {
-		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
-		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
-			public org.lgna.croquet.components.TrackableShape getResolved() {
-				if( expression != null ) {
+	public void showHighlightStencil( final org.lgna.project.ast.UserField field, String noteText ) {
+		if( field != null ) {
+			org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
+			highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 					if( composite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
-						
+						if( view instanceof org.alice.ide.declarationseditor.type.components.TypeDeclarationView ) {
+							java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );
+							for( javax.swing.JPanel jPanel : jPanels ) {
+								org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPanel );
+								if( component instanceof org.alice.ide.common.FieldDeclarationPane ) {
+									org.alice.ide.common.FieldDeclarationPane fieldDeclarationPane = (org.alice.ide.common.FieldDeclarationPane)component;
+									org.lgna.project.ast.UserField candidate = fieldDeclarationPane.getField();
+									if( candidate == field ) {
+										return fieldDeclarationPane;
+									}
+								}
+							}
+						}
+					}
+					return null;
+				}
+			}, noteText );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "field is null", noteText );
+		}
+	}
+	public void showHighlightStencil( final org.lgna.project.ast.Expression expression, String noteText ) {
+		if( expression != null ) {
+			org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
+			highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
+					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					if( composite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+
 						java.util.List<org.lgna.croquet.components.DropDown.JPopupMenuButton> jPopupMenuButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), org.lgna.croquet.components.DropDown.JPopupMenuButton.class );
 						for( org.lgna.croquet.components.DropDown.JPopupMenuButton jPopupMenuButton : jPopupMenuButtons ) {
 							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPopupMenuButton );
@@ -665,21 +694,21 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 									}
 								}
 							}
-						};
+						}
+						;
 					}
 					return null;
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", expression );
-					return null;
 				}
-			}
-		}, noteText );
+			}, noteText );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( noteText );
+		}
 	}
 	public void showHighlightStencil( final org.lgna.croquet.Model model, String noteText ) {
-		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
-		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
-			public org.lgna.croquet.components.TrackableShape getResolved() {
-				if( model != null ) {
+		if( model != null ) {
+			org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
+			highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
 					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
 					if( component != null ) {
 						//pass
@@ -687,12 +716,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
 					}
 					return component;
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", model );
-					return null;
 				}
-			}
-		}, noteText );
+			}, noteText );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( noteText );
+		}
 	}
 	
 }
