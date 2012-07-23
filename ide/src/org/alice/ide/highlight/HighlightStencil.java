@@ -97,7 +97,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 
 		java.awt.Shape shape = prevClip;
 		java.awt.geom.Area area = new java.awt.geom.Area( shape );
-		for( org.lgna.cheshire.simple.Feature feature : note.getFeatures() ) {
+		for( org.lgna.stencil.Feature feature : note.getFeatures() ) {
 			java.awt.geom.Area featureAreaToSubtract = feature.getAreaToSubstractForPaint( HighlightStencil.this );
 			if( featureAreaToSubtract != null ) {
 				area.subtract( featureAreaToSubtract );
@@ -113,7 +113,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 	@Override
 	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
 		if( note.isActive() ) {
-			for( org.lgna.cheshire.simple.Feature feature : note.getFeatures() ) {
+			for( org.lgna.stencil.Feature feature : note.getFeatures() ) {
 				feature.paint( g2, HighlightStencil.this, note );
 			}
 		}
@@ -122,7 +122,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
 		if( note.isActive() ) {
-			for( org.lgna.cheshire.simple.Feature feature : note.getFeatures() ) {
+			for( org.lgna.stencil.Feature feature : note.getFeatures() ) {
 				org.lgna.croquet.components.TrackableShape trackableShape = feature.getTrackableShape();
 				if( trackableShape != null ) {
 					if( trackableShape.isInView() ) {
@@ -145,9 +145,9 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 			this.setStencilShowing( false );
 		}
 	}
-	public void show( org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolver, final String noteText ) {
+	protected void show( org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolverA, org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolverB, final String noteText ) {
 		this.note.removeAllFeatures();
-		org.lgna.cheshire.simple.stencil.features.Hole hole = new org.lgna.cheshire.simple.stencil.features.Hole( trackableShapeResolver, org.lgna.cheshire.simple.Feature.ConnectionPreference.NORTH_SOUTH ) {
+		org.lgna.stencil.Hole hole = new org.lgna.stencil.Hole( trackableShapeResolverA, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH ) {
 			@Override
 			protected boolean isPathRenderingDesired() {
 				return noteText.length() > 0;
@@ -155,6 +155,16 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		};
 		this.note.addFeature( hole );
 		this.note.setText( noteText );
+
+		if( trackableShapeResolverB != null ) {
+			org.lgna.stencil.Hole holeB = new org.lgna.stencil.Hole( trackableShapeResolverB, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH ) {
+				@Override
+				protected boolean isPathRenderingDesired() {
+					return noteText.length() > 0;
+				}
+			};
+			this.note.addFeature( holeB );
+		}
 		this.note.reset();
 		this.setStencilShowing( true );
 	}

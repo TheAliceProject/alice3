@@ -49,7 +49,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 	private static java.awt.Color BASE_COLOR = new java.awt.Color( 255, 255, 100 );
 	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 180 );
 
-	private final java.util.List<org.lgna.cheshire.simple.Feature> features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Feature> features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final javax.swing.text.html.HTMLDocument document = new javax.swing.text.html.HTMLDocument();
 
 	public String getText() {
@@ -66,7 +66,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 			throw new RuntimeException( text, ble );
 		}
 	}
-	public void addFeature( org.lgna.cheshire.simple.Feature feature ) {
+	public void addFeature( Feature feature ) {
 		if( feature != null ) {
 			this.features.add( feature );
 		} else {
@@ -76,13 +76,13 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 	public void removeAllFeatures() {
 		this.features.clear();
 	}
-	public java.util.List<org.lgna.cheshire.simple.Feature> getFeatures() {
+	public java.util.List<Feature> getFeatures() {
 		return this.features;
 	}
 	public java.awt.Point calculateLocation( org.lgna.croquet.components.Container<?> container ) {
 		java.awt.Point rv;
 		if( this.features.size() > 0 ) {
-			org.lgna.cheshire.simple.Feature feature = this.features.get( 0 );
+			Feature feature = this.features.get( 0 );
 			rv = feature.calculateNoteLocation( container, this );
 		} else {
 			rv = new java.awt.Point( (container.getWidth() - this.getWidth()) / 2, 320 );
@@ -197,7 +197,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 	public void setActive( boolean isActive ) {
 		if( this.isActive != isActive ) {
 			this.isActive = isActive;
-			for( org.lgna.cheshire.simple.Feature feature : this.features ) {
+			for( Feature feature : this.features ) {
 				feature.updateTrackableShapeIfNecessary();
 			}
 			org.lgna.croquet.components.Container<?> container = this.getParent();
@@ -208,12 +208,12 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 	}
 
 	private void bind() {
-		for( org.lgna.cheshire.simple.Feature feature : this.features ) {
+		for( Feature feature : this.features ) {
 			feature.bind();
 		}
 	}
 	private void unbind() {
-		for( org.lgna.cheshire.simple.Feature feature : this.features ) {
+		for( Feature feature : this.features ) {
 			feature.unbind();
 		}
 	}

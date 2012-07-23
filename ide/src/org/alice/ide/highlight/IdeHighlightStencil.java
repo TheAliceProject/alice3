@@ -72,7 +72,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 					}
 					return null;
 				}
-			}, noteText );
+			}, null, noteText );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "field is null", noteText );
 		}
@@ -113,7 +113,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 					}
 					return null;
 				}
-			}, noteText );
+			}, null, noteText );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
 		}
@@ -142,6 +142,10 @@ public class IdeHighlightStencil extends HighlightStencil {
 					}
 					return null;
 				}
+			}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
+					return org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView();
+				}
 			}, "" );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
@@ -159,7 +163,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 					}
 					return component;
 				}
-			}, noteText );
+			}, null, noteText );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
 		}
