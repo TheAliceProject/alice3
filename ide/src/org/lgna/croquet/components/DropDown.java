@@ -115,109 +115,110 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 //		}
 //	}
 
+	public class JPopupMenuButton extends javax.swing.JButton {
+		public JPopupMenuButton() {
+			this.setRolloverEnabled(true);
+		}
+		@Override
+		public void updateUI() {
+			this.setUI(new javax.swing.plaf.basic.BasicButtonUI());
+		}
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+		}
+		@Override
+		public java.awt.Dimension getMaximumSize() {
+			if( DropDown.this.isMaximumSizeClampedToPreferredSize() ) {
+				return this.getPreferredSize();
+			} else {
+				return super.getMaximumSize();
+			}
+		}
+		@Override
+		public void paint(java.awt.Graphics g) {
+			int x = 0;
+			int y = 0;
+			int width = this.getWidth();
+			int height = this.getHeight();
+			javax.swing.ButtonModel buttonModel = this.getModel();
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+
+			java.awt.Paint prevPaint = g2.getPaint();
+			boolean isActive = buttonModel.isRollover();
+			if (isActive || DropDown.this.isInactiveFeedbackDesired()) {
+				if (isActive) {
+					g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
+				} else {
+					g2.setColor(this.getBackground());
+				}
+				g2.fillRect(x, y, width, height);
+			}
+
+			super.paint( g );
+			
+			int AFFORDANCE_WIDTH = getAffordanceWidth();
+			int AFFORDANCE_HALF_HEIGHT = getAffordanceHalfHeight();
+			
+			float x0 = x + width - 4 - AFFORDANCE_WIDTH;
+			float x1 = x0 + AFFORDANCE_WIDTH;
+			float xC = (x0 + x1) / 2;
+
+			float yC = (y + height) / 2;
+			float y0 = yC - AFFORDANCE_HALF_HEIGHT;
+			float y1 = yC + AFFORDANCE_HALF_HEIGHT;
+
+			java.awt.Color triangleFill;
+			java.awt.Color triangleOutline;
+			if (isActive) {
+				triangleFill = java.awt.Color.YELLOW;
+				triangleOutline = java.awt.Color.BLACK;
+			} else {
+				triangleFill = ARROW_COLOR;
+				triangleOutline = null;
+			}
+
+			g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+
+			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+			path.moveTo(x0, y0);
+			path.lineTo(xC, y1);
+			path.lineTo(x1, y0);
+			path.closePath();
+
+			g2.setColor(triangleFill);
+			g2.fill(path);
+			if (triangleOutline != null) {
+				g2.setColor(triangleOutline);
+				g2.draw(path);
+			}
+
+			if (isActive) {
+				g2.setStroke(new java.awt.BasicStroke(3.0f));
+//				g2.setColor(java.awt.Color.BLUE);
+//				g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
+				int xMax = x+width-1;
+				int yMax = y+height-1;
+				g2.setColor( java.awt.Color.WHITE );
+				g2.drawLine( x, yMax, x, y );
+				g2.drawLine( x, y, xMax, y );
+				g2.setColor( java.awt.Color.BLACK );
+				g2.drawLine( x, yMax, xMax, yMax );
+				g2.drawLine( xMax, yMax, xMax, y );
+			} else {
+				if (DropDown.this.isInactiveFeedbackDesired()) {
+					g2.setColor(java.awt.Color.WHITE);
+					//g2.drawRect( x, y, width-1, height-1 );
+					g2.drawLine(x, y, x + width, y);
+					g2.drawLine(x, y, x, y + height);
+				}
+			}
+
+			g2.setPaint(prevPaint);
+		}
+	}; 
 	protected javax.swing.JButton createJButton() {
-		class JPopupMenuButton extends javax.swing.JButton {
-			public JPopupMenuButton() {
-				this.setRolloverEnabled(true);
-			}
-			@Override
-			public void updateUI() {
-				this.setUI(new javax.swing.plaf.basic.BasicButtonUI());
-			}
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				if( DropDown.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-			@Override
-			public void paint(java.awt.Graphics g) {
-				int x = 0;
-				int y = 0;
-				int width = this.getWidth();
-				int height = this.getHeight();
-				javax.swing.ButtonModel buttonModel = this.getModel();
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-
-				java.awt.Paint prevPaint = g2.getPaint();
-				boolean isActive = buttonModel.isRollover();
-				if (isActive || DropDown.this.isInactiveFeedbackDesired()) {
-					if (isActive) {
-						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
-					} else {
-						g2.setColor(this.getBackground());
-					}
-					g2.fillRect(x, y, width, height);
-				}
-
-				super.paint( g );
-				
-				int AFFORDANCE_WIDTH = getAffordanceWidth();
-				int AFFORDANCE_HALF_HEIGHT = getAffordanceHalfHeight();
-				
-				float x0 = x + width - 4 - AFFORDANCE_WIDTH;
-				float x1 = x0 + AFFORDANCE_WIDTH;
-				float xC = (x0 + x1) / 2;
-
-				float yC = (y + height) / 2;
-				float y0 = yC - AFFORDANCE_HALF_HEIGHT;
-				float y1 = yC + AFFORDANCE_HALF_HEIGHT;
-
-				java.awt.Color triangleFill;
-				java.awt.Color triangleOutline;
-				if (isActive) {
-					triangleFill = java.awt.Color.YELLOW;
-					triangleOutline = java.awt.Color.BLACK;
-				} else {
-					triangleFill = ARROW_COLOR;
-					triangleOutline = null;
-				}
-
-				g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-
-				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-				path.moveTo(x0, y0);
-				path.lineTo(xC, y1);
-				path.lineTo(x1, y0);
-				path.closePath();
-
-				g2.setColor(triangleFill);
-				g2.fill(path);
-				if (triangleOutline != null) {
-					g2.setColor(triangleOutline);
-					g2.draw(path);
-				}
-
-				if (isActive) {
-					g2.setStroke(new java.awt.BasicStroke(3.0f));
-//					g2.setColor(java.awt.Color.BLUE);
-//					g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
-					int xMax = x+width-1;
-					int yMax = y+height-1;
-					g2.setColor( java.awt.Color.WHITE );
-					g2.drawLine( x, yMax, x, y );
-					g2.drawLine( x, y, xMax, y );
-					g2.setColor( java.awt.Color.BLACK );
-					g2.drawLine( x, yMax, xMax, yMax );
-					g2.drawLine( xMax, yMax, xMax, y );
-				} else {
-					if (DropDown.this.isInactiveFeedbackDesired()) {
-						g2.setColor(java.awt.Color.WHITE);
-						//g2.drawRect( x, y, width-1, height-1 );
-						g2.drawLine(x, y, x + width, y);
-						g2.drawLine(x, y, x, y + height);
-					}
-				}
-
-				g2.setPaint(prevPaint);
-			}
-		};
+		
 		javax.swing.JButton rv = new JPopupMenuButton();
 		rv.setRolloverEnabled(true);
 		rv.setOpaque(false);

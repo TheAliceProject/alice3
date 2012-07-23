@@ -644,14 +644,28 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 					if( composite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
-						if( view instanceof org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView ) {
-							org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView codeView = (org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView)view;
-							org.alice.ide.codedrop.CodePanelWithDropReceptor codePanel = codeView.getCodePanelWithDropReceptor();
-
-							org.lgna.project.ast.Statement statement = expression.getFirstAncestorAssignableTo( org.lgna.project.ast.Statement.class );
-							org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statement );
-							return codePanel.getTrackableShape( blockStatementIndexPair );
-						}
+						
+						java.util.List<org.lgna.croquet.components.DropDown.JPopupMenuButton> jPopupMenuButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), org.lgna.croquet.components.DropDown.JPopupMenuButton.class );
+						for( org.lgna.croquet.components.DropDown.JPopupMenuButton jPopupMenuButton : jPopupMenuButtons ) {
+							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPopupMenuButton );
+							if( component instanceof org.alice.ide.codeeditor.ExpressionPropertyDropDownPane ) {
+								org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (org.alice.ide.codeeditor.ExpressionPropertyDropDownPane)component;
+								org.lgna.project.ast.Expression candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
+								if( candidate == expression ) {
+									return component;
+								}
+							} else if( component instanceof org.alice.ide.croquet.components.ExpressionDropDown ) {
+								org.alice.ide.croquet.components.ExpressionDropDown<org.lgna.project.ast.Expression> expressionDropDown = (org.alice.ide.croquet.components.ExpressionDropDown<org.lgna.project.ast.Expression>)component;
+								org.lgna.croquet.CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
+								if( completionModel instanceof org.lgna.croquet.CustomItemState ) {
+									org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state = (org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>)completionModel;
+									org.lgna.project.ast.Expression candidate = state.getValue();
+									if( candidate == expression ) {
+										return component;
+									}
+								}
+							}
+						};
 					}
 					return null;
 				} else {
