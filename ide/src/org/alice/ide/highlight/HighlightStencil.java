@@ -51,6 +51,9 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 	private static final java.awt.Insets INSETS = new java.awt.Insets( INSET, INSET, INSET, INSET );
 	private static final java.awt.Color STENCIL_BASE_COLOR = new java.awt.Color( 181, 140, 140, 150 );
 	private static final java.awt.Color STENCIL_LINE_COLOR = new java.awt.Color( 92, 48, 24, 63 );
+	
+	private static final org.lgna.stencil.Painter GLOW_PAINTER = new org.lgna.stencil.GlowPainter( new java.awt.Color(255, 255, 0, 23) );
+	private static final org.lgna.stencil.Painter OUTLINE_PAINTER = new org.lgna.stencil.BasicPainter( new java.awt.BasicStroke( 2.0f ), java.awt.Color.RED );
 	private static java.awt.Paint createStencilPaint() {
 		int width = 8;
 		int height = 8;
@@ -147,7 +150,14 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 	}
 	protected void show( org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolverA, org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolverB, final String noteText ) {
 		this.note.removeAllFeatures();
-		org.lgna.stencil.Hole hole = new org.lgna.stencil.Hole( trackableShapeResolverA, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH ) {
+		
+		org.lgna.stencil.Painter painter;
+		if( trackableShapeResolverB != null ) {
+			painter = OUTLINE_PAINTER;
+		} else {
+			painter = GLOW_PAINTER;
+		}
+		org.lgna.stencil.Hole hole = new org.lgna.stencil.Hole( trackableShapeResolverA, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH, painter ) {
 			@Override
 			protected boolean isPathRenderingDesired() {
 				return noteText.length() > 0;
@@ -157,7 +167,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		this.note.setText( noteText );
 
 		if( trackableShapeResolverB != null ) {
-			org.lgna.stencil.Hole holeB = new org.lgna.stencil.Hole( trackableShapeResolverB, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH ) {
+			org.lgna.stencil.Hole holeB = new org.lgna.stencil.Hole( trackableShapeResolverB, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH, painter ) {
 				@Override
 				protected boolean isPathRenderingDesired() {
 					return noteText.length() > 0;

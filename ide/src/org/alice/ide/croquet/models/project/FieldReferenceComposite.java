@@ -78,7 +78,6 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ancestor ) );
 				}
 				IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( nextValue, nextValue.field.getValue().getName() );
-				//IDE.getActiveInstance().getHighlightStencil().showHighlightOverStatementAndRenderWindow( nextValue.getFirstAncestorAssignableTo( org.lgna.project.ast.Statement.class ) );
 			}
 		}
 	};
