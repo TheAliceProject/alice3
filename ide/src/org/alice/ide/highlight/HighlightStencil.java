@@ -145,8 +145,22 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 	@Override
 	protected void processMouseEvent( java.awt.event.MouseEvent e ) {
 		if( e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
-			this.setStencilShowing( false );
+			this.hide();
 		}
+	}
+	private static final javax.swing.KeyStroke HIDE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
+	private java.awt.event.ActionListener hideAction = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			hide();
+		}
+	};
+	private void show() {
+		this.registerKeyboardAction( this.hideAction, HIDE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.setStencilShowing( true );
+	}
+	private void hide() {
+		this.setStencilShowing( false );
+		this.unregisterKeyboardAction( HIDE_KEY_STROKE );
 	}
 	protected void show( org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolverA, org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolverB, final String noteText ) {
 		this.note.removeAllFeatures();
@@ -176,6 +190,6 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 			this.note.addFeature( holeB );
 		}
 		this.note.reset();
-		this.setStencilShowing( true );
+		this.show();
 	}
 }
