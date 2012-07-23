@@ -74,7 +74,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 				}
 			}, noteText );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "field is null", noteText );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "field is null", noteText );
 		}
 	}
 	public void showHighlightOverExpression( final org.lgna.project.ast.Expression expression, String noteText ) {
@@ -106,8 +106,8 @@ public class IdeHighlightStencil extends HighlightStencil {
 							}
 							if( candidate == expression ) {
 								return component;
-							} else {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+//							} else {
+//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
 							}
 						}
 					}
@@ -115,7 +115,36 @@ public class IdeHighlightStencil extends HighlightStencil {
 				}
 			}, noteText );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( noteText );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
+		}
+	}
+	public void showHighlightOverStatementAndRenderWindow( final org.lgna.project.ast.Statement statement ) {
+		if( statement != null ) {
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
+					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					if( composite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
+						for( javax.swing.AbstractButton jButton : jButtons ) {
+							org.lgna.project.ast.Statement candidate = null;
+							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jButton );
+							if( component instanceof org.alice.ide.common.AbstractStatementPane ) {
+								org.alice.ide.common.AbstractStatementPane statementPane = (org.alice.ide.common.AbstractStatementPane)component;
+								candidate = statementPane.getStatement();
+							}
+							if( candidate == statement ) {
+								return component;
+//							} else {
+//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+							}
+						}
+					}
+					return null;
+				}
+			}, "" );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	}
 	public void showHighlightOverCroquetViewController( final org.lgna.croquet.Model model, String noteText ) {
@@ -132,7 +161,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 				}
 			}, noteText );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( noteText );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
 		}
 	}
 }

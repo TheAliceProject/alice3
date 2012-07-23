@@ -145,9 +145,15 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 			this.setStencilShowing( false );
 		}
 	}
-	public void show( org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolver, String noteText ) {
+	public void show( org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolver, final String noteText ) {
 		this.note.removeAllFeatures();
-		this.note.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( trackableShapeResolver, org.lgna.cheshire.simple.Feature.ConnectionPreference.NORTH_SOUTH ) );
+		org.lgna.cheshire.simple.stencil.features.Hole hole = new org.lgna.cheshire.simple.stencil.features.Hole( trackableShapeResolver, org.lgna.cheshire.simple.Feature.ConnectionPreference.NORTH_SOUTH ) {
+			@Override
+			protected boolean isPathRenderingDesired() {
+				return noteText.length() > 0;
+			}
+		};
+		this.note.addFeature( hole );
 		this.note.setText( noteText );
 		this.note.reset();
 		this.setStencilShowing( true );

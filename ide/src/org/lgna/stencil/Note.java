@@ -143,6 +143,12 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 				super.paintComponent( g );
 			}
 			@Override
+			public void paint( java.awt.Graphics g ) {
+				if( Note.this.getText().length() > 0 ) {
+					super.paint( g );
+				}
+			}
+			@Override
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();
 				rv.width = 240;
@@ -182,7 +188,6 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 		}
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 		}
-
 	};
 
 	private boolean isActive = true;
