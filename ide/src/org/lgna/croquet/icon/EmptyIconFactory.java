@@ -59,7 +59,7 @@ public enum EmptyIconFactory implements IconFactory {
 			}
 		};
 	}
-	public java.awt.Dimension getDefaultSize() {
-		return null;
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		return sizeIfResolutionIndependent;
 	}
 }

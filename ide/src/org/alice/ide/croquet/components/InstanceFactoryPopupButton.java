@@ -46,15 +46,13 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */	
-public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState< org.alice.ide.instancefactory.InstanceFactory > > extends org.lgna.croquet.components.ItemDropDown< org.alice.ide.instancefactory.InstanceFactory, M > {
-	public static final java.awt.Dimension DEFAULT_ICON_SIZE = new java.awt.Dimension( 40, 30 );
+public class InstanceFactoryPopupButton extends org.lgna.croquet.components.CustomItemStatePopupButton< org.alice.ide.instancefactory.InstanceFactory > {
 	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
 		private org.alice.ide.instancefactory.InstanceFactory nextValue;
 		private void handleChanged( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
 			this.nextValue = nextValue;
 			this.refreshLater();
 		}
-
 		@Override
 		protected void internalRefresh() {
 			super.internalRefresh();
@@ -69,7 +67,7 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 			if( nextValue != null ) {
 				org.lgna.croquet.icon.IconFactory iconFactory = nextValue.getIconFactory();
 				if( iconFactory != null && iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) {
-					javax.swing.Icon icon = iconFactory.getIcon( DEFAULT_ICON_SIZE );
+					javax.swing.Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE );
 					if( icon != null ) {
 						this.addLineStartComponent( new org.lgna.croquet.components.Label( icon ) );
 					}
@@ -78,70 +76,29 @@ public class InstanceFactoryDropDown< M extends org.lgna.croquet.CustomItemState
 		}
 	};
 	
-	private class DropDownIcon implements javax.swing.Icon {
-		public int getIconWidth() {
-			return 24;
-		}
-		public int getIconHeight() {
-			return 24;
-		}
-		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-			final int OFFSET = 4;
-			int width = this.getIconWidth();
-			int height = this.getIconHeight();
-			
-			javax.swing.AbstractButton jButton = InstanceFactoryDropDown.this.getAwtComponent();
-			javax.swing.ButtonModel buttonModel = jButton.getModel();
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Paint fillPaint;
-			java.awt.Paint drawPaint;
-			if( buttonModel.isPressed() ) {
-				fillPaint = java.awt.Color.WHITE;
-				drawPaint = java.awt.Color.BLACK;
-			} else {
-				if( buttonModel.isRollover() || buttonModel.isArmed() ) {
-					fillPaint = java.awt.Color.GRAY;
-				} else {
-					fillPaint = java.awt.Color.BLACK;
-				}
-				drawPaint = null;
+	private final MainComponent mainComponent = new MainComponent();
+	public InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState ) {
+		super( instanceFactoryState );
+		this.getAwtComponent().setLayout( new java.awt.BorderLayout() );
+
+		this.getAwtComponent().removeAll();
+		this.internalAddComponent( this.mainComponent, java.awt.BorderLayout.LINE_START );
+		this.internalAddComponent( new org.lgna.croquet.components.Label( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 24 ) {
+			@Override
+			protected javax.swing.ButtonModel getButtonModel(java.awt.Component c) {
+				javax.swing.AbstractButton jButton = InstanceFactoryPopupButton.this.getAwtComponent();
+				return jButton.getModel();
 			}
-			if( fillPaint != null ) {
-				g2.setPaint( fillPaint );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+OFFSET, y+OFFSET, width-OFFSET-OFFSET, height-OFFSET-OFFSET );
-			}
-			if( drawPaint != null ) {
-				g2.setPaint( drawPaint );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+OFFSET, y+OFFSET, width-OFFSET-OFFSET, height-OFFSET-OFFSET );
-			}
-		}
-	}
-	
-	public InstanceFactoryDropDown( M model ) {
-		super( model );
-		this.setPrefixComponent( new MainComponent() );
-		this.setMainComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
-		this.setPostfixComponent( new org.lgna.croquet.components.Label( new DropDownIcon() ) );
-		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		//this.setBackgroundColor( new java.awt.Color( 127, 127, 191 ) );
+		} ), java.awt.BorderLayout.LINE_END );
 	}
 	@Override
-	protected int getAffordanceHalfHeight() {
-		return super.getAffordanceHalfHeight() * 2;
-	}
-	@Override
-	protected int getAffordanceWidth() {
-		return super.getAffordanceWidth() * 2;
-	}
-	@Override
-	protected javax.swing.JButton createJButton() {
-		javax.swing.JButton rv = new javax.swing.JButton();
-//		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-//		rv.setIcon( new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, 64, 64 ) );
+	protected javax.swing.JButton createAwtComponent() {
+		javax.swing.JButton rv = super.createAwtComponent();
+		rv.setIcon( null );
 		return rv;
 	}
 	@Override
 	protected void handleChanged( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		((MainComponent)this.getPrefixComponent()).handleChanged( nextValue );
+		this.mainComponent.handleChanged( nextValue );
 	}
 };

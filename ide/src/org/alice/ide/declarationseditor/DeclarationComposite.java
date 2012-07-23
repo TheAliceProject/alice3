@@ -61,13 +61,26 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 			}
 		}
 	}
-
+	
 	private final D declaration;
 	private final Class<D> declarationCls;
 	public DeclarationComposite( java.util.UUID id, D declaration, Class<D> declarationCls ) {
 		super( id );
 		this.declaration = declaration;
 		this.declarationCls = declarationCls;
+		
+		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
+		if( nameProperty != null ) {
+			edu.cmu.cs.dennisc.property.event.PropertyListener nameListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				}
+				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+					String nextName = (String)e.getValue();
+					DeclarationTabState.getInstance().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
+				}
+			};
+			nameProperty.addPropertyListener( nameListener );
+		}
 	}
 	@Override
 	public java.util.UUID getTabId() {

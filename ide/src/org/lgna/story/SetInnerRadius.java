@@ -40,13 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.components.declaration;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.CylinderFieldDeclarationOperation > {
-	public CylinderFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.CylinderFieldDeclarationOperation model ) {
-		super( model );
+public class SetInnerRadius extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetInnerRadius.class )
+	public static interface Detail {
+	}
+	private SetInnerRadius() {
+		super();
 	}
 }

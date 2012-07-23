@@ -60,7 +60,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	
 	@Override
 	protected boolean isFieldFinal() {
-		return false;
+		return true;
 	}
 	@Override
 	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
@@ -69,6 +69,14 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	@Override
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
+	}
+	@Override
+	public boolean isValueComponentTypeDisplayed() {
+		return super.isValueComponentTypeDisplayed() && org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
+	}	
+	@Override
+	public boolean isInitializerDisplayed() {
+		return super.isInitializerDisplayed() && org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
 	}
 	protected static class EditCustomization {
 		private final java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -135,7 +143,12 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	}
 	
 	protected <T> org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitialPropertyValueExpressionState( Key key, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls ) {
-		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, setterName, valueCls, variableLengthCls );
+		java.lang.reflect.Method mthd;
+		if( variableLengthCls != null ) {
+			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, setterName, valueCls, variableLengthCls );
+		} else {
+			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, setterName, valueCls );
+		}
 		org.lgna.project.ast.JavaMethod method = org.lgna.project.ast.JavaMethod.getInstance( mthd );
 		org.alice.ide.ast.ExpressionCreator expressionCreator = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
 		try {

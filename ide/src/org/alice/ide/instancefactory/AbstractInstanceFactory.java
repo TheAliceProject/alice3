@@ -90,7 +90,7 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 	}
 	
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.gallerybrowser.ResourceManager.getIconFactoryForType( this.getValueType() );
+		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( this.getValueType() );
 	}
 	
 	@Override

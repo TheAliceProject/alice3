@@ -46,6 +46,7 @@ package org.alice.ide.typemanager;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class ConstructorArgumentUtilities {
 	private ConstructorArgumentUtilities() {
 		throw new AssertionError();
@@ -75,7 +76,7 @@ public class ConstructorArgumentUtilities {
 		return getParameter0Type( getContructor0( type ) );
 	}
 
-	private static org.lgna.project.ast.JavaField getField( org.lgna.project.ast.SimpleArgumentListProperty arguments ) {
+	public static org.lgna.project.ast.JavaField getField( org.lgna.project.ast.SimpleArgumentListProperty arguments ) {
 		if( arguments.size() > 0 ) {
 			org.lgna.project.ast.Expression expression = arguments.get( 0 ).expression.getValue();
 			if( expression instanceof org.lgna.project.ast.FieldAccess ) {

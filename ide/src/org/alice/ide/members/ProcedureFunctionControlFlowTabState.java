@@ -57,7 +57,7 @@ public class ProcedureFunctionControlFlowTabState extends TemplatesTabSelectionS
 		super( java.util.UUID.fromString( "a1887919-53b6-43eb-b092-b84c120f816e" ), ProcedureTemplateComposite.getInstance(), FunctionTemplateComposite.getInstance(), org.alice.ide.controlflow.ControlFlowComposite.getInstance( /*todo*/null ) );
 	}
 	@Override
-	public org.lgna.croquet.components.AbstractTabbedPane< ?, ?, ? > createTabbedPane() {
+	public org.lgna.croquet.components.AbstractTabbedPane<?,?> createTabbedPane() {
 		return this.createToolPaletteTabbedPane();
 	}
 }

@@ -40,35 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AxesFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+public class AddBoxManagedFieldComposite extends AddModelManagedFieldComposite {
 	private static class SingletonHolder {
-		private static AxesFieldDeclarationOperation instance = new AxesFieldDeclarationOperation();
+		private static AddBoxManagedFieldComposite instance = new AddBoxManagedFieldComposite();
 	}
-	public static AxesFieldDeclarationOperation getInstance() {
+	public static AddBoxManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private AxesFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "7bcdb463-b53a-4f16-b053-96e89f779afa" ), 
-				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Axes.class ), false, 
-				false, false, 
-				"", true, 
-				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Axes.class ), false 
-		);
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> widthState = this.createInitialPropertyValueExpressionState( this.createKey( "widthState" ), 1.0, org.lgna.story.Model.class, "setWidth", Number.class, org.lgna.story.SetWidth.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> heightState = this.createInitialPropertyValueExpressionState( this.createKey( "heightState" ), 1.0, org.lgna.story.Model.class, "setHeight", Number.class, org.lgna.story.SetHeight.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> depthState = this.createInitialPropertyValueExpressionState( this.createKey( "depthState" ), 1.0, org.lgna.story.Model.class, "setDepth", Number.class, org.lgna.story.SetDepth.Detail[].class );
+	private AddBoxManagedFieldComposite() {
+		super( java.util.UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ),	org.lgna.story.Box.class );
 	}
-	@Override
-	protected org.alice.stageide.croquet.components.declaration.AxesFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.croquet.components.declaration.AxesFieldDeclarationPanel( this );
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getWidthState() {
+		return this.widthState;
 	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		return rv;
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getHeightState() {
+		return this.heightState;
+	}
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getDepthState() {
+		return this.depthState;
 	}
 }

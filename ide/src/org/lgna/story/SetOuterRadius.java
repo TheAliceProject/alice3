@@ -40,20 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.croquet.components.declaration;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextModelFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation > {
-	public TextModelFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation model ) {
-		super( model );
+public class SetOuterRadius extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetOuterRadius.class )
+	public static interface Detail {
 	}
-	@Override
-	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation model ) {
-		super.updateComponentRows( rv, model );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getValueLabelText()+":", model.getValueState().createEditor( this.getFactory() ) ) );
-		return rv;
+	private SetOuterRadius() {
+		super();
 	}
 }

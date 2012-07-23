@@ -279,6 +279,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				this.setFocusedCode( sceneType.findMethod( methodName ) );
 			}
 		}
+		org.alice.stageide.icons.SceneIconFactory.getInstance().markAllIconsDirty();
 	}
 	@Override
 	public boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType ) {

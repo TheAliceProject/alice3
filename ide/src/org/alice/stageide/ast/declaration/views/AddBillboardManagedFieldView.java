@@ -41,48 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.codecs;
+package org.alice.stageide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposite<?>> implements org.lgna.croquet.ItemCodec< C > {
-	private static java.util.Map< Class<?>, SimpleTabCompositeCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends org.lgna.croquet.SimpleTabComposite<?> > SimpleTabCompositeCodec< T > getInstance( Class< T > cls ) {
-		SimpleTabCompositeCodec< ? > rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SimpleTabCompositeCodec< T >( cls );
+public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.views.AddManagedFieldView {
+	public AddBillboardManagedFieldView( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
+		super( composite );
+	}
+	@Override
+	protected org.lgna.croquet.components.JComponent< ? > createPropertiesSidePanel() {
+		final org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite = (org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite)this.getComposite();
+		class SidePanel extends org.lgna.croquet.components.GridBagPanel {
+			public SidePanel() {
+				java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+				gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+				gbc.weighty = 0.0;
+				gbc.fill = java.awt.GridBagConstraints.BOTH;
+				gbc.anchor = java.awt.GridBagConstraints.PAGE_START;
+				this.addComponent( composite.getPaintState().getSidekickLabel().createImmutableTextField(), gbc );
+				this.addComponent( new PaintView( composite.getPaintState() ), gbc );
+				this.addComponent( composite.getBackPaintState().getSidekickLabel().createImmutableTextField(), gbc );
+				this.addComponent( new PaintView( composite.getBackPaintState() ), gbc );
+				gbc.weighty = 1.0;
+				this.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue(), gbc );
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 32, 0, 0 ) );
+			}
 		}
-		return (SimpleTabCompositeCodec< T >)rv;
-	}
-	private Class<C> valueCls;
-	private SimpleTabCompositeCodec( Class<C> valueCls ) {
-		this.valueCls = valueCls;
-	}
-	public Class< C > getValueClass() {
-		return this.valueCls;
-	}
-	public C decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			org.lgna.croquet.resolvers.Resolver<C> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			return resolver.getResolved();
-		} else {
-			return null;
-		}
-	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, C value) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getResolver() );
-		}
-	}
-	public StringBuilder appendRepresentation(StringBuilder rv, C value) {
-		value.initializeIfNecessary();
-		rv.append( value.getTitleText() );
-		return rv;
+		return new SidePanel();
 	}
 }

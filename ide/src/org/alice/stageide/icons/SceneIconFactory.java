@@ -40,57 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextModelFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+public class SceneIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
 	private static class SingletonHolder {
-		private static TextModelFieldDeclarationOperation instance = new TextModelFieldDeclarationOperation();
+		private static SceneIconFactory instance = new SceneIconFactory();
 	}
-	public static TextModelFieldDeclarationOperation getInstance() {
+	public static SceneIconFactory getInstance() {
 		return SingletonHolder.instance;
 	}
-	private String valueLabelText;
-	private TextModelFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "d22b663b-966a-4a8e-a2ef-ca43523b4c1e" ), 
-				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TextModel.class ), false, 
-				false, false, 
-				"", true, 
-				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.TextModel.class ), false 
-		);
+	private SceneIconFactory() {
 	}
 	@Override
-	protected void localize() {
-		super.localize();
-		this.valueLabelText = this.findLocalizedText( "valueLabel" );
-	}
-
-	public String getValueLabelText() {
-		return this.valueLabelText;
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new SceneIcon( size );
 	}
 	
-	public org.alice.ide.croquet.models.ast.PropertyState getValueState() {
-		return this.getStateForGetter( org.lgna.story.TextModel.class, "getValue" );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		org.alice.ide.croquet.models.ast.PropertyState valueState = this.getValueState();
-		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
-				false, field, 
-				valueState.getSetter(), 
-				valueState.getValue()
-		) );
-		return rv;
-	}
-	
-	@Override
-	protected org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
-		this.getValueState().setValue( new org.lgna.project.ast.StringLiteral( "" ) );
-		return new org.alice.stageide.croquet.components.declaration.TextModelFieldDeclarationPanel( this );
+	public void markAllIconsDirty() {
+		for( javax.swing.Icon icon : this.getMap().values() ) {
+			if( icon instanceof SceneIcon ) {
+				SceneIcon sceneIcon = (SceneIcon)icon;
+				sceneIcon.markDirty();
+			}
+		}
 	}
 }

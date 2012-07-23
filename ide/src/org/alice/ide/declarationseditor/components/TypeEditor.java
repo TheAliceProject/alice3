@@ -151,6 +151,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 		org.alice.ide.common.TypeDropDownIcon icon = new org.alice.ide.common.TypeDropDownIcon( type, this.popupButton.getAwtComponent().getModel() );
 		this.popupButton.setIcon( icon );
+		this.popupButton.revalidateAndRepaint();
 	}
 
 	@Override

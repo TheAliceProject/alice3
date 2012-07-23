@@ -54,6 +54,13 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 			InstanceFactoryFillIn.this.markDirty();
 		}
 	}
+	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			InstanceFactoryFillIn.this.markDirty();
+		}
+	};
 	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static InstanceFactoryFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {
@@ -72,6 +79,10 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 	private InstanceFactoryFillIn( org.alice.ide.instancefactory.InstanceFactory value ) {
 		super( java.util.UUID.fromString( "2fce347e-f10e-4eec-8ac4-291225a5da4f" ) );
 		this.value = value;
+
+		if( this.value == org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) {
+			org.alice.ide.declarationseditor.TypeState.getInstance().addValueListener( this.typeListener );
+		}
 		
 		edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();
 		if( mutablePropertiesOfInterest != null && mutablePropertiesOfInterest.length > 0 ) {
@@ -94,11 +105,19 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn< org.a
 		org.lgna.project.ast.Expression expression = this.value.createTransientExpression();
 		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 
-		javax.swing.Icon icon = this.value.getIconFactory().getIcon( org.alice.ide.croquet.components.InstanceFactoryDropDown.DEFAULT_ICON_SIZE );
+		javax.swing.Icon icon = this.value.getIconFactory().getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE );
+		javax.swing.JLabel label = new javax.swing.JLabel( icon );
+		
+		expressionPane.setAlignmentY( 0.5f );
+		label.setAlignmentY( 0.5f );
+		
 		javax.swing.JPanel rv = new javax.swing.JPanel();
-		rv.setLayout( new java.awt.BorderLayout() );
-		rv.add( new javax.swing.JLabel( icon ), java.awt.BorderLayout.LINE_START );
-		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
+//		rv.setLayout( new java.awt.BorderLayout() );
+//		rv.add( label, java.awt.BorderLayout.LINE_START );
+//		rv.add( expressionPane, java.awt.BorderLayout.CENTER );
+		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
+		rv.add( label );
+		rv.add( expressionPane );
 		rv.setOpaque( false );
 		return rv;
 		

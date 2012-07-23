@@ -41,48 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.codecs;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposite<?>> implements org.lgna.croquet.ItemCodec< C > {
-	private static java.util.Map< Class<?>, SimpleTabCompositeCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends org.lgna.croquet.SimpleTabComposite<?> > SimpleTabCompositeCodec< T > getInstance( Class< T > cls ) {
-		SimpleTabCompositeCodec< ? > rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SimpleTabCompositeCodec< T >( cls );
-		}
-		return (SimpleTabCompositeCodec< T >)rv;
+public class AddTextModelManagedFieldOperationComposite extends AddModelManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddTextModelManagedFieldOperationComposite instance = new AddTextModelManagedFieldOperationComposite();
 	}
-	private Class<C> valueCls;
-	private SimpleTabCompositeCodec( Class<C> valueCls ) {
-		this.valueCls = valueCls;
+	public static AddTextModelManagedFieldOperationComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	public Class< C > getValueClass() {
-		return this.valueCls;
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> valueState = this.createInitialPropertyValueExpressionState( this.createKey( "valueState" ), "hello", org.lgna.story.TextModel.class, "setValue", String.class, null );
+	private AddTextModelManagedFieldOperationComposite() {
+		super( java.util.UUID.fromString( "d82699ca-eb75-4db2-ab9e-b2c18d957f25" ),	org.lgna.story.TextModel.class );
 	}
-	public C decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			org.lgna.croquet.resolvers.Resolver<C> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			return resolver.getResolved();
-		} else {
-			return null;
-		}
-	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, C value) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getResolver() );
-		}
-	}
-	public StringBuilder appendRepresentation(StringBuilder rv, C value) {
-		value.initializeIfNecessary();
-		rv.append( value.getTitleText() );
-		return rv;
+	public org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > getValueState() {
+		return this.valueState;
 	}
 }

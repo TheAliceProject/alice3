@@ -40,34 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.declaration;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
-	private static class SingletonHolder {
-		private static CylinderFieldDeclarationOperation instance = new CylinderFieldDeclarationOperation();
+public abstract class CustomItemStatePopupButton<T> extends PopupButton {
+	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+		}
+		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+			CustomItemStatePopupButton.this.handleChanged( state, prevValue, nextValue, isAdjusting );
+		}
+	};
+	public CustomItemStatePopupButton( org.lgna.croquet.CustomItemState<T> itemState ) {
+		super( itemState.getCascadeRoot().getPopupPrepModel() );
 	}
-	public static CylinderFieldDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
+	public org.lgna.croquet.CustomItemState<T> getCustomItemState() {
+		org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model = (org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T>)this.getModel();
+		org.lgna.croquet.CustomItemState.InternalRoot<T> root = (org.lgna.croquet.CustomItemState.InternalRoot<T>)model.getCascadeRoot();
+		return root.getCompletionModel();
 	}
-	private CylinderFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "ce0b0697-67a3-44bd-b8d8-0a473a2a0def" ), 
-				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cylinder.class ), false, 
-				false, false, 
-				"", true, 
-				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Cylinder.class ), false 
-		);
+	
+	protected abstract void handleChanged( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting );
+	
+	@Override
+	protected void handleDisplayable() {
+		this.getCustomItemState().addAndInvokeValueListener( valueListener );
+		super.handleDisplayable();
 	}
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.CylinderFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.croquet.components.declaration.CylinderFieldDeclarationPanel( this );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		return rv;
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.getCustomItemState().removeValueListener( valueListener );
 	}
 }

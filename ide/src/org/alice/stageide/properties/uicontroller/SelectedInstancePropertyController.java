@@ -95,7 +95,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
         this.label.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
         this.label.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         
-        Component itemSelector = new org.alice.ide.croquet.components.InstanceFactoryDropDown( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+        Component itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
         GridBagPanel componentPanel = new GridBagPanel();
         int xIndex = 0;
         componentPanel.addComponent(itemSelector, new GridBagConstraints(

@@ -40,49 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.codecs;
+package org.lgna.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposite<?>> implements org.lgna.croquet.ItemCodec< C > {
-	private static java.util.Map< Class<?>, SimpleTabCompositeCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends org.lgna.croquet.SimpleTabComposite<?> > SimpleTabCompositeCodec< T > getInstance( Class< T > cls ) {
-		SimpleTabCompositeCodec< ? > rv = map.get( cls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new SimpleTabCompositeCodec< T >( cls );
-		}
-		return (SimpleTabCompositeCodec< T >)rv;
-	}
-	private Class<C> valueCls;
-	private SimpleTabCompositeCodec( Class<C> valueCls ) {
-		this.valueCls = valueCls;
-	}
-	public Class< C > getValueClass() {
-		return this.valueCls;
-	}
-	public C decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
-		if( valueIsNotNull ) {
-			org.lgna.croquet.resolvers.Resolver<C> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			return resolver.getResolved();
-		} else {
-			return null;
-		}
-	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, C value) {
-		boolean valueIsNotNull = value != null;
-		binaryEncoder.encode( valueIsNotNull );
-		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getResolver() );
-		}
-	}
-	public StringBuilder appendRepresentation(StringBuilder rv, C value) {
-		value.initializeIfNecessary();
-		rv.append( value.getTitleText() );
-		return rv;
+public class Box extends Shape {
+	private final org.lgna.story.implementation.BoxImp implementation = new org.lgna.story.implementation.BoxImp( this );
+	@Override
+	/*package-private*/ org.lgna.story.implementation.BoxImp getImplementation() {
+		return this.implementation;
 	}
 }

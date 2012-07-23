@@ -46,8 +46,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.swing.Icon;
-
 import org.alice.ide.name.validators.MarkerColorValidator;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.View;
@@ -68,11 +66,12 @@ public class MarkerUtilities {
 	private static final String[] COLOR_NAME_KEYS;
 	private static final org.lgna.story.Color[] COLORS;
 	
-	private static final HashMap<CameraMarker, Tuple2<Icon, Icon>> cameraToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final HashMap<CameraMarker, Tuple2<org.lgna.croquet.icon.ImageIconFactory, org.lgna.croquet.icon.ImageIconFactory>> cameraToIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static final HashMap<CameraMarker, View> cameraToViewMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private static final HashMap<org.lgna.story.Color, Icon> colorToObjectIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static final HashMap<org.lgna.story.Color, Icon> colorToCameraIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final HashMap<org.lgna.story.Color, javax.swing.ImageIcon> colorToObjectIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final HashMap<org.lgna.story.Color, javax.swing.ImageIcon> colorToCameraIconMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map< CameraMarker, org.lgna.croquet.icon.IconFactory > mapCameraIconFactory = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	static
 	{
@@ -229,61 +228,89 @@ public class MarkerUtilities {
 	public static void addIconForCamera(CameraMarker camera, String iconName) {
 		java.net.URL normalIconURL = StorytellingSceneEditor.class.getResource("images/"+iconName+"Icon.png");
 		assert normalIconURL != null;
-		Icon normalIcon = new javax.swing.ImageIcon(normalIconURL);
+		javax.swing.ImageIcon normalIcon = new javax.swing.ImageIcon(normalIconURL);
 		java.net.URL highlightedIconURL = StorytellingSceneEditor.class.getResource("images/"+iconName+"Icon_highlighted.png");
 		assert highlightedIconURL != null;
-		Icon highlightedIcon = new javax.swing.ImageIcon(highlightedIconURL);
+		javax.swing.ImageIcon highlightedIcon = new javax.swing.ImageIcon(highlightedIconURL);
 		
-		cameraToIconMap.put(camera, Tuple2.createInstance(normalIcon, highlightedIcon));
+		cameraToIconMap.put(camera, Tuple2.createInstance(new org.lgna.croquet.icon.ImageIconFactory( normalIcon ), new org.lgna.croquet.icon.ImageIconFactory( highlightedIcon )));
 	}
 	
-	private static Icon loadIconForObjectMarker(org.lgna.story.Color color) {
+	private static javax.swing.ImageIcon loadIconForObjectMarker(org.lgna.story.Color color) {
 		java.net.URL markerIconURL = StorytellingSceneEditor.class.getResource("images/axis"+getIconSuffixForMarkerColor(color));
 		assert markerIconURL != null : color;
-		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
+		javax.swing.ImageIcon markerIcon = new javax.swing.ImageIcon(markerIconURL);
 		return markerIcon;
 	}
 	
-	private static Icon loadIconForCameraMarker(org.lgna.story.Color color) {
+	private static javax.swing.ImageIcon loadIconForCameraMarker(org.lgna.story.Color color) {
 		java.net.URL markerIconURL = StorytellingSceneEditor.class.getResource("images/markerIcon"+getIconSuffixForMarkerColor(color));
 		assert markerIconURL != null;
-		Icon markerIcon = new javax.swing.ImageIcon(markerIconURL);
+		javax.swing.ImageIcon markerIcon = new javax.swing.ImageIcon(markerIconURL);
 		return markerIcon;
 	}
 	
-	public static Icon getIconForObjectMarker(UserField marker)
+	public static org.lgna.croquet.icon.IconFactory getIconFactoryForObjectMarker(UserField marker)
 	{
 		if (marker != null) {
 			org.lgna.story.Color markerColor = getColorForMarkerField(marker);
-			if (colorToObjectIconMap.containsKey(markerColor)) {
-				return colorToObjectIconMap.get(markerColor);
-			}
-			else {
-				Icon icon = loadIconForObjectMarker(markerColor);
-				colorToObjectIconMap.put(markerColor, icon);
-				return icon;
-			}
+			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForObjectMarker(markerColor);
 		}
 		return null;
 	}
 	
-	public static Icon getIconForCameraMarker(UserField marker)
+	public static org.lgna.croquet.icon.IconFactory getIconFactoryForCameraMarker(UserField marker)
 	{
 		if (marker != null) {
 			org.lgna.story.Color markerColor = getColorForMarkerField(marker);
-			if (colorToCameraIconMap.containsKey(markerColor)) {
-				return colorToCameraIconMap.get(markerColor);
-			}
-			else {
-				Icon icon = loadIconForCameraMarker(markerColor);
-				colorToCameraIconMap.put(markerColor, icon);
-				return icon;
-			}
+			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForCameraMarker(markerColor);
 		}
 		return null;
 	}
 	
-	public static Icon getIconForMarkerField(UserField markerField) {
+	public static javax.swing.ImageIcon getIconForObjectMarker(UserField marker)
+	{
+		if (marker != null) {
+			org.lgna.story.Color markerColor = getColorForMarkerField(marker);
+			return getObjectMarkIconForColor(markerColor);
+		}
+		return null;
+	}
+	
+	public static javax.swing.ImageIcon getIconForCameraMarker(UserField marker)
+	{
+		if (marker != null) {
+			org.lgna.story.Color markerColor = getColorForMarkerField(marker);
+			return getCameraMarkIconForColor(markerColor);
+		}
+		return null;
+	}
+	
+	public static javax.swing.ImageIcon getCameraMarkIconForColor(org.lgna.story.Color markerColor) {
+		if (colorToCameraIconMap.containsKey(markerColor)) {
+			return colorToCameraIconMap.get(markerColor);
+		}
+		else {
+			javax.swing.ImageIcon icon = loadIconForCameraMarker(markerColor);
+			colorToCameraIconMap.put(markerColor, icon);
+			return icon;
+		}
+	}
+	
+	public static javax.swing.ImageIcon getObjectMarkIconForColor(org.lgna.story.Color markerColor) {
+		if (colorToObjectIconMap.containsKey(markerColor)) {
+			return colorToObjectIconMap.get(markerColor);
+		}
+		else {
+			javax.swing.ImageIcon icon = loadIconForObjectMarker(markerColor);
+			colorToObjectIconMap.put(markerColor, icon);
+			return icon;
+		}
+	}
+	
+	
+	
+	public static javax.swing.ImageIcon getIconForMarkerField(UserField markerField) {
 		if (markerField != null ){
 			if (markerField.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class)) {
 				return getIconForCameraMarker(markerField);
@@ -295,25 +322,47 @@ public class MarkerUtilities {
 		return null;
 	}
 	
-	public static Icon getIconForCamera(CameraMarker camera) {
+	private static org.lgna.croquet.icon.IconFactory getIconFactoryForCameraMarker(CameraMarker camera) {
 		assert cameraToIconMap.containsKey(camera);
 		return cameraToIconMap.get(camera).getA();
 	}
 	
-	public static Icon getHighlightedIconForCamera(CameraMarker camera) {
+	private static org.lgna.croquet.icon.IconFactory getHighlightedIconFactoryForCameraMarker(CameraMarker camera) {
 		assert cameraToIconMap.containsKey(camera);
 		return cameraToIconMap.get(camera).getB();
 	}
 	
-	public static Icon getIconForCameraImp(CameraMarkerImp camera) {
+	private static final java.awt.Dimension DEFAULT_SIZE_IF_NULL = org.lgna.croquet.icon.IconSize.MEDIUM.getSize();
+	public static javax.swing.Icon getIconForCameraMarkerImp(CameraMarkerImp camera) {
 		if (camera != null) {
-			return getIconForCamera(camera.getAbstraction());
+			org.lgna.croquet.icon.IconFactory factory = getIconFactoryForCameraMarker(camera.getAbstraction());
+			return factory.getIcon(factory.getDefaultSize( DEFAULT_SIZE_IF_NULL ));
 		}
 		return null;
 	}
 	
-	public static Icon getHighlightedIconForCameraImp(CameraMarkerImp camera) {
-		return getHighlightedIconForCamera(camera.getAbstraction());
+	public static javax.swing.Icon getHighlightedIconForCameraMarkerImp(CameraMarkerImp camera) {
+		if (camera != null) {
+			org.lgna.croquet.icon.IconFactory factory = getHighlightedIconFactoryForCameraMarker(camera.getAbstraction());
+			return factory.getIcon(factory.getDefaultSize( DEFAULT_SIZE_IF_NULL ));
+		}
+		return null;
+	}
+	
+	public static org.lgna.croquet.icon.IconFactory getIconFactoryForCameraMarkerImp(CameraMarkerImp camera) {
+		if (camera != null) {
+			org.lgna.croquet.icon.IconFactory factory = getIconFactoryForCameraMarker(camera.getAbstraction());
+			return factory;
+		}
+		return null;
+	}
+	
+	public static org.lgna.croquet.icon.IconFactory getHighlightedIconFactoryForCameraMarkerImp(CameraMarkerImp camera) {
+		if (camera != null) {
+			org.lgna.croquet.icon.IconFactory factory = getHighlightedIconFactoryForCameraMarker(camera.getAbstraction());
+			return factory;
+		}
+		return null;
 	}
 	
 	private static org.lgna.story.Color getNewMarkerColor(Class<? extends org.lgna.story.Marker> markerCls) {

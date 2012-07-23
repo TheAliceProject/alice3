@@ -40,14 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.croquet.components.declaration;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AxesFieldDeclarationPanel extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel< org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation > {
-	public AxesFieldDeclarationPanel( final org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation model ) {
-		super( model );
+public class BoxIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new BoxIcon( size );
 	}
 }

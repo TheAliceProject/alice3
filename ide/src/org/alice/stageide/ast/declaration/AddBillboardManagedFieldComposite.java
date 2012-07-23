@@ -41,40 +41,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.declaration;
+package org.alice.stageide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DiscFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
+public class AddBillboardManagedFieldComposite extends AddModelManagedFieldComposite {
 	private static class SingletonHolder {
-		private static DiscFieldDeclarationOperation instance = new DiscFieldDeclarationOperation();
+		private static AddBillboardManagedFieldComposite instance = new AddBillboardManagedFieldComposite();
 	}
-	public static DiscFieldDeclarationOperation getInstance() {
+	public static AddBillboardManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private DiscFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "5b3b70e1-95f9-43b9-a965-118f78e8c249" ), 
-				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Disc.class ), false, 
-				false, false, 
-				"", true, 
-				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Disc.class ), false 
-		);
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> backPaintState = this.createInitialPropertyValueExpressionState( this.createKey( "backPaintState" ), null, org.lgna.story.Billboard.class, "setBackPaint", org.lgna.story.Paint.class, org.lgna.story.SetBackPaint.Detail[].class );
+	private AddBillboardManagedFieldComposite() {
+		super( java.util.UUID.fromString( "bba3fc83-4db4-4be4-87d4-5111dbda4f60" ),	org.lgna.story.Billboard.class );
+	}
+	public org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > getBackPaintState() {
+		return this.backPaintState;
 	}
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.DiscFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.croquet.components.declaration.DiscFieldDeclarationPanel( this );
-	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		try {
-			//todo: better z-fighting avoidance
-			rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement( false, field, new org.lgna.story.Position( 0.0, 0.01, 0.0 ) ) );
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ccee );
-		}
-		return rv;
+	protected org.alice.ide.ast.declaration.views.AddManagedFieldView createView() {
+		return new org.alice.stageide.ast.declaration.views.AddBillboardManagedFieldView( this );
 	}
 }

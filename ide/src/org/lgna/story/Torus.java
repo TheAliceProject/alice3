@@ -40,35 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story;
 
-package org.alice.stageide.croquet.models.declaration;
+import org.lgna.project.annotations.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConeFieldDeclarationOperation extends org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation {
-	private static class SingletonHolder {
-		private static ConeFieldDeclarationOperation instance = new ConeFieldDeclarationOperation();
-	}
-	public static ConeFieldDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-	private ConeFieldDeclarationOperation() {
-		super( 
-				java.util.UUID.fromString( "15ce46f1-0ffc-436d-85c3-1f98be9a5e67" ), 
-				org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cone.class ), false, 
-				false, false, 
-				"", true, 
-				org.lgna.project.ast.AstUtilities.createInstanceCreation( org.lgna.story.Cone.class ), false 
-		);
-	}
+public class Torus extends Shape {
+	private final org.lgna.story.implementation.TorusImp implementation = new org.lgna.story.implementation.TorusImp( this );
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.ConeFieldDeclarationPanel createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new org.alice.stageide.croquet.components.declaration.ConeFieldDeclarationPanel( this );
+	/*package-private*/ org.lgna.story.implementation.TorusImp getImplementation() {
+		return this.implementation;
 	}
-	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		return rv;
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getInnerRadius() {
+		return this.implementation.innerRadius.getValue();
+	}
+	@MethodTemplate()
+	public void setInnerRadius( Number innerRadius, SetInnerRadius.Detail... details ) {
+		this.implementation.innerRadius.animateValue( innerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getOuterRadius() {
+		return this.implementation.outerRadius.getValue();
+	}
+	@MethodTemplate()
+	public void setOuterRadius( Number outerRadius, SetOuterRadius.Detail... details ) {
+		this.implementation.outerRadius.animateValue( outerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

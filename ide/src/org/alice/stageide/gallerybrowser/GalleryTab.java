@@ -46,7 +46,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTab extends org.lgna.croquet.TabComposite< org.lgna.croquet.components.View< ?,? > > {
+public abstract class GalleryTab extends org.lgna.croquet.SimpleTabComposite< org.lgna.croquet.components.View< ?,? > > {
 	public GalleryTab( java.util.UUID id ) {
 		super( id );
 	}

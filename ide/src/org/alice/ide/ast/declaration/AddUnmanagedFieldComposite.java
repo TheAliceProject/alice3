@@ -73,6 +73,10 @@ public class AddUnmanagedFieldComposite extends AddFieldComposite {
 		this.declaringType = declaringType;
 	}
 	@Override
+	protected boolean isNullAllowedForInitializer() {
+		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers.getInstance().getValue();
+	}
+	@Override
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}

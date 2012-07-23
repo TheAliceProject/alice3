@@ -112,6 +112,6 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 	
 	@Override
 	protected boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
-		return expressionType.isAssignableTo( org.lgna.story.JointedModel.class ) || desiredType.isAssignableTo( org.lgna.story.Joint.class );
+		return desiredType.isAssignableFrom( org.lgna.story.Joint.class ) && expressionType.isAssignableTo( org.lgna.story.JointedModel.class );
 	}
 }
