@@ -103,7 +103,16 @@ public abstract class Turnable extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public void setOrientationRelativeToVehicle( Orientation orientation, SetOrientationRelativeToVehicle.Detail... details ) {
-		this.getImplementation().animateOrientationOnly( this.getImplementation().getVehicle(), orientation.getInternal(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		org.lgna.story.implementation.EntityImp vehicle = this.getImplementation().getVehicle();
+		if( vehicle != null ) {
+			this.getImplementation().animateOrientationOnly( vehicle, orientation.getInternal(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		} else {
+			edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getImplementation().getSgComposite();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.getLocalTransformation();
+			m.orientation.setValue( orientation.getInternal() );
+			sgTransformable.setLocalTransformation( m );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		}
 	}
 	
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
