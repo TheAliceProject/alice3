@@ -224,6 +224,20 @@ public abstract class BooleanState extends State< Boolean > {
 				}
 			}
 		}
+		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
+	}
+	//	public int getMnemonicKey() {
+	//	return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+	//}
+	private void setMnemonicKey( int mnemonicKey ) {
+		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+	}
+	//public javax.swing.KeyStroke getAcceleratorKey() {
+	//	return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+	//}
+	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
 	@Override

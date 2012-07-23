@@ -68,6 +68,6 @@ public class PopupMenuEventTrigger extends EventObjectTrigger<javax.swing.event.
 	}
 	@Override
 	public String getNoteText( ) {
-		return "PopUp";
+		return "Click to Pop Up Menu";
 	}
 }

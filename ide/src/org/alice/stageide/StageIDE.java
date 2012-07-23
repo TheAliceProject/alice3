@@ -49,7 +49,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	public static StageIDE getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance(  org.alice.ide.IDE.getActiveInstance(), StageIDE.class );
 	}
-	private org.alice.ide.cascade.CascadeManager cascadeManager = new org.alice.stageide.cascade.CascadeManager();
+	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = new org.alice.stageide.cascade.ExpressionCascadeManager();
 	public StageIDE() {
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
@@ -79,7 +79,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
 	}
 	@Override
-	public org.alice.ide.cascade.CascadeManager getCascadeManager() {
+	public org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager() {
 		return this.cascadeManager;
 	}
 	
@@ -265,7 +265,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public org.lgna.croquet.Operation getAboutOperation() {
-		return org.alice.stageide.croquet.models.help.AboutOperation.getInstance();
+		return org.alice.stageide.about.AboutComposite.getInstance().getOperation();
 	}
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
@@ -279,6 +279,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				this.setFocusedCode( sceneType.findMethod( methodName ) );
 			}
 		}
+		org.alice.stageide.icons.SceneIconFactory.getInstance().markAllIconsDirty();
 	}
 	@Override
 	public boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType ) {
@@ -286,8 +287,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( javaType.getClassReflectionProxy().getReification(), org.lgna.story.Scene.class, org.lgna.story.Camera.class );
 	}
 
-	private static final int THUMBNAIL_WIDTH = 160;
-	private static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH * 3 / 4;
+	private static final int THUMBNAIL_WIDTH = org.lgna.story.resourceutilities.ThumbnailMaker.THUMBNAIL_WIDTH;
+	private static final int THUMBNAIL_HEIGHT = org.lgna.story.resourceutilities.ThumbnailMaker.THUMBNAIL_HEIGHT;
 	@Override
 	protected java.awt.image.BufferedImage createThumbnail() throws Throwable {
 		return org.alice.stageide.sceneeditor.ThumbnailGenerator.createThumbnail( THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT );

@@ -47,23 +47,31 @@ package org.alice.stageide.instancefactory.croquet.joint.all;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessJointedTypeMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserField, Integer, ThisFieldAccessJointedTypeMenuModel > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static ThisFieldAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserField value ) {
-		synchronized( map ) {
-			ThisFieldAccessJointedTypeMenuModel rv = map.get( value );
+		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( value.getValueType() );
+		return getInstance( value, jointedTypeInfos, 0 );
+	}
+	private static ThisFieldAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserField value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		synchronized( mapToMap ) {
+			ThisFieldAccessJointedTypeMenuModel rv = mapToMap.get( value, index );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ThisFieldAccessJointedTypeMenuModel( value );
-				map.put( value, rv );
+				rv = new ThisFieldAccessJointedTypeMenuModel( value, jointedTypeInfos, index );
+				mapToMap.put( value, index, rv );
 			}
 			return rv;
 		}
 	}
 	private final org.lgna.project.ast.UserField field;
-	private ThisFieldAccessJointedTypeMenuModel( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), field.getValueType() );
+	private ThisFieldAccessJointedTypeMenuModel( org.lgna.project.ast.UserField field, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		super( java.util.UUID.fromString( "bb23e6d5-9eab-4e8d-9aaf-0016f3465634" ), jointedTypeInfos, index );
 		this.field = field;
+	}
+	@Override
+	protected org.alice.stageide.instancefactory.croquet.joint.all.JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		return getInstance( this.field, jointedTypeInfos, index );
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {

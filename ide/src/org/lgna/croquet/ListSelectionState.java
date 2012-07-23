@@ -381,6 +381,16 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			this.popAtomic();
 		}
 	}
+	public final void removeItemAndSelectAppropriateReplacement( T item ) {
+		T prevSelection = this.getValue();
+		this.removeItem( item );
+		if( prevSelection == item ) {
+			//todo:
+			if( this.getItemCount() > 0 ) {
+				this.setValueTransactionlessly( this.getItemAt( 0 ) );
+			}
+		}
+	}
 
 	public final void setItems( java.util.Collection< T > items ) {
 		this.pushAtomic();
@@ -507,7 +517,7 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 	}
 
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item ) {
-		org.lgna.croquet.components.ItemSelectable< ?, T > itemSelectable = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.ItemSelectable.class );
+		org.lgna.croquet.components.ItemSelectable< ?, T, ? > itemSelectable = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
 		} else {
@@ -643,38 +653,5 @@ public abstract class ListSelectionState<T> extends ItemState< T > implements It
 			}
 			return rv;
 		}
-	}
-
-	private static class InternalSelectItemOperation<T> extends ActionOperation {
-		private final ListSelectionState< T > listSelectionState;
-		private final T item;
-		private InternalSelectItemOperation( ListSelectionState< T > listSelectionState, T item ) {
-			super( listSelectionState.getGroup(), java.util.UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
-			assert listSelectionState != null;
-			this.listSelectionState = listSelectionState;
-			this.item = item;
-		}
-		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			this.listSelectionState.setValueTransactionlessly( this.item );
-			step.finish();
-		}
-	}
-	private java.util.Map< T, InternalSelectItemOperation<T> > mapItemToSelectionOperation;
-	public ActionOperation getItemSelectionOperation( T item ) {
-		if( mapItemToSelectionOperation != null ) {
-			//pass
-		} else {
-			this.mapItemToSelectionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-		}
-		InternalSelectItemOperation<T> rv = this.mapItemToSelectionOperation.get( item );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new InternalSelectItemOperation< T >( this, item );
-			this.mapItemToSelectionOperation.put( item, rv );
-		}
-		return rv;
 	}
 }

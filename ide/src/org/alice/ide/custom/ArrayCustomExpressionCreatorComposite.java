@@ -59,7 +59,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 			return rv;
 		}
 	}
-	private final org.lgna.croquet.StringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) ); 
+	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) ); 
 	private final org.lgna.project.ast.AbstractType<?,?,?> arrayType;
 	
 	private final org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > valueState = this.createListSelectionState( 
@@ -71,7 +71,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	private final org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > addItemCascade = this.createCascadeWithInternalBlank( this.createKey( "addItemCascade" ), org.lgna.project.ast.Expression.class, new CascadeCustomizer< org.lgna.project.ast.Expression >() {
 		public void appendBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			ide.getCascadeManager().updateChildren( rv, blankNode, arrayType.getComponentType(), null );
+			ide.getExpressionCascadeManager().appendItems( rv, blankNode, arrayType.getComponentType(), null );
 		}
 		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
 			assert values.length == 1;
@@ -89,7 +89,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
 		return this.arrayType;
 	}
-	public org.lgna.croquet.StringValue getArrayTypeLabel() {
+	public org.lgna.croquet.PlainStringValue getArrayTypeLabel() {
 		return this.arrayTypeLabel;
 	}
 	public org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > getValueState() {
@@ -108,7 +108,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.arrayType, this.valueState.toArray() );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 	@Override

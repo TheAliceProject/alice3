@@ -74,7 +74,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	};
 
 	private org.lgna.cheshire.simple.stencil.SimplePresentation simplePresentation = null;
-	private org.alice.ide.stencil.PotentialDropReceptorsStencil potentialDropReceptorsStencil = null;
+	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil = null;
 
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
@@ -151,9 +151,97 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return rv;
 	}
+	
+	private static class UnacceptableFieldAccessCrawler extends edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.FieldAccess > {
+		private final java.util.Set<org.lgna.project.ast.UserField> unacceptableFields;
+		public UnacceptableFieldAccessCrawler( java.util.Set<org.lgna.project.ast.UserField> unacceptableFields ) {
+			super( org.lgna.project.ast.FieldAccess.class );
+			this.unacceptableFields = unacceptableFields;
+		}
+		@Override
+		protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
+			return this.unacceptableFields.contains( fieldAccess.field.getValue() );
+		}
+	}
+	private String reorganizeTypeFieldsIfNecessary( org.lgna.project.ast.NamedUserType namedUserType, int startIndex, java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields ) {
+		java.util.List<org.lgna.project.ast.UserField> fields = namedUserType.fields.getValue().subList( startIndex, namedUserType.fields.size() );
+		java.util.Set<org.lgna.project.ast.UserField> unacceptableFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( fields );
+		org.lgna.project.ast.UserField fieldToMoveToTheEnd = null;
+		java.util.List< org.lgna.project.ast.FieldAccess > accessesForFieldToMoveToTheEnd = null;
+		for( org.lgna.project.ast.UserField field : fields ) {
+			org.lgna.project.ast.Expression initializer = field.initializer.getValue();
+			UnacceptableFieldAccessCrawler crawler = new UnacceptableFieldAccessCrawler( unacceptableFields );
+			initializer.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+			java.util.List< org.lgna.project.ast.FieldAccess > fieldAccesses = crawler.getList();
+			if( fieldAccesses.size() > 0 ) {
+				fieldToMoveToTheEnd = field;
+				accessesForFieldToMoveToTheEnd = fieldAccesses;
+				break;
+			}
+			unacceptableFields.remove( field );
+		}
+		if( fieldToMoveToTheEnd != null ) {
+			if( alreadyMovedFields.contains( fieldToMoveToTheEnd ) ) {
+				//todo: better cycle detection?
+				StringBuilder sb = new StringBuilder();
+				sb.append( "<html>Possible cycle detected.<br>The field <strong>\"" );
+				sb.append( fieldToMoveToTheEnd.getName() );
+				sb.append( "\"</strong> on type <strong>\"" );
+				sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
+				sb.append( "\"</strong> is referencing: " );
+				String prefix = "<strong>\"";
+				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
+					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
+					sb.append( prefix );
+					sb.append( accessedField.getName() );
+					prefix = "\"</strong>, <strong>\"";
+				}
+				sb.append( "\"</strong><br>" );
+				sb.append( this.getApplicationName() );
+				sb.append( " already attempted to move it once." );
+				sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
+				return sb.toString();
+			} else {
+				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
+					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
+					if( accessedField == fieldToMoveToTheEnd ) {
+						StringBuilder sb = new StringBuilder();
+						sb.append( "<html>The field <strong>\"" );
+						sb.append( fieldToMoveToTheEnd.getName() );
+						sb.append( "\"</strong> on type <strong>\"" );
+						sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
+						sb.append( "\"</strong> is referencing <strong>itself</strong>." );
+						sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
+						return sb.toString();
+					}
+				}
+				int prevIndex = namedUserType.fields.indexOf( fieldToMoveToTheEnd );
+				int nextIndex = namedUserType.fields.size() - 1;
+				namedUserType.fields.slide( prevIndex, nextIndex );
+				alreadyMovedFields.add( fieldToMoveToTheEnd );
+				return this.reorganizeTypeFieldsIfNecessary( namedUserType, prevIndex, alreadyMovedFields );
+			}
+		} else {
+			return null;
+		}
+	}
+	private void reorganizeFieldsIfNecessary() {
+		org.lgna.project.Project project = this.getProject();
+		if( project != null ) {
+			for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
+				java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
+				if( message != null ) {
+					this.showMessageDialog( message, "Unable to Recover", org.lgna.croquet.MessageType.ERROR );
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void ensureProjectCodeUpToDate() {
 		this.generateCodeForSceneSetUp();
+		this.reorganizeFieldsIfNecessary();
 	}
 	public org.lgna.project.ast.NamedUserType getUpToDateProgramType() {
 		org.lgna.project.Project project = this.getUpToDateProject();
@@ -201,11 +289,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "reboot required" );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "restart required" );
 		}
 	};
 
-	public abstract org.alice.ide.cascade.CascadeManager getCascadeManager();
+	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );
 		this.updateTitlePrefix( rv );
@@ -230,25 +318,25 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return " 3 BETA ";
 	}
 
-	public org.alice.ide.stencil.PotentialDropReceptorsStencil getPotentialDropReceptorsStencil() {
+	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
 		if ( this.potentialDropReceptorsStencil == null ) {
-			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsStencil( this.getFrame() );
+			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getFrame() );
 		}
 		return this.potentialDropReceptorsStencil;
 	}
 
 	public void showDropReceptorsStencilOver( org.lgna.croquet.components.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		this.getPotentialDropReceptorsStencil().showStencilOver( potentialDragSource, type );
+		this.getPotentialDropReceptorsFeedbackView().showStencilOver( potentialDragSource, type );
 	}
 	public void hideDropReceptorsStencil() {
-		this.getPotentialDropReceptorsStencil().hideStencil();
+		this.getPotentialDropReceptorsFeedbackView().hideStencil();
 	}
 
 	@Deprecated
 	@Override
 	public void setDragInProgress( boolean isDragInProgress ) {
 		super.setDragInProgress( isDragInProgress );
-		this.getPotentialDropReceptorsStencil().setDragInProgress( isDragInProgress );
+		this.getPotentialDropReceptorsFeedbackView().setDragInProgress( isDragInProgress );
 	}
 
 	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
@@ -405,7 +493,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
 	}
 
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeEditorInFocus() {
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeEditorInFocus() {
 		org.alice.ide.perspectives.ProjectPerspective perspective = this.getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getCodeDropReceptorInFocus();
@@ -537,4 +625,74 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return simplePresentation;
 	}
+
+	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
+	private org.alice.ide.highlight.HighlightStencil highlightStencil;
+	private org.alice.ide.highlight.HighlightStencil getHighlightStencil() {
+		if( this.highlightStencil != null ) {
+			//pass
+		} else {
+			this.highlightStencil = new org.alice.ide.highlight.HighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
+		}
+		return this.highlightStencil;
+	}
+	public void showHighlightStencil( final org.lgna.project.ast.Expression expression, String noteText ) {
+		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
+		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				if( expression != null ) {
+					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					if( composite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+						
+						java.util.List<org.lgna.croquet.components.DropDown.JPopupMenuButton> jPopupMenuButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), org.lgna.croquet.components.DropDown.JPopupMenuButton.class );
+						for( org.lgna.croquet.components.DropDown.JPopupMenuButton jPopupMenuButton : jPopupMenuButtons ) {
+							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPopupMenuButton );
+							if( component instanceof org.alice.ide.codeeditor.ExpressionPropertyDropDownPane ) {
+								org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (org.alice.ide.codeeditor.ExpressionPropertyDropDownPane)component;
+								org.lgna.project.ast.Expression candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
+								if( candidate == expression ) {
+									return component;
+								}
+							} else if( component instanceof org.alice.ide.croquet.components.ExpressionDropDown ) {
+								org.alice.ide.croquet.components.ExpressionDropDown<org.lgna.project.ast.Expression> expressionDropDown = (org.alice.ide.croquet.components.ExpressionDropDown<org.lgna.project.ast.Expression>)component;
+								org.lgna.croquet.CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
+								if( completionModel instanceof org.lgna.croquet.CustomItemState ) {
+									org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state = (org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>)completionModel;
+									org.lgna.project.ast.Expression candidate = state.getValue();
+									if( candidate == expression ) {
+										return component;
+									}
+								}
+							}
+						};
+					}
+					return null;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", expression );
+					return null;
+				}
+			}
+		}, noteText );
+	}
+	public void showHighlightStencil( final org.lgna.croquet.Model model, String noteText ) {
+		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
+		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				if( model != null ) {
+					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+					if( component != null ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
+					}
+					return component;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", model );
+					return null;
+				}
+			}
+		}, noteText );
+	}
+	
 }

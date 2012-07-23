@@ -87,142 +87,20 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
-		final int SMALL_ICON_SIZE = 24;
-		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Sun.class, new javax.swing.Icon() {
-
-			public int getIconWidth() {
-				return SMALL_ICON_SIZE;
-			}
-			public int getIconHeight() {
-				return SMALL_ICON_SIZE;
-			}
-			
-			private java.awt.Shape createArc( float size ) {
-				java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
-				rv.moveTo( 0.0f, 0.0f );
-				rv.lineTo( size, 0.0f );
-				rv.quadTo( size, size, 0.0f, size );
-				rv.closePath();
-				return rv;
-			}
-			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.geom.AffineTransform m = g2.getTransform();
-				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-				try {
-					java.awt.Shape innerArc = this.createArc( 16.0f );
-					java.awt.Shape outerArc = this.createArc( 18.0f );
-					
-					g2.translate( 4.0f, 4.0f );
-					java.awt.geom.GeneralPath pathRays = new java.awt.geom.GeneralPath();
-					double thetaN = Math.PI/2.0;
-					double thetaDelta = thetaN/8.0;
-					g2.setColor( new java.awt.Color( 255, 210, 0 ) );
-					for( double theta = 0.0; theta<=thetaN; theta += thetaDelta ) {
-						pathRays.moveTo( 0.0f, 0.0f );
-						pathRays.lineTo( (float)( Math.cos( theta ) * 20.0 ), (float)( Math.sin( theta ) * 20.0 ) ); 
-					}
-					g2.draw( pathRays );
-					g2.fill( outerArc );
-
-					g2.setColor( new java.awt.Color( 230, 230, 0 ) );
-					g2.fill( innerArc );
-				} finally {
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-					g2.setTransform( m );
-				}
-			}
-		} );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Scene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Cylinder.class, new org.alice.stageide.icons.CylinderIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Cone.class, new org.alice.stageide.icons.ConeIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Disc.class, new org.alice.stageide.icons.DiscIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Sphere.class, new org.alice.stageide.icons.SphereIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Torus.class, new org.alice.stageide.icons.TorusIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Axes.class, new org.alice.stageide.icons.AxesIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.TextModel.class, new org.alice.stageide.icons.TextModelIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Billboard.class, new org.alice.stageide.icons.BillboardIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Box.class, new org.alice.stageide.icons.BoxIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Ground.class, new org.alice.stageide.icons.GroundIconFactory() );
 		
-		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Ground.class, new javax.swing.Icon() {
-			public int getIconWidth() {
-				return SMALL_ICON_SIZE;
-			}
-			public int getIconHeight() {
-				return SMALL_ICON_SIZE;
-			}
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				g.setColor( java.awt.Color.DARK_GRAY );
-				g.drawRect( x+2, y+2, SMALL_ICON_SIZE-5, SMALL_ICON_SIZE-5 );
-			}
-		} );
-
-		final java.awt.Stroke BONE_STROKE = new java.awt.BasicStroke( 3.0f );
-		final java.awt.Stroke JOINT_OUTLINE_STROKE = new java.awt.BasicStroke( 1.0f );
-		final int INSET_X = 6;
-		final int INSET_Y = 6;
-		final int JOINT_A_X = INSET_X;
-		final int JOINT_A_Y = INSET_Y;
-		final int JOINT_B_X = 3*SMALL_ICON_SIZE/4;
-		final int JOINT_B_Y = 2*SMALL_ICON_SIZE/5;
-		final int JOINT_C_X = SMALL_ICON_SIZE/2;
-		final int JOINT_C_Y = SMALL_ICON_SIZE-INSET_Y;
-		final int JOINT_WIDTH = 6;
-		final int JOINT_HEIGHT = 6;
-		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Joint.class, new javax.swing.Icon() {
-			public int getIconWidth() {
-				return SMALL_ICON_SIZE;
-			}
-			public int getIconHeight() {
-				return SMALL_ICON_SIZE;
-			}
-			private void drawJoint( java.awt.Graphics2D g2, int x, int y, java.awt.Paint fillPaint, java.awt.Paint outlinePaint ) {
-				if( fillPaint != null ) {
-					g2.setPaint( fillPaint );
-					g2.fillOval( x-4, y-4, JOINT_WIDTH, JOINT_HEIGHT );
-				}
-				if( outlinePaint != null ) {
-					g2.setPaint( outlinePaint );
-					g2.drawOval( x-4, y-4, JOINT_WIDTH, JOINT_HEIGHT );
-				}
-
-			}
-			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-				java.awt.Stroke prevStroke = g2.getStroke();
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-				try {
-					g2.setStroke( BONE_STROKE );
-					g2.drawLine( JOINT_A_X, JOINT_A_Y, JOINT_B_X, JOINT_B_Y );
-					g2.drawLine( JOINT_B_X, JOINT_B_Y, JOINT_C_X, JOINT_C_Y );
-					g2.setStroke( JOINT_OUTLINE_STROKE );
-					this.drawJoint( g2, JOINT_B_X, JOINT_B_Y, java.awt.Color.RED, java.awt.Color.BLACK );
-					this.drawJoint( g2, JOINT_A_X, JOINT_A_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
-					this.drawJoint( g2, JOINT_C_X, JOINT_C_Y, java.awt.Color.LIGHT_GRAY, java.awt.Color.BLACK );
-				} finally {
-					g2.setStroke( prevStroke );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-				}
-			}
-		} );
-		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lgna.story.Camera.class, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.gallerybrowser.ResourceManager.class.getResource( "images/camera-video.png" ) ) );
-//		org.alice.stageide.gallerybrowser.ResourceManager.registerSmallIcon( org.lookingglassandalice.storytelling.Camera.class, new javax.swing.Icon() {
-//			public int getIconWidth() {
-//				return SMALL_ICON_SIZE;
-//			}
-//			public int getIconHeight() {
-//				return SMALL_ICON_SIZE;
-//			}
-//			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-//				path.moveTo( 4,4 );
-//				path.lineTo( 20, 4 );
-//				path.lineTo( 20, 12 );
-//				path.lineTo( 28, 8 );
-//				path.lineTo( 28, 20 );
-//				path.lineTo( 20, 16 );
-//				path.lineTo( 20, 24 );
-//				path.lineTo( 4, 24 );
-//				path.closePath();
-//				g2.setColor( java.awt.Color.GRAY );
-//				g2.fill( path );
-//				g2.setColor( java.awt.Color.BLACK );
-//				g2.draw( path );
-//			}
-//		} );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Joint.class, new org.alice.stageide.icons.JointIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Camera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 	}
 	@Override
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {

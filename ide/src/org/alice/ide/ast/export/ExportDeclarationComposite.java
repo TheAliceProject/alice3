@@ -56,7 +56,7 @@ public abstract class ExportDeclarationComposite<V extends org.alice.ide.ast.exp
 	}
 
 	@Override
-	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
 }

@@ -80,13 +80,12 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		return this.features;
 	}
 	public java.awt.Point calculateLocation( org.lgna.croquet.components.Container< ? > container ) {
-		java.awt.Point rv = new java.awt.Point( 20, 20 );
+		java.awt.Point rv;
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
 			rv = feature.calculateNoteLocation( container, this );
 		} else {
-			rv.x = (container.getWidth()-this.getWidth())/2;
-			rv.y = 320;
+			rv = new java.awt.Point( (container.getWidth()-this.getWidth())/2, 320 );
 		}
 
 		System.err.println( "todo: remove text calculateLocation special case" );
@@ -219,14 +218,17 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		
 		//rv.setBackground( BASE_COLOR );
 
-		org.lgna.croquet.components.Hyperlink hyperlink = getNextOperation().createHyperlink();
-		hyperlink.scaleFont( 1.4f );
+		org.lgna.croquet.Operation nextOperation = this.getNextOperation();
+		if( nextOperation != null ) {
+			org.lgna.croquet.components.Hyperlink hyperlink = nextOperation.createHyperlink();
+			hyperlink.scaleFont( 1.4f );
 
-		org.lgna.croquet.components.BorderPanel southPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-			.lineEnd( hyperlink )
-		.build();
+			org.lgna.croquet.components.BorderPanel southPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineEnd( hyperlink )
+			.build();
 
-		rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
+			rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
+		}
 		final int X_BORDER_PAD = 16;
 		final int Y_BORDER_PAD = 12;
 		int top = Y_PAD+Y_BORDER_PAD;
@@ -249,7 +251,10 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		private java.awt.Point ptPressed;
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 			if( e.getClickCount() == 2 ) {
-				getNextOperation().fire(e);
+				org.lgna.croquet.Operation nextOperation = getNextOperation();
+				if( nextOperation != null ) {
+					nextOperation.fire( e );
+				}
 			}
 		}
 

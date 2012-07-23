@@ -119,19 +119,19 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
 				backwardFowardComponent,
 				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
-				org.alice.ide.clipboard.Clipboard.SINGLETON.getDropReceptor()
+				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
 		);
 		this.tabbedPane = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().createFolderTabbedPane();
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
 		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
 		this.addCenterComponent( tabbedPane );
 	}
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus() {
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
 		org.alice.ide.declarationseditor.DeclarationComposite item = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getSelectedItem();
 		if( item != null ) {
 			org.lgna.croquet.components.JComponent< ? > component = this.tabbedPane.getMainComponentFor( item );
 			if( component instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
-				return ((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)component).getCodeDropReceptor();
+				return ((org.alice.ide.declarationseditor.code.components.CodeDeclarationView)component).getCodePanelWithDropReceptor();
 			}
 		}
 		return null;
@@ -151,6 +151,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 		org.alice.ide.common.TypeDropDownIcon icon = new org.alice.ide.common.TypeDropDownIcon( type, this.popupButton.getAwtComponent().getModel() );
 		this.popupButton.setIcon( icon );
+		this.popupButton.revalidateAndRepaint();
 	}
 
 	@Override

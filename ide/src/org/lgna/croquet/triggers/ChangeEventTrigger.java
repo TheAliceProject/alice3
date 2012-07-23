@@ -70,6 +70,6 @@ public class ChangeEventTrigger extends EventObjectTrigger< javax.swing.event.Ch
 
 	@Override
 	public String getNoteText( ) {
-		return "Change";
+		return "Select";
 	}
 }

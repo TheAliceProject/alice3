@@ -200,7 +200,7 @@ public abstract class AbstractElement implements Element {
 	}
 	
 	protected int getLocalizedMnemonicKey() {
-		return getKeyCode( this.findLocalizedText( "mnenonic" ) );
+		return getKeyCode( this.findLocalizedText( "mnemonic" ) );
 	}
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
@@ -261,6 +261,14 @@ public abstract class AbstractElement implements Element {
 		this.appendRepr( sb );
 		sb.append( "]" );
 		return sb.toString();
+	}
+	
+	public void appendUserRepr( StringBuilder sb ) {
+		sb.append( "todo: override appendUserString\n" );
+		sb.append( this );
+		sb.append( "\n" );
+		sb.append( this.getClass().getName() );
+		sb.append( "\n" );
 	}
 	@Override
 	public final String toString() {

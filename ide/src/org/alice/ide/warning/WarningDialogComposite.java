@@ -52,26 +52,18 @@ public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperatio
 	public static WarningDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringValue descriptionText = this.createStringValue( this.createKey( "descriptionText" ) );
+	private final org.lgna.croquet.PlainStringValue descriptionText;
 	private WarningDialogComposite() {
 		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ), org.lgna.croquet.Application.INFORMATION_GROUP );
-	}
-	@Override
-	protected void localize() {
-		super.localize();
-		
-		//note: we choose to not encourage localizers to waste their time w/ this composite
-		//WarningDialogComposite.descriptionText = WARNING: Alice3 is not for the faint of heart.\n\nAlice3 is currently under development.\nWe are working very hard to make this dialog box obsolete.\nThank you for your patience.\nWe welcome your feedback.
-
 		StringBuilder sb = new StringBuilder();
 		sb.append( "WARNING: Alice3 is not for the faint of heart.\n\n" );
 		sb.append( "Alice3 is currently under development.\n" );
 		sb.append( "We are working very hard to make this dialog box obsolete.\n" );
 		sb.append( "Thank you for your patience.\n" );
 		sb.append( "We welcome your feedback.\n" );
-		this.descriptionText.setText( sb.toString() );
+		this.descriptionText = this.createUnlocalizedPlainStringValue( sb.toString() );
 	}
-	public org.lgna.croquet.StringValue getDescriptionText() {
+	public org.lgna.croquet.PlainStringValue getDescriptionText() {
 		return this.descriptionText;
 	}
 	@Override

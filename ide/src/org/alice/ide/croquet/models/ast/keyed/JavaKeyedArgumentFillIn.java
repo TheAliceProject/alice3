@@ -97,4 +97,8 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org
 	public org.lgna.project.ast.JavaKeyedArgument getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > node ) {
 		return this.transientValue;
 	}
+	@Override
+	protected java.lang.String getTutorialItemText() {
+		return this.transientValue.getKeyMethod().getName();
+	}
 }

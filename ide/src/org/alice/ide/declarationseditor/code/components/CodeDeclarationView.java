@@ -56,7 +56,7 @@ public class CodeDeclarationView extends AbstractCodeDeclarationView {
 	}
 	@Deprecated
 	@Override
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
 		return this.codeEditor;
 	}
 }

@@ -4,14 +4,13 @@ package org.lgna.croquet.components;
  * @author Kyle J. Harms
  */
 public abstract class Stencil extends Panel implements LayeredPane.ResizeListener {
-
-	public enum StencilLayer {
-		ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
-		BELOW_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
+	public enum LayerId {
+		BELOW_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER - 1 ),
+		ABOVE_POPUP_LAYER( javax.swing.JLayeredPane.POPUP_LAYER + 1 );
 
 		private int stencilLayer;
 
-		private StencilLayer( int stencilLayer ) {
+		private LayerId( int stencilLayer ) {
 			this.stencilLayer = stencilLayer;
 		}
 
@@ -27,25 +26,9 @@ public abstract class Stencil extends Panel implements LayeredPane.ResizeListene
 			return this.stencilLayer > javax.swing.JLayeredPane.POPUP_LAYER;
 		}
 	}
-
-	private LayeredPane layeredPane;
+	private final LayeredPane layeredPane;
 	private boolean isEventInterceptEnabled;
 	private javax.swing.RepaintManager repaintManager;
-
-	public Stencil( AbstractWindow<?> window ) {
-		this.layeredPane = window.getLayeredPane();
-		this.isEventInterceptEnabled = false;
-		this.setOpaque( false );
-	}
-
-	protected abstract void handleMouseMoved(java.awt.event.MouseEvent e);
-	protected abstract void redispatchMouseEvent(java.awt.event.MouseEvent e);
-
-	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
-	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
-	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
-	protected abstract boolean contains( int x, int y, boolean superContains );
-	protected abstract StencilLayer getStencilsLayer();
 
 	private final class StencilRepaintManager extends javax.swing.RepaintManager {
 		private org.lgna.croquet.components.Stencil stencil;
@@ -90,42 +73,41 @@ public abstract class Stencil extends Panel implements LayeredPane.ResizeListene
 
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 		public void mouseClicked(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
 		}
 		public void mouseEntered(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
 		}
 		public void mouseExited(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
 		}
 		public void mousePressed(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
 		}
 		public void mouseReleased(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
 		}
 	};
 
 	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
 		public void mouseMoved(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
 		}
 		public void mouseDragged(java.awt.event.MouseEvent e) {
-			redispatchMouseEvent(e);
 		}
 	};
 
 	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
-		//todo: this seems wrong... this should also redispatch
 		public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
-			java.awt.Point p = e.getPoint();
-			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent().getContentPane(), p.x, p.y);
-			if (component != null) {
-				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(e.getComponent(), p, component);
-				component.dispatchEvent(new java.awt.event.MouseWheelEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e.getScrollAmount(), e.getWheelRotation()));
-			}
 		}
 	};
+
+	public Stencil( AbstractWindow<?> window ) {
+		this.layeredPane = window.getLayeredPane();
+		this.isEventInterceptEnabled = false;
+		this.setOpaque( false );
+	}
+
+	protected abstract void handleMouseMoved(java.awt.event.MouseEvent e);
+	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
+	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
+	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
+	protected abstract boolean contains( int x, int y, boolean superContains );
+	protected abstract LayerId getStencilsLayer();
 
 	@Override
 	protected javax.swing.JPanel createJPanel() {
@@ -167,15 +149,15 @@ public abstract class Stencil extends Panel implements LayeredPane.ResizeListene
 	public void setEventInterceptEnabled( boolean isEventInterceptEnabled ) {
 		if( this.isEventInterceptEnabled != isEventInterceptEnabled ) {
 			if( this.isEventInterceptEnabled ) {
-				this.layeredPane.getAwtComponent().removeMouseListener( this.mouseListener );
-				this.layeredPane.getAwtComponent().removeMouseMotionListener( this.mouseMotionListener );
-				this.layeredPane.getAwtComponent().removeMouseWheelListener( this.mouseWheelListener );
+				this.getAwtComponent().removeMouseListener( this.mouseListener );
+				this.getAwtComponent().removeMouseMotionListener( this.mouseMotionListener );
+				this.getAwtComponent().removeMouseWheelListener( this.mouseWheelListener );
 			}
 			this.isEventInterceptEnabled = isEventInterceptEnabled;
 			if( this.isEventInterceptEnabled ) {
-				this.layeredPane.getAwtComponent().addMouseListener( this.mouseListener );
-				this.layeredPane.getAwtComponent().addMouseMotionListener( this.mouseMotionListener );
-				this.layeredPane.getAwtComponent().addMouseWheelListener( this.mouseWheelListener );
+				this.getAwtComponent().addMouseListener( this.mouseListener );
+				this.getAwtComponent().addMouseMotionListener( this.mouseMotionListener );
+				this.getAwtComponent().addMouseWheelListener( this.mouseWheelListener );
 			}
 		}
 	}

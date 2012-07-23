@@ -128,9 +128,14 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 	public org.lgna.croquet.DropReceptor getCurrentDropReceptor() {
 		return this.currentDropReceptor;
 	}
-	public void setCurrentDropReceptor( org.lgna.croquet.DropReceptor currentDropReceptor ) {
-		this.currentDropReceptor = currentDropReceptor;
+//	public void setCurrentDropReceptor( org.lgna.croquet.DropReceptor currentDropReceptor ) {
+//		this.currentDropReceptor = currentDropReceptor;
+//	}
+	
+	public org.lgna.croquet.DropSite getCurrentPotentialDropSite() {
+		return this.currentPotentialDropSite;
 	}
+	
 	private org.lgna.croquet.DropReceptor getDropReceptorUnder( int x, int y ) {
 		org.lgna.croquet.DropReceptor rv = null;
 		int prevHeight = Integer.MAX_VALUE;

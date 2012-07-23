@@ -210,7 +210,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 		}
 	}
 	@Override
-	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
+	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		super.handleMouseDragged( e );
 		if( isActuallyPotentiallyDraggable() ) {
 			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
@@ -225,7 +225,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 	}
 
 	@Override
-	public void handleMousePressed( java.awt.event.MouseEvent e ) {
+	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
 		super.handleMousePressed( e );
 		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 			if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
@@ -234,7 +234,7 @@ public abstract class DragComponent< J extends javax.swing.AbstractButton, M ext
 		}
 	}
 	@Override
-	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
+	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
 			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				if( this.isWithinClickThreshold() ) {

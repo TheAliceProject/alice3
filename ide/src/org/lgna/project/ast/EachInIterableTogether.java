@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class EachInIterableTogether extends AbstractEachInTogether {
+public class EachInIterableTogether extends AbstractEachInTogether implements EachInIterableStatement {
 	public ExpressionProperty iterable = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
@@ -57,5 +57,8 @@ public class EachInIterableTogether extends AbstractEachInTogether {
 	}
 	public EachInIterableTogether( UserLocal item, Expression iterable, BlockStatement body ) {
 		super( item, body );
+	}
+	public ExpressionProperty getIterableProperty() {
+		return this.iterable;
 	}
 }

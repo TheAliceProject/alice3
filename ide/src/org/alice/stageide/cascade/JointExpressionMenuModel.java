@@ -50,12 +50,23 @@ public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<
 	private final org.lgna.project.ast.Expression expression;
 	private final java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos;
 	private final int index;
+	private final boolean isOwnedByCascadeItemMenuCombo;
 
-	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression, java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos, int index ) {
+	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression, java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos, int index, boolean isOwnedByCascadeItemMenuCombo ) {
 		super( java.util.UUID.fromString( "c70ca3a5-b1e0-4ed9-8648-14acd52a4091" ) );
 		this.expression = expression;
 		this.jointedTypeInfos = jointedTypeInfos;
 		this.index = index;
+		this.isOwnedByCascadeItemMenuCombo = isOwnedByCascadeItemMenuCombo;
+	}
+	@Override
+	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression,org.lgna.project.ast.Expression> node ) {
+		if( this.isOwnedByCascadeItemMenuCombo ) {
+			return super.getMenuProxy( node );
+		} else {
+			javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( this.expression ).getAwtComponent();
+			return expressionPane;
+		}
 	}
 	@Override
 	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
@@ -63,7 +74,7 @@ public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<
 		JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance( info.getType() ); 
 		org.lgna.croquet.CascadeBlankChild child;
 		if( jointedTypeInfos.size() > this.index+1 ) {
-			child = new org.lgna.croquet.CascadeItemMenuCombo( separator, new JointExpressionMenuModel( this.expression, this.jointedTypeInfos, this.index+1 ) );
+			child = new org.lgna.croquet.CascadeItemMenuCombo( separator, new JointExpressionMenuModel( this.expression, this.jointedTypeInfos, this.index+1, true ) );
 		} else {
 			child = separator;
 		}

@@ -46,7 +46,12 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
-	public static void main( String[] args ) {
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+
 		TestCroquet testCroquet = new TestCroquet();
 		testCroquet.initialize( args );
 		
@@ -64,10 +69,20 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		IntegerState integerState = new IntegerState();
 		DoubleState doubleState = new DoubleState();
 		
+		integerState.addValueListener( new org.lgna.croquet.State.ValueListener<Integer>() {
+			public void changing( org.lgna.croquet.State<java.lang.Integer> state, java.lang.Integer prevValue, java.lang.Integer nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State<java.lang.Integer> state, java.lang.Integer prevValue, java.lang.Integer nextValue, boolean isAdjusting ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue, isAdjusting );
+			}
+		} );
+		
 		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 
 				4,  1, 
 				integerState.createSlider(), integerState.createSpinner(),
-				doubleState.createSlider(), doubleState.createSpinner()
+				doubleState.createSlider(), doubleState.createSpinner(),
+				
+				new org.lgna.croquet.components.SwingAdapter( new javax.swing.JComboBox() )
 		);
 		
 		testCroquet.getFrame().getContentPanel().addCenterComponent( gridPanel );

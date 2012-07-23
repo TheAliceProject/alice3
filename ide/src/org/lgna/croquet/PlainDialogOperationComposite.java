@@ -46,12 +46,12 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
-	private final Operation operation;
+	private final OwnedByCompositeOperation operation;
 	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId );
 		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
-	public org.lgna.croquet.Operation getOperation() {
+	public OwnedByCompositeOperation getOperation() {
 		return this.operation;
 	}
 	@Override
@@ -69,7 +69,7 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 	}
 	
 	@Override
-	protected org.lgna.croquet.AbstractWindowComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
 		//todo
 		return null;
 	}
@@ -90,5 +90,11 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 				completionStep.finish();
 			}
 		}, completionStep );
+	}
+	
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: generate close transaction" );
+	}
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 }

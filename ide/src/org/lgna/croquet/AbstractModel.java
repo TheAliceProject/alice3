@@ -97,8 +97,10 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		return this.isEnabled;
 	}
 	public void setEnabled( boolean isEnabled ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-		this.isEnabled = isEnabled;
+		if( this.isEnabled != isEnabled ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: override setEnabled", this );
+			this.isEnabled = isEnabled;
+		}
 	}
 //	public boolean isEnabled() {
 //		throw new RuntimeException( "todo" );
@@ -124,19 +126,15 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 	}
 
 	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit );
-//	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
-//		rv.append( "TODO: override updateTutorialStepText " );
-//		rv.append( this );
-//		return rv;
-//	}
 	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit ) {
 		StringBuilder sb = new StringBuilder();
-//		sb.append( "trigger:" );
 		sb.append( triggerText );
-//		sb.append( ",bonus:" );
-		this.updateTutorialStepText( sb, step, edit );
-//		sb.append( ",this:" );
-//		sb.append( this );
+		sb.append( " " );
+		if( step.getTrigger() instanceof org.lgna.croquet.triggers.DropTrigger ) {
+			sb.append( "<strong>here</strong>." );
+		} else {
+			this.updateTutorialStepText( sb, step, edit );
+		}
 		return sb.toString();
 	}
 }

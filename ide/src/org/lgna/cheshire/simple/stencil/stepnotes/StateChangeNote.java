@@ -46,17 +46,29 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public final class StateChangeNote<T> extends CompletionNote< org.lgna.croquet.history.StateChangeStep<T> > {
-	public StateChangeNote( org.lgna.croquet.history.StateChangeStep<T> step ) {
+public final class StateChangeNote<T> extends CompletionNote<org.lgna.croquet.State<T>> {
+	public StateChangeNote( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<T>> step ) {
 		super( step );
 	}
 	@Override
-	protected void addFeatures(org.lgna.croquet.history.StateChangeStep<T> step) {
-		org.lgna.croquet.State<T> state = step.getModel();
-		if( state instanceof org.lgna.croquet.ListSelectionState ) {
-			this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ItemSelectionStateItemResolver<T>( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.NORTH_SOUTH ) );
+	protected void addFeatures( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<T>> step ) {
+		org.lgna.croquet.history.Step previousStep = step.getPreviousStep();
+		if( previousStep instanceof org.lgna.croquet.history.MenuItemSelectStep ) {
+			org.lgna.croquet.history.MenuItemSelectStep menuItemSelectStep = (org.lgna.croquet.history.MenuItemSelectStep)previousStep;
+			this.addFeature( new org.lgna.cheshire.simple.stencil.features.MenuHole( 
+					new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( menuItemSelectStep ), 
+					org.lgna.cheshire.simple.Feature.ConnectionPreference.NORTH_SOUTH,
+					true,
+					true,
+					false
+			) );
 		} else {
-			this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.EAST_WEST ) );
+			org.lgna.croquet.State<T> state = step.getModel();
+			if( state instanceof org.lgna.croquet.ListSelectionState ) {
+				this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ItemSelectionStateItemResolver<T>( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.NORTH_SOUTH ) );
+			} else {
+				this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.EAST_WEST ) );
+			}
 		}
 	}
 }

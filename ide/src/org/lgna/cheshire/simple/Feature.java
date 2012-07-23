@@ -513,7 +513,14 @@ public abstract class Feature {
 			if( this.isPathRenderingDesired() ) {
 				g2.setPaint( java.awt.Color.BLACK );
 
-				java.awt.Rectangle noteBounds = note.getComponent( 0 ).getBounds( asSeenBy );
+				
+				org.lgna.croquet.components.Component<?> component;
+				if( note.getComponentCount() > 0 ) {
+					component = note.getComponent( 0 );
+				} else {
+					component = note;
+				}
+				java.awt.Rectangle noteBounds = component.getBounds( asSeenBy );
 				java.awt.Rectangle shapeBounds = shape.getBounds();
 				if( shapeBounds != null ) {
 					java.awt.Point ptComponent = actualConnection.getPoint( shapeBounds );
@@ -538,7 +545,8 @@ public abstract class Feature {
 		sb.append( "\t\t" );
 		sb.append( this.getClass().getName() );
 		sb.append( ": " );
-		sb.append( this.getStatus() );
+		String status = this.getStatus();
+		sb.append( status != null ? status : "IS_GOOD_TO_GO" );
 		sb.append( "\n" );
 	}
 }

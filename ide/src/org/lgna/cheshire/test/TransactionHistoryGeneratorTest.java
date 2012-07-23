@@ -19,6 +19,7 @@ public class TransactionHistoryGeneratorTest {
 
 	private org.lgna.project.ast.AbstractNode reuseMethod;
 	private org.lgna.croquet.history.TransactionHistory reuseTransactionHistory;
+	private org.lgna.project.Project reuseProject;
 
 	public TransactionHistoryGeneratorTest( String testName, String reuseType ) {
 		this( testName, reuseType, null, null );
@@ -59,7 +60,11 @@ public class TransactionHistoryGeneratorTest {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public org.lgna.project.Project getReuseProject() {
+		return this.reuseProject;
+	}
+	
 	private org.lgna.project.ast.AbstractNode loadReuseLgp( java.io.File file ) throws java.io.IOException {
 		org.lgna.project.Version BAD_BAD_BAD_madeUpVersion = new org.lgna.project.Version( "3.1" );
 		java.io.FileInputStream fis = new java.io.FileInputStream( file );
@@ -73,12 +78,11 @@ public class TransactionHistoryGeneratorTest {
 	}
 
 	private org.lgna.project.ast.AbstractNode loadReuseA3p( java.io.File file, String fieldName, String methodName ) throws java.io.IOException {
-		org.lgna.project.Project project;
 		org.lgna.project.ast.AbstractMethod method = null;
 		try {
-			project = org.lgna.project.io.IoUtilities.readProject( file );
+			this.reuseProject = org.lgna.project.io.IoUtilities.readProject( file );
 
-			org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
+			org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)this.reuseProject.getProgramType().fields.get( 0 ).getValueType();
 			org.lgna.project.ast.AbstractField alienField = sceneType.findField( fieldName );
 
 			method = alienField.getValueType().findMethod( methodName );
@@ -87,24 +91,43 @@ public class TransactionHistoryGeneratorTest {
 		}
 		return method;
 	}
+	
 
+
+	private static final boolean TEMPORARY_HACK_isStoringDesired = false;
+	public static final java.io.File TEMPORARY_HACK_lastGeneratedTransactionHistoryFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "lastGeneratedTransactionHistory.bin" );
+	public static final java.io.File TEMPORARY_HACK_lastGeneratedProjectFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "lastGeneratedProject.a3p" );
+	
 	public void generate( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
 		assert sceneType.isAssignableTo( org.lgna.story.Scene.class ) : sceneType;
 
 		org.lgna.project.ast.UserType<?> type;
+		org.lgna.project.ast.UserField field;
 		if ( this.fieldName != null ) {
-			org.lgna.project.ast.UserField field = sceneType.getDeclaredField( this.fieldName );
+			field = sceneType.getDeclaredField( this.fieldName );
 			type = (org.lgna.project.ast.UserType<?>)field.getValueType();
 		} else {
 			type = sceneType;
+			field = null;
 		}
+
+		org.lgna.project.ast.UserMethod myFirstMethod = sceneType.getDeclaredMethod( "myFirstMethod" );
 
 		org.lgna.project.ast.UserMethod methodToGenerate = (org.lgna.project.ast.UserMethod)this.reuseMethod;
 		org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), methodToGenerate );
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
-		this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation );
+		this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation, myFirstMethod, field );
+
+		if( TEMPORARY_HACK_isStoringDesired ) {
+			try {
+				org.lgna.project.io.IoUtilities.writeProject( TEMPORARY_HACK_lastGeneratedProjectFile, project );
+				edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( this.reuseTransactionHistory, TEMPORARY_HACK_lastGeneratedTransactionHistoryFile );
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
+		}
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getReuseTransactionHistory() {

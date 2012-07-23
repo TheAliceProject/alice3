@@ -47,6 +47,9 @@ package org.lgna.cheshire.ast;
  * @author Dennis Cosgrove
  */
 public class BlockStatementGenerator {
+	private BlockStatementGenerator() {
+		throw new AssertionError();
+	}
 	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>,StatementGenerator> mapStatementClassToGenerator = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.Comment.class, org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
@@ -58,105 +61,133 @@ public class BlockStatementGenerator {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.ForEachInArrayLoop.class, org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance() );
 		//mapStatementClassToGenerator.put( org.lgna.project.ast.ReturnStatement.class, org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance() );
 		mapStatementClassToGenerator.put( org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
+		mapStatementClassToGenerator.put( org.lgna.project.ast.LocalDeclarationStatement.class, org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
 	}
 	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
-			StatementGenerator statementGenerator;
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
-			org.alice.ide.members.TemplateComposite templateComposite = null;
-			org.lgna.project.ast.MethodInvocation methodInvocation = null;
-			org.lgna.project.ast.Expression[] initialExpressions = {};
-			if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-				org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-				org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-				if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-					methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+			if( statement.isEnabled.getValue() ) {
+				StatementGenerator statementGenerator;
+				org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
+				org.alice.ide.members.TemplateComposite templateComposite = null;
+				org.lgna.project.ast.MethodInvocation methodInvocation = null;
+				org.lgna.project.ast.Expression[] initialExpressions = {};
+				if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+					org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+					org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+					if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+						methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 
-					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+						org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 
-					if( method instanceof org.lgna.project.ast.UserMethod ) {
-						org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-						//todo: check to see if generation actually required
-						org.alice.ide.ast.declaration.ProcedureDeclarationComposite.getInstance( userMethod.getDeclaringType() ).generateAndAddToTransactionHistory( history, userMethod );
+						if( method instanceof org.lgna.project.ast.UserMethod ) {
+							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+							//todo: check to see if generation actually required
+							
+							org.lgna.project.ast.UserType<?> declaringType = userMethod.getDeclaringType();
+							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethod );
+							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( userMethod.getDeclaringType() ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit );
+						}
+
+						org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
+
+						final int N = methodInvocation.requiredArguments.size();
+						initialExpressions = new org.lgna.project.ast.Expression[ N ];
+						for( int i=0; i<N; i++ ) {
+							initialExpressions[ i ] = methodInvocation.requiredArguments.get( i ).expression.getValue();
+						}
+						instanceFactory = org.alice.ide.instancefactory.InstanceFactoryUtilities.getInstanceFactoryForExpression( instanceExpression );
+						if( instanceFactory != null ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instanceExpression );
+						}
+						statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
+						
+						boolean isFieldTemplateCompositeValid = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue();
+						//todo
+						if( method.isProcedure() ) {
+							if( isFieldTemplateCompositeValid && method.getName().startsWith( "set" ) ) {
+								templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
+							} else {
+								templateComposite = org.alice.ide.members.ProcedureTemplateComposite.getInstance();
+							}
+						} else {
+							if( isFieldTemplateCompositeValid && ( method.getName().startsWith( "get" ) || method.getName().startsWith( "is" ) ) ) {
+								templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
+							} else {
+								templateComposite = org.alice.ide.members.FunctionTemplateComposite.getInstance();
+							}
+						}
+					} else {
+						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: handle expression " + expression );
+						statementGenerator = null;
 					}
-
-					org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
-
-					final int N = methodInvocation.requiredArguments.size();
-					initialExpressions = new org.lgna.project.ast.Expression[ N ];
-					for( int i=0; i<N; i++ ) {
-						initialExpressions[ i ] = methodInvocation.requiredArguments.get( i ).expression.getValue();
+				} else {
+					statementGenerator = mapStatementClassToGenerator.get( statement.getClass() );
+					if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+						// pass
+					} else {
+						templateComposite = org.alice.ide.controlflow.ControlFlowComposite.getInstance( /*todo*/null );
 					}
-					instanceFactory = org.alice.ide.instancefactory.InstanceFactoryUtilities.getInstanceFactoryForExpression( instanceExpression );
+				}
+				if( statementGenerator != null ) {
 					if( instanceFactory != null ) {
-						//pass
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instanceExpression );
+						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
 					}
-					statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
-					//todo
-					if( method.isProcedure() ) {
-						if( method.getName().startsWith( "set" ) ) {
-							templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
+					if( templateComposite != null ) {
+						if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+							org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().pushGeneratedValue( templateComposite );
 						} else {
-							templateComposite = org.alice.ide.members.ProcedureTemplateComposite.getInstance();
-						}
-					} else {
-						if( method.getName().startsWith( "get" ) || method.getName().startsWith( "is" ) ) {
-							templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
-						} else {
-							templateComposite = org.alice.ide.members.FunctionTemplateComposite.getInstance();
+							org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( templateComposite );
 						}
 					}
+					statementGenerator.generateAndAddStepsToTransaction( history, statement, initialExpressions );
+					if( templateComposite != null ) {
+						if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+							org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
+						} else {
+							org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();
+						}
+					}
+					if( instanceFactory != null ) {
+						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
+					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle", expression );
-					statementGenerator = null;
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: handle statement " + statement );
 				}
-			} else {
-				statementGenerator = mapStatementClassToGenerator.get( statement.getClass() );
-				if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-					// pass
-				} else {
-					templateComposite = org.alice.ide.controlflow.ControlFlowComposite.getInstance( /*todo*/null );
-				}
-			}
-			if( statementGenerator != null ) {
-				if( instanceFactory != null ) {
-					org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
-				}
-				if( templateComposite != null ) {
-					if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-						org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().pushGeneratedValue( templateComposite );
-					} else {
-						org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( templateComposite );
+				if( methodInvocation != null ) {
+					org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade moreCascade = org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( methodInvocation );
+					for( org.lgna.project.ast.JavaKeyedArgument argument : methodInvocation.keyedArguments ) {
+						org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
+						org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, moreCascade.getRoot().getPopupPrepModel(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
+
+						java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+						prepModels.add( org.alice.ide.croquet.models.ast.keyed.JavaKeyedArgumentFillIn.getInstance( argument.getKeyMethod() ) );
+
+						org.alice.ide.croquet.models.MenuBarComposite menuBarComposite = null;
+						org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );
+						org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+
+						org.lgna.croquet.history.TransactionHistory[] bufferForCompletionStepSubTransactionHistory = { null };
+						
+						org.lgna.project.ast.MethodInvocation keyedArgumentMethodInvocation = (org.lgna.project.ast.MethodInvocation)argument.expression.getValue();
+						
+						org.lgna.croquet.CascadeFillIn fillIn = ExpressionFillInGenerator.generateFillInForExpression( keyedArgumentMethodInvocation.requiredArguments.get( 0 ).expression.getValue(), bufferForCompletionStepSubTransactionHistory );
+						
+						if( fillIn != null ) {
+							prepModels.add( fillIn );
+							menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );
+							org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+						}
+						
+						org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, moreCascade, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), bufferForCompletionStepSubTransactionHistory[ 0 ] );
+						completionStep.setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
 					}
 				}
-				statementGenerator.generateAndAddStepsToTransaction( history, statement, initialExpressions );
-				if( templateComposite != null ) {
-					if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-						org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
-					} else {
-						org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();
-					}
+				if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+					org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+					BlockStatementGenerator.generateAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
 				}
-				if( instanceFactory != null ) {
-					org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
-				}
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( statement );
-			}
-			if( methodInvocation != null ) {
-				org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade moreCascade = org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( methodInvocation );
-				for( org.lgna.project.ast.JavaKeyedArgument argument : methodInvocation.keyedArguments ) {
-					org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
-					org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, moreCascade.getRoot().getPopupPrepModel(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance() );
-					org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, moreCascade, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), null );
-					completionStep.setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
-				}
-			}
-			if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-				org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
-				BlockStatementGenerator.generateAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
 			}
 		}
 	}

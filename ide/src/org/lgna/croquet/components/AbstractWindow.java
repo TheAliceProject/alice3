@@ -59,9 +59,9 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 
 	private final W window;
 
+	private final java.util.Map<Integer,Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	//<kjh/>
-	private Layer abovePopupLayer;
-	private Layer belowPopupLayer;
 	private final LayeredPane layeredPane;
 	
 	public AbstractWindow( W window ) {
@@ -75,20 +75,19 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public final W getAwtComponent() {
 		return this.window;
 	}
-	
-	public Layer getAbovePopupLayer() {
-		if( this.abovePopupLayer != null ) {
-			this.abovePopupLayer = new Layer( this, javax.swing.JLayeredPane.POPUP_LAYER+1 );
+
+	public Layer getLayer( Integer id ) {
+		synchronized( this.mapIdToLayer ) {
+			Layer rv = this.mapIdToLayer.get( id );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new Layer( this, id );
+				this.mapIdToLayer.put( id, rv );
+			}
+			return rv;
 		}
-		return this.abovePopupLayer;
 	}
-	public Layer getBelowPopupLayer() {
-		if( this.belowPopupLayer != null ) {
-			this.belowPopupLayer = new Layer( this, javax.swing.JLayeredPane.POPUP_LAYER-1 );
-		}
-		return this.belowPopupLayer;
-	}
-	
 	@Override
 	public org.lgna.croquet.components.AbstractWindow< ? > getRoot() {
 		return this;

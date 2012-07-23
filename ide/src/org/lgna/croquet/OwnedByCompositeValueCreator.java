@@ -52,6 +52,9 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 		super( java.util.UUID.fromString( "d8315541-a441-4e09-b102-3e7730fbc960" ) );
 		this.composite = composite;
 	}
+	public ValueCreatorOwningComposite<?,T> getComposite() {
+		return this.composite;
+	}
 	@Override
 	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		//todo

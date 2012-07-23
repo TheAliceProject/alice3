@@ -55,10 +55,14 @@ public class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
 	public void addKeyValuePair( Object key, Object value ) {
 		this.map.put( key, value );
 		if( key instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-			org.lgna.project.ast.AbstractStatementWithBody keyAbstractStatementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)key;
-			org.lgna.project.ast.AbstractStatementWithBody valueAbstractStatementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)key;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "addKeyValuePair recursive retarget" );
-			this.addBody( keyAbstractStatementWithBody.body.getValue(), valueAbstractStatementWithBody.body.getValue() );
+			org.lgna.project.ast.AbstractStatementWithBody keyStatementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)key;
+			org.lgna.project.ast.AbstractStatementWithBody valueStatementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)value;
+			this.addBody( keyStatementWithBody.body.getValue(), valueStatementWithBody.body.getValue() );
+			if( key instanceof org.lgna.project.ast.EachInStatement ) {
+				org.lgna.project.ast.EachInStatement keyEachInStatement = (org.lgna.project.ast.EachInStatement)keyStatementWithBody;
+				org.lgna.project.ast.EachInStatement valueEachInStatement = (org.lgna.project.ast.EachInStatement)valueStatementWithBody;
+				this.map.put( keyEachInStatement.getItemProperty().getValue(), valueEachInStatement.getItemProperty().getValue() );
+			}
 		}
 		if( key instanceof org.lgna.project.ast.ExpressionStatement ) {
 			org.lgna.project.ast.ExpressionStatement keyExpressionStatement = (org.lgna.project.ast.ExpressionStatement)key;
@@ -84,19 +88,18 @@ public class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
 			if( replacementBlockStatement != null ) {
 				return (N)new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( replacementBlockStatement, originalBlockStatementIndexPair.getIndex() );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "retarget", originalBlockStatementIndexPair.getOwningDropReceptor() );
 				return original;
 			}
-		} else if( original instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-			original = (N)org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( retarget( ((org.alice.ide.instancefactory.ThisFieldAccessFactory)original).getField() ) );
-		}
-
-		N rv = (N)map.get( original );
-		if( rv != null ) {
-			//pass
+		} else if( original instanceof org.alice.ide.instancefactory.InstanceFactory ) {
+			return (N)org.alice.ide.instancefactory.InstanceFactoryUtilities.retarget( this, (org.alice.ide.instancefactory.InstanceFactory)original );
 		} else {
-			rv = original;
+			N rv = (N)map.get( original );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = original;
+			}
+			return rv;
 		}
-		return rv;
 	}
 }

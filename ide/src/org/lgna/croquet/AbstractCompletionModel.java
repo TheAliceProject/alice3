@@ -50,11 +50,15 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	private final Group group;
 	private int ignoreCount = 0;
 	
-	private static class SidekickLabel extends StringValue {
+	private static final class SidekickLabel extends PlainStringValue {
 		private final AbstractCompletionModel completionModel;
 		public SidekickLabel( AbstractCompletionModel completionModel ) {
 			super( java.util.UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
 			this.completionModel = completionModel;
+		}
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.completionModel.getClassUsedForLocalization();
 		}
 		@Override
 		protected String getSubKeyForLocalization() {
@@ -70,6 +74,18 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	}
 	public Group getGroup() {
 		return this.group;
+	}
+	public synchronized PlainStringValue getSidekickLabel() {
+		if( this.sidekickLabel != null ) {
+			//pass
+		} else {
+			this.sidekickLabel = new SidekickLabel( this );
+			this.sidekickLabel.initializeIfNecessary();
+		}
+		return this.sidekickLabel;
+	}
+	public StringValue peekSidekickLabel() {
+		return this.sidekickLabel;
 	}
 
 	protected void pushIgnore() {
@@ -104,16 +120,43 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		sb.append( "group=" );
 		sb.append( this.getGroup() );
 	}
-	
-	public synchronized StringValue getSidekickLabel() {
-		if( this.sidekickLabel != null ) {
-			//pass
-		} else {
-			this.sidekickLabel = new SidekickLabel( this );
-		}
-		return this.sidekickLabel;
+
+	protected boolean isSubTransactionHistoryRequired() {
+		return false;
 	}
-	public StringValue peekSidekickLabel() {
-		return this.sidekickLabel;
+	protected void addGeneratedPrepSteps( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.edits.Edit<?> edit ) {
+	}
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	}
+	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	}
+	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+	}
+	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+	}
+	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit ) {
+		this.pushGeneratedContexts( edit );
+		try {
+			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( ownerTransactionHistory );
+			this.addGeneratedPrepSteps( transaction, edit );
+			org.lgna.croquet.history.TransactionHistory subTransactionHistory;
+			if( this.isSubTransactionHistoryRequired() ) {
+				subTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
+			} else {
+				subTransactionHistory = null;
+			}
+			org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, subTransactionHistory );
+			if( subTransactionHistory != null ) {
+				this.addGeneratedSubTransactions( subTransactionHistory, edit );
+			}
+			if( edit != null ) {
+				edit.setCompletionStep( completionStep );
+			}
+			completionStep.setEdit( edit );
+			this.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+			return transaction;
+		} finally {
+			this.popGeneratedContexts( edit );
+		}
 	}
 }

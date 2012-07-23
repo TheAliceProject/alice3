@@ -50,6 +50,14 @@ public class DropNoteUtilities {
 	private DropNoteUtilities() {
 		throw new AssertionError();
 	}
+	public static org.lgna.croquet.triggers.DropTrigger getDropTrigger( StepNote<?> note ) {
+		org.lgna.croquet.history.Step<?> step = note.getStep();
+		return (org.lgna.croquet.triggers.DropTrigger)step.getTrigger();
+	}
+	public static org.lgna.croquet.DropSite getDropSite( StepNote<?> note ) {
+		org.lgna.croquet.triggers.DropTrigger dropTrigger = getDropTrigger( note );
+		return dropTrigger.getDropSite();
+	}
 	private static boolean EPIC_HACK_isCloseEnough( org.lgna.croquet.Model desiredModel, org.lgna.croquet.Model candidateModel ) {
 		assert desiredModel != null;
 		if( candidateModel != null ) {
@@ -68,15 +76,22 @@ public class DropNoteUtilities {
 				if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
 					org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
 					return dropTrigger.getDropSite().equals( desiredDropSite );
+				} else if( trigger instanceof org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handle automatic drop" );
+					return true;
 				}
 			}
+//		} else if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+//			org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
+//			org.lgna.croquet.edits.Edit edit = editCommittedEvent.getEdit();
+//			return edit.getCompletionStep().getTrigger() instanceof org.lgna.croquet.triggers.DropTrigger;
 		}
 		return false;
 	}
 	public static boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event< ? > event, StepNote<?> note ) {
 		org.lgna.croquet.history.Step<?> step = note.getStep();
 		org.lgna.croquet.Model desiredModel = step.getModel();
-		org.lgna.croquet.DropSite desiredDropSite = ((org.lgna.croquet.triggers.DropTrigger)step.getTrigger()).getDropSite();
+		org.lgna.croquet.DropSite desiredDropSite = getDropSite( note );
 		return isWhatWeveBeenWaitingFor( event, desiredModel, desiredDropSite );
 	}
 	public static org.lgna.cheshire.simple.Feature createHole( org.lgna.croquet.history.Step< ? > dropStep ) {
@@ -86,5 +101,21 @@ public class DropNoteUtilities {
 	}
 	public static org.lgna.cheshire.simple.Feature createPreviewHole( org.lgna.croquet.history.Step< ? > dropStep ) {
 		return new org.lgna.cheshire.simple.stencil.features.DropPreviewHole( new org.lgna.cheshire.simple.stencil.resolvers.DropSiteResolver( dropStep ), null );
+	}
+	
+	public static org.lgna.croquet.DropRejector createDropRejector( final org.lgna.croquet.DropSite desiredDropSite ) {
+		return new org.lgna.croquet.DropRejector() {
+			public boolean isRejected( org.lgna.croquet.history.DragStep step ) {
+				org.lgna.croquet.DropSite dropSite = step.getCurrentPotentialDropSite();
+				boolean areEquivalent = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( desiredDropSite, dropSite );
+//				if( areEquivalent ) {
+//					//pass
+//				} else {
+//					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "rejecting", desiredDropSite.hashCode(), dropSite.hashCode() );
+//					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( desiredDropSite, dropSite );
+//				}
+				return areEquivalent == false;
+			}
+		};
 	}
 }

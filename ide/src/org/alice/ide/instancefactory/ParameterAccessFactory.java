@@ -92,13 +92,6 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 		return this.parameter.getValueType();
 	}
 	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "this." );
-//		sb.append( "<strong>" );
-		sb.append( this.parameter.getName() );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
+		return this.parameter.getName();
 	}
 }

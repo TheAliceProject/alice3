@@ -83,17 +83,53 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 	}
 	public org.lgna.story.resources.JointId[] getRootJointIds() {
 		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
-	}
-
+	}	
 	public final org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction ) {
-		org.lgna.story.implementation.BipedImp rv = new org.lgna.story.implementation.BipedImp( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
-//		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)rv.getVisualData();
-//		visualData.setGender( this.getGender() );
-//		visualData.setOutfit( this.getOutfit() );
-//		visualData.setSkinTone( this.getSkinTone() );
-//		visualData.setObesityLevel( this.getObesityLevel() );
-//		visualData.setHair( org.lgna.story.resources.sims2.FemaleAdultHairBraids.BLACK );
-//		visualData.setEyeColor( org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+		return new org.lgna.story.implementation.BipedImp( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
+	}
+	@Override
+	public boolean equals( Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( obj instanceof PersonResource ) {
+			PersonResource other = (PersonResource)obj;
+			if( this.getClass() == other.getClass() ) {
+				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.gender, other.gender ) ) {
+					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.skinTone, other.skinTone ) ) {
+						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.eyeColor, other.eyeColor ) ) {
+							if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hair, other.hair ) ) {
+								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.outfit, other.outfit ) ) {
+									return this.obesityLevel == other.obesityLevel;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.gender != null ) {
+			rv = 37*rv + this.gender.hashCode();
+		}
+		if( this.skinTone != null ) {
+			rv = 37*rv + this.skinTone.hashCode();
+		}
+		if( this.eyeColor != null ) {
+			rv = 37*rv + this.eyeColor.hashCode();
+		}
+		if( this.hair != null ) {
+			rv = 37*rv + this.hair.hashCode();
+		}
+		if( this.outfit != null ) {
+			rv = 37*rv + this.outfit.hashCode();
+		}
+		long lng = Double.doubleToLongBits( this.obesityLevel );
+		rv = 37*rv + (int)( lng ^(lng >>>32) );
 		return rv;
 	}
 }

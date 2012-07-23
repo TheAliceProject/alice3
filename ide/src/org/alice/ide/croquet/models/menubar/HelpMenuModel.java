@@ -62,7 +62,7 @@ public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 			//pass
 		} else {
 			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.stageide.croquet.models.help.AboutOperation.getInstance().getMenuItemPrepModel());
+			list.add(org.alice.stageide.about.AboutComposite.getInstance().getOperation().getMenuItemPrepModel());
 		}
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}

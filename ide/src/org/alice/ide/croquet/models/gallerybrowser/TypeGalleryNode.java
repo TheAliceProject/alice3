@@ -57,8 +57,20 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 		}
 	}
 	
+	private static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> setOfClassesWithIcons = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( 
+			org.lgna.story.resources.BipedResource.class, 
+			org.lgna.story.resources.FishResource.class, 
+			org.lgna.story.resources.PropResource.class, 
+			org.lgna.story.resources.QuadrupedResource.class, 
+			org.lgna.story.resources.SwimmerResource.class, 
+			org.lgna.story.resources.WhaleResource.class 
+	);
 	
-	private static javax.swing.Icon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type, boolean isOffset ) {
+	public static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> getSetOfClassesWithIcons() {
+		return setOfClassesWithIcons;
+	}
+	
+	private static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type, boolean isOffset ) {
 		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
@@ -70,8 +82,11 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( sb.toString() ) );
 	}
 	
-	public static javax.swing.Icon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	public static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		return getIcon( type, false );
+	}
+	public static javax.swing.ImageIcon getIcon( Class<?> cls ) {
+		return getIcon( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
 	public static javax.swing.Icon getOffsetIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		javax.swing.Icon icon = getIcon( type, true );

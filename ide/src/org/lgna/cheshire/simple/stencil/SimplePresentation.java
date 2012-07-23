@@ -50,17 +50,16 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
 	private final org.lgna.croquet.Operation prevOperation = new PrevStepOperation( this );
-	private final org.lgna.croquet.BooleanState isInterceptingEvents = new PresentationBooleanState( java.util.UUID.fromString( "c3a009d6-976e-439e-8f99-3c8ff8a0324a" ), true, "intercept events" );
-	private final org.lgna.croquet.BooleanState isPaintingStencil = new PresentationBooleanState( java.util.UUID.fromString( "b1c1b125-cfe3-485f-9453-1e57e5b02cb1" ), true, "paint stencil" );
 
 	@Override
-	protected org.lgna.cheshire.simple.Chapter createChapter(org.lgna.croquet.history.Transaction transaction) {
+	protected org.lgna.cheshire.simple.Chapter createChapter( org.lgna.croquet.history.Transaction transaction ) {
 		return new org.lgna.cheshire.simple.TransactionChapter( transaction );
 	}
 
 	public class Stencil extends org.lgna.cheshire.simple.SimpleStencil {
 		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
-		public Stencil( org.lgna.croquet.components.AbstractWindow< ? > window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, StencilLayer menuPolicy ) {
+
+		public Stencil( org.lgna.croquet.components.AbstractWindow<?> window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, LayerId menuPolicy ) {
 			super( window );
 			org.lgna.croquet.components.BorderPanel controlsPanel = new org.lgna.croquet.components.BorderPanel();
 			controlsPanel.setOpaque( false );
@@ -69,17 +68,6 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			controlPanel.addComponent( new BookComboBox( SimplePresentation.this.bookComboBoxModel, menuPolicy.isAboveStencil() ) );
 			controlPanel.addComponent( NextStepOperation.getInstance().createButton() );
 			controlsPanel.addCenterComponent( controlPanel );
-			SimplePresentation.this.isPaintingStencil.setTextForBothTrueAndFalse( "stencil" );
-
-			org.lgna.croquet.components.CheckBox isInterceptingEventsCheckBox = SimplePresentation.this.isInterceptingEvents.createCheckBox();
-			isInterceptingEventsCheckBox.getAwtComponent().setOpaque( false );
-			org.lgna.croquet.components.CheckBox isPaintingStencilCheckBox = SimplePresentation.this.isPaintingStencil.createCheckBox();
-			isPaintingStencilCheckBox.getAwtComponent().setOpaque( false );
-
-			org.lgna.croquet.components.FlowPanel eastPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.TRAILING, 2, 0 );
-			eastPanel.addComponent( isInterceptingEventsCheckBox );
-			eastPanel.addComponent( isPaintingStencilCheckBox );
-			//controlsPanel.addComponent(eastPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END);
 			controlsPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
 			for( java.awt.Component component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( controlsPanel.getAwtComponent() ) ) {
@@ -93,6 +81,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			this.cardPanel.setBackgroundColor( null );
 			this.internalAddComponent( controlsPanel, java.awt.BorderLayout.PAGE_START );
 			this.internalAddComponent( this.cardPanel, java.awt.BorderLayout.CENTER );
+			this.addMouseWheelListener( this.mouseWheelListener );
 		}
 
 		@Override
@@ -142,13 +131,30 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			}
 		};
 
+		// todo: I think this is a really bad way to allow scrolling in the stencil... do this better.
+		private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+			public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+				java.awt.Point p = e.getPoint();
+				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt( org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent().getContentPane(), p.x, p.y );
+				if( component != null ) {
+					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint( e.getComponent(), p, component );
+					component.dispatchEvent( new java.awt.event.MouseWheelEvent( component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger(), e.getScrollType(), e
+							.getScrollAmount(), e.getWheelRotation() ) );
+				}
+			}
+		};
+
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
 			SimplePresentation.this.startListening();
-			SimplePresentation.this.handleChapterChanged( SimplePresentation.this.getBook().getSelectedChapter() );
 			this.addKeyListener( this.keyListener );
 			this.addMouseListener( this.mouseListener );
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					SimplePresentation.this.handleChapterChanged( SimplePresentation.this.getBook().getSelectedChapter() );
+				}
+			} );
 		}
 
 		@Override
@@ -160,22 +166,22 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		}
 
 		@Override
-		protected StencilLayer getStencilsLayer() {
-			return org.lgna.croquet.components.Stencil.StencilLayer.ABOVE_POPUP_LAYER;
+		protected LayerId getStencilsLayer() {
+			return LayerId.ABOVE_POPUP_LAYER;
 		}
 
 		@Override
-		protected java.awt.LayoutManager createLayoutManager(javax.swing.JPanel jPanel) {
+		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 			return new java.awt.BorderLayout();
 		}
 	}
 
 	private final org.lgna.croquet.history.event.Listener transactionListener = new org.lgna.croquet.history.event.Listener() {
-		public void changing(org.lgna.croquet.history.event.Event<?> e) {
+		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
-		public void changed(org.lgna.croquet.history.event.Event<?> e) {
+		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			if( e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) {
-				SimplePresentation.this.insertRecoveryChapter( ((org.lgna.croquet.history.event.AddTransactionEvent) e).getTransaction(), ((org.lgna.croquet.history.event.AddTransactionEvent) e).getIndex() );
+				SimplePresentation.this.insertRecoveryChapter( ((org.lgna.croquet.history.event.AddTransactionEvent)e).getTransaction(), ((org.lgna.croquet.history.event.AddTransactionEvent)e).getIndex() );
 			}
 		}
 	};
@@ -185,45 +191,23 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	final private org.lgna.croquet.Application application;
 
 	private boolean isIgnoringEvents = false;
+
 	public SimplePresentation( org.lgna.croquet.Application application ) {
 		super();
 		this.application = application;
 	}
 
 	@Override
-	public void initializePresentation(org.lgna.cheshire.simple.ChapterAccessPolicy transactionAccessPolicy, 
-			org.lgna.croquet.history.TransactionHistory originalTransactionHistory, 
-			org.lgna.croquet.migration.MigrationManager migrationManager,
-			org.lgna.cheshire.Filterer filterer,
-			org.lgna.cheshire.Recoverer recoverer,
-			org.lgna.croquet.Group[] groupsTrackedForRandomAccess) {
-		super.initializePresentation(transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess);
+	public void initializePresentation( org.lgna.cheshire.simple.ChapterAccessPolicy transactionAccessPolicy, org.lgna.croquet.history.TransactionHistory originalTransactionHistory, org.lgna.croquet.migration.MigrationManager migrationManager,
+			org.lgna.cheshire.Filterer filterer, org.lgna.cheshire.Recoverer recoverer, org.lgna.croquet.Group[] groupsTrackedForRandomAccess ) {
+		super.initializePresentation( transactionAccessPolicy, originalTransactionHistory, migrationManager, filterer, recoverer, groupsTrackedForRandomAccess );
 		this.originalTransactionHistory.addListener( this.transactionListener );
 		this.setRetargeter( new org.lgna.cheshire.simple.AstLiveRetargeter() );
 		this.bookComboBoxModel = new BookComboBoxModel( this.getBook() );
-		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.StencilLayer.BELOW_POPUP_LAYER );
-
-		this.isInterceptingEvents.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
-			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				SimplePresentation.this.stencil.setEventInterceptEnabled( nextValue );
-			}
-		} );
-
-		this.isPaintingStencil.addAndInvokeValueListener( new org.lgna.croquet.State.ValueListener< Boolean >() {
-			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				SimplePresentation.this.stencil.revalidateAndRepaint();
-				SimplePresentation.this.isInterceptingEvents.setValueTransactionlessly( nextValue );
-				SimplePresentation.this.isInterceptingEvents.setEnabled( nextValue );
-			}
-		} );
+		this.stencil = new Stencil( this.application.getFrame(), new org.lgna.cheshire.simple.SimpleScrollRenderer(), org.lgna.croquet.components.Stencil.LayerId.ABOVE_POPUP_LAYER );
 	}
 
-	@Override
-	protected void handleTransactionCanceled( org.lgna.croquet.history.Transaction transaction ) {
+	protected void handleTransactionCanceled() {
 		this.restoreHistoryIndicesDueToCancel();
 		org.lgna.cheshire.simple.Chapter chapter = this.getBook().getSelectedChapter();
 		if( chapter != null ) {
@@ -231,17 +215,30 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			chapterPage.reset();
 		}
 	}
+
 	@Override
 	protected void handleEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		if( this.isIgnoringEvents ) {
 			//pass
+		} else if( event instanceof org.lgna.croquet.history.event.CancelEvent ) {
+			org.lgna.croquet.history.event.CancelEvent cancelEvent = (org.lgna.croquet.history.event.CancelEvent)event;
+			try {
+				org.lgna.croquet.history.TransactionHistory history = cancelEvent.getNode().getOwnerTransaction().getOwnerTransactionHistory();
+				if( history.getOwner() != null ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "ignoring", cancelEvent );
+				} else {
+					this.handleTransactionCanceled();
+				}
+			} catch( Throwable t ) {
+				t.printStackTrace();
+			}
 		} else {
 			org.lgna.cheshire.simple.Book book = getBook();
 			org.lgna.cheshire.simple.Chapter chapter = book.getSelectedChapter();
 
 			if( event instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
 				org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)event;
-				org.lgna.croquet.edits.Edit< ? > replacementCandidate = editCommittedEvent.getEdit();
+				org.lgna.croquet.edits.Edit<?> replacementCandidate = editCommittedEvent.getEdit();
 				book.handleEditCommitted( replacementCandidate );
 			}
 
@@ -250,7 +247,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			if( chapterPage.isWhatWeveBeenWaitingFor( event ) ) {
 				NextStepOperation.getInstance().setEnabled( true );
 				if( chapterPage.isAutoAdvanceDesired() ) {
-					javax.swing.SwingUtilities.invokeLater(new Runnable() {
+					javax.swing.SwingUtilities.invokeLater( new Runnable() {
 						public void run() {
 							SimplePresentation.this.isIgnoringEvents = true;
 							try {
@@ -270,7 +267,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		if( chapter != null ) {
 			ChapterPage chapterPage = ChapterPage.getInstance( chapter );
 			chapterPage.refreshNotes();
-			Iterable< org.lgna.croquet.Context > contexts = chapter.getAllContexts();
+			Iterable<org.lgna.croquet.Context> contexts = chapter.getAllContexts();
 			for( org.lgna.croquet.Context context : contexts ) {
 				if( context.isGoodToGo() ) {
 					//pass
@@ -314,17 +311,17 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			} else {
 				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.simple.TransactionChapter)chapter).getTransaction();
 
-				org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+				org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
 				org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
 
 				// TODO: This should probably not be done here... this should probably be part of croquet contexts or something...
-				org.lgna.croquet.history.PrepStep< ? >[] prepSteps = transaction.getPrepStepsAsArray();
+				org.lgna.croquet.history.PrepStep<?>[] prepSteps = transaction.getPrepStepsAsArray();
 				transaction.removeAllPrepSteps();
 				chapterPage.refreshNotes();
 				if( chapterPage.isGoodToGo() ) {
 					this.handleChapterChanged( chapter );
 				} else {
-					java.util.List< org.lgna.croquet.MenuItemPrepModel > menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
+					java.util.List<org.lgna.croquet.MenuItemPrepModel> menuItemPrepModels = this.huntForInMenus( transaction.getCompletionStep().getModel() );
 					if( menuItemPrepModels != null ) {
 						chapterPage.refreshNotes();
 						if( chapterPage.isGoodToGo() ) {
@@ -332,7 +329,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 						}
 					} else {
 						boolean isPrepModelSearchSuccessful = false;
-						Iterable< ? extends org.lgna.croquet.PrepModel > prepModels = completionModel.getPotentialRootPrepModels();
+						Iterable<? extends org.lgna.croquet.PrepModel> prepModels = completionModel.getPotentialRootPrepModels();
 						assert prepModels != null : completionModel;
 						for( org.lgna.croquet.PrepModel prepModel : prepModels ) {
 							//todo
@@ -341,6 +338,19 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 								org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, popupPrepModel, org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance() );
 								chapterPage.refreshNotes();
 								if( chapterPage.isGoodToGo() ) {
+									org.lgna.croquet.edits.Edit edit = completionStep.getEdit();
+									if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
+										org.lgna.croquet.edits.StateEdit stateEdit = (org.lgna.croquet.edits.StateEdit)edit;
+										if( completionModel instanceof org.alice.ide.declarationseditor.TypeState ) {
+											org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)stateEdit.getNextValue();
+											org.lgna.croquet.MenuItemPrepModel[] stateValueMenuItemPrepModels = { org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) };
+											org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, null, stateValueMenuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
+										} else if( completionModel instanceof org.alice.ide.instancefactory.croquet.InstanceFactoryState ) {
+											org.alice.ide.instancefactory.InstanceFactory instanceFactory = (org.alice.ide.instancefactory.InstanceFactory)stateEdit.getNextValue();
+											org.lgna.croquet.MenuItemPrepModel[] stateValueMenuItemPrepModels = { org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( instanceFactory ) };
+											org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, null, stateValueMenuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
+										}
+									}
 									this.handleChapterChanged( chapter );
 									isPrepModelSearchSuccessful = true;
 								}
@@ -370,8 +380,13 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "detailed report:\n\n\n" + chapterPage.getDetailedReport() + "\n\n\n" );
 									javax.swing.SwingUtilities.invokeLater( new Runnable() {
 										public void run() {
-											org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "unable to recover" );
-											handleChapterChanged( accessibleChapter );
+											javax.swing.Icon icon = null;
+											String tryAgain = "try again";
+											String giveUp = "give up";
+											Object o = org.lgna.croquet.Application.getActiveInstance().showOptionDialog( "unable to recover", "Unable to Recover", org.lgna.croquet.MessageType.ERROR, icon, tryAgain, giveUp, 0 );
+											if( o == tryAgain ) {
+												handleChapterChanged( accessibleChapter );
+											}
 										}
 									} );
 									//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to recover", transaction );
@@ -389,9 +404,9 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		org.lgna.cheshire.simple.TransactionChapter chapter = (org.lgna.cheshire.simple.TransactionChapter)this.getBook().getSelectedChapter();
 		org.lgna.croquet.history.Transaction currentTransaction = chapter.getTransaction();
 		boolean insertedTransaction = false;
-		for ( int i = 0; i < this.originalTransactionHistory.getTransactionCount(); i++ ) {
-			if ( currentTransaction == this.originalTransactionHistory.getTransactionAt(i) ) {
-				originalTransactionHistory.addTransaction( i, recoveryTransaction);
+		for( int i = 0; i < this.originalTransactionHistory.getTransactionCount(); i++ ) {
+			if( currentTransaction == this.originalTransactionHistory.getTransactionAt( i ) ) {
+				originalTransactionHistory.addTransaction( i, recoveryTransaction );
 				insertedTransaction = true;
 				break;
 			}
@@ -407,7 +422,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	}
 
 	@Override
-	protected void handleStateChange(boolean isVisible) {
+	protected void handleStateChange( boolean isVisible ) {
 		assert this.stencil != null;
 
 		// Adjust spacing for tutorial controls
@@ -415,7 +430,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		javax.swing.JMenuBar menu = frame.getJMenuBar();
 		int menuSpacer = 0;
 		int frameSpacer = 0;
-		if ( isVisible ) {
+		if( isVisible ) {
 			menuSpacer = 48;
 			if( menu != null ) {
 				frameSpacer = 0;

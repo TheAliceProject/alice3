@@ -48,7 +48,7 @@ import org.lgna.croquet.ListSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public class List<E> extends ItemSelectable<javax.swing.JList, E > {
+public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionState<T> > {
 	private long tModelChange;
 	private class ListUI extends javax.swing.plaf.basic.BasicListUI {
 		@Override
@@ -94,7 +94,7 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 //		}
 	}
 	
-	public List( ListSelectionState<E> model ) {
+	public List( ListSelectionState<T> model ) {
 		super( model );
 		this.setSwingListModel(model.getSwingModel().getComboBoxModel());
 		this.setSelectionModel(model.getSwingModel().getListSelectionModel());
@@ -111,7 +111,7 @@ public class List<E> extends ItemSelectable<javax.swing.JList, E > {
 	}
 	
 	@Override
-	public TrackableShape getTrackableShapeFor( E item ) {
+	public TrackableShape getTrackableShapeFor( T item ) {
 		//todo
 		return this;
 	}

@@ -52,8 +52,8 @@ public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.
 	public static IsRecursionAllowedPreferenceDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringValue descriptionText = this.createStringValue( this.createKey( "descriptionText" ) );
-	private final org.lgna.croquet.StringValue recursiveButtonText = this.createStringValue( this.createKey( "recursiveButtonText" ) );
+	private final org.lgna.croquet.PlainStringValue descriptionText = this.createStringValue( this.createKey( "descriptionText" ) );
+	private final org.lgna.croquet.PlainStringValue recursiveButtonText = this.createStringValue( this.createKey( "recursiveButtonText" ) );
 	private final int depth;
 	private IsRecursionAllowedPreferenceDialogComposite next;
 	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
@@ -64,10 +64,10 @@ public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.
 	protected org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView createView() {
 		return new org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView( this );
 	}
-	public org.lgna.croquet.StringValue getDescriptionText() {
+	public org.lgna.croquet.PlainStringValue getDescriptionText() {
 		return this.descriptionText;
 	}
-	public org.lgna.croquet.StringValue getRecursiveButtonText() {
+	public org.lgna.croquet.PlainStringValue getRecursiveButtonText() {
 		return this.recursiveButtonText;
 	}
 	public IsRecursionAllowedPreferenceDialogComposite getNext() {

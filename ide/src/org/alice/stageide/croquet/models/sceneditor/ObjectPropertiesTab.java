@@ -43,7 +43,7 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-public class ObjectPropertiesTab extends org.lgna.croquet.TabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> 
+public class ObjectPropertiesTab extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> 
 {
     private static class SingletonHolder {
         private static ObjectPropertiesTab instance = new ObjectPropertiesTab();

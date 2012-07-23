@@ -50,13 +50,13 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		super( composite );
 	}
 	@Deprecated
-	public abstract org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor();
+	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor();
 	@Override
 	public boolean isPrintSupported() {
 		return true;
 	}
 	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-		return this.getCodeDropReceptor().print( g, pageFormat, pageIndex );
+		return this.getCodePanelWithDropReceptor().print( g, pageFormat, pageIndex );
 	}
 	
 	@Override
@@ -89,11 +89,14 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 						return false;
 					}
 				} );
-				out.addAll( list );
+				for( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane pane : list ) {
+					out.add( pane.getDropReceptor() );
+				}
 			}
-			org.alice.ide.codedrop.CodeDropReceptor codeDropReceptor = this.getCodeDropReceptor();
-			if( codeDropReceptor.isPotentiallyAcceptingOf( codeDragModel ) ) {
-				out.add( codeDropReceptor );
+			org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor = this.getCodePanelWithDropReceptor();
+			org.lgna.croquet.DropReceptor dropReceptor = codePanelWithDropReceptor.getDropReceptor();
+			if( dropReceptor.isPotentiallyAcceptingOf( codeDragModel ) ) {
+				out.add( dropReceptor );
 			}
 		}
 	}

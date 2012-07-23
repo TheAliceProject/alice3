@@ -83,10 +83,36 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>, CC extends GatedCommitDialogContentComposite<? extends GatedCommitDialogContentPanel<?>>> extends DialogCoreComposite<V,CC> {
+	private final java.util.List< CommitRejector > commitRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
 	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
-	protected abstract Status getStatus( org.lgna.croquet.history.CompletionStep<?> step );
+
+	public void addCommitRejector( CommitRejector commitRejector ) {
+		this.commitRejectors.add( commitRejector );
+	}
+	public void removeCommitRejector( CommitRejector commitRejector ) {
+		this.commitRejectors.remove( commitRejector );
+	}
+	public void clearCommitRejectors() {
+		this.commitRejectors.clear();
+	}
+	protected abstract Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step );
+	public final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		Status status = this.getStatusPreRejectorCheck( step );
+		if( status == IS_GOOD_TO_GO_STATUS ) {
+			for( CommitRejector rejector : this.commitRejectors ) {
+				status = rejector.getRejectionStatus( step );
+				if( status == IS_GOOD_TO_GO_STATUS ) {
+					//pass
+				} else {
+					return status;
+				}
+			}
+		}
+		return status;
+	}
+	
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
@@ -98,7 +124,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
 	private void updateStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		boolean isGoodToGo;
-		PotentiallyGatedComposite.Status status = this.getStatus( step );
+		AbstractSeverityStatusComposite.Status status = this.getStatus( step );
 		if( status != null ) {
 			isGoodToGo = status.isGoodToGo();
 		} else {
@@ -128,5 +154,12 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		completionStep.removeListener( this.listener );
 		super.handlePostHideDialog( completionStep );
+	}
+	
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+		org.lgna.croquet.edits.Edit<?> commitEdit = null;
+		this.getCommitOperation().addGeneratedTransaction( subTransactionHistory, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), commitEdit );
+	}
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 }

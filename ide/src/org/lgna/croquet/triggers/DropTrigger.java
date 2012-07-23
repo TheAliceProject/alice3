@@ -83,4 +83,10 @@ public class DropTrigger extends AbstractMouseEventTrigger {
 	public String getNoteText( ) {
 		return "Drop";
 	}
+	@Override
+	protected void appendReprInternal( StringBuilder repr ) {
+		super.appendReprInternal( repr );
+		repr.append( ";dropSite=" );
+		repr.append( this.dropSite );
+	}
 }

@@ -73,7 +73,6 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	public SwingModel getSwingModel() {
-		this.initializeIfNecessary();
 		return this.swingModel;
 	}
 	
@@ -92,8 +91,14 @@ public abstract class Operation extends AbstractCompletionModel {
 //
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+		this.initializeIfNecessary();
 		rv.append( " <strong>" );
-		rv.append( this.getName() );
+		String name = this.getName();
+		if( name != null ) {
+			rv.append( name );
+		} else {
+			rv.append( this.getClass().getSimpleName() );
+		}
 		rv.append( "</strong>" );
 		return rv;
 	}
@@ -167,10 +172,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		return transaction.getCompletionStep();
 	}
 
-	public String getName() {
+	public final String getName() {
 		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
 	}
-	public void setName( String name ) {
+	public final void setName( String name ) {
 		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 	}
 //	public String getShortDescription() {
@@ -281,7 +286,9 @@ public abstract class Operation extends AbstractCompletionModel {
 		return new org.lgna.croquet.components.Button( this );
 	}
 	public org.lgna.croquet.components.Hyperlink createHyperlink() {
-		return new org.lgna.croquet.components.Hyperlink( this );
+		org.lgna.croquet.components.Hyperlink rv = new org.lgna.croquet.components.Hyperlink( this );
+		rv.scaleFont( 1.2f );
+		return rv;
 	}
 
 	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade< ? > cascade ) {

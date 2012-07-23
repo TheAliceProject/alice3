@@ -88,7 +88,7 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 	private void handleFieldsChanged() {
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
-
+	
 	@Override
 	protected void fireChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
@@ -108,6 +108,7 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna
 		}
 		return rv;
 	}
+	
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.NamedUserType > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();

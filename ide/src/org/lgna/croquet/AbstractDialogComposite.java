@@ -94,8 +94,14 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 			this.composite.handleFinally( step, dialog );
 		}
 	}
+	private String title;
 	public AbstractDialogComposite( java.util.UUID migrationId ) {
 		super( migrationId );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.title = this.findLocalizedText( "title" );
 	}
 	//todo
 	protected abstract org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step );
@@ -107,12 +113,18 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 	}
 	protected abstract String getName();
 	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
-		String rv = this.getName();
+		this.initializeIfNecessary();
+		String rv = this.title;
 		if( rv != null ) {
-			rv = rv.replaceAll( "<[a-z]*>", "" );
-			rv = rv.replaceAll( "</[a-z]*>", "" );
-			if( rv.endsWith( "..." ) ) {
-				rv = rv.substring( 0, rv.length() - 3 );
+			//pass
+		} else {
+			rv = this.getName();
+			if( rv != null ) {
+				rv = rv.replaceAll( "<[a-z]*>", "" );
+				rv = rv.replaceAll( "</[a-z]*>", "" );
+				if( rv.endsWith( "..." ) ) {
+					rv = rv.substring( 0, rv.length() - 3 );
+				}
 			}
 		}
 		return rv;
@@ -129,5 +141,13 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 	protected abstract void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step );
 	protected abstract void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step );
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	}
+	
+	public boolean isSubTransactionHistoryRequired() {
+		return true;
+	}
+	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	}
+	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 	}
 }

@@ -196,4 +196,18 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 		return rv;
 	}	
+	public void handleAstChangeThatCouldBeOfInterest() {
+		org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = this.getValue();
+		if( declarationComposite != null ) {
+			org.lgna.croquet.components.View view = declarationComposite.getView();
+			if( view instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
+				org.alice.ide.declarationseditor.code.components.CodeDeclarationView codeDeclarationView = (org.alice.ide.declarationseditor.code.components.CodeDeclarationView)view;
+				org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor = codeDeclarationView.getCodePanelWithDropReceptor();
+				if( codePanelWithDropReceptor instanceof org.alice.ide.codeeditor.CodeEditor ) {
+					org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)codePanelWithDropReceptor;
+					codeEditor.handleAstChangeThatCouldBeOfInterest();
+				}
+			}
+		}
+	}
 }

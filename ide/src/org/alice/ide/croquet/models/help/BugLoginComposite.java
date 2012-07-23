@@ -131,7 +131,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	}
 
 	@Override
-	protected org.lgna.croquet.PotentiallyGatedComposite.Status getStatus( CompletionStep<?> step ) {
+	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return null;
 	}
 

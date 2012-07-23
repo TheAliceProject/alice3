@@ -50,13 +50,12 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 		super( org.lgna.story.Key.class );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		return rv;
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		items.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
+		items.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
+		items.add( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
+		items.add( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
+		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		items.add( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 	}
 }

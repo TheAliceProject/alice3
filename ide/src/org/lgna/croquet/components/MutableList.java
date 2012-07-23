@@ -43,17 +43,23 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/class MutableListItemDetails<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemDetails<E,MutableListItemDetails<E,LC,MC,TC>,MutableList<E,LC,MC,TC>> {
-	private LC leadingComponent;
-	private MC mainComponent;
-	private TC trailingComponent;
+/**
+ * @author Dennis Cosgrove
+ */
 
-	public MutableListItemDetails( MutableList<E,LC,MC,TC> panel, E item, BooleanStateButton<javax.swing.AbstractButton> button, LC leadingComponent, MC mainComponent, TC trailingComponent, java.awt.event.ActionListener actionListener ) {
-		super( panel, item, button );
+/*package-private*/ class MutableListItemDetails<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemDetails<E> {
+	private final LC leadingComponent;
+	private final MC mainComponent;
+	private final TC trailingComponent;
+
+	public MutableListItemDetails( org.lgna.croquet.ItemState<E> state, E item, ItemSelectablePanel<E,?> panel, LC leadingComponent, MC mainComponent, TC trailingComponent, java.awt.event.ActionListener actionListener ) {
+		super( state, item, panel );
+		AbstractButton<?,?> button = this.getButton();
 		this.leadingComponent = leadingComponent;
 		this.mainComponent = mainComponent;
 		this.trailingComponent = trailingComponent;
 
+		button.getAwtComponent().removeAll();
 		if( this.leadingComponent != null ) {
 			button.internalAddComponent( this.leadingComponent, java.awt.BorderLayout.LINE_START );
 		}
@@ -71,7 +77,6 @@ package org.lgna.croquet.components;
 				button.internalAddComponent( this.trailingComponent, java.awt.BorderLayout.LINE_END );
 			}
 		}
-
 	}
 	public LC getLeadingComponent() {
 		return this.leadingComponent;
@@ -84,11 +89,74 @@ package org.lgna.croquet.components;
 	}
 }
 
+public abstract class MutableList<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemSelectablePanel<E,MutableListItemDetails<E,LC,MC,TC>> {
+	private class MutableListButton extends BooleanStateButton<javax.swing.AbstractButton> {
+		public MutableListButton( org.lgna.croquet.BooleanState itemSelectedState ) {
+			super( itemSelectedState );
+		}
+		@Override
+		protected javax.swing.AbstractButton createAwtComponent() {
+			javax.swing.JToggleButton rv = new javax.swing.JToggleButton() {
+				@Override
+				public java.awt.Dimension getMaximumSize() {
+					java.awt.Dimension rv = super.getPreferredSize();
+					rv.width = Short.MAX_VALUE;
+					return rv;
+				}
+				@Override
+				public void updateUI() {
+					this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
+				}
+				@Override
+				protected void paintComponent( java.awt.Graphics g ) {
+					//super.paintComponent( g );
+					javax.swing.ButtonModel model = this.getModel();
+					java.awt.Color color;
+					if( model.isSelected() ) {
+						if( model.isRollover() ) { 
+							color = MutableList.this.selectedRolloverBackgroundColor;
+						} else {
+							color = MutableList.this.selectedBackgroundColor;
+						}
+					} else {
+						if( model.isRollover() ) { 
+							color = MutableList.this.unselectedRolloverBackgroundColor;
+						} else {
+							color = null;
+						}
+					}
+					int width = this.getWidth();
+					int height = this.getHeight();
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					if( color != null ) {
+						Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+						g2.setPaint( color );
+						
+						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+						g2.fillRoundRect( 0, 0, width, height, 8, 8 );
+						if( model.isRollover() ) {
+							color = java.awt.Color.LIGHT_GRAY;
+						} else {
+							color = java.awt.Color.GRAY;
+						}
+						g2.setPaint( color );
+						edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, height - 5 );
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class MutableList<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemSelectablePanel<E,MutableListItemDetails<E,LC,MC,TC>> implements org.lgna.croquet.DropReceptor {
+						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+					} else {
+//						g2.setPaint( MutableList.this.getUnselectedBackgroundColor() );
+//						g.clearRect( 0, 0, width, height );
+					}
+				}
+			};
+			rv.setOpaque( false );
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+			rv.setLayout( new java.awt.BorderLayout() );
+			rv.setRolloverEnabled( true );
+			return rv;
+		}
+	}
+
 //	private class MutableListDragModel extends org.lgna.croquet.DragModel {
 //		public MutableListDragModel() {
 //			super( java.util.UUID.fromString( "a136b615-2e99-4481-a89d-a48d633a4080" ) );
@@ -152,73 +220,6 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 //		}
 //	}
 	
-	private class MutableListButton extends BooleanStateButton<javax.swing.AbstractButton> {
-		public MutableListButton( org.lgna.croquet.BooleanState booleanState ) {
-			super( booleanState );
-		}
-		@Override
-		protected javax.swing.AbstractButton createAwtComponent() {
-			javax.swing.JToggleButton rv = new javax.swing.JToggleButton() {
-				@Override
-				public java.awt.Dimension getMaximumSize() {
-					java.awt.Dimension rv = super.getPreferredSize();
-					rv.width = Short.MAX_VALUE;
-					return rv;
-				}
-				@Override
-				public void updateUI() {
-					this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
-				}
-				@Override
-				protected void paintComponent( java.awt.Graphics g ) {
-					//super.paintComponent( g );
-					javax.swing.ButtonModel model = this.getModel();
-					java.awt.Color color;
-					if( model.isSelected() ) {
-						if( model.isRollover() ) { 
-							color = MutableList.this.selectedRolloverBackgroundColor;
-						} else {
-							color = MutableList.this.selectedBackgroundColor;
-						}
-					} else {
-						if( model.isRollover() ) { 
-							color = MutableList.this.unselectedRolloverBackgroundColor;
-						} else {
-							color = null;
-						}
-					}
-					int width = this.getWidth();
-					int height = this.getHeight();
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					if( color != null ) {
-						Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-						g2.setPaint( color );
-						
-						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-						g2.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 8, 8 );
-						if( model.isRollover() ) {
-							color = java.awt.Color.LIGHT_GRAY;
-						} else {
-							color = java.awt.Color.GRAY;
-						}
-						g2.setPaint( color );
-						edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
-
-						g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-					} else {
-//						g2.setPaint( MutableList.this.getUnselectedBackgroundColor() );
-//						g.clearRect( 0, 0, width, height );
-					}
-				}
-			};
-			rv.setOpaque( false );
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
-			rv.setLayout( new java.awt.BorderLayout() );
-			rv.setRolloverEnabled( true );
-			return rv;
-		}
-	}
-
 	private static final java.awt.Color DEFAULT_SELECTED_BACKGROUND = new java.awt.Color( 57, 105, 138 );
 	private static final java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = java.awt.Color.WHITE;//new java.awt.Color( 214, 217, 223 );
 
@@ -272,9 +273,14 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
+	
+	@Override
+	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
+		return new MutableListButton( itemSelectedState );
+	}
 	@Override
 	protected void removeAllDetails() {
-		for( MutableListItemDetails details : this.getAllItemDetails() ) {
+		for( ItemDetails<E> details : this.getAllItemDetails() ) {
 			details.getButton().setVisible( false );
 		}
 	}
@@ -305,7 +311,7 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 	protected void addPrologue( int count ) {
 		//this.pageAxisPanel.internalRemoveAllComponents();
 		this.index = 0;
-		for( MutableListItemDetails details : this.getAllItemDetails() ) {
+		for( ItemDetails<E> details : this.getAllItemDetails() ) {
 			details.getButton().setVisible( false );
 		}
 	}
@@ -339,16 +345,13 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 		super.handleUndisplayable();
 	}
 	@Override
-	protected final MutableListItemDetails<E,LC,MC,TC> createItemDetails( final E item, org.lgna.croquet.BooleanState booleanState ) {
+	protected final MutableListItemDetails<E,LC,MC,TC> createItemDetails( final E item ) {
 		java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				MutableList.this.getModel().removeItem( item );
 			}
 		};
-
-		MutableListButton mutableListButton = new MutableListButton( booleanState );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( booleanState );
-		MutableListItemDetails<E,LC,MC,TC> rv = new MutableListItemDetails<E,LC,MC,TC>( this, item, mutableListButton, this.createLeadingComponent(), this.createMainComponent(), this.createTrailingComponent(), actionListener );
+		MutableListItemDetails<E,LC,MC,TC> rv = new MutableListItemDetails<E,LC,MC,TC>( this.getModel(), item, this, this.createLeadingComponent(), this.createMainComponent(), this.createTrailingComponent(), actionListener );
 		ViewController<?,?> button = rv.getButton();
 		button.setVisible( false );
 		this.pageAxisPanel.addComponent( button );
@@ -393,32 +396,5 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 		this.unregisterKeyboardAction( UP_KEY_STROKE );
 		this.unregisterKeyboardAction( BACK_SPACE_KEY_STROKE );
 		this.unregisterKeyboardAction( DELETE_KEY_STROKE );
-	}
-
-	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
-		return null;
-	}
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-		return false;
-	}
-	public org.lgna.croquet.components.JComponent<?> getViewController() {
-		return null;
-	}
-	public void dragStarted( org.lgna.croquet.history.DragStep step ) {
-	}
-	public void dragEntered( org.lgna.croquet.history.DragStep step ) {
-	}
-	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
-		return null;
-	}
-	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep step ) {
-		return null;
-	}
-	public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
-	}
-	public void dragStopped( org.lgna.croquet.history.DragStep step ) {
-	}
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit<?> edit ) {
-		return null;
 	}
 }
