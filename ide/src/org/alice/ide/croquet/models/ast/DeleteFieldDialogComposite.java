@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.ast;
 
 import org.lgna.croquet.PlainDialogOperationComposite;
+import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.StringValue;
 import org.lgna.project.ast.UserField;
@@ -61,8 +62,7 @@ public class DeleteFieldDialogComposite extends PlainDialogOperationComposite<De
 	private StringValue singularThisReference = createStringValue( this.createKey( "singularThisReference" ) );
 	private StringValue pluralTheseReferences = createStringValue( this.createKey( "pluralTheseReferences" ) );
 	private StringValue ifYouWantToDelete = createStringValue( this.createKey( "ifYouWantToDelete" ) );
-	private StringState blah = createStringState( createKey( "blah" ) );
-	private StringValue bleh = createStringValue( createKey( "bleh" ) );
+	private PlainStringValue bleh = createStringValue( createKey( "bleh" ) );
 	private Integer refCount;
 
 	public DeleteFieldDialogComposite( UserField field ) {
@@ -135,15 +135,11 @@ public class DeleteFieldDialogComposite extends PlainDialogOperationComposite<De
 		rv += getIfYouWantToDelete().getText();
 		rv += getField().name.getValue();
 		rv += "\" .";
-		blah.setValue( rv );
 		bleh.setText( rv );
 		return rv;
 	}
 
-	public StringState getBlah() {
-		return this.blah;
-	}
-	public StringValue getBleh() {
+	public PlainStringValue getBleh() {
 		return this.bleh;
 	}
 }

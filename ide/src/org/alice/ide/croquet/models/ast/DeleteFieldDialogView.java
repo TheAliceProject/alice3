@@ -44,19 +44,21 @@ package org.alice.ide.croquet.models.ast;
 
 import org.alice.ide.croquet.models.project.FindFieldsFrameComposite;
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Component;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.TextArea;
+import org.lgna.croquet.components.ImmutableTextArea;
+
+import edu.cmu.cs.dennisc.math.GoldenRatio;
 
 /**
  * @author Matt May
  */
 public class DeleteFieldDialogView extends BorderPanel {
+	
+	private static int WIDTH = 650;
 
 	public DeleteFieldDialogView( DeleteFieldDialogComposite composite ) {
-		TextArea textArea = composite.getBlah().createTextArea();
-//		this.addComponent( textArea, Constraint.CENTER );
-//		this.addComponent( composite.getBleh()., constraint )child )
+		this.setMinimumPreferredHeight( GoldenRatio.getShorterSideLength( WIDTH ) );
+		this.setMinimumPreferredWidth( WIDTH );
+		this.addComponent( new ImmutableTextArea( composite.getBleh() ), Constraint.CENTER );
 		FindFieldsFrameComposite searchFrame = new FindFieldsFrameComposite();
 		this.addComponent( searchFrame.getBooleanState().createPushButton(), Constraint.PAGE_END );
 	}
