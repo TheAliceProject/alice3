@@ -48,6 +48,14 @@ package org.alice.ide.member.views;
 public class FunctionTabView extends MemberTabView {
 	public FunctionTabView( org.alice.ide.member.FunctionTabComposite composite ) {
 		super( composite );
+		
+		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
+		pageAxisPanel.addComponent( composite.getBooleanReturnTypeFilteredComposite().getView() );
+		pageAxisPanel.addComponent( composite.getNumberReturnTypeFilteredComposite().getView() );
+		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
+		
+		this.addCenterComponent( pageAxisPanel );
+
 		//this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 }
