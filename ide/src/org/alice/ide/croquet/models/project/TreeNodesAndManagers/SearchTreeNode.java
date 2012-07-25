@@ -107,7 +107,6 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 		} else if( parent != null ) {
 			assert methodInvocation != null;
 			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)parent.method ) );
-			System.out.println( methodInvocation.expression.getValue() );
 			IDE.getActiveInstance().showHighlightStencil( methodInvocation.expression.getValue(), null );
 		}
 	}
