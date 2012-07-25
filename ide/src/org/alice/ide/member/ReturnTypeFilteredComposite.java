@@ -45,26 +45,21 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<MemberTabComposite> {
-	public MemberTabSelectionState() {
-		super( 
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ), 
-				MemberTabComposite.class, 
-				1,
-				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
-		);
+public class ReturnTypeFilteredComposite extends FilteredComposite<org.alice.ide.member.views.ReturnTypeFilteredView> {
+	private final org.lgna.project.ast.AbstractType<?,?,?> returnType;
+	public ReturnTypeFilteredComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+		super( java.util.UUID.fromString( "39743af8-b64e-4688-8a2b-032ad78cec92" ) );
+		this.returnType = returnType;
 	}
-	public static void main( String[] args ) {
-		MemberTabSelectionState state = new MemberTabSelectionState();
-		
-		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = application.getFrame();
-		frame.getContentPanel().addCenterComponent( state.createFolderTabbedPane() );
-		frame.getContentPanel().setMinimumPreferredHeight( 800 );
-		frame.pack();
-		frame.setVisible( true );
+	public org.lgna.project.ast.AbstractType<?,?,?> getReturnType() {
+		return this.returnType;
+	}
+	@Override
+	protected boolean isIncluded( org.lgna.project.ast.AbstractMethod method ) {
+		return method.getReturnType() == this.returnType;
+	}
+	@Override
+	protected org.alice.ide.member.views.ReturnTypeFilteredView createView() {
+		return new org.alice.ide.member.views.ReturnTypeFilteredView( this );
 	}
 }
