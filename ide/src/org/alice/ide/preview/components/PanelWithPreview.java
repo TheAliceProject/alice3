@@ -80,7 +80,7 @@ public abstract class PanelWithPreview extends org.lgna.croquet.components.Borde
 		if( this.previewPanel != null ) {
 			//pass
 		} else {
-			this.addComponent( this.createMainComponent(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+			this.addCenterComponent( this.createMainComponent() );
 
 			if( this.isPreviewDesired() ) {
 				this.previewPanel = this.createPreviewPanel();
@@ -95,7 +95,7 @@ public abstract class PanelWithPreview extends org.lgna.croquet.components.Borde
 						new org.lgna.croquet.components.HorizontalSeparator(),
 						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 )
 				);
-				this.addComponent( northPanel, org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
+				this.addPageStartComponent( northPanel );
 			}
 		}
 	}

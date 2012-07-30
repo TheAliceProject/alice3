@@ -54,7 +54,7 @@ public abstract class ExpressionFillIn< F extends org.lgna.project.ast.Expressio
 	@Override
 	protected void localize() {
 		super.localize();
-		this.text = this.getDefaultLocalizedText();
+		this.text = this.findDefaultLocalizedText();
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,B > step ) {

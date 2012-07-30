@@ -45,18 +45,13 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AddParameterEdit extends ParameterEdit< org.alice.ide.croquet.models.declaration.ParameterDeclarationOperation > {
+public class AddParameterEdit extends ParameterEdit {
 	private transient int index;
-	public AddParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserParameter parameter ) {
-		super( completionStep, parameter );
+	public AddParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
+		super( completionStep, code, parameter );
 	}
 	public AddParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-	}
-
-	@Override
-	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > getParametersProperty() {
-		return this.getModel().getCode().getRequiredParamtersProperty();
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
@@ -70,9 +65,9 @@ public class AddParameterEdit extends ParameterEdit< org.alice.ide.croquet.model
 		this.removeParameter( this.index );
 	}
 	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+	protected StringBuilder updatePresentation(StringBuilder rv) {
 		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getParameter(), locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getParameter(), org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

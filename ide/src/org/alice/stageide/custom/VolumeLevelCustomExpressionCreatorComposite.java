@@ -53,13 +53,13 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 	public static VolumeLevelCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 200 ).initialValue( 100 ) );
+	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), VolumeLevelUtilities.createDetails() );
 	private final org.lgna.croquet.StringValue silentLabel = this.createStringValue( this.createKey( "silentLabel" ) ); 
 	private final org.lgna.croquet.StringValue normalLabel = this.createStringValue( this.createKey( "normalLabel" ) ); 
 	private final org.lgna.croquet.StringValue louderLabel = this.createStringValue( this.createKey( "louderLabel" ) ); 
 	
 	private VolumeLevelCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+		super( java.util.UUID.fromString( "1c80a46b-6ff8-4fbd-8003-5bbab71a3fca" ) );
 	}
 	@Override
 	protected org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView createView() {
@@ -79,30 +79,28 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 	}
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		java.math.BigDecimal decimal = new java.math.BigDecimal( this.valueState.getValue() );
-		decimal = decimal.movePointLeft( 2 );
-		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
+		double actualVolume = VolumeLevelUtilities.toDouble( this.valueState.getValue() );
+		return new org.lgna.project.ast.DoubleLiteral( actualVolume );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		double value;
+		double actualVolume;
 		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
 			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
-			value = doubleLiteral.value.getValue();
+			actualVolume = doubleLiteral.value.getValue();
 		} else {
-			value = Double.NaN;
+			actualVolume = Double.NaN;
 		}
-		if( Double.isNaN( value ) ) {
+		if( Double.isNaN( actualVolume ) ) {
 			//pass
 		} else {
-			java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
-			decimal = decimal.movePointRight( 2 );
-			this.valueState.setValueTransactionlessly( decimal.intValue() );
+			int value = VolumeLevelUtilities.toInt( actualVolume );
+			this.valueState.setValueTransactionlessly( value );
 		}
 	}
 }

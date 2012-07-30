@@ -62,7 +62,7 @@ public abstract class StringState extends State< String > {
 				javax.swing.text.Document document = e.getDocument();
 				String nextValue = document.getText( 0, document.getLength() );
 				boolean isAdjusting = false;
-				StringState.this.changeValueFromSwing( nextValue, isAdjusting, new org.lgna.croquet.triggers.DocumentEventTrigger( e ) );
+				StringState.this.changeValueFromSwing( nextValue, isAdjusting, org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
 			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
@@ -95,7 +95,7 @@ public abstract class StringState extends State< String > {
 	}
 
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, String value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, String value ) {
 		rv.append( value );
 		return rv;
 	}
@@ -147,11 +147,20 @@ public abstract class StringState extends State< String > {
 
 	@Override
 	protected void localize() {
-		this.textForBlankCondition = this.getLocalizedText( "textForBlankCondition" );
+		this.textForBlankCondition = this.findLocalizedText( "textForBlankCondition" );
 	}
 	
 	public String getTextForBlankCondition() {
 		return this.textForBlankCondition;
+	}
+	public void setTextForBlankCondition( String textForBlankCondition ) {
+		this.textForBlankCondition = textForBlankCondition;
+		for( org.lgna.croquet.components.JComponent<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+			if( component instanceof org.lgna.croquet.components.TextComponent<?> ) {
+				org.lgna.croquet.components.TextComponent<?> textComponent = (org.lgna.croquet.components.TextComponent<?>)component;
+				textComponent.updateTextForBlankCondition( this.textForBlankCondition );
+			}
+		}
 	}
 
 //	@Override

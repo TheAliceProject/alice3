@@ -49,7 +49,7 @@ package org.lgna.croquet;
 public abstract class PopupPrepModel extends AbstractPrepModel {
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			PopupPrepModel.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
+			PopupPrepModel.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 		}
 	};
 	public PopupPrepModel( java.util.UUID id ) {
@@ -58,7 +58,7 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	
 	@Override
 	protected final void localize() {
-		String name = this.getDefaultLocalizedText();
+		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
 			this.setName( name );
 //			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
@@ -69,10 +69,10 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	public javax.swing.Action getAction() {
 		return this.action;
 	}
-	private String getName() {
+	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
 	}
-	private void setName( String name ) {
+	public void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
 	}
 	
@@ -102,7 +102,7 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return rv;
 	}
 	public org.lgna.croquet.components.PopupButton createPopupButton() {

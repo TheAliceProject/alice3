@@ -48,18 +48,17 @@ package org.alice.ide.perspectives;
  */
 public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspective {
 	private final org.lgna.croquet.Composite< ? > mainComposite;
-	private String name;
 	public ProjectPerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > mainComposite ) {
 		super( id );
 		this.mainComposite = mainComposite;
 	}
-	public org.lgna.croquet.Composite< ? > getMainComposite() {
+	public final org.lgna.croquet.Composite< ? > getMainComposite() {
 		return this.mainComposite;
 	}
 	public org.alice.ide.croquet.models.MenuBarComposite getMenuBarComposite() {
 		return org.alice.ide.croquet.models.MenuBarComposite.getInstance();
 	}
-	public abstract org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus();
+	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus();
 	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		this.stack.push( reasonToDisableSomeAmountOfRendering );
@@ -74,9 +73,9 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 	public final java.util.List< org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
 		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addPotentialDropReceptors( rv, dragModel );
-		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
-		if( clipboard.isPotentiallyAcceptingOf( dragModel ) ) {
-			rv.add( clipboard );
+		org.lgna.croquet.DropReceptor dropReceptorComposite = org.alice.ide.clipboard.Clipboard.SINGLETON.getDropReceptor();
+		if( dropReceptorComposite.isPotentiallyAcceptingOf( dragModel ) ) {
+			rv.add( dropReceptorComposite );
 		}
 		return rv;
 	}

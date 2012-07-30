@@ -57,7 +57,7 @@ public enum ProjectDocumentCodec implements org.lgna.croquet.ItemCodec< org.alic
 	public Class< org.alice.ide.ProjectDocument > getValueClass() {
 		return org.alice.ide.ProjectDocument.class;
 	}
-	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.ProjectDocument value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.ProjectDocument value ) {
 		rv.append( value );
 		return rv;
 	}

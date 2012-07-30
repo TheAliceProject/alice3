@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.ast;
 public abstract class EditCodeOperation<N extends org.lgna.project.ast.AbstractCode> extends org.lgna.croquet.ActionOperation {
 	private N code;
 	public EditCodeOperation( java.util.UUID id, N code ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, id );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id );
 		this.code = code;
 	}
 	public N getCode() {

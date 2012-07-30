@@ -48,11 +48,11 @@ package org.alice.ide.croquet.models.menubar;
 public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
 		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.help.HelpOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.help.HelpComposite.getInstance().getOperation().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ReportBugOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.help.RequestNewFeatureOperation.getInstance().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.help.ReportBugComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.help.SuggestImprovementComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
+				org.alice.ide.croquet.models.help.RequestNewFeatureComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.warning.WarningDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance().getMenuItemPrepModel(), 
@@ -62,7 +62,7 @@ public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 			//pass
 		} else {
 			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.stageide.croquet.models.help.AboutOperation.getInstance().getMenuItemPrepModel());
+			list.add(org.alice.stageide.about.AboutComposite.getInstance().getOperation().getMenuItemPrepModel());
 		}
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}

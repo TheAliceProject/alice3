@@ -115,7 +115,13 @@ public abstract class AbstractElement implements Element {
 		this.localize();
 	}
 
-	private static String findLocalizedText( Class<? extends Element> cls, Class<? extends Element> clsRoot, String subKey ) {
+	protected Class<? extends Element> getClassUsedForLocalization() {
+		return this.getClass();
+	}
+	protected String getSubKeyForLocalization() {
+		return null;
+	}
+	private static String findLocalizedText( Class<? extends Element> cls, String subKey ) {
 		if( cls != null ) {
 			String bundleName = cls.getPackage().getName() + ".croquet";
 			try {
@@ -137,36 +143,35 @@ public abstract class AbstractElement implements Element {
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
-				if( cls == clsRoot ) {
+				if( cls == AbstractElement.class ) {
 					return null;
 				} else {
-					return findLocalizedText( (Class<? extends Element>)cls.getSuperclass(), clsRoot, subKey );
+					return findLocalizedText( (Class<? extends Element>)cls.getSuperclass(), subKey );
 				}
 			}
 		} else {
 			return null;
 		}
 	}
-	private static String getLocalizedText( Class<? extends Element> cls, String subKey ) {
-		return findLocalizedText( cls, cls, subKey );
+
+	protected final String findLocalizedText( String subKey ) {
+		String inherantSubKey = this.getSubKeyForLocalization();
+		String actualSubKey;
+		if( inherantSubKey != null ) {
+			if( subKey != null ) {
+				actualSubKey = inherantSubKey + "." + subKey;
+			} else {
+				actualSubKey = inherantSubKey;
+			}
+		} else {
+			actualSubKey = subKey;
+		}
+		return findLocalizedText( this.getClassUsedForLocalization(), actualSubKey );
+	}
+	protected String findDefaultLocalizedText() {
+		return this.findLocalizedText( null );
 	}
 
-	protected Class<? extends Element> getClassUsedForLocalization() {
-		return this.getClass();
-	}
-	protected final String getLocalizedText( String subKey ) {
-		return getLocalizedText( this.getClassUsedForLocalization(), subKey );
-	}
-	protected final String findLocalizedText( String subKey, Class<? extends Element> clsRoot ) {
-		return findLocalizedText( this.getClassUsedForLocalization(), clsRoot, subKey );
-	}
-	
-	protected static String getDefaultLocalizedText( Class<? extends Element> cls ) {
-		return getLocalizedText( cls, null );
-	}
-	protected /*final*/ String getDefaultLocalizedText() {
-		return getDefaultLocalizedText( this.getClassUsedForLocalization() );
-	}
 	private static int getField( Class<?> cls, String fieldName, int nullValue ) {
 		if( fieldName != null ) {
 			try {
@@ -194,16 +199,12 @@ public abstract class AbstractElement implements Element {
 		}
 	}
 	
-	protected static int getLocalizedMnemonicKey( Class<? extends Element> cls ) {
-		return getKeyCode( getLocalizedText( cls, "mnemonic" ) );
-	}
 	protected int getLocalizedMnemonicKey() {
-		return getLocalizedMnemonicKey( this.getClassUsedForLocalization() );
+		return getKeyCode( this.findLocalizedText( "mnenonic" ) );
 	}
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
-	protected static javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke( Class<? extends Element> cls ) {
-		String acceleratorText = getLocalizedText( cls, "accelerator" );
+	protected static javax.swing.KeyStroke getKeyStroke( String acceleratorText ) {
 		if( acceleratorText != null ) {
 			String[] array = acceleratorText.split(",");
 			if( array.length > 0 ) {
@@ -234,12 +235,11 @@ public abstract class AbstractElement implements Element {
 		return null;
 	}
 	protected javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke() {
-		return getLocalizedAcceleratorKeyStroke( this.getClassUsedForLocalization() );
+		return getKeyStroke( this.findLocalizedText( "accelerator" ) );
 	}
 	
 	protected abstract void localize();
 	
-//	protected abstract <M extends Model> org.lgna.croquet.resolvers.RetargetableResolver< M > createResolver();
 	protected <M extends Element> org.lgna.croquet.resolvers.Resolver< M > createResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver( this );
 	}
@@ -261,6 +261,14 @@ public abstract class AbstractElement implements Element {
 		this.appendRepr( sb );
 		sb.append( "]" );
 		return sb.toString();
+	}
+	
+	public void appendUserRepr( StringBuilder sb ) {
+		sb.append( "todo: override appendUserString\n" );
+		sb.append( this );
+		sb.append( "\n" );
+		sb.append( this.getClass().getName() );
+		sb.append( "\n" );
 	}
 	@Override
 	public final String toString() {

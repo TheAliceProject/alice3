@@ -66,7 +66,7 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 			}
 		}
 	}
-	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator, org.lgna.croquet.UserInformation userInformation ) {
+	public void filter( java.util.ListIterator< org.lgna.cheshire.Chapter > chapterIterator ) {
 		java.util.Set< Class<? extends org.lgna.project.ast.Statement> > introducedStatementClses = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		while( chapterIterator.hasNext() ) {
 			org.lgna.cheshire.Chapter chapter = chapterIterator.next();
@@ -81,20 +81,21 @@ public class TutorialFilterer implements org.lgna.cheshire.Filterer {
 					if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 						org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
 						org.lgna.project.ast.Statement statement = insertStatementEdit.getStatement();
-						if( userInformation instanceof uist.UserInformation ) {
-							Class<? extends org.lgna.project.ast.Statement> statementCls = statement.getClass();
-							if( introducedStatementClses.contains( statementCls ) ) {
-								//pass
-							} else {
-								org.lgna.cheshire.MessageChapter messageChapter = ((uist.UserInformation)userInformation).createMessageChapterIfUnfamiliarWithProgrammingConstruct( statementCls );
-								if( messageChapter != null ) {
-									chapterIterator.previous();
-									chapterIterator.add( messageChapter );
-									chapterIterator.next();
-									introducedStatementClses.add( statementCls );
-								}
-							}
-						}
+						// <kjh/>
+//						if( userInformation instanceof uist.UserInformation ) {
+//							Class<? extends org.lgna.project.ast.Statement> statementCls = statement.getClass();
+//							if( introducedStatementClses.contains( statementCls ) ) {
+//								//pass
+//							} else {
+//								org.lgna.cheshire.MessageChapter messageChapter = ((uist.UserInformation)userInformation).createMessageChapterIfUnfamiliarWithProgrammingConstruct( statementCls );
+//								if( messageChapter != null ) {
+//									chapterIterator.previous();
+//									chapterIterator.add( messageChapter );
+//									chapterIterator.next();
+//									introducedStatementClses.add( statementCls );
+//								}
+//							}
+//						}
 					}
 				} else {
 					chapterIterator.remove();

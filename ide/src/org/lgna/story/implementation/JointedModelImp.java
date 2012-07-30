@@ -43,12 +43,16 @@
 
 package org.lgna.story.implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lgna.story.Joint;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 
 /**
@@ -166,6 +170,20 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData( this );
 
+		
+		List<JointId> missingJoints = this.getMissingJoints();
+		if (!missingJoints.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			String resourceName = this.getResource().getClass().getSimpleName();
+			sb.append(resourceName+" missing joints: ");
+			boolean first = true;
+			for (JointId id : missingJoints) {
+				sb.append((!first ? ", ": "")+ id.toString());
+				first = false;
+			}
+			throw new RuntimeException(sb.toString());
+		}
+		
 		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
 		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
 		if( rootIds.length == 0 ) {
@@ -188,6 +206,25 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		}
 		
 		this.visualData.setSGParent( sgComposite );
+	}
+	
+	private List<org.lgna.story.resources.JointId> getMissingJoints() {
+		List<JointId> missingJoints = new ArrayList<JointId>();
+		List<JointId> jointsToCheck = new ArrayList<JointId>();
+		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
+		for (JointId id : rootIds ) {
+			jointsToCheck.add(id);
+		}
+		while (!jointsToCheck.isEmpty()) {
+			JointId joint = jointsToCheck.remove(0);
+			if (this.createJointImplementation(joint) == null) {
+				missingJoints.add(joint);
+			}
+			for (JointId child : joint.getChildren(this.getResource()) ) {
+				jointsToCheck.add(child);
+			}
+		}
+		return missingJoints;
 	}
 	
 //	public void setNewJointedModelFactory(JointImplementationAndVisualDataFactory< R > factory) {
@@ -314,11 +351,12 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	
 	private JointImp createWrapperJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent, java.util.Map< org.lgna.story.resources.JointId, JointImpWrapper > jointMap ) {
 		JointImpWrapper joint = new JointImpWrapper(this, this.createJointImplementation( jointId ));
-		joint.setVehicle(parent);
 		jointMap.put( jointId, joint );
+		if (joint.getSgVehicle() == null) {
+			joint.setVehicle(parent);
+		}
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			JointImp childTree = createWrapperJointTree(childId, joint, jointMap);
-			childTree.setVehicle(joint);
+			createWrapperJointTree(childId, joint, jointMap);
 		}
 		return joint;
 	}

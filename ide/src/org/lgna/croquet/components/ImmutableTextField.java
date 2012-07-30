@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JTextField> {
-	public ImmutableTextField( org.lgna.croquet.StringValue value ) {
+	public ImmutableTextField( org.lgna.croquet.PlainStringValue value ) {
 		super( value );
 	}
 //	public HorizontalAlignment getHorizontalAlignment() {
@@ -57,7 +57,7 @@ public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JText
 	}
 	@Override
 	protected javax.swing.JTextField createAwtComponent() {
-		javax.swing.JTextField rv = new javax.swing.JTextField() {
+		javax.swing.JTextField rv = new javax.swing.JTextField( this.getValue().getDocument(), null, 0 ) {
 			@Override
 			public java.awt.Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );

@@ -62,7 +62,26 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		}
 	}
 	
-	protected static abstract class AbstractInternalStringValue extends StringValue {
+	private static final class UnlocalizedPlainStringValue extends PlainStringValue { 
+		public UnlocalizedPlainStringValue( String text ) {
+			super( java.util.UUID.randomUUID() );
+			this.setText( text );
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	private static final class UnlocalizedHtmlStringValue extends HtmlStringValue { 
+		public UnlocalizedHtmlStringValue( String text ) {
+			super( java.util.UUID.randomUUID() );
+			this.setText( text );
+		}
+		@Override
+		protected void localize() {
+		}
+	}
+	
+	protected static abstract class AbstractInternalStringValue extends PlainStringValue {
 		private final Key key;
 		public AbstractInternalStringValue( java.util.UUID id, Key key ) {
 			super( id );
@@ -72,7 +91,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	
@@ -92,7 +116,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	private static final class InternalBooleanState extends BooleanState {
@@ -105,7 +134,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	private static final class InternalListSelectionState<T> extends DefaultListSelectionState<T> {
@@ -118,10 +152,15 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
-	protected static class BoundedIntegerDetails extends BoundedIntegerState.Details {
+	public static class BoundedIntegerDetails extends BoundedIntegerState.Details {
 		public BoundedIntegerDetails() {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "3cb7dfc5-de8c-442c-9e9a-deab2eff38e8" ) );
 		}
@@ -133,10 +172,15 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			this.key = key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
-	protected static class BoundedDoubleDetails extends BoundedDoubleState.Details {
+	public static class BoundedDoubleDetails extends BoundedDoubleState.Details {
 		public BoundedDoubleDetails() {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "603d4a60-cc60-41df-b5a5-992966128b41" ) );
 		}
@@ -151,7 +195,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 	}
 	protected static interface Action {
@@ -169,7 +218,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			return this.key;
 		}
 		@Override
-		protected void localize() {
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
 		}
 		@Override
 		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
@@ -186,10 +240,41 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 			}
 		}
 	}
-	
-	
 
-	
+	protected static interface CascadeCustomizer<T> {
+		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode );
+		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values );
+	}
+	protected static final class InternalCascadeWithInternalBlank<T> extends CascadeWithInternalBlank<T> {
+		private final CascadeCustomizer customizer;
+		private final Key key;
+		private InternalCascadeWithInternalBlank( CascadeCustomizer customizer, Class< T > componentType, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "165e65a4-fd9b-4a09-921d-ecc3cc808de0" ), componentType );
+			this.customizer = customizer;
+			this.key = key;
+		}
+		public Key getKey() {
+			return this.key;
+		}
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+		@Override
+		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
+			return this.customizer.createEdit( completionStep, values );
+		}
+		@Override
+		protected java.util.List< CascadeBlankChild > updateBlankChildren( java.util.List< CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
+			this.customizer.appendBlankChildren( rv, blankNode );
+			return rv;
+		}
+	}
+
 	public AbstractComposite( java.util.UUID id ) {
 		super( id );
 		Manager.registerComposite( this );
@@ -224,28 +309,28 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	private java.util.Map<Key,InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key,InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key,InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+	private void localizeSidekicks( java.util.Map<Key,? extends AbstractCompletionModel>... maps ) {
+		for( java.util.Map<Key,? extends AbstractCompletionModel> map : maps ) {
+			for( Key key : map.keySet() ) {
+				AbstractCompletionModel model = map.get( key );
+				String text = this.findLocalizedText( key.getLocalizationKey() + ".sidekickLabel" );
+				if( text != null ) {
+					StringValue sidekickLabel = model.getSidekickLabel();
+					sidekickLabel.setText( text );
+				}
+			}
+		}
+	}
+	
 	@Override
 	protected void localize() {
 		for( Key key : this.mapKeyToStringValue.keySet() ) {
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
-			stringValue.setText( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
+			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
 		}
-		for( Key key : this.mapKeyToBooleanState.keySet() ) {
-			InternalBooleanState booleanState = this.mapKeyToBooleanState.get( key );
-			//todo
-			String trueAndFalseText = this.findLocalizedText( key.getLocalizationKey(), Composite.class );
-			if( trueAndFalseText != null ) {
-				booleanState.setTextForBothTrueAndFalse( trueAndFalseText );
-			} else {
-				String trueText = this.findLocalizedText( key.getLocalizationKey() + ".true", Composite.class );
-				String falseText = this.findLocalizedText( key.getLocalizationKey() + ".false", Composite.class );
-				booleanState.setTextForTrueAndTextForFalse( trueText, falseText );
-			}
-		}
-		for( Key key : this.mapKeyToActionOperation.keySet() ) {
-			InternalActionOperation operation = this.mapKeyToActionOperation.get( key );
-			operation.setName( this.findLocalizedText( key.getLocalizationKey(), Composite.class ) );
-		}
+		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToListSelectionState, this.mapKeyToStringState );
 	}
 	public boolean contains( Model model ) {
 		for( Key key : this.mapKeyToBooleanState.keySet() ) {
@@ -284,6 +369,12 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 				return true;
 			}
 		}
+		for( Key key : this.mapKeyToCascade.keySet() ) {
+			InternalCascadeWithInternalBlank cascade = this.mapKeyToCascade.get( key );
+			if( model == cascade ) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -294,9 +385,17 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	protected Key createKey( String localizationKey ) {
 		return new Key( this, localizationKey );
 	}
-	protected StringValue createStringValue( Key key ) {
+	protected PlainStringValue createStringValue( Key key ) {
 		InternalStringValue rv = new InternalStringValue( key );
 		this.registerStringValue( rv );
+		return rv;
+	}
+	protected PlainStringValue createUnlocalizedPlainStringValue( String text ) {
+		UnlocalizedPlainStringValue rv = new UnlocalizedPlainStringValue( text );
+		return rv;
+	}
+	protected HtmlStringValue createUnlocalizedHtmlStringValue( String text ) {
+		UnlocalizedHtmlStringValue rv = new UnlocalizedHtmlStringValue( text );
 		return rv;
 	}
 	protected StringState createStringState( Key key, String initialValue ) {
@@ -328,7 +427,11 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		return rv;
 	}
 	
-	
+	protected <T> Cascade<T> createCascadeWithInternalBlank( Key key, Class<T> cls, CascadeCustomizer< T > customizer ) {
+		InternalCascadeWithInternalBlank< T > rv = new InternalCascadeWithInternalBlank< T >( customizer, cls, key );
+		this.mapKeyToCascade.put( key, rv );
+		return rv;
+	}
 	
 	protected <T> ListSelectionState<T> createListSelectionState( Key key, Class<T> valueCls, org.lgna.croquet.ItemCodec< T > codec, int selectionIndex, T... values ) {
 		InternalListSelectionState<T> rv = new InternalListSelectionState<T>( codec, selectionIndex, values, key );

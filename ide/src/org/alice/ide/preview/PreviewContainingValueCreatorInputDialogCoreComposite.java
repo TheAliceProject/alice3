@@ -53,8 +53,6 @@ public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V ex
 	public T getPreviewValue() {
 		return this.createValue();
 	}
-	protected abstract void initializeToPreviousExpression( org.lgna.project.ast.Expression expression );
-	
 	@Override
 	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		super.handleFiredEvent( event );

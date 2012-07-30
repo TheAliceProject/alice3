@@ -45,29 +45,26 @@ package org.alice.ide.warning;
 /**
  * @author Dennis Cosgrove
  */
-public class WarningDialogComposite extends org.lgna.croquet.PlainDialogComposite< org.alice.ide.warning.components.WarningView > {
+public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperationComposite< org.alice.ide.warning.components.WarningView > {
 	private static class SingletonHolder {
 		private static WarningDialogComposite instance = new WarningDialogComposite();
 	}
 	public static WarningDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringValue descriptionValue = this.createStringValue( this.createKey( "description" ) );
+	private final org.lgna.croquet.PlainStringValue descriptionText;
 	private WarningDialogComposite() {
-		super( java.util.UUID.randomUUID()/*java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" )*/, org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "WARNING: Alice3 is not for the faint of heart.\n\n" );
+		sb.append( "Alice3 is currently under development.\n" );
+		sb.append( "We are working very hard to make this dialog box obsolete.\n" );
+		sb.append( "Thank you for your patience.\n" );
+		sb.append( "We welcome your feedback.\n" );
+		this.descriptionText = this.createUnlocalizedPlainStringValue( sb.toString() );
 	}
-//	@Override
-//	protected void localize() {
-//		super.localize();
-//		StringBuilder sb = new StringBuilder();
-//		sb.append( "WARNING: Alice3 is not for the faint of heart.\n\n" );
-//		sb.append( "Alice3 is currently under development.  We are working very hard to make this dialog box obsolete.\n" );
-//		sb.append( "Thank you for your patience.\n" );
-//		sb.append( "We welcome your feedback.\n" );
-//		this.descriptionValue.setText( sb.toString() );
-//	}
-	public org.lgna.croquet.StringValue getDescriptionValue() {
-		return this.descriptionValue;
+	public org.lgna.croquet.PlainStringValue getDescriptionText() {
+		return this.descriptionText;
 	}
 	@Override
 	protected org.alice.ide.warning.components.WarningView createView() {
@@ -77,7 +74,5 @@ public class WarningDialogComposite extends org.lgna.croquet.PlainDialogComposit
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		WarningDialogComposite.getInstance().getOperation().fire();
 		System.exit( 0 );
-//		WarningView warningPane = new WarningView( null );
-//		javax.swing.JOptionPane.showMessageDialog( null, warningPane, "Alice3 is currently under development", javax.swing.JOptionPane.WARNING_MESSAGE );
 	}
 }

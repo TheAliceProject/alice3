@@ -131,7 +131,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 			} else if( colList instanceof CollisionEndListener ) {
 				return wereTouchingMap.get( m ).get( changedEntity ) && !AabbCollisionDetector.doTheseCollide( m, changedEntity );
 			}
-			Logger.errln( "UNHANDLED CollisionListener TYPE " + colList.getClass() );
+			Logger.errln( "UNHANDLED CollisionListener TYPE", colList.getClass() );
 			return false;
 		}
 

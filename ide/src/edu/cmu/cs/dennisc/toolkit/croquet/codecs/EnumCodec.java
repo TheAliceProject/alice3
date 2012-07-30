@@ -69,7 +69,7 @@ public class EnumCodec< T extends Enum< T > > implements org.lgna.croquet.ItemCo
 	public final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t) {
 		binaryEncoder.encode( t );
 	}
-	public final StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+	public final StringBuilder appendRepresentation(StringBuilder rv, T value) {
 		rv.append( value );
 		return rv;
 	}

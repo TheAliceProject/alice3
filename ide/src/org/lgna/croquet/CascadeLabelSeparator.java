@@ -47,11 +47,17 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeLabelSeparator extends CascadeSeparator {
+	private String menuItemText;
 	public CascadeLabelSeparator( java.util.UUID id ) {
 		super( id );
 	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.menuItemText = this.findDefaultLocalizedText();
+	}
 	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
-		return this.getDefaultLocalizedText();
+		return this.menuItemText;
 	}
 	public boolean isValid() {
 		String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );

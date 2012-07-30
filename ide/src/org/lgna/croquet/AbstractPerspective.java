@@ -53,7 +53,7 @@ public abstract class AbstractPerspective extends AbstractElement implements Per
 	}
 	@Override
 	protected void localize() {
-		this.name = this.getDefaultLocalizedText();
+		this.name = this.findDefaultLocalizedText();
 	}
 	public String getName() {
 		this.initializeIfNecessary();

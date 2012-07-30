@@ -46,13 +46,9 @@ package org.alice.ide.croquet;
  * @author Dennis Cosgrove
  */
 public class ImageView extends org.lgna.croquet.components.JComponent<edu.cmu.cs.dennisc.javax.swing.components.JImageView> {
-	private int desiredSize;
-	public ImageView( int desiredSize ) {
-		this.desiredSize = desiredSize;
-	}
 	@Override
 	protected edu.cmu.cs.dennisc.javax.swing.components.JImageView createAwtComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JImageView(this.desiredSize);
+		return new edu.cmu.cs.dennisc.javax.swing.components.JImageView();
 	}
 	public java.awt.image.BufferedImage getBufferedImage() {
 		return this.getAwtComponent().getBufferedImage();

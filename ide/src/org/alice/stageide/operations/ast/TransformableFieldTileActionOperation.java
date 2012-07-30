@@ -74,7 +74,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 						transformableImp.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, prevPOV );
 					}
 					@Override
-					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+					protected StringBuilder updatePresentation( StringBuilder rv ) {
 						//todo
 						rv.append( TransformableFieldTileActionOperation.this.getName() );
 						return rv;

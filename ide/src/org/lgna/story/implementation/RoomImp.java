@@ -177,8 +177,6 @@ public class RoomImp extends VisualScaleModelImp {
 				bottomRight.position.set(rightVals.x, 0, rightVals.z);
 				edu.cmu.cs.dennisc.scenegraph.Vertex bottomLeft = sgVertices[i*4 + 3];
 				bottomLeft.position.set(leftVals.x, 0, leftVals.z);
-				
-//				System.out.println("Wall "+i+": "+topLeft.position+", "+bottomLeft.position+", "+bottomRight.position+", "+topRight.position);
 			}
 		}
 	}

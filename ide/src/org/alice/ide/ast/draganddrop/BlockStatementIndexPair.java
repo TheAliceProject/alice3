@@ -49,9 +49,19 @@ package org.alice.ide.ast.draganddrop;
 public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite {
 	private final org.lgna.project.ast.BlockStatement blockStatement;
 	private final int index;
+	
+	public static BlockStatementIndexPair createInstanceFromChildStatement( org.lgna.project.ast.Statement statement ) {
+		assert statement != null;
+		org.lgna.project.ast.Node parent = statement.getParent();
+		assert parent instanceof org.lgna.project.ast.BlockStatement : parent;
+		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+		int index = blockStatement.statements.indexOf( statement );
+		return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
+	}
+	
 	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+		assert blockStatement != null;
 		assert index >= 0 : index + " " + blockStatement;
-		assert index < (blockStatement.statements.size()+1) : index + " " + blockStatement.statements.size();
 		this.blockStatement = blockStatement;
 		this.index = index;
 	}
@@ -60,6 +70,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		org.lgna.project.Project project = ide.getProject();
 		java.util.UUID id = binaryDecoder.decodeId();
 		this.blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
+		assert this.blockStatement != null;
 		this.index = binaryDecoder.decodeInt(); 
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -76,9 +87,19 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	
 	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-		return new BlockStatementIndexPair( replacementBlockStatement, this.index );
+		if( this.blockStatement != replacementBlockStatement ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "creating replacement:", replacementBlockStatement );
+			return new BlockStatementIndexPair( replacementBlockStatement, this.index );
+		} else {
+			return this;
+		}
 	}
 
+	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
+		org.lgna.project.ast.AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
+		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
+	}
+	
 	@Override
 	public boolean equals( Object o ) {
 		if( o == this )

@@ -58,7 +58,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		rv.append( " to preview your program." );
 		return rv;
 	}

@@ -45,9 +45,8 @@ package org.alice.ide.ast.rename;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenameComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.ide.ast.rename.components.RenamePanel> {
+public abstract class RenameComposite<V extends org.alice.ide.ast.rename.components.RenamePanel> extends org.lgna.croquet.OperationInputDialogCoreComposite<V> {
 	private final org.alice.ide.name.NameValidator nameValidator;
-	private final org.lgna.croquet.StringValue nameLabel = this.createStringValue( this.createKey( "nameLabel" ) );
 	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
 
 	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
@@ -55,14 +54,14 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 		this.nameValidator = nameValidator;
 	}
-	public org.lgna.croquet.StringValue getNameLabel() {
-		return this.nameLabel;
+	protected org.alice.ide.name.NameValidator getNameValidator() {
+		return this.nameValidator;
 	}
 	public org.lgna.croquet.StringState getNameState() {
 		return this.nameState;
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( nameValidator != null ) {
 			String candidate = this.nameState.getValue();
 			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
@@ -79,16 +78,8 @@ public abstract class RenameComposite extends org.lgna.croquet.OperationInputDia
 	protected abstract String getInitialValue();
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
 		this.nameState.selectAll();
-	}
-	protected abstract java.awt.Color getViewBackgroundColor();
-	@Override
-	protected org.alice.ide.ast.rename.components.RenamePanel createView() {
-		org.alice.ide.ast.rename.components.RenamePanel rv = new org.alice.ide.ast.rename.components.RenamePanel( this );
-		rv.setMinimumPreferredWidth( 320 );
-		rv.setBackgroundColor( this.getViewBackgroundColor() );
-		return rv;
+		super.handlePreShowDialog( step );
 	}
 }

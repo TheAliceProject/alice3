@@ -77,8 +77,8 @@ public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation
 				SetValueOperation.this.propertyAdapter.setValue( SetValueOperation.this.originalValue );
 			}
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription( locale ) );
+			protected StringBuilder updatePresentation( StringBuilder rv ) {
+				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription() );
 				return rv;
 			}
 		} );	

@@ -65,11 +65,11 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 		super( java.util.UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
 	}
 	@Override
-	protected Class< org.lgna.project.ast.UserField > getNodeParameterType() {
+	public Class< org.lgna.project.ast.UserField > getNodeParameterType() {
 		return org.lgna.project.ast.UserField.class;
 	}
 	@Override
-	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserField > getNodeListProperty( org.lgna.project.ast.UserType< ? > declaringType ) {
+	public org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserField > getNodeListProperty( org.lgna.project.ast.UserType< ? > declaringType ) {
 		return declaringType.fields;
 	}
 	@Override

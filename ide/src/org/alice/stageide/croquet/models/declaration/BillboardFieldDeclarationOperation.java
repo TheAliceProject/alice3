@@ -67,8 +67,8 @@ public class BillboardFieldDeclarationOperation extends org.alice.ide.croquet.mo
 	@Override
 	protected void localize() {
 		super.localize();
-		this.paintLabelText = this.findLocalizedText( "paintLabel", BillboardFieldDeclarationOperation.class );
-		this.backPaintLabelText = this.findLocalizedText( "backPaintLabel", BillboardFieldDeclarationOperation.class );
+		this.paintLabelText = this.findLocalizedText( "paintLabel" );
+		this.backPaintLabelText = this.findLocalizedText( "backPaintLabel" );
 	}
 
 	public String getFrontPaintLabelText() {

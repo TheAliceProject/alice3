@@ -44,6 +44,9 @@
 package org.lgna.story.resourceutilities;
 
 import java.awt.Image;
+import java.awt.color.ColorSpace;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -66,6 +69,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipException;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -73,8 +78,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.lgna.project.License;
+import org.lgna.story.Joint;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.resources.BipedResource;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
@@ -128,6 +135,7 @@ public class ModelResourceExporter {
 	private Map<String, AxisAlignedBox> boundingBoxes = new HashMap<String, AxisAlignedBox>();
 	private File xmlFile;
 	private File javaFile;
+	private List<String> jointIdsToSuppress = new ArrayList<String>();
 	private Map<ModelSubResourceExporter, Image> thumbnails = new HashMap<ModelSubResourceExporter, Image>();
 	private Map<String, File> existingThumbnails = null;
 	private List<ModelSubResourceExporter> subResources = new LinkedList<ModelSubResourceExporter>();
@@ -280,6 +288,44 @@ public class ModelResourceExporter {
 		return false;
 	}
 	
+	public void addJointIdsToSuppress(List<String> jointIds){
+		for (String jointId : jointIds) {
+			if (!this.jointIdsToSuppress.contains(jointId)) {
+				this.jointIdsToSuppress.add(jointId);
+			}
+		}
+	}
+	
+	public void addJointIdsToSuppress(String[] jointIds){
+		for (String jointId : jointIds) {
+			if (!this.jointIdsToSuppress.contains(jointId)) {
+				this.jointIdsToSuppress.add(jointId);
+			}
+		}
+	}
+	
+	private static List<Tuple2<String, String>> removeEntry(List<Tuple2<String, String>> sourceList, String toRemove) {
+		Tuple2<String, String> entryToRemove = null;
+		//Find the entry to remove
+		for (Tuple2<String, String> entry : sourceList) {
+			if (entry.getA().equalsIgnoreCase(toRemove)) {
+				entryToRemove = entry;
+				break;
+			}
+		}
+		if (entryToRemove != null) {
+			//Remap any existing joints that are children of the joint to remove to be children of the parent of the joint to remove
+			for (Tuple2<String, String> entry : sourceList) {
+				if (entry.getB() != null && entry.getB().equalsIgnoreCase(entryToRemove.getA())) {
+					entry.setB(entryToRemove.getB());
+				}
+			}
+			//Remove the joint
+			sourceList.remove(entryToRemove);
+		}
+		return sourceList;
+	}
+	
 	private List<Tuple2<String, String>> makeCodeReadyTree(List<Tuple2<String, String>> sourceList) {
 		if (sourceList != null) {
 			List<Tuple2<String, String>> cleaned = new ArrayList<Tuple2<String,String>>();
@@ -300,6 +346,12 @@ public class ModelResourceExporter {
 					}
 				}
 			}
+			
+			//Remove joints that are in the "to suppress" list
+			for (String toSuppress : this.jointIdsToSuppress) {
+				sorted = removeEntry(sorted, toSuppress);
+			}
+			
 			return sorted;
 		}
 		return null;
@@ -430,9 +482,10 @@ public class ModelResourceExporter {
 	private static org.w3c.dom.Element createSubResourceElement(Document doc, ModelSubResourceExporter subResource, ModelResourceExporter parentMRE)
 	{
 		org.w3c.dom.Element resourceElement = doc.createElement("Resource");
-		resourceElement.setAttribute("name", AliceResourceUtilties.makeEnumName(subResource.getTextureName()));
+		resourceElement.setAttribute("textureName", AliceResourceUtilties.makeEnumName(subResource.getTextureName()));
+		resourceElement.setAttribute("resourceName", createResourceEnumName(parentMRE, subResource));
 		if (subResource.getModelName() != null) {
-			resourceElement.setAttribute("model", subResource.getModelName());
+			resourceElement.setAttribute("modelName", subResource.getModelName());
 		}
 		if (subResource.getBbox() != null){
 			resourceElement.appendChild(createBoundingBoxElement(doc, subResource.getBbox()));
@@ -675,17 +728,20 @@ public class ModelResourceExporter {
 		return sb.toString();
 	}
 	
-	private String createResourceEnumName(String modelName, String textureName) {
-		if (modelName.equalsIgnoreCase(this.getClassName())) {
+	private static String createResourceEnumName(ModelResourceExporter parentExporter, String modelName, String textureName) {
+		if (modelName.equalsIgnoreCase(parentExporter.getClassName())) {
 			return AliceResourceUtilties.makeEnumName(textureName);
+		}
+		else if (modelName.equalsIgnoreCase(textureName)) {
+			return AliceResourceUtilties.makeEnumName(modelName);
 		}
 		else {
 			return AliceResourceUtilties.makeEnumName(modelName) + "_" + AliceResourceUtilties.makeEnumName(textureName);
 		}
 	}
 	
-	private String createResourceEnumName(ModelSubResourceExporter resource) {
-		return createResourceEnumName(resource.getModelName(), resource.getTextureName());
+	private static String createResourceEnumName(ModelResourceExporter parentExporter, ModelSubResourceExporter resource) {
+		return createResourceEnumName(parentExporter, resource.getModelName(), resource.getTextureName());
 	}
 	
 	public String createJavaCode()
@@ -697,10 +753,12 @@ public class ModelResourceExporter {
 		sb.append("package "+this.classData.packageString+";\n\n");
 		
 		sb.append("public enum "+this.className+" implements "+this.classData.superClass.getCanonicalName()+" {\n");
+		int numSubResources = this.subResources.size();
+		assert this.subResources.size() > 0;
 		for (int i=0; i<this.subResources.size(); i++)
 		{
 			ModelSubResourceExporter resource = this.subResources.get(i);
-			String resourceEnumName = createResourceEnumName(resource);
+			String resourceEnumName = createResourceEnumName(this, resource);
 			sb.append("\t"+resourceEnumName);
 			if (i < this.subResources.size() - 1)
 			{
@@ -1003,6 +1061,13 @@ public class ModelResourceExporter {
 		String resourceDirectory = rootPath + getDirectoryStringForPackage(this.classData.packageString)+ModelResourceExporter.getResourceSubDirWithSeparator(this.className);
 		return resourceDirectory+thumbnailName;
 	}
+	
+	public static BufferedImage createClassThumb(BufferedImage imgSrc) {
+		ColorConvertOp colorConvert = 
+		        new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+		    colorConvert.filter(imgSrc, imgSrc);
+		    return imgSrc;
+	}
 
 	private List<File> saveThumbnailsToDir(String root)
 	{
@@ -1015,14 +1080,9 @@ public class ModelResourceExporter {
 				if (!gotBase) {
 					String thumbName = AliceResourceUtilties.getThumbnailResourceFileName(this.getClassName(), null);
 					File thumb = new File(getThumbnailPath(root, thumbName));
-					try {
-						FileUtilities.copyFile(entry.getValue(), thumb);
-						thumbnailFiles.add(thumb);
-					}
-					catch (IOException e) {
-						e.printStackTrace();
-						return null;
-					}
+					BufferedImage classThumb = createClassThumb(ImageUtilities.read(entry.getValue()));
+					ImageUtilities.write(thumb, classThumb);
+					thumbnailFiles.add(thumb);
 					gotBase = true;
 				}
 				if (entry.getValue().exists() ){
@@ -1090,6 +1150,7 @@ public class ModelResourceExporter {
 					javaFile = createJavaCode(sourceDirectory);
 				}
 				catch (Exception e) {
+					e.printStackTrace();
 					throw new IOException("FAILED TO MAKE JAVA FILE FOR "+this.getClassName()+"--NOT ADDING IT TO JARS.\n"+e.toString());
 				}
 			}
@@ -1165,5 +1226,26 @@ public class ModelResourceExporter {
 		return outputFile;
 	}
 	
+	/*
+	public Joint getRightWrist() {
+		return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_WRIST );
+	}
+	 */
+	
+	public static String getJointAccessCodeForClass(Class<?> resourceClass) {
+		List<String> ids = getExistingJointIds(resourceClass);
+		StringBuilder sb = new StringBuilder();
+		for (String id : ids) {
+			sb.append("public org.lgna.story.Joint get"+AliceResourceClassUtilities.getAliceMethodNameForEnum(id)+"() {\n");
+			sb.append("\treturn org.lgna.story.Joint.getJoint( this, "+resourceClass.getName()+"."+id+" );\n");
+			sb.append("}\n");
+		}
+		
+		return sb.toString();
+		
+	}
+	public static void main(String[] args) {
+		System.out.println(getJointAccessCodeForClass(BipedResource.class));
+	}
 }
  

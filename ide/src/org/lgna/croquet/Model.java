@@ -48,7 +48,7 @@ package org.lgna.croquet;
 public interface Model extends Element, org.lgna.croquet.resolvers.RuntimeResolver< Model > {
 	public Iterable< ContextFactory<?> > getContextFactories();
 	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
-	public String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation );
+	public String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit );
 	
 	public boolean isEnabled();
 	public void setEnabled( boolean isEnabled );

@@ -62,11 +62,11 @@ public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.
 		try {
 			expression = this.createValue();
 		} catch( RuntimeException re ) {
-			//re.printStackTrace();
+			re.printStackTrace();
 			expression = new org.lgna.project.ast.NullLiteral();
 		}
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+			.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
+		.build();
 	}
 }

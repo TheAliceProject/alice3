@@ -50,6 +50,7 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 	private transient boolean isDirty = true;
 	private transient javax.swing.JComponent menuProxy = null;
 	private transient javax.swing.Icon icon = null;
+	private transient String tutorialItemText;
 	public CascadeItem( java.util.UUID id ) {
 		super( id );
 	}
@@ -68,6 +69,7 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 	@Override
 	protected void localize() {
 		this.isDirty = true;
+		this.tutorialItemText = this.findDefaultLocalizedText();
 	}
 	protected boolean isDirty() {
 		return this.isDirty;
@@ -118,11 +120,11 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 	}
 	
 	protected String getTutorialItemText() {
-		return this.getDefaultLocalizedText();
+		return this.tutorialItemText;
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > node, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > node, org.lgna.croquet.edits.Edit< ? > edit ) {
 		rv.append( " <strong>" );
 		rv.append( this.getTutorialItemText() );
 		rv.append( "</strong>." );

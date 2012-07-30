@@ -87,7 +87,7 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< org.
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue(), org.lgna.project.ast.AbstractField.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, org.lgna.project.ast.AbstractField.class, this.transientValue.field.getValue() );
 	}
 	
 	@Override

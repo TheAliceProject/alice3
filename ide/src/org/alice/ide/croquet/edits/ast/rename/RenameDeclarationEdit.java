@@ -79,7 +79,7 @@ public class RenameDeclarationEdit extends org.lgna.croquet.edits.Edit {
 		this.declaration.getNamePropertyIfItExists().setValue( this.prevValue );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "rename: " );
 		rv.append( this.prevValue );
 		rv.append( " ===> " );

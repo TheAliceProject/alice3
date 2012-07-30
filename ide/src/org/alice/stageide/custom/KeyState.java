@@ -52,10 +52,9 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState< org.lgna.s
 	public static KeyState getInstance() {
 		return SingletonHolder.instance;
 	}
-	private static final org.lgna.story.Key DEFAULT_VALUE = null;
-	private org.lgna.story.Key value = DEFAULT_VALUE;
+	private org.lgna.story.Key value;
 	private KeyState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), DEFAULT_VALUE, org.alice.stageide.apis.org.lgna.story.codecs.KeyCodec.SINGLETON );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), null, org.alice.stageide.apis.org.lgna.story.codecs.KeyCodec.SINGLETON );
 	}
 	@Override
 	protected void localize() {
@@ -89,7 +88,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState< org.lgna.s
 	}
 	public void handleKeyPressed( org.alice.stageide.custom.components.KeyViewController viewController, java.awt.event.KeyEvent e ) {
 		org.lgna.story.Key nextValue = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
-		org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.KeyEventTrigger( viewController, e );
+		org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.KeyEventTrigger.createUserInstance( viewController, e );
 		this.value = nextValue;
 		this.changeValueFromSwing( this.value, false, trigger );
 		this.updateViewControllers();

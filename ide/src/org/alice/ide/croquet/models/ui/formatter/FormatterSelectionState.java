@@ -57,7 +57,7 @@ public class FormatterSelectionState extends org.lgna.croquet.preferences.Prefer
 		return SingletonHolder.instance;
 	}
 	private FormatterSelectionState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ), 
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ), 
 				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.formatter.Formatter.class ), 
 				0, 
 				org.alice.ide.formatter.AliceFormatter.getInstance(), 

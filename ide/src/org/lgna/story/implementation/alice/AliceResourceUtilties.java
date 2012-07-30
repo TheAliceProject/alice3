@@ -215,7 +215,7 @@ public class AliceResourceUtilties {
 	public static boolean isEnumName(String name) {
 		for (int i=0; i<name.length(); i++) {
 			char c = name.charAt(i);
-			if (c != '_' && !Character.isUpperCase(c)) {
+			if (c != '_' && !(Character.isUpperCase(c) || Character.isDigit(c))) {
 				return false;
 			}
 		}
@@ -320,6 +320,21 @@ public class AliceResourceUtilties {
 		}
 		if (!found) {
 			Logger.severe("Failed to find resource names for '"+resourceClass+"' and '"+resourceName+"'");
+			modelName = new StringBuilder();
+			for (int i=0; i<splitName.length; i++) {
+				if (splitName[i].length() > 0) {
+					if (i != 0) {
+						modelName.append("_");
+					}
+					modelName.append(splitName[i]);
+					visualName = enumToCamelCase(modelName.toString());
+					textureName = arrayToEnum(splitName, i+1, splitName.length);
+					if (checkVisualAndTextureName(resourceClass, visualName, textureName)) {
+						found = true;
+						break;
+					}
+				}
+			}
 			return;
 		}
 		ResourceIdentifier identifier = new ResourceIdentifier(resourceClass, resourceName);
@@ -393,9 +408,12 @@ public class AliceResourceUtilties {
 	
 	private static String createTextureBaseName(String modelName, String textureName) {
 		if (textureName == null) {
+			textureName = "_cls";
+		}
+		else if (modelName.equalsIgnoreCase(enumToCamelCase(textureName))) {
 			textureName = "";
 		}
-		else {
+		else if (textureName.length() > 0){
 			textureName = "_"+makeEnumName(textureName);
 		}
 		return modelName.toLowerCase() + textureName;
@@ -681,9 +699,7 @@ public class AliceResourceUtilties {
 					return parentInfo;
 				}
 				//Otherwise get the model and texture names and find the sub resource we're looking for
-				String modelName = getModelNameFromClassAndResource(modelResource, resourceName);
-				String textureName = getTextureNameFromClassAndResource(modelResource, resourceName);
-				ModelResourceInfo subResource = parentInfo.getSubResource(modelName, textureName);
+				ModelResourceInfo subResource = parentInfo.getSubResource(resourceName);
 				if (subResource == null) {
 					Logger.severe("Failed to find a resource for "+modelResource+" : "+resourceName);
 				}
@@ -717,7 +733,7 @@ public class AliceResourceUtilties {
 	{
 		ModelResourceInfo info = getModelResourceInfo(modelResource, resourceName);
 		if (info != null) {
-			return info.getName();
+			return info.getModelName();
 		}
 		return null;
 	}

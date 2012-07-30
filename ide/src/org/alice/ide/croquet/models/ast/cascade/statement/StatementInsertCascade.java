@@ -55,6 +55,35 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
+	
+	protected abstract java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement );
+	public void generateAndAddPostDragStepsToTransaction( org.lgna.croquet.history.Transaction transaction, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		java.util.List<org.lgna.project.ast.Expression> expressions = this.extractExpressionsForFillInGeneration( statement );
+		org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair );
+		if( expressions.size() > 0 ) {
+			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getRoot().getPopupPrepModel(), dropTrigger );
+			java.util.List<org.lgna.croquet.MenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			org.lgna.croquet.history.TransactionHistory[] bufferForCompletionStepSubTransactionHistory = { null };
+			for( org.lgna.project.ast.Expression expression : expressions ) {
+				org.lgna.croquet.CascadeFillIn fillIn = org.lgna.cheshire.ast.ExpressionFillInGenerator.generateFillInForExpression( expression, bufferForCompletionStepSubTransactionHistory );
+				if( fillIn != null ) {
+					prepModels.add( fillIn );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: pass fill in to menu selection step ", fillIn );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle expression ", expression );
+				}
+				org.lgna.croquet.MenuBarComposite menuBarComposite = null;
+				org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );
+				if( menuItemPrepModels.length > 0 ) {
+					org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
+				}
+			}
+			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), bufferForCompletionStepSubTransactionHistory[ 0 ] );
+		} else {
+			org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, dropTrigger, null );
+		}
+	}
+	
 	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions );
 	@Override
 	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> step, org.lgna.project.ast.Expression[] values ) {

@@ -60,6 +60,8 @@ public class Duration implements
 		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
 		//JointedModel
 		StraightenOutJoints.Detail, Say.Detail, Think.Detail,
+		//Room
+		SetFloorPaint.Detail, SetWallPaint.Detail, SetCeilingPaint.Detail,
 		//Billboard
 		SetBackPaint.Detail,
 		//Camera,

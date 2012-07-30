@@ -45,7 +45,8 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class Transaction extends Node<TransactionHistory> {
+public class Transaction extends TransactionNode<TransactionHistory> {
+
 	private static class DescendantStepIterator implements java.util.Iterator<Step<?>> {
 		private final java.util.List<Transaction> transactions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private int transactionIndex;
@@ -98,6 +99,12 @@ public class Transaction extends Node<TransactionHistory> {
 	private final java.util.List<PrepStep<?>> prepSteps;
 	private CompletionStep<?> completionStep;
 
+	public static Transaction createAndAddToHistory( TransactionHistory owner ) {
+		Transaction rv = new Transaction( owner );
+		owner.addTransaction( rv );
+		return rv;
+	}
+
 	public Transaction( TransactionHistory parent ) {
 		super( parent );
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -107,10 +114,10 @@ public class Transaction extends Node<TransactionHistory> {
 		super( binaryDecoder );
 		this.prepSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
 		for( PrepStep<?> prepStep : this.prepSteps ) {
-			prepStep.setParent( this );
+			prepStep.setOwner( this );
 		}
 		this.completionStep = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.completionStep.setParent( this );
+		this.completionStep.setOwner( this );
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
@@ -200,21 +207,21 @@ public class Transaction extends Node<TransactionHistory> {
 		};
 	}
 
-	public String getTitle( org.lgna.croquet.UserInformation userInformation ) {
+	public String getTitle() {
 		if( this.completionStep != null ) {
-			return this.completionStep.getTutorialTransactionTitle( userInformation );
+			return this.completionStep.getTutorialTransactionTitle( );
 		} else {
 			return null;
 		}
 	}
-	/*package-private*/void addMenuSelection( org.lgna.croquet.triggers.MenuSelectionTrigger trigger ) {
+
+	public void addMenuSelection( MenuSelection menuSelection ) {
 		java.util.ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator( this.prepSteps.size() );
 		while( iterator.hasPrevious() ) {
 			PrepStep<?> prepStep = iterator.previous();
 			if( prepStep instanceof MenuItemSelectStep ) {
-				MenuItemSelectStep menuItemSelectStep = (MenuItemSelectStep)prepStep;
-				org.lgna.croquet.triggers.MenuSelectionTrigger menuSelectionTrigger = (org.lgna.croquet.triggers.MenuSelectionTrigger)menuItemSelectStep.getTrigger();
-				if( menuSelectionTrigger.isPrevious( trigger ) ) {
+				MenuItemSelectStep prevMenuItemSelectStep = (MenuItemSelectStep)prepStep;
+				if( menuSelection.isPrevious( prevMenuItemSelectStep.getMenuBarComposite(), prevMenuItemSelectStep.getMenuItemPrepModels() ) ) {
 					break;
 				} else {
 					iterator.remove();
@@ -223,8 +230,9 @@ public class Transaction extends Node<TransactionHistory> {
 				break;
 			}
 		}
-		MenuItemSelectStep.createAndAddToTransaction( this, trigger );
+		MenuItemSelectStep.createAndAddToTransaction( this, menuSelection.getMenuBarComposite(), menuSelection.getMenuItemPrepModels(), menuSelection.getTrigger() );
 	}
+
 	public org.lgna.croquet.edits.Edit<?> getEdit() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getEdit();
@@ -237,7 +245,15 @@ public class Transaction extends Node<TransactionHistory> {
 		for( PrepStep<?> prepStep : this.prepSteps ) {
 			prepStep.retarget( retargeter );
 		}
-		this.completionStep.retarget( retargeter );
+		if( this.completionStep != null ) {
+			this.completionStep.retarget( retargeter );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		}
+	}
+
+	public TransactionHistory getOwnerTransactionHistory() {
+		return this.getOwner();
 	}
 
 	public int getChildStepCount() {
@@ -288,7 +304,6 @@ public class Transaction extends Node<TransactionHistory> {
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		//		step = this.pendingSteps.reify( step, true );
 		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
 		step.fireChanging( e );
 		if( step instanceof PrepStep<?> ) {
@@ -304,20 +319,17 @@ public class Transaction extends Node<TransactionHistory> {
 	/*package-private*/void addPrepStep( PrepStep<?> step ) {
 		this.addStep( step );
 	}
-	//	public void removePrepStep( PrepStep< ? > step ) {
-	//		this.prepSteps.remove( step );
-	//	}
 	public CompletionStep<?> getCompletionStep() {
 		return this.completionStep;
 	}
-	
+
 	public <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory subTransactionHistory ) {
 		return CompletionStep.createAndAddToTransaction( this, model, trigger, subTransactionHistory );
 	}
 	public <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return this.createAndSetCompletionStep( model, trigger, null );
 	}
-	
+
 	/*package-private*/void setCompletionStep( CompletionStep<?> step ) {
 		//assert this.completionStep == null : this.completionStep + " " + step;
 		this.addStep( step );
@@ -335,5 +347,18 @@ public class Transaction extends Node<TransactionHistory> {
 		} else {
 			return false;
 		}
+	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		for( PrepStep prepStep : this.prepSteps ) {
+			sb.append( prepStep );
+			sb.append( "," );
+		}
+		sb.append( this.completionStep );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

@@ -54,7 +54,7 @@ public class ViewListSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.m
 	}
 	private ViewListSelectionState() {
 		super( 
-				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
+				org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, 
 				java.util.UUID.fromString( "5ac32bb0-95ba-43b0-842d-66f824e3ef38" ), 
 				0,
 				org.alice.stageide.sceneeditor.View.class

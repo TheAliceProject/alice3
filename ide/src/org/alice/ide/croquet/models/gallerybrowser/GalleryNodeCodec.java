@@ -57,7 +57,7 @@ public enum GalleryNodeCodec implements org.lgna.croquet.ItemCodec< GalleryNode 
 	public GalleryNode decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new AssertionError();
 	}
-	public StringBuilder appendRepresentation( StringBuilder rv, GalleryNode value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, GalleryNode value ) {
 		rv.append( value );
 		return rv;
 	}

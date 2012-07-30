@@ -63,4 +63,11 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 	) {
 		super( id, initialDeclaringType, isDeclaringTypeEditable, initialValueComponentType, isValueComponentTypeEditable, initialIsArrayValueType, isIsArrayValueTypeEditable, initialName, isNameEditable, initialExpression, isInitializerEditable, nameValidator );
 	}
+	@Override
+	protected void appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( this.getInitialDeclaringType() );
+		rv.append( " " );
+		rv.append( this.getDeclaringType() );
+	}
 }

@@ -133,8 +133,8 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			String key = jointId.toString();
 			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
 			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
-			sgJoint.setName(key);
 			if( sgJoint != null  ) {
+				sgJoint.setName(key);
 				return new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoint );
 			} else {
 				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();

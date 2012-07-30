@@ -91,7 +91,7 @@ class MyOgre extends MyBiped {
 
 class MyArmoire extends Prop {
 	public MyArmoire() {
-		super( org.lgna.story.resources.prop.Armoire.LOFT__BLACK_TRIM);
+		super( org.lgna.story.resources.prop.Armoire.LOFT_BLACK_TRIM);
 	}
 	public org.lgna.story.Joint getLeftDoor() {
 		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
@@ -244,11 +244,11 @@ class SnowScene extends Scene {
 //			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 //			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 			this.ogre.delay(1);
-			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.LOFT__BLACK_TRIM);
+			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.LOFT_BLACK_TRIM);
 			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			this.ogre.setResource(org.lgna.story.resources.biped.Alien.ALIEN);
 			this.ogre.delay(1);
-			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.LOFT__BLACK_TRIM);
+			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.LOFT_BLACK_TRIM);
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
 			org.lgna.common.ThreadUtilities.doTogether( new Runnable() {
 				public void run() {

@@ -52,63 +52,6 @@ import java.util.List;
  */
 public class ModelResourceBuilderUtilities {
 	
-	public static String getAliceEnumNameForModelJoint( String modelJointName )
-	{
-		List<String> nameParts = new LinkedList<String>();
-		String[] parts = org.lgna.story.implementation.alice.AliceResourceClassUtilities.fullStringSplit(modelJointName);
-		boolean hasRight = false;
-		boolean hasLeft = false;
-		boolean hasBack = false;
-		boolean hasFront = false;
-		for (String part : parts)
-		{
-			if (part.equalsIgnoreCase("l"))
-			{
-				hasLeft = true;
-			}
-			else if (part.equalsIgnoreCase("r"))
-			{
-				hasRight = true;
-			}
-			else if (part.equalsIgnoreCase("f"))
-			{
-				hasFront = true;
-			}
-			else if (part.equalsIgnoreCase("b"))
-			{
-				hasBack = true;
-			}
-			else if (part.length() > 0)
-			{
-				nameParts.add(part);
-			}
-		}
-		if (hasRight)
-		{
-			nameParts.add(0, "RIGHT");
-		}
-		else if (hasLeft)
-		{
-			nameParts.add(0, "LEFT");
-		}
-		if (hasFront)
-		{
-			nameParts.add(0, "FRONT");
-		}
-		else if (hasBack)
-		{
-			nameParts.add(0, "BACK");
-		}
-		StringBuilder sb = new StringBuilder();
-		for (int i=0; i<nameParts.size(); i++)
-		{
-			if (i != 0)
-			{
-				sb.append("_");
-			}
-			sb.append(nameParts.get(i).toUpperCase());
-		}
-		return sb.toString();
-	}
+	
 	
 }

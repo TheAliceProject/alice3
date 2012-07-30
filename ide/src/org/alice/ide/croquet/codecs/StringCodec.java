@@ -56,7 +56,7 @@ public enum StringCodec implements org.lgna.croquet.ItemCodec< String > {
 	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
 		binaryEncoder.encode( value );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, String value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, String value) {
 		rv.append( value );
 		return rv;
 	}

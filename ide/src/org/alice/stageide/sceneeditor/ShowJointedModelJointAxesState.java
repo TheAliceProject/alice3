@@ -66,7 +66,7 @@ public class ShowJointedModelJointAxesState extends org.lgna.croquet.BooleanStat
 	
 	
 	private ShowJointedModelJointAxesState(org.lgna.project.ast.AbstractField field) {
-        super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "3b3bdd30-4f04-4160-ae58-e466732a4c6c" ), false );
+        super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "3b3bdd30-4f04-4160-ae58-e466732a4c6c" ), false );
         this.field = field;
     }
 	

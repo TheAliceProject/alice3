@@ -58,7 +58,7 @@ public class KeyedMoreCascade extends org.lgna.croquet.Cascade<org.lgna.project.
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.ArgumentOwner argumentOwner;
+	private org.lgna.project.ast.ArgumentOwner argumentOwner;
 	private KeyedMoreCascade( org.lgna.project.ast.ArgumentOwner argumentOwner ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), org.lgna.project.ast.JavaKeyedArgument.class, KeyedBlank.getInstance( argumentOwner.getKeyedArgumentsProperty() ) );
 		this.argumentOwner = argumentOwner;
@@ -71,5 +71,9 @@ public class KeyedMoreCascade extends org.lgna.croquet.Cascade<org.lgna.project.
 		org.lgna.project.ast.JavaKeyedArgument javaKeyedArgument = values[ 0 ];
 		javaKeyedArgument.parameter.setValue( this.argumentOwner.getParameterOwnerProperty().getValue().getKeyedParameter() );
 		return new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, javaKeyedArgument );
+	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< KeyedMoreCascade > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< KeyedMoreCascade >( this, org.lgna.project.ast.ArgumentOwner.class, this.argumentOwner );
 	}
 }

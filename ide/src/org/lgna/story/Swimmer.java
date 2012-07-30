@@ -38,17 +38,17 @@ public class Swimmer extends JointedModel {
 	public Joint getRightEye() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_EYE);
 	}
-	public Joint getLeftPectoralFin() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_PECTORAL_FIN);
+	public Joint getFrontLeftFin() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_LEFT_FIN);
 	}
-//	public Joint getLeftPectoralFinTip() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_PECTORAL_FIN_TIP);
+//	public Joint getFrontLeftFinTip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_LEFT_FIN_TIP);
 //	}
-	public Joint getRightPectoralFin() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN);
+	public Joint getFrontRightFin() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_RIGHT_FIN);
 	}
-//	public Joint getRightPectoralFinTip() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN_TIP);
+//	public Joint getFrontRightFinTip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_RIGHT_FIN_TIP);
 //	}
 	public Joint getSpineBase() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_BASE);
@@ -59,12 +59,6 @@ public class Swimmer extends JointedModel {
 	public Joint getTail() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.TAIL);
 	}
-//	public Joint getTopTailFin() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.TOP_TAIL_FIN);
-//	}
-//	public Joint getBottomTailFin() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.BOTTOM_TAIL_FIN);
-//	}
 }
 	
 

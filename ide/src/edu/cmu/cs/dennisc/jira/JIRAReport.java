@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.jira;
  */
 public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	public enum Type {
-		BUG, NEW_FEAURE, IMPROVEMENT
+		BUG, NEW_FEATURE, IMPROVEMENT
 	}
 	private String projectKey;
 	private Type type;

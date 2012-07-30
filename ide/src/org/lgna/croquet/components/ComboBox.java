@@ -96,12 +96,12 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 
 	private javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
 		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-			org.lgna.croquet.history.TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
+			org.lgna.croquet.history.TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel(), org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
 		}
 		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 		}
 		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-			org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( ComboBox.this.getModel().getListSelectionState(), new org.lgna.croquet.triggers.PopupMenuEventTrigger( ComboBox.this, e ) );
+			org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( ComboBox.this.getModel().getListSelectionState(), org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
 		}
 	};
 

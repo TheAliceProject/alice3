@@ -90,7 +90,7 @@ public class PropertyOfNodeCodec< T extends edu.cmu.cs.dennisc.property.Instance
 			binaryEncoder.encode( node != null ? value.getName() : null );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
 		//todo
 		return rv;
 	}

@@ -122,7 +122,7 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 	}
 
 	public void update( double tCurrent ) {
-		if( timeOfLastFrame == Double.NaN ) {
+		if( Double.isNaN( timeOfLastFrame ) ) {
 			deltaSinceLastFrame = 0.0d;
 		} else {
 			deltaSinceLastFrame = tCurrent - timeOfLastFrame;

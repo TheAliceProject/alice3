@@ -56,7 +56,7 @@ public class PerspectiveState extends org.lgna.croquet.DefaultListSelectionState
 	}
 	private PerspectiveState() {
 		super( 
-				org.lgna.croquet.Application.UI_STATE_GROUP, 
+				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
 				java.util.UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ), 
 				org.alice.ide.perspectives.codecs.IdePerspectiveCodec.SINGLETON,
 				0, 

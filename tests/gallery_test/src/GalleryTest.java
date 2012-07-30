@@ -69,6 +69,7 @@ public class GalleryTest {
 			test( brokenModels, node.getChild( i ), instanceCls, parameterClses );
 		}
 	}
+
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
@@ -84,13 +85,13 @@ public class GalleryTest {
 		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Swimmer.class, org.lgna.story.resources.SwimmerResource.class );
 		
 		if( brokenModels.size() > 0 ) {
-//			System.err.println();
-//			System.err.println();
-//			System.err.println();
-//			for( Throwable t : brokenModels ) {
-//				t.printStackTrace();
-//			}
-			javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
+			System.err.println();
+			System.err.println();
+			System.err.println();
+			for( Throwable t : brokenModels ) {
+				t.printStackTrace();
+			}
+//			javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
 		}
 		
 	}

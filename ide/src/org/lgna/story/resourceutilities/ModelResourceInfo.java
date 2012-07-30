@@ -62,7 +62,8 @@ public class ModelResourceInfo {
 	private final AxisAlignedBox boundingBox;
 	private final int creationYear;
 	private final String creator;
-	private final String name;
+	private final String resourceName;
+	private final String modelName;
 	private final String textureName;
 	private final ModelResourceInfo parentInfo;
 	private final java.util.List<ModelResourceInfo> subResources = new java.util.LinkedList<ModelResourceInfo>();
@@ -102,12 +103,16 @@ public class ModelResourceInfo {
 				bbox = getBoundingBoxFromXML((Element)bboxNodeList.item(0));
 			}
 			String modelName = null;
-			if (resourceElement.hasAttribute("model")) {
-				modelName = resourceElement.getAttribute("model");
+			if (resourceElement.hasAttribute("modelName")) {
+				modelName = resourceElement.getAttribute("modelName");
 			}
 			String textureName = null;
-			if (resourceElement.hasAttribute("name")) {
-				textureName = resourceElement.getAttribute("name");
+			if (resourceElement.hasAttribute("textureName")) {
+				textureName = resourceElement.getAttribute("textureName");
+			}
+			String resourceName = null;
+			if (resourceElement.hasAttribute("resourceName")) {
+				resourceName = resourceElement.getAttribute("resourceName");
 			}
 			LinkedList<String> tagList = new LinkedList<String>();
 			NodeList tagNodeList = resourceElement.getElementsByTagName("Tag");
@@ -115,21 +120,22 @@ public class ModelResourceInfo {
 				tagList.add(tagNodeList.item(i).getTextContent());
 			}
 			String[] tags = tagList.toArray(new String[tagList.size()]);
-			ModelResourceInfo resource = new ModelResourceInfo(parent, modelName, null, -1, bbox, tags, textureName);
+			ModelResourceInfo resource = new ModelResourceInfo(parent, resourceName, null, -1, bbox, tags, modelName, textureName);
 			return resource;
 		}
 		
 		return null;
 	}
 	
-	public ModelResourceInfo(ModelResourceInfo parent, String name, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String textureName) {
+	public ModelResourceInfo(ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String modelName, String textureName) {
 		this.parentInfo = parent;
-		this.name = name;
+		this.resourceName = resourceName;
 		this.creator = creator;
 		this.creationYear = creationYear;
 		this.boundingBox = boundingBox;
 		this.tags = tags;
 		this.textureName = textureName;
+		this.modelName = modelName;
 	}
 	
 	private static java.util.List<Element> getImmediateChildElementsByTagName(Element node, String tagName) {
@@ -157,7 +163,7 @@ public class ModelResourceInfo {
 		else {
 			this.boundingBox = new AxisAlignedBox();
 		}
-		this.name = modelElement.getAttribute("name");
+		this.modelName = modelElement.getAttribute("name");
 		this.creator = modelElement.getAttribute("creator");
 		int creationYearTemp = -1;
 		try {
@@ -187,6 +193,7 @@ public class ModelResourceInfo {
 			}
 		}
 		this.textureName = null;
+		this.resourceName = null;
 		this.parentInfo = null;
 	}
 
@@ -211,11 +218,18 @@ public class ModelResourceInfo {
 		return creator;
 	}
 
-	public String getName() {
-		if (this.name == null && parentInfo != null) {
-			return this.parentInfo.name;
+	public String getResourceName() {
+		if (this.resourceName == null && parentInfo != null) {
+			return this.parentInfo.resourceName;
 		}
-		return name;
+		return resourceName;
+	}
+	
+	public String getModelName() {
+		if (this.modelName == null && parentInfo != null) {
+			return this.parentInfo.modelName;
+		}
+		return modelName;
 	}
 	
 	public String getTextureName() {
@@ -241,10 +255,20 @@ public class ModelResourceInfo {
 	
 	public ModelResourceInfo getSubResource(String modelName, String textureName) {
 		for (ModelResourceInfo mri : this.subResources) {
-			String subModel = mri.getName();
+			String subModel = mri.getModelName();
 			String subTexture = mri.getTextureName();
 			if (subModel != null && subModel.equalsIgnoreCase(modelName) && 
 				subTexture != null && subTexture.equalsIgnoreCase(textureName)) {
+				return mri;
+			}
+		}
+		return null;
+	}
+	
+	public ModelResourceInfo getSubResource(String resourceName) {
+		for (ModelResourceInfo mri : this.subResources) {
+			String subResource = mri.getResourceName();
+			if (subResource != null && subResource.equalsIgnoreCase(resourceName) ){
 				return mri;
 			}
 		}

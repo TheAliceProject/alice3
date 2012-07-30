@@ -87,51 +87,51 @@ public class Flyer extends JointedModel implements Articulable {
 	public Joint getMouth() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.MOUTH);
 	}
-	public Joint getLowerLip() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LOWER_LIP);
-	}
+//	public Joint getLowerLip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LOWER_LIP);
+//	}
 	public Joint getLeftEye() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_EYE);
 	}
 	public Joint getRightEye() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_EYE);
 	}
-	public Joint getLeftClavicle() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_CLAVICLE);
+	public Joint getLeftWingShoulder() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_SHOULDER);
 	}
-	public Joint getLeftShoulder() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_SHOULDER);
+	public Joint getLeftWingElbow() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_ELBOW);
 	}
-	public Joint getLeftElbow() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_ELBOW);
+	public Joint getLeftWingWrist() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_WRIST);
 	}
-	public Joint getLeftWrist() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WRIST);
+//	public Joint getLeftWingTip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_TIP);
+//	}
+	public Joint getRightWingShoulder() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_SHOULDER);
 	}
-	public Joint getRightClavicle() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_CLAVICLE);
+	public Joint getRightWingElbow() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_ELBOW);
 	}
-	public Joint getRightShoulder() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_SHOULDER);
+	public Joint getRightWingWrist() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_WRIST);
 	}
-	public Joint getRightElbow() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_ELBOW);
-	}
-	public Joint getRightWrist() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WRIST);
-	}
+//	public Joint getRightWingTip() {
+//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_TIP);
+//	}
 	public Joint getPelvisLowerBody() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.PELVIS_LOWER_BODY);
 	}
-//	public Joint getTail1() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_1);
-//	}
-//	public Joint getTail2() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_2);
-//	}
-//	public Joint getTail3() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_3);
-//	}
+	public Joint getTail() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL);
+	}
+	public Joint getTail2() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_2);
+	}
+	public Joint getTail3() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_3);
+	}
 	public Joint getLeftHip() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_HIP);
 	}

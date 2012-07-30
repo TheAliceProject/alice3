@@ -59,6 +59,6 @@ public class ProceduresOpenState extends org.lgna.croquet.BooleanState {
 		return rv;
 	}
 	private ProceduresOpenState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "006d5fac-8369-4f32-b090-faaceb00475f" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "006d5fac-8369-4f32-b090-faaceb00475f" ), true );
 	}
 }

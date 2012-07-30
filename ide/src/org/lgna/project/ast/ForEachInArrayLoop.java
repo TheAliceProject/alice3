@@ -52,7 +52,11 @@ public class ForEachInArrayLoop extends AbstractForEachLoop {
 		public AbstractType<?,?,?> getExpressionType() {
 			UserLocal item = ForEachInArrayLoop.this.item.getValue();
 			AbstractType<?,?,?> type = item.valueType.getValue();
-			return type.getArrayType();
+			if( type != null ) {
+				return type.getArrayType();
+			} else {
+				return null;
+			}
 		}
 	};
 	public ForEachInArrayLoop() {

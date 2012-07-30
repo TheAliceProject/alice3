@@ -58,8 +58,8 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	public SelectedTypeView() {
 		//this.typeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
 		this.snapshotLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		this.addComponent( new org.lgna.croquet.components.LineAxisPanel( this.label, this.typeLabel ), Constraint.PAGE_START );
-		this.addComponent( this.snapshotLabel, Constraint.CENTER );
+		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel( this.label, this.typeLabel ) );
+		this.addCenterComponent( this.snapshotLabel );
 	}
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		this.typeLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( nextValue ) );

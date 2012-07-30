@@ -89,7 +89,7 @@ public class MoveAndOrientToEdit extends Edit {
 		}
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		return null;
 	}
 

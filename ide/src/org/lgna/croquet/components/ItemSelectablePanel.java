@@ -78,7 +78,20 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+			}
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
+				if( ItemSelectablePanel.this.isMaximumSizeClampedToPreferredSize() ) {
+					rv.setSize( this.getPreferredSize() );
+				}
+				return rv;
+			}
+		};
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		rv.setOpaque( false );
@@ -193,9 +206,16 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 			assert itemDetails != null : item;
 			itemDetails.setSelected( true );
 		} else {
-			javax.swing.ButtonModel model = this.buttonGroup.getSelection();
-			if( model != null ) {
-				this.buttonGroup.setSelected(model, false);
+			//todo: use buttonGroup.clearSelection() when 1.6
+			java.util.Enumeration<javax.swing.AbstractButton> buttonEnum = this.buttonGroup.getElements();
+			while( buttonEnum.hasMoreElements() ) {
+				javax.swing.AbstractButton button = buttonEnum.nextElement();
+				javax.swing.ButtonModel model = button.getModel();
+				if( model.isSelected() ) {
+					this.buttonGroup.remove( button );
+					model.setSelected( false );
+					this.buttonGroup.add( button );
+				}
 			}
 		}
 	}

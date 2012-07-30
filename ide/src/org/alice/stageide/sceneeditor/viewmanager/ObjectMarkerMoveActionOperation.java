@@ -108,7 +108,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	{
 		if (this.toMoveToField != null && this.toMoveField != null)
 		{
-			String unformattedTooltipText = this.findLocalizedText("tooltip", this.getClassUsedForLocalization());
+			String unformattedTooltipText = this.findLocalizedText("tooltip");
 			MessageFormat formatter = new MessageFormat("");
 			formatter.setLocale(javax.swing.JComponent.getDefaultLocale());
 			formatter.applyPattern(unformattedTooltipText);
@@ -118,7 +118,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		}
 		else
 		{
-			this.setToolTipText(this.findLocalizedText("disabledTooltip", ObjectMarkerFieldDeclarationOperation.class));
+			this.setToolTipText(this.findLocalizedText("disabledTooltip"));
 			this.setEnabled(false);
 		}
 		this.setSmallIcon(this.imageIcon);

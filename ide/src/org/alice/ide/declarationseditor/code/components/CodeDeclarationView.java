@@ -52,11 +52,11 @@ public class CodeDeclarationView extends AbstractCodeDeclarationView {
 		super( composite );
 		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() );
 		this.setBackgroundColor( this.codeEditor.getBackgroundColor() );
-		this.addComponent( this.codeEditor, Constraint.CENTER );
+		this.addCenterComponent( this.codeEditor );
 	}
 	@Deprecated
 	@Override
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor() {
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
 		return this.codeEditor;
 	}
 }

@@ -71,12 +71,12 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			return this.valueInputDialogOperation;
 		}
 		@Override
-		protected InternalFillInResolver<F> createResolver() {
-			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.valueInputDialogOperation.getClassUsedForLocalization();
 		}
 		@Override
-		protected String getTutorialItemText() {
-			return this.valueInputDialogOperation.getDefaultLocalizedText();
+		protected InternalFillInResolver<F> createResolver() {
+			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
 		}
 		@Override
 		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
@@ -123,6 +123,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			T value = this.createValue( step );
 			if( value != null ) {
 				step.putEphemeralDataFor( VALUE_KEY, value );
+				step.finish();
 			} else {
 				step.cancel();
 			}

@@ -53,6 +53,6 @@ public class IsIncludingTypeFeedbackForExpressionsState extends org.lgna.croquet
 		return SingletonHolder.instance;
 	}
 	private IsIncludingTypeFeedbackForExpressionsState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true );
 	}
 }

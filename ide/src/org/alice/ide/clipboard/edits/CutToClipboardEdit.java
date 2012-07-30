@@ -77,16 +77,16 @@ public class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 	}
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.clipboard.Clipboard.getInstance().push( this.statement );
+		org.alice.ide.clipboard.Clipboard.SINGLETON.push( this.statement );
 		this.originalBlockStatement.statements.remove( this.originalIndex );
 	}
 	@Override
 	protected void undoInternal() {
-		org.alice.ide.clipboard.Clipboard.getInstance().pop();
+		org.alice.ide.clipboard.Clipboard.SINGLETON.pop();
 		this.originalBlockStatement.statements.add( this.originalIndex, this.statement );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "cut to clipboard" );
 		return rv;
 	}

@@ -142,17 +142,17 @@ public class Quadruped extends JointedModel implements Articulable {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.PELVIS_LOWER_BODY);
 	}
 	public Joint getTail() {
-		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_1);
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL);
 	}
 	public Joint getTail2() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_2);
 	}
-//	public Joint getTail3() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_3);
-//	}
-//	public Joint getTail4() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_4);
-//	}
+	public Joint getTail3() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_3);
+	}
+	public Joint getTail4() {
+		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.TAIL_4);
+	}
 	public Joint getBackLeftHip() {
 		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.QuadrupedResource.BACK_LEFT_HIP);
 	}

@@ -52,7 +52,7 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			return CodeComposite.getInstance( (org.lgna.project.ast.AbstractCode)declaration );
 		} else if( declaration instanceof org.lgna.project.ast.NamedUserType ) {
-			return TypeComposite.getInstance( (org.lgna.project.ast.AbstractType< ?,?,? >)declaration );
+			return TypeComposite.getInstance( (org.lgna.project.ast.NamedUserType)declaration );
 		} else {
 			if( declaration != null ) {
 				throw new RuntimeException( "todo " + declaration );
@@ -89,6 +89,6 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > >( this, this.declaration, this.declarationCls );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > >( this, this.declarationCls, this.declaration );
 	}
 }

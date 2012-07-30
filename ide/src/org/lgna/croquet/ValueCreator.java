@@ -64,9 +64,15 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	}
 	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
 		private final ValueCreator<F> valueCreator;
+		private String text; 
 		private InternalFillIn( ValueCreator<F> valueCreator ) {
 			super( java.util.UUID.fromString( "258797f2-c1b6-4887-b6fc-42702493d573" ) );
 			this.valueCreator = valueCreator;
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+			this.text = this.findDefaultLocalizedText();
 		}
 		public ValueCreator<F> getValueCreator() {
 			return this.valueCreator;
@@ -81,15 +87,16 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 		@Override
 		protected String getTutorialItemText() {
-			return this.valueCreator.getDefaultLocalizedText();
+			this.initializeIfNecessary();
+			return this.text;
 		}
 		@Override
 		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
-			return new javax.swing.JLabel( this.getTutorialItemText() );
+			return new javax.swing.JLabel( this.text );
 		}
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-			org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.NullTrigger();
+			org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER );
 			org.lgna.croquet.history.Step<?> step = this.valueCreator.fire( trigger );
 			if( step != null ) {
 				return (F)step.getEphemeralDataFor( VALUE_KEY );
@@ -103,6 +110,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 	}
 
+	
 	private InternalFillIn<T> fillIn = new InternalFillIn<T>( this );
 	public static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueCreator.VALUE_KEY" );
 	public ValueCreator( java.util.UUID migrationId ) {
@@ -120,7 +128,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		return false;
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		return rv;
 	}
 	public CascadeFillIn< T, Void > getFillIn() {
@@ -130,12 +138,16 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	@Override
 	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.initializeIfNecessary();
-		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
+		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		T value = this.createValue( transaction, trigger );
 		org.lgna.croquet.history.CompletionStep<?> rv = transaction.getCompletionStep();
 		if( rv != null ) {
 			rv.putEphemeralDataFor( VALUE_KEY, value );
 		}
 		return rv;
+	}
+	@Override
+	protected org.lgna.croquet.triggers.Trigger createGeneratedTrigger() {
+		return org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance();
 	}
 }

@@ -52,12 +52,12 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		
 		class IntegerState extends org.lgna.croquet.BoundedIntegerState {
 			public IntegerState() {
-				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ) );
+				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ) );
 			}
 		}
 		class DoubleState extends org.lgna.croquet.BoundedDoubleState {
 			public DoubleState() {
-				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ).stepSize( 10 ).minimum( 20 ) );
+				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ).stepSize( 10 ).minimum( 20 ) );
 			}
 		}
 		
@@ -70,7 +70,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 				doubleState.createSlider(), doubleState.createSpinner()
 		);
 		
-		testCroquet.getFrame().getContentPanel().addComponent( gridPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		testCroquet.getFrame().getContentPanel().addCenterComponent( gridPanel );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );

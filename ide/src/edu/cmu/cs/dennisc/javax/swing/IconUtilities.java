@@ -71,4 +71,11 @@ public class IconUtilities {
 		int nextHeight = nextIcon != null ? nextIcon.getIconHeight() : 0;
 		return prevWidth == nextWidth && prevHeight == nextHeight;
 	}
+	
+	public static javax.swing.Icon getWarningIcon() {
+		return javax.swing.UIManager.getIcon( "OptionPane.warningIcon" );
+	}
+	public static javax.swing.Icon getErrorIcon() {
+		return javax.swing.UIManager.getIcon( "OptionPane.errorIcon" );
+	}
 }

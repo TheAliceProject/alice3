@@ -119,7 +119,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 	}
 
-	private final StringValue stepsLabel = this.createStringValue( this.createKey( "stepsLabel" ) );
+	private final PlainStringValue stepsLabel = this.createStringValue( this.createKey( "stepsLabel" ) );
 	private int index = 0;
 
 	private int getIndex() {
@@ -134,7 +134,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			Composite<?> composite = this.cardComposite.getCards().get( this.index );
 			if( composite instanceof WizardPageComposite ) {
 				WizardPageComposite wizardPageComposite = (WizardPageComposite)composite;
-				text = wizardPageComposite.getDefaultLocalizedText();
+				text = wizardPageComposite.getName();
 			} else {
 				text = null;
 			}
@@ -171,7 +171,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			StringBuilder sb = new StringBuilder();
 			sb.append( index + 1 );
 			sb.append( ".    " );
-			sb.append( value.getDefaultLocalizedText() );
+			sb.append( value.getName() );
 			if( isSelected ) {
 				//pass
 			} else {
@@ -234,7 +234,6 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 
 		org.lgna.croquet.components.ImmutableTextField stepsTextField = this.stepsLabel.createImmutableTextField();
 		javax.swing.JList list = new javax.swing.JList( this.listModel ) {
@@ -255,20 +254,23 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		org.lgna.croquet.components.PageAxisPanel mainView = this.createPageAxisPanel( this.stepLabel );
 		mainView.addComponent( this.cardComposite.getView() );
 
-		rv.addComponent( stepsView, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		rv.addComponent( mainView, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
+			.lineStart( stepsView )
+			.center( mainView )
+		.build();
 
 		//todo: remove
 		this.cardComposite.getView().setBackgroundColor( rv.getBackgroundColor() );
+
 		return rv;
 	}
 	@Override
-	protected final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected final Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Composite<?> page = this.cardComposite.getShowingCard();
 		if( page instanceof WizardPageComposite ) {
 			return ((WizardPageComposite)page).getPageStatus( step );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( this, page );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this, page );
 			//todo
 			return IS_GOOD_TO_GO_STATUS;
 		}
@@ -284,8 +286,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	@Override
 	protected void localize() {
 		super.localize();
-		this.nextOperation.setName( this.findLocalizedText( "next", WizardDialogCoreComposite.class ) );
-		this.prevOperation.setName( this.findLocalizedText( "previous", WizardDialogCoreComposite.class ) );
+		this.nextOperation.setName( this.findLocalizedText( "next" ) );
+		this.prevOperation.setName( this.findLocalizedText( "previous" ) );
 	}
 
 	private void updateEnabled() {
