@@ -47,10 +47,10 @@ package org.alice.ide.common;
  */
 public class TypeDropDownIcon extends TypeIcon {
 	private static final int ARROW_SIZE = 12;
-	private javax.swing.ButtonModel model;
-	public TypeDropDownIcon( org.lgna.project.ast.AbstractType<?,?,?> type, javax.swing.ButtonModel model ) {
+	private javax.swing.ButtonModel buttonModel;
+	public TypeDropDownIcon( org.lgna.project.ast.AbstractType<?,?,?> type, javax.swing.ButtonModel buttonModel ) {
 		super( type );
-		this.model = model;
+		this.buttonModel = buttonModel;
 	}
 	
 	@Override
@@ -61,21 +61,35 @@ public class TypeDropDownIcon extends TypeIcon {
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		super.paintIcon( c, g, x, y );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Paint paint;
-		if( this.model.isPressed() ) {
-			paint = java.awt.Color.WHITE;
-		} else {
-			if( this.model.isRollover() ) {
-				paint = java.awt.Color.DARK_GRAY;
+		java.awt.Paint fillPaint;
+		java.awt.Paint drawPaint;
+		if( buttonModel.isEnabled() ) {
+			if( buttonModel.isPressed() ) {
+				fillPaint = java.awt.Color.WHITE;
+				drawPaint = java.awt.Color.BLACK;
 			} else {
-				paint = java.awt.Color.BLACK;
+				if( buttonModel.isRollover() || buttonModel.isArmed() ) {
+					fillPaint = java.awt.Color.GRAY;
+				} else {
+					fillPaint = java.awt.Color.BLACK;
+				}
+				drawPaint = null;
 			}
+		} else {
+			fillPaint = java.awt.Color.LIGHT_GRAY;
+			drawPaint = null;
 		}
-		g2.setPaint( paint );
 		
 		int w = this.getIconWidth();
 		int h = this.getIconHeight();
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+w-ARROW_SIZE, y+(h-ARROW_SIZE)/2, ARROW_SIZE, ARROW_SIZE );
+		if( fillPaint != null ) {
+			g2.setPaint( fillPaint );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+w-ARROW_SIZE, y+(h-ARROW_SIZE)/2, ARROW_SIZE, ARROW_SIZE );
+		}
+		if( drawPaint != null ) {
+			g2.setPaint( drawPaint );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+w-ARROW_SIZE, y+(h-ARROW_SIZE)/2, ARROW_SIZE, ARROW_SIZE );
+		}
 	}
 }
 

@@ -52,23 +52,12 @@ public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
 		this.resource = resource;
 	}
 	@Override
-	protected boolean isNameAvailable( String name ) {
+	public boolean isNameAvailable( String name ) {
 		if( this.resource != null ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
 				org.lgna.project.Project project = ide.getProject();
-				if( project != null ) {
-					java.util.Set< org.lgna.common.Resource > resources = project.getResources();
-					if( resources != null ) {
-						for( org.lgna.common.Resource resource : resources ) {
-							if( resource != null && resource != this.resource ) {
-								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( name, resource.getName(), edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE ) ) {
-									return false;
-								}
-							}
-						}
-					}
-				}
+				return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableResourceName( project, name, this.resource );
 			}
 		}
 		return true;

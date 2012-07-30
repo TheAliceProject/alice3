@@ -72,7 +72,7 @@ public class MarkerColorValidator extends MemberNameValidator {
 	}
 	
 	@Override
-	protected boolean isNameAvailable( String name ) {
+	public boolean isNameAvailable( String name ) {
 		String suffix = getColorAndNumberSuffix(name);
 		
 		org.lgna.project.ast.Node node = this.getNode();

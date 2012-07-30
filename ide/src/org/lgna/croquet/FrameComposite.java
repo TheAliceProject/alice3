@@ -76,6 +76,7 @@ package org.lgna.croquet;
 		} else {
 			this.frame = new org.lgna.croquet.components.Frame();
 			this.frame.getContentPanel().addCenterComponent( this.frameComposite.getView() );
+			this.frame.setTitle( this.frameComposite.getFrameTitle() );
 			this.frame.pack();
 			this.frameComposite.modifyPackedWindowSizeIfDesired( this.frame );
 			this.frame.addWindowListener( this.windowListener );
@@ -130,11 +131,34 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.View<
 	}
 
 	private final InternalBooleanState booleanState;
+	private String title;
 	public FrameComposite( java.util.UUID id, Group booleanStateGroup ) {
 		super( id );
 		this.booleanState = new InternalBooleanState( booleanStateGroup, this );
 	}
 	public BooleanState getBooleanState() {
 		return this.booleanState;
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.title = this.findLocalizedText( "title" );
+	}
+	protected String getFrameTitle() {
+		this.initializeIfNecessary();
+		String rv = this.title;
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = this.booleanState.getTrueText();
+			if( rv != null ) {
+				rv = rv.replaceAll( "<[a-z]*>", "" );
+				rv = rv.replaceAll( "</[a-z]*>", "" );
+				if( rv.endsWith( "..." ) ) {
+					rv = rv.substring( 0, rv.length() - 3 );
+				}
+			}
+		}
+		return rv;
 	}
 }

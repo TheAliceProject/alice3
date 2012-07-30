@@ -60,6 +60,8 @@ import org.lgna.project.ast.UserField;
  */
 public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 
+	protected static final java.awt.Dimension ICON_DIMENSION = new java.awt.Dimension( 25, 20 );
+	
 	private UserField markerField;
 	private UserField selectedField;
 	

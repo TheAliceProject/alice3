@@ -68,8 +68,10 @@ public class Duration implements
 		MoveAndOrientToAGoodVantagePointOf.Detail,
 		//Scene
 		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere
-		SetRadius.Detail,
+		//Sphere,Disc
+		SetRadius.Detail, 
+		//Torus
+		SetInnerRadius.Detail, SetOuterRadius.Detail,
 		//Cone
 		SetBaseRadius.Detail, SetLength.Detail
 {

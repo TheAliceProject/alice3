@@ -66,4 +66,8 @@ public class CustomArrayInputDialogOperation extends CustomInputDialogOperation<
 	protected org.alice.ide.choosers.ValueChooser< org.lgna.project.ast.ArrayInstanceCreation > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return new org.alice.ide.choosers.ArrayChooser( this.componentType );
 	}
+	@Override
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< CustomArrayInputDialogOperation > createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< CustomArrayInputDialogOperation >( this, org.lgna.project.ast.AbstractType.class, this.componentType );
+	}
 }

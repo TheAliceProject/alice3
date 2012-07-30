@@ -134,8 +134,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	}
 	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
 	}
-	protected abstract org.lgna.croquet.triggers.Trigger createGeneratedTrigger();
-	public final void addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit ) {
 		this.pushGeneratedContexts( edit );
 		try {
 			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( ownerTransactionHistory );
@@ -146,7 +145,6 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 			} else {
 				subTransactionHistory = null;
 			}
-			org.lgna.croquet.triggers.Trigger trigger = this.createGeneratedTrigger();
 			org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, subTransactionHistory );
 			if( subTransactionHistory != null ) {
 				this.addGeneratedSubTransactions( subTransactionHistory, edit );
@@ -156,6 +154,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 			}
 			completionStep.setEdit( edit );
 			this.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+			return transaction;
 		} finally {
 			this.popGeneratedContexts( edit );
 		}

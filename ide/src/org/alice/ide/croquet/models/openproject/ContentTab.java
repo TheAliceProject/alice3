@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ContentTab< V extends org.alice.ide.openprojectpane.TabContentPanel > extends org.lgna.croquet.TabComposite< V > {
+public abstract class ContentTab< V extends org.alice.ide.openprojectpane.TabContentPanel > extends org.lgna.croquet.SimpleTabComposite< V > {
 	public ContentTab( java.util.UUID id ) {
 		super( id );
 	}

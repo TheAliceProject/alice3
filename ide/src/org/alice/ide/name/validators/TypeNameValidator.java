@@ -48,7 +48,7 @@ public class TypeNameValidator extends NodeNameValidator {
 		super( type );
 	}
 	@Override
-	protected boolean isNameAvailable( String name ) {
+	public boolean isNameAvailable( String name ) {
 		//todo
 		return true;
 	}

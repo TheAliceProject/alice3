@@ -97,8 +97,10 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		return this.isEnabled;
 	}
 	public void setEnabled( boolean isEnabled ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-		this.isEnabled = isEnabled;
+		if( this.isEnabled != isEnabled ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: override setEnabled", this );
+			this.isEnabled = isEnabled;
+		}
 	}
 //	public boolean isEnabled() {
 //		throw new RuntimeException( "todo" );

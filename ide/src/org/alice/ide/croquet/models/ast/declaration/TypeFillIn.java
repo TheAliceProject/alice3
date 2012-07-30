@@ -107,6 +107,12 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project
 			return org.alice.ide.common.TypeIcon.getInstance( this.type );
 		}
 	}
+	
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( this.type );
+	}
 	@Override
 	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.AbstractType<?,?,?>, Void > node ) {
 		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( type );

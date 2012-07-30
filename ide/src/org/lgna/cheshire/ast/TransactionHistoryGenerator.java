@@ -11,7 +11,7 @@ public class TransactionHistoryGenerator {
 		org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)methodInvocation.method.getValue();
 		
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, method );
-		org.alice.ide.ast.declaration.ProcedureDeclarationComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, declareMethodEdit );
+		org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit );
 
 		//cheshire cat does not recover since the procedure invocation drag model is found (albeit with the wrong state).  curses.
 		//so we manually place ide in correct configuration.

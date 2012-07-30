@@ -98,9 +98,18 @@ public abstract class TabComposite< V extends org.lgna.croquet.components.View<?
 	}
 	
 	@Override
-	protected final void appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( this.getTitleText() );
+	public void appendUserRepr( StringBuilder userRepr ) {
+		userRepr.append( this.getTitleText() );
+	}
+	@Override
+	protected final void appendRepr( StringBuilder repr ) {
+		this.appendUserRepr( repr );
+	}
+	@Override
+	protected String createRepr() {
+		StringBuilder sb = new StringBuilder();
+		this.appendRepr( sb );
+		return sb.toString();
 	}
 	
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {

@@ -92,14 +92,20 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.field.getValueType();
 	}
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( this.field );
+		javax.swing.Icon icon;
+		if( iconFactory != null && iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) {
+			return iconFactory;
+		} else {
+			return super.getIconFactory();
+		}
+	}
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
 		sb.append( "this." );
-//		sb.append( "<strong>" );
 		sb.append( this.field.getName() );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
 		return sb.toString();
 	}
 }

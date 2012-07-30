@@ -66,6 +66,8 @@ public class DropPrepNote extends PrepNote< org.lgna.croquet.history.PrepStep > 
 		org.lgna.croquet.DropReceptor dropReceptor = dropSite.getOwningDropReceptor();
 		if( isActive ) {
 			this.dropRejector = DropNoteUtilities.createDropRejector( dropSite );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: we must clear the drop rejectors since final notes do not (as yet) get setActive( false ) notification." ); 
+			dropReceptor.clearDropRejectors();
 			dropReceptor.addDropRejector( this.dropRejector );
 		} else {
 			if( this.dropRejector != null ) {

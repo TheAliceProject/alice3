@@ -172,11 +172,11 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<Entity, 
 	{
 		if (vehicle != null)
 		{
-			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
+			org.lgna.project.ast.UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
 			if (field != null)
 			{
-				org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
-				return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType(valueType);
+				org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( field );
+				return iconFactory.getIcon( new java.awt.Dimension( 24, 18 ) );
 			}
 		}
 		return null;

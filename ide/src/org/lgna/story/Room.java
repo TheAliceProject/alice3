@@ -189,6 +189,12 @@ public class Room extends Entity implements MutableRider, Visual {
 	}
 	
 	@MethodTemplate()
+	@Deprecated
+	public void setFloorPaint( Paint paint, SetPaint.Detail... details ) {
+		this.getImplementation().floorPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+	}
+	
+	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
 	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.RoomWallAppearanceDetails.class)
 	public Paint getWallPaint() {
@@ -196,6 +202,12 @@ public class Room extends Entity implements MutableRider, Visual {
 	}
 	@MethodTemplate()
 	public void setWallPaint( Paint paint, SetWallPaint.Detail... details ) {
+		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+	}
+	
+	@MethodTemplate()
+	@Deprecated
+	public void setWallPaint( Paint paint, SetPaint.Detail... details ) {
 		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
 	}
 
@@ -207,6 +219,12 @@ public class Room extends Entity implements MutableRider, Visual {
 	}
 	@MethodTemplate()
 	public void setCeilingPaint( Paint paint, SetCeilingPaint.Detail... details ) {
+		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+	}
+	
+	@MethodTemplate()
+	@Deprecated
+	public void setCeilingPaint( Paint paint, SetPaint.Detail... details ) {
 		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
 	}
 	

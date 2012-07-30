@@ -93,9 +93,9 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 		.build();
 		ingredientsPanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 
-		org.lgna.croquet.components.HorizontalSplitPane splitPane = new org.lgna.croquet.components.HorizontalSplitPane( personViewer, ingredientsPanel );
+		javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, personViewer.getAwtComponent(), ingredientsPanel.getAwtComponent() );
 		splitPane.setDividerLocation( 400 );
-		this.addCenterComponent( splitPane );
+		this.getAwtComponent().add( splitPane, java.awt.BorderLayout.CENTER );
 		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueListener( this.baseSkinToneObserver );
 	}
 	public PersonViewer getPersonViewer() {

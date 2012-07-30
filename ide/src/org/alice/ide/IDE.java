@@ -289,7 +289,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "reboot required" );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "restart required" );
 		}
 	};
 
@@ -624,5 +624,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			this.simplePresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
 		}
 		return simplePresentation;
+	}
+
+	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
+	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;
+	public org.alice.ide.highlight.IdeHighlightStencil getHighlightStencil() {
+		if( this.highlightStencil != null ) {
+			//pass
+		} else {
+			this.highlightStencil = new org.alice.ide.highlight.IdeHighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
+		}
+		return this.highlightStencil;
 	}
 }

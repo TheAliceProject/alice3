@@ -52,11 +52,13 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	};
 	private final java.util.List< ValueListener<T> > valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private T prevValueForSkipCheck;
+	private boolean prevIsAdjustingForSkipCheck;
 	private final java.util.Stack<T> generatorValueStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
 	public State( Group group, java.util.UUID id, T initialValue ) {
 		super(group, id);
 		this.prevValueForSkipCheck = initialValue;
+		this.prevIsAdjustingForSkipCheck = false;
 	}
 
 	public abstract Class<T> getItemClass();
@@ -151,13 +153,15 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return rv;
 	}
 
+	private static final boolean IS_ADJUSTING_IGNORED = true; //todo
 	protected abstract void updateSwingModel( T nextValue );
 	private void changeValue( T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger, boolean isFromSwing ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValueForSkipCheck, nextValue ) ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValueForSkipCheck, nextValue ) && ( IS_ADJUSTING_IGNORED || ( isAdjusting == this.prevIsAdjustingForSkipCheck ) ) ) {
 			//pass
 		} else {
 			T prevValue = this.prevValueForSkipCheck;
 			this.prevValueForSkipCheck = nextValue;
+			this.prevIsAdjustingForSkipCheck = isAdjusting;
 			this.fireChanging( prevValue, nextValue, isAdjusting );
 			if( isFromSwing ) {
 				//pass
@@ -228,11 +232,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return new org.lgna.croquet.edits.StateEdit< T >( completionStep, prevValue, nextValue );
 	}
 	
-	@Override
-	protected org.lgna.croquet.triggers.Trigger createGeneratedTrigger() {
-		return org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance();
-	}
-	public void addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
-		this.addGeneratedTransaction( history, new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ) );
+	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
+		return this.addGeneratedTransaction( history, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ) );
 	}
 }

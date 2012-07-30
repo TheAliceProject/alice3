@@ -161,4 +161,93 @@ public class StaticAnalysisUtilities {
 		return containsAReturnForEveryPath( method.body.getValue() );
 	}
 
+	
+	public static boolean isValidIdentifier( String identifier ) {
+		if( identifier != null ) {
+			final int N = identifier.length();
+			if( N > 0 ) {
+				char c0 = identifier.charAt( 0 );
+				if( Character.isLetter( c0 ) || c0 == '_' ) {
+					for( int i=1; i<N; i++ ) {
+						char cI = identifier.charAt( i );
+						if( Character.isLetterOrDigit( cI ) || cI== '_' ) {
+							//pass
+						} else {
+							return false;
+						}
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static boolean isAvailableResourceName( org.lgna.project.Project project, String name, org.lgna.common.Resource self ) {
+		if( project != null ) {
+			java.util.Set< org.lgna.common.Resource > resources = project.getResources();
+			if( resources != null ) {
+				for( org.lgna.common.Resource resource : resources ) {
+					if( resource != null && resource != self ) {
+						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( name, resource.getName(), edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE ) ) {
+							return false;
+						}
+					}
+				}
+			}
+		} else {
+			//todo?
+		}
+		return true;
+	}
+	public static boolean isAvailableResourceName( org.lgna.project.Project project, String name ) {
+		return isAvailableResourceName( project, name, null );
+	}
+
+	private static boolean isAvailableFieldName( String name, UserType<?> declaringType, UserField self ) {
+		if( declaringType != null ) {
+			for( org.lgna.project.ast.UserField field : declaringType.fields ) {
+				assert field != null;
+				if( field == self ) {
+					//pass
+				} else {
+					if( name.equals( field.name.getValue() ) ) {
+						return false;
+					}
+				}
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "type == null" );
+		}
+		return true;
+	}
+	public static boolean isAvailableFieldName( String name, UserType<?> declaringType ) {
+		return isAvailableFieldName( name, declaringType, null );
+	}
+	public static boolean isAvailableFieldName( String name, UserField self ) {
+		return isAvailableFieldName( name, self.getDeclaringType(), self );
+	}
+
+	private static boolean isAvailableMethodName( String name, UserType<?> declaringType, UserMethod self ) {
+		if( declaringType != null ) {
+			for( org.lgna.project.ast.UserMethod method : declaringType.methods ) {
+				if( method == self ) {
+					//pass
+				} else {
+					if( name.equals( method.name.getValue() ) ) {
+						return false;
+					}
+				}
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "type == null" );
+		}
+		return true;
+	}
+	public static boolean isAvailableMethodName( String name, UserType<?> declaringType ) {
+		return isAvailableMethodName( name, declaringType, null );
+	}
+	public static boolean isAvailableMethodName( String name, UserMethod self ) {
+		return isAvailableMethodName( name, self.getDeclaringType(), self );
+	}
 }

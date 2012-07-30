@@ -51,17 +51,13 @@ public class MethodNameValidator extends MemberNameValidator {
 		super( null, type );
 	}
 	@Override
-	protected boolean isNameAvailable( String name ) {
+	public boolean isNameAvailable( String name ) {
 		org.lgna.project.ast.Node node = this.getNode();
-		for( org.lgna.project.ast.UserMethod method : this.getType().methods ) {
-			if( method == node ) {
-				//pass
-			} else {
-				if( name.equals( method.name.getValue() ) ) {
-					return false;
-				}
-			}
+		if( node != null ) {
+			return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableMethodName( name, (org.lgna.project.ast.UserMethod)node );
+		} else {
+			org.lgna.project.ast.UserType<?> type = this.getType();
+			return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableMethodName( name, type );
 		}
-		return true;
 	}
 }

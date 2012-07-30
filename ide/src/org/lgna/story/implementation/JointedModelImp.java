@@ -69,7 +69,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	public static interface JointImplementationAndVisualDataFactory< R extends org.lgna.story.resources.JointedModelResource > {
 		public R getResource();
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
-		public VisualData createVisualData( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation );
+		public VisualData createVisualData();
 		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId );
 		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId );
 		public JointImplementationAndVisualDataFactory< R > getFactoryForResource(R resource);
@@ -168,7 +168,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	public JointedModelImp( A abstraction, JointImplementationAndVisualDataFactory< R > factory ) {
 		this.abstraction = abstraction;
 		this.factory = factory;
-		this.visualData = this.factory.createVisualData( this );
+		this.visualData = this.factory.createVisualData( );
 
 		
 		List<JointId> missingJoints = this.getMissingJoints();
@@ -253,7 +253,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 			this.factory = (JointImplementationAndVisualDataFactory<R>)resource.getImplementationAndVisualFactory();
 			float originalOpacity = this.opacity.getValue();
 			org.lgna.story.Paint originalPaint = this.paint.getValue();
-			this.visualData = this.factory.createVisualData( this );
+			this.visualData = this.factory.createVisualData( );
 			org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
 			java.util.Map< org.lgna.story.resources.JointId, JointImp > newJoints = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			if( rootIds.length == 0 ) {

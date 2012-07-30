@@ -46,6 +46,8 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public interface Theme {
+	public static final java.awt.Dimension DEFAULT_SMALL_ICON_SIZE = new java.awt.Dimension( 40, 30 );
+	public static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 120, 90 );
 	public java.awt.Color getTypeColor();
 	public java.awt.Color getProcedureColor();
 	public java.awt.Color getFunctionColor();

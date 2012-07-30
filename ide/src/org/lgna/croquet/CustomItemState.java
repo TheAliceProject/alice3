@@ -60,7 +60,7 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 		}
 	}
 
-	public static class InternalRoot< T > extends org.lgna.croquet.CascadeRoot< T, org.lgna.croquet.history.CompletionStep< CustomItemState<T> > > {
+	public static class InternalRoot< T > extends org.lgna.croquet.CascadeRoot< T, CustomItemState<T> > {
 		private final CustomItemState< T > state;
 		private InternalRoot( CustomItemState< T > state, CascadeBlank< T >... blanks ) {
 			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
@@ -107,5 +107,12 @@ public abstract class CustomItemState< T > extends ItemState< T > {
 	}
 	@Override
 	protected void localize() {
+	}
+	
+	@Override
+	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction(org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue) {
+		org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
+		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( rv, this.getCascadeRoot().getPopupPrepModel(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance() );
+		return rv;
 	}
 }

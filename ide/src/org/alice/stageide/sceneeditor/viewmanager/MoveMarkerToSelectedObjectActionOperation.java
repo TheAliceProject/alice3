@@ -62,8 +62,11 @@ public class MoveMarkerToSelectedObjectActionOperation extends ObjectMarkerMoveA
 	
 	@Override
 	protected void updateMoveFields(UserField markerField, UserField selectedField) {
-		this.setToMoveToField(selectedField, org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField(selectedField));
-		this.setToMoveField(markerField, MarkerUtilities.getIconForObjectMarker(markerField));
-		
+		org.lgna.croquet.icon.IconFactory selectedFieldIconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( selectedField );
+		javax.swing.Icon selectedFieldIcon = selectedFieldIconFactory != null ? selectedFieldIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+		this.setToMoveToField(selectedField, selectedFieldIcon);
+		org.lgna.croquet.icon.IconFactory markerIconFactory = MarkerUtilities.getIconFactoryForObjectMarker(markerField);
+		javax.swing.Icon markerIcon = markerIconFactory != null ? markerIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+		this.setToMoveField(markerField, markerIcon);
 	}
 }

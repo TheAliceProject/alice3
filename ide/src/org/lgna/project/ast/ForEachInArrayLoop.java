@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ForEachInArrayLoop extends AbstractForEachLoop {
+public class ForEachInArrayLoop extends AbstractForEachLoop implements EachInArrayStatement {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?,?,?> getExpressionType() {
@@ -64,6 +64,9 @@ public class ForEachInArrayLoop extends AbstractForEachLoop {
 	public ForEachInArrayLoop( UserLocal item, Expression array, BlockStatement body ) {
 		super( item, body );
 		this.array.setValue( array );
+	}
+	public ExpressionProperty getArrayProperty() {
+		return this.array;
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
