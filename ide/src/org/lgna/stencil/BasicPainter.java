@@ -40,31 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.lgna.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<MemberTabComposite> {
-	public MemberTabSelectionState() {
-		super( 
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ), 
-				MemberTabComposite.class, 
-				1,
-				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
-		);
+public class BasicPainter implements Painter {
+	private final java.awt.BasicStroke stroke;
+	private final java.awt.Paint paint;
+	public BasicPainter(java.awt.BasicStroke stroke, java.awt.Paint paint) {
+		this.stroke = stroke;
+		this.paint = paint;
 	}
-	public static void main( String[] args ) {
-		MemberTabSelectionState state = new MemberTabSelectionState();
+	public java.awt.Rectangle getBounds( java.awt.Shape shape ) {
+		java.awt.Rectangle bounds = shape.getBounds();
+		//todo?
+		int pad = (int)(this.stroke.getLineWidth()*0.5)+1;
+		edu.cmu.cs.dennisc.java.awt.RectangleUtilities.grow( bounds, pad );
+		return bounds;
+	}
+	public void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+		java.awt.Stroke prevStroke = g2.getStroke();
+		java.awt.Paint prevPaint = g2.getPaint();
 		
-		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = application.getFrame();
-		frame.getContentPanel().addCenterComponent( state.createFolderTabbedPane() );
-		frame.getContentPanel().setMinimumPreferredHeight( 800 );
-		frame.pack();
-		frame.setVisible( true );
+		try {
+			g2.setStroke( this.stroke );
+			g2.setPaint( this.paint );
+			
+			g2.draw( shape );
+			
+		} finally {
+			g2.setPaint( prevPaint );
+			g2.setStroke( prevStroke );
+		}
+		
 	}
 }

@@ -115,7 +115,7 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 //		}
 //	}
 
-	public class JPopupMenuButton extends javax.swing.JButton {
+	private class JPopupMenuButton extends javax.swing.JButton {
 		public JPopupMenuButton() {
 			this.setRolloverEnabled(true);
 		}

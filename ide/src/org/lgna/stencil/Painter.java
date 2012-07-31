@@ -40,31 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.lgna.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<MemberTabComposite> {
-	public MemberTabSelectionState() {
-		super( 
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ), 
-				MemberTabComposite.class, 
-				1,
-				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
-		);
-	}
-	public static void main( String[] args ) {
-		MemberTabSelectionState state = new MemberTabSelectionState();
-		
-		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = application.getFrame();
-		frame.getContentPanel().addCenterComponent( state.createFolderTabbedPane() );
-		frame.getContentPanel().setMinimumPreferredHeight( 800 );
-		frame.pack();
-		frame.setVisible( true );
-	}
+public interface Painter {
+	public void paint( java.awt.Graphics2D g2, java.awt.Shape shape );
+	public java.awt.Rectangle getBounds( java.awt.Shape shape );
 }

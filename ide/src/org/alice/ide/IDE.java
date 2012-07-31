@@ -627,72 +627,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
-	private org.alice.ide.highlight.HighlightStencil highlightStencil;
-	private org.alice.ide.highlight.HighlightStencil getHighlightStencil() {
+	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;
+	public org.alice.ide.highlight.IdeHighlightStencil getHighlightStencil() {
 		if( this.highlightStencil != null ) {
 			//pass
 		} else {
-			this.highlightStencil = new org.alice.ide.highlight.HighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
+			this.highlightStencil = new org.alice.ide.highlight.IdeHighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
 		}
 		return this.highlightStencil;
 	}
-	public void showHighlightStencil( final org.lgna.project.ast.Expression expression, String noteText ) {
-		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
-		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
-			public org.lgna.croquet.components.TrackableShape getResolved() {
-				if( expression != null ) {
-					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
-					if( composite != null ) {
-						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
-						
-						java.util.List<org.lgna.croquet.components.DropDown.JPopupMenuButton> jPopupMenuButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), org.lgna.croquet.components.DropDown.JPopupMenuButton.class );
-						for( org.lgna.croquet.components.DropDown.JPopupMenuButton jPopupMenuButton : jPopupMenuButtons ) {
-							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPopupMenuButton );
-							if( component instanceof org.alice.ide.codeeditor.ExpressionPropertyDropDownPane ) {
-								org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = (org.alice.ide.codeeditor.ExpressionPropertyDropDownPane)component;
-								org.lgna.project.ast.Expression candidate = expressionPropertyDropDownPane.getExpressionProperty().getValue();
-								if( candidate == expression ) {
-									return component;
-								}
-							} else if( component instanceof org.alice.ide.croquet.components.ExpressionDropDown ) {
-								org.alice.ide.croquet.components.ExpressionDropDown<org.lgna.project.ast.Expression> expressionDropDown = (org.alice.ide.croquet.components.ExpressionDropDown<org.lgna.project.ast.Expression>)component;
-								org.lgna.croquet.CompletionModel completionModel = expressionDropDown.getModel().getCascadeRoot().getCompletionModel();
-								if( completionModel instanceof org.lgna.croquet.CustomItemState ) {
-									org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state = (org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>)completionModel;
-									org.lgna.project.ast.Expression candidate = state.getValue();
-									if( candidate == expression ) {
-										return component;
-									}
-								}
-							}
-						};
-					}
-					return null;
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", expression );
-					return null;
-				}
-			}
-		}, noteText );
-	}
-	public void showHighlightStencil( final org.lgna.croquet.Model model, String noteText ) {
-		org.alice.ide.highlight.HighlightStencil highlightStencil = this.getHighlightStencil();
-		highlightStencil.show( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
-			public org.lgna.croquet.components.TrackableShape getResolved() {
-				if( model != null ) {
-					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
-					if( component != null ) {
-						//pass
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
-					}
-					return component;
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "step model is null", model );
-					return null;
-				}
-			}
-		}, noteText );
-	}
-	
 }

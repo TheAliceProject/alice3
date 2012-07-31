@@ -52,9 +52,22 @@ public final class FunctionTabComposite extends MemberTabComposite {
 	public static FunctionTabComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
+	private final ReturnTypeFilteredComposite booleanReturnTypeFilteredComposite = new ReturnTypeFilteredComposite( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE );
+	private final ReturnTypeFilteredComposite numberReturnTypeFilteredComposite = new ReturnTypeFilteredComposite( org.lgna.project.ast.JavaType.NUMBER_OBJECT_TYPE );
+
 	private FunctionTabComposite() {
 		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), new org.alice.ide.members.filters.FunctionFilter() );
 	}
+	
+	
+	public ReturnTypeFilteredComposite getBooleanReturnTypeFilteredComposite() {
+		return this.booleanReturnTypeFilteredComposite;
+	}
+	public ReturnTypeFilteredComposite getNumberReturnTypeFilteredComposite() {
+		return this.numberReturnTypeFilteredComposite;
+	}
+	
 	@Override
 	protected org.alice.ide.member.views.MemberTabView createView() {
 		return new org.alice.ide.member.views.FunctionTabView( this );

@@ -969,9 +969,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		org.lgna.project.ast.BlockStatement bs = new org.lgna.project.ast.BlockStatement();
 		
 		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
-		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
+		if( this.sceneCameraImp.getVehicle() != null ) {
+			this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.sceneCameraImp );
+		}
 		this.fillInAutomaticSetUpMethod( bs.statements, false, field, true );
-		this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
+		if( this.sceneCameraImp.getVehicle() != null ) {
+			this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
+		}
 		Statement setVehicleStatement = null;
 		for (Statement statement : bs.statements.getValue()) {
 			if (statement instanceof org.lgna.project.ast.ExpressionStatement) {
