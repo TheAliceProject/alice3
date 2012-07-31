@@ -40,57 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.history;
+
+package org.alice.ide.ast.code.resolvers;
 
 /**
- * @author Dennis Cosgrove
+ * @author dennisc
  */
-@Deprecated
-public class TransactionManager {
-	private TransactionManager() {
-		throw new AssertionError();
+public class MoveStatementOperationResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<org.alice.ide.ast.code.MoveStatementOperation> {
+	public MoveStatementOperationResolver( org.alice.ide.ast.code.MoveStatementOperation instance ) {
+		super( instance, 
+				new Class[] { 
+					org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, 
+					org.lgna.project.ast.Statement.class, 
+					org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class
+				}, 
+				new Object[] {
+					instance.getFromLocation(),
+					instance.getStatement(),
+					instance.getToLocation()
+				}
+		);
+	}
+	public MoveStatementOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 
-	@Deprecated
-	private static TransactionHistory getActiveTransactionHistory() {
-		return org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+	@Override
+	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+		java.util.UUID statementId = binaryDecoder.decodeId();
+		org.lgna.project.ast.Statement statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		return new Object[] { fromLocation, statement, toLocation };
 	}
-
-	@Deprecated
-	private static Transaction getActiveTransaction() {
-		return getActiveTransactionHistory().acquireActiveTransaction();
-	}
-
-	@Deprecated
-	public static void TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		transaction.addPrepStep( new TODO_REMOVE_BogusStep( transaction, trigger ) );
-	}
-
-	@Deprecated
-	public static void firePopupMenuResized( PopupPrepStep step ) {
-		step.fireChanged( new org.lgna.croquet.history.event.PopupMenuResizedEvent( step ) );
-	}
-
-	@Deprecated
-	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.DragTrigger trigger ) {
-		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
-	}
-
-	@Deprecated
-	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
-		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );
-	}
-
-	@Deprecated
-	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.ListSelectionState.InternalPrepModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
-	}
-
-	@Deprecated
-	public static CompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
-		CompletionStep rv = CompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger, null );
-		rv.cancel();
-		return rv;
+	@Override
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
+		org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)arguments[ 1 ];
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 2 ];
+		binaryEncoder.encode( fromLocation );
+		binaryEncoder.encode( statement.getId() );
+		binaryEncoder.encode( toLocation );
 	}
 }

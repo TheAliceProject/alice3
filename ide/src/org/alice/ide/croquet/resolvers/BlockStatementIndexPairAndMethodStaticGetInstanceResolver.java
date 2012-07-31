@@ -66,9 +66,9 @@ public class BlockStatementIndexPairAndMethodStaticGetInstanceResolver extends o
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		java.util.UUID statementId = binaryDecoder.decodeId();
+		java.util.UUID methodId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.AbstractMethod method = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
+		org.lgna.project.ast.AbstractMethod method = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), methodId );
 		return new Object[] { blockStatementIndexPair, method };
 	}
 	@Override

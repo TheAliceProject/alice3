@@ -334,6 +334,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 									rv = null;
 								} else {
 									rv = new org.alice.ide.croquet.models.ast.MoveStatementActionOperation( prevBlockStatement, prevIndex, statement, nextBlockStatement, nextIndex );
+									//rv = org.alice.ide.ast.code.MoveStatementOperation.getInstance( new BlockStatementIndexPair( prevBlockStatement, prevIndex ), statement, new BlockStatementIndexPair( nextBlockStatement, nextIndex ) );
 								}
 							}
 						}
