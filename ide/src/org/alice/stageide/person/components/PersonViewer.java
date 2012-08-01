@@ -61,22 +61,22 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private void positionAndOrientCamera( double height, int index, double duration ) {
 		double xzFactor;
 		if( index == 0 ) {
-			xzFactor = 2.333;
+			xzFactor = 2.0*height;
 		} else {
-			xzFactor = 0.5;
+			xzFactor = 1.0;
 		}
 		double yFactor;
 		if( index == 0 ) {
-			yFactor = 0.5;
+			yFactor = 1.5;
 		} else {
-			yFactor = 0.9;
+			yFactor = 1.5;
 		}
 		yFactor *= 0.65;
 		xzFactor *= 0.65;
 		if( this.getScene() != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
 			this.getCamera().setTransformation( this.getScene().createOffsetStandIn( -0.3*xzFactor, height*yFactor, -height*xzFactor ) );
-			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height*yFactor, 0 ) );
+			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height*.5, 0 ) );
 			edu.cmu.cs.dennisc.animation.Animator animator = this.getAnimator();
 			if( duration > 0.0 && animator != null ) {
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
