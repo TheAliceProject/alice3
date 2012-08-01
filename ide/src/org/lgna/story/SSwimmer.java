@@ -29,8 +29,8 @@ public class SSwimmer extends SJointedModel {
 	public SJoint getMouth() {
 		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.MOUTH);
 	}
-//	public Joint getLowerLip() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LOWER_LIP);
+//	public SJoint getLowerLip() {
+//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.LOWER_LIP);
 //	}
 	public SJoint getLeftEye() {
 		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_EYE);
@@ -38,17 +38,17 @@ public class SSwimmer extends SJointedModel {
 	public SJoint getRightEye() {
 		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_EYE);
 	}
-	public SJoint getLeftPectoralFin() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_PECTORAL_FIN);
+	public SJoint getFrontLeftFin() {
+		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_LEFT_FIN);
 	}
-//	public Joint getLeftPectoralFinTip() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.LEFT_PECTORAL_FIN_TIP);
+//	public SJoint getFrontLeftFinTip() {
+//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_LEFT_FIN_TIP);
 //	}
-	public SJoint getRightPectoralFin() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN);
+	public SJoint getFrontRightFin() {
+		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_RIGHT_FIN);
 	}
-//	public Joint getRightPectoralFinTip() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.RIGHT_PECTORAL_FIN_TIP);
+//	public SJoint getFrontRightFinTip() {
+//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.FRONT_RIGHT_FIN_TIP);
 //	}
 	public SJoint getSpineBase() {
 		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.SPINE_BASE);
@@ -59,12 +59,4 @@ public class SSwimmer extends SJointedModel {
 	public SJoint getTail() {
 		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SwimmerResource.TAIL);
 	}
-//	public Joint getTopTailFin() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.TOP_TAIL_FIN);
-//	}
-//	public Joint getBottomTailFin() {
-//		 return org.lgna.story.Joint.getJoint( this, org.lgna.story.resources.SwimmerResource.BOTTOM_TAIL_FIN);
-//	}
 }
-	
-

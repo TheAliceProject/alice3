@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.resources;
+package org.lgna.story.resourceutilities;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
- * @author dculyba
+ * @author alice
  *
  */
-public interface ModelResource {
+public class ModelSubResourceExporter {
+	private final String textureName;
+	private final String modelName;
+	private AxisAlignedBox bbox = null;
+	List<String> tags = new LinkedList<String>();
+
+	public ModelSubResourceExporter(String modelName, String textureName) {
+		this.modelName = modelName;
+		this.textureName = textureName;
+	}
+	
+	public AxisAlignedBox getBbox() {
+		return bbox;
+	}
+
+	public void setBbox(AxisAlignedBox bbox) {
+		this.bbox = bbox;
+	}
+
+	public String getModelName() {
+		return modelName;
+	}
+	
+	public String getTextureName() {
+		return textureName;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	} 
+	
+	public void addTags(String... tags) {
+		for (String tag : tags) {
+			this.tags.add(tag);
+		}
+	}
+	
 	
 }

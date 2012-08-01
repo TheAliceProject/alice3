@@ -71,14 +71,14 @@ public class SBiped extends SJointedModel implements Articulable {
 	public SJoint getRoot() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.ROOT );
 	}
-
+	
 	public SJoint getPelvis() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.PELVIS_LOWER_BODY );
 	}
 	public SJoint getSpineBase() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.SPINE_BASE );
 	}
-
+	
 	public SJoint getSpineMiddle() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.SPINE_MIDDLE );
 	}
@@ -110,6 +110,9 @@ public class SBiped extends SJointedModel implements Articulable {
 	public SJoint getRightAnkle() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_ANKLE );
 	}
+	public SJoint getRightFoot() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_FOOT );
+	}
 	public SJoint getLeftHip() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_HIP );
 	}
@@ -119,7 +122,10 @@ public class SBiped extends SJointedModel implements Articulable {
 	public SJoint getLeftAnkle() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_ANKLE );
 	}
-
+	public SJoint getLeftFoot() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_FOOT );
+	}
+	
 	
 	public SJoint getRightClavicle() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE );
@@ -133,6 +139,33 @@ public class SBiped extends SJointedModel implements Articulable {
 	public SJoint getRightWrist() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_WRIST );
 	}
+	public SJoint getRightHand() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_HAND );
+	}
+	public org.lgna.story.SJoint getRightThumb() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_THUMB );
+	}
+	public org.lgna.story.SJoint getRightThumbKnuckle() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_THUMB_KNUCKLE );
+	}
+	public org.lgna.story.SJoint getRightIndexFinger() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_INDEX_FINGER );
+	}
+	public org.lgna.story.SJoint getRightIndexFingerKnuckle() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_INDEX_FINGER_KNUCKLE );
+	}
+	public org.lgna.story.SJoint getRightMiddleFinger() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_MIDDLE_FINGER );
+	}
+	public org.lgna.story.SJoint getRightMiddleFingerKnuckle() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_MIDDLE_FINGER_KNUCKLE );
+	}
+	public org.lgna.story.SJoint getRightPinkyFinger() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_PINKY_FINGER );
+	}
+	public org.lgna.story.SJoint getRightPinkyFingerKnuckle() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_PINKY_FINGER_KNUCKLE );
+	}
 	public SJoint getLeftClavicle() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_CLAVICLE );
 	}
@@ -144,5 +177,32 @@ public class SBiped extends SJointedModel implements Articulable {
 	}
 	public SJoint getLeftWrist() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_WRIST );
+	}
+	public org.lgna.story.SJoint getLeftHand() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_HAND );
+	}
+	public org.lgna.story.SJoint getLeftThumb() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_THUMB );
+	}
+	public org.lgna.story.SJoint getLeftThumbKnuckle() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_THUMB_KNUCKLE );
+	}
+	public org.lgna.story.SJoint getLeftIndexFinger() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_INDEX_FINGER );
+	}
+	public org.lgna.story.SJoint getLeftIndexFingerKnuckle() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_INDEX_FINGER_KNUCKLE );
+	}
+	public org.lgna.story.SJoint getLeftMiddleFinger() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_MIDDLE_FINGER );
+	}
+	public org.lgna.story.SJoint getLeftMiddleFingerKnuckle() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_MIDDLE_FINGER_KNUCKLE );
+	}
+	public org.lgna.story.SJoint getLeftPinkyFinger() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_PINKY_FINGER );
+	}
+	public org.lgna.story.SJoint getLeftPinkyFingerKnuckle() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_PINKY_FINGER_KNUCKLE );
 	}
 }

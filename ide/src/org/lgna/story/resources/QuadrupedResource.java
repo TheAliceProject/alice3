@@ -73,10 +73,10 @@ public interface QuadrupedResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId FRONT_RIGHT_FOOT = new org.lgna.story.resources.JointId( FRONT_RIGHT_ANKLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_RIGHT_TOE = new org.lgna.story.resources.JointId( FRONT_RIGHT_FOOT, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId PELVIS_LOWER_BODY = new org.lgna.story.resources.JointId( ROOT, QuadrupedResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, QuadrupedResource.class );
-//	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, QuadrupedResource.class );
-//	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId TAIL = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, QuadrupedResource.class );
+	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_KNEE = new org.lgna.story.resources.JointId( BACK_LEFT_HIP, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_HOCK = new org.lgna.story.resources.JointId( BACK_LEFT_KNEE, QuadrupedResource.class );
