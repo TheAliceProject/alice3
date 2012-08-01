@@ -47,17 +47,20 @@ import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public class Camera extends MovableTurnable implements MutableRider {
-	private final org.lgna.story.implementation.SymmetricPerspectiveCameraImp implementation = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( this );
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
-	}
+public class SSphere extends SShape {
+	private final org.lgna.story.implementation.SphereImp implementation = new org.lgna.story.implementation.SphereImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SymmetricPerspectiveCameraImp getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.SphereImp getImplementation() {
 		return this.implementation;
 	}
+	
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	@MethodTemplate()
-	public void moveAndOrientToAGoodVantagePointOf( Entity entity, MoveAndOrientToAGoodVantagePointOf.Detail... details ) {
-		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public Double getRadius() {
+		return this.implementation.radius.getValue();
+	}
+	@MethodTemplate()
+	public void setRadius( Number radius, SetRadius.Detail... details ) {
+		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

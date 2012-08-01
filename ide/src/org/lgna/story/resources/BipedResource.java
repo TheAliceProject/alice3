@@ -47,7 +47,7 @@ package org.lgna.story.resources;
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Biped.class )
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.SBiped.class )
 public interface BipedResource extends JointedModelResource {
 	public static final JointId ROOT = new JointId( null, BipedResource.class );
 
@@ -84,5 +84,5 @@ public interface BipedResource extends JointedModelResource {
 	
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction );
+	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction );
 }

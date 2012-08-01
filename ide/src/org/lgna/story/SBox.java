@@ -40,56 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story;
 
-import org.lgna.project.annotations.MethodTemplate;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointedModel extends Model {
+public class SBox extends SShape {
+	private final org.lgna.story.implementation.BoxImp implementation = new org.lgna.story.implementation.BoxImp( this );
 	@Override
-	/*package-private*/abstract org.lgna.story.implementation.JointedModelImp getImplementation();
-	
-	
-	//todo: make protected
-	@MethodTemplate(visibility=org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN)
-	public Joint getJoint( org.lgna.story.resources.JointId jointId ) {
-		return Joint.getJoint( this, jointId );
+	/*package-private*/ org.lgna.story.implementation.BoxImp getImplementation() {
+		return this.implementation;
 	}
-	
-	public void straightenOutJoints( StraightenOutJoints.Detail... details ) {
-		this.getImplementation().animateStraightenOutJoints( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
-	
-	@MethodTemplate()
-	public void say( String text, Say.Detail... details ) {
-		this.getImplementation().say( text, Duration.getValue(details), 
-				TextFont.getValue(details, new Font(new java.awt.Font( null, java.awt.Font.PLAIN, 16 ))).getAsAWTFont(),
-				TextColor.getValue(details, Color.BLACK).getInternal(),
-				BubbleFillColor.getValue(details, Color.WHITE).getInternal(),
-				BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
-	}
-	
-	@MethodTemplate()
-	public void think( String text, Think.Detail... details ) {
-		this.getImplementation().think( text, Duration.getValue(details), 
-				TextFont.getValue(details, new Font(new java.awt.Font( null, java.awt.Font.PLAIN, 16 ))).getAsAWTFont(),
-				TextColor.getValue(details, Color.BLACK).getInternal(),
-				BubbleFillColor.getValue(details, Color.WHITE).getInternal(),
-				BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
-	}
-	
-	//TODO: Get this to work
-//	@MethodTemplate()
-//	public void sayOutLoud( String text, org.alice.flite.VoiceType voice, SayOutLoud.Detail... details ) {
-//		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = null;
-//		if (ShowSpeechBubble.getValue(details, true))
-//		{
-//			bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
-//			bubble.text.setValue(text);
-//			initializeBubble(bubble, details);
-//		}
-//		this.getImplementation().sayText(text, voice, bubble);
-//	}
 }

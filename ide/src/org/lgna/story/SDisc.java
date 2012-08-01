@@ -40,25 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public class Billboard extends Model {
-	private final org.lgna.story.implementation.BillboardImp implementation = new org.lgna.story.implementation.BillboardImp( this );
+public class SDisc extends SShape {
+	private final org.lgna.story.implementation.DiscImp implementation = new org.lgna.story.implementation.DiscImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.BillboardImp getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.DiscImp getImplementation() {
 		return this.implementation;
 	}
+	
+	@GetterTemplate(isPersistent=true)
 	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	public Paint getBackPaint() {
-		return this.getImplementation().backPaint.getValue();
+	public Double getRadius() {
+		return this.implementation.outerRadius.getValue();
 	}
 	@MethodTemplate()
-	public void setBackPaint( Paint paint, SetBackPaint.Detail... details ) {
-		this.getImplementation().backPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void setRadius( Number baseRadius, SetRadius.Detail... details ) {
+		this.implementation.outerRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

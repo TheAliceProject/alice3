@@ -42,34 +42,79 @@
  */
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
-
 /**
  * @author Dennis Cosgrove
  */
-public class Cylinder extends Shape {
-	private final org.lgna.story.implementation.CylinderImp implementation = new org.lgna.story.implementation.CylinderImp( this );
+public class STextModel extends SModel {
+	private final org.lgna.story.implementation.TextModelImp implementation = new org.lgna.story.implementation.TextModelImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.CylinderImp getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.TextModelImp getImplementation() {
 		return this.implementation;
 	}
 	
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
-	public Double getRadius() {
-		return this.implementation.radius.getValue();
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	public String getValue() {
+		return this.implementation.getValue();
 	}
-	@MethodTemplate()
-	public void setRadius( Number radius, SetRadius.Detail... details ) {
-		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void setValue( String text ) {
+		this.implementation.setValue( text );
 	}
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
-	public Double getLength() {
-		return this.implementation.length.getValue();
+//	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+//	public Font getFont() {
+//		return new Font( this.implementation.getFont() );
+//	}
+//	public void setFont( Font font ) {
+//		this.implementation.setFont( font.getAsAWTFont() );
+//	}
+	
+	public void append( Object value ) {
+		this.implementation.append( value );
 	}
-	@MethodTemplate()
-	public void setLength( Number length, SetLength.Detail... details ) {
-		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	
+	public Character charAt( Integer index ) {
+		return this.implementation.charAt( index );
 	}
+
+	public void delete( Integer start, Integer end ) {
+		this.implementation.delete( start, end );
+	}
+	public void deleteCharAt( Integer index ) {
+		this.implementation.deleteCharAt( index );
+	}
+
+	public Integer indexOf( String s ) {
+		return this.implementation.indexOf( s );
+	}
+	public Integer indexOf( String s, Integer fromIndex ) {
+		return this.implementation.indexOf( s, fromIndex );
+	}
+
+	public void insert( Integer offset, Object value ) {
+		this.implementation.insert( offset, value );
+	}
+
+	public Integer lastIndexOf( String s ) {
+		return this.implementation.lastIndexOf( s );
+	}
+	public Integer lastIndexOf( String s, Integer fromIndex ) {
+		return this.implementation.lastIndexOf( s, fromIndex );
+	}
+	
+	//todo: rename length?
+	public Integer getLength() {
+		return this.implementation.getLength();
+	}
+
+	public void replace( Integer start, Integer end, String s ) {
+		this.implementation.replace( start, end, s );
+	}
+
+	public void setCharAt( Integer index, Character c ) {
+		this.implementation.setCharAt( index, c );
+	}
+	
+//	public void setLength( Integer length ) {
+//		m_sb.setLength( length );
+//		updateSGText();
+//	}
 }

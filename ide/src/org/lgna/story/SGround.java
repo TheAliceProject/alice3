@@ -43,6 +43,61 @@
 
 package org.lgna.story;
 
-public class BookmarkCameraMarker extends PerspectiveCameraMarker {	
-	
+import org.lgna.project.annotations.*;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class SGround extends SThing implements MutableRider, Visual {
+	public static enum SurfaceAppearance implements ImagePaint {
+		GRASS("grass"),
+		DARK_GRASS("dark_grass"), 
+		DIRT("dirt"), 
+		SAND("sand"),
+		MARS("mars"),
+		DESERT("desert"),
+		SNOW("snow"), 
+		WATER("water"), 
+		OCEAN_FLOOR("underwater"), 
+		MOON("moon");
+		private String resourceName;
+
+		SurfaceAppearance( String resourceName ) {
+			this.resourceName = resourceName;
+		}
+		public java.net.URL getResource() {
+			return SGround.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
+		}
+	}
+
+	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
+
+	@Override
+	/*package-private*/org.lgna.story.implementation.GroundImp getImplementation() {
+		return this.implementation;
+	}
+	public void setVehicle( SThing vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	}
+	@MethodTemplate()
+	@GetterTemplate(isPersistent = true)
+	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.GroundSurfaceAppearanceDetails.class)
+	public Paint getPaint() {
+		return this.getImplementation().paint.getValue();
+	}
+	@MethodTemplate()
+	public void setPaint( Paint paint, SetPaint.Detail... details ) {
+		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal()  );
+	}
+
+	@MethodTemplate()
+	@GetterTemplate(isPersistent = true)
+	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+	public Double getOpacity() {
+		return (double)this.getImplementation().opacity.getValue();
+	}
+	@MethodTemplate()
+	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
+		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
 }

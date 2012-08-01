@@ -43,32 +43,22 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
-
 /**
  * @author Dennis Cosgrove
  */
-public class Torus extends Shape {
-	private final org.lgna.story.implementation.TorusImp implementation = new org.lgna.story.implementation.TorusImp( this );
+public class SBillboard extends SModel {
+	private final org.lgna.story.implementation.BillboardImp implementation = new org.lgna.story.implementation.BillboardImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.TorusImp getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.BillboardImp getImplementation() {
 		return this.implementation;
 	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
 	@MethodTemplate()
-	public Double getInnerRadius() {
-		return this.implementation.innerRadius.getValue();
+	@GetterTemplate(isPersistent = true)
+	public Paint getBackPaint() {
+		return this.getImplementation().backPaint.getValue();
 	}
 	@MethodTemplate()
-	public void setInnerRadius( Number innerRadius, SetInnerRadius.Detail... details ) {
-		this.implementation.innerRadius.animateValue( innerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate()
-	public Double getOuterRadius() {
-		return this.implementation.outerRadius.getValue();
-	}
-	@MethodTemplate()
-	public void setOuterRadius( Number outerRadius, SetOuterRadius.Detail... details ) {
-		this.implementation.outerRadius.animateValue( outerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void setBackPaint( Paint paint, SetBackPaint.Detail... details ) {
+		this.getImplementation().backPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

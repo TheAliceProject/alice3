@@ -47,11 +47,11 @@ import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends MovableTurnable implements MutableRider, Resizable, Visual {
+public abstract class SModel extends SMovableTurnable implements MutableRider, Resizable, Visual {
 	@Override
 	/*package-private*/abstract org.lgna.story.implementation.ModelImp getImplementation();
 
-	public void setVehicle( Entity vehicle ) {
+	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 

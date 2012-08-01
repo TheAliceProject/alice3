@@ -43,33 +43,52 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public class Cone extends Shape {
-	private final org.lgna.story.implementation.ConeImp implementation = new org.lgna.story.implementation.ConeImp( this );
+public class SJoint extends STurnable {
+
+	private static final edu.cmu.cs.dennisc.map.MapToMap< SJointedModel, org.lgna.story.resources.JointId, SJoint > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+	/*package-private*/ static SJoint getJoint( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
+		synchronized( mapToMap ) {
+			SJoint rv = mapToMap.get( jointedModel, jointId );
+			if( rv != null ) {
+				//pass
+			} else {
+				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = ImplementationAccessor.getImplementation( jointedModel );
+				rv = org.lgna.story.SJoint.getInstance( jointedModelImplementation, jointId );
+				mapToMap.put( jointedModel, jointId, rv );
+			}
+			return rv;
+		}
+	}
+	private static SJoint getInstance( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
+		org.lgna.story.implementation.JointImp implementation = jointedModelImplementation.getJointImplementation( jointId );
+		SJoint rv = implementation.getAbstraction();
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new SJoint( implementation );
+			implementation.setAbstraction( rv );
+		}
+		return rv;
+	}
+
+	private final org.lgna.story.implementation.JointImp implementation;
+
+	private SJoint( org.lgna.story.implementation.JointImp implementation ) {
+		this.implementation = implementation;
+	}
 	@Override
-	/*package-private*/ org.lgna.story.implementation.ConeImp getImplementation() {
+	/*package-private*/org.lgna.story.implementation.JointImp getImplementation() {
 		return this.implementation;
 	}
 	
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
-	public Double getBaseRadius() {
-		return this.implementation.baseRadius.getValue();
+	public Boolean isPivotVisible() {
+		return this.implementation.isPivotVisible();
 	}
-	@MethodTemplate()
-	public void setBaseRadius( Number baseRadius, SetBaseRadius.Detail... details ) {
-		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	}
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
-	public Double getLength() {
-		return this.implementation.length.getValue();
-	}
-	@MethodTemplate()
-	public void setLength( Number length, SetLength.Detail... details ) {
-		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void setPivotVisible( Boolean isPivotVisible ) {
+		this.implementation.setPivotVisible( isPivotVisible );
 	}
 }

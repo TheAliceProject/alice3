@@ -89,9 +89,9 @@ import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Marker;
+import org.lgna.story.SMarker;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
 import org.lgna.story.implementation.AbstractTransformableImp;
@@ -353,7 +353,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	{
 		if (this.globalDragAdapter != null)
 		{
-			Entity selectedEntity = this.getInstanceInJavaVMForField(field, Entity.class);
+			SThing selectedEntity = this.getInstanceInJavaVMForField(field, SThing.class);
 			TransformableImp transImp = null;
 			if (selectedEntity != null)
 			{
@@ -371,7 +371,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	{
 		if (this.globalDragAdapter != null)
 		{
-			Entity selectedEntity = this.getInstanceInJavaVMForExpression(method, Entity.class);
+			SThing selectedEntity = this.getInstanceInJavaVMForExpression(method, SThing.class);
 			AbstractTransformableImp transImp = null;
 			if (selectedEntity != null)
 			{
@@ -637,7 +637,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				if (field.getValueType().isAssignableFrom(org.lgna.story.CameraMarker.class)) {
 					this.setSelectedCameraMarker(field);
 				}
-				else if (field.getValueType().isAssignableFrom(org.lgna.story.ObjectMarker.class)) {
+				else if (field.getValueType().isAssignableFrom(org.lgna.story.SThingMarker.class)) {
 					this.setSelectedObjectMarker(field);
 				}
 				else {
@@ -661,7 +661,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		if (element != null)
 		{
 			EntityImp entityImp = EntityImp.getInstance(element);
-			Entity entity = entityImp.getAbstraction();
+			SThing entity = entityImp.getAbstraction();
 			UserField field = this.getFieldForInstanceInJavaVM(entity);
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
 			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
@@ -801,8 +801,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	@Override
 	public void addField(UserType<?> declaringType, UserField field, Statement... statements) {
 		super.addField(declaringType, field, statements);
-		if (field.getValueType().isAssignableTo(org.lgna.story.Marker.class)) {
-			org.lgna.story.Marker marker = this.getInstanceInJavaVMForField(field, org.lgna.story.Marker.class);
+		if (field.getValueType().isAssignableTo(org.lgna.story.SMarker.class)) {
+			org.lgna.story.SMarker marker = this.getInstanceInJavaVMForField(field, org.lgna.story.SMarker.class);
 			MarkerImp markerImp = ImplementationAccessor.getImplementation(marker);
 			markerImp.setDisplayVisuals(true);
 			markerImp.setShowing(true);
@@ -810,14 +810,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			if (field.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class)) {
 				this.setSelectedCameraMarker(field);
 			}
-			else if (field.getValueType().isAssignableTo(org.lgna.story.ObjectMarker.class)) {
+			else if (field.getValueType().isAssignableTo(org.lgna.story.SThingMarker.class)) {
 				this.setSelectedObjectMarker(field);
 			}
 		}
 		setInitialCodeStateForField(field, getCurrentStateCodeForField(field));
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY ) ) {
-			if( field.getValueType().isAssignableTo( org.lgna.story.JointedModel.class ) ) {
-				org.lgna.story.JointedModel jointedModel = this.getInstanceInJavaVMForField( field, org.lgna.story.JointedModel.class );
+			if( field.getValueType().isAssignableTo( org.lgna.story.SJointedModel.class ) ) {
+				org.lgna.story.SJointedModel jointedModel = this.getInstanceInJavaVMForField( field, org.lgna.story.SJointedModel.class );
 				org.lgna.story.implementation.JointedModelImp jointedModelImp = ImplementationAccessor.getImplementation( jointedModel );
 				jointedModelImp.opacity.setValue( 0.25f );
 				jointedModelImp.showVisualization();
@@ -833,10 +833,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 
 		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
-		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getJavaInstance();
+		org.lgna.story.SScene sceneJavaInstance = (org.lgna.story.SScene)sceneAliceInstance.getJavaInstance();
 
 		org.lgna.story.Program program = getProgramInstanceInJava();
-		org.lgna.story.Scene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.Scene.class );
+		org.lgna.story.SScene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.SScene.class );
 		SceneImp ACCEPTABLE_HACK_sceneImp = ImplementationAccessor.getImplementation( scene );
 		ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();
 		try {
@@ -852,7 +852,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		this.instanceFactorySelectionPanel.setType( sceneAliceInstance.getType() );
 		for (org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields())
 		{
-			if( field.getValueType().isAssignableTo(org.lgna.story.Camera.class)) 
+			if( field.getValueType().isAssignableTo(org.lgna.story.SCamera.class)) 
 			{
 				this.sceneCameraImp = getImplementation(field);
 				break;
@@ -1034,7 +1034,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 	
 	public org.lgna.project.ast.Statement[] getDoStatementsForAddField(org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform, org.lgna.story.Paint initialPaint) {
-		if (initialTransform == null && field.getValueType().isAssignableTo(org.lgna.story.Model.class))
+		if (initialTransform == null && field.getValueType().isAssignableTo(org.lgna.story.SModel.class))
 		{
 			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
 			JavaType javaType = type.getFirstEncounteredJavaType();
@@ -1193,9 +1193,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 	public MarkerImp getMarkerForField( UserField field ) {
 		Object obj = this.getInstanceInJavaVMForField(field);
-		if (obj instanceof Marker)
+		if (obj instanceof SMarker)
 		{
-			return ImplementationAccessor.getImplementation((Marker)obj);
+			return ImplementationAccessor.getImplementation((SMarker)obj);
 		}
 		return null;
 	}

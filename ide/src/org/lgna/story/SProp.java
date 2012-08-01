@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story;
 
+import org.lgna.story.implementation.JointedModelImp;
+
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class Joint extends Turnable {
+public class SProp extends SJointedModel {
 
-	private static final edu.cmu.cs.dennisc.map.MapToMap< JointedModel, org.lgna.story.resources.JointId, Joint > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-
-	/*package-private*/ static Joint getJoint( JointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
-		synchronized( mapToMap ) {
-			Joint rv = mapToMap.get( jointedModel, jointId );
-			if( rv != null ) {
-				//pass
-			} else {
-				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = ImplementationAccessor.getImplementation( jointedModel );
-				rv = org.lgna.story.Joint.getInstance( jointedModelImplementation, jointId );
-				mapToMap.put( jointedModel, jointId, rv );
-			}
-			return rv;
-		}
-	}
-	private static Joint getInstance( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
-		org.lgna.story.implementation.JointImp implementation = jointedModelImplementation.getJointImplementation( jointId );
-		Joint rv = implementation.getAbstraction();
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new Joint( implementation );
-			implementation.setAbstraction( rv );
-		}
-		return rv;
-	}
-
-	private final org.lgna.story.implementation.JointImp implementation;
-
-	private Joint( org.lgna.story.implementation.JointImp implementation ) {
-		this.implementation = implementation;
-	}
-	@Override
-	/*package-private*/org.lgna.story.implementation.JointImp getImplementation() {
-		return this.implementation;
+	private final org.lgna.story.implementation.JointedModelImp implementation;
+	
+	public SProp( org.lgna.story.resources.PropResource resource ) {
+		this.implementation = resource.createImplementation( this );
 	}
 	
-	public Boolean isPivotVisible() {
-		return this.implementation.isPivotVisible();
+	@Override
+	JointedModelImp getImplementation() {
+		// TODO Auto-generated method stub
+		return implementation;
 	}
-	public void setPivotVisible( Boolean isPivotVisible ) {
-		this.implementation.setPivotVisible( isPivotVisible );
-	}
+
 }

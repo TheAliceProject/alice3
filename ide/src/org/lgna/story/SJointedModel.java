@@ -43,24 +43,53 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.MethodTemplate;
 /**
  * @author Dennis Cosgrove
  */
-public class Sphere extends Shape {
-	private final org.lgna.story.implementation.SphereImp implementation = new org.lgna.story.implementation.SphereImp( this );
+public abstract class SJointedModel extends SModel {
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SphereImp getImplementation() {
-		return this.implementation;
+	/*package-private*/abstract org.lgna.story.implementation.JointedModelImp getImplementation();
+	
+	
+	//todo: make protected
+	@MethodTemplate(visibility=org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN)
+	public SJoint getJoint( org.lgna.story.resources.JointId jointId ) {
+		return SJoint.getJoint( this, jointId );
 	}
 	
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate()
-	public Double getRadius() {
-		return this.implementation.radius.getValue();
+	public void straightenOutJoints( StraightenOutJoints.Detail... details ) {
+		this.getImplementation().animateStraightenOutJoints( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
+	
 	@MethodTemplate()
-	public void setRadius( Number radius, SetRadius.Detail... details ) {
-		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void say( String text, Say.Detail... details ) {
+		this.getImplementation().say( text, Duration.getValue(details), 
+				TextFont.getValue(details, new Font(new java.awt.Font( null, java.awt.Font.PLAIN, 16 ))).getAsAWTFont(),
+				TextColor.getValue(details, Color.BLACK).getInternal(),
+				BubbleFillColor.getValue(details, Color.WHITE).getInternal(),
+				BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
 	}
+	
+	@MethodTemplate()
+	public void think( String text, Think.Detail... details ) {
+		this.getImplementation().think( text, Duration.getValue(details), 
+				TextFont.getValue(details, new Font(new java.awt.Font( null, java.awt.Font.PLAIN, 16 ))).getAsAWTFont(),
+				TextColor.getValue(details, Color.BLACK).getInternal(),
+				BubbleFillColor.getValue(details, Color.WHITE).getInternal(),
+				BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
+	}
+	
+	//TODO: Get this to work
+//	@MethodTemplate()
+//	public void sayOutLoud( String text, org.alice.flite.VoiceType voice, SayOutLoud.Detail... details ) {
+//		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = null;
+//		if (ShowSpeechBubble.getValue(details, true))
+//		{
+//			bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
+//			bubble.text.setValue(text);
+//			initializeBubble(bubble, details);
+//		}
+//		this.getImplementation().sayText(text, voice, bubble);
+//	}
 }

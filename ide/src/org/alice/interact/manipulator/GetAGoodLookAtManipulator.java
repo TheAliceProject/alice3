@@ -82,10 +82,10 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		AbstractTransformable toLookAt = endInput.getClickPickTransformable();
 		if (toLookAt != null && this.camera != null)
 		{
-			org.lgna.story.Entity toLookAtEntity = EntityImp.getAbstractionFromSgElement(toLookAt);
-			org.lgna.story.Entity cameraAbstraction  = EntityImp.getAbstractionFromSgElement(this.camera);
-			assert cameraAbstraction instanceof org.lgna.story.Camera;
-			org.lgna.story.Camera storytellingCamera = (org.lgna.story.Camera)cameraAbstraction;
+			org.lgna.story.SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement(toLookAt);
+			org.lgna.story.SThing cameraAbstraction  = EntityImp.getAbstractionFromSgElement(this.camera);
+			assert cameraAbstraction instanceof org.lgna.story.SCamera;
+			org.lgna.story.SCamera storytellingCamera = (org.lgna.story.SCamera)cameraAbstraction;
 
 			//Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
 			int transactionCount = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionCount();

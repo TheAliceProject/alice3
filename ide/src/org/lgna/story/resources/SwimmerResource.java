@@ -1,6 +1,6 @@
 package org.lgna.story.resources;
 
-@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Swimmer.class )
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.SSwimmer.class )
 public interface SwimmerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId ROOT = new JointId( null, SwimmerResource.class );
 	public static final org.lgna.story.resources.JointId NECK = new org.lgna.story.resources.JointId( ROOT, SwimmerResource.class );
@@ -21,5 +21,5 @@ public interface SwimmerResource extends JointedModelResource {
 
 	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
 	
-	public org.lgna.story.implementation.SwimmerImp createImplementation( org.lgna.story.Swimmer abstraction );
+	public org.lgna.story.implementation.SwimmerImp createImplementation( org.lgna.story.SSwimmer abstraction );
 }

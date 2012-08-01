@@ -48,15 +48,15 @@ package org.lgna.story;
  */
 public /*abstract*/ class Program {
 	private final org.lgna.story.implementation.ProgramImp implementation = org.lgna.story.implementation.ProgramImp.createInstance( this );
-	private Scene activeScene;
+	private SScene activeScene;
 	/*package-private*/ org.lgna.story.implementation.ProgramImp getImplementation() {
 		return this.implementation;
 	}
 	
-	public Scene getActiveScene() {
+	public SScene getActiveScene() {
 		return this.activeScene;
 	}
-	public void setActiveScene( Scene scene ) {
+	public void setActiveScene( SScene scene ) {
 		if( this.activeScene != null ) {
 			this.activeScene.getImplementation().deactivate( this.getImplementation() );
 		}

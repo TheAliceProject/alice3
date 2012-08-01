@@ -174,14 +174,14 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			if( filteredFields.size() > 16 ) {
 				org.alice.ide.ast.fieldtree.RootNode root = org.alice.ide.ast.fieldtree.FieldTree.createTreeFor( 
 						filteredFields, 
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Biped.class ), 
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Quadruped.class ), 
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Swimmer.class ), 
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Flyer.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SBiped.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SQuadruped.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SSwimmer.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SFlyer.class ), 
 						
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Prop.class ), 
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Shape.class ),
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Entity.class ),
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SProp.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SShape.class ),
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SThing.class ),
 						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( Object.class )
 				);
 				for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : root.getFieldNodes() ) {

@@ -134,14 +134,14 @@ public class FieldTree {
 		
 		RootNode root = createTreeFor(
 				sceneType.fields , 
-				createFirstClassThreshold( org.lgna.story.Biped.class ), 
-				createFirstClassThreshold( org.lgna.story.Quadruped.class ), 
-				createFirstClassThreshold( org.lgna.story.Swimmer.class ), 
-				createFirstClassThreshold( org.lgna.story.Flyer.class ), 
+				createFirstClassThreshold( org.lgna.story.SBiped.class ), 
+				createFirstClassThreshold( org.lgna.story.SQuadruped.class ), 
+				createFirstClassThreshold( org.lgna.story.SSwimmer.class ), 
+				createFirstClassThreshold( org.lgna.story.SFlyer.class ), 
 				
-				createSecondClassThreshold( org.lgna.story.Prop.class ), 
-				createSecondClassThreshold( org.lgna.story.Shape.class ),
-				createSecondClassThreshold( org.lgna.story.Entity.class ),
+				createSecondClassThreshold( org.lgna.story.SProp.class ), 
+				createSecondClassThreshold( org.lgna.story.SShape.class ),
+				createSecondClassThreshold( org.lgna.story.SThing.class ),
 				createSecondClassThreshold( Object.class )
 		);
 		StringBuilder sb = new StringBuilder();

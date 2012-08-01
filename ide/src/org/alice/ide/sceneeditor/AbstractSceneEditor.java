@@ -188,7 +188,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		if (field == null) {
 			return null;
 		}
-		org.lgna.story.Entity entity = getInstanceInJavaVMForField(field, org.lgna.story.Entity.class);
+		org.lgna.story.SThing entity = getInstanceInJavaVMForField(field, org.lgna.story.SThing.class);
 		if (entity != null)
 		{
 			return org.lgna.story.ImplementationAccessor.getImplementation(entity);
@@ -290,7 +290,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	
 	public  <T extends org.lgna.story.implementation.EntityImp> T getActiveSceneImplementation() {
-		org.lgna.story.Entity entity = getInstanceInJavaVMForField(getActiveSceneField(), org.lgna.story.Entity.class);
+		org.lgna.story.SThing entity = getInstanceInJavaVMForField(getActiveSceneField(), org.lgna.story.SThing.class);
 		if (entity != null)
 		{
 			return org.lgna.story.ImplementationAccessor.getImplementation(entity);
@@ -375,7 +375,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 				setProgramInstance(this.createProgramInstance());
 				for (org.lgna.project.ast.AbstractField programField : this.programType.getDeclaredFields())
 				{
-					if( programField.getValueType().isAssignableTo(org.lgna.story.Scene.class)) 
+					if( programField.getValueType().isAssignableTo(org.lgna.story.SScene.class)) 
 					{
 						this.addScene((org.lgna.project.ast.UserField)programField);
 					}

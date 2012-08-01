@@ -1,7 +1,7 @@
 ﻿//These need wustl header
 package edu.cmu.cs.dennisc.matt;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.EntityImp;
@@ -12,7 +12,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 
 public class AabbCollisionDetector {
 	
-	public static boolean doTheseCollide(Entity object1, Entity object2) {
+	public static boolean doTheseCollide(SThing object1, SThing object2) {
 		Point3 center1 = new Point3();
 		Point3 center2 = new Point3();
 		Vector3 corner1 = new Vector3();
@@ -34,7 +34,7 @@ public class AabbCollisionDetector {
 
 
 
-	public static boolean doTheseCollide(Entity object1, Entity object2, double extraProximity) {
+	public static boolean doTheseCollide(SThing object1, SThing object2, double extraProximity) {
 		Point3 center1 = new Point3();
 		Point3 center2 = new Point3();
 		Vector3 corner1 = new Vector3();
@@ -58,7 +58,7 @@ public class AabbCollisionDetector {
 //		}
 //	}
 	
-	private static void findCenterAndCorner( Entity object, Point3 center, Vector3 corner) {
+	private static void findCenterAndCorner( SThing object, Point3 center, Vector3 corner) {
 		AxisAlignedBox aabb1 = ImplementationAccessor.getImplementation(object).getAxisAlignedMinimumBoundingBox(AsSeenBy.SCENE);
 		Point3 min = aabb1.getMinimum();
 		Point3 max = aabb1.getMaximum();

@@ -44,60 +44,20 @@
 package org.lgna.story;
 
 import org.lgna.project.annotations.*;
-
 /**
  * @author Dennis Cosgrove
  */
-public class Ground extends Entity implements MutableRider, Visual {
-	public static enum SurfaceAppearance implements ImagePaint {
-		GRASS("grass"),
-		DARK_GRASS("dark_grass"), 
-		DIRT("dirt"), 
-		SAND("sand"),
-		MARS("mars"),
-		DESERT("desert"),
-		SNOW("snow"), 
-		WATER("water"), 
-		OCEAN_FLOOR("underwater"), 
-		MOON("moon");
-		private String resourceName;
-
-		SurfaceAppearance( String resourceName ) {
-			this.resourceName = resourceName;
-		}
-		public java.net.URL getResource() {
-			return Ground.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
-		}
-	}
-
-	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
-
-	@Override
-	/*package-private*/org.lgna.story.implementation.GroundImp getImplementation() {
-		return this.implementation;
-	}
-	public void setVehicle( Entity vehicle ) {
+public class SCamera extends SMovableTurnable implements MutableRider {
+	private final org.lgna.story.implementation.SymmetricPerspectiveCameraImp implementation = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( this );
+	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.GroundSurfaceAppearanceDetails.class)
-	public Paint getPaint() {
-		return this.getImplementation().paint.getValue();
+	@Override
+	/*package-private*/ org.lgna.story.implementation.SymmetricPerspectiveCameraImp getImplementation() {
+		return this.implementation;
 	}
 	@MethodTemplate()
-	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal()  );
-	}
-
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
-	public Double getOpacity() {
-		return (double)this.getImplementation().opacity.getValue();
-	}
-	@MethodTemplate()
-	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void moveAndOrientToAGoodVantagePointOf( SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details ) {
+		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

@@ -43,11 +43,16 @@
 
 package org.lgna.story;
 
-public class ObjectMarker extends Marker 
-{
-	private final org.lgna.story.implementation.ObjectMarkerImp implementation = new org.lgna.story.implementation.ObjectMarkerImp( this );
+/**
+ * @author Dennis Cosgrove
+ */
+public class SAxes extends SMovableTurnable implements MutableRider {
+	private final org.lgna.story.implementation.AxesImp implementation = new org.lgna.story.implementation.AxesImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.ObjectMarkerImp getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.AxesImp getImplementation() {
 		return this.implementation;
+	}
+	public void setVehicle( SThing vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 }

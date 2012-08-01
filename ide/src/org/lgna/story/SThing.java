@@ -51,7 +51,7 @@ import org.lgna.project.annotations.Visibility;
  * @author Dennis Cosgrove
  */
 @org.lgna.project.annotations.ClassTemplate(isFollowToSuperClassDesired = false)
-public abstract class Entity implements Rider {
+public abstract class SThing implements Rider {
 	/*package-private*/abstract org.lgna.story.implementation.EntityImp getImplementation();
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
@@ -64,12 +64,12 @@ public abstract class Entity implements Rider {
 	}
 	@GetterTemplate(isPersistent = true)
 	@MethodTemplate()
-	public Entity getVehicle() {
+	public SThing getVehicle() {
 		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
 	}
 
-	public VantagePoint getVantagePoint( Entity entity ) {
+	public VantagePoint getVantagePoint( SThing entity ) {
 		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) );
 	}
 
@@ -84,7 +84,7 @@ public abstract class Entity implements Rider {
 	}
 
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public boolean isCollidingWith( Entity other ) {
+	public boolean isCollidingWith( SThing other ) {
 		return this.getImplementation().isCollidingWith( other );
 	}
 	

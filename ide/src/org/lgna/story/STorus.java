@@ -40,47 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story;
+
+import org.lgna.project.annotations.*;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Marker extends MovableTurnable implements MutableRider {
-	
+public class STorus extends SShape {
+	private final org.lgna.story.implementation.TorusImp implementation = new org.lgna.story.implementation.TorusImp( this );
 	@Override
-	/*package-private*/abstract org.lgna.story.implementation.MarkerImp getImplementation();
-	
-	public void setVehicle( Entity vehicle ) {
-		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
+	/*package-private*/ org.lgna.story.implementation.TorusImp getImplementation() {
+		return this.implementation;
 	}
-	
-	public org.lgna.story.Color getColorId(){
-		return (org.lgna.story.Color)this.getImplementation().paint.getValue();
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getInnerRadius() {
+		return this.implementation.innerRadius.getValue();
 	}
-	
-	public void setColorId( org.lgna.story.Color color ){
-		this.getImplementation().paint.setValue(color);
+	@MethodTemplate()
+	public void setInnerRadius( Number innerRadius, SetInnerRadius.Detail... details ) {
+		this.implementation.innerRadius.animateValue( innerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	
-//	@MethodTemplate()
-//	@GetterTemplate(isPersistent = true)
-//	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
-//	public Double getOpacity() {
-//		return (double)this.getImplementation().opacity.getValue();
-//	}
-//	@MethodTemplate()
-//	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
-//		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-//	}
-//	
-//	@MethodTemplate()
-//	@GetterTemplate(isPersistent = true)
-//	public Paint getPaint() {
-//		return this.getImplementation().paint.getValue();
-//	}
-//	@MethodTemplate()
-//	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-//		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-//	}
+	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getOuterRadius() {
+		return this.implementation.outerRadius.getValue();
+	}
+	@MethodTemplate()
+	public void setOuterRadius( Number outerRadius, SetOuterRadius.Detail... details ) {
+		this.implementation.outerRadius.animateValue( outerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
 }

@@ -43,24 +43,17 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public class Disc extends Shape {
-	private final org.lgna.story.implementation.DiscImp implementation = new org.lgna.story.implementation.DiscImp( this );
+@Deprecated
+public class SSun extends STurnable implements MutableRider {
+	private final org.lgna.story.implementation.SunImp implementation = new org.lgna.story.implementation.SunImp( this );
 	@Override
-	/*package-private*/ org.lgna.story.implementation.DiscImp getImplementation() {
+	/*package-private*/ org.lgna.story.implementation.SunImp getImplementation() {
 		return this.implementation;
 	}
-	
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
-	public Double getRadius() {
-		return this.implementation.outerRadius.getValue();
-	}
-	@MethodTemplate()
-	public void setRadius( Number baseRadius, SetRadius.Detail... details ) {
-		this.implementation.outerRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	public void setVehicle( SThing vehicle ) {
+		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 }

@@ -58,7 +58,7 @@ import org.lgna.story.event.WhileInViewListener;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Scene extends Entity {
+public abstract class SScene extends SThing {
 	private final org.lgna.story.implementation.SceneImp implementation = new org.lgna.story.implementation.SceneImp( this );
 
 	@Override
@@ -174,24 +174,24 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addObjectMoverFor( MovableTurnable entity, AddObjectMoverFor.Detail... details ) {
+	public void addObjectMoverFor( SMovableTurnable entity, AddObjectMoverFor.Detail... details ) {
 		this.implementation.getEventManager().moveWithArrows( entity );
 	}
 
 	//TransformationListeners
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener transformationlistener, Entity[] shouldListenTo, AddPositionOrientationChangeListener.Detail... details ) {
+	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo, AddPositionOrientationChangeListener.Detail... details ) {
 		this.getImplementation().getEventManager().addTransformationListener( transformationlistener, shouldListenTo );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddStartCollisionListener.Detail... details ) {
+	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener collisionListener, SThing[] groupOne, SThing[] groupTwo, AddStartCollisionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileCollisionListener( org.lgna.story.event.WhileCollisionListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddTimeListener.Detail... details ) {
+	public void addWhileCollisionListener( org.lgna.story.event.WhileCollisionListener collisionListener, SThing[] groupOne, SThing[] groupTwo, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
 				.addWhileCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), TimerFrequency.getValue( details ).getFrequency(),
@@ -199,17 +199,17 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener collisionListener, Entity[] groupOne, Entity[] groupTwo, AddEndCollisionListener.Detail... details ) {
+	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener collisionListener, SThing[] groupOne, SThing[] groupTwo, AddEndCollisionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener proximityEventListener, Entity[] groupOne, Entity[] groupTwo, Double distance, AddEnterProximityEventListener.Detail... details ) {
+	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener proximityEventListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddEnterProximityEventListener.Detail... details ) {
 		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddEnterProximityEventListener.getDist( details ));
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileProximityListener( org.lgna.story.event.WhileProximityListener proximityListener, Entity[] groupOne, Entity[] groupTwo, Double distance, AddTimeListener.Detail... details ) {
+	public void addWhileProximityListener( org.lgna.story.event.WhileProximityListener proximityListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
 				.addWhileProximityListener( proximityListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance,
@@ -217,33 +217,33 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addViewEnterListener( ViewEnterListener listener, Model[] models, AddEnterViewListener.Detail... details ) {
+	public void addViewEnterListener( ViewEnterListener listener, SModel[] models, AddEnterViewListener.Detail... details ) {
 		this.implementation.getEventManager().addComesIntoViewEventListener( listener, models );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileInViewListener( WhileInViewListener listener, Model[] models, AddTimeListener.Detail... details ) {
+	public void addWhileInViewListener( WhileInViewListener listener, SModel[] models, AddTimeListener.Detail... details ) {
 		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( models ), TimerFrequency.getValue( details ).getFrequency(),
 				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener proximityEventListener, Entity[] groupOne, Entity[] groupTwo, Double distance, AddExitProximityEventListener.Detail... details ) {
+	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener proximityEventListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddExitProximityEventListener.Detail... details ) {
 		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddExitProximityEventListener.getDist( details ));
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addViewExitListener( ViewExitListener listener, Model[] entities, AddExitViewListener.Detail... details ) {
+	public void addViewExitListener( ViewExitListener listener, SModel[] entities, AddExitViewListener.Detail... details ) {
 		this.implementation.getEventManager().addLeavesViewEventListener( listener, entities );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, Model[] groupOne, Model[] groupTwo, AddStartOcclusionListener.Detail... details ) {
+	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, SModel[] groupOne, SModel[] groupTwo, AddStartOcclusionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileOcclusionListener( org.lgna.story.event.WhileOcclusionListener occlusionListener, Model[] groupOne, Model[] groupTwo, AddTimeListener.Detail... details ) {
+	public void addWhileOcclusionListener( org.lgna.story.event.WhileOcclusionListener occlusionListener, SModel[] groupOne, SModel[] groupTwo, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
 				.addWhileOcclusionListener( occlusionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), TimerFrequency.getValue( details ).getFrequency(),
@@ -251,7 +251,7 @@ public abstract class Scene extends Entity {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, Model[] groupOne, Model[] groupTwo, AddEndOcclusionListener.Detail... details ) {
+	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, SModel[] groupOne, SModel[] groupTwo, AddEndOcclusionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 

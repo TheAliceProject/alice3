@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.story;
 
-import org.lgna.story.implementation.JointedModelImp;
-
+import org.lgna.project.annotations.*;
 /**
- * @author dculyba
- *
+ * @author Dennis Cosgrove
  */
-public class Prop extends JointedModel {
-
-	private final org.lgna.story.implementation.JointedModelImp implementation;
-	
-	public Prop( org.lgna.story.resources.PropResource resource ) {
-		this.implementation = resource.createImplementation( this );
-	}
-	
+public class SCone extends SShape {
+	private final org.lgna.story.implementation.ConeImp implementation = new org.lgna.story.implementation.ConeImp( this );
 	@Override
-	JointedModelImp getImplementation() {
-		// TODO Auto-generated method stub
-		return implementation;
+	/*package-private*/ org.lgna.story.implementation.ConeImp getImplementation() {
+		return this.implementation;
 	}
-
+	
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getBaseRadius() {
+		return this.implementation.baseRadius.getValue();
+	}
+	@MethodTemplate()
+	public void setBaseRadius( Number baseRadius, SetBaseRadius.Detail... details ) {
+		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+	@GetterTemplate(isPersistent=true)
+	@MethodTemplate()
+	public Double getLength() {
+		return this.implementation.length.getValue();
+	}
+	@MethodTemplate()
+	public void setLength( Number length, SetLength.Detail... details ) {
+		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
 }

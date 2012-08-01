@@ -100,7 +100,7 @@ public class ModelResourceTree {
 				ConstructorParameterPair parentConstructorAndParameter = null;
 				if (parentNode == null || parentNode.getUserType() == null)
 				{
-					Class<? extends org.lgna.story.Model> parentClass = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getModelClassForResourceClass(currentClass);
+					Class<? extends org.lgna.story.SModel> parentClass = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getModelClassForResourceClass(currentClass);
 					parentType = JavaType.getInstance( parentClass );
 					parentConstructorAndParameter = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getConstructorAndParameterForJavaClass(parentClass);
 				}
@@ -176,7 +176,7 @@ public class ModelResourceTree {
 			while (currentClass != null)
 			{
 				classStack.push(currentClass);
-				Class<? extends org.lgna.story.Model> modelClass = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getModelClassForResourceClass(currentClass);
+				Class<? extends org.lgna.story.SModel> modelClass = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getModelClassForResourceClass(currentClass);
 				if (modelClass != null)
 				{
 					break;

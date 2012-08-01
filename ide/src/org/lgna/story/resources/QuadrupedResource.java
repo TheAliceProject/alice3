@@ -46,7 +46,7 @@ package org.lgna.story.resources;
  * @author dculyba
  *
  */
-@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Quadruped.class )
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.SQuadruped.class )
 public interface QuadrupedResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId ROOT = new JointId( null, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId SPINE_BASE = new org.lgna.story.resources.JointId( ROOT, QuadrupedResource.class );
@@ -92,5 +92,5 @@ public interface QuadrupedResource extends JointedModelResource {
 
 	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.Quadruped abstraction );
+	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction );
 }

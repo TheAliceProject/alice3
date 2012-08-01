@@ -52,7 +52,7 @@ import org.lgna.project.annotations.Visibility;
 import edu.cmu.cs.dennisc.nebulous.NebulousTexture;
 
 
-public class Room extends Entity implements MutableRider, Visual {
+public class SRoom extends SThing implements MutableRider, Visual {
 	public static enum WallAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
 		BLUE_STRIPE_WITH_WOOD_TRIM,
 		BLUE_STRIPE_WITH_WHITE_TRIM,
@@ -163,7 +163,7 @@ public class Room extends Entity implements MutableRider, Visual {
 	/*package-private*/org.lgna.story.implementation.RoomImp getImplementation() {
 		return this.implementation;
 	}
-	public void setVehicle( Entity vehicle ) {
+	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 	

@@ -1,7 +1,7 @@
 package org.lgna.story.event;
 
 public class MouseClickOnObjectEvent extends MouseClickEvent {
-	public MouseClickOnObjectEvent( java.awt.event.MouseEvent e, org.lgna.story.Scene scene ) {
+	public MouseClickOnObjectEvent( java.awt.event.MouseEvent e, org.lgna.story.SScene scene ) {
 		super( e, scene );
 	}
 	public MouseClickOnObjectEvent( MouseClickEvent e ) {

@@ -56,13 +56,13 @@ import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
-class TestScene extends Scene {
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private final Camera camera;
-	private final Biped susan;
-	private final ObjectMarker marker;
-	public TestScene( Camera camera, MyBiped susan, ObjectMarker marker ) {
+class TestScene extends SScene {
+	private final SSun sun = new SSun();
+	private final SGround snow = new SGround();
+	private final SCamera camera;
+	private final SBiped susan;
+	private final SThingMarker marker;
+	public TestScene( SCamera camera, MyBiped susan, SThingMarker marker ) {
 		this.camera = camera;
 		this.susan = susan;
 		this.marker = marker;
@@ -77,7 +77,7 @@ class TestScene extends Scene {
 		this.susan.setVehicle( this );
 		this.marker.setVehicle( this );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
-		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
+		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.susan );
 		this.camera.move( MoveDirection.UP, .4);
 		this.camera.move( MoveDirection.FORWARD, 3 );
@@ -135,7 +135,7 @@ class TestJointedModel extends Program {
 			fillInMap( childId );
 		}
 	}
-	private final Camera camera = new Camera();
+	private final SCamera camera = new SCamera();
 	private final MyBiped susan = new MyBiped( 
 			new AdultPersonResource(
 					Gender.FEMALE,
@@ -146,7 +146,7 @@ class TestJointedModel extends Program {
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
 	private final MyBiped ogre = new MyBiped(org.lgna.story.resources.biped.Ogre.BROWN_OGRE);
-	private final ObjectMarker marker = new ObjectMarker();
+	private final SThingMarker marker = new SThingMarker();
 	private final TestScene testScene = new TestScene( camera, susan, marker );
 	
 	private int previousX = -1;

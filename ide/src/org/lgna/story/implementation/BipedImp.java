@@ -48,8 +48,8 @@ import org.lgna.story.resources.JointId;
 /**
  * @author Dennis Cosgrove
  */
-public final class BipedImp extends JointedModelImp< org.lgna.story.Biped, org.lgna.story.resources.BipedResource > {
-	public BipedImp( org.lgna.story.Biped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
+public final class BipedImp extends JointedModelImp< org.lgna.story.SBiped, org.lgna.story.resources.BipedResource > {
+	public BipedImp( org.lgna.story.SBiped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
 		super( abstraction, factory );
 	}
 

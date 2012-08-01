@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public class DiscImp extends ShapeImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Disc sgDisc = new edu.cmu.cs.dennisc.scenegraph.Disc();
-	private final org.lgna.story.Disc abstraction;
+	private final org.lgna.story.SDisc abstraction;
 	public final DoubleProperty outerRadius = new DoubleProperty( DiscImp.this ) {
 		@Override
 		public Double getValue() {
@@ -59,13 +59,13 @@ public class DiscImp extends ShapeImp {
 			DiscImp.this.sgDisc.outerRadius.setValue( value );
 		}
 	};
-	public DiscImp( org.lgna.story.Disc abstraction ) {
+	public DiscImp( org.lgna.story.SDisc abstraction ) {
 		this.abstraction = abstraction;
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgDisc } );
 	}
 	@Override
-	public org.lgna.story.Disc getAbstraction() {
+	public org.lgna.story.SDisc getAbstraction() {
 		return this.abstraction;
 	}
 	@Override
