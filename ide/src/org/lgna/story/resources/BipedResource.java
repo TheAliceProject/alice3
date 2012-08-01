@@ -50,7 +50,7 @@ import org.lgna.story.resources.biped.MarchHare;
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Biped.class )
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.SBiped.class )
 public interface BipedResource extends JointedModelResource {
 	public static final JointId ROOT = new JointId( null, BipedResource.class );
 
@@ -119,6 +119,6 @@ public interface BipedResource extends JointedModelResource {
 	
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-//	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > getImplementationAndVisualFactory();
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction );
+	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction );
+
 }

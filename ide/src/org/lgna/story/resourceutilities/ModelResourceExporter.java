@@ -78,7 +78,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.lgna.project.License;
-import org.lgna.story.Joint;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.BipedResource;

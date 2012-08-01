@@ -48,9 +48,9 @@ package org.alice.interact.operations;
  */
 public class GetAGoodLookAtActionOperation extends org.lgna.croquet.ActionOperation {
 	
-	private final org.lgna.story.Camera camera;
-	private final org.lgna.story.Entity toLookAt;
-	public GetAGoodLookAtActionOperation( org.lgna.croquet.Group group, org.lgna.story.Camera camera, org.lgna.story.Entity toLookAt)
+	private final org.lgna.story.SCamera camera;
+	private final org.lgna.story.SThing toLookAt;
+	public GetAGoodLookAtActionOperation( org.lgna.croquet.Group group, org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt)
 	{
 		super(group, java.util.UUID.fromString( "566dedf3-e612-4eed-8025-a49763feeeb4" ));
 		this.camera = camera;

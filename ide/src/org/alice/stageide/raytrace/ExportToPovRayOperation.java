@@ -62,7 +62,7 @@ public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
 		org.lgna.project.ast.UserField sceneField = sceneEditor.getActiveSceneField();
 		org.lgna.project.ast.AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
-		org.lgna.story.Camera camera = (org.lgna.story.Camera)sceneEditor.getInstanceInJavaVMForField( cameraField );
+		org.lgna.story.SCamera camera = (org.lgna.story.SCamera)sceneEditor.getInstanceInJavaVMForField( cameraField );
 		org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation( camera );
 		edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
 		edu.cmu.cs.dennisc.raytrace.POVRayUtilities.export( new java.io.PrintWriter( System.out ), sgCamera );

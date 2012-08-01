@@ -47,7 +47,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class JointImp extends AbstractTransformableImp {
-	private org.lgna.story.Joint abstraction;
+	private org.lgna.story.SJoint abstraction;
 	private final JointedModelImp<?,?> jointedModelImplementation;
 	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
 	public JointImp( JointedModelImp<?,?> jointedModelImplementation ) {
@@ -59,10 +59,10 @@ public abstract class JointImp extends AbstractTransformableImp {
 	}
 	public abstract org.lgna.story.resources.JointId getJointId();
 	@Override
-	public final org.lgna.story.Joint getAbstraction() {
+	public final org.lgna.story.SJoint getAbstraction() {
 		return this.abstraction;
 	}
-	public void setAbstraction( org.lgna.story.Joint abstraction ) {
+	public void setAbstraction( org.lgna.story.SJoint abstraction ) {
 		assert abstraction != null;
 		assert this.abstraction == null : this.abstraction;
 		this.abstraction = abstraction;

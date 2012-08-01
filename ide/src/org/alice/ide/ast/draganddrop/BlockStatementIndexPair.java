@@ -85,14 +85,19 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	}
 	
 	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-		if( this.blockStatement != replacementBlockStatement ) {
-			BlockStatementIndexPair rv = new BlockStatementIndexPair( replacementBlockStatement, this.index );
-//			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "original:", this, this.hashCode() );
-//			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacement:", rv, rv.hashCode() );
-			return rv;
+		BlockStatementIndexPair replacement = retargeter.retarget( this );
+		if( replacement != this ) {
+			return replacement;
 		} else {
-			return this;
+			org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+			if( this.blockStatement != replacementBlockStatement ) {
+				BlockStatementIndexPair rv = new BlockStatementIndexPair( replacementBlockStatement, this.index );
+//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "original:", this, this.hashCode() );
+//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacement:", rv, rv.hashCode() );
+				return rv;
+			} else {
+				return this;
+			}
 		}
 	}
 

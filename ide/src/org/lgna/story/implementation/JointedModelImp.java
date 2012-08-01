@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lgna.story.Joint;
+import org.lgna.story.SJoint;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
@@ -58,7 +58,7 @@ import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R extends org.lgna.story.resources.JointedModelResource > extends ModelImp {
+public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R extends org.lgna.story.resources.JointedModelResource > extends ModelImp {
 	public static interface VisualData< R extends org.lgna.story.resources.JointedModelResource > { 
 		public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances();
@@ -83,7 +83,7 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 		}
 		
 		@Override
-		public final void setAbstraction(Joint abstraction) {
+		public final void setAbstraction(SJoint abstraction) {
 			super.setAbstraction(abstraction);
 			if (this.internalJointImp != null) {
 				this.internalJointImp.setAbstraction(abstraction);

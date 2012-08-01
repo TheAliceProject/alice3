@@ -217,7 +217,8 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
-		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: investigate blockStatement" );
+		//retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 		final int N = this.initialExpressions.length;
 		assert N == replacementEdit.initialExpressions.length;

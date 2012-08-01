@@ -2,7 +2,7 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.awt.Point;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
@@ -11,7 +11,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class IsInViewDetector {
 
-	public static boolean isThisInView( Entity entity, CameraImp camera ) {
+	public static boolean isThisInView( SThing entity, CameraImp camera ) {
 		EntityImp implementation = ImplementationAccessor.getImplementation( entity );
 		Point3[] points = implementation.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
 		Point3[] relativeToCamera = implementation.getAxisAlignedMinimumBoundingBox( camera ).getHexahedron().getPoints();

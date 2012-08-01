@@ -16,11 +16,11 @@ public class ModelClassData extends BaseModelClassData
 	
 	//Alice Definitions
 	
-	public static final BaseModelClassData PROP_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.JointedModel.class, org.lgna.story.implementation.BasicJointedModelImp.class);
-	public static final BaseModelClassData BIPED_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.Biped.class, org.lgna.story.implementation.BipedImp.class);
-	public static final BaseModelClassData SWIMMER_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.Swimmer.class, org.lgna.story.implementation.SwimmerImp.class);
-	public static final BaseModelClassData FLYER_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.Flyer.class, org.lgna.story.implementation.FlyerImp.class);
-	public static final BaseModelClassData QUADRUPED_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.Quadruped.class, org.lgna.story.implementation.QuadrupedImp.class);
+	public static final BaseModelClassData PROP_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.SJointedModel.class, org.lgna.story.implementation.BasicJointedModelImp.class);
+	public static final BaseModelClassData BIPED_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.SBiped.class, org.lgna.story.implementation.BipedImp.class);
+	public static final BaseModelClassData SWIMMER_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.SSwimmer.class, org.lgna.story.implementation.SwimmerImp.class);
+	public static final BaseModelClassData FLYER_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.SFlyer.class, org.lgna.story.implementation.FlyerImp.class);
+	public static final BaseModelClassData QUADRUPED_BASE_CLASS_DATA = new BaseModelClassData(org.lgna.story.SQuadruped.class, org.lgna.story.implementation.QuadrupedImp.class);
 	
 	public static final ModelClassData BIPED_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BipedResource.class, "org.lgna.story.resources.biped", BIPED_BASE_CLASS_DATA);
 	public static final ModelClassData FLYER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.FlyerResource.class, "org.lgna.story.resources.flyer", FLYER_BASE_CLASS_DATA);

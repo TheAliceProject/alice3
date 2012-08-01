@@ -48,9 +48,9 @@ import org.alice.ide.croquet.models.StandardExpressionState;
  * @author dculyba
  *
  */
-public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.story.resources.JointedModelResource, org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.JointedModel, ? extends org.lgna.story.resources.JointedModelResource >> {
+public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.story.resources.JointedModelResource, org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource >> {
 	
-	public ResourcePropertyAdapter(org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.JointedModel, ? extends org.lgna.story.resources.JointedModelResource > instance, StandardExpressionState expressionState) 
+	public ResourcePropertyAdapter(org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource > instance, StandardExpressionState expressionState) 
 	{
 		super("Visual Resource", instance, expressionState);
 	}

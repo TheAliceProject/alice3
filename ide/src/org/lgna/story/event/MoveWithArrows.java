@@ -1,13 +1,13 @@
 package org.lgna.story.event;
 
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.event.ArrowKeyEvent.MoveDirectionPlane;
 
 public class MoveWithArrows implements ArrowKeyPressListener {
 
-	private MovableTurnable entity;
+	private SMovableTurnable entity;
 
-	public MoveWithArrows( MovableTurnable entity ) {
+	public MoveWithArrows( SMovableTurnable entity ) {
 		this.entity = entity;
 	}
 

@@ -89,7 +89,7 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		return org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this );
 	}
 	
-	public final org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction ) {
+	public final org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
 		return new org.lgna.story.implementation.BipedImp( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
 	}
 	@Override

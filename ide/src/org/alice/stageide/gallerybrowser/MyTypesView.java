@@ -83,7 +83,7 @@ public class MyTypesView extends org.lgna.croquet.components.GridBagPanel {
 	private void addComponents( edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > node, int depth, java.awt.GridBagConstraints gbc ) {
 		if( node != null ) {
 			org.lgna.project.ast.NamedUserType type = node.getValue();
-			if( type == null || type.isAssignableTo( org.lgna.story.Turnable.class ) ) {
+			if( type == null || type.isAssignableTo( org.lgna.story.STurnable.class ) ) {
 				if( type != null ) {
 					org.lgna.croquet.components.JComponent< ? > component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( TypeDragModel.getInstance( type ) );
 					gbc.insets.top = 8 + depth*12;

@@ -76,10 +76,10 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 	private org.lgna.croquet.DropReceptor currentDropReceptor;
 	private org.lgna.croquet.DropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
-	public static DragStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static DragStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.DragTrigger trigger ) {
 		return new DragStep( parent, model, trigger );
 	}
-	private DragStep( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+	private DragStep( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.DragTrigger trigger ) {
 		super( parent, model, trigger );
 	}
 	public DragStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

@@ -73,7 +73,7 @@ public class TransactionManager {
 	}
 
 	@Deprecated
-	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.DragTrigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
 	}
 

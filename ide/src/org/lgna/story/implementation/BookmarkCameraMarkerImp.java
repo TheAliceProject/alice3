@@ -42,7 +42,7 @@
  */
 package org.lgna.story.implementation;
 
-import org.lgna.story.BookmarkCameraMarker;
+import org.lgna.story.SCameraMarker;
 
 /**
  * @author dculyba
@@ -50,7 +50,7 @@ import org.lgna.story.BookmarkCameraMarker;
  */
 public class BookmarkCameraMarkerImp extends PerspectiveCameraMarkerImp{
 
-	public BookmarkCameraMarkerImp( BookmarkCameraMarker abstraction ) {
+	public BookmarkCameraMarkerImp( SCameraMarker abstraction ) {
 		super(abstraction);
 	}
 

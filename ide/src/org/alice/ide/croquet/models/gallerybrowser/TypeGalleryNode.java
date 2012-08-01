@@ -153,7 +153,6 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		String name = this.getDeclaration().getName();
-		sb.append( "My" );
 		sb.append( name.replace( "Resource", "" ) );
 	}
 }

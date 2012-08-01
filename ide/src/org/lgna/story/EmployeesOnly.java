@@ -50,7 +50,7 @@ public class EmployeesOnly {
 		throw new AssertionError();
 	}
 	
-	public static void invokeHandleActiveChanged( Scene scene, boolean isActive, int activationCount ) {
+	public static void invokeHandleActiveChanged( SScene scene, boolean isActive, int activationCount ) {
 		scene.handleActiveChanged( isActive, activationCount );
 	}
 

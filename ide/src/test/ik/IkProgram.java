@@ -49,9 +49,9 @@ import org.lgna.story.*;
  * @author Dennis Cosgrove
  */
 class IkProgram extends Program {
-	private final Camera camera = new Camera();
-	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN );
-	private final Sphere target = new Sphere();
+	private final SCamera camera = new SCamera();
+	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.Ogre.BROWN );
+	private final SSphere target = new SSphere();
 	private final IkScene scene = new IkScene( camera, ogre, target );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();

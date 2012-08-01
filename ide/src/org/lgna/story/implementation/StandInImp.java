@@ -60,7 +60,7 @@ public class StandInImp extends AbstractTransformableImp implements edu.cmu.cs.d
 		this.sgStandIn.setVehicle( sgVehicle );
 	}
 	@Override
-	public org.lgna.story.Entity getAbstraction() {
+	public org.lgna.story.SThing getAbstraction() {
 		return null;
 	}
 	@Override

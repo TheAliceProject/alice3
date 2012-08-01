@@ -52,11 +52,11 @@ public class AddBoxManagedFieldComposite extends AddModelManagedFieldComposite {
 	public static AddBoxManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> widthState = this.createInitialPropertyValueExpressionState( this.createKey( "widthState" ), 1.0, org.lgna.story.Model.class, "setWidth", Number.class, org.lgna.story.SetWidth.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> heightState = this.createInitialPropertyValueExpressionState( this.createKey( "heightState" ), 1.0, org.lgna.story.Model.class, "setHeight", Number.class, org.lgna.story.SetHeight.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> depthState = this.createInitialPropertyValueExpressionState( this.createKey( "depthState" ), 1.0, org.lgna.story.Model.class, "setDepth", Number.class, org.lgna.story.SetDepth.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> widthState = this.createInitialPropertyValueExpressionState( this.createKey( "widthState" ), 1.0, org.lgna.story.SModel.class, "setWidth", Number.class, org.lgna.story.SetWidth.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> heightState = this.createInitialPropertyValueExpressionState( this.createKey( "heightState" ), 1.0, org.lgna.story.SModel.class, "setHeight", Number.class, org.lgna.story.SetHeight.Detail[].class );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> depthState = this.createInitialPropertyValueExpressionState( this.createKey( "depthState" ), 1.0, org.lgna.story.SModel.class, "setDepth", Number.class, org.lgna.story.SetDepth.Detail[].class );
 	private AddBoxManagedFieldComposite() {
-		super( java.util.UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ),	org.lgna.story.Box.class );
+		super( java.util.UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ),	org.lgna.story.SBox.class );
 	}
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getWidthState() {
 		return this.widthState;

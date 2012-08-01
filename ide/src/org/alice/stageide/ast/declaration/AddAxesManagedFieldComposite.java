@@ -53,6 +53,6 @@ public class AddAxesManagedFieldComposite extends org.alice.ide.ast.declaration.
 		return SingletonHolder.instance;
 	}
 	private AddAxesManagedFieldComposite() {
-		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ),	org.lgna.story.Axes.class );
+		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ),	org.lgna.story.SAxes.class );
 	}
 }

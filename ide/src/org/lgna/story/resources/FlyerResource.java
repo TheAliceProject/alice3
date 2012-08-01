@@ -46,7 +46,7 @@ package org.lgna.story.resources;
  * @author dculyba
  *
  */
-@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Flyer.class )
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.SFlyer.class )
 public interface FlyerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId ROOT = new JointId( null, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId SPINE_BASE = new org.lgna.story.resources.JointId( ROOT, FlyerResource.class );
@@ -84,6 +84,5 @@ public interface FlyerResource extends JointedModelResource {
 	
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 	
-//	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory< org.lgna.story.resources.FlyerResource > getImplementationAndVisualFactory();
-	public org.lgna.story.implementation.FlyerImp createImplementation( org.lgna.story.Flyer abstraction );
+	public org.lgna.story.implementation.FlyerImp createImplementation( org.lgna.story.SFlyer abstraction );
 }
