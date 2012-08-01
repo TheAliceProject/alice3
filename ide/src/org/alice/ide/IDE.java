@@ -240,8 +240,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	@Override
 	public void ensureProjectCodeUpToDate() {
-		this.generateCodeForSceneSetUp();
-		this.reorganizeFieldsIfNecessary();
+		org.lgna.project.Project project = this.getProject();
+		if( project != null ) {
+			synchronized( project.getLock() ) {
+				this.generateCodeForSceneSetUp();
+				this.reorganizeFieldsIfNecessary();
+			}
+		}
 	}
 	public org.lgna.project.ast.NamedUserType getUpToDateProgramType() {
 		org.lgna.project.Project project = this.getUpToDateProject();
