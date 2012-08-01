@@ -73,11 +73,6 @@ public class MigrationManager {
 
 			new org.lgna.project.migration.TextMigration(
 				new org.lgna.project.Version( "3.1.9.0.0" ),
-				new org.lgna.project.Version( "3.1.10.0.0" )
-			),
-
-			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.10.0.0" ),
 				new org.lgna.project.Version( "3.1.11.0.0" )
 			),
 
@@ -131,17 +126,7 @@ public class MigrationManager {
 
 			new org.lgna.project.migration.TextMigration(
 				new org.lgna.project.Version( "3.1.20.0.0" ),
-				new org.lgna.project.Version( "3.1.23.0.0" )
-			),
-
-			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.23.0.0" ),
-				new org.lgna.project.Version( "3.1.24.0.0" )
-			),
-
-			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.24.0.0" ),
-				new org.lgna.project.Version( "3.1.25.0.0" )
+				new org.lgna.project.Version( "3.1.33.0.0" )
 			),
 
 			new org.lgna.project.migration.TextMigration(
