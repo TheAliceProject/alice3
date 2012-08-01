@@ -48,7 +48,7 @@ import org.lgna.story.*;
 /**
  * @author Dennis Cosgrove
  */
-class IkProgram extends Program {
+class IkProgram extends SProgram {
 	private final SCamera camera = new SCamera();
 	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.Ogre.BROWN );
 	private final SSphere target = new SSphere();

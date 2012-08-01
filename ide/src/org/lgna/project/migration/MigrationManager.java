@@ -133,6 +133,9 @@ public class MigrationManager {
 				new org.lgna.project.Version( "3.1.33.0.0" ),
 				new org.lgna.project.Version( "3.1.34.0.0" ),
 
+				"org.lgna.story.Program",
+				"org.lgna.story.SProgram",
+
 				"org.lgna.story.Entity",
 				"org.lgna.story.SThing",
 

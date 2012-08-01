@@ -248,7 +248,7 @@ public class BootstrapUtilties {
 
 		handleActiveChangedBody.statements.add( ifOuter );
 		
-		org.lgna.project.ast.NamedUserType sceneType = createType( "MyScene", org.lgna.story.SScene.class );
+		org.lgna.project.ast.NamedUserType sceneType = createType( "Scene", org.lgna.story.SScene.class );
 		sceneType.fields.add( fields );
 		sceneType.methods.add( performCustomSetupMethod );
 		sceneType.methods.add( performGeneratedSetupMethod );
@@ -275,7 +275,7 @@ public class BootstrapUtilties {
 				)
 		);
 
-		org.lgna.project.ast.NamedUserType rv = createType( "MyProgram", org.lgna.story.Program.class );
+		org.lgna.project.ast.NamedUserType rv = createType( "Program", org.lgna.story.SProgram.class );
 		rv.fields.add( sceneField );
 		rv.methods.add( getSceneMethod );
 

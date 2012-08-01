@@ -55,7 +55,7 @@ import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
-import org.lgna.story.Program;
+import org.lgna.story.SProgram;
 import org.lgna.story.RollDirection;
 import org.lgna.story.SScene;
 import org.lgna.story.SSphere;
@@ -269,7 +269,7 @@ class SnowScene extends SScene {
 /**
  * @author Dennis Cosgrove
  */
-class RagsToRichesStory extends Program {
+class RagsToRichesStory extends SProgram {
 
 	private final SCamera camera = new SCamera();
 	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(),

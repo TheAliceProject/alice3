@@ -45,7 +45,7 @@ package test;
 
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
-import org.lgna.story.Program;
+import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
 import org.lgna.story.SSun;
 import org.lgna.story.TurnDirection;
@@ -85,7 +85,7 @@ class MyScene extends SScene {
 /**
  * @author Dennis Cosgrove
  */
-public class BootStrapStory extends Program {
+public class BootStrapStory extends SProgram {
 	private final MyScene myScene = new MyScene();
 	public void playOutStory() {
 		this.setActiveScene( this.myScene );

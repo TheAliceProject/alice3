@@ -90,8 +90,8 @@ public abstract class ProgramContext {
 	public org.lgna.project.virtualmachine.UserInstance getProgramInstance() {
 		return this.programInstance;
 	}
-	public org.lgna.story.Program getProgram() {
-		return this.programInstance.getJavaInstance( org.lgna.story.Program.class );
+	public org.lgna.story.SProgram getProgram() {
+		return this.programInstance.getJavaInstance( org.lgna.story.SProgram.class );
 	}
 	public org.lgna.story.implementation.ProgramImp getProgramImp() {
 		return org.lgna.story.ImplementationAccessor.getImplementation( this.getProgram() );

@@ -46,7 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public /*abstract*/ class Program {
+public /*abstract*/ class SProgram {
 	private final org.lgna.story.implementation.ProgramImp implementation = org.lgna.story.implementation.ProgramImp.createInstance( this );
 	private SScene activeScene;
 	/*package-private*/ org.lgna.story.implementation.ProgramImp getImplementation() {
