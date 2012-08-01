@@ -145,7 +145,7 @@ class TestJointedModel extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final MyBiped ogre = new MyBiped(org.lgna.story.resources.biped.Ogre.BROWN_OGRE);
+	private final MyBiped ogre = new MyBiped(org.lgna.story.resources.biped.Ogre.BROWN);
 	private final SThingMarker marker = new SThingMarker();
 	private final TestScene testScene = new TestScene( camera, susan, marker );
 	
