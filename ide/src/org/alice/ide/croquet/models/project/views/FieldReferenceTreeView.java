@@ -56,6 +56,7 @@ public class FieldReferenceTreeView extends BorderPanel {
 	private Tree<FieldReferenceSearchTreeNode> tree;
 
 	public FieldReferenceTreeView( FieldReferenceTreeComposite composite ) {
+		super( composite );
 		tree = composite.getManager().createTree();
 		this.addCenterComponent( new ScrollPane( tree ) );
 		tree.setRootVisible( false );
@@ -64,6 +65,11 @@ public class FieldReferenceTreeView extends BorderPanel {
 
 	public void refresh() {
 		tree.expandEachRowOnce();
+	}
+
+	public void disable() {
+		tree.repaint();
+		tree.getAwtComponent().setEnabled( false );
 	}
 
 }

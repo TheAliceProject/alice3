@@ -42,19 +42,32 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.InstanceSearchTreeManager;
+import org.alice.ide.croquet.models.project.views.FindFrameView;
+import org.lgna.project.ast.UserField;
 
 /**
  * @author Matt May
  */
 public class FindFieldsFrameComposite extends FindFrameComposite {
 
-	public FindFieldsFrameComposite() {
+	public static FindFieldsFrameComposite getFrameFor( UserField field ) {
+		return new FindFieldsFrameComposite( field );
+	}
+
+	private UserField field;
+
+	private FindFieldsFrameComposite( UserField field ) {
 		super( java.util.UUID.fromString( "fa923388-bc04-44ba-b347-db12ec55fe02" ) );
+		this.field = field;
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+		InstanceSearchTreeManager treeManager = fieldSearchComposite.treeComposite.getManager();
+		treeManager.setValue( treeManager.find( field ) );
+		fieldSearchComposite.disableTree();
 		this.getState().setSelectedIndex( 1 );
 	}
 }
