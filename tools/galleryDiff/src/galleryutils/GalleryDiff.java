@@ -3,10 +3,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.lgna.project.Version;
 
@@ -203,7 +201,7 @@ public class GalleryDiff {
 		
 	}
 	
-	public static File saveGalleryInfo(Version version, String outputFilename, File... jars) {
+public static File saveGalleryInfo(String version, String outputFilename, File... jars) {
 		
 		List<String> symbols = new java.util.ArrayList<String>();
 		for (File jar : jars) {
@@ -230,6 +228,10 @@ public class GalleryDiff {
 			return null;
 		}
 		return outputFile;
+	}
+	
+	public static File saveGalleryInfo(Version version, String outputFilename, File... jars) {
+		return saveGalleryInfo(version.toString(), outputFilename, jars);
 	}
 	
 	private void doMatch()
@@ -551,42 +553,48 @@ public class GalleryDiff {
 	
 	public static void main( String[] args ) throws Exception {
 		
-		String curDir = System.getProperty("user.dir");
-		System.out.println(curDir);
-		
-		File jarDir = new File(curDir);
-		jarDir = jarDir.getParentFile().getParentFile();
-		jarDir = new File(jarDir, "ide/lib/alice");
-		
-		System.out.println(jarDir);
-		
-		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
-		
-		File galleryData = GalleryDiff.saveGalleryInfo(Version.getCurrentVersion(), "C:/aliceBuildProcess/Data_AliceVersions/"+Version.getCurrentVersion().toString()+"/galleryData.txt", jarFiles);
-		
-//		GalleryDiff diff = new GalleryDiff(galleryData, galleryData);
+//		String curDir = System.getProperty("user.dir");
+//		System.out.println(curDir);
 //		
+//		File jarDir = new File(curDir);
+//		jarDir = jarDir.getParentFile().getParentFile();
+//		jarDir = new File(jarDir, "ide/lib/alice");
 //		
-//		final String[] DATA_VERSIONS = {
-////				"3.1.0.0.0", //Not supported
-////				"3.1.1.0.0", //Not supported
-////				"3.1.2.0.0", //Not supported
-////				"3.1.3.0.0", //Not supported
-////				"3.1.4.0.0", //Not supported
-////				"3.1.5.0.0", //Not supported
-////				"3.1.6.0.0", //Not supported
-//				"3.1.7.0.0",
-//				"3.1.8.0.0",
-//				"3.1.9.0.0",
-//				"3.1.10.0.0",
-//				"3.1.11.0.0",
-//				"3.1.14.0.0",
-//				"3.1.15.1.0",
-//				"3.1.20.0.0",
-//				"3.1.23.0.0",
-//				"3.1.24.0.0",
-//				"3.1.25.0.0",
-//		};
+//		System.out.println(jarDir);
+//		
+//		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
+//		
+//		File galleryData = GalleryDiff.saveGalleryInfo(Version.getCurrentVersion(), "C:/aliceBuildProcess/Data_AliceVersions/"+Version.getCurrentVersion().toString()+"/galleryData.txt", jarFiles);
+//		
+
+		final String[] DATA_VERSIONS = {
+//				"3.1.0.0.0", //Not supported
+//				"3.1.1.0.0", //Not supported
+//				"3.1.2.0.0", //Not supported
+//				"3.1.3.0.0", //Not supported
+//				"3.1.4.0.0", //Not supported
+//				"3.1.5.0.0", //Not supported
+//				"3.1.6.0.0", //Not supported
+				"3.1.29.0.0",
+				"3.1.34.0.0",
+		};
+		
+		final String DATA_LOCATIONS = "C:\\aliceBuildProcess\\Data_AliceVersions\\";
+		final String FILE_NAME = "\\galleryData.txt";
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<DATA_VERSIONS.length-1; i++)
+		{
+			String prev = DATA_VERSIONS[i];
+			String cur = DATA_VERSIONS[i+1];
+			GalleryDiff differ = new GalleryDiff(new File(DATA_LOCATIONS+prev+FILE_NAME), new File(DATA_LOCATIONS+cur+FILE_NAME));
+			String code = differ.getMigrationCode();
+			sb.append(code+"\n");
+		}
+		String finalCode = sb.toString();
+		edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(finalCode);
+		System.out.println(finalCode);
+		return;
+		
 //		
 //		GalleryDiff differ = null;
 //		
