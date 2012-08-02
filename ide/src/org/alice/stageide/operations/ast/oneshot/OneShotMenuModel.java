@@ -43,6 +43,9 @@
 
 package org.alice.stageide.operations.ast.oneshot;
 
+import org.alice.ide.croquet.models.ast.DeleteFieldFrameComposite;
+import org.alice.ide.croquet.models.ast.DeleteFieldFrameView;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,7 +68,8 @@ public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 					if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) || field.getValueType().isAssignableTo( org.lgna.story.Scene.class ) )  {
 						//pass
 					} else {
-						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+						models.add( new DeleteFieldFrameComposite( field ).getBooleanState().getMenuItemPrepModel() );
+//						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 					}
 					models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance(field).getMenuItemPrepModel() );
 				}

@@ -65,6 +65,7 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 	}
 	@Override
 	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
+		super.releaseView();
 		//todo
 	}
 	

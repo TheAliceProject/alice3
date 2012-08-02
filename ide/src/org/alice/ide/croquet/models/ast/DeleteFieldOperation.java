@@ -96,9 +96,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 			sb.append( " if you want to delete \"" );
 			sb.append( field.name.getValue() );
 			sb.append( "\" ." );
-//			DeleteFieldDialogComposite dialog = DeleteFieldDialogComposite.getDialog( field );
-//			dialog.getOperation().fire();
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString() );
+			DeleteFieldFrameComposite dialog = DeleteFieldFrameComposite.getDialog( field );
 			return false;
 		} else {
 			return true;

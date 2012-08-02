@@ -63,7 +63,7 @@ public abstract class FindFrameComposite extends FrameComposite<FindFrameView> {
 	}
 
 	@Override
-	protected final FindFrameView createView() {
+	protected FindFrameView createView() {
 		methodSearchComposite = new MethodSearchTabComposite();
 		fieldSearchComposite = new FieldSearchTabCompsoite();
 		tabState = this.createTabSelectionState( this.createKey( "tabState" ), SimpleTabComposite.class, 0, methodSearchComposite, fieldSearchComposite );

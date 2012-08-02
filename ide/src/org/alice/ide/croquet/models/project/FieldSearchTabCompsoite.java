@@ -67,8 +67,8 @@ public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabVi
 			referenceComposite.changed( treeComposite.getManager(), treeComposite.getManager().getSelectedNode(), treeComposite.getManager().getSelectedNode(), true );
 		}
 	};
-	private FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
-	private FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
+	public FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
+	public FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
 
 	@Override
 	public boolean isCloseable() {
@@ -88,6 +88,10 @@ public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabVi
 
 	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
 		treeComposite.addListener( listener );
+	}
+
+	public void disableTree() {
+		treeComposite.getView().disable();
 	}
 
 }
