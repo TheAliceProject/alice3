@@ -47,6 +47,6 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public interface Articulable {
-	public void touch( Entity entity );
-	public void walkTo( Entity entity );
+	public void touch( SThing entity );
+	public void walkTo( SThing entity );
 }

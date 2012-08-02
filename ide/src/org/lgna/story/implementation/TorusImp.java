@@ -47,7 +47,7 @@ package org.lgna.story.implementation;
  */
 public class TorusImp extends ShapeImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Torus sgTorus = new edu.cmu.cs.dennisc.scenegraph.Torus();
-	private final org.lgna.story.Torus abstraction;
+	private final org.lgna.story.STorus abstraction;
 	
 	private static final double MINIMUM_VALUE = 0.01; //todo
 	public final DoubleProperty innerRadius = new DoubleProperty( TorusImp.this ) {
@@ -81,14 +81,14 @@ public class TorusImp extends ShapeImp {
 		}
 	};
 
-	public TorusImp( org.lgna.story.Torus abstraction ) {
+	public TorusImp( org.lgna.story.STorus abstraction ) {
 		this.sgTorus.majorRadius.setValue( 0.375 );
 		this.sgTorus.minorRadius.setValue( 0.125 );
 		this.abstraction = abstraction;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgTorus } );
 	}
 	@Override
-	public org.lgna.story.Torus getAbstraction() {
+	public org.lgna.story.STorus getAbstraction() {
 		return this.abstraction;
 	}
 	@Override

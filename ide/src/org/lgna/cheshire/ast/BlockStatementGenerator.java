@@ -63,6 +63,12 @@ public class BlockStatementGenerator {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
 		mapStatementClassToGenerator.put( org.lgna.project.ast.LocalDeclarationStatement.class, org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
 	}
+	
+	private static org.alice.ide.ast.draganddrop.BlockStatementIndexPair createRetargetedLocation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair original, org.alice.ide.ast.draganddrop.BlockStatementIndexPair destination ) {
+		org.lgna.project.ast.BlockStatement nextBlockStatement = destination.getBlockStatement();
+		int nextIndex = destination.getIndex() + original.getIndex();
+		return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( nextBlockStatement, nextIndex );
+	}
 	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
 			if( statement.isEnabled.getValue() ) {
@@ -130,6 +136,15 @@ public class BlockStatementGenerator {
 						templateComposite = org.alice.ide.controlflow.ControlFlowComposite.getInstance( /*todo*/null );
 					}
 				}
+				boolean isReorderingDesired = statement instanceof org.lgna.project.ast.CountLoop;
+
+				if( isReorderingDesired ) {
+					if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+						org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+						BlockStatementGenerator.generateAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
+					}
+				}
+				
 				if( statementGenerator != null ) {
 					if( instanceFactory != null ) {
 						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
@@ -184,9 +199,50 @@ public class BlockStatementGenerator {
 						completionStep.setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
 					}
 				}
-				if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-					org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
-					BlockStatementGenerator.generateAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
+				if( isReorderingDesired ) {
+					if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+						final org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+						final org.alice.ide.ast.draganddrop.BlockStatementIndexPair destination = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statementWithBody );
+						org.lgna.croquet.Retargeter retargeter = new org.lgna.croquet.Retargeter() {
+							public void addKeyValuePair( java.lang.Object key, java.lang.Object value ) {
+							}
+							public <T> T retarget( T value ) {
+								if( value instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
+									org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)value;
+									if( blockStatementIndexPair.getBlockStatement() == statementWithBody.body.getValue() ) {
+//										org.lgna.project.ast.BlockStatement nextBlockStatement = destination.getBlockStatement();
+//										int nextIndex = destination.getIndex() + blockStatementIndexPair.getIndex();
+//										return (T)new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( nextBlockStatement, nextIndex );
+										return (T)createRetargetedLocation( blockStatementIndexPair, destination );
+									}
+								}
+								return value;
+							}
+						};
+						history.retarget( retargeter );
+						
+						for( org.lgna.project.ast.Statement subStatement : statementWithBody.body.getValue().statements ) {
+							org.lgna.croquet.DragModel dragModel = org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( subStatement );
+
+							org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( subStatement );
+							org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation = createRetargetedLocation( toLocation, destination );
+							
+							org.lgna.croquet.triggers.DragTrigger dragTrigger = org.lgna.croquet.triggers.DragTrigger.createGeneratorInstance();
+							org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( toLocation );
+							//org.lgna.croquet.Model tempDropModel = lastStatementDragModel.getDropModel( null, nextLocation );
+							org.alice.ide.ast.code.MoveStatementOperation dropModel = org.alice.ide.ast.code.MoveStatementOperation.getInstance( fromLocation, subStatement, toLocation );
+
+							org.lgna.croquet.history.Transaction moveStatementTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
+							org.lgna.croquet.history.DragStep.createAndAddToTransaction( moveStatementTransaction, dragModel, dragTrigger );
+							org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( moveStatementTransaction, dropModel, dropTrigger, null );
+							org.alice.ide.ast.code.edits.MoveStatementEdit moveStatementEdit = new org.alice.ide.ast.code.edits.MoveStatementEdit( completionStep, fromLocation, subStatement, toLocation );
+						}
+					}
+				} else {
+					if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+						org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
+						BlockStatementGenerator.generateAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
+					}
 				}
 			}
 		}

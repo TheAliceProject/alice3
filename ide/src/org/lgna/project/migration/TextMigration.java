@@ -57,11 +57,26 @@ public class TextMigration implements Migration {
 			java.util.regex.Matcher matcher = this.pattern.matcher( source );
 			if( matcher.find() ) {
 				//todo?
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replace all", this.pattern, this.replacement );
 				matcher.reset();
-				return matcher.replaceAll( this.replacement );
+				String rv = matcher.replaceAll( this.replacement );
+//				java.util.regex.Matcher postMatcher = this.pattern.matcher( rv );
+//				assert postMatcher.find() == false : rv;
+//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
+				return rv;
 			} else {
 				return source;
 			}
+		}
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "Pair[" );
+			sb.append( this.pattern );
+			sb.append( ";" );
+			sb.append( this.replacement );
+			sb.append( "]" );
+			return sb.toString();
 		}
 	}
 	

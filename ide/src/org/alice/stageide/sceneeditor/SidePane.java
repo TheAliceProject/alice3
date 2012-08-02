@@ -176,6 +176,8 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
                 	itemSelectedState.setToolTipText(item.getToolTipText());
                 }
                 PushButton b = itemSelectedState.createPushButton();
+                b.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+                b.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
                 b.setSelectedColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
                 b.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor());
                 return b;

@@ -77,11 +77,11 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ToolPalette;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.JointedModel;
-import org.lgna.story.Model;
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SModel;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MutableRider;
 import org.lgna.story.implementation.BillboardImp;
 import org.lgna.story.implementation.ConeImp;
@@ -101,7 +101,7 @@ import org.lgna.story.resources.JointedModelResource;
 public class SceneObjectPropertyManagerPanel extends GridBagPanel
 {
 	private org.alice.ide.instancefactory.InstanceFactory selectedInstance;
-	private Entity selectedEntity;
+	private SThing selectedEntity;
 	private EntityImp selectedImp;
 	
 	private org.lgna.project.virtualmachine.UserInstance sceneInstance;
@@ -143,7 +143,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	}
 	
 	private void setShowJointsOfField(org.lgna.project.ast.AbstractField field, boolean showJoints) {
-		JointedModelImp<? extends JointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
+		JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
 		if (imp != null) {
 			imp.setAllJointPivotsVisibile(showJoints);
 		}
@@ -396,11 +396,11 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				}
 			}
 			
-			if (this.selectedEntity instanceof MovableTurnable)
+			if (this.selectedEntity instanceof SMovableTurnable)
 			{
-				propertyAdapters.add( new MoveableTurnableTranslationAdapter((MovableTurnable)this.selectedEntity, null));
+				propertyAdapters.add( new MoveableTurnableTranslationAdapter((SMovableTurnable)this.selectedEntity, null));
 			}
-			if (this.selectedEntity instanceof Model && this.selectedImp instanceof ModelImp)
+			if (this.selectedEntity instanceof SModel && this.selectedImp instanceof ModelImp)
 			{
 				propertyAdapters.add( new ModelSizeAdapter((ModelImp)this.selectedImp, null));
 			}
@@ -505,8 +505,8 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		
 		if (instance != null) {
 			Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( this.selectedInstance.createExpression() );
-			if( instanceInJava instanceof org.lgna.story.Entity ) {
-				this.selectedEntity = (org.lgna.story.Entity)instanceInJava;
+			if( instanceInJava instanceof org.lgna.story.SThing ) {
+				this.selectedEntity = (org.lgna.story.SThing)instanceInJava;
 				this.selectedImp = ImplementationAccessor.getImplementation(this.selectedEntity);
 			}
 			else if (instanceInJava instanceof org.lgna.story.implementation.EntityImp)

@@ -49,5 +49,5 @@ public interface ArmoireResource extends PropResource {
 
 	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { RIGHT_DOOR, LEFT_DOOR };
 	
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.JointedModel abstraction );
+	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction );
 }

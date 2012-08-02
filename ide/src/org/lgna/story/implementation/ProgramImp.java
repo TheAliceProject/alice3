@@ -47,7 +47,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ProgramImp {
-	private final org.lgna.story.Program abstraction;
+	private final org.lgna.story.SProgram abstraction;
 	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	
 	private static Object ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock = new Object();
@@ -66,13 +66,13 @@ public abstract class ProgramImp {
 		ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( classForNextInstance, new Class<?>[] {}, new Object[] {} );
 	}
 	
-	public static ProgramImp createInstance( org.lgna.story.Program abstraction ) {
+	public static ProgramImp createInstance( org.lgna.story.SProgram abstraction ) {
 		ProgramImp rv;
 		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
 			if( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance != null ) {
 				
 				Class<?>[] parameterTypes = new Class<?>[ ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes.length + 1 ];
-				parameterTypes[ 0 ] = org.lgna.story.Program.class;
+				parameterTypes[ 0 ] = org.lgna.story.SProgram.class;
 				System.arraycopy( ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes, 0, parameterTypes, 1, ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes.length );
 				
 				Object[] arguments = new Object[ ACCEPTABLE_HACK_FOR_NOW_bonusArguments.length + 1 ];
@@ -91,7 +91,7 @@ public abstract class ProgramImp {
 	}
 	
 	private double simulationSpeedFactor = 1.0; 
-	protected ProgramImp( org.lgna.story.Program abstraction, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		this.abstraction = abstraction;
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
@@ -217,7 +217,7 @@ public abstract class ProgramImp {
 		this.isControlPanelDesired = isControlPanelDesired;
 	}
 
-	public org.lgna.story.Program getAbstraction() {
+	public org.lgna.story.SProgram getAbstraction() {
 		return this.abstraction;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {

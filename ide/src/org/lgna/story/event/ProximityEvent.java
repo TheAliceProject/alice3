@@ -47,12 +47,12 @@ package org.lgna.story.event;
  */
 public class ProximityEvent extends AbstractEvent {
 
-	private final org.lgna.story.MovableTurnable[] entities;
+	private final org.lgna.story.SMovableTurnable[] entities;
 
-	public ProximityEvent( org.lgna.story.MovableTurnable... entities ) {
+	public ProximityEvent( org.lgna.story.SMovableTurnable... entities ) {
 		this.entities = entities;
 	}
-	public org.lgna.story.MovableTurnable[] getModels() {
+	public org.lgna.story.SMovableTurnable[] getModels() {
 		return entities;
 	}
 

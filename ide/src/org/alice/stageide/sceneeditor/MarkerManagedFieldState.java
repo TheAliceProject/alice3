@@ -64,7 +64,7 @@ public class MarkerManagedFieldState extends org.alice.ide.declarationseditor.ty
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
 		if( super.isAcceptableItem( value ) ) {
-			return value.getValueType().isAssignableTo( org.lgna.story.Marker.class );
+			return value.getValueType().isAssignableTo( org.lgna.story.SMarker.class );
 		} else {
 			return false;
 		}

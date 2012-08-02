@@ -47,14 +47,14 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class AxesImp extends AbstractTransformableImp {
-	private final org.lgna.story.Axes abstraction;
+	private final org.lgna.story.SAxes abstraction;
 	private final edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
-	public AxesImp( org.lgna.story.Axes abstraction ) {
+	public AxesImp( org.lgna.story.SAxes abstraction ) {
 		this.abstraction = abstraction;
 		this.putInstance( this.sgAxes );
 	}
 	@Override
-	public org.lgna.story.Axes getAbstraction() {
+	public org.lgna.story.SAxes getAbstraction() {
 		return this.abstraction;
 	}
 	@Override

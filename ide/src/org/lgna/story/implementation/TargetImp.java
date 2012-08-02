@@ -47,12 +47,12 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class TargetImp extends TransformableImp {
-	private final org.lgna.story.Target abstraction;
-	public TargetImp( org.lgna.story.Target abstraction ) {
+	private final org.lgna.story.STarget abstraction;
+	public TargetImp( org.lgna.story.STarget abstraction ) {
 		this.abstraction = abstraction;
 	}
 	@Override
-	public org.lgna.story.Target getAbstraction() {
+	public org.lgna.story.STarget getAbstraction() {
 		return this.abstraction;
 	}
 	@Override

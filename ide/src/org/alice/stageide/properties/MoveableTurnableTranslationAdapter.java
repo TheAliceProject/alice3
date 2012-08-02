@@ -52,11 +52,11 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, org.lgna.story.MovableTurnable> 
+public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, org.lgna.story.SMovableTurnable> 
 {
 	private AbsoluteTransformationListener absoluteTransformationListener;
 	
-	public MoveableTurnableTranslationAdapter(org.lgna.story.MovableTurnable instance, StandardExpressionState expressionState) {
+	public MoveableTurnableTranslationAdapter(org.lgna.story.SMovableTurnable instance, StandardExpressionState expressionState) {
 		super("Position", instance, expressionState);
 	}
 	

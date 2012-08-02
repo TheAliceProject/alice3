@@ -2,7 +2,7 @@ package org.lgna.story.event;
 
 public class EnterProximityEvent extends ProximityEvent {
 
-	public EnterProximityEvent( org.lgna.story.MovableTurnable... movables ) {
+	public EnterProximityEvent( org.lgna.story.SMovableTurnable... movables ) {
 		super( movables );
 	}
 
