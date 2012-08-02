@@ -78,7 +78,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
-		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
+		IDE.exceptionHandler.setApplicationName( getApplicationName() );
 		//initialize locale
 		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueListener( new org.lgna.croquet.ListSelectionState.ValueListener< java.util.Locale >() {
 			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
@@ -197,7 +197,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					prefix = "\"</strong>, <strong>\"";
 				}
 				sb.append( "\"</strong><br>" );
-				sb.append( this.getApplicationName() );
+				sb.append( getApplicationName() );
 				sb.append( " already attempted to move it once." );
 				sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
 				return sb.toString();
@@ -308,19 +308,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		StringBuffer sb = new StringBuffer();
 		updateBugReportSubmissionTitle( sb );
 		return sb.toString();
-	}
-
-	@Override
-	public String getApplicationName() {
-		return "Alice";
-	}
-	@Override
-	public String getVersionText() {
-		return org.lgna.project.Version.getCurrentVersionText();
-	}
-	@Override
-	public String getVersionAdornment() {
-		return " 3 BETA ";
 	}
 
 	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
