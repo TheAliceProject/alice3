@@ -72,7 +72,7 @@ public class DeleteFieldFrameView extends BorderPanel {
 		//		Icon icon = new ScaledImageIcon( image, 120, 90 );
 //		System.out.println( composite.getField() );
 		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
-		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE );
+		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
 //		System.out.println( "icon factory: " + iconFactory );
 //		System.out.println( "icon: " + icon );
 		Label label = new Label( icon );
