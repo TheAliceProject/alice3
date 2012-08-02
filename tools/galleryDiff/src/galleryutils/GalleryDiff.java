@@ -167,6 +167,68 @@ public class GalleryDiff {
 		doMatch();
 	}
 	
+	
+	public GalleryDiff(String prevVersion, String curVersion, java.io.File prevDataFile, java.io.File curDataFile) throws IOException {
+		this(new Version(prevVersion), new Version(curVersion), prevDataFile, curDataFile);
+	}
+	
+	public GalleryDiff(org.lgna.project.Version prevVersion, org.lgna.project.Version curVersion, java.io.File prevDataFile, java.io.File curDataFile) throws IOException{
+		this(prevVersion, curVersion);
+		
+		prevSymbols = new java.util.ArrayList<String>();
+		curSymbols = new java.util.ArrayList<String>();
+		
+		loadGalleryInfo(prevSymbols, prevDataFile);
+		loadGalleryInfo(curSymbols, curDataFile);
+
+		doMatch();
+	}
+	
+	private void loadGalleryInfo(List<String> symbolArray, File dataFile) {
+		
+		try {
+			java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(dataFile));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				symbolArray.add(line.trim());
+			}
+			reader.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	public static File saveGalleryInfo(String outputFilename, File... jars) {
+		
+		List<String> symbols = new java.util.ArrayList<String>();
+		for (File jar : jars) {
+			try {
+				symbols.addAll(loadResourceSymbols(jar));
+			}
+			catch (MalformedURLException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		File outputFile = new File(outputFilename);
+		try {
+			java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter(outputFile));
+			for (String s : symbols) {
+				writer.write(s+"\n");
+			}
+			writer.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return outputFile;
+	}
+	
 	private void doMatch()
 	{
 		this.unMatchedSymbols = new java.util.ArrayList<String>();
@@ -485,6 +547,22 @@ public class GalleryDiff {
 	}
 	
 	public static void main( String[] args ) throws Exception {
+		
+		String curDir = System.getProperty("user.dir");
+		System.out.println(curDir);
+		
+		File jarDir = new File(curDir);
+		jarDir = jarDir.getParentFile().getParentFile();
+		jarDir = new File(jarDir, "ide/lib/alice");
+		
+		System.out.println(jarDir);
+		
+		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
+		
+		File galleryData = GalleryDiff.saveGalleryInfo(jarDir.getAbsolutePath()+"/galleryData.txt", jarFiles);
+		
+		GalleryDiff diff = new GalleryDiff("3.1.34.0.0", "3.1.34.0.0", galleryData, galleryData);
+		
 		
 		final String[] DATA_VERSIONS = {
 //				"3.1.0.0.0", //Not supported
