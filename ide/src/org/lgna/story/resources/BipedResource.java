@@ -43,11 +43,14 @@
 
 package org.lgna.story.resources;
 
+import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
+import org.lgna.story.resources.biped.MarchHare;
+
 
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Biped.class )
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.SBiped.class )
 public interface BipedResource extends JointedModelResource {
 	public static final JointId ROOT = new JointId( null, BipedResource.class );
 
@@ -60,6 +63,10 @@ public interface BipedResource extends JointedModelResource {
 	public static final JointId RIGHT_HIP = new JointId( PELVIS_LOWER_BODY, BipedResource.class );
 	public static final JointId RIGHT_KNEE = new JointId( RIGHT_HIP, BipedResource.class );
 	public static final JointId RIGHT_ANKLE = new JointId( RIGHT_KNEE, BipedResource.class );
+	public static final JointId LEFT_FOOT = new JointId( LEFT_ANKLE, BipedResource.class );
+//	public static final JointId LEFT_TOES = new JointId( LEFT_FOOT, BipedResource.class );
+	public static final JointId RIGHT_FOOT = new JointId( RIGHT_ANKLE, BipedResource.class );
+//	public static final JointId RIGHT_TOES = new JointId( RIGHT_FOOT, BipedResource.class );
 	
 	public static final JointId SPINE_BASE = new JointId( ROOT, BipedResource.class );
 	
@@ -77,12 +84,41 @@ public interface BipedResource extends JointedModelResource {
 	public static final JointId RIGHT_ELBOW = new JointId( RIGHT_SHOULDER, BipedResource.class );
 	public static final JointId RIGHT_WRIST = new JointId( RIGHT_ELBOW, BipedResource.class );
 	
+	public static final JointId RIGHT_HAND = new JointId( RIGHT_WRIST, BipedResource.class );
+	public static final JointId RIGHT_THUMB = new JointId( RIGHT_HAND, BipedResource.class );
+	public static final JointId RIGHT_THUMB_KNUCKLE = new JointId( RIGHT_THUMB, BipedResource.class );
+//	public static final JointId RIGHT_THUMB_TIP = new JointId( RIGHT_THUMB_KNUCKLE, BipedResource.class );
+	public static final JointId RIGHT_INDEX_FINGER = new JointId( RIGHT_HAND, BipedResource.class );
+	public static final JointId RIGHT_INDEX_FINGER_KNUCKLE = new JointId( RIGHT_INDEX_FINGER, BipedResource.class );
+//	public static final JointId RIGHT_INDEX_FINGER_TIP = new JointId( RIGHT_INDEX_FINGER_KNUCKLE, BipedResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER = new JointId( RIGHT_HAND, BipedResource.class );
+	public static final JointId RIGHT_MIDDLE_FINGER_KNUCKLE = new JointId( RIGHT_MIDDLE_FINGER, BipedResource.class );
+//	public static final JointId RIGHT_MIDDLE_FINGER_TIP = new JointId( RIGHT_MIDDLE_FINGER_KNUCKLE, BipedResource.class );
+	public static final JointId RIGHT_PINKY_FINGER = new JointId( RIGHT_HAND, BipedResource.class );
+	public static final JointId RIGHT_PINKY_FINGER_KNUCKLE = new JointId( RIGHT_PINKY_FINGER, BipedResource.class );
+//	public static final JointId RIGHT_PINKY_FINGER_TIP = new JointId( RIGHT_PINKY_FINGER_KNUCKLE, BipedResource.class );
+	
 	public static final JointId LEFT_CLAVICLE = new JointId( SPINE_UPPER, BipedResource.class );
 	public static final JointId LEFT_SHOULDER = new JointId( LEFT_CLAVICLE, BipedResource.class );
 	public static final JointId LEFT_ELBOW = new JointId( LEFT_SHOULDER, BipedResource.class );
 	public static final JointId LEFT_WRIST = new JointId( LEFT_ELBOW, BipedResource.class );
 	
+	public static final JointId LEFT_HAND = new JointId( LEFT_WRIST, BipedResource.class );
+	public static final JointId LEFT_THUMB = new JointId( LEFT_HAND, BipedResource.class );
+	public static final JointId LEFT_THUMB_KNUCKLE = new JointId( LEFT_THUMB, BipedResource.class );
+//	public static final JointId LEFT_THUMB_TIP = new JointId( LEFT_THUMB_KNUCKLE, BipedResource.class );
+	public static final JointId LEFT_INDEX_FINGER = new JointId( LEFT_HAND, BipedResource.class );
+	public static final JointId LEFT_INDEX_FINGER_KNUCKLE = new JointId( LEFT_INDEX_FINGER, BipedResource.class );
+//	public static final JointId LEFT_INDEX_FINGER_TIP = new JointId( LEFT_INDEX_FINGER_KNUCKLE, BipedResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER = new JointId( LEFT_HAND, BipedResource.class );
+	public static final JointId LEFT_MIDDLE_FINGER_KNUCKLE = new JointId( LEFT_MIDDLE_FINGER, BipedResource.class );
+//	public static final JointId LEFT_MIDDLE_FINGER_TIP = new JointId( LEFT_MIDDLE_FINGER_KNUCKLE, BipedResource.class );
+	public static final JointId LEFT_PINKY_FINGER = new JointId( LEFT_HAND, BipedResource.class );
+	public static final JointId LEFT_PINKY_FINGER_KNUCKLE = new JointId( LEFT_PINKY_FINGER, BipedResource.class );
+//	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, BipedResource.class );
+	
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
-	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.Biped abstraction );
+	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction );
+
 }

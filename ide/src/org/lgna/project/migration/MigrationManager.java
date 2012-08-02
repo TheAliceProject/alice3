@@ -73,11 +73,6 @@ public class MigrationManager {
 
 			new org.lgna.project.migration.TextMigration(
 				new org.lgna.project.Version( "3.1.9.0.0" ),
-				new org.lgna.project.Version( "3.1.10.0.0" )
-			),
-
-			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.10.0.0" ),
 				new org.lgna.project.Version( "3.1.11.0.0" )
 			),
 
@@ -131,18 +126,109 @@ public class MigrationManager {
 
 			new org.lgna.project.migration.TextMigration(
 				new org.lgna.project.Version( "3.1.20.0.0" ),
-				new org.lgna.project.Version( "3.1.23.0.0" )
+				new org.lgna.project.Version( "3.1.33.0.0" )
 			),
 
 			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.23.0.0" ),
-				new org.lgna.project.Version( "3.1.24.0.0" )
-			),
+				new org.lgna.project.Version( "3.1.33.0.0" ),
+				new org.lgna.project.Version( "3.1.34.0.0" ),
 
-			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.24.0.0" ),
-				new org.lgna.project.Version( "3.1.25.0.0" )
-			)
+				"org.lgna.story.Program",
+				"org.lgna.story.SProgram",
+
+				"org.lgna.story.Entity",
+				"org.lgna.story.SThing",
+
+				"org.lgna.story.Ground",
+				"org.lgna.story.SGround",
+
+				"org.lgna.story.Room",
+				"org.lgna.story.SRoom",
+
+				"org.lgna.story.Scene",
+				"org.lgna.story.SScene",
+
+				"org.lgna.story.Turnable",
+				"org.lgna.story.STurnable",
+
+				"org.lgna.story.Joint",
+				"org.lgna.story.SJoint",
+
+				"org.lgna.story.MovableTurnable",
+				"org.lgna.story.SMovableTurnable",
+
+				"org.lgna.story.Axes",
+				"org.lgna.story.SAxes",
+
+				"org.lgna.story.Camera",
+				"org.lgna.story.SCamera",
+
+				"org.lgna.story.Marker",
+				"org.lgna.story.SMarker",
+
+				"org.lgna.story.BookmarkCameraMarker",
+				"org.lgna.story.SCameraMarker",
+				
+				"org.lgna.story.ObjectMarker",
+				"org.lgna.story.SThingMarker",
+
+				"org.lgna.story.Model",
+				"org.lgna.story.SModel",
+
+				"org.lgna.story.Billboard",
+				"org.lgna.story.SBillboard",
+				
+				"org.lgna.story.JointedModel",
+				"org.lgna.story.SJointedModel",
+				
+				"org.lgna.story.Biped",
+				"org.lgna.story.SBiped",
+
+				"org.lgna.story.Flyer",
+				"org.lgna.story.SFlyer",
+				
+				"org.lgna.story.Prop",
+				"org.lgna.story.SProp",
+				
+				"org.lgna.story.Quadruped",
+				"org.lgna.story.SQuadruped",
+
+				"org.lgna.story.Swimmer",
+				"org.lgna.story.SSwimmer",
+				
+				"org.lgna.story.Vehicle",
+				"org.lgna.story.SVehicle",
+				
+				"org.lgna.story.Shape",
+				"org.lgna.story.SShape",
+				
+				"org.lgna.story.Box",
+				"org.lgna.story.SBox",
+				
+				"org.lgna.story.Cone",
+				"org.lgna.story.SCone",
+				
+				"org.lgna.story.Cylinder",
+				"org.lgna.story.SCylinder",
+				
+				"org.lgna.story.Disc",
+				"org.lgna.story.SDisc",
+				
+				"org.lgna.story.Sphere",
+				"org.lgna.story.SSphere",
+
+				"org.lgna.story.Torus",
+				"org.lgna.story.STorus",
+				
+				"org.lgna.story.TextModel",
+				"org.lgna.story.STextModel",
+				
+				"org.lgna.story.Target",
+				"org.lgna.story.STarget",
+				
+				"org.lgna.story.Sun",
+				"org.lgna.story.SSun"
+			),
 	};
 	private static final java.util.List< Migration > versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	

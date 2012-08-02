@@ -46,9 +46,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionEvent;
@@ -66,12 +66,12 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 
 	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
-	public void addCollisionListener( Object collisionListener, List<Entity> groupOne, List<Entity> groupTwo ) {
+	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
 		registerIsFiringMap( collisionListener );
 		registerPolicyMap( collisionListener, MultipleEventPolicy.IGNORE );
-		List<Entity> allObserving = Collections.newArrayList( groupOne );
+		List<SThing> allObserving = Collections.newArrayList( groupOne );
 		allObserving.addAll( groupTwo );
-		for( Entity m : allObserving ) {
+		for( SThing m : allObserving ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
@@ -81,7 +81,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 	}
 
 	@Override
-	protected void check( Entity changedEntity ) {
+	protected void check( SThing changedEntity ) {
 		collisionEventHandler.check( changedEntity );
 	}
 	@Override
@@ -97,25 +97,25 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 
 	private class CollisionEventHandler {
 
-		HashMap<Entity,LinkedList<Entity>> checkMap = new HashMap<Entity,LinkedList<Entity>>();
-		HashMap<Entity,HashMap<Entity,LinkedList<Object>>> eventMap = new HashMap<Entity,HashMap<Entity,LinkedList<Object>>>();
-		HashMap<Entity,HashMap<Entity,Boolean>> wereTouchingMap = new HashMap<Entity,HashMap<Entity,Boolean>>();
+		HashMap<SThing,LinkedList<SThing>> checkMap = new HashMap<SThing,LinkedList<SThing>>();
+		HashMap<SThing,HashMap<SThing,LinkedList<Object>>> eventMap = new HashMap<SThing,HashMap<SThing,LinkedList<Object>>>();
+		HashMap<SThing,HashMap<SThing,Boolean>> wereTouchingMap = new HashMap<SThing,HashMap<SThing,Boolean>>();
 
-		public void check( Entity changedEntity ) {
-			for( Entity m : checkMap.get( changedEntity ) ) {
+		public void check( SThing changedEntity ) {
+			for( SThing m : checkMap.get( changedEntity ) ) {
 				LinkedList<Object> listenerList = eventMap.get( changedEntity ).get( m );
 				if( listenerList == null || listenerList.size() == 0 ) {
 					return;
 				}
 				for( Object colList : listenerList ) {
 					if( check( colList, m, changedEntity ) ) {
-						LinkedList<Entity> models = new LinkedList<Entity>();
+						LinkedList<SThing> models = new LinkedList<SThing>();
 						models.add( changedEntity );
 						models.add( m );
 						if( colList instanceof CollisionStartListener ) {
-							fireEvent( colList, new StartCollisionEvent( models.toArray( new MovableTurnable[ 0 ] ) ) );
+							fireEvent( colList, new StartCollisionEvent( models.toArray( new SMovableTurnable[ 0 ] ) ) );
 						} else if( colList instanceof CollisionEndListener ) {
-							fireEvent( colList, new EndCollisionEvent( models.toArray( new MovableTurnable[ 0 ] ) ) );
+							fireEvent( colList, new EndCollisionEvent( models.toArray( new SMovableTurnable[ 0 ] ) ) );
 						}
 					}
 				}
@@ -125,7 +125,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 			}
 		}
 
-		private boolean check( Object colList, Entity m, Entity changedEntity ) {
+		private boolean check( Object colList, SThing m, SThing changedEntity ) {
 			if( colList instanceof CollisionStartListener ) {
 				return !wereTouchingMap.get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity );
 			} else if( colList instanceof CollisionEndListener ) {
@@ -135,14 +135,14 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 			return false;
 		}
 
-		public void register( Object collisionListener, List<Entity> groupOne, List<Entity> groupTwo ) {
-			for( Entity m : groupOne ) {
+		public void register( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
+			for( SThing m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<Entity,LinkedList<Object>>() );
-					wereTouchingMap.put( m, new HashMap<Entity,Boolean>() );
-					checkMap.put( m, new LinkedList<Entity>() );
+					eventMap.put( m, new HashMap<SThing,LinkedList<Object>>() );
+					wereTouchingMap.put( m, new HashMap<SThing,Boolean>() );
+					checkMap.put( m, new LinkedList<SThing>() );
 				}
-				for( Entity t : groupTwo ) {
+				for( SThing t : groupTwo ) {
 					if( eventMap.get( m ).get( t ) == null ) {
 						eventMap.get( m ).put( t, new LinkedList<Object>() );
 					}
@@ -155,13 +155,13 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 					}
 				}
 			}
-			for( Entity m : groupTwo ) {
+			for( SThing m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<Entity,LinkedList<Object>>() );
-					wereTouchingMap.put( m, new HashMap<Entity,Boolean>() );
-					checkMap.put( m, new LinkedList<Entity>() );
+					eventMap.put( m, new HashMap<SThing,LinkedList<Object>>() );
+					wereTouchingMap.put( m, new HashMap<SThing,Boolean>() );
+					checkMap.put( m, new LinkedList<SThing>() );
 				}
-				for( Entity t : groupOne ) {
+				for( SThing t : groupOne ) {
 					if( eventMap.get( m ).get( t ) == null ) {
 						eventMap.get( m ).put( t, new LinkedList<Object>() );
 					}

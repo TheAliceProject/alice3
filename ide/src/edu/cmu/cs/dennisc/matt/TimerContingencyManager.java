@@ -2,10 +2,10 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.util.ArrayList;
 
-import org.lgna.story.Entity;
-import org.lgna.story.Model;
+import org.lgna.story.SThing;
+import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.Scene;
+import org.lgna.story.SScene;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.ComesIntoViewEvent;
@@ -30,36 +30,36 @@ import org.lgna.story.implementation.SceneImp;
 public class TimerContingencyManager {
 
 	private TimerEventHandler timer;
-	private Scene scene;
+	private SScene scene;
 
 	public TimerContingencyManager( TimerEventHandler timer ) {
 		this.timer = timer;
 	}
 
-	public void register( WhileCollisionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileCollisionListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addCollisionStartListener( newStartCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 		scene.addCollisionEndListener( newEndCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 	}
-	public void register( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 		scene.addProximityExitListener( newExitProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 	}
-	public void register( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileOcclusionListener listener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
-		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), (Model[])toArray( groupOne ), (Model[])toArray( groupTwo ) );
-		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), (Model[])toArray( groupOne ), (Model[])toArray( groupTwo ) );
+		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), (SModel[])toArray( groupOne ), (SModel[])toArray( groupTwo ) );
+		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), (SModel[])toArray( groupOne ), (SModel[])toArray( groupTwo ) );
 	}
 
-	public void register( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
+	public void register( WhileInViewListener listener, ArrayList<SModel> group, Long frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
-		scene.addViewEnterListener( newEnterViewAdapter( listener ), (Model[])toArray( group ) );
-		scene.addViewExitListener( newExitViewAdapter( listener ), (Model[])toArray( group ) );
+		scene.addViewEnterListener( newEnterViewAdapter( listener ), (SModel[])toArray( group ) );
+		scene.addViewExitListener( newExitViewAdapter( listener ), (SModel[])toArray( group ) );
 	}
 
 	private ViewExitListener newExitViewAdapter( final WhileInViewListener listener ) {
@@ -126,8 +126,8 @@ public class TimerContingencyManager {
 		};
 	}
 
-	private Entity[] toArray( ArrayList<? extends Entity> arr ) {
-		Entity[] rv = new Entity[ arr.size() ];
+	private SThing[] toArray( ArrayList<? extends SThing> arr ) {
+		SThing[] rv = new SThing[ arr.size() ];
 		for( int i = 0; i != arr.size(); ++i ) {
 			rv[ i ] = arr.get( i );
 		}

@@ -49,12 +49,12 @@ package org.lgna.story;
 public class UpAsSeenBy implements
 		//Turnable
 		OrientToUpright.Detail, PointAt.Detail {
-	private final Entity value;
+	private final SThing value;
 
-	public UpAsSeenBy( Entity value ) {
+	public UpAsSeenBy( SThing value ) {
 		this.value = value;
 	}
-	/*package-private*/static Entity getValue( Object[] details, Entity defaultValue ) {
+	/*package-private*/static SThing getValue( Object[] details, SThing defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof UpAsSeenBy ) {
 				UpAsSeenBy upAsSeenBy = (UpAsSeenBy)detail;

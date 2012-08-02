@@ -164,10 +164,10 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		if (this.toMoveImp != null && this.toMoveToImp != null && 
-			this.toMoveImp.getAbstraction() instanceof org.lgna.story.MovableTurnable &&
+			this.toMoveImp.getAbstraction() instanceof org.lgna.story.SMovableTurnable &&
 			this.toMoveToImp.getAbstraction() != null) {
 
-			MoveAndOrientToEdit edit = new MoveAndOrientToEdit(step, (org.lgna.story.MovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction());
+			MoveAndOrientToEdit edit = new MoveAndOrientToEdit(step, (org.lgna.story.SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction());
 			step.commitAndInvokeDo(edit);
 		} else {
 			step.cancel();

@@ -48,13 +48,13 @@ import org.lgna.story.*;
 /**
  * @author Dennis Cosgrove
  */
-public class IkScene extends Scene {
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private final Camera camera;
-	private final Biped ogre;
-	private final Sphere target;
-	public IkScene( Camera camera, Biped ogre, Sphere target ) {
+public class IkScene extends SScene {
+	private final SSun sun = new SSun();
+	private final SGround snow = new SGround();
+	private final SCamera camera;
+	private final SBiped ogre;
+	private final SSphere target;
+	public IkScene( SCamera camera, SBiped ogre, SSphere target ) {
 		this.camera = camera;
 		this.ogre = ogre;
 		this.target = target;
@@ -68,7 +68,7 @@ public class IkScene extends Scene {
 		this.target.setVehicle( this );
 		
 		this.ogre.place( SpatialRelation.ABOVE, this.snow );
-		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
+		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 
 		this.target.setRadius( 0.2 );
 		this.target.setPaint( Color.RED );

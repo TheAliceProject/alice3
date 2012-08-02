@@ -52,7 +52,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
 	}
 	@Override
-	public org.lgna.story.Entity getAbstraction() {
+	public org.lgna.story.SThing getAbstraction() {
 		return null;
 	}
 	private final java.util.Map< org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person > mapLifeStageToNebPerson = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();

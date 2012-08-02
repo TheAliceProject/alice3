@@ -315,7 +315,7 @@ public class MarkerUtilities {
 			if (markerField.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class)) {
 				return getIconForCameraMarker(markerField);
 			}
-			else if (markerField.getValueType().isAssignableFrom(org.lgna.story.ObjectMarker.class)) {
+			else if (markerField.getValueType().isAssignableFrom(org.lgna.story.SThingMarker.class)) {
 				return getIconForObjectMarker(markerField);
 			}
 		}
@@ -365,14 +365,14 @@ public class MarkerUtilities {
 		return null;
 	}
 	
-	private static org.lgna.story.Color getNewMarkerColor(Class<? extends org.lgna.story.Marker> markerCls) {
+	private static org.lgna.story.Color getNewMarkerColor(Class<? extends org.lgna.story.SMarker> markerCls) {
 		AbstractType<?, ?, ?> sceneType = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getActiveSceneField().getValueType();
 		int[] colorCounts = new int[getColorCount()];
 		Arrays.fill(colorCounts, 0);
 		ArrayList<? extends AbstractField> fields = sceneType.getDeclaredFields();
 		for (AbstractField f : fields) {
 			if (f.getValueType().isAssignableTo(markerCls)) {
-				org.lgna.story.Marker marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(f, markerCls);
+				org.lgna.story.SMarker marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(f, markerCls);
 				if (marker != null) {
 					int colorIndex = getColorIndexForColor(marker.getColorId());
 					if (colorIndex != -1) {
@@ -393,7 +393,7 @@ public class MarkerUtilities {
 	}
 	
 	public static org.lgna.story.Color getNewObjectMarkerColor() {
-		return getNewMarkerColor(org.lgna.story.ObjectMarker.class);
+		return getNewMarkerColor(org.lgna.story.SThingMarker.class);
 	}
 	
 	public static org.lgna.story.Color getNewCameraMarkerColor() {
@@ -402,7 +402,7 @@ public class MarkerUtilities {
 	
 	public static org.lgna.story.Color getColorForMarkerField(UserField markerField)
 	{
-		org.lgna.story.Marker marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(markerField, org.lgna.story.Marker.class);
+		org.lgna.story.SMarker marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField(markerField, org.lgna.story.SMarker.class);
 		if (marker != null)
 		{
 			return marker.getColorId();

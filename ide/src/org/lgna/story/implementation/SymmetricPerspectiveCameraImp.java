@@ -47,13 +47,13 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public class SymmetricPerspectiveCameraImp extends CameraImp< edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera > {
-	private final org.lgna.story.Camera abstraction;
-	public SymmetricPerspectiveCameraImp( org.lgna.story.Camera abstraction ) {
+	private final org.lgna.story.SCamera abstraction;
+	public SymmetricPerspectiveCameraImp( org.lgna.story.SCamera abstraction ) {
 		super( new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera() );
 		this.abstraction = abstraction;
 	}
 	@Override
-	public org.lgna.story.Camera getAbstraction() {
+	public org.lgna.story.SCamera getAbstraction() {
 		return this.abstraction;
 	}
 	

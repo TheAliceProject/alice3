@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public class DefaultProgramImp extends ProgramImp {
 	private final edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	public DefaultProgramImp( org.lgna.story.Program abstraction ) {
+	public DefaultProgramImp( org.lgna.story.SProgram abstraction ) {
 		super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
 	}
 	@Override

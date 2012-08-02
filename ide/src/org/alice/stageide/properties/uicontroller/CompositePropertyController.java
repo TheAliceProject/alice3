@@ -50,11 +50,11 @@ import javax.swing.BorderFactory;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 
-public class CompositePropertyController extends LabelBasedPropertyController<Entity>{
+public class CompositePropertyController extends LabelBasedPropertyController<SThing>{
 
-	public CompositePropertyController(AbstractPropertyAdapter<Entity, ?> propertyAdapter) 
+	public CompositePropertyController(AbstractPropertyAdapter<SThing, ?> propertyAdapter) 
 	{
 		super(propertyAdapter);
 	}
@@ -62,7 +62,7 @@ public class CompositePropertyController extends LabelBasedPropertyController<En
 	@Override
 	public Class<?> getPropertyType() 
 	{
-		return Entity.class;
+		return SThing.class;
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class CompositePropertyController extends LabelBasedPropertyController<En
 	}
 
 	@Override
-	protected void setValueOnUI(Entity value) 
+	protected void setValueOnUI(SThing value) 
 	{
 		this.label.setIcon(MutableRiderVehicleAdapter.getIconForVehicle(value));
 		this.label.setText(MutableRiderVehicleAdapter.getNameForVehicle(value));
