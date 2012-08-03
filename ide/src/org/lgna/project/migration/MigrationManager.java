@@ -46,1982 +46,1965 @@ package org.lgna.project.migration;
  * @author Dennis Cosgrove
  */
 public class MigrationManager {
-	public static final String NO_REPLACEMENT  = null;
-	
+	public static final String NO_REPLACEMENT = null;
+
 	private static final TextMigration[] textMigrations = {
-		new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.7.0.0" ),
-				new org.lgna.project.Version( "3.1.8.0.0" )
-			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version("3.1.7.0.0"),
+					new org.lgna.project.Version("3.1.8.0.0")),
 
 			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.8.0.0" ),
-				new org.lgna.project.Version( "3.1.9.0.0" ),
+					new org.lgna.project.Version("3.1.8.0.0"),
+					new org.lgna.project.Version("3.1.9.0.0"),
 
-				"ARMOIRE_CLOTHING",
-				NO_REPLACEMENT,
-				
-				"org.lgna.story.resources.armoire.ArmoireArtNouveau",
-				NO_REPLACEMENT,
-				
-				"PINK_POODLE",
-				NO_REPLACEMENT,
-				
-				"org.lgna.story.resources.quadruped.Poodle",
-				NO_REPLACEMENT 
-			),
+					"ARMOIRE_CLOTHING", NO_REPLACEMENT,
+
+					"org.lgna.story.resources.armoire.ArmoireArtNouveau",
+					NO_REPLACEMENT,
+
+					"PINK_POODLE", NO_REPLACEMENT,
+
+					"org.lgna.story.resources.quadruped.Poodle", NO_REPLACEMENT),
 
 			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.9.0.0" ),
-				new org.lgna.project.Version( "3.1.11.0.0" )
-			),
+					new org.lgna.project.Version("3.1.9.0.0"),
+					new org.lgna.project.Version("3.1.11.0.0")),
 
 			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.11.0.0" ),
-				new org.lgna.project.Version( "3.1.14.0.0" ),
+					new org.lgna.project.Version("3.1.11.0.0"),
+					new org.lgna.project.Version("3.1.14.0.0"),
 
-				"CAMEL",
-				NO_REPLACEMENT ,
-				
-				"org.lgna.story.resources.quadruped.Camel",
-				NO_REPLACEMENT ,
+					"CAMEL", NO_REPLACEMENT,
 
-				"FALCON",
-				NO_REPLACEMENT ,
+					"org.lgna.story.resources.quadruped.Camel", NO_REPLACEMENT,
 
-				"org.lgna.story.resources.flyer.Falcon",
-				NO_REPLACEMENT ,
+					"FALCON", NO_REPLACEMENT,
 
-				"LION",
-				NO_REPLACEMENT ,
+					"org.lgna.story.resources.flyer.Falcon", NO_REPLACEMENT,
 
-				"org.lgna.story.resources.quadruped.Lion",
-				NO_REPLACEMENT ,
+					"LION", NO_REPLACEMENT,
 
-				"WOLF",
-				NO_REPLACEMENT ,
+					"org.lgna.story.resources.quadruped.Lion", NO_REPLACEMENT,
 
-				"org.lgna.story.resources.quadruped.Wolf",
-				NO_REPLACEMENT
-			),
+					"WOLF", NO_REPLACEMENT,
+
+					"org.lgna.story.resources.quadruped.Wolf", NO_REPLACEMENT),
 
 			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.14.0.0" ),
-				new org.lgna.project.Version( "3.1.15.1.0" )
-			),
+					new org.lgna.project.Version("3.1.14.0.0"),
+					new org.lgna.project.Version("3.1.15.1.0")),
 
 			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.15.1.0" ),
-				new org.lgna.project.Version( "3.1.20.0.0" ),
+					new org.lgna.project.Version("3.1.15.1.0"),
+					new org.lgna.project.Version("3.1.20.0.0"),
 
-				"org.lgna.story.resources.dresser.DresserCentralAsian",
-				"org.lgna.story.resources.prop.DresserCentralAsian",
+					"org.lgna.story.resources.dresser.DresserCentralAsian",
+					"org.lgna.story.resources.prop.DresserCentralAsian",
 
-				"org.lgna.story.resources.dresser.DresserColonial",
-				"org.lgna.story.resources.prop.DresserColonial",
+					"org.lgna.story.resources.dresser.DresserColonial",
+					"org.lgna.story.resources.prop.DresserColonial",
 
-				"org.lgna.story.resources.dresser.DresserDesigner",
-				"org.lgna.story.resources.prop.DresserDesigner"
-			),
-
-			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.20.0.0" ),
-				new org.lgna.project.Version( "3.1.33.0.0" )
-			),
+					"org.lgna.story.resources.dresser.DresserDesigner",
+					"org.lgna.story.resources.prop.DresserDesigner"),
 
 			new org.lgna.project.migration.TextMigration(
-				new org.lgna.project.Version( "3.1.33.0.0" ),
-				new org.lgna.project.Version( "3.1.34.0.0" ),
-
-				"org.lgna.story.Program",
-				"org.lgna.story.SProgram",
-
-				"org.lgna.story.Entity",
-				"org.lgna.story.SThing",
-
-				"org.lgna.story.Ground",
-				"org.lgna.story.SGround",
-
-				"org.lgna.story.Room",
-				"org.lgna.story.SRoom",
-
-				"org.lgna.story.Scene",
-				"org.lgna.story.SScene",
-
-				"org.lgna.story.Turnable",
-				"org.lgna.story.STurnable",
-
-				"org.lgna.story.Joint",
-				"org.lgna.story.SJoint",
-
-				"org.lgna.story.MovableTurnable",
-				"org.lgna.story.SMovableTurnable",
-
-				"org.lgna.story.Axes",
-				"org.lgna.story.SAxes",
-
-				"org.lgna.story.Camera",
-				"org.lgna.story.SCamera",
-
-				"org.lgna.story.Marker",
-				"org.lgna.story.SMarker",
-
-				"org.lgna.story.BookmarkCameraMarker",
-				"org.lgna.story.SCameraMarker",
-				
-				"org.lgna.story.ObjectMarker",
-				"org.lgna.story.SThingMarker",
-
-				"org.lgna.story.Model",
-				"org.lgna.story.SModel",
-
-				"org.lgna.story.Billboard",
-				"org.lgna.story.SBillboard",
-				
-				"org.lgna.story.JointedModel",
-				"org.lgna.story.SJointedModel",
-				
-				"org.lgna.story.Biped",
-				"org.lgna.story.SBiped",
-
-				"org.lgna.story.Flyer",
-				"org.lgna.story.SFlyer",
-				
-				"org.lgna.story.Prop",
-				"org.lgna.story.SProp",
-				
-				"org.lgna.story.Quadruped",
-				"org.lgna.story.SQuadruped",
-
-				"org.lgna.story.Swimmer",
-				"org.lgna.story.SSwimmer",
-				
-				"org.lgna.story.Vehicle",
-				"org.lgna.story.SVehicle",
-				
-				"org.lgna.story.Shape",
-				"org.lgna.story.SShape",
-				
-				"org.lgna.story.Box",
-				"org.lgna.story.SBox",
-				
-				"org.lgna.story.Cone",
-				"org.lgna.story.SCone",
-				
-				"org.lgna.story.Cylinder",
-				"org.lgna.story.SCylinder",
-				
-				"org.lgna.story.Disc",
-				"org.lgna.story.SDisc",
-				
-				"org.lgna.story.Sphere",
-				"org.lgna.story.SSphere",
-
-				"org.lgna.story.Torus",
-				"org.lgna.story.STorus",
-				
-				"org.lgna.story.TextModel",
-				"org.lgna.story.STextModel",
-				
-				"org.lgna.story.Target",
-				"org.lgna.story.STarget",
-				
-				"org.lgna.story.Sun",
-				"org.lgna.story.SSun",
-				
-				"ABYSSINIAN",
-				"ABYSSINIAN_CAT",
+					new org.lgna.project.Version("3.1.20.0.0"),
+					new org.lgna.project.Version("3.1.33.0.0")),
 
-				"org.lgna.story.resources.flyer.MeanChicken",
-				"org.lgna.story.resources.flyer.Chicken",
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version("3.1.33.0.0"),
+					new org.lgna.project.Version("3.1.34.0.0"),
 
-				"org.lgna.story.resources.quadruped.Dalmation",
-				"org.lgna.story.resources.quadruped.Dalmatian",
+					"org.lgna.story.Program",
+					"org.lgna.story.SProgram",
 
-				"BROWN_OGRE",
-				"BROWN",
+					"org.lgna.story.Entity",
+					"org.lgna.story.SThing",
 
-				"PAJAMA_CARDINAL",
-				"PAJAMA_FISH",
+					"org.lgna.story.Ground",
+					"org.lgna.story.SGround",
 
-				"PINK_POODLE",
-				"POODLE",
+					"org.lgna.story.Room",
+					"org.lgna.story.SRoom",
 
-				"SHORT_HAIR",
-				"SHORT_HAIR_CAT",
+					"org.lgna.story.Scene",
+					"org.lgna.story.SScene",
 
-				"ROBOT",
-				"ALIEN_ROBOT",
+					"org.lgna.story.Turnable",
+					"org.lgna.story.STurnable",
 
-				"ASTEROID1_GRAY",
-				"BOULDER1_MOON",
+					"org.lgna.story.Joint",
+					"org.lgna.story.SJoint",
 
-				"ASTEROID1_RED",
-				"BOULDER1_MARS",
+					"org.lgna.story.MovableTurnable",
+					"org.lgna.story.SMovableTurnable",
 
-				"ASTEROID1_BROWN",
-				"BOULDER1_DESERT",
+					"org.lgna.story.Axes",
+					"org.lgna.story.SAxes",
 
-				"org.lgna.story.resources.prop.Boulder1",
-				"org.lgna.story.resources.prop.Boulder",
+					"org.lgna.story.Camera",
+					"org.lgna.story.SCamera",
 
-				"ASTEROID2_BROWN",
-				"BOULDER2_DESERT",
+					"org.lgna.story.Marker",
+					"org.lgna.story.SMarker",
 
-				"ASTEROID2_GRAY",
-				"BOULDER2_MOON",
+					"org.lgna.story.BookmarkCameraMarker",
+					"org.lgna.story.SCameraMarker",
 
-				"ASTEROID2_RED",
-				"BOULDER2_MARS",
+					"org.lgna.story.ObjectMarker",
+					"org.lgna.story.SThingMarker",
 
-				"org.lgna.story.resources.prop.Boulder2",
-				"org.lgna.story.resources.prop.Boulder",
+					"org.lgna.story.Model",
+					"org.lgna.story.SModel",
 
-				"ASTEROID4_BROWN",
-				"BOULDER3_DESERT",
+					"org.lgna.story.Billboard",
+					"org.lgna.story.SBillboard",
 
-				"ASTEROID4_GRAY",
-				"BOULDER3_MOON",
+					"org.lgna.story.JointedModel",
+					"org.lgna.story.SJointedModel",
 
-				"ASTEROID4_RED",
-				"BOULDER3_MARS",
+					"org.lgna.story.Biped",
+					"org.lgna.story.SBiped",
 
-				"org.lgna.story.resources.prop.Boulder3",
-				"org.lgna.story.resources.prop.Boulder",
+					"org.lgna.story.Flyer",
+					"org.lgna.story.SFlyer",
 
-				"ASTEROID5_RED",
-				"BOULDER4_MARS",
+					"org.lgna.story.Prop",
+					"org.lgna.story.SProp",
 
-				"ASTEROID5_GRAY",
-				"BOULDER4_MOON",
+					"org.lgna.story.Quadruped",
+					"org.lgna.story.SQuadruped",
 
-				"ASTEROID5_BROWN",
-				"BOULDER4_DESERT",
+					"org.lgna.story.Swimmer",
+					"org.lgna.story.SSwimmer",
 
-				"org.lgna.story.resources.prop.Boulder4",
-				"org.lgna.story.resources.prop.Boulder",
+					"org.lgna.story.Vehicle",
+					"org.lgna.story.SVehicle",
 
-				"ASTEROID6_BROWN",
-				"BOULDER5_DESERT",
+					"org.lgna.story.Shape",
+					"org.lgna.story.SShape",
 
-				"ASTEROID6_RED",
-				"BOULDER5_MARS",
+					"org.lgna.story.Box",
+					"org.lgna.story.SBox",
 
-				"ASTEROID6_GRAY",
-				"BOULDER5_MOON",
+					"org.lgna.story.Cone",
+					"org.lgna.story.SCone",
 
-				"org.lgna.story.resources.prop.Boulder5",
-				"org.lgna.story.resources.prop.Boulder",
+					"org.lgna.story.Cylinder",
+					"org.lgna.story.SCylinder",
 
-				"OUTSIDE_SHIP",
-				"PIRATE_SHIP",
+					"org.lgna.story.Disc",
+					"org.lgna.story.SDisc",
 
-				"CORAL_SHELF1",
-				"SHELF1",
+					"org.lgna.story.Sphere",
+					"org.lgna.story.SSphere",
 
-				"org.lgna.story.resources.prop.CoralShelf1",
-				"org.lgna.story.resources.prop.CoralShelf",
+					"org.lgna.story.Torus",
+					"org.lgna.story.STorus",
 
-				"CORAL_SHELF2",
-				"SHELF2",
+					"org.lgna.story.TextModel",
+					"org.lgna.story.STextModel",
 
-				"org.lgna.story.resources.prop.CoralShelf2",
-				"org.lgna.story.resources.prop.CoralShelf",
+					"org.lgna.story.Target",
+					"org.lgna.story.STarget",
 
-				"SEA_PLANT1",
-				"PLANT1",
+					"org.lgna.story.Sun",
+					"org.lgna.story.SSun",
 
-				"org.lgna.story.resources.prop.SeaPlant1",
-				"org.lgna.story.resources.prop.SeaPlant",
+					"ABYSSINIAN",
+					"ABYSSINIAN_CAT",
 
-				"SEAPLANT2",
-				"PLANT2",
+					"org.lgna.story.resources.flyer.MeanChicken",
+					"org.lgna.story.resources.flyer.Chicken",
 
-				"org.lgna.story.resources.prop.SeaPlant2",
-				"org.lgna.story.resources.prop.SeaPlant",
+					"org.lgna.story.resources.quadruped.Dalmation",
+					"org.lgna.story.resources.quadruped.Dalmatian",
 
-				"SEA_PLANT3",
-				"PLANT3",
+					"BROWN_OGRE",
+					"BROWN",
 
-				"org.lgna.story.resources.prop.SeaPlant3",
-				"org.lgna.story.resources.prop.SeaPlant",
+					"PAJAMA_CARDINAL",
+					"PAJAMA_FISH",
 
-				"org.lgna.story.resources.prop.SeaWeed1",
-				"org.lgna.story.resources.prop.Seaweed",
+					"PINK_POODLE",
+					"POODLE",
 
-				"org.lgna.story.resources.prop.SeaWeed2",
-				"org.lgna.story.resources.prop.Seaweed",
+					"SHORT_HAIR",
+					"SHORT_HAIR_CAT",
 
-				"org.lgna.story.resources.prop.SeaWeed3",
-				"org.lgna.story.resources.prop.Seaweed",
+					"ROBOT",
+					"ALIEN_ROBOT",
 
-				"MUSHROOM_RED",
-				"RED",
+					"ASTEROID1_GRAY",
+					"BOULDER1_MOON",
 
-				"org.lgna.story.resources.prop.ShortRedMushroom",
-				"org.lgna.story.resources.prop.ShortMushroom",
+					"ASTEROID1_RED",
+					"BOULDER1_MARS",
 
-				"org.lgna.story.resources.prop.TallRedMushroom",
-				"org.lgna.story.resources.prop.TallMushroom",
+					"ASTEROID1_BROWN",
+					"BOULDER1_DESERT",
 
-				"MUSHROOM_WHITE",
-				"WHITE",
+					"org.lgna.story.resources.prop.Boulder1",
+					"org.lgna.story.resources.prop.Boulder",
 
-				"org.lgna.story.resources.prop.ShortWhiteMushroom",
-				"org.lgna.story.resources.prop.ShortMushroom",
+					"ASTEROID2_BROWN",
+					"BOULDER2_DESERT",
 
-				"org.lgna.story.resources.prop.TallWhiteMushroom",
-				"org.lgna.story.resources.prop.TallMushroom",
+					"ASTEROID2_GRAY",
+					"BOULDER2_MOON",
 
-				"TREE_WONDERLAND",
-				"WONDERLAND_TREE",
+					"ASTEROID2_RED",
+					"BOULDER2_MARS",
 
-				"ARMOIRE_LOFT_REDFINISH",
-				"LOFT_RED_FINISH",
+					"org.lgna.story.resources.prop.Boulder2",
+					"org.lgna.story.resources.prop.Boulder",
 
-				"ARMOIRE_LOFT_DARK_WOOD",
-				"LOFT_DARK_WOOD",
+					"ASTEROID4_BROWN",
+					"BOULDER3_DESERT",
 
-				"ARMOIRE_LOFT_HONEY",
-				"LOFT_HONEY",
+					"ASTEROID4_GRAY",
+					"BOULDER3_MOON",
 
-				"ARMOIRE_LOFT_MAPLE",
-				"LOFT_MAPLE",
+					"ASTEROID4_RED",
+					"BOULDER3_MARS",
 
-				"org.lgna.story.resources.armoire.ArmoireLoft",
-				"org.lgna.story.resources.armoire.Armoire",
+					"org.lgna.story.resources.prop.Boulder3",
+					"org.lgna.story.resources.prop.Boulder",
 
-				"org.lgna.story.resources.armoire.ArmoireQuaint",
-				"org.lgna.story.resources.armoire.Armoire",
+					"ASTEROID5_RED",
+					"BOULDER4_MARS",
 
-				"ARMOIRE_CENTRAL_ASIAN_GREENFLORAL",
-				"CENTRAL_ASIAN_GREEN_FLORAL",
+					"ASTEROID5_GRAY",
+					"BOULDER4_MOON",
 
-				"ARMOIRE_CENTRAL_ASIAN_LATTICE",
-				"CENTRAL_ASIAN_LATTICE",
+					"ASTEROID5_BROWN",
+					"BOULDER4_DESERT",
 
-				"ARMOIRE_CENTRAL_ASIAN_LION",
-				"CENTRAL_ASIAN_LION",
+					"org.lgna.story.resources.prop.Boulder4",
+					"org.lgna.story.resources.prop.Boulder",
 
-				"ARMOIRE_CENTRAL_ASIAN_SIMPLEFLORAL",
-				"CENTRAL_ASIAN_SIMPLE_FLORAL",
+					"ASTEROID6_BROWN",
+					"BOULDER5_DESERT",
 
-				"ARMOIRE_CENTRAL_ASIAN_STORY",
-				"CENTRAL_ASIAN_STORY",
+					"ASTEROID6_RED",
+					"BOULDER5_MARS",
 
-				"org.lgna.story.resources.armoire.ArmoireColonial",
-				"org.lgna.story.resources.armoire.Armoire",
+					"ASTEROID6_GRAY",
+					"BOULDER5_MOON",
 
-				"_ARMOIRE_MOROCCAN_GREEN",
-				"MOROCCAN_GREEN",
+					"org.lgna.story.resources.prop.Boulder5",
+					"org.lgna.story.resources.prop.Boulder",
 
-				"_ARMOIRE_MOROCCAN_BLUE",
-				"MOROCCAN_BLUE",
+					"OUTSIDE_SHIP",
+					"PIRATE_SHIP",
 
-				"_ARMOIRE_MOROCCAN_RED",
-				"MOROCCAN_RED",
+					"CORAL_SHELF1",
+					"SHELF1",
 
-				"org.lgna.story.resources.armoire.ArmoireMoroccan",
-				"org.lgna.story.resources.armoire.Armoire",
+					"org.lgna.story.resources.prop.CoralShelf1",
+					"org.lgna.story.resources.prop.CoralShelf",
 
-				"UFO__GLOW",
-				"UFO",
+					"CORAL_SHELF2",
+					"SHELF2",
 
-				"UFO__ZAP2",
-				"UFO",
+					"org.lgna.story.resources.prop.CoralShelf2",
+					"org.lgna.story.resources.prop.CoralShelf",
 
-				"CANDY_FACTORY_SURFACE",
-				"CANDY_FACTORY",
+					"SEA_PLANT1",
+					"PLANT1",
 
-				"org.lgna.story.resources.prop.ArtNoveauCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"org.lgna.story.resources.prop.SeaPlant1",
+					"org.lgna.story.resources.prop.SeaPlant",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+					"SEAPLANT2",
+					"PLANT2",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+					"org.lgna.story.resources.prop.SeaPlant2",
+					"org.lgna.story.resources.prop.SeaPlant",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+					"SEA_PLANT3",
+					"PLANT3",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+					"org.lgna.story.resources.prop.SeaPlant3",
+					"org.lgna.story.resources.prop.SeaPlant",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+					"org.lgna.story.resources.prop.SeaWeed1",
+					"org.lgna.story.resources.prop.Seaweed",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+					"org.lgna.story.resources.prop.SeaWeed2",
+					"org.lgna.story.resources.prop.Seaweed",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+					"org.lgna.story.resources.prop.SeaWeed3",
+					"org.lgna.story.resources.prop.Seaweed",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+					"MUSHROOM_RED",
+					"RED",
 
-				"org.lgna.story.resources.prop.SmallClubCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"org.lgna.story.resources.prop.ShortRedMushroom",
+					"org.lgna.story.resources.prop.ShortMushroom",
 
-				"org.lgna.story.resources.prop.LargeClubCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"org.lgna.story.resources.prop.TallRedMushroom",
+					"org.lgna.story.resources.prop.TallMushroom",
 
-				"TABLE_COFFEE_COLONIAL_GOLDFLORAL",
-				"COLONIAL_TABLE_COFFEE_COLONIAL_GOLDFLORAL",
+					"MUSHROOM_WHITE",
+					"WHITE",
 
-				"TABLE_COFFEE_COLONIAL_PAONAZZETTO",
-				"COLONIAL_TABLE_COFFEE_COLONIAL_PAONAZZETTO",
+					"org.lgna.story.resources.prop.ShortWhiteMushroom",
+					"org.lgna.story.resources.prop.ShortMushroom",
 
-				"TABLE_COFFEE_COLONIAL_PERLINO",
-				"COLONIAL_TABLE_COFFEE_COLONIAL_PERLINO",
+					"org.lgna.story.resources.prop.TallWhiteMushroom",
+					"org.lgna.story.resources.prop.TallMushroom",
 
-				"TABLE_COFFEE_COLONIAL_WHITEMARBLE",
-				"COLONIAL_TABLE_COFFEE_COLONIAL_WHITEMARBLE",
+					"TREE_WONDERLAND",
+					"WONDERLAND_TREE",
 
-				"org.lgna.story.resources.prop.ColonialCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"ARMOIRE_LOFT_REDFINISH",
+					"LOFT_RED_FINISH",
 
-				"TABLE_COFFEE_END_DESIGNER_WALNUT",
-				"DESIGNER_TABLE_COFFEE_END_DESIGNER_WALNUT",
+					"ARMOIRE_LOFT_DARK_WOOD",
+					"LOFT_DARK_WOOD",
 
-				"org.lgna.story.resources.prop.DesignerCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"ARMOIRE_LOFT_HONEY",
+					"LOFT_HONEY",
 
-				"_TABLE_COFFEE_LOFT_SHEEN",
-				"LOFT_TABLE_COFFEE_LOFT_SHEEN",
+					"ARMOIRE_LOFT_MAPLE",
+					"LOFT_MAPLE",
 
-				"_TABLE_COFFEE_LOFT_CONCRETE",
-				"LOFT_TABLE_COFFEE_LOFT_CONCRETE",
+					"org.lgna.story.resources.armoire.ArmoireLoft",
+					"org.lgna.story.resources.armoire.Armoire",
 
-				"_TABLE_COFFEE_LOFT_RED_METAL",
-				"LOFT_TABLE_COFFEE_LOFT_RED_METAL",
+					"org.lgna.story.resources.armoire.ArmoireQuaint",
+					"org.lgna.story.resources.armoire.Armoire",
 
-				"_TABLE_COFFEE_LOFT_PATINA",
-				"LOFT_TABLE_COFFEE_LOFT_PATINA",
+					"ARMOIRE_CENTRAL_ASIAN_GREENFLORAL",
+					"CENTRAL_ASIAN_GREEN_FLORAL",
 
-				"org.lgna.story.resources.prop.LoftCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"ARMOIRE_CENTRAL_ASIAN_LATTICE",
+					"CENTRAL_ASIAN_LATTICE",
 
-				"TABLE_COFFEE_MOROCCAN_TOP_TABLE_STAR",
-				"MOROCCAN_TABLE_COFFEE_MOROCCAN_TOP_TABLE_STAR",
+					"ARMOIRE_CENTRAL_ASIAN_LION",
+					"CENTRAL_ASIAN_LION",
 
-				"TABLE_COFFEE_MOROCCAN_TOP_TABLE_ALADDIN",
-				"MOROCCAN_TABLE_COFFEE_MOROCCAN_TOP_TABLE_ALADDIN",
+					"ARMOIRE_CENTRAL_ASIAN_SIMPLEFLORAL",
+					"CENTRAL_ASIAN_SIMPLE_FLORAL",
 
-				"TABLE_COFFEE_MOROCCAN_TOP_TABLE_DETAIL",
-				"MOROCCAN_TABLE_COFFEE_MOROCCAN_TOP_TABLE_DETAIL",
+					"ARMOIRE_CENTRAL_ASIAN_STORY",
+					"CENTRAL_ASIAN_STORY",
 
-				"TABLE_COFFEE_MOROCCAN_TOP_TABLE_TILE",
-				"MOROCCAN_TABLE_COFFEE_MOROCCAN_TOP_TABLE_TILE",
+					"org.lgna.story.resources.armoire.ArmoireColonial",
+					"org.lgna.story.resources.armoire.Armoire",
 
-				"TABLE_COFFEE_MOROCCAN_WOODS_CHERRY",
-				"MOROCCAN_TABLE_COFFEE_MOROCCAN_WOODS_CHERRY",
+					"_ARMOIRE_MOROCCAN_GREEN",
+					"MOROCCAN_GREEN",
 
-				"TABLE_COFFEE_MOROCCAN_WOODS_MAHOGNY",
-				"MOROCCAN_TABLE_COFFEE_MOROCCAN_WOODS_MAHOGNY",
+					"_ARMOIRE_MOROCCAN_BLUE",
+					"MOROCCAN_BLUE",
 
-				"TABLE_COFFEE_MOROCCAN_WOODS_YELLOWASPEN",
-				"MOROCCAN_TABLE_COFFEE_MOROCCAN_WOODS_YELLOWASPEN",
+					"_ARMOIRE_MOROCCAN_RED",
+					"MOROCCAN_RED",
 
-				"TABLE_COFFEE_MOROCCAN_WOODS_BLACK_LAQUER",
-				"MOROCCAN_TABLE_COFFEE_MOROCCAN_WOODS_BLACK_LAQUER",
+					"org.lgna.story.resources.armoire.ArmoireMoroccan",
+					"org.lgna.story.resources.armoire.Armoire",
 
-				"org.lgna.story.resources.prop.MoroccanCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"UFO__GLOW",
+					"UFO",
 
-				"_TABLE_COFFEE_PINE_CEDAR_WOOD",
-				"PINE_TABLE_COFFEE_PINE_CEDAR_WOOD",
+					"UFO__ZAP2",
+					"UFO",
 
-				"_TABLE_COFFEE_PINE_BLONDE_WOOD",
-				"PINE_TABLE_COFFEE_PINE_BLONDE_WOOD",
+					"CANDY_FACTORY_SURFACE",
+					"CANDY_FACTORY",
 
-				"_TABLE_COFFEE_PINE_HONEY_PINE",
-				"PINE_TABLE_COFFEE_PINE_HONEY_PINE",
+					"org.lgna.story.resources.prop.ArtNoveauCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"_TABLE_COFFEE_PINE_WALNUT_WOOD",
-				"PINE_TABLE_COFFEE_PINE_WALNUT_WOOD",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
 
-				"_TABLE_COFFEE_PINE_BIRCH_WOOD",
-				"PINE_TABLE_COFFEE_PINE_BIRCH_WOOD",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
 
-				"org.lgna.story.resources.prop.PineCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
 
-				"TABLE_COFFEE_QUAINT_BLUE",
-				"QUAINT_TABLE_COFFEE_QUAINT_BLUE",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
 
-				"TABLE_COFFEE_QUAINT_GREEN",
-				"QUAINT_TABLE_COFFEE_QUAINT_GREEN",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
 
-				"TABLE_COFFEE_QUAINT_WHITE",
-				"QUAINT_TABLE_COFFEE_QUAINT_WHITE",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
 
-				"TABLE_COFFEE_QUAINT_RED",
-				"QUAINT_TABLE_COFFEE_QUAINT_RED",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
 
-				"org.lgna.story.resources.prop.QuaintCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
 
-				"TABLE_COFFEE_SPINDLE_WOOD_OLDWOOD",
-				"SPINDLE_TABLE_COFFEE_SPINDLE_WOOD_OLDWOOD",
+					"org.lgna.story.resources.prop.SmallClubCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_COFFEE_SPINDLE_WOOD_PAINTED",
-				"SPINDLE_TABLE_COFFEE_SPINDLE_WOOD_PAINTED",
+					"org.lgna.story.resources.prop.LargeClubCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_COFFEE_SPINDLE_WOOD_RED",
-				"SPINDLE_TABLE_COFFEE_SPINDLE_WOOD_RED",
+					"TABLE_COFFEE_COLONIAL_GOLDFLORAL",
+					"COLONIAL_TABLE_COFFEE_COLONIAL_GOLDFLORAL",
 
-				"org.lgna.story.resources.prop.SpindleCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
+					"TABLE_COFFEE_COLONIAL_PAONAZZETTO",
+					"COLONIAL_TABLE_COFFEE_COLONIAL_PAONAZZETTO",
 
-				"TABLE_DINING_CLUB_ROOT",
-				"CLUB_TABLE_DINING_CLUB_ROOT",
+					"TABLE_COFFEE_COLONIAL_PERLINO",
+					"COLONIAL_TABLE_COFFEE_COLONIAL_PERLINO",
 
-				"TABLE_DINING_CLUB_NEDAR",
-				"CLUB_TABLE_DINING_CLUB_NEDAR",
+					"TABLE_COFFEE_COLONIAL_WHITEMARBLE",
+					"COLONIAL_TABLE_COFFEE_COLONIAL_WHITEMARBLE",
 
-				"TABLE_DINING_CLUB_OAK",
-				"CLUB_TABLE_DINING_CLUB_OAK",
+					"org.lgna.story.resources.prop.ColonialCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_DINING_CLUB_RED",
-				"CLUB_TABLE_DINING_CLUB_RED",
+					"TABLE_COFFEE_END_DESIGNER_WALNUT",
+					"DESIGNER_TABLE_COFFEE_END_DESIGNER_WALNUT",
 
-				"TABLE_DINING_CLUB_REDDARK",
-				"CLUB_TABLE_DINING_CLUB_REDDARK",
+					"org.lgna.story.resources.prop.DesignerCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_DINING_CLUB_WOOD",
-				"CLUB_TABLE_DINING_CLUB_WOOD",
+					"_TABLE_COFFEE_LOFT_SHEEN",
+					"LOFT_TABLE_COFFEE_LOFT_SHEEN",
 
-				"TABLE_DINING_CLUB_PINE",
-				"CLUB_TABLE_DINING_CLUB_PINE",
+					"_TABLE_COFFEE_LOFT_CONCRETE",
+					"LOFT_TABLE_COFFEE_LOFT_CONCRETE",
 
-				"TABLE_DINING_CLUB_SEDAR",
-				"CLUB_TABLE_DINING_CLUB_SEDAR",
+					"_TABLE_COFFEE_LOFT_RED_METAL",
+					"LOFT_TABLE_COFFEE_LOFT_RED_METAL",
 
-				"org.lgna.story.resources.prop.ClubDiningTable",
-				"org.lgna.story.resources.prop.DiningTable",
+					"_TABLE_COFFEE_LOFT_PATINA",
+					"LOFT_TABLE_COFFEE_LOFT_PATINA",
 
-				"TABLE_DINING_MOROCCAN_TURQ",
-				"MOROCCAN_TABLE_DINING_MOROCCAN_TURQ",
+					"org.lgna.story.resources.prop.LoftCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_DINING_MOROCCAN_BLUE",
-				"MOROCCAN_TABLE_DINING_MOROCCAN_BLUE",
+					"TABLE_COFFEE_MOROCCAN_TOP_TABLE_STAR",
+					"MOROCCAN_TABLE_COFFEE_MOROCCAN_TOP_TABLE_STAR",
 
-				"TABLE_DINING_MOROCCAN_BLUE_LIGHT",
-				"MOROCCAN_TABLE_DINING_MOROCCAN_BLUE_LIGHT",
+					"TABLE_COFFEE_MOROCCAN_TOP_TABLE_ALADDIN",
+					"MOROCCAN_TABLE_COFFEE_MOROCCAN_TOP_TABLE_ALADDIN",
 
-				"TABLE_DINING_MOROCCAN_GREEN",
-				"MOROCCAN_TABLE_DINING_MOROCCAN_GREEN",
+					"TABLE_COFFEE_MOROCCAN_TOP_TABLE_DETAIL",
+					"MOROCCAN_TABLE_COFFEE_MOROCCAN_TOP_TABLE_DETAIL",
 
-				"org.lgna.story.resources.prop.MoroccanDiningTable",
-				"org.lgna.story.resources.prop.DiningTable",
+					"TABLE_COFFEE_MOROCCAN_TOP_TABLE_TILE",
+					"MOROCCAN_TABLE_COFFEE_MOROCCAN_TOP_TABLE_TILE",
 
-				"TABLE_DINING_ORIENTAL_DRAGON_BROWN",
-				"ORIENTAL_TABLE_DINING_ORIENTAL_DRAGON_BROWN",
+					"TABLE_COFFEE_MOROCCAN_WOODS_CHERRY",
+					"MOROCCAN_TABLE_COFFEE_MOROCCAN_WOODS_CHERRY",
 
-				"TABLE_DINING_ORIENTAL_FISH_BROWN",
-				"ORIENTAL_TABLE_DINING_ORIENTAL_FISH_BROWN",
+					"TABLE_COFFEE_MOROCCAN_WOODS_MAHOGNY",
+					"MOROCCAN_TABLE_COFFEE_MOROCCAN_WOODS_MAHOGNY",
 
-				"TABLE_DINING_ORIENTAL_DRAGON_RED",
-				"ORIENTAL_TABLE_DINING_ORIENTAL_DRAGON_RED",
+					"TABLE_COFFEE_MOROCCAN_WOODS_YELLOWASPEN",
+					"MOROCCAN_TABLE_COFFEE_MOROCCAN_WOODS_YELLOWASPEN",
 
-				"TABLE_DINING_ORIENTAL_FISH_RED",
-				"ORIENTAL_TABLE_DINING_ORIENTAL_FISH_RED",
+					"TABLE_COFFEE_MOROCCAN_WOODS_BLACK_LAQUER",
+					"MOROCCAN_TABLE_COFFEE_MOROCCAN_WOODS_BLACK_LAQUER",
 
-				"TABLE_DINING_ORIENTAL_LOTUS_BLACK",
-				"ORIENTAL_TABLE_DINING_ORIENTAL_LOTUS_BLACK",
+					"org.lgna.story.resources.prop.MoroccanCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_DINING_ORIENTAL_LOTUS_ORANGE",
-				"ORIENTAL_TABLE_DINING_ORIENTAL_LOTUS_ORANGE",
+					"_TABLE_COFFEE_PINE_CEDAR_WOOD",
+					"PINE_TABLE_COFFEE_PINE_CEDAR_WOOD",
 
-				"org.lgna.story.resources.prop.OrientalDiningTable",
-				"org.lgna.story.resources.prop.DiningTable",
+					"_TABLE_COFFEE_PINE_BLONDE_WOOD",
+					"PINE_TABLE_COFFEE_PINE_BLONDE_WOOD",
 
-				"TABLE_DINING_OUTDOOR_WOOD_ASH",
-				"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_ASH",
+					"_TABLE_COFFEE_PINE_HONEY_PINE",
+					"PINE_TABLE_COFFEE_PINE_HONEY_PINE",
 
-				"TABLE_DINING_OUTDOOR_WOOD_REDOAK",
-				"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_REDOAK",
+					"_TABLE_COFFEE_PINE_WALNUT_WOOD",
+					"PINE_TABLE_COFFEE_PINE_WALNUT_WOOD",
 
-				"TABLE_DINING_OUTDOOR_WOOD_REDWOOD",
-				"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_REDWOOD",
+					"_TABLE_COFFEE_PINE_BIRCH_WOOD",
+					"PINE_TABLE_COFFEE_PINE_BIRCH_WOOD",
 
-				"TABLE_DINING_OUTDOOR_WOOD_WHITE",
-				"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_WHITE",
+					"org.lgna.story.resources.prop.PineCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_DINING_OUTDOOR_WOOD_CROSSPINE",
-				"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_CROSSPINE",
+					"TABLE_COFFEE_QUAINT_BLUE",
+					"QUAINT_TABLE_COFFEE_QUAINT_BLUE",
 
-				"org.lgna.story.resources.prop.OutdoorDiningTable",
-				"org.lgna.story.resources.prop.DiningTable",
+					"TABLE_COFFEE_QUAINT_GREEN",
+					"QUAINT_TABLE_COFFEE_QUAINT_GREEN",
 
-				"TABLE_DINING_QUAINT_RED",
-				"QUAINT_TABLE_DINING_QUAINT_RED",
+					"TABLE_COFFEE_QUAINT_WHITE",
+					"QUAINT_TABLE_COFFEE_QUAINT_WHITE",
 
-				"TABLE_DINING_QUAINT_GREEN",
-				"QUAINT_TABLE_DINING_QUAINT_GREEN",
+					"TABLE_COFFEE_QUAINT_RED",
+					"QUAINT_TABLE_COFFEE_QUAINT_RED",
 
-				"TABLE_DINING_QUAINT_WHITE",
-				"QUAINT_TABLE_DINING_QUAINT_WHITE",
+					"org.lgna.story.resources.prop.QuaintCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_DINING_QUAINT_BLUE",
-				"QUAINT_TABLE_DINING_QUAINT_BLUE",
+					"TABLE_COFFEE_SPINDLE_WOOD_OLDWOOD",
+					"SPINDLE_TABLE_COFFEE_SPINDLE_WOOD_OLDWOOD",
 
-				"org.lgna.story.resources.prop.QuaintDiningTable",
-				"org.lgna.story.resources.prop.DiningTable",
+					"TABLE_COFFEE_SPINDLE_WOOD_PAINTED",
+					"SPINDLE_TABLE_COFFEE_SPINDLE_WOOD_PAINTED",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+					"TABLE_COFFEE_SPINDLE_WOOD_RED",
+					"SPINDLE_TABLE_COFFEE_SPINDLE_WOOD_RED",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+					"org.lgna.story.resources.prop.SpindleCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+					"TABLE_DINING_CLUB_ROOT",
+					"CLUB_TABLE_DINING_CLUB_ROOT",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+					"TABLE_DINING_CLUB_NEDAR",
+					"CLUB_TABLE_DINING_CLUB_NEDAR",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+					"TABLE_DINING_CLUB_OAK",
+					"CLUB_TABLE_DINING_CLUB_OAK",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+					"TABLE_DINING_CLUB_RED",
+					"CLUB_TABLE_DINING_CLUB_RED",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+					"TABLE_DINING_CLUB_REDDARK",
+					"CLUB_TABLE_DINING_CLUB_REDDARK",
 
-				"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
-				"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+					"TABLE_DINING_CLUB_WOOD",
+					"CLUB_TABLE_DINING_CLUB_WOOD",
 
-				"org.lgna.story.resources.prop.ClubEndTable",
-				"org.lgna.story.resources.prop.EndTable",
+					"TABLE_DINING_CLUB_PINE",
+					"CLUB_TABLE_DINING_CLUB_PINE",
 
-				"TABLE_END_COLONIAL2_TABLE_LIGHTWOOD",
-				"COLONIAL_TABLE_END_COLONIAL2_TABLE_LIGHTWOOD",
+					"TABLE_DINING_CLUB_SEDAR",
+					"CLUB_TABLE_DINING_CLUB_SEDAR",
 
-				"TABLE_END_COLONIAL2_TABLE_REDWOOD",
-				"COLONIAL_TABLE_END_COLONIAL2_TABLE_REDWOOD",
+					"org.lgna.story.resources.prop.ClubDiningTable",
+					"org.lgna.story.resources.prop.DiningTable",
 
-				"TABLE_END_COLONIAL2_TABLE_WOOD",
-				"COLONIAL_TABLE_END_COLONIAL2_TABLE_WOOD",
+					"TABLE_DINING_MOROCCAN_TURQ",
+					"MOROCCAN_TABLE_DINING_MOROCCAN_TURQ",
 
-				"TABLE_END_COLONIAL2_TABLE_DARKWOOD",
-				"COLONIAL_TABLE_END_COLONIAL2_TABLE_DARKWOOD",
+					"TABLE_DINING_MOROCCAN_BLUE",
+					"MOROCCAN_TABLE_DINING_MOROCCAN_BLUE",
 
-				"TABLE_END_MOROCCAN_END_TABLE_ALADDIN",
-				"MOROCCAN_TABLE_END_MOROCCAN_END_TABLE_ALADDIN",
+					"TABLE_DINING_MOROCCAN_BLUE_LIGHT",
+					"MOROCCAN_TABLE_DINING_MOROCCAN_BLUE_LIGHT",
 
-				"TABLE_END_MOROCCAN_END_TABLE_STAR",
-				"MOROCCAN_TABLE_END_MOROCCAN_END_TABLE_STAR",
+					"TABLE_DINING_MOROCCAN_GREEN",
+					"MOROCCAN_TABLE_DINING_MOROCCAN_GREEN",
 
-				"TABLE_END_MOROCCAN_END_TABLE_TILE",
-				"MOROCCAN_TABLE_END_MOROCCAN_END_TABLE_TILE",
+					"org.lgna.story.resources.prop.MoroccanDiningTable",
+					"org.lgna.story.resources.prop.DiningTable",
 
-				"TABLE_END_MOROCCAN_END_TABLE_DETAIL",
-				"MOROCCAN_TABLE_END_MOROCCAN_END_TABLE_DETAIL",
+					"TABLE_DINING_ORIENTAL_DRAGON_BROWN",
+					"ORIENTAL_TABLE_DINING_ORIENTAL_DRAGON_BROWN",
 
-				"org.lgna.story.resources.prop.MoroccanEndTable",
-				"org.lgna.story.resources.prop.EndTable",
+					"TABLE_DINING_ORIENTAL_FISH_BROWN",
+					"ORIENTAL_TABLE_DINING_ORIENTAL_FISH_BROWN",
 
-				"org.lgna.story.resources.prop.OctagonalEndTable",
-				"org.lgna.story.resources.prop.EndTable",
+					"TABLE_DINING_ORIENTAL_DRAGON_RED",
+					"ORIENTAL_TABLE_DINING_ORIENTAL_DRAGON_RED",
 
-				"TABLE_END_QUAINT__FABRIC_BLUE",
-				"QUAINT_TABLE_END_QUAINT_FABRIC_BLUE",
+					"TABLE_DINING_ORIENTAL_FISH_RED",
+					"ORIENTAL_TABLE_DINING_ORIENTAL_FISH_RED",
 
-				"TABLE_END_QUAINT__FABRIC_PINK",
-				"QUAINT_TABLE_END_QUAINT_FABRIC_PINK",
+					"TABLE_DINING_ORIENTAL_LOTUS_BLACK",
+					"ORIENTAL_TABLE_DINING_ORIENTAL_LOTUS_BLACK",
 
-				"TABLE_END_QUAINT__FABRIC_GREEN",
-				"QUAINT_TABLE_END_QUAINT_FABRIC_GREEN",
+					"TABLE_DINING_ORIENTAL_LOTUS_ORANGE",
+					"ORIENTAL_TABLE_DINING_ORIENTAL_LOTUS_ORANGE",
 
-				"TABLE_END_QUAINT__FABRIC_BEIGE",
-				"QUAINT_TABLE_END_QUAINT_FABRIC_BEIGE",
+					"org.lgna.story.resources.prop.OrientalDiningTable",
+					"org.lgna.story.resources.prop.DiningTable",
 
-				"TABLE_END_QUAINT__FABRIC_WHITE",
-				"QUAINT_TABLE_END_QUAINT_FABRIC_WHITE",
+					"TABLE_DINING_OUTDOOR_WOOD_ASH",
+					"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_ASH",
 
-				"TABLE_END_QUAINT__FABRIC_WHITE_FLOWERS",
-				"QUAINT_TABLE_END_QUAINT_FABRIC_WHITE_FLOWERS",
+					"TABLE_DINING_OUTDOOR_WOOD_REDOAK",
+					"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_REDOAK",
 
-				"TABLE_END_UM_PURPLE",
-				"UM_TABLE_END_UM_PURPLE",
+					"TABLE_DINING_OUTDOOR_WOOD_REDWOOD",
+					"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_REDWOOD",
 
-				"TABLE_END_UM_GREEN",
-				"UM_TABLE_END_UM_GREEN",
+					"TABLE_DINING_OUTDOOR_WOOD_WHITE",
+					"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_WHITE",
 
-				"TABLE_END_UM_BLACK",
-				"UM_TABLE_END_UM_BLACK",
+					"TABLE_DINING_OUTDOOR_WOOD_CROSSPINE",
+					"OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_CROSSPINE",
 
-				"TABLE_END_UM_BLUE",
-				"UM_TABLE_END_UM_BLUE",
+					"org.lgna.story.resources.prop.OutdoorDiningTable",
+					"org.lgna.story.resources.prop.DiningTable",
 
-				"TABLE_END_UM_YELLOW",
-				"UM_TABLE_END_UM_YELLOW",
+					"TABLE_DINING_QUAINT_RED",
+					"QUAINT_TABLE_DINING_QUAINT_RED",
 
-				"TABLE_END_UM_WHITE",
-				"UM_TABLE_END_UM_WHITE",
+					"TABLE_DINING_QUAINT_GREEN",
+					"QUAINT_TABLE_DINING_QUAINT_GREEN",
 
-				"TABLE_END_UM_ORANGE",
-				"UM_TABLE_END_UM_ORANGE",
+					"TABLE_DINING_QUAINT_WHITE",
+					"QUAINT_TABLE_DINING_QUAINT_WHITE",
 
-				"org.lgna.story.resources.prop.UmEndTable",
-				"org.lgna.story.resources.prop.EndTable",
+					"TABLE_DINING_QUAINT_BLUE",
+					"QUAINT_TABLE_DINING_QUAINT_BLUE",
 
-				"LOFT_BOOKCASE_WOOD_DARK",
-				"LOFT_LOFT_BOOKCASE_WOOD_DARK",
+					"org.lgna.story.resources.prop.QuaintDiningTable",
+					"org.lgna.story.resources.prop.DiningTable",
 
-				"LOFT_BOOKCASE_WOOD_LIGHT",
-				"LOFT_LOFT_BOOKCASE_WOOD_LIGHT",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
 
-				"LOFT_BOOKCASE_WOOD_MEDIUM",
-				"LOFT_LOFT_BOOKCASE_WOOD_MEDIUM",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
 
-				"LOFT_BOOKCASE_BRUSHED",
-				"LOFT_LOFT_BOOKCASE_BRUSHED",
+					"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
 
-				"org.lgna.story.resources.prop.BookcaseLoft",
-				"org.lgna.story.resources.prop.Bookcase",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
 
-				"BOOKCASE_CHEAP_OAK",
-				"CHEAP_BOOKCASE_CHEAP_OAK",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
 
-				"BOOKCASE_CHEAP_MAHOGANY",
-				"CHEAP_BOOKCASE_CHEAP_MAHOGANY",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
 
-				"BOOKCASE_CHEAP_PINE",
-				"CHEAP_BOOKCASE_CHEAP_PINE",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
 
-				"BOOKCASE_CHEAP_BLACK_WASH",
-				"CHEAP_BOOKCASE_CHEAP_BLACK_WASH",
+					"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
 
-				"BOOKCASE_CHEAP_WOOD_PLANK",
-				"CHEAP_BOOKCASE_CHEAP_WOOD_PLANK",
+					"org.lgna.story.resources.prop.ClubEndTable",
+					"org.lgna.story.resources.prop.EndTable",
 
-				"org.lgna.story.resources.prop.BookcaseCheap",
-				"org.lgna.story.resources.prop.Bookcase",
+					"TABLE_END_COLONIAL2_TABLE_LIGHTWOOD",
+					"COLONIAL_TABLE_END_COLONIAL2_TABLE_LIGHTWOOD",
 
-				"BOOKCASE_COLONIAL_REDWOODCURLY",
-				"COLONIAL_BOOKCASE_COLONIAL_REDWOODCURLY",
+					"TABLE_END_COLONIAL2_TABLE_REDWOOD",
+					"COLONIAL_TABLE_END_COLONIAL2_TABLE_REDWOOD",
 
-				"BOOKCASE_COLONIAL_BROWNWOODCURLY",
-				"COLONIAL_BOOKCASE_COLONIAL_BROWNWOODCURLY",
+					"TABLE_END_COLONIAL2_TABLE_WOOD",
+					"COLONIAL_TABLE_END_COLONIAL2_TABLE_WOOD",
 
-				"BOOKCASE_COLONIAL_DARK_BROWN_WOODCURLY",
-				"COLONIAL_BOOKCASE_COLONIAL_DARK_BROWN_WOODCURLY",
+					"TABLE_END_COLONIAL2_TABLE_DARKWOOD",
+					"COLONIAL_TABLE_END_COLONIAL2_TABLE_DARKWOOD",
 
-				"org.lgna.story.resources.prop.BookcaseColonial",
-				"org.lgna.story.resources.prop.Bookcase",
+					"TABLE_END_MOROCCAN_END_TABLE_ALADDIN",
+					"MOROCCAN_TABLE_END_MOROCCAN_END_TABLE_ALADDIN",
 
-				"BOOKCASE_VALUE_PRESSEDPINE",
-				"VALUE_BOOKCASE_VALUE_PRESSEDPINE",
+					"TABLE_END_MOROCCAN_END_TABLE_STAR",
+					"MOROCCAN_TABLE_END_MOROCCAN_END_TABLE_STAR",
 
-				"BOOKCASE_VALUE_PINE",
-				"VALUE_BOOKCASE_VALUE_PINE",
+					"TABLE_END_MOROCCAN_END_TABLE_TILE",
+					"MOROCCAN_TABLE_END_MOROCCAN_END_TABLE_TILE",
 
-				"org.lgna.story.resources.prop.BookcaseValue",
-				"org.lgna.story.resources.prop.Bookcase",
+					"TABLE_END_MOROCCAN_END_TABLE_DETAIL",
+					"MOROCCAN_TABLE_END_MOROCCAN_END_TABLE_DETAIL",
 
-				"org.lgna.story.resources.prop.LoveseatCamelBack",
-				"org.lgna.story.resources.prop.Loveseat",
+					"org.lgna.story.resources.prop.MoroccanEndTable",
+					"org.lgna.story.resources.prop.EndTable",
 
-				"SOFA_MOROCCAN_BEIGE",
-				"MOROCCAN_BLUE",
+					"org.lgna.story.resources.prop.OctagonalEndTable",
+					"org.lgna.story.resources.prop.EndTable",
 
-				"SOFA_MOROCCAN_GREEN",
-				"MOROCCAN_GREEN",
+					"TABLE_END_QUAINT__FABRIC_BLUE",
+					"QUAINT_TABLE_END_QUAINT_FABRIC_BLUE",
 
-				"SOFA_MOROCCAN_RED",
-				"MOROCCAN_RED",
+					"TABLE_END_QUAINT__FABRIC_PINK",
+					"QUAINT_TABLE_END_QUAINT_FABRIC_PINK",
 
-				"org.lgna.story.resources.prop.LoveseatMoroccan",
-				"org.lgna.story.resources.prop.Loveseat",
+					"TABLE_END_QUAINT__FABRIC_GREEN",
+					"QUAINT_TABLE_END_QUAINT_FABRIC_GREEN",
 
-				"LOVESEAT_PARK_BENCH_OAK",
-				"PARK_LOVESEAT_PARK_BENCH_OAK",
+					"TABLE_END_QUAINT__FABRIC_BEIGE",
+					"QUAINT_TABLE_END_QUAINT_FABRIC_BEIGE",
 
-				"LOVESEAT_PARK_BENCH_RED",
-				"PARK_LOVESEAT_PARK_BENCH_RED",
+					"TABLE_END_QUAINT__FABRIC_WHITE",
+					"QUAINT_TABLE_END_QUAINT_FABRIC_WHITE",
 
-				"LOVESEAT_PARK_BENCH_OAKGREEN",
-				"PARK_LOVESEAT_PARK_BENCH_OAKGREEN",
+					"TABLE_END_QUAINT__FABRIC_WHITE_FLOWERS",
+					"QUAINT_TABLE_END_QUAINT_FABRIC_WHITE_FLOWERS",
 
-				"LOVESEAT_PARK_BENCH_OAKBLUE",
-				"PARK_LOVESEAT_PARK_BENCH_OAKBLUE",
+					"TABLE_END_UM_PURPLE",
+					"UM_TABLE_END_UM_PURPLE",
 
-				"LOVESEAT_PARK_BENCH_IVORY",
-				"PARK_LOVESEAT_PARK_BENCH_IVORY",
+					"TABLE_END_UM_GREEN",
+					"UM_TABLE_END_UM_GREEN",
 
-				"org.lgna.story.resources.prop.LoveseatParkBench",
-				"org.lgna.story.resources.prop.Loveseat",
+					"TABLE_END_UM_BLACK",
+					"UM_TABLE_END_UM_BLACK",
 
-				"org.lgna.story.resources.prop.LoveseatQuaint",
-				"org.lgna.story.resources.prop.Loveseat",
+					"TABLE_END_UM_BLUE",
+					"UM_TABLE_END_UM_BLUE",
 
-				"LOVESEAT_VALUE_RED_CHECKER",
-				"VALUE_LOVESEAT_VALUE_RED_CHECKER",
+					"TABLE_END_UM_YELLOW",
+					"UM_TABLE_END_UM_YELLOW",
 
-				"LOVESEAT_VALUE_BLUE_CHECKER",
-				"VALUE_LOVESEAT_VALUE_BLUE_CHECKER",
+					"TABLE_END_UM_WHITE",
+					"UM_TABLE_END_UM_WHITE",
 
-				"LOVESEAT_VALUE_BLUE_STRIPE",
-				"VALUE_LOVESEAT_VALUE_BLUE_STRIPE",
+					"TABLE_END_UM_ORANGE",
+					"UM_TABLE_END_UM_ORANGE",
 
-				"LOVESEAT_VALUE_FLOWER",
-				"VALUE_LOVESEAT_VALUE_FLOWER",
+					"org.lgna.story.resources.prop.UmEndTable",
+					"org.lgna.story.resources.prop.EndTable",
 
-				"org.lgna.story.resources.prop.LoveseatValue",
-				"org.lgna.story.resources.prop.Loveseat",
+					"LOFT_BOOKCASE_WOOD_DARK",
+					"LOFT_LOFT_BOOKCASE_WOOD_DARK",
 
-				"DESK_CENTRAL_ASIAN_RED",
-				"CENTRAL_ASIAN_LION",
+					"LOFT_BOOKCASE_WOOD_LIGHT",
+					"LOFT_LOFT_BOOKCASE_WOOD_LIGHT",
 
-				"DESK_CENTRAL_ASIAN_BLACK",
-				"CENTRAL_ASIAN_LION",
+					"LOFT_BOOKCASE_WOOD_MEDIUM",
+					"LOFT_LOFT_BOOKCASE_WOOD_MEDIUM",
 
-				"DESK_CLUB__DARKWOOD",
-				"CLUB_DESK_CLUB_DARKWOOD",
+					"LOFT_BOOKCASE_BRUSHED",
+					"LOFT_LOFT_BOOKCASE_BRUSHED",
 
-				"DESK_CLUB__ASH",
-				"CLUB_DESK_CLUB_ASH",
+					"org.lgna.story.resources.prop.BookcaseLoft",
+					"org.lgna.story.resources.prop.Bookcase",
 
-				"DESK_CLUB__REDWOOD",
-				"CLUB_DESK_CLUB_REDWOOD",
+					"BOOKCASE_CHEAP_OAK",
+					"CHEAP_BOOKCASE_CHEAP_OAK",
 
-				"org.lgna.story.resources.prop.DeskClub",
-				"org.lgna.story.resources.prop.Desk",
+					"BOOKCASE_CHEAP_MAHOGANY",
+					"CHEAP_BOOKCASE_CHEAP_MAHOGANY",
 
-				"DESK_QUAINT_GREEN",
-				"QUAINT_GREEN",
+					"BOOKCASE_CHEAP_PINE",
+					"CHEAP_BOOKCASE_CHEAP_PINE",
 
-				"DESK_QUAINT_WHITE",
-				"QUAINT_DESK_QUAINT_WHITE",
+					"BOOKCASE_CHEAP_BLACK_WASH",
+					"CHEAP_BOOKCASE_CHEAP_BLACK_WASH",
 
-				"DESK_QUAINT_RED",
-				"QUAINT_RED",
+					"BOOKCASE_CHEAP_WOOD_PLANK",
+					"CHEAP_BOOKCASE_CHEAP_WOOD_PLANK",
 
-				"DESK_QUAINT_BLUE",
-				"QUAINT_BLUE",
+					"org.lgna.story.resources.prop.BookcaseCheap",
+					"org.lgna.story.resources.prop.Bookcase",
 
-				"DESK_VALUE_WOODWHITE",
-				"VALUE_DESK_VALUE_WOODWHITE",
+					"BOOKCASE_COLONIAL_REDWOODCURLY",
+					"COLONIAL_BOOKCASE_COLONIAL_REDWOODCURLY",
 
-				"DESK_VALUE_WOODRED",
-				"VALUE_DESK_VALUE_WOODRED",
+					"BOOKCASE_COLONIAL_BROWNWOODCURLY",
+					"COLONIAL_BOOKCASE_COLONIAL_BROWNWOODCURLY",
 
-				"DESK_VALUE_WOOD_METAL",
-				"VALUE_DESK_VALUE_WOOD_METAL",
+					"BOOKCASE_COLONIAL_DARK_BROWN_WOODCURLY",
+					"COLONIAL_BOOKCASE_COLONIAL_DARK_BROWN_WOODCURLY",
 
-				"DESK_VALUE_WOODMAPPLE",
-				"VALUE_DESK_VALUE_WOODMAPPLE",
+					"org.lgna.story.resources.prop.BookcaseColonial",
+					"org.lgna.story.resources.prop.Bookcase",
 
-				"org.lgna.story.resources.prop.DeskValue",
-				"org.lgna.story.resources.prop.Desk",
+					"BOOKCASE_VALUE_PRESSEDPINE",
+					"VALUE_BOOKCASE_VALUE_PRESSEDPINE",
 
-				"SOFA_VALUE1_REDCHECKER",
-				"VALUE1_SOFA_VALUE1_REDCHECKER",
+					"BOOKCASE_VALUE_PINE",
+					"VALUE_BOOKCASE_VALUE_PINE",
 
-				"SOFA_VALUE1_BLUE_CHECKER",
-				"VALUE1_SOFA_VALUE1_BLUE_CHECKER",
+					"org.lgna.story.resources.prop.BookcaseValue",
+					"org.lgna.story.resources.prop.Bookcase",
 
-				"SOFA_VALUE1_BLUE_STRIPE",
-				"VALUE1_SOFA_VALUE1_BLUE_STRIPE",
+					"org.lgna.story.resources.prop.LoveseatCamelBack",
+					"org.lgna.story.resources.prop.Loveseat",
 
-				"SOFA_VALUE1_FLOWER",
-				"VALUE1_SOFA_VALUE1_FLOWER",
+					"SOFA_MOROCCAN_BEIGE",
+					"MOROCCAN_SOFA_MOROCCAN_BEIGE",
 
-				"org.lgna.story.resources.prop.SofaValue1",
-				"org.lgna.story.resources.prop.Sofa",
+					"SOFA_MOROCCAN_GREEN",
+					"MOROCCAN_SOFA_MOROCCAN_GREEN",
 
-				"SOFA_MOROCCAN_RED",
-				"MOROCCAN_RED",
+					"SOFA_MOROCCAN_RED",
+					"MOROCCAN_SOFA_MOROCCAN_RED",
 
-				"SOFA_MOROCCAN_GREEN",
-				"MOROCCAN_GREEN",
+					"org.lgna.story.resources.prop.LoveseatMoroccan",
+					"org.lgna.story.resources.prop.Loveseat",
 
-				"SOFA_MOROCCAN_BEIGE",
-				"MOROCCAN_BLUE",
+					"LOVESEAT_PARK_BENCH_OAK",
+					"PARK_BENCH_LOVESEAT_PARK_BENCH_OAK",
 
-				"org.lgna.story.resources.prop.SofaQuaint",
-				"org.lgna.story.resources.prop.SeaPlant",
+					"LOVESEAT_PARK_BENCH_RED",
+					"PARK_BENCH_LOVESEAT_PARK_BENCH_RED",
 
-				"SOFA_VALUE2_LIGHT_BROWN_FLOWER",
-				"VALUE2_SOFA_VALUE2_LIGHT_BROWN_FLOWER",
+					"LOVESEAT_PARK_BENCH_OAKGREEN",
+					"PARK_BENCH_LOVESEAT_PARK_BENCH_OAKGREEN",
 
-				"SOFA_VALUE2_RED_CHECKER",
-				"VALUE2_SOFA_VALUE2_RED_CHECKER",
+					"LOVESEAT_PARK_BENCH_OAKBLUE",
+					"PARK_BENCH_LOVESEAT_PARK_BENCH_OAKBLUE",
 
-				"SOFA_VALUE2_GREEN_FLOWER",
-				"VALUE2_SOFA_VALUE2_GREEN_FLOWER",
+					"LOVESEAT_PARK_BENCH_IVORY",
+					"PARK_BENCH_LOVESEAT_PARK_BENCH_IVORY",
 
-				"SOFA_VALUE2_BLUE_FLOWER_BORDER",
-				"VALUE2_SOFA_VALUE2_BLUE_FLOWER_BORDER",
+					"org.lgna.story.resources.prop.LoveseatParkBench",
+					"org.lgna.story.resources.prop.Loveseat",
 
-				"org.lgna.story.resources.prop.SofaValue2",
-				"org.lgna.story.resources.prop.Sofa",
+					"org.lgna.story.resources.prop.LoveseatQuaint",
+					"org.lgna.story.resources.prop.Loveseat",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADE",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADE",
+					"LOVESEAT_VALUE_RED_CHECKER",
+					"VALUE_LOVESEAT_VALUE_RED_CHECKER",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADEON",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADEON",
+					"LOVESEAT_VALUE_BLUE_CHECKER",
+					"VALUE_LOVESEAT_VALUE_BLUE_CHECKER",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADE",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADE",
+					"LOVESEAT_VALUE_BLUE_STRIPE",
+					"VALUE_LOVESEAT_VALUE_BLUE_STRIPE",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADEON",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADEON",
+					"LOVESEAT_VALUE_FLOWER",
+					"VALUE_LOVESEAT_VALUE_FLOWER",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADE",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADE",
+					"org.lgna.story.resources.prop.LoveseatValue",
+					"org.lgna.story.resources.prop.Loveseat",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADEON",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADEON",
+					"DESK_CENTRAL_ASIAN_RED",
+					"CENTRAL_ASIAN_LION",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADEON",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADEON",
+					"DESK_CENTRAL_ASIAN_BLACK",
+					"CENTRAL_ASIAN_LION",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADE",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADE",
+					"DESK_CLUB__DARKWOOD",
+					"CLUB_DESK_CLUB_DARKWOOD",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADE",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADE",
+					"DESK_CLUB__ASH",
+					"CLUB_DESK_CLUB_ASH",
 
-				"LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADEON",
-				"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADEON",
+					"DESK_CLUB__REDWOOD",
+					"CLUB_DESK_CLUB_REDWOOD",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_UNLIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_UNLIT",
+					"org.lgna.story.resources.prop.DeskClub",
+					"org.lgna.story.resources.prop.Desk",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_BLUE_UNLIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_BLUE_UNLIT",
+					"DESK_QUAINT_GREEN",
+					"QUAINT_GREEN",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_GREEN_UNLIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_GREEN_UNLIT",
+					"DESK_QUAINT_WHITE",
+					"QUAINT_DESK_QUAINT_WHITE",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_ORANGE_UNLIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_ORANGE_UNLIT",
+					"DESK_QUAINT_RED",
+					"QUAINT_RED",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_RED_UNLIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_RED_UNLIT",
+					"DESK_QUAINT_BLUE",
+					"QUAINT_BLUE",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_LIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_LIT",
+					"DESK_VALUE_WOODWHITE",
+					"VALUE_DESK_VALUE_WOODWHITE",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_BLUE_LIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_BLUE_LIT",
+					"DESK_VALUE_WOODRED",
+					"VALUE_DESK_VALUE_WOODRED",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_RED_LIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_RED_LIT",
+					"DESK_VALUE_WOOD_METAL",
+					"VALUE_DESK_VALUE_WOOD_METAL",
 
-				"LIGHTING_FLOOR_LOFT_LAMP_SHADE_GREEN_LIT",
-				"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_GREEN_LIT",
+					"DESK_VALUE_WOODMAPPLE",
+					"VALUE_DESK_VALUE_WOODMAPPLE",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_BLUE_UNLIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_BLUE_UNLIT",
+					"org.lgna.story.resources.prop.DeskValue",
+					"org.lgna.story.resources.prop.Desk",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_GOLD_BLUE_UNLIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_GOLD_BLUE_UNLIT",
+					"SOFA_VALUE1_REDCHECKER",
+					"VALUE1_SOFA_VALUE1_REDCHECKER",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_ORANGE_UNLIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_ORANGE_UNLIT",
+					"SOFA_VALUE1_BLUE_CHECKER",
+					"VALUE1_SOFA_VALUE1_BLUE_CHECKER",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_RED_UNLIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_RED_UNLIT",
+					"SOFA_VALUE1_BLUE_STRIPE",
+					"VALUE1_SOFA_VALUE1_BLUE_STRIPE",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_UNLIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_UNLIT",
+					"SOFA_VALUE1_FLOWER",
+					"VALUE1_SOFA_VALUE1_FLOWER",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_BLUES_LIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_BLUES_LIT",
+					"org.lgna.story.resources.prop.SofaValue1",
+					"org.lgna.story.resources.prop.Sofa",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_GOLD_BLUE_LIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_GOLD_BLUE_LIT",
+					"SOFA_MOROCCAN_RED",
+					"MOROCCAN_RED",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_ORANGE_LIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_ORANGE_LIT",
+					"SOFA_MOROCCAN_GREEN",
+					"MOROCCAN_GREEN",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_RED_LIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_RED_LIT",
+					"SOFA_MOROCCAN_BEIGE",
+					"MOROCCAN_BLUE",
 
-				"LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_LIT",
-				"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_LIT",
+					"org.lgna.story.resources.prop.SofaQuaint",
+					"org.lgna.story.resources.prop.SeaPlant",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_PINK_LIT",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_PINK_LIT",
+					"SOFA_VALUE2_LIGHT_BROWN_FLOWER",
+					"VALUE2_SOFA_VALUE2_LIGHT_BROWN_FLOWER",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_BEIGE_LIT",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BEIGE_LIT",
+					"SOFA_VALUE2_RED_CHECKER",
+					"VALUE2_SOFA_VALUE2_RED_CHECKER",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_BEIGE",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BEIGE",
+					"SOFA_VALUE2_GREEN_FLOWER",
+					"VALUE2_SOFA_VALUE2_GREEN_FLOWER",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_WHITE",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_WHITE",
+					"SOFA_VALUE2_BLUE_FLOWER_BORDER",
+					"VALUE2_SOFA_VALUE2_BLUE_FLOWER_BORDER",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_PINK",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_PINK",
+					"org.lgna.story.resources.prop.SofaValue2",
+					"org.lgna.story.resources.prop.Sofa",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_BLUE",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BLUE",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADE",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADE",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_YELLOW",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_YELLOW",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADEON",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADEON",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_GREEN",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_GREEN",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADE",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADE",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_BLUE_LIT",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BLUE_LIT",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADEON",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADEON",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_GREEN_LIT",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_GREEN_LIT",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADE",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADE",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_WHITE_LIT",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_WHITE_LIT",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADEON",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADEON",
 
-				"LIGHTING_FLOOR_QUAINT_SHADE_YELLOW_LIT",
-				"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_YELLOW_LIT",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADEON",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADEON",
 
-				"LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_LIT",
-				"STUDIO_LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_LIT",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADE",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADE",
 
-				"LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_UNLIT",
-				"STUDIO_LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_UNLIT",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADE",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADE",
 
-				"LIGHTING_FLOOR_VALUE_PAINTED_METAL_BLACKPAINT",
-				"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_BLACKPAINT",
+					"LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADEON",
+					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADEON",
 
-				"LIGHTING_FLOOR_VALUE_PAINTED_METAL_REDPAINT",
-				"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_REDPAINT",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_UNLIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_UNLIT",
 
-				"LIGHTING_FLOOR_VALUE_PAINTED_METAL_TANPAINT",
-				"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_TANPAINT",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_BLUE_UNLIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_BLUE_UNLIT",
 
-				"LIGHTING_FLOOR_VALUE_PAINTED_METAL_GREEN_PAINT",
-				"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_GREEN_PAINT",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_GREEN_UNLIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_GREEN_UNLIT",
 
-				"LIGHTING_FLOOR_VALUE_PAINTED_METAL_WHITEPAINT",
-				"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_WHITEPAINT",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_ORANGE_UNLIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_ORANGE_UNLIT",
 
-				"CHAIR_DINING_CLUB_RED_WOOD",
-				"CLUB_CHAIR_DINING_CLUB_RED_WOOD",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_RED_UNLIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_RED_UNLIT",
 
-				"CHAIR_DINING_CLUB_GREENLEATH",
-				"CLUB_CHAIR_DINING_CLUB_GREENLEATH",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_LIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_LIT",
 
-				"CHAIR_DINING_CLUB_OAKCANE",
-				"CLUB_CHAIR_DINING_CLUB_OAKCANE",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_BLUE_LIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_BLUE_LIT",
 
-				"CHAIR_DINING_CLUB_LTGREENLEATH",
-				"CLUB_CHAIR_DINING_CLUB_LTGREENLEATH",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_RED_LIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_RED_LIT",
 
-				"org.lgna.story.resources.prop.ClubDiningChair",
-				"org.lgna.story.resources.prop.DiningTable",
+					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_GREEN_LIT",
+					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_GREEN_LIT",
 
-				"CHAIR_DINING_COLONIAL1_PURPLE",
-				"COLONIAL_CHAIR_DINING_COLONIAL1_PURPLE",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_BLUE_UNLIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_BLUE_UNLIT",
 
-				"CHAIR_DINING_COLONIAL1_GOLD_PATTERN",
-				"COLONIAL_CHAIR_DINING_COLONIAL1_GOLD_PATTERN",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_GOLD_BLUE_UNLIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_GOLD_BLUE_UNLIT",
 
-				"CHAIR_DINING_COLONIAL1_GOLDEN2",
-				"COLONIAL_CHAIR_DINING_COLONIAL1_GOLDEN2",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_ORANGE_UNLIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_ORANGE_UNLIT",
 
-				"CHAIR_DINING_COLONIAL1_STRIPES",
-				"COLONIAL_CHAIR_DINING_COLONIAL1_STRIPES",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_RED_UNLIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_RED_UNLIT",
 
-				"CHAIR_DINING_COLONIAL1_BLUEPATTERN",
-				"COLONIAL_CHAIR_DINING_COLONIAL1_BLUEPATTERN",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_UNLIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_UNLIT",
 
-				"CHAIR_DINING_COLONIAL1_DIAMONDS",
-				"COLONIAL_CHAIR_DINING_COLONIAL1_DIAMONDS",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_BLUES_LIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_BLUES_LIT",
 
-				"LOVESEAT_PARK_BENCH_OAK",
-				"PARK_LOVESEAT_PARK_BENCH_OAK",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_GOLD_BLUE_LIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_GOLD_BLUE_LIT",
 
-				"LOVESEAT_PARK_BENCH_WALNUT",
-				"PARK_LOVESEAT_PARK_BENCH_WALNUT",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_ORANGE_LIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_ORANGE_LIT",
 
-				"LOVESEAT_PARK_BENCH_RED",
-				"PARK_LOVESEAT_PARK_BENCH_RED",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_RED_LIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_RED_LIT",
 
-				"LOVESEAT_PARK_BENCH_OAKGREEN",
-				"PARK_LOVESEAT_PARK_BENCH_OAKGREEN",
+					"LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_LIT",
+					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_LIT",
 
-				"LOVESEAT_PARK_BENCH_OAKBLUE",
-				"PARK_LOVESEAT_PARK_BENCH_OAKBLUE",
+					"LIGHTING_FLOOR_QUAINT_SHADE_PINK_LIT",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_PINK_LIT",
 
-				"LOVESEAT_PARK_BENCH_IVORY",
-				"PARK_LOVESEAT_PARK_BENCH_IVORY",
+					"LIGHTING_FLOOR_QUAINT_SHADE_BEIGE_LIT",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BEIGE_LIT",
 
-				"LOVESEAT_PARK_BENCH_CHESTNUT",
-				"PARK_LOVESEAT_PARK_BENCH_CHESTNUT",
+					"LIGHTING_FLOOR_QUAINT_SHADE_BEIGE",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BEIGE",
 
-				"org.lgna.story.resources.prop.ParkChair",
-				"org.lgna.story.resources.prop.Chair",
+					"LIGHTING_FLOOR_QUAINT_SHADE_WHITE",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_WHITE",
 
-				"CHAIR_DINING_MODERATE_BODY_BLACK",
-				"MODERATE_CHAIR_DINING_MODERATE_BODY_BLACK",
+					"LIGHTING_FLOOR_QUAINT_SHADE_PINK",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_PINK",
 
-				"CHAIR_DINING_MODERATE_BODY_WOOD",
-				"MODERATE_CHAIR_DINING_MODERATE_BODY_WOOD",
+					"LIGHTING_FLOOR_QUAINT_SHADE_BLUE",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BLUE",
 
-				"CHAIR_DINING_MODERATE_BODY_TEAL",
-				"MODERATE_CHAIR_DINING_MODERATE_BODY_TEAL",
+					"LIGHTING_FLOOR_QUAINT_SHADE_YELLOW",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_YELLOW",
 
-				"CHAIR_DINING_MODERATE_BODY_RED",
-				"MODERATE_CHAIR_DINING_MODERATE_BODY_RED",
+					"LIGHTING_FLOOR_QUAINT_SHADE_GREEN",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_GREEN",
 
-				"CHAIR_DINING_MODERATE_BODY_BLUE",
-				"MODERATE_CHAIR_DINING_MODERATE_BODY_BLUE",
+					"LIGHTING_FLOOR_QUAINT_SHADE_BLUE_LIT",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BLUE_LIT",
 
-				"CHAIR_DINING_MODERATE_SEAT_GRAY",
-				"MODERATE_CHAIR_DINING_MODERATE_SEAT_GRAY",
+					"LIGHTING_FLOOR_QUAINT_SHADE_GREEN_LIT",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_GREEN_LIT",
 
-				"CHAIR_DINING_MODERATE_SEAT_BUMBLE",
-				"MODERATE_CHAIR_DINING_MODERATE_SEAT_BUMBLE",
+					"LIGHTING_FLOOR_QUAINT_SHADE_WHITE_LIT",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_WHITE_LIT",
 
-				"CHAIR_DINING_MODERATE_SEAT_TEAL",
-				"MODERATE_CHAIR_DINING_MODERATE_SEAT_TEAL",
+					"LIGHTING_FLOOR_QUAINT_SHADE_YELLOW_LIT",
+					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_YELLOW_LIT",
 
-				"CHAIR_DINING_MODERATE_SEAT_STRAWBERRY",
-				"MODERATE_CHAIR_DINING_MODERATE_SEAT_STRAWBERRY",
+					"LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_LIT",
+					"STUDIO_LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_LIT",
 
-				"CHAIR_DINING_MODERATE_SEAT_YELLOW",
-				"MODERATE_CHAIR_DINING_MODERATE_SEAT_YELLOW",
+					"LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_UNLIT",
+					"STUDIO_LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_UNLIT",
 
-				"CHAIR_DINING_MODERATE_SEAT_BLUE",
-				"MODERATE_CHAIR_DINING_MODERATE_SEAT_BLUE",
+					"LIGHTING_FLOOR_VALUE_PAINTED_METAL_BLACKPAINT",
+					"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_BLACKPAINT",
 
-				"CHAIR_DINING_MOROCCAN_SURFACES_BLUE_ORANGE",
-				"MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_BLUE_ORANGE",
+					"LIGHTING_FLOOR_VALUE_PAINTED_METAL_REDPAINT",
+					"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_REDPAINT",
 
-				"CHAIR_DINING_MOROCCAN_SURFACES_RED_CIRCLES",
-				"MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_RED_CIRCLES",
+					"LIGHTING_FLOOR_VALUE_PAINTED_METAL_TANPAINT",
+					"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_TANPAINT",
 
-				"CHAIR_DINING_MOROCCAN_SURFACES_RED_TAN",
-				"MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_RED_TAN",
+					"LIGHTING_FLOOR_VALUE_PAINTED_METAL_GREEN_PAINT",
+					"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_GREEN_PAINT",
 
-				"CHAIR_DINING_MOROCCAN_SURFACES_BLUE_STRIPES",
-				"MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_BLUE_STRIPES",
-				
-				"CHICKENEYE_CARTOON",
-				"CHICKEN",
-				
-				"org.lgna.story.resources.whale.Dolphin",
-				"org.lgna.story.resources.marinemammal.Dolphin",
-				
-				"MANX",
-				"MANX_CAT",
-				
-				"GREEN_OGRE",
-				"GREEN",
-				
-				"org.lgna.story.resources.whale.Orca",
-				"org.lgna.story.resources.marinemammal.Orca",
-				
-				"ADULT_PENGUIN",
-				"ADULT",
-				
-				"BABY_PENGUIN",
-				"BABY",
-				
-				"org.lgna.story.resources.biped.FarmerPig",
-				"org.lgna.story.resources.biped.Pig",
-				
-				"SCOTTY",
-				"SCOTTY_DOG",
-				
-				"SHOE",
-				"TORTOISE",
-				
-				"org.lgna.story.resources.quadruped.Robot",
-				"org.lgna.story.resources.quadruped.AlienRobot",
-				
-				"_SUB",
-				"SUBMARINE",
-				
-				"SEAWEED_BACK",
-				"SEAWEED3",
-				
-				"SEAWEED_FRONT",
-				"SEAWEED1",
-				
-				"SEAWEED_MID",
-				"SEAWEED2",
-				
-				"QUEEN",
-				"QUEEN_OF_HEARTS",
-				
-				"PLAYING_CARD_TWO",
-				"CARD02",
-				
-				"PLAYING_CARD_TEN",
-				"CARD10",
-				
-				"PLAYING_CARD_THREE",
-				"CARD03",
-				
-				"PLAYING_CARD_ONE",
-				"CARD01",
-				
-				"PLAYING_CARD_SEVEN",
-				"CARD07",
-				
-				"PLAYING_CARD_NINE",
-				"CARD09",
-				
-				"PLAYING_CARD_SIX",
-				"CARD06",
-				
-				"PLAYING_CARD",
-				"BLANK",
-				
-				"PLAYING_CARD_EIGHT",
-				"CARD08",
-				
-				"PLAYING_CARD_FIVE",
-				"CARD05",
-				
-				"PLAYING_CARD_FOUR",
-				"CARD04",
-				
-				"ARMOIRE_LOFT_TRIM_BLACK",
-				"LOFT_BLACK_TRIM",
-				
-				"ARMOIRE_LOFT_TRIM_HONEY_DARK",
-				"LOFT_DARK_HONEY_TRIM",
-				
-				"ARMOIRE_LOFT_TRIM_SWIRLY_BROWN",
-				"LOFT_SWIRLY_BROWN_TRIM",
-				
-				"ARMOIRE_LOFT_TRIM_DARK_RED",
-				"LOFT_DARK_RED_TRIM",
-				
-				"ARMOIRE_LOFT_TRIM_MEDIUM_BROWN",
-				"LOFT_MEDIUM_BROWN_TRIM",
-				
-				"ARMOIRE_LOFT_SURFACES",
-				"LOFT_OAK",
-				
-				"ARMOIRE_QUAINT_ARMOIRE_BLUE",
-				"QUAINT_BLUE",
-				
-				"ARMOIRE_QUAINT_ARMOIRE_GREEN",
-				"QUAINT_GREEN",
-				
-				"ARMOIRE_QUAINT_ARMOIR_LEAVES",
-				"QUAINT_LEAVES",
-				
-				"ARMOIRE_QUAINT_ARMOIRE_RED",
-				"QUAINT_RED",
-				
-				"ARMOIRE_QUAINT_ARMOIRE_ROSES",
-				"QUAINT_ROSES",
-				
-				"ARMOIRE_CENTRAL_ASIAN_DRAGONDOOR",
-				"CENTRAL_ASIAN_DRAGON",
-				
-				"org.lgna.story.resources.armoire.ArmoireCentralAsian",
-				"org.lgna.story.resources.armoire.Armoire",
-				
-				"ARMOIRE_COLONIAL_WOOD_REDWOODCURLY",
-				"COLONIAL_CURLY_REDWOOD",
-				
-				"ARMOIRE_COLONIAL_WOOD_DARKWOODQUILTED",
-				"COLONIAL_QUILTED_DARK_WOOD",
-				
-				"ARMOIRE_COLONIAL_WOOD_LIGHTWOODCURLY",
-				"COLONIAL_CURLY_LIGHT_WOOD",
-				
-				"DRESSER_CENTRAL_ASIAN_GREEN_FLOWERS",
-				NO_REPLACEMENT,
-				
-				"DRESSER_CENTRAL_ASIAN_RED_FLOWERS",
-				NO_REPLACEMENT,
-				
-				"DRESSER_CENTRAL_ASIAN_GREEN",
-				NO_REPLACEMENT,
-				
-				"DRESSER_CENTRAL_ASIAN_RED",
-				NO_REPLACEMENT,
-				
-				"org.lgna.story.resources.prop.DresserCentralAsian",
-				NO_REPLACEMENT,
-				
-				"DRESSER_COLONIAL_WOOD",
-				NO_REPLACEMENT,
-				
-				"DRESSER_COLONIAL_LIGHT_WOOD_CURLY",
-				NO_REPLACEMENT,
-				
-				"DRESSER_COLONIAL_RED_WOOD",
-				NO_REPLACEMENT,
-				
-				"DRESSER_COLONIAL_WOOD_STRAIGHT_DARK",
-				NO_REPLACEMENT,
-				
-				"org.lgna.story.resources.prop.DresserColonial",
-				NO_REPLACEMENT,
-				
-				"DRESSER_DESIGNER_BROWN",
-				NO_REPLACEMENT,
-				
-				"DRESSER_DESIGNER_LIGHT_WOOD",
-				NO_REPLACEMENT,
-				
-				"DRESSER_DESIGNER_RED",
-				NO_REPLACEMENT,
-				
-				"DRESSER_DESIGNER_BLACK",
-				NO_REPLACEMENT,
-				
-				"DRESSER_DESIGNER_BLUE",
-				NO_REPLACEMENT,
-				
-				"org.lgna.story.resources.prop.DresserDesigner",
-				NO_REPLACEMENT,
-				
-				"DRESSER_JAPANESE_TANSU_NORMAL",
-				NO_REPLACEMENT,
-				
-				"DRESSER_JAPANESE_TANSU_BLACK",
-				NO_REPLACEMENT,
-				
-				"DRESSER_JAPANESE_TANSU_LIGHT",
-				NO_REPLACEMENT,
-				
-				"DRESSER_JAPANESE_TANSU_RED",
-				NO_REPLACEMENT,
-				
-				"org.lgna.story.resources.prop.DresserJapaneseTansu",
-				NO_REPLACEMENT,
-				
-				"BARBEQUE_VALUE_METAL_GREEN",
-				"GREEN",
-				
-				"BARBEQUE_VALUE_METAL_BLACK",
-				"BLACK",
-				
-				"BARBEQUE_VALUE_METAL_YELLO",
-				"YELLOW",
-				
-				"BARBEQUE_VALUE_METAL_RED",
-				"RED",
-				
-				"BARBEQUE_VALUE_METAL_BLUE",
-				"BLUE",
-				
-				"UFO_MAIN",
-				"UFO",
-				
-				"UFO_FRAME",
-				"UFO",
-				
-				"CANDY_FACTORY_ANIMATED_SURFACE",
-				"CANDY_FACTORY",
-				
-				"CANDY_FACTORY_LIGHT_GREEN",
-				"CANDY_FACTORY",
-				
-				"CANDY_FACTORY_LIGHT_OFF",
-				"CANDY_FACTORY",
-				
-				"CANDY_FACTORY_LIGHT_RED",
-				"CANDY_FACTORY",
-				
-				"TABLE_COFFEE_ART_NOUVEAU_TABLE1",
-				"ART_NOVEAU_TABLE_COFFEE_ART_NOUVEAU_TABLE1",
-				
-				"TABLE_COFFEE_ART_NOUVEAU_TABLE2",
-				"ART_NOVEAU_TABLE_COFFEE_ART_NOUVEAU_TABLE2",
-				
-				"TABLE_COFFEE_ART_NOUVEAU_TABLE3",
-				"ART_NOVEAU_TABLE_COFFEE_ART_NOUVEAU_TABLE3",
-				
-				"TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_RED",
-				"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_RED",
-				
-				"TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_CHERRY",
-				"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_CHERRY",
-				
-				"TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_BLONDE",
-				"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_BLONDE",
-				
-				"TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_DARK",
-				"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_DARK",
-				
-				"TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_CHERRY",
-				"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_CHERRY",
-				
-				"TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_BLONDE",
-				"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_BLONDE",
-				
-				"TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_RED",
-				"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_RED",
-				
-				"TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_DARK",
-				"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_DARK",
-				
-				"org.lgna.story.resources.prop.CentralAsianCoffeeTable",
-				"org.lgna.story.resources.prop.CoffeeTable",
-				
-				"TABLE_COFFEE_CLUB_RECTANGLE_WOOD",
-				"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_WOOD",
-				
-				"TABLE_COFFEE_CLUB_RECTANGLE_BRIDS_RED",
-				"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_BRIDS_RED",
-				
-				"TABLE_COFFEE_CLUB_RECTANGLE_BLEACHED_OAK",
-				"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_BLEACHED_OAK",
-				
-				"TABLE_COFFEE_CLUB_RECTANGLE_MAHOG",
-				"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_MAHOG",
-				
-				"TABLE_COFFEE_CLUB_RECTANGLE_RED_ASH",
-				"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_RED_ASH",
-				
-				"TABLE_COFFEE_CLUB_RECTANGLE_WHITE_OAK",
-				"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_WHITE_OAK",
-				
-				"TABLE_COFFEE_CLUB_RECTANGLE_LTBLUE",
-				"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_LTBLUE",
-				
-				"TABLE_COFFEE_END_DESIGNER__WHITE",
-				"DESIGNER_TABLE_COFFEE_END_DESIGNER_WHITE",
-				
-				"TABLE_COFFEE_END_DESIGNER__ASH",
-				"DESIGNER_TABLE_COFFEE_END_DESIGNER_ASH",
-				
-				"TABLE_END_CENTRAL_ASIAN_WOOD_BLOND_WOOD",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_BLOND_WOOD",
-				
-				"TABLE_END_CENTRAL_ASIAN_WOOD_ROUGH",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_ROUGH",
-				
-				"TABLE_END_CENTRAL_ASIAN_WOOD_BROWN",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_BROWN",
-				
-				"TABLE_END_CENTRAL_ASIAN_WOOD_CHERRY",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_CHERRY",
-				
-				"TABLE_END_CENTRAL_ASIAN_WOOD_DARK",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_DARK",
-				
-				"TABLE_END_CENTRAL_ASIAN_WOOD_RED_LACQUER",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_RED_LACQUER",
-				
-				"TABLE_END_CENTRAL_ASIAN_TABLE_TOP_ROUGH",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_TABLE_TOP_ROUGH",
-				
-				"TABLE_END_CENTRAL_ASIAN_TABLE_TOP_BLOND_WOOD",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_TABLE_TOP_BLOND_WOOD",
-				
-				"TABLE_END_CENTRAL_ASIAN_TABLE_TOP_CHERRY",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_TABLE_TOP_CHERRY",
-				
-				"TABLE_END_CENTRAL_ASIAN_TABLE_TOP_RED_LACQUER",
-				"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_TABLE_TOP_RED_LACQUER",
-				
-				"org.lgna.story.resources.prop.CentralAsianEndTable",
-				"org.lgna.story.resources.prop.EndTable",
-				
-				"org.lgna.story.resources.prop.ColonialEndTable",
-				"org.lgna.story.resources.prop.EndTable",
-				
-				"TABLE_END_OCTAGONAL_CHERRY",
-				"OCTAGONAL_TABLE_END_OCTAGONAL_CHERRY",
-				
-				"TABLE_END_OCTAGONAL_WHITE",
-				"OCTAGONAL_TABLE_END_OCTAGONAL_WHITE",
-				
-				"TABLE_END_OCTAGONAL_DARK",
-				"OCTAGONAL_TABLE_END_OCTAGONAL_DARK",
-				
-				"TABLE_END_OCTAGONAL_YELLOW",
-				"OCTAGONAL_TABLE_END_OCTAGONAL_YELLOW",
-				
-				"TABLE_END_OCTAGONAL_GREEN",
-				"OCTAGONAL_TABLE_END_OCTAGONAL_GREEN",
-				
-				"org.lgna.story.resources.prop.QuaintEndTable",
-				"org.lgna.story.resources.prop.EndTable",
-				
-				"TABLE_END_TRIANGULAR_TILE_MARBLE_GREEN",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_GREEN",
-				
-				"TABLE_END_TRIANGULAR_TILE_MARBLE_CREAM",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_CREAM",
-				
-				"TABLE_END_TRIANGULAR_TILE_MARBLE_RED",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_RED",
-				
-				"TABLE_END_TRIANGULAR_TILE_MARBLE_WHITE",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_WHITE",
-				
-				"TABLE_END_TRIANGULAR_TILE_MARBLE_BLACK",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_BLACK",
-				
-				"TABLE_END_TRIANGULAR_TILE_WOOD_SANTA_MARIA",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_SANTA_MARIA",
-				
-				"TABLE_END_TRIANGULAR_TILE_WOOD_BLACKWOOD",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_BLACKWOOD",
-				
-				"TABLE_END_TRIANGULAR_TILE_WOOD_CHERRY",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_CHERRY",
-				
-				"TABLE_END_TRIANGULAR_TILE_WOOD_WHITE",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_WHITE",
-				
-				"TABLE_END_TRIANGULAR_TILE_WOOD_RED_OAK",
-				"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_RED_OAK",
-				
-				"org.lgna.story.resources.prop.TriangularEndTable",
-				"org.lgna.story.resources.prop.EndTable",
-				
-				"BOOKCASE_ART_NOUVEAU_SURFACE",
-				"ART_NOUVEAU_BOOKCASE_ART_NOUVEAU_SURFACE",
-				
-				"org.lgna.story.resources.prop.BookcaseArtNouveau",
-				"org.lgna.story.resources.prop.Bookcase",
-				
-				"BOOKCASE_CINDERBLOCK_SHELVES_BLACKWASH",
-				"CINDER_BLOCK_BOOKCASE_CINDERBLOCK_SHELVES_BLACKWASH",
-				
-				"BOOKCASE_CINDERBLOCK_SHELVES_KNOTTYPINE",
-				"CINDER_BLOCK_BOOKCASE_CINDERBLOCK_SHELVES_KNOTTYPINE",
-				
-				"BOOKCASE_CINDERBLOCK_SHELVES_OLDWOOD",
-				"CINDER_BLOCK_BOOKCASE_CINDERBLOCK_SHELVES_OLDWOOD",
-				
-				"org.lgna.story.resources.prop.BookcaseCinderblock",
-				"org.lgna.story.resources.prop.Bookcase",
-				
-				"CHAIR_LIVING_ADIRONDACK_CUSHION_GRAY",
-				"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_GRAY",
-				
-				"CHAIR_LIVING_ADIRONDACK_CUSHION_CAMO",
-				"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_CAMO",
-				
-				"CHAIR_LIVING_ADIRONDACK_CUSHION_STRIPES",
-				"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_STRIPES",
-				
-				"CHAIR_LIVING_ADIRONDACK_CUSHION_POLKA",
-				"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_POLKA",
-				
-				"CHAIR_LIVING_ADIRONDACK_CUSHION_PALM",
-				"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_PALM",
-				
-				"org.lgna.story.resources.prop.LoveseatAdirondack",
-				"org.lgna.story.resources.prop.Loveseat",
-				
-				"LOVESEAT_ART_NOUVEAU_FRAME_ANTIQUE",
-				"ART_NOUVEAU_LOVESEAT_ART_NOUVEAU_FRAME_ANTIQUE",
-				
-				"LOVESEAT_ART_NOUVEAU_FRAME_MOHOGANY",
-				"ART_NOUVEAU_LOVESEAT_ART_NOUVEAU_FRAME_MOHOGANY",
-				
-				"LOVESEAT_ART_NOUVEAU_FRAME_OAK",
-				"ART_NOUVEAU_LOVESEAT_ART_NOUVEAU_FRAME_OAK",
-				
-				"org.lgna.story.resources.prop.LoveseatArtNouveau",
-				"org.lgna.story.resources.prop.Loveseat",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_MAHOGONY",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_MAHOGONY",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_RED",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_RED",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_WHITE",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_WHITE",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_LIGHT_WOOD",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_LIGHT_WOOD",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_PINK_VELOUR",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_PINK_VELOUR",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BLUE_VELOUR",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BLUE_VELOUR",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_RED_VELOUR",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_RED_VELOUR",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BLACK_VELOUR",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BLACK_VELOUR",
-				
-				"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BEIGE_FABRIC",
-				"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BEIGE_FABRIC",
-				
-				"LOVSEATLOFT_MODERN_FABRIC_BEIGE",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_BEIGE",
-				
-				"LOVSEATLOFT_MODERN_FABRIC_ORANGE",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_ORANGE",
-				
-				"LOVSEATLOFT_MODERN_FABRIC_WHITE",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_WHITE",
-				
-				"LOVSEATLOFT_MODERN_FABRIC_BLUE",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_BLUE",
-				
-				"LOVSEATLOFT_MODERN_FABRIC_GREEN",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_GREEN",
-				
-				"LOVSEATLOFT_MODERN_CUSHIONS_TAN",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_TAN",
-				
-				"LOVSEATLOFT_MODERN_CUSHIONS_GREEN",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_GREEN",
-				
-				"LOVSEATLOFT_MODERN_CUSHIONS_ORANGE",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_ORANGE",
-				
-				"LOVSEATLOFT_MODERN_CUSHIONS_RED",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_RED",
-				
-				"LOVSEATLOFT_MODERN_CUSHIONS_BLUE",
-				"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_BLUE",
-				
-				"org.lgna.story.resources.prop.LoveseatLoftModern",
-				"org.lgna.story.resources.prop.Loveseat",
-				
-				"SOFA_MOROCCAN_BEIGECROSS",
-				"MOROCCAN_SOFA_MOROCCAN_BEIGECROSS",
-				
-				"LOVESEAT_PARK_BENCH_WOOD",
-				"PARK_BENCH_LOVESEAT_PARK_BENCH_WOOD",
-				
-				"SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
-				
-				"SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
-				
-				"SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
-				
-				"SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
-				
-				"SOFA_QUAINT_FABRIC_PINK_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_PINK_FLOWERS",
-				
-				"DESK_CENTRAL_ASIAN_WALNUT",
-				"CENTRAL_ASIAN_DESK_CENTRAL_ASIAN_WALNUT",
-				
-				"DESK_CENTRAL_ASIAN_AVODIRE",
-				"CENTRAL_ASIAN_DESK_CENTRAL_ASIAN_AVODIRE",
-				
-				"org.lgna.story.resources.prop.DeskCentralAsian",
-				"org.lgna.story.resources.prop.Desk",
-				
-				"org.lgna.story.resources.prop.DeskQuaint",
-				"org.lgna.story.resources.prop.Desk",
-				
-				"SOFA_COLONIAL1_FRUITS",
-				"COLONIAL1_SOFA_COLONIAL1_FRUITS",
-				
-				"SOFA_COLONIAL1_DIAMOND",
-				"COLONIAL1_SOFA_COLONIAL1_DIAMOND",
-				
-				"SOFA_COLONIAL1_REDPATTERN",
-				"COLONIAL1_SOFA_COLONIAL1_REDPATTERN",
-				
-				"SOFA_COLONIAL1_BEIGE",
-				"COLONIAL1_SOFA_COLONIAL1_BEIGE",
-				
-				"SOFA_COLONIAL1_WHITE_DIAMOND",
-				"COLONIAL1_SOFA_COLONIAL1_WHITE_DIAMOND",
-				
-				"SOFA_COLONIAL1_LINE_CURVES",
-				"COLONIAL1_SOFA_COLONIAL1_LINE_CURVES",
-				
-				"org.lgna.story.resources.prop.SofaColonial1",
-				"org.lgna.story.resources.prop.Sofa",
-				
-				"SOFA_COLONIAL2_NEONBLUE",
-				"COLONIAL2_SOFA_COLONIAL2_NEONBLUE",
-				
-				"SOFA_COLONIAL2_GOLDDIAMOND",
-				"COLONIAL2_SOFA_COLONIAL2_GOLDDIAMOND",
-				
-				"SOFA_COLONIAL2_GREEN_FLORAL",
-				"COLONIAL2_SOFA_COLONIAL2_GREEN_FLORAL",
-				
-				"SOFA_COLONIAL2_ORANGE",
-				"COLONIAL2_SOFA_COLONIAL2_ORANGE",
-				
-				"SOFA_COLONIAL2_RED_STRIPES",
-				"COLONIAL2_SOFA_COLONIAL2_RED_STRIPES",
-				
-				"SOFA_COLONIAL2_WHITEDIAMOND",
-				"COLONIAL2_SOFA_COLONIAL2_WHITEDIAMOND",
-				
-				"SOFA_COLONIAL2_BLUE_PATTERN",
-				"COLONIAL2_SOFA_COLONIAL2_BLUE_PATTERN",
-				
-				"org.lgna.story.resources.prop.SofaColonial2",
-				"org.lgna.story.resources.prop.Sofa",
-				
-				"SOFA_MODERN_STEEL_FRAME_FABRIC_LEATHER",
-				"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_LEATHER",
-				
-				"SOFA_MODERN_STEEL_FRAME_FABRIC_BLACKLEATHER",
-				"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_BLACKLEATHER",
-				
-				"SOFA_MODERN_STEEL_FRAME_FABRIC_CORDOROY",
-				"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_CORDOROY",
-				
-				"SOFA_MODERN_STEEL_FRAME_FABRIC_STRIPE",
-				"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_STRIPE",
-				
-				"SOFA_MODERN_STEEL_FRAME_FABRIC_GATOR",
-				"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_GATOR",
-				
-				"org.lgna.story.resources.prop.SofaSteelFrame",
-				"org.lgna.story.resources.prop.Sofa",
-				
-				"SOFA_MOROCCAN_BEIGECROSS",
-				"MOROCCAN_SOFA_MOROCCAN_BEIGECROSS",
-				
-				"org.lgna.story.resources.prop.SofaMoroccan",
-				"org.lgna.story.resources.prop.Sofa",
-				
-				"SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
-				
-				"SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
-				
-				"SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
-				
-				"SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
-				
-				"SOFA_QUAINT_FABRIC_PINK_FLOWERS",
-				"QUAINT_SOFA_QUAINT_FABRIC_PINK_FLOWERS",
-				
-				"SOFA_UM_CUTOUT_BLACK_CREAM",
-				"MODERN_CUTOUT_SOFA_UM_CUTOUT_BLACK_CREAM",
-				
-				"SOFA_UM_CUTOUT_BLUE",
-				"MODERN_CUTOUT_SOFA_UM_CUTOUT_BLUE",
-				
-				"SOFA_UM_CUTOUT_LEOPARD",
-				"MODERN_CUTOUT_SOFA_UM_CUTOUT_LEOPARD",
-				
-				"SOFA_UM_CUTOUT_PURPLE",
-				"MODERN_CUTOUT_SOFA_UM_CUTOUT_PURPLE",
-				
-				"SOFA_UM_CUTOUT_RED",
-				"MODERN_CUTOUT_SOFA_UM_CUTOUT_RED",
-				
-				"SOFA_UM_CUTOUT_ZEBRA",
-				"MODERN_CUTOUT_SOFA_UM_CUTOUT_ZEBRA",
-				
-				"SOFA_UM_CUTOUT_GREEN",
-				"MODERN_CUTOUT_SOFA_UM_CUTOUT_GREEN",
-				
-				"org.lgna.story.resources.prop.SofaModernCutout",
-				"org.lgna.story.resources.prop.Sofa",
-				
-				"SOFA_U_M_DIAMOND_CHECK",
-				"MODERN_DIAMOND_SOFA_U_M_DIAMOND_CHECK",
-				
-				"SOFA_U_M_DIAMOND_BABYBLUE",
-				"MODERN_DIAMOND_SOFA_U_M_DIAMOND_BABYBLUE",
-				
-				"SOFA_U_M_DIAMOND_BLACK",
-				"MODERN_DIAMOND_SOFA_U_M_DIAMOND_BLACK",
-				
-				"SOFA_U_M_DIAMOND_YELLOW",
-				"MODERN_DIAMOND_SOFA_U_M_DIAMOND_YELLOW",
-				
-				"SOFA_U_M_DIAMOND_PURPLE",
-				"MODERN_DIAMOND_SOFA_U_M_DIAMOND_PURPLE",
-				
-				"SOFA_U_M_DIAMOND_RED",
-				"MODERN_DIAMOND_SOFA_U_M_DIAMOND_RED",
-				
-				"org.lgna.story.resources.prop.SofaModernDiamond",
-				"org.lgna.story.resources.prop.Sofa",
-				
-				"LIGHTING_FLOOR_CLUB_LAMP_LAMP",
-				"SWING_ARM_LIGHTING_FLOOR_CLUB_LAMP_LAMP",
-				
-				"org.lgna.story.resources.prop.FloorLampSwingArm",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"org.lgna.story.resources.prop.FloorLampDesigner",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"LIGHTING_FLOOR_GARDEN_TIER_LIT",
-				"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_LIT",
-				
-				"LIGHTING_FLOOR_GARDEN_TIER",
-				"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER",
-				
-				"LIGHTING_FLOOR_GARDEN_TIER_GREEN_LIT",
-				"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_GREEN_LIT",
-				
-				"LIGHTING_FLOOR_GARDEN_TIER_GREEN",
-				"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_GREEN",
-				
-				"org.lgna.story.resources.prop.FloorLampGardenBollard",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"org.lgna.story.resources.prop.FloorLampGardenTier",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"org.lgna.story.resources.prop.FloorLampLoft",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"org.lgna.story.resources.prop.FloorLampMoroccan",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"org.lgna.story.resources.prop.FloorLampQuaint",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"org.lgna.story.resources.prop.FloorLampStudio",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"org.lgna.story.resources.prop.FloorLampValue",
-				"org.lgna.story.resources.prop.Lamp",
-				
-				"CHAIR_DINING_ART_NOUVEAU_LIGHT_CLEAN",
-				"ART_NOUVEAU_CHAIR_DINING_ART_NOUVEAU_LIGHT_CLEAN",
-				
-				"CHAIR_DINING_ART_NOUVEAU_MID_CLEAN",
-				"ART_NOUVEAU_CHAIR_DINING_ART_NOUVEAU_MID_CLEAN",
-				
-				"CHAIR_DINING_ART_NOUVEAU_DARK_CLEAN",
-				"ART_NOUVEAU_CHAIR_DINING_ART_NOUVEAU_DARK_CLEAN",
-				
-				"org.lgna.story.resources.prop.ArtNouveauDiningChair",
-				"org.lgna.story.resources.prop.Chair",
-				
-				"org.lgna.story.resources.prop.ColonialDiningChair",
-				"org.lgna.story.resources.prop.Chair",
-				
-				"CHAIR_DINING_COLONIAL2_GOLDFLOWER",
-				"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_GOLDFLOWER",
-				
-				"CHAIR_DINING_COLONIAL2_SRIPE",
-				"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_SRIPE",
-				
-				"CHAIR_DINING_COLONIAL2_GOLDPATTERN",
-				"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_GOLDPATTERN",
-				
-				"CHAIR_DINING_COLONIAL2_BEIGE",
-				"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_BEIGE",
-				
-				"CHAIR_DINING_COLONIAL2_BLUEPATTERN",
-				"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_BLUEPATTERN",
-				
-				"CHAIR_DINING_COLONIAL2_BLUESILK",
-				"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_BLUESILK",
-				
-				"CHAIR_DINING_COLONIAL2_DIAMONDPATTERN",
-				"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_DIAMONDPATTERN",
-				
-				"org.lgna.story.resources.prop.FancyColonialDiningChair",
-				"org.lgna.story.resources.prop.Chair",
-				
-				"CHAIR_DINING_DANISH_MODERN_CUSHIONS_GREEN",
-				"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_GREEN",
-				
-				"CHAIR_DINING_DANISH_MODERN_CUSHIONS_BABY_BLUE",
-				"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_BABY_BLUE",
-				
-				"CHAIR_DINING_DANISH_MODERN_CUSHIONS_POLKA",
-				"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_POLKA",
-				
-				"CHAIR_DINING_DANISH_MODERN_CUSHIONS_WHITE",
-				"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_WHITE",
-				
-				"CHAIR_DINING_DANISH_MODERN_CUSHIONS_RED",
-				"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_RED",
-				
-				"org.lgna.story.resources.prop.DanishModernDiningChair",
-				"org.lgna.story.resources.prop.Chair",
-				
-				"CHAIR_DINING_LOFT_SEAT_BLUE",
-				"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_BLUE",
-				
-				"CHAIR_DINING_LOFT_SEAT_GREEN",
-				"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_GREEN",
-				
-				"CHAIR_DINING_LOFT_SEAT_RED",
-				"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_RED",
-				
-				"CHAIR_DINING_LOFT_SEAT_TAN",
-				"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_TAN",
-				
-				"CHAIR_DINING_LOFT_SEAT_ORANGE",
-				"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_ORANGE",
-				
-				"CHAIR_DINING_LOFT_FORK_BASE_WOOD_LIGHT",
-				"LOFT_FORK_CHAIR_DINING_LOFT_FORK_BASE_WOOD_LIGHT",
-				
-				"CHAIR_DINING_LOFT_FORK_BASE_WOOD_ORANGE",
-				"LOFT_FORK_CHAIR_DINING_LOFT_FORK_BASE_WOOD_ORANGE",
-				
-				"CHAIR_DINING_LOFT_FORK_BASE_IRON",
-				"LOFT_FORK_CHAIR_DINING_LOFT_FORK_BASE_IRON",
-				
-				"CHAIR_DINING_LOFT_FORK_BASE_WOOD_RED",
-				"LOFT_FORK_CHAIR_DINING_LOFT_FORK_BASE_WOOD_RED",
-				
-				"org.lgna.story.resources.prop.LoftForkDiningChair",
-				"org.lgna.story.resources.prop.Chair",
-				
-				"org.lgna.story.resources.prop.LoftOfficeDiningChair",
-				"org.lgna.story.resources.prop.Chair",
-				
-				"org.lgna.story.resources.prop.ModerateDiningChair",
-				"org.lgna.story.resources.prop.Chair",
-				
-				"org.lgna.story.resources.prop.MoroccanDiningChair",
-				"org.lgna.story.resources.prop.Chair"
-				
-			),
-	};
-	private static final java.util.List< Migration > versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
+					"LIGHTING_FLOOR_VALUE_PAINTED_METAL_WHITEPAINT",
+					"VALUE_LIGHTING_FLOOR_VALUE_PAINTED_METAL_WHITEPAINT",
+
+					"CHAIR_DINING_CLUB_RED_WOOD",
+					"CLUB_CHAIR_DINING_CLUB_RED_WOOD",
+
+					"CHAIR_DINING_CLUB_GREENLEATH",
+					"CLUB_CHAIR_DINING_CLUB_GREENLEATH",
+
+					"CHAIR_DINING_CLUB_OAKCANE",
+					"CLUB_CHAIR_DINING_CLUB_OAKCANE",
+
+					"CHAIR_DINING_CLUB_LTGREENLEATH",
+					"CLUB_CHAIR_DINING_CLUB_LTGREENLEATH",
+
+					"org.lgna.story.resources.prop.ClubDiningChair",
+					"org.lgna.story.resources.prop.DiningTable",
+
+					"CHAIR_DINING_COLONIAL1_PURPLE",
+					"COLONIAL_CHAIR_DINING_COLONIAL1_PURPLE",
+
+					"CHAIR_DINING_COLONIAL1_GOLD_PATTERN",
+					"COLONIAL_CHAIR_DINING_COLONIAL1_GOLD_PATTERN",
+
+					"CHAIR_DINING_COLONIAL1_GOLDEN2",
+					"COLONIAL_CHAIR_DINING_COLONIAL1_GOLDEN2",
+
+					"CHAIR_DINING_COLONIAL1_STRIPES",
+					"COLONIAL_CHAIR_DINING_COLONIAL1_STRIPES",
+
+					"CHAIR_DINING_COLONIAL1_BLUEPATTERN",
+					"COLONIAL_CHAIR_DINING_COLONIAL1_BLUEPATTERN",
+
+					"CHAIR_DINING_COLONIAL1_DIAMONDS",
+					"COLONIAL_CHAIR_DINING_COLONIAL1_DIAMONDS",
+
+					"LOVESEAT_PARK_BENCH_OAK",
+					"PARK_LOVESEAT_PARK_BENCH_OAK",
+
+					"LOVESEAT_PARK_BENCH_WALNUT",
+					"PARK_LOVESEAT_PARK_BENCH_WALNUT",
+
+					"LOVESEAT_PARK_BENCH_RED",
+					"PARK_LOVESEAT_PARK_BENCH_RED",
+
+					"LOVESEAT_PARK_BENCH_OAKGREEN",
+					"PARK_LOVESEAT_PARK_BENCH_OAKGREEN",
+
+					"LOVESEAT_PARK_BENCH_OAKBLUE",
+					"PARK_LOVESEAT_PARK_BENCH_OAKBLUE",
+
+					"LOVESEAT_PARK_BENCH_IVORY",
+					"PARK_LOVESEAT_PARK_BENCH_IVORY",
+
+					"LOVESEAT_PARK_BENCH_CHESTNUT",
+					"PARK_LOVESEAT_PARK_BENCH_CHESTNUT",
+
+					"org.lgna.story.resources.prop.ParkChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					"CHAIR_DINING_MODERATE_BODY_BLACK",
+					"MODERATE_CHAIR_DINING_MODERATE_BODY_BLACK",
+
+					"CHAIR_DINING_MODERATE_BODY_WOOD",
+					"MODERATE_CHAIR_DINING_MODERATE_BODY_WOOD",
+
+					"CHAIR_DINING_MODERATE_BODY_TEAL",
+					"MODERATE_CHAIR_DINING_MODERATE_BODY_TEAL",
+
+					"CHAIR_DINING_MODERATE_BODY_RED",
+					"MODERATE_CHAIR_DINING_MODERATE_BODY_RED",
+
+					"CHAIR_DINING_MODERATE_BODY_BLUE",
+					"MODERATE_CHAIR_DINING_MODERATE_BODY_BLUE",
+
+					"CHAIR_DINING_MODERATE_SEAT_GRAY",
+					"MODERATE_CHAIR_DINING_MODERATE_SEAT_GRAY",
+
+					"CHAIR_DINING_MODERATE_SEAT_BUMBLE",
+					"MODERATE_CHAIR_DINING_MODERATE_SEAT_BUMBLE",
+
+					"CHAIR_DINING_MODERATE_SEAT_TEAL",
+					"MODERATE_CHAIR_DINING_MODERATE_SEAT_TEAL",
+
+					"CHAIR_DINING_MODERATE_SEAT_STRAWBERRY",
+					"MODERATE_CHAIR_DINING_MODERATE_SEAT_STRAWBERRY",
+
+					"CHAIR_DINING_MODERATE_SEAT_YELLOW",
+					"MODERATE_CHAIR_DINING_MODERATE_SEAT_YELLOW",
+
+					"CHAIR_DINING_MODERATE_SEAT_BLUE",
+					"MODERATE_CHAIR_DINING_MODERATE_SEAT_BLUE",
+
+					"CHAIR_DINING_MOROCCAN_SURFACES_BLUE_ORANGE",
+					"MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_BLUE_ORANGE",
+
+					"CHAIR_DINING_MOROCCAN_SURFACES_RED_CIRCLES",
+					"MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_RED_CIRCLES",
+
+					"CHAIR_DINING_MOROCCAN_SURFACES_RED_TAN",
+					"MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_RED_TAN",
+
+					"CHAIR_DINING_MOROCCAN_SURFACES_BLUE_STRIPES",
+					"MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_BLUE_STRIPES",
+
+					"CHICKENEYE_CARTOON",
+					"CHICKEN",
+
+					"org.lgna.story.resources.whale.Dolphin",
+					"org.lgna.story.resources.marinemammal.Dolphin",
+
+					"MANX",
+					"MANX_CAT",
+
+					"GREEN_OGRE",
+					"GREEN",
+
+					"org.lgna.story.resources.whale.Orca",
+					"org.lgna.story.resources.marinemammal.Orca",
+
+					"ADULT_PENGUIN",
+					"ADULT",
+
+					"BABY_PENGUIN",
+					"BABY",
+
+					"org.lgna.story.resources.biped.FarmerPig",
+					"org.lgna.story.resources.biped.Pig",
+
+					"SCOTTY",
+					"SCOTTY_DOG",
+
+					"SHOE",
+					"TORTOISE",
+
+					"org.lgna.story.resources.quadruped.Robot",
+					"org.lgna.story.resources.quadruped.AlienRobot",
+
+					"_SUB",
+					"SUBMARINE",
+
+					"SEAWEED_BACK",
+					"SEAWEED3",
+
+					"SEAWEED_FRONT",
+					"SEAWEED1",
+
+					"SEAWEED_MID",
+					"SEAWEED2",
+
+					"QUEEN",
+					"QUEEN_OF_HEARTS",
+
+					"PLAYING_CARD_TWO",
+					"CARD02",
+
+					"PLAYING_CARD_TEN",
+					"CARD10",
+
+					"PLAYING_CARD_THREE",
+					"CARD03",
+
+					"PLAYING_CARD_ONE",
+					"CARD01",
+
+					"PLAYING_CARD_SEVEN",
+					"CARD07",
+
+					"PLAYING_CARD_NINE",
+					"CARD09",
+
+					"PLAYING_CARD_SIX",
+					"CARD06",
+
+					"PLAYING_CARD",
+					"BLANK",
+
+					"PLAYING_CARD_EIGHT",
+					"CARD08",
+
+					"PLAYING_CARD_FIVE",
+					"CARD05",
+
+					"PLAYING_CARD_FOUR",
+					"CARD04",
+
+					"ARMOIRE_LOFT_TRIM_BLACK",
+					"LOFT_BLACK_TRIM",
+
+					"ARMOIRE_LOFT_TRIM_HONEY_DARK",
+					"LOFT_DARK_HONEY_TRIM",
+
+					"ARMOIRE_LOFT_TRIM_SWIRLY_BROWN",
+					"LOFT_SWIRLY_BROWN_TRIM",
+
+					"ARMOIRE_LOFT_TRIM_DARK_RED",
+					"LOFT_DARK_RED_TRIM",
+
+					"ARMOIRE_LOFT_TRIM_MEDIUM_BROWN",
+					"LOFT_MEDIUM_BROWN_TRIM",
+
+					"ARMOIRE_LOFT_SURFACES",
+					"LOFT_OAK",
+
+					"ARMOIRE_QUAINT_ARMOIRE_BLUE",
+					"QUAINT_BLUE",
+
+					"ARMOIRE_QUAINT_ARMOIRE_GREEN",
+					"QUAINT_GREEN",
+
+					"ARMOIRE_QUAINT_ARMOIR_LEAVES",
+					"QUAINT_LEAVES",
+
+					"ARMOIRE_QUAINT_ARMOIRE_RED",
+					"QUAINT_RED",
+
+					"ARMOIRE_QUAINT_ARMOIRE_ROSES",
+					"QUAINT_ROSES",
+
+					"ARMOIRE_CENTRAL_ASIAN_DRAGONDOOR",
+					"CENTRAL_ASIAN_DRAGON",
+
+					"org.lgna.story.resources.armoire.ArmoireCentralAsian",
+					"org.lgna.story.resources.armoire.Armoire",
+
+					"ARMOIRE_COLONIAL_WOOD_REDWOODCURLY",
+					"COLONIAL_CURLY_REDWOOD",
+
+					"ARMOIRE_COLONIAL_WOOD_DARKWOODQUILTED",
+					"COLONIAL_QUILTED_DARK_WOOD",
+
+					"ARMOIRE_COLONIAL_WOOD_LIGHTWOODCURLY",
+					"COLONIAL_CURLY_LIGHT_WOOD",
+
+					"DRESSER_CENTRAL_ASIAN_GREEN_FLOWERS",
+					NO_REPLACEMENT,
+
+					"DRESSER_CENTRAL_ASIAN_RED_FLOWERS",
+					NO_REPLACEMENT,
+
+					"DRESSER_CENTRAL_ASIAN_GREEN",
+					NO_REPLACEMENT,
+
+					"DRESSER_CENTRAL_ASIAN_RED",
+					NO_REPLACEMENT,
+
+					"org.lgna.story.resources.prop.DresserCentralAsian",
+					NO_REPLACEMENT,
+
+					"DRESSER_COLONIAL_WOOD",
+					NO_REPLACEMENT,
+
+					"DRESSER_COLONIAL_LIGHT_WOOD_CURLY",
+					NO_REPLACEMENT,
+
+					"DRESSER_COLONIAL_RED_WOOD",
+					NO_REPLACEMENT,
+
+					"DRESSER_COLONIAL_WOOD_STRAIGHT_DARK",
+					NO_REPLACEMENT,
+
+					"org.lgna.story.resources.prop.DresserColonial",
+					NO_REPLACEMENT,
+
+					"DRESSER_DESIGNER_BROWN",
+					NO_REPLACEMENT,
+
+					"DRESSER_DESIGNER_LIGHT_WOOD",
+					NO_REPLACEMENT,
+
+					"DRESSER_DESIGNER_RED",
+					NO_REPLACEMENT,
+
+					"DRESSER_DESIGNER_BLACK",
+					NO_REPLACEMENT,
+
+					"DRESSER_DESIGNER_BLUE",
+					NO_REPLACEMENT,
+
+					"org.lgna.story.resources.prop.DresserDesigner",
+					NO_REPLACEMENT,
+
+					"DRESSER_JAPANESE_TANSU_NORMAL",
+					NO_REPLACEMENT,
+
+					"DRESSER_JAPANESE_TANSU_BLACK",
+					NO_REPLACEMENT,
+
+					"DRESSER_JAPANESE_TANSU_LIGHT",
+					NO_REPLACEMENT,
+
+					"DRESSER_JAPANESE_TANSU_RED",
+					NO_REPLACEMENT,
+
+					"org.lgna.story.resources.prop.DresserJapaneseTansu",
+					NO_REPLACEMENT,
+
+					"BARBEQUE_VALUE_METAL_GREEN",
+					"GREEN",
+
+					"BARBEQUE_VALUE_METAL_BLACK",
+					"BLACK",
+
+					"BARBEQUE_VALUE_METAL_YELLO",
+					"YELLOW",
+
+					"BARBEQUE_VALUE_METAL_RED",
+					"RED",
+
+					"BARBEQUE_VALUE_METAL_BLUE",
+					"BLUE",
+
+					"UFO_MAIN",
+					"UFO",
+
+					"UFO_FRAME",
+					"UFO",
+
+					"CANDY_FACTORY_ANIMATED_SURFACE",
+					"CANDY_FACTORY",
+
+					"CANDY_FACTORY_LIGHT_GREEN",
+					"CANDY_FACTORY",
+
+					"CANDY_FACTORY_LIGHT_OFF",
+					"CANDY_FACTORY",
+
+					"CANDY_FACTORY_LIGHT_RED",
+					"CANDY_FACTORY",
+
+					"TABLE_COFFEE_ART_NOUVEAU_TABLE1",
+					"ART_NOVEAU_TABLE_COFFEE_ART_NOUVEAU_TABLE1",
+
+					"TABLE_COFFEE_ART_NOUVEAU_TABLE2",
+					"ART_NOVEAU_TABLE_COFFEE_ART_NOUVEAU_TABLE2",
+
+					"TABLE_COFFEE_ART_NOUVEAU_TABLE3",
+					"ART_NOVEAU_TABLE_COFFEE_ART_NOUVEAU_TABLE3",
+
+					"TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_RED",
+					"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_RED",
+
+					"TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_CHERRY",
+					"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_CHERRY",
+
+					"TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_BLONDE",
+					"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_BLONDE",
+
+					"TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_DARK",
+					"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_REFLECT_CHINESE_DARK",
+
+					"TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_CHERRY",
+					"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_CHERRY",
+
+					"TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_BLONDE",
+					"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_BLONDE",
+
+					"TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_RED",
+					"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_RED",
+
+					"TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_DARK",
+					"CENTRAL_ASIAN_TABLE_COFFEE_CENTRAL_ASIAN_ASIAN_WOOD_CHINESE_DARK",
+
+					"org.lgna.story.resources.prop.CentralAsianCoffeeTable",
+					"org.lgna.story.resources.prop.CoffeeTable",
+
+					"TABLE_COFFEE_CLUB_RECTANGLE_WOOD",
+					"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_WOOD",
+
+					"TABLE_COFFEE_CLUB_RECTANGLE_BRIDS_RED",
+					"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_BRIDS_RED",
+
+					"TABLE_COFFEE_CLUB_RECTANGLE_BLEACHED_OAK",
+					"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_BLEACHED_OAK",
+
+					"TABLE_COFFEE_CLUB_RECTANGLE_MAHOG",
+					"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_MAHOG",
+
+					"TABLE_COFFEE_CLUB_RECTANGLE_RED_ASH",
+					"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_RED_ASH",
+
+					"TABLE_COFFEE_CLUB_RECTANGLE_WHITE_OAK",
+					"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_WHITE_OAK",
+
+					"TABLE_COFFEE_CLUB_RECTANGLE_LTBLUE",
+					"LARGE_CLUB_TABLE_COFFEE_CLUB_RECTANGLE_LTBLUE",
+
+					"TABLE_COFFEE_END_DESIGNER__WHITE",
+					"DESIGNER_TABLE_COFFEE_END_DESIGNER_WHITE",
+
+					"TABLE_COFFEE_END_DESIGNER__ASH",
+					"DESIGNER_TABLE_COFFEE_END_DESIGNER_ASH",
+
+					"TABLE_END_CENTRAL_ASIAN_WOOD_BLOND_WOOD",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_BLOND_WOOD",
+
+					"TABLE_END_CENTRAL_ASIAN_WOOD_ROUGH",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_ROUGH",
+
+					"TABLE_END_CENTRAL_ASIAN_WOOD_BROWN",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_BROWN",
+
+					"TABLE_END_CENTRAL_ASIAN_WOOD_CHERRY",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_CHERRY",
+
+					"TABLE_END_CENTRAL_ASIAN_WOOD_DARK",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_DARK",
+
+					"TABLE_END_CENTRAL_ASIAN_WOOD_RED_LACQUER",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_WOOD_RED_LACQUER",
+
+					"TABLE_END_CENTRAL_ASIAN_TABLE_TOP_ROUGH",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_TABLE_TOP_ROUGH",
+
+					"TABLE_END_CENTRAL_ASIAN_TABLE_TOP_BLOND_WOOD",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_TABLE_TOP_BLOND_WOOD",
+
+					"TABLE_END_CENTRAL_ASIAN_TABLE_TOP_CHERRY",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_TABLE_TOP_CHERRY",
+
+					"TABLE_END_CENTRAL_ASIAN_TABLE_TOP_RED_LACQUER",
+					"CENTRAL_ASIAN_TABLE_END_CENTRAL_ASIAN_TABLE_TOP_RED_LACQUER",
+
+					"org.lgna.story.resources.prop.CentralAsianEndTable",
+					"org.lgna.story.resources.prop.EndTable",
+
+					"org.lgna.story.resources.prop.ColonialEndTable",
+					"org.lgna.story.resources.prop.EndTable",
+
+					"TABLE_END_OCTAGONAL_CHERRY",
+					"OCTAGONAL_TABLE_END_OCTAGONAL_CHERRY",
+
+					"TABLE_END_OCTAGONAL_WHITE",
+					"OCTAGONAL_TABLE_END_OCTAGONAL_WHITE",
+
+					"TABLE_END_OCTAGONAL_DARK",
+					"OCTAGONAL_TABLE_END_OCTAGONAL_DARK",
+
+					"TABLE_END_OCTAGONAL_YELLOW",
+					"OCTAGONAL_TABLE_END_OCTAGONAL_YELLOW",
+
+					"TABLE_END_OCTAGONAL_GREEN",
+					"OCTAGONAL_TABLE_END_OCTAGONAL_GREEN",
+
+					"org.lgna.story.resources.prop.QuaintEndTable",
+					"org.lgna.story.resources.prop.EndTable",
+
+					"TABLE_END_TRIANGULAR_TILE_MARBLE_GREEN",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_GREEN",
+
+					"TABLE_END_TRIANGULAR_TILE_MARBLE_CREAM",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_CREAM",
+
+					"TABLE_END_TRIANGULAR_TILE_MARBLE_RED",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_RED",
+
+					"TABLE_END_TRIANGULAR_TILE_MARBLE_WHITE",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_WHITE",
+
+					"TABLE_END_TRIANGULAR_TILE_MARBLE_BLACK",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_MARBLE_BLACK",
+
+					"TABLE_END_TRIANGULAR_TILE_WOOD_SANTA_MARIA",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_SANTA_MARIA",
+
+					"TABLE_END_TRIANGULAR_TILE_WOOD_BLACKWOOD",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_BLACKWOOD",
+
+					"TABLE_END_TRIANGULAR_TILE_WOOD_CHERRY",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_CHERRY",
+
+					"TABLE_END_TRIANGULAR_TILE_WOOD_WHITE",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_WHITE",
+
+					"TABLE_END_TRIANGULAR_TILE_WOOD_RED_OAK",
+					"TRAINGULAR_TABLE_END_TRIANGULAR_TILE_WOOD_RED_OAK",
+
+					"org.lgna.story.resources.prop.TriangularEndTable",
+					"org.lgna.story.resources.prop.EndTable",
+
+					"BOOKCASE_ART_NOUVEAU_SURFACE",
+					"ART_NOUVEAU_BOOKCASE_ART_NOUVEAU_SURFACE",
+
+					"org.lgna.story.resources.prop.BookcaseArtNouveau",
+					"org.lgna.story.resources.prop.Bookcase",
+
+					"BOOKCASE_CINDERBLOCK_SHELVES_BLACKWASH",
+					"CINDER_BLOCK_BOOKCASE_CINDERBLOCK_SHELVES_BLACKWASH",
+
+					"BOOKCASE_CINDERBLOCK_SHELVES_KNOTTYPINE",
+					"CINDER_BLOCK_BOOKCASE_CINDERBLOCK_SHELVES_KNOTTYPINE",
+
+					"BOOKCASE_CINDERBLOCK_SHELVES_OLDWOOD",
+					"CINDER_BLOCK_BOOKCASE_CINDERBLOCK_SHELVES_OLDWOOD",
+
+					"org.lgna.story.resources.prop.BookcaseCinderblock",
+					"org.lgna.story.resources.prop.Bookcase",
+
+					"CHAIR_LIVING_ADIRONDACK_CUSHION_GRAY",
+					"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_GRAY",
+
+					"CHAIR_LIVING_ADIRONDACK_CUSHION_CAMO",
+					"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_CAMO",
+
+					"CHAIR_LIVING_ADIRONDACK_CUSHION_STRIPES",
+					"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_STRIPES",
+
+					"CHAIR_LIVING_ADIRONDACK_CUSHION_POLKA",
+					"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_POLKA",
+
+					"CHAIR_LIVING_ADIRONDACK_CUSHION_PALM",
+					"ADIRONDACK_CHAIR_LIVING_ADIRONDACK_CUSHION_PALM",
+
+					"org.lgna.story.resources.prop.LoveseatAdirondack",
+					"org.lgna.story.resources.prop.Loveseat",
+
+					"LOVESEAT_ART_NOUVEAU_FRAME_ANTIQUE",
+					"ART_NOUVEAU_LOVESEAT_ART_NOUVEAU_FRAME_ANTIQUE",
+
+					"LOVESEAT_ART_NOUVEAU_FRAME_MOHOGANY",
+					"ART_NOUVEAU_LOVESEAT_ART_NOUVEAU_FRAME_MOHOGANY",
+
+					"LOVESEAT_ART_NOUVEAU_FRAME_OAK",
+					"ART_NOUVEAU_LOVESEAT_ART_NOUVEAU_FRAME_OAK",
+
+					"org.lgna.story.resources.prop.LoveseatArtNouveau",
+					"org.lgna.story.resources.prop.Loveseat",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_MAHOGONY",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_MAHOGONY",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_RED",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_RED",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_WHITE",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_WHITE",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_LIGHT_WOOD",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_WOOD_LIGHT_WOOD",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_PINK_VELOUR",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_PINK_VELOUR",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BLUE_VELOUR",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BLUE_VELOUR",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_RED_VELOUR",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_RED_VELOUR",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BLACK_VELOUR",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BLACK_VELOUR",
+
+					"LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BEIGE_FABRIC",
+					"CAMEL_BACK_LOVESEAT_EXPENSIVE_CAMEL_BACK_CUSHION_BEIGE_FABRIC",
+
+					"LOVSEATLOFT_MODERN_FABRIC_BEIGE",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_BEIGE",
+
+					"LOVSEATLOFT_MODERN_FABRIC_ORANGE",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_ORANGE",
+
+					"LOVSEATLOFT_MODERN_FABRIC_WHITE",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_WHITE",
+
+					"LOVSEATLOFT_MODERN_FABRIC_BLUE",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_BLUE",
+
+					"LOVSEATLOFT_MODERN_FABRIC_GREEN",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_FABRIC_GREEN",
+
+					"LOVSEATLOFT_MODERN_CUSHIONS_TAN",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_TAN",
+
+					"LOVSEATLOFT_MODERN_CUSHIONS_GREEN",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_GREEN",
+
+					"LOVSEATLOFT_MODERN_CUSHIONS_ORANGE",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_ORANGE",
+
+					"LOVSEATLOFT_MODERN_CUSHIONS_RED",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_RED",
+
+					"LOVSEATLOFT_MODERN_CUSHIONS_BLUE",
+					"MODERN_LOFT_LOVSEATLOFT_MODERN_CUSHIONS_BLUE",
+
+					"org.lgna.story.resources.prop.LoveseatLoftModern",
+					"org.lgna.story.resources.prop.Loveseat",
+
+					"SOFA_MOROCCAN_BEIGECROSS",
+					"MOROCCAN_SOFA_MOROCCAN_BEIGECROSS",
+
+					"LOVESEAT_PARK_BENCH_WOOD",
+					"PARK_BENCH_LOVESEAT_PARK_BENCH_WOOD",
+
+					"SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+
+					"SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
+
+					"SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
+
+					"SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
+
+					"SOFA_QUAINT_FABRIC_PINK_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_PINK_FLOWERS",
+
+					"DESK_CENTRAL_ASIAN_WALNUT",
+					"CENTRAL_ASIAN_DESK_CENTRAL_ASIAN_WALNUT",
+
+					"DESK_CENTRAL_ASIAN_AVODIRE",
+					"CENTRAL_ASIAN_DESK_CENTRAL_ASIAN_AVODIRE",
+
+					"org.lgna.story.resources.prop.DeskCentralAsian",
+					"org.lgna.story.resources.prop.Desk",
+
+					"org.lgna.story.resources.prop.DeskQuaint",
+					"org.lgna.story.resources.prop.Desk",
+
+					"SOFA_COLONIAL1_FRUITS",
+					"COLONIAL1_SOFA_COLONIAL1_FRUITS",
+
+					"SOFA_COLONIAL1_DIAMOND",
+					"COLONIAL1_SOFA_COLONIAL1_DIAMOND",
+
+					"SOFA_COLONIAL1_REDPATTERN",
+					"COLONIAL1_SOFA_COLONIAL1_REDPATTERN",
+
+					"SOFA_COLONIAL1_BEIGE",
+					"COLONIAL1_SOFA_COLONIAL1_BEIGE",
+
+					"SOFA_COLONIAL1_WHITE_DIAMOND",
+					"COLONIAL1_SOFA_COLONIAL1_WHITE_DIAMOND",
+
+					"SOFA_COLONIAL1_LINE_CURVES",
+					"COLONIAL1_SOFA_COLONIAL1_LINE_CURVES",
+
+					"org.lgna.story.resources.prop.SofaColonial1",
+					"org.lgna.story.resources.prop.Sofa",
+
+					"SOFA_COLONIAL2_NEONBLUE",
+					"COLONIAL2_SOFA_COLONIAL2_NEONBLUE",
+
+					"SOFA_COLONIAL2_GOLDDIAMOND",
+					"COLONIAL2_SOFA_COLONIAL2_GOLDDIAMOND",
+
+					"SOFA_COLONIAL2_GREEN_FLORAL",
+					"COLONIAL2_SOFA_COLONIAL2_GREEN_FLORAL",
+
+					"SOFA_COLONIAL2_ORANGE",
+					"COLONIAL2_SOFA_COLONIAL2_ORANGE",
+
+					"SOFA_COLONIAL2_RED_STRIPES",
+					"COLONIAL2_SOFA_COLONIAL2_RED_STRIPES",
+
+					"SOFA_COLONIAL2_WHITEDIAMOND",
+					"COLONIAL2_SOFA_COLONIAL2_WHITEDIAMOND",
+
+					"SOFA_COLONIAL2_BLUE_PATTERN",
+					"COLONIAL2_SOFA_COLONIAL2_BLUE_PATTERN",
+
+					"org.lgna.story.resources.prop.SofaColonial2",
+					"org.lgna.story.resources.prop.Sofa",
+
+					"SOFA_MODERN_STEEL_FRAME_FABRIC_LEATHER",
+					"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_LEATHER",
+
+					"SOFA_MODERN_STEEL_FRAME_FABRIC_BLACKLEATHER",
+					"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_BLACKLEATHER",
+
+					"SOFA_MODERN_STEEL_FRAME_FABRIC_CORDOROY",
+					"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_CORDOROY",
+
+					"SOFA_MODERN_STEEL_FRAME_FABRIC_STRIPE",
+					"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_STRIPE",
+
+					"SOFA_MODERN_STEEL_FRAME_FABRIC_GATOR",
+					"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_GATOR",
+
+					"org.lgna.story.resources.prop.SofaSteelFrame",
+					"org.lgna.story.resources.prop.Sofa",
+
+					"SOFA_MOROCCAN_BEIGECROSS",
+					"MOROCCAN_SOFA_MOROCCAN_BEIGECROSS",
+
+					"org.lgna.story.resources.prop.SofaMoroccan",
+					"org.lgna.story.resources.prop.Sofa",
+
+					"SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+
+					"SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
+
+					"SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
+
+					"SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
+
+					"SOFA_QUAINT_FABRIC_PINK_FLOWERS",
+					"QUAINT_SOFA_QUAINT_FABRIC_PINK_FLOWERS",
+
+					"SOFA_UM_CUTOUT_BLACK_CREAM",
+					"MODERN_CUTOUT_SOFA_UM_CUTOUT_BLACK_CREAM",
+
+					"SOFA_UM_CUTOUT_BLUE",
+					"MODERN_CUTOUT_SOFA_UM_CUTOUT_BLUE",
+
+					"SOFA_UM_CUTOUT_LEOPARD",
+					"MODERN_CUTOUT_SOFA_UM_CUTOUT_LEOPARD",
+
+					"SOFA_UM_CUTOUT_PURPLE",
+					"MODERN_CUTOUT_SOFA_UM_CUTOUT_PURPLE",
+
+					"SOFA_UM_CUTOUT_RED",
+					"MODERN_CUTOUT_SOFA_UM_CUTOUT_RED",
+
+					"SOFA_UM_CUTOUT_ZEBRA",
+					"MODERN_CUTOUT_SOFA_UM_CUTOUT_ZEBRA",
+
+					"SOFA_UM_CUTOUT_GREEN",
+					"MODERN_CUTOUT_SOFA_UM_CUTOUT_GREEN",
+
+					"org.lgna.story.resources.prop.SofaModernCutout",
+					"org.lgna.story.resources.prop.Sofa",
+
+					"SOFA_U_M_DIAMOND_CHECK",
+					"MODERN_DIAMOND_SOFA_U_M_DIAMOND_CHECK",
+
+					"SOFA_U_M_DIAMOND_BABYBLUE",
+					"MODERN_DIAMOND_SOFA_U_M_DIAMOND_BABYBLUE",
+
+					"SOFA_U_M_DIAMOND_BLACK",
+					"MODERN_DIAMOND_SOFA_U_M_DIAMOND_BLACK",
+
+					"SOFA_U_M_DIAMOND_YELLOW",
+					"MODERN_DIAMOND_SOFA_U_M_DIAMOND_YELLOW",
+
+					"SOFA_U_M_DIAMOND_PURPLE",
+					"MODERN_DIAMOND_SOFA_U_M_DIAMOND_PURPLE",
+
+					"SOFA_U_M_DIAMOND_RED",
+					"MODERN_DIAMOND_SOFA_U_M_DIAMOND_RED",
+
+					"org.lgna.story.resources.prop.SofaModernDiamond",
+					"org.lgna.story.resources.prop.Sofa",
+
+					"LIGHTING_FLOOR_CLUB_LAMP_LAMP",
+					"SWING_ARM_LIGHTING_FLOOR_CLUB_LAMP_LAMP",
+
+					"org.lgna.story.resources.prop.FloorLampSwingArm",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"org.lgna.story.resources.prop.FloorLampDesigner",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"LIGHTING_FLOOR_GARDEN_TIER_LIT",
+					"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_LIT",
+
+					"LIGHTING_FLOOR_GARDEN_TIER",
+					"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER",
+
+					"LIGHTING_FLOOR_GARDEN_TIER_GREEN_LIT",
+					"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_GREEN_LIT",
+
+					"LIGHTING_FLOOR_GARDEN_TIER_GREEN",
+					"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_GREEN",
+
+					"org.lgna.story.resources.prop.FloorLampGardenBollard",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"org.lgna.story.resources.prop.FloorLampGardenTier",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"org.lgna.story.resources.prop.FloorLampLoft",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"org.lgna.story.resources.prop.FloorLampMoroccan",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"org.lgna.story.resources.prop.FloorLampQuaint",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"org.lgna.story.resources.prop.FloorLampStudio",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"org.lgna.story.resources.prop.FloorLampValue",
+					"org.lgna.story.resources.prop.Lamp",
+
+					"CHAIR_DINING_ART_NOUVEAU_LIGHT_CLEAN",
+					"ART_NOUVEAU_CHAIR_DINING_ART_NOUVEAU_LIGHT_CLEAN",
+
+					"CHAIR_DINING_ART_NOUVEAU_MID_CLEAN",
+					"ART_NOUVEAU_CHAIR_DINING_ART_NOUVEAU_MID_CLEAN",
+
+					"CHAIR_DINING_ART_NOUVEAU_DARK_CLEAN",
+					"ART_NOUVEAU_CHAIR_DINING_ART_NOUVEAU_DARK_CLEAN",
+
+					"org.lgna.story.resources.prop.ArtNouveauDiningChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					"org.lgna.story.resources.prop.ColonialDiningChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					"CHAIR_DINING_COLONIAL2_GOLDFLOWER",
+					"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_GOLDFLOWER",
+
+					"CHAIR_DINING_COLONIAL2_SRIPE",
+					"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_SRIPE",
+
+					"CHAIR_DINING_COLONIAL2_GOLDPATTERN",
+					"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_GOLDPATTERN",
+
+					"CHAIR_DINING_COLONIAL2_BEIGE",
+					"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_BEIGE",
+
+					"CHAIR_DINING_COLONIAL2_BLUEPATTERN",
+					"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_BLUEPATTERN",
+
+					"CHAIR_DINING_COLONIAL2_BLUESILK",
+					"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_BLUESILK",
+
+					"CHAIR_DINING_COLONIAL2_DIAMONDPATTERN",
+					"FANCY_COLONIAL_CHAIR_DINING_COLONIAL2_DIAMONDPATTERN",
+
+					"org.lgna.story.resources.prop.FancyColonialDiningChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					"CHAIR_DINING_DANISH_MODERN_CUSHIONS_GREEN",
+					"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_GREEN",
+
+					"CHAIR_DINING_DANISH_MODERN_CUSHIONS_BABY_BLUE",
+					"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_BABY_BLUE",
+
+					"CHAIR_DINING_DANISH_MODERN_CUSHIONS_POLKA",
+					"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_POLKA",
+
+					"CHAIR_DINING_DANISH_MODERN_CUSHIONS_WHITE",
+					"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_WHITE",
+
+					"CHAIR_DINING_DANISH_MODERN_CUSHIONS_RED",
+					"DANISH_MODERN_CHAIR_DINING_DANISH_MODERN_CUSHIONS_RED",
+
+					"org.lgna.story.resources.prop.DanishModernDiningChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					"CHAIR_DINING_LOFT_SEAT_BLUE",
+					"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_BLUE",
+
+					"CHAIR_DINING_LOFT_SEAT_GREEN",
+					"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_GREEN",
+
+					"CHAIR_DINING_LOFT_SEAT_RED",
+					"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_RED",
+
+					"CHAIR_DINING_LOFT_SEAT_TAN",
+					"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_TAN",
+
+					"CHAIR_DINING_LOFT_SEAT_ORANGE",
+					"LOFT_FORK_CHAIR_DINING_LOFT_SEAT_ORANGE",
+
+					"CHAIR_DINING_LOFT_FORK_BASE_WOOD_LIGHT",
+					"LOFT_FORK_CHAIR_DINING_LOFT_FORK_BASE_WOOD_LIGHT",
+
+					"CHAIR_DINING_LOFT_FORK_BASE_WOOD_ORANGE",
+					"LOFT_FORK_CHAIR_DINING_LOFT_FORK_BASE_WOOD_ORANGE",
+
+					"CHAIR_DINING_LOFT_FORK_BASE_IRON",
+					"LOFT_FORK_CHAIR_DINING_LOFT_FORK_BASE_IRON",
+
+					"CHAIR_DINING_LOFT_FORK_BASE_WOOD_RED",
+					"LOFT_FORK_CHAIR_DINING_LOFT_FORK_BASE_WOOD_RED",
+
+					"org.lgna.story.resources.prop.LoftForkDiningChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					"org.lgna.story.resources.prop.LoftOfficeDiningChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					"org.lgna.story.resources.prop.ModerateDiningChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					"org.lgna.story.resources.prop.MoroccanDiningChair",
+					"org.lgna.story.resources.prop.Chair"
+
+			), };
+	private static final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections
+			.newCopyOnWriteArrayList();
+
 	private MigrationManager() {
 		throw new AssertionError();
 	}
-	
+
 	public static boolean isDevoidOfVersionIndependentMigrations() {
 		return versionIndependentMigrations.size() == 0;
 	}
-	
-	public static String migrate( String source, org.lgna.project.Version version ) {
+
+	public static String migrate(String source, org.lgna.project.Version version) {
 		String rv = source;
-		for( TextMigration textMigration : textMigrations ) {
-			if( textMigration.isApplicable( version ) ) {
-				rv = textMigration.migrate( rv );
+		for (TextMigration textMigration : textMigrations) {
+			if (textMigration.isApplicable(version)) {
+				rv = textMigration.migrate(rv);
 				version = textMigration.getResultVersion();
 			}
 		}
-		
-		for( Migration versionIndependentMigration : versionIndependentMigrations ) {
-			rv = versionIndependentMigration.migrate( rv );
+
+		for (Migration versionIndependentMigration : versionIndependentMigrations) {
+			rv = versionIndependentMigration.migrate(rv);
 		}
-		
+
 		return rv;
 	}
-	
-	public static void addVersionIndependentMigration( Migration migration ) {
-		versionIndependentMigrations.add( migration );
+
+	public static void addVersionIndependentMigration(Migration migration) {
+		versionIndependentMigrations.add(migration);
 	}
-	public static void removeVersionIndependentMigration( Migration migration ) {
-		versionIndependentMigrations.remove( migration );
+
+	public static void removeVersionIndependentMigration(Migration migration) {
+		versionIndependentMigrations.remove(migration);
 	}
 }
