@@ -95,9 +95,9 @@ public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R
 		}
 		
 		this.visualData.setSGParent( sgComposite );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
-			sgVisual.setParent( sgComposite );
-		}
+//		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
+//			sgVisual.setParent( sgComposite );
+//		}
 	}
 	
 	public Iterable< JointImp > getJoints() {
@@ -118,11 +118,12 @@ public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R
 	}
 	private JointImp createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
 		JointImp joint = this.createJointImplementation( jointId );
-		joint.setVehicle(parent);
+		if (joint.getSgVehicle() == null) {
+			joint.setVehicle(parent);
+		}
 		this.mapIdToJoint.put( jointId, joint );
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
 			JointImp childTree = createJointTree(childId, joint);
-			childTree.setVehicle(joint);
 		}
 		return joint;
 	}
