@@ -598,7 +598,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public String getApplicationSubPath() {
+	public static final String getApplicationSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
 			rv = "Alice3";
