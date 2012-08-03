@@ -553,18 +553,18 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 	
 	public static void main( String[] args ) throws Exception {
 		
-//		String curDir = System.getProperty("user.dir");
-//		System.out.println(curDir);
+		String curDir = System.getProperty("user.dir");
+		System.out.println(curDir);
+		
+		File jarDir = new File(curDir);
+		jarDir = jarDir.getParentFile().getParentFile();
+		jarDir = new File(jarDir, "ide/lib/alice");
+		
+		System.out.println(jarDir);
+		
+		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
 //		
-//		File jarDir = new File(curDir);
-//		jarDir = jarDir.getParentFile().getParentFile();
-//		jarDir = new File(jarDir, "ide/lib/alice");
-//		
-//		System.out.println(jarDir);
-//		
-//		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
-//		
-//		File galleryData = GalleryDiff.saveGalleryInfo(Version.getCurrentVersion(), "C:/aliceBuildProcess/Data_AliceVersions/"+Version.getCurrentVersion().toString()+"/galleryData.txt", jarFiles);
+		File galleryData = GalleryDiff.saveGalleryInfo(Version.getCurrentVersion(), "C:/aliceBuildProcess/Data_AliceVersions/"+Version.getCurrentVersion().toString()+"/galleryData.txt", jarFiles);
 //		
 
 		final String[] DATA_VERSIONS = {
