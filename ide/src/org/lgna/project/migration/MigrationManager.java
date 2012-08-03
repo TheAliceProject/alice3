@@ -48,6 +48,17 @@ package org.lgna.project.migration;
 public class MigrationManager {
 	public static final String NO_REPLACEMENT = null;
 
+	private static String createMoreSpecificFieldString( String fieldName, String clsName ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "name=\"" );
+		sb.append( fieldName );
+		sb.append( "\"><declaringClass name=\"" );
+		sb.append( clsName );
+		sb.append( "\"" );
+//		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb );
+		return sb.toString();
+	}
+	
 	private static final TextMigration[] textMigrations = {
 			new org.lgna.project.migration.TextMigration(
 					new org.lgna.project.Version("3.1.7.0.0"),
@@ -652,29 +663,30 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.QuaintDiningTable",
 					"org.lgna.story.resources.prop.DiningTable",
 
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+// duplicates
+//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+//
+//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+//
+//					"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+//
+//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+//
+//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+//
+//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+//
+//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+//
+//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
 
 					"org.lgna.story.resources.prop.ClubEndTable",
 					"org.lgna.story.resources.prop.EndTable",
@@ -808,6 +820,15 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.LoveseatCamelBack",
 					"org.lgna.story.resources.prop.Loveseat",
 
+					"org.lgna.story.resources.prop.LoveseatMoroccan",
+					"org.lgna.story.resources.prop.Loveseat",
+
+					"org.lgna.story.resources.prop.LoveseatParkBench",
+					"org.lgna.story.resources.prop.Loveseat",
+
+					"org.lgna.story.resources.prop.LoveseatQuaint",
+					"org.lgna.story.resources.prop.Loveseat",
+
 					"SOFA_MOROCCAN_BEIGE",
 					"MOROCCAN_SOFA_MOROCCAN_BEIGE",
 
@@ -817,11 +838,8 @@ public class MigrationManager {
 					"SOFA_MOROCCAN_RED",
 					"MOROCCAN_SOFA_MOROCCAN_RED",
 
-					"org.lgna.story.resources.prop.LoveseatMoroccan",
-					"org.lgna.story.resources.prop.Loveseat",
-
-					"LOVESEAT_PARK_BENCH_OAK",
-					"PARK_BENCH_LOVESEAT_PARK_BENCH_OAK",
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Loveseat" ),
 
 					"LOVESEAT_PARK_BENCH_RED",
 					"PARK_BENCH_LOVESEAT_PARK_BENCH_RED",
@@ -835,11 +853,6 @@ public class MigrationManager {
 					"LOVESEAT_PARK_BENCH_IVORY",
 					"PARK_BENCH_LOVESEAT_PARK_BENCH_IVORY",
 
-					"org.lgna.story.resources.prop.LoveseatParkBench",
-					"org.lgna.story.resources.prop.Loveseat",
-
-					"org.lgna.story.resources.prop.LoveseatQuaint",
-					"org.lgna.story.resources.prop.Loveseat",
 
 					"LOVESEAT_VALUE_RED_CHECKER",
 					"VALUE_LOVESEAT_VALUE_RED_CHECKER",
@@ -1120,8 +1133,11 @@ public class MigrationManager {
 					"CHAIR_DINING_COLONIAL1_DIAMONDS",
 					"COLONIAL_CHAIR_DINING_COLONIAL1_DIAMONDS",
 
-					"LOVESEAT_PARK_BENCH_OAK",
-					"PARK_LOVESEAT_PARK_BENCH_OAK",
+					"org.lgna.story.resources.prop.ParkChair",
+					"org.lgna.story.resources.prop.Chair",
+
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Chair" ),
 
 					"LOVESEAT_PARK_BENCH_WALNUT",
 					"PARK_LOVESEAT_PARK_BENCH_WALNUT",
@@ -1141,8 +1157,6 @@ public class MigrationManager {
 					"LOVESEAT_PARK_BENCH_CHESTNUT",
 					"PARK_LOVESEAT_PARK_BENCH_CHESTNUT",
 
-					"org.lgna.story.resources.prop.ParkChair",
-					"org.lgna.story.resources.prop.Chair",
 
 					"CHAIR_DINING_MODERATE_BODY_BLACK",
 					"MODERATE_CHAIR_DINING_MODERATE_BODY_BLACK",
@@ -1768,26 +1782,28 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.SofaSteelFrame",
 					"org.lgna.story.resources.prop.Sofa",
 
-					"SOFA_MOROCCAN_BEIGECROSS",
-					"MOROCCAN_SOFA_MOROCCAN_BEIGECROSS",
 
 					"org.lgna.story.resources.prop.SofaMoroccan",
 					"org.lgna.story.resources.prop.Sofa",
 
-					"SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
-					"QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+//duplicates
+//					"SOFA_MOROCCAN_BEIGECROSS",
+//					"MOROCCAN_SOFA_MOROCCAN_BEIGECROSS",
 
-					"SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
-					"QUAINT_SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
-
-					"SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
-					"QUAINT_SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
-
-					"SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
-					"QUAINT_SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
-
-					"SOFA_QUAINT_FABRIC_PINK_FLOWERS",
-					"QUAINT_SOFA_QUAINT_FABRIC_PINK_FLOWERS",
+//					"SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+//					"QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+//
+//					"SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
+//					"QUAINT_SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
+//
+//					"SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
+//					"QUAINT_SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
+//
+//					"SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
+//					"QUAINT_SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
+//
+//					"SOFA_QUAINT_FABRIC_PINK_FLOWERS",
+//					"QUAINT_SOFA_QUAINT_FABRIC_PINK_FLOWERS",
 
 					"SOFA_UM_CUTOUT_BLACK_CREAM",
 					"MODERN_CUTOUT_SOFA_UM_CUTOUT_BLACK_CREAM",
