@@ -8,6 +8,8 @@ import java.util.zip.ZipEntry;
 
 import org.lgna.project.Version;
 
+import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
+
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
@@ -315,7 +317,7 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 		{
 			if (entry.getName().endsWith(fileName))
 			{
-				byte[] data = edu.cmu.cs.dennisc.zip.ZipUtilities.extractBytes(zis, entry);
+				byte[] data = ZipUtilities.extractBytes(zis, entry);
 				zis.close();
 				return data;
 			}
@@ -334,7 +336,7 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 			{
 				if (entry.getName().endsWith(fileName))
 				{
-					byte[] data = edu.cmu.cs.dennisc.zip.ZipUtilities.extractBytes(zis, entry);
+					byte[] data = ZipUtilities.extractBytes(zis, entry);
 					zis.close();
 					return new java.io.ByteArrayInputStream(data);
 				}
