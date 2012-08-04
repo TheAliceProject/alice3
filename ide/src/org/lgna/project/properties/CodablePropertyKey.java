@@ -55,7 +55,7 @@ public class CodablePropertyKey< T extends edu.cmu.cs.dennisc.codec.BinaryEncoda
 	}
 	@Override
 	protected T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return binaryDecoder.decodeBinaryEncodableAndDecodable();
+		return (T)binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	@Override
 	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
