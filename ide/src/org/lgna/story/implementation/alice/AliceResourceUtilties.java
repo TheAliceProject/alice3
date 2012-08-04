@@ -613,7 +613,7 @@ public class AliceResourceUtilties {
 	{
 		URL resourceURL = getThumbnailURLInternal(modelResource, resourceName);
 		if (resourceURL == null) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", resourceName);
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", modelResource, resourceName);
 			resourceURL = getThumbnailURLInternal(modelResource, resourceName);
 		}
 		if( resourceURL != null ) {
