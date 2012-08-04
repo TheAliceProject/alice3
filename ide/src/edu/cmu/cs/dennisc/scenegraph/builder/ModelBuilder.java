@@ -56,7 +56,7 @@ public class ModelBuilder {
 				java.util.Map< Integer, edu.cmu.cs.dennisc.scenegraph.Geometry > mapIdToGeometry = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 				java.util.Map< Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture > mapIdToTexture = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 				java.io.FileInputStream fis = new java.io.FileInputStream( file );
-				java.util.Map< String, byte[] > map = edu.cmu.cs.dennisc.zip.ZipUtilities.extract( fis );
+				java.util.Map< String, byte[] > map = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( fis );
 
 				java.io.InputStream isMainEntry = null;
 				for( String entryPath : map.keySet() ) {
@@ -121,7 +121,7 @@ public class ModelBuilder {
 		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
 		for( final edu.cmu.cs.dennisc.scenegraph.Geometry geometry : this.geometries ) {
-			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 				public String getName() {
 					return getEntryPath( geometry );
 				}
@@ -150,7 +150,7 @@ public class ModelBuilder {
 			} );
 		}
 		for( final edu.cmu.cs.dennisc.texture.BufferedImageTexture texture : this.textures ) {
-			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 				public String getName() {
 					return getEntryPath( texture );
 				}
@@ -159,7 +159,7 @@ public class ModelBuilder {
 				}
 			} );
 		}
-		edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 			public String getName() {
 				return MAIN_ENTRY_PATH;
 			}

@@ -96,7 +96,7 @@ public abstract class IoUtilities {
 		private final java.util.Map< String, byte[] > mapZipEntryToBuffer;
 		public ZipInputStreamEntryContainer( java.util.zip.ZipInputStream zipInputStream ) {
 			try {
-				this.mapZipEntryToBuffer = edu.cmu.cs.dennisc.zip.ZipUtilities.extract( zipInputStream );
+				this.mapZipEntryToBuffer = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( zipInputStream );
 			} catch( java.io.IOException ioe ) {
 				throw new RuntimeException( ioe );
 			}
@@ -256,7 +256,7 @@ public abstract class IoUtilities {
 	}
 
 	private static void writeVersion( java.util.zip.ZipOutputStream zos ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 			public String getName() {
 				return VERSION_ENTRY_NAME;
 			}
@@ -266,7 +266,7 @@ public abstract class IoUtilities {
 		} );
 	}
 	private static void writeXML( final org.w3c.dom.Document xmlDocument, java.util.zip.ZipOutputStream zos, final String entryName ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 			public String getName() {
 				return entryName;
 			}
@@ -278,9 +278,9 @@ public abstract class IoUtilities {
 	private static void writeType( org.lgna.project.ast.AbstractType<?,?,?> type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
 		writeXML( type.encode(), zos, entryName );
 	}
-	private static void writeDataSources( java.util.zip.ZipOutputStream zos, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
-		for( edu.cmu.cs.dennisc.zip.DataSource dataSource : dataSources ) {
-			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, dataSource );
+	private static void writeDataSources( java.util.zip.ZipOutputStream zos, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
+		for( edu.cmu.cs.dennisc.java.util.zip.DataSource dataSource : dataSources ) {
+			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, dataSource );
 		}
 	}
 
@@ -338,13 +338,13 @@ public abstract class IoUtilities {
 				for( org.lgna.common.Resource resource : resources ) {
 					String entryName = generateEntryName( resource, usedEntryNames );
 					usedEntryNames.add( entryName );
-					edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.ByteArrayDataSource( entryName, resource.getData() ) );
+					edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource( entryName, resource.getData() ) );
 				}
 			}
 		}
 	}
 
-	public static void writeProject( java.io.OutputStream os, final org.lgna.project.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeProject( java.io.OutputStream os, final org.lgna.project.Project project, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
 		writeVersion( zos );
 		org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
@@ -353,7 +353,7 @@ public abstract class IoUtilities {
 		if( propertyKeys.isEmpty() ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 				public String getName() {
 					return PROPERTIES_ENTRY_NAME;
 				}
@@ -395,16 +395,16 @@ public abstract class IoUtilities {
 		zos.flush();
 		zos.close();
 	}
-	public static void writeProject( java.io.File file, org.lgna.project.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeProject( java.io.File file, org.lgna.project.Project project, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		writeProject( new java.io.FileOutputStream( file ), project, dataSources );
 	}
 
-	public static void writeProject( String path, org.lgna.project.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeProject( String path, org.lgna.project.Project project, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		writeProject( new java.io.File( path ), project, dataSources );
 	}
 
-	public static void writeType( java.io.OutputStream os, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeType( java.io.OutputStream os, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
 		writeVersion( zos );
 		writeType( type, zos, TYPE_ENTRY_NAME );
@@ -426,11 +426,11 @@ public abstract class IoUtilities {
 		zos.flush();
 		zos.close();
 	}
-	public static void writeType( java.io.File file, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeType( java.io.File file, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		writeType( new java.io.FileOutputStream( file ), type, dataSources );
 	}
-	public static void writeType( String path, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeType( String path, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		writeType( new java.io.File( path ), type, dataSources );
 	}
 

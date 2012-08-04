@@ -40,32 +40,79 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.zip;
+package edu.cmu.cs.dennisc.ziptree;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ByteArrayDataSource implements DataSource {
-	private String name;
-	private byte[] data;
-	public ByteArrayDataSource( String name, byte[] data ) {
-		this.setName( name );
-		this.setData( data );
+public class DirectoryZipTreeNode extends ZipTreeNode {
+	private java.util.List< ZipTreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private boolean isSorted = false;
+	public DirectoryZipTreeNode( String path ) {
+		super( path );
 	}
-	public String getName() {
-		return this.name;
+	public boolean getAllowsChildren() {
+		return true;
 	}
-	public void setName( String name ) {
-		this.name = name;
+	private java.util.List< ? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > getSortedChildren() {
+		if( this.isSorted ) {
+			//pass
+		} else {
+			java.util.Collections.sort( this.children );
+			this.isSorted = true;
+		}
+		return this.children;
 	}
-	public byte[] getData() {
-		return this.data;
+	public java.util.Enumeration< ? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > children() {
+		return java.util.Collections.enumeration( this.getSortedChildren() );
 	}
-	public void setData( byte[] data ) {
-		this.data = data;
+	public java.util.Iterator iterator() {
+		return this.children.iterator();
+	}
+//	public java.util.Iterator< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > iterator() {
+//		return this.children.iterator();
+//	}
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
+		return this.getSortedChildren().get( childIndex );
+	}
+	public int getChildCount() {
+		return this.children.size();
+	}
+	public boolean isLeaf() {
+		return false;
+	}
+	public int getIndex(javax.swing.tree.TreeNode node) {
+		return this.getSortedChildren().indexOf( node );
 	}
 	
-	public void write( java.io.OutputStream os ) throws java.io.IOException {
-		os.write( this.data );
+	/*package-private*/ void addChild( ZipTreeNode zipTreeNode ) {
+		this.children.add( zipTreeNode );
+		this.isSorted = false;
+	}
+	/*package-private*/ void removeChild( ZipTreeNode zipTreeNode ) {
+		this.children.remove( zipTreeNode );
+	}
+	
+	public ZipTreeNode getChildNamed( String name ) {
+		for( ZipTreeNode zipTreeNode : this.children ) {
+			if( name.equals( zipTreeNode.getName() ) ) {
+				return zipTreeNode;
+			}
+		}
+		return null;
+	}
+	public ZipTreeNode getDescendant( String path ) {
+		ZipTreeNode rv = this;
+		String[] names = path.split( "/" );
+		for( String name : names ) {
+			if( rv instanceof DirectoryZipTreeNode ) { 
+				DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)rv;
+				rv = directoryZipTreeNode.getChildNamed( name );
+			} else {
+				rv = null;
+				break;
+			}
+		}
+		return rv;
 	}
 }

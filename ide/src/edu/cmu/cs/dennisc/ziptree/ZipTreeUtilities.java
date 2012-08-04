@@ -40,12 +40,60 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.zip;
+package edu.cmu.cs.dennisc.ziptree;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface DataSource {
-	public String getName();
-	public void write( java.io.OutputStream os ) throws java.io.IOException;
+public class ZipTreeUtilities {
+	public static DirectoryZipTreeNode createTreeNode( java.util.zip.ZipInputStream zis, boolean isDataExtractionDesired ) throws java.io.IOException {
+		java.util.Map< String, DirectoryZipTreeNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		DirectoryZipTreeNode rv = new DirectoryZipTreeNode( null );
+		map.put( "", rv );
+		java.util.zip.ZipEntry zipEntry;
+		while ((zipEntry = zis.getNextEntry()) != null) {
+			String name = zipEntry.getName();
+			ZipTreeNode zipTreeNode;
+			if( zipEntry.isDirectory() ) {
+				DirectoryZipTreeNode directoryZipTreeNode = new DirectoryZipTreeNode( name );
+				map.put( name, directoryZipTreeNode );
+				zipTreeNode = directoryZipTreeNode;
+			} else {
+				byte[] data;
+				if( isDataExtractionDesired ) {
+					data = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extractBytes(zis, zipEntry);
+				} else {
+					data = null;
+				}
+				        
+				zipTreeNode = new FileZipTreeNode( name, data );
+			}
+			String parentName; 
+			int index = name.lastIndexOf( '/', name.length()-2 );
+			if( index != -1 ) {
+				parentName = name.substring( 0, index+1 );
+			} else {
+				parentName = "";
+			}
+			DirectoryZipTreeNode parent = map.get( parentName );
+			assert parent != null : parentName;
+			zipTreeNode.setParent( parent );
+		}
+		return rv;
+	}
+	public static DirectoryZipTreeNode createTreeNode( java.io.InputStream is, boolean isDataExtractionDesired ) throws java.io.IOException {
+		java.util.zip.ZipInputStream zis;
+		if( is instanceof java.util.zip.ZipInputStream ) {
+			zis = (java.util.zip.ZipInputStream) is;
+		} else {
+			zis = new java.util.zip.ZipInputStream( is );
+		}
+		return createTreeNode( zis, isDataExtractionDesired );
+	}
+	public static DirectoryZipTreeNode createTreeNode( java.io.File file, boolean isDataExtractionDesired ) throws java.io.IOException {
+		return createTreeNode( new java.io.FileInputStream( file ), isDataExtractionDesired );
+	}
+	public static DirectoryZipTreeNode createTreeNode( String path, boolean isDataExtractionDesired ) throws java.io.IOException {
+		return createTreeNode( new java.io.File( path ), isDataExtractionDesired );
+	}
 }

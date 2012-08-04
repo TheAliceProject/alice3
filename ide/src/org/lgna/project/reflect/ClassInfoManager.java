@@ -59,11 +59,13 @@ public class ClassInfoManager {
 					//pass
 				} else {
 					String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( zipEntry.getName() );
-					final byte[] data = edu.cmu.cs.dennisc.zip.ZipUtilities.extractBytes(zis, zipEntry);
+					final byte[] data = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extractBytes(zis, zipEntry);
 					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
 						@Override
 						protected ClassInfo initialize() {
-							return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( data, ClassInfo.class );
+							ClassInfo rv = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( data, ClassInfo.class );
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
+							return rv;
 						}
 					} );
 				}
