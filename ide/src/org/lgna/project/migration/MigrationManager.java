@@ -55,8 +55,33 @@ public class MigrationManager {
 		sb.append( "\"><declaringClass name=\"" );
 		sb.append( clsName );
 		sb.append( "\"" );
-//		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb );
 		return sb.toString();
+	}
+	
+	private static String createPrevJointString( String prevFieldName, String packageSubName ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "name=\"" );
+		sb.append( prevFieldName );
+		sb.append( "\"><declaringClass name=\"org\\.lgna\\.story\\.resources." );
+		sb.append( packageSubName );
+		sb.append( "\\.[A-Za-z]*\"" );
+		return sb.toString();
+	}
+	private static String createNextJointString( String prevFieldName, String clsName ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "name=\"" );
+		sb.append( prevFieldName );
+		sb.append( "\"><declaringClass name=\"org.lgna.story.resources." );
+		sb.append( clsName );
+		sb.append( "\"" );
+		return sb.toString();
+	}
+	
+	private static String createPrevBipedJointString( String prevFieldName ) {
+		return createPrevJointString( prevFieldName, "biped" );
+	}
+	private static String createNextBipedJointString( String prevFieldName ) {
+		return createNextJointString( prevFieldName, "BipedResource" );
 	}
 	
 	private static final TextMigration[] textMigrations = {
@@ -1986,8 +2011,55 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.Chair",
 
 					"org.lgna.story.resources.prop.MoroccanDiningChair",
-					"org.lgna.story.resources.prop.Chair"
+					"org.lgna.story.resources.prop.Chair",
 
+					createPrevBipedJointString( "LEFT_THUMB_1" ),
+					createNextBipedJointString( "LEFT_THUMB" ),
+
+					createPrevBipedJointString( "LEFT_THUMB_2" ),
+					createNextBipedJointString( "LEFT_THUMB_KNUCKLE" ),
+
+					createPrevBipedJointString( "LEFT_INDEX_1" ),
+					createNextBipedJointString( "LEFT_INDEX_FINGER" ),
+
+					createPrevBipedJointString( "LEFT_INDEX_2" ),
+					createNextBipedJointString( "LEFT_INDEX_FINGER_KNUCKLE" ),
+
+					createPrevBipedJointString( "LEFT_MIDDLE_1" ),
+					createNextBipedJointString( "LEFT_MIDDLE_FINGER" ),
+
+					createPrevBipedJointString( "LEFT_MIDDLE_2" ),
+					createNextBipedJointString( "LEFT_MIDDLE_FINGER_KNUCKLE" ),
+					
+					createPrevBipedJointString( "LEFT_PINKY_1" ),
+					createNextBipedJointString( "LEFT_PINKY_FINGER" ),
+
+					createPrevBipedJointString( "LEFT_PINKY_2" ),
+					createNextBipedJointString( "LEFT_PINKY_FINGER_KNUCKLE" ),
+					
+					createPrevBipedJointString( "RIGHT_THUMB_1" ),
+					createNextBipedJointString( "RIGHT_THUMB" ),
+
+					createPrevBipedJointString( "RIGHT_THUMB_2" ),
+					createNextBipedJointString( "RIGHT_THUMB_KNUCKLE" ),
+
+					createPrevBipedJointString( "RIGHT_INDEX_1" ),
+					createNextBipedJointString( "RIGHT_INDEX_FINGER" ),
+
+					createPrevBipedJointString( "RIGHT_INDEX_2" ),
+					createNextBipedJointString( "RIGHT_INDEX_FINGER_KNUCKLE" ),
+
+					createPrevBipedJointString( "RIGHT_MIDDLE_1" ),
+					createNextBipedJointString( "RIGHT_MIDDLE_FINGER" ),
+
+					createPrevBipedJointString( "RIGHT_MIDDLE_2" ),
+					createNextBipedJointString( "RIGHT_MIDDLE_FINGER_KNUCKLE" ),
+					
+					createPrevBipedJointString( "RIGHT_PINKY_1" ),
+					createNextBipedJointString( "RIGHT_PINKY_FINGER" ),
+
+					createPrevBipedJointString( "RIGHT_PINKY_2" ),
+					createNextBipedJointString( "RIGHT_PINKY_FINGER_KNUCKLE" )
 			), };
 	private static final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections
 			.newCopyOnWriteArrayList();
