@@ -42,27 +42,49 @@
  */
 
 /**
- * @author Dennis Cosgrove
+ * @author dennisc
  */
-public class GalleryTest {
-	private static void test( java.util.List<Throwable> brokenModels,  org.alice.ide.croquet.models.gallerybrowser.GalleryNode node, Class<? extends org.lgna.story.SJointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException {
+public class ProjectFilePerGalleryModelGeneration {
+	private static void test( java.util.List<Throwable> brokenModels,  org.alice.ide.croquet.models.gallerybrowser.GalleryNode node, Class<? extends org.lgna.story.SJointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException, java.io.IOException {
 		if( node instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
 			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)node;
-			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)fieldGalleryNode.getDeclaration();
-			java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln("TESTING:", field.getName(), field.getDeclaringType().getName() );
-			Object resource = fld.get( null );
-			assert parameterClses[ 0 ].isInstance( resource ) : parameterClses[ 0 ] + " " + resource;
-			try {
-				org.lgna.story.SJointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( instanceCls, parameterClses, resource );
-				jointedModel.straightenOutJoints();
-			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-				brokenModels.add( t );
-			}
-//			if (jointedModel instanceof org.lgna.story.Swimmer) {
-//				jointedModel.straightenOutJoints();
-//			}
+			org.lgna.project.ast.JavaField argumentField = (org.lgna.project.ast.JavaField)fieldGalleryNode.getDeclaration();
+
+			org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = argumentField.getValueType();
+			org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
+			org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), (org.lgna.project.ast.JavaField)argumentField );
+			org.lgna.project.ast.AbstractConstructor constructor = namedUserType.constructors.get( 0 );
+			org.lgna.project.ast.InstanceCreation instanceCreation = org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField ) );
+			
+			org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField( argumentField.getName(), namedUserType, instanceCreation );
+			field.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
+			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+			
+			org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS;
+			org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+			org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
+			sceneType.fields.add( field );
+
+			org.lgna.project.ast.UserMethod performGeneratedSetupMethod = (org.lgna.project.ast.UserMethod)sceneType.findMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
+
+			org.lgna.project.ast.JavaMethod setVehicleMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SModel.class, "setVehicle", org.lgna.story.SThing.class );
+			
+			performGeneratedSetupMethod.body.getValue().statements.add( 
+					org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(  
+							new org.lgna.project.ast.FieldAccess(new org.lgna.project.ast.ThisExpression(), field), 
+							setVehicleMethod, 
+							new org.lgna.project.ast.ThisExpression()
+					) 
+			);
+			
+			org.lgna.project.Project project = new org.lgna.project.Project( programType );
+			
+			
+			String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + org.lgna.project.Version.getCurrentVersionText() + "/" + valueType.getName() + "/" + argumentField.getName() + ".a3p";
+			
+			org.lgna.project.io.IoUtilities.writeProject( path, project );
+			
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( path );
 		}
 		final int N = node.getChildCount();
 		for( int i=0; i<N; i++ ) {

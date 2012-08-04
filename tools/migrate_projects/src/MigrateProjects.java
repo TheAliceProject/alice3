@@ -45,8 +45,8 @@
  * @author Dennis Cosgrove
  */
 public class MigrateProjects extends Batch {
-	private static final int WIDTH = 400;
-	private static final int HEIGHT = 300 + 60;
+	private static final int WIDTH = 200;
+	private static final int HEIGHT = 150 + 40;
 	private int x = 0;
 	private int y = 0;
 	
@@ -85,8 +85,8 @@ public class MigrateProjects extends Batch {
 	}
 	public static void main( String[] args ) {
 		MigrateProjects migrateProjects = new MigrateProjects();
-		String inRootPath = "C:/Users/dennisc/Documents/Alice3/MyProjects/Section_Examples";
-		String outRootPath = inRootPath + "_Fixed";
+		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/3.1.33.1.0";
+		String outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.Version.getCurrentVersionText();
 		String ext = "a3p";
 		migrateProjects.process( inRootPath, outRootPath, ext, ext );
 	}

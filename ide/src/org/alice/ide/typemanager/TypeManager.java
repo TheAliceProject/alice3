@@ -224,11 +224,13 @@ public class TypeManager {
 		} else {
 			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
 		}
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
-			if( criterion.accept( existingType ) ) {
-				return existingType;
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+		if( project != null ) {
+			java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
+			for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
+				if( criterion.accept( existingType ) ) {
+					return existingType;
+				}
 			}
 		}
 		org.lgna.project.ast.Expression[] expressions;
