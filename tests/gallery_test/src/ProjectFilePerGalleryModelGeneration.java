@@ -45,7 +45,7 @@
  * @author dennisc
  */
 public class ProjectFilePerGalleryModelGeneration {
-	private static void test( java.util.List<Throwable> brokenModels,  org.alice.ide.croquet.models.gallerybrowser.GalleryNode node, Class<? extends org.lgna.story.JointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException, java.io.IOException {
+	private static void test( java.util.List<Throwable> brokenModels,  org.alice.ide.croquet.models.gallerybrowser.GalleryNode node, Class<? extends org.lgna.story.SJointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException, java.io.IOException {
 		if( node instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
 			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)node;
 			org.lgna.project.ast.JavaField argumentField = (org.lgna.project.ast.JavaField)fieldGalleryNode.getDeclaration();
@@ -67,7 +67,7 @@ public class ProjectFilePerGalleryModelGeneration {
 
 			org.lgna.project.ast.UserMethod performGeneratedSetupMethod = (org.lgna.project.ast.UserMethod)sceneType.findMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
 
-			org.lgna.project.ast.JavaMethod setVehicleMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Model.class, "setVehicle", org.lgna.story.Entity.class );
+			org.lgna.project.ast.JavaMethod setVehicleMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SModel.class, "setVehicle", org.lgna.story.SThing.class );
 			
 			performGeneratedSetupMethod.body.getValue().statements.add( 
 					org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(  
@@ -99,11 +99,11 @@ public class ProjectFilePerGalleryModelGeneration {
 		java.util.List< Throwable > brokenModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
 		int i = 0;
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Biped.class, org.lgna.story.resources.BipedResource.class );
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Flyer.class, org.lgna.story.resources.FlyerResource.class );
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Prop.class, org.lgna.story.resources.PropResource.class );
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Quadruped.class, org.lgna.story.resources.QuadrupedResource.class );
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.Swimmer.class, org.lgna.story.resources.SwimmerResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SBiped.class, org.lgna.story.resources.BipedResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SFlyer.class, org.lgna.story.resources.FlyerResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SProp.class, org.lgna.story.resources.PropResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SQuadruped.class, org.lgna.story.resources.QuadrupedResource.class );
+		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SSwimmer.class, org.lgna.story.resources.SwimmerResource.class );
 		
 		if( brokenModels.size() > 0 ) {
 //			System.err.println();
