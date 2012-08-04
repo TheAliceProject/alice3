@@ -85,8 +85,8 @@ public class MigrateProjects extends Batch {
 	}
 	public static void main( String[] args ) {
 		MigrateProjects migrateProjects = new MigrateProjects();
-		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + org.lgna.project.Version.getCurrentVersionText();
-		String outRootPath = inRootPath + "_Fixed";
+		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/3.1.33.1.0";
+		String outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.Version.getCurrentVersionText();
 		String ext = "a3p";
 		migrateProjects.process( inRootPath, outRootPath, ext, ext );
 	}
