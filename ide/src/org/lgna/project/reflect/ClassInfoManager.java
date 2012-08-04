@@ -64,7 +64,7 @@ public class ClassInfoManager {
 						@Override
 						protected ClassInfo initialize() {
 							ClassInfo rv = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( data, ClassInfo.class );
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
+							//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
 							return rv;
 						}
 					} );
