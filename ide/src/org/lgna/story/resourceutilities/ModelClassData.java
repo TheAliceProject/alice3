@@ -31,7 +31,7 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData MONSTER_CLASS_DATA = new ModelClassData(org.lgna.story.resources.MonsterResource.class, "org.lgna.story.resources.monster", BIPED_BASE_CLASS_DATA);
 	public static final ModelClassData BIRD_CLASS_DATA = new ModelClassData(org.lgna.story.resources.BirdResource.class, "org.lgna.story.resources.bird", FLYER_BASE_CLASS_DATA);
 	public static final ModelClassData FISH_CLASS_DATA = new ModelClassData(org.lgna.story.resources.FishResource.class, "org.lgna.story.resources.fish", SWIMMER_BASE_CLASS_DATA);
-	public static final ModelClassData WHALE_CLASS_DATA = new ModelClassData(org.lgna.story.resources.MarineMammalResource.class, "org.lgna.story.resources.whale", SWIMMER_BASE_CLASS_DATA);
+	public static final ModelClassData MARINE_MAMMAL_CLASS_DATA = new ModelClassData(org.lgna.story.resources.MarineMammalResource.class, "org.lgna.story.resources.marinemammal", SWIMMER_BASE_CLASS_DATA);
 	public static final ModelClassData PROP_CLASS_DATA = new ModelClassData(org.lgna.story.resources.PropResource.class, "org.lgna.story.resources.prop", PROP_BASE_CLASS_DATA);
 	public static final ModelClassData CAT_CLASS_DATA = new ModelClassData(org.lgna.story.resources.CatResource.class, "org.lgna.story.resources.cat", QUADRUPED_BASE_CLASS_DATA);
 	public static final ModelClassData DOG_CLASS_DATA = new ModelClassData(org.lgna.story.resources.DogResource.class, "org.lgna.story.resources.dog", QUADRUPED_BASE_CLASS_DATA);

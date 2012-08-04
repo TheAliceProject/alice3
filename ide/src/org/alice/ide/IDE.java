@@ -143,11 +143,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public abstract org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod();
 
+	private boolean isSetupMethodCleared = false;
 	public org.lgna.project.ast.NamedUserType getStrippedProgramType() {
 		org.lgna.project.ast.NamedUserType rv = this.getProgramType();
 		if( rv != null ) {
 			org.lgna.project.ast.UserMethod setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
 			setUpMethod.body.getValue().statements.clear();
+			this.isSetupMethodCleared = true;
 		}
 		return rv;
 	}
@@ -242,9 +244,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void ensureProjectCodeUpToDate() {
 		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
-			synchronized( project.getLock() ) {
-				this.generateCodeForSceneSetUp();
-				this.reorganizeFieldsIfNecessary();
+			if( this.isSetupMethodCleared || this.isProjectUpToDateWithFile()==false ) {
+				synchronized( project.getLock() ) {
+					this.generateCodeForSceneSetUp();
+					this.reorganizeFieldsIfNecessary();
+				}
 			}
 		}
 	}
@@ -360,6 +364,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
+		this.isSetupMethodCleared = false;
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( perspective == null || perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
 			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
@@ -501,6 +506,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new org.lgna.project.ast.Comment( GENERATED_CODE_WARNING ) );
 		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
+		this.isSetupMethodCleared = false;
 	}
 
 	public org.lgna.project.ast.NamedUserType getProgramType() {
@@ -592,7 +598,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public String getApplicationSubPath() {
+	public static final String getApplicationSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
 			rv = "Alice3";

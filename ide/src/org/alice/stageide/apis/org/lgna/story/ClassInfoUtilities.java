@@ -50,7 +50,7 @@ public class ClassInfoUtilities {
 		throw new AssertionError();
 	}
 	public static void loadClassInfos() {
-		final boolean IS_CLASSINFO_VALID = false;
+		final boolean IS_CLASSINFO_VALID = true;
 		if( IS_CLASSINFO_VALID ) {
 			java.io.InputStream is = ClassInfoUtilities.class.getResourceAsStream( "classinfos.zip" );
 			if( is != null ) {
