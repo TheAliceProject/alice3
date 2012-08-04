@@ -77,11 +77,42 @@ public class MigrationManager {
 		return sb.toString();
 	}
 	
+	private static String createJointAccessorString( String accessorName, String clsName ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "name=\"" );
+		sb.append( accessorName );
+		sb.append( "\"><declaringClass name=\"org.lgna.story." );
+		sb.append( clsName );
+		sb.append( "\"" );
+		return sb.toString();
+	}
+	
 	private static String createPrevBipedJointString( String prevFieldName ) {
 		return createPrevJointString( prevFieldName, "biped" );
 	}
 	private static String createNextBipedJointString( String prevFieldName ) {
 		return createNextJointString( prevFieldName, "BipedResource" );
+	}
+	
+	private static String createPrevQuadrupedJointString( String prevFieldName ) {
+		return createPrevJointString( prevFieldName, "quadruped" );
+	}
+	private static String createNextQuadrupedJointString( String prevFieldName ) {
+		return createNextJointString( prevFieldName, "QuadrupedResource" );
+	}
+	
+	private static String createPrevFlyerJointString( String prevFieldName ) {
+		return createPrevJointString( prevFieldName, "flyer" );
+	}
+	private static String createNextFlyerJointString( String prevFieldName ) {
+		return createNextJointString( prevFieldName, "FlyerResource" );
+	}
+	
+	private static String createPrevSwimmerJointString( String prevFieldName ) {
+		return createPrevJointString( prevFieldName, "swimmer" );
+	}
+	private static String createNextSwimmerJointString( String prevFieldName ) {
+		return createNextJointString( prevFieldName, "SwimmerResource" );
 	}
 	
 	private static final TextMigration[] textMigrations = {
@@ -1418,7 +1449,7 @@ public class MigrationManager {
 					"JAPANESE_DRESSER_JAPANESE_TANSU_LIGHT",
 
 					"org.lgna.story.resources.prop.DresserJapaneseTansu",
-					NO_REPLACEMENT,
+					"org.lgna.story.resources.prop.Dresser",
 
 					"BARBEQUE_VALUE_METAL_GREEN",
 					"GREEN",
@@ -2059,7 +2090,40 @@ public class MigrationManager {
 					createNextBipedJointString( "RIGHT_PINKY_FINGER" ),
 
 					createPrevBipedJointString( "RIGHT_PINKY_2" ),
-					createNextBipedJointString( "RIGHT_PINKY_FINGER_KNUCKLE" )
+					createNextBipedJointString( "RIGHT_PINKY_FINGER_KNUCKLE" ),
+					
+					createPrevQuadrupedJointString( "TAIL_1" ),
+					createNextQuadrupedJointString( "TAIL" ),
+					
+					createPrevFlyerJointString( "TAIL_1" ),
+					createNextFlyerJointString( "TAIL" ),
+					
+					createJointAccessorString("getRightClavicle", "SFlyer"),
+					createJointAccessorString("getRightWingShoulder", "SFlyer"),
+					
+					createJointAccessorString("getLeftClavicle", "SFlyer"),
+					createJointAccessorString("getLeftWingShoulder", "SFlyer"),
+					
+					createJointAccessorString("getLeftShoulder", "SFlyer"),
+					createJointAccessorString("getLeftWingElbow", "SFlyer"),
+					
+					createJointAccessorString("getRightShoulder", "SFlyer"),
+					createJointAccessorString("getRightWingElbow", "SFlyer"),
+					
+					createJointAccessorString("getRightElbow", "SFlyer"),
+					createJointAccessorString("getRightWingWrist", "SFlyer"),
+					
+					createJointAccessorString("getLeftElbow", "SFlyer"),
+					createJointAccessorString("getLeftWingWrist", "SFlyer"),
+					
+					createJointAccessorString("getLeftPectoralFin", "SSwimmer"),
+					createJointAccessorString("getFrontRightFin", "SSwimmer"),
+					
+					createJointAccessorString("getRightPectoralFin", "SSwimmer"),
+					createJointAccessorString("getFrontRightFin", "SSwimmer")
+					
+					
+					
 			), };
 	private static final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections
 			.newCopyOnWriteArrayList();
