@@ -854,30 +854,29 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.LoveseatQuaint",
 					"org.lgna.story.resources.prop.Loveseat",
 
-					"SOFA_MOROCCAN_BEIGE",
-					"MOROCCAN_SOFA_MOROCCAN_BEIGE",
+					createMoreSpecificFieldString( "SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Loveseat" ),
 
-					"SOFA_MOROCCAN_GREEN",
-					"MOROCCAN_SOFA_MOROCCAN_GREEN",
+					createMoreSpecificFieldString( "SOFA_MOROCCAN_GREEN", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_GREEN", "org.lgna.story.resources.prop.Loveseat" ),
 
-					"SOFA_MOROCCAN_RED",
-					"MOROCCAN_SOFA_MOROCCAN_RED",
+					createMoreSpecificFieldString( "SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Loveseat" ),
 
 					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Loveseat" ),
 					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Loveseat" ),
 
-					"LOVESEAT_PARK_BENCH_RED",
-					"PARK_BENCH_LOVESEAT_PARK_BENCH_RED",
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Loveseat" ),
 
-					"LOVESEAT_PARK_BENCH_OAKGREEN",
-					"PARK_BENCH_LOVESEAT_PARK_BENCH_OAKGREEN",
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Loveseat" ),
 
-					"LOVESEAT_PARK_BENCH_OAKBLUE",
-					"PARK_BENCH_LOVESEAT_PARK_BENCH_OAKBLUE",
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Loveseat" ),
 
-					"LOVESEAT_PARK_BENCH_IVORY",
-					"PARK_BENCH_LOVESEAT_PARK_BENCH_IVORY",
-
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Loveseat" ),
 
 					"LOVESEAT_VALUE_RED_CHECKER",
 					"VALUE_LOVESEAT_VALUE_RED_CHECKER",
@@ -954,14 +953,15 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.SofaValue1",
 					"org.lgna.story.resources.prop.Sofa",
 
-					"SOFA_MOROCCAN_RED",
-					"MOROCCAN_RED",
+					createMoreSpecificFieldString( "SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Sofa" ),
+					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Sofa" ),
 
-					"SOFA_MOROCCAN_GREEN",
-					"MOROCCAN_GREEN",
+					createMoreSpecificFieldString( "SOFA_MOROCCAN_GREEN", "org.lgna.story.resources.prop.Sofa" ),
+					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_GREEN", "org.lgna.story.resources.prop.Sofa" ),
 
-					"SOFA_MOROCCAN_BEIGE",
-					"MOROCCAN_BLUE",
+					createMoreSpecificFieldString( "SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Sofa" ),
+					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Sofa" ),
+
 
 					"org.lgna.story.resources.prop.SofaQuaint",
 					"org.lgna.story.resources.prop.SeaPlant",
@@ -1164,20 +1164,20 @@ public class MigrationManager {
 					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Chair" ),
 					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Chair" ),
 
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Chair" ),
+
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Chair" ),
+
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Chair" ),
+
+					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Chair" ),
+
 					"LOVESEAT_PARK_BENCH_WALNUT",
 					"PARK_LOVESEAT_PARK_BENCH_WALNUT",
-
-					"LOVESEAT_PARK_BENCH_RED",
-					"PARK_LOVESEAT_PARK_BENCH_RED",
-
-					"LOVESEAT_PARK_BENCH_OAKGREEN",
-					"PARK_LOVESEAT_PARK_BENCH_OAKGREEN",
-
-					"LOVESEAT_PARK_BENCH_OAKBLUE",
-					"PARK_LOVESEAT_PARK_BENCH_OAKBLUE",
-
-					"LOVESEAT_PARK_BENCH_IVORY",
-					"PARK_LOVESEAT_PARK_BENCH_IVORY",
 
 					"LOVESEAT_PARK_BENCH_CHESTNUT",
 					"PARK_LOVESEAT_PARK_BENCH_CHESTNUT",
