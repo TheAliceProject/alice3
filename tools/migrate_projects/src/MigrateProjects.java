@@ -50,33 +50,41 @@ public class MigrateProjects extends Batch {
 	private int x = 0;
 	private int y = 0;
 	
+	private final java.util.List<Error> errors = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	
 	@Override
 	protected void handle( java.io.File inFile, java.io.File outFile ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( inFile );
 		try {
 			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
 
-			
-			javax.swing.JFrame frame = new javax.swing.JFrame();
-			frame.setLocation( x, y );
-			frame.setSize( WIDTH, HEIGHT );
-			x += WIDTH;
-			if( x > 1600 ) {
-				x = 0;
-				y += HEIGHT;
+			final boolean IS_DISPLAY_DESIRED = true;
+			if( IS_DISPLAY_DESIRED ) {
+				javax.swing.JFrame frame = new javax.swing.JFrame();
+				frame.setLocation( x, y );
+				frame.setSize( WIDTH, HEIGHT );
+				x += WIDTH;
+				if( x > 1600 ) {
+					x = 0;
+					y += HEIGHT;
+				}
+				frame.setVisible( true );
+				
+				org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
+				runProgramContext.initializeInContainer( frame.getContentPane() );
+				runProgramContext.setActiveScene();
+				runProgramContext.cleanUpProgram();
+				frame.dispose();
 			}
-			frame.setVisible( true );
-			
-			org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
-			runProgramContext.initializeInContainer( frame.getContentPane() );
-			runProgramContext.setActiveScene();
-			//runProgramContext.cleanUpProgram();
 			
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new RuntimeException( inFile.toString(), vnse );
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( inFile.toString(), ioe );
+		} catch( Error e ) {
+			errors.add( e );
+			e.printStackTrace();
 		}
 	}
 	@Override
@@ -89,5 +97,8 @@ public class MigrateProjects extends Batch {
 		String outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.Version.getCurrentVersionText();
 		String ext = "a3p";
 		migrateProjects.process( inRootPath, outRootPath, ext, ext );
+		for( Error error : migrateProjects.errors ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( error );
+		}
 	}
 }

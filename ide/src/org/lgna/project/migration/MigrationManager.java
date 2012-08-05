@@ -438,10 +438,10 @@ public class MigrationManager {
 					"LOFT_MAPLE",
 
 					"org.lgna.story.resources.armoire.ArmoireLoft",
-					"org.lgna.story.resources.armoire.Armoire",
+					"org.lgna.story.resources.prop.Armoire",
 
 					"org.lgna.story.resources.armoire.ArmoireQuaint",
-					"org.lgna.story.resources.armoire.Armoire",
+					"org.lgna.story.resources.prop.Armoire",
 
 					"ARMOIRE_CENTRAL_ASIAN_GREENFLORAL",
 					"CENTRAL_ASIAN_GREEN_FLORAL",
@@ -459,7 +459,7 @@ public class MigrationManager {
 					"CENTRAL_ASIAN_STORY",
 
 					"org.lgna.story.resources.armoire.ArmoireColonial",
-					"org.lgna.story.resources.armoire.Armoire",
+					"org.lgna.story.resources.prop.Armoire",
 
 					"_ARMOIRE_MOROCCAN_GREEN",
 					"MOROCCAN_GREEN",
@@ -471,7 +471,7 @@ public class MigrationManager {
 					"MOROCCAN_RED",
 
 					"org.lgna.story.resources.armoire.ArmoireMoroccan",
-					"org.lgna.story.resources.armoire.Armoire",
+					"org.lgna.story.resources.prop.Armoire",
 
 					"UFO__GLOW",
 					"UFO",
@@ -485,35 +485,35 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.ArtNoveauCoffeeTable",
 					"org.lgna.story.resources.prop.CoffeeTable",
 
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
-
-					"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
-					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
-
 					"org.lgna.story.resources.prop.SmallClubCoffeeTable",
 					"org.lgna.story.resources.prop.CoffeeTable",
 
 					"org.lgna.story.resources.prop.LargeClubCoffeeTable",
 					"org.lgna.story.resources.prop.CoffeeTable",
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD", "org.lgna.story.resources.prop.CoffeeTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK", "org.lgna.story.resources.prop.CoffeeTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED", "org.lgna.story.resources.prop.CoffeeTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG", "org.lgna.story.resources.prop.CoffeeTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD", "org.lgna.story.resources.prop.CoffeeTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH", "org.lgna.story.resources.prop.CoffeeTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK", "org.lgna.story.resources.prop.CoffeeTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE", "org.lgna.story.resources.prop.CoffeeTable" ),
 
 					"TABLE_COFFEE_COLONIAL_GOLDFLORAL",
 					"COLONIAL_TABLE_COFFEE_COLONIAL_GOLDFLORAL",
@@ -623,44 +623,44 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.SpindleCoffeeTable",
 					"org.lgna.story.resources.prop.CoffeeTable",
 
-					"TABLE_DINING_CLUB_ROOT",
-					"CLUB_TABLE_DINING_CLUB_ROOT",
+					"name=\"TABLE_DINING_CLUB_ROOT",
+					"name=\"CLUB_TABLE_DINING_CLUB_ROOT",
 
-					"TABLE_DINING_CLUB_NEDAR",
-					"CLUB_TABLE_DINING_CLUB_NEDAR",
+					"name=\"TABLE_DINING_CLUB_NEDAR",
+					"name=\"CLUB_TABLE_DINING_CLUB_NEDAR",
 
-					"TABLE_DINING_CLUB_OAK",
-					"CLUB_TABLE_DINING_CLUB_OAK",
+					"name=\"TABLE_DINING_CLUB_OAK",
+					"name=\"CLUB_TABLE_DINING_CLUB_OAK",
 
-					"TABLE_DINING_CLUB_RED",
-					"CLUB_TABLE_DINING_CLUB_RED",
+					"name=\"TABLE_DINING_CLUB_RED",
+					"name=\"CLUB_TABLE_DINING_CLUB_RED",
 
-					"TABLE_DINING_CLUB_REDDARK",
-					"CLUB_TABLE_DINING_CLUB_REDDARK",
+					"name=\"TABLE_DINING_CLUB_REDDARK",
+					"name=\"CLUB_TABLE_DINING_CLUB_REDDARK",
 
-					"TABLE_DINING_CLUB_WOOD",
-					"CLUB_TABLE_DINING_CLUB_WOOD",
+					"name=\"TABLE_DINING_CLUB_WOOD",
+					"name=\"CLUB_TABLE_DINING_CLUB_WOOD",
 
-					"TABLE_DINING_CLUB_PINE",
-					"CLUB_TABLE_DINING_CLUB_PINE",
+					"name=\"TABLE_DINING_CLUB_PINE",
+					"name=\"CLUB_TABLE_DINING_CLUB_PINE",
 
-					"TABLE_DINING_CLUB_SEDAR",
-					"CLUB_TABLE_DINING_CLUB_SEDAR",
+					"name=\"TABLE_DINING_CLUB_SEDAR",
+					"name=\"CLUB_TABLE_DINING_CLUB_SEDAR",
 
 					"org.lgna.story.resources.prop.ClubDiningTable",
 					"org.lgna.story.resources.prop.DiningTable",
 
-					"TABLE_DINING_MOROCCAN_TURQ",
-					"MOROCCAN_TABLE_DINING_MOROCCAN_TURQ",
+					"name=\"TABLE_DINING_MOROCCAN_TURQ",
+					"name=\"MOROCCAN_TABLE_DINING_MOROCCAN_TURQ",
 
-					"TABLE_DINING_MOROCCAN_BLUE",
-					"MOROCCAN_TABLE_DINING_MOROCCAN_BLUE",
+					"name=\"TABLE_DINING_MOROCCAN_BLUE",
+					"name=\"MOROCCAN_TABLE_DINING_MOROCCAN_BLUE",
 
-					"TABLE_DINING_MOROCCAN_BLUE_LIGHT",
-					"MOROCCAN_TABLE_DINING_MOROCCAN_BLUE_LIGHT",
+					"name=\"TABLE_DINING_MOROCCAN_BLUE_LIGHT",
+					"name=\"MOROCCAN_TABLE_DINING_MOROCCAN_BLUE_LIGHT",
 
-					"TABLE_DINING_MOROCCAN_GREEN",
-					"MOROCCAN_TABLE_DINING_MOROCCAN_GREEN",
+					"name=\"TABLE_DINING_MOROCCAN_GREEN",
+					"name=\"MOROCCAN_TABLE_DINING_MOROCCAN_GREEN",
 
 					"org.lgna.story.resources.prop.MoroccanDiningTable",
 					"org.lgna.story.resources.prop.DiningTable",
@@ -719,33 +719,32 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.QuaintDiningTable",
 					"org.lgna.story.resources.prop.DiningTable",
 
-// duplicates
-//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
-//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
-//
-//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
-//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
-//
-//					"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
-//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
-//
-//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
-//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
-//
-//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
-//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
-//
-//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
-//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
-//
-//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
-//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
-//
-//					"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
-//					"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
-
 					"org.lgna.story.resources.prop.ClubEndTable",
 					"org.lgna.story.resources.prop.EndTable",
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD", "org.lgna.story.resources.prop.EndTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK", "org.lgna.story.resources.prop.EndTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED", "org.lgna.story.resources.prop.EndTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG", "org.lgna.story.resources.prop.EndTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD", "org.lgna.story.resources.prop.EndTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH", "org.lgna.story.resources.prop.EndTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK", "org.lgna.story.resources.prop.EndTable" ),
+
+					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE", "org.lgna.story.resources.prop.EndTable" ),
 
 					"TABLE_END_COLONIAL2_TABLE_LIGHTWOOD",
 					"COLONIAL_TABLE_END_COLONIAL2_TABLE_LIGHTWOOD",
@@ -925,10 +924,10 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.Loveseat",
 
 					"DESK_CENTRAL_ASIAN_RED",
-					"CENTRAL_ASIAN_LION",
+					"CENTRAL_ASIAN_DESK_CENTRAL_ASIAN_RED",
 
 					"DESK_CENTRAL_ASIAN_BLACK",
-					"CENTRAL_ASIAN_LION",
+					"CENTRAL_ASIAN_DESK_CENTRAL_ASIAN_BLACK",
 
 					"DESK_CLUB__DARKWOOD",
 					"CLUB_DESK_CLUB_DARKWOOD",
@@ -943,16 +942,16 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.Desk",
 
 					"DESK_QUAINT_GREEN",
-					"QUAINT_GREEN",
+					"QUAINT_DESK_QUAINT_GREEN",
 
 					"DESK_QUAINT_WHITE",
 					"QUAINT_DESK_QUAINT_WHITE",
 
 					"DESK_QUAINT_RED",
-					"QUAINT_RED",
+					"QUAINT_DESK_QUAINT_RED",
 
 					"DESK_QUAINT_BLUE",
-					"QUAINT_BLUE",
+					"QUAINT_DESK_QUAINT_BLUE",
 
 					"DESK_VALUE_WOODWHITE",
 					"VALUE_DESK_VALUE_WOODWHITE",
@@ -984,6 +983,30 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.SofaValue1",
 					"org.lgna.story.resources.prop.Sofa",
 
+					"org.lgna.story.resources.prop.SofaQuaint",
+					"org.lgna.story.resources.prop.Sofa",
+
+					"org.lgna.story.resources.prop.SofaValue2",
+					"org.lgna.story.resources.prop.Sofa",
+
+					"org.lgna.story.resources.prop.SofaSteelFrame",
+					"org.lgna.story.resources.prop.Sofa",
+					
+					"org.lgna.story.resources.prop.SofaColonial1",
+					"org.lgna.story.resources.prop.Sofa",
+					
+					"org.lgna.story.resources.prop.SofaColonial2",
+					"org.lgna.story.resources.prop.Sofa",
+					
+					"org.lgna.story.resources.prop.SofaMoroccan",
+					"org.lgna.story.resources.prop.Sofa",
+					
+					"org.lgna.story.resources.prop.SofaModernCutout",
+					"org.lgna.story.resources.prop.Sofa",
+					
+					"org.lgna.story.resources.prop.SofaModernDiamond",
+					"org.lgna.story.resources.prop.Sofa",
+
 					createMoreSpecificFieldString( "SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Sofa" ),
 					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Sofa" ),
 
@@ -992,10 +1015,6 @@ public class MigrationManager {
 
 					createMoreSpecificFieldString( "SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Sofa" ),
 					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Sofa" ),
-
-
-					"org.lgna.story.resources.prop.SofaQuaint",
-					"org.lgna.story.resources.prop.SeaPlant",
 
 					"SOFA_VALUE2_LIGHT_BROWN_FLOWER",
 					"VALUE2_SOFA_VALUE2_LIGHT_BROWN_FLOWER",
@@ -1009,38 +1028,35 @@ public class MigrationManager {
 					"SOFA_VALUE2_BLUE_FLOWER_BORDER",
 					"VALUE2_SOFA_VALUE2_BLUE_FLOWER_BORDER",
 
-					"org.lgna.story.resources.prop.SofaValue2",
-					"org.lgna.story.resources.prop.Sofa",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADE",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADE",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADE",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADE",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADEON",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADEON",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADEON",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_BLUESHADEON",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADE",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADE",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADE",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADE",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADEON",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADEON",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADEON",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_PLAINSHADEON",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADE",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADE",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADE",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADE",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADEON",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADEON",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADEON",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_OLIVESHADEON",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADEON",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADEON",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADEON",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADEON",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADE",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADE",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADE",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_ORANGESHADE",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADE",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADE",
 
-					"LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADE",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADE",
-
-					"LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADEON",
-					"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADEON",
+					"name=\"LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADEON",
+					"name=\"DESIGNER_LIGHTING_FLOOR_DESIGNER_SHADE_REDSHADEON",
 
 					"LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_UNLIT",
 					"LOFT_LIGHTING_FLOOR_LOFT_LAMP_SHADE_YELLOW_UNLIT",
@@ -1099,41 +1115,41 @@ public class MigrationManager {
 					"LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_LIT",
 					"MOROCCAN_LIGHTING_FLOOR_MOROCCAN_SHADE_YELLOW_LIT",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_PINK_LIT",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_PINK_LIT",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_PINK_LIT",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_PINK_LIT",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_BEIGE_LIT",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BEIGE_LIT",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_BEIGE_LIT",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BEIGE_LIT",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_BEIGE",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BEIGE",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_BEIGE",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BEIGE",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_WHITE",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_WHITE",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_WHITE",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_WHITE",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_PINK",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_PINK",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_PINK",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_PINK",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_BLUE",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BLUE",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_BLUE",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BLUE",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_YELLOW",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_YELLOW",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_YELLOW",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_YELLOW",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_GREEN",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_GREEN",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_GREEN",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_GREEN",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_BLUE_LIT",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BLUE_LIT",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_BLUE_LIT",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_BLUE_LIT",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_GREEN_LIT",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_GREEN_LIT",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_GREEN_LIT",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_GREEN_LIT",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_WHITE_LIT",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_WHITE_LIT",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_WHITE_LIT",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_WHITE_LIT",
 
-					"LIGHTING_FLOOR_QUAINT_SHADE_YELLOW_LIT",
-					"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_YELLOW_LIT",
+					"name=\"LIGHTING_FLOOR_QUAINT_SHADE_YELLOW_LIT",
+					"name=\"QUAINT_LIGHTING_FLOOR_QUAINT_SHADE_YELLOW_LIT",
 
 					"LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_LIT",
 					"STUDIO_LIGHTING_FLOOR_STUDIO_LIGHTS_LIGHTS_LIT",
@@ -1169,7 +1185,7 @@ public class MigrationManager {
 					"CLUB_CHAIR_DINING_CLUB_LTGREENLEATH",
 
 					"org.lgna.story.resources.prop.ClubDiningChair",
-					"org.lgna.story.resources.prop.DiningTable",
+					"org.lgna.story.resources.prop.Chair",
 
 					"CHAIR_DINING_COLONIAL1_PURPLE",
 					"COLONIAL_CHAIR_DINING_COLONIAL1_PURPLE",
@@ -1196,16 +1212,16 @@ public class MigrationManager {
 					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Chair" ),
 
 					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Chair" ),
 
 					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Chair" ),
 
 					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Chair" ),
 
 					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Chair" ),
 
 					"LOVESEAT_PARK_BENCH_WALNUT",
 					"PARK_LOVESEAT_PARK_BENCH_WALNUT",
@@ -1283,6 +1299,9 @@ public class MigrationManager {
 					"org.lgna.story.resources.biped.FarmerPig",
 					"org.lgna.story.resources.biped.Pig",
 
+					"PIG_OVERALLS",
+					"PIG",
+
 					"SCOTTY",
 					"SCOTTY_DOG",
 
@@ -1328,9 +1347,6 @@ public class MigrationManager {
 					"PLAYING_CARD_SIX",
 					"CARD06",
 
-					"PLAYING_CARD",
-					"BLANK",
-
 					"PLAYING_CARD_EIGHT",
 					"CARD08",
 
@@ -1339,6 +1355,9 @@ public class MigrationManager {
 
 					"PLAYING_CARD_FOUR",
 					"CARD04",
+
+					"name=\"PLAYING_CARD",
+					"name=\"BLANK",
 
 					"ARMOIRE_LOFT_TRIM_BLACK",
 					"LOFT_BLACK_TRIM",
@@ -1377,7 +1396,7 @@ public class MigrationManager {
 					"CENTRAL_ASIAN_DRAGON",
 
 					"org.lgna.story.resources.armoire.ArmoireCentralAsian",
-					"org.lgna.story.resources.armoire.Armoire",
+					"org.lgna.story.resources.prop.Armoire",
 
 					"ARMOIRE_COLONIAL_WOOD_REDWOODCURLY",
 					"COLONIAL_CURLY_REDWOOD",
@@ -1388,32 +1407,32 @@ public class MigrationManager {
 					"ARMOIRE_COLONIAL_WOOD_LIGHTWOODCURLY",
 					"COLONIAL_CURLY_LIGHT_WOOD",
 
-					"DRESSER_CENTRAL_ASIAN_GREEN_FLOWERS",
-					"CENTRAL_ASIAN_DRESSER_CENTRAL_ASIAN_GREEN_FLOWERS",
+					"name=\"DRESSER_CENTRAL_ASIAN_GREEN_FLOWERS",
+					"name=\"CENTRAL_ASIAN_DRESSER_CENTRAL_ASIAN_GREEN_FLOWERS",
 
-					"DRESSER_CENTRAL_ASIAN_RED_FLOWERS",
-					"CENTRAL_ASIAN_DRESSER_CENTRAL_ASIAN_RED_FLOWERS",
+					"name=\"DRESSER_CENTRAL_ASIAN_RED_FLOWERS",
+					"name=\"CENTRAL_ASIAN_DRESSER_CENTRAL_ASIAN_RED_FLOWERS",
 
-					"DRESSER_CENTRAL_ASIAN_GREEN",
-					"CENTRAL_ASIAN_DRESSER_CENTRAL_ASIAN_GREEN",
+					"name=\"DRESSER_CENTRAL_ASIAN_GREEN",
+					"name=\"CENTRAL_ASIAN_DRESSER_CENTRAL_ASIAN_GREEN",
 
-					"DRESSER_CENTRAL_ASIAN_RED",
-					"CENTRAL_ASIAN_DRESSER_CENTRAL_ASIAN_RED",
+					"name=\"DRESSER_CENTRAL_ASIAN_RED",
+					"name=\"CENTRAL_ASIAN_DRESSER_CENTRAL_ASIAN_RED",
 
 					"org.lgna.story.resources.prop.DresserCentralAsian",
 					"org.lgna.story.resources.prop.Dresser",
 
-					"DRESSER_COLONIAL_WOOD",
-					"COLONIAL_DRESSER_COLONIAL_WOOD",
+					"name=\"DRESSER_COLONIAL_WOOD",
+					"name=\"COLONIAL_DRESSER_COLONIAL_WOOD",
 
-					"DRESSER_COLONIAL_LIGHT_WOOD_CURLY",
-					"COLONIAL_DRESSER_COLONIAL_LIGHT_WOOD_CURLY",
+					"name=\"DRESSER_COLONIAL_LIGHT_WOOD_CURLY",
+					"name=\"COLONIAL_DRESSER_COLONIAL_LIGHT_WOOD_CURLY",
 
-					"DRESSER_COLONIAL_RED_WOOD",
-					"COLONIAL_DRESSER_COLONIAL_RED_WOOD",
+					"name=\"DRESSER_COLONIAL_RED_WOOD",
+					"name=\"COLONIAL_DRESSER_COLONIAL_RED_WOOD",
 
-					"DRESSER_COLONIAL_WOOD_STRAIGHT_DARK",
-					"COLONIAL_DRESSER_COLONIAL_WOOD_STRAIGHT_DARK",
+					"name=\"DRESSER_COLONIAL_WOOD_STRAIGHT_DARK",
+					"name=\"COLONIAL_DRESSER_COLONIAL_WOOD_STRAIGHT_DARK",
 
 					"org.lgna.story.resources.prop.DresserColonial",
 					"org.lgna.story.resources.prop.Dresser",
@@ -1793,8 +1812,6 @@ public class MigrationManager {
 					"SOFA_COLONIAL1_LINE_CURVES",
 					"COLONIAL1_SOFA_COLONIAL1_LINE_CURVES",
 
-					"org.lgna.story.resources.prop.SofaColonial1",
-					"org.lgna.story.resources.prop.Sofa",
 
 					"SOFA_COLONIAL2_NEONBLUE",
 					"COLONIAL2_SOFA_COLONIAL2_NEONBLUE",
@@ -1817,9 +1834,6 @@ public class MigrationManager {
 					"SOFA_COLONIAL2_BLUE_PATTERN",
 					"COLONIAL2_SOFA_COLONIAL2_BLUE_PATTERN",
 
-					"org.lgna.story.resources.prop.SofaColonial2",
-					"org.lgna.story.resources.prop.Sofa",
-
 					"SOFA_MODERN_STEEL_FRAME_FABRIC_LEATHER",
 					"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_LEATHER",
 
@@ -1834,13 +1848,6 @@ public class MigrationManager {
 
 					"SOFA_MODERN_STEEL_FRAME_FABRIC_GATOR",
 					"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_GATOR",
-
-					"org.lgna.story.resources.prop.SofaSteelFrame",
-					"org.lgna.story.resources.prop.Sofa",
-
-
-					"org.lgna.story.resources.prop.SofaMoroccan",
-					"org.lgna.story.resources.prop.Sofa",
 
 //duplicates
 //					"SOFA_MOROCCAN_BEIGECROSS",
@@ -1882,9 +1889,6 @@ public class MigrationManager {
 					"SOFA_UM_CUTOUT_GREEN",
 					"MODERN_CUTOUT_SOFA_UM_CUTOUT_GREEN",
 
-					"org.lgna.story.resources.prop.SofaModernCutout",
-					"org.lgna.story.resources.prop.Sofa",
-
 					"SOFA_U_M_DIAMOND_CHECK",
 					"MODERN_DIAMOND_SOFA_U_M_DIAMOND_CHECK",
 
@@ -1903,9 +1907,6 @@ public class MigrationManager {
 					"SOFA_U_M_DIAMOND_RED",
 					"MODERN_DIAMOND_SOFA_U_M_DIAMOND_RED",
 
-					"org.lgna.story.resources.prop.SofaModernDiamond",
-					"org.lgna.story.resources.prop.Sofa",
-
 					"LIGHTING_FLOOR_CLUB_LAMP_LAMP",
 					"SWING_ARM_LIGHTING_FLOOR_CLUB_LAMP_LAMP",
 
@@ -1915,18 +1916,18 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.FloorLampDesigner",
 					"org.lgna.story.resources.prop.Lamp",
 
-					"LIGHTING_FLOOR_GARDEN_TIER_LIT",
-					"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_LIT",
+					"name=\"LIGHTING_FLOOR_GARDEN_TIER_LIT",
+					"name=\"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_LIT",
 
-					"LIGHTING_FLOOR_GARDEN_TIER",
-					"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER",
+					"name=\"LIGHTING_FLOOR_GARDEN_TIER_GREEN_LIT",
+					"name=\"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_GREEN_LIT",
 
-					"LIGHTING_FLOOR_GARDEN_TIER_GREEN_LIT",
-					"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_GREEN_LIT",
+					"name=\"LIGHTING_FLOOR_GARDEN_TIER_GREEN",
+					"name=\"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_GREEN",
 
-					"LIGHTING_FLOOR_GARDEN_TIER_GREEN",
-					"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER_GREEN",
-
+					"name=\"LIGHTING_FLOOR_GARDEN_TIER",
+					"name=\"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER",
+					
 					"org.lgna.story.resources.prop.FloorLampGardenBollard",
 					"org.lgna.story.resources.prop.Lamp",
 
@@ -2043,6 +2044,12 @@ public class MigrationManager {
 
 					"org.lgna.story.resources.prop.MoroccanDiningChair",
 					"org.lgna.story.resources.prop.Chair",
+					
+					"SAUCER_QUEEN_OF_HEARTS",
+					"SAUCER_QUEEN",
+					
+					"TEACUP_QUEEN_OF_HEARTS",
+					"TEACUP_QUEEN",
 
 					createPrevBipedJointString( "LEFT_THUMB_1" ),
 					createNextBipedJointString( "LEFT_THUMB" ),
@@ -2121,9 +2128,6 @@ public class MigrationManager {
 					
 					createJointAccessorString("getRightPectoralFin", "SSwimmer"),
 					createJointAccessorString("getFrontRightFin", "SSwimmer")
-					
-					
-					
 			), };
 	private static final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections
 			.newCopyOnWriteArrayList();
