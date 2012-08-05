@@ -51,14 +51,6 @@ public abstract class MemberTemplateComposite<V extends org.lgna.croquet.compone
 		private static final java.awt.Dimension SIZE = new java.awt.Dimension( 32, 24 );
 		private org.lgna.croquet.icon.IconFactory getCurrentAccessibleTypeIconFactory() {
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-//			org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
-//			if( instanceFactory != null ) {
-//				type = instanceFactory.getValueType();
-//			} else {
-//				type = null;
-//			}
-//			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( type );
-
 			if( instanceFactory != null ) {
 				org.lgna.croquet.icon.IconFactory rv = null;
 				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
