@@ -48,6 +48,13 @@ package org.alice.ide.member.views;
 public class ProcedureTabView extends MemberTabView {
 	public ProcedureTabView( org.alice.ide.member.ProcedureTabComposite composite ) {
 		super( composite );
-		//this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.alice.ide.Theme theme;
+		if( ide != null ) {
+			theme = ide.getTheme();
+		} else {
+			theme = new org.alice.ide.DefaultTheme();
+		}
+		this.setBackgroundColor( theme.getProcedureColor() );
 	}
 }

@@ -40,38 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<MemberTabComposite> {
-	private static class SingletonHolder {
-		private static MemberTabSelectionState instance = new MemberTabSelectionState();
+public class ExpandableCollapsibleView extends BorderPanel {
+	private final org.lgna.croquet.State.ValueListener<Boolean> isExpandedListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			ExpandableCollapsibleView.this.handleIsExpandedChanged( nextValue );
+		}
+	};
+	public ExpandableCollapsibleView( org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite composite ) {
+		super( composite );
+		this.addPageStartComponent( new ToolPaletteTitle( composite.getIsExpandedState() ) );
+		this.addCenterComponent( composite.getCoreComposite().getView() );
+		this.handleIsExpandedChanged( composite.getIsExpandedState().getValue() );
 	}
-	public static MemberTabSelectionState getInstance() {
-		return SingletonHolder.instance;
+	private void handleIsExpandedChanged( boolean isExpanded ) {
+		this.getCenterComponent().setVisible( isExpanded );
+		this.revalidateAndRepaint();
 	}
-		private MemberTabSelectionState() {
-		super( 
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ), 
-				MemberTabComposite.class, 
-				1,
-				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
-		);
+	@Override
+	protected void handleDisplayable() {
+		org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite composite = (org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite)this.getComposite();
+		composite.getIsExpandedState().addValueListener( this.isExpandedListener );
+		super.handleDisplayable();
 	}
-
-	public static void main( String[] args ) {
-		MemberTabSelectionState state = new MemberTabSelectionState();
-		
-		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = application.getFrame();
-		frame.getContentPanel().addCenterComponent( state.createFolderTabbedPane() );
-		frame.getContentPanel().setMinimumPreferredHeight( 800 );
-		frame.pack();
-		frame.setVisible( true );
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite composite = (org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite)this.getComposite();
+		composite.getIsExpandedState().removeValueListener( this.isExpandedListener );
 	}
 }

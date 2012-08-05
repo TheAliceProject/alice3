@@ -40,38 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<MemberTabComposite> {
-	private static class SingletonHolder {
-		private static MemberTabSelectionState instance = new MemberTabSelectionState();
+public abstract class ExpandableCollapsibleCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractComposite<V> {
+	public static class OuterComposite extends SimpleComposite<org.lgna.croquet.components.ExpandableCollapsibleView> {
+		private final ExpandableCollapsibleCoreComposite<?> coreComposite;
+		private final BooleanState isExpandedState;
+		public OuterComposite( ExpandableCollapsibleCoreComposite<?> coreComposite, boolean isExpandedInitialValue ) {
+			super( java.util.UUID.fromString( "04fd070d-fea8-4f0e-81df-4b3acde7137c" ) );
+			this.coreComposite = coreComposite;
+			this.isExpandedState = this.createBooleanState( this.createKey( "isExpandedState" ), isExpandedInitialValue );
+		}
+		@Override
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.coreComposite.getClassUsedForLocalization();
+		}
+		public BooleanState getIsExpandedState() {
+			return this.isExpandedState;
+		}
+		public ExpandableCollapsibleCoreComposite<?> getCoreComposite() {
+			return this.coreComposite;
+		}
+		@Override
+		protected org.lgna.croquet.components.ExpandableCollapsibleView createView() {
+			return new org.lgna.croquet.components.ExpandableCollapsibleView( this );
+		}
 	}
-	public static MemberTabSelectionState getInstance() {
-		return SingletonHolder.instance;
+	private final OuterComposite outerComposite;
+	public ExpandableCollapsibleCoreComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
+		super( migrationId );
+		this.outerComposite = new OuterComposite( this, isExpandedInitialValue );
 	}
-		private MemberTabSelectionState() {
-		super( 
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ), 
-				MemberTabComposite.class, 
-				1,
-				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
-		);
-	}
-
-	public static void main( String[] args ) {
-		MemberTabSelectionState state = new MemberTabSelectionState();
-		
-		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = application.getFrame();
-		frame.getContentPanel().addCenterComponent( state.createFolderTabbedPane() );
-		frame.getContentPanel().setMinimumPreferredHeight( 800 );
-		frame.pack();
-		frame.setVisible( true );
+	public OuterComposite getOuterComposite() {
+		return this.outerComposite;
 	}
 }

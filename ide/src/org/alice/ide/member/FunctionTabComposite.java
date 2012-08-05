@@ -52,24 +52,53 @@ public final class FunctionTabComposite extends MemberTabComposite {
 	public static FunctionTabComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-
-	private final ReturnTypeFilteredComposite booleanReturnTypeFilteredComposite = new ReturnTypeFilteredComposite( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE );
-	private final ReturnTypeFilteredComposite numberReturnTypeFilteredComposite = new ReturnTypeFilteredComposite( org.lgna.project.ast.JavaType.NUMBER_OBJECT_TYPE );
-
+	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+			if( isAdjusting ) {
+				//pass
+			} else {
+				FunctionTabComposite.this.handleInstanceFactoryChanged( prevValue, nextValue );
+			}
+		}
+	};
+	
 	private FunctionTabComposite() {
 		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), new org.alice.ide.members.filters.FunctionFilter() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handlePreActivation tab composites" );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 	}
 	
-	
-	public ReturnTypeFilteredComposite getBooleanReturnTypeFilteredComposite() {
-		return this.booleanReturnTypeFilteredComposite;
+	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
+		for( ReturnTypeFilteredComposite returnTypeFilteredComposite : this.getReturnTypeFilteredComposites() ) {
+			returnTypeFilteredComposite.getView().refreshLater();
+		}
+		this.getView().refreshLater();
 	}
-	public ReturnTypeFilteredComposite getNumberReturnTypeFilteredComposite() {
-		return this.numberReturnTypeFilteredComposite;
-	}
 	
+	public java.util.List<ReturnTypeFilteredComposite> getReturnTypeFilteredComposites() {
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 
+				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ), 
+				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE ),
+				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), 
+				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.getInstance( String.class ) ), 
+				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) ) 
+		);
+	}
 	@Override
 	protected org.alice.ide.member.views.MemberTabView createView() {
 		return new org.alice.ide.member.views.FunctionTabView( this );
 	}
+//todo
+//	@Override
+//	public void handlePreActivation() {
+//		super.handlePreActivation();
+//		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+//	}
+//	@Override
+//	public void handlePostDeactivation() {
+//		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );
+//		super.handlePostDeactivation();
+//	}
 }
