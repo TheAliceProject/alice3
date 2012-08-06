@@ -83,7 +83,7 @@ class MyBiped extends SBiped {
 }
 
 class MyOgre extends MyBiped {
-	public MyOgre( org.lgna.story.resources.biped.Ogre resource ) {
+	public MyOgre( org.lgna.story.resources.biped.OgreResource resource ) {
 		super( resource );
 	}
 }
@@ -104,7 +104,7 @@ class DesertScene extends SScene {
 	private final SSun sun = new SSun();
 	private final SGround desert = new SGround();
 	private final SSphere sphere = new SSphere();
-	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.Ogre.BROWN );
+	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
 	private final org.lgna.story.SBillboard billboard = new org.lgna.story.SBillboard();
 	private final SCamera camera;
 	private final MyOgre ogre;
@@ -275,7 +275,7 @@ class RagsToRichesStory extends SProgram {
 	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(),
 
 	BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ) );
-	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN );
+	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 

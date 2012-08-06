@@ -44,7 +44,6 @@
 package org.lgna.story.resources;
 
 import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
-import org.lgna.story.resources.biped.MarchHare;
 
 
 /**

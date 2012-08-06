@@ -82,8 +82,4 @@ public class FieldReferenceTreeComposite extends SimpleComposite<FieldReferenceT
 	public void addListener( ValueListener<FieldReferenceSearchTreeNode> fieldReferenceComposite ) {
 		manager.addValueListener( fieldReferenceComposite );
 	}
-
-	public void disableTree() {
-		getView().disable();
-	}
 }
