@@ -77,7 +77,7 @@ import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.jdesktop.swingworker.SwingWorker;
 import org.lgna.project.Project;
-import org.lgna.story.Program;
+import org.lgna.story.SProgram;
 
 import edu.cmu.cs.dennisc.inputpane.FileSelectionPane;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
@@ -165,7 +165,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	private MovieFileSelectionPane fileSelectionPane = new MovieFileSelectionPane();
 	private OwnerPane worldPane = new OwnerPane(worldSize);
 	private Project project;
-	private Program rtProgram;
+	private SProgram rtProgram;
 	private boolean isRestart = false;
 	private UploadToYouTubePane youTubeUploaderPane;
 	private File recordedMovieFile;

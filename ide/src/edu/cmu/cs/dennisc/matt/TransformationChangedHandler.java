@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.implementation.EntityImp;
@@ -17,18 +17,18 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 
 	HashMap<Visual, LinkedList<Object>> eventMap = new HashMap<Visual, LinkedList<Object>>();
 	List< L > listenerList = Collections.newLinkedList();
-	List< Entity > modelList = Collections.newLinkedList();
+	List< SThing > modelList = Collections.newLinkedList();
 
-	public final void fireAllTargeted( Entity changedEntity ){
+	public final void fireAllTargeted( SThing changedEntity ){
 		if( shouldFire ) {
 			check( changedEntity );
 		}
 	}
 
-	protected abstract void check( Entity changedEntity );
+	protected abstract void check( SThing changedEntity );
 
 	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
-		Entity source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
+		SThing source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
 		fireAllTargeted( source );
 //		if( source instanceof Turnable ) {
 //			fireAllTargeted( (Turnable)source );

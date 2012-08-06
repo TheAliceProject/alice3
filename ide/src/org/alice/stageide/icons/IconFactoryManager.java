@@ -326,6 +326,8 @@ public class IconFactoryManager {
 					return iconFactory;
 				}
 			}
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: falling back to type for icon for", field );
+			return getIconFactoryForType( field.getValueType() );
 		}
 		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
 	}

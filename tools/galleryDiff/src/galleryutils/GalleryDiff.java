@@ -3,12 +3,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.lgna.project.Version;
+
+import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
@@ -110,6 +110,10 @@ public class GalleryDiff {
 	private static final int SCORE_THRESHOLD = 10;
 	
 	private GalleryDiff(org.lgna.project.Version prevVersion, org.lgna.project.Version curVersion) {
+		initializeVersion(prevVersion, curVersion);
+	}
+	
+	private void initializeVersion(org.lgna.project.Version prevVersion, org.lgna.project.Version curVersion) {
 		this.prevVersion = prevVersion;
 		this.curVersion = curVersion;
 	}
@@ -165,6 +169,71 @@ public class GalleryDiff {
 			curSymbols.addAll(loadResourceSymbols(curData));
 		}
 		doMatch();
+	}
+	
+	
+	public GalleryDiff(java.io.File prevDataFile, java.io.File curDataFile) throws IOException{
+
+		prevSymbols = new java.util.ArrayList<String>();
+		curSymbols = new java.util.ArrayList<String>();
+		
+		this.prevVersion = loadGalleryInfo(prevSymbols, prevDataFile);
+		this.curVersion = loadGalleryInfo(curSymbols, curDataFile);
+
+		doMatch();
+	}
+	
+	private Version loadGalleryInfo(List<String> symbolArray, File dataFile) {
+		
+		Version version = null;
+		try {
+			java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(dataFile));
+			String line = reader.readLine();
+			version = new Version(line.trim());
+			while ((line = reader.readLine()) != null) {
+				symbolArray.add(line.trim());
+			}
+			reader.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return version;
+		
+	}
+	
+public static File saveGalleryInfo(String version, String outputFilename, File... jars) {
+		
+		List<String> symbols = new java.util.ArrayList<String>();
+		for (File jar : jars) {
+			try {
+				symbols.addAll(loadResourceSymbols(jar));
+			}
+			catch (MalformedURLException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		File outputFile = new File(outputFilename);
+		try {
+			java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter(outputFile));
+			writer.write(version.toString()+"\n");
+			for (String s : symbols) {
+				writer.write(s+"\n");
+			}
+			writer.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return outputFile;
+	}
+	
+	public static File saveGalleryInfo(Version version, String outputFilename, File... jars) {
+		return saveGalleryInfo(version.toString(), outputFilename, jars);
 	}
 	
 	private void doMatch()
@@ -248,7 +317,7 @@ public class GalleryDiff {
 		{
 			if (entry.getName().endsWith(fileName))
 			{
-				byte[] data = edu.cmu.cs.dennisc.zip.ZipUtilities.extractBytes(zis, entry);
+				byte[] data = ZipUtilities.extractBytes(zis, entry);
 				zis.close();
 				return data;
 			}
@@ -267,7 +336,7 @@ public class GalleryDiff {
 			{
 				if (entry.getName().endsWith(fileName))
 				{
-					byte[] data = edu.cmu.cs.dennisc.zip.ZipUtilities.extractBytes(zis, entry);
+					byte[] data = ZipUtilities.extractBytes(zis, entry);
 					zis.close();
 					return new java.io.ByteArrayInputStream(data);
 				}
@@ -486,6 +555,20 @@ public class GalleryDiff {
 	
 	public static void main( String[] args ) throws Exception {
 		
+		String curDir = System.getProperty("user.dir");
+		System.out.println(curDir);
+		
+		File jarDir = new File(curDir);
+		jarDir = jarDir.getParentFile().getParentFile();
+		jarDir = new File(jarDir, "ide/lib/alice");
+		
+		System.out.println(jarDir);
+		
+		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
+//		
+		File galleryData = GalleryDiff.saveGalleryInfo(Version.getCurrentVersion(), "C:/aliceBuildProcess/Data_AliceVersions/"+Version.getCurrentVersion().toString()+"/galleryData.txt", jarFiles);
+//		
+
 		final String[] DATA_VERSIONS = {
 //				"3.1.0.0.0", //Not supported
 //				"3.1.1.0.0", //Not supported
@@ -494,116 +577,124 @@ public class GalleryDiff {
 //				"3.1.4.0.0", //Not supported
 //				"3.1.5.0.0", //Not supported
 //				"3.1.6.0.0", //Not supported
-				"3.1.7.0.0",
-				"3.1.8.0.0",
-				"3.1.9.0.0",
-				"3.1.10.0.0",
-				"3.1.11.0.0",
-				"3.1.14.0.0",
-				"3.1.15.1.0",
-				"3.1.20.0.0",
-				"3.1.23.0.0",
-				"3.1.24.0.0",
-				"3.1.25.0.0",
+				"3.1.29.0.0",
+				"3.1.34.0.0",
 		};
 		
-		GalleryDiff differ = null;
-		
-		if (args.length < 4 || args.length % 4 != 0) {
-			final String ZIP_LOCATIONS = "C:\\unstableBuild\\Data_AliceVersions\\";
-			final String ZIP_NAME = "\\aliceData.zip";
-			StringBuilder sb = new StringBuilder();
-			for (int i=0; i<DATA_VERSIONS.length-1; i++)
-			{
-				String prev = DATA_VERSIONS[i];
-				String cur = DATA_VERSIONS[i+1];
-				try {
-					differ = new GalleryDiff(prev, cur, ZIP_LOCATIONS+prev+ZIP_NAME, ZIP_LOCATIONS+cur+ZIP_NAME, new String[] {"aliceModelSource.jar", "nebulousModelSource.jar"});
-					String code = differ.getMigrationCode();
-					sb.append(code+"\n");
-				}
-				catch (IOException e) {
-					System.err.println("Failed to make diff for "+prev+" -> "+cur+": "+e);
-				}
-			}
-			String finalCode = sb.toString();
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(finalCode);
-			System.out.println(finalCode);
-			return;
-		}
-		else {
-			File baseDir = new File(System.getProperty( "user.dir" ));
-			File baseAliceDir = baseDir;
-			if (baseAliceDir.exists() && baseAliceDir.getParentFile() != null) {
-				baseAliceDir = baseAliceDir.getParentFile();
-				if (baseAliceDir.exists() && baseAliceDir.getParent() != null) {
-					baseAliceDir = baseAliceDir.getParentFile();
-					if (baseAliceDir.exists()) {
-						baseAliceDir = new File(baseAliceDir, "ide/lib/alice");
-						if (!baseAliceDir.exists()) {
-							baseAliceDir = null;
-						}
-					}
-					else {
-						baseAliceDir = null;
-					}
-				}
-				else {
-					baseAliceDir = null;
-				}
-			}
-			else {
-				baseAliceDir = null;
-			}
-			File baseTestDir = new File(baseDir, "test");
-			if (!baseTestDir.exists()) {
-				baseTestDir = null;
-			}
-			int argsOffset = 2;
-			int fileCount = args.length - argsOffset;
-			File[] files = new File[fileCount];
-			for (int i=0; i<files.length; i++) {
-				files[i] = new File(args[argsOffset+i]);
-				if (!files[i].exists() && baseDir != null) {
-					files[i] = new File(baseDir, args[argsOffset+i]);
-				}
-				if (!files[i].exists() && baseTestDir != null) {
-					files[i] = new File(baseTestDir, args[argsOffset+i]);
-				}
-				if (!files[i].exists()) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Failed to find file '"+args[argsOffset+i]+"'");
-					return;
-				}
-			}
-			int toDiffCount = files.length /2;
-			File[] prevFiles = new File[toDiffCount];
-			System.arraycopy(files, 0, prevFiles, 0, toDiffCount);
-			File[] curFiles = new File[toDiffCount];
-			System.arraycopy(files, toDiffCount, curFiles, 0, toDiffCount);
-			
-			org.lgna.project.Version previousVersion = new org.lgna.project.Version(args[0]);
-			org.lgna.project.Version currentVersion = new org.lgna.project.Version(args[1]);
-			boolean areZips = false;
-			for (File f : files) {
-				if (edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension(f).equalsIgnoreCase("zip")) {
-					areZips = true;
-					break;
-				}
-			}
-
-			if (areZips) {
-				differ = new GalleryDiff(previousVersion, currentVersion, prevFiles[0], curFiles[0], new String[] {"aliceModelSource.jar", "nebulousModelSource.jar"});
-			}
-			else {
-				differ = new GalleryDiff(previousVersion, currentVersion, prevFiles, curFiles);
-			}
-		}
-		if (differ != null) {
+		final String DATA_LOCATIONS = "C:\\aliceBuildProcess\\Data_AliceVersions\\";
+		final String FILE_NAME = "\\galleryData.txt";
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<DATA_VERSIONS.length-1; i++)
+		{
+			String prev = DATA_VERSIONS[i];
+			String cur = DATA_VERSIONS[i+1];
+			GalleryDiff differ = new GalleryDiff(new File(DATA_LOCATIONS+prev+FILE_NAME), new File(DATA_LOCATIONS+cur+FILE_NAME));
 			String code = differ.getMigrationCode();
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(code);
-			System.out.println(code);
-			System.out.println();
+			sb.append(code+"\n");
 		}
+		String finalCode = sb.toString();
+		edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(finalCode);
+		System.out.println(finalCode);
+		return;
+		
+//		
+//		GalleryDiff differ = null;
+//		
+//		if (args.length < 4 || args.length % 4 != 0) {
+//			final String ZIP_LOCATIONS = "C:\\unstableBuild\\Data_AliceVersions\\";
+//			final String ZIP_NAME = "\\aliceData.zip";
+//			StringBuilder sb = new StringBuilder();
+//			for (int i=0; i<DATA_VERSIONS.length-1; i++)
+//			{
+//				String prev = DATA_VERSIONS[i];
+//				String cur = DATA_VERSIONS[i+1];
+//				try {
+//					differ = new GalleryDiff(prev, cur, ZIP_LOCATIONS+prev+ZIP_NAME, ZIP_LOCATIONS+cur+ZIP_NAME, new String[] {"aliceModelSource.jar", "nebulousModelSource.jar"});
+//					String code = differ.getMigrationCode();
+//					sb.append(code+"\n");
+//				}
+//				catch (IOException e) {
+//					System.err.println("Failed to make diff for "+prev+" -> "+cur+": "+e);
+//				}
+//			}
+//			String finalCode = sb.toString();
+//			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(finalCode);
+//			System.out.println(finalCode);
+//			return;
+//		}
+//		else {
+//			File baseDir = new File(System.getProperty( "user.dir" ));
+//			File baseAliceDir = baseDir;
+//			if (baseAliceDir.exists() && baseAliceDir.getParentFile() != null) {
+//				baseAliceDir = baseAliceDir.getParentFile();
+//				if (baseAliceDir.exists() && baseAliceDir.getParent() != null) {
+//					baseAliceDir = baseAliceDir.getParentFile();
+//					if (baseAliceDir.exists()) {
+//						baseAliceDir = new File(baseAliceDir, "ide/lib/alice");
+//						if (!baseAliceDir.exists()) {
+//							baseAliceDir = null;
+//						}
+//					}
+//					else {
+//						baseAliceDir = null;
+//					}
+//				}
+//				else {
+//					baseAliceDir = null;
+//				}
+//			}
+//			else {
+//				baseAliceDir = null;
+//			}
+//			File baseTestDir = new File(baseDir, "test");
+//			if (!baseTestDir.exists()) {
+//				baseTestDir = null;
+//			}
+//			int argsOffset = 2;
+//			int fileCount = args.length - argsOffset;
+//			File[] files = new File[fileCount];
+//			for (int i=0; i<files.length; i++) {
+//				files[i] = new File(args[argsOffset+i]);
+//				if (!files[i].exists() && baseDir != null) {
+//					files[i] = new File(baseDir, args[argsOffset+i]);
+//				}
+//				if (!files[i].exists() && baseTestDir != null) {
+//					files[i] = new File(baseTestDir, args[argsOffset+i]);
+//				}
+//				if (!files[i].exists()) {
+//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Failed to find file '"+args[argsOffset+i]+"'");
+//					return;
+//				}
+//			}
+//			int toDiffCount = files.length /2;
+//			File[] prevFiles = new File[toDiffCount];
+//			System.arraycopy(files, 0, prevFiles, 0, toDiffCount);
+//			File[] curFiles = new File[toDiffCount];
+//			System.arraycopy(files, toDiffCount, curFiles, 0, toDiffCount);
+//			
+//			org.lgna.project.Version previousVersion = new org.lgna.project.Version(args[0]);
+//			org.lgna.project.Version currentVersion = new org.lgna.project.Version(args[1]);
+//			boolean areZips = false;
+//			for (File f : files) {
+//				if (edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension(f).equalsIgnoreCase("zip")) {
+//					areZips = true;
+//					break;
+//				}
+//			}
+//
+//			if (areZips) {
+//				differ = new GalleryDiff(previousVersion, currentVersion, prevFiles[0], curFiles[0], new String[] {"aliceModelSource.jar", "nebulousModelSource.jar"});
+//			}
+//			else {
+//				differ = new GalleryDiff(previousVersion, currentVersion, prevFiles, curFiles);
+//			}
+//		}
+//		if (differ != null) {
+//			String code = differ.getMigrationCode();
+//			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents(code);
+//			System.out.println(code);
+//			System.out.println();
+//		}
 	}
 	
 }

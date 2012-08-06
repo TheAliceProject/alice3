@@ -47,7 +47,7 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class JointedTypeInfo {
-	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
+	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 
 	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, JointedTypeInfo > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static JointedTypeInfo getDeclarationInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {

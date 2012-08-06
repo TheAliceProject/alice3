@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.GlobalDragAdapter;
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.HeldKeyPolicy;
-import org.lgna.story.Model;
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SModel;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
@@ -123,10 +123,10 @@ public class EventManager {
 			handler.restoreListeners();
 		}
 	}
-	public void addCollisionListener( Object collisionListener, List<Entity> groupOne, List<Entity> groupTwo ) {
+	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
 		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
 	}
-	public void addProximityEventListener( Object proximityEventListener, List<Entity> groupOne, List<Entity> groupTwo, Double dist ) {
+	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Double dist ) {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
 
@@ -143,7 +143,7 @@ public class EventManager {
 	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
 		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS, heldKeyPolicy );
 	}
-	public void moveWithArrows( MovableTurnable entity ) {
+	public void moveWithArrows( SMovableTurnable entity ) {
 		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS, HeldKeyPolicy.FIRE_MULTIPLE );
 	}
 
@@ -157,7 +157,7 @@ public class EventManager {
 		this.mouseHandler.addListener( listener, policy, targets );
 	}
 
-	public void addTransformationListener( PointOfViewChangeListener transformationlistener, Entity[] shouldListenTo ) {
+	public void addTransformationListener( PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo ) {
 		this.transHandler.addTransformationListener( transformationlistener, shouldListenTo );
 	}
 
@@ -165,10 +165,10 @@ public class EventManager {
 	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	//	}
 
-	public void addComesIntoViewEventListener( ViewEnterListener listener, Model[] entities ) {
+	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
-	public void addLeavesViewEventListener( ViewExitListener listener, Model[] entities ) {
+	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
 
@@ -198,24 +198,24 @@ public class EventManager {
 		}
 	}
 
-	public void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
-	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<Entity> groupOne, ArrayList<Entity> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double dist, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, dist, frequency, policy );
 	}
-	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
-	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<Model> group, Long frequency, MultipleEventPolicy policy ) {
+	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<SModel> group, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, group, frequency, policy );
 	}
 
-	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo ) {
+	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo ) {
 		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
 
-	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<Model> groupOne, ArrayList<Model> groupTwo ) {
+	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo ) {
 		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	}
 }

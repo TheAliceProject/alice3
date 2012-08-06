@@ -45,9 +45,19 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnTypeFilteredView extends org.lgna.croquet.components.BorderPanel {
+public class ReturnTypeFilteredView extends org.lgna.croquet.components.PageAxisPanel {
 	public ReturnTypeFilteredView( org.alice.ide.member.ReturnTypeFilteredComposite composite ) {
-		this.addPageStartComponent( new org.lgna.croquet.components.Label( new org.alice.ide.common.TypeIcon( composite.getReturnType() ) ) );
+		super( composite );
 		this.setMaximumSizeClampedToPreferredSize( true );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
+	}
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		org.alice.ide.member.ReturnTypeFilteredComposite composite = (org.alice.ide.member.ReturnTypeFilteredComposite)this.getComposite();
+		this.removeAllComponents();
+		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
+			this.addComponent( org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method ) );
+		}
 	}
 }

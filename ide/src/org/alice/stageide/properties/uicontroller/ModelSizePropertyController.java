@@ -125,7 +125,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	@Override
 	public Class<?> getPropertyType() 
 	{
-		return org.lgna.story.Model.class;
+		return org.lgna.story.SModel.class;
 	}
 
 	@Override

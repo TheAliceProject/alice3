@@ -47,7 +47,7 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class JointMethodUtilities {
-	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class );
+	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class );
 	private static final String GETTER_PREFIX = "get";
 	public static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
 		if( method.isPublicAccess() ) {

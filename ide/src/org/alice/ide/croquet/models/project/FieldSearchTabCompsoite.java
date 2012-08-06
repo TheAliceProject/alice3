@@ -67,6 +67,7 @@ public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabVi
 			referenceComposite.changed( treeComposite.getManager(), treeComposite.getManager().getSelectedNode(), treeComposite.getManager().getSelectedNode(), true );
 		}
 	};
+
 	public FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
 	public FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
 

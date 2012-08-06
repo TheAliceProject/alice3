@@ -76,6 +76,11 @@ public class UserField extends AbstractField implements UserMember {
 	}
 
 	@Override
+	public boolean isValid() {
+		return true;
+	}
+	
+	@Override
 	public UserType< ? > getDeclaringType() {
 		return (UserType< ? >)super.getDeclaringType();
 	}

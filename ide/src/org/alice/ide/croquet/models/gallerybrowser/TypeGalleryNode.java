@@ -63,7 +63,7 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 			org.lgna.story.resources.PropResource.class, 
 			org.lgna.story.resources.QuadrupedResource.class, 
 			org.lgna.story.resources.SwimmerResource.class, 
-			org.lgna.story.resources.WhaleResource.class 
+			org.lgna.story.resources.MarineMammalResource.class 
 	);
 	
 	public static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> getSetOfClassesWithIcons() {
@@ -153,7 +153,6 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		String name = this.getDeclaration().getName();
-		sb.append( "My" );
 		sb.append( name.replace( "Resource", "" ) );
 	}
 }

@@ -48,8 +48,8 @@ import org.lgna.story.resources.JointId;
  * @author dculyba
  *
  */
-public class BasicJointedModelImp extends JointedModelImp< org.lgna.story.JointedModel, org.lgna.story.resources.BasicResource > {
-	public BasicJointedModelImp( org.lgna.story.JointedModel abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BasicResource > factory ) {
+public class BasicJointedModelImp extends JointedModelImp< org.lgna.story.SJointedModel, org.lgna.story.resources.BasicResource > {
+	public BasicJointedModelImp( org.lgna.story.SJointedModel abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BasicResource > factory ) {
 		super( abstraction, factory );
 	}
 

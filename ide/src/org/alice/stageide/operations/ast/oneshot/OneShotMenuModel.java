@@ -44,7 +44,6 @@
 package org.alice.stageide.operations.ast.oneshot;
 
 import org.alice.ide.croquet.models.ast.DeleteFieldFrameComposite;
-import org.alice.ide.croquet.models.ast.DeleteFieldFrameView;
 
 /**
  * @author Dennis Cosgrove
@@ -65,11 +64,10 @@ public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
 					org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
 					models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
-					if( field.getValueType().isAssignableTo( org.lgna.story.Camera.class ) || field.getValueType().isAssignableTo( org.lgna.story.Scene.class ) )  {
+					if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) )  {
 						//pass
 					} else {
-						models.add( new DeleteFieldFrameComposite( field ).getBooleanState().getMenuItemPrepModel() );
-//						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 					}
 					models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance(field).getMenuItemPrepModel() );
 				}

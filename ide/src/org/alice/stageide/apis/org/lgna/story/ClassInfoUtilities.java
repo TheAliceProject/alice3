@@ -50,12 +50,15 @@ public class ClassInfoUtilities {
 		throw new AssertionError();
 	}
 	public static void loadClassInfos() {
-		java.io.InputStream is = ClassInfoUtilities.class.getResourceAsStream( "classinfos.zip" );
-		if( is != null ) {
-			try {
-				org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom( is );
-			} catch( java.io.IOException ioe ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe );
+		final boolean IS_CLASSINFO_VALID = true;
+		if( IS_CLASSINFO_VALID ) {
+			java.io.InputStream is = ClassInfoUtilities.class.getResourceAsStream( "classinfos.zip" );
+			if( is != null ) {
+				try {
+					org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom( is );
+				} catch( java.io.IOException ioe ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe );
+				}
 			}
 		}
 	}

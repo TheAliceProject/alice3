@@ -57,8 +57,8 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
 	}
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.Turnable ) {
-			org.lgna.story.Turnable turnable = (org.lgna.story.Turnable)instance;
+		if( instance instanceof org.lgna.story.STurnable ) {
+			org.lgna.story.STurnable turnable = (org.lgna.story.STurnable)instance;
 			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
 			this.m = this.transformable.getLocalTransformation();
 		} else {

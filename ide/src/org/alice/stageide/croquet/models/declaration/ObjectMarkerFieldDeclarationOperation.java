@@ -62,7 +62,7 @@ public class ObjectMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 	}
 
 	public ObjectMarkerFieldDeclarationOperation() {
-		super( java.util.UUID.fromString( "830f80f7-da68-43cc-be8a-bbd64da78c24" ),  org.lgna.story.ObjectMarker.class );
+		super( java.util.UUID.fromString( "830f80f7-da68-43cc-be8a-bbd64da78c24" ),  org.lgna.story.SThingMarker.class );
 	}
 
 	@Override

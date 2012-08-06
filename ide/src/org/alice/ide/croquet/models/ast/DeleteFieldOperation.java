@@ -97,6 +97,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 			sb.append( field.name.getValue() );
 			sb.append( "\" ." );
 			DeleteFieldFrameComposite dialog = DeleteFieldFrameComposite.getDialog( field );
+			dialog.getOperation().fire();
 			return false;
 		} else {
 			return true;

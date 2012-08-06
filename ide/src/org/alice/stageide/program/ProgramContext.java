@@ -62,7 +62,7 @@ public abstract class ProgramContext {
 	public ProgramContext( org.lgna.project.ast.NamedUserType programType ) {
 		assert programType != null;
 		this.vm = this.createVirtualMachine();
-		this.vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickOnScreenListener.class, org.alice.stageide.apis.story.event.MouseClickOnScreenAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickOnObjectListener.class, org.alice.stageide.apis.story.event.MouseClickOnObjectAdapter.class );
@@ -90,8 +90,8 @@ public abstract class ProgramContext {
 	public org.lgna.project.virtualmachine.UserInstance getProgramInstance() {
 		return this.programInstance;
 	}
-	public org.lgna.story.Program getProgram() {
-		return this.programInstance.getJavaInstance( org.lgna.story.Program.class );
+	public org.lgna.story.SProgram getProgram() {
+		return this.programInstance.getJavaInstance( org.lgna.story.SProgram.class );
 	}
 	public org.lgna.story.implementation.ProgramImp getProgramImp() {
 		return org.lgna.story.ImplementationAccessor.getImplementation( this.getProgram() );
@@ -119,7 +119,7 @@ public abstract class ProgramContext {
 			public void run() {
 				org.lgna.project.ast.UserField sceneField = null;
 				for( org.lgna.project.ast.UserField field : programInstance.getType().fields ) {
-					if( field.valueType.getValue().isAssignableTo( org.lgna.story.Scene.class ) ) {
+					if( field.valueType.getValue().isAssignableTo( org.lgna.story.SScene.class ) ) {
 						sceneField = field;
 					}
 				}

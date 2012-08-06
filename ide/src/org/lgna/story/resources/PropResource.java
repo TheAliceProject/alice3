@@ -46,6 +46,6 @@ package org.lgna.story.resources;
  * @author dculyba
  *
  */
-@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.Prop.class )
+@org.lgna.project.annotations.ResourceTemplate( modelClass=org.lgna.story.SProp.class )
 public interface PropResource extends BasicResource {
 }

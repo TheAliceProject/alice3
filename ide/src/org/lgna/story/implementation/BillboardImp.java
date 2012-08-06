@@ -129,15 +129,15 @@ public class BillboardImp extends VisualScaleModelImp {
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.sgFrontFace.getAppearance() };
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance() };
 
-	private final org.lgna.story.Billboard abstraction;
-	public BillboardImp( org.lgna.story.Billboard abstraction ) {
+	private final org.lgna.story.SBillboard abstraction;
+	public BillboardImp( org.lgna.story.SBillboard abstraction ) {
 		this.abstraction = abstraction;
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.sgVisuals ) {
 			sgVisual.setParent( this.getSgComposite() );
 		}
 	}
 	@Override
-	public org.lgna.story.Billboard getAbstraction() {
+	public org.lgna.story.SBillboard getAbstraction() {
 		return this.abstraction;
 	}
 

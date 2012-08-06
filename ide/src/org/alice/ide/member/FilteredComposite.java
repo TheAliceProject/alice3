@@ -45,9 +45,27 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredComposite<V extends org.lgna.croquet.components.View<?,?>> extends org.lgna.croquet.SimpleComposite<V> {
-	public FilteredComposite( java.util.UUID migrationId ) {
-		super( migrationId );
+public abstract class FilteredComposite<V extends org.lgna.croquet.components.View<?,?>> extends org.lgna.croquet.ExpandableCollapsibleCoreComposite<V> {
+	public FilteredComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
+		super( migrationId, isExpandedInitialValue );
 	}
 	protected abstract boolean isIncluded( org.lgna.project.ast.AbstractMethod method );
+	public java.util.List<org.lgna.project.ast.AbstractMethod> getMethods() {
+		java.util.List<org.lgna.project.ast.AbstractMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
+		while( type != null ) {
+			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+				if( this.isIncluded( method ) ) {
+					list.add( method );
+				}
+			}
+			if( type.isFollowToSuperClassDesired() ) {
+				type = type.getSuperType();
+			} else {
+				break;
+			}
+		}
+		return list;
+	}
 }

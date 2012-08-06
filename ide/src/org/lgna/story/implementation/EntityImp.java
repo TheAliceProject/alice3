@@ -62,7 +62,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	public static <T extends EntityImp> T getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstance( sgElement ), cls );
 	}
-	public static org.lgna.story.Entity getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+	public static org.lgna.story.SThing getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		EntityImp imp = getInstance( sgElement );
 		if( imp != null ) {
 			return imp.getAbstraction();
@@ -70,7 +70,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			return null;
 		}
 	}
-	public static <T extends org.lgna.story.Entity> T getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
+	public static <T extends org.lgna.story.SThing> T getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getAbstractionFromSgElement( sgElement ), cls );
 	}
 
@@ -128,7 +128,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	//		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	//	}
 
-	public abstract org.lgna.story.Entity getAbstraction();
+	public abstract org.lgna.story.SThing getAbstraction();
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 		return this.getSgComposite();
@@ -597,7 +597,7 @@ public abstract class EntityImp implements ReferenceFrame {
 		sb.append( "]" );
 		return sb.toString();
 	}
-	public boolean isCollidingWith( org.lgna.story.Entity other ) {
+	public boolean isCollidingWith( org.lgna.story.SThing other ) {
 		return AabbCollisionDetector.doTheseCollide( this.getAbstraction(), other );
 	}
 	

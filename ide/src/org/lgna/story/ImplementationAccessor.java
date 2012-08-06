@@ -51,10 +51,10 @@ public class ImplementationAccessor {
 	private ImplementationAccessor() {
 		throw new AssertionError();
 	}
-	public static <T extends org.lgna.story.implementation.EntityImp> T getImplementation( Entity entity ) {
+	public static <T extends org.lgna.story.implementation.EntityImp> T getImplementation( SThing entity ) {
 		return (T)entity.getImplementation();
 	}
-	public static org.lgna.story.implementation.ProgramImp getImplementation( Program program ) {
+	public static org.lgna.story.implementation.ProgramImp getImplementation( SProgram program ) {
 		return program.getImplementation();
 	}
 	public static edu.cmu.cs.dennisc.math.Point3 getPoint3( Position position ) {

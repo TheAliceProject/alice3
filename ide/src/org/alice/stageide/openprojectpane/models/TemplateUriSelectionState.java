@@ -52,22 +52,22 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 	}
 	public static final String SCHEME = "gen";
 	public static enum Template {
-		GRASS( org.lgna.story.Ground.SurfaceAppearance.GRASS, new org.lgna.story.Color(150/255.0, 226/255.0, 252/255.0) ),
-		SEA_FLOOR( org.lgna.story.Ground.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color(66/255.0, 195/255.0, 252/255.0) ),
-		MOON( org.lgna.story.Ground.SurfaceAppearance.MOON, org.lgna.story.Color.BLACK ),
+		GRASS( org.lgna.story.SGround.SurfaceAppearance.GRASS, new org.lgna.story.Color(150/255.0, 226/255.0, 252/255.0) ),
+		SEA_FLOOR( org.lgna.story.SGround.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color(66/255.0, 195/255.0, 252/255.0) ),
+		MOON( org.lgna.story.SGround.SurfaceAppearance.MOON, org.lgna.story.Color.BLACK ),
 		
-		MARS( org.lgna.story.Ground.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color(11/255.0, 0/255.0, 24/255.0) ),
-		SNOW( org.lgna.story.Ground.SurfaceAppearance.SNOW ),
-		ROOM( org.lgna.story.Room.FloorAppearance.REDWOOD, org.lgna.story.Room.WallAppearance.YELLOW, org.lgna.story.Color.WHITE),
+		MARS( org.lgna.story.SGround.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color(11/255.0, 0/255.0, 24/255.0) ),
+		SNOW( org.lgna.story.SGround.SurfaceAppearance.SNOW ),
+		ROOM( org.lgna.story.SRoom.FloorAppearance.REDWOOD, org.lgna.story.SRoom.WallAppearance.YELLOW, org.lgna.story.Color.WHITE),
 		
-		WONDERLAND( org.lgna.story.Ground.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color(0/255.0, 24/255.0, 75/255.0), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color(25/255.0, 0/255.0, 0/255.0)),
-		SEA_SURFACE( org.lgna.story.Ground.SurfaceAppearance.WATER ),
-		LAGOON_FLOOR( org.lgna.story.Ground.SurfaceAppearance.SAND, new org.lgna.story.Color(75/255.0, 220/255.0, 255/255.0), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color(0/255.0, 26/255.0, 60/255.0) ),
+		WONDERLAND( org.lgna.story.SGround.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color(0/255.0, 24/255.0, 75/255.0), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color(25/255.0, 0/255.0, 0/255.0)),
+		SEA_SURFACE( org.lgna.story.SGround.SurfaceAppearance.WATER ),
+		LAGOON_FLOOR( org.lgna.story.SGround.SurfaceAppearance.SAND, new org.lgna.story.Color(75/255.0, 220/255.0, 255/255.0), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color(0/255.0, 26/255.0, 60/255.0) ),
 		
-		DESERT( org.lgna.story.Ground.SurfaceAppearance.DESERT ),
-		DIRT( org.lgna.story.Ground.SurfaceAppearance.DIRT );
+		DESERT( org.lgna.story.SGround.SurfaceAppearance.DESERT ),
+		DIRT( org.lgna.story.SGround.SurfaceAppearance.DIRT );
 		
-		private final org.lgna.story.Ground.SurfaceAppearance surfaceAppearance;
+		private final org.lgna.story.SGround.SurfaceAppearance surfaceAppearance;
 		private final org.lgna.story.Paint floorAppearance;
 		private final org.lgna.story.Paint wallAppearance;
 		private final org.lgna.story.Paint ceilingAppearance;
@@ -77,7 +77,7 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		private final org.lgna.story.Color aboveLightColor;
 		private final org.lgna.story.Color belowLightColor;
 		private final boolean isRoom;
-		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor) {
+		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor) {
 			this.surfaceAppearance = surfaceAppearance;
 			//this.atmosphereColor = atmosphereColor;
 			this.atmosphereColor = atmosphereColor;
@@ -89,16 +89,16 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 			this.wallAppearance = null;
 			this.ceilingAppearance = null;
 		}
-		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor ) {
+		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor ) {
 			this( surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, null );
 		}
-		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity ) {
+		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity ) {
 			this( surfaceAppearance, atmosphereColor, fogDensity, null );
 		}
-		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor ) {
+		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor ) {
 			this( surfaceAppearance, atmosphereColor, Double.NaN );
 		}
-		private Template( org.lgna.story.Ground.SurfaceAppearance surfaceAppearance ) {
+		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance ) {
 			this( surfaceAppearance, null );
 		}
 		
@@ -115,7 +115,7 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 			this.ceilingAppearance = ceilingAppearance;
 		}
 
-		public org.lgna.story.Ground.SurfaceAppearance getSurfaceAppearance() {
+		public org.lgna.story.SGround.SurfaceAppearance getSurfaceAppearance() {
 			return this.surfaceAppearance;
 		}
 		public org.lgna.story.Paint getFloorAppearance() {
@@ -150,7 +150,7 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 			try {
 				//todo: investigate
 				String schemeSpecificPart = null;//org.lgna.story.Ground.SurfaceAppearance.class.getName();
-				String path = "/" + org.lgna.story.Ground.SurfaceAppearance.class.getName();
+				String path = "/" + org.lgna.story.SGround.SurfaceAppearance.class.getName();
 				String fragment = this.name();
 				return new java.net.URI( SCHEME, schemeSpecificPart, path, fragment );
 			} catch( java.net.URISyntaxException urise ) {

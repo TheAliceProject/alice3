@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  * @author Dennis Cosgrove
  */
 public class StoryApiConfigurationManager extends org.alice.ide.ApiConfigurationManager {
-	public static final org.lgna.project.ast.JavaMethod SET_ACTIVE_SCENE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.Scene.class );
+	public static final org.lgna.project.ast.JavaMethod SET_ACTIVE_SCENE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SProgram.class, "setActiveScene", org.lgna.story.SScene.class );
 
 	private static class SingletonHolder {
 		private static StoryApiConfigurationManager instance = new StoryApiConfigurationManager();
@@ -78,37 +78,37 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	@Override
 	protected boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type ) {
-		return type.isAssignableTo( org.lgna.story.Model.class );
+		return type.isAssignableTo( org.lgna.story.SModel.class );
 	}
 	@Override
 	protected boolean isNamedUserTypesAcceptableForSelection( org.lgna.project.ast.NamedUserType type ) {
-		return type.isAssignableTo( org.lgna.story.Program.class ) == false || org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
+		return type.isAssignableTo( org.lgna.story.SProgram.class ) == false || org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
 	}
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {
-		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.Entity.class );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Scene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Cylinder.class, new org.alice.stageide.icons.CylinderIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Cone.class, new org.alice.stageide.icons.ConeIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Disc.class, new org.alice.stageide.icons.DiscIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Sphere.class, new org.alice.stageide.icons.SphereIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Torus.class, new org.alice.stageide.icons.TorusIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Axes.class, new org.alice.stageide.icons.AxesIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.TextModel.class, new org.alice.stageide.icons.TextModelIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Billboard.class, new org.alice.stageide.icons.BillboardIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Box.class, new org.alice.stageide.icons.BoxIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Ground.class, new org.alice.stageide.icons.GroundIconFactory() );
+		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.SThing.class );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SScene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCylinder.class, new org.alice.stageide.icons.CylinderIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCone.class, new org.alice.stageide.icons.ConeIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SDisc.class, new org.alice.stageide.icons.DiscIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SSphere.class, new org.alice.stageide.icons.SphereIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.STorus.class, new org.alice.stageide.icons.TorusIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SAxes.class, new org.alice.stageide.icons.AxesIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.STextModel.class, new org.alice.stageide.icons.TextModelIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBillboard.class, new org.alice.stageide.icons.BillboardIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBox.class, new org.alice.stageide.icons.BoxIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SGround.class, new org.alice.stageide.icons.GroundIconFactory() );
 		
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Joint.class, new org.alice.stageide.icons.JointIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.Camera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, new org.alice.stageide.icons.JointIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 	}
 	@Override
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
-		return type.isAssignableTo( org.lgna.story.Scene.class );
+		return type.isAssignableTo( org.lgna.story.SScene.class );
 	}
 	@Override
 	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		return type.isAssignableTo( org.lgna.story.Entity.class );
+		return type.isAssignableTo( org.lgna.story.SThing.class );
 	}
 	@Override
 	public java.util.List< org.lgna.project.ast.JavaType > getTopLevelGalleryTypes() {
@@ -210,8 +210,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		if( fieldExpression instanceof org.lgna.project.ast.ThisExpression || fieldExpression instanceof org.alice.ide.ast.CurrentThisExpression ) {
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
 			org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
-			if( declaringType != null && declaringType.isAssignableTo( org.lgna.story.Scene.class ) ) {
-				if( field.getValueType().isAssignableTo( org.lgna.story.Entity.class ) ) {
+			if( declaringType != null && declaringType.isAssignableTo( org.lgna.story.SScene.class ) ) {
+				if( field.getValueType().isAssignableTo( org.lgna.story.SThing.class ) ) {
 					return this.createDeclarationNameLabel( field );
 				}
 			}
@@ -257,20 +257,20 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.JavaType> rv) {
 		super.addSecondaryJavaTypes(rv);
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Joint.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Entity.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Turnable.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MovableTurnable.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Model.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Billboard.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Axes.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Shape.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Sphere.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Cone.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Disc.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Marker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.ObjectMarker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBillboard.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SAxes.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SShape.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SSphere.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCone.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SDisc.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMarker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThingMarker.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Paint.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ) );
@@ -280,7 +280,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		return rv;
 	}
 	
-	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.JointedModel.class );
+	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 	@Override
 	public org.lgna.project.ast.UserType< ? > augmentTypeIfNecessary( org.lgna.project.ast.UserType< ? > rv ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( rv ) ) {
@@ -303,7 +303,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 					for( org.lgna.project.ast.AbstractField field : resourceType.getDeclaredFields() ) {
 						if( field.isStatic() ) {
 							if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId.class ) ) {
-								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" ), org.lgna.story.Joint.class );
+								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" ), org.lgna.story.SJoint.class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
 								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( 
@@ -311,7 +311,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 										getJointMethod, 
 										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
 								);
-								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.Joint.class, expression ) );
+								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint.class, expression ) );
 								rv.methods.add( method );
 							}
 						}

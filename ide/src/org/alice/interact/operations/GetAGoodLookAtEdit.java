@@ -47,10 +47,10 @@ package org.alice.interact.operations;
  *
  */
 public class GetAGoodLookAtEdit extends org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit{
-	private final org.lgna.story.Camera camera;
-	private final org.lgna.story.Entity toLookAt;
+	private final org.lgna.story.SCamera camera;
+	private final org.lgna.story.SThing toLookAt;
 	
-	public GetAGoodLookAtEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory cameraInstanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions, org.lgna.story.Camera camera, org.lgna.story.Entity toLookAt ) {
+	public GetAGoodLookAtEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory cameraInstanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions, org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt ) {
 		super( completionStep, cameraInstanceFactory, method, argumentExpressions );
 		this.camera = camera;
 		this.toLookAt = toLookAt;
@@ -61,11 +61,11 @@ public class GetAGoodLookAtEdit extends org.alice.stageide.operations.ast.onesho
 		this.toLookAt = null;
 	}
 	
-	public org.lgna.story.Camera getCamera() {
+	public org.lgna.story.SCamera getCamera() {
 		return this.camera;
 	}
 	
-	public org.lgna.story.Entity getTarget() {
+	public org.lgna.story.SThing getTarget() {
 		return this.toLookAt;
 	}
 }
