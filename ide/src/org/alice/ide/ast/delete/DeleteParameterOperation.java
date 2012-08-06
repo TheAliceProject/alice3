@@ -62,7 +62,12 @@ public class DeleteParameterOperation extends DeleteDeclarationLikeSubstanceOper
 		super( java.util.UUID.fromString( "208b5971-9a2c-43b8-911c-06f11359da75" ), parameter );
 	}
 	@Override
-	protected org.lgna.croquet.Operation getFailedToClearOperation() {
+	protected org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete() {
+		//todo
+		return null;
+	}
+	@Override
+	protected org.lgna.croquet.BooleanState getFindModel() {
 		//todo
 		return null;
 	}

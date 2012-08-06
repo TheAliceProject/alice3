@@ -55,17 +55,26 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 	public N getNode() {
 		return this.node;
 	}
-	protected abstract org.lgna.croquet.Operation getFailedToClearOperation();
+	protected abstract org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete();
+	protected abstract org.lgna.croquet.BooleanState getFindModel();
 	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.Operation failedToClearOperation = this.getFailedToClearOperation();
-		if( failedToClearOperation != null ) {
-			
-		}
 		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.createAndSetCompletionStep( this, trigger );
-		org.lgna.croquet.edits.Edit<?> edit = this.createEdit( completionStep );
-		assert edit != null : this;
-		completionStep.commitAndInvokeDo( edit );
+		org.lgna.croquet.Operation failedToClearOperation = this.getAlertModelIfNotAllowedToDelete();
+		if( failedToClearOperation != null ) {
+			completionStep.cancel();
+			org.lgna.croquet.history.CompletionStep<?> subCompletionStep = failedToClearOperation.fire();
+			if( subCompletionStep.isSuccessfullyCompleted() ) {
+				org.lgna.croquet.BooleanState findFrameState = this.getFindModel();
+				if( findFrameState != null ) {
+					findFrameState.setValue( true );
+				}
+			}
+		} else {
+			org.lgna.croquet.edits.Edit<?> edit = this.createEdit( completionStep );
+			assert edit != null : this;
+			completionStep.commitAndInvokeDo( edit );
+		}
 	}
 }
