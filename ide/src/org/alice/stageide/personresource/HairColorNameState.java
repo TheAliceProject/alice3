@@ -40,18 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.person.components;
+package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HorizontalWrapList< T > extends org.lgna.croquet.components.List< T > {
-	public HorizontalWrapList( org.lgna.croquet.ListSelectionState< T > model, int visibleRowCount ) {
-		super( model );
-		this.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.setVisibleRowCount( visibleRowCount );
-		this.setBackgroundColor( MainPanel.BACKGROUND_COLOR );
-		//rv.getAwtComponent().setOpaque( false );
+public class HairColorNameState extends org.lgna.croquet.DefaultListSelectionState< String > {
+	private static class SingletonHolder {
+		private static HairColorNameState instance = new HairColorNameState();
+	}
+	public static HairColorNameState getInstance() {
+		return SingletonHolder.instance;
+	}
+	private HairColorNameState() {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
 	}
 }

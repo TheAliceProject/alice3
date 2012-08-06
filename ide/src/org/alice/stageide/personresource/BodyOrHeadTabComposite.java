@@ -41,17 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.person.components;
+package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HorizontalWrapList< T > extends org.lgna.croquet.components.List< T > {
-	public HorizontalWrapList( org.lgna.croquet.ListSelectionState< T > model, int visibleRowCount ) {
-		super( model );
-		this.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.setVisibleRowCount( visibleRowCount );
-		this.setBackgroundColor( MainPanel.BACKGROUND_COLOR );
-		//rv.getAwtComponent().setOpaque( false );
+public abstract class BodyOrHeadTabComposite< V extends org.lgna.croquet.components.View<?,?> > extends org.lgna.croquet.SimpleTabComposite< V > {
+	public BodyOrHeadTabComposite(java.util.UUID id) {
+		super(id);
+	}
+	@Override
+	public final boolean isCloseable() {
+		return false;
+	}
+	@Override
+	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
+		return null;
 	}
 }

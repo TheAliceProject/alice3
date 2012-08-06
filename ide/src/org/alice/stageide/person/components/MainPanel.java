@@ -47,8 +47,9 @@ package org.alice.stageide.person.components;
  * @author Dennis Cosgrove
  */
 public class MainPanel extends org.lgna.croquet.components.BorderPanel {
+	public static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
 	private final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane;
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone>() {
@@ -80,7 +81,7 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 				return rv;
 			}
 		};
-		ubiquitousPane.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		ubiquitousPane.setBackgroundColor( BACKGROUND_COLOR );
 
 		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel.Builder()
 			.pageStart( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton() )
@@ -91,7 +92,7 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 			.pageStart( northPane )
 			.center( this.tabbedPane )
 		.build();
-		ingredientsPanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		ingredientsPanel.setBackgroundColor( BACKGROUND_COLOR );
 
 		javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, personViewer.getAwtComponent(), ingredientsPanel.getAwtComponent() );
 		splitPane.setDividerLocation( 400 );
