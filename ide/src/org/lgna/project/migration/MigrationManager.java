@@ -437,6 +437,9 @@ public class MigrationManager {
 					"ARMOIRE_LOFT_MAPLE",
 					"LOFT_MAPLE",
 
+					"org.lgna.story.resources.ArmoireResource",
+					"org.lgna.story.resources.prop.Armoire",
+					
 					"org.lgna.story.resources.armoire.ArmoireLoft",
 					"org.lgna.story.resources.prop.Armoire",
 
