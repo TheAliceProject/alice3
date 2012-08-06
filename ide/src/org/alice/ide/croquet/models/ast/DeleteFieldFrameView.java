@@ -40,59 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
+package org.alice.ide.croquet.models.ast;
 
-import java.awt.event.ActionListener;
+import javax.swing.Icon;
 
-import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
-import org.alice.ide.croquet.models.project.views.FieldSearchTabView;
-import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.State.ValueListener;
+import org.alice.ide.croquet.models.project.FindFieldsFrameComposite;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.ImmutableTextArea;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.icon.IconFactory;
+
+import edu.cmu.cs.dennisc.math.GoldenRatio;
 
 /**
  * @author Matt May
  */
-public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabView> {
-	
-	public FieldSearchTabCompsoite() {
-		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
-		this.getView().getAwtComponent().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
+public class DeleteFieldFrameView extends BorderPanel {
+
+	private static int WIDTH = 550;
+
+	public DeleteFieldFrameView( DeleteFieldFrameComposite composite ) {
+		this.setMinimumPreferredHeight( GoldenRatio.getShorterSideLength( WIDTH ) );
+		this.setMinimumPreferredWidth( WIDTH );
+		//		System.out.println( composite.getField().getValueType() );
+		//		System.out.println( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy() );
+		//		BufferedImage image = AliceResourceUtilties.getThumbnail( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy().getReification() );
+		ImmutableTextArea textArea = new ImmutableTextArea( composite.getBleh() );
+		//		System.out.println(image);
+		//		Icon icon = new ScaledImageIcon( image, 120, 90 );
+//		System.out.println( composite.getField() );
+		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
+		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
+//		System.out.println( "icon factory: " + iconFactory );
+//		System.out.println( "icon: " + icon );
+		Label label = new Label( icon );
+		this.addComponent( label, Constraint.LINE_START );
+		GridPanel panel = GridPanel.createGridPane( 3, 1 );
+		panel.addComponent( new Label() );
+		panel.addComponent( textArea );
+		panel.addComponent( new Label() );
+		this.addComponent( panel, Constraint.CENTER );
+//		FindFieldsFrameComposite searchFrame = FindFieldsFrameComposite.getFrameFor( composite.getField() );
+		this.addComponent( composite.getSearchFrame().getBooleanState().createPushButton(), Constraint.PAGE_END );
 	}
-
-	private final ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			treeComposite.refresh();
-			referenceComposite.refresh();
-			referenceComposite.changed( treeComposite.getManager(), treeComposite.getManager().getSelectedNode(), treeComposite.getManager().getSelectedNode(), true );
-		}
-	};
-
-	public FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
-	public FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
-
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-	
-	private SplitComposite splitComposite = createHorizontalSplitComposite( treeComposite, referenceComposite, .5 );
-
-	@Override
-	protected org.alice.ide.croquet.models.project.views.FieldSearchTabView createView() {
-		return new FieldSearchTabView( this );
-	}
-
-	public SplitComposite getSplitComposite() {
-		return this.splitComposite;
-	}
-
-	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
-		treeComposite.addListener( listener );
-	}
-
-	public void disableTree() {
-		treeComposite.getView().disable();
-	}
-
 }

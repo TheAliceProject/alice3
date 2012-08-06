@@ -40,59 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project;
 
-import java.awt.event.ActionListener;
-
-import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
-import org.alice.ide.croquet.models.project.views.FieldSearchTabView;
-import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.State.ValueListener;
+package org.alice.ide.ast.delete;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabView> {
-	
-	public FieldSearchTabCompsoite() {
-		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
-		this.getView().getAwtComponent().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
-	}
-
-	private final ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			treeComposite.refresh();
-			referenceComposite.refresh();
-			referenceComposite.changed( treeComposite.getManager(), treeComposite.getManager().getSelectedNode(), treeComposite.getManager().getSelectedNode(), true );
+public class DeleteMethodOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.UserMethod> {
+	private static java.util.Map< org.lgna.project.ast.UserMethod, DeleteMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
+		DeleteMethodOperation rv = map.get( method );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new DeleteMethodOperation( method );
+			map.put( method, rv );
 		}
-	};
-
-	public FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
-	public FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
-
+		return rv;
+	}
+	private DeleteMethodOperation( org.lgna.project.ast.UserMethod method ) {
+		super( java.util.UUID.fromString( "2b3dc326-34b3-4fae-b6a0-b47a2e0730e1" ), method );
+	}
 	@Override
-	public boolean isCloseable() {
-		return false;
+	protected org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete() {
+		//todo
+		return null;
 	}
-	
-	private SplitComposite splitComposite = createHorizontalSplitComposite( treeComposite, referenceComposite, .5 );
-
 	@Override
-	protected org.alice.ide.croquet.models.project.views.FieldSearchTabView createView() {
-		return new FieldSearchTabView( this );
+	protected org.lgna.croquet.BooleanState getFindModel() {
+		//todo
+		return null;
 	}
-
-	public SplitComposite getSplitComposite() {
-		return this.splitComposite;
+	@Override
+	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return new org.alice.ide.ast.delete.edits.DeleteMethodEdit( completionStep, this.getNode() );
 	}
-
-	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
-		treeComposite.addListener( listener );
-	}
-
-	public void disableTree() {
-		treeComposite.getView().disable();
-	}
-
 }

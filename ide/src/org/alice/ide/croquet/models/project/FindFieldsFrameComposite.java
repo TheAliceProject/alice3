@@ -42,57 +42,31 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import java.awt.event.ActionListener;
-
-import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FieldReferenceSearchTreeNode;
-import org.alice.ide.croquet.models.project.views.FieldSearchTabView;
-import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.State.ValueListener;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.InstanceSearchTreeManager;
+import org.lgna.project.ast.UserField;
 
 /**
  * @author Matt May
  */
-public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabView> {
-	
-	public FieldSearchTabCompsoite() {
-		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
-		this.getView().getAwtComponent().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
+public class FindFieldsFrameComposite extends FindFrameComposite {
+
+	public static FindFieldsFrameComposite getFrameFor( UserField field ) {
+		return new FindFieldsFrameComposite( field );
 	}
 
-	private final ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			treeComposite.refresh();
-			referenceComposite.refresh();
-			referenceComposite.changed( treeComposite.getManager(), treeComposite.getManager().getSelectedNode(), treeComposite.getManager().getSelectedNode(), true );
-		}
-	};
+	private UserField field;
 
-	public FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
-	public FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
+	private FindFieldsFrameComposite( UserField field ) {
+		super( java.util.UUID.fromString( "fa923388-bc04-44ba-b347-db12ec55fe02" ) );
+		this.field = field;
+	}
 
 	@Override
-	public boolean isCloseable() {
-		return false;
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		InstanceSearchTreeManager treeManager = fieldSearchComposite.treeComposite.getManager();
+		treeManager.setValue( treeManager.find( field ) );
+		fieldSearchComposite.disableTree();
+		this.getState().setSelectedIndex( 1 );
 	}
-	
-	private SplitComposite splitComposite = createHorizontalSplitComposite( treeComposite, referenceComposite, .5 );
-
-	@Override
-	protected org.alice.ide.croquet.models.project.views.FieldSearchTabView createView() {
-		return new FieldSearchTabView( this );
-	}
-
-	public SplitComposite getSplitComposite() {
-		return this.splitComposite;
-	}
-
-	public void addListener( ValueListener<FieldReferenceSearchTreeNode> listener ) {
-		treeComposite.addListener( listener );
-	}
-
-	public void disableTree() {
-		treeComposite.getView().disable();
-	}
-
 }

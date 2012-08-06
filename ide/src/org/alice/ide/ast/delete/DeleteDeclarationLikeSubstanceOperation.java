@@ -41,34 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.ast.delete;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.lgna.project.ast.Statement, DeleteStatementOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DeleteStatementOperation getInstance( org.lgna.project.ast.Statement statement ) {
-		DeleteStatementOperation rv = map.get( statement );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DeleteStatementOperation( statement );
-			map.put( statement, rv );
-		}
-		return rv;
+public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna.project.ast.Node> extends org.lgna.croquet.ActionOperation {
+	private final N node;
+	public DeleteDeclarationLikeSubstanceOperation( java.util.UUID migrationId, N node ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, migrationId );
+		this.node = node;
 	}
-	private org.lgna.project.ast.Statement statement;
-	private DeleteStatementOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
-		this.statement = statement;
+	public N getNode() {
+		return this.node;
 	}
-	public org.lgna.project.ast.Statement getStatement() {
-		return this.statement;
-	}
+	protected abstract org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete();
+	protected abstract org.lgna.croquet.BooleanState getFindModel();
+	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeleteStatementEdit( step ) );
+		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.createAndSetCompletionStep( this, trigger );
+		org.lgna.croquet.Operation failedToClearOperation = this.getAlertModelIfNotAllowedToDelete();
+		if( failedToClearOperation != null ) {
+			completionStep.cancel();
+			org.lgna.croquet.history.CompletionStep<?> subCompletionStep = failedToClearOperation.fire();
+			if( subCompletionStep.isSuccessfullyCompleted() ) {
+				org.lgna.croquet.BooleanState findFrameState = this.getFindModel();
+				if( findFrameState != null ) {
+					findFrameState.setValue( true );
+				}
+			}
+		} else {
+			org.lgna.croquet.edits.Edit<?> edit = this.createEdit( completionStep );
+			assert edit != null : this;
+			completionStep.commitAndInvokeDo( edit );
+		}
 	}
 }

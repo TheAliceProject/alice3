@@ -41,55 +41,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.edits.ast;
+package org.alice.ide.ast.delete.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croquet.models.ast.DeleteStatementOperation > {
-	//todo:
-	private static org.alice.ide.croquet.models.ast.DeleteStatementOperation getModel( org.lgna.croquet.history.CompletionStep<org.alice.ide.croquet.models.ast.DeleteStatementOperation> completionStep ) {
-		return completionStep.getModel();
-	}
-	private static org.lgna.project.ast.BlockStatement getBlockStatement( org.lgna.croquet.history.CompletionStep completionStep ) {
-		org.lgna.project.ast.BlockStatement rv = (org.lgna.project.ast.BlockStatement)getModel( completionStep ).getStatement().getParent();
-		assert rv != null : completionStep;
-		return rv;
-	}
+public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.edits.Edit<org.alice.ide.ast.delete.DeleteDeclarationLikeSubstanceOperation> {
+	private final org.lgna.project.ast.UserType<?> declaringType;
 	private final int index;
-	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		super( completionStep, getBlockStatement( completionStep ) );
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		this.index = this.getBlockStatement().statements.indexOf( statement );
+	private final M member;
+	public DeleteMemberEdit( org.lgna.croquet.history.CompletionStep completionStep, M member ) {
+		super( completionStep );
+		this.declaringType = member.getDeclaringType();
+		assert this.declaringType != null : member;
+		this.index = this.getNodeListProperty( this.declaringType ).indexOf( member );
+		assert this.index != -1 : member;
+		this.member = member;
 	}
-	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeleteMemberEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
+		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
 		this.index = binaryDecoder.decodeInt();
+		this.member = (M)org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMember.class ).decodeValue( binaryDecoder );
+	}
+	protected abstract org.lgna.project.ast.NodeListProperty<M> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType );
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
+		binaryEncoder.encode( this.index );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMember.class ).encodeValue( binaryEncoder, this.member );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		assert blockStatement.statements.indexOf( statement ) == this.index;
-		blockStatement.statements.remove( index );
-		
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "preserve deletion", statement );
+		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
+		assert this.index == owner.indexOf( this.member ) : this.member;
+		owner.remove( this.index );
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	protected final void undoInternal() {
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		blockStatement.statements.add( index, statement );
+		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
+		owner.add( this.index, member );
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member, org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

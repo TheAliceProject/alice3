@@ -123,4 +123,8 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 		return node.getIcon();
 	}
 
+	public FieldReferenceSearchTreeNode find( UserField field ) {
+		return root.find( field );
+	}
+
 }
