@@ -44,11 +44,18 @@
 package org.alice.stageide.personresource;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.IngredientsView> {
-	//private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), valueCls, codec, selectionIndex, values );
+	private final org.lgna.croquet.Operation randomize = this.createActionOperation( this.createKey( "randomize" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			return null;
+		}
+	} );
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> skinToneState = this.createListSelectionStateForEnum( this.createKey( "skinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
+	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, BodyTabComposite.getInstance(), HeadTabComposite.getInstance() );
 	public IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );
 	}
@@ -56,7 +63,19 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	protected org.alice.stageide.personresource.views.IngredientsView createView() {
 		return new org.alice.stageide.personresource.views.IngredientsView( this );
 	}
+	public org.lgna.croquet.Operation getRandomize() {
+		return this.randomize;
+	}
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> getLifeStageState() {
+		return this.lifeStageState;
+	}
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> getGenderState() {
 		return this.genderState;
+	}
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> getSkinToneState() {
+		return this.skinToneState;
+	}
+	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getBodyHeadTabState() {
+		return this.bodyHeadTabState;
 	}
 }

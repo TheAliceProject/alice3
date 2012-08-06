@@ -41,17 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.person.components;
+package org.alice.stageide.personresource.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HorizontalWrapList< T > extends org.lgna.croquet.components.List< T > {
-	public HorizontalWrapList( org.lgna.croquet.ListSelectionState< T > model, int visibleRowCount ) {
-		super( model );
-		this.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		this.setVisibleRowCount( visibleRowCount );
-		this.setBackgroundColor( MainPanel.BACKGROUND_COLOR );
-		//rv.getAwtComponent().setOpaque( false );
+public class HeadTabView extends org.lgna.croquet.components.RowSpringPanel {
+	public HeadTabView( org.alice.stageide.personresource.HeadTabComposite composite ) {
+		super( composite, 8, 8 );
+		java.awt.Color backgroundColor = org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR;
+		this.setBackgroundColor( backgroundColor );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+	}
+	@Override
+	protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+		org.alice.stageide.personresource.HeadTabComposite composite = (org.alice.stageide.personresource.HeadTabComposite)this.getComposite();
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getHairColorNameState().getSidekickLabel(), new HorizontalWrapList( composite.getHairColorNameState(), 1 ) ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( null, new org.alice.stageide.person.components.HairList() ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getEyeColorState().getSidekickLabel(), new HorizontalWrapList( composite.getEyeColorState(), 1 ) ) );
 	}
 }

@@ -79,7 +79,7 @@ public class IngredientsPanel extends org.lgna.croquet.components.BorderPanel {
 				return rv;
 			}
 		};
-		ubiquitousPane.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		ubiquitousPane.setBackgroundColor( MainPanel.BACKGROUND_COLOR );
 
 		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel.Builder()
 			.pageStart( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton() )
@@ -88,7 +88,7 @@ public class IngredientsPanel extends org.lgna.croquet.components.BorderPanel {
 
 		this.addPageStartComponent( northPane );
 		this.addCenterComponent( this.tabbedPane );
-		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBackgroundColor( MainPanel.BACKGROUND_COLOR );
 
 		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueListener( this.baseSkinToneObserver );
 	}

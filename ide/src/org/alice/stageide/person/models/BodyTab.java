@@ -58,13 +58,14 @@ public class BodyTab extends ContentTab<org.lgna.croquet.components.BorderPanel>
 	}
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
+		java.awt.Color backgroundColor = org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR;
 		org.lgna.croquet.components.List< ? > list = new org.alice.stageide.person.components.FullBodyOutfitList();
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
         scrollPane.setBothScrollBarIncrements( 66, 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
 		org.lgna.croquet.components.Slider slider = ObesityLevelState.getInstance().createSlider();
-		slider.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		slider.setBackgroundColor( backgroundColor );
 		
 		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel.Builder()
 				.lineStart( SetObesityToInShapeOperation.getInstance().createButton() )
@@ -78,7 +79,7 @@ public class BodyTab extends ContentTab<org.lgna.croquet.components.BorderPanel>
 			.center( scrollPane )
 			.pageEnd( obesityLevelPane )
 		.build();
-		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		rv.setBackgroundColor( backgroundColor );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		return rv;
 	}
