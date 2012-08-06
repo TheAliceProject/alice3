@@ -70,6 +70,7 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 	public MainPanel( PersonViewer personViewer ) {
 		this.personViewer = personViewer;
 		this.tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createFolderTabbedPane();
+		this.tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
 		this.tabbedPane.scaleFont( 1.5f );
 
 		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
