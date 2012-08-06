@@ -297,9 +297,9 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 		sb.append("\tnew org.lgna.project.Version( \""+ this.curVersion.toString() +"\" ),\n");
 		
 		for (int i=0; i<conversionMap.size(); i+=2) {
-			sb.append("\n\t\""+conversionMap.get(i)+"\",\n");
+			sb.append("\n\t\"name=\\\""+conversionMap.get(i)+"\",\n");
 			String lastComma = i < conversionMap.size()-2 ? "," : "";
-			sb.append("\t\""+conversionMap.get(i+1)+"\""+lastComma+"\n");
+			sb.append("\t\"name=\\\""+conversionMap.get(i+1)+"\""+lastComma+"\n");
 		}
 		sb.append(")\n");
 		
@@ -565,9 +565,8 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 		System.out.println(jarDir);
 		
 		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
-//		
-		File galleryData = GalleryDiff.saveGalleryInfo(Version.getCurrentVersion(), "C:/aliceBuildProcess/Data_AliceVersions/"+Version.getCurrentVersion().toString()+"/galleryData.txt", jarFiles);
-//		
+		
+//		GalleryDiff.saveGalleryInfo(Version.getCurrentVersion(), "C:/aliceBuildProcess/Data_AliceVersions/"+Version.getCurrentVersion().toString()+"/galleryData.txt", jarFiles);
 
 		final String[] DATA_VERSIONS = {
 //				"3.1.0.0.0", //Not supported
@@ -577,8 +576,9 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 //				"3.1.4.0.0", //Not supported
 //				"3.1.5.0.0", //Not supported
 //				"3.1.6.0.0", //Not supported
-				"3.1.29.0.0",
+//				"3.1.29.0.0",
 				"3.1.34.0.0",
+				"3.1.35.0.0",
 		};
 		
 		final String DATA_LOCATIONS = "C:\\aliceBuildProcess\\Data_AliceVersions\\";
