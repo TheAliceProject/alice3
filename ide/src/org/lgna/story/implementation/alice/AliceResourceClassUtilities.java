@@ -74,6 +74,8 @@ public class AliceResourceClassUtilities {
 	
 	public static String DEFAULT_PACKAGE = "";
 	
+	public static String RESOURCE_SUFFIX = "Resource";
+	
 	public static Class<? extends org.lgna.story.SModel> getModelClassForResourceClass(Class<? extends org.lgna.story.resources.ModelResource> resourceClass)
 	{
 		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
@@ -105,17 +107,21 @@ public class AliceResourceClassUtilities {
 		return sb.toString();
 	}
 	
-	
-	public static String getAliceClassName(Class<?> resourceClass)
+	public static String getAliceClassName(String name)
 	{
-		String name = resourceClass.getSimpleName();
-		int resourceIndex = name.indexOf("Resource");
+		int resourceIndex = name.indexOf(RESOURCE_SUFFIX);
 		if (resourceIndex != -1)
 		{
 			name = name.substring(0, resourceIndex);
 		}
 		name = getClassNameFromName(name);
 		return name;
+	}
+	
+	
+	public static String getAliceClassName(Class<?> resourceClass)
+	{
+		return getAliceClassName(resourceClass.getSimpleName());
 	}
 	
 	public static List<String> splitOnCapitalsAndNumbers(String s)

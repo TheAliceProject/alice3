@@ -98,7 +98,10 @@ public class ModelResourceExporter {
 	public static final String RESOURCE_SUB_DIR = "";
 	
 	public static String getResourceSubDirWithSeparator(String className) {
+		className = AliceResourceClassUtilities.getAliceClassName(className);
 		String classDir = className != null && className.length() > 0 ? className.toLowerCase()+"/" : "";
+		
+		
 		if (RESOURCE_SUB_DIR == null || RESOURCE_SUB_DIR.length() == 0) {
 			return classDir;
 		}
@@ -751,7 +754,7 @@ public class ModelResourceExporter {
 		sb.append("\n");
 		sb.append("package "+this.classData.packageString+";\n\n");
 		
-		sb.append("public enum "+this.className+" implements "+this.classData.superClass.getCanonicalName()+" {\n");
+		sb.append("public enum "+this.getJavaClassName()+" implements "+this.classData.superClass.getCanonicalName()+" {\n");
 		int numSubResources = this.subResources.size();
 		assert this.subResources.size() > 0;
 		for (int i=0; i<this.subResources.size(); i++)
@@ -789,7 +792,7 @@ public class ModelResourceExporter {
 					rootJoints.add(jointString);
 					addedRoots = true;
 				}
-				sb.append("\tpublic static final org.lgna.story.resources.JointId "+jointString+" = new org.lgna.story.resources.JointId( "+parentString+", "+this.className+".class );\n");
+				sb.append("\tpublic static final org.lgna.story.resources.JointId "+jointString+" = new org.lgna.story.resources.JointId( "+parentString+", "+this.getJavaClassName()+".class );\n");
 			}
 			
 			if (addedRoots)
@@ -810,7 +813,7 @@ public class ModelResourceExporter {
 			sb.append("\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){\n");
 			if (addedRoots)
 			{
-				sb.append("\t\treturn "+this.className+"."+ROOT_IDS_FIELD_NAME+";\n");
+				sb.append("\t\treturn "+this.getJavaClassName()+"."+ROOT_IDS_FIELD_NAME+";\n");
 			}
 			else
 			{
@@ -913,6 +916,10 @@ public class ModelResourceExporter {
 	  }
 	}
 
+	private String getJavaClassName() {
+		return this.className+AliceResourceClassUtilities.RESOURCE_SUFFIX;
+	}
+	
 	private File getJavaCodeDir(String root)
 	{
 		String packageDirectory = getDirectoryStringForPackage(this.classData.packageString);
@@ -921,13 +928,13 @@ public class ModelResourceExporter {
 	
 	private File getJavaClassFile(String root)
 	{
-		String filename = getDirectoryStringForPackage(this.classData.packageString)+this.className+".class";
+		String filename = getDirectoryStringForPackage(this.classData.packageString)+this.getJavaClassName()+".class";
 		return new File(root+filename);
 	}
 
 	private File getJavaFile(String root)
 	{
-		String filename = getDirectoryStringForPackage(this.classData.packageString)+this.className+".java";
+		String filename = getDirectoryStringForPackage(this.classData.packageString)+this.getJavaClassName()+".java";
 		return new File(root+filename);
 	}
 	
@@ -1208,7 +1215,7 @@ public class ModelResourceExporter {
 	public File export(String sourceDirectory, String resourceDirectory, String outputDir)
 	{
 		
-		File outputFile = new File(outputDir+this.className+".jar");
+		File outputFile = new File(outputDir+this.getJavaClassName()+".jar");
 		try
 		{
 			FileUtilities.createParentDirectoriesIfNecessary(outputFile);
