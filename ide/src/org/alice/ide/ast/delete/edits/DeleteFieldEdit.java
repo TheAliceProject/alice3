@@ -41,33 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.ast.delete;
+package org.alice.ide.ast.delete.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteFieldOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.UserField> {
-	private static java.util.Map< org.lgna.project.ast.UserField, DeleteFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
-		DeleteFieldOperation rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DeleteFieldOperation( field );
-			map.put( field, rv );
-		}
-		return rv;
+public class DeleteFieldEdit extends DeleteMemberEdit<org.lgna.project.ast.UserField> {
+	public DeleteFieldEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserField field ) {
+		super( completionStep, field );
 	}
-	private DeleteFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "ce1e3e13-9677-415f-bf4c-edfec13d8a30" ), field );
+	public DeleteFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
 	@Override
-	protected org.lgna.croquet.Operation getFailedToClearOperation() {
-		//todo
-		return null;
-	}
-	@Override
-	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.ast.delete.edits.DeleteFieldEdit( completionStep, this.getNode() );
+	protected org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserField> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType ) {
+		return declaringType.fields;
 	}
 }

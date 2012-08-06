@@ -44,50 +44,53 @@
 package org.alice.ide.ast.delete.edits;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
-public class DeleteStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.ast.delete.DeleteStatementOperation> {
-	private final org.lgna.project.ast.BlockStatement blockStatement;
+public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.edits.Edit<org.alice.ide.ast.delete.DeleteDeclarationLikeSubstanceOperation> {
+	private final org.lgna.project.ast.UserType<?> declaringType;
 	private final int index;
-	private final org.lgna.project.ast.Statement statement;
-	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
+	private final M member;
+	public DeleteMemberEdit( org.lgna.croquet.history.CompletionStep completionStep, M member ) {
 		super( completionStep );
-		this.blockStatement = (org.lgna.project.ast.BlockStatement)statement.getParent();
-		assert this.blockStatement != null : statement;
-		this.index = this.blockStatement.statements.indexOf( statement );
-		assert this.index != -1 : statement;
-		this.statement = statement;
+		this.declaringType = member.getDeclaringType();
+		assert this.declaringType != null : member;
+		this.index = this.getNodeListProperty( this.declaringType ).indexOf( member );
+		assert this.index != -1 : member;
+		this.member = member;
 	}
-	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeleteMemberEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.blockStatement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
+		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
 		this.index = binaryDecoder.decodeInt();
-		this.statement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).decodeValue( binaryDecoder );
+		this.member = (M)org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMember.class ).decodeValue( binaryDecoder );
 	}
+	protected abstract org.lgna.project.ast.NodeListProperty<M> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType );
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
 		binaryEncoder.encode( this.index );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).encodeValue( binaryEncoder, this.statement );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMember.class ).encodeValue( binaryEncoder, this.member );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		assert blockStatement.statements.indexOf( statement ) == this.index;
-		blockStatement.statements.remove( index );
+		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
+		assert this.index == owner.indexOf( this.member ) : this.member;
+		owner.remove( this.index );
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	protected final void undoInternal() {
-		blockStatement.statements.add( index, statement );
+		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
+		owner.add( this.index, member );
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member, org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

@@ -44,7 +44,7 @@
 package org.alice.ide.ast.delete;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.Statement> {
 	private static java.util.Map< org.lgna.project.ast.Statement, DeleteStatementOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -60,6 +60,10 @@ public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOper
 	}
 	private DeleteStatementOperation( org.lgna.project.ast.Statement statement ) {
 		super( java.util.UUID.fromString( "72f66253-976f-48dc-ad52-c5d02aeed5ba" ), statement );
+	}
+	@Override
+	protected org.lgna.croquet.Operation getFailedToClearOperation() {
+		return null;
 	}
 	@Override
 	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {

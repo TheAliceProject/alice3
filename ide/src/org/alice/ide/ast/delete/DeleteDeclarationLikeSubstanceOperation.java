@@ -44,7 +44,7 @@
 package org.alice.ide.ast.delete;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna.project.ast.Node> extends org.lgna.croquet.ActionOperation {
 	private final N node;
@@ -55,10 +55,14 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 	public N getNode() {
 		return this.node;
 	}
-	
+	protected abstract org.lgna.croquet.Operation getFailedToClearOperation();
 	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.Operation failedToClearOperation = this.getFailedToClearOperation();
+		if( failedToClearOperation != null ) {
+			
+		}
 		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.createAndSetCompletionStep( this, trigger );
 		org.lgna.croquet.edits.Edit<?> edit = this.createEdit( completionStep );
 		assert edit != null : this;
