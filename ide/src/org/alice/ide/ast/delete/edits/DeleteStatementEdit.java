@@ -41,53 +41,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.edits.ast;
+package org.alice.ide.ast.delete.edits;
 
 /**
- * @author Dennis Cosgrove
+ * @author dennisc
  */
-public class DeleteStatementEdit extends BlockStatementEdit< org.alice.ide.croquet.models.ast.DeleteStatementOperation > {
-	//todo:
-	private static org.alice.ide.croquet.models.ast.DeleteStatementOperation getModel( org.lgna.croquet.history.CompletionStep<org.alice.ide.croquet.models.ast.DeleteStatementOperation> completionStep ) {
-		return completionStep.getModel();
-	}
-	private static org.lgna.project.ast.BlockStatement getBlockStatement( org.lgna.croquet.history.CompletionStep completionStep ) {
-		org.lgna.project.ast.BlockStatement rv = (org.lgna.project.ast.BlockStatement)getModel( completionStep ).getStatement().getParent();
-		assert rv != null : completionStep;
-		return rv;
-	}
+public class DeleteStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.ast.delete.DeleteStatementOperation> {
+	private final org.lgna.project.ast.BlockStatement blockStatement;
 	private final int index;
-	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		super( completionStep, getBlockStatement( completionStep ) );
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
-		this.index = this.getBlockStatement().statements.indexOf( statement );
+	private final org.lgna.project.ast.Statement statement;
+	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
+		super( completionStep );
+		this.blockStatement = (org.lgna.project.ast.BlockStatement)statement.getParent();
+		assert this.blockStatement != null : statement;
+		this.index = this.blockStatement.statements.indexOf( statement );
+		assert this.index != -1 : statement;
+		this.statement = statement;
+		assert this.index == this.blockStatement.statements.indexOf( statement );
 	}
 	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
+		this.blockStatement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
 		this.index = binaryDecoder.decodeInt();
+		this.statement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).decodeValue( binaryDecoder );
+	}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
+		binaryEncoder.encode( this.index );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).encodeValue( binaryEncoder, this.statement );
 	}
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		assert blockStatement.statements.indexOf( statement ) == this.index;
 		blockStatement.statements.remove( index );
-		
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "preserve deletion", statement );
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	protected final void undoInternal() {
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		blockStatement.statements.add( index, statement );
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
-		org.lgna.project.ast.Statement statement = this.getModel().getStatement();
 		rv.append( "delete:" );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, org.lgna.croquet.Application.getLocale());
 		return rv;

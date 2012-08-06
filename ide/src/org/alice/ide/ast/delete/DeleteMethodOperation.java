@@ -41,34 +41,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.ast.delete;
 
 /**
- * @author Dennis Cosgrove
+ * @author dennisc
  */
-public class DeleteStatementOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.lgna.project.ast.Statement, DeleteStatementOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized DeleteStatementOperation getInstance( org.lgna.project.ast.Statement statement ) {
-		DeleteStatementOperation rv = map.get( statement );
+public class DeleteMethodOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.UserMethod> {
+	private static java.util.Map< org.lgna.project.ast.UserMethod, DeleteMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
+		DeleteMethodOperation rv = map.get( method );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new DeleteStatementOperation( statement );
-			map.put( statement, rv );
+			rv = new DeleteMethodOperation( method );
+			map.put( method, rv );
 		}
 		return rv;
 	}
-	private org.lgna.project.ast.Statement statement;
-	private DeleteStatementOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
-		this.statement = statement;
-	}
-	public org.lgna.project.ast.Statement getStatement() {
-		return this.statement;
+	private DeleteMethodOperation( org.lgna.project.ast.UserMethod method ) {
+		super( java.util.UUID.fromString( "2b3dc326-34b3-4fae-b6a0-b47a2e0730e1" ), method );
 	}
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeleteStatementEdit( step ) );
+	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
 	}
 }
