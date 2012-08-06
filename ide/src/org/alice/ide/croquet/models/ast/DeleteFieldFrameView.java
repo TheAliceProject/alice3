@@ -40,44 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.ast;
 
-package org.alice.stageide.operations.ast.oneshot;
+import javax.swing.Icon;
 
-import org.alice.ide.croquet.models.ast.DeleteFieldFrameComposite;
+import org.alice.ide.croquet.models.project.FindFieldsFrameComposite;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.ImmutableTextArea;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.icon.IconFactory;
+
+import edu.cmu.cs.dennisc.math.GoldenRatio;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, OneShotMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class DeleteFieldFrameView extends BorderPanel {
 
-	public static OneShotMenuModel getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		synchronized( map ) {
-			OneShotMenuModel rv = map.get( instanceFactory );
-			if( rv != null ) {
-				//pass
-			} else {
-				java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
-				models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
-				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
-					models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
-					if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) )  {
-						//pass
-					} else {
-						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-					}
-					models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance(field).getMenuItemPrepModel() );
-				}
-				rv = new OneShotMenuModel( instanceFactory, models );
-				map.put( instanceFactory, rv );
-			}
-			return rv;
-		}
-	}
-	private OneShotMenuModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory, java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models ) {
-		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
+	private static int WIDTH = 550;
+
+	public DeleteFieldFrameView( DeleteFieldFrameComposite composite ) {
+		this.setMinimumPreferredHeight( GoldenRatio.getShorterSideLength( WIDTH ) );
+		this.setMinimumPreferredWidth( WIDTH );
+		//		System.out.println( composite.getField().getValueType() );
+		//		System.out.println( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy() );
+		//		BufferedImage image = AliceResourceUtilties.getThumbnail( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy().getReification() );
+		ImmutableTextArea textArea = new ImmutableTextArea( composite.getBleh() );
+		//		System.out.println(image);
+		//		Icon icon = new ScaledImageIcon( image, 120, 90 );
+//		System.out.println( composite.getField() );
+		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
+		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
+//		System.out.println( "icon factory: " + iconFactory );
+//		System.out.println( "icon: " + icon );
+		Label label = new Label( icon );
+		this.addComponent( label, Constraint.LINE_START );
+		GridPanel panel = GridPanel.createGridPane( 3, 1 );
+		panel.addComponent( new Label() );
+		panel.addComponent( textArea );
+		panel.addComponent( new Label() );
+		this.addComponent( panel, Constraint.CENTER );
+//		FindFieldsFrameComposite searchFrame = FindFieldsFrameComposite.getFrameFor( composite.getField() );
+		this.addComponent( composite.getSearchFrame().getBooleanState().createPushButton(), Constraint.PAGE_END );
 	}
 }

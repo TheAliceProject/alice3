@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.alice.ide.IDE;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
@@ -17,13 +19,21 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 
 	private List<SearchTreeNode> children = Collections.newLinkedList();
 	private SearchTreeNode parent;
-	private AbstractMethod content;
+	private AbstractMethod method;
+	private MethodInvocation methodInvocation;
 	private boolean isGenerated;
 
 	public SearchTreeNode( SearchTreeNode parent, AbstractMethod content ) {
 		this.parent = parent;
-		this.content = content;
+		this.method = content;
 		this.isGenerated = (content instanceof UserMethod) && ((UserMethod)content).getManagementLevel().isGenerated();
+	}
+	
+	public SearchTreeNode( SearchTreeNode parent, MethodInvocation invocation ) {
+		this.parent = parent;
+		this.methodInvocation = invocation;
+		this.method = methodInvocation.method.getValue();
+		this.isGenerated = (invocation.method.getValue() instanceof UserMethod) && ((UserMethod)invocation.method.getValue()).getManagementLevel().isGenerated();
 	}
 
 	public boolean getIsGenerated() {
@@ -47,18 +57,18 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 	}
 
 	public String getText() {
-		if( content instanceof UserMethod ) {
-			UserMethod method = (UserMethod)content;
+		if( method instanceof UserMethod ) {
+			UserMethod userMethod = (UserMethod)method;
 			String edit = "";
 			if( parent != null ) {
 				edit = parent.parent == null ? "edit" : "";
 			}
-			return "<html> " + edit + " <strong>" + method.getName() + "</strong></html>";
-		} else if( content instanceof JavaMethod ) {
-			JavaMethod javaMethod = (JavaMethod)content;
+			return "<html> " + edit + " <strong>" + userMethod.getName() + "</strong></html>";
+		} else if( method instanceof JavaMethod ) {
+			JavaMethod javaMethod = (JavaMethod)method;
 			return javaMethod.getName();
 		}
-		return "ERROR: (mmay) unhandledtype in tree: " + content.getClass();
+		return "ERROR: (mmay) unhandledtype in tree: " + method.getClass();
 	}
 	public Icon getIcon() {
 		return null;
@@ -92,14 +102,17 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 
 	public void invokeOperation() {
 		if( parent != null && parent.getParent() == null ) {// && content instanceof UserMethod ) {//node is not root AND node's parent is root
-			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)content ) );
+			assert methodInvocation == null;
+			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)method ) );
 		} else if( parent != null ) {
-			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)parent.content ) );
+			assert methodInvocation != null;
+			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)parent.method ) );
+			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( methodInvocation.expression.getValue(), null );
 		}
 	}
 
 	public AbstractMethod getContent() {
-		return content;
+		return method;
 	}
 
 	public int getDepth() {
@@ -116,11 +129,11 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 		if( getDepth() != o.getDepth() ) {
 			return new Integer( getDepth() ).compareTo( new Integer( o.getDepth() ) );
 		}
-		return content.getName().compareTo( o.getContent().getName() );
+		return method.getName().compareTo( o.getContent().getName() );
 	}
 
 	public SearchTreeNode find( UserMethod method ) {
-		if( this.content.equals( method ) ) {
+		if( this.method.equals( method ) ) {
 			return this;
 		}
 		for( SearchTreeNode child : children ) {

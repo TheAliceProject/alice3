@@ -40,44 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.project;
 
-package org.alice.stageide.operations.ast.oneshot;
-
-import org.alice.ide.croquet.models.ast.DeleteFieldFrameComposite;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.InstanceSearchTreeManager;
+import org.alice.ide.croquet.models.project.views.FindFrameView;
+import org.lgna.project.ast.UserField;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, OneShotMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class FindFieldsFrameComposite extends FindFrameComposite {
 
-	public static OneShotMenuModel getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		synchronized( map ) {
-			OneShotMenuModel rv = map.get( instanceFactory );
-			if( rv != null ) {
-				//pass
-			} else {
-				java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
-				models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
-				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
-					models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
-					if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) )  {
-						//pass
-					} else {
-						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-					}
-					models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance(field).getMenuItemPrepModel() );
-				}
-				rv = new OneShotMenuModel( instanceFactory, models );
-				map.put( instanceFactory, rv );
-			}
-			return rv;
-		}
+	public static FindFieldsFrameComposite getFrameFor( UserField field ) {
+		return new FindFieldsFrameComposite( field );
 	}
-	private OneShotMenuModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory, java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models ) {
-		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
+
+	private UserField field;
+
+	private FindFieldsFrameComposite( UserField field ) {
+		super( java.util.UUID.fromString( "fa923388-bc04-44ba-b347-db12ec55fe02" ) );
+		this.field = field;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		InstanceSearchTreeManager treeManager = fieldSearchComposite.treeComposite.getManager();
+		treeManager.setValue( treeManager.find( field ) );
+		fieldSearchComposite.treeComposite.getView().refresh();
+		fieldSearchComposite.disableTree();
+		this.getState().setSelectedIndex( 1 );
 	}
 }
