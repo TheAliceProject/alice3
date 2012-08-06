@@ -69,7 +69,7 @@ public class FieldReferenceTreeView extends BorderPanel {
 
 	public void disable() {
 		tree.repaint();
-		tree.getAwtComponent().setEnabled( false );
+		tree.getAwtComponent().setEditable( false );
 	}
 
 }

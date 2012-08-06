@@ -43,20 +43,22 @@
 package org.alice.ide.croquet.models.ast;
 
 import org.alice.ide.croquet.models.project.FindFieldsFrameComposite;
-import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.FrameComposite;
-import org.lgna.croquet.PlainDialogOperationComposite;
+import org.lgna.croquet.BooleanState.InternalMenuItemPrepModel;
+import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.StringValue;
+import org.lgna.croquet.components.PopupMenu;
+import org.lgna.croquet.components.ViewController;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.triggers.Trigger.Origin;
 import org.lgna.project.ast.UserField;
 
 /**
  * @author Matt May
  */
-public class DeleteFieldFrameComposite extends FrameComposite<DeleteFieldFrameView> {
+public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite<DeleteFieldFrameView> {
 
 	private UserField field;
 	private StringValue unableToDelete = createStringValue( this.createKey( "unableToDelete" ) );
@@ -113,7 +115,7 @@ public class DeleteFieldFrameComposite extends FrameComposite<DeleteFieldFrameVi
 		} else {
 			rv += pluralTheseReferences.getText();
 		}
-		rv += ifYouWantToDelete.getText();
+		rv += " " + ifYouWantToDelete.getText();
 		rv += getField().name.getValue();
 		rv += "\" .";
 		bleh.setText( rv );
@@ -126,4 +128,17 @@ public class DeleteFieldFrameComposite extends FrameComposite<DeleteFieldFrameVi
 	public FindFieldsFrameComposite getSearchFrame() {
 		return this.searchFrame;
 	}
+
+	@Override
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		FindFieldsFrameComposite composite = FindFieldsFrameComposite.getFrameFor( getField() );
+		composite.getBooleanState().setValue( true );
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+		return null;
+	}
+	
 }
