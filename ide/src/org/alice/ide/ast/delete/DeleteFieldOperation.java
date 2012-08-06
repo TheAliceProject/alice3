@@ -62,7 +62,12 @@ public class DeleteFieldOperation extends DeleteDeclarationLikeSubstanceOperatio
 		super( java.util.UUID.fromString( "ce1e3e13-9677-415f-bf4c-edfec13d8a30" ), field );
 	}
 	@Override
-	protected org.lgna.croquet.Operation getFailedToClearOperation() {
+	protected org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete() {
+		//todo
+		return null;
+	}
+	@Override
+	protected org.lgna.croquet.BooleanState getFindModel() {
 		//todo
 		return null;
 	}
