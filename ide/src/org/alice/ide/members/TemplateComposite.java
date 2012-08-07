@@ -57,10 +57,6 @@ public abstract class TemplateComposite<V extends org.lgna.croquet.components.Vi
 		this.name = this.findDefaultLocalizedText();
 	}
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button ) {
-//		button.getAwtComponent().setIcon( ICON );
-//		button.getAwtComponent().setText( this.getClass().getName() );
-//		booleanState.setTextForBothTrueAndFalse( "Action Ordering Boxes" );
-
 		button.scaleFont( 1.5f );
 		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		booleanState.setTextForBothTrueAndFalse( this.name );

@@ -161,15 +161,16 @@ public abstract class Operation extends AbstractCompletionModel {
 	
 	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
+	protected org.lgna.croquet.history.CompletionStep<?> perform( org.lgna.croquet.history.TransactionHistory history, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+		this.perform( transaction, trigger );
+		return transaction.getCompletionStep();
+	}
 	/*package-private*/ final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
 		//todo: move up to Model
 		this.initializeIfNecessary();
-
-		// Create a Transaction
-		org.lgna.croquet.history.Transaction transaction = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
-
-		this.perform( transaction, trigger );
-		return transaction.getCompletionStep();
+		org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+		return this.perform( history, trigger );
 	}
 
 	public final String getName() {

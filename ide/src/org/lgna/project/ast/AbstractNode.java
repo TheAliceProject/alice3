@@ -148,9 +148,9 @@ public abstract class AbstractNode extends Element implements Node {
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty< ? > ) {
 			NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
-			for( AbstractNode node : nodeListProperty ) {
-				if( node != null ) {
-					node.setParent( null );
+			for( Node node : nodeListProperty ) {
+				if( node instanceof AbstractNode ) {
+					((AbstractNode)node).setParent( null );
 				}
 			}
 		}

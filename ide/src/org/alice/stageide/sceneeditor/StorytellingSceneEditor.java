@@ -334,7 +334,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	
 	
 	public static class SceneEditorProgramImp extends ProgramImp {
-		public SceneEditorProgramImp( org.lgna.story.Program abstraction ) {
+		public SceneEditorProgramImp( org.lgna.story.SProgram abstraction ) {
 			super( abstraction, StorytellingSceneEditor.getInstance().onscreenLookingGlass );
 		}
 		@Override
@@ -835,7 +835,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
 		org.lgna.story.SScene sceneJavaInstance = (org.lgna.story.SScene)sceneAliceInstance.getJavaInstance();
 
-		org.lgna.story.Program program = getProgramInstanceInJava();
+		org.lgna.story.SProgram program = getProgramInstanceInJava();
 		org.lgna.story.SScene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.SScene.class );
 		SceneImp ACCEPTABLE_HACK_sceneImp = ImplementationAccessor.getImplementation( scene );
 		ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();

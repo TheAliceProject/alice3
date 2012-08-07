@@ -48,12 +48,6 @@ import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.story.event.MouseClickOnObjectListener;
-import org.lgna.story.event.MouseClickOnScreenListener;
-import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.ViewEnterListener;
-import org.lgna.story.event.ViewExitListener;
-import org.lgna.story.event.WhileInViewListener;
 
 /**
  * @author Dennis Cosgrove
@@ -130,12 +124,12 @@ public abstract class SScene extends SThing {
 	//Mouse
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, AddMouseButtonListener.Detail... details ) {
+	public void addMouseClickOnScreenListener( org.lgna.story.event.MouseClickOnScreenListener listener, AddMouseButtonListener.Detail... details ) {
 		this.implementation.getEventManager().addMouseClickOnScreenListener( listener, MultipleEventPolicy.getValue( details ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, AddMouseButtonListener.Detail... details ) {
+	public void addMouseClickOnObjectListener( org.lgna.story.event.MouseClickOnObjectListener listener, AddMouseButtonListener.Detail... details ) {
 		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
@@ -147,7 +141,7 @@ public abstract class SScene extends SThing {
 	//time/Scene
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addTimeListener( TimeListener timeListener, AddTimeListener.Detail... details ) {
+	public void addTimeListener( org.lgna.story.event.TimeListener timeListener, AddTimeListener.Detail... details ) {
 		this.getImplementation().getEventManager().addTimerEventListener( timeListener, TimerFrequency.getValue( details ).getFrequency(), MultipleEventPolicy.getValue( details ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
@@ -217,12 +211,12 @@ public abstract class SScene extends SThing {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addViewEnterListener( ViewEnterListener listener, SModel[] models, AddEnterViewListener.Detail... details ) {
+	public void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, SModel[] models, AddEnterViewListener.Detail... details ) {
 		this.implementation.getEventManager().addComesIntoViewEventListener( listener, models );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@AddEventListenerTemplate()
-	public void addWhileInViewListener( WhileInViewListener listener, SModel[] models, AddTimeListener.Detail... details ) {
+	public void addWhileInViewListener( org.lgna.story.event.WhileInViewListener listener, SModel[] models, AddTimeListener.Detail... details ) {
 		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( models ), TimerFrequency.getValue( details ).getFrequency(),
 				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
@@ -233,7 +227,7 @@ public abstract class SScene extends SThing {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public void addViewExitListener( ViewExitListener listener, SModel[] entities, AddExitViewListener.Detail... details ) {
+	public void addViewExitListener( org.lgna.story.event.ViewExitListener listener, SModel[] entities, AddExitViewListener.Detail... details ) {
 		this.implementation.getEventManager().addLeavesViewEventListener( listener, entities );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)

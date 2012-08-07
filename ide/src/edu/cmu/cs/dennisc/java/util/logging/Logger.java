@@ -166,12 +166,14 @@ public class Logger {
 	}
 	
 	public static void throwable( Throwable t, Object object ) {
-		errln( t );
-		log( THROWABLE, object );
+		Object[] array = { edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( t ), object };
+		log( THROWABLE, array );
 	}
 	public static void throwable( Throwable t, Object... objects ) {
-		errln( t );
-		log( THROWABLE, objects );
+		Object[] array = new Object[ objects.length + 1 ];
+		System.arraycopy( objects, 0, array, 0, objects.length );
+		array[ array.length-1 ] = edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( t );
+		log( THROWABLE, array );
 	}
 	
 	public static void todo( Object object ) {
@@ -180,13 +182,6 @@ public class Logger {
 	public static void todo( Object... objects ) {
 		log( TODO, objects );
 	}
-
-//	public static void testing( Object object ) {
-//		log( TESTING, object );
-//	}
-//	public static void testing( Object... objects ) {
-//		log( TESTING, objects );
-//	}
 
 	public static void severe( Object object ) {
 		log( java.util.logging.Level.SEVERE, object );

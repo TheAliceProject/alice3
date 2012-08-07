@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  * @author Dennis Cosgrove
  */
 public class StoryApiConfigurationManager extends org.alice.ide.ApiConfigurationManager {
-	public static final org.lgna.project.ast.JavaMethod SET_ACTIVE_SCENE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Program.class, "setActiveScene", org.lgna.story.SScene.class );
+	public static final org.lgna.project.ast.JavaMethod SET_ACTIVE_SCENE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SProgram.class, "setActiveScene", org.lgna.story.SScene.class );
 
 	private static class SingletonHolder {
 		private static StoryApiConfigurationManager instance = new StoryApiConfigurationManager();
@@ -82,7 +82,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 	@Override
 	protected boolean isNamedUserTypesAcceptableForSelection( org.lgna.project.ast.NamedUserType type ) {
-		return type.isAssignableTo( org.lgna.story.Program.class ) == false || org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
+		return type.isAssignableTo( org.lgna.story.SProgram.class ) == false || org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
 	}
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private StoryApiConfigurationManager() {

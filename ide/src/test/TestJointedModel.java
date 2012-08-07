@@ -122,7 +122,7 @@ class TestScene extends SScene {
 /**
  * @author Dennis Cosgrove
  */
-class TestJointedModel extends Program {
+class TestJointedModel extends SProgram {
 	private static java.util.Map< Integer, org.lgna.story.resources.JointId > mapHashCodeToJointId = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		for( org.lgna.story.resources.JointId rootJointId : org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS ) {
@@ -145,7 +145,7 @@ class TestJointedModel extends Program {
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
 	) );
-	private final MyBiped ogre = new MyBiped(org.lgna.story.resources.biped.Ogre.BROWN);
+	private final MyBiped ogre = new MyBiped(org.lgna.story.resources.biped.OgreResource.BROWN);
 	private final SThingMarker marker = new SThingMarker();
 	private final TestScene testScene = new TestScene( camera, susan, marker );
 	

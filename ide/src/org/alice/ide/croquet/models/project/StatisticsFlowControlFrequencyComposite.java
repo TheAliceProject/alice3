@@ -113,7 +113,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 				UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
 				if( method != null && !method.getManagementLevel().isGenerated()
 				// This condition prevents counting methods of the Program class (e.g., main method) which a user cannot edit
-						&& !(method.getDeclaringType().isAssignableTo( org.lgna.story.Program.class )) && statement.isEnabled.getValue() ) {
+						&& !(method.getDeclaringType().isAssignableTo( org.lgna.story.SProgram.class )) && statement.isEnabled.getValue() ) {
 					if( !methodToConstructMap.keySet().contains( method ) ) {
 						methodToConstructMap.put( method, new LinkedList<Statement>() );
 					}

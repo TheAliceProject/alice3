@@ -43,6 +43,8 @@
 
 package org.alice.stageide.operations.ast.oneshot;
 
+import org.alice.ide.croquet.models.ast.DeleteFieldFrameComposite;
+
 /**
  * @author Dennis Cosgrove
  */

@@ -622,6 +622,7 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 	
 	protected <C extends SimpleTabComposite<?>> TabSelectionState<C> createTabSelectionState( Key key, Class<C> cls, int selectionIndex, C... tabComposites ) {
 		InternalTabSelectionState<C> rv = new InternalTabSelectionState<C>( cls, selectionIndex, tabComposites, key );
+		this.mapKeyToTabSelectionState.put( key, rv );
 		return rv;
 	}
 	protected TabSelectionState<SimpleTabComposite> createTabSelectionState( Key key, int selectionIndex, SimpleTabComposite... tabComposites ) {

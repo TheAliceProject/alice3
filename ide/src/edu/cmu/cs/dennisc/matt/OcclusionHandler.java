@@ -29,7 +29,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 		registerPolicyMap( occlusionEventListener, MultipleEventPolicy.IGNORE );
 		List<SModel> allObserving = Collections.newArrayList( groupOne );
 		allObserving.addAll( groupTwo );
-		if( groupOne.get( 0 ) != null && camera == null ) {
+		if( groupOne.size() > 0 && groupOne.get( 0 ) != null && camera == null ) {
 			camera = ImplementationAccessor.getImplementation( groupOne.get( 0 ) ).getScene().findFirstCamera();
 			camera.getSgComposite().addAbsoluteTransformationListener( this );
 		}

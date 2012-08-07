@@ -340,11 +340,12 @@ public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R
 	
 	private JointImp createRegularJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent, java.util.Map< org.lgna.story.resources.JointId, JointImp > jointMap ) {
 		JointImp joint = this.createJointImplementation( jointId );
-		joint.setVehicle(parent);
+		if (joint.getSgVehicle() == null) {
+			joint.setVehicle(parent);
+		}
 		jointMap.put( jointId, joint );
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
 			JointImp childTree = createRegularJointTree(childId, joint, jointMap);
-			childTree.setVehicle(joint);
 		}
 		return joint;
 	}

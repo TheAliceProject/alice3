@@ -52,6 +52,6 @@ public enum ModelResourceDetails  implements org.lgna.project.annotations.Public
 		return org.lgna.story.resources.JointedModelResource.class;
 	}
 	public java.lang.reflect.Field[] getFlds() {
-		return org.lgna.story.resources.biped.Ogre.class.getFields();
+		return org.lgna.story.resources.biped.OgreResource.class.getFields();
 	}
 }

@@ -12,6 +12,7 @@ import java.util.zip.ZipFile;
 
 import org.alice.ide.ResourcePathManager;
 import org.lgna.project.ast.JavaType;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
@@ -223,6 +224,7 @@ public class StorytellingResources {
 						if (baseName.startsWith(".")) {
 							baseName = baseName.substring(1);
 						}
+						baseName += AliceResourceClassUtilities.RESOURCE_SUFFIX;
 						if (!rv.containsKey(resourceJar)) {
 							rv.put(resourceJar, new LinkedList<String>());
 						}

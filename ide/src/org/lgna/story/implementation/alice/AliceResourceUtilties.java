@@ -293,7 +293,7 @@ public class AliceResourceUtilties {
 		String[] splitName = resourceName.split("_");
 		StringBuilder modelName = new StringBuilder();
 		//Set up to try the simple approach first (that the visual is the class name and the texture is the resource name)
-		String visualName = resourceClass.getSimpleName();
+		String visualName = AliceResourceClassUtilities.getAliceClassName( resourceClass.getSimpleName() );
 		String textureName = resourceName;
 		
 		//Check the simple case and if it fails, iterate through the resource name to find a visual name that resolves to a valid url
@@ -344,7 +344,7 @@ public class AliceResourceUtilties {
 	public static String getModelNameFromClassAndResource(Class<?> resourceClass, String resourceName) {
 		//If we're just using the class as a lookup, return the class name directly
 		if (resourceName == null) {
-			return resourceClass.getSimpleName();
+			return AliceResourceClassUtilities.getAliceClassName(resourceClass);
 		}
 		ResourceIdentifier identifier = new ResourceIdentifier(resourceClass, resourceName);
 		if (!resourceIdentifierToResourceNamesMap.containsKey(identifier)) {
@@ -592,7 +592,7 @@ public class AliceResourceUtilties {
 	
 	public static String getName(Class<?> modelResource)
 	{
-		return modelResource.getSimpleName();
+		return AliceResourceClassUtilities.getAliceClassName(modelResource);
 	}
 	
 	public static String trimName(String name) {
@@ -613,7 +613,7 @@ public class AliceResourceUtilties {
 	{
 		URL resourceURL = getThumbnailURLInternal(modelResource, resourceName);
 		if (resourceURL == null) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", resourceName);
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", modelResource, resourceName);
 			resourceURL = getThumbnailURLInternal(modelResource, resourceName);
 		}
 		if( resourceURL != null ) {

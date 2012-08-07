@@ -46,10 +46,27 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public class ReturnTypeFilteredComposite extends FilteredComposite<org.alice.ide.member.views.ReturnTypeFilteredView> {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, ReturnTypeFilteredComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ReturnTypeFilteredComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		if( type != null ) {
+			ReturnTypeFilteredComposite rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ReturnTypeFilteredComposite( type );
+				map.put( type, rv );
+			}
+			return rv;
+		} else {
+			return null;
+		}
+	}
 	private final org.lgna.project.ast.AbstractType<?,?,?> returnType;
-	public ReturnTypeFilteredComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
-		super( java.util.UUID.fromString( "39743af8-b64e-4688-8a2b-032ad78cec92" ) );
+	private ReturnTypeFilteredComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+		super( java.util.UUID.fromString( "39743af8-b64e-4688-8a2b-032ad78cec92" ), returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
 		this.returnType = returnType;
+		//this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
+		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( this.returnType.getName() );
 	}
 	public org.lgna.project.ast.AbstractType<?,?,?> getReturnType() {
 		return this.returnType;

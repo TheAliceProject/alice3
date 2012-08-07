@@ -221,7 +221,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	public void addField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
 		assert declaringType == this.getActiveSceneType() : declaringType;
 		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField(this.getActiveSceneInstance(), field);
-		org.lgna.story.Program program = this.getProgramInstanceInJava();
+		org.lgna.story.SProgram program = this.getProgramInstanceInJava();
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 		try {
@@ -348,9 +348,9 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		return this.programInstance;
 	}
 	
-	protected org.lgna.story.Program getProgramInstanceInJava()
+	protected org.lgna.story.SProgram getProgramInstanceInJava()
 	{
-		return  (org.lgna.story.Program)this.programInstance.getJavaInstance();
+		return  (org.lgna.story.SProgram)this.programInstance.getJavaInstance();
 	}
 	
 	protected void setProgramInstance(org.lgna.project.virtualmachine.UserInstance programInstance)

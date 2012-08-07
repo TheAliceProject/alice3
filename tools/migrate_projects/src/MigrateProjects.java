@@ -45,10 +45,12 @@
  * @author Dennis Cosgrove
  */
 public class MigrateProjects extends Batch {
-	private static final int WIDTH = 400;
-	private static final int HEIGHT = 300 + 60;
+	private static final int WIDTH = 200;
+	private static final int HEIGHT = 150 + 40;
 	private int x = 0;
 	private int y = 0;
+	
+	private final java.util.List<Error> errors = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	
 	@Override
 	protected void handle( java.io.File inFile, java.io.File outFile ) {
@@ -56,27 +58,33 @@ public class MigrateProjects extends Batch {
 		try {
 			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
 
-			
-			javax.swing.JFrame frame = new javax.swing.JFrame();
-			frame.setLocation( x, y );
-			frame.setSize( WIDTH, HEIGHT );
-			x += WIDTH;
-			if( x > 1600 ) {
-				x = 0;
-				y += HEIGHT;
+			final boolean IS_DISPLAY_DESIRED = true;
+			if( IS_DISPLAY_DESIRED ) {
+				javax.swing.JFrame frame = new javax.swing.JFrame();
+				frame.setLocation( x, y );
+				frame.setSize( WIDTH, HEIGHT );
+				x += WIDTH;
+				if( x > 1600 ) {
+					x = 0;
+					y += HEIGHT;
+				}
+				frame.setVisible( true );
+				
+				org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
+				runProgramContext.initializeInContainer( frame.getContentPane() );
+				runProgramContext.setActiveScene();
+				runProgramContext.cleanUpProgram();
+				frame.dispose();
 			}
-			frame.setVisible( true );
-			
-			org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
-			runProgramContext.initializeInContainer( frame.getContentPane() );
-			runProgramContext.setActiveScene();
-			//runProgramContext.cleanUpProgram();
 			
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new RuntimeException( inFile.toString(), vnse );
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( inFile.toString(), ioe );
+		} catch( Error e ) {
+			errors.add( e );
+			e.printStackTrace();
 		}
 	}
 	@Override
@@ -85,9 +93,12 @@ public class MigrateProjects extends Batch {
 	}
 	public static void main( String[] args ) {
 		MigrateProjects migrateProjects = new MigrateProjects();
-		String inRootPath = "C:/Users/dennisc/Documents/Alice3/MyProjects/Section_Examples";
-		String outRootPath = inRootPath + "_Fixed";
+		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/3.1.33.1.0";
+		String outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.Version.getCurrentVersionText();
 		String ext = "a3p";
 		migrateProjects.process( inRootPath, outRootPath, ext, ext );
+		for( Error error : migrateProjects.errors ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( error );
+		}
 	}
 }

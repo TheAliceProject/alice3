@@ -58,7 +58,7 @@ public abstract class BooleanState extends State< Boolean > {
 			return indirect.getMenuItemPrepModel();
 		}
 	}
-	private static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
+	public static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
 		private final BooleanState booleanState;
 		private InternalMenuItemPrepModel( BooleanState booleanState ) {
 			super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );

@@ -99,4 +99,20 @@ public abstract class MemberWithParametersInfo extends MemberInfo {
 	public String[] getParameterNames() {
 		return this.parameterNames;
 	}
+	protected abstract void appendRepr( StringBuilder sb );
+	@Override
+	public final String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( getClass().getSimpleName() );
+		sb.append( "[" );
+		this.appendRepr( sb );
+		sb.append( "]" );
+		for( int i=0; i<this.parameterClassNames.length; i++ ) {
+			sb.append( "\t\t" );
+			sb.append( this.parameterClassNames[ i ] );
+			sb.append( " " );
+			sb.append( this.parameterNames[ i ] );
+		}
+		return sb.toString();
+	}
 }

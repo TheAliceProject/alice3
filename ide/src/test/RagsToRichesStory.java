@@ -55,7 +55,7 @@ import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
-import org.lgna.story.Program;
+import org.lgna.story.SProgram;
 import org.lgna.story.SProp;
 import org.lgna.story.RollDirection;
 import org.lgna.story.SScene;
@@ -84,20 +84,20 @@ class MyBiped extends SBiped {
 }
 
 class MyOgre extends MyBiped {
-	public MyOgre( org.lgna.story.resources.biped.Ogre resource ) {
+	public MyOgre( org.lgna.story.resources.biped.OgreResource resource ) {
 		super( resource );
 	}
 }
 
 class MyArmoire extends SProp {
 	public MyArmoire() {
-		super( org.lgna.story.resources.prop.Armoire.LOFT_BLACK_TRIM);
+		super( org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
 	}
 	public org.lgna.story.SJoint getLeftDoor() {
-		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
+		return this.getJoint( org.lgna.story.resources.prop.ArmoireResource.LEFT_DOOR );
 	}
 	public org.lgna.story.SJoint getRightDoor() {
-		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
+		return this.getJoint( org.lgna.story.resources.prop.ArmoireResource.RIGHT_DOOR );
 	}
 }
 
@@ -105,7 +105,7 @@ class DesertScene extends SScene {
 	private final SSun sun = new SSun();
 	private final SGround desert = new SGround();
 	private final SSphere sphere = new SSphere();
-	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.Ogre.BROWN );
+	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
 	private final org.lgna.story.SBillboard billboard = new org.lgna.story.SBillboard();
 	private final SCamera camera;
 	private final MyOgre ogre;
@@ -244,11 +244,11 @@ class SnowScene extends SScene {
 //			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 //			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 			this.ogre.delay(1);
-			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.LOFT_BLACK_TRIM);
+			this.armoire.setResource(org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
 			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-			this.ogre.setResource(org.lgna.story.resources.biped.Alien.ALIEN);
+			this.ogre.setResource(org.lgna.story.resources.biped.AlienResource.ALIEN);
 			this.ogre.delay(1);
-			this.armoire.setResource(org.lgna.story.resources.prop.Armoire.LOFT_BLACK_TRIM);
+			this.armoire.setResource(org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
 			org.lgna.common.ThreadUtilities.doTogether( new Runnable() {
 				public void run() {
@@ -273,12 +273,13 @@ class SnowScene extends SScene {
 /**
  * @author Dennis Cosgrove
  */
-class RagsToRichesStory extends Program {
+class RagsToRichesStory extends SProgram {
 
 	private final SCamera camera = new SCamera();
-//	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(), BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ) );
-	private final MyBiped susan = new MyBiped( org.lgna.story.resources.biped.Alien.ALIEN );
-	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN );
+	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(),
+
+	BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ) );
+	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 
