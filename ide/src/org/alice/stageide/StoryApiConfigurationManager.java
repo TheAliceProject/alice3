@@ -271,7 +271,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SDisc.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMarker.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThingMarker.class ) );
-		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.CameraMarker.class ) );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCameraMarker.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Paint.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MoveDirection.class ) );
