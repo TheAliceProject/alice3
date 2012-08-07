@@ -46,86 +46,15 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitPane extends View< javax.swing.JSplitPane, org.lgna.croquet.SplitComposite > {
-	private static final java.awt.Dimension MINIMUM_SIZE = new java.awt.Dimension( 24, 24 );
+public abstract class SplitPane extends AbstractSplitPane<org.lgna.croquet.SplitComposite> {
 	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation ) {
-		super( splitComposite );
-		this.getAwtComponent().setOrientation( orientation );
-		if( splitComposite != null ) {
-			org.lgna.croquet.Composite< ? > leadingComposite = splitComposite.getLeadingComposite();
-			org.lgna.croquet.Composite< ? > trailingComposite = splitComposite.getTrailingComposite();
-			this.setLeadingComponent( leadingComposite != null ? leadingComposite.getView() : null );
-			this.setTrailingComponent( trailingComposite != null ? trailingComposite.getView() : null );
-		}
+		super( splitComposite, orientation );
 	}
 	@Override
-	protected javax.swing.JSplitPane createAwtComponent() {
-		return new javax.swing.JSplitPane();
-//			@Override
-//			public void setDividerLocation(double proportionalLocation) {
-//				proportionalLocation = 1.0 - proportionalLocation;
-//				super.setDividerLocation(proportionalLocation);
-//				
-//			}
-//			@Override
-//			public void setDividerLocation(int location) {
-////				location = -location;
-//				super.setDividerLocation(location);
-//			}
-//			@Override
-//			public void setComponentOrientation(java.awt.ComponentOrientation o) {
-//				super.setComponentOrientation(o);
-//				
-//			}
-//		};
-	}
-	
-	public void setLeadingComponent( JComponent<?> component ) {
-		javax.swing.JComponent jComponent;
-		if( component != null ) {
-			jComponent = component.getAwtComponent();
-			jComponent.setMinimumSize( MINIMUM_SIZE );
-		} else {
-			jComponent = null;
-		}
-		if( this.getAwtComponent().getLeftComponent() != jComponent ) {
-			this.getAwtComponent().setLeftComponent( jComponent );
-			this.revalidateAndRepaint();
-		}
-	}
-	public void setTrailingComponent( JComponent<?> component ) {
-		javax.swing.JComponent jComponent;
-		if( component != null ) {
-			jComponent = component.getAwtComponent();
-			jComponent.setMinimumSize( MINIMUM_SIZE );
-		} else {
-			jComponent = null;
-		}
-		if( this.getAwtComponent().getRightComponent() != jComponent ) {
-			this.getAwtComponent().setRightComponent( jComponent );
-			this.revalidateAndRepaint();
-		}
-	}
-	
-	public double getResizeWeight() {
-		return this.getAwtComponent().getResizeWeight();
-	}
-	public void setResizeWeight( double resizeWeight ) {
-		this.getAwtComponent().setResizeWeight( resizeWeight );
-	}
-	public int getDividerSize() {
-		return this.getAwtComponent().getDividerSize();
-	}
-	public void setDividerSize( int dividerSize ) {
-		this.getAwtComponent().setDividerSize( dividerSize );
-	}
-	public int getDividerLocation() {
-		return this.getAwtComponent().getDividerLocation();
-	}
-	public void setDividerLocation( int dividerLocation ) {
-		this.getAwtComponent().setDividerLocation( dividerLocation );
-	}
-	public void setDividerProportionalLocation( double proportionalLocation ) {
-		this.getAwtComponent().setDividerLocation( proportionalLocation );
+	protected javax.swing.JSplitPane createJSplitPane( int orientation ) {
+		org.lgna.croquet.SplitComposite composite = this.getComposite();
+		org.lgna.croquet.Composite<?> leadingComposite = composite.getLeadingComposite();
+		org.lgna.croquet.Composite<?> trailingComposite = composite.getTrailingComposite();
+		return new javax.swing.JSplitPane( orientation, leadingComposite != null ? leadingComposite.getView().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getView().getAwtComponent() : null );
 	}
 }

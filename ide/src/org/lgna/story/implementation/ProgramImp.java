@@ -46,18 +46,54 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class ProgramImp {
-	private final org.lgna.story.Program abstraction;
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+public abstract class ProgramImp {
+	private final org.lgna.story.SProgram abstraction;
+	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+	
+	private static Object ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock = new Object();
+	private static Class<? extends ProgramImp> ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
+	private static Class<?>[] ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes;
+	private static Object[] ACCEPTABLE_HACK_FOR_NOW_bonusArguments;
+	public static void ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( Class<? extends ProgramImp> classForNextInstance, Class<?>[] bonusParameterTypes, Object[] bonusArguments ) {
+		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
+			assert ACCEPTABLE_HACK_FOR_NOW_classForNextInstance == null: ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
+			ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = classForNextInstance;
+			ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes = bonusParameterTypes;
+			ACCEPTABLE_HACK_FOR_NOW_bonusArguments = bonusArguments;
+		}
+	}
+	public static void ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( Class<? extends ProgramImp> classForNextInstance ) {
+		ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( classForNextInstance, new Class<?>[] {}, new Object[] {} );
+	}
+	
+	public static ProgramImp createInstance( org.lgna.story.SProgram abstraction ) {
+		ProgramImp rv;
+		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
+			if( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance != null ) {
+				
+				Class<?>[] parameterTypes = new Class<?>[ ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes.length + 1 ];
+				parameterTypes[ 0 ] = org.lgna.story.SProgram.class;
+				System.arraycopy( ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes, 0, parameterTypes, 1, ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes.length );
+				
+				Object[] arguments = new Object[ ACCEPTABLE_HACK_FOR_NOW_bonusArguments.length + 1 ];
+				arguments[ 0 ] = abstraction;
+				System.arraycopy( ACCEPTABLE_HACK_FOR_NOW_bonusArguments, 0, arguments, 1, ACCEPTABLE_HACK_FOR_NOW_bonusArguments.length );
 
-	public static final Double CLOCK_BASED_FRAME_RATE = null;
-	private Double frameRate = CLOCK_BASED_FRAME_RATE;
-	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator;
-	private edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator;
+				java.lang.reflect.Constructor< ? extends ProgramImp > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance, parameterTypes );
+				assert cnstrctr != null : ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
+				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, arguments );
+				ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = null;
+			} else {
+				rv = new DefaultProgramImp( abstraction );
+			}
+		}
+		return rv;
+	}
 	
 	private double simulationSpeedFactor = 1.0; 
-	public ProgramImp( org.lgna.story.Program abstraction ) {
+	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		this.abstraction = abstraction;
+		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
 	private final class ControlPanel extends javax.swing.JPanel {
@@ -161,7 +197,7 @@ public class ProgramImp {
 		}
 		this.getAnimator().setSpeedFactor( speedFactor );
 	}
-	private void handleSpeedChange( double speedFactor ) {
+	protected void handleSpeedChange( double speedFactor ) {
 		this.getAnimator().setSpeedFactor( speedFactor );
 	}
 	
@@ -173,67 +209,22 @@ public class ProgramImp {
 		this.restartAction = restartAction;
 	}
 	
-	protected javax.swing.JComponent createControlPanelIfDesired() {
-		return new ControlPanel();
+	private boolean isControlPanelDesired = true;
+	public boolean isControlPanelDesired() {
+		return this.isControlPanelDesired;
+	}
+	public void setControlPanelDesired( boolean isControlPanelDesired ) {
+		this.isControlPanelDesired = isControlPanelDesired;
 	}
 
-	public org.lgna.story.Program getAbstraction() {
+	public org.lgna.story.SProgram getAbstraction() {
 		return this.abstraction;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		if( this.onscreenLookingGlass != null ) {
-			//pass
-		} else {
-			this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass();
-			//this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenLookingGlass();
-		}
 		return this.onscreenLookingGlass;
 	}
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
-	}
 	
-	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator getClockBasedAnimator() {
-		if( this.clockBasedAnimator != null ) {
-			//pass
-		} else {
-			this.clockBasedAnimator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-		}
-		return this.clockBasedAnimator;
-	}
-	private edu.cmu.cs.dennisc.animation.FrameBasedAnimator getFrameBasedAnimator() {
-		if( this.frameBasedAnimator != null ) {
-			//pass
-		} else {
-			this.frameBasedAnimator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
-		}
-		return this.frameBasedAnimator;
-	}
-	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
-		if( this.frameRate == CLOCK_BASED_FRAME_RATE ) {
-			return this.getClockBasedAnimator();
-		} else {
-			return this.getFrameBasedAnimator();
-		}
-	}
-	
-	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_setClockBasedAnimator( edu.cmu.cs.dennisc.animation.ClockBasedAnimator clockBasedAnimator ) {
-		this.clockBasedAnimator = clockBasedAnimator;
-	}
-	
-	public Double getFrameRate() {
-		return this.frameRate;
-	}
-	public void setFrameRate( Double frameRate ) {
-		this.frameRate = frameRate;
-		if( this.frameRate == CLOCK_BASED_FRAME_RATE ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.animation.FrameBasedAnimator frameBasedAnimator = this.getFrameBasedAnimator();
-			frameBasedAnimator.setFramesPerSecond( frameRate );
-		}
-	}
-	
+	public abstract edu.cmu.cs.dennisc.animation.Animator getAnimator();
 	public double getSimulationSpeedFactor() {
 		return this.simulationSpeedFactor;
 	}
@@ -266,39 +257,58 @@ public class ProgramImp {
 		}
 	}
 	
-	private void addComponents( java.awt.Container container ) {
-		synchronized( container.getTreeLock() ) {
-			java.awt.Component awtComponent = this.getOnscreenLookingGlass().getAWTComponent();
-			container.add( awtComponent );
-			javax.swing.JComponent controlPanel = this.createControlPanelIfDesired();
-			if( controlPanel != null ) {
-				container.add( controlPanel, java.awt.BorderLayout.PAGE_START );
+	private void addComponents( AwtContainerInitializer awtContainerInitializer ) {
+		java.awt.Component awtLgComponent = this.getOnscreenLookingGlass().getAWTComponent();
+		synchronized( awtLgComponent.getTreeLock() ) {
+			javax.swing.JPanel controlPanel;
+			if( this.isControlPanelDesired() ) {
+				controlPanel = new ControlPanel();
+			} else {
+				controlPanel = null;
 			}
-			if (container instanceof javax.swing.JComponent	) {
-				((javax.swing.JComponent)container).revalidate();
-			}
+			awtContainerInitializer.addComponents( onscreenLookingGlass, controlPanel );
 		}
 	}
 	
 	private void requestFocusInWindow() {
 		this.getOnscreenLookingGlass().getAWTComponent().requestFocusInWindow();
 	}
+	public static interface AwtContainerInitializer {
+		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel );
+	}
+	private static class DefaultAwtContainerInitializer implements AwtContainerInitializer {
+		private final java.awt.Container awtContainer;
+		public DefaultAwtContainerInitializer( java.awt.Container awtContainer ) {
+			this.awtContainer = awtContainer;
+		}
+		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
+			this.awtContainer.add( onscreenLookingGlass.getAWTComponent() );
+			if( controlPanel != null ) {
+				this.awtContainer.add( controlPanel, java.awt.BorderLayout.PAGE_START );
+			}
+			if (this.awtContainer instanceof javax.swing.JComponent	) {
+				((javax.swing.JComponent)this.awtContainer).revalidate();
+			}
+		}
+	}
 	
+	public void initializeInAwtContainer( AwtContainerInitializer awtContainerInitializer ) {
+		this.addComponents( awtContainerInitializer );
+		this.startAnimator();
+		this.requestFocusInWindow();
+	}
+	public void initializeInAwtContainer( java.awt.Container awtContainer ) {
+		this.initializeInAwtContainer( new DefaultAwtContainerInitializer( awtContainer ) );
+	}
 	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				ProgramImp.this.addComponents( frame.getContentPane() );
+				ProgramImp.this.addComponents( new DefaultAwtContainerInitializer( frame.getContentPane() ) );
 				frame.setVisible( true );
 				runnable.run();
 				requestFocusInWindow();
 			}
 		} );
-	}
-	public void initializeInAwtContainer( java.awt.Container container ) {
-		assert container.getLayout() instanceof java.awt.BorderLayout;
-		this.addComponents( container );
-		this.startAnimator();
-		this.requestFocusInWindow();
 	}
 	public void initializeInFrame( javax.swing.JFrame frame ) {
 		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
@@ -323,7 +333,7 @@ public class ProgramImp {
 		this.startAnimator();
 	}
 	public void initializeInApplet( javax.swing.JApplet applet ) {
-		this.addComponents( applet.getContentPane() );
+		this.addComponents( new DefaultAwtContainerInitializer( applet.getContentPane() ) );
 		this.startAnimator();
 	}
 	private boolean isProgramClosedExceptionDesired = false;

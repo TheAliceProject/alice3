@@ -70,8 +70,6 @@ public class IngredientsPanel extends org.lgna.croquet.components.BorderPanel {
 		this.tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createFolderTabbedPane();
 		this.tabbedPane.scaleFont( 1.5f );
 
-		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel();
-		northPane.addComponent( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton(), Constraint.PAGE_START );
 		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
@@ -81,12 +79,16 @@ public class IngredientsPanel extends org.lgna.croquet.components.BorderPanel {
 				return rv;
 			}
 		};
-		ubiquitousPane.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
+		ubiquitousPane.setBackgroundColor( MainPanel.BACKGROUND_COLOR );
 
-		this.addComponent( northPane, Constraint.PAGE_START );
-		this.addComponent( this.tabbedPane, Constraint.CENTER );
-		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel.Builder()
+			.pageStart( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton() )
+			.center( ubiquitousPane )
+		.build();
+
+		this.addPageStartComponent( northPane );
+		this.addCenterComponent( this.tabbedPane );
+		this.setBackgroundColor( MainPanel.BACKGROUND_COLOR );
 
 		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueListener( this.baseSkinToneObserver );
 	}

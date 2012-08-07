@@ -58,7 +58,7 @@ public class CameraMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 	}
 
 	public CameraMarkerFieldDeclarationOperation() {
-		super( java.util.UUID.fromString( "93addd81-69ea-4fc9-9664-f641229cbf5d" ),  org.lgna.story.BookmarkCameraMarker.class );
+		super( java.util.UUID.fromString( "93addd81-69ea-4fc9-9664-f641229cbf5d" ),  org.lgna.story.SCameraMarker.class );
 	}
 	
 	@Override

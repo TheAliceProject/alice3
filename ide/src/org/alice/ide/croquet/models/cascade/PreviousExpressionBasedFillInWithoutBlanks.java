@@ -51,10 +51,15 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 		super( id );
 	}
 	private org.lgna.project.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().getPreviousExpression();
+		return org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 	}
 	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
-		return org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
+		org.lgna.project.ast.Expression prevExpression = this.getPreviousExpression();
+		if( prevExpression != null ) {
+			return org.alice.ide.IDE.getActiveInstance().createCopy( prevExpression );
+		} else {
+			return null;
+		}
 	}
 //	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
 //	@Override
@@ -76,11 +81,11 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 
 	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
 	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}
 	@Override
-	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
 		//todo?
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}

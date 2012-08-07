@@ -59,7 +59,11 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite<org.alic
 	}
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
-		return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
+		if( super.contains( model ) ) {
+			return true;
+		} else {
+			return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
+		}
 	}
 	@Override
 	protected org.alice.ide.members.components.ProceduresContentPanel createView() {

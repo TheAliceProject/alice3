@@ -5,9 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Model;
+import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.LeavesViewEvent;
@@ -21,21 +21,21 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEvent> {
 
 	private CameraImp camera;
-	private Map<Model,List<Object>> map = Collections.newHashMap();
-	private Map<Model,Boolean> wasInView = Collections.newHashMap();
+	private Map<SModel,List<Object>> map = Collections.newHashMap();
+	private Map<SModel,Boolean> wasInView = Collections.newHashMap();
 
 	@Override
-	protected void check( Entity changedEntity ) {
+	protected void check( SThing changedThing ) {
 		if( camera == null ) { //should not really be hit
-			camera = ImplementationAccessor.getImplementation( changedEntity ).getScene().findFirstCamera();
+			camera = ImplementationAccessor.getImplementation( changedThing ).getScene().findFirstCamera();
 			if( camera == null ) {
 				return;
 			} else {
 				camera.getSgComposite().addAbsoluteTransformationListener( this );
 			}
 		}
-		if( changedEntity == camera.getAbstraction() ) {
-			for( Model model : map.keySet() ) {
+		if( changedThing == camera.getAbstraction() ) {
+			for( SModel model : map.keySet() ) {
 				for( Object listener : map.get( model ) ) {
 					if( check( listener, model ) ) {
 						ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( model ) : new LeavesViewEvent( model );
@@ -45,33 +45,33 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 				wasInView.put( model, IsInViewDetector.isThisInView( model, camera ) );
 			}
 		} else {
-			for( Object listener : map.get( changedEntity ) ) {
-				if( check( listener, changedEntity ) ) {
-					ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( (Model)changedEntity ) : new LeavesViewEvent( (Model)changedEntity );
+			for( Object listener : map.get( changedThing ) ) {
+				if( check( listener, changedThing ) ) {
+					ViewEvent event = listener instanceof ViewEnterListener ? new ComesIntoViewEvent( (SModel)changedThing ) : new LeavesViewEvent( (SModel)changedThing );
 					fireEvent( listener, event );
 				}
 			}
-			wasInView.put( (Model)changedEntity, IsInViewDetector.isThisInView( changedEntity, camera ) );
+			wasInView.put( (SModel)changedThing, IsInViewDetector.isThisInView( changedThing, camera ) );
 		}
 	}
 
 	@Override
-	protected void ammend( Object key, int i, Entity newObject ) {
+	protected void ammend( Object key, int i, SThing newObject ) {
 	}
 
-	private boolean check( Object listener, Entity changedEntity ) {
+	private boolean check( Object listener, SThing changedThing ) {
 		boolean rv = false;
-		boolean thisInView = IsInViewDetector.isThisInView( changedEntity, camera );
-		if( wasInView.get( changedEntity ) == null ) {
-			wasInView.put( (Model)changedEntity, thisInView );
+		boolean thisInView = IsInViewDetector.isThisInView( changedThing, camera );
+		if( wasInView.get( changedThing ) == null ) {
+			wasInView.put( (SModel)changedThing, thisInView );
 			return false;
 		}
 		if( listener instanceof ViewEnterListener ) {
-			if( thisInView && !wasInView.get( changedEntity ) ) {
+			if( thisInView && !wasInView.get( changedThing ) ) {
 				rv = true;
 			}
 		} else if( listener instanceof ViewExitListener ) {
-			if( !thisInView && wasInView.get( changedEntity ) ) {
+			if( !thisInView && wasInView.get( changedThing ) ) {
 				rv = true;
 			}
 		}
@@ -89,11 +89,11 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 		}
 	}
 
-	public <A extends Model> void addViewEventListener( Object listener, ArrayList<A> models, Class<A> a, MultipleEventPolicy policy ) {
+	public <A extends SModel> void addViewEventListener( Object listener, ArrayList<A> models, Class<A> a, MultipleEventPolicy policy ) {
 		super.addSoloListener( listener, models, a, policy );
 		registerIsFiringMap( listener );
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
-		for( Model m : models ) {
+		for( SModel m : models ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
@@ -103,7 +103,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 				}
 			}
 		}
-		for( Model model : models ) {
+		for( SModel model : models ) {
 			if( map.get( model ) == null ) {
 				map.put( model, new LinkedList<Object>() );
 			}

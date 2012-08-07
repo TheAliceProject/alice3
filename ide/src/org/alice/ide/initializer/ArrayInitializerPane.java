@@ -416,7 +416,7 @@ public class ArrayInitializerPane extends org.lgna.croquet.components.BorderPane
         scrollPane.setBothScrollBarIncrements( 12, 24 );
         //pageAxisPanel.getAwtComponent().setOpaque( false );
         pageAxisPanel.setBackgroundColor( null );
-        this.addComponent( scrollPane, Constraint.CENTER );
+        this.addCenterComponent( scrollPane );
         this.setMinimumPreferredHeight( 240 );
     }
 } 

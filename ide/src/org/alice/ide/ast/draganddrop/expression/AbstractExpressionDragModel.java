@@ -65,11 +65,19 @@ public abstract class AbstractExpressionDragModel extends org.alice.ide.ast.drag
 //		}
 //		return rv;
 //	}
+	public abstract boolean isPotentialStatementCreator();
 	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty );
+	protected abstract org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair );
 	@Override
 	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		assert dropSite instanceof org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
-		org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite expressionPropertyDropSite = (org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite)dropSite;
-		return this.getDropModel( expressionPropertyDropSite.getExpressionProperty() );
+		if( dropSite instanceof org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite ) {
+			org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite expressionPropertyDropSite = (org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite)dropSite;
+			return this.getDropModel( expressionPropertyDropSite.getExpressionProperty() );
+		} else if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
+			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
+			return this.getDropModel( blockStatementIndexPair );
+		} else {
+			return null;
+		}
 	}
 }

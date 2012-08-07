@@ -52,9 +52,9 @@ public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColo
 	protected DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory() {
 		super();
 	}
-	public static TextFont font( Font font ) {
-		return new TextFont(font);
-	}
+//	public static TextFont font( Font font ) {
+//		return new TextFont(font);
+//	}
 	public static TextColor fontColor( Color color ) {
 		return new TextColor(color);
 	}

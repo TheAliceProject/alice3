@@ -46,8 +46,8 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class StateChangeEvent< T > extends Event< org.lgna.croquet.history.StateChangeStep > {
-	public StateChangeEvent( org.lgna.croquet.history.StateChangeStep step ) {
+public class StateChangeEvent<T> extends Event<org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<T>>> {
+	public StateChangeEvent( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<T>> step ) {
 		super( step );
 	}
 }

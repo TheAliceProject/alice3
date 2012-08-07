@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectTabSelectionState extends org.lgna.croquet.TabSelectionState< ContentTab > {
+public class ProjectTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState< ContentTab > {
 	private static class SingletonHolder {
 		private static ProjectTabSelectionState instance = new ProjectTabSelectionState();
 	}
@@ -55,9 +55,9 @@ public class ProjectTabSelectionState extends org.lgna.croquet.TabSelectionState
 	}
 	private ProjectTabSelectionState() {
 		super( 
-				org.lgna.croquet.Application.UI_STATE_GROUP,
+				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
 				java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ), 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( ContentTab.class ), 
+				ContentTab.class, 
 				-1, 
 				TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance()
 		);

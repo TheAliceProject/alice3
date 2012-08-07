@@ -63,7 +63,7 @@ public class NebulousResourceDirectoryState extends DirectoryState {
 	}
 	private NebulousResourceDirectoryState() {
 		super( 
-				org.lgna.croquet.Application.UI_STATE_GROUP, 
+				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
 				java.util.UUID.fromString( "b6fc2151-fe58-498d-9c91-cd6335bb0646" ), 
 				getInitialValue() 
 		);

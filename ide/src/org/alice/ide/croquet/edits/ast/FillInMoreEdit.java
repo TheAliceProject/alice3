@@ -111,16 +111,16 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 //		this.getModel().updateToolTipText();
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
 		org.lgna.project.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
 			rv.append( "more: " );
-			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), locale );
+			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), org.lgna.croquet.Application.getLocale() );
 			rv.append( " " );
 			final int N = nextMethodInvocation.requiredArguments.size(); 
 			org.lgna.project.ast.AbstractArgument argument = nextMethodInvocation.requiredArguments.get( N-1 );
-			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, argument, locale );
+			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, argument, org.lgna.croquet.Application.getLocale() );
 		}
 		return rv;
 	}

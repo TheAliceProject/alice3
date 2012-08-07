@@ -155,12 +155,21 @@ public class IncompleteAstUtilities {
 	public static org.lgna.project.ast.ReturnStatement createIncompleteReturnStatement( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		return org.lgna.project.ast.AstUtilities.createReturnStatement( type, new EmptyExpression( type ) );
 	}
+	public static org.lgna.project.ast.AssignmentExpression createIncompleteLocalAssignment( org.lgna.project.ast.UserLocal local ) {
+		return org.lgna.project.ast.AstUtilities.createLocalAssignment( local, new EmptyExpression( local.valueType.getValue() ) );
+	}
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteLocalAssignmentStatement( org.lgna.project.ast.UserLocal local ) {
 		return org.lgna.project.ast.AstUtilities.createLocalAssignmentStatement( local, new EmptyExpression( local.valueType.getValue() ) );
 	}
 
+	public static org.lgna.project.ast.AssignmentExpression createIncompleteLocalArrayAssignment( org.lgna.project.ast.UserLocal local ) {
+		return org.lgna.project.ast.AstUtilities.createLocalArrayAssignment( local, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( local.valueType.getValue().getComponentType() ) );
+	}
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteLocalArrayAssignmentStatement( org.lgna.project.ast.UserLocal local ) {
 		return org.lgna.project.ast.AstUtilities.createLocalArrayAssignmentStatement( local, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( local.valueType.getValue().getComponentType() ) );
+	}
+	public static org.lgna.project.ast.AssignmentExpression createIncompleteParameterArrayAssignment( org.lgna.project.ast.UserParameter parameter ) {
+		return org.lgna.project.ast.AstUtilities.createParameterArrayAssignment( parameter, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
 	}
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( org.lgna.project.ast.UserParameter parameter ) {
 		return org.lgna.project.ast.AstUtilities.createParameterArrayAssignmentStatement( parameter, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );

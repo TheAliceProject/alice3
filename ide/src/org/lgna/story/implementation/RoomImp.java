@@ -177,14 +177,12 @@ public class RoomImp extends VisualScaleModelImp {
 				bottomRight.position.set(rightVals.x, 0, rightVals.z);
 				edu.cmu.cs.dennisc.scenegraph.Vertex bottomLeft = sgVertices[i*4 + 3];
 				bottomLeft.position.set(leftVals.x, 0, leftVals.z);
-				
-				System.out.println("Wall "+i+": "+topLeft.position+", "+bottomLeft.position+", "+bottomRight.position+", "+topRight.position);
 			}
 		}
 	}
 	
 	
-	private final org.lgna.story.Room abstraction;
+	private final org.lgna.story.SRoom abstraction;
 
 	private final WallSurface walls = new WallSurface();
 	private final edu.cmu.cs.dennisc.scenegraph.HorizontalSurface floor = new edu.cmu.cs.dennisc.scenegraph.HorizontalSurface(true);
@@ -194,19 +192,19 @@ public class RoomImp extends VisualScaleModelImp {
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
 	
-	public RoomImp( org.lgna.story.Room abstraction ) {
+	public RoomImp( org.lgna.story.SRoom abstraction ) {
 		this(abstraction, 10, 3, 10);
 	}
 	
-	public RoomImp( org.lgna.story.Room abstraction, float width, float height, float depth) {
+	public RoomImp( org.lgna.story.SRoom abstraction, float width, float height, float depth) {
 		this.abstraction = abstraction;
 		this.internalSetSize(width, height, depth);
 		this.walls.setParent(this.getSgComposite());
 		this.walls.setTiling((float)(width/2), (float)(depth/2));
 		this.floor.setParent(this.getSgComposite());
-		this.floor.setTiling(width/2, depth/2);
+		this.floor.setTiling(width, depth);
 		this.ceiling.setParent(this.getSgComposite());
-		this.ceiling.setTiling(width/2, depth/2);
+		this.ceiling.setTiling(width, depth);
 	}
 	
 	private void internalSetSize(float width, float height, float depth) {
@@ -215,10 +213,13 @@ public class RoomImp extends VisualScaleModelImp {
 		this.floor.setSize(width, depth, 0);
 	}
 	
-	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		internalSetSize((float)size.x, (float)size.y, (float)size.z);
+	}
 	
 	@Override
-	public org.lgna.story.Room getAbstraction() {
+	public org.lgna.story.SRoom getAbstraction() {
 		return this.abstraction;
 	}
 

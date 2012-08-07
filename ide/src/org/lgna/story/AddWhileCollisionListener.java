@@ -52,7 +52,7 @@ public class AddWhileCollisionListener {
 	public interface Detail {
 	}
 
-	public static <T extends MovableTurnable> ArrayList<T> getGroupOne( Detail[] details, Class<T> cls ) {
+	public static <T extends SMovableTurnable> ArrayList<T> getGroupOne( Detail[] details, Class<T> cls ) {
 		for( Detail detail : details ) {
 			if( detail instanceof EventCollection ) {
 				EventCollection eCollection = (EventCollection)detail;
@@ -63,7 +63,7 @@ public class AddWhileCollisionListener {
 		}
 		return null;
 	}
-	public static <T extends MovableTurnable> ArrayList<T> getGroupTwo( Detail[] details, Class<T> cls ) {
+	public static <T extends SMovableTurnable> ArrayList<T> getGroupTwo( Detail[] details, Class<T> cls ) {
 		EventCollection firstCollection = null;
 		for( Detail detail : details ) {
 			if( detail instanceof EventCollection ) {

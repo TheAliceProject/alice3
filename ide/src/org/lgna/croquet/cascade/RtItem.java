@@ -123,8 +123,8 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		}
 		return rv;
 	}
-	public F createValue() {
-		return this.getElement().createValue( this.getNode() );
+	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		return this.getElement().createValue( this.getNode(), transactionHistory );
 	}
 	protected boolean isLast() {
 		return this.getNextNode() == null;
@@ -281,7 +281,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		org.lgna.croquet.components.ViewController< ?, ? > rv;
 		javax.swing.JMenuItem jMenuItem;
 		if( isLast ) {
-			org.lgna.croquet.components.CascadeMenuItem menuItem = new org.lgna.croquet.components.CascadeMenuItem( item );
+			org.lgna.croquet.components.CascadeMenuItem menuItem = new org.lgna.croquet.components.CascadeMenuItem( item, this.getRtRoot() );
 			menuItem.getAwtComponent().addActionListener( this.actionListener );
 			jMenuItem = menuItem.getAwtComponent();
 			rv = menuItem;

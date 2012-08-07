@@ -71,19 +71,19 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			return this.valueInputDialogOperation;
 		}
 		@Override
-		protected InternalFillInResolver<F> createResolver() {
-			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.valueInputDialogOperation.getClassUsedForLocalization();
 		}
 		@Override
-		protected String getTutorialItemText() {
-			return this.valueInputDialogOperation.getDefaultLocalizedText();
+		protected InternalFillInResolver<F> createResolver() {
+			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
 		}
 		@Override
 		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
 			return new javax.swing.JLabel( this.getTutorialItemText() );
 		}
 		@Override
-		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 			org.lgna.croquet.history.CompletionStep<?> inputDialogStep = this.valueInputDialogOperation.fire();
 			if( inputDialogStep.containsEphemeralDataFor( VALUE_KEY ) ) {
 				return (F)inputDialogStep.getEphemeralDataFor( VALUE_KEY );
@@ -92,17 +92,20 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			}
 		}
 		@Override
-		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
 			return null;
 		}
-		
+
 		@Override
-		protected StringBuilder appendRepr( StringBuilder rv ) {
-			super.appendRepr( rv );
-			rv.append( "[" );
-			rv.append( this.getInputDialogOperation() );
-			rv.append( "]" );
+		protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.Edit<?> edit ) {
+			rv.append( this.getTutorialItemText() );
 			return rv;
+		}
+		@Override
+		protected void appendRepr( StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( "owner=" );
+			sb.append( this.getInputDialogOperation() );
 		}
 	}
 
@@ -125,6 +128,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			T value = this.createValue( step );
 			if( value != null ) {
 				step.putEphemeralDataFor( VALUE_KEY, value );
+				step.finish();
 			} else {
 				step.cancel();
 			}

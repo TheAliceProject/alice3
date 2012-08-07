@@ -47,6 +47,20 @@ package org.alice.ide.choosers;
  */
 public abstract class AbstractRowsPaneChooser<E extends org.lgna.project.ast.Expression> extends ValueChooser< E > {
 	private static final String[] LABEL_TEXTS = { "value:" };
+	@Override
+	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+		org.lgna.project.ast.Expression expression;
+		try {
+			expression = this.getValue();
+		} catch( RuntimeException re ) {
+			//re.printStackTrace();
+			expression = new org.lgna.project.ast.NullLiteral();
+		}
+		
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
+		.build();
+	}
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}

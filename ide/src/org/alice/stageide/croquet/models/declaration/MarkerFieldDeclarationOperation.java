@@ -69,7 +69,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		}
 	};
 
-	public MarkerFieldDeclarationOperation(java.util.UUID id, Class<? extends org.lgna.story.Marker> markerCls) {
+	public MarkerFieldDeclarationOperation(java.util.UUID id, Class<? extends org.lgna.story.SMarker> markerCls) {
 		super( 
 				id, 
 				org.lgna.project.ast.JavaType.getInstance( markerCls ), false, 
@@ -116,7 +116,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	@Override
 	protected void localize() {
 		super.localize();
-		this.colorFieldLabel = this.findLocalizedText( "colorFieldLabel", MarkerFieldDeclarationOperation.class );
+		this.colorFieldLabel = this.findLocalizedText( "colorFieldLabel" );
 	}
 	
 	
@@ -129,7 +129,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	}
 
 	public org.alice.ide.croquet.models.ast.PropertyState getColorIdState() {
-		return this.getStateForGetter( org.lgna.story.Marker.class, "getColorId" );
+		return this.getStateForGetter( org.lgna.story.SMarker.class, "getColorId" );
 	}
 	
 	public String getColorFieldLabel() {

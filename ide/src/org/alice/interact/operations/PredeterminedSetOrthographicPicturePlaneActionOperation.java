@@ -110,7 +110,7 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 				setPicturePlaneHeight( previousPicturePlaneHeight );
 			}
 			@Override
-			protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+			protected StringBuilder updatePresentation( StringBuilder rv ) {
 				rv.append( editPresentationKey );
 				return rv;
 			}

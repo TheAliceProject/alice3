@@ -1,6 +1,6 @@
 package org.lgna.story.event;
 
-public abstract class CollisionEvent<A extends org.lgna.story.MovableTurnable, B extends org.lgna.story.MovableTurnable> extends AbstractEvent {
+public abstract class CollisionEvent<A extends org.lgna.story.SMovableTurnable, B extends org.lgna.story.SMovableTurnable> extends AbstractEvent {
 	private A collidingFromA;
 	private B collidingFromB;
 

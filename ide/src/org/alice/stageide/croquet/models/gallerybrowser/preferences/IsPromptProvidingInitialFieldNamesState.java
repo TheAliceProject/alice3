@@ -53,6 +53,6 @@ public class IsPromptProvidingInitialFieldNamesState extends org.lgna.croquet.pr
 		return SingletonHolder.instance;
 	}
 	private IsPromptProvidingInitialFieldNamesState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), true );
 	}
 }

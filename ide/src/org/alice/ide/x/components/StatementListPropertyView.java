@@ -415,9 +415,11 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 				rv.y = lastComponent.getY() + lastComponent.getHeight();
 				rv.yPlusHeight = null;
 			} else {
-				org.lgna.croquet.components.Component< ? > component = this.getComponent( index );
-				rv.y = component.getY();
-				rv.yPlusHeight = rv.y + component.getHeight();
+				if( index < this.getComponentCount() ) {
+					org.lgna.croquet.components.Component< ? > component = this.getComponent( index );
+					rv.y = component.getY();
+					rv.yPlusHeight = rv.y + component.getHeight();
+				}
 			}
 		}
 		return rv;

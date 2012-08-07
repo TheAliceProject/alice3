@@ -1,6 +1,6 @@
 package org.lgna.story.event;
 
-public class PointOfViewEvent<A extends org.lgna.story.MovableTurnable> extends AbstractEvent {
+public class PointOfViewEvent<A extends org.lgna.story.SMovableTurnable> extends AbstractEvent {
 	private final A entity;
 
 	public PointOfViewEvent( A entity ) {

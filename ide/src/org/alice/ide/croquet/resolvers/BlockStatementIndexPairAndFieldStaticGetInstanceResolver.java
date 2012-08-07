@@ -47,46 +47,20 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractField.class };
 	public BlockStatementIndexPairAndFieldStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade instance ) {
-		super( instance );
+		super( instance, 
+				new Class[] { 
+					org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, 
+					org.lgna.project.ast.AbstractField.class 
+				}, 
+				new Object[] {
+					instance.getBlockStatementIndexPair(),
+					instance.getField()
+				}
+		);
 	}
 	public BlockStatementIndexPairAndFieldStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-
-	@Override
-	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
-		super.performCustomRetargeting( retargeter );
-		Object[] arguments = this.getArguments();
-		assert arguments != null;
-		assert arguments.length == 2;
-		//arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-		
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
-		org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
-		blockStatement = retargeter.retarget( blockStatement );
-		int index = blockStatementIndexPair.getIndex();
-		
-		
-		arguments[ 0 ] = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
-		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
-	}
-
-	@Override
-	protected Class< org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade.class;
-	}
-	@Override
-	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class< org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade > cls ) {
-		//note: do not call super
-	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 
 	@Override
@@ -98,8 +72,10 @@ public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends or
 		return new Object[] { blockStatementIndexPair, field };
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getBlockStatementIndexPair() );
-		binaryEncoder.encode( this.getInstance().getField().getId() );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
+		org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)arguments[ 1 ];
+		binaryEncoder.encode( blockStatementIndexPair );
+		binaryEncoder.encode( field.getId() );
 	}
 }

@@ -7,9 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
@@ -21,15 +21,14 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L,E> implements AbsoluteTransformationListener {
-
 	HashMap<Visual,LinkedList<Object>> eventMap = new HashMap<Visual,LinkedList<Object>>();
 	List<L> listenerList = Collections.newLinkedList();
-	List<Entity> modelList = Collections.newLinkedList();
+	List<SThing> modelList = Collections.newLinkedList();
 	private Map<Object,Class[]> checkNewMap = Collections.newHashMap();
 
-	public final void fireAllTargeted( Entity changedEntity ) {
+	public final void fireAllTargeted( SThing changedThing ) {
 		if( shouldFire ) {
-			check( changedEntity );
+			check( changedThing );
 		}
 	}
 
@@ -38,7 +37,7 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 			for( int i = 0; i != checkNewMap.get( key ).length; ++i ) {
 				Class cls = checkNewMap.get( key )[ i ];
 				if( cls != null ) {
-					Entity abstraction = created.getAbstraction();
+					SThing abstraction = created.getAbstraction();
 					if( checkNewMap.get( key )[ 1 - i ] == null || cls.isAssignableFrom( abstraction.getClass() ) && !checkNewMap.get( key )[ 1 - i ].isAssignableFrom( cls ) ) {
 						ammend( key, i, abstraction );
 					}
@@ -47,11 +46,11 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 		}
 	}
 
-	protected abstract void ammend( Object key, int i, Entity newObject );
+	protected abstract void ammend( Object key, int i, SThing newObject );
 
-	protected abstract void check( Entity changedEntity );
+	protected abstract void check( SThing changedThing );
 
-	protected <A extends MovableTurnable> ArrayList<A> addSoloListener( Object listener, ArrayList<A> groupOne, Class<A> a, MultipleEventPolicy policy ) {
+	protected <A extends SMovableTurnable> ArrayList<A> addSoloListener( Object listener, ArrayList<A> groupOne, Class<A> a, MultipleEventPolicy policy ) {
 		registerIsFiringMap( listener );
 		registerPolicyMap( (L)listener, policy );
 		Class<?>[] clsArr = { a };
@@ -68,8 +67,8 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 			checkNewMap.put( listener, checkClassArr );
 		}
 		EventBuilder.register( listener, clsArr, firstList );
-		List<Entity> allObserving = (List<Entity>)Collections.newArrayList( (Collection<? extends Entity>)firstList );
-		for( Entity m : allObserving ) {
+		List<SThing> allObserving = (List<SThing>)Collections.newArrayList( (Collection<? extends SThing>)firstList );
+		for( SThing m : allObserving ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
@@ -78,7 +77,7 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 		return firstList;
 	}
 
-	protected <A extends MovableTurnable, B extends MovableTurnable> ArrayList[] addPairedListener( Object listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
+	protected <A extends SMovableTurnable, B extends SMovableTurnable> ArrayList[] addPairedListener( Object listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
 		registerIsFiringMap( listener );
 		registerPolicyMap( (L)listener, policy );
 		Class<?>[] clsArr = { a, b };
@@ -123,9 +122,9 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 		}
 		list = Collections.newArrayList( firstList, secondList );
 		EventBuilder.register( listener, clsArr, list );
-		List<Entity> allObserving = (List<Entity>)Collections.newArrayList( (Collection<? extends Entity>)firstList );
-		allObserving.addAll( (Collection<? extends Entity>)secondList );
-		for( Entity m : allObserving ) {
+		List<SThing> allObserving = (List<SThing>)Collections.newArrayList( (Collection<? extends SThing>)firstList );
+		allObserving.addAll( (Collection<? extends SThing>)secondList );
+		for( SThing m : allObserving ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
@@ -136,7 +135,7 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 	}
 
 	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
-		Entity source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
+		SThing source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
 		fireAllTargeted( source );
 	}
 }

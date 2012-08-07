@@ -46,17 +46,13 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardComposite extends Composite< org.lgna.croquet.components.CardPanel > {
+public abstract class CardComposite extends AbstractComposite< org.lgna.croquet.components.CardPanel > {
 	private final java.util.List< Composite< ? > > cards;
 	private Composite<?> showingCard;
 	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
 		super( id );
 		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
 	}
-	@Override
-	protected void localize() {
-	}
-	
 	public void addCard( Composite<?> card ) {
 		this.cards.add( card );
 		org.lgna.croquet.components.CardPanel view = this.peekView();
@@ -67,16 +63,23 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	public void removeCard( Composite<?> card ) {
 		this.cards.remove( card );
 	}
+	public Composite<?> getShowingCard() {
+		return this.showingCard;
+	}
 	
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
-		for( Composite< ? > card : this.cards ) {
-			//todo
-			if( card.contains( model ) ) {
-				return true;
+		if( super.contains( model ) ) {
+			return true;
+		} else {
+			for( Composite< ? > card : this.cards ) {
+				//todo
+				if( card.contains( model ) ) {
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
 	}
 	public java.util.List< Composite< ? >> getCards() {
 		return this.cards;
@@ -96,7 +99,7 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 	public void showCard( Composite< ? > card ) {
 		synchronized( this.getView().getTreeLock() ) {
 			if( this.showingCard != null ) {
-				this.showingCard.handlePostDectivation();
+				this.showingCard.handlePostDeactivation();
 			}
 			this.showingCard = card;
 			if( this.showingCard != null ) {
@@ -113,10 +116,10 @@ public abstract class CardComposite extends Composite< org.lgna.croquet.componen
 		}
 	}
 	@Override
-	public void handlePostDectivation() {
+	public void handlePostDeactivation() {
 		if( this.showingCard != null ) {
-			this.showingCard.handlePostDectivation();
+			this.showingCard.handlePostDeactivation();
 		}
-		super.handlePostDectivation();
+		super.handlePostDeactivation();
 	}
 }

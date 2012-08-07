@@ -45,8 +45,54 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.CascadeRoot.InternalPopupPrepModel< org.lgna.project.ast.Expression > > implements org.lgna.croquet.DropReceptor {
-	private org.lgna.project.ast.ExpressionProperty expressionProperty;
+public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.CascadeRoot.InternalPopupPrepModel< org.lgna.project.ast.Expression > > {
+	private class ExpressionPropertyDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+			return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
+		}
+		public void dragStarted( org.lgna.croquet.history.DragStep dragStep ) {
+		}
+		public void dragEntered( org.lgna.croquet.history.DragStep dragStep ) {
+			dragStep.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), ExpressionPropertyDropDownPane.this.getMainComponent(), ExpressionPropertyDropDownPane.this.getBounds().height, -1 );
+		}
+		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep dragStep ) {
+			return null;
+		}
+		@Override
+		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep dragStep ) {
+			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
+			org.lgna.croquet.Model rv;
+			if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {
+				org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel expressionDragModel = (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)dragModel;
+				rv = expressionDragModel.getDropModel( dragStep, new org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite( ExpressionPropertyDropDownPane.this.expressionProperty ) );
+			} else {
+				rv = null;
+			}
+			if( rv != null ) {
+				//pass
+			} else {
+//				source.hideDropProxyIfNecessary();
+				dragStep.cancelTransaction( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
+			}
+			return rv;
+		}
+		public void dragExited( org.lgna.croquet.history.DragStep dragStep, boolean isDropRecipient ) {
+//			edu.cmu.cs.dennisc.croquet.DragComponent source = dragStep.getDragSource();
+//			source.hideDropProxyIfNecessary();
+		}
+		public void dragStopped( org.lgna.croquet.history.DragStep dragStep ) {
+		}
+		
+		public org.lgna.croquet.components.ViewController<?,?> getViewController() {
+			return ExpressionPropertyDropDownPane.this;
+		}
+		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+			return ExpressionPropertyDropDownPane.this;
+		}
+	}
+
+	private final ExpressionPropertyDropReceptor dropReceptor = new ExpressionPropertyDropReceptor();
+	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel< org.lgna.project.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
@@ -54,77 +100,8 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
-
-//	@Override
-//	protected int getInsetLeft() {
-//		int rv = super.getInsetLeft();
-//		if( org.alice.ide.IDE.getActiveInstance().getExpressionTypeFeedbackDesiredState().getValue() ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent = this.getMainComponent();
-//			if( mainComponent instanceof org.alice.ide.common.ExpressionPropertyPane ) {
-//				org.alice.ide.common.ExpressionPropertyPane expressionPropertyPane = (org.alice.ide.common.ExpressionPropertyPane)mainComponent;
-//				if( expressionPropertyPane.getComponentCount()==1 ) {
-//					edu.cmu.cs.dennisc.croquet.Component< ? > component0 = expressionPropertyPane.getComponent( 0 );
-//					if( component0 instanceof org.alice.ide.common.InstancePropertyPane ) {
-//						//org.alice.ide.common.InstancePropertyPane instancePropertyPane = (org.alice.ide.common.InstancePropertyPane)component0;
-//						rv += 2;
-//					}
-//				}
-//			}
-//		}
-//		return rv;	
-//	}
-
-	public String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-		return "Drop...";
-	}
-	
-	public org.lgna.croquet.resolvers.Resolver< ExpressionPropertyDropDownPane > getResolver() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
-		return null;
-	}
-	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
-		return this;
-	}
-
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-		return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
-	}
-	public void dragStarted( org.lgna.croquet.history.DragStep context ) {
-	}
-	public void dragEntered( org.lgna.croquet.history.DragStep context ) {
-		context.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height, -1 );
-	}
-	public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep context ) {
-		return null;
-	}
-	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep context ) {
-		org.lgna.croquet.DragModel dragModel = context.getModel();
-		org.lgna.croquet.Model rv;
-		if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {
-			org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel expressionDragModel = (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)dragModel;
-			rv = expressionDragModel.getDropModel( context, new org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite( this.expressionProperty ) );
-		} else {
-			rv = null;
-		}
-		if( rv != null ) {
-			//pass
-		} else {
-//			source.hideDropProxyIfNecessary();
-			context.cancelTransaction();
-		}
-		return rv;
-	}
-	public void dragExited( org.lgna.croquet.history.DragStep context, boolean isDropRecipient ) {
-//		edu.cmu.cs.dennisc.croquet.DragComponent source = context.getDragSource();
-//		source.hideDropProxyIfNecessary();
-	}
-	public void dragStopped( org.lgna.croquet.history.DragStep context ) {
-	}
-	
-	public org.lgna.croquet.components.ViewController<?,?> getViewController() {
-		return this;
+	public ExpressionPropertyDropReceptor getDropReceptor() {
+		return this.dropReceptor;
 	}
 
 	@Override

@@ -75,5 +75,5 @@ public interface ItemCodec<T> {
 	public Class<T> getValueClass();
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
-	public StringBuilder appendRepresentation( StringBuilder rv, T value, java.util.Locale locale );
+	public StringBuilder appendRepresentation( StringBuilder rv, T value );
 }

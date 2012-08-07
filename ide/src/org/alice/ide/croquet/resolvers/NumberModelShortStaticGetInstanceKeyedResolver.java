@@ -47,34 +47,21 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class NumberModelShortStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.croquet.models.numberpad.NumberModel.class, Short.TYPE };
-	private org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
-	private short numeral;
 	public NumberModelShortStaticGetInstanceKeyedResolver( T instance, org.alice.ide.croquet.models.numberpad.NumberModel numberModel, short numeral ) {
-		super( instance );
-		this.numberModel = numberModel;
-		this.numeral = numeral;
+		super( instance, new Class[] { org.alice.ide.croquet.models.numberpad.NumberModel.class, Short.TYPE }, new Object[] { numberModel, numeral } );
 	}
 	public NumberModelShortStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		final String METHOD_NAME = "getInstance";
 		String clsName = binaryDecoder.decodeString();
-		short numeral = binaryDecoder.decodeShort();
 		try {
 			Class< ? > cls = edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( clsName );
 			java.lang.reflect.Method mthd = cls.getMethod( METHOD_NAME );
 			Object instance = mthd.invoke( null );
+			short numeral = binaryDecoder.decodeShort();
 			return new Object[] { instance, numeral };
 		} catch( ClassNotFoundException cnfe ) {
 			throw new RuntimeException( clsName, cnfe );
@@ -87,9 +74,10 @@ public class NumberModelShortStaticGetInstanceKeyedResolver<T> extends org.lgna.
 		}
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		Class<?> cls = this.numberModel.getClass();
-		binaryEncoder.encode( cls.getName() );
-		binaryEncoder.encode( this.numeral );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		org.alice.ide.croquet.models.numberpad.NumberModel numberModel = (org.alice.ide.croquet.models.numberpad.NumberModel)arguments[ 0 ];
+		short numeral = (Short)arguments[ 1 ];
+		binaryEncoder.encode( numberModel.getClass().getName() );
+		binaryEncoder.encode( numeral );
 	}
 }

@@ -60,6 +60,9 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( resource );
 			//Set the texture data to be the texture info specified by the resource
 			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
+			if (this.sgSkeletonVisual.skeleton.getValue() != null) {
+				this.sgSkeletonVisual.skeleton.getValue().setParentVisual(this.sgSkeletonVisual);
+			}
 		}
 		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
 			return new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { (edu.cmu.cs.dennisc.scenegraph.SimpleAppearance)this.sgSkeletonVisual.frontFacingAppearance.getValue() };
@@ -103,6 +106,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			String key = jointId.toString();
 			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
 			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
+			sgJoint.setName(key);
 			if( sgJoint != null  ) {
 				return new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoint );
 			} else {
@@ -120,7 +124,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId ) {
 		return AliceResourceUtilties.getOriginalJointTransformation( this.resource, jointId );
 	}
-	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( org.lgna.story.implementation.JointedModelImp jointedModelImplementation ) {
+	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData( ) {
 		return new VisualData( this.resource );
 	}
 }

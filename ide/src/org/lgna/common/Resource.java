@@ -48,8 +48,8 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	private String originalFileName;
 	private String contentType;
 	private byte[] data;
-	private java.util.List< edu.cmu.cs.dennisc.pattern.event.NameListener > nameListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.event.NameListener >();
-	private java.util.List< org.lgna.common.event.ResourceContentListener > contentListeners = new java.util.LinkedList< org.lgna.common.event.ResourceContentListener >();
+	private java.util.List< edu.cmu.cs.dennisc.pattern.event.NameListener > nameListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List< org.lgna.common.event.ResourceContentListener > contentListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	protected Resource( java.util.UUID uuid ) {
 		this.uuid = uuid;
@@ -79,29 +79,23 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	}
 	public void setName( String name ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.name, name ) ) {
-			synchronized( this.nameListeners ) {
-				edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
-				for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener : this.nameListeners ) {
-					nameListener.nameChanging( nameEvent );
-				}
-				this.name = name;
-				for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener : this.nameListeners ) {
-					nameListener.nameChanged( nameEvent );
-				}
+			edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
+			for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener : this.nameListeners ) {
+				nameListener.nameChanging( nameEvent );
+			}
+			this.name = name;
+			for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener : this.nameListeners ) {
+				nameListener.nameChanged( nameEvent );
 			}
 		}
 	}
 	public void addNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		assert nameListener != null;
-		synchronized( this.nameListeners ) {
-			this.nameListeners.add( nameListener );
-		}
+		this.nameListeners.add( nameListener );
 	}
 	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		assert nameListener != null;
-		synchronized( this.nameListeners ) {
-			this.nameListeners.remove( nameListener );
-		}
+		this.nameListeners.remove( nameListener );
 	}
 	public Iterable< edu.cmu.cs.dennisc.pattern.event.NameListener > getNameListeners() {
 		return this.nameListeners;
@@ -109,15 +103,11 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	
 	public void addContentListener( org.lgna.common.event.ResourceContentListener contentListener ) {
 		assert contentListener != null;
-		synchronized( this.contentListeners ) {
-			this.contentListeners.add( contentListener );
-		}
+		this.contentListeners.add( contentListener );
 	}
 	public void removeContentListener( org.lgna.common.event.ResourceContentListener contentListener ) {
 		assert contentListener != null;
-		synchronized( this.contentListeners ) {
-			this.contentListeners.remove( contentListener );
-		}
+		this.contentListeners.remove( contentListener );
 	}
 	public Iterable< org.lgna.common.event.ResourceContentListener > getContentListeners() {
 		return this.contentListeners;
@@ -134,21 +124,14 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 		return this.data;
 	}
 	public void setContent( String contentType, byte[] data ) {
-		synchronized( this.contentListeners ) {
-			
-			//todo
-			org.lgna.common.event.ResourceContentListener[] array = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.contentListeners, org.lgna.common.event.ResourceContentListener.class );
-			
-			
-			org.lgna.common.event.ResourceContentEvent e = new org.lgna.common.event.ResourceContentEvent( this, contentType, data );
-			for( org.lgna.common.event.ResourceContentListener contentListener : array ) {
-				contentListener.contentChanging( e );
-			}
-			this.contentType = contentType;
-			this.data = data;
-			for( org.lgna.common.event.ResourceContentListener contentListener : array ) {
-				contentListener.contentChanged( e );
-			}
+		org.lgna.common.event.ResourceContentEvent e = new org.lgna.common.event.ResourceContentEvent( this, contentType, data );
+		for( org.lgna.common.event.ResourceContentListener contentListener : this.contentListeners ) {
+			contentListener.contentChanging( e );
+		}
+		this.contentType = contentType;
+		this.data = data;
+		for( org.lgna.common.event.ResourceContentListener contentListener : this.contentListeners ) {
+			contentListener.contentChanged( e );
 		}
 	}
 	public String getOriginalFileName() {

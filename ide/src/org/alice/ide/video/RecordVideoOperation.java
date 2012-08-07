@@ -50,7 +50,15 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 	public RecordVideoOperation( java.util.UUID id ) {
 		super( org.alice.ide.IDE.EXPORT_GROUP, id );
 	}
-	
+
+	private double frameRate = 24.0;
+	public double getFrameRate() {
+		return this.frameRate;
+	}
+	public void setFrameRate( double frameRate ) {
+		this.frameRate = frameRate;
+	}
+
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	protected abstract org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel();
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
@@ -106,7 +114,7 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 				super.run();
 				image = null;
 				imageCount = 0;
-				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( 30.0 );
+				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( frameRate );
 				programContext.initialize( videoExportPanel.getLookingGlassContainer() );
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				programContext.setActiveScene();

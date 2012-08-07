@@ -113,8 +113,8 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 		
 		org.lgna.croquet.components.CheckBox isArrayCheckBox = this.isArrayStateState.createCheckBox();
 		isArrayCheckBox.setBackgroundColor( null );
-		this.addComponent( typeDropDownPane, Constraint.CENTER );
-		this.addComponent( isArrayCheckBox, Constraint.LINE_END );
+		this.addCenterComponent( typeDropDownPane );
+		this.addLineEndComponent( isArrayCheckBox );
 	}
 	
 	public org.lgna.project.ast.AbstractType<?,?,?> getValueType() {

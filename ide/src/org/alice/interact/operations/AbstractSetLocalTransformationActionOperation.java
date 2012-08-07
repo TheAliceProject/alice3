@@ -56,7 +56,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 	protected abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable();
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation();
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation();
-	protected abstract String getEditPresentationName( java.util.Locale locale );
+	protected abstract String getEditPresentationName();
 	
 	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
@@ -92,8 +92,8 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 				setLocalTransformation( prevLT );
 			}
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-				rv.append( getEditPresentationName( locale ) );
+			protected StringBuilder updatePresentation( StringBuilder rv ) {
+				rv.append( getEditPresentationName() );
 				return rv;
 			}
 		} );

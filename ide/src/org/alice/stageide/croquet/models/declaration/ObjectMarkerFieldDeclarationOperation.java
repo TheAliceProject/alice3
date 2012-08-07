@@ -62,7 +62,7 @@ public class ObjectMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 	}
 
 	public ObjectMarkerFieldDeclarationOperation() {
-		super( java.util.UUID.fromString( "830f80f7-da68-43cc-be8a-bbd64da78c24" ),  org.lgna.story.ObjectMarker.class );
+		super( java.util.UUID.fromString( "830f80f7-da68-43cc-be8a-bbd64da78c24" ),  org.lgna.story.SThingMarker.class );
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class ObjectMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 		MessageFormat formatter = new MessageFormat("");
 		formatter.setLocale(javax.swing.JComponent.getDefaultLocale());
 		formatter.applyPattern(unformattedName);
-		String defaultName = this.findLocalizedText( "defaultObjectName", ObjectMarkerFieldDeclarationOperation.class );
+		String defaultName = this.findLocalizedText( "defaultObjectName" );
 		String fieldNameParam = this.getSelectedField() == null ? defaultName : this.getSelectedField().getName();
 		String formattedName = formatter.format(new Object[]{fieldNameParam});
 		this.setName(formattedName);

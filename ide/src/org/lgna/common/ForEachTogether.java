@@ -61,6 +61,7 @@ class ForEachRunnableAdapter<E> implements Runnable {
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class ForEachTogether {
 	public static < E extends Object> void invokeAndWait( E[] array, ForEachRunnable< E > forEachRunnable ) {
 		switch( array.length ) {

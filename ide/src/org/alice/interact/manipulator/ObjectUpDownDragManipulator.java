@@ -86,7 +86,7 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 		{
 			badPlaneNormal = Vector3.createPositiveYAxis();
 		}
-		return new Plane( clickPoint, badPlaneNormal );
+		return Plane.createInstance( clickPoint, badPlaneNormal );
 	}
 	
 	@Override

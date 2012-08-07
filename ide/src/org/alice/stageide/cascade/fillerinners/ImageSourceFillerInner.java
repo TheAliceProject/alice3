@@ -52,7 +52,7 @@ public class ImageSourceFillerInner extends SourceFillerInner< org.lgna.common.r
 
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getImportFillIn() {
-		return new org.alice.stageide.croquet.models.cascade.source.ImportNewImageSourceFillIn();
+		return org.alice.stageide.ast.source.ImageSourceImportValueCreator.getInstance().getFillIn();
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.lgna.common.resources.ImageResource resource ) {

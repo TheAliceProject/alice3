@@ -64,6 +64,14 @@ public class ParameterAccessDragModel extends AbstractExpressionDragModel {
 		this.parameter = parameter;
 	}
 	@Override
+	public boolean isPotentialStatementCreator() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		throw new AssertionError();
+	}
+	@Override
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
 		return this.parameter.getValueType();
 	}

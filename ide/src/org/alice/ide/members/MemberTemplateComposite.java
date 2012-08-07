@@ -48,52 +48,45 @@ package org.alice.ide.members;
  */
 public abstract class MemberTemplateComposite<V extends org.lgna.croquet.components.View< ?,? >> extends TemplateComposite< V > {
 	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
-		private javax.swing.Icon getCurrentAccessibleTypeIcon() {
+		private static final java.awt.Dimension SIZE = new java.awt.Dimension( 32, 24 );
+		private org.lgna.croquet.icon.IconFactory getCurrentAccessibleTypeIconFactory() {
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-//			org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
-//			if( instanceFactory != null ) {
-//				type = instanceFactory.getValueType();
-//			} else {
-//				type = null;
-//			}
-//			return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( type );
-
 			if( instanceFactory != null ) {
-				javax.swing.Icon rv = null;
+				org.lgna.croquet.icon.IconFactory rv = null;
 				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
 					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					rv = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForField( thisFieldAccessFactory.getField() );
+					rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( thisFieldAccessFactory.getField() );
 				} 
 				if( rv != null ) {
 					//pass
 				} else {
-					rv = org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( instanceFactory.getValueType() );
+					rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( instanceFactory.getValueType() );
 				}
 				return rv;
 			} else {
 				return null;
 			}
 		}
-		public int getIconHeight() {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				return icon.getIconHeight();
+		public int getIconWidth() {
+			org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+			if( iconFactory != null ) {
+				return SIZE.width;
 			} else {
 				return 0;
 			}
 		}
-		public int getIconWidth() {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				return icon.getIconWidth();
+		public int getIconHeight() {
+			org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+			if( iconFactory != null ) {
+				return SIZE.height;
 			} else {
 				return 0;
 			}
 		}
 		public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-			javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-			if( icon != null ) {
-				icon.paintIcon(c, g, x, y);
+			org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+			if( iconFactory != null ) {
+				iconFactory.getIcon( SIZE ).paintIcon(c, g, x, y);
 			}
 		}
 	}
@@ -107,10 +100,5 @@ public abstract class MemberTemplateComposite<V extends org.lgna.croquet.compone
 		super.customizeTitleComponent( booleanState, button );
 		//booleanState.setIconForBothTrueAndFalse( ICON );
 		button.getAwtComponent().setIcon( ICON );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model );
-		return false;
 	}
 }

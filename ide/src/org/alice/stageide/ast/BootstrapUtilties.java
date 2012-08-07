@@ -110,7 +110,7 @@ public class BootstrapUtilties {
 	public static String GET_MY_SCENE_METHOD_NAME = "getMyScene";
 	
 	public static org.lgna.project.ast.NamedUserType createProgramType(org.lgna.project.ast.UserField[] modelFields, org.lgna.project.ast.ExpressionStatement[] setupStatements, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
-		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.Camera.class, "camera" );
+		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.SCamera.class, "camera" );
 		cameraField.isDeletionAllowed.setValue( false );
 		cameraField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
@@ -125,7 +125,7 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.UserLambda sceneActivationListener = org.lgna.project.ast.AstUtilities.createUserLambda( org.lgna.story.event.SceneActivationListener.class );
 		org.lgna.project.ast.LambdaExpression sceneActivationListenerExpression = new org.lgna.project.ast.LambdaExpression( sceneActivationListener );
 
-		org.lgna.project.ast.JavaMethod addSceneActivationListenerMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "addSceneActivationListener", org.lgna.story.event.SceneActivationListener.class, AddSceneActivationListener.Detail[].class );
+		org.lgna.project.ast.JavaMethod addSceneActivationListenerMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SScene.class, "addSceneActivationListener", org.lgna.story.event.SceneActivationListener.class, AddSceneActivationListener.Detail[].class );
 		
 		initializeEventListenersMethod.body.getValue().statements.add(
 				org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(  
@@ -140,7 +140,7 @@ public class BootstrapUtilties {
 		fields[modelFields.length] = cameraField;
 		                                                                             
 		for( org.lgna.project.ast.UserField field : fields ) {
-			org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lgna.story.Entity.class );
+			org.lgna.project.ast.AbstractMethod method = field.getValueType().findMethod( "setVehicle", org.lgna.story.SThing.class );
 			performGeneratedSetupBody.statements.add( 
 					createMethodInvocationStatement( 
 							createThisFieldAccess( field ), 
@@ -167,7 +167,7 @@ public class BootstrapUtilties {
 			throw new RuntimeException( ccee );
 		}
 		if( atmosphereColor != null ) {
-			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
+			org.lgna.project.ast.JavaMethod setAtmosphereColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SScene.class, "setAtmosphereColor", org.lgna.story.Color.class, org.lgna.story.SetAtmosphereColor.Detail[].class );
 			try {
 				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(atmosphereColor);
 				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAtmosphereColorMethod, colorExpression ) );
@@ -179,11 +179,11 @@ public class BootstrapUtilties {
 		if( Double.isNaN( fogDensity) ) {
 			//pass
 		} else {
-			org.lgna.project.ast.JavaMethod setFogDensityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFogDensity", Number.class, org.lgna.story.SetFogDensity.Detail[].class );
+			org.lgna.project.ast.JavaMethod setFogDensityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SScene.class, "setFogDensity", Number.class, org.lgna.story.SetFogDensity.Detail[].class );
 			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setFogDensityMethod, new org.lgna.project.ast.DoubleLiteral( fogDensity ) ));
 		}
 		if (aboveLightColor != null) {
-			org.lgna.project.ast.JavaMethod setAboveLightColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFromAboveLightColor", org.lgna.story.Color.class, org.lgna.story.SetFromAboveLightColor.Detail[].class );
+			org.lgna.project.ast.JavaMethod setAboveLightColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SScene.class, "setFromAboveLightColor", org.lgna.story.Color.class, org.lgna.story.SetFromAboveLightColor.Detail[].class );
 			try {
 				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(aboveLightColor);
 				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setAboveLightColorMethod, colorExpression ) );
@@ -193,7 +193,7 @@ public class BootstrapUtilties {
 			}
 		}
 		if ( belowLightColor != null) {
-			org.lgna.project.ast.JavaMethod setBelowLightColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Scene.class, "setFromBelowLightColor", org.lgna.story.Color.class, org.lgna.story.SetFromBelowLightColor.Detail[].class );
+			org.lgna.project.ast.JavaMethod setBelowLightColorMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SScene.class, "setFromBelowLightColor", org.lgna.story.Color.class, org.lgna.story.SetFromBelowLightColor.Detail[].class );
 			try {
 				org.lgna.project.ast.Expression colorExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(belowLightColor);
 				performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), setBelowLightColorMethod, colorExpression ) );
@@ -239,7 +239,7 @@ public class BootstrapUtilties {
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), performCustomSetupMethod ) );
 		ifInnerTrueBody.statements.add( createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), initializeEventListenersMethod ) );
 
-		Class< ? > sceneCls = org.lgna.story.Scene.class;
+		Class< ? > sceneCls = org.lgna.story.SScene.class;
 		
 		org.lgna.project.ast.JavaMethod preserveVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "preserveStateAndEventListeners" );
 		org.lgna.project.ast.JavaMethod restoreVehiclesAndVantagePointsMethod = org.lgna.project.ast.JavaMethod.getInstance( sceneCls, "restoreStateAndEventListeners" );
@@ -248,7 +248,7 @@ public class BootstrapUtilties {
 
 		handleActiveChangedBody.statements.add( ifOuter );
 		
-		org.lgna.project.ast.NamedUserType sceneType = createType( "MyScene", org.lgna.story.Scene.class );
+		org.lgna.project.ast.NamedUserType sceneType = createType( "Scene", org.lgna.story.SScene.class );
 		sceneType.fields.add( fields );
 		sceneType.methods.add( performCustomSetupMethod );
 		sceneType.methods.add( performGeneratedSetupMethod );
@@ -275,7 +275,7 @@ public class BootstrapUtilties {
 				)
 		);
 
-		org.lgna.project.ast.NamedUserType rv = createType( "MyProgram", org.lgna.story.Program.class );
+		org.lgna.project.ast.NamedUserType rv = createType( "Program", org.lgna.story.SProgram.class );
 		rv.fields.add( sceneField );
 		rv.methods.add( getSceneMethod );
 
@@ -314,9 +314,9 @@ public class BootstrapUtilties {
 		
 		return rv;
 	}
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Ground.SurfaceAppearance appearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.SGround.SurfaceAppearance appearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
 
-		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.Ground.class, "ground" );
+		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.SGround.class, "ground" );
 
 		groundField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
@@ -325,7 +325,7 @@ public class BootstrapUtilties {
 		};
 		java.util.ArrayList<org.lgna.project.ast.ExpressionStatement> setupStatements = new java.util.ArrayList<org.lgna.project.ast.ExpressionStatement>();
 
-		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Ground.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
 		
 		return createProgramType(modelFields, setupStatements.toArray(new org.lgna.project.ast.ExpressionStatement[setupStatements.size()]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor);
@@ -333,7 +333,7 @@ public class BootstrapUtilties {
 	
 	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Paint floorAppearance, org.lgna.story.Paint wallAppearance, org.lgna.story.Paint ceilingAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
 
-		org.lgna.project.ast.UserField roomField = createPrivateFinalField( org.lgna.story.Room.class, "room" );
+		org.lgna.project.ast.UserField roomField = createPrivateFinalField( org.lgna.story.SRoom.class, "room" );
 
 		roomField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
@@ -342,40 +342,40 @@ public class BootstrapUtilties {
 		};
 		java.util.ArrayList<org.lgna.project.ast.ExpressionStatement> setupStatements = new java.util.ArrayList<org.lgna.project.ast.ExpressionStatement>();
 
-		org.lgna.project.ast.JavaMethod setFloorPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+		org.lgna.project.ast.JavaMethod setFloorPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SRoom.class, "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetFloorPaint.Detail[].class );
 		org.lgna.project.ast.Expression floorPaintExpression = null;
 		org.lgna.project.ast.Expression wallPaintExpression = null;
 		org.lgna.project.ast.Expression ceilingPaintExpression = null;
 		
 		try{
-			if (floorAppearance instanceof org.lgna.story.Room.FloorAppearance) {
-				floorPaintExpression = createFieldAccess( (org.lgna.story.Room.FloorAppearance)floorAppearance );
+			if (floorAppearance instanceof org.lgna.story.SRoom.FloorAppearance) {
+				floorPaintExpression = createFieldAccess( (org.lgna.story.SRoom.FloorAppearance)floorAppearance );
 			}
 			else {
 				floorPaintExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(floorAppearance);
 			}
 			
-			if (wallAppearance instanceof org.lgna.story.Room.WallAppearance) {
-				wallPaintExpression = createFieldAccess( (org.lgna.story.Room.WallAppearance)wallAppearance );
+			if (wallAppearance instanceof org.lgna.story.SRoom.WallAppearance) {
+				wallPaintExpression = createFieldAccess( (org.lgna.story.SRoom.WallAppearance)wallAppearance );
 			}
 			else {
 				wallPaintExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(wallAppearance);
 			}
 			
-			if (ceilingAppearance instanceof org.lgna.story.Room.CeilingAppearance) {
-				ceilingPaintExpression = createFieldAccess( (org.lgna.story.Room.CeilingAppearance)ceilingAppearance );
+			if (ceilingAppearance instanceof org.lgna.story.SRoom.CeilingAppearance) {
+				ceilingPaintExpression = createFieldAccess( (org.lgna.story.SRoom.CeilingAppearance)ceilingAppearance );
 			}
 			else {
 				ceilingPaintExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression(ceilingAppearance);
 			}
 		} catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln(e);
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot create expression", e );
 		}
 		
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setFloorPaintMethod, floorPaintExpression ) );
-		org.lgna.project.ast.JavaMethod setWallPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setWallPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+		org.lgna.project.ast.JavaMethod setWallPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SRoom.class, "setWallPaint", org.lgna.story.Paint.class, org.lgna.story.SetWallPaint.Detail[].class );
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setWallPaintMethod, wallPaintExpression ) );
-		org.lgna.project.ast.JavaMethod setCeilingPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.Room.class, "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+		org.lgna.project.ast.JavaMethod setCeilingPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SRoom.class, "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetCeilingPaint.Detail[].class );
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setCeilingPaintMethod, ceilingPaintExpression ) );
 		
 		return createProgramType(modelFields, setupStatements.toArray(new org.lgna.project.ast.ExpressionStatement[setupStatements.size()]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor);

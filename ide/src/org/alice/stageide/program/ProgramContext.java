@@ -62,7 +62,7 @@ public abstract class ProgramContext {
 	public ProgramContext( org.lgna.project.ast.NamedUserType programType ) {
 		assert programType != null;
 		this.vm = this.createVirtualMachine();
-		this.vm.registerAnonymousAdapter( org.lgna.story.Scene.class, org.alice.stageide.ast.SceneAdapter.class );
+		this.vm.registerAnonymousAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickOnScreenListener.class, org.alice.stageide.apis.story.event.MouseClickOnScreenAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickOnObjectListener.class, org.alice.stageide.apis.story.event.MouseClickOnObjectAdapter.class );
@@ -79,7 +79,10 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionStartListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionEndListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
-		this.programInstance = vm.ENTRY_POINT_createInstance( programType );
+		this.programInstance = this.createProgramInstance( programType );
+	}
+	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance( org.lgna.project.ast.NamedUserType programType ) {
+		return this.vm.ENTRY_POINT_createInstance( programType );
 	}
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachine() {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
@@ -87,8 +90,8 @@ public abstract class ProgramContext {
 	public org.lgna.project.virtualmachine.UserInstance getProgramInstance() {
 		return this.programInstance;
 	}
-	public org.lgna.story.Program getProgram() {
-		return this.programInstance.getJavaInstance( org.lgna.story.Program.class );
+	public org.lgna.story.SProgram getProgram() {
+		return this.programInstance.getJavaInstance( org.lgna.story.SProgram.class );
 	}
 	public org.lgna.story.implementation.ProgramImp getProgramImp() {
 		return org.lgna.story.ImplementationAccessor.getImplementation( this.getProgram() );
@@ -96,12 +99,19 @@ public abstract class ProgramContext {
 	public org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
 		return this.vm;
 	}
+	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		org.lgna.story.implementation.ProgramImp programImp = this.getProgramImp();
+		return programImp != null ? programImp.getOnscreenLookingGlass() : null;
+	}
 
 	private org.alice.ide.ReasonToDisableSomeAmountOfRendering rendering;
 
 	protected void disableRendering() {
 		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
-		org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( rendering );
+		org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
+		if( ide != null ) {
+			ide.getPerspectiveState().getValue().disableRendering( rendering );
+		}
 	}
 
 	public void setActiveScene() {
@@ -109,7 +119,7 @@ public abstract class ProgramContext {
 			public void run() {
 				org.lgna.project.ast.UserField sceneField = null;
 				for( org.lgna.project.ast.UserField field : programInstance.getType().fields ) {
-					if( field.valueType.getValue().isAssignableTo( org.lgna.story.Scene.class ) ) {
+					if( field.valueType.getValue().isAssignableTo( org.lgna.story.SScene.class ) ) {
 						sceneField = field;
 					}
 				}
@@ -122,7 +132,10 @@ public abstract class ProgramContext {
 	public void cleanUpProgram() {
 		this.getProgramImp().shutDown();
 		if( this.rendering != null ) {
-			org.alice.stageide.StageIDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
+			org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
+			if( ide != null ) {
+				ide.getPerspectiveState().getValue().enableRendering();
+			}
 			this.rendering = null;
 		}
 	}

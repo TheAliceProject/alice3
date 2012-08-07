@@ -81,23 +81,23 @@ class TreeNodeFillIn<T> extends CascadeFillIn< T, Void > {
 		this.node = node;
 	}
 	@Override
-	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.node;
 	}
 	@Override
-	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.node;
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.model.getTextForNode( this.node );
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.model.getIconForNode( this.node );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		throw new AssertionError();
 	}
 	@Override
@@ -129,7 +129,7 @@ class TreeNodeMenu<T> extends CascadeMenuModel< T > {
 		this.node = node;
 	}
 	@Override
-	protected String getDefaultLocalizedText() {
+	protected String findDefaultLocalizedText() {
 		return null;
 	}
 	@Override
@@ -243,7 +243,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
 			boolean isAdjusting = false;
-			TreeSelectionState.this.changeValueFromSwing( nextValue, isAdjusting, new org.lgna.croquet.triggers.TreeSelectionEventTrigger( e ) );
+			TreeSelectionState.this.changeValueFromSwing( nextValue, isAdjusting, org.lgna.croquet.triggers.TreeSelectionEventTrigger.createUserInstance( e ) );
 			T prevValue = getValue();
 			fireChanged( prevValue, nextValue, false );
 		}

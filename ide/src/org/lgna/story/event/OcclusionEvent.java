@@ -1,9 +1,8 @@
 package org.lgna.story.event;
 
-public class OcclusionEvent<A extends org.lgna.story.Model, B extends org.lgna.story.Model> extends AbstractEvent {
-
-	private org.lgna.story.Model foreground;
-	private org.lgna.story.Model background;
+public class OcclusionEvent<A extends org.lgna.story.SModel, B extends org.lgna.story.SModel> extends AbstractEvent {
+	private org.lgna.story.SModel foreground;
+	private org.lgna.story.SModel background;
 	private A a;
 	private B b;
 
@@ -12,7 +11,7 @@ public class OcclusionEvent<A extends org.lgna.story.Model, B extends org.lgna.s
 		this.b = b;
 	}
 
-	public void setForeground( org.lgna.story.Model foreground ) {
+	public void setForeground( org.lgna.story.SModel foreground ) {
 		if( a.equals( foreground ) ) {
 			foreground = a;
 			background = b;
@@ -22,19 +21,17 @@ public class OcclusionEvent<A extends org.lgna.story.Model, B extends org.lgna.s
 		}
 	}
 
-	public org.lgna.story.Model getForeground() {
+	public org.lgna.story.SModel getForeground() {
 		return foreground;
 	}
-	public org.lgna.story.Model getBackground() {
+	public org.lgna.story.SModel getBackground() {
 		return background;
 	}
 
 	public A getFromA() {
 		return a;
 	}
-
 	public B getFromB() {
 		return b;
 	}
-
 }

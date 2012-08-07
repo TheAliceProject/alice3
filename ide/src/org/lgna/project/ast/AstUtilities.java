@@ -373,7 +373,7 @@ public class AstUtilities {
 		return createReturnStatement( JavaType.getInstance( cls ), expression );
 	}
 	
-	public static Expression createLocalAssignment( UserLocal local, Expression valueExpression ) {
+	public static AssignmentExpression createLocalAssignment( UserLocal local, Expression valueExpression ) {
 		assert local.isFinal.getValue() == false;
 		Expression localAccess = new LocalAccess( local ); 
 		return new AssignmentExpression( local.valueType.getValue(), localAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
@@ -382,17 +382,22 @@ public class AstUtilities {
 		return new ExpressionStatement( createLocalAssignment( local, valueExpression) );
 	}
 
-	public static ExpressionStatement createLocalArrayAssignmentStatement( UserLocal local, Expression indexExpression, Expression valueExpression ) {
+	public static AssignmentExpression createLocalArrayAssignment( UserLocal local, Expression indexExpression, Expression valueExpression ) {
 		Expression localAccess = new LocalAccess( local ); 
 		ArrayAccess arrayAccess = new ArrayAccess( local.valueType.getValue(), localAccess, indexExpression ); 
-		Expression expression = new AssignmentExpression( local.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
-		return new ExpressionStatement( expression );
+		return new AssignmentExpression( local.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 	}
-	public static ExpressionStatement createParameterArrayAssignmentStatement( UserParameter parameter, Expression indexExpression, Expression valueExpression ) {
+
+	public static ExpressionStatement createLocalArrayAssignmentStatement( UserLocal local, Expression indexExpression, Expression valueExpression ) {
+		return new ExpressionStatement( createLocalArrayAssignment( local, indexExpression, valueExpression ) );
+	}
+	public static AssignmentExpression createParameterArrayAssignment( UserParameter parameter, Expression indexExpression, Expression valueExpression ) {
 		Expression parameterAccess = new ParameterAccess( parameter ); 
 		ArrayAccess arrayAccess = new ArrayAccess( parameter.valueType.getValue(), parameterAccess, indexExpression ); 
-		Expression expression = new AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
-		return new ExpressionStatement( expression );
+		return new AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+	}
+	public static ExpressionStatement createParameterArrayAssignmentStatement( UserParameter parameter, Expression indexExpression, Expression valueExpression ) {
+		return new ExpressionStatement( createParameterArrayAssignment( parameter, indexExpression, valueExpression ) );
 	}
 
 	

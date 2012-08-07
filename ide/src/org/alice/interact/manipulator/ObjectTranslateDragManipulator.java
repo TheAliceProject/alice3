@@ -74,7 +74,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	
 	protected Point3 initialClickPoint = new Point3();
 	protected Point3 initialObjectPosition = new Point3();
-	protected Plane movementPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	protected Plane movementPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
 	protected Plane badAnglePlane = null; 
 	protected Point3 offsetToOrigin = null;
 	protected Point initialMouseLocation = new Point();
@@ -159,7 +159,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			{
 				Vector3 newNormal = Vector3.createInterpolation( PlaneUtilities.getPlaneNormal( this.movementPlane ), PlaneUtilities.getPlaneNormal( this.badAnglePlane ), badAngleAmount );
 				newNormal.normalize();				
-				toMoveIn = new Plane(this.initialClickPoint, newNormal);
+				toMoveIn = Plane.createInstance(this.initialClickPoint, newNormal);
 			}
 			Point3 newPosition = this.getPositionForPlane( toMoveIn, pickRay );
 			return newPosition;
@@ -199,7 +199,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	
 	protected Plane createCameraFacingStoodUpPlane( Point3 clickPoint )
 	{
-		return new Plane(clickPoint, createCameraFacingStoodUpVector());
+		return Plane.createInstance(clickPoint, createCameraFacingStoodUpVector());
 	}
 	
 	protected Vector3 createCameraFacingStoodUpVector()
@@ -222,12 +222,12 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 		Vector3 badPlaneNormal = createCameraFacingStoodUpVector();
 		badPlaneNormal.y += 2d;  //Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
 		badPlaneNormal.normalize();
-		return new Plane( clickPoint, badPlaneNormal );
+		return Plane.createInstance( clickPoint, badPlaneNormal );
 	}
 	
 	protected Plane createPickPlane( Point3 clickPoint )
 	{
-		return new Plane(clickPoint, Vector3.createPositiveYAxis());
+		return Plane.createInstance(clickPoint, Vector3.createPositiveYAxis());
 	}
 	
 	@Override

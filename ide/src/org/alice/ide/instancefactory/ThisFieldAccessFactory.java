@@ -75,7 +75,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.Resolver< ThisFieldAccessFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessFactory >( this, this.field, org.lgna.project.ast.UserField.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessFactory >( this, org.lgna.project.ast.UserField.class, this.field );
 	}
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
@@ -92,14 +92,19 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return this.field.getValueType();
 	}
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( this.field );
+		if( iconFactory != null && iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) {
+			return iconFactory;
+		} else {
+			return super.getIconFactory();
+		}
+	}
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
 		sb.append( "this." );
-//		sb.append( "<strong>" );
 		sb.append( this.field.getName() );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
 		return sb.toString();
 	}
 }

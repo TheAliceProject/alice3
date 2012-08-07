@@ -92,5 +92,10 @@ public final class SceneDropSite implements org.lgna.croquet.DropSite {
 		}
 		return rv;
 	}
+	
+	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
+		//todo
+		return (org.lgna.croquet.DropReceptor)org.alice.ide.IDE.getActiveInstance().getSceneEditor();
+	}
 
 }

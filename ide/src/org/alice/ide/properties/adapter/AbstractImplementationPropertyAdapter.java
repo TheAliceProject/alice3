@@ -50,6 +50,8 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 
 	private Listener<P> propertyListener;
 	private org.lgna.story.implementation.Property<P> property;
+	private boolean isPropertyListening = false;
+	private boolean isPropertyUpdate = false;
 	
 	private void initializeListenersIfNecessary()
 	{
@@ -58,7 +60,9 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 			this.propertyListener = new Listener<P>()
 			{
 				public void propertyChanged(P prevValue, P nextValue) {
+					isPropertyUpdate = true;
 					handleInternalValueChanged();
+					isPropertyUpdate = false;
 				}
 			};
 		}
@@ -87,8 +91,14 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 	
 	public AbstractImplementationPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<P> property, StandardExpressionState expressionState ){
 		super(repr, instance, expressionState);
-		this.property = property;
+		setProperty(property);
 		this.initializeExpressionState();
+	}
+	
+	private void setProperty(org.lgna.story.implementation.Property<P> property) {
+		stopPropertyListening();
+		this.property = property;
+		startPropertyListening();
 	}
 	
 	@Override
@@ -108,14 +118,16 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 	
 	@Override
 	public void setValue(final P value) {
-		super.setValue(value);
-		if (this.property != null){
-			new Thread() {
-				@Override
-				public void run() {
-					AbstractImplementationPropertyAdapter.this.property.setValue(value);
-				}
-			}.start();
+		if (!isPropertyUpdate) {
+			super.setValue(value);
+			if (this.property != null){
+				new Thread() {
+					@Override
+					public void run() {
+						AbstractImplementationPropertyAdapter.this.property.setValue(value);
+					}
+				}.start();
+			}
 		}
 		
 	}
@@ -123,12 +135,14 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 	protected void addPropertyListener(Listener<P> propertyListener) {
 		if (this.property != null){
 			property.addPropertyObserver(propertyListener);
+			isPropertyListening = true;
 		}
 	}
 
 	protected void removePropertyListener(Listener<P> propertyListener) {
-		if (this.property != null){
+		if (this.property != null && isPropertyListening){
 			property.removePropertyObserver(propertyListener);
+			isPropertyListening = false;
 		}
 	}
 	

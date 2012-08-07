@@ -47,59 +47,35 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class BlockStatementIndexPairAndMethodStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, org.lgna.project.ast.AbstractMethod.class };
 	public BlockStatementIndexPairAndMethodStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade instance ) {
-		super( instance );
+		super( instance, 
+				new Class[] { 
+					org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, 
+					org.lgna.project.ast.AbstractMethod.class 
+				}, 
+				new Object[] {
+					instance.getBlockStatementIndexPair(),
+					instance.getMethod()
+				}
+		);
 	}
 	public BlockStatementIndexPairAndMethodStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
-	protected void performCustomRetargeting( org.lgna.croquet.Retargeter retargeter ) {
-		super.performCustomRetargeting( retargeter );
-		Object[] arguments = this.getArguments();
-		assert arguments != null;
-		assert arguments.length == 2;
-		//arguments[ 0 ] = retargeter.retarget( arguments[ 0 ] );
-		
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
-		org.lgna.project.ast.BlockStatement blockStatement = blockStatementIndexPair.getBlockStatement();
-		blockStatement = retargeter.retarget( blockStatement );
-		int index = blockStatementIndexPair.getIndex();
-		
-		
-		arguments[ 0 ] = new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
-		arguments[ 1 ] = retargeter.retarget( arguments[ 1 ] );
-	}
-
-	@Override
-	protected Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.class;
-	}
-	@Override
-	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class< org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade > cls ) {
-		//note: do not call super
-	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-
-	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		java.util.UUID statementId = binaryDecoder.decodeId();
+		java.util.UUID methodId = binaryDecoder.decodeId();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.AbstractMethod method = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
+		org.lgna.project.ast.AbstractMethod method = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), methodId );
 		return new Object[] { blockStatementIndexPair, method };
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.getInstance().getBlockStatementIndexPair() );
-		binaryEncoder.encode( this.getInstance().getMethod().getId() );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
+		org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)arguments[ 1 ];
+		binaryEncoder.encode( blockStatementIndexPair );
+		binaryEncoder.encode( method.getId() );
 	}
 }

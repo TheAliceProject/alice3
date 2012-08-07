@@ -72,6 +72,10 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
 		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 	}
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return org.alice.ide.ast.icons.ThisInstanceIconFactory.SINGLETON;
+	}
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );

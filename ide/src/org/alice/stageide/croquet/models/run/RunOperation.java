@@ -58,7 +58,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		rv.append( " to preview your program." );
 		return rv;
 	}
@@ -67,26 +67,34 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 //		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
 //	}
 	private transient org.alice.stageide.program.RunProgramContext programContext;
+	public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
+	private static final int DEFAULT_WIDTH = 640;
+	private static final int DEFAULT_HEIGHT = (int)(DEFAULT_WIDTH/WIDTH_TO_HEIGHT_RATIO);
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
-	private java.awt.Dimension size = new java.awt.Dimension( 640, 480 );
+	private java.awt.Dimension size = null;
 	@Override
 	protected java.awt.Point getDesiredDialogLocation() {
 		return this.location;
 	}
 	@Override
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-		dialog.setSize( this.size );
+		if( this.size != null ) {
+			dialog.setSize( this.size );
+		} else {
+			this.programContext.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
+			dialog.pack();
+		}
 	}
 	
 	private class ProgramRunnable implements Runnable { 
 		private final java.awt.Container awtContainer;
 		public ProgramRunnable( java.awt.Container awtContainer ) {
 			this.awtContainer = awtContainer;
-		}
-		public void run() {
 			RunOperation.this.programContext = new org.alice.stageide.program.RunProgramContext();
 			RunOperation.this.programContext.getProgramImp().setRestartAction( RunOperation.this.restartAction );
 			RunOperation.this.programContext.initializeInContainer( this.awtContainer );
+		}
+		public void run() {
 			RunOperation.this.programContext.setActiveScene();
 		}		
 	}
@@ -94,15 +102,27 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 		new org.lgna.common.ComponentThread( new ProgramRunnable( awtContainer ), RunOperation.this.getName() ).start();
 	}
 	private java.awt.Container stopProgram() {
-		java.awt.Container rv = this.programContext.getContainer(); 
-		this.programContext.cleanUpProgram();
-		this.programContext = null;
-		return rv;
+		if( this.programContext != null ) {
+			java.awt.Container rv = this.programContext.getContainer(); 
+			this.programContext.cleanUpProgram();
+			this.programContext = null;
+			return rv;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this );
+			return null;
+		}
 	}
 	private class RestartAction extends javax.swing.AbstractAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.awt.Container awtContainer = RunOperation.this.stopProgram();
-			RunOperation.this.startProgram( awtContainer );
+			if( awtContainer != null ) {
+				RunOperation.this.startProgram( awtContainer );
+			} else {
+				//todo: prompt w/ dialog that can submit world to bugs database
+				String message = "Unable to restart";
+				String title = null;
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.ERROR );
+			}
 		}
 	};
 	private final RestartAction restartAction = new RestartAction();
@@ -116,8 +136,10 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
-			org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-			this.startProgram( rv.getAwtComponent() );
+			org.lgna.croquet.components.BorderPanel container = new org.lgna.croquet.components.BorderPanel();
+			org.lgna.croquet.components.FixedAspectRatioPanel rv = new org.lgna.croquet.components.FixedAspectRatioPanel( container, WIDTH_TO_HEIGHT_RATIO );
+			rv.setBackgroundColor( java.awt.Color.BLACK );
+			this.startProgram( container.getAwtComponent() );
 			return rv;
 		} else {
 			ide.showMessageDialog( "Please open a project first." );

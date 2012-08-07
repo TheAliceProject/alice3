@@ -47,9 +47,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionEvent;
@@ -67,13 +67,13 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 
 	protected CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
-	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionListener( Object collisionListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
+	public <A extends SMovableTurnable, B extends SMovableTurnable> void addCollisionListener( Object collisionListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
 		ArrayList[] listArr = super.addPairedListener( collisionListener, groupOne, a, groupTwo, b, policy );
-		collisionEventHandler.register( collisionListener, new ArrayList<Entity>( (ArrayList<? extends Entity>)listArr[ 0 ] ), new ArrayList<Entity>( (ArrayList<? extends Entity>)listArr[ 1 ] ) );
+		collisionEventHandler.register( collisionListener, new ArrayList<SThing>( (ArrayList<? extends SThing>)listArr[ 0 ] ), new ArrayList<SThing>( (ArrayList<? extends SThing>)listArr[ 1 ] ) );
 	}
 	@Override
-	protected void check( Entity changedEntity ) {
-		collisionEventHandler.check( changedEntity );
+	protected void check( SThing changedThing ) {
+		collisionEventHandler.check( changedThing );
 	}
 	@Override
 	protected void nameOfFireCall( Object listener, CollisionEvent event ) {
@@ -86,58 +86,58 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 		}
 	}
 	@Override
-	protected void ammend( Object key, int group, Entity newObject ) {
+	protected void ammend( Object key, int group, SThing newObject ) {
 		ImplementationAccessor.getImplementation( newObject ).getSgComposite().addAbsoluteTransformationListener( this );
 		collisionEventHandler.ammend( key, group, newObject );
 	}
 
 	private class CollisionEventHandler {
 
-		HashMap<Entity,LinkedList<Entity>> checkMap = new HashMap<Entity,LinkedList<Entity>>();
-		HashMap<Entity,HashMap<Entity,LinkedList<Object>>> internalEventMap = new HashMap<Entity,HashMap<Entity,LinkedList<Object>>>();
-		HashMap<Entity,HashMap<Entity,Boolean>> wereTouchingMap = new HashMap<Entity,HashMap<Entity,Boolean>>();
-		HashMap<Object,List<List<Entity>>> listenerToGroupMap = Collections.newHashMap();
+		HashMap<SThing,LinkedList<SThing>> checkMap = new HashMap<SThing,LinkedList<SThing>>();
+		HashMap<SThing,HashMap<SThing,LinkedList<Object>>> internalEventMap = new HashMap<SThing,HashMap<SThing,LinkedList<Object>>>();
+		HashMap<SThing,HashMap<SThing,Boolean>> wereTouchingMap = new HashMap<SThing,HashMap<SThing,Boolean>>();
+		HashMap<Object,List<List<SThing>>> listenerToGroupMap = Collections.newHashMap();
 
-		public void check( Entity changedEntity ) {
-			for( Entity m : checkMap.get( changedEntity ) ) {
-				LinkedList<Object> listenerList = internalEventMap.get( changedEntity ).get( m );
+		public void check( SThing changedThing ) {
+			for( SThing m : checkMap.get( changedThing ) ) {
+				LinkedList<Object> listenerList = internalEventMap.get( changedThing ).get( m );
 				if( listenerList == null || listenerList.size() == 0 ) {
 					return;
 				}
 				for( Object colList : listenerList ) {
-					if( check( colList, m, changedEntity ) ) {
-						LinkedList<Entity> models = new LinkedList<Entity>();
-						models.add( changedEntity );
+					if( check( colList, m, changedThing ) ) {
+						LinkedList<SThing> models = new LinkedList<SThing>();
+						models.add( changedThing );
 						models.add( m );
 						if( colList instanceof CollisionStartListener ) {
-							fireEvent( colList, EventBuilder.buildCollisionEvent( StartCollisionEvent.class, colList, models.toArray( new MovableTurnable[ 0 ] ) ), models );
+							fireEvent( colList, EventBuilder.buildCollisionEvent( StartCollisionEvent.class, colList, models.toArray( new SMovableTurnable[ 0 ] ) ), models );
 						} else if( colList instanceof CollisionEndListener ) {
-							fireEvent( colList, EventBuilder.buildCollisionEvent( EndCollisionEvent.class, colList, models.toArray( new MovableTurnable[ 0 ] ) ), models );
+							fireEvent( colList, EventBuilder.buildCollisionEvent( EndCollisionEvent.class, colList, models.toArray( new SMovableTurnable[ 0 ] ) ), models );
 						}
 					}
 				}
-				boolean doTheseCollide = AabbCollisionDetector.doTheseCollide( m, changedEntity );
-				wereTouchingMap.get( m ).put( changedEntity, doTheseCollide );
-				wereTouchingMap.get( changedEntity ).put( m, doTheseCollide );
+				boolean doTheseCollide = AabbCollisionDetector.doTheseCollide( m, changedThing );
+				wereTouchingMap.get( m ).put( changedThing, doTheseCollide );
+				wereTouchingMap.get( changedThing ).put( m, doTheseCollide );
 			}
 		}
-		public void ammend( Object key, int group, Entity newObject ) {
+		public void ammend( Object key, int group, SThing newObject ) {
 			EventBuilder.ammend( key, group, newObject );
 			listenerToGroupMap.get( key ).get( group ).add( newObject );
 			if( checkMap.get( newObject ) == null ) {
-				checkMap.put( newObject, new LinkedList<Entity>() );
+				checkMap.put( newObject, new LinkedList<SThing>() );
 			}
 			if( internalEventMap.get( newObject ) == null ) {
-				internalEventMap.put( newObject, new HashMap<Entity,LinkedList<Object>>() );
+				internalEventMap.put( newObject, new HashMap<SThing,LinkedList<Object>>() );
 			}
 			if( wereTouchingMap.get( newObject ) == null ) {
-				wereTouchingMap.put( newObject, new HashMap<Entity,Boolean>() );
+				wereTouchingMap.put( newObject, new HashMap<SThing,Boolean>() );
 			}
 			for( int i = 0; i != listenerToGroupMap.get( key ).size(); ++i ) {
 				if( i == group ) {
 					//pass
 				} else {
-					for( Entity e : listenerToGroupMap.get( key ).get( i ) ) {
+					for( SThing e : listenerToGroupMap.get( key ).get( i ) ) {
 						//checkMap
 						checkMap.get( e ).add( newObject );
 						checkMap.get( newObject ).add( e );
@@ -157,26 +157,26 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 				}
 			}
 		}
-		private boolean check( Object colList, Entity m, Entity changedEntity ) {
+		private boolean check( Object colList, SThing m, SThing changedThing ) {
 			if( colList instanceof CollisionStartListener ) {
-				return !wereTouchingMap.get( m ).get( changedEntity ) && AabbCollisionDetector.doTheseCollide( m, changedEntity );
+				return !wereTouchingMap.get( m ).get( changedThing ) && AabbCollisionDetector.doTheseCollide( m, changedThing );
 			} else if( colList instanceof CollisionEndListener ) {
-				return wereTouchingMap.get( m ).get( changedEntity ) && !AabbCollisionDetector.doTheseCollide( m, changedEntity );
+				return wereTouchingMap.get( m ).get( changedThing ) && !AabbCollisionDetector.doTheseCollide( m, changedThing );
 			}
-			Logger.errln( "UNHANDLED CollisionListener TYPE " + colList.getClass() );
+			Logger.errln( "UNHANDLED CollisionListener TYPE", colList.getClass() );
 			return false;
 		}
 
-		public void register( Object collisionListener, List<Entity> groupOne, List<Entity> groupTwo ) {
-			List<List<Entity>> list = Collections.newLinkedList( groupOne, groupTwo );
+		public void register( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
+			List<List<SThing>> list = Collections.newLinkedList( groupOne, groupTwo );
 			listenerToGroupMap.put( collisionListener, list );
-			for( Entity m : groupOne ) {
+			for( SThing m : groupOne ) {
 				if( internalEventMap.get( m ) == null ) {
-					internalEventMap.put( m, new HashMap<Entity,LinkedList<Object>>() );
-					wereTouchingMap.put( m, new HashMap<Entity,Boolean>() );
-					checkMap.put( m, new LinkedList<Entity>() );
+					internalEventMap.put( m, new HashMap<SThing,LinkedList<Object>>() );
+					wereTouchingMap.put( m, new HashMap<SThing,Boolean>() );
+					checkMap.put( m, new LinkedList<SThing>() );
 				}
-				for( Entity t : groupTwo ) {
+				for( SThing t : groupTwo ) {
 					if( internalEventMap.get( m ).get( t ) == null ) {
 						internalEventMap.get( m ).put( t, new LinkedList<Object>() );
 					}
@@ -189,13 +189,13 @@ public class CollisionHandler extends TransformationChangedHandler<Object,Collis
 					}
 				}
 			}
-			for( Entity m : groupTwo ) {
+			for( SThing m : groupTwo ) {
 				if( internalEventMap.get( m ) == null ) {
-					internalEventMap.put( m, new HashMap<Entity,LinkedList<Object>>() );
-					wereTouchingMap.put( m, new HashMap<Entity,Boolean>() );
-					checkMap.put( m, new LinkedList<Entity>() );
+					internalEventMap.put( m, new HashMap<SThing,LinkedList<Object>>() );
+					wereTouchingMap.put( m, new HashMap<SThing,Boolean>() );
+					checkMap.put( m, new LinkedList<SThing>() );
 				}
-				for( Entity t : groupOne ) {
+				for( SThing t : groupOne ) {
 					if( internalEventMap.get( m ).get( t ) == null ) {
 						internalEventMap.get( m ).put( t, new LinkedList<Object>() );
 					}

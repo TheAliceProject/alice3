@@ -54,6 +54,6 @@ public class FilterState extends org.lgna.croquet.StringState {
 		return SingletonHolder.instance;
 	}
 	private FilterState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "ecfb472a-c73f-4dda-9db7-757dfcab8a46" ), "" );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ecfb472a-c73f-4dda-9db7-757dfcab8a46" ), "" );
 	}
 }

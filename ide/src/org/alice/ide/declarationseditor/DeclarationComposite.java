@@ -52,22 +52,35 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			return CodeComposite.getInstance( (org.lgna.project.ast.AbstractCode)declaration );
 		} else if( declaration instanceof org.lgna.project.ast.NamedUserType ) {
-			return TypeComposite.getInstance( (org.lgna.project.ast.AbstractType< ?,?,? >)declaration );
+			return TypeComposite.getInstance( (org.lgna.project.ast.NamedUserType)declaration );
 		} else {
 			if( declaration != null ) {
 				throw new RuntimeException( "todo " + declaration );
 			} else {
-				throw new NullPointerException();
+				return null;
 			}
 		}
 	}
-
+	
 	private final D declaration;
 	private final Class<D> declarationCls;
 	public DeclarationComposite( java.util.UUID id, D declaration, Class<D> declarationCls ) {
 		super( id );
 		this.declaration = declaration;
 		this.declarationCls = declarationCls;
+		
+		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
+		if( nameProperty != null ) {
+			edu.cmu.cs.dennisc.property.event.PropertyListener nameListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				}
+				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+					String nextName = (String)e.getValue();
+					DeclarationTabState.getInstance().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
+				}
+			};
+			nameProperty.addPropertyListener( nameListener );
+		}
 	}
 	@Override
 	public java.util.UUID getTabId() {
@@ -80,11 +93,6 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 	public abstract boolean isValid();
 	
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( model );
-		return false;
-	}
-	@Override
 	public String getTitleText() {
 		return this.declaration.getName();
 	}
@@ -94,6 +102,6 @@ public abstract class DeclarationComposite< D extends org.lgna.project.ast.Abstr
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > >( this, this.declaration, this.declarationCls );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< DeclarationComposite< D,V > >( this, this.declarationCls, this.declaration );
 	}
 }

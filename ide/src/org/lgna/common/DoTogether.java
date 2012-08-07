@@ -46,6 +46,7 @@ package org.lgna.common;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class DoTogether {
 	private static int threadCountForDescription = 0;
 	//todo 

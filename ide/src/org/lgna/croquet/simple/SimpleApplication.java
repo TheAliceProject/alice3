@@ -42,30 +42,45 @@
  */
 package org.lgna.croquet.simple;
 
+import org.lgna.croquet.Group;
+import org.lgna.croquet.undo.UndoHistory;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SimpleApplication extends org.lgna.croquet.Application {
+	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
+		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+			return this.transactionHistory;
+		}
+		public UndoHistory getUndoHistory(Group group) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	};
+	@Override
+	public org.lgna.croquet.Document getDocument() {
+		return this.document;
+	}
 	@Override
 	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
 	}
+
 	@Override
 	protected void handleWindowOpened(java.awt.event.WindowEvent e) {
 	}
+
 	@Override
 	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
 		System.exit( 0 );
 	}
 
 	@Override
-	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		return null;
-	}
-
-	@Override
 	protected org.lgna.croquet.Operation getAboutOperation() {
 		return null;
 	}
+
 	@Override
 	protected org.lgna.croquet.Operation getPreferencesOperation() {
 		return null;

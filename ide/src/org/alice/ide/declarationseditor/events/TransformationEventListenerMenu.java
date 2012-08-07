@@ -13,7 +13,7 @@ import org.lgna.story.AddExitProximityEventListener;
 import org.lgna.story.AddExitViewListener;
 import org.lgna.story.AddPositionOrientationChangeListener;
 import org.lgna.story.AddStartCollisionListener;
-import org.lgna.story.Scene;
+import org.lgna.story.SScene;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.PointOfViewChangeListener;
@@ -24,13 +24,13 @@ import org.lgna.story.event.ViewExitListener;
 
 public class TransformationEventListenerMenu extends EventListenerMenuModel {
 
-	public static final JavaMethod ADD_TRANSFORMATION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addPointOfViewChangeListener", PointOfViewChangeListener.class, Class.class, AddPositionOrientationChangeListener.Detail[].class );
-	public static final JavaMethod ADD_START_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addCollisionStartListener", CollisionStartListener.class, Class.class, Class.class, AddStartCollisionListener.Detail[].class );
-	public static final JavaMethod ADD_END_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addCollisionEndListener", CollisionEndListener.class, Class.class, Class.class, AddEndCollisionListener.Detail[].class );
-	public static final JavaMethod ADD_ENTER_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addProximityEnterListener", ProximityEnterListener.class, Class.class, Class.class, Double.class, AddEnterProximityEventListener.Detail[].class );
-	public static final JavaMethod ADD_EXIT_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addProximityExitListener", ProximityExitListener.class, Class.class, Class.class, Double.class, AddExitProximityEventListener.Detail[].class );
-	public static final JavaMethod ADD_ENTER_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addViewEnterListener", ViewEnterListener.class, Class.class, AddEnterViewListener.Detail[].class );
-	public static final JavaMethod ADD_EXIT_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addViewExitListener", ViewExitListener.class, Class.class, AddExitViewListener.Detail[].class );
+	public static final JavaMethod ADD_TRANSFORMATION_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addPointOfViewChangeListener", PointOfViewChangeListener.class, Class.class, AddPositionOrientationChangeListener.Detail[].class );
+	public static final JavaMethod ADD_START_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addCollisionStartListener", CollisionStartListener.class, Class.class, Class.class, AddStartCollisionListener.Detail[].class );
+	public static final JavaMethod ADD_END_COLLISION_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addCollisionEndListener", CollisionEndListener.class, Class.class, Class.class, AddEndCollisionListener.Detail[].class );
+	public static final JavaMethod ADD_ENTER_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addProximityEnterListener", ProximityEnterListener.class, Class.class, Class.class, Double.class, AddEnterProximityEventListener.Detail[].class );
+	public static final JavaMethod ADD_EXIT_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addProximityExitListener", ProximityExitListener.class, Class.class, Class.class, Double.class, AddExitProximityEventListener.Detail[].class );
+	public static final JavaMethod ADD_ENTER_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addViewEnterListener", ViewEnterListener.class, Class.class, AddEnterViewListener.Detail[].class );
+	public static final JavaMethod ADD_EXIT_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addViewExitListener", ViewExitListener.class, Class.class, AddExitViewListener.Detail[].class );
 
 	//	public static final JavaMethod ADD_START_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addOcclusionStartListener", OcclusionStartListener.class, Model[].class, Model[].class, AddStartOcclusionListener.Detail[].class );
 	//	public static final JavaMethod ADD_END_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addOcclusionEndListener", OcclusionEndListener.class, Model[].class, Model[].class, AddEndOcclusionListener.Detail[].class );

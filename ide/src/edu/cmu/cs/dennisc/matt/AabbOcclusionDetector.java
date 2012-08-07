@@ -2,7 +2,7 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.awt.Point;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
@@ -11,7 +11,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class AabbOcclusionDetector {
 
-	public static boolean doesTheseOcclude(CameraImp camera, Entity object1, Entity object2) {
+	public static boolean doesTheseOcclude(CameraImp camera, SThing object1, SThing object2) {
 		EntityImp implementation = ImplementationAccessor.getImplementation( object1 );
 		EntityImp implementation2 = ImplementationAccessor.getImplementation( object2 );
 		Point3[] object1Points = implementation.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();

@@ -78,23 +78,6 @@ public class RenderContext extends Context {
 	private final java.util.Stack< Float > globalOpacityStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private float globalOpacity = 1.0f;
 
-	
-	private int normalizeCount = 0;
-	
-	public void pushNormalize() {
-		this.normalizeCount ++;
-		if( this.normalizeCount == 1 ) {
-			this.gl.glEnable( GL_NORMALIZE );
-		}
-		
-	}
-	public void popNormalize() {
-		if( this.normalizeCount == 1 ) {
-			this.gl.glDisable( GL_NORMALIZE );
-		}
-		this.normalizeCount --;
-	}
-	
 	public void pushGlobalOpacity() {
 		this.globalOpacityStack.push( this.globalOpacity );
 	}
@@ -105,12 +88,20 @@ public class RenderContext extends Context {
 		this.globalOpacity = this.globalOpacityStack.pop();
 	}
 
+	@Override
 	public void initialize() {
+		super.initialize();
 		this.clearRect.setBounds( 0, 0, 0, 0 );
 		this.globalOpacity = 1.0f;
 		this.globalOpacityStack.clear();
-
-		this.normalizeCount = 0;
+	}
+	
+	@Override
+	protected void enableNormalize() {
+		this.gl.glEnable( GL_NORMALIZE );
+	}
+	@Override
+	protected void disableNormalize() {
 		this.gl.glDisable( GL_NORMALIZE );
 	}
 	public void renderLetterboxingIfNecessary( int width, int height ) {
@@ -477,6 +468,7 @@ public class RenderContext extends Context {
 				int value = isDiffuseColorTextureClamped ? GL_CLAMP : GL_REPEAT;
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, value );
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, value );
+				//gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 				this.currDiffuseColorTextureAdapter = diffuseColorTextureAdapter;
 			}
 		} else {

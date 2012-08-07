@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.matt.EventManager;
@@ -89,7 +89,7 @@ public class SceneImp extends EntityImp {
 	private final java.util.List<Capsule> capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private ProgramImp program;
-	private final org.lgna.story.Scene abstraction;
+	private final org.lgna.story.SScene abstraction;
 	private float fogDensityValue = 0;
 	private final EventManager eventManager;
 
@@ -166,7 +166,7 @@ public class SceneImp extends EntityImp {
 		return rv;
 	}
 
-	public SceneImp( org.lgna.story.Scene abstraction ) {
+	public SceneImp( org.lgna.story.SScene abstraction ) {
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
 		this.sgFog.color.setValue( this.sgBackground.color.getValue() );
@@ -270,7 +270,7 @@ public class SceneImp extends EntityImp {
 		return this.sgScene;
 	}
 	@Override
-	public org.lgna.story.Scene getAbstraction() {
+	public org.lgna.story.SScene getAbstraction() {
 		return this.abstraction;
 	}
 
@@ -310,32 +310,27 @@ public class SceneImp extends EntityImp {
 		this.eventManager.restoreAllListeners();
 	}
 	public void addCamerasTo( ProgramImp program ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				CameraImp cameraImplementation = (CameraImp)entityImplementation;
-				program.getOnscreenLookingGlass().addCamera( cameraImplementation.getSgCamera() );
+		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class ) ) {
+			EntityImp entityImp = EntityImp.getInstance( sgCamera );
+			if( entityImp instanceof CameraImp ) {
+				CameraImp cameraImp = (CameraImp)entityImp;
+				program.getOnscreenLookingGlass().addCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}
 	public void removeCamerasFrom( ProgramImp program ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				CameraImp cameraImplementation = (CameraImp)entityImplementation;
-				program.getOnscreenLookingGlass().removeCamera( cameraImplementation.getSgCamera() );
+		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class ) ) {
+			EntityImp entityImp = EntityImp.getInstance( sgCamera );
+			if( entityImp instanceof CameraImp ) {
+				CameraImp cameraImp = (CameraImp)entityImp;
+				program.getOnscreenLookingGlass().removeCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}
 
 	public CameraImp findFirstCamera() {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				return (CameraImp)entityImplementation;
-			}
-		}
-		return null;
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = edu.cmu.cs.dennisc.pattern.VisitUtilities.getFirst( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class );
+		return (CameraImp)EntityImp.getInstance( sgCamera );
 	}
 
 	public float getGlobalBrightness() {
@@ -366,7 +361,7 @@ public class SceneImp extends EntityImp {
 	public <T> ArrayList<T> findAll( Class<T> cls ) {
 		ArrayList<T> rv = new ArrayList<T>();
 		for( Component component : sgScene.getComponents() ) {
-			Entity abstraction = EntityImp.getAbstractionFromSgElement( component );
+			SThing abstraction = EntityImp.getAbstractionFromSgElement( component );
 			if( abstraction != null ) {
 				if( cls.isAssignableFrom( abstraction.getClass() ) ) {
 					rv.add( (T)abstraction );

@@ -150,7 +150,7 @@ public abstract class AbstractMarkerManagerPanel extends GridBagPanel{
     }
     
     public void updateButtons() {
-    	
+    	this.revalidateAndRepaint();
     }
     
     protected Button getMoveToMarkerButton() {

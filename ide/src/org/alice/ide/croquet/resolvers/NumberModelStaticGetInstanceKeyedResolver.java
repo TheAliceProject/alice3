@@ -47,22 +47,11 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class NumberModelStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.croquet.models.numberpad.NumberModel.class };
-	private org.alice.ide.croquet.models.numberpad.NumberModel numberModel;
 	public NumberModelStaticGetInstanceKeyedResolver( T instance, org.alice.ide.croquet.models.numberpad.NumberModel numberModel ) {
-		super( instance );
-		this.numberModel = numberModel;
+		super( instance, new Class[] { org.alice.ide.croquet.models.numberpad.NumberModel.class }, new Object[] { numberModel } );
 	}
 	public NumberModelStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -84,8 +73,8 @@ public class NumberModelStaticGetInstanceKeyedResolver<T> extends org.lgna.croqu
 		}
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		Class<?> cls = this.numberModel.getClass();
-		binaryEncoder.encode( cls.getName() );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		org.alice.ide.croquet.models.numberpad.NumberModel numberModel = (org.alice.ide.croquet.models.numberpad.NumberModel)arguments[ 0 ];
+		binaryEncoder.encode( numberModel.getClass().getName() );
 	}
 }

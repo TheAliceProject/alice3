@@ -63,7 +63,7 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.CascadeFillIn< 
 		this.declarationComposite = declarationComposite;
 	}
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node ) {
+	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.declarationComposite;
 	}
 	@Override

@@ -61,7 +61,7 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 	private org.lgna.project.ast.UserMethod method;
 	private MethodTemplateMenuModel( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString(  "96831579-1fb6-4c15-a509-ccdcc51458a8" ),
-				org.alice.ide.croquet.models.ast.rename.RenameMethodOperation.getInstance( method ).getMenuItemPrepModel(),
+				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(),
 				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( method ).getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel()
@@ -70,6 +70,6 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel >( this, this.method, org.lgna.project.ast.UserMethod.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel >( this, org.lgna.project.ast.UserMethod.class, this.method );
 	}
 }

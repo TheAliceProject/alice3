@@ -195,7 +195,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
 		startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
 		Vector3 rotationAxis = this.absoluteRotationAxis;
-		this.rotationPlane = new Plane(this.initialClickPoint, rotationAxis);
+		this.rotationPlane = Plane.createInstance(this.initialClickPoint, rotationAxis);
 		
 		this.rotationHandle.initializeSnapReferenceFrame();
 
@@ -223,7 +223,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		
 //		DEBUG_setDebugSpherePosition(this.initialClickPoint);
 		
-		this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
+		this.cameraFacingPlane = Plane.createInstance( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 		this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.getLocalTransformation());
 		this.originalAbsoluteTransformation = manipulatedTransformable.getAbsoluteTransformation();
 		this.originalAngleBasedOnMouse = getRotationBasedOnMouse( startInput.getMouseLocation() );

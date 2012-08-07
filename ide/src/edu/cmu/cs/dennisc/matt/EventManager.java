@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.GlobalDragAdapter;
-import org.lgna.story.Model;
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SModel;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
@@ -18,11 +18,15 @@ import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.TimeListener;
+import org.lgna.story.event.ViewEnterListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.event.WhileOcclusionListener;
 import org.lgna.story.event.WhileProximityListener;
 import org.lgna.story.implementation.SceneImp;
+import org.lgna.story.HeldKeyPolicy;
+
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
@@ -51,9 +55,11 @@ public class EventManager {
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
-			EventManager.this.handleKeyPressed( event );
+			keyHandler.handleKeyPress( event );
 		}
 		public void keyReleased( java.awt.event.KeyEvent e ) {
+			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
+			keyHandler.handleKeyRelease( event );
 		}
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
@@ -83,13 +89,6 @@ public class EventManager {
 		throw new RuntimeException( "todo" );
 		//		this.mouse.removeListener(keyListener);
 		//		this.keyListeners.remove( keyListener );
-	}
-
-	protected void handleKeyPressed( org.lgna.story.event.KeyEvent event ) {
-		keyHandler.fireAllTargeted( event );
-		//		for(KeyListener listener: keyListeners){
-		//			listener.keyPressed(event);
-		//		}
 	}
 
 	public void addListenersTo( OnscreenLookingGlass onscreenLookingGlass ) {
@@ -128,10 +127,10 @@ public class EventManager {
 			handler.restoreListeners();
 		}
 	}
-	public <A extends MovableTurnable, B extends MovableTurnable> void addCollisionListener( Object collisionListener, Class<A> a, Class<B> b, ArrayList<A> groupOne, ArrayList<B> groupTwo, MultipleEventPolicy policy ) {
+	public <A extends SMovableTurnable, B extends SMovableTurnable> void addCollisionListener( Object collisionListener, Class<A> a, Class<B> b, ArrayList<A> groupOne, ArrayList<B> groupTwo, MultipleEventPolicy policy ) {
 		collisionHandler.addCollisionListener( collisionListener, groupOne, a, groupTwo, b, policy );
 	}
-	public <A extends MovableTurnable, B extends MovableTurnable> void addProximityEventListener( Object proximityEventListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Double dist, MultipleEventPolicy policy ) {
+	public <A extends SMovableTurnable, B extends SMovableTurnable> void addProximityEventListener( Object proximityEventListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Double dist, MultipleEventPolicy policy ) {
 		proxyHandler.addProximityListener( proximityEventListener, groupOne, a, groupTwo, b, dist, policy );
 	}
 
@@ -139,30 +138,30 @@ public class EventManager {
 		timer.addListener( timerEventListener, frequency, policy );
 	}
 
-	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy ) {
-		this.keyHandler.addListener( keyListener, eventPolicy, null );
+	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy, HeldKeyPolicy heldKeyPolicy ) {
+		this.keyHandler.addListener( keyListener, eventPolicy, null, heldKeyPolicy );
 	}
-	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
-		keyHandler.addListener( keyPressListener, policy, NumberKeyEvent.NUMBERS );
+	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
+		keyHandler.addListener( keyPressListener, policy, NumberKeyEvent.NUMBERS, heldKeyPolicy );
 	}
-	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy ) {
-		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS );
+	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
+		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS, heldKeyPolicy );
 	}
-	public void moveWithArrows( MovableTurnable entity ) {
-		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS );
+	public void moveWithArrows( SMovableTurnable entity ) {
+		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS, HeldKeyPolicy.FIRE_MULTIPLE );
 	}
 
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
 		mouseHandler.addListener( listener, null, policy, null );
 	}
-	public <T extends Model> void addMouseClickOnObjectListener( MouseClickOnObjectListener<T> listener, Class<T> cls, MultipleEventPolicy policy, Visual[] targets ) {
+	public <T extends SModel> void addMouseClickOnObjectListener( MouseClickOnObjectListener<T> listener, Class<T> cls, MultipleEventPolicy policy, Visual[] targets ) {
 		this.mouseHandler.addListener( listener, cls, policy, targets );
 	}
 	public void addMouseButtonListener( Object listener, MultipleEventPolicy policy, Visual[] targets ) {
 		this.mouseHandler.addListener( listener, null, policy, targets );
 	}
 
-	public <A extends MovableTurnable> void addTransformationListener( PointOfViewChangeListener transformationlistener, Class<A> a, ArrayList<A> shouldListenTo, MultipleEventPolicy policy ) {
+	public <A extends SMovableTurnable> void addTransformationListener( PointOfViewChangeListener transformationlistener, Class<A> a, ArrayList<A> shouldListenTo, MultipleEventPolicy policy ) {
 		this.transHandler.addTransformationListener( transformationlistener, a, shouldListenTo, policy );
 	}
 
@@ -170,7 +169,7 @@ public class EventManager {
 	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	//	}
 
-	public <A extends Model> void addViewEventListener( Object listener, Class<A> a, ArrayList<A> entities, MultipleEventPolicy policy ) {
+	public <A extends SModel> void addViewEventListener( Object listener, Class<A> a, ArrayList<A> entities, MultipleEventPolicy policy ) {
 		this.viewHandler.addViewEventListener( listener, entities, a, policy );
 	}
 
@@ -200,20 +199,20 @@ public class EventManager {
 		}
 	}
 
-	public <A extends MovableTurnable, B extends MovableTurnable> void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Long frequency, MultipleEventPolicy policy ) {
+	public <A extends SMovableTurnable, B extends SMovableTurnable> void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, a, groupTwo, b, frequency, policy );
 	}
-	public <A extends MovableTurnable, B extends MovableTurnable> void addWhileProximityListener( WhileProximityListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Double dist, Long frequency, MultipleEventPolicy policy ) {
+	public <A extends SMovableTurnable, B extends SMovableTurnable> void addWhileProximityListener( WhileProximityListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Double dist, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, a, groupTwo, b, dist, frequency, policy );
 	}
-	public <A extends Model, B extends Model> void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Long frequency, MultipleEventPolicy policy ) {
+	public <A extends SModel, B extends SModel> void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, a, groupTwo, b, frequency, policy );
 	}
-	public <A extends Model> void addWhileInViewListener( WhileInViewListener listener, ArrayList<A> group, Class<A> a, Long frequency, MultipleEventPolicy policy ) {
+	public <A extends SModel> void addWhileInViewListener( WhileInViewListener listener, ArrayList<A> group, Class<A> a, Long frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, a, group, frequency, policy );
 	}
 
-	public <A extends Model, B extends Model> void addOcclusionEventListener( Object occlusionEventListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
+	public <A extends SModel, B extends SModel> void addOcclusionEventListener( Object occlusionEventListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
 		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, a, groupTwo, b, policy );
 	}
 }

@@ -54,17 +54,16 @@ public class SimpleExpressionFillIn< E extends org.lgna.project.ast.Expression >
 		this.transientValue = value;
 	}
 	@Override
-	public E createValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > step ) {
+	public E createValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.transientValue;
 	}
 	@Override
-	public E getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > step ) {
+	public E getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > node ) {
 		return this.transientValue;
 	}
 	@Override
-	protected StringBuilder appendRepr( StringBuilder rv ) {
-		super.appendRepr( rv );
-		rv.append( this.transientValue );
-		return rv;
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( this.transientValue );
 	}
 }

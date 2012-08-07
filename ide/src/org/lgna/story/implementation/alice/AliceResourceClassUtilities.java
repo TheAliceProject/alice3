@@ -74,14 +74,16 @@ public class AliceResourceClassUtilities {
 	
 	public static String DEFAULT_PACKAGE = "";
 	
-	public static Class<? extends org.lgna.story.Model> getModelClassForResourceClass(Class<? extends org.lgna.story.resources.ModelResource> resourceClass)
+	public static String RESOURCE_SUFFIX = "Resource";
+	
+	public static Class<? extends org.lgna.story.SModel> getModelClassForResourceClass(Class<? extends org.lgna.story.resources.ModelResource> resourceClass)
 	{
 		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
 			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
 			Class<?> cls = resourceTemplate.modelClass();
-			if (org.lgna.story.Model.class.isAssignableFrom(cls))
+			if (org.lgna.story.SModel.class.isAssignableFrom(cls))
 			{
-				return (Class<? extends org.lgna.story.Model>)cls;
+				return (Class<? extends org.lgna.story.SModel>)cls;
 			}
 			else
 			{
@@ -105,17 +107,21 @@ public class AliceResourceClassUtilities {
 		return sb.toString();
 	}
 	
-	
-	public static String getAliceClassName(Class<?> resourceClass)
+	public static String getAliceClassName(String name)
 	{
-		String name = resourceClass.getSimpleName();
-		int resourceIndex = name.indexOf("Resource");
+		int resourceIndex = name.indexOf(RESOURCE_SUFFIX);
 		if (resourceIndex != -1)
 		{
 			name = name.substring(0, resourceIndex);
 		}
 		name = getClassNameFromName(name);
 		return name;
+	}
+	
+	
+	public static String getAliceClassName(Class<?> resourceClass)
+	{
+		return getAliceClassName(resourceClass.getSimpleName());
 	}
 	
 	public static List<String> splitOnCapitalsAndNumbers(String s)
@@ -296,12 +302,12 @@ public class AliceResourceClassUtilities {
 	public static UserMethod getPartAccessorMethod(Field partField)
 	{
 		String methodName = "get"+getAliceMethodNameForEnum(partField.getName());
-		Class<?> returnClass = org.lgna.story.Joint.class;
+		Class<?> returnClass = org.lgna.story.SJoint.class;
 		UserParameter[] parameters = {};
 		org.lgna.project.ast.JavaType jointIdType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointId.class );
-		org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( org.lgna.story.Joint.class );
-		Class< ? >[] methodParameterClasses = { org.lgna.story.JointedModel.class, org.lgna.story.resources.JointId.class };
-		org.lgna.project.ast.JavaMethod methodExpression = org.lgna.project.ast.JavaMethod.getInstance(org.lgna.story.Joint.class, "getJoint", methodParameterClasses);
+		org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( org.lgna.story.SJoint.class );
+		Class< ? >[] methodParameterClasses = { org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointId.class };
+		org.lgna.project.ast.JavaMethod methodExpression = org.lgna.project.ast.JavaMethod.getInstance(org.lgna.story.SJoint.class, "getJoint", methodParameterClasses);
 		
 		org.lgna.project.ast.SimpleArgument thisArgument = new org.lgna.project.ast.SimpleArgument( methodExpression.getRequiredParameters().get(0), new org.lgna.project.ast.ThisExpression() );
 		

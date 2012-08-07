@@ -47,29 +47,20 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class JComponent<J extends javax.swing.JComponent> extends Container<J> {
-	
-//	public void setOpaque(boolean isOpaque) {
-//		this.getAwtComponent().setOpaque(isOpaque);
-//	}
+
 	@Override
 	public void setBackgroundColor( java.awt.Color color ) {
 		super.setBackgroundColor( color );
 		this.getAwtComponent().setOpaque( color != null );
-//		//todo?
-//		if( color != null ) {
-//			//pass
-//		} else {
-//			this.getAwtComponent().setOpaque( false );
-//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-//		}
 	}
+
 	public void setAlignmentX(float alignmentX) {
 		this.getAwtComponent().setAlignmentX(alignmentX);
 	}
 	public void setAlignmentY(float alignmentY) {
 		this.getAwtComponent().setAlignmentY(alignmentY);
 	}
-	
+
 	@Override
 	public java.awt.Rectangle getVisibleRectangle() {
 		return this.getAwtComponent().getVisibleRect();
@@ -99,9 +90,45 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 		this.getAwtComponent().setBorder(border);
 	}
 
+	public void setOpaque(boolean isOpaque) {
+		this.getAwtComponent().setOpaque( isOpaque );
+	}
+
 	private void revalidate() {
 		this.getAwtComponent().revalidate();
 	}
+	
+	public static enum Condition {
+		WHEN_FOCUSED( javax.swing.JComponent.WHEN_FOCUSED ),
+		WHEN_IN_FOCUSED_WINDOW( javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW ),
+		WHEN_ANCESTOR_OF_FOCUSED_COMPONENT( javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
+		private int internal;
+		private Condition( int internal ) {
+			this.internal = internal;
+		}
+		private int getInternal() {
+			return this.internal;
+		}
+		public static Condition valueOf( int constant ) {
+			switch( constant ) {
+			case javax.swing.JComponent.WHEN_FOCUSED:
+				return WHEN_FOCUSED;
+			case javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW:
+				return WHEN_IN_FOCUSED_WINDOW;
+			case javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT:
+				return WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
+			default:
+				return null;
+			}
+		}
+	}
+	public void registerKeyboardAction( java.awt.event.ActionListener actionListener, javax.swing.KeyStroke keyStroke, Condition condition ) {
+		this.getAwtComponent().registerKeyboardAction( actionListener, keyStroke, condition.getInternal() );
+	}
+	public void unregisterKeyboardAction( javax.swing.KeyStroke keyStroke ) {
+		this.getAwtComponent().unregisterKeyboardAction( keyStroke );
+	}
+	
 
 	public void revalidateAndRepaint() {
 		this.revalidate();

@@ -51,7 +51,7 @@ public class JavaConstructorParameter extends JavaParameter {
 	private static String getParameterNameFor( ConstructorReflectionProxy constructorReflectionProxy, int index ) {
 		String rv = null;
 		try {
-			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.get( constructorReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
+			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.getInstance( constructorReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
 			if( classInfo != null ) {
 				org.lgna.project.reflect.ConstructorInfo constructorInfo = classInfo.lookupInfo( constructorReflectionProxy.getReification() );
 				if( constructorInfo != null ) {

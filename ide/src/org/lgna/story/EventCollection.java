@@ -55,11 +55,11 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddWhi
 	private Class internalClass;
 	private ArrayList collection;
 
-	public <A extends MovableTurnable> EventCollection( Class<A> cls, A... groupMembers ) {
+	public <A extends SMovableTurnable> EventCollection( Class<A> cls, A... groupMembers ) {
 		this.internalClass = cls;
 		this.collection = Collections.newArrayList( groupMembers );
 	}
-	private <A extends MovableTurnable> EventCollection( Class<A> cls, ArrayList groupMembers ) {
+	private <A extends SMovableTurnable> EventCollection( Class<A> cls, ArrayList groupMembers ) {
 		this.internalClass = cls;
 		this.collection = groupMembers;
 	}
@@ -71,7 +71,7 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddWhi
 	ArrayList getValue() {
 		return this.collection;
 	}
-	public static <T extends MovableTurnable> ArrayList<T> getGroupOne( Object[] details, Class<T> cls ) {
+	public static <T extends SMovableTurnable> ArrayList<T> getGroupOne( Object[] details, Class<T> cls ) {
 		for( Object detail : details ) {
 			if( detail instanceof EventCollection ) {
 				EventCollection eCollection = (EventCollection)detail;
@@ -82,7 +82,7 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddWhi
 		}
 		return null;
 	}
-	public static <T extends MovableTurnable> ArrayList<T> getGroupTwo( Object[] details, Class<T> cls ) {
+	public static <T extends SMovableTurnable> ArrayList<T> getGroupTwo( Object[] details, Class<T> cls ) {
 		EventCollection firstCollection = null;
 		for( Object detail : details ) {
 			if( detail instanceof EventCollection ) {
@@ -100,7 +100,7 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddWhi
 		return null;
 	}
 
-	public static <A extends MovableTurnable> EventCollection makeNew( Class<A> a, ArrayList<A> arrayList ) {
+	public static <A extends SMovableTurnable> EventCollection makeNew( Class<A> a, ArrayList<A> arrayList ) {
 		return new EventCollection( a, arrayList );
 	}
 }

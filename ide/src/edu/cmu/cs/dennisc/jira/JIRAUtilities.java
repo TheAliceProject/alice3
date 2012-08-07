@@ -49,7 +49,7 @@ public class JIRAUtilities {
 	public static int getType( edu.cmu.cs.dennisc.jira.JIRAReport.Type type ) {
 		if( type == edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG ) {
 			return 1;
-		} else if( type == edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEAURE ) {
+		} else if( type == edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE ) {
 			return 2;
 		} else if( type == edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT ) {
 			return 4;

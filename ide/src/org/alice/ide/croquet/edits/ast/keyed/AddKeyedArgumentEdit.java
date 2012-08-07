@@ -47,7 +47,7 @@ package org.alice.ide.croquet.edits.ast.keyed;
  * @author Dennis Cosgrove
  */
 public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade > {
-	private final org.lgna.project.ast.JavaKeyedArgument keyedArgument;
+	private org.lgna.project.ast.JavaKeyedArgument keyedArgument;
 	public AddKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
 		super( completionStep );
 		this.keyedArgument = keyedArgument;
@@ -71,9 +71,33 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice
 		this.getModel().getArgumentListProperty().remove( index );
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "add: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.keyedArgument, locale );
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
+		rv.append( "add detail " );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.keyedArgument, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
+	@Override
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
+		return this.updatePresentation( rv );
+	}
+	@Override
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+		super.addKeyValuePairs( retargeter, edit );
+		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;
+		org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade replacement = replacementEdit.getModel();
+		retargeter.addKeyValuePair( this.keyedArgument, replacementEdit.keyedArgument );
+	}
+	@Override
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		super.retarget( retargeter );
+		this.keyedArgument = retargeter.retarget( this.keyedArgument );
+	}
+//	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
+//		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;
+//		KeyedMoreCascade replacement = replacementEdit.getModel();
+//		retargeter.addKeyValuePair( this.argumentOwner, replacement.argumentOwner );
+//	}
+//	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+//		this.argumentOwner = retargeter.retarget( this.argumentOwner );
+//	}
 }

@@ -45,9 +45,9 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lgna.story.Entity;
-import org.lgna.story.Model;
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SThing;
+import org.lgna.story.SModel;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionStartListener;
@@ -100,31 +100,31 @@ public class EventBuilder {
 	@SuppressWarnings("unchecked")
 	private static <A> A buildEvent( Class<A> event, Object listener, Object[] array ) {
 		if( CollisionEvent.class.isAssignableFrom( event ) ) {
-			if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
-				if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
-					Class<? extends MovableTurnable> clsOne = (Class<? extends MovableTurnable>)classMap.get( listener )[ 0 ];
-					Class<? extends MovableTurnable> clsTwo = (Class<? extends MovableTurnable>)classMap.get( listener )[ 1 ];
+			if( SMovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
+				if( SMovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
+					Class<? extends SMovableTurnable> clsOne = (Class<? extends SMovableTurnable>)classMap.get( listener )[ 0 ];
+					Class<? extends SMovableTurnable> clsTwo = (Class<? extends SMovableTurnable>)classMap.get( listener )[ 1 ];
 					return (A)makeCollisionEvent( clsOne, clsTwo, listener, array );
 				}
 			}
 		} else if( ProximityEvent.class.isAssignableFrom( event ) ) {
-			if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
-				if( MovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
-					Class<? extends MovableTurnable> clsOne = (Class<? extends MovableTurnable>)classMap.get( listener )[ 0 ];
-					Class<? extends MovableTurnable> clsTwo = (Class<? extends MovableTurnable>)classMap.get( listener )[ 1 ];
+			if( SMovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
+				if( SMovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
+					Class<? extends SMovableTurnable> clsOne = (Class<? extends SMovableTurnable>)classMap.get( listener )[ 0 ];
+					Class<? extends SMovableTurnable> clsTwo = (Class<? extends SMovableTurnable>)classMap.get( listener )[ 1 ];
 					return (A)makeProximityEvent( clsOne, clsTwo, listener, array );
 				}
 			}
 		} else if( ViewEvent.class.isAssignableFrom( event ) ) {
-			if( Model.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
-				Class<? extends Model> clsOne = (Class<? extends Model>)classMap.get( listener )[ 0 ];
+			if( SModel.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
+				Class<? extends SModel> clsOne = (Class<? extends SModel>)classMap.get( listener )[ 0 ];
 				return (A)makeViewEvent( clsOne, listener, array );
 			}
 		} else if( OcclusionEvent.class.isAssignableFrom( event ) ) {
-			if( Model.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
-				if( Model.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
-					Class<? extends Model> clsOne = (Class<? extends Model>)classMap.get( listener )[ 0 ];
-					Class<? extends Model> clsTwo = (Class<? extends Model>)classMap.get( listener )[ 1 ];
+			if( SModel.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
+				if( SModel.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
+					Class<? extends SModel> clsOne = (Class<? extends SModel>)classMap.get( listener )[ 0 ];
+					Class<? extends SModel> clsTwo = (Class<? extends SModel>)classMap.get( listener )[ 1 ];
 					return (A)makeCollisionEvent( clsOne, clsTwo, listener, array );
 				}
 			}
@@ -133,7 +133,7 @@ public class EventBuilder {
 		return null;
 	}
 	@SuppressWarnings("unchecked")
-	private static <A extends Model> ViewEvent<A> makeViewEvent( Class<A> clsOne, Object listener, Object[] array ) {
+	private static <A extends SModel> ViewEvent<A> makeViewEvent( Class<A> clsOne, Object listener, Object[] array ) {
 		if( listener instanceof ViewEnterListener ) {
 			return new ComesIntoViewEvent<A>( (A)array[ 0 ] );
 		} else if( listener instanceof ViewExitListener ) {
@@ -144,7 +144,7 @@ public class EventBuilder {
 		}
 	}
 
-	private static <A extends MovableTurnable, B extends MovableTurnable> ProximityEvent<A,B> makeProximityEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+	private static <A extends SMovableTurnable, B extends SMovableTurnable> ProximityEvent<A,B> makeProximityEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
 		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
 		if( listener instanceof ProximityEnterListener ) {
 			return new EnterProximityEvent<A,B>( pair.getFirst(), pair.getSecond() );
@@ -156,7 +156,7 @@ public class EventBuilder {
 		}
 	}
 
-	private static <A extends MovableTurnable, B extends MovableTurnable> CollisionEvent<A,B> makeCollisionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+	private static <A extends SMovableTurnable, B extends SMovableTurnable> CollisionEvent<A,B> makeCollisionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
 		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
 		if( listener instanceof CollisionStartListener ) {
 			return new StartCollisionEvent<A,B>( pair.getFirst(), pair.getSecond() );
@@ -191,19 +191,19 @@ public class EventBuilder {
 		collectionMap.get( key ).get( group ).addAll( temp );
 	}
 
-	public static <A> A buildCollisionEvent( Class<A> eventClass, Object colList, MovableTurnable[] array ) {
+	public static <A> A buildCollisionEvent( Class<A> eventClass, Object colList, SMovableTurnable[] array ) {
 		return buildEvent( eventClass, colList, array );
 	}
 
-	public static <A> A buildProximityEvent( Class<A> eventClass, Object proxList, MovableTurnable[] array ) {
+	public static <A> A buildProximityEvent( Class<A> eventClass, Object proxList, SMovableTurnable[] array ) {
 		return buildEvent( eventClass, proxList, array );
 	}
 
-	public static <A> A buildViewEvent( Class<A> eventClass, PointOfViewChangeListener listener, Entity[] array ) {
+	public static <A> A buildViewEvent( Class<A> eventClass, PointOfViewChangeListener listener, SThing[] array ) {
 		return buildEvent( eventClass, listener, array );
 	}
 
-	public static <A> A buildOcclusionEvent( Class<A> eventClass, PointOfViewChangeListener listener, Entity[] array ) {
+	public static <A> A buildOcclusionEvent( Class<A> eventClass, PointOfViewChangeListener listener, SThing[] array ) {
 		return buildEvent( eventClass, listener, array );
 	}
 }

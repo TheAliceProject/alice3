@@ -106,8 +106,6 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 public class CameraTiltDragManipulator extends CameraManipulator implements OnScreenLookingGlassInformedManipulator{
 
-	
-	static final Plane GROUND_PLANE = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
 
 	private Plane cameraFacingPickPlane;
 	private Point3 pickPoint = null;
@@ -238,7 +236,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 			this.manipulatedTransformable.setTransformation(cameraTransform, AsSeenBy.SCENE);
 			
 			
-			this.cameraFacingPickPlane = new Plane(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
+			this.cameraFacingPickPlane = Plane.createInstance(newPickPoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
 		}
 		
 
@@ -268,7 +266,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			
 			Point3 planePoint = Point3.createAddition(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward);
-			this.cameraFacingPickPlane = new Plane(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
+			this.cameraFacingPickPlane = Plane.createInstance(planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward);
 			
 			Point3 pickPoint = PlaneUtilities.getPointInPlane( this.cameraFacingPickPlane, pickRay);
 			if ( pickPoint != null)

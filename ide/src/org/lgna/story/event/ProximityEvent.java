@@ -45,7 +45,7 @@ package org.lgna.story.event;
 /**
  * @author Matt May
  */
-public class ProximityEvent<A extends org.lgna.story.MovableTurnable, B extends org.lgna.story.MovableTurnable> extends AbstractEvent {
+public class ProximityEvent<A extends org.lgna.story.SMovableTurnable, B extends org.lgna.story.SMovableTurnable> extends AbstractEvent {
 	private A closeFromA;
 	private B closeFromB;
 

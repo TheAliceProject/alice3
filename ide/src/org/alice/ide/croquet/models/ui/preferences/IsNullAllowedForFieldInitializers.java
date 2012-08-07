@@ -54,6 +54,6 @@ public class IsNullAllowedForFieldInitializers extends org.lgna.croquet.preferen
 		return SingletonHolder.instance;
 	}
 	private IsNullAllowedForFieldInitializers() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "bc1fc1d8-eebf-48d7-80ed-771d0f365229" ), false );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bc1fc1d8-eebf-48d7-80ed-771d0f365229" ), false );
 	}
 }

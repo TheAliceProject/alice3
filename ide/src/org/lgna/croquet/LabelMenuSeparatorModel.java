@@ -47,6 +47,7 @@ package org.lgna.croquet;
  */
 public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel {
 	private javax.swing.Icon icon;
+	private String name;
 	public LabelMenuSeparatorModel( java.util.UUID id ) {
 		super( id );
 	}
@@ -56,9 +57,10 @@ public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel 
 	}
 	@Override
 	protected void localize() {
+		this.name = this.findDefaultLocalizedText();
 	}
 	public String getName() {
-		return this.getDefaultLocalizedText();
+		return this.name;
 	}
 	public javax.swing.Icon getIcon() {
 		return this.icon;
@@ -77,7 +79,7 @@ public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel 
 		return rv;
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
 		return rv;
 	}
 }

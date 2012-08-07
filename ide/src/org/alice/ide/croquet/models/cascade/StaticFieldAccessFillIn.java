@@ -78,16 +78,16 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< org.
 		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field );
 	}
 	@Override
-	public org.lgna.project.ast.FieldAccess createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.FieldAccess,Void > step ) {
+	public org.lgna.project.ast.FieldAccess createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.FieldAccess,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.transientValue.field.getValue() );
 	}
 	@Override
-	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.FieldAccess,Void > step ) {
+	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.FieldAccess,Void > node ) {
 		return this.transientValue;
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue(), org.lgna.project.ast.AbstractField.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, org.lgna.project.ast.AbstractField.class, this.transientValue.field.getValue() );
 	}
 	
 	@Override

@@ -46,9 +46,41 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public interface Trigger extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController();
-	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
-	public String getNoteText( java.util.Locale locale );
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
+public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public static enum Origin {
+		USER,
+		RECOVERY,
+		GENERATOR
+	}
+	
+	private final Origin origin;
+	public Trigger( Origin origin ) {
+		this.origin = origin;
+	}
+	public Trigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.origin = binaryDecoder.decodeEnum();
+	}
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.origin );
+	}
+	
+	public Origin getOrigin() {
+		return this.origin;
+	}
+	
+	public abstract org.lgna.croquet.components.ViewController< ?, ? > getViewController();
+	public abstract void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
+	public abstract String getNoteText();
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+	}
+	
+	protected void appendReprInternal( StringBuilder repr ) {
+	}
+	public void appendRepr( StringBuilder repr ) {
+		repr.append( this.getClass().getSimpleName() );
+		repr.append( "[origin=" );
+		repr.append( this.origin );
+		this.appendReprInternal( repr );
+		repr.append( "]" );
+	}
 }

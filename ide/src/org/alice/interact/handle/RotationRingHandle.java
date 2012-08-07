@@ -77,6 +77,9 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		MIDDLE,
 	}
 	
+	protected static final double MIN_TORUS_RADIUS = .05d;
+	protected static final double MAX_TORUS_RADIUS = .1d;
+	
 	protected static final double MINOR_RADIUS = .075d;
 	protected static final double MIN_RADIUS = .4d;
 	
@@ -283,6 +286,13 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	
 	protected void animateHandleToRadius(double desiredRadius)
 	{
+		if (desiredRadius == 0) {
+			return;
+		}
+		else {
+			this.setSize(desiredRadius);
+		}
+/*
 		if (this.animator == null || this.getParentTransformable() == null)
 		{
 //			PrintUtilities.println("Early exit: animator = "+this.animator+", manipulated object = "+this.manipulatedObject);
@@ -326,6 +336,7 @@ public class RotationRingHandle extends ManipulationHandle3D{
 			}
 		};
 		this.animator.invokeLater(this.radiusAnimation, null);
+		*/
 	}
 	
 	@Override
@@ -401,12 +412,12 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		if (this.getParentTransformable() != null)
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			Plane planeOfRotation = new Plane(Point3.createZero(), this.rotationAxis);
+			Plane planeOfRotation = Plane.createInstance(Point3.createZero(), this.rotationAxis);
 			Point3 minPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMinimum() );
 			Point3 maxPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMaximum() );
 			double minSize = minPlanePoint.calculateMagnitude();
 			double maxSize = maxPlanePoint.calculateMagnitude();
-			double radius = Math.max( minSize, maxSize );
+			double radius = Math.max( minSize, maxSize ) + MIN_TORUS_RADIUS;
 			if (Double.isNaN( radius ) || radius < MIN_RADIUS)
 			{
 				radius = MIN_RADIUS;
@@ -443,15 +454,30 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		this.setSize(radius);
 	}
 	
+	protected double getMinTorusRadius() {
+		return MIN_TORUS_RADIUS;
+	}
+	
+	protected double getMaxTorusRadius() {
+		return MAX_TORUS_RADIUS;
+	}
+	
 	@Override
 	protected void setScale( double scale ) {
+		double torusRadius = MINOR_RADIUS * scale;
+		if (torusRadius < getMinTorusRadius()) {
+			torusRadius = getMinTorusRadius();
+		}
+		if (torusRadius > getMaxTorusRadius()) {
+			torusRadius = getMaxTorusRadius();
+		}
 		if (this.sgTorus != null)
 		{
-			this.sgTorus.minorRadius.setValue( MINOR_RADIUS * scale );
+			this.sgTorus.minorRadius.setValue( torusRadius );
 		}
 		if (this.sgSphere != null)
 		{
-			this.sgSphere.radius.setValue( MINOR_RADIUS * 2.0d * scale);
+			this.sgSphere.radius.setValue( torusRadius * 2.0d );
 		}
 	}
 	

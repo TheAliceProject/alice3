@@ -55,7 +55,7 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	private final java.nio.IntBuffer selectionAsIntBuffer;
 	private javax.media.opengl.GLDrawable glDrawable;
 	private javax.media.opengl.GLContext glContext;
-	private javax.media.opengl.GLContext prevShareContext;
+//	private javax.media.opengl.GLContext prevShareContext;
 
 	private class GlEventAdapter implements javax.media.opengl.GLEventListener {
 		private PickParameters pickParameters;
@@ -127,21 +127,22 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 		java.awt.Dimension lgSize = this.lookingGlass.getSize();
 		if( lgSize.width > 0 && lgSize.height > 0 ) {
 			javax.media.opengl.GLAutoDrawable shareDrawable = this.lookingGlass.getGLAutoDrawable();
-			if( shareDrawable != null ) {
-				javax.media.opengl.GLContext shareContext;
-				try {
-					shareContext = shareDrawable.getContext();
-				} catch( NullPointerException npe ) {
-					shareContext = null;
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "fix null pointer exception in jogl" );
-				}
-				if( shareContext != null ) {
-					if( shareContext != this.prevShareContext ) {
-						this.release();
-					}
+//			if( shareDrawable != null ) {
+//				javax.media.opengl.GLContext shareContext;
+//				try {
+//					shareContext = shareDrawable.getContext();
+//				} catch( NullPointerException npe ) {
+//					shareContext = null;
+//					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "fix null pointer exception in jogl" );
+//				}
+//				if( shareContext != null ) {
+//					if( shareContext != this.prevShareContext ) {
+//						this.release();
+//					}
 					if( this.glDrawable != null ) {
 						//pass
 					} else {
+						javax.media.opengl.GLContext shareContext = null;
 						if( LookingGlassFactory.getInstance().canCreateGLPbuffer() ) {
 							javax.media.opengl.GLPbuffer glPixelBuffer = LookingGlassFactory.getInstance().createGLPbuffer( 1, 1, LookingGlassFactory.getSampleCountForDisabledMultisampling(), shareContext );;
 							this.glContext = glPixelBuffer.getContext();
@@ -154,10 +155,10 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 							this.glContext = this.glDrawable.createContext( shareContext );
 							this.glContext.setSynchronized(true);
 						}
-						this.prevShareContext = shareContext;
+//						this.prevShareContext = shareContext;
 					}
-				}
-			}
+//				}
+//			}
 		}
 		return this.glDrawable;
 	}

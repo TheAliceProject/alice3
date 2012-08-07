@@ -58,18 +58,23 @@ public class TypeTab extends GalleryTab {
 	}
 	@Override
 	protected org.lgna.croquet.components.View<?,?> createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
 
 		MyTypesView myTypesView = new MyTypesView();
 		
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
 		scrollPane.setBorder( null );
         scrollPane.setBothScrollBarIncrements( 16, 160 );
-		rv.addComponent( scrollPane, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
 
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
-		rv.addComponent( lineEndPanel, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+
+		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+			.pageEnd( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton() )
+		.build();
+
+		
+		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
+			.center( scrollPane )
+			.lineEnd( lineEndPanel )
+		.build();
 
 		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
@@ -81,10 +86,5 @@ public class TypeTab extends GalleryTab {
 		super.customizeTitleComponent( booleanState, button );
 		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.BOOKMARK_ICON_SMALL );
 		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
 	}
 }

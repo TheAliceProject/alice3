@@ -54,7 +54,7 @@ public abstract class DragModel extends AbstractPrepModel {
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, UserInformation userInformation) {
+	protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit) {
 		rv.append( "..." );
 		return rv;
 	}
@@ -70,7 +70,6 @@ public abstract class DragModel extends AbstractPrepModel {
 	}
 	
 	
-	//public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( org.lgna.croquet.components.DragComponent dragSource );
 	public abstract java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors();
 	public abstract void handleDragStarted( org.lgna.croquet.history.DragStep step );
 	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step );

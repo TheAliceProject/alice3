@@ -53,11 +53,11 @@ public class AsSeenBy implements
 		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
 		Place.Detail
 {
-	private final Entity value;
-	public AsSeenBy( Entity value ) {
+	private final SThing value;
+	public AsSeenBy( SThing value ) {
 		this.value = value; 
 	}
-	/*package-private*/ static Entity getValue( Object[] details, Entity defaultValue ) {
+	/*package-private*/ static SThing getValue( Object[] details, SThing defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof AsSeenBy ) {
 				AsSeenBy asSeenBy = (AsSeenBy)detail;
@@ -68,7 +68,7 @@ public class AsSeenBy implements
 	}
 
 	/*package-private*/ static org.lgna.story.implementation.ReferenceFrame getImplementation( Object[] details, org.lgna.story.implementation.ReferenceFrame defaultValue ) {
-		Entity entity = getValue( details, null );
+		SThing entity = getValue( details, null );
 		return entity != null ? entity.getImplementation() : defaultValue;
 	}
 	

@@ -45,6 +45,7 @@ package org.lgna.story;
 /**
  * @author David Culyba
  */
+@Deprecated
 public class PerspectiveCameraMarker extends CameraMarker 
 {
 	private final org.lgna.story.implementation.PerspectiveCameraMarkerImp implementation = new org.lgna.story.implementation.PerspectiveCameraMarkerImp( this );

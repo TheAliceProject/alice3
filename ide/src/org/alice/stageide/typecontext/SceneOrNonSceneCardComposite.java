@@ -78,7 +78,7 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		org.lgna.croquet.Composite< ? > composite;
 		if( nextValue != null ) {
-			if( nextValue.isAssignableTo( org.lgna.story.Scene.class ) ) {
+			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
 				composite = SceneTypeComposite.getInstance();
 			} else {
 				composite = NonSceneTypeComposite.getInstance();
@@ -99,8 +99,8 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 	}
 	@Override
-	public void handlePostDectivation() {
+	public void handlePostDeactivation() {
 		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
-		super.handlePostDectivation();
+		super.handlePostDeactivation();
 	}
 }

@@ -72,4 +72,5 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 	public void selectAll() {
 		this.getAwtComponent().selectAll();
 	}
+	public abstract void updateTextForBlankCondition( String textForBlankCondition );
 }

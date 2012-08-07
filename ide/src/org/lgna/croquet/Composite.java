@@ -46,38 +46,10 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Composite< V extends org.lgna.croquet.components.View< ?, ? > > extends AbstractElement {
-	public Composite( java.util.UUID id ) {
-		super( id );
-		Manager.registerComposite( this );
-	}
-	private V view;
-	protected abstract V createView();
-	protected V peekView() {
-		return this.view;
-	}
-	public synchronized final V getView() {
-		if( this.view != null ) {
-			//pass
-		} else {
-			this.view = this.createView();
-			assert this.view != null : this;
-		}
-		return this.view;
-	}
-	public void releaseView() {
-		this.view = null;
-	}
-	public abstract boolean contains( Model model );
-//	private boolean isActive;
-//	public boolean isActive() {
-//		return this.isActive;
-//	}
-//	public void setActive( boolean isActive ) {
-//		this.isActive = isActive;
-//	}
-	public void handlePreActivation() {
-	}
-	public void handlePostDectivation() {
-	}
+public interface Composite< V extends org.lgna.croquet.components.View< ?, ? > > extends Element {
+	public V getView();
+	public void releaseView();
+	public void handlePreActivation();
+	public void handlePostDeactivation();
+	public boolean contains( Model model );
 }

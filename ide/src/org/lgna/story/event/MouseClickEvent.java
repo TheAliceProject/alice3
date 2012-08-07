@@ -54,17 +54,17 @@ import edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy;
  */
 public class MouseClickEvent extends AbstractEvent {
 	protected java.awt.event.MouseEvent e;
-	protected org.lgna.story.Scene scene;
-	private boolean isPickPerformed;
-	private org.lgna.story.Model modelAtMouseLocation;
+	protected org.lgna.story.SScene scene;
+	protected boolean isPickPerformed;
+	protected org.lgna.story.SModel modelAtMouseLocation;
 
-	public MouseClickEvent( java.awt.event.MouseEvent e, org.lgna.story.Scene scene ) {
+	public MouseClickEvent( java.awt.event.MouseEvent e, org.lgna.story.SScene scene ) {
 		this.e = e;
 		this.scene = scene;
 		this.isPickPerformed = false;
 	}
 
-	private synchronized void pickIfNecessary() {
+	protected synchronized void pickIfNecessary() {
 		if( this.isPickPerformed ) {
 			//pass
 		} else {
@@ -85,9 +85,9 @@ public class MouseClickEvent extends AbstractEvent {
 										break;
 									}
 									if( sgParent == sceneImp.getSgComposite() ) {
-										org.lgna.story.Entity e = EntityImp.getAbstractionFromSgElement( sgComponent );
-										if( e instanceof org.lgna.story.Model ) {
-											this.modelAtMouseLocation = (org.lgna.story.Model)e;
+										org.lgna.story.SThing e = EntityImp.getAbstractionFromSgElement( sgComponent );
+										if( e instanceof org.lgna.story.SModel ) {
+											this.modelAtMouseLocation = (org.lgna.story.SModel)e;
 										}
 										break;
 									}
@@ -101,7 +101,7 @@ public class MouseClickEvent extends AbstractEvent {
 			this.isPickPerformed = true;
 		}
 	}
-	protected org.lgna.story.Model getModelAtMouseLocation() {
+	protected org.lgna.story.SModel getModelAtMouseLocation() {
 		this.pickIfNecessary();
 		return this.modelAtMouseLocation;
 	}

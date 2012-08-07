@@ -60,7 +60,12 @@ public class DecimalPointOperation extends NumberPadOperation {
 
 	private DecimalPointOperation( NumberModel<?> model ) {
 		super( java.util.UUID.fromString( "45fb7f55-166b-421c-9e6d-cf781b562936" ), model );
-		this.setName( "." );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		java.text.DecimalFormatSymbols decimalFormatSymbols = new java.text.DecimalFormatSymbols();
+		this.setName( "" + decimalFormatSymbols.getDecimalSeparator() );
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createResolver() {
@@ -69,7 +74,7 @@ public class DecimalPointOperation extends NumberPadOperation {
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		this.numberModel.appendDecimalPoint();
+		this.numberModel.replaceSelectionWithDecimalPoint();
 		step.finish();
 	}
 }

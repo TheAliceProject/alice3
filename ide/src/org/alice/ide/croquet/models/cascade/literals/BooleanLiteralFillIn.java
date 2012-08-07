@@ -62,15 +62,19 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		this.transientValue = new org.lgna.project.ast.BooleanLiteral( value );
 	}
 	@Override
-	public org.lgna.project.ast.BooleanLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.BooleanLiteral,Void > step ) {
+	public org.lgna.project.ast.BooleanLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.BooleanLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.BooleanLiteral( this.transientValue.value.getValue() );
 	}
 	@Override
-	public org.lgna.project.ast.BooleanLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.BooleanLiteral,Void > step ) {
+	public org.lgna.project.ast.BooleanLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.BooleanLiteral,Void > node ) {
 		return this.transientValue;
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
+	}
+	@Override
+	protected String getTutorialItemText() {
+		return Boolean.toString( this.transientValue.value.getValue() );
 	}
 }

@@ -53,7 +53,7 @@ public class ForwardOperation extends org.lgna.croquet.ActionOperation {
 		return SingletonHolder.instance;
 	}
 	private ForwardOperation() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
 	}
 	@Override
 	protected void localize() {

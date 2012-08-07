@@ -46,15 +46,24 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DragTrigger extends MouseEventTrigger {
-	public DragTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
-		super( viewController, mouseEvent );
+public class DragTrigger extends AbstractMouseEventTrigger {
+	public static DragTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
+		return new DragTrigger( Origin.USER, viewController, mouseEvent );
+	}
+	public static DragTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent ) {
+		return createUserInstance( null, mouseEvent );
+	}
+	public static DragTrigger createGeneratorInstance() {
+		return new DragTrigger( Origin.GENERATOR, null, null );
+	}
+	private DragTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
+		super( origin, viewController, mouseEvent );
 	}
 	public DragTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		return "Press and Drag";
 	}
 }
