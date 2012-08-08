@@ -120,9 +120,20 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
  * @author Dennis Cosgrove
  */
 public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPanel {
+	private final org.lgna.croquet.State.ValueListener< Boolean > isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
+		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			if( isAdjusting ) {
+				//pass
+			} else {
+				NonSceneTypeView.this.handleEmphasizingClassesChanged( nextValue );
+			}
+		}
+	};
+	private final ReturnToSceneTypeButton returnToSceneTypeButton = new ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance() );
 	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
 		super( composite );
-		this.setSouthWestComponent( new ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance() ) );
 		this.setNorthWestComponent( new SelectedTypeView() );
 		this.setNorthEastComponent( org.alice.stageide.croquet.models.run.RunOperation.getInstance().createButton() );
 	}
@@ -134,5 +145,18 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 				return new java.awt.Dimension( 320, 240 );
 			}
 		};
+	}
+	private final void handleEmphasizingClassesChanged( boolean nextValue ) {
+		this.setSouthWestComponent( nextValue ? returnToSceneTypeButton : null );
+	}
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesListener );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesListener );
+		super.handleUndisplayable();
 	}
 }

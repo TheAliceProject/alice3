@@ -76,6 +76,14 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 		}
 	};
 	
+	// note: for singleton ThisInstanceFactory
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			InstanceFactoryPopupButton.this.repaint();
+		}
+	};
 	private final MainComponent mainComponent = new MainComponent();
 	public InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState ) {
 		super( instanceFactoryState );
@@ -100,5 +108,16 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 	@Override
 	protected void handleChanged( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		this.mainComponent.handleChanged( nextValue );
+	}
+	
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		org.alice.ide.declarationseditor.TypeState.getInstance().addValueListener( this.typeListener );
+	}
+	@Override
+	protected void handleUndisplayable() {
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
+		super.handleUndisplayable();
 	}
 };
