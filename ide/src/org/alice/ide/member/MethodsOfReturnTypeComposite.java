@@ -40,24 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member.views;
+
+package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnTypeFilteredView extends org.lgna.croquet.components.PageAxisPanel {
-	public ReturnTypeFilteredView( org.alice.ide.member.ReturnTypeFilteredComposite composite ) {
-		super( composite );
-		this.setMaximumSizeClampedToPreferredSize( true );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
-	}
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.alice.ide.member.ReturnTypeFilteredComposite composite = (org.alice.ide.member.ReturnTypeFilteredComposite)this.getComposite();
-		this.removeAllComponents();
-		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			this.addComponent( org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method ) );
+public class MethodsOfReturnTypeComposite extends MembersExpandableCollapsibleComposite {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, MethodsOfReturnTypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized MethodsOfReturnTypeComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		if( type != null ) {
+			MethodsOfReturnTypeComposite rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new MethodsOfReturnTypeComposite( type );
+				map.put( type, rv );
+			}
+			return rv;
+		} else {
+			return null;
 		}
+	}
+	private final org.lgna.project.ast.AbstractType<?,?,?> returnType;
+	private MethodsOfReturnTypeComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
+		this.returnType = returnType;
+		
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
+		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( this.returnType ) );
+	}
+	public org.lgna.project.ast.AbstractType<?,?,?> getReturnType() {
+		return this.returnType;
 	}
 }

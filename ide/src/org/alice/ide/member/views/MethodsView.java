@@ -40,43 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+
+package org.alice.ide.member.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnTypeFilteredComposite extends FilteredComposite<org.alice.ide.member.views.ReturnTypeFilteredView> {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, ReturnTypeFilteredComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ReturnTypeFilteredComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		if( type != null ) {
-			ReturnTypeFilteredComposite rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ReturnTypeFilteredComposite( type );
-				map.put( type, rv );
-			}
-			return rv;
-		} else {
-			return null;
+public class MethodsView extends org.lgna.croquet.components.PageAxisPanel {
+	public MethodsView( org.alice.ide.member.MembersExpandableCollapsibleComposite composite ) {
+		super( composite );
+		this.setMaximumSizeClampedToPreferredSize( true );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
+	}
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		org.alice.ide.member.MembersExpandableCollapsibleComposite composite = (org.alice.ide.member.MembersExpandableCollapsibleComposite)this.getComposite();
+		this.removeAllComponents();
+		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
+			this.addComponent( org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method ) );
 		}
-	}
-	private final org.lgna.project.ast.AbstractType<?,?,?> returnType;
-	private ReturnTypeFilteredComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
-		super( java.util.UUID.fromString( "39743af8-b64e-4688-8a2b-032ad78cec92" ), returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
-		this.returnType = returnType;
-		//this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( this.returnType.getName() );
-	}
-	public org.lgna.project.ast.AbstractType<?,?,?> getReturnType() {
-		return this.returnType;
-	}
-	@Override
-	protected boolean isIncluded( org.lgna.project.ast.AbstractMethod method ) {
-		return method.getReturnType() == this.returnType;
-	}
-	@Override
-	protected org.alice.ide.member.views.ReturnTypeFilteredView createView() {
-		return new org.alice.ide.member.views.ReturnTypeFilteredView( this );
 	}
 }

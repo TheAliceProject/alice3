@@ -43,12 +43,6 @@
 
 package org.alice.stageide;
 
-import java.util.List;
-
-import org.lgna.project.ast.JavaMethod;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -62,20 +56,50 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		return SingletonHolder.instance;
 	}
 	
-	
-	
-	@Override
-	public List<JavaMethod> getAddEventListenerMethods() {
-		return Collections.newLinkedList(
-//				ADD_SCENE_ACTIVATION_LISTENER_METHOD,
-//				ADD_MOUSE_BUTTON_LISTENER_METHOD,
-//				ADD_KEY_LISTENER_METHOD,
-//				ADD_COLLISION_LISTENER_METHOD,
-//				ADD_PROXIMITY_LISTENER_METHOD,
-//				ADD_TIMER_EVENT_LISTENER_METHOD
-		);
-	}
+	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?,?,?>> {
+		SINGLETON;
+		private static final double DEFAULT_VALUE = 50.0;
+		private final java.util.Map<org.lgna.project.ast.AbstractType<?,?,?>,Double> mapTypeToValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		TypeComparator() {
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, 1.1 );
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE, 1.2 );
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, 1.3 );
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( String.class ), 1.4 );
 
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ), 10.1 );
+			
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ), 20.1 );
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Paint.class ), 20.2 );
+
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Position.class ), 30.1 );
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Orientation.class ), 30.2 );
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.VantagePoint.class ), 30.3 );
+
+			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ), 99.9 );
+		}
+		private double getValue( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+			Double value = mapTypeToValue.get( type );
+			if( value != null ) {
+				return value;
+			} else {
+				return DEFAULT_VALUE;
+			}
+		}
+		public int compare( org.lgna.project.ast.AbstractType<?,?,?> typeA, org.lgna.project.ast.AbstractType<?,?,?> typeB ) {
+			double valueA = getValue( typeA );
+			double valueB = getValue( typeB );
+			if( valueA == valueB ) {
+				return typeA.getName().compareTo( typeB.getName() );
+			} else {
+				return Double.compare( valueA, valueB );
+			}
+		}
+	};
+	@Override
+	public java.util.Comparator<org.lgna.project.ast.AbstractType<?,?,?>> getTypeComparator() {
+		return TypeComparator.SINGLETON;
+	}
+	
 	@Override
 	protected boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type ) {
 		return type.isAssignableTo( org.lgna.story.SModel.class );

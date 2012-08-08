@@ -47,6 +47,25 @@ package org.alice.ide.member;
  */
 public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.member.views.MemberTabView> {
 	private final org.alice.ide.members.filters.MemberFilter memberFilter;
+	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
+		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
+			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
+			if( method.isStatic() ) {
+				return false;
+			}
+		} else if( member instanceof org.lgna.project.ast.AbstractField ) {
+			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)member;
+			if( field.isStatic() ) {
+				return false;
+			}
+		}
+		if( member.isPublicAccess() || member.isUserAuthored() ) {
+			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
+			return visibility == null || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
+		} else {
+			return false;
+		}
+	}
 	public MemberTabComposite( java.util.UUID migrationId, org.alice.ide.members.filters.MemberFilter memberFilter ) {
 		super( migrationId );
 		this.memberFilter = memberFilter;

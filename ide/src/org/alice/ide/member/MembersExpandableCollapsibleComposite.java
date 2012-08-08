@@ -40,37 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member.views;
+
+package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionTabView extends MemberTabView {
-	public FunctionTabView( org.alice.ide.member.FunctionTabComposite composite ) {
-		super( composite );
-
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.Theme theme;
-		if( ide != null ) {
-			theme = ide.getTheme();
-		} else {
-			theme = new org.alice.ide.DefaultTheme();
-		}
-		this.setBackgroundColor( theme.getFunctionColor() );
+public abstract class MembersExpandableCollapsibleComposite extends org.lgna.croquet.ExpandableCollapsibleCoreComposite<org.alice.ide.member.views.MethodsView> {
+	private java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	public MembersExpandableCollapsibleComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
+		super( migrationId, isExpandedInitialValue );
+	}
+	public java.util.List<org.lgna.project.ast.AbstractMethod> getMethods() {
+		return java.util.Collections.unmodifiableList( this.methods );
+	}
+	public void setMethods( java.util.List<org.lgna.project.ast.AbstractMethod> methods ) {
+		this.methods = methods;
+		this.getView().refreshLater();
 	}
 	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.alice.ide.member.FunctionTabComposite composite = (org.alice.ide.member.FunctionTabComposite)this.getComposite();
-		this.removeAllComponents();
-		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
-		for( org.alice.ide.member.MembersExpandableCollapsibleComposite subComposite : composite.getSubComposites() ) {
-			org.lgna.croquet.components.ExpandableCollapsibleView view = subComposite.getOuterComposite().getView();
-			view.getPageStartComponent().setForegroundColor( java.awt.Color.GRAY );
-			pageAxisPanel.addComponent( view );
-			pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
-		}
-		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
-		this.addPageStartComponent( pageAxisPanel );
+	protected org.alice.ide.member.views.MethodsView createView() {
+		return new org.alice.ide.member.views.MethodsView( this );
 	}
 }

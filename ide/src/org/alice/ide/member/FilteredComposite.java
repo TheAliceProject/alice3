@@ -53,17 +53,19 @@ public abstract class FilteredComposite<V extends org.lgna.croquet.components.Vi
 	public java.util.List<org.lgna.project.ast.AbstractMethod> getMethods() {
 		java.util.List<org.lgna.project.ast.AbstractMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
-		while( type != null ) {
-			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-				if( this.isIncluded( method ) ) {
-					list.add( method );
+		if( instanceFactory != null ) {
+			org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
+			while( type != null ) {
+				for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+					if( this.isIncluded( method ) ) {
+						list.add( method );
+					}
 				}
-			}
-			if( type.isFollowToSuperClassDesired() ) {
-				type = type.getSuperType();
-			} else {
-				break;
+				if( type.isFollowToSuperClassDesired() ) {
+					type = type.getSuperType();
+				} else {
+					break;
+				}
 			}
 		}
 		return list;

@@ -84,7 +84,7 @@ public abstract class SThing implements Rider {
 	}
 
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public boolean isCollidingWith( SThing other ) {
+	public Boolean isCollidingWith( SThing other ) {
 		return this.getImplementation().isCollidingWith( other );
 	}
 	
