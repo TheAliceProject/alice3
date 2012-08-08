@@ -59,8 +59,7 @@ public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSel
 				MemberTabComposite.class, 
 				1,
 				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
+				FunctionTabComposite.getInstance()
 		);
 	}
 

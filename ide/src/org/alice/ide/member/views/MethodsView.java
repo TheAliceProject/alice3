@@ -58,7 +58,18 @@ public class MethodsView extends org.lgna.croquet.components.PageAxisPanel {
 		org.alice.ide.member.MembersExpandableCollapsibleComposite composite = (org.alice.ide.member.MembersExpandableCollapsibleComposite)this.getComposite();
 		this.removeAllComponents();
 		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			this.addComponent( org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method ) );
+			org.lgna.croquet.components.DragComponent<?,?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
+			org.lgna.croquet.components.JComponent<?> component;
+			if( method.isUserAuthored() ) {
+				org.alice.ide.declarationseditor.CodeComposite codeComposite = org.alice.ide.declarationseditor.CodeComposite.getInstance( method );
+				org.lgna.croquet.BooleanState isSelectedState = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectedState( codeComposite );
+				org.lgna.croquet.components.ToggleButton button = isSelectedState.createToggleButton();
+				button.getAwtComponent().setText( "edit" );
+				component = new org.lgna.croquet.components.LineAxisPanel( button, org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ), dragComponent );
+			} else {
+				component = dragComponent;
+			}
+			this.addComponent( component );
 		}
 	}
 }
