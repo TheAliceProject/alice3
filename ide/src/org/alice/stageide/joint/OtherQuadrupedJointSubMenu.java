@@ -46,8 +46,8 @@ package org.alice.stageide.joint;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BipedSubMenu<FB> extends JointSubMenu<FB> {
-	public BipedSubMenu( java.util.UUID migrationId, String... methodNames ) {
-		super( migrationId, org.lgna.story.SBiped.class, methodNames );
+public class OtherQuadrupedJointSubMenu<FB> extends JointSubMenu<FB> {
+	public OtherQuadrupedJointSubMenu() {
+		super( java.util.UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), org.lgna.story.SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
 	}
 }

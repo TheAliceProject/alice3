@@ -46,8 +46,8 @@ package org.alice.stageide.joint;
 /**
  * @author Dennis Cosgrove
  */
-public class LeftHandBipedSubMenu<FB> extends BipedSubMenu<FB> {
-	public LeftHandBipedSubMenu() {
-		super( java.util.UUID.fromString( "50d00e4d-bdaf-4123-a343-098a6548cd26" ), "getLeftHand", "getLeftThumb", "getLeftHand" );
+public class LeftHandBipedJointSubMenu<FB> extends JointSubMenu<FB> {
+	public LeftHandBipedJointSubMenu() {
+		super( java.util.UUID.fromString( "50d00e4d-bdaf-4123-a343-098a6548cd26" ), org.lgna.story.SBiped.class, "getLeftHand", "getLeftThumb", "getLeftThumbKnuckle", "getLeftIndexFinger", "getLeftIndexFingerKnuckle", "getMiddleIndexFinger", "getLeftMiddleFingerKnuckle", "getLeftPinkyFinger", "getLeftPinkyFingerKnuckle" );
 	}
 }
