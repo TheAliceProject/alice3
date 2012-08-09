@@ -40,41 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+
+package org.alice.stageide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SearchTabComposite extends MemberTabComposite {
+public class AddListenerProceduresComposite extends org.alice.ide.member.FilteredJavaProceduresSubComposite {
 	private static class SingletonHolder {
-		private static SearchTabComposite instance = new SearchTabComposite();
+		private static AddListenerProceduresComposite instance = new AddListenerProceduresComposite();
 	}
-	public static SearchTabComposite getInstance() {
+	public static AddListenerProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private final org.lgna.croquet.StringState queryState = this.createStringState( this.createKey( "queryState" ) );
-	private final org.lgna.croquet.Operation clearQueryOperation = this.createActionOperation( this.createKey( "clearQueryOperation" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			queryState.setValueTransactionlessly( "" );
-			return null;
+	private final java.util.Collection<String> names = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "addDefaultModelManipulation", "addObjectMoverFor" ); 
+	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+			return compareMethodNames( methodA, methodB );
 		}
-	} );
-	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
-	}
-	public org.lgna.croquet.StringState getQueryState() {
-		return this.queryState;
-	}
-	public org.lgna.croquet.Operation getClearQueryOperation() {
-		return this.clearQueryOperation;
+	};
+	private AddListenerProceduresComposite() {
+		super( java.util.UUID.fromString( "cfb5bd39-c07b-4436-a4e9-031dd25ca3b5" ) );
 	}
 	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.SearchMemberTabView( this );
+	public java.util.Comparator< org.lgna.project.ast.JavaMethod > getComparator() {
+		return this.comparator;
 	}
 	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		return java.util.Collections.emptyList();
+	public boolean isShowingDesired() {
+		return false;
+	}
+	@Override
+	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+		String name = method.getName();
+		return names.contains( name ) || ( name.startsWith( "add" ) && name.endsWith( "Listener" ) );
 	}
 }

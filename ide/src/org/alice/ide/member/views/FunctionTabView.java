@@ -48,26 +48,6 @@ package org.alice.ide.member.views;
 public class FunctionTabView extends MemberTabView {
 	public FunctionTabView( org.alice.ide.member.FunctionTabComposite composite ) {
 		super( composite );
-
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.Theme theme;
-		if( ide != null ) {
-			theme = ide.getTheme();
-		} else {
-			theme = new org.alice.ide.DefaultTheme();
-		}
-		this.setBackgroundColor( theme.getFunctionColor() );
-	}
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.alice.ide.member.FunctionTabComposite composite = (org.alice.ide.member.FunctionTabComposite)this.getComposite();
-		this.removeAllComponents();
-		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
-		for( org.alice.ide.member.ReturnTypeFilteredComposite returnTypeFilteredComposite : composite.getReturnTypeFilteredComposites() ) {
-			pageAxisPanel.addComponent( returnTypeFilteredComposite.getOuterComposite().getView() );
-		}
-		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
-		this.addPageStartComponent( pageAxisPanel );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
 }

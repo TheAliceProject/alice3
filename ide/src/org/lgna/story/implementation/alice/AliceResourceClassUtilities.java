@@ -332,7 +332,14 @@ public class AliceResourceClassUtilities {
 		List<UserMethod> methods = new LinkedList<UserMethod>();
 		for (Field f : jointFields)
 		{
-			methods.add(getPartAccessorMethod(f));
+			boolean visible = true;
+			if( f.isAnnotationPresent( org.lgna.project.annotations.FieldTemplate.class ) ) {
+				org.lgna.project.annotations.FieldTemplate propertyFieldTemplate = f.getAnnotation( org.lgna.project.annotations.FieldTemplate.class );
+				visible = propertyFieldTemplate.visibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN;
+			}
+			if (visible) {
+				methods.add(getPartAccessorMethod(f));
+			}
 		}
 		return methods.toArray(new UserMethod[methods.size()]);
 	}

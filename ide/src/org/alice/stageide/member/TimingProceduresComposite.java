@@ -40,24 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member.views;
+
+package org.alice.stageide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnTypeFilteredView extends org.lgna.croquet.components.PageAxisPanel {
-	public ReturnTypeFilteredView( org.alice.ide.member.ReturnTypeFilteredComposite composite ) {
-		super( composite );
-		this.setMaximumSizeClampedToPreferredSize( true );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
+public class TimingProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+	private static class SingletonHolder {
+		private static TimingProceduresComposite instance = new TimingProceduresComposite();
 	}
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.alice.ide.member.ReturnTypeFilteredComposite composite = (org.alice.ide.member.ReturnTypeFilteredComposite)this.getComposite();
-		this.removeAllComponents();
-		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			this.addComponent( org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method ) );
-		}
+	public static TimingProceduresComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private TimingProceduresComposite() {
+		super( java.util.UUID.fromString( "1b396495-c642-4831-8cc0-7f2e46c357fa" ), "delay" );
 	}
 }

@@ -41,13 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.member.views;
+package org.alice.ide.member;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
-public class MemberGroupView extends org.lgna.croquet.components.BorderPanel {
-	public MemberGroupView( org.alice.ide.member.MemberGroupComposite composite ) {
-		this.addCenterComponent( new org.lgna.croquet.components.Label( "todo" ) );
+public class UnclaimedJavaProceduresComposite extends FilteredJavaProceduresSubComposite {
+	private static class SingletonHolder {
+		private static UnclaimedJavaProceduresComposite instance = new UnclaimedJavaProceduresComposite();
+	}
+	public static UnclaimedJavaProceduresComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+			return compareMethodNames( methodA, methodB );
+		}
+	};
+	private UnclaimedJavaProceduresComposite() {
+		super( java.util.UUID.fromString( "1ecd0cc1-1336-4c89-b099-5d17cb381aed" ) );
+	}
+	@Override
+	public java.util.Comparator< org.lgna.project.ast.JavaMethod > getComparator() {
+		return this.comparator;
+	}
+	@Override
+	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+		return true;
 	}
 }

@@ -41,17 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.member;
+package org.alice.stageide.member;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
-public abstract class MemberGroupComposite extends org.lgna.croquet.ExpandableCollapsibleCoreComposite<org.alice.ide.member.views.MemberGroupView> {
-	public MemberGroupComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, isExpandedInitialValue );
+public class SayThinkProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+	private static class SingletonHolder {
+		private static SayThinkProceduresComposite instance = new SayThinkProceduresComposite();
 	}
-	@Override
-	protected org.alice.ide.member.views.MemberGroupView createView() {
-		return new org.alice.ide.member.views.MemberGroupView( this );
+	public static SayThinkProceduresComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SayThinkProceduresComposite() {
+		super( java.util.UUID.fromString( "b071a0b7-3d60-4888-9c3d-4ab8ff639887" ), "say", "think" );
 	}
 }

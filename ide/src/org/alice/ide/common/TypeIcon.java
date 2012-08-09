@@ -107,7 +107,15 @@ public class TypeIcon implements javax.swing.Icon {
 		int h = this.getBorderHeight();
 		this.border.paintBorder( c, g, x, y, w, h );
 		g.setColor( this.getTextColor( c ) );
+		
+		java.awt.Font font = g.getFont();
+		if( font.isItalic() ) {
+			g.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( font, edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR ) );
+		}
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getText(), x, y, w, h );
+		if( font.isItalic() ) {
+			g.setFont( font );
+		}
 	}
 }
 

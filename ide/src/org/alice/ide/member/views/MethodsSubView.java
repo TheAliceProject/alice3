@@ -40,41 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+
+package org.alice.ide.member.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SearchTabComposite extends MemberTabComposite {
-	private static class SingletonHolder {
-		private static SearchTabComposite instance = new SearchTabComposite();
+public class MethodsSubView extends org.lgna.croquet.components.PageAxisPanel {
+	public MethodsSubView( org.alice.ide.member.MethodsSubComposite composite ) {
+		super( composite );
+		this.setMaximumSizeClampedToPreferredSize( true );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 8, 12, 0 ) );
 	}
-	public static SearchTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final org.lgna.croquet.StringState queryState = this.createStringState( this.createKey( "queryState" ) );
-	private final org.lgna.croquet.Operation clearQueryOperation = this.createActionOperation( this.createKey( "clearQueryOperation" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			queryState.setValueTransactionlessly( "" );
-			return null;
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		org.alice.ide.member.MethodsSubComposite composite = (org.alice.ide.member.MethodsSubComposite)this.getComposite();
+		this.removeAllComponents();
+		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
+			org.lgna.croquet.components.DragComponent<?,?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
+			org.lgna.croquet.components.JComponent<?> component;
+			if( method.isUserAuthored() ) {
+				org.alice.ide.declarationseditor.CodeComposite codeComposite = org.alice.ide.declarationseditor.CodeComposite.getInstance( method );
+				org.lgna.croquet.BooleanState isSelectedState = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectedState( codeComposite );
+				org.lgna.croquet.components.ToggleButton button = isSelectedState.createToggleButton();
+				button.getAwtComponent().setText( "edit" );
+				component = new org.lgna.croquet.components.LineAxisPanel( button, dragComponent );
+			} else {
+				component = dragComponent;
+			}
+			this.addComponent( component );
 		}
-	} );
-	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
-	}
-	public org.lgna.croquet.StringState getQueryState() {
-		return this.queryState;
-	}
-	public org.lgna.croquet.Operation getClearQueryOperation() {
-		return this.clearQueryOperation;
-	}
-	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.SearchMemberTabView( this );
-	}
-	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		return java.util.Collections.emptyList();
 	}
 }
