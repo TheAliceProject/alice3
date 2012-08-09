@@ -101,7 +101,7 @@ public class TransactionHistoryGeneratorTest {
 	public void generate( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
-		assert sceneType.isAssignableTo( org.lgna.story.Scene.class ) : sceneType;
+		assert sceneType.isAssignableTo( org.lgna.story.SScene.class ) : sceneType;
 
 		org.lgna.project.ast.UserType<?> type;
 		org.lgna.project.ast.UserField field;

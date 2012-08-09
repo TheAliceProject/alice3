@@ -53,9 +53,9 @@ public class AddTextModelManagedFieldOperationComposite extends AddModelManagedF
 	public static AddTextModelManagedFieldOperationComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> valueState = this.createInitialPropertyValueExpressionState( this.createKey( "valueState" ), "hello", org.lgna.story.TextModel.class, "setValue", String.class, null );
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> valueState = this.createInitialPropertyValueExpressionState( this.createKey( "valueState" ), "hello", org.lgna.story.STextModel.class, "setValue", String.class, null );
 	private AddTextModelManagedFieldOperationComposite() {
-		super( java.util.UUID.fromString( "d82699ca-eb75-4db2-ab9e-b2c18d957f25" ),	org.lgna.story.TextModel.class );
+		super( java.util.UUID.fromString( "d82699ca-eb75-4db2-ab9e-b2c18d957f25" ),	org.lgna.story.STextModel.class );
 	}
 	public org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > getValueState() {
 		return this.valueState;

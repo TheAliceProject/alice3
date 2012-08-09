@@ -67,7 +67,7 @@ public class ObjectMarkerImp extends MarkerImp{
 
 	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] opacityAppearances = {sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
 	
-	public ObjectMarkerImp(org.lgna.story.ObjectMarker abstraction){
+	public ObjectMarkerImp(org.lgna.story.SThingMarker abstraction){
 		super(abstraction);
 	}
 	

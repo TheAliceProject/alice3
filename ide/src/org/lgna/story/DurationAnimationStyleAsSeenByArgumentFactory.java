@@ -50,7 +50,7 @@ public class DurationAnimationStyleAsSeenByArgumentFactory extends DurationAnima
 	protected DurationAnimationStyleAsSeenByArgumentFactory() {
 		super();
 	}
-	public static AsSeenBy asSeenBy( Entity entity ) {
+	public static AsSeenBy asSeenBy( SThing entity ) {
 		return new AsSeenBy( entity );
 	}
 }

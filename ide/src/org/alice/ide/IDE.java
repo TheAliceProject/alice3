@@ -78,7 +78,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
-		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
+		IDE.exceptionHandler.setApplicationName( getApplicationName() );
 		//initialize locale
 		org.alice.ide.croquet.models.ui.locale.LocaleSelectionState.getInstance().addAndInvokeValueListener( new org.lgna.croquet.ListSelectionState.ValueListener< java.util.Locale >() {
 			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
@@ -143,11 +143,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public abstract org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod();
 
+	private boolean isSetupMethodCleared = false;
 	public org.lgna.project.ast.NamedUserType getStrippedProgramType() {
 		org.lgna.project.ast.NamedUserType rv = this.getProgramType();
 		if( rv != null ) {
 			org.lgna.project.ast.UserMethod setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
 			setUpMethod.body.getValue().statements.clear();
+			this.isSetupMethodCleared = true;
 		}
 		return rv;
 	}
@@ -197,7 +199,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					prefix = "\"</strong>, <strong>\"";
 				}
 				sb.append( "\"</strong><br>" );
-				sb.append( this.getApplicationName() );
+				sb.append( getApplicationName() );
 				sb.append( " already attempted to move it once." );
 				sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
 				return sb.toString();
@@ -240,8 +242,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	
 	@Override
 	public void ensureProjectCodeUpToDate() {
-		this.generateCodeForSceneSetUp();
-		this.reorganizeFieldsIfNecessary();
+		org.lgna.project.Project project = this.getProject();
+		if( project != null ) {
+			if( this.isSetupMethodCleared || this.isProjectUpToDateWithFile()==false ) {
+				synchronized( project.getLock() ) {
+					this.generateCodeForSceneSetUp();
+					this.reorganizeFieldsIfNecessary();
+				}
+			}
+		}
 	}
 	public org.lgna.project.ast.NamedUserType getUpToDateProgramType() {
 		org.lgna.project.Project project = this.getUpToDateProject();
@@ -305,19 +314,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return sb.toString();
 	}
 
-	@Override
-	public String getApplicationName() {
-		return "Alice";
-	}
-	@Override
-	public String getVersionText() {
-		return org.lgna.project.Version.getCurrentVersionText();
-	}
-	@Override
-	public String getVersionAdornment() {
-		return " 3 BETA ";
-	}
-
 	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
 		if ( this.potentialDropReceptorsStencil == null ) {
 			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getFrame() );
@@ -368,6 +364,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
+		this.isSetupMethodCleared = false;
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( perspective == null || perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) {
 			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
@@ -509,6 +506,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new org.lgna.project.ast.Comment( GENERATED_CODE_WARNING ) );
 		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
+		this.isSetupMethodCleared = false;
 	}
 
 	public org.lgna.project.ast.NamedUserType getProgramType() {
@@ -600,7 +598,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public String getApplicationSubPath() {
+	public static final String getApplicationSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
 			rv = "Alice3";

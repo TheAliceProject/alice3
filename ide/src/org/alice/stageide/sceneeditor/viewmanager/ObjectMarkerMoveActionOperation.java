@@ -128,7 +128,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	
 	public void setMarkerField(UserField markerField)
 	{
-		if (markerField == null || markerField.getValueType().isAssignableTo(org.lgna.story.ObjectMarker.class))
+		if (markerField == null || markerField.getValueType().isAssignableTo(org.lgna.story.SThingMarker.class))
 		{
 			this.markerField = markerField;
 		}
@@ -145,7 +145,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	
 	public void setSelectedField(AbstractField field)
 	{
-		if (field instanceof UserField && field.getValueType().isAssignableTo(org.lgna.story.MovableTurnable.class))
+		if (field instanceof UserField && field.getValueType().isAssignableTo(org.lgna.story.SMovableTurnable.class))
 		{
 			this.selectedField = (UserField)field;
 		}
@@ -166,7 +166,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		if( this.toMoveField != null && this.toMoveToField != null ) {
 			org.lgna.project.ast.Expression toMoveToExpression = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.toMoveToField );
-			AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( org.lgna.story.MovableTurnable.class, "moveAndOrientTo", new Class< ? >[] { org.lgna.story.Entity.class, org.lgna.story.MoveAndOrientTo.Detail[].class } );
+			AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( org.lgna.story.SMovableTurnable.class, "moveAndOrientTo", new Class< ? >[] { org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientTo.Detail[].class } );
 			LocalTransformationEdit edit = new LocalTransformationEdit(step, org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new org.lgna.project.ast.Expression[]{toMoveToExpression});
 			step.commitAndInvokeDo(edit);
 		} else {

@@ -60,8 +60,9 @@ public abstract class ApiConfigurationManager {
 		}
 	}
 	
-	public abstract java.util.List<JavaMethod> getAddEventListenerMethods();
-
+	public abstract java.util.Comparator<org.lgna.project.ast.AbstractType<?,?,?>> getTypeComparator();
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> getFilteredProceduresComposites();
+	
 	//override to create user types if desired
 	public org.lgna.project.ast.AbstractType< ?,?,? > getTypeFor( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
 		return type;

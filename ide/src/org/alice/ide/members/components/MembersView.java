@@ -70,14 +70,16 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,0,4 ) );
 
 		this.addPageStartComponent( instancePanel );
-		org.alice.ide.members.TemplatesTabSelectionState tabState;
+		org.lgna.croquet.components.AbstractTabbedPane<?,?> tabbedPane;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			tabState = org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance();
+			if( false && org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+				tabbedPane = org.alice.ide.member.MemberTabSelectionState.getInstance().createFolderTabbedPane();
+			} else {
+				tabbedPane = org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().createTabbedPane();
+			}
 		} else {
-			tabState = org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance();
+			tabbedPane = org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().createToolPaletteTabbedPane();
 		}
-		org.lgna.croquet.components.AbstractTabbedPane<?,?> tabbedPane = tabState.createTabbedPane();
-
 		this.addCenterComponent( tabbedPane );
 	}
 }

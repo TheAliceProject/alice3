@@ -147,6 +147,12 @@ public abstract class AddFieldComposite extends AddDeclarationComposite< org.lgn
 				org.lgna.project.ast.AbstractType< ?,?,? > abstractType = constructor.getDeclaringType();
 				String typeName = abstractType.getName();
 				if( typeName != null ) {
+					//todo: move to api configuration
+					if( typeName.length() > 1 ) {
+						if( typeName.charAt( 0 ) == 'S' && Character.isUpperCase( typeName.charAt( 1 ) ) ) {
+							typeName = typeName.substring( 1 );
+						}
+					}
 					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
 				} else {
 					return "";

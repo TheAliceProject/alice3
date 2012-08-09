@@ -105,41 +105,70 @@ public class JavaField extends AbstractField {
 		return this.fieldReflectionProxy.getName();
 	}
 	@Override
+	public boolean isValid() {
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+		return fld != null;
+	}
+	@Override
 	public JavaType getValueType() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null : this.fieldReflectionProxy;
-		return JavaType.getInstance( fld.getType() );
+		if( fld != null ) {
+			return JavaType.getInstance( fld.getType() );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			return JavaType.OBJECT_TYPE;
+		}
 	}
 	
 	@Override
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null : this.fieldReflectionProxy;
-		return AccessLevel.get( fld.getModifiers() );
+		if( fld != null ) {
+			return AccessLevel.get( fld.getModifiers() );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			return AccessLevel.PRIVATE;
+		}
 	}	
 	@Override
 	public boolean isStatic() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null : this.fieldReflectionProxy;
-		return java.lang.reflect.Modifier.isStatic( fld.getModifiers() );
+		if( fld != null ) {
+			return java.lang.reflect.Modifier.isStatic( fld.getModifiers() );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			return false;
+		}
 	}
 	@Override
 	public boolean isFinal() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null : this.fieldReflectionProxy;
-		return java.lang.reflect.Modifier.isFinal( fld.getModifiers() );
+		if( fld != null ) {
+			return java.lang.reflect.Modifier.isFinal( fld.getModifiers() );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			return false;
+		}
 	}
 	@Override
 	public boolean isVolatile() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null : this.fieldReflectionProxy;
-		return java.lang.reflect.Modifier.isVolatile( fld.getModifiers() );
+		if( fld != null ) {
+			return java.lang.reflect.Modifier.isVolatile( fld.getModifiers() );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			return false;
+		}
 	}
 	@Override
 	public boolean isTransient() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
-		assert fld != null : this.fieldReflectionProxy;
-		return java.lang.reflect.Modifier.isTransient( fld.getModifiers() );
+		if( fld != null ) {
+			return java.lang.reflect.Modifier.isTransient( fld.getModifiers() );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			return false;
+		}
 	}
 	
 	@Override

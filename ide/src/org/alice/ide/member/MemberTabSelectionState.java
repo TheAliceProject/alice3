@@ -46,17 +46,23 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<MemberTabComposite> {
-	public MemberTabSelectionState() {
+	private static class SingletonHolder {
+		private static MemberTabSelectionState instance = new MemberTabSelectionState();
+	}
+	public static MemberTabSelectionState getInstance() {
+		return SingletonHolder.instance;
+	}
+		private MemberTabSelectionState() {
 		super( 
 				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
 				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ), 
 				MemberTabComposite.class, 
-				1,
+				0,
 				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
+				FunctionTabComposite.getInstance()
 		);
 	}
+
 	public static void main( String[] args ) {
 		MemberTabSelectionState state = new MemberTabSelectionState();
 		

@@ -78,7 +78,7 @@ public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		org.lgna.croquet.Composite< ? > composite;
 		if( nextValue != null ) {
-			if( nextValue.isAssignableTo( org.lgna.story.Scene.class ) ) {
+			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
 				composite = SceneTypeComposite.getInstance();
 			} else {
 				composite = NonSceneTypeComposite.getInstance();

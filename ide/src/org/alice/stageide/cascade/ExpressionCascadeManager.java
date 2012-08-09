@@ -72,7 +72,7 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		//this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
 
-		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Entity.class );
+		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.SThing.class );
 	}
 
 	@Override
@@ -99,8 +99,8 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 	
 	@Override
 	protected org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> createPartMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType< ?, ?, ? > desiredType, org.lgna.project.ast.AbstractType< ?, ?, ? > expressionType, boolean isOwnedByCascadeItemMenuCombo ) {
-		if( expressionType.isAssignableTo( org.lgna.story.JointedModel.class ) ) {
-			if( desiredType.isAssignableFrom( org.lgna.story.Joint.class ) ) {
+		if( expressionType.isAssignableTo( org.lgna.story.SJointedModel.class ) ) {
+			if( desiredType.isAssignableFrom( org.lgna.story.SJoint.class ) ) {
 				if( org.alice.stageide.ast.JointedTypeInfo.isJointed( expressionType ) ) {
 					java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( expressionType );
 					return new JointExpressionMenuModel( expression, jointedTypeInfos, 0, isOwnedByCascadeItemMenuCombo );
@@ -112,6 +112,6 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 	
 	@Override
 	protected boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
-		return desiredType.isAssignableFrom( org.lgna.story.Joint.class ) && expressionType.isAssignableTo( org.lgna.story.JointedModel.class );
+		return desiredType.isAssignableFrom( org.lgna.story.SJoint.class ) && expressionType.isAssignableTo( org.lgna.story.SJointedModel.class );
 	}
 }

@@ -46,7 +46,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.interact.handle.ManipulationHandle3D;
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -110,7 +110,7 @@ public class PickUtilities {
 		return null;
 	}
 	
-	public static Entity getEntityFromPickedObject(edu.cmu.cs.dennisc.scenegraph.Component pickedObject) {
+	public static SThing getEntityFromPickedObject(edu.cmu.cs.dennisc.scenegraph.Component pickedObject) {
 		if (pickedObject != null)
 		{
 			edu.cmu.cs.dennisc.scenegraph.Component mainComponent = PickUtilities.getFirstClassFromComponent(pickedObject);
@@ -123,15 +123,15 @@ public class PickUtilities {
 		return null;
 	}
 	
-	public static PickHint getPickHintForEntity(Entity entity) {
+	public static PickHint getPickHintForEntity(SThing entity) {
 		List<PickHint.PickType> pickTypes = new LinkedList<PickHint.PickType>();
 		if (entity != null)
 		{
-			if (entity instanceof org.lgna.story.Turnable)
+			if (entity instanceof org.lgna.story.STurnable)
 			{
 				pickTypes.add(PickHint.PickType.TURNABLE);
 			}
-			if (entity instanceof org.lgna.story.MovableTurnable)
+			if (entity instanceof org.lgna.story.SMovableTurnable)
 			{
 				pickTypes.add(PickHint.PickType.MOVEABLE);
 			}
@@ -139,11 +139,11 @@ public class PickUtilities {
 			{
 				pickTypes.add(PickHint.PickType.RESIZABLE);
 			}
-			if (entity instanceof org.lgna.story.Camera || entity instanceof org.lgna.story.Model || entity instanceof org.lgna.story.Marker)
+			if (entity instanceof org.lgna.story.SCamera || entity instanceof org.lgna.story.SModel || entity instanceof org.lgna.story.SMarker)
 			{
 				pickTypes.add(PickHint.PickType.SELECTABLE);
 			}
-			if (entity instanceof org.lgna.story.MovableTurnable)
+			if (entity instanceof org.lgna.story.SMovableTurnable)
 			{
 				pickTypes.add(PickHint.PickType.VIEWABLE);
 			}
@@ -151,15 +151,15 @@ public class PickUtilities {
 			{
 				pickTypes.add(PickHint.PickType.CAMERA_MARKER);
 			}
-			if (entity instanceof org.lgna.story.ObjectMarker)
+			if (entity instanceof org.lgna.story.SThingMarker)
 			{
 				pickTypes.add(PickHint.PickType.OBJECT_MARKER);
 			}
-			if (entity instanceof org.lgna.story.Sun)
+			if (entity instanceof org.lgna.story.SSun)
 			{
 				pickTypes.add(PickHint.PickType.SUN);
 			}
-			if (entity instanceof org.lgna.story.Joint)
+			if (entity instanceof org.lgna.story.SJoint)
 			{
 				pickTypes.add(PickHint.PickType.JOINT);
 			}
@@ -179,7 +179,7 @@ public class PickUtilities {
 			return getPickHintForEntity(imp.getAbstraction());
 		}
 		else  {
-			return getPickHintForEntity((Entity)null);
+			return getPickHintForEntity((SThing)null);
 		}
 	}
 	
@@ -188,7 +188,7 @@ public class PickUtilities {
 		PickHint returnHint = null;
 		if (pickedObject != null)
 		{
-			Entity entity = getEntityFromPickedObject(pickedObject);
+			SThing entity = getEntityFromPickedObject(pickedObject);
 			returnHint = getPickHintForEntity(entity);
 				
 			if (pickedObject instanceof edu.cmu.cs.dennisc.scenegraph.Composite)

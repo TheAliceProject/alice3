@@ -73,6 +73,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			}
 		};
+		this.updateTitle();
 	}
 
 	private void updateUndoRedoEnabled() {
@@ -91,9 +92,15 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
-	public abstract String getApplicationName();
-	public abstract String getVersionText();
-	public abstract String getVersionAdornment();
+	public static final String getApplicationName() {
+		return "Alice";
+	}
+	public static final String getVersionText() {
+		return org.lgna.project.Version.getCurrentVersionText();
+	}
+	public static final String getVersionAdornment() {
+		return " 3.1";
+	}
 
 	private void showUnableToOpenFileDialog( java.io.File file, String message ) {
 		StringBuilder sb = new StringBuilder();
@@ -105,7 +112,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 	public void handleVersionNotSupported( java.io.File file, org.lgna.project.VersionNotSupportedException vnse ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( this.getApplicationName() );
+		sb.append( getApplicationName() );
 		sb.append( " is not backwards compatible with:" );
 		sb.append( "\n    File Version: " );
 		sb.append( vnse.getVersion() );
@@ -233,9 +240,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
-		rv.append( this.getApplicationName() );
+		rv.append( getApplicationName() );
 		rv.append( " " );
-		rv.append( this.getVersionAdornment() ); 
+		rv.append( getVersionAdornment() ); 
 		rv.append( " " );
 		return rv;
 	}
@@ -303,7 +310,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
 		org.lgna.project.Project project = this.getUpToDateProject();
-		edu.cmu.cs.dennisc.zip.DataSource[] dataSources;
+		edu.cmu.cs.dennisc.java.util.zip.DataSource[] dataSources;
 		try {
 			final java.awt.image.BufferedImage thumbnailImage = createThumbnail();
 			if( thumbnailImage != null ) {
@@ -315,7 +322,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			} else {
 				throw new NullPointerException();
 			}
-			dataSources = new edu.cmu.cs.dennisc.zip.DataSource[] { new edu.cmu.cs.dennisc.zip.DataSource() {
+			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] { new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 				public String getName() {
 					return "thumbnail.png";
 				}
@@ -324,7 +331,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 				}
 			} };
 		} catch( Throwable t ) {
-			dataSources = new edu.cmu.cs.dennisc.zip.DataSource[] {};
+			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] {};
 		}
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
 		this.uri = file.toURI();

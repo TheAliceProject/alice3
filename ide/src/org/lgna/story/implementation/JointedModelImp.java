@@ -46,7 +46,7 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R extends org.lgna.story.resources.JointedModelResource > extends ModelImp {
+public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R extends org.lgna.story.resources.JointedModelResource > extends ModelImp {
 	public static interface VisualData { 
 		public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances();
@@ -118,11 +118,12 @@ public abstract class JointedModelImp< A extends org.lgna.story.JointedModel, R 
 	}
 	private JointImp createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
 		JointImp joint = this.createJointImplementation( jointId );
-		joint.setVehicle(parent);
+		if (joint.getSgVehicle() == null) {
+			joint.setVehicle(parent);
+		}
 		this.mapIdToJoint.put( jointId, joint );
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
 			JointImp childTree = createJointTree(childId, joint);
-			childTree.setVehicle(joint);
 		}
 		return joint;
 	}

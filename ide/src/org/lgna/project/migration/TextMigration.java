@@ -57,11 +57,32 @@ public class TextMigration implements Migration {
 			java.util.regex.Matcher matcher = this.pattern.matcher( source );
 			if( matcher.find() ) {
 				//todo?
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replace all", this.pattern, this.replacement );
 				matcher.reset();
-				return matcher.replaceAll( this.replacement );
+				String rv = matcher.replaceAll( this.replacement );
+//				java.util.regex.Matcher postMatcher = this.pattern.matcher( rv );
+//				assert postMatcher.find() == false : rv;
+//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
+				return rv;
 			} else {
 				return source;
 			}
+		}
+		public boolean isPatternEqual( Pair other ) {
+			return this.pattern.toString().equals( other.pattern.toString() );
+		}
+		public boolean isReplacementEqual( Pair other ) {
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.replacement, other.replacement );
+		}
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "Pair[pattern=" );
+			sb.append( this.pattern );
+			sb.append( ";replacement=" );
+			sb.append( this.replacement );
+			sb.append( "]" );
+			return sb.toString();
 		}
 	}
 	
@@ -74,9 +95,22 @@ public class TextMigration implements Migration {
 		this.resultVersion = resultVersion;
 		assert values.length % 2 == 0 : values.length;
 		this.pairs = new Pair[ values.length / 2 ];
-		for( int i=0; i< this.pairs.length; i++ ) {
+		for( int i=0; i<this.pairs.length; i++ ) {
 			this.pairs[ i ] = new Pair( values[ i*2 ], values[ i*2 + 1 ] );
 		}
+
+		for( int i=0; i<this.pairs.length; i++ ) {
+			for( int j=i+1; j<this.pairs.length; j++ ) {
+				if( this.pairs[ i ].isPatternEqual( this.pairs[ j ] ) ) {
+					if( this.pairs[ i ].isReplacementEqual( this.pairs[ j ] ) ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "duplicate", i, j, this.pairs[ i ] );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "severe problem", i, j, this.pairs[ i ], this.pairs[ j ] );
+					}
+				}
+			}
+		}
+		
 	}
 	public org.lgna.project.Version getResultVersion() {
 		return this.resultVersion;

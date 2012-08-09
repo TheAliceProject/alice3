@@ -108,6 +108,22 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueListener( this.isEmphasizingClassesListener );
 		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectListener );
 	}
+
+	@Override
+	protected void fireChanged( org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		super.fireChanged( prevValue, nextValue, isAdjusting );
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			//pass
+		} else {
+			if( nextValue != null ) {
+				org.lgna.project.ast.AbstractType< ?,?,? > type = nextValue.getType();
+				if( type instanceof org.lgna.project.ast.NamedUserType ) {
+					org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+					TypeState.getInstance().setValueTransactionlessly( namedUserType );
+				}
+			}
+		}
+	}
 	@Override
 	protected void handleMissingItem( org.alice.ide.declarationseditor.DeclarationComposite missingItem ) {
 		this.addItem( missingItem );
