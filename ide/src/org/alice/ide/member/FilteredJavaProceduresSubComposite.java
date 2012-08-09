@@ -47,10 +47,27 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredJavaProceduresSubComposite extends ProceduresSubComposite {
+	protected static int compareMethodNames( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+		if( methodA != null ) {
+			if( methodB != null ) {
+				return methodA.getName().compareTo( methodB.getName() );
+			} else {
+				return 1;
+			}
+		} else {
+			if( methodB != null ) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
+	}
+
 	private java.util.List<org.lgna.project.ast.JavaMethod> methods = java.util.Collections.emptyList();
 	public FilteredJavaProceduresSubComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
+	public abstract java.util.Comparator< org.lgna.project.ast.JavaMethod > getComparator();
 	@Override
 	protected void localize() {
 		super.localize();
@@ -62,6 +79,7 @@ public abstract class FilteredJavaProceduresSubComposite extends ProceduresSubCo
 		return this.methods;
 	}
 	public void sortAndSetMethods( java.util.List<org.lgna.project.ast.JavaMethod> unsortedMethods ) {
+		java.util.Collections.sort( unsortedMethods, this.getComparator() );
 		this.methods = java.util.Collections.unmodifiableList( unsortedMethods );
 		this.getView().refreshLater();
 	}

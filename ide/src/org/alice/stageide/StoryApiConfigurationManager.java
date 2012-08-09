@@ -79,13 +79,13 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		list.add( org.alice.stageide.member.TextProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.AtmosphereProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.SayThinkProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.AudioProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.PositionProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.OrientationProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.SizeProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.AppearanceProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.VehicleProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.AudioProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.TimingProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
 		this.filteredProceduresComposites = java.util.Collections.unmodifiableList( list );

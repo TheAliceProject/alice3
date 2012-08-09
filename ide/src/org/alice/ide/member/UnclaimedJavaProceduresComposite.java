@@ -53,8 +53,17 @@ public class UnclaimedJavaProceduresComposite extends FilteredJavaProceduresSubC
 	public static UnclaimedJavaProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+			return compareMethodNames( methodA, methodB );
+		}
+	};
 	private UnclaimedJavaProceduresComposite() {
 		super( java.util.UUID.fromString( "1ecd0cc1-1336-4c89-b099-5d17cb381aed" ) );
+	}
+	@Override
+	public java.util.Comparator< org.lgna.project.ast.JavaMethod > getComparator() {
+		return this.comparator;
 	}
 	@Override
 	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
