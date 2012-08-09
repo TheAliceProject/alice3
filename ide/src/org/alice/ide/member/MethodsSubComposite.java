@@ -40,41 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SearchTabComposite extends MemberTabComposite {
-	private static class SingletonHolder {
-		private static SearchTabComposite instance = new SearchTabComposite();
+public abstract class MethodsSubComposite extends org.lgna.croquet.ExpandableCollapsibleCoreComposite<org.alice.ide.member.views.MethodsSubView> {
+	public MethodsSubComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
+		super( migrationId, isExpandedInitialValue );
 	}
-	public static SearchTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final org.lgna.croquet.StringState queryState = this.createStringState( this.createKey( "queryState" ) );
-	private final org.lgna.croquet.Operation clearQueryOperation = this.createActionOperation( this.createKey( "clearQueryOperation" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			queryState.setValueTransactionlessly( "" );
-			return null;
-		}
-	} );
-	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
-	}
-	public org.lgna.croquet.StringState getQueryState() {
-		return this.queryState;
-	}
-	public org.lgna.croquet.Operation getClearQueryOperation() {
-		return this.clearQueryOperation;
+	public abstract java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods();
+	public boolean isShowingDesired() {
+		return true;
 	}
 	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.SearchMemberTabView( this );
-	}
-	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		return java.util.Collections.emptyList();
+	protected org.alice.ide.member.views.MethodsSubView createView() {
+		return new org.alice.ide.member.views.MethodsSubView( this );
 	}
 }

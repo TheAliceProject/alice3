@@ -49,7 +49,6 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 	private final java.util.Map<org.lgna.project.ast.Member,org.lgna.croquet.components.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public MemberTabView( org.alice.ide.member.MemberTabComposite composite ) {
 		super( composite );
-		this.addCenterComponent( new org.lgna.croquet.components.Label( "todo" ) );
 	}
 	
 	private static org.lgna.croquet.components.JComponent<?> createDragView( org.lgna.project.ast.Member member ) {
@@ -66,5 +65,30 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 			}
 			return rv;
 		}
+	}
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		org.alice.ide.member.MemberTabComposite composite = (org.alice.ide.member.MemberTabComposite)this.getComposite();
+		this.removeAllComponents();
+		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
+		for( org.alice.ide.member.MethodsSubComposite subComposite : composite.getSubComposites() ) {
+			if( subComposite != org.alice.ide.member.MemberTabComposite.SEPARATOR ) {
+				if( subComposite.isShowingDesired() ) {
+					org.lgna.croquet.components.ExpandableCollapsibleView view = subComposite.getOuterComposite().getView();
+					if( subComposite instanceof org.alice.ide.member.FunctionsOfReturnTypeSubComposite ) {
+						//view.getPageStartComponent().setForegroundColor( java.awt.Color.GRAY );
+						((org.lgna.croquet.components.AbstractButton)view.getPageStartComponent()).setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+					}
+					view.getPageStartComponent().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+					pageAxisPanel.addComponent( view );
+					//pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
+				}
+			} else {
+				pageAxisPanel.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
+			}
+		}
+		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
+		this.addPageStartComponent( pageAxisPanel );
 	}
 }

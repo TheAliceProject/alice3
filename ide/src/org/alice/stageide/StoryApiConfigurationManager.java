@@ -55,6 +55,41 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public static StoryApiConfigurationManager getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
+	private final java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> filteredProceduresComposites;
+	private StoryApiConfigurationManager() {
+		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.SThing.class );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SScene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCylinder.class, new org.alice.stageide.icons.CylinderIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCone.class, new org.alice.stageide.icons.ConeIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SDisc.class, new org.alice.stageide.icons.DiscIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SSphere.class, new org.alice.stageide.icons.SphereIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.STorus.class, new org.alice.stageide.icons.TorusIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SAxes.class, new org.alice.stageide.icons.AxesIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.STextModel.class, new org.alice.stageide.icons.TextModelIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBillboard.class, new org.alice.stageide.icons.BillboardIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBox.class, new org.alice.stageide.icons.BoxIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SGround.class, new org.alice.stageide.icons.GroundIconFactory() );
+		
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, new org.alice.stageide.icons.JointIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
+		
+		
+		java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		list.add( org.alice.stageide.member.TextProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.AtmosphereProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.SayThinkProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.AudioProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.PositionProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.OrientationProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.SizeProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.AppearanceProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.VehicleProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.TimingProceduresComposite.getInstance() );
+		list.add( org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
+		this.filteredProceduresComposites = java.util.Collections.unmodifiableList( list );
+	}
 	
 	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?,?,?>> {
 		SINGLETON;
@@ -99,7 +134,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public java.util.Comparator<org.lgna.project.ast.AbstractType<?,?,?>> getTypeComparator() {
 		return TypeComparator.SINGLETON;
 	}
-	
+		
 	@Override
 	protected boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type ) {
 		return type.isAssignableTo( org.lgna.story.SModel.class );
@@ -108,23 +143,9 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	protected boolean isNamedUserTypesAcceptableForSelection( org.lgna.project.ast.NamedUserType type ) {
 		return type.isAssignableTo( org.lgna.story.SProgram.class ) == false || org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
 	}
-	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
-	private StoryApiConfigurationManager() {
-		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.SThing.class );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SScene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCylinder.class, new org.alice.stageide.icons.CylinderIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCone.class, new org.alice.stageide.icons.ConeIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SDisc.class, new org.alice.stageide.icons.DiscIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SSphere.class, new org.alice.stageide.icons.SphereIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.STorus.class, new org.alice.stageide.icons.TorusIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SAxes.class, new org.alice.stageide.icons.AxesIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.STextModel.class, new org.alice.stageide.icons.TextModelIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBillboard.class, new org.alice.stageide.icons.BillboardIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBox.class, new org.alice.stageide.icons.BoxIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SGround.class, new org.alice.stageide.icons.GroundIconFactory() );
-		
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, new org.alice.stageide.icons.JointIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
+	@Override
+	public java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> getFilteredProceduresComposites() {
+		return this.filteredProceduresComposites;
 	}
 	@Override
 	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {

@@ -72,15 +72,19 @@ package org.lgna.croquet.components;
 				}
 			}
 			// }
+			Object antialiasingValue = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 			g2.setPaint( fillPaint );
 			g2.fill( path );
 			g2.setPaint( java.awt.Color.BLACK );
 			g2.draw( path );
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, antialiasingValue );
+			
 		}
 	}
 
-	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 14 );
+	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 9 );
 
 	public ToolPaletteTitle( org.lgna.croquet.BooleanState booleanState ) {
 		super( booleanState );
@@ -126,7 +130,7 @@ package org.lgna.croquet.components;
 			}
 
 		};
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 24, 4, 4 ) );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 4 ) );
 		rv.setOpaque( false );
 		rv.setVerticalTextPosition( javax.swing.SwingConstants.CENTER );
 		rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );

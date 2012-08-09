@@ -40,41 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SearchTabComposite extends MemberTabComposite {
+public class UnclaimedJavaProceduresComposite extends FilteredJavaProceduresSubComposite {
 	private static class SingletonHolder {
-		private static SearchTabComposite instance = new SearchTabComposite();
+		private static UnclaimedJavaProceduresComposite instance = new UnclaimedJavaProceduresComposite();
 	}
-	public static SearchTabComposite getInstance() {
+	public static UnclaimedJavaProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private final org.lgna.croquet.StringState queryState = this.createStringState( this.createKey( "queryState" ) );
-	private final org.lgna.croquet.Operation clearQueryOperation = this.createActionOperation( this.createKey( "clearQueryOperation" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			queryState.setValueTransactionlessly( "" );
-			return null;
-		}
-	} );
-	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
-	}
-	public org.lgna.croquet.StringState getQueryState() {
-		return this.queryState;
-	}
-	public org.lgna.croquet.Operation getClearQueryOperation() {
-		return this.clearQueryOperation;
+	private UnclaimedJavaProceduresComposite() {
+		super( java.util.UUID.fromString( "1ecd0cc1-1336-4c89-b099-5d17cb381aed" ) );
 	}
 	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.SearchMemberTabView( this );
-	}
-	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		return java.util.Collections.emptyList();
+	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+		return true;
 	}
 }

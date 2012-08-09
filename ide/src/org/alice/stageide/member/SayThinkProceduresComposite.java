@@ -41,35 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.member.views;
+package org.alice.stageide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsView extends org.lgna.croquet.components.PageAxisPanel {
-	public MethodsView( org.alice.ide.member.MembersExpandableCollapsibleComposite composite ) {
-		super( composite );
-		this.setMaximumSizeClampedToPreferredSize( true );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
+public class SayThinkProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+	private static class SingletonHolder {
+		private static SayThinkProceduresComposite instance = new SayThinkProceduresComposite();
 	}
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.alice.ide.member.MembersExpandableCollapsibleComposite composite = (org.alice.ide.member.MembersExpandableCollapsibleComposite)this.getComposite();
-		this.removeAllComponents();
-		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			org.lgna.croquet.components.DragComponent<?,?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
-			org.lgna.croquet.components.JComponent<?> component;
-			if( method.isUserAuthored() ) {
-				org.alice.ide.declarationseditor.CodeComposite codeComposite = org.alice.ide.declarationseditor.CodeComposite.getInstance( method );
-				org.lgna.croquet.BooleanState isSelectedState = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectedState( codeComposite );
-				org.lgna.croquet.components.ToggleButton button = isSelectedState.createToggleButton();
-				button.getAwtComponent().setText( "edit" );
-				component = new org.lgna.croquet.components.LineAxisPanel( button, org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ), dragComponent );
-			} else {
-				component = dragComponent;
-			}
-			this.addComponent( component );
-		}
+	public static SayThinkProceduresComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SayThinkProceduresComposite() {
+		super( java.util.UUID.fromString( "b071a0b7-3d60-4888-9c3d-4ab8ff639887" ), "say", "think" );
 	}
 }

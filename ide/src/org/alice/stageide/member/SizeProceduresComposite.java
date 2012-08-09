@@ -41,25 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.member;
+package org.alice.stageide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersExpandableCollapsibleComposite extends org.lgna.croquet.ExpandableCollapsibleCoreComposite<org.alice.ide.member.views.MethodsView> {
-	private java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	public MembersExpandableCollapsibleComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, isExpandedInitialValue );
+public class SizeProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+	private static class SingletonHolder {
+		private static SizeProceduresComposite instance = new SizeProceduresComposite();
 	}
-	public java.util.List<org.lgna.project.ast.AbstractMethod> getMethods() {
-		return java.util.Collections.unmodifiableList( this.methods );
+	public static SizeProceduresComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	public void setMethods( java.util.List<org.lgna.project.ast.AbstractMethod> methods ) {
-		this.methods = methods;
-		this.getView().refreshLater();
-	}
-	@Override
-	protected org.alice.ide.member.views.MethodsView createView() {
-		return new org.alice.ide.member.views.MethodsView( this );
+	private SizeProceduresComposite() {
+		super( java.util.UUID.fromString( "167f609c-43cb-40e8-8d6b-2f171e4d0e98" ), "setRadius", "setInnerRadius", "setOuterRadius", "setBaseRadius", "setLength", "setWidth", "setHeight", "setDepth", "resize", "resizeWidth", "resizeHeight", "resizeDepth" );
 	}
 }

@@ -41,36 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.member;
+package org.alice.stageide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsOfReturnTypeComposite extends MembersExpandableCollapsibleComposite {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, MethodsOfReturnTypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized MethodsOfReturnTypeComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		if( type != null ) {
-			MethodsOfReturnTypeComposite rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new MethodsOfReturnTypeComposite( type );
-				map.put( type, rv );
-			}
-			return rv;
-		} else {
-			return null;
-		}
+public class AtmosphereProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+	private static class SingletonHolder {
+		private static AtmosphereProceduresComposite instance = new AtmosphereProceduresComposite();
 	}
-	private final org.lgna.project.ast.AbstractType<?,?,?> returnType;
-	private MethodsOfReturnTypeComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
-		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), true /*returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class )*/);
-		this.returnType = returnType;
-		
-		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( this.returnType ) );
+	public static AtmosphereProceduresComposite getInstance() {
+		return SingletonHolder.instance;
 	}
-	public org.lgna.project.ast.AbstractType<?,?,?> getReturnType() {
-		return this.returnType;
+	private AtmosphereProceduresComposite() {
+		super( java.util.UUID.fromString( "72eec6bf-660f-4e01-88e8-5f894164a999" ), "setAtmosphereColor", "setFromAboveLightColor", "setFromBelowLightColor", "setFogDensity" );
 	}
 }

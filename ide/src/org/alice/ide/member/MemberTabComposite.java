@@ -46,7 +46,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.member.views.MemberTabView> {
-	private final org.alice.ide.members.filters.MemberFilter memberFilter;
+	public static org.alice.ide.member.MethodsSubComposite SEPARATOR = null;
 	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
@@ -66,15 +66,34 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 			return false;
 		}
 	}
-	public MemberTabComposite( java.util.UUID migrationId, org.alice.ide.members.filters.MemberFilter memberFilter ) {
+	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+			if( isAdjusting ) {
+				//pass
+			} else {
+				MemberTabComposite.this.handleInstanceFactoryChanged( prevValue, nextValue );
+			}
+		}
+	};
+	public MemberTabComposite( java.util.UUID migrationId ) {
 		super( migrationId );
-		this.memberFilter = memberFilter;
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handlePreActivation tab composites" );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+	}
+	
+	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
+		for( MethodsSubComposite subComposite : this.getSubComposites() ) {
+			if( subComposite != null ) {
+				subComposite.getView().refreshLater();
+			}
+		}
+		this.getView().refreshLater();
 	}
 	@Override
 	public boolean isCloseable() {
 		return false;
 	}
-	public org.alice.ide.members.filters.MemberFilter getMemberFilter() {
-		return this.memberFilter;
-	}
+	public abstract java.util.List<MethodsSubComposite> getSubComposites();
 }

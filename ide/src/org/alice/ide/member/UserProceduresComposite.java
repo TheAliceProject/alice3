@@ -40,41 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SearchTabComposite extends MemberTabComposite {
-	private static class SingletonHolder {
-		private static SearchTabComposite instance = new SearchTabComposite();
-	}
-	public static SearchTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final org.lgna.croquet.StringState queryState = this.createStringState( this.createKey( "queryState" ) );
-	private final org.lgna.croquet.Operation clearQueryOperation = this.createActionOperation( this.createKey( "clearQueryOperation" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			queryState.setValueTransactionlessly( "" );
-			return null;
+public class UserProceduresComposite extends ProceduresSubComposite {
+	private static java.util.Map< org.lgna.project.ast.NamedUserType, UserProceduresComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized UserProceduresComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		assert type != null;
+		UserProceduresComposite rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new UserProceduresComposite( type );
+			map.put( type, rv );
 		}
-	} );
-	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
+		return rv;
 	}
-	public org.lgna.croquet.StringState getQueryState() {
-		return this.queryState;
-	}
-	public org.lgna.croquet.Operation getClearQueryOperation() {
-		return this.clearQueryOperation;
-	}
-	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.SearchMemberTabView( this );
+	private final org.lgna.project.ast.NamedUserType type;
+	private UserProceduresComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "55b386bf-a97b-452e-94c7-13160c27ac8c" ) );
+		this.type = type;
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.type ) );
+		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Procedures" );
 	}
 	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		return java.util.Collections.emptyList();
+	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
+		java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( org.lgna.project.ast.UserMethod method : this.type.getDeclaredMethods() ) {
+			if( method.isProcedure() ) {
+				rv.add( method );
+			}
+		}
+		return rv;
 	}
 }

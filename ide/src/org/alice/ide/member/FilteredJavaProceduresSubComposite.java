@@ -40,41 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SearchTabComposite extends MemberTabComposite {
-	private static class SingletonHolder {
-		private static SearchTabComposite instance = new SearchTabComposite();
-	}
-	public static SearchTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final org.lgna.croquet.StringState queryState = this.createStringState( this.createKey( "queryState" ) );
-	private final org.lgna.croquet.Operation clearQueryOperation = this.createActionOperation( this.createKey( "clearQueryOperation" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			queryState.setValueTransactionlessly( "" );
-			return null;
-		}
-	} );
-	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
-	}
-	public org.lgna.croquet.StringState getQueryState() {
-		return this.queryState;
-	}
-	public org.lgna.croquet.Operation getClearQueryOperation() {
-		return this.clearQueryOperation;
+public abstract class FilteredJavaProceduresSubComposite extends ProceduresSubComposite {
+	private java.util.List<org.lgna.project.ast.JavaMethod> methods = java.util.Collections.emptyList();
+	public FilteredJavaProceduresSubComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.SearchMemberTabView( this );
+	protected void localize() {
+		super.localize();
+		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( this.findDefaultLocalizedText() );
 	}
+	protected abstract boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method );
 	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		return java.util.Collections.emptyList();
+	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
+		return this.methods;
+	}
+	public void sortAndSetMethods( java.util.List<org.lgna.project.ast.JavaMethod> unsortedMethods ) {
+		this.methods = java.util.Collections.unmodifiableList( unsortedMethods );
+		this.getView().refreshLater();
 	}
 }

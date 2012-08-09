@@ -40,41 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SearchTabComposite extends MemberTabComposite {
-	private static class SingletonHolder {
-		private static SearchTabComposite instance = new SearchTabComposite();
-	}
-	public static SearchTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-	
-	private final org.lgna.croquet.StringState queryState = this.createStringState( this.createKey( "queryState" ) );
-	private final org.lgna.croquet.Operation clearQueryOperation = this.createActionOperation( this.createKey( "clearQueryOperation" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			queryState.setValueTransactionlessly( "" );
+public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, FunctionsOfReturnTypeSubComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FunctionsOfReturnTypeSubComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+		if( type != null ) {
+			FunctionsOfReturnTypeSubComposite rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new FunctionsOfReturnTypeSubComposite( type );
+				map.put( type, rv );
+			}
+			return rv;
+		} else {
 			return null;
 		}
-	} );
-	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
 	}
-	public org.lgna.croquet.StringState getQueryState() {
-		return this.queryState;
+	private java.util.List<org.lgna.project.ast.AbstractMethod> methods = java.util.Collections.emptyList();
+	private final org.lgna.project.ast.AbstractType<?,?,?> returnType;
+	private FunctionsOfReturnTypeSubComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), true /*returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class )*/);
+		this.returnType = returnType;
+		
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
+		//this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( this.returnType ) );
+		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "Functions returning" );
 	}
-	public org.lgna.croquet.Operation getClearQueryOperation() {
-		return this.clearQueryOperation;
+	public org.lgna.project.ast.AbstractType<?,?,?> getReturnType() {
+		return this.returnType;
 	}
 	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
-		return new org.alice.ide.member.views.SearchMemberTabView( this );
+	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
+		return this.methods;
 	}
-	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		return java.util.Collections.emptyList();
+	public void setMethods( java.util.List<org.lgna.project.ast.AbstractMethod> methods ) {
+		this.methods = java.util.Collections.unmodifiableList( methods );
+		this.getView().refreshLater();
 	}
 }

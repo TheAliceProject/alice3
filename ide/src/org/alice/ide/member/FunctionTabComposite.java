@@ -52,36 +52,15 @@ public final class FunctionTabComposite extends MemberTabComposite {
 	public static FunctionTabComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-			if( isAdjusting ) {
-				//pass
-			} else {
-				FunctionTabComposite.this.handleInstanceFactoryChanged( prevValue, nextValue );
-			}
-		}
-	};
-	
 	private FunctionTabComposite() {
-		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), new org.alice.ide.members.filters.FunctionFilter() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handlePreActivation tab composites" );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ) );
 	}
 	
-	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
-		for( MembersExpandableCollapsibleComposite subComposite : this.getSubComposites() ) {
-			subComposite.getView().refreshLater();
-		}
-		this.getView().refreshLater();
-	}
-	
-	public java.util.List<MethodsOfReturnTypeComposite> getSubComposites() {
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		
+	@Override
+	public java.util.List<MethodsSubComposite> getSubComposites() {
 		java.util.Map<org.lgna.project.ast.AbstractType<?,?,?>,java.util.List<org.lgna.project.ast.AbstractMethod>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
 		if( instanceFactory != null ) {
 			org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
 			while( type != null ) {
@@ -112,9 +91,9 @@ public final class FunctionTabComposite extends MemberTabComposite {
 		
 		java.util.List<org.lgna.project.ast.AbstractType<?,?,?>> types = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( map.keySet() );
 		java.util.Collections.sort( types, org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator() );
-		java.util.List<MethodsOfReturnTypeComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( types.size() );
+		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( types.size() );
 		for( org.lgna.project.ast.AbstractType<?,?,?> type : types ) {
-			MethodsOfReturnTypeComposite subComposite = MethodsOfReturnTypeComposite.getInstance( type );
+			FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance( type );
 			subComposite.setMethods( map.get( type ) );
 			rv.add( subComposite );
 		}
