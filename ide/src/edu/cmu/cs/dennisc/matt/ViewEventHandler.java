@@ -90,10 +90,10 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 	}
 
 	public <A extends SModel> void addViewEventListener( Object listener, ArrayList<A> models, Class<A> a, MultipleEventPolicy policy ) {
-		super.addSoloListener( listener, models, a, policy );
+		ArrayList<A> handledModels = super.addSoloListener( listener, models, a, policy );
 		registerIsFiringMap( listener );
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
-		for( SModel m : models ) {
+		for( SModel m : handledModels ) {
 			if( !modelList.contains( m ) ) {
 				modelList.add( m );
 				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
@@ -103,7 +103,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEv
 				}
 			}
 		}
-		for( SModel model : models ) {
+		for( SModel model : handledModels ) {
 			if( map.get( model ) == null ) {
 				map.put( model, new LinkedList<Object>() );
 			}

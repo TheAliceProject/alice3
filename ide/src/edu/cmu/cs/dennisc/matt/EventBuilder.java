@@ -42,6 +42,7 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -53,14 +54,20 @@ import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.EndCollisionEvent;
+import org.lgna.story.event.EndOcclusionEvent;
 import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.ExitProximityEvent;
 import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionEvent;
+import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.PointOfViewChangeListener;
+import org.lgna.story.event.PointOfViewEvent;
 import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityEvent;
+import org.lgna.story.event.ProximityExitListener;
 import org.lgna.story.event.StartCollisionEvent;
+import org.lgna.story.event.StartOcclusionEvent;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewEvent;
 import org.lgna.story.event.ViewExitListener;
@@ -125,13 +132,29 @@ public class EventBuilder {
 				if( SModel.class.isAssignableFrom( classMap.get( listener )[ 1 ] ) ) {
 					Class<? extends SModel> clsOne = (Class<? extends SModel>)classMap.get( listener )[ 0 ];
 					Class<? extends SModel> clsTwo = (Class<? extends SModel>)classMap.get( listener )[ 1 ];
-					return (A)makeCollisionEvent( clsOne, clsTwo, listener, array );
+					return (A)makeOcclusionEvent( clsOne, clsTwo, listener, array );
 				}
 			}
+		} else if( PointOfViewEvent.class.isAssignableFrom( event ) ){
+			if(array != null && array.length > 0  )
+			return (A)new PointOfViewEvent( (SMovableTurnable)array[0] );
 		}
-		System.out.println( "ATTEMPTED TO MAKE UNHANDLED EVENT" );
+		System.out.println( "ATTEMPTED TO MAKE UNHANDLED EVENT: " + event );
 		return null;
 	}
+
+	private static <A extends SModel, B extends SModel> OcclusionEvent<A,B> makeOcclusionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
+		if( listener instanceof OcclusionStartListener ) {
+			return new StartOcclusionEvent<A,B>( pair.getFirst(), pair.getSecond() );
+		} else if( listener instanceof OcclusionEndListener ) {
+			return new EndOcclusionEvent<A,B>( pair.getFirst(), pair.getSecond() );
+		} else {
+			System.out.println( "ATTEMPTED TO MAKE UNHANDLED OCCLUSION EVENT" );
+			return null;
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	private static <A extends SModel> ViewEvent<A> makeViewEvent( Class<A> clsOne, Object listener, Object[] array ) {
 		if( listener instanceof ViewEnterListener ) {
@@ -139,7 +162,7 @@ public class EventBuilder {
 		} else if( listener instanceof ViewExitListener ) {
 			return new LeavesViewEvent<A>( (A)array[ 0 ] );
 		} else {
-			System.out.println( "ATTEMPTED TO MAKE UNHANDLED COLLISION EVENT" );
+			System.out.println( "ATTEMPTED TO MAKE UNHANDLED VIEW EVENT" );
 			return null;
 		}
 	}
@@ -148,10 +171,10 @@ public class EventBuilder {
 		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
 		if( listener instanceof ProximityEnterListener ) {
 			return new EnterProximityEvent<A,B>( pair.getFirst(), pair.getSecond() );
-		} else if( listener instanceof ProximityEnterListener ) {
+		} else if( listener instanceof ProximityExitListener ) {
 			return new ExitProximityEvent<A,B>( pair.getFirst(), pair.getSecond() );
 		} else {
-			System.out.println( "ATTEMPTED TO MAKE UNHANDLED COLLISION EVENT" );
+			System.out.println( "ATTEMPTED TO MAKE UNHANDLED PROXIMITY EVENT" );
 			return null;
 		}
 	}
@@ -163,7 +186,7 @@ public class EventBuilder {
 		} else if( listener instanceof CollisionEndListener ) {
 			return new EndCollisionEvent<A,B>( pair.getFirst(), pair.getSecond() );
 		} else {
-			System.out.println( "ATTEMPTED TO MAKE UNHANDLED PROXIMITY EVENT" );
+			System.out.println( "ATTEMPTED TO MAKE UNHANDLED COLLISION EVENT" );
 			return null;
 		}
 	}
@@ -199,11 +222,15 @@ public class EventBuilder {
 		return buildEvent( eventClass, proxList, array );
 	}
 
-	public static <A> A buildViewEvent( Class<A> eventClass, PointOfViewChangeListener listener, SThing[] array ) {
+	public static <A> A buildViewEvent( Class<A> eventClass, Object listener, SThing[] array ) {
 		return buildEvent( eventClass, listener, array );
 	}
 
-	public static <A> A buildOcclusionEvent( Class<A> eventClass, PointOfViewChangeListener listener, SThing[] array ) {
+	public static <A> A buildOcclusionEvent( Class<A> eventClass, Object listener, SThing[] array ) {
 		return buildEvent( eventClass, listener, array );
+	}
+
+	public static <A> A buildPointOfViewEvent( Class<A> eventClass, Object listener, SThing[] arr ) {
+		return buildEvent( eventClass, listener, arr );
 	}
 }

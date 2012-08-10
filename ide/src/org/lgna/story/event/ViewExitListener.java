@@ -1,7 +1,7 @@
 package org.lgna.story.event;
 
-public interface ViewExitListener {
+public interface ViewExitListener<A extends org.lgna.story.SModel> {
 
-	public void leftView( LeavesViewEvent e );
+	public void leftView( LeavesViewEvent<A> e );
 	
 }

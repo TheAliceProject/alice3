@@ -42,7 +42,7 @@ public class EventManager {
 	private final ProximityEventHandler proxyHandler = new ProximityEventHandler();
 	private final KeyPressedHandler keyHandler = new KeyPressedHandler();
 	private final TimerEventHandler timer = new TimerEventHandler();
-	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, transHandler, collisionHandler, proxyHandler, keyHandler };
+	private final AbstractEventHandler[] handlers = new AbstractEventHandler[] { mouseHandler, transHandler, occlusionHandler, viewHandler, collisionHandler, proxyHandler, keyHandler, timer };
 
 	private final TimerContingencyManager contingent = new TimerContingencyManager( timer );
 

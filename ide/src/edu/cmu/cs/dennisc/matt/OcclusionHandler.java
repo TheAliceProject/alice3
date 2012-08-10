@@ -118,11 +118,11 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 								models.add( (SModel)m );
 							}
 							if( occList instanceof OcclusionStartListener ) {
-								StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new SModel[ 0 ] ) );
+								StartOcclusionEvent event = EventBuilder.buildOcclusionEvent( StartOcclusionEvent.class, (OcclusionStartListener) occList, models.toArray( new SModel[ 0 ] ) );
 								event.setForeground( models.getFirst() );
 								fireEvent( occList, event, event );
 							} else if( occList instanceof OcclusionEndListener ) {
-								StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new SModel[ 0 ] ) );
+								EndOcclusionEvent event = EventBuilder.buildOcclusionEvent( EndOcclusionEvent.class, (OcclusionEndListener) occList, models.toArray( new SModel[ 0 ] ) );
 								event.setForeground( models.getFirst() );
 								fireEvent( occList, event, event );
 							}

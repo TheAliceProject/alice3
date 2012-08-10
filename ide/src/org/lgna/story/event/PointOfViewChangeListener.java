@@ -1,5 +1,5 @@
 package org.lgna.story.event;
 
-public interface PointOfViewChangeListener {
-	public void pointOfViewChanged( PointOfViewEvent e );
+public interface PointOfViewChangeListener<A extends org.lgna.story.SModel> {
+	public void pointOfViewChanged( PointOfViewEvent<A> e );
 }

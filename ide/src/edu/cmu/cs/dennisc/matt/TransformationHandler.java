@@ -1,6 +1,7 @@
 package edu.cmu.cs.dennisc.matt;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,13 @@ public class TransformationHandler extends TransformationChangedHandler<PointOfV
 	private Map<SThing,List<PointOfViewChangeListener>> checkMap = Collections.newHashMap();
 
 	public <A extends SMovableTurnable> void addTransformationListener( PointOfViewChangeListener transformationlistener, Class<A> a, ArrayList<A> shouldListenTo, MultipleEventPolicy policy ) {
-		super.addSoloListener( transformationlistener, shouldListenTo, a, policy );
+		ArrayList<A> models = super.addSoloListener( transformationlistener, shouldListenTo, a, policy );
+		for(SThing o : models) {
+			if(checkMap.get( o ) == null) {
+				checkMap.put( o, new LinkedList<PointOfViewChangeListener>() );
+			}
+			checkMap.get( o ).add( transformationlistener );
+		}
 	}
 
 	@Override
@@ -31,7 +38,7 @@ public class TransformationHandler extends TransformationChangedHandler<PointOfV
 	protected void check( SThing changedEntity ) {
 		for( PointOfViewChangeListener listener : checkMap.get( changedEntity ) ) {
 			SThing[] arr = { changedEntity };
-			fireEvent( listener, EventBuilder.buildViewEvent( PointOfViewEvent.class, listener, arr ) );
+			fireEvent( listener, EventBuilder.buildPointOfViewEvent( PointOfViewEvent.class, listener, arr ) );
 		}
 	}
 

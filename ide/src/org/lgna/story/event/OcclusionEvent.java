@@ -13,10 +13,10 @@ public class OcclusionEvent<A extends org.lgna.story.SModel, B extends org.lgna.
 
 	public void setForeground( org.lgna.story.SModel foreground ) {
 		if( a.equals( foreground ) ) {
-			foreground = a;
+			this.foreground = a;
 			background = b;
 		} else if( b.equals( foreground ) ) {
-			foreground = b;
+			this.foreground = b;
 			background = a;
 		}
 	}

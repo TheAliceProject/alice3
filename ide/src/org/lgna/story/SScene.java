@@ -217,13 +217,13 @@ public abstract class SScene extends SThing {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public <A extends SMovableTurnable, B extends SMovableTurnable> void addProximityExitListener( org.lgna.story.event.ProximityExitListener proximityEventListener, Class<A> a, Class<B> b, Double distance, AddExitProximityEventListener.Detail... details ) {
+	public <A extends SMovableTurnable, B extends SMovableTurnable> void addProximityExitListener( org.lgna.story.event.ProximityExitListener<A,B> proximityEventListener, Class<A> a, Class<B> b, Double distance, AddExitProximityEventListener.Detail... details ) {
 		this.getImplementation().getEventManager()
 				.addProximityEventListener( proximityEventListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, distance, MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public <A extends SModel> void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, Class<A> a, AddEnterViewListener.Detail... details ) {
+	public <A extends SModel> void addViewEnterListener( org.lgna.story.event.ViewEnterListener<A> listener, Class<A> a, AddEnterViewListener.Detail... details ) {
 		this.implementation.getEventManager().addViewEventListener( listener, a, EventCollection.getGroupOne( details, a ), MultipleEventPolicy.getValue( details, MultipleEventPolicy.ENQUEUE ) );
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
@@ -233,12 +233,12 @@ public abstract class SScene extends SThing {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public <A extends SModel> void addViewExitListener( org.lgna.story.event.ViewExitListener listener, Class<A> a, AddExitViewListener.Detail... details ) {
+	public <A extends SModel> void addViewExitListener( org.lgna.story.event.ViewExitListener<A> listener, Class<A> a, AddExitViewListener.Detail... details ) {
 		this.implementation.getEventManager().addViewEventListener( listener, a, EventCollection.getGroupOne( details, a ), MultipleEventPolicy.getValue( details, MultipleEventPolicy.ENQUEUE ) );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public <A extends SModel, B extends SModel> void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, Class<A> a, Class<B> b, AddStartOcclusionListener.Detail... details ) {
+	public <A extends SModel, B extends SModel> void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener<A,B> occlusionEventListener, Class<A> a, Class<B> b, AddStartOcclusionListener.Detail... details ) {
 		this.getImplementation().getEventManager()
 				.addOcclusionEventListener( occlusionEventListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, MultipleEventPolicy.getValue( details, MultipleEventPolicy.COMBINE ) );
 	}
@@ -252,7 +252,7 @@ public abstract class SScene extends SThing {
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	@AddEventListenerTemplate()
-	public <A extends SModel, B extends SModel> void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, Class<A> a, Class<B> b, AddEndOcclusionListener.Detail... details ) {
+	public <A extends SModel, B extends SModel> void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener<A,B> occlusionEventListener, Class<A> a, Class<B> b, AddEndOcclusionListener.Detail... details ) {
 		this.getImplementation().getEventManager()
 				.addOcclusionEventListener( occlusionEventListener, EventCollection.getGroupOne( details, a ), a, EventCollection.getGroupTwo( details, b ), b, MultipleEventPolicy.getValue( details, MultipleEventPolicy.COMBINE ) );
 	}
