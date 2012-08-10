@@ -120,7 +120,7 @@ public class TextMigration implements Migration {
 			return 
 					this.minimumVersion.compareTo( version ) <= 0
 						&&
-					this.resultVersion.compareTo( version ) >= 0;
+					this.resultVersion.compareTo( version ) > 0;
 		} else {
 			//todo?
 			return false;
