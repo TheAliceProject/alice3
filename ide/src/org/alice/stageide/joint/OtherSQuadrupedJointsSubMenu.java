@@ -46,36 +46,8 @@ package org.alice.stageide.joint;
 /**
  * @author Dennis Cosgrove
  */
-public class JointSubMenuManager {
-	private static final java.util.Map<org.lgna.project.ast.JavaType,Class<? extends JointSubMenu>[]> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	static {
-		addToMap( org.lgna.story.SBiped.class, LeftHandBipedJointSubMenu.class, RightHandBipedJointSubMenu.class );
-		addToMap( org.lgna.story.SQuadruped.class, OtherQuadrupedJointSubMenu.class );
-		addToMap( org.lgna.story.SFlyer.class, OtherFlyerJointSubMenu.class );
-	}
-	private static void addToMap( Class<? extends org.lgna.story.SJointedModel> cls, Class<? extends JointSubMenu>... subMenuClses ) {
-		map.put( org.lgna.project.ast.JavaType.getInstance( cls ), subMenuClses );
-	}
-	private JointSubMenuManager() {
-		throw new AssertionError();
-	}
-	
-	public static <FB> JointSubMenu<FB>[] getSubMenusForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		Class<? extends JointSubMenu>[] subMenuClses = map.get( type );
-		if( subMenuClses != null ) {
-			JointSubMenu[] rv = new JointSubMenu[ subMenuClses.length ];
-			for( int i=0; i<rv.length; i++ ) {
-				try {
-					rv[ i ] = subMenuClses[ i ].newInstance();
-				} catch( InstantiationException ie ) {
-					throw new RuntimeException( subMenuClses[ i ].getName(), ie );
-				} catch( IllegalAccessException iae ) {
-					throw new RuntimeException( subMenuClses[ i ].getName(), iae );
-				}
-			}
-			return rv;
-		} else {
-			return new JointSubMenu[ 0 ];
-		}
+public class OtherSQuadrupedJointsSubMenu<FB> extends JointsSubMenu<FB> {
+	public OtherSQuadrupedJointsSubMenu() {
+		super( java.util.UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), org.lgna.story.SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getFrontLeftFoot", "getFrontLeftToe", "getFrontRightFoot", "getFrontRightToe", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
 	}
 }

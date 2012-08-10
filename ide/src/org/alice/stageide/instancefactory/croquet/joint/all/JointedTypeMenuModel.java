@@ -68,13 +68,13 @@ public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuM
 		}
 		rv.add( child );
 		
-		org.alice.stageide.joint.JointSubMenu<org.alice.ide.instancefactory.InstanceFactory>[] subMenus = org.alice.stageide.joint.JointSubMenuManager.getSubMenusForType( info.getType() ); 
+		org.alice.stageide.joint.JointsSubMenu<org.alice.ide.instancefactory.InstanceFactory>[] subMenus = org.alice.stageide.joint.JointsSubMenuManager.getSubMenusForType( info.getType() ); 
 		
 		for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
 			org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
 			if( fillIn != null ) {
 				boolean isConsumed = false;
-				for( org.alice.stageide.joint.JointSubMenu<org.alice.ide.instancefactory.InstanceFactory> subMenu : subMenus ) {
+				for( org.alice.stageide.joint.JointsSubMenu<org.alice.ide.instancefactory.InstanceFactory> subMenu : subMenus ) {
 					if( subMenu.consumeIfAppropriate( method, fillIn ) ) {
 						isConsumed = true;
 						break;
@@ -89,7 +89,7 @@ public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuM
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "no fillIn for", method );
 			}
 		}
-		for( org.alice.stageide.joint.JointSubMenu<org.alice.ide.instancefactory.InstanceFactory> subMenu : subMenus ) {
+		for( org.alice.stageide.joint.JointsSubMenu<org.alice.ide.instancefactory.InstanceFactory> subMenu : subMenus ) {
 			rv.add( subMenu );
 		}
 		return rv;

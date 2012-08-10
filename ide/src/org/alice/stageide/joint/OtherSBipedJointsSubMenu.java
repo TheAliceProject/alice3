@@ -46,8 +46,8 @@ package org.alice.stageide.joint;
 /**
  * @author Dennis Cosgrove
  */
-public class OtherQuadrupedJointSubMenu<FB> extends JointSubMenu<FB> {
-	public OtherQuadrupedJointSubMenu() {
-		super( java.util.UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), org.lgna.story.SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
+public class OtherSBipedJointsSubMenu<FB> extends JointsSubMenu<FB> {
+	public OtherSBipedJointsSubMenu() {
+		super( java.util.UUID.fromString( "1928d655-ff70-4dd8-a346-c627b342141c" ), org.lgna.story.SBiped.class, "getSpineUpper", "getSpineMiddle", "getLeftHand", "getLeftThumb", "getLeftThumbKnuckle", "getLeftIndexFinger", "getLeftIndexFingerKnuckle", "getMiddleIndexFinger", "getLeftMiddleFingerKnuckle", "getLeftPinkyFinger", "getLeftPinkyFingerKnuckle", "getRightHand", "getRightThumb", "getRightThumbKnuckle", "getRightIndexFinger", "getRightIndexFingerKnuckle", "getMiddleIndexFinger", "getRightMiddleFingerKnuckle", "getRightPinkyFinger", "getRightPinkyFingerKnuckle", "getPelvisLowerBody", "getLeftFoot", "getLeftToes", "getRightFoot", "getRightToes" );
 	}
 }

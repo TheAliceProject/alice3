@@ -46,27 +46,8 @@ package org.alice.stageide.joint;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointSubMenu<FB> extends org.lgna.croquet.CascadeMenuModel<FB> {
-	private final java.util.List<org.lgna.croquet.CascadeFillIn<FB,?>> fillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final java.util.List<String> methodNames;
-	public JointSubMenu( java.util.UUID migrationId, Class<?> cls, String... methodNames ) {
-		super( migrationId );
-		this.methodNames = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( methodNames );
-	}
-	
-	public boolean consumeIfAppropriate( org.lgna.project.ast.Method method, org.lgna.croquet.CascadeFillIn<FB,?> fillIn ) {
-		if( this.methodNames.contains( method.getName() ) ) {
-			this.fillIns.add( fillIn );
-			return true;
-		} else {
-			return false;
-		}
-	}
-	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<FB> blankNode ) {
-		for( org.lgna.croquet.CascadeFillIn<FB,?> fillIn : this.fillIns ) {
-			rv.add( fillIn );
-		}
-		return rv;
+public class OtherSFlyerJointsSubMenu<FB> extends JointsSubMenu<FB> {
+	public OtherSFlyerJointsSubMenu() {
+		super( java.util.UUID.fromString( "f1ee6351-f9d6-4cc3-b9b7-23d9bc3fcd44" ), org.lgna.story.SFlyer.class, "getNeck2", "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getLeftFoot", "getRightFoot" );
 	}
 }
