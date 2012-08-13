@@ -63,7 +63,7 @@ public class WeightedMeshAdapter< E extends WeightedMesh > extends MeshAdapter<E
     }
     
     @Override
-    protected void renderGeometry(RenderContext rc)
+    protected void renderGeometry(RenderContext rc, VisualAdapter.RenderType renderType)
     {
         throw new UnsupportedOperationException("WeightedMeshAdapters cannot be used to render WeightedMeshes. See SkeletonVisualAdapter.");
     }

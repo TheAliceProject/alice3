@@ -50,7 +50,7 @@ import static javax.media.opengl.GL.*;
  */
 public class TriangleStripAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.TriangleStrip > {
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
     	renderPrimative( rc, GL_TRIANGLE_STRIP );
     }
 	@Override

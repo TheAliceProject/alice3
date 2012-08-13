@@ -802,10 +802,10 @@ public class ModelResourceExporter {
 					addedRoots = true;
 				}
 				if (shouldSuppressJoint(jointString)) {
-					sb.append("@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)\n");
+					sb.append("\t@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)\n");
 				}
 				else {
-					sb.append("@FieldTemplate(visibility=Visibility.PRIME_TIME)\n");
+					sb.append("\t@FieldTemplate(visibility=Visibility.PRIME_TIME)\n");
 				}
 				sb.append("\tpublic static final org.lgna.story.resources.JointId "+jointString+" = new org.lgna.story.resources.JointId( "+parentString+", "+this.getJavaClassName()+".class );\n");
 			}

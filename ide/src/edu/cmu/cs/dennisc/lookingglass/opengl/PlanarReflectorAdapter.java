@@ -163,12 +163,12 @@ public class PlanarReflectorAdapter extends VisualAdapter< edu.cmu.cs.dennisc.sc
 		rc.gl.glMultMatrixd( m_reflectionBuffer );
 	}
 	
-	public void renderStencil( RenderContext rc ) {
+	public void renderStencil( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		rc.gl.glPushMatrix();
 		synchronized( this ) {
 			rc.gl.glMultMatrixd( accessAbsoluteTransformationAsBuffer() );
 		}
-		actuallyRender( rc );
+		actuallyRender( rc, renderType );
 		rc.gl.glPopMatrix();
 	}
 }

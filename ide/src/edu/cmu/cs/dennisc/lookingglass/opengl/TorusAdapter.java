@@ -105,7 +105,7 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		glTorus( rc, true );
 	}
 	@Override

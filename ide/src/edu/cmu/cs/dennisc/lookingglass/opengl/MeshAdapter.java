@@ -199,7 +199,7 @@ public class MeshAdapter< E extends Mesh > extends GeometryAdapter<E>
     
 
     @Override
-    protected void renderGeometry(RenderContext rc)
+    protected void renderGeometry(RenderContext rc, VisualAdapter.RenderType renderType)
     {
         renderMesh(rc, this.vertexBuffer, this.normalBuffer, this.textCoordBuffer, this.indexBuffer);
     }

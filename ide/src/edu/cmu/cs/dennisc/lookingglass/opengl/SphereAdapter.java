@@ -56,7 +56,7 @@ public class SphereAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.S
 		c.glu.gluSphere( c.getQuadric(), m_radius, m_slices, m_stacks );
 	}
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		boolean isTextureEnabled = rc.isTextureEnabled();
 		//todo:
 		isTextureEnabled = true;

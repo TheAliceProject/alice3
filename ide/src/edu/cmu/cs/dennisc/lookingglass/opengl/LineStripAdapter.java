@@ -50,7 +50,7 @@ import static javax.media.opengl.GL.*;
  */
 public class LineStripAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.LineStrip > {
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
     	renderPrimative( rc, GL_LINE_STRIP );
     }
 	@Override

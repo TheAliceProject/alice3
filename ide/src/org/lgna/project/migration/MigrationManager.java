@@ -48,73 +48,82 @@ package org.lgna.project.migration;
 public class MigrationManager {
 	public static final String NO_REPLACEMENT = null;
 
-	private static String createMoreSpecificFieldString( String fieldName, String clsName ) {
+	private static String createMoreSpecificFieldString(String fieldName,
+			String clsName) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "name=\"" );
-		sb.append( fieldName );
-		sb.append( "\"><declaringClass name=\"" );
-		sb.append( clsName );
-		sb.append( "\"" );
+		sb.append("name=\"");
+		sb.append(fieldName);
+		sb.append("\"><declaringClass name=\"");
+		sb.append(clsName);
+		sb.append("\"");
 		return sb.toString();
 	}
-	
-	private static String createPrevJointString( String prevFieldName, String packageSubName ) {
+
+	private static String createPrevJointString(String prevFieldName,
+			String packageSubName) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "name=\"" );
-		sb.append( prevFieldName );
-		sb.append( "\"><declaringClass name=\"org\\.lgna\\.story\\.resources." );
-		sb.append( packageSubName );
-		sb.append( "\\.[A-Za-z]*\"" );
+		sb.append("name=\"");
+		sb.append(prevFieldName);
+		sb.append("\"><declaringClass name=\"org\\.lgna\\.story\\.resources.");
+		sb.append(packageSubName);
+		sb.append("\\.[A-Za-z]*\"");
 		return sb.toString();
 	}
-	private static String createNextJointString( String prevFieldName, String clsName ) {
+
+	private static String createNextJointString(String prevFieldName,
+			String clsName) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "name=\"" );
-		sb.append( prevFieldName );
-		sb.append( "\"><declaringClass name=\"org.lgna.story.resources." );
-		sb.append( clsName );
-		sb.append( "\"" );
+		sb.append("name=\"");
+		sb.append(prevFieldName);
+		sb.append("\"><declaringClass name=\"org.lgna.story.resources.");
+		sb.append(clsName);
+		sb.append("\"");
 		return sb.toString();
 	}
-	
-	private static String createJointAccessorString( String accessorName, String clsName ) {
+
+	private static String createJointAccessorString(String accessorName,
+			String clsName) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "name=\"" );
-		sb.append( accessorName );
-		sb.append( "\"><declaringClass name=\"org.lgna.story." );
-		sb.append( clsName );
-		sb.append( "\"" );
+		sb.append("name=\"");
+		sb.append(accessorName);
+		sb.append("\"><declaringClass name=\"org.lgna.story.");
+		sb.append(clsName);
+		sb.append("\"");
 		return sb.toString();
 	}
-	
-	private static String createPrevBipedJointString( String prevFieldName ) {
-		return createPrevJointString( prevFieldName, "biped" );
+
+	private static String createPrevBipedJointString(String prevFieldName) {
+		return createPrevJointString(prevFieldName, "biped");
 	}
-	private static String createNextBipedJointString( String prevFieldName ) {
-		return createNextJointString( prevFieldName, "BipedResource" );
+
+	private static String createNextBipedJointString(String prevFieldName) {
+		return createNextJointString(prevFieldName, "BipedResource");
 	}
-	
-	private static String createPrevQuadrupedJointString( String prevFieldName ) {
-		return createPrevJointString( prevFieldName, "quadruped" );
+
+	private static String createPrevQuadrupedJointString(String prevFieldName) {
+		return createPrevJointString(prevFieldName, "quadruped");
 	}
-	private static String createNextQuadrupedJointString( String prevFieldName ) {
-		return createNextJointString( prevFieldName, "QuadrupedResource" );
+
+	private static String createNextQuadrupedJointString(String prevFieldName) {
+		return createNextJointString(prevFieldName, "QuadrupedResource");
 	}
-	
-	private static String createPrevFlyerJointString( String prevFieldName ) {
-		return createPrevJointString( prevFieldName, "flyer" );
+
+	private static String createPrevFlyerJointString(String prevFieldName) {
+		return createPrevJointString(prevFieldName, "flyer");
 	}
-	private static String createNextFlyerJointString( String prevFieldName ) {
-		return createNextJointString( prevFieldName, "FlyerResource" );
+
+	private static String createNextFlyerJointString(String prevFieldName) {
+		return createNextJointString(prevFieldName, "FlyerResource");
 	}
-	
-	private static String createPrevSwimmerJointString( String prevFieldName ) {
-		return createPrevJointString( prevFieldName, "swimmer" );
+
+	private static String createPrevSwimmerJointString(String prevFieldName) {
+		return createPrevJointString(prevFieldName, "swimmer");
 	}
-	private static String createNextSwimmerJointString( String prevFieldName ) {
-		return createNextJointString( prevFieldName, "SwimmerResource" );
+
+	private static String createNextSwimmerJointString(String prevFieldName) {
+		return createNextJointString(prevFieldName, "SwimmerResource");
 	}
-	
+
 	private static final TextMigration[] textMigrations = {
 			new org.lgna.project.migration.TextMigration(
 					new org.lgna.project.Version("3.1.7.0.0"),
@@ -439,7 +448,7 @@ public class MigrationManager {
 
 					"org.lgna.story.resources.ArmoireResource",
 					"org.lgna.story.resources.prop.Armoire",
-					
+
 					"org.lgna.story.resources.armoire.ArmoireLoft",
 					"org.lgna.story.resources.prop.Armoire",
 
@@ -494,29 +503,61 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.LargeClubCoffeeTable",
 					"org.lgna.story.resources.prop.CoffeeTable",
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD", "org.lgna.story.resources.prop.CoffeeTable" ),
-					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+							"org.lgna.story.resources.prop.CoffeeTable"),
+					createMoreSpecificFieldString(
+							"SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+							"org.lgna.story.resources.prop.CoffeeTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK", "org.lgna.story.resources.prop.CoffeeTable" ),
-					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+							"org.lgna.story.resources.prop.CoffeeTable"),
+					createMoreSpecificFieldString(
+							"SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+							"org.lgna.story.resources.prop.CoffeeTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED", "org.lgna.story.resources.prop.CoffeeTable" ),
-					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+							"org.lgna.story.resources.prop.CoffeeTable"),
+					createMoreSpecificFieldString(
+							"SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+							"org.lgna.story.resources.prop.CoffeeTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG", "org.lgna.story.resources.prop.CoffeeTable" ),
-					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+							"org.lgna.story.resources.prop.CoffeeTable"),
+					createMoreSpecificFieldString(
+							"SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+							"org.lgna.story.resources.prop.CoffeeTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD", "org.lgna.story.resources.prop.CoffeeTable" ),
-					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+							"org.lgna.story.resources.prop.CoffeeTable"),
+					createMoreSpecificFieldString(
+							"SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+							"org.lgna.story.resources.prop.CoffeeTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH", "org.lgna.story.resources.prop.CoffeeTable" ),
-					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+							"org.lgna.story.resources.prop.CoffeeTable"),
+					createMoreSpecificFieldString(
+							"SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+							"org.lgna.story.resources.prop.CoffeeTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK", "org.lgna.story.resources.prop.CoffeeTable" ),
-					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+							"org.lgna.story.resources.prop.CoffeeTable"),
+					createMoreSpecificFieldString(
+							"SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+							"org.lgna.story.resources.prop.CoffeeTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE", "org.lgna.story.resources.prop.CoffeeTable" ),
-					createMoreSpecificFieldString( "SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE", "org.lgna.story.resources.prop.CoffeeTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+							"org.lgna.story.resources.prop.CoffeeTable"),
+					createMoreSpecificFieldString(
+							"SMALL_CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+							"org.lgna.story.resources.prop.CoffeeTable"),
 
 					"TABLE_COFFEE_COLONIAL_GOLDFLORAL",
 					"COLONIAL_TABLE_COFFEE_COLONIAL_GOLDFLORAL",
@@ -725,29 +766,61 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.ClubEndTable",
 					"org.lgna.story.resources.prop.EndTable",
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD", "org.lgna.story.resources.prop.EndTable" ),
-					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+							"org.lgna.story.resources.prop.EndTable"),
+					createMoreSpecificFieldString(
+							"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WOOD",
+							"org.lgna.story.resources.prop.EndTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK", "org.lgna.story.resources.prop.EndTable" ),
-					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+							"org.lgna.story.resources.prop.EndTable"),
+					createMoreSpecificFieldString(
+							"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_WHITEOAK",
+							"org.lgna.story.resources.prop.EndTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED", "org.lgna.story.resources.prop.EndTable" ),
-					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+							"org.lgna.story.resources.prop.EndTable"),
+					createMoreSpecificFieldString(
+							"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIAL_BIRDSRED",
+							"org.lgna.story.resources.prop.EndTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG", "org.lgna.story.resources.prop.EndTable" ),
-					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+							"org.lgna.story.resources.prop.EndTable"),
+					createMoreSpecificFieldString(
+							"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_MAHOG",
+							"org.lgna.story.resources.prop.EndTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD", "org.lgna.story.resources.prop.EndTable" ),
-					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+							"org.lgna.story.resources.prop.EndTable"),
+					createMoreSpecificFieldString(
+							"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_GUMWOOD",
+							"org.lgna.story.resources.prop.EndTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH", "org.lgna.story.resources.prop.EndTable" ),
-					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+							"org.lgna.story.resources.prop.EndTable"),
+					createMoreSpecificFieldString(
+							"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_REDASH",
+							"org.lgna.story.resources.prop.EndTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK", "org.lgna.story.resources.prop.EndTable" ),
-					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+							"org.lgna.story.resources.prop.EndTable"),
+					createMoreSpecificFieldString(
+							"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_BLEACHEDOAK",
+							"org.lgna.story.resources.prop.EndTable"),
 
-					createMoreSpecificFieldString( "TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE", "org.lgna.story.resources.prop.EndTable" ),
-					createMoreSpecificFieldString( "CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE", "org.lgna.story.resources.prop.EndTable" ),
+					createMoreSpecificFieldString(
+							"TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+							"org.lgna.story.resources.prop.EndTable"),
+					createMoreSpecificFieldString(
+							"CLUB_TABLE_COFFEE_CLUB1_X1_MATERIALS_LTBLUE",
+							"org.lgna.story.resources.prop.EndTable"),
 
 					"TABLE_END_COLONIAL2_TABLE_LIGHTWOOD",
 					"COLONIAL_TABLE_END_COLONIAL2_TABLE_LIGHTWOOD",
@@ -887,29 +960,54 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.LoveseatQuaint",
 					"org.lgna.story.resources.prop.Loveseat",
 
-					createMoreSpecificFieldString( "SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Loveseat" ),
-					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString("SOFA_MOROCCAN_BEIGE",
+							"org.lgna.story.resources.prop.Loveseat"),
+					createMoreSpecificFieldString(
+							"MOROCCAN_SOFA_MOROCCAN_BEIGE",
+							"org.lgna.story.resources.prop.Loveseat"),
 
-					createMoreSpecificFieldString( "SOFA_MOROCCAN_GREEN", "org.lgna.story.resources.prop.Loveseat" ),
-					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_GREEN", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString("SOFA_MOROCCAN_GREEN",
+							"org.lgna.story.resources.prop.Loveseat"),
+					createMoreSpecificFieldString(
+							"MOROCCAN_SOFA_MOROCCAN_GREEN",
+							"org.lgna.story.resources.prop.Loveseat"),
 
-					createMoreSpecificFieldString( "SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Loveseat" ),
-					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString("SOFA_MOROCCAN_RED",
+							"org.lgna.story.resources.prop.Loveseat"),
+					createMoreSpecificFieldString("MOROCCAN_SOFA_MOROCCAN_RED",
+							"org.lgna.story.resources.prop.Loveseat"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Loveseat" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString("LOVESEAT_PARK_BENCH_OAK",
+							"org.lgna.story.resources.prop.Loveseat"),
+					createMoreSpecificFieldString(
+							"PARK_BENCH_LOVESEAT_PARK_BENCH_OAK",
+							"org.lgna.story.resources.prop.Loveseat"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Loveseat" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString("LOVESEAT_PARK_BENCH_RED",
+							"org.lgna.story.resources.prop.Loveseat"),
+					createMoreSpecificFieldString(
+							"PARK_BENCH_LOVESEAT_PARK_BENCH_RED",
+							"org.lgna.story.resources.prop.Loveseat"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Loveseat" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString(
+							"LOVESEAT_PARK_BENCH_OAKGREEN",
+							"org.lgna.story.resources.prop.Loveseat"),
+					createMoreSpecificFieldString(
+							"PARK_BENCH_LOVESEAT_PARK_BENCH_OAKGREEN",
+							"org.lgna.story.resources.prop.Loveseat"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Loveseat" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString(
+							"LOVESEAT_PARK_BENCH_OAKBLUE",
+							"org.lgna.story.resources.prop.Loveseat"),
+					createMoreSpecificFieldString(
+							"PARK_BENCH_LOVESEAT_PARK_BENCH_OAKBLUE",
+							"org.lgna.story.resources.prop.Loveseat"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Loveseat" ),
-					createMoreSpecificFieldString( "PARK_BENCH_LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Loveseat" ),
+					createMoreSpecificFieldString("LOVESEAT_PARK_BENCH_IVORY",
+							"org.lgna.story.resources.prop.Loveseat"),
+					createMoreSpecificFieldString(
+							"PARK_BENCH_LOVESEAT_PARK_BENCH_IVORY",
+							"org.lgna.story.resources.prop.Loveseat"),
 
 					"LOVESEAT_VALUE_RED_CHECKER",
 					"VALUE_LOVESEAT_VALUE_RED_CHECKER",
@@ -994,30 +1092,38 @@ public class MigrationManager {
 
 					"org.lgna.story.resources.prop.SofaSteelFrame",
 					"org.lgna.story.resources.prop.Sofa",
-					
+
 					"org.lgna.story.resources.prop.SofaColonial1",
 					"org.lgna.story.resources.prop.Sofa",
-					
+
 					"org.lgna.story.resources.prop.SofaColonial2",
 					"org.lgna.story.resources.prop.Sofa",
-					
+
 					"org.lgna.story.resources.prop.SofaMoroccan",
 					"org.lgna.story.resources.prop.Sofa",
-					
+
 					"org.lgna.story.resources.prop.SofaModernCutout",
 					"org.lgna.story.resources.prop.Sofa",
-					
+
 					"org.lgna.story.resources.prop.SofaModernDiamond",
 					"org.lgna.story.resources.prop.Sofa",
 
-					createMoreSpecificFieldString( "SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Sofa" ),
-					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_BEIGE", "org.lgna.story.resources.prop.Sofa" ),
+					createMoreSpecificFieldString("SOFA_MOROCCAN_BEIGE",
+							"org.lgna.story.resources.prop.Sofa"),
+					createMoreSpecificFieldString(
+							"MOROCCAN_SOFA_MOROCCAN_BEIGE",
+							"org.lgna.story.resources.prop.Sofa"),
 
-					createMoreSpecificFieldString( "SOFA_MOROCCAN_GREEN", "org.lgna.story.resources.prop.Sofa" ),
-					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_GREEN", "org.lgna.story.resources.prop.Sofa" ),
+					createMoreSpecificFieldString("SOFA_MOROCCAN_GREEN",
+							"org.lgna.story.resources.prop.Sofa"),
+					createMoreSpecificFieldString(
+							"MOROCCAN_SOFA_MOROCCAN_GREEN",
+							"org.lgna.story.resources.prop.Sofa"),
 
-					createMoreSpecificFieldString( "SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Sofa" ),
-					createMoreSpecificFieldString( "MOROCCAN_SOFA_MOROCCAN_RED", "org.lgna.story.resources.prop.Sofa" ),
+					createMoreSpecificFieldString("SOFA_MOROCCAN_RED",
+							"org.lgna.story.resources.prop.Sofa"),
+					createMoreSpecificFieldString("MOROCCAN_SOFA_MOROCCAN_RED",
+							"org.lgna.story.resources.prop.Sofa"),
 
 					"SOFA_VALUE2_LIGHT_BROWN_FLOWER",
 					"VALUE2_SOFA_VALUE2_LIGHT_BROWN_FLOWER",
@@ -1211,27 +1317,43 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.ParkChair",
 					"org.lgna.story.resources.prop.Chair",
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_OAK", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString("LOVESEAT_PARK_BENCH_OAK",
+							"org.lgna.story.resources.prop.Chair"),
+					createMoreSpecificFieldString(
+							"PARK_LOVESEAT_PARK_BENCH_OAK",
+							"org.lgna.story.resources.prop.Chair"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_RED", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString("LOVESEAT_PARK_BENCH_RED",
+							"org.lgna.story.resources.prop.Chair"),
+					createMoreSpecificFieldString(
+							"PARK_LOVESEAT_PARK_BENCH_RED",
+							"org.lgna.story.resources.prop.Chair"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_OAKGREEN", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString(
+							"LOVESEAT_PARK_BENCH_OAKGREEN",
+							"org.lgna.story.resources.prop.Chair"),
+					createMoreSpecificFieldString(
+							"PARK_LOVESEAT_PARK_BENCH_OAKGREEN",
+							"org.lgna.story.resources.prop.Chair"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_OAKBLUE", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString(
+							"LOVESEAT_PARK_BENCH_OAKBLUE",
+							"org.lgna.story.resources.prop.Chair"),
+					createMoreSpecificFieldString(
+							"PARK_LOVESEAT_PARK_BENCH_OAKBLUE",
+							"org.lgna.story.resources.prop.Chair"),
 
-					createMoreSpecificFieldString( "LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Chair" ),
-					createMoreSpecificFieldString( "PARK_LOVESEAT_PARK_BENCH_IVORY", "org.lgna.story.resources.prop.Chair" ),
+					createMoreSpecificFieldString("LOVESEAT_PARK_BENCH_IVORY",
+							"org.lgna.story.resources.prop.Chair"),
+					createMoreSpecificFieldString(
+							"PARK_LOVESEAT_PARK_BENCH_IVORY",
+							"org.lgna.story.resources.prop.Chair"),
 
 					"LOVESEAT_PARK_BENCH_WALNUT",
 					"PARK_LOVESEAT_PARK_BENCH_WALNUT",
 
 					"LOVESEAT_PARK_BENCH_CHESTNUT",
 					"PARK_LOVESEAT_PARK_BENCH_CHESTNUT",
-
 
 					"CHAIR_DINING_MODERATE_BODY_BLACK",
 					"MODERATE_CHAIR_DINING_MODERATE_BODY_BLACK",
@@ -1815,7 +1937,6 @@ public class MigrationManager {
 					"SOFA_COLONIAL1_LINE_CURVES",
 					"COLONIAL1_SOFA_COLONIAL1_LINE_CURVES",
 
-
 					"SOFA_COLONIAL2_NEONBLUE",
 					"COLONIAL2_SOFA_COLONIAL2_NEONBLUE",
 
@@ -1852,24 +1973,24 @@ public class MigrationManager {
 					"SOFA_MODERN_STEEL_FRAME_FABRIC_GATOR",
 					"STEEL_FRAME_SOFA_MODERN_STEEL_FRAME_FABRIC_GATOR",
 
-//duplicates
-//					"SOFA_MOROCCAN_BEIGECROSS",
-//					"MOROCCAN_SOFA_MOROCCAN_BEIGECROSS",
+					// duplicates
+					// "SOFA_MOROCCAN_BEIGECROSS",
+					// "MOROCCAN_SOFA_MOROCCAN_BEIGECROSS",
 
-//					"SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
-//					"QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
-//
-//					"SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
-//					"QUAINT_SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
-//
-//					"SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
-//					"QUAINT_SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
-//
-//					"SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
-//					"QUAINT_SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
-//
-//					"SOFA_QUAINT_FABRIC_PINK_FLOWERS",
-//					"QUAINT_SOFA_QUAINT_FABRIC_PINK_FLOWERS",
+					// "SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+					// "QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS",
+					//
+					// "SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
+					// "QUAINT_SOFA_QUAINT_FABRIC_GREEN_FLOWERS",
+					//
+					// "SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
+					// "QUAINT_SOFA_QUAINT_FABRIC_BEIGE_FLOWERS",
+					//
+					// "SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
+					// "QUAINT_SOFA_QUAINT_FABRIC_BLUE_FLOWERS",
+					//
+					// "SOFA_QUAINT_FABRIC_PINK_FLOWERS",
+					// "QUAINT_SOFA_QUAINT_FABRIC_PINK_FLOWERS",
 
 					"SOFA_UM_CUTOUT_BLACK_CREAM",
 					"MODERN_CUTOUT_SOFA_UM_CUTOUT_BLACK_CREAM",
@@ -1930,7 +2051,7 @@ public class MigrationManager {
 
 					"name=\"LIGHTING_FLOOR_GARDEN_TIER",
 					"name=\"GARDEN_TIER_LIGHTING_FLOOR_GARDEN_TIER",
-					
+
 					"org.lgna.story.resources.prop.FloorLampGardenBollard",
 					"org.lgna.story.resources.prop.Lamp",
 
@@ -2047,95 +2168,94 @@ public class MigrationManager {
 
 					"org.lgna.story.resources.prop.MoroccanDiningChair",
 					"org.lgna.story.resources.prop.Chair",
-					
+
 					"SAUCER_QUEEN_OF_HEARTS",
 					"SAUCER_QUEEN",
-					
+
 					"TEACUP_QUEEN_OF_HEARTS",
 					"TEACUP_QUEEN",
 
-					createPrevBipedJointString( "LEFT_THUMB_1" ),
-					createNextBipedJointString( "LEFT_THUMB" ),
+					createPrevBipedJointString("LEFT_THUMB_1"),
+					createNextBipedJointString("LEFT_THUMB"),
 
-					createPrevBipedJointString( "LEFT_THUMB_2" ),
-					createNextBipedJointString( "LEFT_THUMB_KNUCKLE" ),
+					createPrevBipedJointString("LEFT_THUMB_2"),
+					createNextBipedJointString("LEFT_THUMB_KNUCKLE"),
 
-					createPrevBipedJointString( "LEFT_INDEX_1" ),
-					createNextBipedJointString( "LEFT_INDEX_FINGER" ),
+					createPrevBipedJointString("LEFT_INDEX_1"),
+					createNextBipedJointString("LEFT_INDEX_FINGER"),
 
-					createPrevBipedJointString( "LEFT_INDEX_2" ),
-					createNextBipedJointString( "LEFT_INDEX_FINGER_KNUCKLE" ),
+					createPrevBipedJointString("LEFT_INDEX_2"),
+					createNextBipedJointString("LEFT_INDEX_FINGER_KNUCKLE"),
 
-					createPrevBipedJointString( "LEFT_MIDDLE_1" ),
-					createNextBipedJointString( "LEFT_MIDDLE_FINGER" ),
+					createPrevBipedJointString("LEFT_MIDDLE_1"),
+					createNextBipedJointString("LEFT_MIDDLE_FINGER"),
 
-					createPrevBipedJointString( "LEFT_MIDDLE_2" ),
-					createNextBipedJointString( "LEFT_MIDDLE_FINGER_KNUCKLE" ),
-					
-					createPrevBipedJointString( "LEFT_PINKY_1" ),
-					createNextBipedJointString( "LEFT_PINKY_FINGER" ),
+					createPrevBipedJointString("LEFT_MIDDLE_2"),
+					createNextBipedJointString("LEFT_MIDDLE_FINGER_KNUCKLE"),
 
-					createPrevBipedJointString( "LEFT_PINKY_2" ),
-					createNextBipedJointString( "LEFT_PINKY_FINGER_KNUCKLE" ),
-					
-					createPrevBipedJointString( "RIGHT_THUMB_1" ),
-					createNextBipedJointString( "RIGHT_THUMB" ),
+					createPrevBipedJointString("LEFT_PINKY_1"),
+					createNextBipedJointString("LEFT_PINKY_FINGER"),
 
-					createPrevBipedJointString( "RIGHT_THUMB_2" ),
-					createNextBipedJointString( "RIGHT_THUMB_KNUCKLE" ),
+					createPrevBipedJointString("LEFT_PINKY_2"),
+					createNextBipedJointString("LEFT_PINKY_FINGER_KNUCKLE"),
 
-					createPrevBipedJointString( "RIGHT_INDEX_1" ),
-					createNextBipedJointString( "RIGHT_INDEX_FINGER" ),
+					createPrevBipedJointString("RIGHT_THUMB_1"),
+					createNextBipedJointString("RIGHT_THUMB"),
 
-					createPrevBipedJointString( "RIGHT_INDEX_2" ),
-					createNextBipedJointString( "RIGHT_INDEX_FINGER_KNUCKLE" ),
+					createPrevBipedJointString("RIGHT_THUMB_2"),
+					createNextBipedJointString("RIGHT_THUMB_KNUCKLE"),
 
-					createPrevBipedJointString( "RIGHT_MIDDLE_1" ),
-					createNextBipedJointString( "RIGHT_MIDDLE_FINGER" ),
+					createPrevBipedJointString("RIGHT_INDEX_1"),
+					createNextBipedJointString("RIGHT_INDEX_FINGER"),
 
-					createPrevBipedJointString( "RIGHT_MIDDLE_2" ),
-					createNextBipedJointString( "RIGHT_MIDDLE_FINGER_KNUCKLE" ),
-					
-					createPrevBipedJointString( "RIGHT_PINKY_1" ),
-					createNextBipedJointString( "RIGHT_PINKY_FINGER" ),
+					createPrevBipedJointString("RIGHT_INDEX_2"),
+					createNextBipedJointString("RIGHT_INDEX_FINGER_KNUCKLE"),
 
-					createPrevBipedJointString( "RIGHT_PINKY_2" ),
-					createNextBipedJointString( "RIGHT_PINKY_FINGER_KNUCKLE" ),
-					
-					createPrevQuadrupedJointString( "TAIL_1" ),
-					createNextQuadrupedJointString( "TAIL" ),
-					
-					createPrevFlyerJointString( "TAIL_1" ),
-					createNextFlyerJointString( "TAIL" ),
-					
+					createPrevBipedJointString("RIGHT_MIDDLE_1"),
+					createNextBipedJointString("RIGHT_MIDDLE_FINGER"),
+
+					createPrevBipedJointString("RIGHT_MIDDLE_2"),
+					createNextBipedJointString("RIGHT_MIDDLE_FINGER_KNUCKLE"),
+
+					createPrevBipedJointString("RIGHT_PINKY_1"),
+					createNextBipedJointString("RIGHT_PINKY_FINGER"),
+
+					createPrevBipedJointString("RIGHT_PINKY_2"),
+					createNextBipedJointString("RIGHT_PINKY_FINGER_KNUCKLE"),
+
+					createPrevQuadrupedJointString("TAIL_1"),
+					createNextQuadrupedJointString("TAIL"),
+
+					createPrevFlyerJointString("TAIL_1"),
+					createNextFlyerJointString("TAIL"),
+
 					createJointAccessorString("getRightClavicle", "SFlyer"),
 					createJointAccessorString("getRightWingShoulder", "SFlyer"),
-					
+
 					createJointAccessorString("getLeftClavicle", "SFlyer"),
 					createJointAccessorString("getLeftWingShoulder", "SFlyer"),
-					
+
 					createJointAccessorString("getLeftShoulder", "SFlyer"),
 					createJointAccessorString("getLeftWingElbow", "SFlyer"),
-					
+
 					createJointAccessorString("getRightShoulder", "SFlyer"),
 					createJointAccessorString("getRightWingElbow", "SFlyer"),
-					
+
 					createJointAccessorString("getRightElbow", "SFlyer"),
 					createJointAccessorString("getRightWingWrist", "SFlyer"),
-					
+
 					createJointAccessorString("getLeftElbow", "SFlyer"),
 					createJointAccessorString("getLeftWingWrist", "SFlyer"),
-					
+
 					createJointAccessorString("getLeftPectoralFin", "SSwimmer"),
 					createJointAccessorString("getFrontRightFin", "SSwimmer"),
-					
+
 					createJointAccessorString("getRightPectoralFin", "SSwimmer"),
-					createJointAccessorString("getFrontRightFin", "SSwimmer")
-			), 
+					createJointAccessorString("getFrontRightFin", "SSwimmer")),
 			new org.lgna.project.migration.TextMigration(
 					new org.lgna.project.Version("3.1.34.0.0"),
 					new org.lgna.project.Version("3.1.35.0.0"),
-					
+
 					"org.lgna.story.resources.biped.Alien",
 					"org.lgna.story.resources.biped.AlienResource",
 
@@ -2473,9 +2593,7 @@ public class MigrationManager {
 					"org.lgna.story.resources.marinemammal.OrcaResource",
 
 					"org.lgna.story.resources.marinemammal.Walrus",
-					"org.lgna.story.resources.marinemammal.WalrusResource"
-			)
-	};
+					"org.lgna.story.resources.marinemammal.WalrusResource") };
 	private static final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections
 			.newCopyOnWriteArrayList();
 

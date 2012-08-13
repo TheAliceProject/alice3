@@ -50,7 +50,7 @@ import static javax.media.opengl.GL.*;
  */
 public class QuadArrayAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.QuadArray > {
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
     	renderPrimative( rc, GL_QUADS );
     }
 	@Override

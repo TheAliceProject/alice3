@@ -50,7 +50,7 @@ import static javax.media.opengl.GL.*;
  */
 public class TriangleArrayAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.TriangleArray > {
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
     	renderPrimative( rc, GL_TRIANGLES );
     }
 	@Override

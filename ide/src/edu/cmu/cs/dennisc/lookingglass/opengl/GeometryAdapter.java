@@ -76,7 +76,9 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
         m_isGeometryChanged = isGeometryChanged;
     }
     public abstract boolean isAlphaBlended();
-
+    public boolean hasOpaque() {
+    	return !isAlphaBlended();
+    }
 
     protected boolean isDisplayListDesired() {
     	return true;
@@ -86,10 +88,10 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
     }
 
     //todo: better name
-    protected abstract void renderGeometry( RenderContext rc );
+    protected abstract void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType );
     protected abstract void pickGeometry( PickContext pc, boolean isSubElementRequired );
     
-    public final void render( RenderContext rc ) {
+    public final void render( RenderContext rc, VisualAdapter.RenderType renderType ) {
     	if( isDisplayListDesired() ) {
     		Integer id = rc.getDisplayListID( this );
     		if( id == null ) {
@@ -99,7 +101,7 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
     		if( isDisplayListInNeedOfRefresh( rc ) || rc.gl.glIsList( id ) == false ) {
     			rc.gl.glNewList( id, GL_COMPILE_AND_EXECUTE );
     			try {
-            		renderGeometry( rc );
+            		renderGeometry( rc, renderType );
     			} finally {
     				rc.gl.glEndList();
 //    				int error = rc.gl.glGetError();
@@ -116,7 +118,7 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
        			}
     		}
     	} else {
-    		renderGeometry( rc );
+    		renderGeometry( rc, renderType );
     	}
     }
 	public final void pick( PickContext pc, boolean isSubElementRequired ) {

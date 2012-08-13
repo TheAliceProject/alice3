@@ -23,9 +23,10 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
         Manager.initializeIfNecessary();
     }
     
-    public native void render(javax.media.opengl.GL gl, float globalBrightness);
+    public native void render(javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque);
     public native void pick();
-//    public native boolean isAlphaBlended();
+    public native boolean isAlphaBlended();
+    public native boolean hasOpaque();
     private native void getAxisAlignedBoundingBoxForJoint(org.lgna.story.resources.JointId name, double[] bboxData);
     private native void updateAxisAlignedBoundingBox(double[] bboxData);
     public native void getOriginalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );

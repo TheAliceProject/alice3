@@ -62,7 +62,7 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
     	return super.isDisplayListInNeedOfRefresh( rc ) || (Float.compare( uRatio, m_uRatio ) != 0) || (Float.compare( vRatio, m_vRatio ) != 0);
     }
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		float uRatio = rc.getURatio();
 		float vRatio = rc.getVRatio();
 		int[] polygonData = m_element.polygonData.getValueAsArray();
