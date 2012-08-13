@@ -81,7 +81,9 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 		}
 	}
 	public StringBuilder appendRepresentation(StringBuilder rv, C value) {
-		value.initializeIfNecessary();
+		if( value != null ) {
+			value.initializeIfNecessary();
+		}
 		rv.append( value.getTitleText() );
 		return rv;
 	}
