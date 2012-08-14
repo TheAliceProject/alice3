@@ -118,6 +118,19 @@ public class IdeHighlightStencil extends HighlightStencil {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
 		}
 	}
+	private org.lgna.croquet.components.TrackableShape getRenderWindow() {
+		org.alice.ide.perspectives.ProjectPerspective perspective = org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue();
+		if( perspective != null ) {
+			org.lgna.croquet.Composite<?> composite = perspective.getRenderComposite();
+			if( composite != null ) {
+				return composite.getView();
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
 	public void showHighlightOverStatementAndRenderWindow( final org.lgna.project.ast.Statement statement ) {
 		if( statement != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
@@ -144,7 +157,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 				}
 			}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					return org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView();
+					return getRenderWindow();
 				}
 			}, "" );
 		} else {
@@ -164,7 +177,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 			}
 		}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 			public org.lgna.croquet.components.TrackableShape getResolved() {
-				return org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView();
+				return getRenderWindow();
 			}
 		}, "" );
 	}

@@ -58,6 +58,11 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPer
 	}
 	
 	@Override
+	public org.lgna.croquet.Composite<?> getRenderComposite() {
+		//todo
+		return org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite.getInstance();
+	}
+	@Override
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
 		return null;
 	}
