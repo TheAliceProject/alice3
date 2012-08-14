@@ -309,6 +309,14 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+		if( this.trueOperation != null ) {
+			this.trueOperation.setName( this.trueText );
+			this.trueOperation.setSmallIcon( this.trueIcon );
+		}
+		if( this.falseOperation != null ) {
+			this.falseOperation.setName( this.falseText );
+			this.falseOperation.setSmallIcon( this.falseIcon );
+		}
 	}
 	
 	public org.lgna.croquet.components.RadioButton createRadioButton() {
