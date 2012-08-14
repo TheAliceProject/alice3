@@ -213,13 +213,15 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if (glDrawableFactory.canCreateGLPbuffer()) {
-			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer(createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share);
+		if( glDrawableFactory.canCreateGLPbuffer() ) {
+			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share );
 
 			// This is a work around for Linux users.
-			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will 
+			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
 			// return 0 for information about a drawable, include getWidth and getHeight even though the drawable is the correct size.
-			this.drawableSizeMap.put( buffer, new java.awt.Dimension( width, height ) );
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+				LookingGlassFactory.drawableSizeMap.put( buffer, new java.awt.Dimension( width, height ) );
+			}
 
 			return buffer;
 		} else {
