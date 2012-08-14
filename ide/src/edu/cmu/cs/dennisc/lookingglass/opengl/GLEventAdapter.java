@@ -165,7 +165,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
 			} else if( this.width == 0 || this.height == 0 ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "width", this.width, "height", this.height );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, this.lookingGlass.getSize() );
 			} else {
 				try {
 					//todo: separate clearing and rendering
@@ -478,6 +478,9 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			}
 		}
 		
+		this.width = drawable.getWidth();
+		this.height = drawable.getHeight();
+
 		this.renderContext.setGL( gl );
 		this.pickContext.setGL( gl );
 		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, this.drawable.getWidth(), this.drawable.getHeight() ) );
@@ -499,13 +502,19 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			//pass
 		} else {
 			initialize( drawable );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: initialize necessary from display" );
 		}
-//		if( this.width > 0 && this.height > 0 ) {
-//			//pass
-//		} else {
-//			this.width = drawable.getWidth();
-//			this.height = drawable.getHeight();
-//		}
+		if( this.width > 0 && this.height > 0 ) {
+			//pass
+		} else {
+			int nextWidth = drawable.getWidth();
+			int nextHeight = drawable.getHeight();
+			if( this.width != nextWidth || this.height != nextHeight ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
+				this.width = nextWidth;
+				this.height = nextHeight;
+			}
+		}
 		if( this.pickParameters != null ) {
 			//todo?
 			this.pickContext.setGL( gl );
@@ -522,7 +531,6 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		assert drawable == this.drawable;
 		this.width = width;
 		this.height = height;
-		
 		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( this.lookingGlass, width, height ) );
 	}
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
