@@ -46,6 +46,7 @@ package org.lgna.project.migration;
  * @author Dennis Cosgrove
  */
 public class TextMigration implements Migration {
+	private static final boolean IS_SANITY_CHECKING_DESIRED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.lgna.project.migration.TextMigration.isSanityCheckingDesired", false );
 	private static class Pair {
 		private final java.util.regex.Pattern pattern;
 		private final String replacement;
@@ -98,19 +99,20 @@ public class TextMigration implements Migration {
 		for( int i=0; i<this.pairs.length; i++ ) {
 			this.pairs[ i ] = new Pair( values[ i*2 ], values[ i*2 + 1 ] );
 		}
-
-		for( int i=0; i<this.pairs.length; i++ ) {
-			for( int j=i+1; j<this.pairs.length; j++ ) {
-				if( this.pairs[ i ].isPatternEqual( this.pairs[ j ] ) ) {
-					if( this.pairs[ i ].isReplacementEqual( this.pairs[ j ] ) ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "duplicate", i, j, this.pairs[ i ] );
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "severe problem", i, j, this.pairs[ i ], this.pairs[ j ] );
+		if( IS_SANITY_CHECKING_DESIRED ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "sanity checking " + this.pairs.length );
+			for( int i=0; i<this.pairs.length; i++ ) {
+				for( int j=i+1; j<this.pairs.length; j++ ) {
+					if( this.pairs[ i ].isPatternEqual( this.pairs[ j ] ) ) {
+						if( this.pairs[ i ].isReplacementEqual( this.pairs[ j ] ) ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "duplicate", i, j, this.pairs[ i ] );
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "severe problem", i, j, this.pairs[ i ], this.pairs[ j ] );
+						}
 					}
 				}
 			}
 		}
-		
 	}
 	public org.lgna.project.Version getResultVersion() {
 		return this.resultVersion;
