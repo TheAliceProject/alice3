@@ -348,6 +348,11 @@ public abstract class BooleanState extends State< Boolean > {
 			this.value = value;
 		}
 		@Override
+		protected void initialize() {
+			this.state.initializeIfNecessary();
+			super.initialize();
+		}
+		@Override
 		protected void localize() {
 			super.localize();
 			this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
