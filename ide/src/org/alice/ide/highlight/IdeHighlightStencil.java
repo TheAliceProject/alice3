@@ -151,6 +151,23 @@ public class IdeHighlightStencil extends HighlightStencil {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	}
+	public void showHighlightOverCroquetViewControllerAndRenderWindow( final org.lgna.croquet.Model model ) {
+		this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+				if( component != null ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
+				}
+				return component;
+			}
+		}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				return org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView();
+			}
+		}, "" );
+	}
 	public void showHighlightOverCroquetViewController( final org.lgna.croquet.Model model, String noteText ) {
 		if( model != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
