@@ -598,14 +598,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return null;
 	}
 
-	public static final String getApplicationSubPath() {
-		String rv = getApplicationName();
-		if( "Alice".equals( rv ) ) {
-			rv = "Alice3";
-		}
-		return rv.replaceAll( " ", "" );
-	}
-
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
 
 	public java.util.Set< org.lgna.common.Resource > getResources() {
