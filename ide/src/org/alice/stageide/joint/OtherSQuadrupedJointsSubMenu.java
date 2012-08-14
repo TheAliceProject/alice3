@@ -46,20 +46,8 @@ package org.alice.stageide.joint;
 /**
  * @author Dennis Cosgrove
  */
-public class JointSubMenuManager {
-	private final java.util.Map<org.lgna.project.ast.AbstractType<?,?,?>,Class<JointSubMenu>[]> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	static {
-		addToMap( org.lgna.story.SBiped.class, LeftHandBipedSubMenu.class );
+public class OtherSQuadrupedJointsSubMenu<FB> extends JointsSubMenu<FB> {
+	public OtherSQuadrupedJointsSubMenu() {
+		super( java.util.UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), org.lgna.story.SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getFrontLeftFoot", "getFrontLeftToe", "getFrontRightFoot", "getFrontRightToe", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
 	}
-	private static void addToMap( Class<? extends org.lgna.story.SJointedModel> cls, Class<? extends JointSubMenu>... subMenuClses ) {
-		//todo
-	}
-	private JointSubMenuManager() {
-		throw new AssertionError();
-	}
-	
-	public static <FB> JointSubMenu<FB>[] getSubMenusForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		return null;
-	}
-
 }

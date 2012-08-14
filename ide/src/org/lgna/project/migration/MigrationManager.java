@@ -2247,11 +2247,11 @@ public class MigrationManager {
 					"org.lgna.story.resources.prop.CastleWall",
 					"org.lgna.story.resources.prop.CastleWallResource",
 
-					"org.lgna.story.resources.prop.Cauldron",
-					"org.lgna.story.resources.prop.CauldronResource",
+					"declaringClass name=\"org.lgna.story.resources.prop.Cauldron\"",
+					"declaringClass name=\"org.lgna.story.resources.prop.CauldronResource\"",
 
-					"org.lgna.story.resources.prop.CauldronLid",
-					"org.lgna.story.resources.prop.CauldronLidResource",
+					"declaringClass name=\"org.lgna.story.resources.prop.CauldronLid\"",
+					"declaringClass name=\"org.lgna.story.resources.prop.CauldronLidResource\"",
 
 					"org.lgna.story.resources.prop.Cave",
 					"org.lgna.story.resources.prop.CaveResource",

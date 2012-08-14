@@ -41,13 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.joint;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BipedSubMenu<FB> extends JointSubMenu<FB> {
-	public BipedSubMenu( java.util.UUID migrationId, String... methodNames ) {
-		super( migrationId, org.lgna.story.SBiped.class, methodNames );
+public class RoomIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new RoomIcon( size );
 	}
 }

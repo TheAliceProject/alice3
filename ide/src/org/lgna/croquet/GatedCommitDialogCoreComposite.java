@@ -56,7 +56,10 @@ package org.lgna.croquet;
 		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gbc.weightx = 1.0;
 		gbc.weighty = 0.0;
-		pageEndPanel.addComponent( this.getStatusLabel(), gbc );
+		GatedCommitDialogCoreComposite coreComposite = (GatedCommitDialogCoreComposite)composite.getCoreComposite();
+		if( coreComposite.isStatusLineDesired() ) {
+			pageEndPanel.addComponent( this.getStatusLabel(), gbc );
+		}
 		pageEndPanel.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
 		pageEndPanel.addComponent( controlLine, gbc );
 		controlLine.setBackgroundColor( null );
@@ -121,6 +124,9 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		}
 	};
 
+	public boolean isStatusLineDesired() {
+		return true;
+	}
 	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
 	private void updateStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		boolean isGoodToGo;

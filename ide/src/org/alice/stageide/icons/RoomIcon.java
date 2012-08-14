@@ -40,22 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoxIcon extends ShapeIcon {
-	private static final float x0 = 0.0f;
-	private static final float xA = 0.4f;
-	private static final float xB = 0.6f;
-	private static final float x1 = 1.0f;
+public class RoomIcon extends ShapeIcon {
+	private static final float x0 = 1.0f;
+	private static final float xA = 0.5f;
+	private static final float xB = 0.5f;
+	private static final float x1 = 0.0f;
 
-	private static final float y0 = 0.0f;
-	private static final float yA = 0.2f;
-	private static final float yB = 0.4f;
-	private static final float yC = 0.8f;
-	private static final float y1 = 1.0f;
+	private static final float y0 = 0.95f;
+	private static final float yA = 0.7f;
+	private static final float yB = 0.5f;
+	private static final float yC = 0.2f;
+	private static final float y1 = 0.1f;
 
 	private static final java.awt.geom.Point2D.Float a0 = new java.awt.geom.Point2D.Float( xA, y1 );
 	private static final java.awt.geom.Point2D.Float b0 = new java.awt.geom.Point2D.Float( x0, yC );
@@ -72,8 +73,10 @@ public class BoxIcon extends ShapeIcon {
 	private static final java.awt.geom.Point2D.Float c2 = a0;
 	private static final java.awt.geom.Point2D.Float d2 = new java.awt.geom.Point2D.Float( x1, yC );
 
-	private static final java.awt.Color SHADOW_COLOR = FILL_PAINT.darker(); 
 	private final java.awt.Stroke STROKE = new java.awt.BasicStroke( 0.0f );
+
+	private static final java.awt.Color SHADOW_COLOR = FILL_PAINT.darker(); 
+	private static final java.awt.Color FLOOR_COLOR = java.awt.Color.GRAY; 
 	private static java.awt.Shape createFace( java.awt.geom.Point2D.Float a, java.awt.geom.Point2D.Float b, java.awt.geom.Point2D.Float c, java.awt.geom.Point2D.Float d, int width, int height ) {
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		path.moveTo( a.x*width, a.y*height );
@@ -83,7 +86,7 @@ public class BoxIcon extends ShapeIcon {
 		path.closePath();
 		return path;
 	}
-	public BoxIcon( java.awt.Dimension size ) {
+	public RoomIcon( java.awt.Dimension size ) {
 		super( size );
 	}
 	@Override
@@ -95,18 +98,22 @@ public class BoxIcon extends ShapeIcon {
 			java.awt.Shape face1 = createFace( a1, b1, c1, d1, width, height );
 			java.awt.Shape face2 = createFace( a2, b2, c2, d2, width, height );
 
+			g2.setPaint( new java.awt.GradientPaint( width, height/2, FLOOR_COLOR.darker(),  0, height, FLOOR_COLOR.brighter() ) );
+			g2.fill( face1 );
 			g2.setPaint( SHADOW_COLOR );
 			g2.fill( face0 );
 			g2.setPaint( fillPaint );
-			g2.fill( face1 );
 			g2.fill( face2 );
+			
 			g2.setPaint( drawPaint );
-			g2.draw( face0 );
+//			drawLine( g2, x0*width, yA*height, xA*width, yB*height );
+//			drawLine( g2, x1*width, yA*height, xA*width, yB*height );
 			g2.draw( face1 );
-			g2.draw( face2 );
+			
+			g2.setPaint( java.awt.Color.GRAY );
+			drawLine( g2, xA*width, y1*height, xA*width, yB*height );
 		} finally {
 			g2.setStroke( prevStroke );
 		}
-
 	}
 }

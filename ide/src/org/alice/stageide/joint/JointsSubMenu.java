@@ -40,37 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+
+package org.alice.stageide.joint;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
-	protected static void drawLine( java.awt.Graphics2D g2, float x0, float y0, float x1, float y1 ) {
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo( x0, y0 );
-		path.lineTo( x1, y1 );
-		g2.draw( path );
+public abstract class JointsSubMenu<FB> extends org.lgna.croquet.CascadeMenuModel<FB> {
+	private final java.util.List<org.lgna.croquet.CascadeFillIn<FB,?>> fillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<String> methodNames;
+	public JointsSubMenu( java.util.UUID migrationId, Class<?> cls, String... methodNames ) {
+		super( migrationId );
+		this.methodNames = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( methodNames );
 	}
-
-	private static final int PAD = 2;
-	protected static final java.awt.Color FILL_PAINT = new java.awt.Color( 191, 191, 255 );
-	public ShapeIcon( java.awt.Dimension size ) {
-		super( size );
+	
+	public boolean consumeIfAppropriate( org.lgna.project.ast.Method method, org.lgna.croquet.CascadeFillIn<FB,?> fillIn ) {
+		if( this.methodNames.contains( method.getName() ) ) {
+			this.fillIns.add( fillIn );
+			return true;
+		} else {
+			return false;
+		}
 	}
-	protected abstract void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2 ) {
-		int xOffset = PAD;
-		int yOffset = PAD;
-		int width = this.getIconWidth()-PAD-PAD;
-		int height = this.getIconHeight()-PAD-PAD;
-		g2.translate( xOffset, yOffset );
-		
-		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		this.paintIcon( g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-		g2.translate( -xOffset, -yOffset );
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<FB> blankNode ) {
+		for( org.lgna.croquet.CascadeFillIn<FB,?> fillIn : this.fillIns ) {
+			rv.add( fillIn );
+		}
+		return rv;
 	}
 }

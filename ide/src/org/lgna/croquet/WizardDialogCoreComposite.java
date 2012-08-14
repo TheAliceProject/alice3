@@ -58,7 +58,7 @@ package org.lgna.croquet;
 
 /*package-private*/final class WizardDialogContentComposite extends GatedCommitDialogContentComposite<WizardDialogContentPanel> {
 	public WizardDialogContentComposite( WizardDialogCoreComposite coreComposite ) {
-		super( java.util.UUID.fromString( "7cb5123b-293e-4ec8-bc99-a221f8a10d1b" ), coreComposite );
+		super( java.util.UUID.fromString( "ecfac12c-7762-445b-a952-fcffc09126f9" ), coreComposite );
 	}
 	@Override
 	protected WizardDialogContentPanel createView() {
@@ -69,7 +69,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<org.lgna.croquet.components.BorderPanel,WizardDialogContentComposite> {
+public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<org.lgna.croquet.components.Panel,WizardDialogContentComposite> {
 	private static abstract class InternalWizardDialogOperation extends InternalDialogOperation {
 		public InternalWizardDialogOperation( java.util.UUID id, WizardDialogCoreComposite composite ) {
 			super( id, composite );
@@ -222,7 +222,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.cardComposite.removeCard( page );
 	}
 
-	private org.lgna.croquet.components.PageAxisPanel createPageAxisPanel( org.lgna.croquet.components.JComponent<?> header ) {
+	private org.lgna.croquet.components.PageAxisPanel createAdornmentPageAxisPanel( org.lgna.croquet.components.JComponent<?> header ) {
 		final int PAD = 16;
 		org.lgna.croquet.components.PageAxisPanel rv = new org.lgna.croquet.components.PageAxisPanel();
 		header.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.ULTRABOLD );
@@ -233,35 +233,37 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return rv;
 	}
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
+	protected org.lgna.croquet.components.Panel createView() {
+		org.lgna.croquet.components.CardPanel cardPanel = this.cardComposite.getView();
+		org.lgna.croquet.components.Panel rv;
+		if( this.isAdornmentDesired() ) {
+			org.lgna.croquet.components.ImmutableTextField stepsTextField = this.stepsLabel.createImmutableTextField();
+			javax.swing.JList list = new javax.swing.JList( this.listModel ) {
+				@Override
+				public boolean contains( int x, int y ) {
+					return false;
+				}
+			};
+			list.setSelectionModel( this.listSelectionModel );
+			list.setAlignmentX( 0.0f );
+			//list.setEnabled( false );
+			list.setCellRenderer( this.listCellRenderer );
 
-		org.lgna.croquet.components.ImmutableTextField stepsTextField = this.stepsLabel.createImmutableTextField();
-		javax.swing.JList list = new javax.swing.JList( this.listModel ) {
-			@Override
-			public boolean contains( int x, int y ) {
-				return false;
-			}
-		};
-		list.setSelectionModel( this.listSelectionModel );
-		list.setAlignmentX( 0.0f );
-		//list.setEnabled( false );
-		list.setCellRenderer( this.listCellRenderer );
+			org.lgna.croquet.components.PageAxisPanel stepsView = this.createAdornmentPageAxisPanel( stepsTextField );
+			stepsView.setBackgroundColor( java.awt.Color.WHITE );
+			stepsView.getAwtComponent().add( list );
 
-		org.lgna.croquet.components.PageAxisPanel stepsView = this.createPageAxisPanel( stepsTextField );
-		stepsView.setBackgroundColor( java.awt.Color.WHITE );
-		stepsView.getAwtComponent().add( list );
+			org.lgna.croquet.components.PageAxisPanel mainView = this.createAdornmentPageAxisPanel( this.stepLabel );
+			mainView.addComponent( cardPanel );
 
-		org.lgna.croquet.components.PageAxisPanel mainView = this.createPageAxisPanel( this.stepLabel );
-		mainView.addComponent( this.cardComposite.getView() );
-
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
-			.lineStart( stepsView )
-			.center( mainView )
-		.build();
-
-		//todo: remove
-		this.cardComposite.getView().setBackgroundColor( rv.getBackgroundColor() );
-
+			rv = new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( stepsView )
+				.center( mainView )
+			.build();
+			rv.setBackgroundColor( cardPanel.getBackgroundColor() );
+		} else {
+			rv = cardPanel;
+		}
 		return rv;
 	}
 	@Override
@@ -290,6 +292,9 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.prevOperation.setName( this.findLocalizedText( "previous" ) );
 	}
 
+	protected boolean isAdornmentDesired() {
+		return true;
+	}
 	private void updateEnabled() {
 		this.nextOperation.setEnabled( this.isNextPageAvailable() );
 		this.prevOperation.setEnabled( this.isPrevPageAvailable() );
