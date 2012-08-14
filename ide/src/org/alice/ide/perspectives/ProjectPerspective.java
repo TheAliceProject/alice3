@@ -59,7 +59,7 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 		return org.alice.ide.croquet.models.MenuBarComposite.getInstance();
 	}
 	
-	public abstract org.lgna.croquet.Composite<?> getRenderComposite();
+	public abstract org.lgna.croquet.components.TrackableShape getRenderWindow();
 	
 	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus();
 	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
