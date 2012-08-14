@@ -107,6 +107,14 @@ public abstract class SThing implements Rider {
 	
 	@Override
 	public String toString() {
-		return this.getName();
+		String name = this.getName();
+		if( name != null ) {
+			return name;
+		} else {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "unnamed " );
+			sb.append( this.getClass().getSimpleName() );
+			return sb.toString();
+		}
 	}
 }
