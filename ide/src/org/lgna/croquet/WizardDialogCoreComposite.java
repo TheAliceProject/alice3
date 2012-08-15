@@ -113,8 +113,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private final NextOperation nextOperation = new NextOperation( this );
 	private final PreviousOperation prevOperation = new PreviousOperation( this );
 
-	private static class WizardCardComposite extends CardComposite {
-		public WizardCardComposite( WizardPageComposite<?>[] wizardPages ) {
+	private static class WizardCardOwnerComposite extends CardOwnerComposite {
+		public WizardCardOwnerComposite( WizardPageComposite<?>[] wizardPages ) {
 			super( java.util.UUID.fromString( "d660e0ed-900a-4f98-ac23-bec8804dba22" ), wizardPages );
 		}
 	}
@@ -198,11 +198,11 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private final org.lgna.croquet.components.Label stepLabel = new org.lgna.croquet.components.Label( "todo" );
 
 	private final WizardDialogContentComposite contentComposite = new WizardDialogContentComposite( this );
-	private final WizardCardComposite cardComposite;
+	private final WizardCardOwnerComposite cardComposite;
 
 	public WizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?>[] wizardPages ) {
 		super( migrationId );
-		this.cardComposite = new WizardCardComposite( wizardPages );
+		this.cardComposite = new WizardCardOwnerComposite( wizardPages );
 	}
 	@Override
 	protected org.lgna.croquet.WizardDialogContentComposite getDialogContentComposite() {

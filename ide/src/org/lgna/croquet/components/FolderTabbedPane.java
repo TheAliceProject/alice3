@@ -334,12 +334,12 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		}
 	}
 	
-	private static final class InternalCardComposite extends org.lgna.croquet.CardComposite {
-		public InternalCardComposite() {
+	private static final class InternalCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
+		public InternalCardOwnerComposite() {
 			super( java.util.UUID.fromString( "31cf52f4-80ea-49f9-9875-7ea942d241e7" ) );
 		}
 	}
-	private final InternalCardComposite cardComposite = new InternalCardComposite();
+	private final InternalCardOwnerComposite cardComposite = new InternalCardOwnerComposite();
 	private final TitlesPanel titlesPanel = new TitlesPanel();
 	private final BorderPanel innerHeaderPanel = new BorderPanel();
 	private final BorderPanel outerHeaderPanel = new BorderPanel();

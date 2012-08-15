@@ -48,7 +48,7 @@ import org.lgna.croquet.State.ValueListener;
 /**
  * @author Dennis Cosgrove
  */
-public final class LogInOutCardComposite extends org.lgna.croquet.CardComposite {
+public final class LogInOutCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
 	private final LogInCard logInCard = new LogInCard();
 	private final LogOutCard logOutCard = new LogOutCard();
 	
@@ -63,7 +63,7 @@ public final class LogInOutCardComposite extends org.lgna.croquet.CardComposite 
 		
 	};
 
-	public LogInOutCardComposite() {
+	public LogInOutCardOwnerComposite() {
 		super( java.util.UUID.fromString( "05bfed8e-d09d-4928-9b20-1c758600bfe0" ) );
 		this.addCard( this.logInCard );
 		this.addCard( this.logOutCard );

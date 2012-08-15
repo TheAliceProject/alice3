@@ -48,7 +48,7 @@ package org.lgna.croquet.components;
  */
 public class CardPanel extends Panel {
 	private final java.awt.CardLayout cardLayout;
-	public CardPanel( org.lgna.croquet.CardComposite composite, int hgap, int vgap ) {
+	public CardPanel( org.lgna.croquet.CardOwnerComposite composite, int hgap, int vgap ) {
 		super( composite );
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
 		java.awt.Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
@@ -63,7 +63,7 @@ public class CardPanel extends Panel {
 		}
 		this.setBackgroundColor( color );
 	}
-	public CardPanel( org.lgna.croquet.CardComposite composite ) {
+	public CardPanel( org.lgna.croquet.CardOwnerComposite composite ) {
 		this( composite, 0, 0 );
 	}
 	@Deprecated

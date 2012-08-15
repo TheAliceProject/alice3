@@ -41,85 +41,66 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet;
+package org.alice.stageide.typecontext;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardComposite extends AbstractComposite< org.lgna.croquet.components.CardPanel > {
-	private final java.util.List< Composite< ? > > cards;
-	private Composite<?> showingCard;
-	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
-		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
+public class SceneOrNonSceneCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
+	private static class SingletonHolder {
+		private static SceneOrNonSceneCardOwnerComposite instance = new SceneOrNonSceneCardOwnerComposite();
 	}
-	public void addCard( Composite<?> card ) {
-		this.cards.add( card );
-		org.lgna.croquet.components.CardPanel view = this.peekView();
-		if( view != null ) {
-			view.addComposite( card );
-		}
-	}
-	public void removeCard( Composite<?> card ) {
-		this.cards.remove( card );
-	}
-	public Composite<?> getShowingCard() {
-		return this.showingCard;
+	public static SceneOrNonSceneCardOwnerComposite getInstance() {
+		return SingletonHolder.instance;
 	}
 	
+	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
+		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			SceneOrNonSceneCardOwnerComposite.this.handleTypeStateChanged( nextValue );
+		}
+	};
+
+	private SceneOrNonSceneCardOwnerComposite() {
+		super( java.util.UUID.fromString( "9d3525cd-c560-4a00-9de4-7c2b5a926ae9" ),
+				SceneTypeComposite.getInstance(), 
+				NonSceneTypeComposite.getInstance() 
+		);
+	}
 	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
-		if( super.contains( model ) ) {
-			return true;
+	public org.lgna.croquet.components.CardPanel createView() {
+		org.lgna.croquet.components.CardPanel rv = super.createView();
+		rv.showComposite( SceneTypeComposite.getInstance() );
+		return rv;
+	}
+
+	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
+		org.lgna.croquet.Composite< ? > composite;
+		if( nextValue != null ) {
+			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
+				composite = SceneTypeComposite.getInstance();
+			} else {
+				composite = NonSceneTypeComposite.getInstance();
+			}
+//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
+//			if( view instanceof NonSceneTypeView ) {
+//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
+//				nonSceneTypeView.handlePreShow();
+//			}
 		} else {
-			for( Composite< ? > card : this.cards ) {
-				//todo
-				if( card.contains( model ) ) {
-					return true;
-				}
-			}
-			return false;
+			composite = null;
 		}
-	}
-	public java.util.List< Composite< ? >> getCards() {
-		return this.cards;
-	}
-	@Override
-	protected org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
-	}
-	@Override
-	public void releaseView() {
-		for( Composite< ? > card : this.cards ) {
-			card.releaseView();
-		}
-		super.releaseView();
-	}
-	
-	public void showCard( Composite< ? > card ) {
-		synchronized( this.getView().getTreeLock() ) {
-			if( this.showingCard != null ) {
-				this.showingCard.handlePostDeactivation();
-			}
-			this.showingCard = card;
-			if( this.showingCard != null ) {
-				this.showingCard.handlePreActivation();
-			}
-			this.getView().showComposite( this.showingCard );
-		}
+		this.showCard( composite );
 	}
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 	}
 	@Override
 	public void handlePostDeactivation() {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDeactivation();
-		}
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
 		super.handlePostDeactivation();
 	}
 }

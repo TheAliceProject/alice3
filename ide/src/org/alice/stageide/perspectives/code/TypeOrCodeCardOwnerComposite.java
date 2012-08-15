@@ -46,11 +46,11 @@ package org.alice.stageide.perspectives.code;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
+public class TypeOrCodeCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
 	private static class SingletonHolder {
-		private static TypeOrCodeCardComposite instance = new TypeOrCodeCardComposite();
+		private static TypeOrCodeCardOwnerComposite instance = new TypeOrCodeCardOwnerComposite();
 	}
-	public static TypeOrCodeCardComposite getInstance() {
+	public static TypeOrCodeCardOwnerComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
@@ -58,10 +58,10 @@ public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
 		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
 		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			TypeOrCodeCardComposite.this.handleDeclarationStateChanged( nextValue );
+			TypeOrCodeCardOwnerComposite.this.handleDeclarationStateChanged( nextValue );
 		}
 	};
-	private TypeOrCodeCardComposite() {
+	private TypeOrCodeCardOwnerComposite() {
 		super( java.util.UUID.fromString( "698a5480-5af2-47af-8faa-9cc8d82f4fe8" ),
 				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
 				org.alice.ide.members.MembersComposite.getInstance() 
