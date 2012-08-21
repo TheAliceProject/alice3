@@ -466,6 +466,22 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				standInB.applyTranslation( 0, 0, -1.0, standInB );
 	
 				edu.cmu.cs.dennisc.math.Point3 forwardPos = standInB.getTransformation( standInA ).translation;
+				
+				double y;
+				if( forwardPos.isWithinReasonableEpsilonOf( 0, 1, 0 ) ) {
+					y = -1.0;
+				} else if( forwardPos.isWithinReasonableEpsilonOf( 0, -1, 0 ) ) {
+					y = 1.0;
+				} else {
+					y = Double.NaN;
+				}
+				if( Double.isNaN( y ) ) {
+					//pass
+				} else {
+					standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
+					standInB.applyTranslation( 0, y, 0.0, standInB );
+					forwardPos = standInB.getTransformation( standInA ).translation;
+				}
 				double forwardTheta = Math.atan2( forwardPos.z, forwardPos.x );
 
 				standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
