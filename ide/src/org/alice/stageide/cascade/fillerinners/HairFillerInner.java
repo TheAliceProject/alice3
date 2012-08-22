@@ -49,6 +49,7 @@ public class HairFillerInner extends IngredientFillerInner {
 	public HairFillerInner() {
 		super( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.Hair.class ) );
 	}
+
 	@Override
 	protected Class<? extends org.lgna.story.resources.sims2.Ingredient>[] getClses( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		return org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender );

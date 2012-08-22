@@ -56,22 +56,26 @@ public class EulerNumbers implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 		yaw = 0.0;
 		roll = 0.0;
 	}
+
 	public EulerNumbers( double[] array, EulerAngles.Order order ) {
 		set( array, order );
 	}
+
 	public EulerNumbers( double a, double b, double c, EulerAngles.Order order ) {
 		set( a, b, c, order );
 	}
+
 	public EulerNumbers( EulerNumbers other ) {
 		set( other );
 	}
 
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		pitch = binaryDecoder.decodeDouble();
 		yaw = binaryDecoder.decodeDouble();
 		roll = binaryDecoder.decodeDouble();
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( pitch );
 		binaryEncoder.encode( yaw );
 		binaryEncoder.encode( roll );
@@ -80,20 +84,23 @@ public class EulerNumbers implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	public boolean isNaN() {
 		return Double.isNaN( pitch ) || Double.isNaN( yaw ) || Double.isNaN( roll );
 	}
+
 	public void setNaN() {
 		pitch = Double.NaN;
 		yaw = Double.NaN;
 		roll = Double.NaN;
 	}
-	
+
 	public void set( double a, double b, double c, EulerAngles.Order order ) {
 		this.pitch = order.getPitch( a, b, c );
 		this.yaw = order.getYaw( a, b, c );
 		this.roll = order.getRoll( a, b, c );
 	}
+
 	public void set( double[] pyr, EulerAngles.Order order ) {
-		set( pyr[0], pyr[1], pyr[2], order );
+		set( pyr[ 0 ], pyr[ 1 ], pyr[ 2 ], order );
 	}
+
 	public void set( EulerNumbers other ) {
 		this.pitch = other.pitch;
 		this.yaw = other.yaw;
@@ -102,11 +109,11 @@ public class EulerNumbers implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 
 	@Override
 	public String toString() {
-		return EulerNumbers.class.getName()+"[pitch=" + pitch + ",yaw=" + yaw + ",roll=" + roll + "]";
+		return EulerNumbers.class.getName() + "[pitch=" + pitch + ",yaw=" + yaw + ",roll=" + roll + "]";
 	}
 
 	public static EulerNumbers valueOf( String s ) {
-		String[] markers = { EulerNumbers.class.getName()+"[pitch=", ",yaw=", ",roll=", "]" };
+		String[] markers = { EulerNumbers.class.getName() + "[pitch=", ",yaw=", ",roll=", "]" };
 		double[] values = new double[ markers.length - 1 ];
 		for( int i = 0; i < values.length; i++ ) {
 			int begin = s.indexOf( markers[ i ] ) + markers[ i ].length();
@@ -115,5 +122,5 @@ public class EulerNumbers implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 		}
 		return new EulerNumbers( values, EulerAngles.Order.PITCH_YAW_ROLL );
 	}
-	
+
 }

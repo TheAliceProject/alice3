@@ -46,24 +46,25 @@ package edu.cmu.cs.dennisc.image;
  * @author Dennis Cosgrove
  */
 public final class ImageFactory {
-	private static java.util.Map< org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage > resourceToBufferedImageMap = new java.util.HashMap< org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage >();
+	private static java.util.Map<org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage> resourceToBufferedImageMap = new java.util.HashMap<org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage>();
 
 	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
 		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
+
 		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
 			ImageFactory.forget( (org.lgna.common.resources.ImageResource)e.getTypedSource() );
 		}
 	};
-	
+
 	private ImageFactory() {
 	}
 
-	
 	public static void forget( org.lgna.common.resources.ImageResource imageResource ) {
 		ImageFactory.resourceToBufferedImageMap.remove( imageResource );
 		imageResource.removeContentListener( ImageFactory.resourceContentListener );
 	}
+
 	public static java.awt.image.BufferedImage getBufferedImage( org.lgna.common.resources.ImageResource imageResource ) {
 		assert imageResource != null;
 		java.awt.image.BufferedImage rv = ImageFactory.resourceToBufferedImageMap.get( imageResource );
@@ -76,7 +77,7 @@ public final class ImageFactory {
 				imageResource.setWidth( rv.getWidth() );
 				imageResource.setHeight( rv.getHeight() );
 				//				}
-				
+
 				imageResource.addContentListener( ImageFactory.resourceContentListener );
 				ImageFactory.resourceToBufferedImageMap.put( imageResource, rv );
 			} catch( java.io.IOException ioe ) {

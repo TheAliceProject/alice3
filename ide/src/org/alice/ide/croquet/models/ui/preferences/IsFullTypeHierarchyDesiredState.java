@@ -50,9 +50,11 @@ public class IsFullTypeHierarchyDesiredState extends org.lgna.croquet.preference
 	private static class SingletonHolder {
 		private static IsFullTypeHierarchyDesiredState instance = new IsFullTypeHierarchyDesiredState();
 	}
+
 	public static IsFullTypeHierarchyDesiredState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsFullTypeHierarchyDesiredState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "b389ea56-2b42-4354-a54e-3467846f0c06" ), false );
 	}

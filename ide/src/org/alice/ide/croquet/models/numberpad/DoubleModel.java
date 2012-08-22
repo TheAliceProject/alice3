@@ -49,16 +49,20 @@ public class DoubleModel extends NumberModel<org.lgna.project.ast.DoubleLiteral>
 	private static class SingletonHolder {
 		private static DoubleModel instance = new DoubleModel();
 	}
+
 	public static DoubleModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private DoubleModel() {
-		 super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ) );
+		super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ) );
 	}
+
 	@Override
 	public boolean isDecimalPointSupported() {
 		return true;
 	}
+
 	@Override
 	protected org.lgna.project.ast.DoubleLiteral valueOf( String s ) {
 		double d = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );

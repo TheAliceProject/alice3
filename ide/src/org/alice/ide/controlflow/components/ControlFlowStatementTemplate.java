@@ -48,16 +48,17 @@ package org.alice.ide.controlflow.components;
  */
 public class ControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
 	private final org.lgna.project.ast.Statement incompleteStatement;
-	private org.lgna.croquet.components.JComponent< ? > incompleteStatementPane;
+	private org.lgna.croquet.components.JComponent<?> incompleteStatementPane;
 	private org.lgna.croquet.components.Label label;
 	private javax.swing.JToolTip toolTip;
+
 	public ControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
 		super( dragModel, dragModel.getStatementCls() );
 		this.incompleteStatement = dragModel.getPossiblyIncompleteStatement();
 	}
-	
 
 	private String labelText;
+
 	private String getLabelText() {
 		if( this.labelText != null ) {
 			//pass
@@ -67,7 +68,8 @@ public class ControlFlowStatementTemplate extends org.alice.ide.templates.Statem
 		}
 		return this.labelText;
 	}
-	private org.lgna.croquet.components.JComponent< ? > getIncompleteStatementPane() {
+
+	private org.lgna.croquet.components.JComponent<?> getIncompleteStatementPane() {
 		if( this.incompleteStatementPane != null ) {
 			//pass
 		} else {
@@ -75,8 +77,9 @@ public class ControlFlowStatementTemplate extends org.alice.ide.templates.Statem
 		}
 		return this.incompleteStatementPane;
 	}
+
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > getSubject() {
+	public org.lgna.croquet.components.JComponent<?> getSubject() {
 		return this.getIncompleteStatementPane();
 	}
 
@@ -85,20 +88,21 @@ public class ControlFlowStatementTemplate extends org.alice.ide.templates.Statem
 		javax.swing.JToolTip toolTip = this.createToolTip( null );
 		if( toolTip != null ) {
 			int offset = toolTip.getPreferredSize().height;
-//			if( offset == 0 ) {
-//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( toolTip );
-//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( toolTip );
-//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( toolTip );
-//				offset = toolTip.getPreferredSize().height;
-//			}
+			//			if( offset == 0 ) {
+			//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( toolTip );
+			//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( toolTip );
+			//				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( toolTip );
+			//				offset = toolTip.getPreferredSize().height;
+			//			}
 			offset += 4;
 			return new java.awt.Point( 0, -offset );
 		} else {
 			return location;
 		}
 	}
+
 	@Override
-	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
+	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
 		if( this.toolTip != null ) {
 			//pass
 		} else {
@@ -106,7 +110,7 @@ public class ControlFlowStatementTemplate extends org.alice.ide.templates.Statem
 		}
 		return this.toolTip;
 	}
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -122,10 +126,10 @@ public class ControlFlowStatementTemplate extends org.alice.ide.templates.Statem
 			this.setToolTipText( "" );
 		}
 	}
-	
+
 	@Override
 	protected void handleUndisplayable() {
-//		this.removeAllComponents();
+		//		this.removeAllComponents();
 		super.handleUndisplayable();
 	}
 }

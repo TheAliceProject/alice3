@@ -47,27 +47,30 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class UserType<C extends UserConstructor> extends AbstractType<C, UserMethod, UserField> {
-	public DeclarationProperty< AbstractType<?,?,?> > superType = new DeclarationProperty< AbstractType<?,?,?> >( this ) {
+	public DeclarationProperty<AbstractType<?, ?, ?>> superType = new DeclarationProperty<AbstractType<?, ?, ?>>( this ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?,?,?> value) {
-			assert value == null || value.isArray() == false;
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?, ?, ?> value ) {
+			assert ( value == null ) || ( value.isArray() == false );
 			super.setValue( owner, value );
 		}
 	};
-	public NodeListProperty< UserMethod > methods = new NodeListProperty< UserMethod >( this );
-	public NodeListProperty< UserField > fields = new NodeListProperty< UserField >( this );
+	public NodeListProperty<UserMethod> methods = new NodeListProperty<UserMethod>( this );
+	public NodeListProperty<UserField> fields = new NodeListProperty<UserField>( this );
+
 	public UserType() {
 	}
-	public UserType( AbstractType<?,?,?> superType, UserMethod[] methods, UserField[] fields ) {
+
+	public UserType( AbstractType<?, ?, ?> superType, UserMethod[] methods, UserField[] fields ) {
 		this.superType.setValue( superType );
 		this.methods.add( methods );
 		this.fields.add( fields );
 	}
+
 	private boolean isEqualToOrSubTypeOf( UserType<?> candidate ) {
 		if( this == candidate ) {
 			return true;
 		} else {
-			AbstractType<?,?,?> superType = this.superType.getValue();
+			AbstractType<?, ?, ?> superType = this.superType.getValue();
 			if( superType instanceof UserType<?> ) {
 				UserType<?> superUserType = (UserType<?>)superType;
 				return superUserType.isEqualToOrSubTypeOf( candidate );
@@ -76,8 +79,9 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 			}
 		}
 	}
+
 	@Override
-	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType< ?, ?, ? > other ) {
+	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType<?, ?, ?> other ) {
 		if( other.isArray() ) {
 			return false;
 		} else {
@@ -89,44 +93,52 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 			}
 		}
 	}
+
 	@Override
-	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
+	public AbstractType<?, ?, ?> getKeywordFactoryType() {
 		return null;
 	}
+
 	@Override
 	public final boolean isFollowToSuperClassDesired() {
 		return true;
 	}
+
 	@Override
 	public final boolean isConsumptionBySubClassDesired() {
 		return false;
 	}
+
 	@Override
-	public final AbstractType<?,?,?> getSuperType() {
+	public final AbstractType<?, ?, ?> getSuperType() {
 		return superType.getValue();
 	}
+
 	@Override
-	public AbstractType<?,?,?>[] getInterfaces() {
-		return new AbstractType< ?,?,? >[] {};
+	public AbstractType<?, ?, ?>[] getInterfaces() {
+		return new AbstractType<?, ?, ?>[] {};
 	}
+
 	@Override
-	public final java.util.ArrayList< UserMethod > getDeclaredMethods() {
+	public final java.util.ArrayList<UserMethod> getDeclaredMethods() {
 		return methods.getValue();
 	}
+
 	@Override
-	public final java.util.ArrayList< UserField > getDeclaredFields() {
+	public final java.util.ArrayList<UserField> getDeclaredFields() {
 		return fields.getValue();
 	}
-	
 
 	@Override
 	public boolean isPrimitive() {
 		return false;
 	}
+
 	@Override
 	public final boolean isInterface() {
 		return false;
 	}
+
 	@Override
 	public final boolean isUserAuthored() {
 		return true;
@@ -136,12 +148,14 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 	public final boolean isArray() {
 		return false;
 	}
+
 	@Override
-	public final AbstractType<?,?,?> getComponentType() {
+	public final AbstractType<?, ?, ?> getComponentType() {
 		return null;
 	}
+
 	@Override
-	public final AbstractType<?,?,?> getArrayType() {
+	public final AbstractType<?, ?, ?> getArrayType() {
 		return UserArrayType.getInstance( this, 1 );
 	}
 }

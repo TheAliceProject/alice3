@@ -50,20 +50,25 @@ public class AudioResourceExpressionState extends org.alice.ide.croquet.models.S
 	private static class SingletonHolder {
 		private static AudioResourceExpressionState instance = new AudioResourceExpressionState();
 	}
+
 	public static AudioResourceExpressionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AudioResourceExpressionState() {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "cb9c681f-3486-4be2-bdf3-f3ba8d663e3b" ), null );
 	}
+
 	@Override
 	protected org.lgna.project.annotations.ValueDetails<?> getValueDetails() {
 		return null;
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType<?,?,?> getType() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return org.lgna.project.ast.JavaType.getInstance( org.lgna.common.resources.AudioResource.class );
 	}
+
 	public org.lgna.common.resources.AudioResource getAudioResource() {
 		org.lgna.project.ast.Expression expression = this.getValue();
 		if( expression instanceof org.lgna.project.ast.ResourceExpression ) {

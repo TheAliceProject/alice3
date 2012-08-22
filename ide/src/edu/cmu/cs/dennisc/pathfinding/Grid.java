@@ -48,18 +48,20 @@ package edu.cmu.cs.dennisc.pathfinding;
 public class Grid {
 	private java.util.Random s_random = new java.util.Random( System.currentTimeMillis() );
 	private Cell[][] m_cells;
+
 	public Grid( int rowCount, int columnCount ) {
 		m_cells = new Cell[ rowCount ][ columnCount ];
-		for( int row=0; row<rowCount; row++ ) {
-			for( int column=0; column<columnCount; column++ ) {
+		for( int row = 0; row < rowCount; row++ ) {
+			for( int column = 0; column < columnCount; column++ ) {
 				m_cells[ row ][ column ] = new Cell( row, column );
 			}
 		}
 	}
-	
+
 	public int getRowCount() {
 		return m_cells.length;
 	}
+
 	public int getColumnCount() {
 		if( m_cells.length > 0 ) {
 			return m_cells[ 0 ].length;
@@ -67,7 +69,7 @@ public class Grid {
 			return 0;
 		}
 	}
-	
+
 	private Cell getAdjacentCell( Cell cell, Heading heading ) {
 		int row = cell.getRow();
 		int column = cell.getColumn();
@@ -95,7 +97,7 @@ public class Grid {
 			column--;
 			break;
 		}
-		
+
 		//todo: replace with bounds check?
 		try {
 			return m_cells[ row ][ column ];
@@ -103,13 +105,15 @@ public class Grid {
 			return Cell.OUT_OF_BOUNDS_CELL;
 		}
 	}
-	
+
 	public Cell getCellAt( int row, int column ) {
 		return m_cells[ row ][ column ];
 	}
+
 	public Cell getRandomCell() {
 		return getCellAt( s_random.nextInt( getRowCount() ), s_random.nextInt( getColumnCount() ) );
 	}
+
 	public boolean isWalkableBetweenNeighbors( Cell src, Cell dst ) {
 		//todo: remove this check?
 		if( src.isOccupied() ) {
@@ -122,8 +126,8 @@ public class Grid {
 		int srcColumn = src.getColumn();
 		int dstRow = dst.getRow();
 		int dstColumn = dst.getColumn();
-		
-		if( srcRow != dstRow && srcColumn != dstColumn ) {
+
+		if( ( srcRow != dstRow ) && ( srcColumn != dstColumn ) ) {
 			if( getCellAt( srcRow, dstColumn ).isOccupied() ) {
 				return false;
 			}
@@ -133,7 +137,7 @@ public class Grid {
 		}
 		return true;
 	}
-	
+
 	//todo: cache neighbors?
 	private Cell[] getNeighbors( Cell src ) {
 		Cell[] neighbors = new Cell[ 8 ];
@@ -146,7 +150,8 @@ public class Grid {
 		neighbors[ 6 ] = getAdjacentCell( src, Heading.WEST );
 		neighbors[ 7 ] = getAdjacentCell( src, Heading.NORTH_WEST );
 		return neighbors;
-	}	
+	}
+
 	private Cell getCellWithMinimumF( java.util.Set<Cell> open, Cell dst ) {
 		int fMin = Integer.MAX_VALUE;
 		Cell cellMin = null;
@@ -161,11 +166,11 @@ public class Grid {
 		}
 		return cellMin;
 	}
-	
+
 	public java.util.Vector<Cell> findShortestPathBetween( Cell src, Cell dst, java.util.Set<Cell> open, java.util.Set<Cell> closed, java.awt.Component observer ) {
 		//todo: remove?
-		for( int row=0; row<getRowCount(); row++ ) {
-			for( int column=0; column<getColumnCount(); column++ ) {
+		for( int row = 0; row < getRowCount(); row++ ) {
+			for( int column = 0; column < getColumnCount(); column++ ) {
 				m_cells[ row ][ column ].setParent( null );
 			}
 		}
@@ -186,7 +191,7 @@ public class Grid {
 			}
 			Cell bestNeighbor = getCellWithMinimumF( open, dst );
 			if( bestNeighbor.equals( dst ) ) {
-				java.util.Vector<Cell> path = new java.util.Vector<Cell>( closed.size()+1 );
+				java.util.Vector<Cell> path = new java.util.Vector<Cell>( closed.size() + 1 );
 				Cell cell = dst;
 				while( cell != null ) {
 					path.addElement( cell );
@@ -204,7 +209,7 @@ public class Grid {
 					} else {
 						Cell parentCache;
 						if( open.contains( cell ) ) {
-							if( gCurrent + bestNeighbor.getGToNeighbor( cell ) < cell.getG() ) {
+							if( ( gCurrent + bestNeighbor.getGToNeighbor( cell ) ) < cell.getG() ) {
 								parentCache = bestNeighbor;
 							} else {
 								parentCache = cell.getParent();
@@ -220,7 +225,7 @@ public class Grid {
 		}
 		return null;
 	}
-	
+
 	public java.util.Vector<Cell> findShortestPathBetween( Cell src, Cell dst ) {
 		if( src.equals( dst ) ) {
 			java.util.Vector<Cell> path = new java.util.Vector<Cell>( 2 );

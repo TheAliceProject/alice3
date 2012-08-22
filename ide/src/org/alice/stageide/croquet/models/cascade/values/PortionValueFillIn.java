@@ -47,7 +47,8 @@ package org.alice.stageide.croquet.models.cascade.values;
  * @author Dennis Cosgrove
  */
 public class PortionValueFillIn extends org.alice.ide.croquet.models.cascade.literals.AbstractDoubleLiteralFillIn {
-	private static java.util.Map< Double, PortionValueFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Double, PortionValueFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static PortionValueFillIn getInstance( double value ) {
 		synchronized( map ) {
 			PortionValueFillIn rv = map.get( value );
@@ -60,6 +61,7 @@ public class PortionValueFillIn extends org.alice.ide.croquet.models.cascade.lit
 			return rv;
 		}
 	}
+
 	private PortionValueFillIn( double value ) {
 		super( java.util.UUID.fromString( "b1ee9e0c-b9ca-4931-b1c0-b6cb5c4ba649" ), value );
 	}

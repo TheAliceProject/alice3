@@ -48,59 +48,73 @@ package org.lgna.croquet.components;
  */
 public abstract class SpringPanel extends Panel {
 	public enum Vertical {
-		NORTH(javax.swing.SpringLayout.NORTH), 
-		CENTER(null), 
-		SOUTH(javax.swing.SpringLayout.SOUTH);
+		NORTH( javax.swing.SpringLayout.NORTH ),
+		CENTER( null ),
+		SOUTH( javax.swing.SpringLayout.SOUTH );
 		private String internal;
+
 		private Vertical( String internal ) {
 			this.internal = internal;
 		}
+
 		public String getInternal() {
 			return internal;
 		}
 	}
+
 	public enum Horizontal {
-		WEST(javax.swing.SpringLayout.WEST), 
-		CENTER(null), 
-		EAST(javax.swing.SpringLayout.EAST);
+		WEST( javax.swing.SpringLayout.WEST ),
+		CENTER( null ),
+		EAST( javax.swing.SpringLayout.EAST );
 		private String internal;
+
 		private Horizontal( String internal ) {
 			this.internal = internal;
 		}
+
 		public String getInternal() {
 			return internal;
 		}
 	}
+
 	private final javax.swing.SpringLayout springLayout = new javax.swing.SpringLayout();
-	
+
 	public SpringPanel() {
 		this( null );
 	}
+
 	public SpringPanel( org.lgna.croquet.Composite composite ) {
 		super( composite );
 	}
+
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return this.springLayout;
 	}
-//	protected javax.swing.SpringLayout getSpringLayout() {
-//		return this.springLayout;
-//	}
+
+	//	protected javax.swing.SpringLayout getSpringLayout() {
+	//		return this.springLayout;
+	//	}
 	abstract class CenterSpring extends javax.swing.Spring {
-		private Component< ? > component;
+		private Component<?> component;
 		private int offset;
-		public CenterSpring( Component< ? > component, int offset ) {
+
+		public CenterSpring( Component<?> component, int offset ) {
 			this.component = component;
 			this.offset = offset;
 		}
+
 		@Override
 		public int getValue() {
 			return this.getPreferredValue();
 		}
+
 		@Override
 		public void setValue( int value ) {
 		}
+
 		protected abstract int getValue( java.awt.Dimension dimension );
+
 		@Override
 		public int getPreferredValue() {
 			int macro = getValue( SpringPanel.this.getAwtComponent().getSize() );
@@ -111,67 +125,78 @@ public abstract class SpringPanel extends Panel {
 				size = this.component.getAwtComponent().getPreferredSize();
 			}
 			int micro = getValue( size );
-			return this.offset + (macro - micro) / 2;
+			return this.offset + ( ( macro - micro ) / 2 );
 		}
+
 		@Override
 		public int getMinimumValue() {
 			return this.getPreferredValue();
 		}
+
 		@Override
 		public int getMaximumValue() {
 			return this.getPreferredValue();
 		}
 	}
+
 	class HorizontalCenterSpring extends CenterSpring {
-		public HorizontalCenterSpring( Component< ? > component, int offset ) {
+		public HorizontalCenterSpring( Component<?> component, int offset ) {
 			super( component, offset );
 		}
+
 		@Override
 		protected int getValue( java.awt.Dimension dimension ) {
 			return dimension.width;
 		}
 	}
+
 	class VerticalCenterSpring extends CenterSpring {
-		public VerticalCenterSpring( Component< ? > component, int offset ) {
+		public VerticalCenterSpring( Component<?> component, int offset ) {
 			super( component, offset );
 		}
+
 		@Override
 		protected int getValue( java.awt.Dimension dimension ) {
 			return dimension.height;
 		}
 	}
-	private void putConstraint( Component< ? > dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, Component< ? > anchor ) {
+
+	private void putConstraint( Component<?> dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, Component<?> anchor ) {
 		String horizontalDependentConstraint = horizontalDependent.getInternal();
 		String horizontalAnchorConstraint = horizontalAnchor.getInternal();
-		if( horizontalDependentConstraint != null && horizontalAnchorConstraint != null ) {
+		if( ( horizontalDependentConstraint != null ) && ( horizontalAnchorConstraint != null ) ) {
 			this.springLayout.putConstraint( horizontalDependentConstraint, dependent.getAwtComponent(), x, horizontalAnchorConstraint, anchor.getAwtComponent() );
 		} else {
 			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, dependent.getAwtComponent(), new HorizontalCenterSpring( dependent, x ), javax.swing.SpringLayout.WEST, anchor.getAwtComponent() );
 		}
 		String verticalDependentConstraint = verticalDependent.getInternal();
 		String verticalAnchorConstraint = verticalAnchor.getInternal();
-		if( verticalDependentConstraint != null && verticalAnchorConstraint != null ) {
+		if( ( verticalDependentConstraint != null ) && ( verticalAnchorConstraint != null ) ) {
 			this.springLayout.putConstraint( verticalDependentConstraint, dependent.getAwtComponent(), y, verticalAnchorConstraint, anchor.getAwtComponent() );
 		} else {
 			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, dependent.getAwtComponent(), new VerticalCenterSpring( dependent, y ), javax.swing.SpringLayout.NORTH, anchor.getAwtComponent() );
 		}
 	}
-	
-	public void addComponent( Component< ? > dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, Component< ? > anchor ) {
+
+	public void addComponent( Component<?> dependent, Horizontal horizontalDependent, Horizontal horizontalAnchor, int x, Vertical verticalDependent, Vertical verticalAnchor, int y, Component<?> anchor ) {
 		this.internalAddComponent( dependent );
 		this.putConstraint( dependent, horizontalDependent, horizontalAnchor, x, verticalDependent, verticalAnchor, y, anchor );
 	}
-	public void addComponent( Component< ? > dependent, Horizontal horizontalDependent, Horizontal horizontalThis, int x, Vertical verticalDependent, Vertical verticalThis, int y ) {
+
+	public void addComponent( Component<?> dependent, Horizontal horizontalDependent, Horizontal horizontalThis, int x, Vertical verticalDependent, Vertical verticalThis, int y ) {
 		this.addComponent( dependent, horizontalDependent, horizontalThis, x, verticalDependent, verticalThis, y, this );
 	}
-	public void addComponent( Component< ? > dependent, Horizontal horizontal, int x, Vertical vertical, int y, Component< ? > anchor ) {
+
+	public void addComponent( Component<?> dependent, Horizontal horizontal, int x, Vertical vertical, int y, Component<?> anchor ) {
 		this.addComponent( dependent, horizontal, horizontal, x, vertical, vertical, y, anchor );
 	}
-	public void addComponent( Component< ? > dependent, Horizontal horizontal, int x, Vertical vertical, int y ) {
+
+	public void addComponent( Component<?> dependent, Horizontal horizontal, int x, Vertical vertical, int y ) {
 		this.addComponent( dependent, horizontal, x, vertical, y, this );
 	}
+
 	@Override
-	public void removeComponent( org.lgna.croquet.components.Component< ? > component ) {
+	public void removeComponent( org.lgna.croquet.components.Component<?> component ) {
 		super.removeComponent( component );
 		this.springLayout.removeLayoutComponent( component.getAwtComponent() );
 	}

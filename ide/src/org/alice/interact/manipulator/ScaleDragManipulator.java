@@ -64,30 +64,30 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Scale, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
-		if (this.linearHandle != null) {
+		if( this.linearHandle != null ) {
 			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Scale, this.linearHandle.getMovementDescription(), this.manipulatedTransformable ) );
 		}
-		
+
 	}
 
 	@Override
-	public boolean doStartManipulator(InputState startInput) {
-		boolean started = super.doStartManipulator(startInput);
-		
-		if (started) {
+	public boolean doStartManipulator( InputState startInput ) {
+		boolean started = super.doStartManipulator( startInput );
+
+		if( started ) {
 			LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
 				org.lgna.story.implementation.ModelImp.Resizer resizer = scaleHandle.getResizer();
-				this.initialScale = scalable.getValueForResizer(resizer);
+				this.initialScale = scalable.getValueForResizer( resizer );
 			}
 		}
-		
+
 		return started;
 	}
-	
+
 	@Override
-	protected void updateBasedOnHandlePull( double initialPull, double newPull ) 
+	protected void updateBasedOnHandlePull( double initialPull, double newPull )
 	{
 		double pullDif = newPull - initialPull;
 		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
@@ -96,14 +96,14 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		if( newPull <= MIN_HANDLE_PULL ) {
 			scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
 		}
-		if (this.initialScale + scale < ResizeDragManipulator.MIN_SCALE) {
+		if( ( this.initialScale + scale ) < ResizeDragManipulator.MIN_SCALE ) {
 			scale = ResizeDragManipulator.MIN_SCALE - this.initialScale;
 		}
 		accumulatedScale = scale + this.initialScale;
-		
+
 		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 		if( scalable != null ) {
-			scalable.setValueForResizer(scaleHandle.getResizer(), accumulatedScale);
+			scalable.setValueForResizer( scaleHandle.getResizer(), accumulatedScale );
 		}
 
 	}
@@ -115,7 +115,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 
 	@Override
 	public void undoRedoEndManipulation() {
-		if( this.getManipulatedTransformable() != null ) 
+		if( this.getManipulatedTransformable() != null )
 		{
 			edu.cmu.cs.dennisc.animation.Animator animator;
 			if( this.dragAdapter != null ) {

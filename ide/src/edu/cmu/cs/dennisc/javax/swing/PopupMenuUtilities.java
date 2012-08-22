@@ -66,22 +66,28 @@ public class PopupMenuUtilities {
 				private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
 					public void mouseEntered( java.awt.event.MouseEvent e ) {
 					}
+
 					public void mouseExited( java.awt.event.MouseEvent e ) {
 					}
+
 					public void mousePressed( java.awt.event.MouseEvent e ) {
 					}
+
 					public void mouseReleased( java.awt.event.MouseEvent e ) {
 						EventConsumer.this.removeFromParentJustInCaseAnExceptionWasThrownSomewhere();
 					}
+
 					public void mouseClicked( java.awt.event.MouseEvent e ) {
 					}
 				};
+
 				private void removeFromParentJustInCaseAnExceptionWasThrownSomewhere() {
 					java.awt.Container parent = this.getParent();
 					if( parent != null ) {
 						parent.remove( this );
 					}
 				}
+
 				@Override
 				public void addNotify() {
 					super.addNotify();
@@ -92,6 +98,7 @@ public class PopupMenuUtilities {
 					}
 					this.addMouseListener( this.mouseAdapter );
 				}
+
 				@Override
 				public void removeNotify() {
 					this.removeMouseListener( this.mouseAdapter );
@@ -104,9 +111,11 @@ public class PopupMenuUtilities {
 				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 					layeredPane.add( eventConsumer, new Integer( javax.swing.JLayeredPane.MODAL_LAYER ) );
 				}
+
 				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 					layeredPane.remove( eventConsumer );
 				}
+
 				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				}
 			} );

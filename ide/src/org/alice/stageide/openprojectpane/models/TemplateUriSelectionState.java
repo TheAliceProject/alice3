@@ -50,23 +50,25 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 	public static Template getSurfaceAppearance( java.net.URI uri ) {
 		return Template.valueOf( uri.getFragment() );
 	}
+
 	public static final String SCHEME = "gen";
+
 	public static enum Template {
-		GRASS( org.lgna.story.SGround.SurfaceAppearance.GRASS, new org.lgna.story.Color(150/255.0, 226/255.0, 252/255.0) ),
-		SEA_FLOOR( org.lgna.story.SGround.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color(66/255.0, 195/255.0, 252/255.0) ),
+		GRASS( org.lgna.story.SGround.SurfaceAppearance.GRASS, new org.lgna.story.Color( 150 / 255.0, 226 / 255.0, 252 / 255.0 ) ),
+		SEA_FLOOR( org.lgna.story.SGround.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 66 / 255.0, 195 / 255.0, 252 / 255.0 ) ),
 		MOON( org.lgna.story.SGround.SurfaceAppearance.MOON, org.lgna.story.Color.BLACK ),
-		
-		MARS( org.lgna.story.SGround.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color(11/255.0, 0/255.0, 24/255.0) ),
+
+		MARS( org.lgna.story.SGround.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 11 / 255.0, 0 / 255.0, 24 / 255.0 ) ),
 		SNOW( org.lgna.story.SGround.SurfaceAppearance.SNOW ),
-		ROOM( org.lgna.story.SRoom.FloorAppearance.REDWOOD, org.lgna.story.SRoom.WallAppearance.YELLOW, org.lgna.story.Color.WHITE),
-		
-		WONDERLAND( org.lgna.story.SGround.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color(0/255.0, 24/255.0, 75/255.0), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color(25/255.0, 0/255.0, 0/255.0)),
+		ROOM( org.lgna.story.SRoom.FloorAppearance.REDWOOD, org.lgna.story.SRoom.WallAppearance.YELLOW, org.lgna.story.Color.WHITE ),
+
+		WONDERLAND( org.lgna.story.SGround.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color( 0 / 255.0, 24 / 255.0, 75 / 255.0 ), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 25 / 255.0, 0 / 255.0, 0 / 255.0 ) ),
 		SEA_SURFACE( org.lgna.story.SGround.SurfaceAppearance.WATER ),
-		LAGOON_FLOOR( org.lgna.story.SGround.SurfaceAppearance.SAND, new org.lgna.story.Color(75/255.0, 220/255.0, 255/255.0), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color(0/255.0, 26/255.0, 60/255.0) ),
-		
+		LAGOON_FLOOR( org.lgna.story.SGround.SurfaceAppearance.SAND, new org.lgna.story.Color( 75 / 255.0, 220 / 255.0, 255 / 255.0 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 0 / 255.0, 26 / 255.0, 60 / 255.0 ) ),
+
 		DESERT( org.lgna.story.SGround.SurfaceAppearance.DESERT ),
 		DIRT( org.lgna.story.SGround.SurfaceAppearance.DIRT );
-		
+
 		private final org.lgna.story.SGround.SurfaceAppearance surfaceAppearance;
 		private final org.lgna.story.Paint floorAppearance;
 		private final org.lgna.story.Paint wallAppearance;
@@ -77,7 +79,8 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		private final org.lgna.story.Color aboveLightColor;
 		private final org.lgna.story.Color belowLightColor;
 		private final boolean isRoom;
-		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor) {
+
+		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
 			this.surfaceAppearance = surfaceAppearance;
 			//this.atmosphereColor = atmosphereColor;
 			this.atmosphereColor = atmosphereColor;
@@ -89,24 +92,28 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 			this.wallAppearance = null;
 			this.ceilingAppearance = null;
 		}
+
 		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor ) {
 			this( surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, null );
 		}
+
 		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity ) {
 			this( surfaceAppearance, atmosphereColor, fogDensity, null );
 		}
+
 		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor ) {
 			this( surfaceAppearance, atmosphereColor, Double.NaN );
 		}
+
 		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance ) {
 			this( surfaceAppearance, null );
 		}
-		
+
 		private Template( org.lgna.story.Paint floorAppearance, org.lgna.story.Paint wallAppearance, org.lgna.story.Paint ceilingAppearance ) {
 			this.surfaceAppearance = null;
 			//this.atmosphereColor = atmosphereColor;
 			this.atmosphereColor = null;
-			this.fogDensity = Double.NaN ;
+			this.fogDensity = Double.NaN;
 			this.aboveLightColor = null;
 			this.belowLightColor = null;
 			this.isRoom = true;
@@ -118,34 +125,42 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 		public org.lgna.story.SGround.SurfaceAppearance getSurfaceAppearance() {
 			return this.surfaceAppearance;
 		}
+
 		public org.lgna.story.Paint getFloorAppearance() {
 			return this.floorAppearance;
 		}
+
 		public org.lgna.story.Paint getWallAppearance() {
 			return this.wallAppearance;
 		}
+
 		public org.lgna.story.Paint getCeilingAppearance() {
 			return this.ceilingAppearance;
 		}
+
 		public boolean isRoom() {
 			return this.isRoom;
 		}
-		
-//		public org.lgna.story.Color getAtmosphereColor() {
-//			return this.atmosphereColor;
-//		}
+
+		//		public org.lgna.story.Color getAtmosphereColor() {
+		//			return this.atmosphereColor;
+		//		}
 		public org.lgna.story.Color getAtmospherColor() {
 			return this.atmosphereColor;
 		}
+
 		public org.lgna.story.Color getAboveLightColor() {
 			return this.aboveLightColor;
 		}
+
 		public org.lgna.story.Color getBelowLightColor() {
 			return this.belowLightColor;
 		}
+
 		public double getFogDensity() {
 			return this.fogDensity;
 		}
+
 		public java.net.URI getUri() {
 			try {
 				//todo: investigate
@@ -158,21 +173,26 @@ public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.mod
 			}
 		}
 	};
+
 	private static class SingletonHolder {
 		private static TemplateUriSelectionState instance = new TemplateUriSelectionState();
 	}
+
 	public static TemplateUriSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final java.net.URI[] array;
+
 	private TemplateUriSelectionState() {
 		super( java.util.UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ) );
 		Template[] values = Template.values();
 		this.array = new java.net.URI[ values.length ];
-		for( int i=0; i<this.array.length; i++ ) {
+		for( int i = 0; i < this.array.length; i++ ) {
 			this.array[ i ] = values[ i ].getUri();
 		}
 	}
+
 	@Override
 	protected java.net.URI[] createArray() {
 		return this.array;

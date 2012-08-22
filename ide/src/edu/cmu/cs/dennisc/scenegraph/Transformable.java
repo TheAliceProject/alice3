@@ -54,14 +54,17 @@ public class Transformable extends AbstractTransformable {
 			Transformable.this.fireAbsoluteTransformationChange();
 		}
 	};
+
 	@Override
 	protected Composite getVehicle() {
 		return getParent();
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
 		return this.localTransformation.getValue();
 	}
+
 	@Override
 	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		if( m == this.localTransformation.getValue() ) {
@@ -71,4 +74,3 @@ public class Transformable extends AbstractTransformable {
 		}
 	}
 }
-

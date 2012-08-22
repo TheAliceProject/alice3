@@ -48,12 +48,14 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  */
 public class LocalArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
 	private final org.lgna.project.ast.UserLocal local;
+
 	public LocalArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, local.getValueType(), null );
 		this.local = local;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.LocalAccess( this.local ); 
+		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
 }

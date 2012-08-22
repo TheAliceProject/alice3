@@ -48,7 +48,9 @@ package org.alice.media.encoder;
 public interface EncoderListener {
 
 	public void encodingStarted();
-	public void encodingFinished(boolean success);
-	public void frameUpdate(int frameCount);
-	
+
+	public void encodingFinished( boolean success );
+
+	public void frameUpdate( int frameCount );
+
 }

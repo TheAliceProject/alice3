@@ -47,6 +47,8 @@ package edu.cmu.cs.dennisc.issue;
  */
 public interface Attachment {
 	public String getFileName();
+
 	public String getMIMEType();
+
 	public byte[] getBytes();
 }

@@ -49,18 +49,21 @@ public final class RenameResourceEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.common.Resource resource;
 	private final String prevValue;
 	private final String nextValue;
+
 	public RenameResourceEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.common.Resource resource, String prevValue, String nextValue ) {
 		super( completionStep );
 		this.resource = resource;
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
+
 	public RenameResourceEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.resource = org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ).decodeValue( binaryDecoder );
 		this.prevValue = binaryDecoder.decodeString();
 		this.nextValue = binaryDecoder.decodeString();
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -75,12 +78,14 @@ public final class RenameResourceEdit extends org.lgna.croquet.edits.Edit {
 		//todo
 		org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getView().repaint();
 	}
+
 	@Override
 	protected final void undoInternal() {
 		resource.setName( this.prevValue );
 		//todo
 		org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getView().repaint();
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "rename resource: " );

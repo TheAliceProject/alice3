@@ -50,12 +50,15 @@ public class WhileLoopTemplateDragModel extends StatementTemplateDragModel {
 	private static class SingletonHolder {
 		private static WhileLoopTemplateDragModel instance = new WhileLoopTemplateDragModel();
 	}
+
 	public static WhileLoopTemplateDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private WhileLoopTemplateDragModel() {
 		super( java.util.UUID.fromString( "fef12a3b-6ebd-4cc3-81f0-8bc0d34cada3" ), org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteWhileLoop() );
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.WhileLoopInsertCascade.getInstance( blockStatementIndexPair );

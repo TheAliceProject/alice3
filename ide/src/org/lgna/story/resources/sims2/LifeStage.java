@@ -42,19 +42,6 @@
  */
 package org.lgna.story.resources.sims2;
 
-import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfit;
-import org.lgna.story.resources.sims2.FemaleAdultHair;
-import org.lgna.story.resources.sims2.FemaleChildFullBodyOutfit;
-import org.lgna.story.resources.sims2.FemaleChildHair;
-import org.lgna.story.resources.sims2.MaleAdultFullBodyOutfit;
-import org.lgna.story.resources.sims2.MaleAdultHair;
-import org.lgna.story.resources.sims2.MaleChildFullBodyOutfit;
-import org.lgna.story.resources.sims2.MaleChildHair;
-import org.lgna.story.resources.sims2.UnisexAdultFullBodyOutfit;
-import org.lgna.story.resources.sims2.UnisexAdultHair;
-import org.lgna.story.resources.sims2.UnisexChildFullBodyOutfit;
-import org.lgna.story.resources.sims2.UnisexChildHair;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -64,6 +51,7 @@ public enum LifeStage {
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return null;
 		}
+
 		@Override
 		public String[] getHairColors() {
 			return EXCLUDE_GREY;
@@ -73,89 +61,97 @@ public enum LifeStage {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return new ChildPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
-		} 
+		}
+
 		@Override
 		public String[] getHairColors() {
 			return EXCLUDE_GREY;
 		}
-	}, 
+	},
 	TEEN {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return null;
-		} 
+		}
+
 		@Override
 		public String[] getHairColors() {
 			return EXCLUDE_GREY;
 		}
-	}, 
+	},
 	ADULT {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return new AdultPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
-		} 
+		}
+
 		@Override
 		public String[] getHairColors() {
 			return INCLUDE_GREY;
 		}
-	}, 
+	},
 	ELDER {
 		@Override
 		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 			return null;
-		} 
+		}
+
 		@Override
 		public String[] getHairColors() {
 			return INCLUDE_GREY;
 		}
 	};
-	
+
 	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
 	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
 
 	public static LifeStage getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
 	}
-	
-	private static java.util.Map< LifeStage, Class<? extends FullBodyOutfit> > s_mapLifeStageUnisexFullBodyOutfit;
-	private static java.util.Map< LifeStage, Class<? extends Hair> > s_mapLifeStageUnisexHair;
-	private static edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> > s_mapLifeStageGenderFullBodyOutfit;
-	private static edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends Hair> > s_mapLifeStageGenderHair;
+
+	private static java.util.Map<LifeStage, Class<? extends FullBodyOutfit>> s_mapLifeStageUnisexFullBodyOutfit;
+	private static java.util.Map<LifeStage, Class<? extends Hair>> s_mapLifeStageUnisexHair;
+	private static edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>> s_mapLifeStageGenderFullBodyOutfit;
+	private static edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends Hair>> s_mapLifeStageGenderHair;
 	static {
-		s_mapLifeStageUnisexFullBodyOutfit = new java.util.HashMap< LifeStage, Class<? extends FullBodyOutfit> >();
+		s_mapLifeStageUnisexFullBodyOutfit = new java.util.HashMap<LifeStage, Class<? extends FullBodyOutfit>>();
 		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.ADULT, UnisexAdultFullBodyOutfit.class );
 		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.CHILD, UnisexChildFullBodyOutfit.class );
 
-		s_mapLifeStageUnisexHair = new java.util.HashMap< LifeStage, Class<? extends Hair> >();
+		s_mapLifeStageUnisexHair = new java.util.HashMap<LifeStage, Class<? extends Hair>>();
 		s_mapLifeStageUnisexHair.put( LifeStage.ADULT, UnisexAdultHair.class );
 		s_mapLifeStageUnisexHair.put( LifeStage.CHILD, UnisexChildHair.class );
-		
-		
-		s_mapLifeStageGenderFullBodyOutfit = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> >();
+
+		s_mapLifeStageGenderFullBodyOutfit = new edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>>();
 		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
 		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
 		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.CHILD, Gender.MALE, MaleChildFullBodyOutfit.class );
 		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildFullBodyOutfit.class );
 
-		s_mapLifeStageGenderHair = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends Hair> >();
+		s_mapLifeStageGenderHair = new edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends Hair>>();
 		s_mapLifeStageGenderHair.put( LifeStage.ADULT, Gender.MALE, MaleAdultHair.class );
 		s_mapLifeStageGenderHair.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class );
 		s_mapLifeStageGenderHair.put( LifeStage.CHILD, Gender.MALE, MaleChildHair.class );
 		s_mapLifeStageGenderHair.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildHair.class );
 	}
-	public Class<? extends FullBodyOutfit> getGenderedFullBodyOutfitInterfaceClass( Gender gender ) {	
+
+	public Class<? extends FullBodyOutfit> getGenderedFullBodyOutfitInterfaceClass( Gender gender ) {
 		return s_mapLifeStageGenderFullBodyOutfit.get( this, gender );
 	}
-	public Class<? extends Hair> getGenderedHairInterfaceClass( Gender gender ) {	
+
+	public Class<? extends Hair> getGenderedHairInterfaceClass( Gender gender ) {
 		return s_mapLifeStageGenderHair.get( this, gender );
 	}
-	public Class<? extends FullBodyOutfit> getUnisexFullBodyOutfitInterfaceClass() {	
+
+	public Class<? extends FullBodyOutfit> getUnisexFullBodyOutfitInterfaceClass() {
 		return s_mapLifeStageUnisexFullBodyOutfit.get( this );
 	}
-	public Class<? extends Hair> getUnisexHairInterfaceClass() {	
+
+	public Class<? extends Hair> getUnisexHairInterfaceClass() {
 		return s_mapLifeStageUnisexHair.get( this );
 	}
-	
+
 	public abstract PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit );
+
 	public abstract String[] getHairColors();
 }

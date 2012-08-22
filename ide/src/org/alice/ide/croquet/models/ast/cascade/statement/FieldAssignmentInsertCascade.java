@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class FieldAssignmentInsertCascade extends ExpressionStatementInsertCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractField, FieldAssignmentInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractField, FieldAssignmentInsertCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized FieldAssignmentInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
 		FieldAssignmentInsertCascade rv = mapToMap.get( blockStatementIndexPair, field );
 		if( rv != null ) {
@@ -60,35 +61,40 @@ public class FieldAssignmentInsertCascade extends ExpressionStatementInsertCasca
 	}
 
 	private final org.lgna.project.ast.AbstractField field;
+
 	private FieldAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( field.getValueType() ) );
 		this.field = field;
 	}
+
 	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
+
 	@Override
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
 		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-		
+
 		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
 		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-				assignmentExpression.rightHandSide.getValue() 
-		);
+				assignmentExpression.rightHandSide.getValue()
+				);
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
 		org.lgna.project.ast.AssignmentExpression rv = new org.lgna.project.ast.AssignmentExpression(
-			this.field.getValueType(), 
-			new org.lgna.project.ast.FieldAccess( instanceExpression, this.field ),
-			org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
-			expressions[ 0 ] 
-		);
+				this.field.getValueType(),
+				new org.lgna.project.ast.FieldAccess( instanceExpression, this.field ),
+				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
+				expressions[ 0 ]
+				);
 		return rv;
 	}
+
 	@Override
 	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndFieldStaticGetInstanceResolver( this );

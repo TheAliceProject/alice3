@@ -49,42 +49,43 @@ import org.alice.interact.event.ManipulationEvent;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 
-public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2D 
+public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2D
 {
 	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
 	{
-		Inactive("images/zoom.png"),
-		Highlighted("images/zoomHighlight.png"),
-		ZoomingIn("images/zoomIn.png"),
-		ZoomingOut("images/zoomOut.png");
-		
+		Inactive( "images/zoom.png" ),
+		Highlighted( "images/zoomHighlight.png" ),
+		ZoomingIn( "images/zoomIn.png" ),
+		ZoomingOut( "images/zoomOut.png" );
+
 		private ImageIcon icon;
-		private ControlState(String resourceString)
+
+		private ControlState( String resourceString )
 		{
-			this.icon = new ImageIcon( this.getClass().getResource( resourceString ));
+			this.icon = new ImageIcon( this.getClass().getResource( resourceString ) );
 		}
-		
+
 		public ImageIcon getIcon()
 		{
 			return this.icon;
 		}
 	}
-	
+
 	private boolean zoomingIn = false;
 	private boolean zoomingOut = false;
-	
+
 	@Override
-	protected ImageState getStateForManipulationStatus() {	
-		if (this.zoomingIn)
+	protected ImageState getStateForManipulationStatus() {
+		if( this.zoomingIn )
 		{
 			return ControlState.ZoomingIn;
 		}
-		else if (this.zoomingOut)
+		else if( this.zoomingOut )
 		{
 			return ControlState.ZoomingOut;
 		}
 		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if (this.state.isRollover())
+		else if( this.state.isRollover() )
 		{
 			return ControlState.Highlighted;
 		}
@@ -100,13 +101,17 @@ public class ManipulationHandle2CameraZoom extends ImageBasedManipulationHandle2
 	}
 
 	@Override
-	protected void setManipulationState(ManipulationEvent event,
-			boolean isActive) 
+	protected void setManipulationState( ManipulationEvent event,
+			boolean isActive )
 	{
-		switch (event.getMovementDescription().direction)
+		switch( event.getMovementDescription().direction )
 		{
-			case FORWARD : this.zoomingIn = isActive; break;
-			case BACKWARD : this.zoomingOut = isActive; break;
+		case FORWARD:
+			this.zoomingIn = isActive;
+			break;
+		case BACKWARD:
+			this.zoomingOut = isActive;
+			break;
 		}
 	}
 

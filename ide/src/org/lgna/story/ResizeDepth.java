@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class ResizeDepth extends DurationAnimationStyleIsVolumePreservedArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=ResizeDepth.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = ResizeDepth.class )
 	public static interface Detail {
 	}
+
 	private ResizeDepth() {
 		super();
 	}

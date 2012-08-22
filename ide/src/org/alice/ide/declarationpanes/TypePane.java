@@ -47,30 +47,35 @@ package org.alice.ide.declarationpanes;
  */
 class IsArrayState extends org.lgna.croquet.BooleanState {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
+
 	public IsArrayState( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue() );
 		this.isArrayProperty = isArrayProperty;
 		this.setTextForBothTrueAndFalse( "is array" );
-		this.addValueListener( new ValueListener< Boolean >() {
-			public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		this.addValueListener( new ValueListener<Boolean>() {
+			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				IsArrayState.this.isArrayProperty.setValue( nextValue );
 			}
 		} );
 	}
 }
 
-class TypePropertyItemState extends org.lgna.croquet.CustomItemState< org.lgna.project.ast.AbstractType > {
-	private final org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > typeProperty;
-	public TypePropertyItemState( org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > typeProperty ) {
+class TypePropertyItemState extends org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> {
+	private final org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> typeProperty;
+
+	public TypePropertyItemState( org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> typeProperty ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1818f209-d305-431c-8fea-bcb8698ba908" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), org.alice.ide.croquet.models.ast.declaration.TypeBlank.getInstance() );
 		this.typeProperty = typeProperty;
 	}
+
 	@Override
 	protected org.lgna.project.ast.AbstractType getActualValue() {
 		return this.typeProperty.getValue();
 	}
+
 	@Override
 	protected void updateSwingModel( org.lgna.project.ast.AbstractType value ) {
 		this.typeProperty.setValue( value );
@@ -78,47 +83,48 @@ class TypePropertyItemState extends org.lgna.croquet.CustomItemState< org.lgna.p
 }
 
 public class TypePane extends org.lgna.croquet.components.BorderPanel {
-	private org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > typeProperty;
+	private org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> typeProperty;
 	private IsArrayState isArrayStateState;
-	
-	private class TypeDropDownPane extends org.lgna.croquet.components.ItemDropDown< org.lgna.project.ast.AbstractType, TypePropertyItemState > {
+
+	private class TypeDropDownPane extends org.lgna.croquet.components.ItemDropDown<org.lgna.project.ast.AbstractType, TypePropertyItemState> {
 		public TypeDropDownPane( TypePropertyItemState model ) {
 			super( model );
 			this.update( model.getValue() );
 			this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		}
+
 		private void update( org.lgna.project.ast.AbstractType type ) {
 			this.getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) {
 				@Override
-				protected java.awt.Color getTextColor(java.awt.Component c) {
+				protected java.awt.Color getTextColor( java.awt.Component c ) {
 					return super.getTextColor( TypeDropDownPane.this.getAwtComponent() );
 				}
 			} );
 		}
-		
+
 		@Override
-		protected void handleChanged( org.lgna.croquet.State< org.lgna.project.ast.AbstractType > state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
+		protected void handleChanged( org.lgna.croquet.State<org.lgna.project.ast.AbstractType> state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
 			this.update( nextValue );
 		}
 	};
-	
-	public TypePane( org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
+
+	public TypePane( org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
 		this.typeProperty = typeProperty;
 		final TypeDropDownPane typeDropDownPane = new TypeDropDownPane( new TypePropertyItemState( typeProperty ) );
 		typeDropDownPane.getAwtComponent().setEnabled( isTypeComboBoxEnabled );
 		this.isArrayStateState = new IsArrayState( isArrayProperty );
 		this.isArrayStateState.setEnabled( isArrayCheckBoxEnabled );
-		
+
 		org.lgna.croquet.components.CheckBox isArrayCheckBox = this.isArrayStateState.createCheckBox();
 		isArrayCheckBox.setBackgroundColor( null );
 		this.addCenterComponent( typeDropDownPane );
 		this.addLineEndComponent( isArrayCheckBox );
 	}
-	
-	public org.lgna.project.ast.AbstractType<?,?,?> getValueType() {
-		org.lgna.project.ast.AbstractType<?,?,?> rv = this.typeProperty.getValue();
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+		org.lgna.project.ast.AbstractType<?, ?, ?> rv = this.typeProperty.getValue();
 		if( rv != null ) {
 			if( this.isArrayStateState.getValue() ) {
 				rv = rv.getArrayType();

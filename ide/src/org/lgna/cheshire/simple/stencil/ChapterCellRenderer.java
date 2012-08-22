@@ -45,14 +45,16 @@ package org.lgna.cheshire.simple.stencil;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class ChapterCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.cheshire.simple.Chapter > {
+/* package-private */class ChapterCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.cheshire.simple.Chapter> {
 	private static javax.swing.Icon BLANK_ICON = new javax.swing.Icon() {
 		public int getIconWidth() {
 			return 32;
 		}
+
 		public int getIconHeight() {
 			return 32;
 		}
+
 		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		}
 	};
@@ -72,14 +74,15 @@ package org.lgna.cheshire.simple.stencil;
 		this.disabledForeground = java.awt.Color.LIGHT_GRAY;
 		this.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
 	}
+
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, org.lgna.cheshire.simple.Chapter value, int index, boolean isSelected, boolean cellHasFocus) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.cheshire.simple.Chapter value, int index, boolean isSelected, boolean cellHasFocus ) {
 		assert list != null;
 		StringBuilder sb = new StringBuilder();
 		org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability;
-		if( value != null) {
+		if( value != null ) {
 			int i;
-			if (index >= 0) {
+			if( index >= 0 ) {
 				i = index;
 			} else {
 				i = this.book.getSelectedIndex();
@@ -88,27 +91,27 @@ package org.lgna.cheshire.simple.stencil;
 				// stepsModel.getElementAt( i );
 				// }
 			}
-			sb.append("<html>");
+			sb.append( "<html>" );
 			//sb.append("<strong>");
 			//sb.append("Chapter ");
-			sb.append(i + 1);
-			sb.append(":    ");
+			sb.append( i + 1 );
+			sb.append( ":    " );
 			//sb.append("</strong>");
-			sb.append(value.getTitle());
-			sb.append("</html>");
+			sb.append( value.getTitle() );
+			sb.append( "</html>" );
 			replacementAcceptability = value.getReplacementAcceptability();
 		} else {
 			sb.append( "null" );
 			replacementAcceptability = null;
 		}
-		rv.setText(sb.toString());
+		rv.setText( sb.toString() );
 
 		String toolTipText = null;
 		javax.swing.Icon icon;
 		if( index != -1 ) {
 			if( index <= this.book.getSelectedIndex() ) {
 				if( replacementAcceptability != null ) {
-					if( replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
+					if( ( replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH ) || ( replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) ) {
 						icon = PERFECT_MATCH_ICON;
 					} else {
 						if( replacementAcceptability.isDeviation() ) {
@@ -119,7 +122,7 @@ package org.lgna.cheshire.simple.stencil;
 							}
 							if( isSelected ) {
 								StringBuilder sbToolTip = new StringBuilder();
-								sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr( ) );
+								sbToolTip.append( replacementAcceptability.getDeviationSeverity().getRepr() );
 								sbToolTip.append( ": " );
 								sbToolTip.append( replacementAcceptability.getDeviationDescription() );
 								toolTipText = sbToolTip.toString();
@@ -144,7 +147,7 @@ package org.lgna.cheshire.simple.stencil;
 
 		rv.setToolTipText( toolTipText );
 		rv.setIcon( icon );
-		
+
 		if( this.book.isIndexAccessible( index ) ) {
 			if( isSelected || cellHasFocus ) {
 				//pass

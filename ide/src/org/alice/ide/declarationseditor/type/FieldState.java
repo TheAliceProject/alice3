@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldState extends FilteredMemberState< org.lgna.project.ast.UserField > {
+public abstract class FieldState extends FilteredMemberState<org.lgna.project.ast.UserField> {
 	public FieldState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id, org.lgna.project.ast.UserField.class, type.fields );
 	}

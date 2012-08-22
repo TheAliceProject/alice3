@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.project;
 
-
 /**
  * @author Matt May
  */
@@ -55,9 +54,11 @@ public class FindMethodsFrameComposite extends FindFrameComposite {
 	public static FindMethodsFrameComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	public FindMethodsFrameComposite(){
+
+	public FindMethodsFrameComposite() {
 		super( java.util.UUID.fromString( "b34e805e-e6ef-4f08-af53-df98e1653732" ) );
 	}
+
 	@Override
 	public void handlePreActivation() {
 		this.getState().setSelectedIndex( 0 );

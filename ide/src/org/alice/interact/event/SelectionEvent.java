@@ -51,25 +51,26 @@ import edu.cmu.cs.dennisc.pattern.event.Event;
 /**
  * @author David Culyba
  */
-public class SelectionEvent extends Event< AbstractDragAdapter >{
+public class SelectionEvent extends Event<AbstractDragAdapter> {
 	private AbstractTransformableImp transformable;
+
 	public SelectionEvent( AbstractDragAdapter source, AbstractTransformableImp transformable ) {
 		super( source );
 		this.transformable = transformable;
 	}
-	
+
 	public SelectionEvent( AbstractDragAdapter source, org.lgna.story.STurnable mtTransformable ) {
 		super( source );
-		if (mtTransformable != null)
+		if( mtTransformable != null )
 		{
-			this.transformable = ImplementationAccessor.getImplementation(mtTransformable);
+			this.transformable = ImplementationAccessor.getImplementation( mtTransformable );
 		}
 		else
 		{
 			this.transformable = null;
 		}
 	}
-	
+
 	public AbstractTransformableImp getTransformable() {
 		return this.transformable;
 	}

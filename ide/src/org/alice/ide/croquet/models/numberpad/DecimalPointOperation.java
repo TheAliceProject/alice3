@@ -46,7 +46,8 @@ package org.alice.ide.croquet.models.numberpad;
  * @author Dennis Cosgrove
  */
 public class DecimalPointOperation extends NumberPadOperation {
-	private static java.util.Map< NumberModel<?>, DecimalPointOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<NumberModel<?>, DecimalPointOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized DecimalPointOperation getInstance( NumberModel<?> model ) {
 		DecimalPointOperation rv = map.get( model );
 		if( rv != null ) {
@@ -61,16 +62,19 @@ public class DecimalPointOperation extends NumberPadOperation {
 	private DecimalPointOperation( NumberModel<?> model ) {
 		super( java.util.UUID.fromString( "45fb7f55-166b-421c-9e6d-cf781b562936" ), model );
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		java.text.DecimalFormatSymbols decimalFormatSymbols = new java.text.DecimalFormatSymbols();
 		this.setName( "" + decimalFormatSymbols.getDecimalSeparator() );
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
+	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver<NumberPadOperation> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver<NumberPadOperation>( this, this.numberModel );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

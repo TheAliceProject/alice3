@@ -46,9 +46,10 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel model, Class<? extends org.lgna.project.ast.Statement> cls) {
-		super( model, cls, javax.swing.BoxLayout.LINE_AXIS);
+	public StatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel model, Class<? extends org.lgna.project.ast.Statement> cls ) {
+		super( model, cls, javax.swing.BoxLayout.LINE_AXIS );
 	}
+
 	@Override
 	protected boolean isPressed() {
 		return false;

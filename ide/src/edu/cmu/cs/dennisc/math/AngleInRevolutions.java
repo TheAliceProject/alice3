@@ -47,18 +47,23 @@ package edu.cmu.cs.dennisc.math;
  */
 public class AngleInRevolutions implements Angle {
 	private double m_revolutions;
+
 	public AngleInRevolutions( double revolutions ) {
 		setAsRevolutions( revolutions );
 	}
+
 	public AngleInRevolutions( Angle other ) {
 		set( other );
 	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		m_revolutions = binaryDecoder.decodeDouble();
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( m_revolutions );
 	}
+
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof Angle ) {
@@ -68,27 +73,35 @@ public class AngleInRevolutions implements Angle {
 			return false;
 		}
 	}
+
 	public boolean isNaN() {
 		return Double.isNaN( m_revolutions );
 	}
+
 	public void setNaN() {
 		m_revolutions = Double.NaN;
 	}
+
 	public double getAsRadians() {
 		return edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( m_revolutions );
 	}
+
 	public double getAsDegrees() {
 		return edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToDegrees( m_revolutions );
 	}
+
 	public double getAsRevolutions() {
 		return m_revolutions;
 	}
+
 	public void setAsRadians( double radians ) {
 		m_revolutions = AngleUtilities.radiansToRevolutions( radians );
 	}
+
 	public void setAsDegrees( double degrees ) {
 		m_revolutions = AngleUtilities.degreesToRevolutions( degrees );
 	}
+
 	public void setAsRevolutions( double revolutions ) {
 		m_revolutions = revolutions;
 	}
@@ -96,12 +109,12 @@ public class AngleInRevolutions implements Angle {
 	public Angle createCopy() {
 		return new AngleInDegrees( this );
 	}
-	
+
 	public void set( Angle other ) {
 		setAsRevolutions( other.getAsRevolutions() );
 	}
-	
-	public void setToInterpolation(Angle a0, Angle a1, double portion) {
+
+	public void setToInterpolation( Angle a0, Angle a1, double portion ) {
 		setAsRevolutions( InterpolationUtilities.interpolate( a0.getAsRevolutions(), a1.getAsRevolutions(), portion ) );
 	}
 

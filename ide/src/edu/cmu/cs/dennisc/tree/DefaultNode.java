@@ -46,15 +46,18 @@ package edu.cmu.cs.dennisc.tree;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNode< T > implements Node< T > {
+public class DefaultNode<T> implements Node<T> {
 	private final T value;
-	private final java.util.List< DefaultNode<T> > children;
-	public static <T> DefaultNode< T > createUnsafeInstance( T value, Class<T> cls ) {
-		return new DefaultNode< T >( value, false );
+	private final java.util.List<DefaultNode<T>> children;
+
+	public static <T> DefaultNode<T> createUnsafeInstance( T value, Class<T> cls ) {
+		return new DefaultNode<T>( value, false );
 	}
-	public static <T> DefaultNode< T > createSafeInstance( T value, Class<T> cls ) {
-		return new DefaultNode< T >( value, true );
+
+	public static <T> DefaultNode<T> createSafeInstance( T value, Class<T> cls ) {
+		return new DefaultNode<T>( value, true );
 	}
+
 	private DefaultNode( T value, boolean isCopyOnWrite ) {
 		this.value = value;
 		if( isCopyOnWrite ) {
@@ -63,21 +66,25 @@ public class DefaultNode< T > implements Node< T > {
 			this.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		}
 	}
+
 	public void addChild( DefaultNode<T> node ) {
 		this.children.add( node );
 	}
-	public DefaultNode< T > addChild( T child ) {
-		DefaultNode< T > rv = new DefaultNode< T >( child, this.children instanceof java.util.concurrent.CopyOnWriteArrayList );
+
+	public DefaultNode<T> addChild( T child ) {
+		DefaultNode<T> rv = new DefaultNode<T>( child, this.children instanceof java.util.concurrent.CopyOnWriteArrayList );
 		this.addChild( rv );
 		return rv;
 	}
+
 	public void removeChild( DefaultNode<T> node ) {
 		this.children.remove( node );
 	}
-	public DefaultNode< T > removeChild( T child ) {
-		java.util.ListIterator< DefaultNode< T > > listIterator = this.children.listIterator();
+
+	public DefaultNode<T> removeChild( T child ) {
+		java.util.ListIterator<DefaultNode<T>> listIterator = this.children.listIterator();
 		while( listIterator.hasNext() ) {
-			DefaultNode< T > node = listIterator.next();
+			DefaultNode<T> node = listIterator.next();
 			if( node.getValue().equals( child ) ) {
 				listIterator.remove();
 				return node;
@@ -85,17 +92,20 @@ public class DefaultNode< T > implements Node< T > {
 		}
 		return null;
 	}
+
 	public T getValue() {
 		return this.value;
 	}
-	public java.util.List< DefaultNode< T > > getChildren() {
+
+	public java.util.List<DefaultNode<T>> getChildren() {
 		return this.children;
 	}
-	
-	public boolean contains(T value) {
+
+	public boolean contains( T value ) {
 		return get( value ) != null;
 	}
-	public edu.cmu.cs.dennisc.tree.DefaultNode<T> get(T value) {
+
+	public edu.cmu.cs.dennisc.tree.DefaultNode<T> get( T value ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
 			return this;
 		} else {
@@ -108,7 +118,7 @@ public class DefaultNode< T > implements Node< T > {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

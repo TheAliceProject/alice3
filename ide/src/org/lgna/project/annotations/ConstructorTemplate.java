@@ -46,8 +46,9 @@ package org.lgna.project.annotations;
  * @author Dennis Cosgrove
  */
 @java.lang.annotation.Documented
-@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+@java.lang.annotation.Retention( java.lang.annotation.RetentionPolicy.RUNTIME )
 public @interface ConstructorTemplate {
 	Visibility visibility() default org.lgna.project.annotations.Visibility.PRIME_TIME;
+
 	boolean isFollowedByLongerConstructor() default false;
 }

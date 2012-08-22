@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitSuit implements MaleAdultFullBodyOutfit {
-	GREYSHORTLAPEL ,
- 	BLUEPIN ,
- 	GREYPIN ,
- 	BROWN ,
- 	REDSMOKING ;
+	GREYSHORTLAPEL,
+	BLUEPIN,
+	GREYPIN,
+	BROWN,
+	REDSMOKING;
 }

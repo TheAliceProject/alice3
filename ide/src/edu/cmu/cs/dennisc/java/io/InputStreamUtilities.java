@@ -71,8 +71,8 @@ public class InputStreamUtilities {
 			if( n > 0 ) {
 				buffer = new byte[ n ];
 				int offset = 0;
-				while( offset<n ) {
-					offset += is.read( buffer, offset, n-offset ); 
+				while( offset < n ) {
+					offset += is.read( buffer, offset, n - offset );
 				}
 				assert offset == n;
 			} else {
@@ -81,7 +81,8 @@ public class InputStreamUtilities {
 		}
 		return baos.toByteArray();
 	}
-	public static byte[] getBytes( java.io.File file ) throws java.io.IOException{
+
+	public static byte[] getBytes( java.io.File file ) throws java.io.IOException {
 		java.io.FileInputStream fis = new java.io.FileInputStream( file );
 		try {
 			return getBytes( fis );
@@ -89,7 +90,8 @@ public class InputStreamUtilities {
 			fis.close();
 		}
 	}
-	public static byte[] getBytes( Class< ? > cls, String resourceName ) throws java.io.IOException{
+
+	public static byte[] getBytes( Class<?> cls, String resourceName ) throws java.io.IOException {
 		java.io.InputStream is = cls.getResourceAsStream( resourceName );
 		try {
 			return getBytes( is );

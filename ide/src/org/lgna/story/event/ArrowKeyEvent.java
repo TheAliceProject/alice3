@@ -5,10 +5,12 @@ import org.lgna.story.Key;
 public class ArrowKeyEvent extends AbstractKeyEvent {
 
 	public enum MoveDirectionPlane {
-		FORWARD_BACKWARD_LEFT_RIGHT, UP_DOWN_LEFT_RIGHT;
+		FORWARD_BACKWARD_LEFT_RIGHT,
+		UP_DOWN_LEFT_RIGHT;
 	};
 
 	public static final java.util.List<Key> ARROWS = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( Key.UP, Key.DOWN, Key.LEFT, Key.RIGHT, Key.A, Key.S, Key.D, Key.W );
+
 	public ArrowKeyEvent( java.awt.event.KeyEvent e ) {
 		super( e );
 		boolean isArrow = false;
@@ -20,6 +22,7 @@ public class ArrowKeyEvent extends AbstractKeyEvent {
 		}
 		assert isArrow : e;
 	}
+
 	public ArrowKeyEvent( AbstractKeyEvent other ) {
 		this( other.getJavaEvent() );
 	}

@@ -46,21 +46,22 @@ package org.alice.stageide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel< org.lgna.project.ast.Expression > {
+public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
 	private final org.lgna.project.ast.Expression expression;
-	private final java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos;
+	private final java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos;
 	private final int index;
 	private final boolean isOwnedByCascadeItemMenuCombo;
 
-	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression, java.util.List< org.alice.stageide.ast.JointedTypeInfo > jointedTypeInfos, int index, boolean isOwnedByCascadeItemMenuCombo ) {
+	public JointExpressionMenuModel( org.lgna.project.ast.Expression expression, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index, boolean isOwnedByCascadeItemMenuCombo ) {
 		super( java.util.UUID.fromString( "c70ca3a5-b1e0-4ed9-8648-14acd52a4091" ) );
 		this.expression = expression;
 		this.jointedTypeInfos = jointedTypeInfos;
 		this.index = index;
 		this.isOwnedByCascadeItemMenuCombo = isOwnedByCascadeItemMenuCombo;
 	}
+
 	@Override
-	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression,org.lgna.project.ast.Expression> node ) {
+	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> node ) {
 		if( this.isOwnedByCascadeItemMenuCombo ) {
 			return super.getMenuProxy( node );
 		} else {
@@ -68,20 +69,21 @@ public class JointExpressionMenuModel extends org.lgna.croquet.CascadeMenuModel<
 			return expressionPane;
 		}
 	}
+
 	@Override
-	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+	protected final java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.alice.stageide.ast.JointedTypeInfo info = jointedTypeInfos.get( this.index );
-		JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance( info.getType() ); 
+		JointedModelTypeSeparator separator = JointedModelTypeSeparator.getInstance( info.getType() );
 		org.lgna.croquet.CascadeBlankChild child;
-		if( jointedTypeInfos.size() > this.index+1 ) {
-			child = new org.lgna.croquet.CascadeItemMenuCombo( separator, new JointExpressionMenuModel( this.expression, this.jointedTypeInfos, this.index+1, true ) );
+		if( jointedTypeInfos.size() > ( this.index + 1 ) ) {
+			child = new org.lgna.croquet.CascadeItemMenuCombo( separator, new JointExpressionMenuModel( this.expression, this.jointedTypeInfos, this.index + 1, true ) );
 		} else {
 			child = separator;
 		}
 		rv.add( child );
-		
-		org.alice.stageide.joint.JointsSubMenu<org.lgna.project.ast.MethodInvocation>[] subMenus = org.alice.stageide.joint.JointsSubMenuManager.getSubMenusForType( info.getType() ); 
-		
+
+		org.alice.stageide.joint.JointsSubMenu<org.lgna.project.ast.MethodInvocation>[] subMenus = org.alice.stageide.joint.JointsSubMenuManager.getSubMenusForType( info.getType() );
+
 		for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
 			JointExpressionFillIn fillIn = JointExpressionFillIn.getInstance( expression, method );
 			if( fillIn != null ) {

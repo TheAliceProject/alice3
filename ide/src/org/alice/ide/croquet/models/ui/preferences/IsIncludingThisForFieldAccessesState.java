@@ -49,9 +49,11 @@ public class IsIncludingThisForFieldAccessesState extends org.lgna.croquet.prefe
 	private static class SingletonHolder {
 		private static IsIncludingThisForFieldAccessesState instance = new IsIncludingThisForFieldAccessesState();
 	}
+
 	public static IsIncludingThisForFieldAccessesState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsIncludingThisForFieldAccessesState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), true );
 	}

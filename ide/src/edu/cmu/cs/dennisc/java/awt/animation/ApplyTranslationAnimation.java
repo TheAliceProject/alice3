@@ -50,10 +50,12 @@ public class ApplyTranslationAnimation extends SubjectAnimation {
 	private edu.cmu.cs.dennisc.math.Point2f m_sum = new edu.cmu.cs.dennisc.math.Point2f();
 	private edu.cmu.cs.dennisc.math.Point2f m_interp = new edu.cmu.cs.dennisc.math.Point2f();
 	private java.awt.Point m_runtime = new java.awt.Point();
+
 	public ApplyTranslationAnimation() {
 		m_translation.setNaN();
 		m_sum.setNaN();
 	}
+
 	public ApplyTranslationAnimation( java.awt.Component awtSubject, edu.cmu.cs.dennisc.math.Point2f translation ) {
 		super( awtSubject );
 		setTranslation( translation );
@@ -63,13 +65,16 @@ public class ApplyTranslationAnimation extends SubjectAnimation {
 	public edu.cmu.cs.dennisc.math.Point2f accessTranslation() {
 		return m_translation;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point2f getTranslation( edu.cmu.cs.dennisc.math.Point2f rv ) {
 		rv.set( m_translation );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point2f getTranslation() {
 		return getTranslation( new edu.cmu.cs.dennisc.math.Point2f() );
 	}
+
 	public void setTranslation( edu.cmu.cs.dennisc.math.Point2f translation ) {
 		m_translation.set( translation );
 	}
@@ -78,19 +83,21 @@ public class ApplyTranslationAnimation extends SubjectAnimation {
 	public void prologue() {
 		m_sum.set( 0, 0 );
 	}
+
 	@Override
 	public void setPortion( double portion ) {
 		edu.cmu.cs.dennisc.math.InterpolationUtilities.interpolate( m_interp, m_translation, portion );
-		
+
 		getSubject().getLocation( m_runtime );
-		
+
 		m_runtime.x += m_interp.x - m_sum.x;
 		m_runtime.y += m_interp.y - m_sum.y;
-		
+
 		getSubject().setLocation( m_runtime );
 
 		m_sum.set( m_interp );
 	}
+
 	@Override
 	public void epilogue() {
 		m_sum.setNaN();

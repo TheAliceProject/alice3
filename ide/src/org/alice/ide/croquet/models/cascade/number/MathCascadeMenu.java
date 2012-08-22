@@ -46,48 +46,51 @@ package org.alice.ide.croquet.models.cascade.number;
 /**
  * @author Dennis Cosgrove
  */
-public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.Expression > {
+public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
 	private static class SingletonHolder {
 		private static MathCascadeMenu instance = new MathCascadeMenu();
 	}
+
 	public static MathCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private MathCascadeMenu() {
 		super( java.util.UUID.fromString( "d6d9501b-2a63-4b72-9ceb-3046ff079ba1" ) );
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > context ) {
-//		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-//			rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
-//		}
-//		blank.addSeparator();
-//		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
-//			rv.add( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
-//		}
-//		blank.addSeparator();
-//
-//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "remainder, integer divide" ) {
-//			@Override
-//			protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-//				if( previousExpression != null ) {
-//					for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS ) {
-//						rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
-//					}
-//					blank.addSeparator();
-//				}
-//				for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS ) {
-//					rv.add( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
-//				}
-//			}
-//		} );
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+		//		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
+		//			rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
+		//		}
+		//		blank.addSeparator();
+		//		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
+		//			rv.add( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
+		//		}
+		//		blank.addSeparator();
+		//
+		//		rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "remainder, integer divide" ) {
+		//			@Override
+		//			protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		//				if( previousExpression != null ) {
+		//					for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS ) {
+		//						rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
+		//					}
+		//					blank.addSeparator();
+		//				}
+		//				for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : TUCKED_AWAY_DOUBLE_ARITHMETIC_OPERATORS ) {
+		//					rv.add( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( org.lgna.project.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE, operator, org.lgna.project.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) );
+		//				}
+		//			}
+		//		} );
 		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
 			rv.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 		}
 		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
 			rv.add( org.alice.ide.croquet.models.cascade.number.NumberArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
-		
+
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( org.alice.ide.croquet.models.cascade.number.MinMaxCascadeMenu.getInstance() );
 		rv.add( FloorCeilingCascadeMenu.getInstance() );

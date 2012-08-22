@@ -46,8 +46,9 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, ConstantsOwningFillerInner > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ConstantsOwningFillerInner getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static ConstantsOwningFillerInner getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		synchronized( map ) {
 			ConstantsOwningFillerInner rv = map.get( type );
 			if( rv != null ) {
@@ -59,19 +60,22 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 			return rv;
 		}
 	}
+
 	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
 		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
-	private ConstantsOwningFillerInner( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	private ConstantsOwningFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = this.getType();
- 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
- 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
- 			}
- 		}
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getType();
+		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
+			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
+				items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+			}
+		}
 	}
 }

@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class ResizeWidth extends DurationAnimationStyleIsVolumePreservedArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=ResizeWidth.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = ResizeWidth.class )
 	public static interface Detail {
 	}
+
 	private ResizeWidth() {
 		super();
 	}

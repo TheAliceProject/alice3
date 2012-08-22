@@ -54,30 +54,36 @@ public abstract class AbstractElement implements Element {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "org.lgna.croquet.Element.isIdCheckDesired==true" );
 		}
 	}
-	
-	protected static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.Resolver< D > {
+
+	protected static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.Resolver<D> {
 		private final org.lgna.croquet.resolvers.Resolver<I> resolver;
+
 		public IndirectResolver( I indirect ) {
 			this.resolver = indirect.getResolver();
 		}
+
 		public IndirectResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			this.resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		}
+
 		public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			binaryEncoder.encode( this.resolver );
 		}
+
 		protected abstract D getDirect( I indirect );
+
 		public final D getResolved() {
 			return this.getDirect( this.resolver.getResolved() );
 		}
+
 		public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
 			this.resolver.retarget( retargeter );
 		}
 	}
 
-	
 	private final java.util.UUID migrationId;
 	private org.lgna.croquet.resolvers.Resolver<Element> resolver;
+
 	public AbstractElement( java.util.UUID migrationId ) {
 		this.migrationId = migrationId;
 		if( map != null ) {
@@ -96,14 +102,18 @@ public abstract class AbstractElement implements Element {
 			}
 		}
 	}
+
 	public java.util.UUID getMigrationId() {
 		return this.migrationId;
 	}
+
 	private boolean isInTheMidstOfInitialization = false;
 	private boolean isInitialized = false;
+
 	protected void initialize() {
 		this.localize();
 	}
+
 	public final void initializeIfNecessary() {
 		if( this.isInitialized ) {
 			//pass
@@ -121,6 +131,7 @@ public abstract class AbstractElement implements Element {
 			}
 		}
 	}
+
 	public final void relocalize() {
 		this.localize();
 	}
@@ -128,21 +139,22 @@ public abstract class AbstractElement implements Element {
 	protected Class<? extends Element> getClassUsedForLocalization() {
 		return this.getClass();
 	}
+
 	protected String getSubKeyForLocalization() {
 		return null;
 	}
+
 	private static String findLocalizedText( Class<? extends Element> cls, String subKey ) {
 		if( cls != null ) {
 			String bundleName = cls.getPackage().getName() + ".croquet";
 			try {
 				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
 				String key = cls.getSimpleName();
-				
+
 				//todo?
 				//if( cls.isMemberClass() ) {
 				//}
-				
-				
+
 				if( subKey != null ) {
 					StringBuilder sb = new StringBuilder();
 					sb.append( key );
@@ -178,6 +190,7 @@ public abstract class AbstractElement implements Element {
 		}
 		return findLocalizedText( this.getClassUsedForLocalization(), actualSubKey );
 	}
+
 	protected String findDefaultLocalizedText() {
 		return this.findLocalizedText( null );
 	}
@@ -198,9 +211,11 @@ public abstract class AbstractElement implements Element {
 		}
 		return nullValue;
 	}
+
 	private static int getKeyCode( String vkFieldName ) {
 		return getField( java.awt.event.KeyEvent.class, vkFieldName, NULL_MNEMONIC );
 	}
+
 	private static int getModifierMask( String modifierText ) {
 		if( "PLATFORM_ACCELERATOR_MASK".equals( modifierText ) ) {
 			return edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
@@ -208,20 +223,22 @@ public abstract class AbstractElement implements Element {
 			return getField( java.awt.event.InputEvent.class, modifierText, NULL_ACCELERATOR_MASK );
 		}
 	}
-	
+
 	protected int getLocalizedMnemonicKey() {
 		return getKeyCode( this.findLocalizedText( "mnemonic" ) );
 	}
+
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
+
 	protected static javax.swing.KeyStroke getKeyStroke( String acceleratorText ) {
 		if( acceleratorText != null ) {
-			String[] array = acceleratorText.split(",");
+			String[] array = acceleratorText.split( "," );
 			if( array.length > 0 ) {
 				int keyCode = getKeyCode( array[ 0 ] );
 				if( keyCode != NULL_MNEMONIC ) {
 					int modifierMask;
-					if( java.awt.event.KeyEvent.VK_F1 <= keyCode && keyCode <= java.awt.event.KeyEvent.VK_F24 ) {
+					if( ( java.awt.event.KeyEvent.VK_F1 <= keyCode ) && ( keyCode <= java.awt.event.KeyEvent.VK_F24 ) ) {
 						modifierMask = 0;
 					} else {
 						modifierMask = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
@@ -239,31 +256,34 @@ public abstract class AbstractElement implements Element {
 					}
 					return javax.swing.KeyStroke.getKeyStroke( keyCode, modifierMask );
 				}
-				
+
 			}
 		}
 		return null;
 	}
+
 	protected javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke() {
 		return getKeyStroke( this.findLocalizedText( "accelerator" ) );
 	}
-	
+
 	protected abstract void localize();
-	
-	protected <M extends Element> org.lgna.croquet.resolvers.Resolver< M > createResolver() {
+
+	protected <M extends Element> org.lgna.croquet.resolvers.Resolver<M> createResolver() {
 		return new org.lgna.croquet.resolvers.SingletonResolver( this );
 	}
-	public <M extends Element> org.lgna.croquet.resolvers.Resolver< M > getResolver() {
+
+	public <M extends Element> org.lgna.croquet.resolvers.Resolver<M> getResolver() {
 		if( this.resolver != null ) {
 			//pass
 		} else {
 			this.resolver = this.createResolver();
 		}
-		return (org.lgna.croquet.resolvers.Resolver< M >)this.resolver;
+		return (org.lgna.croquet.resolvers.Resolver<M>)this.resolver;
 	}
-	
+
 	protected void appendRepr( StringBuilder sb ) {
 	}
+
 	protected String createRepr() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getSimpleName() );
@@ -272,7 +292,7 @@ public abstract class AbstractElement implements Element {
 		sb.append( "]" );
 		return sb.toString();
 	}
-	
+
 	public void appendUserRepr( StringBuilder sb ) {
 		sb.append( "todo: override appendUserString\n" );
 		sb.append( this );
@@ -280,6 +300,7 @@ public abstract class AbstractElement implements Element {
 		sb.append( this.getClass().getName() );
 		sb.append( "\n" );
 	}
+
 	@Override
 	public final String toString() {
 		return this.createRepr();

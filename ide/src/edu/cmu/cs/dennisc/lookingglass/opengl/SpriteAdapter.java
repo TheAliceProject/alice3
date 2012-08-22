@@ -46,30 +46,34 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class SpriteAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.Sprite > {
+public class SpriteAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.Sprite> {
 	@Override
-    public boolean isAlphaBlended() {
-    	return false;
-    }
+	public boolean isAlphaBlended() {
+		return false;
+	}
+
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
 		throw new RuntimeException( "todo" );
-    }
+	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		throw new RuntimeException( "todo" );
-	}    
+	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.radius ) {
-            //todo
+			//todo
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		rv.setNaN();
 		return rv;
 	}

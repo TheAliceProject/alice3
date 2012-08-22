@@ -49,8 +49,8 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class ScaleUtilities {
-	private static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgRoot, edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > inclusionCriterion ) {
-		if( inclusionCriterion == null || inclusionCriterion.accept( sgComponent ) /*&& !(sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Joint)*/) {
+	private static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgRoot, edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> inclusionCriterion ) {
+		if( ( inclusionCriterion == null ) || inclusionCriterion.accept( sgComponent ) /* && !(sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Joint) */) {
 			if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 				edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
 				if( sgComposite instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
@@ -64,7 +64,7 @@ public class ScaleUtilities {
 					}
 				}
 				final int N = sgComposite.getComponentCount();
-				for( int i=0; i<N; i++ ) {
+				for( int i = 0; i < N; i++ ) {
 					applyScale( sgRoot, sgComposite.getComponentAt( i ), axis, inclusionCriterion );
 				}
 			} else if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
@@ -75,10 +75,11 @@ public class ScaleUtilities {
 			}
 		}
 	}
-	public static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > inclusionCriterion ) {
+
+	public static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> inclusionCriterion ) {
 		applyScale( sgComponent, sgComponent, axis, inclusionCriterion );
 	}
-	
+
 	public static void exorciseTheDemonsOfScaledSpace( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
 		if( m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
@@ -87,15 +88,15 @@ public class ScaleUtilities {
 			double xScale = m.orientation.right.calculateMagnitude();
 			double yScale = m.orientation.up.calculateMagnitude();
 			double zScale = m.orientation.backward.calculateMagnitude();
-			
+
 			applyScale( sgTransformable, new edu.cmu.cs.dennisc.math.Vector3( xScale, yScale, zScale ), null );
-			
+
 			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 inverseScale = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createIdentity();
-			inverseScale.right.x = 1/xScale;
-			inverseScale.up.y = 1/yScale;
-			inverseScale.backward.z = 1/zScale;
+			inverseScale.right.x = 1 / xScale;
+			inverseScale.up.y = 1 / yScale;
+			inverseScale.backward.z = 1 / zScale;
 			m.orientation.applyMultiplication( inverseScale );
-			
+
 			assert m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		}
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgTransformable.getComponents() ) {
@@ -105,22 +106,22 @@ public class ScaleUtilities {
 			}
 		}
 	}
-	
+
 	public static Visual getSGVisualForTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable object )
 	{
-		if (object == null)
+		if( object == null )
 		{
 			return null;
 		}
-		for (int i=0; i<object.getComponentCount(); i++)
+		for( int i = 0; i < object.getComponentCount(); i++ )
 		{
 			Component c = object.getComponentAt( i );
-			if (c instanceof Visual)
+			if( c instanceof Visual )
 			{
 				return (Visual)c;
 			}
 		}
 		return null;
 	}
-	
+
 }

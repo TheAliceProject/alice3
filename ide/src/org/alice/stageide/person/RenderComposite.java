@@ -46,27 +46,32 @@ package org.alice.stageide.person;
 /**
  * @author Dennis Cosgrove
  */
-public class RenderComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.person.components.PersonViewer > {
+public class RenderComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.person.components.PersonViewer> {
 	private static class SingletonHolder {
 		private static RenderComposite instance = new RenderComposite();
 	}
+
 	public static RenderComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RenderComposite() {
 		super( java.util.UUID.fromString( "248ab13c-60cf-400b-9023-cfe46a1dd8df" ) );
 	}
+
 	private org.lgna.story.resources.sims2.PersonResource createPersonResource() {
 		return org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
 	}
+
 	@Override
 	protected org.alice.stageide.person.components.PersonViewer createView() {
 		org.alice.stageide.person.components.PersonViewer rv = org.alice.stageide.person.PersonResourceManager.SINGLETON.allocatePersonViewer( this.createPersonResource() );
 		return rv;
 	}
+
 	@Override
 	public void releaseView() {
-		org.alice.stageide.person.PersonResourceManager.SINGLETON.releasePersonViewer( this.getView() );		
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.releasePersonViewer( this.getView() );
 		super.releaseView();
 	}
 }

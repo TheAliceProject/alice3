@@ -49,14 +49,16 @@ public abstract class PrintOperation extends org.alice.ide.operations.Inconseque
 	public PrintOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}
+
 	protected abstract java.awt.print.Printable getPrintable();
+
 	@Override
 	protected final void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		java.awt.print.PrinterJob job = java.awt.print.PrinterJob.getPrinterJob();
 		java.awt.print.Printable printable = this.getPrintable();
 		if( printable != null ) {
 			job.setPrintable( printable );
-			if( job.printDialog(new javax.print.attribute.HashPrintRequestAttributeSet()) ) {
+			if( job.printDialog( new javax.print.attribute.HashPrintRequestAttributeSet() ) ) {
 				try {
 					job.print();
 				} catch( java.awt.print.PrinterException pe ) {

@@ -46,13 +46,15 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class LongBufferProperty extends PrimitiveBufferProperty< java.nio.LongBuffer > {
+public class LongBufferProperty extends PrimitiveBufferProperty<java.nio.LongBuffer> {
 	public LongBufferProperty( InstancePropertyOwner owner, java.nio.LongBuffer value ) {
 		super( owner, value );
 	}
+
 	public LongBufferProperty( InstancePropertyOwner owner, long[] value ) {
 		super( owner, java.nio.LongBuffer.wrap( value ) );
 	}
+
 	public final void setValue( long[] value ) {
 		this.setValue( java.nio.LongBuffer.wrap( value ) );
 	}

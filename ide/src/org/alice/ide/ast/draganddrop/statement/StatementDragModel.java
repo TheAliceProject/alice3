@@ -47,7 +47,8 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public class StatementDragModel extends AbstractStatementDragModel {
-	private static java.util.Map< org.lgna.project.ast.Statement, StatementDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.Statement, StatementDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized StatementDragModel getInstance( org.lgna.project.ast.Statement statement ) {
 		StatementDragModel rv = map.get( statement );
 		if( rv != null ) {
@@ -58,22 +59,28 @@ public class StatementDragModel extends AbstractStatementDragModel {
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.Statement statement;
+
 	private StatementDragModel( org.lgna.project.ast.Statement statement ) {
 		super( java.util.UUID.fromString( "e9c09a94-b2f0-440b-80ee-aff456b382e8" ) );
 		this.statement = statement;
 	}
+
 	@Override
 	public boolean isAddEventListenerLikeSubstance() {
 		return org.lgna.project.ast.AstUtilities.isAddEventListenerMethodInvocationStatement( this.statement );
 	}
+
 	public org.lgna.project.ast.Statement getStatement() {
 		return this.statement;
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StatementDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StatementDragModel >( this, org.lgna.project.ast.Statement.class, this.statement );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<StatementDragModel> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<StatementDragModel>( this, org.lgna.project.ast.Statement.class, this.statement );
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		throw new RuntimeException( "todo" );

@@ -41,7 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDressGothic implements FemaleAdultFullBodyOutfit {
-	DEADLYBLACK ,
- 	BLOODYRED ;
+	DEADLYBLACK,
+	BLOODYRED;
 }

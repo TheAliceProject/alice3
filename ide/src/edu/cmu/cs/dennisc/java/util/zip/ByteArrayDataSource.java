@@ -48,23 +48,28 @@ package edu.cmu.cs.dennisc.java.util.zip;
 public class ByteArrayDataSource implements DataSource {
 	private String name;
 	private byte[] data;
+
 	public ByteArrayDataSource( String name, byte[] data ) {
 		this.setName( name );
 		this.setData( data );
 	}
+
 	public String getName() {
 		return this.name;
 	}
+
 	public void setName( String name ) {
 		this.name = name;
 	}
+
 	public byte[] getData() {
 		return this.data;
 	}
+
 	public void setData( byte[] data ) {
 		this.data = data;
 	}
-	
+
 	public void write( java.io.OutputStream os ) throws java.io.IOException {
 		os.write( this.data );
 	}

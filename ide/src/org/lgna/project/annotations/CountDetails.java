@@ -48,15 +48,18 @@ package org.lgna.project.annotations;
  */
 public enum CountDetails implements IntegerValueDetails {
 	SINGLETON;
-	public Class< Integer > getSupportedCls() {
+	public Class<Integer> getSupportedCls() {
 		return Integer.class;
 	}
+
 	public Integer getMinimumValue() {
 		return 0;
 	}
+
 	public Integer getMaximumValue() {
 		return null;
 	}
+
 	public int[] getLiterals() {
 		return new int[] { 1, 2, 3 };
 	}

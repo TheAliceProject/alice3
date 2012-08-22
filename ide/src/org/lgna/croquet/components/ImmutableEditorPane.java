@@ -50,6 +50,7 @@ public class ImmutableEditorPane extends ImmutableTextComponent<javax.swing.JEdi
 	public ImmutableEditorPane( org.lgna.croquet.HtmlStringValue value ) {
 		super( value );
 	}
+
 	@Override
 	protected javax.swing.JEditorPane createAwtComponent() {
 		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", this.getValue().getText() ) {
@@ -57,6 +58,7 @@ public class ImmutableEditorPane extends ImmutableTextComponent<javax.swing.JEdi
 			public java.awt.Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
+
 			@Override
 			public void updateUI() {
 				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );

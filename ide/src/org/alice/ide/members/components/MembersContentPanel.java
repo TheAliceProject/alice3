@@ -47,42 +47,48 @@ package org.alice.ide.members.components;
  */
 public abstract class MembersContentPanel extends org.lgna.croquet.components.PageAxisPanel {
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 			MembersContentPanel.this.refreshLater();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 			MembersContentPanel.this.refreshLater();
 		}
 	};
-	public MembersContentPanel( org.lgna.croquet.TabComposite< ? > composite ) {
+
+	public MembersContentPanel( org.lgna.croquet.TabComposite<?> composite ) {
 		super( composite );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactoryListener );
 		org.alice.ide.declarationseditor.TypeState.getInstance().addValueListener( this.typeListener );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactoryListener );
 		super.handleUndisplayable();
 	}
-	
-	protected abstract void refresh( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types );
+
+	protected abstract void refresh( java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types );
+
 	@Override
 	protected void internalRefresh() {
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( instanceFactory != null ) {
-			org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
 			while( type != null ) {
 				types.add( type );
 				if( type.isFollowToSuperClassDesired() ) {
@@ -95,4 +101,3 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 		this.refresh( types );
 	}
 }
-

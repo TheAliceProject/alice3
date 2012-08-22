@@ -45,8 +45,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class JointAdapter extends TransformableAdapter< edu.cmu.cs.dennisc.scenegraph.Joint > {
-	
+public class JointAdapter extends TransformableAdapter<edu.cmu.cs.dennisc.scenegraph.Joint> {
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.jointID ) {

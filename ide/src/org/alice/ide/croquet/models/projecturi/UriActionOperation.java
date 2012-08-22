@@ -49,6 +49,7 @@ public abstract class UriActionOperation extends org.lgna.croquet.ActionOperatio
 	public UriActionOperation( java.util.UUID individualUUID ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
+
 	protected org.alice.ide.ProjectApplication getProjectApplication() {
 		return org.alice.ide.ProjectApplication.getActiveInstance();
 	}

@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitClosedCoatLongPants implements MaleAdultFullBodyOutfit {
-	TUXBROWN ,
- 	TUXBLACK ,
- 	TUXBLUE ,
- 	TUXWHITE ,
- 	TUXAQUALAPEL ,
- 	TUXPINK ;
+	TUXBROWN,
+	TUXBLACK,
+	TUXBLUE,
+	TUXWHITE,
+	TUXAQUALAPEL,
+	TUXPINK;
 }

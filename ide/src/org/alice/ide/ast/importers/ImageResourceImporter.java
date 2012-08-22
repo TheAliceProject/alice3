@@ -46,22 +46,24 @@ package org.alice.ide.ast.importers;
 /**
  * @author Dennis Cosgrove
  */
-public final class ImageResourceImporter extends org.lgna.croquet.importer.Importer< org.lgna.common.resources.ImageResource > { 
+public final class ImageResourceImporter extends org.lgna.croquet.importer.Importer<org.lgna.common.resources.ImageResource> {
 	private static class SingletonHolder {
 		private static ImageResourceImporter instance = new ImageResourceImporter();
 	}
+
 	public static ImageResourceImporter getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ImageResourceImporter() {
 		super(
-				java.util.UUID.randomUUID(), 
-				edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), 
+				java.util.UUID.randomUUID(),
+				edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(),
 				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.png;*.jpg;*.gif;*.bmp" : null,
 				org.lgna.common.resources.ImageResource.createFilenameFilter( true ),
-				"png", "jpg", "gif", "bmp"
-		);
+				"png", "jpg", "gif", "bmp" );
 	}
+
 	@Override
 	protected org.lgna.common.resources.ImageResource createFromFile( java.io.File file ) throws java.io.IOException {
 		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );

@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class FieldArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized FieldArrayLengthOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
@@ -60,16 +61,19 @@ public class FieldArrayLengthOperation extends ArrayLengthOperation {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.AbstractField field;
+
 	private FieldArrayLengthOperation( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "52ff6677-3ebe-44ba-8869-b1b2761ead6f" ), expressionProperty );
 		this.field = field;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return org.lgna.project.ast.AstUtilities.createFieldAccess( 
-				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), 
+		return org.lgna.project.ast.AstUtilities.createFieldAccess(
+				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(),
 				this.field
-		);
+				);
 	}
 }

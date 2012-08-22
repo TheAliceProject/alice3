@@ -46,22 +46,26 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TableRowSelectionState<T> extends ItemState< T > {
+public abstract class TableRowSelectionState<T> extends ItemState<T> {
 	public class SwingModel {
 		private final javax.swing.table.TableModel tableModel;
 		private final javax.swing.ListSelectionModel listSelectionModel;
 		private final javax.swing.table.TableColumnModel tableColumnModel;
+
 		private SwingModel( javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
 			this.tableModel = tableModel;
 			this.tableColumnModel = tableColumnModel;
 			this.listSelectionModel = listSelectionModel;
 		}
+
 		public javax.swing.table.TableModel getTableModel() {
 			return this.tableModel;
 		}
+
 		public javax.swing.table.TableColumnModel getTableColumnModel() {
 			return this.tableColumnModel;
 		}
+
 		public javax.swing.ListSelectionModel getListSelectionModel() {
 			return this.listSelectionModel;
 		}
@@ -73,18 +77,21 @@ public abstract class TableRowSelectionState<T> extends ItemState< T > {
 		}
 	};
 	private final SwingModel swingModel;
-	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec< T > itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
+
+	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
 		super( group, migrationId, initialValue, itemCodec );
 		this.swingModel = new SwingModel( tableModel, tableColumnModel, listSelectionModel );
 		this.swingModel.getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
-	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec< T > itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel ) {
+
+	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel ) {
 		this( group, migrationId, initialValue, itemCodec, tableModel, tableColumnModel, new javax.swing.DefaultListSelectionModel() );
 	}
-	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec< T > itemCodec, javax.swing.table.TableModel tableModel ) {
+
+	public TableRowSelectionState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel ) {
 		this( group, migrationId, initialValue, itemCodec, tableModel, null ); //new javax.swing.table.DefaultTableColumnModel() );
 	}
-	
+
 	private void handleListSelectionChanged( javax.swing.event.ListSelectionEvent e ) {
 		T prevValue = null;
 		T nextValue = this.getValue();
@@ -96,11 +103,13 @@ public abstract class TableRowSelectionState<T> extends ItemState< T > {
 		}
 		this.fireChanged( prevValue, nextValue, isAdjusting );
 	}
+
 	@Override
 	protected void localize() {
 	}
-	
+
 	protected abstract T getActualValueAt( int selectionIndex );
+
 	@Override
 	protected final T getActualValue() {
 		javax.swing.ListSelectionModel listSelectionModel = this.getSwingModel().getListSelectionModel();
@@ -117,15 +126,17 @@ public abstract class TableRowSelectionState<T> extends ItemState< T > {
 			}
 		}
 	}
-	
+
 	@Override
-	public Iterable< ? extends org.lgna.croquet.PrepModel > getPotentialRootPrepModels() {
+	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
 		return java.util.Collections.emptyList();
 	}
+
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
-	public org.lgna.croquet.components.Table< T > createTable() {
-		return new org.lgna.croquet.components.Table< T >( this );
+
+	public org.lgna.croquet.components.Table<T> createTable() {
+		return new org.lgna.croquet.components.Table<T>( this );
 	}
 }

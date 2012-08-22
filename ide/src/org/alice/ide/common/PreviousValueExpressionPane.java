@@ -48,20 +48,23 @@ package org.alice.ide.common;
 public class PreviousValueExpressionPane extends org.lgna.croquet.components.BorderPanel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.alice.ide.ast.PreviousValueExpression expression;
+
 	public PreviousValueExpressionPane( org.alice.ide.x.AstI18nFactory factory, org.alice.ide.ast.PreviousValueExpression expression ) {
 		this.factory = factory;
 		this.expression = expression;
 	}
+
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 		super.handleAddedTo( parent );
 		org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
-		org.lgna.croquet.components.JComponent< ? > component = this.factory.createExpressionPane( previousExpression );
+		org.lgna.croquet.components.JComponent<?> component = this.factory.createExpressionPane( previousExpression );
 		component.getAwtComponent().doLayout();
 		this.addCenterComponent( component );
 	}
+
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
 		this.forgetAndRemoveAllComponents();
 		super.handleRemovedFrom( parent );
 	}

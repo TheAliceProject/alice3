@@ -50,7 +50,8 @@ public class BlockStatementGenerator {
 	private BlockStatementGenerator() {
 		throw new AssertionError();
 	}
-	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>,StatementGenerator> mapStatementClassToGenerator = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private static final java.util.Map<Class<? extends org.lgna.project.ast.Statement>, StatementGenerator> mapStatementClassToGenerator = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.Comment.class, org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
 		mapStatementClassToGenerator.put( org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance() );
@@ -63,12 +64,13 @@ public class BlockStatementGenerator {
 		mapStatementClassToGenerator.put( org.lgna.project.ast.WhileLoop.class, org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
 		mapStatementClassToGenerator.put( org.lgna.project.ast.LocalDeclarationStatement.class, org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
 	}
-	
+
 	private static org.alice.ide.ast.draganddrop.BlockStatementIndexPair createRetargetedLocation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair original, org.alice.ide.ast.draganddrop.BlockStatementIndexPair destination ) {
 		org.lgna.project.ast.BlockStatement nextBlockStatement = destination.getBlockStatement();
 		int nextIndex = destination.getIndex() + original.getIndex();
 		return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( nextBlockStatement, nextIndex );
 	}
+
 	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
 			if( statement.isEnabled.getValue() ) {
@@ -88,7 +90,7 @@ public class BlockStatementGenerator {
 						if( method instanceof org.lgna.project.ast.UserMethod ) {
 							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
 							//todo: check to see if generation actually required
-							
+
 							org.lgna.project.ast.UserType<?> declaringType = userMethod.getDeclaringType();
 							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethod );
 							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( userMethod.getDeclaringType() ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit );
@@ -98,7 +100,7 @@ public class BlockStatementGenerator {
 
 						final int N = methodInvocation.requiredArguments.size();
 						initialExpressions = new org.lgna.project.ast.Expression[ N ];
-						for( int i=0; i<N; i++ ) {
+						for( int i = 0; i < N; i++ ) {
 							initialExpressions[ i ] = methodInvocation.requiredArguments.get( i ).expression.getValue();
 						}
 						instanceFactory = org.alice.ide.instancefactory.InstanceFactoryUtilities.getInstanceFactoryForExpression( instanceExpression );
@@ -108,7 +110,7 @@ public class BlockStatementGenerator {
 							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instanceExpression );
 						}
 						statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
-						
+
 						boolean isFieldTemplateCompositeValid = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue();
 						//todo
 						if( method.isProcedure() ) {
@@ -133,7 +135,7 @@ public class BlockStatementGenerator {
 					if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 						// pass
 					} else {
-						templateComposite = org.alice.ide.controlflow.ControlFlowComposite.getInstance( /*todo*/null );
+						templateComposite = org.alice.ide.controlflow.ControlFlowComposite.getInstance( /* todo */null );
 					}
 				}
 				boolean isReorderingDesired = statement instanceof org.lgna.project.ast.CountLoop;
@@ -144,7 +146,7 @@ public class BlockStatementGenerator {
 						BlockStatementGenerator.generateAndAddToTransactionHistory( history, statementWithBody.body.getValue() );
 					}
 				}
-				
+
 				if( statementGenerator != null ) {
 					if( instanceFactory != null ) {
 						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
@@ -184,17 +186,17 @@ public class BlockStatementGenerator {
 						org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
 
 						org.lgna.croquet.history.TransactionHistory[] bufferForCompletionStepSubTransactionHistory = { null };
-						
+
 						org.lgna.project.ast.MethodInvocation keyedArgumentMethodInvocation = (org.lgna.project.ast.MethodInvocation)argument.expression.getValue();
-						
+
 						org.lgna.croquet.CascadeFillIn fillIn = ExpressionFillInGenerator.generateFillInForExpression( keyedArgumentMethodInvocation.requiredArguments.get( 0 ).expression.getValue(), bufferForCompletionStepSubTransactionHistory );
-						
+
 						if( fillIn != null ) {
 							prepModels.add( fillIn );
 							menuItemPrepModels = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( prepModels, org.lgna.croquet.MenuItemPrepModel.class );
 							org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, menuBarComposite, menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance() );
 						}
-						
+
 						org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, moreCascade, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), bufferForCompletionStepSubTransactionHistory[ 0 ] );
 						completionStep.setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
 					}
@@ -206,13 +208,14 @@ public class BlockStatementGenerator {
 						org.lgna.croquet.Retargeter retargeter = new org.lgna.croquet.Retargeter() {
 							public void addKeyValuePair( java.lang.Object key, java.lang.Object value ) {
 							}
+
 							public <T> T retarget( T value ) {
 								if( value instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
 									org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)value;
 									if( blockStatementIndexPair.getBlockStatement() == statementWithBody.body.getValue() ) {
-//										org.lgna.project.ast.BlockStatement nextBlockStatement = destination.getBlockStatement();
-//										int nextIndex = destination.getIndex() + blockStatementIndexPair.getIndex();
-//										return (T)new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( nextBlockStatement, nextIndex );
+										//										org.lgna.project.ast.BlockStatement nextBlockStatement = destination.getBlockStatement();
+										//										int nextIndex = destination.getIndex() + blockStatementIndexPair.getIndex();
+										//										return (T)new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( nextBlockStatement, nextIndex );
 										return (T)createRetargetedLocation( blockStatementIndexPair, destination );
 									}
 								}
@@ -220,13 +223,13 @@ public class BlockStatementGenerator {
 							}
 						};
 						history.retarget( retargeter );
-						
+
 						for( org.lgna.project.ast.Statement subStatement : statementWithBody.body.getValue().statements ) {
 							org.lgna.croquet.DragModel dragModel = org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( subStatement );
 
 							org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( subStatement );
 							org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation = createRetargetedLocation( toLocation, destination );
-							
+
 							org.lgna.croquet.triggers.DragTrigger dragTrigger = org.lgna.croquet.triggers.DragTrigger.createGeneratorInstance();
 							org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( toLocation );
 							//org.lgna.croquet.Model tempDropModel = lastStatementDragModel.getDropModel( null, nextLocation );

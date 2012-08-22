@@ -42,12 +42,12 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, MethodHeaderMenuModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserMethod, MethodHeaderMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
 		MethodHeaderMenuModel rv = map.get( method );
 		if( rv != null ) {
@@ -61,8 +61,7 @@ public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuMod
 
 	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.FindReferencesFrameComposite.getInstance( method ).getBooleanState().getMenuItemPrepModel()
-		);
+				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.project.FindReferencesFrameComposite.getInstance( method ).getBooleanState().getMenuItemPrepModel() );
 	}
 }

@@ -46,29 +46,35 @@ package org.alice.ide.ast.fieldtree;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Node<N extends org.lgna.project.ast.AbstractDeclaration>  implements Comparable< Node<N> > {
+public abstract class Node<N extends org.lgna.project.ast.AbstractDeclaration> implements Comparable<Node<N>> {
 	private final TypeNode parent;
 	private final N declaration;
+
 	public Node( TypeNode parent, N declaration ) {
 		this.parent = parent;
 		this.declaration = declaration;
 	}
+
 	public TypeNode getParent() {
 		return this.parent;
 	}
+
 	public N getDeclaration() {
 		return this.declaration;
 	}
+
 	protected void append( StringBuilder sb, int depth ) {
-		for( int i=0; i<depth; i++ ) {
+		for( int i = 0; i < depth; i++ ) {
 			sb.append( "\t" );
 		}
 		sb.append( this.declaration );
 		sb.append( "\n" );
 	}
+
 	public int compareTo( Node<N> other ) {
 		return this.getDeclaration().getName().toLowerCase().compareTo( other.getDeclaration().getName().toLowerCase() );
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

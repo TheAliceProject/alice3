@@ -47,13 +47,16 @@ package edu.cmu.cs.dennisc.javax.swing.tooltips;
  */
 public class IconToolTip extends javax.swing.JToolTip {
 	private javax.swing.Icon icon;
+
 	public IconToolTip( javax.swing.Icon icon ) {
 		this.icon = icon;
 	}
+
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		return new java.awt.Dimension( this.icon.getIconWidth(), this.icon.getIconHeight() );
 	}
+
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		this.icon.paintIcon( this, g, 0, 0 );

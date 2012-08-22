@@ -50,6 +50,7 @@ public class IngredientImageUtilities {
 	private IngredientImageUtilities() {
 		throw new AssertionError();
 	}
+
 	public static java.net.URL getResource( String path ) {
 		return IngredientImageUtilities.class.getResource( path );
 	}

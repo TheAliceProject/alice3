@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleChildFullBodyOutfitJacketDressFlare implements FemaleChildFullBodyOutfit {
 	GEOMETRICBEIGE,
- 	HOUNDSTOOPINK,
- 	ICEBLUE;
+	HOUNDSTOOPINK,
+	ICEBLUE;
 }

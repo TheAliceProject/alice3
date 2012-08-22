@@ -52,18 +52,21 @@ public final class Ray {
 
 	public Ray() {
 	}
+
 	public Ray( Point3 origin, Vector3 direction ) {
 		this.origin.set( origin );
 		this.direction.set( direction );
 	}
+
 	public Ray( Ray other ) {
 		this( other.origin, other.direction );
 	}
 
 	@Override
 	public boolean equals( Object o ) {
-		if( o == this )
+		if( o == this ) {
 			return true;
+		}
 		if( o instanceof Ray ) {
 			Ray ray = (Ray)o;
 			return this.origin.equals( ray.origin ) && this.direction.equals( ray.direction );
@@ -71,14 +74,15 @@ public final class Ray {
 			return false;
 		}
 	}
+
 	@Override
 	public int hashCode() {
 		int rv = 17;
 		if( this.origin != null ) {
-			rv = 37*rv + this.origin.hashCode();
+			rv = ( 37 * rv ) + this.origin.hashCode();
 		}
 		if( this.direction != null ) {
-			rv = 37*rv + this.direction.hashCode();
+			rv = ( 37 * rv ) + this.direction.hashCode();
 		}
 		return rv;
 	}
@@ -86,6 +90,7 @@ public final class Ray {
 	public boolean isNaN() {
 		return this.origin.isNaN() || this.direction.isNaN();
 	}
+
 	public void setNaN() {
 		this.origin.setNaN();
 		this.direction.setNaN();
@@ -94,13 +99,16 @@ public final class Ray {
 	public Point3 accessOrigin() {
 		return this.origin;
 	}
+
 	public Point3 getOrigin( Point3 rv ) {
 		rv.set( this.origin );
 		return rv;
 	}
+
 	public Point3 getOrigin() {
 		return getOrigin( new Point3() );
 	}
+
 	public void setOrigin( Point3 origin ) {
 		if( origin != null ) {
 			this.setOrigin( origin.x, origin.y, origin.z );
@@ -108,19 +116,24 @@ public final class Ray {
 			this.setOrigin( Double.NaN, Double.NaN, Double.NaN );
 		}
 	}
+
 	public void setOrigin( double x, double y, double z ) {
 		this.origin.set( x, y, z );
 	}
+
 	public Vector3 accessDirection() {
 		return this.direction;
 	}
+
 	public Vector3 getDirection( Vector3 rv ) {
 		rv.set( this.direction );
 		return rv;
 	}
+
 	public Vector3 getDirection() {
 		return getDirection( new Vector3() );
 	}
+
 	public void setDirection( Vector3 direction ) {
 		if( direction != null ) {
 			this.setDirection( direction.x, direction.y, direction.z );
@@ -128,6 +141,7 @@ public final class Ray {
 			this.setDirection( Double.NaN, Double.NaN, Double.NaN );
 		}
 	}
+
 	public void setDirection( double x, double y, double z ) {
 		this.direction.set( x, y, z );
 	}
@@ -164,6 +178,7 @@ public final class Ray {
 		//		transformedDirection.w = 1;
 		//		this.direction = LinearAlgebra.newVector3d( transformedDirection );
 	}
+
 	@Override
 	public String toString() {
 		return "Ray[origin=" + this.origin + ",direction=" + this.direction + "]";

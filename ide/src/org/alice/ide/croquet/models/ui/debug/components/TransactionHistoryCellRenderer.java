@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui.debug.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer< Object > {
+public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<Object> {
 	@Override
 	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		if( value instanceof org.lgna.croquet.history.Transaction ) {
@@ -66,8 +66,8 @@ public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swi
 			sb.append( "</html>" );
 			rv.setText( sb.toString() );
 			rv.setIcon( null );
-		} else if( value instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
-			org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)value;
+		} else if( value instanceof org.lgna.croquet.history.CompletionStep<?> ) {
+			org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)value;
 			String name;
 			if( completionStep.isPending() ) {
 				name = "pending";
@@ -81,5 +81,5 @@ public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swi
 			rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
 		}
 		return rv;
-	}	
+	}
 }

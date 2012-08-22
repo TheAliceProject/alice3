@@ -45,8 +45,9 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayComposite< org.lgna.project.ast.EachInArrayTogether > {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayComposite<org.lgna.project.ast.EachInArrayTogether> {
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertEachInArrayTogetherComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized InsertEachInArrayTogetherComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		InsertEachInArrayTogetherComposite rv = map.get( blockStatementIndexPair );
@@ -58,15 +59,16 @@ public final class InsertEachInArrayTogetherComposite extends InsertEachInArrayC
 		}
 		return rv;
 	}
+
 	private InsertEachInArrayTogetherComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "314ebbd9-b810-49aa-9832-39825d54082a" ), blockStatementIndexPair );
 	}
+
 	@Override
 	protected org.lgna.project.ast.EachInArrayTogether createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
 		return new org.lgna.project.ast.EachInArrayTogether(
 				item,
-				initializer, 
-				new org.lgna.project.ast.BlockStatement() 
-		);
+				initializer,
+				new org.lgna.project.ast.BlockStatement() );
 	}
 }

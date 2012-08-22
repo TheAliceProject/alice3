@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.texture;
 public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public float u;
 	public float v;
-	
+
 	public static TextureCoordinate2f createNaN() {
 		return new TextureCoordinate2f( Float.NaN, Float.NaN );
 	}
@@ -56,21 +56,26 @@ public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.Binar
 	public TextureCoordinate2f( TextureCoordinate2f other ) {
 		this( other.u, other.v );
 	}
+
 	public TextureCoordinate2f( float u, float v ) {
 		this.u = u;
 		this.v = v;
 	}
-	public TextureCoordinate2f(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+
+	public TextureCoordinate2f( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.u = binaryDecoder.decodeFloat();
 		this.v = binaryDecoder.decodeFloat();
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( u );
 		binaryEncoder.encode( v );
 	}
+
 	public boolean isNaN() {
 		return Float.isNaN( u ) || Float.isNaN( v );
 	}
+
 	@Override
 	public final boolean equals( Object o ) {
 		if( this == o ) {
@@ -79,7 +84,7 @@ public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.Binar
 			if( o != null ) {
 				if( this.getClass().equals( o.getClass() ) ) {
 					TextureCoordinate2f other = (TextureCoordinate2f)o;
-					return Float.compare( this.u, other.u ) == 0 && Float.compare( this.v, other.v ) == 0;
+					return ( Float.compare( this.u, other.u ) == 0 ) && ( Float.compare( this.v, other.v ) == 0 );
 				} else {
 					return false;
 				}
@@ -88,12 +93,13 @@ public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.Binar
 			}
 		}
 	}
+
 	@Override
 	public final int hashCode() {
 		int rv = 17;
-		rv = 37*rv + this.getClass().hashCode();
-		rv = 37*rv + Float.floatToIntBits( this.u );
-		rv = 37*rv + Float.floatToIntBits( this.v );
+		rv = ( 37 * rv ) + this.getClass().hashCode();
+		rv = ( 37 * rv ) + Float.floatToIntBits( this.u );
+		rv = ( 37 * rv ) + Float.floatToIntBits( this.v );
 		return rv;
 	}
 }

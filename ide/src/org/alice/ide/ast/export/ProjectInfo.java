@@ -46,18 +46,19 @@ package org.alice.ide.ast.export;
  * @author Dennis Cosgrove
  */
 public class ProjectInfo {
-	private final java.util.Map<org.lgna.project.ast.UserType<?>,TypeInfo> typeInfoMap;
+	private final java.util.Map<org.lgna.project.ast.UserType<?>, TypeInfo> typeInfoMap;
 	private final edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> root = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( null, TypeInfo.class );
 	private boolean isInTheMidstOfChange;
+
 	public ProjectInfo( org.lgna.project.Project project ) {
 		java.util.Set<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
-		java.util.Map<org.lgna.project.ast.UserType<?>,TypeInfo> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.UserType<?>, TypeInfo> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		for( org.lgna.project.ast.NamedUserType type : types ) {
 			map.put( type, new TypeInfo( this, type ) );
 		}
 		this.typeInfoMap = java.util.Collections.unmodifiableMap( map );
-		
-		java.util.Map<TypeInfo,edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo>> mapInfoToNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+		java.util.Map<TypeInfo, edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo>> mapInfoToNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		java.util.Collection<TypeInfo> typeInfos = this.getTypeInfos();
 		for( TypeInfo typeInfo : typeInfos ) {
 			typeInfo.updateDependencies();
@@ -69,27 +70,30 @@ public class ProjectInfo {
 			edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> parent = mapInfoToNode.get( typeInfo.getSuperTypeInfo() );
 			parent.addChild( node );
 		}
-		
+
 		java.util.Collections.sort( this.root.getChildren(), new java.util.Comparator<edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo>>() {
 			public int compare( edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> o1, edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> o2 ) {
 				return o1.getValue().getDeclaration().getName().compareTo( o2.getValue().getDeclaration().getName() );
 			}
 		} );
 	}
-	
+
 	public edu.cmu.cs.dennisc.tree.Node<TypeInfo> getTypeInfosAsTree() {
 		return this.root;
 	}
-	
+
 	public java.util.Collection<TypeInfo> getTypeInfos() {
 		return this.typeInfoMap.values();
 	}
+
 	public TypeInfo getInfoForType( org.lgna.project.ast.UserType<?> type ) {
 		return this.typeInfoMap.get( type );
 	}
+
 	public boolean isInTheMidstOfChange() {
 		return this.isInTheMidstOfChange;
 	}
+
 	public void update() {
 		this.isInTheMidstOfChange = true;
 		try {

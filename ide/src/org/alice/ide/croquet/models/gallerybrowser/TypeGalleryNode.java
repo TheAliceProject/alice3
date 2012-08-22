@@ -46,31 +46,30 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.project.ast.AbstractType< ?,?,? > > {
+public abstract class TypeGalleryNode extends DeclarationGalleryNode<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 	private static class CompositeIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DefaultCompositeIcon {
 		public CompositeIcon( javax.swing.Icon icon ) {
-			super( 
+			super(
 					org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE,
 					icon,
-					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE 
-			);
+					org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE );
 		}
 	}
-	
-	private static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> setOfClassesWithIcons = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( 
-			org.lgna.story.resources.BipedResource.class, 
-			org.lgna.story.resources.FishResource.class, 
-			org.lgna.story.resources.PropResource.class, 
-			org.lgna.story.resources.QuadrupedResource.class, 
-			org.lgna.story.resources.SwimmerResource.class, 
-			org.lgna.story.resources.MarineMammalResource.class 
-	);
-	
+
+	private static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> setOfClassesWithIcons = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(
+			org.lgna.story.resources.BipedResource.class,
+			org.lgna.story.resources.FishResource.class,
+			org.lgna.story.resources.PropResource.class,
+			org.lgna.story.resources.QuadrupedResource.class,
+			org.lgna.story.resources.SwimmerResource.class,
+			org.lgna.story.resources.MarineMammalResource.class
+			);
+
 	public static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> getSetOfClassesWithIcons() {
 		return setOfClassesWithIcons;
 	}
-	
-	private static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type, boolean isOffset ) {
+
+	private static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isOffset ) {
 		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
@@ -81,19 +80,21 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 		sb.append( ".png" );
 		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TypeGalleryNode.class.getResource( sb.toString() ) );
 	}
-	
-	public static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+
+	public static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return getIcon( type, false );
 	}
+
 	public static javax.swing.ImageIcon getIcon( Class<?> cls ) {
 		return getIcon( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
-	public static javax.swing.Icon getOffsetIcon( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+
+	public static javax.swing.Icon getOffsetIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		javax.swing.Icon icon = getIcon( type, true );
 		if( icon != null ) {
 			//pass
 		} else {
-			java.awt.image.BufferedImage image = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification());
+			java.awt.image.BufferedImage image = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification() );
 			if( image != null ) {
 				//icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image );
 				icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( image, 120, 90 );
@@ -101,22 +102,24 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 		}
 		return icon;
 	}
-	
+
 	private final javax.swing.Icon largeIcon;
-	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+
+	public TypeGalleryNode( java.util.UUID id, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( id, type );
 		javax.swing.Icon icon = getOffsetIcon( type );
 		if( icon != null ) {
-			this.largeIcon = new CompositeIcon(icon);
+			this.largeIcon = new CompositeIcon( icon );
 		} else {
 			this.largeIcon = org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
 		}
 	}
-	
+
 	private java.util.List<org.lgna.project.ast.AbstractDeclaration> children;
-	
-	protected abstract java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
-	private java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren() {
+
+	protected abstract java.util.List<org.lgna.project.ast.AbstractDeclaration> getDeclarationChildren( org.alice.ide.ApiConfigurationManager api );
+
+	private java.util.List<org.lgna.project.ast.AbstractDeclaration> getDeclarationChildren() {
 		if( this.children != null ) {
 			//pass
 		} else {
@@ -125,22 +128,27 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 		}
 		return this.children;
 	}
+
 	@Override
 	public int getChildCount() {
 		return this.getDeclarationChildren().size();
 	}
+
 	@Override
 	public GalleryNode getChild( int index ) {
 		return getDeclarationNodeInstance( this.getDeclarationChildren().get( index ) );
 	}
+
 	@Override
 	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((DeclarationGalleryNode<?>)child).getDeclaration() );
+		return this.getDeclarationChildren().indexOf( ( (DeclarationGalleryNode<?>)child ).getDeclaration() );
 	}
+
 	@Override
 	public javax.swing.Icon getSmallIcon() {
 		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
 	}
+
 	@Override
 	public javax.swing.Icon getLargeIcon() {
 		return this.largeIcon;
@@ -150,6 +158,7 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode< org.lgna.p
 	public String[] getTags() {
 		return null;
 	}
+
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		String name = this.getDeclaration().getName();

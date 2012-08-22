@@ -45,39 +45,45 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalInfixExpression extends InfixExpression< ConditionalInfixExpression.Operator > {
+public class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
 	public enum Operator {
-		AND() { 
+		AND() {
 			@Override
 			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
 				return leftOperand && rightOperand;
-			}			
+			}
 		},
-		OR() { 
+		OR() {
 			@Override
 			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
 				return leftOperand || rightOperand;
-			}			
+			}
 		};
 		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
 	}
+
 	public ConditionalInfixExpression() {
 	}
+
 	public ConditionalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand ) {
 		super( leftOperand, operator, rightOperand );
 	}
+
 	@Override
-	protected AbstractType<?,?,?> getLeftOperandType() {
+	protected AbstractType<?, ?, ?> getLeftOperandType() {
 		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
+
 	@Override
-	protected AbstractType<?,?,?> getRightOperandType() {
+	protected AbstractType<?, ?, ?> getRightOperandType() {
 		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
+
 	@Override
 	protected void handleMissingProperty( String propertyName, Object value ) {
 		assert propertyName.equals( "expressionType" );

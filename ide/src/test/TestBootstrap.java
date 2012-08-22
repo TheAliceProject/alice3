@@ -59,7 +59,7 @@ public class TestBootstrap {
 			System.err.println();
 			System.err.println();
 			vm.ENTRY_POINT_invoke( programInstance, programType.methods.get( 0 ) );
-//			vm.ENTRY_POINT_invoke( null, programType.methods.get( 1 ) );
+			//			vm.ENTRY_POINT_invoke( null, programType.methods.get( 1 ) );
 			System.err.println();
 			System.err.println();
 			System.err.println();

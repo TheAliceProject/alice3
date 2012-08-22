@@ -45,7 +45,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Step< M > {
+public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Step<M> {
 	public PrepStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 		if( parent != null ) {
@@ -54,10 +54,11 @@ public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Ste
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "PrepStep transaction is null" );
 		}
 	}
+
 	public PrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	
+
 	public void cancelTransaction( org.lgna.croquet.triggers.Trigger trigger ) {
 		CompletionStep step = CompletionStep.createAndAddToTransaction( this.getOwner(), null, trigger, null );
 		step.cancel();

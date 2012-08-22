@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitShirtFlares implements MaleAdultFullBodyOutfit {
-	BLACKTAN ,
- 	GREENBOWLER ,
- 	BLUETAN ,
- 	HEATHEROLIVE ,
- 	REDBLACK ,
- 	BLUEBLACK ;
+	BLACKTAN,
+	GREENBOWLER,
+	BLUETAN,
+	HEATHEROLIVE,
+	REDBLACK,
+	BLUEBLACK;
 }

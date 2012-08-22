@@ -48,13 +48,16 @@ package org.alice.ide.resource.manager.edits;
  */
 public abstract class AddOrRemoveResourceEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.common.Resource resource;
+
 	public AddOrRemoveResourceEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.common.Resource resource ) {
 		super( completionStep );
 		this.resource = resource;
 	}
+
 	public org.lgna.common.Resource getResource() {
 		return this.resource;
 	}
+
 	protected void addResource() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
@@ -65,6 +68,7 @@ public abstract class AddOrRemoveResourceEdit extends org.lgna.croquet.edits.Edi
 			}
 		}
 	}
+
 	protected void removeResource() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {

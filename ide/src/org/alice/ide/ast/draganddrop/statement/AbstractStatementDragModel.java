@@ -49,29 +49,30 @@ public abstract class AbstractStatementDragModel extends org.alice.ide.ast.draga
 	public AbstractStatementDragModel( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return org.lgna.project.ast.JavaType.VOID_TYPE;
 	}
-	
+
 	public abstract boolean isAddEventListenerLikeSubstance();
-	
-//	@Override
-//	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-//		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-//		if( ide != null ) {
-//			org.alice.ide.codedrop.CodeDropReceptor codeEditor = ide.getCodeEditorInFocus();
-//			if( codeEditor != null ) {
-//				codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
-//			} else {
-//				//todo: investigate
-//			}
-//		}
-//		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
-//		if( clipboard.isPotentiallyAcceptingOf( this ) ) {
-//			rv.add( clipboard );
-//		}
-//		return rv;
-//	}
+
+	//	@Override
+	//	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
+	//		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	//		if( ide != null ) {
+	//			org.alice.ide.codedrop.CodeDropReceptor codeEditor = ide.getCodeEditorInFocus();
+	//			if( codeEditor != null ) {
+	//				codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
+	//			} else {
+	//				//todo: investigate
+	//			}
+	//		}
+	//		org.alice.ide.clipboard.Clipboard clipboard = org.alice.ide.clipboard.Clipboard.getInstance();
+	//		if( clipboard.isPotentiallyAcceptingOf( this ) ) {
+	//			rv.add( clipboard );
+	//		}
+	//		return rv;
+	//	}
 }

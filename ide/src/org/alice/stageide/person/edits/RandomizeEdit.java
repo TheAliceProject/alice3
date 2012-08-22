@@ -55,19 +55,23 @@ public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
 		this.prevResource = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
 		this.nextResource = org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
 	}
+
 	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
 		org.alice.stageide.person.PersonResourceManager.SINGLETON.pushAtomic();
 		org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( resource );
 		org.alice.stageide.person.PersonResourceManager.SINGLETON.popAtomic();
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.setResource( this.nextResource );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		this.setResource( this.prevResource );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "randomize" );

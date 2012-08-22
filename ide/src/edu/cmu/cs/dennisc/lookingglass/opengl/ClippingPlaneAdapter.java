@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class ClippingPlaneAdapter extends AffectorAdapter< edu.cmu.cs.dennisc.scenegraph.ClippingPlane > {
+public class ClippingPlaneAdapter extends AffectorAdapter<edu.cmu.cs.dennisc.scenegraph.ClippingPlane> {
 	@Override
-    public void setup( RenderContext rc ) {
-        throw new RuntimeException( "todo" );
-    }
+	public void setup( RenderContext rc ) {
+		throw new RuntimeException( "todo" );
+	}
 }

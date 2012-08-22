@@ -50,14 +50,17 @@ public class PrimitiveIntegerStaticGetInstanceKeyedResolver<T> extends org.lgna.
 	public PrimitiveIntegerStaticGetInstanceKeyedResolver( T instance, int value ) {
 		super( instance, new Class[] { Integer.TYPE }, new Object[] { value } );
 	}
+
 	public PrimitiveIntegerStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		int value = binaryDecoder.decodeInt();
 		return new Object[] { value };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		int value = (Integer)arguments[ 0 ];

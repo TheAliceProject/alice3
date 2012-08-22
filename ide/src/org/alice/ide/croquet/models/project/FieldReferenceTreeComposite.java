@@ -58,7 +58,7 @@ public class FieldReferenceTreeComposite extends SimpleComposite<FieldReferenceT
 	public FieldReferenceTreeComposite() {
 		super( java.util.UUID.fromString( "dbddb7d3-59f4-4128-9168-442570945410" ) );
 	}
-	
+
 	public InstanceSearchTreeManager getManager() {
 		return this.manager;
 	}

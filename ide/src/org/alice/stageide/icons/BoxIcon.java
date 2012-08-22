@@ -61,7 +61,7 @@ public class BoxIcon extends ShapeIcon {
 	private static final java.awt.geom.Point2D.Float b0 = new java.awt.geom.Point2D.Float( x0, yC );
 	private static final java.awt.geom.Point2D.Float c0 = new java.awt.geom.Point2D.Float( x0, yA );
 	private static final java.awt.geom.Point2D.Float d0 = new java.awt.geom.Point2D.Float( xA, yB );
-	
+
 	private static final java.awt.geom.Point2D.Float a1 = c0;
 	private static final java.awt.geom.Point2D.Float b1 = d0;
 	private static final java.awt.geom.Point2D.Float c1 = new java.awt.geom.Point2D.Float( x1, yA );
@@ -72,20 +72,23 @@ public class BoxIcon extends ShapeIcon {
 	private static final java.awt.geom.Point2D.Float c2 = a0;
 	private static final java.awt.geom.Point2D.Float d2 = new java.awt.geom.Point2D.Float( x1, yC );
 
-	private static final java.awt.Color SHADOW_COLOR = FILL_PAINT.darker(); 
+	private static final java.awt.Color SHADOW_COLOR = FILL_PAINT.darker();
 	private final java.awt.Stroke STROKE = new java.awt.BasicStroke( 0.0f );
+
 	private static java.awt.Shape createFace( java.awt.geom.Point2D.Float a, java.awt.geom.Point2D.Float b, java.awt.geom.Point2D.Float c, java.awt.geom.Point2D.Float d, int width, int height ) {
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo( a.x*width, a.y*height );
-		path.lineTo( b.x*width, b.y*height );
-		path.lineTo( c.x*width, c.y*height );
-		path.lineTo( d.x*width, d.y*height );
+		path.moveTo( a.x * width, a.y * height );
+		path.lineTo( b.x * width, b.y * height );
+		path.lineTo( c.x * width, c.y * height );
+		path.lineTo( d.x * width, d.y * height );
 		path.closePath();
 		return path;
 	}
+
 	public BoxIcon( java.awt.Dimension size ) {
 		super( size );
 	}
+
 	@Override
 	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		java.awt.Stroke prevStroke = g2.getStroke();

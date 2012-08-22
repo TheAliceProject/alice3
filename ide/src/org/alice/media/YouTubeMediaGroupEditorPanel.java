@@ -75,16 +75,16 @@ import com.google.gdata.data.youtube.YouTubeNamespace;
 public class YouTubeMediaGroupEditorPanel extends JPanel {
 
 	private YouTubeMediaGroup mediaGroup;
-	
+
 	private JTextField title;
 	private JTextArea description;
 	private JTextArea tags;
 	private JCheckBox isPrivate;
 	private JComboBox categories;
-	
+
 	private static final int TEXT_WIDTH = 24;
 	private static final int TEXT_HEIGHT = 4;
-	
+
 	private static List<String> categoryStrings = null;
 	private static List<String> termStrings = null;
 
@@ -94,139 +94,139 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 	private static final String LABEL_STRING = "label='";
 	private static final String TERM_PATTERN = "term='[^']*'";
 	private static final String LABEL_PATTERN = "label='[^']*'";
-	private static final String[] DEFAULT_TAGS = {"alice", "alice3"};
+	private static final String[] DEFAULT_TAGS = { "alice", "alice3" };
 	private static final String DEFAULT_CATEGORY = "tech";
-	
+
 	public YouTubeMediaGroupEditorPanel()
 	{
 		super();
 		this.setOpaque( false );
-		this.title = new JTextField(TEXT_WIDTH);
+		this.title = new JTextField( TEXT_WIDTH );
 		//this.title.setOpaque( false );
-		
-		this.description = new JTextArea(TEXT_HEIGHT, TEXT_WIDTH);
+
+		this.description = new JTextArea( TEXT_HEIGHT, TEXT_WIDTH );
 		//this.description.setOpaque( false );
-		this.description.setBorder( BorderFactory.createEtchedBorder());
-		
-		this.tags = new JTextArea(TEXT_HEIGHT, TEXT_WIDTH);
+		this.description.setBorder( BorderFactory.createEtchedBorder() );
+
+		this.tags = new JTextArea( TEXT_HEIGHT, TEXT_WIDTH );
 		//this.tags.setOpaque( false );
 		this.tags.setBorder( BorderFactory.createEtchedBorder() );
-		
+
 		this.categories = new JComboBox();
 		//this.categories.setOpaque( false );
-		
-		this.isPrivate = new JCheckBox("Is Private");
+
+		this.isPrivate = new JCheckBox( "Is Private" );
 		this.isPrivate.setOpaque( false );
 		this.isPrivate.setSelected( true );
-		
+
 		this.setLayout( new GridBagLayout() );
 		int gridY = 0;
-		this.add( wrapInTitleBorder( this.title, "Title:" ), 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		this.add( wrapInTitleBorder( this.description, "Description:" ), 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		this.add( wrapInTitleBorder( this.tags, "Tags:" ), 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		this.add( wrapInTitleBorder( this.categories, "Category:" ), 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		this.add( this.isPrivate, 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
+		this.add( wrapInTitleBorder( this.title, "Title:" ),
+				new GridBagConstraints(
+						0, //gridX
+						gridY++, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						0.0, //weightY
+						GridBagConstraints.NORTHWEST, //anchor 
+						GridBagConstraints.HORIZONTAL, //fill
+						new Insets( 2, 2, 2, 2 ), //insets
+						0, //ipadX
+						0 ) //ipadY
+		);
+		this.add( wrapInTitleBorder( this.description, "Description:" ),
+				new GridBagConstraints(
+						0, //gridX
+						gridY++, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						0.0, //weightY
+						GridBagConstraints.NORTHWEST, //anchor 
+						GridBagConstraints.HORIZONTAL, //fill
+						new Insets( 2, 2, 2, 2 ), //insets
+						0, //ipadX
+						0 ) //ipadY
+		);
+		this.add( wrapInTitleBorder( this.tags, "Tags:" ),
+				new GridBagConstraints(
+						0, //gridX
+						gridY++, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						0.0, //weightY
+						GridBagConstraints.NORTHWEST, //anchor 
+						GridBagConstraints.HORIZONTAL, //fill
+						new Insets( 2, 2, 2, 2 ), //insets
+						0, //ipadX
+						0 ) //ipadY
+		);
+		this.add( wrapInTitleBorder( this.categories, "Category:" ),
+				new GridBagConstraints(
+						0, //gridX
+						gridY++, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						0.0, //weightY
+						GridBagConstraints.NORTHWEST, //anchor 
+						GridBagConstraints.NONE, //fill
+						new Insets( 2, 2, 2, 2 ), //insets
+						0, //ipadX
+						0 ) //ipadY
+		);
+		this.add( this.isPrivate,
+				new GridBagConstraints(
+						0, //gridX
+						gridY++, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						0.0, //weightY
+						GridBagConstraints.NORTHWEST, //anchor 
+						GridBagConstraints.NONE, //fill
+						new Insets( 2, 2, 2, 2 ), //insets
+						0, //ipadX
+						0 ) //ipadY
+		);
 	}
-	
-	public void setMediaGroup(YouTubeMediaGroup ytMediaGroup)
+
+	public void setMediaGroup( YouTubeMediaGroup ytMediaGroup )
 	{
 		this.mediaGroup = ytMediaGroup;
-		setValuesBasedOnMediaGroup(this.mediaGroup);
+		setValuesBasedOnMediaGroup( this.mediaGroup );
 	}
-	
-	private void setValuesBasedOnMediaGroup(YouTubeMediaGroup ytMediaGroup)
+
+	private void setValuesBasedOnMediaGroup( YouTubeMediaGroup ytMediaGroup )
 	{
-		if (ytMediaGroup != null && ytMediaGroup.getTitle() != null)
+		if( ( ytMediaGroup != null ) && ( ytMediaGroup.getTitle() != null ) )
 		{
 			this.title.setText( ytMediaGroup.getTitle().getPlainTextContent() );
 		}
-		
-		if (ytMediaGroup != null && ytMediaGroup.getDescription() != null)
+
+		if( ( ytMediaGroup != null ) && ( ytMediaGroup.getDescription() != null ) )
 		{
 			this.description.setText( ytMediaGroup.getDescription().getPlainTextContent() );
 		}
-		
+
 		List<String> keywords;
-		if (ytMediaGroup != null && ytMediaGroup.getKeywords() != null)
+		if( ( ytMediaGroup != null ) && ( ytMediaGroup.getKeywords() != null ) )
 		{
 			keywords = ytMediaGroup.getKeywords().getKeywords();
-			for (String defaultKey : DEFAULT_TAGS)
+			for( String defaultKey : DEFAULT_TAGS )
 			{
 				boolean hasKey = false;
-				for (String s : keywords)
+				for( String s : keywords )
 				{
-					if (s.equalsIgnoreCase( defaultKey))
+					if( s.equalsIgnoreCase( defaultKey ) )
 					{
 						hasKey = true;
 						break;
 					}
 				}
-				if (!hasKey)
+				if( !hasKey )
 				{
 					keywords.add( defaultKey );
 				}
@@ -235,58 +235,58 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 		else
 		{
 			keywords = new LinkedList<String>();
-			for (String s : DEFAULT_TAGS)
+			for( String s : DEFAULT_TAGS )
 			{
 				keywords.add( s );
 			}
 		}
 		StringBuilder sb = new StringBuilder();
-		for (String s : keywords)
+		for( String s : keywords )
 		{
-			sb.append( s+" " );
+			sb.append( s + " " );
 		}
 		this.tags.setText( sb.toString() );
-		
+
 		String categoryString = DEFAULT_CATEGORY;
-		
-		if (ytMediaGroup != null && ytMediaGroup.getYouTubeCategory() != null)
+
+		if( ( ytMediaGroup != null ) && ( ytMediaGroup.getYouTubeCategory() != null ) )
 		{
 			MediaCategory category = ytMediaGroup.getYouTubeCategory();
 			categoryString = category.getContent();
-			if (categoryString == null || categoryString.equals(""))
+			if( ( categoryString == null ) || categoryString.equals( "" ) )
 			{
 				categoryString = DEFAULT_CATEGORY;
 			}
 		}
-		if (termStrings != null)
+		if( termStrings != null )
 		{
-			for (int i=0; i<termStrings.size(); i++)
+			for( int i = 0; i < termStrings.size(); i++ )
 			{
-				if (termStrings.get( i ).equalsIgnoreCase( categoryString ))
+				if( termStrings.get( i ).equalsIgnoreCase( categoryString ) )
 				{
 					this.categories.setSelectedIndex( i );
 					break;
 				}
 			}
 		}
-		if (ytMediaGroup != null)
+		if( ytMediaGroup != null )
 		{
 			this.isPrivate.setSelected( ytMediaGroup.isPrivate() );
 		}
-		
+
 	}
-	
+
 	public boolean initialize()
 	{
 		boolean success = false;
-		if (categoryStrings == null || termStrings == null)
+		if( ( categoryStrings == null ) || ( termStrings == null ) )
 		{
 			success = initializeCategories();
 		}
-		if (success)
+		if( success )
 		{
 			this.categories.removeAllItems();
-			for (String s : categoryStrings)
+			for( String s : categoryStrings )
 			{
 				this.categories.addItem( s );
 			}
@@ -294,16 +294,16 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 		}
 		return false;
 	}
-	
+
 	private static boolean initializeCategories()
 	{
 		try
 		{
-			URL categoryURL = new URL(CATEGORY_URL);
+			URL categoryURL = new URL( CATEGORY_URL );
 			InputStream is = categoryURL.openStream();
 			StringBuilder sb = new StringBuilder();
 			int readValue;
-			while ((readValue = is.read()) != -1)
+			while( ( readValue = is.read() ) != -1 )
 			{
 				char charVal = (char)readValue;
 				sb.append( charVal );
@@ -317,14 +317,14 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 			int categoryLength = categoryData.length();
 			String searchTerm = TERM_STRING;
 			int searchLength = TERM_LENGTH;
-			for (int i=0; i<categoryLength-DEPRECATED_LENGTH;)
+			for( int i = 0; i < ( categoryLength - DEPRECATED_LENGTH ); )
 			{
-				if (categoryData.subSequence( i, i+searchLength).equals( searchTerm ))
+				if( categoryData.subSequence( i, i + searchLength ).equals( searchTerm ) )
 				{
-					int endIndex = categoryData.indexOf( "'", i+searchLength);
-					String foundString = categoryData.substring( i+searchLength, endIndex );
+					int endIndex = categoryData.indexOf( "'", i + searchLength );
+					String foundString = categoryData.substring( i + searchLength, endIndex );
 					foundString = foundString.replace( "&amp;", "&" );
-					if (searchTerm == TERM_STRING)
+					if( searchTerm == TERM_STRING )
 					{
 						searchTerm = LABEL_STRING;
 						searchLength = LABEL_LENGTH;
@@ -338,18 +338,18 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 					}
 					i = endIndex;
 				}
-				else if (categoryData.subSequence( i, i+DEPRECATED_LENGTH).equals( DEPRECATED_STRING ))
+				else if( categoryData.subSequence( i, i + DEPRECATED_LENGTH ).equals( DEPRECATED_STRING ) )
 				{
-					if (terms.size() == labels.size())
+					if( terms.size() == labels.size() )
 					{
 						terms.remove( terms.size() - 1 );
 						labels.remove( labels.size() - 1 );
 					}
 					else
 					{
-						System.err.println("CRAZY!");
+						System.err.println( "CRAZY!" );
 					}
-					i+=DEPRECATED_LENGTH;
+					i += DEPRECATED_LENGTH;
 				}
 				else
 				{
@@ -359,101 +359,100 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 			categoryStrings = labels;
 			termStrings = terms;
 			return true;
-		}
-		catch (IOException e)
+		} catch( IOException e )
 		{
 			categoryStrings = null;
 			termStrings = null;
 		}
 		return false;
 	}
-	
-	public void enableUI(boolean enable)
+
+	public void enableUI( boolean enable )
 	{
-		this.title.setEnabled(enable);
-		this.description.setEnabled(enable);
-		this.tags.setEnabled(enable);
-		this.isPrivate.setEnabled(enable);
-		this.categories.setEnabled(enable);
+		this.title.setEnabled( enable );
+		this.description.setEnabled( enable );
+		this.tags.setEnabled( enable );
+		this.isPrivate.setEnabled( enable );
+		this.categories.setEnabled( enable );
 	}
-	
-	private JComponent wrapInTitleBorder(JComponent c, String title)
+
+	private JComponent wrapInTitleBorder( JComponent c, String title )
 	{
-		JLabel titleLabel = new JLabel(title);
+		JLabel titleLabel = new JLabel( title );
 		titleLabel.setOpaque( false );
 		JPanel holderPanel = new JPanel();
 		holderPanel.setOpaque( false );
-		holderPanel.setLayout(new BorderLayout());
-		holderPanel.add(titleLabel, BorderLayout.NORTH);
+		holderPanel.setLayout( new BorderLayout() );
+		holderPanel.add( titleLabel, BorderLayout.NORTH );
 		holderPanel.add( c, BorderLayout.CENTER );
 		return holderPanel;
 	}
-	
-	public void addDocumentListener(DocumentListener listener)
+
+	public void addDocumentListener( DocumentListener listener )
 	{
 		this.title.getDocument().addDocumentListener( listener );
 		this.description.getDocument().addDocumentListener( listener );
 	}
-	
-	public void removeDocumentListener(DocumentListener listener)
+
+	public void removeDocumentListener( DocumentListener listener )
 	{
 		this.title.getDocument().removeDocumentListener( listener );
 		this.description.getDocument().removeDocumentListener( listener );
 	}
-	
+
 	public void updateMediaGroup()
 	{
-		if (this.mediaGroup == null)
+		if( this.mediaGroup == null )
 		{
 			return;
 		}
-		this.mediaGroup.setTitle(new MediaTitle());
+		this.mediaGroup.setTitle( new MediaTitle() );
 		this.mediaGroup.getTitle().setPlainTextContent( this.title.getText().trim() );
-		this.mediaGroup.setDescription(new MediaDescription());
-		this.mediaGroup.getDescription().setPlainTextContent(this.description.getText().trim());
-		
+		this.mediaGroup.setDescription( new MediaDescription() );
+		this.mediaGroup.getDescription().setPlainTextContent( this.description.getText().trim() );
+
 		String[] tagStrings = this.tags.getText().split( " " );
-		this.mediaGroup.setKeywords(new MediaKeywords());
-		for (String tag : tagStrings)
+		this.mediaGroup.setKeywords( new MediaKeywords() );
+		for( String tag : tagStrings )
 		{
 			this.mediaGroup.getKeywords().addKeyword( tag );
 		}
 		String categoryString = termStrings.get( this.categories.getSelectedIndex() );
 		List<MediaCategory> categories = this.mediaGroup.getCategories();
 		boolean foundCategory = false;
-		for (MediaCategory c : categories)
+		for( MediaCategory c : categories )
 		{
-			if (c.getScheme().equals( YouTubeNamespace.CATEGORY_SCHEME ))
+			if( c.getScheme().equals( YouTubeNamespace.CATEGORY_SCHEME ) )
 			{
 				c.setContent( categoryString );
 				foundCategory = true;
 				break;
 			}
 		}
-		if (!foundCategory)
+		if( !foundCategory )
 		{
-			this.mediaGroup.addCategory(new MediaCategory(YouTubeNamespace.CATEGORY_SCHEME, categoryString));
+			this.mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, categoryString ) );
 		}
-//		this.mediaGroup.setYouTubeCategory( termStrings.get( this.categories.getSelectedIndex() ) );
+		//		this.mediaGroup.setYouTubeCategory( termStrings.get( this.categories.getSelectedIndex() ) );
 		this.mediaGroup.setPrivate( this.isPrivate.isSelected() );
 	}
-	
+
 	public boolean isTitleValid()
 	{
 		String titleString = this.title.getText().trim();
-		return (titleString.length() > 0);
+		return ( titleString.length() > 0 );
 	}
-	
+
 	public boolean isDescriptionValid()
 	{
 		String descriptionString = this.description.getText().trim();
-		return (descriptionString.length() > 0);
+		return ( descriptionString.length() > 0 );
 	}
-	
+
 	public YouTubeMediaGroup getUpdatedMediaGroup()
 	{
 		updateMediaGroup();
 		return this.mediaGroup;
 	}
-	
+
 }

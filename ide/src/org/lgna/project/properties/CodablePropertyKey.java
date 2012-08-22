@@ -46,17 +46,20 @@ package org.lgna.project.properties;
 /**
  * @author Dennis Cosgrove
  */
-public class CodablePropertyKey< T extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable > extends PropertyKey< T > {
+public class CodablePropertyKey<T extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> extends PropertyKey<T> {
 	public static <T extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> CodablePropertyKey<T> createInstance( java.util.UUID id, String repr ) {
 		return new CodablePropertyKey<T>( id, repr );
 	}
+
 	private CodablePropertyKey( java.util.UUID id, String repr ) {
 		super( id, repr );
 	}
+
 	@Override
 	protected T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return (T)binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
+
 	@Override
 	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		binaryEncoder.encode( value );

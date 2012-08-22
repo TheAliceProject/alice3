@@ -3,7 +3,7 @@ package org.lgna.croquet.history.event;
 /**
  * @author Kyle J. Harms
  */
-public class AddTransactionEvent extends Event< org.lgna.croquet.history.Transaction > {
+public class AddTransactionEvent extends Event<org.lgna.croquet.history.Transaction> {
 	private int index;
 
 	public AddTransactionEvent( org.lgna.croquet.history.Transaction transaction, int index ) {

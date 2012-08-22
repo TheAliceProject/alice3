@@ -48,5 +48,6 @@ package org.lgna.project.event;
  */
 public interface ResourceListener {
 	public void resourceAdded( ResourceEvent e );
+
 	public void resourceRemoved( ResourceEvent e );
 }

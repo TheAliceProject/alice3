@@ -54,11 +54,12 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 		this.getAwtComponent().setOpaque( color != null );
 	}
 
-	public void setAlignmentX(float alignmentX) {
-		this.getAwtComponent().setAlignmentX(alignmentX);
+	public void setAlignmentX( float alignmentX ) {
+		this.getAwtComponent().setAlignmentX( alignmentX );
 	}
-	public void setAlignmentY(float alignmentY) {
-		this.getAwtComponent().setAlignmentY(alignmentY);
+
+	public void setAlignmentY( float alignmentY ) {
+		this.getAwtComponent().setAlignmentY( alignmentY );
 	}
 
 	@Override
@@ -69,46 +70,53 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 	public java.awt.Insets getInsets() {
 		return this.getAwtComponent().getInsets();
 	}
-	private void scrollRectToVisible(java.awt.Rectangle rect) {
-		this.getAwtComponent().scrollRectToVisible(rect);
+
+	private void scrollRectToVisible( java.awt.Rectangle rect ) {
+		this.getAwtComponent().scrollRectToVisible( rect );
 	}
+
 	public void scrollToVisible() {
-		this.scrollRectToVisible(javax.swing.SwingUtilities.getLocalBounds(this.getAwtComponent()));
+		this.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() ) );
 	}
 
 	public String getToolTipText() {
 		return this.getAwtComponent().getToolTipText();
 	}
-	public void setToolTipText(String toolTipText) {
-		this.getAwtComponent().setToolTipText(toolTipText);
+
+	public void setToolTipText( String toolTipText ) {
+		this.getAwtComponent().setToolTipText( toolTipText );
 	}
 
 	public javax.swing.border.Border getBorder() {
 		return this.getAwtComponent().getBorder();
 	}
-	public void setBorder(javax.swing.border.Border border) {
-		this.getAwtComponent().setBorder(border);
+
+	public void setBorder( javax.swing.border.Border border ) {
+		this.getAwtComponent().setBorder( border );
 	}
 
-	public void setOpaque(boolean isOpaque) {
+	public void setOpaque( boolean isOpaque ) {
 		this.getAwtComponent().setOpaque( isOpaque );
 	}
 
 	private void revalidate() {
 		this.getAwtComponent().revalidate();
 	}
-	
+
 	public static enum Condition {
 		WHEN_FOCUSED( javax.swing.JComponent.WHEN_FOCUSED ),
 		WHEN_IN_FOCUSED_WINDOW( javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW ),
 		WHEN_ANCESTOR_OF_FOCUSED_COMPONENT( javax.swing.JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
 		private int internal;
+
 		private Condition( int internal ) {
 			this.internal = internal;
 		}
+
 		private int getInternal() {
 			return this.internal;
 		}
+
 		public static Condition valueOf( int constant ) {
 			switch( constant ) {
 			case javax.swing.JComponent.WHEN_FOCUSED:
@@ -122,13 +130,14 @@ public abstract class JComponent<J extends javax.swing.JComponent> extends Conta
 			}
 		}
 	}
+
 	public void registerKeyboardAction( java.awt.event.ActionListener actionListener, javax.swing.KeyStroke keyStroke, Condition condition ) {
 		this.getAwtComponent().registerKeyboardAction( actionListener, keyStroke, condition.getInternal() );
 	}
+
 	public void unregisterKeyboardAction( javax.swing.KeyStroke keyStroke ) {
 		this.getAwtComponent().unregisterKeyboardAction( keyStroke );
 	}
-	
 
 	public void revalidateAndRepaint() {
 		this.revalidate();

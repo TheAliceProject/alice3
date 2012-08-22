@@ -47,7 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
 		assert field != null;
 		ThisFieldAccessMethodInvocationFactory rv = mapToMap.get( field, method );
@@ -59,42 +60,50 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserField field;
+
 	private ThisFieldAccessMethodInvocationFactory( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
 		super( method, field.name );
 		this.field = field;
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getValidInstanceType( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > fieldDeclarationType = this.field.getDeclaringType();
-		if( fieldDeclarationType != null && fieldDeclarationType.isAssignableFrom( type ) ) {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+		org.lgna.project.ast.AbstractType<?, ?, ?> fieldDeclarationType = this.field.getDeclaringType();
+		if( ( fieldDeclarationType != null ) && fieldDeclarationType.isAssignableFrom( type ) ) {
 			return this.field.getValueType();
 		} else {
 			return null;
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver< ThisFieldAccessMethodInvocationFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessMethodInvocationFactory >( 
+	protected org.lgna.croquet.resolvers.Resolver<ThisFieldAccessMethodInvocationFactory> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessMethodInvocationFactory>(
 				this,
-				new Class[] { org.lgna.project.ast.UserField.class, org.lgna.project.ast.AbstractMethod.class }, 
-				new Object[] { this.field, this.getMethod() } 
-		);
+				new Class[] { org.lgna.project.ast.UserField.class, org.lgna.project.ast.AbstractMethod.class },
+				new Object[] { this.field, this.getMethod() } );
 	}
+
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
+
 	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.FieldAccess( expression, this.field );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
 		return this.createFieldAccess( createTransientThisExpression() );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
 		return this.createFieldAccess( createThisExpression() );
 	}
+
 	@Override
 	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
 		rv.append( "this." );

@@ -56,9 +56,11 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 		DISPOSE( javax.swing.WindowConstants.DISPOSE_ON_CLOSE ),
 		EXIT( javax.swing.WindowConstants.EXIT_ON_CLOSE );
 		private int internal;
+
 		private DefaultCloseOperation( int internal ) {
 			this.internal = internal;
 		}
+
 		public static DefaultCloseOperation valueOf( int windowConstant ) {
 			for( DefaultCloseOperation defaultCloseOperation : DefaultCloseOperation.values() ) {
 				if( defaultCloseOperation.internal == windowConstant ) {
@@ -78,15 +80,19 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 	protected javax.swing.JRootPane getRootPane() {
 		return this.getAwtComponent().getRootPane();
 	}
+
 	public DefaultCloseOperation getDefaultCloseOperation() {
 		return DefaultCloseOperation.valueOf( this.getAwtComponent().getDefaultCloseOperation() );
 	}
+
 	public void setDefaultCloseOperation( DefaultCloseOperation defaultCloseOperation ) {
 		this.getAwtComponent().setDefaultCloseOperation( defaultCloseOperation.internal );
 	}
+
 	public String getTitle() {
 		return this.getAwtComponent().getTitle();
 	}
+
 	public void setTitle( String title ) {
 		this.getAwtComponent().setTitle( title );
 	}

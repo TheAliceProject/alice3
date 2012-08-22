@@ -46,6 +46,6 @@ package org.lgna.common;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public interface ForEachRunnable< E > {
+public interface ForEachRunnable<E> {
 	public void run( E value );
 }

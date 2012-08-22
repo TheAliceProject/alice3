@@ -45,13 +45,15 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class LifeStageState extends AbstractListSelectionState< org.lgna.story.resources.sims2.LifeStage > {
+public class LifeStageState extends AbstractListSelectionState<org.lgna.story.resources.sims2.LifeStage> {
 	private static class SingletonHolder {
 		private static LifeStageState instance = new LifeStageState();
 	}
+
 	public static LifeStageState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private LifeStageState() {
 		super( java.util.UUID.fromString( "ee61b76d-b154-4e45-a07c-fb2eac906895" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.ADULT );
 	}

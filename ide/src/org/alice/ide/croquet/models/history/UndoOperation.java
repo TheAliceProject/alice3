@@ -49,15 +49,18 @@ public class UndoOperation extends HistoryOperation {
 	private static class SingletonHolder {
 		private static UndoOperation instance = new UndoOperation();
 	}
+
 	public static UndoOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private UndoOperation() {
 		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ) );
 		this.setSmallIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/undo.png" ) ) );
 	}
+
 	@Override
-	protected void performInternal(org.lgna.croquet.undo.UndoHistory historyManager) {
+	protected void performInternal( org.lgna.croquet.undo.UndoHistory historyManager ) {
 		historyManager.performUndo();
 	}
 }

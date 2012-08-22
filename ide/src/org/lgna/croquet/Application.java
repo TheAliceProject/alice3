@@ -61,12 +61,13 @@ public abstract class Application {
 	};
 
 	private static Application singleton;
+
 	public static Application getActiveInstance() {
 		return singleton;
 	}
 
 	private final org.lgna.croquet.components.Frame frame = new org.lgna.croquet.components.Frame();
-	private final java.util.Stack< org.lgna.croquet.components.AbstractWindow< ? > > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow< ? >[] { this.frame } );
+	private final java.util.Stack<org.lgna.croquet.components.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack( new org.lgna.croquet.components.AbstractWindow<?>[] { this.frame } );
 
 	public Application() {
 		assert Application.singleton == null;
@@ -82,7 +83,7 @@ public abstract class Application {
 	// TODO: Fix this the right way... this is a hack for now... <kjh/>
 	@Deprecated
 	public org.lgna.croquet.history.TransactionHistory getApplicationOrDocumentTransactionHistory() {
-		if ( this.getDocument() == null ) {
+		if( this.getDocument() == null ) {
 			return this.getTransactionHistory();
 		} else {
 			return this.getDocument().getRootTransactionHistory();
@@ -91,15 +92,17 @@ public abstract class Application {
 
 	public abstract Document getDocument();
 
-	public void pushWindow( org.lgna.croquet.components.AbstractWindow< ? > window ) {
+	public void pushWindow( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		this.stack.push( window );
 	}
-	public org.lgna.croquet.components.AbstractWindow< ? > popWindow() {
-		org.lgna.croquet.components.AbstractWindow< ? > rv = this.stack.peek();
+
+	public org.lgna.croquet.components.AbstractWindow<?> popWindow() {
+		org.lgna.croquet.components.AbstractWindow<?> rv = this.stack.peek();
 		this.stack.pop();
 		return rv;
 	}
-	public org.lgna.croquet.components.AbstractWindow< ? > peekWindow() {
+
+	public org.lgna.croquet.components.AbstractWindow<?> peekWindow() {
 		return this.stack.peek();
 	}
 
@@ -113,17 +116,23 @@ public abstract class Application {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				Application.this.handleWindowOpened( e );
 			}
+
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				Application.this.handleQuit( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
+
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowDeactivated( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowIconified( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowDeiconified( java.awt.event.WindowEvent e ) {
 			}
 		} );
@@ -134,15 +143,18 @@ public abstract class Application {
 					aboutOperation.fire( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 				}
 			}
+
 			public void handlePreferences( java.util.EventObject e ) {
 				Operation preferencesOperation = Application.this.getPreferencesOperation();
 				if( preferencesOperation != null ) {
 					preferencesOperation.fire( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 				}
 			}
+
 			public void handleQuit( java.util.EventObject e ) {
 				Application.this.handleQuit( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 			}
+
 			public void handleOpenFile( java.util.EventObject e ) {
 				Application.this.handleOpenFile( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
 			}
@@ -189,24 +201,30 @@ public abstract class Application {
 	}
 
 	protected abstract Operation getAboutOperation();
+
 	protected abstract Operation getPreferencesOperation();
 
 	protected abstract void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger );
+
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
+
 	protected abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-		if( message instanceof org.lgna.croquet.components.Component< ? > ) {
-			message = ((org.lgna.croquet.components.Component< ? >)message).getAwtComponent();
+		if( message instanceof org.lgna.croquet.components.Component<?> ) {
+			message = ( (org.lgna.croquet.components.Component<?>)message ).getAwtComponent();
 		}
 		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.getInternal(), icon );
 	}
+
 	public void showMessageDialog( Object message, String title, MessageType messageType ) {
 		showMessageDialog( message, title, messageType, null );
 	}
+
 	public void showMessageDialog( Object message, String title ) {
 		showMessageDialog( message, title, MessageType.QUESTION );
 	}
+
 	public void showMessageDialog( Object message ) {
 		showMessageDialog( message, null );
 	}
@@ -214,24 +232,31 @@ public abstract class Application {
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon ) );
 	}
+
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType ) {
 		return showYesNoCancelConfirmDialog( message, title, messageType, null );
 	}
+
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title ) {
 		return showYesNoCancelConfirmDialog( message, title, MessageType.QUESTION );
 	}
+
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message ) {
 		return showYesNoCancelConfirmDialog( message, null );
 	}
+
 	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon ) );
 	}
+
 	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType ) {
 		return showYesNoConfirmDialog( message, title, messageType, null );
 	}
+
 	public YesNoOption showYesNoConfirmDialog( Object message, String title ) {
 		return showYesNoConfirmDialog( message, title, MessageType.QUESTION );
 	}
+
 	public YesNoOption showYesNoConfirmDialog( Object message ) {
 		return showYesNoConfirmDialog( message, null );
 	}
@@ -249,6 +274,7 @@ public abstract class Application {
 			return null;
 		}
 	}
+
 	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, Object optionC, int initialValueIndex ) {
 		Object[] options = { optionA, optionB, optionC };
 		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
@@ -270,6 +296,7 @@ public abstract class Application {
 	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
 	}
+
 	@Deprecated
 	public java.io.File showSaveFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
@@ -285,6 +312,7 @@ public abstract class Application {
 	public final synchronized boolean isDragInProgress() {
 		return this.isDragInProgress;
 	}
+
 	@Deprecated
 	public synchronized void setDragInProgress( boolean isDragInProgress ) {
 		this.isDragInProgress = isDragInProgress;

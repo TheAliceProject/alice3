@@ -46,28 +46,30 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenu extends ViewController< javax.swing.JPopupMenu, org.lgna.croquet.PopupPrepModel > implements MenuItemContainer {
+public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.croquet.PopupPrepModel> implements MenuItemContainer {
 	public PopupMenu( org.lgna.croquet.PopupPrepModel model ) {
 		super( model );
 	}
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+
+	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 		return this;
 	}
-	
-//	public void addChangeListener( javax.swing.event.ChangeListener changeListener ) {
-//		this.getAwtComponent().getSelectionModel().addChangeListener( changeListener );
-//	}
-//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener ) {
-//		this.getAwtComponent().getSelectionModel().removeChangeListener( changeListener );
-//	}
-	
-	public void addPopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+
+	//	public void addChangeListener( javax.swing.event.ChangeListener changeListener ) {
+	//		this.getAwtComponent().getSelectionModel().addChangeListener( changeListener );
+	//	}
+	//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener ) {
+	//		this.getAwtComponent().getSelectionModel().removeChangeListener( changeListener );
+	//	}
+
+	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 		this.getAwtComponent().addPopupMenuListener( listener );
 	}
-	public void removePopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+
+	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 		this.getAwtComponent().removePopupMenuListener( listener );
 	}
-	
+
 	@Override
 	protected javax.swing.JPopupMenu createAwtComponent() {
 		javax.swing.JPopupMenu rv = new javax.swing.JPopupMenu();
@@ -77,21 +79,27 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, org.lgna.
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
+
 	public void addMenuItem( MenuItem menuItem ) {
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
+
 	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
 		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
 	}
+
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
 		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
 	}
+
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}
+
 	public void addSeparator() {
 		this.addSeparator( null );
 	}
+
 	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
 		if( menuTextSeparator != null ) {
 			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
@@ -99,7 +107,7 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, org.lgna.
 			this.getAwtComponent().addSeparator();
 		}
 	}
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -109,18 +117,19 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, org.lgna.
 			}
 		} );
 	}
-	
+
 	public void removeAllMenuItems() {
 		//this.internalRemoveAllComponents();
 		this.getAwtComponent().removeAll();
 	}
+
 	public void forgetAndRemoveAllMenuItems() {
 		//this.internalForgetAndRemoveAllComponents();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
 		this.getAwtComponent().removeAll();
 	}
-	
-	public void showAtLocation( Component< ? > invoker, int x, int y ) {
+
+	public void showAtLocation( Component<?> invoker, int x, int y ) {
 		java.awt.Component awtInvoker;
 		if( invoker != null ) {
 			awtInvoker = invoker.getAwtComponent();
@@ -129,7 +138,8 @@ public class PopupMenu extends ViewController< javax.swing.JPopupMenu, org.lgna.
 		}
 		this.getAwtComponent().show( awtInvoker, x, y );
 	}
-	public void showBelow( Component< ? > invoker ) {
+
+	public void showBelow( Component<?> invoker ) {
 		int x;
 		int y;
 		if( invoker != null ) {

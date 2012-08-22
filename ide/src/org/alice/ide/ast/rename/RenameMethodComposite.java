@@ -46,7 +46,8 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameMethodComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserMethod> {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, RenameMethodComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserMethod, RenameMethodComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized RenameMethodComposite getInstance( org.lgna.project.ast.UserMethod method ) {
 		assert method != null;
 		RenameMethodComposite rv = map.get( method );
@@ -58,6 +59,7 @@ public class RenameMethodComposite extends RenameDeclarationComposite<org.lgna.p
 		}
 		return rv;
 	}
+
 	private RenameMethodComposite( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "5ce5b309-8163-437b-b5ed-c1fbdd6cd763" ), new org.alice.ide.name.validators.MethodNameValidator( method ), method );
 	}

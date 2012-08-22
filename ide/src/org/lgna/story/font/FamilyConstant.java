@@ -47,7 +47,8 @@ package org.lgna.story.font;
  * @author Dennis Cosgrove
  */
 public enum FamilyConstant implements FamilyAttribute {
-	SERIF("Serif"), SANS_SERIF("SansSerif");
+	SERIF( "Serif" ),
+	SANS_SERIF( "SansSerif" );
 	private String m_value;
 
 	private FamilyConstant( String value ) {
@@ -57,6 +58,7 @@ public enum FamilyConstant implements FamilyAttribute {
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.FAMILY;
 	}
+
 	public String getValue() {
 		return m_value;
 	}

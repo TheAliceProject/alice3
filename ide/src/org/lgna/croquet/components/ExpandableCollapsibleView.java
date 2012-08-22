@@ -50,26 +50,31 @@ public class ExpandableCollapsibleView extends BorderPanel {
 	private final org.lgna.croquet.State.ValueListener<Boolean> isExpandedListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
+
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			ExpandableCollapsibleView.this.handleIsExpandedChanged( nextValue );
 		}
 	};
+
 	public ExpandableCollapsibleView( org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite composite ) {
 		super( composite );
 		this.addPageStartComponent( new ToolPaletteTitle( composite.getIsExpandedState() ) );
 		this.addCenterComponent( composite.getCoreComposite().getView() );
 		this.handleIsExpandedChanged( composite.getIsExpandedState().getValue() );
 	}
+
 	private void handleIsExpandedChanged( boolean isExpanded ) {
 		this.getCenterComponent().setVisible( isExpanded );
 		this.revalidateAndRepaint();
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite composite = (org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite)this.getComposite();
 		composite.getIsExpandedState().addValueListener( this.isExpandedListener );
 		super.handleDisplayable();
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();

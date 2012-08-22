@@ -47,17 +47,17 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public enum YesNoOption {
-	YES(javax.swing.JOptionPane.YES_OPTION), 
-	NO(javax.swing.JOptionPane.NO_OPTION);
+	YES( javax.swing.JOptionPane.YES_OPTION ),
+	NO( javax.swing.JOptionPane.NO_OPTION );
 	private final int internal;
 
-	YesNoOption(int internal) {
+	YesNoOption( int internal ) {
 		this.internal = internal;
 	}
 
-	public static YesNoOption getInstance(int internal) {
-		for (YesNoOption value : YesNoOption.values()) {
-			if (value.internal == internal) {
+	public static YesNoOption getInstance( int internal ) {
+		for( YesNoOption value : YesNoOption.values() ) {
+			if( value.internal == internal ) {
 				return value;
 			}
 		}

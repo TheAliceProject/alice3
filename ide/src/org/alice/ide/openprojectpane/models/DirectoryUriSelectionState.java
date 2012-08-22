@@ -48,13 +48,16 @@ package org.alice.ide.openprojectpane.models;
  */
 public abstract class DirectoryUriSelectionState extends UriSelectionState {
 	private final java.io.File directory;
+
 	public DirectoryUriSelectionState( java.util.UUID id, java.io.File directory ) {
 		super( id );
 		this.directory = directory;
 	}
+
 	public java.io.File getDirectory() {
 		return this.directory;
 	}
+
 	@Override
 	protected java.net.URI[] createArray() {
 		java.net.URI[] rv;
@@ -62,7 +65,7 @@ public abstract class DirectoryUriSelectionState extends UriSelectionState {
 			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( this.directory );
 			final int N = files.length;
 			rv = new java.net.URI[ N ];
-			for( int i=0; i<N; i++ ) {
+			for( int i = 0; i < N; i++ ) {
 				if( files[ i ] != null ) {
 					rv[ i ] = files[ i ].toURI();
 				} else {

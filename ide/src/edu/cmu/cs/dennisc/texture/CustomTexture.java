@@ -48,11 +48,16 @@ package edu.cmu.cs.dennisc.texture;
 public abstract class CustomTexture extends Texture {
 	public CustomTexture() {
 	}
+
 	public CustomTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	public abstract edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy();
+
 	public abstract void layoutIfNecessary( java.awt.Graphics2D g2 );
+
 	public abstract void paint( java.awt.Graphics2D g2, int width, int height );
+
 	public abstract boolean isAnimated();
 }

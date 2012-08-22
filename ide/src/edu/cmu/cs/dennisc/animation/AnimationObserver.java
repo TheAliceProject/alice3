@@ -47,5 +47,6 @@ package edu.cmu.cs.dennisc.animation;
  */
 public interface AnimationObserver {
 	public void started( Animation animation );
+
 	public void finished( Animation animation );
 }

@@ -53,6 +53,7 @@ public class KeyEventUtilities {
 			return java.awt.event.KeyEvent.VK_CONTROL;
 		}
 	}
+
 	public static int getQuoteAltUnquoteKey() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			return java.awt.event.KeyEvent.VK_CONTROL;
@@ -60,6 +61,7 @@ public class KeyEventUtilities {
 			return java.awt.event.KeyEvent.VK_ALT;
 		}
 	}
+
 	public static java.awt.event.KeyEvent performPlatformFilter( java.awt.event.KeyEvent original ) {
 		java.awt.event.KeyEvent rv;
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
@@ -87,7 +89,7 @@ public class KeyEventUtilities {
 				}
 				int completeModifiers = InputEventUtilities.getCompleteModifiers( original );
 				int filteredModifiers = InputEventUtilities.performPlatformModifiersFilter( completeModifiers );
-				rv = new java.awt.event.KeyEvent(original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getKeyCode(), original.getKeyChar() );
+				rv = new java.awt.event.KeyEvent( original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getKeyCode(), original.getKeyChar() );
 			}
 		} else {
 			rv = original;

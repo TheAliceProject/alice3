@@ -49,6 +49,7 @@ package org.lgna.project.ast;
 public abstract class AbstractLoop extends AbstractStatementWithBody {
 	public AbstractLoop() {
 	}
+
 	public AbstractLoop( BlockStatement body ) {
 		super( body );
 	}

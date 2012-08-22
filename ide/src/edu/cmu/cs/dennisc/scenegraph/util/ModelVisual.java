@@ -42,13 +42,15 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ModelVisual extends Visual {
 	private TexturedAppearance m_sgFrontFacingAppearance = new TexturedAppearance();
+
 	public ModelVisual() {
 		frontFacingAppearance.setValue( m_sgFrontFacingAppearance );
 	}
@@ -56,7 +58,7 @@ public class ModelVisual extends Visual {
 	public TexturedAppearance getSGFrontFacingAppearance() {
 		return m_sgFrontFacingAppearance;
 	}
-	
+
 	@Override
 	public void setName( String name ) {
 		super.setName( name );

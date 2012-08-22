@@ -66,11 +66,13 @@ public class JavaConstructorParameter extends JavaParameter {
 		}
 		return rv;
 	}
+
 	private JavaConstructor m_constructor;
 	private int m_index;
 	private String m_name;
 	private JavaType m_valueType;
-	/*package-private*/ JavaConstructorParameter( JavaConstructor constructor, int index, java.lang.annotation.Annotation[] annotations ) {
+
+	/* package-private */JavaConstructorParameter( JavaConstructor constructor, int index, java.lang.annotation.Annotation[] annotations ) {
 		super( annotations );
 		m_constructor = constructor;
 		m_index = index;
@@ -79,21 +81,23 @@ public class JavaConstructorParameter extends JavaParameter {
 		m_valueType = JavaType.getInstance( constructorReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
 		assert m_valueType != null;
 	}
-	
+
 	@Override
 	public JavaConstructor getCode() {
 		return m_constructor;
 	}
+
 	public int getIndex() {
 		return m_index;
 	}
-	
+
 	@Override
 	public String getName() {
 		return m_name;
 	}
+
 	@Override
-	public AbstractType<?,?,?> getValueType() {
+	public AbstractType<?, ?, ?> getValueType() {
 		return m_valueType;
 	}
 
@@ -101,7 +105,7 @@ public class JavaConstructorParameter extends JavaParameter {
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaConstructorParameter ) {
 			JavaConstructorParameter otherPDIJC = (JavaConstructorParameter)other;
-			return m_constructor.equals( otherPDIJC.m_constructor ) && m_index == otherPDIJC.m_index && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJC.m_name ) && m_valueType.equals( otherPDIJC.m_valueType );
+			return m_constructor.equals( otherPDIJC.m_constructor ) && ( m_index == otherPDIJC.m_index ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJC.m_name ) && m_valueType.equals( otherPDIJC.m_valueType );
 		} else {
 			return false;
 		}

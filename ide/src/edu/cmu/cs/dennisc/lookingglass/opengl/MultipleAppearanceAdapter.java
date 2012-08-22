@@ -60,6 +60,7 @@ public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.denn
 		}
 		return false;
 	}
+
 	@Override
 	public boolean isAlphaBlended() {
 		assert m_singleAppearanceAdapters != null;
@@ -71,6 +72,7 @@ public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.denn
 		}
 		return false;
 	}
+
 	@Override
 	public boolean isEthereal() {
 		assert m_singleAppearanceAdapters != null;
@@ -84,15 +86,16 @@ public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.denn
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void setPipelineState( RenderContext rc, int face ) {
 		rc.setMultipleAppearance( face, this );
 	}
+
 	public void setPipelineState( RenderContext rc, int face, int index ) {
 		m_singleAppearanceAdapters[ index ].setPipelineState( rc, face );
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.singleAppearances ) {

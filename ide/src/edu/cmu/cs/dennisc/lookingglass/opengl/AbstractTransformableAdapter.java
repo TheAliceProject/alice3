@@ -1,37 +1,38 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-public abstract class AbstractTransformableAdapter< E extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable > extends CompositeAdapter< E > {
+public abstract class AbstractTransformableAdapter<E extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> extends CompositeAdapter<E> {
 
 	private static double[] unscaling = new double[ 16 ];
 	private static java.nio.DoubleBuffer unscalingBuffer = java.nio.DoubleBuffer.wrap( unscaling );
-	
+
 	public abstract double[] accessLocalTransformation();
+
 	public abstract java.nio.DoubleBuffer accessLocalTransformationAsBuffer();
-	
-	private static final int X_X  = 0;
-	private static final int X_Y  = 1;
-	private static final int X_Z  = 2;
 
-	private static final int Y_X  = 4;
-	private static final int Y_Y  = 5;
-	private static final int Y_Z  = 6;
+	private static final int X_X = 0;
+	private static final int X_Y = 1;
+	private static final int X_Z = 2;
 
-	private static final int Z_X  = 8;
-	private static final int Z_Y  = 9;
-	private static final int Z_Z  = 10;
+	private static final int Y_X = 4;
+	private static final int Y_Y = 5;
+	private static final int Y_Z = 6;
+
+	private static final int Z_X = 8;
+	private static final int Z_Y = 9;
+	private static final int Z_Z = 10;
 
 	private boolean isUnscalingDesired( Context c ) {
 		//todo
 		return false;
-//		edu.cmu.cs.dennisc.scenegraph.Composite parent = this.m_element.getParent();
-//		return 
-//				c.isScaled() 
-//					&&
-//				( this.m_element instanceof edu.cmu.cs.dennisc.scenegraph.Joint == false )
-//					&&
-//				( parent instanceof edu.cmu.cs.dennisc.scenegraph.Scalable || parent instanceof edu.cmu.cs.dennisc.scenegraph.Joint );
+		//		edu.cmu.cs.dennisc.scenegraph.Composite parent = this.m_element.getParent();
+		//		return 
+		//				c.isScaled() 
+		//					&&
+		//				( this.m_element instanceof edu.cmu.cs.dennisc.scenegraph.Joint == false )
+		//					&&
+		//				( parent instanceof edu.cmu.cs.dennisc.scenegraph.Scalable || parent instanceof edu.cmu.cs.dennisc.scenegraph.Joint );
 	}
-	
+
 	private boolean unscaleIfDesired( Context c ) {
 		boolean isUnscaling = this.isUnscalingDesired( c );
 		if( isUnscaling ) {
@@ -40,15 +41,15 @@ public abstract class AbstractTransformableAdapter< E extends edu.cmu.cs.dennisc
 				double xScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ X_X ], unscaling[ X_Y ], unscaling[ X_Z ] );
 				double yScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ Y_X ], unscaling[ Y_Y ], unscaling[ Y_Z ] );
 				double zScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ Z_X ], unscaling[ Z_Y ], unscaling[ Z_Z ] );
-				
+
 				if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( xScale, 1.0 ) && edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( yScale, 1.0 ) && edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( zScale, 1.0 ) ) {
 					//pass
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 					isUnscaling = false;
 				} else {
-					xScale = 1/xScale;
-					yScale = 1/yScale;
-					zScale = 1/zScale;
+					xScale = 1 / xScale;
+					yScale = 1 / yScale;
+					zScale = 1 / zScale;
 
 					unscaling[ X_X ] *= xScale;
 					unscaling[ X_Y ] *= xScale;
@@ -87,7 +88,7 @@ public abstract class AbstractTransformableAdapter< E extends edu.cmu.cs.dennisc
 			rc.gl.glPopMatrix();
 		}
 	}
-	
+
 	@Override
 	public void renderGhost( RenderContext rc, GhostAdapter root ) {
 		rc.gl.glPushMatrix();
@@ -109,8 +110,7 @@ public abstract class AbstractTransformableAdapter< E extends edu.cmu.cs.dennisc
 			rc.gl.glPopMatrix();
 		}
 	}
-	
-	
+
 	@Override
 	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 		pc.gl.glPushMatrix();

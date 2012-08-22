@@ -46,12 +46,13 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FloatProperty extends Property< Float > {
+public abstract class FloatProperty extends Property<Float> {
 	public FloatProperty( EntityImp owner ) {
 		super( owner, Float.class );
 	}
+
 	@Override
 	protected Float interpolate( Float a, Float b, double portion ) {
-		return a + (float)((b-a)*portion);
+		return a + (float)( ( b - a ) * portion );
 	}
 }

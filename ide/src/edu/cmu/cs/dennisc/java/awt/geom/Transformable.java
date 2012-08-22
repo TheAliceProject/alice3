@@ -60,6 +60,7 @@ public abstract class Transformable {
 		rv.setTransform( m_inverseAffineTransform );
 		return rv;
 	}
+
 	public java.awt.geom.AffineTransform getInverseAffineTransform() {
 		return getInverseAffineTransform( new java.awt.geom.AffineTransform() );
 	}
@@ -68,29 +69,34 @@ public abstract class Transformable {
 		rv.setTransform( m_affineTransform );
 		return rv;
 	}
+
 	public java.awt.geom.AffineTransform getAffineTransform() {
 		return getAffineTransform( new java.awt.geom.AffineTransform() );
 	}
+
 	public void setAffineTransform( java.awt.geom.AffineTransform affineTransform ) {
 		m_affineTransform.setTransform( affineTransform );
 		m_inverseAffineTransform = null;
-		
+
 	}
+
 	public void applyTranslation( double x, double y ) {
 		m_affineTransform.translate( x, y );
 		m_inverseAffineTransform = null;
 	}
+
 	public void applyRotation( edu.cmu.cs.dennisc.math.Angle theta ) {
 		m_affineTransform.rotate( theta.getAsRadians() );
 		m_inverseAffineTransform = null;
 	}
+
 	public void applyScale( double x, double y ) {
 		m_affineTransform.scale( x, y );
 		m_inverseAffineTransform = null;
 	}
-	
-	
+
 	protected abstract void paintComponent( GraphicsContext gc );
+
 	public final void paint( GraphicsContext gc ) {
 		gc.pushAffineTransform();
 		gc.multiplyAffineTransform( m_affineTransform );
@@ -99,7 +105,7 @@ public abstract class Transformable {
 
 		gc.popAffineTransform();
 	}
-	
+
 	protected abstract java.awt.geom.Area update( java.awt.geom.Area rv, TransformContext tc );
 
 	public final java.awt.geom.Area getArea( java.awt.geom.Area rv, TransformContext tc ) {
@@ -109,6 +115,7 @@ public abstract class Transformable {
 		tc.popAffineTransform();
 		return rv;
 	}
+
 	public final java.awt.geom.Area getArea( TransformContext tc ) {
 		return getArea( new java.awt.geom.Area(), tc );
 	}

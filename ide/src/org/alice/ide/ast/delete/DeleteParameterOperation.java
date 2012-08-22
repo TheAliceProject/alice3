@@ -46,8 +46,9 @@ package org.alice.ide.ast.delete;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteParameterOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.UserParameter>  {
-	private static java.util.Map< org.lgna.project.ast.UserParameter, DeleteParameterOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class DeleteParameterOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.UserParameter> {
+	private static java.util.Map<org.lgna.project.ast.UserParameter, DeleteParameterOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized DeleteParameterOperation getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		DeleteParameterOperation rv = map.get( parameter );
 		if( rv != null ) {
@@ -58,19 +59,23 @@ public class DeleteParameterOperation extends DeleteDeclarationLikeSubstanceOper
 		}
 		return rv;
 	}
+
 	private DeleteParameterOperation( org.lgna.project.ast.UserParameter parameter ) {
 		super( java.util.UUID.fromString( "208b5971-9a2c-43b8-911c-06f11359da75" ), parameter );
 	}
+
 	@Override
 	protected org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete() {
 		//todo
 		return null;
 	}
+
 	@Override
 	protected org.lgna.croquet.BooleanState getFindModel() {
 		//todo
 		return null;
 	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;

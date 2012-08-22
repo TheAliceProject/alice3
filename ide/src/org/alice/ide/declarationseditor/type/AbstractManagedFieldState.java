@@ -50,6 +50,7 @@ public abstract class AbstractManagedFieldState extends FieldState {
 	public AbstractManagedFieldState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
 		super( id, type );
 	}
+
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
 		return value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;

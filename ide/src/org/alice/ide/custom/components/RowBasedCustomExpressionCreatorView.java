@@ -50,11 +50,14 @@ public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressi
 	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
+
 	@Override
 	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
 		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
 	}
-	protected abstract void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows );
+
+	protected abstract void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows );
+
 	@Override
 	public org.lgna.croquet.components.RowSpringPanel createMainComponent() {
 		org.lgna.croquet.components.RowSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowSpringPanel() {

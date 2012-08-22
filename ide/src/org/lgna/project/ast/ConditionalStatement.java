@@ -47,11 +47,12 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class ConditionalStatement extends Statement {
-	public NodeListProperty< BooleanExpressionBodyPair > booleanExpressionBodyPairs = new NodeListProperty< BooleanExpressionBodyPair >( this );
-	public NodeProperty< BlockStatement > elseBody = new NodeProperty< BlockStatement >( this );
+	public NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );
+	public NodeProperty<BlockStatement> elseBody = new NodeProperty<BlockStatement>( this );
 
 	public ConditionalStatement() {
 	}
+
 	public ConditionalStatement( BooleanExpressionBodyPair[] booleanExpressionBodyPairs, BlockStatement elseBody ) {
 		this.booleanExpressionBodyPairs.add( booleanExpressionBodyPairs );
 		this.elseBody.setValue( elseBody );

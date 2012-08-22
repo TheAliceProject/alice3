@@ -49,20 +49,25 @@ public class FullBodyOutfitState extends AbstractListSelectionState<org.lgna.sto
 	private static class SingletonHolder {
 		private static FullBodyOutfitState instance = new FullBodyOutfitState();
 	}
+
 	public static FullBodyOutfitState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private FullBodyOutfitState() {
-		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec< org.lgna.story.resources.sims2.FullBodyOutfit >(){
-			public Class< org.lgna.story.resources.sims2.FullBodyOutfit > getValueClass() {
+		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.FullBodyOutfit>() {
+			public Class<org.lgna.story.resources.sims2.FullBodyOutfit> getValueClass() {
 				return org.lgna.story.resources.sims2.FullBodyOutfit.class;
 			}
+
 			public org.lgna.story.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
+
 			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.FullBodyOutfit t ) {
 				throw new RuntimeException( "todo" );
 			}
+
 			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
 				rv.append( value );
 				return rv;

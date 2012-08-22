@@ -55,12 +55,15 @@ public abstract class PreferenceBooleanState extends org.lgna.croquet.BooleanSta
 			return defaultInitialValue;
 		}
 	}
-	private static java.util.List< PreferenceBooleanState > instances = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private static java.util.List<PreferenceBooleanState> instances = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
 		for( PreferenceBooleanState state : instances ) {
 			userPreferences.putBoolean( state.getMigrationId().toString(), state.getValue() );
 		}
 	}
+
 	public PreferenceBooleanState( org.lgna.croquet.Group group, java.util.UUID id, boolean initialValue ) {
 		super( group, id, getInitialValue( id, initialValue ) );
 		assert instances.contains( this ) == false;

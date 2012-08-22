@@ -45,23 +45,25 @@ package org.alice.ide.croquet.models.ui.formatter;
 /**
  * @author Dennis Cosgrove
  */
-public class FormatterSelectionState extends org.lgna.croquet.preferences.PreferenceListSelectionState< org.alice.ide.formatter.Formatter > {
+public class FormatterSelectionState extends org.lgna.croquet.preferences.PreferenceListSelectionState<org.alice.ide.formatter.Formatter> {
 	@Deprecated
 	public static boolean isJava() {
 		return FormatterSelectionState.getInstance().getValue() == org.alice.ide.formatter.JavaFormatter.getInstance();
 	}
+
 	private static class SingletonHolder {
 		private static FormatterSelectionState instance = new FormatterSelectionState();
 	}
+
 	public static FormatterSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private FormatterSelectionState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ), 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.formatter.Formatter.class ), 
-				0, 
-				org.alice.ide.formatter.AliceFormatter.getInstance(), 
-				org.alice.ide.formatter.JavaFormatter.getInstance()
-		);
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bae5a8d1-29ad-4205-9445-578a54c8d1e3" ),
+				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.formatter.Formatter.class ),
+				0,
+				org.alice.ide.formatter.AliceFormatter.getInstance(),
+				org.alice.ide.formatter.JavaFormatter.getInstance() );
 	}
 }

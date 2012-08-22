@@ -50,14 +50,17 @@ public class PrimitiveBooleanStaticGetInstanceKeyedResolver<T> extends org.lgna.
 	public PrimitiveBooleanStaticGetInstanceKeyedResolver( T instance, boolean value ) {
 		super( instance, new Class[] { Boolean.TYPE }, new Object[] { value } );
 	}
+
 	public PrimitiveBooleanStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean value = binaryDecoder.decodeBoolean();
 		return new Object[] { value };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		boolean value = (Boolean)arguments[ 0 ];

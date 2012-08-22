@@ -48,6 +48,7 @@ package org.alice.ide.common;
 public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPanel {
 	private org.lgna.project.ast.UserField field;
 	private org.lgna.croquet.components.Label finalLabel = new org.lgna.croquet.components.Label();
+
 	public FieldDeclarationPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserField field, boolean isDropDownDesired ) {
 		this.field = field;
 		if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
@@ -60,8 +61,8 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		this.addComponent( nameLabel );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.addComponent( new org.alice.ide.common.GetsPane( true ) );
-		
-		org.lgna.croquet.components.Component< ? > component;
+
+		org.lgna.croquet.components.Component<?> component;
 		if( isDropDownDesired ) {
 			component = new org.alice.ide.croquet.components.ExpressionDropDown( org.alice.ide.croquet.models.ast.FieldInitializerState.getInstance( this.field ), org.alice.ide.x.DialogAstI18nFactory.getInstance() );
 		} else {
@@ -69,6 +70,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		}
 		this.addComponent( component );
 	}
+
 	public FieldDeclarationPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserField field ) {
 		this( factory, field, false );
 	}
@@ -82,9 +84,11 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		}
 		this.finalLabel.setText( text );
 	}
+
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
+
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			updateFinalLabel();
 		}
@@ -96,11 +100,13 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 		this.updateFinalLabel();
 		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
 		super.handleUndisplayable();
 	}
+
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}

@@ -46,8 +46,8 @@ package org.alice.stageide.operations.ast.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< MethodInvocationEditFactory > {
-	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, MethodInvocationBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodInvocationEditFactory> {
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, MethodInvocationBlank> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static MethodInvocationBlank getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {
@@ -68,15 +68,16 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 		super( java.util.UUID.fromString( "3c5f528b-340b-4bcc-8094-3475867d2f6e" ) );
 		this.instanceFactory = instanceFactory;
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< MethodInvocationEditFactory > blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<MethodInvocationEditFactory> blankNode ) {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class );
 		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCamera.class );
 
-		org.lgna.project.ast.AbstractType< ?, ?, ? > instanceFactoryValueType = this.instanceFactory.getValueType();
-		java.util.List< org.lgna.project.ast.AbstractMethod > methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
+		java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( turnableType.isAssignableFrom( instanceFactoryValueType ) ) {
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_METHOD );
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROLL_METHOD );
@@ -100,7 +101,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank< Method
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD );
 		}
 
-		java.util.List< org.lgna.project.ast.AbstractMethod > sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
+		java.util.List<org.lgna.project.ast.AbstractMethod> sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
 		for( org.lgna.project.ast.AbstractMethod method : sortedMethods ) {
 			if( method != null ) {
 				//todo

@@ -46,7 +46,7 @@ package org.lgna.story.implementation.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Person > {
+public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.dennisc.nebulous.Person> {
 	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
 	private org.lgna.story.resources.sims2.Gender gender;
 	private org.lgna.story.resources.sims2.Outfit outfit;
@@ -54,9 +54,9 @@ public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.den
 	private double obesityLevel;
 	private org.lgna.story.resources.sims2.Hair hair;
 	private org.lgna.story.resources.sims2.EyeColor eyeColor;
-	
+
 	private int atomicCount = 0;
-	
+
 	public static NebulousPersonVisualData createInstance( org.lgna.story.resources.sims2.PersonResource personResource ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		NebulousPersonVisualData rv = new NebulousPersonVisualData( personResource.getLifeStage() );
 		rv.pushAtomic();
@@ -77,72 +77,84 @@ public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.den
 		super( new edu.cmu.cs.dennisc.nebulous.Person( lifeStage ) );
 		this.lifeStage = lifeStage;
 	}
+
 	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
 		return this.lifeStage;
 	}
-	
+
 	public void pushAtomic() {
 		if( this.atomicCount == 0 ) {
-			
+
 		}
 		this.atomicCount++;
 	}
+
 	public void popAtomic() {
 		this.atomicCount--;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().setAll( this.gender, this.outfit, this.skinTone, this.obesityLevel, this.eyeColor, this.hair );
 		}
 	}
-	
-	
+
 	public org.lgna.story.resources.sims2.Gender getGender() {
 		return this.gender;
 	}
+
 	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
 		this.gender = gender;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().setGender( this.gender );
 		}
 	}
+
 	public org.lgna.story.resources.sims2.Outfit getOutfit() {
 		return this.outfit;
 	}
+
 	public void setOutfit( org.lgna.story.resources.sims2.Outfit outfit ) {
 		this.outfit = outfit;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().setOutfit( this.outfit );
 		}
 	}
+
 	public org.lgna.story.resources.sims2.SkinTone getSkinTone() {
 		return this.skinTone;
 	}
+
 	public void setSkinTone( org.lgna.story.resources.sims2.SkinTone skinTone ) {
 		this.skinTone = skinTone;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().setSkinTone( this.skinTone );
 		}
 	}
+
 	public double getObesityLevel() {
 		return this.obesityLevel;
 	}
+
 	public void setObesityLevel( double obesityLevel ) {
 		this.obesityLevel = obesityLevel;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().setObesityLevel( this.obesityLevel );
 		}
 	}
+
 	public org.lgna.story.resources.sims2.Hair getHair() {
 		return this.hair;
 	}
+
 	public void setHair( org.lgna.story.resources.sims2.Hair hair ) {
 		this.hair = hair;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().setHair( this.hair );
 		}
 	}
+
 	public org.lgna.story.resources.sims2.EyeColor getEyeColor() {
 		return this.eyeColor;
 	}
+
 	public void setEyeColor( org.lgna.story.resources.sims2.EyeColor eyeColor ) {
 		this.eyeColor = eyeColor;
 		if( this.atomicCount == 0 ) {
@@ -150,18 +162,18 @@ public class NebulousPersonVisualData extends NebulousVisualData< edu.cmu.cs.den
 		}
 	}
 
-//	@Override
-//	public Dimension3 getSize() {
-//		AxisAlignedBox aabb = this.nebPerson.getAxisAlignedMinimumBoundingBox();
-//		if (!aabb.isNaN())
-//		{
-//			return new Dimension3(aabb.getWidth(), aabb.getHeight(), aabb.getDepth());
-//		}
-//		else
-//		{
-//			return new Dimension3(1, 2, 1);
-//		}
-//		
-//	}
+	//	@Override
+	//	public Dimension3 getSize() {
+	//		AxisAlignedBox aabb = this.nebPerson.getAxisAlignedMinimumBoundingBox();
+	//		if (!aabb.isNaN())
+	//		{
+	//			return new Dimension3(aabb.getWidth(), aabb.getHeight(), aabb.getDepth());
+	//		}
+	//		else
+	//		{
+	//			return new Dimension3(1, 2, 1);
+	//		}
+	//		
+	//	}
 
 }

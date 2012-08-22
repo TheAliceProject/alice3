@@ -50,8 +50,9 @@ public class ProceduresContentPanel extends MethodsContentPanel {
 		super( composite );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
+
 	@Override
-	protected AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	protected AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return new TypeProceduresPane( type );
 	}
 }

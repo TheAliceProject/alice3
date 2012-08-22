@@ -44,17 +44,20 @@
 package edu.cmu.cs.dennisc.login;
 
 public class AccountManager {
-	private static java.util.Map< String, AccountInformation > map = new java.util.HashMap< String, AccountInformation >();
-	
+	private static java.util.Map<String, AccountInformation> map = new java.util.HashMap<String, AccountInformation>();
+
 	public static AccountInformation get( String key ) {
 		return map.get( key );
 	}
+
 	public static void logIn( String key, AccountInformation accountInformation ) {
 		map.put( key, accountInformation );
 	}
+
 	public static void logIn( String key, String id, String password, String fullName ) {
 		logIn( key, new AccountInformation( id, password, fullName ) );
 	}
+
 	public static void logOut( String key ) {
 		map.remove( key );
 	}

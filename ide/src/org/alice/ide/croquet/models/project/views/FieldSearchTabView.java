@@ -48,7 +48,7 @@ import org.lgna.croquet.components.BorderPanel;
 /**
  * @author Matt May
  */
-public class FieldSearchTabView extends BorderPanel{
+public class FieldSearchTabView extends BorderPanel {
 
 	public FieldSearchTabView( FieldSearchTabCompsoite composite ) {
 		this.addCenterComponent( composite.getSplitComposite().getView() );

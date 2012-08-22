@@ -45,11 +45,13 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractButton< javax.swing.JButton, org.lgna.croquet.PopupPrepModel > {
- 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
- 		super( model );
+public class PopupButton extends AbstractButton<javax.swing.JButton, org.lgna.croquet.PopupPrepModel> {
+	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
+		super( model );
 	}
+
 	private static final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 10 );
+
 	@Override
 	protected javax.swing.JButton createAwtComponent() {
 		javax.swing.JButton rv = new javax.swing.JButton() {

@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class SetPaint extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetPaint.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetPaint.class )
 	public static interface Detail {
 	}
+
 	private SetPaint() {
 		super();
 	}

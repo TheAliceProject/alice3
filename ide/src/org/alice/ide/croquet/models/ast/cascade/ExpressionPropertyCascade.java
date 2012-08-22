@@ -46,31 +46,37 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
+public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 	private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
-	public ExpressionPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
+
+	public ExpressionPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
 		super( group, id, org.lgna.project.ast.Expression.class, blanks );
 		this.expressionProperty = expressionProperty;
 	}
+
 	public final org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
+
 	@Override
 	protected void prologue() {
 		this.pushedContext = new org.alice.ide.cascade.ExpressionPropertyContext( this.expressionProperty );
 		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 		super.prologue();
 	}
+
 	@Override
 	protected void epilogue() {
 		super.epilogue();
 		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
 		this.pushedContext = null;
 	}
+
 	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions );
+
 	@Override
-	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> step, org.lgna.project.ast.Expression[] values ) {
+	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
 	}
 }

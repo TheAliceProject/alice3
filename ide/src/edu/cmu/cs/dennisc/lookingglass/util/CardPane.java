@@ -53,10 +53,12 @@ class SnapshotPane extends javax.swing.JComponent {
 		setFont( new java.awt.Font( null, java.awt.Font.ITALIC, 12 ) );
 		//setOpaque( true );
 	}
+
 	public void setSnapshotImage( java.awt.image.BufferedImage bufferedImage ) {
 		this.bufferedImage = bufferedImage;
 		repaint();
 	}
+
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		if( this.bufferedImage != null ) {
@@ -96,28 +98,30 @@ public class CardPane extends javax.swing.JPanel {
 		//setBackground( java.awt.Color.BLUE );
 		//setOpaque( false );
 	}
+
 	public CardPane( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		this( onscreenLookingGlass, onscreenLookingGlass.getAWTComponent() );
 	}
-	
+
 	private void showCard( String key ) {
 		this.cardLayout.show( this, key );
 		this.currentKey = key;
 	}
+
 	public void showSnapshot() {
 		if( isLive() ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "showSnapshot" );
 			int desiredImageWidth = this.onscreenLookingGlass.getWidth();
 			int desiredImageHeight = this.onscreenLookingGlass.getHeight();
 			if( this.bufferedImage != null ) {
-				if( this.bufferedImage.getWidth() != desiredImageWidth || this.bufferedImage.getHeight() != desiredImageHeight ) {
+				if( ( this.bufferedImage.getWidth() != desiredImageWidth ) || ( this.bufferedImage.getHeight() != desiredImageHeight ) ) {
 					this.bufferedImage = null;
 				}
 			}
 			if( this.bufferedImage != null ) {
 				//pass
 			} else {
-				if( desiredImageWidth > 0 && desiredImageHeight > 0 ) {
+				if( ( desiredImageWidth > 0 ) && ( desiredImageHeight > 0 ) ) {
 					this.bufferedImage = this.onscreenLookingGlass.createBufferedImageForUseAsColorBuffer();
 				}
 			}
@@ -135,6 +139,7 @@ public class CardPane extends javax.swing.JPanel {
 			//pass
 		}
 	}
+
 	public void showLive() {
 		if( isLive() ) {
 			//pass
@@ -147,7 +152,7 @@ public class CardPane extends javax.swing.JPanel {
 			//			} );
 		}
 	}
-	
+
 	public boolean isLive() {
 		return CardPane.LIVE_KEY.equals( this.currentKey );
 	}

@@ -49,5 +49,6 @@ public abstract class CodeDragModel extends org.alice.ide.croquet.models.IdeDrag
 	public CodeDragModel( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract org.lgna.project.ast.AbstractType< ?,?,? > getType();
+
+	public abstract org.lgna.project.ast.AbstractType<?, ?, ?> getType();
 }

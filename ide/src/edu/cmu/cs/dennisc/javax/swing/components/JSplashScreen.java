@@ -51,6 +51,7 @@ public class JSplashScreen extends javax.swing.JWindow {
 		super( owner );
 		initialize( icon );
 	}
+
 	private void initialize( javax.swing.Icon icon ) {
 		javax.swing.JLabel label = new javax.swing.JLabel();
 		label.setIcon( icon );

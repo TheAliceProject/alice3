@@ -71,6 +71,7 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 	public Window() {
 		this( null );
 	}
+
 	public Window( Component<?> owner ) {
 		super( Window.createJWindow( owner ) );
 	}
@@ -79,6 +80,7 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 	protected javax.swing.JRootPane getRootPane() {
 		return this.getAwtComponent().getRootPane();
 	}
+
 	@Override
 	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
 		assert jMenuBar == null;

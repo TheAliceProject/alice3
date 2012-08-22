@@ -46,20 +46,23 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillInWithBlanks< F extends org.lgna.project.ast.Expression, B > extends ExpressionFillIn< F, B > {
+public abstract class ExpressionFillInWithBlanks<F extends org.lgna.project.ast.Expression, B> extends ExpressionFillIn<F, B> {
 	private final Class<B> cls;
+
 	public ExpressionFillInWithBlanks( java.util.UUID id, Class<B> cls ) {
 		super( id );
 		this.cls = cls;
 	}
+
 	protected abstract F createValue( B[] expressions );
+
 	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,B > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, B> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.createFromBlanks( node, transactionHistory, this.cls ) );
 	}
-//	protected abstract F getTransientValue( B[] expressions );
-//	@Override
-//	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, B > step ) {
-//		return this.getTransientValue( runBlanks( step, BlankOperation.GET_TRANSIENT_VALUES ) );
-//	}
+	//	protected abstract F getTransientValue( B[] expressions );
+	//	@Override
+	//	public final F getTransientValue( edu.cmu.cs.dennisc.croquet.CascadeFillInContext< F, B > step ) {
+	//		return this.getTransientValue( runBlanks( step, BlankOperation.GET_TRANSIENT_VALUES ) );
+	//	}
 }

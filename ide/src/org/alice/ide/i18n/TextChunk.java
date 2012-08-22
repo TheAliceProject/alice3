@@ -47,12 +47,15 @@ package org.alice.ide.i18n;
  */
 public class TextChunk extends Chunk {
 	private String text;
+
 	public TextChunk( String text ) {
 		this.text = text;
 	}
+
 	public String getText() {
 		return this.text;
 	}
+
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv.append( "text=" );

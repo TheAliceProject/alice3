@@ -49,22 +49,40 @@ public interface Theme {
 	public static final java.awt.Dimension DEFAULT_SMALLER_ICON_SIZE = new java.awt.Dimension( 32, 24 );
 	public static final java.awt.Dimension DEFAULT_SMALL_ICON_SIZE = new java.awt.Dimension( 40, 30 );
 	public static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 120, 90 );
+
 	public java.awt.Color getTypeColor();
+
 	public java.awt.Color getProcedureColor();
+
 	public java.awt.Color getFunctionColor();
+
 	public java.awt.Color getConstructorColor();
+
 	public java.awt.Color getFieldColor();
+
 	public java.awt.Color getLocalColor();
+
 	public java.awt.Color getParameterColor();
+
 	public java.awt.Color getEventColor();
+
 	public java.awt.Color getEventBodyColor();
-	public java.awt.Paint getPaintFor( Class< ? extends org.lgna.project.ast.Statement > cls, int x, int y, int width, int height );
-	public java.awt.Color getColorFor( Class< ? extends org.lgna.project.ast.Node > cls );
+
+	public java.awt.Paint getPaintFor( Class<? extends org.lgna.project.ast.Statement> cls, int x, int y, int width, int height );
+
+	public java.awt.Color getColorFor( Class<? extends org.lgna.project.ast.Node> cls );
+
 	public java.awt.Color getColorFor( org.lgna.project.ast.Node node );
+
 	public java.awt.Color getCommentForegroundColor();
+
 	public java.awt.Color getCodeColor( org.lgna.project.ast.AbstractCode code );
+
 	public java.awt.Color getSelectedColor();
+
 	public java.awt.Color getUnselectedColor();
+
 	public java.awt.Color getPrimaryBackgroundColor();
+
 	public java.awt.Color getSecondaryBackgroundColor();
 }

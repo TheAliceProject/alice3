@@ -46,16 +46,19 @@ package org.alice.ide.members;
 /**
  * @author Dennis Cosgrove
  */
-public class MembersComposite extends org.lgna.croquet.SimpleComposite< org.alice.ide.members.components.MembersView > {
+public class MembersComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.members.components.MembersView> {
 	private static class SingletonHolder {
 		private static MembersComposite instance = new MembersComposite();
 	}
+
 	public static MembersComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private MembersComposite() {
 		super( java.util.UUID.fromString( "10225a3f-f05d-42f3-baaf-f6bd0f8a7c68" ) );
 	}
+
 	@Override
 	protected org.alice.ide.members.components.MembersView createView() {
 		return new org.alice.ide.members.components.MembersView( this );

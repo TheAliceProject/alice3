@@ -49,27 +49,29 @@ package org.lgna.project.ast;
 public class MethodInvocation extends Expression implements ArgumentOwner {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return method.getValue().getDeclaringType();
 		}
 	};
-	public DeclarationProperty< AbstractMethod > method = new DeclarationProperty< AbstractMethod >( this );
+	public DeclarationProperty<AbstractMethod> method = new DeclarationProperty<AbstractMethod>( this );
 	public SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
 
 	public MethodInvocation() {
 	}
-	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument... requiredArguments ){
+
+	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument... requiredArguments ) {
 		this( expression, method, requiredArguments, null, null );
 	}
-	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ){
+
+	public MethodInvocation( Expression expression, AbstractMethod method, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		if( expression instanceof NullLiteral ) {
 			//pass
 		} else {
-			AbstractType<?,?,?> expressionType = expression.getType();
+			AbstractType<?, ?, ?> expressionType = expression.getType();
 			if( expressionType != null ) {
-				AbstractType<?,?,?> declaringType = method.getDeclaringType();
+				AbstractType<?, ?, ?> declaringType = method.getDeclaringType();
 				if( declaringType != null ) {
 					//todo
 					//assert declaringType.isAssignableFrom( expressionType );
@@ -86,41 +88,46 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 			this.keyedArguments.add( keyedArguments );
 		}
 	}
-	public DeclarationProperty< ? extends AbstractCode > getParameterOwnerProperty() {
+
+	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
 		return this.method;
 	}
+
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
+
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
+
 	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.method.getValue().getReturnType();
 	}
-	
+
 	@Override
 	public boolean isValid() {
 		boolean rv;
 		Expression e = expression.getValue();
 		AbstractMethod m = method.getValue();
-		if( e != null && m != null ) {
+		if( ( e != null ) && ( m != null ) ) {
 			if( m.isValid() ) {
 				if( m.isStatic() ) {
 					//todo
 					rv = true;
 				} else {
-					AbstractType<?,?,?> declaringType = m.getDeclaringType();
-					AbstractType<?,?,?> expressionType = e.getType();
+					AbstractType<?, ?, ?> declaringType = m.getDeclaringType();
+					AbstractType<?, ?, ?> expressionType = e.getType();
 					if( expressionType instanceof AnonymousUserType ) {
 						//todo
 						rv = true;
 					} else {
-						if( declaringType != null && expressionType != null ) {
+						if( ( declaringType != null ) && ( expressionType != null ) ) {
 							rv = declaringType.isAssignableFrom( expressionType );
 						} else {
 							rv = false;
@@ -135,11 +142,11 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		}
 		return rv;
 	}
-	
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-//		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
-//		rv.append( "." );
+		//		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
+		//		rv.append( "." );
 		NodeUtilities.safeAppendRepr( rv, this.method.getValue(), locale );
 		rv.append( "(" );
 		String separator = "";
@@ -151,5 +158,5 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		rv.append( ")" );
 		return rv;
 	}
-	
+
 }

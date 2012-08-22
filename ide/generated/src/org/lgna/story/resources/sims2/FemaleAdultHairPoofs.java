@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultHairPoofs implements FemaleAdultHair {
-	RED ,
- 	BLACK ,
- 	BLOND ,
- 	BROWN ,
- 	GREY ;
+	RED,
+	BLACK,
+	BLOND,
+	BROWN,
+	GREY;
 }

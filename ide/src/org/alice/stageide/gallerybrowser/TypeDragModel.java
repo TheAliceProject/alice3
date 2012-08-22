@@ -47,7 +47,8 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, TypeDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static TypeDragModel getInstance( org.lgna.project.ast.NamedUserType type ) {
 		TypeDragModel rv = map.get( type );
 		if( rv != null ) {
@@ -58,23 +59,25 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.NamedUserType type;
 	private final javax.swing.Icon largeIcon;
+
 	private TypeDragModel( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "547192e8-12cc-4c62-b05d-8108205c0b06" ) );
 		this.type = type;
-		
+
 		//todo: share code
-		org.lgna.project.ast.AbstractType< ?,?,? > snapshotType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( this.type );
+		org.lgna.project.ast.AbstractType<?, ?, ?> snapshotType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( this.type );
 		java.awt.image.BufferedImage thumbnail = null;
 		javax.swing.Icon snapshotIcon = null;
 		if( snapshotType != null ) {
 			if( snapshotType instanceof org.lgna.project.ast.JavaType ) {
 				org.lgna.project.ast.JavaType snapShotJavaType = (org.lgna.project.ast.JavaType)snapshotType;
-				thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(snapShotJavaType.getClassReflectionProxy().getReification());
+				thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( snapShotJavaType.getClassReflectionProxy().getReification() );
 			}
 			if( thumbnail != null ) {
-				snapshotIcon = new javax.swing.ImageIcon(thumbnail);
+				snapshotIcon = new javax.swing.ImageIcon( thumbnail );
 			} else {
 				snapshotIcon = org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getIcon( snapshotType );
 			}
@@ -83,40 +86,45 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 		} else {
 			org.lgna.project.ast.JavaField field = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( this.type.getDeclaredConstructors().get( 0 ) );
 			if( field != null ) {
-				thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(field.getValueType().getClassReflectionProxy().getReification());
+				thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( field.getValueType().getClassReflectionProxy().getReification() );
 				//snapshotText = field.toString();
 				if( thumbnail != null ) {
-					snapshotIcon = new javax.swing.ImageIcon(thumbnail);
+					snapshotIcon = new javax.swing.ImageIcon( thumbnail );
 				}
 			}
 		}
 
 		this.largeIcon = snapshotIcon;
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		org.lgna.project.ast.AbstractConstructor constructor = this.type.getDeclaredConstructors().get( 0 );
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor.getRequiredParameters();
+		java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
 		if( requiredParameters.size() > 0 ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > parameterType = requiredParameters.get( 0 ).getValueType();
+			org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = requiredParameters.get( 0 ).getValueType();
 			return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType, dropSite );
 		} else {
 			org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( constructor );
 			return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, dropSite );
 		}
 	}
+
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return null;
 	}
+
 	@Override
 	public javax.swing.Icon getLargeIcon() {
 		return this.largeIcon;
 	}
+
 	@Override
 	public javax.swing.Icon getSmallIcon() {
 		return null;
 	}
+
 	@Override
 	public String getText() {
 		return this.type.getName();

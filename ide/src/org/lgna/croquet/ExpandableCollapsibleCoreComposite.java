@@ -46,35 +46,43 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpandableCollapsibleCoreComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractComposite<V> {
+public abstract class ExpandableCollapsibleCoreComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
 	public static class OuterComposite extends SimpleComposite<org.lgna.croquet.components.ExpandableCollapsibleView> {
 		private final ExpandableCollapsibleCoreComposite<?> coreComposite;
 		private final BooleanState isExpandedState;
+
 		public OuterComposite( ExpandableCollapsibleCoreComposite<?> coreComposite, boolean isExpandedInitialValue ) {
 			super( java.util.UUID.fromString( "04fd070d-fea8-4f0e-81df-4b3acde7137c" ) );
 			this.coreComposite = coreComposite;
 			this.isExpandedState = this.createBooleanState( this.createKey( "isExpandedState" ), isExpandedInitialValue );
 		}
+
 		@Override
 		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return this.coreComposite.getClassUsedForLocalization();
 		}
+
 		public BooleanState getIsExpandedState() {
 			return this.isExpandedState;
 		}
+
 		public ExpandableCollapsibleCoreComposite<?> getCoreComposite() {
 			return this.coreComposite;
 		}
+
 		@Override
 		protected org.lgna.croquet.components.ExpandableCollapsibleView createView() {
 			return new org.lgna.croquet.components.ExpandableCollapsibleView( this );
 		}
 	}
+
 	private final OuterComposite outerComposite;
+
 	public ExpandableCollapsibleCoreComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
 		super( migrationId );
 		this.outerComposite = new OuterComposite( this, isExpandedInitialValue );
 	}
+
 	public OuterComposite getOuterComposite() {
 		return this.outerComposite;
 	}

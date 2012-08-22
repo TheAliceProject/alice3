@@ -43,25 +43,27 @@
 
 package edu.cmu.cs.dennisc.math.property;
 
-public class Vector3fProperty extends edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.math.Vector3f >  implements edu.cmu.cs.dennisc.property.CopyableProperty< edu.cmu.cs.dennisc.math.Vector3f >{
-    public Vector3fProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value) {
-        super( owner, value );
-    }
+public class Vector3fProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.math.Vector3f> implements edu.cmu.cs.dennisc.property.CopyableProperty<edu.cmu.cs.dennisc.math.Vector3f> {
+	public Vector3fProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
+		super( owner, value );
+	}
 
-    @Override
-    public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
-        assert value != null;
-        super.setValue( owner, value );
-    }
-    
-    public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.math.Vector3f rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-        rv.set( getValue( owner ) );
-        return rv;
-    }
-    public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-        return getCopy( edu.cmu.cs.dennisc.math.Vector3f.createNaN(), owner );
-    }
-    public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
-        setValue( owner, new edu.cmu.cs.dennisc.math.Vector3f( value ) );
-    }
+	@Override
+	public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
+		assert value != null;
+		super.setValue( owner, value );
+	}
+
+	public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.math.Vector3f rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+		rv.set( getValue( owner ) );
+		return rv;
+	}
+
+	public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+		return getCopy( edu.cmu.cs.dennisc.math.Vector3f.createNaN(), owner );
+	}
+
+	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
+		setValue( owner, new edu.cmu.cs.dennisc.math.Vector3f( value ) );
+	}
 }

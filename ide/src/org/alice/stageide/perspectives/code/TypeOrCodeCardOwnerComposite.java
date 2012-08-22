@@ -50,25 +50,28 @@ public class TypeOrCodeCardOwnerComposite extends org.lgna.croquet.CardOwnerComp
 	private static class SingletonHolder {
 		private static TypeOrCodeCardOwnerComposite instance = new TypeOrCodeCardOwnerComposite();
 	}
+
 	public static TypeOrCodeCardOwnerComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			TypeOrCodeCardOwnerComposite.this.handleDeclarationStateChanged( nextValue );
 		}
 	};
+
 	private TypeOrCodeCardOwnerComposite() {
 		super( java.util.UUID.fromString( "698a5480-5af2-47af-8faa-9cc8d82f4fe8" ),
-				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
-				org.alice.ide.members.MembersComposite.getInstance() 
-		);
+				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(),
+				org.alice.ide.members.MembersComposite.getInstance() );
 	}
+
 	private void handleDeclarationStateChanged( org.alice.ide.declarationseditor.DeclarationComposite nextValue ) {
-		org.lgna.croquet.Composite< ? > composite;
+		org.lgna.croquet.Composite<?> composite;
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			if( nextValue != null ) {
 				if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
@@ -84,11 +87,13 @@ public class TypeOrCodeCardOwnerComposite extends org.lgna.croquet.CardOwnerComp
 		}
 		this.showCard( composite );
 	}
+
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueListener( this.declarationListener );
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().removeValueListener( this.declarationListener );

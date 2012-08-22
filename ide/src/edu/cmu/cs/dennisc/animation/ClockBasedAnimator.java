@@ -58,7 +58,7 @@ public class ClockBasedAnimator extends AbstractAnimator {
 			tCurrentSimulation = 0.0;
 		} else {
 			//todo: optimize for speed factor == 0
-			tCurrentSimulation = m_tPreviousSimulation + (tCurrentClock - m_tPreviousClock) * getSpeedFactor();
+			tCurrentSimulation = m_tPreviousSimulation + ( ( tCurrentClock - m_tPreviousClock ) * getSpeedFactor() );
 		}
 		setCurrentTime( tCurrentSimulation );
 		m_tPreviousClock = tCurrentClock;

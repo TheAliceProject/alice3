@@ -47,7 +47,8 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameLocalComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserLocal> {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, RenameLocalComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, RenameLocalComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized RenameLocalComposite getInstance( org.lgna.project.ast.UserLocal local ) {
 		assert local != null;
 		RenameLocalComposite rv = map.get( local );
@@ -59,6 +60,7 @@ public class RenameLocalComposite extends RenameDeclarationComposite<org.lgna.pr
 		}
 		return rv;
 	}
+
 	private RenameLocalComposite( org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "51ce6258-a1ac-4606-b4f8-faea8e732550" ), new org.alice.ide.name.validators.LocalNameValidator( local ), local );
 	}

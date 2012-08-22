@@ -50,9 +50,11 @@ public class SelectProjectToOpenPanel extends org.lgna.croquet.components.Border
 	private static class SingletonHolder {
 		private static SelectProjectToOpenPanel instance = new SelectProjectToOpenPanel();
 	}
+
 	public static SelectProjectToOpenPanel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SelectProjectToOpenPanel() {
 		this.addCenterComponent( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().createFolderTabbedPane() );
 		this.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );

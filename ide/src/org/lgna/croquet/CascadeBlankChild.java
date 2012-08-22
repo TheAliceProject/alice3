@@ -46,7 +46,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface CascadeBlankChild< F > {
+public interface CascadeBlankChild<F> {
 	public int getItemCount();
-	public CascadeItem< F, ? > getItemAt( int index );
+
+	public CascadeItem<F, ?> getItemAt( int index );
 }

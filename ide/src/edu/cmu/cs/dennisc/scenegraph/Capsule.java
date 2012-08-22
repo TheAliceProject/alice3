@@ -52,21 +52,22 @@ public class Capsule extends Shape {
 		Y,
 		Z
 	}
+
 	public final BoundDoubleProperty distanceBetweenSphereCenters = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0;
 			super.setValue( owner, value );
 		}
 	};
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< Axis > axis = new edu.cmu.cs.dennisc.property.InstanceProperty< Axis >( this, Axis.Y ) {
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Axis> axis = new edu.cmu.cs.dennisc.property.InstanceProperty<Axis>( this, Axis.Y ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Axis value ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
@@ -76,9 +77,10 @@ public class Capsule extends Shape {
 			}
 		};
 	};
+
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		double major = this.distanceBetweenSphereCenters.getValue() / 2 + this.radius.getValue();
+		double major = ( this.distanceBetweenSphereCenters.getValue() / 2 ) + this.radius.getValue();
 		double minor = this.radius.getValue();
 		Axis axis = this.axis.getValue();
 		if( axis == Axis.X ) {
@@ -94,9 +96,10 @@ public class Capsule extends Shape {
 			boundingBox.setNaN();
 		}
 	}
+
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		boundingSphere.center.set( 0,0,0 );
-		boundingSphere.radius = this.distanceBetweenSphereCenters.getValue() + this.radius.getValue() * 2;
+		boundingSphere.center.set( 0, 0, 0 );
+		boundingSphere.radius = this.distanceBetweenSphereCenters.getValue() + ( this.radius.getValue() * 2 );
 	}
 }

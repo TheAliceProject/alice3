@@ -50,9 +50,11 @@ public class TypeUnhandledBlank extends org.alice.ide.croquet.models.cascade.Exp
 	private static class SingletonHolder {
 		private static TypeUnhandledBlank instance = new TypeUnhandledBlank();
 	}
+
 	public static TypeUnhandledBlank getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TypeUnhandledBlank() {
 		super( java.util.UUID.fromString( "186ea575-21b4-4b34-b292-96efadc6321b" ), Void.class );
 	}

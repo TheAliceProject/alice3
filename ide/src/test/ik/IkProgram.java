@@ -43,7 +43,11 @@
 
 package test.ik;
 
-import org.lgna.story.*;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
+import org.lgna.story.SProgram;
+import org.lgna.story.SSphere;
 
 /**
  * @author Dennis Cosgrove
@@ -56,56 +60,63 @@ class IkProgram extends SProgram {
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
-	private final org.lgna.croquet.State.ValueListener< Boolean > linearAngularEnabledListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<Boolean> linearAngularEnabledListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleChainChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener< org.lgna.story.resources.JointId > jointIdListener = new org.lgna.croquet.State.ValueListener< org.lgna.story.resources.JointId >() {
-		public void changing( org.lgna.croquet.State< org.lgna.story.resources.JointId > state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.JointId> jointIdListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.JointId>() {
+		public void changing( org.lgna.croquet.State<org.lgna.story.resources.JointId> state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.story.resources.JointId > state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.story.resources.JointId> state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleChainChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener< org.lgna.ik.Bone > boneListener = new org.lgna.croquet.State.ValueListener< org.lgna.ik.Bone >() {
-		public void changing( org.lgna.croquet.State< org.lgna.ik.Bone > state, org.lgna.ik.Bone prevValue, org.lgna.ik.Bone nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.ik.Bone> boneListener = new org.lgna.croquet.State.ValueListener<org.lgna.ik.Bone>() {
+		public void changing( org.lgna.croquet.State<org.lgna.ik.Bone> state, org.lgna.ik.Bone prevValue, org.lgna.ik.Bone nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.ik.Bone > state, org.lgna.ik.Bone prevValue, org.lgna.ik.Bone nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.ik.Bone> state, org.lgna.ik.Bone prevValue, org.lgna.ik.Bone nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleBoneChanged();
 		}
 	};
 	private final edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener targetTransformListener = new edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener() {
-		public void absoluteTransformationChanged(edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
+		public void absoluteTransformationChanged( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent ) {
 			IkProgram.this.handleTargetTransformChanged();
 		}
 	};
-	
+
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
 		return ImplementationAccessor.getImplementation( this.target );
 	}
-	private org.lgna.story.implementation.JointedModelImp< ?,? > getSubjectImp() {
+
+	private org.lgna.story.implementation.JointedModelImp<?, ?> getSubjectImp() {
 		return ImplementationAccessor.getImplementation( this.ogre );
 	}
+
 	private org.lgna.story.implementation.JointImp getAnchorImp() {
 		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 		return this.getSubjectImp().getJointImplementation( anchorId );
 	}
+
 	private org.lgna.story.implementation.JointImp getEndImp() {
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
 		return this.getSubjectImp().getJointImplementation( endId );
 	}
-	
+
 	private void handleTargetTransformChanged() {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getTargetImp().getTransformation( this.getAnchorImp() );
 		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m );
 		this.updateInfo();
 	}
+
 	private void updateInfo() {
 		org.lgna.ik.Bone bone = test.ik.croquet.BonesState.getInstance().getSelectedItem();
-		
+
 		StringBuilder sb = new StringBuilder();
 		if( bone != null ) {
 			org.lgna.story.implementation.JointImp a = bone.getA();
@@ -122,9 +133,10 @@ class IkProgram extends SProgram {
 		sb.append( "target:\n" );
 		edu.cmu.cs.dennisc.print.PrintUtilities.appendLines( sb, this.getTargetImp().getLocalTransformation() );
 		sb.append( "\n" );
-		
+
 		test.ik.croquet.InfoState.getInstance().setValue( sb.toString() );
 	}
+
 	private org.lgna.ik.Chain createChain() {
 		boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
 		boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
@@ -132,11 +144,13 @@ class IkProgram extends SProgram {
 		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
 		return org.lgna.ik.Chain.createInstance( this.getSubjectImp(), anchorId, endId, isLinearEnabled, isAngularEnabled );
 	}
+
 	private void handleChainChanged() {
 		org.lgna.ik.Chain chain = createChain();
 		test.ik.croquet.BonesState.getInstance().setChain( chain );
 		this.updateInfo();
 	}
+
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
 		this.modelManipulationDragAdapter.setOnscreenLookingGlass( ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass() );
@@ -154,20 +168,22 @@ class IkProgram extends SProgram {
 		this.getTargetImp().getSgComposite().addAbsoluteTransformationListener( this.targetTransformListener );
 		this.handleChainChanged();
 	}
+
 	private void handleBoneChanged() {
 		this.updateInfo();
 	}
+
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
 		app.getFrame().setMainComposite( new test.ik.croquet.IkSplitComposite() );
 
-		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.LEFT_CLAVICLE; 
-		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.LEFT_WRIST; 
+		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.LEFT_CLAVICLE;
+		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.LEFT_WRIST;
 
 		test.ik.croquet.AnchorJointIdState.getInstance().setValue( initialAnchor );
 		test.ik.croquet.EndJointIdState.getInstance().setValue( initialEnd );
-		
+
 		IkProgram program = new IkProgram();
 
 		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );

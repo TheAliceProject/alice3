@@ -46,72 +46,78 @@ package edu.cmu.cs.dennisc.java.lang.reflect;
  * @author Dennis Cosgrove
  */
 public final class ReflectionUtilities {
-//	private static java.util.HashMap< String, Class< ? >> s_primativeTypeMap = new java.util.HashMap< String, Class< ? >>();
-//	static {
-//		s_primativeTypeMap.put( Void.TYPE.getName(), Void.TYPE );
-//		s_primativeTypeMap.put( Boolean.TYPE.getName(), Boolean.TYPE );
-//		s_primativeTypeMap.put( Byte.TYPE.getName(), Byte.TYPE );
-//		s_primativeTypeMap.put( Character.TYPE.getName(), Character.TYPE );
-//		s_primativeTypeMap.put( Short.TYPE.getName(), Short.TYPE );
-//		s_primativeTypeMap.put( Integer.TYPE.getName(), Integer.TYPE );
-//		s_primativeTypeMap.put( Long.TYPE.getName(), Long.TYPE );
-//		s_primativeTypeMap.put( Double.TYPE.getName(), Double.TYPE );
-//		s_primativeTypeMap.put( Float.TYPE.getName(), Float.TYPE );
-//	}
+	//	private static java.util.HashMap< String, Class< ? >> s_primativeTypeMap = new java.util.HashMap< String, Class< ? >>();
+	//	static {
+	//		s_primativeTypeMap.put( Void.TYPE.getName(), Void.TYPE );
+	//		s_primativeTypeMap.put( Boolean.TYPE.getName(), Boolean.TYPE );
+	//		s_primativeTypeMap.put( Byte.TYPE.getName(), Byte.TYPE );
+	//		s_primativeTypeMap.put( Character.TYPE.getName(), Character.TYPE );
+	//		s_primativeTypeMap.put( Short.TYPE.getName(), Short.TYPE );
+	//		s_primativeTypeMap.put( Integer.TYPE.getName(), Integer.TYPE );
+	//		s_primativeTypeMap.put( Long.TYPE.getName(), Long.TYPE );
+	//		s_primativeTypeMap.put( Double.TYPE.getName(), Double.TYPE );
+	//		s_primativeTypeMap.put( Float.TYPE.getName(), Float.TYPE );
+	//	}
 	private ReflectionUtilities() {
 	}
-	
+
 	public static boolean isPublic( java.lang.reflect.Member mmbr ) {
 		return java.lang.reflect.Modifier.isPublic( mmbr.getModifiers() );
 	}
+
 	public static boolean isProtected( java.lang.reflect.Member mmbr ) {
 		return java.lang.reflect.Modifier.isProtected( mmbr.getModifiers() );
 	}
+
 	public static boolean isPrivate( java.lang.reflect.Member mmbr ) {
 		return java.lang.reflect.Modifier.isPrivate( mmbr.getModifiers() );
 	}
+
 	public static boolean isAbstract( java.lang.reflect.Member mmbr ) {
 		return java.lang.reflect.Modifier.isAbstract( mmbr.getModifiers() );
 	}
+
 	public static boolean isAbstract( Class<?> cls ) {
 		return java.lang.reflect.Modifier.isAbstract( cls.getModifiers() );
 	}
+
 	//todo: add the rest of the modifiers
-	
+
 	@Deprecated
-	public static Class< ? > getClassForName( String className ) {
+	public static Class<?> getClassForName( String className ) {
 		try {
 			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
 		} catch( ClassNotFoundException cnfe ) {
 			throw new RuntimeException( className, cnfe );
 		}
-//		assert className != null;
-//		assert className.length() > 0;
-//		try {
-//			return Class.forName( className );
-//		} catch( ClassNotFoundException cnfe ) {
-//			if( s_primativeTypeMap.containsKey( className ) ) {
-//				return s_primativeTypeMap.get( className );
-//			} else {
-//				throw new RuntimeException( className, cnfe );
-//			}
-//		}
+		//		assert className != null;
+		//		assert className.length() > 0;
+		//		try {
+		//			return Class.forName( className );
+		//		} catch( ClassNotFoundException cnfe ) {
+		//			if( s_primativeTypeMap.containsKey( className ) ) {
+		//				return s_primativeTypeMap.get( className );
+		//			} else {
+		//				throw new RuntimeException( className, cnfe );
+		//			}
+		//		}
 	}
-	
+
 	public static Class<?> getArrayClass( Class<?> componentCls ) {
 		Object array = java.lang.reflect.Array.newInstance( componentCls, 0 );
 		return array.getClass();
 	}
+
 	public static Class<?> getArrayClass( Class<?> componentCls, int dimensionCount ) {
 		assert dimensionCount > 0;
 		Class<?> rv = componentCls;
-		for( int i=0; i<dimensionCount; i++ ) {
+		for( int i = 0; i < dimensionCount; i++ ) {
 			rv = getArrayClass( rv );
 		}
 		return rv;
 	}
-	
-	public static <T> T newInstance( java.lang.reflect.Constructor< T > cnstrctr, Object... arguments ) {
+
+	public static <T> T newInstance( java.lang.reflect.Constructor<T> cnstrctr, Object... arguments ) {
 		try {
 			return cnstrctr.newInstance( arguments );
 		} catch( java.lang.reflect.InvocationTargetException ite ) {
@@ -123,13 +129,16 @@ public final class ReflectionUtilities {
 			throw new RuntimeException( cnstrctr.toString(), iae );
 		}
 	}
-	public static <T> T newInstance( Class< T > cls, Class<?>[] parameterClses, Object... arguments ) {
+
+	public static <T> T newInstance( Class<T> cls, Class<?>[] parameterClses, Object... arguments ) {
 		return newInstance( getConstructor( cls, parameterClses ), arguments );
 	}
-	public static <T> T newInstanceForArguments( Class< T > cls, Object... arguments ) {
+
+	public static <T> T newInstanceForArguments( Class<T> cls, Object... arguments ) {
 		return newInstance( getConstructorForArguments( cls, arguments ), arguments );
 	}
-	public static <T> T newInstance( Class< T > cls ) {
+
+	public static <T> T newInstance( Class<T> cls ) {
 		try {
 			return cls.newInstance();
 		} catch( InstantiationException ie ) {
@@ -138,52 +147,60 @@ public final class ReflectionUtilities {
 			throw new RuntimeException( cls.getName(), iae );
 		}
 	}
+
 	public static Object newInstance( String className ) {
 		return newInstance( getClassForName( className ) );
 	}
-	private static Object newArrayInstance( Class< ? > componentType, int length ) {
+
+	private static Object newArrayInstance( Class<?> componentType, int length ) {
 		try {
 			return java.lang.reflect.Array.newInstance( componentType, length );
 		} catch( NegativeArraySizeException nase ) {
 			throw new RuntimeException( nase );
 		}
 	}
+
 	public static Object newArrayInstance( String componentTypeName, int length ) {
 		return newArrayInstance( getClassForName( componentTypeName ), length );
 	}
-	public static <T> T[] newTypedArrayInstance( Class< T > componentType, int length ) {
+
+	public static <T> T[] newTypedArrayInstance( Class<T> componentType, int length ) {
 		return (T[])newArrayInstance( componentType, length );
 	}
 
-	public static java.lang.reflect.Field getField( Class< ? > cls, String name ) {
+	public static java.lang.reflect.Field getField( Class<?> cls, String name ) {
 		try {
 			return cls.getField( name );
 		} catch( NoSuchFieldException nsfe ) {
 			throw new RuntimeException( nsfe );
 		}
 	}
-	public static java.lang.reflect.Field getDeclaredField( Class< ? > cls, String name ) {
+
+	public static java.lang.reflect.Field getDeclaredField( Class<?> cls, String name ) {
 		try {
 			return cls.getDeclaredField( name );
 		} catch( NoSuchFieldException nsfe ) {
 			throw new RuntimeException( nsfe );
 		}
 	}
-	public static java.lang.reflect.Method getMethod( Class< ? > cls, String name, Class< ? >... parameterTypes ) {
+
+	public static java.lang.reflect.Method getMethod( Class<?> cls, String name, Class<?>... parameterTypes ) {
 		try {
 			return cls.getMethod( name, parameterTypes );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( nsme );
 		}
 	}
-	public static java.lang.reflect.Method getDeclaredMethod( Class< ? > cls, String name, Class< ? >... parameterTypes ) {
+
+	public static java.lang.reflect.Method getDeclaredMethod( Class<?> cls, String name, Class<?>... parameterTypes ) {
 		try {
 			return cls.getDeclaredMethod( name, parameterTypes );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( nsme );
 		}
 	}
-	public static <T> java.lang.reflect.Constructor< T > getConstructor( Class< T > cls, Class<?>... parameterClses ) {
+
+	public static <T> java.lang.reflect.Constructor<T> getConstructor( Class<T> cls, Class<?>... parameterClses ) {
 		try {
 			return cls.getConstructor( parameterClses );
 		} catch( NoSuchMethodException nsme ) {
@@ -196,18 +213,19 @@ public final class ReflectionUtilities {
 			throw new RuntimeException( sb.toString(), nsme );
 		}
 	}
-	public static <T> java.lang.reflect.Constructor< T > getDeclaredConstructor( Class< T > cls, Class<?>... parameterClses ) {
+
+	public static <T> java.lang.reflect.Constructor<T> getDeclaredConstructor( Class<T> cls, Class<?>... parameterClses ) {
 		try {
 			return cls.getDeclaredConstructor( parameterClses );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( cls.getName(), nsme );
 		}
 	}
-	
-	private static <T> java.lang.reflect.Constructor< T > getConstructorForArguments( java.lang.reflect.Constructor< T >[] constructors, Object... arguments ) throws NoSuchMethodException {
-		java.lang.reflect.Constructor< T > rv = null;
-		for( java.lang.reflect.Constructor< T > constructor : constructors ) {
-			Class< ? >[] parameterClses = constructor.getParameterTypes();
+
+	private static <T> java.lang.reflect.Constructor<T> getConstructorForArguments( java.lang.reflect.Constructor<T>[] constructors, Object... arguments ) throws NoSuchMethodException {
+		java.lang.reflect.Constructor<T> rv = null;
+		for( java.lang.reflect.Constructor<T> constructor : constructors ) {
+			Class<?>[] parameterClses = constructor.getParameterTypes();
 			if( parameterClses.length == arguments.length ) {
 				if( rv != null ) {
 					throw new RuntimeException( "more than one constructor matches arguments" );
@@ -222,16 +240,18 @@ public final class ReflectionUtilities {
 			throw new NoSuchMethodException();
 		}
 	}
-	public static <T> java.lang.reflect.Constructor< T > getConstructorForArguments( Class< T > cls, Object... arguments ) {
+
+	public static <T> java.lang.reflect.Constructor<T> getConstructorForArguments( Class<T> cls, Object... arguments ) {
 		try {
-			return getConstructorForArguments( (java.lang.reflect.Constructor< T >[])cls.getConstructors(), arguments );
+			return getConstructorForArguments( (java.lang.reflect.Constructor<T>[])cls.getConstructors(), arguments );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( cls.getName(), nsme );
 		}
 	}
-	public static <T> java.lang.reflect.Constructor< T > getDeclaredConstructorForArguments( Class< T > cls, Object... arguments ) {
+
+	public static <T> java.lang.reflect.Constructor<T> getDeclaredConstructorForArguments( Class<T> cls, Object... arguments ) {
 		try {
-			return getConstructorForArguments( (java.lang.reflect.Constructor< T >[])cls.getDeclaredConstructors(), arguments );
+			return getConstructorForArguments( (java.lang.reflect.Constructor<T>[])cls.getDeclaredConstructors(), arguments );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( cls.getName(), nsme );
 		}
@@ -257,6 +277,7 @@ public final class ReflectionUtilities {
 		sb.append( " }" );
 		return sb.toString();
 	}
+
 	public static Object invoke( Object instance, java.lang.reflect.Method method, Object... args ) {
 		try {
 			return method.invoke( instance, args );
@@ -278,6 +299,7 @@ public final class ReflectionUtilities {
 			throw new RuntimeException( iae );
 		}
 	}
+
 	public static void set( java.lang.reflect.Field field, Object o, Object value ) {
 		try {
 			field.set( o, value );
@@ -288,33 +310,35 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	private static java.util.List< java.lang.reflect.Field > getFields( Class< ? > cls, Class< ? > clsAssignable, int modifierMask ) {
-		java.util.List< java.lang.reflect.Field > rv = new java.util.LinkedList< java.lang.reflect.Field >();
+	private static java.util.List<java.lang.reflect.Field> getFields( Class<?> cls, Class<?> clsAssignable, int modifierMask ) {
+		java.util.List<java.lang.reflect.Field> rv = new java.util.LinkedList<java.lang.reflect.Field>();
 		java.lang.reflect.Field[] fields = cls.getFields();
 		for( java.lang.reflect.Field field : fields ) {
 			if( clsAssignable.isAssignableFrom( field.getType() ) ) {
-				if( (field.getModifiers() & modifierMask) == modifierMask ) {
+				if( ( field.getModifiers() & modifierMask ) == modifierMask ) {
 					rv.add( field );
 				}
 			}
 		}
 		return rv;
 	}
+
 	//todo
-	public static java.util.List< java.lang.reflect.Field > getPublicFinalFields( Class< ? > cls, Class< ? > clsAssignable ) {
+	public static java.util.List<java.lang.reflect.Field> getPublicFinalFields( Class<?> cls, Class<?> clsAssignable ) {
 		return getFields( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
 	}
+
 	//todo
-	public static java.util.List< java.lang.reflect.Field > getPublicStaticFinalFields( Class< ? > cls, Class< ? > clsAssignable ) {
+	public static java.util.List<java.lang.reflect.Field> getPublicStaticFinalFields( Class<?> cls, Class<?> clsAssignable ) {
 		return getFields( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
 	}
 
-	private static <E extends Object> java.util.List< E > getInstances( Class< ? > cls, Class< E > clsAssignable, int modifierMask ) {
-		java.util.List< E > rv = new java.util.LinkedList< E >();
+	private static <E extends Object> java.util.List<E> getInstances( Class<?> cls, Class<E> clsAssignable, int modifierMask ) {
+		java.util.List<E> rv = new java.util.LinkedList<E>();
 		java.lang.reflect.Field[] fields = cls.getFields();
 		for( java.lang.reflect.Field field : fields ) {
 			if( clsAssignable.isAssignableFrom( field.getType() ) ) {
-				if( (field.getModifiers() & modifierMask) == modifierMask ) {
+				if( ( field.getModifiers() & modifierMask ) == modifierMask ) {
 					E e = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, null );
 					rv.add( e );
 				}
@@ -322,16 +346,18 @@ public final class ReflectionUtilities {
 		}
 		return rv;
 	}
+
 	//todo
-	public static <E extends Object> java.util.List< E > getPublicFinalInstances( Class< ? > cls, Class< E > clsAssignable ) {
+	public static <E extends Object> java.util.List<E> getPublicFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
 		return getInstances( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
 	}
+
 	//todo
-	public static <E extends Object> java.util.List< E > getPublicStaticFinalInstances( Class< ? > cls, Class< E > clsAssignable ) {
+	public static <E extends Object> java.util.List<E> getPublicStaticFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
 		return getInstances( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
 	}
 
-	public static <T> T valueOf( Class< T > cls, String s ) {
+	public static <T> T valueOf( Class<T> cls, String s ) {
 		java.lang.reflect.Method mthd = getMethod( cls, "valueOf", new Class[] { String.class } );
 		return (T)invoke( null, mthd, new Object[] { s } );
 	}

@@ -42,19 +42,22 @@
  */
 package edu.cmu.cs.dennisc.pattern;
 
-public class IsInstanceCrawler< T > implements edu.cmu.cs.dennisc.pattern.Crawler {
-	public static <T> IsInstanceCrawler< T > createInstance( Class<T> cls ) {
-		return new IsInstanceCrawler< T >( cls );
+public class IsInstanceCrawler<T> implements edu.cmu.cs.dennisc.pattern.Crawler {
+	public static <T> IsInstanceCrawler<T> createInstance( Class<T> cls ) {
+		return new IsInstanceCrawler<T>( cls );
 	}
 
 	private final Class<T> cls;
-	private final java.util.List< T > list = new java.util.LinkedList< T >();
+	private final java.util.List<T> list = new java.util.LinkedList<T>();
+
 	protected IsInstanceCrawler( Class<T> cls ) {
 		this.cls = cls;
 	}
+
 	protected boolean isAcceptable( T e ) {
 		return true;
 	}
+
 	public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 		if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {
 			T e = (T)crawlable;
@@ -63,6 +66,7 @@ public class IsInstanceCrawler< T > implements edu.cmu.cs.dennisc.pattern.Crawle
 			}
 		}
 	}
+
 	public java.util.List<T> getList() {
 		return this.list;
 	}

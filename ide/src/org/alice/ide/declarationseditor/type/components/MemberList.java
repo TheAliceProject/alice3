@@ -46,10 +46,11 @@ package org.alice.ide.declarationseditor.type.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSelectablePanel< E, org.lgna.croquet.components.ItemDetails<E> > {
+public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSelectablePanel<E, org.lgna.croquet.components.ItemDetails<E>> {
 	protected final float NAME_FONT_SCALE = 1.5f;
-	protected class MemberButton extends org.lgna.croquet.components.BooleanStateButton< javax.swing.AbstractButton > {
-		public MemberButton( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.JComponent< ? > lineStart, org.lgna.croquet.components.JComponent< ? > center, org.lgna.croquet.components.JComponent< ? > lineEnd ) {
+
+	protected class MemberButton extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
+		public MemberButton( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.JComponent<?> lineStart, org.lgna.croquet.components.JComponent<?> center, org.lgna.croquet.components.JComponent<?> lineEnd ) {
 			super( booleanState );
 			if( lineStart != null ) {
 				this.addComponent( lineStart, org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
@@ -60,8 +61,9 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 			if( lineEnd != null ) {
 				this.addComponent( lineEnd, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
 			}
-			
+
 		}
+
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
 			javax.swing.JToggleButton rv = new javax.swing.JToggleButton() {
@@ -71,6 +73,7 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 					rv.width = Short.MAX_VALUE;
 					return rv;
 				}
+
 				@Override
 				protected void paintComponent( java.awt.Graphics g ) {
 					//super.paintComponent(g);
@@ -84,7 +87,7 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 						color = color.darker();
 					}
 					g.setColor( color );
-					g.fillRoundRect( 0, 0, this.getWidth()-1, this.getHeight()-1, 8, 8 );
+					g.fillRoundRect( 0, 0, this.getWidth() - 1, this.getHeight() - 1, 8, 8 );
 					if( this.getModel().isRollover() ) {
 						color = java.awt.Color.DARK_GRAY;
 					} else {
@@ -92,9 +95,9 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 					}
 					g.setColor( color );
 					edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, this.getHeight() - 5 );
-					g.drawRoundRect( 0, 0, this.getWidth()-1, this.getHeight()-1, 8, 8 );
+					g.drawRoundRect( 0, 0, this.getWidth() - 1, this.getHeight() - 1, 8, 8 );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
-					
+
 				}
 			};
 			rv.setOpaque( false );
@@ -102,13 +105,15 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 			rv.setRolloverEnabled( true );
 			return rv;
 		}
-		public void addComponent( org.lgna.croquet.components.Component< ? > component, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
+
+		public void addComponent( org.lgna.croquet.components.Component<?> component, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
 			this.internalAddComponent( component, constraint.getInternal() );
 		}
 	}
+
 	private org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 
-	public MemberList( org.lgna.croquet.ListSelectionState< E > model, org.lgna.croquet.Operation... operations ) {
+	public MemberList( org.lgna.croquet.ListSelectionState<E> model, org.lgna.croquet.Operation... operations ) {
 		super( model );
 		this.internalAddComponent( pageAxisPanel );
 		for( org.lgna.croquet.Operation operation : operations ) {
@@ -118,29 +123,33 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 			}
 		}
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 
-	protected abstract org.lgna.croquet.components.JComponent< ? > createButtonLineStart( E item );
-	protected abstract org.lgna.croquet.components.JComponent< ? > createButtonCenter( E item );
-	protected abstract org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( E item );
-	
+	protected abstract org.lgna.croquet.components.JComponent<?> createButtonLineStart( E item );
+
+	protected abstract org.lgna.croquet.components.JComponent<?> createButtonCenter( E item );
+
+	protected abstract org.lgna.croquet.components.JComponent<?> createButtonLineEnd( E item );
+
 	@Override
 	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
 		MemberButton memberButton = new MemberButton( itemSelectedState,
 				this.createButtonLineStart( item ),
 				this.createButtonCenter( item ),
 				this.createButtonLineEnd( item )
-		);
+				);
 		return memberButton;
 	}
+
 	@Override
-	protected final org.lgna.croquet.components.ItemDetails<E> createItemDetails(E item) {
+	protected final org.lgna.croquet.components.ItemDetails<E> createItemDetails( E item ) {
 		org.lgna.croquet.components.ItemDetails<E> rv = new org.lgna.croquet.components.ItemDetails<E>( this.getModel(), item, this );
-		
-		org.lgna.croquet.components.AbstractButton<?,?> button = rv.getButton();
+
+		org.lgna.croquet.components.AbstractButton<?, ?> button = rv.getButton();
 		//button.getAwtComponent().removeAll();
 		button.setVisible( false );
 		this.pageAxisPanel.addComponent( button );
@@ -164,11 +173,13 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 			details.getButton().setVisible( false );
 		}
 	}
+
 	@Override
 	protected void addItem( org.lgna.croquet.components.ItemDetails<E> details ) {
 		this.index++;
 		details.getButton().setVisible( true );
 	}
+
 	@Override
 	protected void addEpilogue() {
 	}

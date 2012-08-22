@@ -45,8 +45,9 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
-	private static java.util.Map< org.lgna.project.ast.MethodInvocation, MoreCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class MoreCascade extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> {
+	private static java.util.Map<org.lgna.project.ast.MethodInvocation, MoreCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized MoreCascade getInstance( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		MoreCascade rv = map.get( methodInvocation );
 		if( rv != null ) {
@@ -57,24 +58,25 @@ public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.
 		}
 		return rv;
 	}
-	
+
 	private static org.lgna.project.ast.AbstractParameter getNextParameter( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
-		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextMethod.getRequiredParameters();
-		return parameters.get( parameters.size()-1 );
+		java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = nextMethod.getRequiredParameters();
+		return parameters.get( parameters.size() - 1 );
 	}
-	
+
 	private final org.lgna.project.ast.MethodInvocation methodInvocation;
 	private final org.lgna.project.ast.ExpressionStatement expressionStatement;
 	private final org.lgna.project.ast.MethodInvocation nextMethodInvocation;
+
 	private MoreCascade( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7ed06ae1-3704-4745-afd2-47dc21366412" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( getNextParameter( methodInvocation ) ) );
 		assert methodInvocation != null;
 		this.methodInvocation = methodInvocation;
 		this.expressionStatement = (org.lgna.project.ast.ExpressionStatement)this.methodInvocation.getParent();
-		assert this.expressionStatement != null : ((org.lgna.project.ast.JavaMethod)this.methodInvocation.method.getValue()).getMethodReflectionProxy().getReification();
-		
+		assert this.expressionStatement != null : ( (org.lgna.project.ast.JavaMethod)this.methodInvocation.method.getValue() ).getMethodReflectionProxy().getReification();
+
 		org.lgna.project.ast.AbstractMethod method = this.methodInvocation.method.getValue();
 		org.lgna.project.ast.AbstractMethod nextMethod = (org.lgna.project.ast.AbstractMethod)method.getNextLongerInChain();
 		this.nextMethodInvocation = new org.lgna.project.ast.MethodInvocation();
@@ -83,53 +85,55 @@ public class MoreCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.
 			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, null );
 			this.nextMethodInvocation.requiredArguments.add( argument );
 		}
-//		this.updateToolTipText();
+		//		this.updateToolTipText();
 	}
 
-//	@Override
-//	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
-//		return org.alice.ide.IDE.PROJECT_GROUP;
-//	}
+	//	@Override
+	//	protected edu.cmu.cs.dennisc.croquet.Group getItemGroup() {
+	//		return org.alice.ide.IDE.PROJECT_GROUP;
+	//	}
 
 	public org.lgna.project.ast.ExpressionStatement getExpressionStatement() {
 		return this.expressionStatement;
 	}
+
 	public org.lgna.project.ast.MethodInvocation getPrevMethodInvocation() {
 		return this.methodInvocation;
 	}
+
 	public org.lgna.project.ast.MethodInvocation getNextMethodInvocation() {
 		return this.nextMethodInvocation;
 	}
-	
-//	@Override
-//	public org.lgna.project.ast.Expression getPreviousExpression() {
-//		return null;
-//	}
-//	@Override
-//	protected org.lgna.project.ast.Statement getStatement() {
-//		return this.expressionStatement;
-//	}
-//	
-//	private org.lgna.project.ast.AbstractParameter getLastParameter() {
-//		org.lgna.project.ast.AbstractMethod method = this.nextMethodInvocation.method.getValue();
-//		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
-//		return parameters.get( parameters.size()-1 );
-//	}
-//
-//	@Override
-//	protected String getTitle() {
-//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
-//		return lastParameter.getName();
-//	}
-//	
-//	
-//	@Override
-//	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
-//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
-//		return lastParameter.getDesiredValueType();
-//	}
+
+	//	@Override
+	//	public org.lgna.project.ast.Expression getPreviousExpression() {
+	//		return null;
+	//	}
+	//	@Override
+	//	protected org.lgna.project.ast.Statement getStatement() {
+	//		return this.expressionStatement;
+	//	}
+	//	
+	//	private org.lgna.project.ast.AbstractParameter getLastParameter() {
+	//		org.lgna.project.ast.AbstractMethod method = this.nextMethodInvocation.method.getValue();
+	//		java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = method.getParameters();
+	//		return parameters.get( parameters.size()-1 );
+	//	}
+	//
+	//	@Override
+	//	protected String getTitle() {
+	//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
+	//		return lastParameter.getName();
+	//	}
+	//	
+	//	
+	//	@Override
+	//	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getDesiredValueType() {
+	//		org.lgna.project.ast.AbstractParameter lastParameter = this.getLastParameter();
+	//		return lastParameter.getDesiredValueType();
+	//	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit(org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values) {
+	protected org.alice.ide.croquet.edits.ast.FillInMoreEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.FillInMoreEdit( step, values[ 0 ] );
 	}
 }

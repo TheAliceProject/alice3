@@ -50,7 +50,7 @@ public class GlyphVector {
 	private java.awt.Font m_font;
 	private float m_xFactor;
 	private float m_yFactor;
-	
+
 	public static final double FLATNESS = 0.01;
 
 	private static java.awt.font.FontRenderContext s_frc = new java.awt.font.FontRenderContext( null, false, true );
@@ -67,23 +67,23 @@ public class GlyphVector {
 
 	private java.awt.geom.Rectangle2D.Float m_bounds;
 
-	public GlyphVector( String text, java.awt.Font font, float xFactor, float yFactor) {
+	public GlyphVector( String text, java.awt.Font font, float xFactor, float yFactor ) {
 		m_text = text;
 		m_font = font;
 		m_xFactor = xFactor;
 		m_yFactor = yFactor;
 	}
-	
+
 	private void markShapesDirty() {
 		m_glyphVector = null;
 		m_facesShape = null;
 		m_outlinesShape = null;
 		m_outlineLines = null;
 		m_faceContours = null;
-		
+
 		m_bounds = null;
 	}
-	
+
 	private java.awt.font.GlyphVector getGlyphVector() {
 		if( m_glyphVector == null ) {
 			//m_glyphVector = m_font.layoutGlyphVector( s_frc, m_text.toCharArray(), 0, m_text.length(), java.awt.Font.LAYOUT_LEFT_TO_RIGHT );
@@ -91,6 +91,7 @@ public class GlyphVector {
 		}
 		return m_glyphVector;
 	}
+
 	public java.awt.Shape getFacesShape() {
 		if( m_facesShape == null ) {
 			java.awt.font.GlyphVector glyphVector = getGlyphVector();
@@ -98,6 +99,7 @@ public class GlyphVector {
 		}
 		return m_facesShape;
 	}
+
 	public java.awt.Shape getOutlinesShape() {
 		if( m_outlinesShape == null ) {
 			java.awt.Shape facesShape = getFacesShape();
@@ -106,15 +108,15 @@ public class GlyphVector {
 		return m_outlinesShape;
 	}
 
-//	private static void reverse( java.util.Vector<edu.cmu.cs.dennisc.math.Point2d> v ) {
-//		int n = v.size();
-//		for( int i=0; i<n/2; i++ ) {
-//			int j = n-i-1;
-//			edu.cmu.cs.dennisc.math.Point2d temp = v.elementAt( i );
-//			v.setElementAt( v.elementAt( j ), i );
-//			v.setElementAt( temp, j );
-//		}
-//	}
+	//	private static void reverse( java.util.Vector<edu.cmu.cs.dennisc.math.Point2d> v ) {
+	//		int n = v.size();
+	//		for( int i=0; i<n/2; i++ ) {
+	//			int j = n-i-1;
+	//			edu.cmu.cs.dennisc.math.Point2d temp = v.elementAt( i );
+	//			v.setElementAt( v.elementAt( j ), i );
+	//			v.setElementAt( temp, j );
+	//		}
+	//	}
 	private java.util.Vector<java.util.Vector<edu.cmu.cs.dennisc.math.Point2f>> iterate( java.awt.Shape shape ) {
 		java.awt.geom.PathIterator pi = shape.getPathIterator( null, FLATNESS );
 
@@ -129,13 +131,13 @@ public class GlyphVector {
 				//note: no break
 			case java.awt.geom.PathIterator.SEG_LINETO:
 				assert polyline != null;
-				polyline.addElement( new edu.cmu.cs.dennisc.math.Point2f( segment[ 0 ]*m_xFactor, segment[ 1 ]*m_yFactor ) );
+				polyline.addElement( new edu.cmu.cs.dennisc.math.Point2f( segment[ 0 ] * m_xFactor, segment[ 1 ] * m_yFactor ) );
 				break;
 			case java.awt.geom.PathIterator.SEG_CLOSE:
 				assert polyline != null;
-//				if( m_isReversed ) {
-//					reverse( polyline );
-//				}
+				//				if( m_isReversed ) {
+				//					reverse( polyline );
+				//				}
 				polylines.addElement( polyline );
 				polyline = null;
 				break;
@@ -151,39 +153,41 @@ public class GlyphVector {
 		}
 		return polylines;
 	}
-	
+
 	public java.util.Vector<java.util.Vector<edu.cmu.cs.dennisc.math.Point2f>> acquireFaceContours() {
 		//todo
-//		try {
-//			m_faceContoursLock.wait();
-//		} catch( InterruptedException ie ) {
-//			//todo?
-//		}
+		//		try {
+		//			m_faceContoursLock.wait();
+		//		} catch( InterruptedException ie ) {
+		//			//todo?
+		//		}
 		if( m_faceContours == null ) {
 			m_faceContours = iterate( getFacesShape() );
 		}
 		return m_faceContours;
 	}
+
 	public void releaseFaceContours() {
 		//todo
-//		m_faceContoursLock.notify();
+		//		m_faceContoursLock.notify();
 	}
 
 	public java.util.Vector<java.util.Vector<edu.cmu.cs.dennisc.math.Point2f>> acquireOutlineLines() {
 		//todo
-//		try {
-//			m_outlineLinesLock.wait();
-//		} catch( InterruptedException ie ) {
-//			//todo?
-//		}
+		//		try {
+		//			m_outlineLinesLock.wait();
+		//		} catch( InterruptedException ie ) {
+		//			//todo?
+		//		}
 		if( m_outlineLines == null ) {
 			m_outlineLines = iterate( getOutlinesShape() );
 		}
 		return m_outlineLines;
 	}
+
 	public void releaseOutlineLines() {
 		//todo
-//		m_outlineLinesLock.notify();
+		//		m_outlineLinesLock.notify();
 	}
 
 	public java.awt.geom.Rectangle2D.Float getBounds( java.awt.geom.Rectangle2D.Float rv ) {
@@ -201,8 +205,8 @@ public class GlyphVector {
 				switch( pi.currentSegment( segment ) ) {
 				case java.awt.geom.PathIterator.SEG_MOVETO:
 				case java.awt.geom.PathIterator.SEG_LINETO:
-					float xCurr = segment[ 0 ]*m_xFactor;
-					float yCurr = segment[ 1 ]*m_yFactor;
+					float xCurr = segment[ 0 ] * m_xFactor;
+					float yCurr = segment[ 1 ] * m_yFactor;
 					xMin = Math.min( xMin, xCurr );
 					xMax = Math.max( xMax, xCurr );
 					yMin = Math.min( yMin, yCurr );
@@ -220,23 +224,25 @@ public class GlyphVector {
 				}
 				pi.next();
 			}
-			if( xMin != Float.MAX_VALUE && yMin != Float.MAX_VALUE && xMax != -Float.MAX_VALUE && yMax != -Float.MAX_VALUE ) {
-				m_bounds = new java.awt.geom.Rectangle2D.Float( xMin, yMin, xMax-xMin, yMax-yMin );			
+			if( ( xMin != Float.MAX_VALUE ) && ( yMin != Float.MAX_VALUE ) && ( xMax != -Float.MAX_VALUE ) && ( yMax != -Float.MAX_VALUE ) ) {
+				m_bounds = new java.awt.geom.Rectangle2D.Float( xMin, yMin, xMax - xMin, yMax - yMin );
 			} else {
-				m_bounds = new java.awt.geom.Rectangle2D.Float( Float.NaN, Float.NaN, Float.NaN, Float.NaN );			
+				m_bounds = new java.awt.geom.Rectangle2D.Float( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
 			}
 		}
 		rv.setFrame( m_bounds );
-		
+
 		return rv;
 	}
+
 	public java.awt.geom.Rectangle2D.Float getBounds() {
 		return getBounds( new java.awt.geom.Rectangle2D.Float() );
 	}
-	
+
 	public String getText() {
 		return m_text;
 	}
+
 	public boolean setText( String text ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( m_text, text ) ) {
 			m_text = text;
@@ -250,6 +256,7 @@ public class GlyphVector {
 	public java.awt.Font getFont() {
 		return m_font;
 	}
+
 	public boolean setFont( java.awt.Font font ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( m_font, font ) ) {
 			m_font = font;

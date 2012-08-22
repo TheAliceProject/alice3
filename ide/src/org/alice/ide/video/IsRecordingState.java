@@ -50,9 +50,11 @@ public class IsRecordingState extends org.lgna.croquet.BooleanState {
 	private static class SingletonHolder {
 		private static IsRecordingState instance = new IsRecordingState();
 	}
+
 	public static IsRecordingState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsRecordingState() {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "5cd80ef4-6e77-49ef-a88c-af74ad6b253e" ), false );
 	}

@@ -48,6 +48,7 @@ package org.alice.ide.members.components.templates;
 //todo: reduce visibility
 public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
+
 	protected GetterTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.ast.draganddrop.expression.FieldAccessDragModel.getInstance( field ) );
 		this.field = field;
@@ -56,6 +57,7 @@ public class GetterTemplate extends org.alice.ide.templates.ExpressionTemplate {
 			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field );

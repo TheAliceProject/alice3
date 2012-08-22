@@ -48,26 +48,30 @@ package org.alice.ide.ast.draganddrop;
  */
 public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+
 	public ExpressionPropertyDropSite( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		this.expressionProperty = expressionProperty;
 	}
+
 	public ExpressionPropertyDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.croquet.codecs.PropertyOfNodeCodec< org.lgna.project.ast.ExpressionProperty > codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
+		org.alice.ide.croquet.codecs.PropertyOfNodeCodec<org.lgna.project.ast.ExpressionProperty> codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
 		this.expressionProperty = codec.decodeValue( binaryDecoder );
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		org.alice.ide.croquet.codecs.PropertyOfNodeCodec< org.lgna.project.ast.ExpressionProperty > codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
+		org.alice.ide.croquet.codecs.PropertyOfNodeCodec<org.lgna.project.ast.ExpressionProperty> codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
 		codec.encodeValue( binaryEncoder, this.expressionProperty );
 	}
-	
+
 	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
+
 	public ExpressionPropertyDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		org.lgna.project.ast.ExpressionProperty replacementExpressionProperty = retargeter.retarget( this.expressionProperty );
-		
+
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "retarget properties" );
-		
+
 		return new ExpressionPropertyDropSite( replacementExpressionProperty );
 	}
 
@@ -79,8 +83,9 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 
 	@Override
 	public boolean equals( Object o ) {
-		if( o == this )
+		if( o == this ) {
 			return true;
+		}
 		if( o instanceof ExpressionPropertyDropSite ) {
 			ExpressionPropertyDropSite epds = (ExpressionPropertyDropSite)o;
 			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.expressionProperty, epds.expressionProperty );
@@ -88,11 +93,12 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 			return false;
 		}
 	}
+
 	@Override
 	public int hashCode() {
 		int rv = 17;
 		if( this.expressionProperty != null ) {
-			rv = 37*rv + this.expressionProperty.hashCode();
+			rv = ( 37 * rv ) + this.expressionProperty.hashCode();
 		}
 		return rv;
 	}

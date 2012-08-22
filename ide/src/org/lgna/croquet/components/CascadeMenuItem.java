@@ -46,73 +46,81 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenuItem extends ViewController< javax.swing.JMenuItem, org.lgna.croquet.CascadeItem< ?,? > > {
-	private final org.lgna.croquet.cascade.RtRoot<?,?> rtRoot;
+public class CascadeMenuItem extends ViewController<javax.swing.JMenuItem, org.lgna.croquet.CascadeItem<?, ?>> {
+	private final org.lgna.croquet.cascade.RtRoot<?, ?> rtRoot;
 	private boolean isIconSet;
 	private javax.swing.Icon setIcon;
-	public CascadeMenuItem( org.lgna.croquet.CascadeItem< ?,? > model, org.lgna.croquet.cascade.RtRoot<?,?> rtRoot ) {
+
+	public CascadeMenuItem( org.lgna.croquet.CascadeItem<?, ?> model, org.lgna.croquet.cascade.RtRoot<?, ?> rtRoot ) {
 		super( model );
 		this.rtRoot = rtRoot;
 	}
+
 	protected javax.swing.Icon getSetIcon() {
 		return this.setIcon;
 	}
+
 	public boolean isIconSet() {
 		return this.isIconSet;
 	}
+
 	public void setIconSet( boolean isIconSet ) {
 		this.isIconSet = isIconSet;
 	}
+
 	public javax.swing.Icon getIcon() {
 		return this.getAwtComponent().getIcon();
 	}
+
 	public void setIcon( javax.swing.Icon icon ) {
 		this.setIconSet( true );
 		this.setIcon = icon;
 	}
+
 	@Override
 	protected javax.swing.JMenuItem createAwtComponent() {
 		return new javax.swing.JMenuItem() {
 			private java.awt.Cursor pushedCursor;
+
 			@Override
 			public javax.swing.Icon getIcon() {
 				//note: much of the cascading menu system leverages icons
-//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
-					if( CascadeMenuItem.this.isIconSet() ) {
-						return CascadeMenuItem.this.getSetIcon();
-					} else {
-						return super.getIcon();
-					}
-//				} else {
-//					return null;
-//				}
+				//				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
+				if( CascadeMenuItem.this.isIconSet() ) {
+					return CascadeMenuItem.this.getSetIcon();
+				} else {
+					return super.getIcon();
+				}
+				//				} else {
+				//					return null;
+				//				}
 			}
-//			@Override
-//			protected void processMouseEvent( java.awt.event.MouseEvent e ) {
-//				int id = e.getID();
-//				boolean isSuperRequired = true;
-//				if( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
-//					if( rtRoot != null ) {
-//						if( rtRoot.getElement().getCascadeRejectorCount() > 0 ) {
-//							this.pushedCursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
-//							edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( e.getComponent(), this.pushedCursor );
-//							isSuperRequired = false;
-//						}
-//					}
-//				} else if( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
-//					if( this.pushedCursor != null ) {
-//						java.awt.Cursor poppedCursor = edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
-//						if( this.pushedCursor != poppedCursor ) {
-//							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.pushedCursor, poppedCursor );
-//						}
-//						this.pushedCursor = null;
-//						isSuperRequired = false;
-//					}
-//				}
-//				if( isSuperRequired ) {
-//					super.processMouseEvent( e );
-//				}
-//			}
+			//			@Override
+			//			protected void processMouseEvent( java.awt.event.MouseEvent e ) {
+			//				int id = e.getID();
+			//				boolean isSuperRequired = true;
+			//				if( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
+			//					if( rtRoot != null ) {
+			//						if( rtRoot.getElement().getCascadeRejectorCount() > 0 ) {
+			//							this.pushedCursor = java.awt.dnd.DragSource.DefaultMoveNoDrop;
+			//							edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( e.getComponent(), this.pushedCursor );
+			//							isSuperRequired = false;
+			//						}
+			//					}
+			//				} else if( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) {
+			//					if( this.pushedCursor != null ) {
+			//						java.awt.Cursor poppedCursor = edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
+			//						if( this.pushedCursor != poppedCursor ) {
+			//							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.pushedCursor, poppedCursor );
+			//						}
+			//						this.pushedCursor = null;
+			//						isSuperRequired = false;
+			//					}
+			//				}
+			//				if( isSuperRequired ) {
+			//					super.processMouseEvent( e );
+			//				}
+			//			}
 		};
 	}
 }

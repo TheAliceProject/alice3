@@ -54,42 +54,52 @@ public class ByteArraySeekablePullSourceStream implements javax.media.protocol.P
 		this.data = data;
 		this.location = 0;
 	}
+
 	public int read( byte[] buffer, int offset, int length ) throws java.io.IOException {
-		long bytesLeft = (this.data.length - this.location);
+		long bytesLeft = ( this.data.length - this.location );
 		if( bytesLeft == 0 ) {
 			return -1;
 		}
 		int intBytesLeft = (int)bytesLeft;
 		int toRead = length;
-		if( intBytesLeft < length )
+		if( intBytesLeft < length ) {
 			toRead = intBytesLeft;
+		}
 		System.arraycopy( this.data, (int)this.location, buffer, offset, toRead );
 		this.location = this.location + toRead;
 		return toRead;
 	}
+
 	public Object getControl( String controlType ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControl", controlType );
 		return null;
 	}
+
 	public Object[] getControls() {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControls" );
 		return null;
 	}
+
 	public javax.media.protocol.ContentDescriptor getContentDescriptor() {
 		return RAW_CONTENT_DISCRIPTOR;
 	}
+
 	public boolean endOfStream() {
-		return (this.location == this.data.length);
+		return ( this.location == this.data.length );
 	}
+
 	public long getContentLength() {
 		return this.data.length;
 	}
+
 	public boolean willReadBlock() {
 		return endOfStream();
 	}
+
 	public boolean isRandomAccess() {
 		return true;
 	}
+
 	public long seek( long where ) {
 		if( where > this.data.length ) {
 			this.location = this.data.length;
@@ -98,6 +108,7 @@ public class ByteArraySeekablePullSourceStream implements javax.media.protocol.P
 		}
 		return this.location;
 	}
+
 	public long tell() {
 		return this.location;
 	}

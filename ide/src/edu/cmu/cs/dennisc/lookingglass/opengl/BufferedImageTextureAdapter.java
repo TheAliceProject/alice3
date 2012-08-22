@@ -46,31 +46,33 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class BufferedImageTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.texture.BufferedImageTexture > {
+public class BufferedImageTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.texture.BufferedImageTexture> {
 	@Override
 	public java.awt.Graphics2D createGraphics() {
 		throw new RuntimeException( "TODO" );
 	}
+
 	@Override
 	public void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height ) {
 		throw new RuntimeException( "TODO" );
 	}
+
 	@Override
 	public java.awt.Image getImage() {
 		throw new RuntimeException( "TODO" );
 	}
-	
+
 	@Override
 	protected com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTextureData ) {
-		return newTextureData( gl,m_element.getBufferedImage(), m_element.isMipMappingDesired() );
+		return newTextureData( gl, m_element.getBufferedImage(), m_element.isMipMappingDesired() );
 	}
-//	
-//	@Override
-//	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-//		if( property == m_texture.bufferedImage ) {
-//			setDirty( true );
-//		} else {
-//			super.propertyChanged( property );
-//		}
-//	}
+	//	
+	//	@Override
+	//	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	//		if( property == m_texture.bufferedImage ) {
+	//			setDirty( true );
+	//		} else {
+	//			super.propertyChanged( property );
+	//		}
+	//	}
 }

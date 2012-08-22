@@ -49,12 +49,15 @@ public class RevertProjectOperation extends UriActionOperation {
 	private static class SingletonHolder {
 		private static RevertProjectOperation instance = new RevertProjectOperation();
 	}
+
 	public static RevertProjectOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RevertProjectOperation() {
 		super( java.util.UUID.fromString( "e1c3b3d7-dc4b-491c-8958-9a98710d5d1a" ) );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -69,25 +72,25 @@ public class RevertProjectOperation extends UriActionOperation {
 				application.showMessageDialog( "todo: revert uri == null" );
 				step.cancel();
 			}
-//			context.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-//				@Override
-//				public void doOrRedo( boolean isDo ) {
-//					getIDE().revert();
-//				}
-//				@Override
-//				public void undo() {
-//					throw new AssertionError();
-//				}
-//				@Override
-//				public boolean canUndo() {
-//					return false;
-//				}
-//				@Override
-//				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-//					rv.append( "revert" );
-//					return rv;
-//				}
-//			} );
+			//			context.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			//				@Override
+			//				public void doOrRedo( boolean isDo ) {
+			//					getIDE().revert();
+			//				}
+			//				@Override
+			//				public void undo() {
+			//					throw new AssertionError();
+			//				}
+			//				@Override
+			//				public boolean canUndo() {
+			//					return false;
+			//				}
+			//				@Override
+			//				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+			//					rv.append( "revert" );
+			//					return rv;
+			//				}
+			//			} );
 		} else {
 			step.cancel();
 		}

@@ -50,14 +50,14 @@ public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.
 	public CustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
 		super( composite );
 	}
-	
+
 	private org.lgna.project.ast.Expression createValue() {
 		org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite = (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)this.getComposite();
 		return composite.getPreviewValue();
 	}
-	
+
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		org.lgna.project.ast.Expression expression;
 		try {
 			expression = this.createValue();
@@ -66,7 +66,7 @@ public abstract class CustomExpressionCreatorView extends org.alice.ide.preview.
 			expression = new org.lgna.project.ast.NullLiteral();
 		}
 		return new org.lgna.croquet.components.BorderPanel.Builder()
-			.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
-		.build();
+				.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
+				.build();
 	}
 }

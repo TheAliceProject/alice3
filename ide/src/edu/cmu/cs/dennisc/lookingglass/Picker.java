@@ -49,9 +49,12 @@ package edu.cmu.cs.dennisc.lookingglass;
 public interface Picker {
 	public static final boolean SUB_ELEMENT_IS_REQUIRED = true;
 	public static final boolean SUB_ELEMENT_IS_NOT_REQUIRED = false;
+
 	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+
 	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
 
 	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+
 	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
 }

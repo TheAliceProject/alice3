@@ -6,10 +6,10 @@ package org.lgna.cheshire.ast;
 public class TransactionHistoryGenerator {
 	public org.lgna.croquet.history.TransactionHistory generate( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.ast.UserMethod destinationMethod, org.lgna.project.ast.UserField field ) {
 		org.lgna.croquet.history.TransactionHistory history = new org.lgna.croquet.history.TransactionHistory();
-		
+
 		//we add the new method to the same class as the method we add the invocation to
 		org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)methodInvocation.method.getValue();
-		
+
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, method );
 		org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit );
 
@@ -25,7 +25,7 @@ public class TransactionHistoryGenerator {
 			instanceExpression = new org.lgna.project.ast.FieldAccess(
 					new org.lgna.project.ast.ThisExpression(),
 					field
-			);
+					);
 		} else {
 			instanceFactory = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
 			instanceExpression = new org.lgna.project.ast.ThisExpression();
@@ -46,7 +46,7 @@ public class TransactionHistoryGenerator {
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
 			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		}
-		
+
 		org.alice.stageide.croquet.models.run.RunOperation runOperation = org.alice.stageide.croquet.models.run.RunOperation.getInstance();
 		// Call run
 		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );

@@ -49,15 +49,18 @@ package org.lgna.project.ast;
 public class EachInIterableTogether extends AbstractEachInTogether implements EachInIterableStatement {
 	public ExpressionProperty iterable = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			throw new RuntimeException( "todo" );
 		}
 	};
+
 	public EachInIterableTogether() {
 	}
+
 	public EachInIterableTogether( UserLocal item, Expression iterable, BlockStatement body ) {
 		super( item, body );
 	}
+
 	public ExpressionProperty getIterableProperty() {
 		return this.iterable;
 	}

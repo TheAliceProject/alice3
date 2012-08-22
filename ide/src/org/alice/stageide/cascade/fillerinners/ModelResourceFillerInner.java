@@ -42,25 +42,20 @@
  */
 package org.alice.stageide.cascade.fillerinners;
 
-import java.util.List;
-
 import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
-import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.project.annotations.ValueDetails;
-import org.lgna.project.ast.Expression;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ModelResourceFillerInner extends ExpressionFillerInner {
 
 	public ModelResourceFillerInner() {
 		super( org.lgna.story.resources.JointedModelResource.class );
 	}
-	
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		if( details instanceof org.lgna.project.annotations.PublicStaticFieldValueDetails ) {
 			org.lgna.project.annotations.PublicStaticFieldValueDetails publicStaticFieldValueDetails = (org.lgna.project.annotations.PublicStaticFieldValueDetails)details;
 			java.lang.reflect.Field[] flds = publicStaticFieldValueDetails.getFlds();

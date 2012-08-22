@@ -49,44 +49,43 @@ import org.lgna.story.implementation.BillboardImp;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class BillboardFrontPaintPropertyAdapter extends AbstractPropertyAdapter<Paint, BillboardImp> {
 
-	
-	public BillboardFrontPaintPropertyAdapter(BillboardImp instance, StandardExpressionState expressionState) 
+	public BillboardFrontPaintPropertyAdapter( BillboardImp instance, StandardExpressionState expressionState )
 	{
-		super("Front Paint", instance, expressionState);
+		super( "Front Paint", instance, expressionState );
 	}
 
 	@Override
-	public void setValue(Paint value) 
+	public void setValue( Paint value )
 	{
-		super.setValue(value);
-		if (this.instance != null)
+		super.setValue( value );
+		if( this.instance != null )
 		{
-			this.instance.setFrontPaint(value);
+			this.instance.setFrontPaint( value );
 		}
 	}
 
 	@Override
-	public Class<Paint> getPropertyType() 
+	public Class<Paint> getPropertyType()
 	{
 		return Paint.class;
 	}
 
 	@Override
-	public Paint getValue() 
+	public Paint getValue()
 	{
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			return this.instance.getFrontPaint();
 		}
 		return null;
 	}
-	
+
 	@Override
-	public Paint getValueCopyIfMutable() 
+	public Paint getValueCopyIfMutable()
 	{
 		return this.getValue();
 	}

@@ -49,12 +49,14 @@ public class CharSequenceProperty extends InstanceProperty<CharSequence> {
 	public CharSequenceProperty( InstancePropertyOwner owner, CharSequence value ) {
 		super( owner, value );
 	}
+
 	protected boolean isNullAcceptable() {
 		return false;
 	}
+
 	@Override
 	public void setValue( PropertyOwner owner, CharSequence value ) {
-		assert value != null  || isNullAcceptable();
+		assert ( value != null ) || isNullAcceptable();
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
 			super.setValue( owner, value );
 		}

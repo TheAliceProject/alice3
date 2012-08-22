@@ -46,27 +46,30 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareFieldEdit< M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation > extends org.lgna.croquet.edits.Edit< M > {
+public abstract class DeclareFieldEdit<M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation> extends org.lgna.croquet.edits.Edit<M> {
 	private final org.lgna.project.ast.UserType<?> declaringType;
 	private final org.lgna.project.ast.UserField field;
-	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep< M > step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
+
+	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep<M> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
 		super( step );
 		this.declaringType = declaringType;
 		this.field = field;
 	}
+
 	public DeclareFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
 		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
 	}
-	
-	protected org.lgna.project.ast.UserType< ? > getDeclaringType() {
+
+	protected org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
+
 	protected org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
-	
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -76,8 +79,8 @@ public abstract class DeclareFieldEdit< M extends org.alice.ide.croquet.models.d
 
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
-		rv.append("declare:");
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, field, org.lgna.croquet.Application.getLocale());
+		rv.append( "declare:" );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, field, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 }

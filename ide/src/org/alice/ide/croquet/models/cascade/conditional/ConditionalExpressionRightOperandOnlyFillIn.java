@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< org.lgna.project.ast.ConditionalInfixExpression > {
-	private static java.util.Map< org.lgna.project.ast.ConditionalInfixExpression.Operator, ConditionalExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks<org.lgna.project.ast.ConditionalInfixExpression> {
+	private static java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, ConditionalExpressionRightOperandOnlyFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static ConditionalExpressionRightOperandOnlyFillIn getInstance( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			ConditionalExpressionRightOperandOnlyFillIn rv = map.get( operator );
@@ -60,7 +61,9 @@ public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.c
 			return rv;
 		}
 	}
+
 	private final org.lgna.project.ast.ConditionalInfixExpression transientValue;
+
 	private ConditionalExpressionRightOperandOnlyFillIn( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "d59dd098-3426-453e-927f-84dbf3687824" ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Boolean.class ) );
@@ -68,19 +71,21 @@ public class ConditionalExpressionRightOperandOnlyFillIn extends org.alice.ide.c
 				new org.alice.ide.ast.PreviousValueExpression( Boolean.class ),
 				operator,
 				new org.alice.ide.ast.EmptyExpression( Boolean.class )
-		);
+				);
 	}
-//	@Override
-//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< org.lgna.project.ast.ConditionalInfixExpression, org.lgna.project.ast.Expression > context, org.lgna.project.ast.Expression previousExpression ) {
-//		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
-//	}
+
+	//	@Override
+	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep< org.lgna.project.ast.ConditionalInfixExpression, org.lgna.project.ast.Expression > context, org.lgna.project.ast.Expression previousExpression ) {
+	//		return org.alice.ide.croquet.models.cascade.CascadeManager.isInclusionDesired( context, previousExpression, Boolean.class );
+	//	}
 	@Override
 	protected org.lgna.project.ast.ConditionalInfixExpression createValue( org.lgna.project.ast.Expression previousExpression, org.lgna.project.ast.Expression[] expressions ) {
 		assert expressions.length == 1;
 		return new org.lgna.project.ast.ConditionalInfixExpression( previousExpression, this.transientValue.operator.getValue(), expressions[ 0 ] );
 	}
+
 	@Override
-	public org.lgna.project.ast.ConditionalInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ConditionalInfixExpression,org.lgna.project.ast.Expression > step ) {
+	public org.lgna.project.ast.ConditionalInfixExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ConditionalInfixExpression, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

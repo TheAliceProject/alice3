@@ -43,7 +43,15 @@
 
 package test.ik;
 
-import org.lgna.story.*;
+import org.lgna.story.Color;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
+import org.lgna.story.SGround;
+import org.lgna.story.SScene;
+import org.lgna.story.SSphere;
+import org.lgna.story.SSun;
+import org.lgna.story.SpatialRelation;
 
 /**
  * @author Dennis Cosgrove
@@ -54,37 +62,39 @@ public class IkScene extends SScene {
 	private final SCamera camera;
 	private final SBiped ogre;
 	private final SSphere target;
+
 	public IkScene( SCamera camera, SBiped ogre, SSphere target ) {
 		this.camera = camera;
 		this.ogre = ogre;
 		this.target = target;
 	}
-	
+
 	private void performGeneratedSetup() {
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.ogre.setVehicle( this );
 		this.target.setVehicle( this );
-		
+
 		this.ogre.place( SpatialRelation.ABOVE, this.snow );
 		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 
 		this.target.setRadius( 0.2 );
 		this.target.setPaint( Color.RED );
 		this.target.setOpacity( 0.5 );
-		
+
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
+
 	private void performCustomSetup() {
 		//if you want the skeleton visualization to be co-located
 		//this.ogre.setOpacity( 0.25 );
-		
+
 		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
 		impl.showVisualization();
 	}
-	
+
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {

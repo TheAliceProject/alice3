@@ -50,6 +50,7 @@ public class SelectAndLoadTemplateProjectOperation extends SelectAndLoadProjectO
 	public SelectAndLoadTemplateProjectOperation() {
 		super( java.util.UUID.fromString( "0f98d378-be39-4e4a-8b69-95361b56995e" ) );
 	}
+
 	@Override
 	public boolean isNew() {
 		return true;

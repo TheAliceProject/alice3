@@ -49,19 +49,23 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private P owner;
+
 	public TransactionNode( P owner ) {
 		this.setOwner( owner );
 	}
+
 	public TransactionNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
+
 	public P getOwner() {
 		return this.owner;
 	}
-	/*package-private*/ void setOwner( P owner ) {
+
+	/* package-private */void setOwner( P owner ) {
 		this.owner = owner;
 	}
 
-	protected abstract void appendContexts( java.util.List< org.lgna.croquet.Context > out );
+	protected abstract void appendContexts( java.util.List<org.lgna.croquet.Context> out );
 
 	private <N extends TransactionNode<?>> N findNodeAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		TransactionNode<?> rv;
@@ -78,9 +82,11 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 		}
 		return (N)rv;
 	}
+
 	public final <N extends TransactionNode<?>> N getFirstAssignableTo( Class<N> cls ) {
 		return this.findNodeAssignableTo( cls, true );
 	}
+
 	public final <N extends TransactionNode<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
 		return this.findNodeAssignableTo( cls, false );
 	}
@@ -97,12 +103,15 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 			return null;
 		}
 	}
+
 	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfEquivalentModel( M model, Class<S> stepCls ) {
 		return this.findStepOfEquivalentModel( model, stepCls, false );
 	}
+
 	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstStepOfEquivalentModel( M model, Class<S> stepCls ) {
 		return this.findStepOfEquivalentModel( model, stepCls, true );
 	}
+
 	protected final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S findStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls, boolean isThisIncludedInSearch ) {
 		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
 		if( step != null ) {
@@ -120,9 +129,11 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 			return null;
 		}
 	}
+
 	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
 		return this.findStepOfModelAssignableTo( modelCls, stepCls, false );
 	}
+
 	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
 		return this.findStepOfModelAssignableTo( modelCls, stepCls, true );
 	}
@@ -130,9 +141,11 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 	public void addListener( org.lgna.croquet.history.event.Listener listener ) {
 		this.listeners.add( listener );
 	}
+
 	public void removeListener( org.lgna.croquet.history.event.Listener listener ) {
 		this.listeners.remove( listener );
 	}
+
 	public boolean isListening( org.lgna.croquet.history.event.Listener listener ) {
 		return this.listeners.contains( listener );
 	}
@@ -145,6 +158,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 			listener.changing( e );
 		}
 	}
+
 	protected void fireChanged( org.lgna.croquet.history.event.Event<?> e ) {
 		if( this.owner != null ) {
 			this.owner.fireChanged( e );

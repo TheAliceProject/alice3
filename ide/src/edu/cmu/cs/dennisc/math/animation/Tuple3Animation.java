@@ -47,10 +47,11 @@ import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Tuple3Animation< E extends edu.cmu.cs.dennisc.math.Tuple3 > extends InterpolationAnimation< E > {
+public abstract class Tuple3Animation<E extends edu.cmu.cs.dennisc.math.Tuple3> extends InterpolationAnimation<E> {
 	public Tuple3Animation( Number duration, edu.cmu.cs.dennisc.animation.Style style, E t0, E t1 ) {
 		super( duration, style, t0, t1 );
 	}
+
 	@Override
 	protected E interpolate( E rv, E v0, E v1, double portion ) {
 		rv.setToInterpolation( v0, v1, portion );

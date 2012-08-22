@@ -49,12 +49,13 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent;
 	private String path;
 	private String name;
+
 	public ZipTreeNode( String path ) {
 		this.path = path;
 		if( this.path != null ) {
 			String[] chunks = this.path.split( "/" );
 			if( chunks.length > 0 ) {
-				this.name = chunks[ chunks.length-1 ];
+				this.name = chunks[ chunks.length - 1 ];
 			} else {
 				this.name = null;
 			}
@@ -62,9 +63,11 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 			this.name = null;
 		}
 	}
+
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
 		return this.parent;
 	}
+
 	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent ) {
 		if( this.parent instanceof DirectoryZipTreeNode ) {
 			DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)this.parent;
@@ -76,13 +79,16 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 			directoryZipTreeNode.addChild( this );
 		}
 	}
+
 	public String getValue() {
 		return this.path;
 	}
+
 	public String getName() {
 		return this.name;
 	}
-	public int compareTo(edu.cmu.cs.dennisc.ziptree.ZipTreeNode other) {
+
+	public int compareTo( edu.cmu.cs.dennisc.ziptree.ZipTreeNode other ) {
 		if( this.getAllowsChildren() ) {
 			if( other.getAllowsChildren() ) {
 				return this.getName().compareToIgnoreCase( other.getName() );
@@ -97,6 +103,7 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 			}
 		}
 	}
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + "[" + this.getValue() + "]";

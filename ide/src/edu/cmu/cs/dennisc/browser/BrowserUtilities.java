@@ -48,7 +48,7 @@ public class BrowserUtilities {
 	public static void browse( String url ) throws Exception {
 		String lcOSName = System.getProperty( "os.name" ).toLowerCase();
 		if( lcOSName.startsWith( "mac os" ) ) {
-			Class< ? > fileMgr = Class.forName( "com.apple.eio.FileManager" );
+			Class<?> fileMgr = Class.forName( "com.apple.eio.FileManager" );
 			java.lang.reflect.Method openURL = fileMgr.getDeclaredMethod( "openURL", new Class[] { String.class } );
 			openURL.invoke( null, new Object[] { url } );
 		} else {
@@ -71,9 +71,11 @@ public class BrowserUtilities {
 			}
 		}
 	}
+
 	public static void browse( java.net.URI uri ) throws Exception {
 		browse( uri.getRawPath() );
 	}
+
 	public static void browse( java.net.URL url ) throws Exception {
 		browse( url.toExternalForm() );
 	}

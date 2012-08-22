@@ -49,11 +49,12 @@ public class PageFormatUtilities {
 	private PageFormatUtilities() {
 		throw new AssertionError();
 	}
+
 	public static double calculateScale( java.awt.print.PageFormat pageFormat, int width, int height ) {
 		double imageableHeight = pageFormat.getImageableHeight();
 		double imageableWidth = pageFormat.getImageableWidth();
-		double xScale = width/imageableWidth;
-		double yScale = height/imageableHeight;
+		double xScale = width / imageableWidth;
+		double yScale = height / imageableHeight;
 		return Math.max( xScale, yScale );
 	}
 }

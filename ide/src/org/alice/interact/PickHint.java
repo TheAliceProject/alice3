@@ -47,7 +47,7 @@ import java.util.BitSet;
 /**
  * @author David Culyba
  */
-public class PickHint extends BitSet{
+public class PickHint extends BitSet {
 
 	public enum PickType {
 		NOTHING,
@@ -64,86 +64,84 @@ public class PickHint extends BitSet{
 		PERSPECTIVE_CAMERA,
 		JOINT,
 		SUN;
-		
+
 		private PickHint pickHint;
-		
+
 		private PickType()
 		{
-			this.pickHint = new PickHint(this);
+			this.pickHint = new PickHint( this );
 		}
-		
+
 		public PickHint pickHint()
 		{
 			return this.pickHint;
 		}
-	
+
 	}
-	
-	
-	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< PickHint > PICK_HINT_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "PICK_HINT_KEY" ); 
-	
+
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<PickHint> PICK_HINT_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "PICK_HINT_KEY" );
+
 	protected static final int NUM_TYPES = PickType.values().length;
-	
 
 	public static final PickHint MARKERS = new PickHint( PickType.CAMERA_MARKER, PickType.OBJECT_MARKER );
 	public static final PickHint ANYTHING = createEverythingHint();
-	
-//	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT, PickType.MARKER );
-	
+
+	//	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT, PickType.MARKER );
+
 	public static final PickHint ALL_HANDLES = new PickHint( PickType.TWO_D_HANDLE, PickType.THREE_D_HANDLE );
 	public static final PickHint NON_INTERACTIVE = new PickHint( PickType.NOTHING );
-	
+
 	public PickHint()
 	{
-		super(NUM_TYPES);
+		super( NUM_TYPES );
 	}
-	
-	public PickHint( PickType...pickTypes )
+
+	public PickHint( PickType... pickTypes )
 	{
-		super(NUM_TYPES);
-		for (PickType pickType : pickTypes)
+		super( NUM_TYPES );
+		for( PickType pickType : pickTypes )
 		{
 			this.set( pickType.ordinal() );
 		}
 	}
-	
+
 	public static PickHint createEverythingHint()
 	{
 		PickHint toReturn = new PickHint();
-		for (int i=0; i<NUM_TYPES; i++)
+		for( int i = 0; i < NUM_TYPES; i++ )
 		{
 			toReturn.set( i );
 		}
 		return toReturn;
 	}
-	
+
 	public boolean get( PickType pickType )
 	{
 		return this.get( pickType.ordinal() );
 	}
-	
-	public void addPickType(PickType pickType) {
-		this.set(pickType.ordinal());
+
+	public void addPickType( PickType pickType ) {
+		this.set( pickType.ordinal() );
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("pick: ");
+		sb.append( "pick: " );
 		boolean matches = false;
-		for (PickType pickType : PickType.values())
+		for( PickType pickType : PickType.values() )
 		{
-			if (this.intersects(pickType.pickHint()))
+			if( this.intersects( pickType.pickHint() ) )
 			{
 				matches = true;
-				sb.append(pickType.toString()+" ");
+				sb.append( pickType.toString() + " " );
 			}
 		}
-		if (!matches)
+		if( !matches )
 		{
-			sb.append("No Matches");
+			sb.append( "No Matches" );
 		}
 		return sb.toString();
 	}
-	
+
 }

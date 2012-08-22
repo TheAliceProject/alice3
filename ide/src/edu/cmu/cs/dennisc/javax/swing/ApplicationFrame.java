@@ -52,40 +52,53 @@ public abstract class ApplicationFrame extends javax.swing.JFrame {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				ApplicationFrame.this.handleWindowOpened( e );
 			}
+
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				ApplicationFrame.this.handleQuit( e );
 			}
+
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowDeactivated( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowIconified( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowDeiconified( java.awt.event.WindowEvent e ) {
 			}
 		} );
 		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
 			public void handleAbout( java.util.EventObject e ) {
 			}
+
 			public void handlePreferences( java.util.EventObject e ) {
 			}
+
 			public void handleQuit( java.util.EventObject e ) {
 				ApplicationFrame.this.handleQuit( e );
 			}
+
 			public void handleOpenFile( java.util.EventObject e ) {
 			}
 		} );
-		
+
 	}
+
 	public void maximize() {
 		this.setExtendedState( this.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
 	}
-	
+
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
+
 	//protected abstract void handleWindowClosing();
 	protected abstract void handleAbout( java.util.EventObject e );
+
 	protected abstract void handlePreferences( java.util.EventObject e );
+
 	protected abstract void handleQuit( java.util.EventObject e );
 }

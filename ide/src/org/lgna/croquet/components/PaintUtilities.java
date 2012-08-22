@@ -47,6 +47,7 @@ package org.lgna.croquet.components;
  */
 public class PaintUtilities {
 	private static java.awt.Paint disabledTexturePaint = null;
+
 	public static java.awt.Paint getDisabledTexturePaint() {
 		if( PaintUtilities.disabledTexturePaint != null ) {
 			//pass
@@ -66,6 +67,7 @@ public class PaintUtilities {
 		}
 		return PaintUtilities.disabledTexturePaint;
 	}
+
 	private static java.awt.TexturePaint copyTexturePaint = null;
 
 	public static java.awt.TexturePaint getCopyTexturePaint() {

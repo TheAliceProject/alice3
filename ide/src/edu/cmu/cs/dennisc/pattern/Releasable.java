@@ -48,7 +48,10 @@ package edu.cmu.cs.dennisc.pattern;
 
 public interface Releasable {
 	public void release();
+
 	public void addReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener );
+
 	public void removeReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener );
-	public Iterable< edu.cmu.cs.dennisc.pattern.event.ReleaseListener > accessReleaseListeners();
+
+	public Iterable<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> accessReleaseListeners();
 }

@@ -47,7 +47,8 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ParameterAccessDragModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		ParameterAccessDragModel rv = map.get( parameter );
 		if( rv != null ) {
@@ -58,23 +59,29 @@ public class ParameterAccessDragModel extends AbstractExpressionDragModel {
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.UserParameter parameter;
+
 	private ParameterAccessDragModel( org.lgna.project.ast.UserParameter parameter ) {
 		super( java.util.UUID.fromString( "5b79d910-bbeb-4f9c-9593-28c0697f4036" ) );
 		this.parameter = parameter;
 	}
+
 	@Override
 	public boolean isPotentialStatementCreator() {
 		return false;
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		throw new AssertionError();
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.parameter.getValueType();
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation.getInstance( this.parameter, expressionProperty );

@@ -44,13 +44,14 @@ package org.lgna.story.annotation;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public enum ModelResourceDetails  implements org.lgna.project.annotations.PublicStaticFieldValueDetails< org.lgna.story.resources.JointedModelResource > {
+public enum ModelResourceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails<org.lgna.story.resources.JointedModelResource> {
 	SINGLETON;
-	public Class< org.lgna.story.resources.JointedModelResource  > getSupportedCls() {
+	public Class<org.lgna.story.resources.JointedModelResource> getSupportedCls() {
 		return org.lgna.story.resources.JointedModelResource.class;
 	}
+
 	public java.lang.reflect.Field[] getFlds() {
 		return org.lgna.story.resources.biped.OgreResource.class.getFields();
 	}

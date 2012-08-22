@@ -46,11 +46,13 @@ package edu.cmu.cs.dennisc.math.polynomial;
 /**
  * @author Dennis Cosgrove
  */
-public class HermiteCubic extends BasisMatrixCubic  {
-	private static final edu.cmu.cs.dennisc.math.Matrix4x4 s_h = new edu.cmu.cs.dennisc.math.Matrix4x4( 2,-2,1,1,  -3,3,-2,-1,  0,0,1,0,  1,0,0,0 );
+public class HermiteCubic extends BasisMatrixCubic {
+	private static final edu.cmu.cs.dennisc.math.Matrix4x4 s_h = new edu.cmu.cs.dennisc.math.Matrix4x4( 2, -2, 1, 1, -3, 3, -2, -1, 0, 0, 1, 0, 1, 0, 0, 0 );
+
 	public HermiteCubic( edu.cmu.cs.dennisc.math.Vector4 g ) {
 		super( s_h, g );
 	}
+
 	public HermiteCubic( double g0, double g1, double g2, double g3 ) {
 		this( new edu.cmu.cs.dennisc.math.Vector4( g0, g1, g2, g3 ) );
 	}

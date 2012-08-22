@@ -51,24 +51,24 @@ import org.alice.interact.ModifierMask;
 public class ModifierSensitiveCondition extends InputCondition {
 
 	protected ModifierMask modifierMask = null;
-	
+
 	public ModifierSensitiveCondition()
 	{
 		this.modifierMask = null;
 	}
-	
+
 	public ModifierSensitiveCondition( ModifierMask modifierMask )
 	{
 		this.modifierMask = modifierMask;
 	}
-	
+
 	@Override
 	protected boolean testState( InputState state ) {
-		if (state.getIsDragEvent())
+		if( state.getIsDragEvent() )
 		{
 			return false;
 		}
-		if (this.modifierMask != null)
+		if( this.modifierMask != null )
 		{
 			return this.modifierMask.test( state );
 		}

@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SMovableTurnable;
-import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SThing;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionEvent;
 import org.lgna.story.event.OcclusionStartListener;
@@ -19,7 +19,7 @@ import org.lgna.story.implementation.CameraImp;
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
-public class OcclusionHandler extends TransformationChangedHandler<Object,OcclusionEvent> {
+public class OcclusionHandler extends TransformationChangedHandler<Object, OcclusionEvent> {
 
 	private OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
 	private CameraImp camera;
@@ -29,7 +29,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 		registerPolicyMap( occlusionEventListener, MultipleEventPolicy.IGNORE );
 		List<SModel> allObserving = Collections.newArrayList( groupOne );
 		allObserving.addAll( groupTwo );
-		if( groupOne.size() > 0 && groupOne.get( 0 ) != null && camera == null ) {
+		if( ( groupOne.size() > 0 ) && ( groupOne.get( 0 ) != null ) && ( camera == null ) ) {
 			camera = ImplementationAccessor.getImplementation( groupOne.get( 0 ) ).getScene().findFirstCamera();
 			camera.getSgComposite().addAbsoluteTransformationListener( this );
 		}
@@ -60,9 +60,9 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 
 	private class OcclusionEventHandler {
 
-		private HashMap<SModel,LinkedList<SModel>> checkMap = new HashMap<SModel,LinkedList<SModel>>();
-		private HashMap<SModel,HashMap<SModel,LinkedList<Object>>> eventMap = new HashMap<SModel,HashMap<SModel,LinkedList<Object>>>();
-		private HashMap<SModel,HashMap<SModel,Boolean>> wereOccluded = new HashMap<SModel,HashMap<SModel,Boolean>>();
+		private HashMap<SModel, LinkedList<SModel>> checkMap = new HashMap<SModel, LinkedList<SModel>>();
+		private HashMap<SModel, HashMap<SModel, LinkedList<Object>>> eventMap = new HashMap<SModel, HashMap<SModel, LinkedList<Object>>>();
+		private HashMap<SModel, HashMap<SModel, Boolean>> wereOccluded = new HashMap<SModel, HashMap<SModel, Boolean>>();
 
 		public void check( SThing changedEntity ) {
 			if( camera == null ) {
@@ -135,8 +135,8 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 		public void register( Object occlusionListener, List<SModel> groupOne, List<SModel> groupTwo ) {
 			for( SModel m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SModel,LinkedList<Object>>() );
-					wereOccluded.put( m, new HashMap<SModel,Boolean>() );
+					eventMap.put( m, new HashMap<SModel, LinkedList<Object>>() );
+					wereOccluded.put( m, new HashMap<SModel, Boolean>() );
 					checkMap.put( m, new LinkedList<SModel>() );
 				}
 				for( SModel t : groupTwo ) {
@@ -154,8 +154,8 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 			}
 			for( SModel m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SModel,LinkedList<Object>>() );
-					wereOccluded.put( m, new HashMap<SModel,Boolean>() );
+					eventMap.put( m, new HashMap<SModel, LinkedList<Object>>() );
+					wereOccluded.put( m, new HashMap<SModel, Boolean>() );
 					checkMap.put( m, new LinkedList<SModel>() );
 				}
 				for( SModel t : groupOne ) {

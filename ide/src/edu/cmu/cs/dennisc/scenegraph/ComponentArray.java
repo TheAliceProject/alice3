@@ -47,12 +47,13 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class ComponentArray extends VertexGeometry {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< Component > component = new edu.cmu.cs.dennisc.property.InstanceProperty< Component >( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Component> component = new edu.cmu.cs.dennisc.property.InstanceProperty<Component>( this, null );
 
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		//todo
 	}
+
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
 		//todo

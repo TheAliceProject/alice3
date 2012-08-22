@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDressAboveKnee implements FemaleAdultFullBodyOutfit {
-	BNW ,
- 	BNPINK ,
- 	BNMINT ;
+	BNW,
+	BNPINK,
+	BNMINT;
 }

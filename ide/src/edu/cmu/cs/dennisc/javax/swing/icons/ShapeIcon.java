@@ -53,6 +53,7 @@ public class ShapeIcon implements javax.swing.Icon {
 	private int left;
 	private int bottom;
 	private int right;
+
 	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint, int top, int left, int bottom, int right ) {
 		this.shape = shape;
 		this.fillPaint = fillPaint;
@@ -62,12 +63,15 @@ public class ShapeIcon implements javax.swing.Icon {
 		this.bottom = bottom;
 		this.right = right;
 	}
+
 	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint, java.awt.Insets insets ) {
 		this( shape, fillPaint, drawPaint, insets.top, insets.left, insets.bottom, insets.right );
 	}
+
 	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		this( shape, fillPaint, drawPaint, 0, 0, 0, 0 );
 	}
+
 	public int getIconWidth() {
 		int rv = this.shape.getBounds().width;
 		rv += this.left;
@@ -75,6 +79,7 @@ public class ShapeIcon implements javax.swing.Icon {
 		rv += 1;
 		return rv;
 	}
+
 	public int getIconHeight() {
 		int rv = this.shape.getBounds().height;
 		rv += this.top;
@@ -82,10 +87,11 @@ public class ShapeIcon implements javax.swing.Icon {
 		rv += 1;
 		return rv;
 	}
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-		g2.translate( x+this.left, y+this.top );
+		g2.translate( x + this.left, y + this.top );
 
 		java.awt.Paint prevPaint = g2.getPaint();
 		if( this.fillPaint != null ) {
@@ -96,8 +102,8 @@ public class ShapeIcon implements javax.swing.Icon {
 			g2.setPaint( this.drawPaint );
 			g2.draw( this.shape );
 		}
-		
-		g2.translate( -(x+this.left), -(y+this.top) );
+
+		g2.translate( -( x + this.left ), -( y + this.top ) );
 
 		g2.setPaint( prevPaint );
 	}

@@ -45,28 +45,30 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane< P extends edu.cmu.cs.dennisc.property.InstanceProperty< T >, T > extends org.lgna.croquet.components.Panel {
+public abstract class AbstractPropertyPane<P extends edu.cmu.cs.dennisc.property.InstanceProperty<T>, T> extends org.lgna.croquet.components.Panel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final P property;
 	private final int axis;
 	private final edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-		public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		};
-		public void propertyChanged(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
+
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			AbstractPropertyPane.this.refreshLater();
 		};
 	};
-	
+
 	public AbstractPropertyPane( org.alice.ide.x.AstI18nFactory factory, P property, int axis ) {
 		assert property != null;
 		this.factory = factory;
 		this.property = property;
 		this.axis = axis;
 	}
-	
+
 	protected org.alice.ide.x.AstI18nFactory getFactory() {
 		return this.factory;
 	}
+
 	public P getProperty() {
 		return this.property;
 	}
@@ -74,9 +76,10 @@ public abstract class AbstractPropertyPane< P extends edu.cmu.cs.dennisc.propert
 	protected int getBoxLayoutPad() {
 		return 0;
 	}
+
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		assert this.axis == javax.swing.BoxLayout.LINE_AXIS || this.axis == javax.swing.BoxLayout.PAGE_AXIS;
+		assert ( this.axis == javax.swing.BoxLayout.LINE_AXIS ) || ( this.axis == javax.swing.BoxLayout.PAGE_AXIS );
 		int pad = this.getBoxLayoutPad();
 		if( pad > 0 ) {
 			return new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( jPanel, this.axis, pad );
@@ -84,7 +87,8 @@ public abstract class AbstractPropertyPane< P extends edu.cmu.cs.dennisc.propert
 			return new javax.swing.BoxLayout( jPanel, this.axis );
 		}
 	}
-	public void addComponent( org.lgna.croquet.components.Component< ? > component ) {
+
+	public void addComponent( org.lgna.croquet.components.Component<?> component ) {
 		this.internalAddComponent( component );
 	}
 
@@ -93,10 +97,11 @@ public abstract class AbstractPropertyPane< P extends edu.cmu.cs.dennisc.propert
 		super.handleDisplayable();
 		this.property.addPropertyListener( this.propertyAdapter );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.property.removePropertyListener( this.propertyAdapter );
 		super.handleUndisplayable();
 	}
-	
+
 }

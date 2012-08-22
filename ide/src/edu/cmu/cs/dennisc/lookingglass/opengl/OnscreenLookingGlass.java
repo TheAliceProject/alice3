@@ -50,6 +50,7 @@ abstract class OnscreenLookingGlass extends AbstractLookingGlass implements edu.
 	protected OnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 	}
+
 	@Override
 	protected void repaintIfAppropriate() {
 		this.repaint();

@@ -46,16 +46,18 @@ package edu.cmu.cs.dennisc.animation.interpolation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FloatAnimation extends InterpolationAnimation< Float > {
+public abstract class FloatAnimation extends InterpolationAnimation<Float> {
 	public FloatAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Float f0, Float f1 ) {
 		super( duration, style, f0, f1 );
 	}
+
 	@Override
 	protected Float newE( Float other ) {
 		return other;
 	}
+
 	@Override
 	protected Float interpolate( Float rv, Float v0, Float v1, double portion ) {
-		return (float)(v0 + (v1-v0) * portion);
+		return (float)( v0 + ( ( v1 - v0 ) * portion ) );
 	}
 }

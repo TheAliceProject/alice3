@@ -52,9 +52,11 @@ public class FamilyValue implements FamilyAttribute {
 	public FamilyValue( String value ) {
 		m_value = value;
 	}
+
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.FAMILY;
 	}
+
 	public String getValue() {
 		return m_value;
 	}

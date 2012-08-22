@@ -45,11 +45,11 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PasswordField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField > {
+public class PasswordField extends TextComponent<edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField> {
 	public PasswordField( org.lgna.croquet.StringState model ) {
 		super( model );
 	}
-	
+
 	@Override
 	public void updateTextForBlankCondition( String textForBlankCondition ) {
 		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
@@ -62,6 +62,7 @@ public class PasswordField extends TextComponent< edu.cmu.cs.dennisc.javax.swing
 			public java.awt.Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				if( PasswordField.this.isMaximumSizeClampedToPreferredSize() ) {
@@ -74,15 +75,16 @@ public class PasswordField extends TextComponent< edu.cmu.cs.dennisc.javax.swing
 		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
 		return rv;
 	}
-	
+
 	private static final char EXPOSE_CHAR = 0;
-	
+
 	public boolean isExposed() {
 		return this.getAwtComponent().getEchoChar() != EXPOSE_CHAR;
 	}
+
 	public void setExposed( boolean isExposed ) {
 		char c = isExposed ? EXPOSE_CHAR : '*';
 		this.getAwtComponent().setEchoChar( c );
 	}
-	
+
 }

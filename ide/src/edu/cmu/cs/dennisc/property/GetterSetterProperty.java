@@ -45,34 +45,40 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class GetterSetterProperty<E> implements Property< E > {
-	private static Object[] s_getterArgs = new Object[]{};
-	private static Object[] s_setterArgs = new Object[]{ null };
+public class GetterSetterProperty<E> implements Property<E> {
+	private static Object[] s_getterArgs = new Object[] {};
+	private static Object[] s_setterArgs = new Object[] { null };
 	private java.lang.reflect.Method m_getter;
 	private java.lang.reflect.Method m_setter;
 	private String m_name;
+
 	public GetterSetterProperty( java.lang.reflect.Method getter, java.lang.reflect.Method setter ) {
 		m_getter = getter;
 		m_setter = setter;
 		m_name = PropertyUtilities.getPropertyNameForGetter( m_getter );
 	}
+
 	public GetterSetterProperty( Class<? extends PropertyOwner> cls, String name ) {
 		this( PropertyUtilities.getGetter( cls, name ), PropertyUtilities.getSetter( cls, name ) );
 	}
+
 	public String getName() {
 		return m_name;
 	}
+
 	public E getValue( PropertyOwner owner ) {
 		synchronized( s_getterArgs ) {
 			return (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, m_getter, s_getterArgs );
 		}
 	}
+
 	public void setValue( PropertyOwner owner, E value ) {
 		synchronized( s_setterArgs ) {
 			s_setterArgs[ 0 ] = value;
 			edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, m_setter, s_setterArgs );
 		}
 	}
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

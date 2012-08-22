@@ -47,17 +47,21 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
-	private java.util.ArrayList< AnonymousUserConstructor > constructors;
+	private java.util.ArrayList<AnonymousUserConstructor> constructors;
+
 	public AnonymousUserType() {
 	}
-	public AnonymousUserType( AbstractType<?,?,?> superType, UserMethod[] methods, UserField[] fields ) {
+
+	public AnonymousUserType( AbstractType<?, ?, ?> superType, UserMethod[] methods, UserField[] fields ) {
 		super( superType, methods, fields );
 	}
-	public AnonymousUserType( Class< ? > superCls, UserMethod[] methods, UserField[] fields ) {
+
+	public AnonymousUserType( Class<?> superCls, UserMethod[] methods, UserField[] fields ) {
 		this( JavaType.getInstance( superCls ), methods, fields );
 	}
+
 	@Override
-	public java.util.ArrayList< AnonymousUserConstructor > getDeclaredConstructors() {
+	public java.util.ArrayList<AnonymousUserConstructor> getDeclaredConstructors() {
 		if( this.constructors != null ) {
 			//pass
 		} else {
@@ -66,38 +70,44 @@ public class AnonymousUserType extends UserType<AnonymousUserConstructor> {
 		}
 		return this.constructors;
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
+
 	@Override
 	public AbstractPackage getPackage() {
 		//todo?
 		return null;
 	}
+
 	@Override
 	public AccessLevel getAccessLevel() {
 		//todo?
 		return null;
 	}
-	
+
 	//An anonymous class is never abstract (8.1.1.1). An anonymous class is always an inner class (8.1.3); it is never static (8.1.1, 8.5.2). An anonymous class is always implicitly final (8.1.1.2).
 	@Override
 	public boolean isAbstract() {
 		return false;
 	}
+
 	@Override
 	public boolean isStatic() {
 		return false;
 	}
+
 	@Override
 	public boolean isFinal() {
 		return true;
 	}
+
 	@Override
 	public boolean isStrictFloatingPoint() {
 		//todo?
 		return false;
 	}
-	
+
 }

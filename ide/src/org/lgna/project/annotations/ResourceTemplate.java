@@ -44,10 +44,10 @@ package org.lgna.project.annotations;
 
 /**
  * @author dculyba
- *
+ * 
  */
 @java.lang.annotation.Documented
-@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+@java.lang.annotation.Retention( java.lang.annotation.RetentionPolicy.RUNTIME )
 public @interface ResourceTemplate {
 	Class<?> modelClass();
 }

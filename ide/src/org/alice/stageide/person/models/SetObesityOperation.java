@@ -48,10 +48,12 @@ package org.alice.stageide.person.models;
  */
 public abstract class SetObesityOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private final double value;
+
 	protected SetObesityOperation( java.util.UUID uuid, double value ) {
 		super( uuid );
 		this.value = value;
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		ObesityLevelState.getInstance().setValue( this.value );

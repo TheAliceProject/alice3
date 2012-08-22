@@ -43,12 +43,12 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_QUADS;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoxAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Box > {
+public class BoxAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Box> {
 	private double m_xMin;
 	private double m_xMax;
 	private double m_yMin;
@@ -146,14 +146,16 @@ public class BoxAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Box 
 	protected void renderGeometry( RenderContext rc ) {
 		glBox( rc, true, false );
 	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		pc.gl.glPushName( -1 );
 		glBox( pc, false, isSubElementRequired );
 		pc.gl.glPopName();
 	}
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		edu.cmu.cs.dennisc.math.Point3 origin = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
 		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
 		switch( subElement ) {
@@ -185,9 +187,10 @@ public class BoxAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Box 
 			rv.setNaN();
 			return rv;
 		}
-		GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
+		GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z );
 		return rv;
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.xMinimum ) {

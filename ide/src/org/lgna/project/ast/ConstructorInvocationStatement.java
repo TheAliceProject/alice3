@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ConstructorInvocationStatement extends Statement implements ArgumentOwner {
-	public DeclarationProperty< AbstractConstructor > constructor = new DeclarationProperty< AbstractConstructor >( this ) {
+	public DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
 		@Override
 		public boolean isReference() {
 			return true;
@@ -56,11 +56,14 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 	public SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
+
 	public ConstructorInvocationStatement() {
 	}
-	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... requiredArguments ){
+
+	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... requiredArguments ) {
 		this( constructor, requiredArguments, null, null );
 	}
+
 	public ConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		assert constructor != null;
 		this.constructor.setValue( constructor );
@@ -72,15 +75,19 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 			this.keyedArguments.add( keyedArguments );
 		}
 	}
-	public DeclarationProperty< ? extends AbstractCode > getParameterOwnerProperty() {
+
+	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
 		return this.constructor;
 	}
+
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
+
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
+
 	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}

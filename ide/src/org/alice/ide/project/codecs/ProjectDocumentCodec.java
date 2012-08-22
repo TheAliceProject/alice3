@@ -46,17 +46,20 @@ package org.alice.ide.project.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum ProjectDocumentCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.ProjectDocument >{
+public enum ProjectDocumentCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.ProjectDocument> {
 	SINGLETON;
 	public org.alice.ide.ProjectDocument decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
+
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.ProjectDocument value ) {
 		throw new RuntimeException( "todo" );
 	}
-	public Class< org.alice.ide.ProjectDocument > getValueClass() {
+
+	public Class<org.alice.ide.ProjectDocument> getValueClass() {
 		return org.alice.ide.ProjectDocument.class;
 	}
+
 	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.ProjectDocument value ) {
 		rv.append( value );
 		return rv;

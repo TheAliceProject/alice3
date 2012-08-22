@@ -48,7 +48,10 @@ package edu.cmu.cs.dennisc.tree;
  */
 public interface Node<T> {
 	public T getValue();
+
 	public java.util.List<? extends Node<T>> getChildren();
+
 	public boolean contains( T value );
+
 	public Node<T> get( T value );
 }

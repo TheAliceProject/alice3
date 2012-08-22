@@ -48,45 +48,43 @@ import org.lgna.story.implementation.TextModelImp;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class TextFontPropertyAdapter extends AbstractPropertyAdapter<java.awt.Font, TextModelImp> {
 
-	
-	public TextFontPropertyAdapter(TextModelImp instance, StandardExpressionState expressionState) 
+	public TextFontPropertyAdapter( TextModelImp instance, StandardExpressionState expressionState )
 	{
-		super("Font", instance, expressionState);
+		super( "Font", instance, expressionState );
 	}
-	
 
 	@Override
-	public void setValue(java.awt.Font value) 
+	public void setValue( java.awt.Font value )
 	{
-		super.setValue(value);
-		if (this.instance != null)
+		super.setValue( value );
+		if( this.instance != null )
 		{
-			this.instance.setFont(value);
+			this.instance.setFont( value );
 		}
 	}
 
 	@Override
-	public Class<java.awt.Font> getPropertyType() 
+	public Class<java.awt.Font> getPropertyType()
 	{
 		return java.awt.Font.class;
 	}
 
 	@Override
-	public java.awt.Font getValue() 
+	public java.awt.Font getValue()
 	{
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			return this.instance.getFont();
 		}
 		return null;
 	}
-	
+
 	@Override
-	public java.awt.Font getValueCopyIfMutable() 
+	public java.awt.Font getValueCopyIfMutable()
 	{
 		return this.getValue();
 	}

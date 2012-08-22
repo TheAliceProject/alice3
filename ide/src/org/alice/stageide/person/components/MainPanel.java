@@ -53,20 +53,23 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 
 	private final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane;
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone>() {
-		public void changing( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseSkinTone > state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseSkinTone> state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.story.resources.sims2.BaseSkinTone > state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseSkinTone> state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
 			tabbedPane.repaint();
 		}
 	};
 	private org.lgna.croquet.State.ValueListener<org.lgna.croquet.TabComposite> tabChangeAdapter = new org.lgna.croquet.State.ValueListener<org.lgna.croquet.TabComposite>() {
-		public void changing( org.lgna.croquet.State< org.lgna.croquet.TabComposite > state, org.lgna.croquet.TabComposite prevValue, org.lgna.croquet.TabComposite nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State<org.lgna.croquet.TabComposite> state, org.lgna.croquet.TabComposite prevValue, org.lgna.croquet.TabComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.croquet.TabComposite > state, org.lgna.croquet.TabComposite prevValue, org.lgna.croquet.TabComposite nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.croquet.TabComposite> state, org.lgna.croquet.TabComposite prevValue, org.lgna.croquet.TabComposite nextValue, boolean isAdjusting ) {
 			//todo
 		}
 	};
 	private final PersonViewer personViewer;
+
 	public MainPanel( PersonViewer personViewer ) {
 		this.personViewer = personViewer;
 		this.tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createFolderTabbedPane();
@@ -75,7 +78,7 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 
 		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows( java.util.List<org.lgna.croquet.components.Component<?>[]> rv ) {
 				//rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "life stage:", new org.alice.stageide.person.components.LifeStageList() ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "gender:", new org.alice.stageide.person.components.GenderList() ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "skin tone:", new org.alice.stageide.person.components.BaseSkinToneList() ) );
@@ -85,14 +88,14 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 		ubiquitousPane.setBackgroundColor( BACKGROUND_COLOR );
 
 		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel.Builder()
-			.pageStart( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton() )
-			.center( ubiquitousPane )
-		.build();
+				.pageStart( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton() )
+				.center( ubiquitousPane )
+				.build();
 
 		org.lgna.croquet.components.BorderPanel ingredientsPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-			.pageStart( northPane )
-			.center( this.tabbedPane )
-		.build();
+				.pageStart( northPane )
+				.center( this.tabbedPane )
+				.build();
 		ingredientsPanel.setBackgroundColor( BACKGROUND_COLOR );
 
 		javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, personViewer.getAwtComponent(), ingredientsPanel.getAwtComponent() );
@@ -100,6 +103,7 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 		this.getAwtComponent().add( splitPane, java.awt.BorderLayout.CENTER );
 		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueListener( this.baseSkinToneObserver );
 	}
+
 	public PersonViewer getPersonViewer() {
 		return this.personViewer;
 	}

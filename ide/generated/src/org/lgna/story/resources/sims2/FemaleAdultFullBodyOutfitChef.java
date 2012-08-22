@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitChef implements FemaleAdultFullBodyOutfit {
-	WHITEBLUE ,
- 	WHITEGREY ,
- 	WHITEKHAKI ,
- 	WHITECHECKS ;
+	WHITEBLUE,
+	WHITEGREY,
+	WHITEKHAKI,
+	WHITECHECKS;
 }

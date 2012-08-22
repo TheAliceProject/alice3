@@ -49,9 +49,11 @@ package org.lgna.project.ast;
 public class DoInOrder extends AbstractStatementWithBody {
 	public DoInOrder() {
 	}
+
 	public DoInOrder( BlockStatement body ) {
 		super( body );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "do in order" );

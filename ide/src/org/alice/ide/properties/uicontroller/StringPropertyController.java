@@ -43,33 +43,31 @@
 
 package org.alice.ide.properties.uicontroller;
 
-
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
-
 
 public class StringPropertyController extends LabelBasedPropertyController<String>
 {
-	public StringPropertyController(AbstractPropertyAdapter<String, ?> propertyAdapter)
+	public StringPropertyController( AbstractPropertyAdapter<String, ?> propertyAdapter )
 	{
-		super(propertyAdapter);
+		super( propertyAdapter );
 	}
-	
+
 	@Override
-	public Class<?> getPropertyType() 
+	public Class<?> getPropertyType()
 	{
 		return String.class;
 	}
-	
+
 	@Override
-	protected void setValueOnUI(String stringValue)
+	protected void setValueOnUI( String stringValue )
 	{
-		if (stringValue != null)
+		if( stringValue != null )
 		{
-		    this.label.setText(stringValue);
+			this.label.setText( stringValue );
 		}
 		else
 		{
-		    this.label.setText(BLANK_STRING);
+			this.label.setText( BLANK_STRING );
 		}
 	}
 }

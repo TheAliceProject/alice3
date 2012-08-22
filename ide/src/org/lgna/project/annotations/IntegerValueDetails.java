@@ -46,8 +46,10 @@ package org.lgna.project.annotations;
 /**
  * @author Dennis Cosgrove
  */
-public interface IntegerValueDetails extends ValueDetails< Integer > {
+public interface IntegerValueDetails extends ValueDetails<Integer> {
 	public Integer getMinimumValue();
+
 	public Integer getMaximumValue();
+
 	public int[] getLiterals();
 }

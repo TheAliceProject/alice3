@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class StatementListProperty extends NodeListProperty< Statement > {
+public class StatementListProperty extends NodeListProperty<Statement> {
 	public StatementListProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		super( owner );
 	}

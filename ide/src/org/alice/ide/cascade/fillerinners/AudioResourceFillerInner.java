@@ -45,16 +45,18 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceFillerInner extends ResourceFillerInner< org.lgna.common.resources.AudioResource > {
+public class AudioResourceFillerInner extends ResourceFillerInner<org.lgna.common.resources.AudioResource> {
 	public AudioResourceFillerInner() {
 		super( org.lgna.common.resources.AudioResource.class );
 	}
+
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getResourceExpressionFillIn( org.lgna.common.resources.AudioResource resource ) {
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getResourceExpressionFillIn( org.lgna.common.resources.AudioResource resource ) {
 		return org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn.getInstance( resource );
 	}
+
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getImportNewResourceFillIn() {
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getImportNewResourceFillIn() {
 		return org.alice.ide.ast.resource.AudioResourceImportValueCreator.getInstance().getFillIn();
 	}
 }

@@ -45,11 +45,12 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.MethodInvocation > {
+public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
 	private final org.lgna.project.ast.MethodInvocation transientValue;
+
 	public MethodInvocationFillInWithInstance( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "8f3d3ba6-7c5f-411d-b3a8-432a5216e9eb" ) );
-		org.lgna.project.ast.AbstractType<?,?,?> type = method.getDeclaringType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = method.getDeclaringType();
 		this.addBlank( CascadeManager.getBlankForType( type ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( new org.alice.ide.ast.EmptyExpression( type ), method );
 		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
@@ -57,14 +58,16 @@ public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpr
 			this.addBlank( parameterBlank );
 		}
 	}
+
 	@Override
 	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		org.lgna.project.ast.Expression[] argumentExpressions = new org.lgna.project.ast.Expression[ expressions.length - 1 ];
 		System.arraycopy( expressions, 0, argumentExpressions, 0, argumentExpressions.length );
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( expressions[ 0 ], this.transientValue.method.getValue(), argumentExpressions );
 	}
+
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

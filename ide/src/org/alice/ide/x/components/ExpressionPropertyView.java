@@ -45,12 +45,13 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyView extends NodePropertyView< org.lgna.project.ast.ExpressionProperty, org.lgna.project.ast.Expression > {
+public class ExpressionPropertyView extends NodePropertyView<org.lgna.project.ast.ExpressionProperty, org.lgna.project.ast.Expression> {
 	public ExpressionPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionProperty property ) {
 		super( factory, property );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createComponent( org.lgna.project.ast.Expression expression ) {
+	protected org.lgna.croquet.components.JComponent<?> createComponent( org.lgna.project.ast.Expression expression ) {
 		return this.getFactory().createExpressionPane( expression );
 	}
 }

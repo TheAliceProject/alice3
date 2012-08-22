@@ -48,39 +48,42 @@ package org.alice.ide.type;
  */
 public class ExtendsTypeWithSuperArgumentFieldKey extends AbstractExtendsTypeKey {
 	private final org.lgna.project.ast.AbstractField superArgumentField;
-	public ExtendsTypeWithSuperArgumentFieldKey( org.lgna.project.ast.AbstractType< ?,?,? > superType, org.lgna.project.ast.AbstractField superArgumentField ) {
+
+	public ExtendsTypeWithSuperArgumentFieldKey( org.lgna.project.ast.AbstractType<?, ?, ?> superType, org.lgna.project.ast.AbstractField superArgumentField ) {
 		super( superType );
 		assert superArgumentField != null;
 		this.superArgumentField = superArgumentField;
 	}
-//	@Override
-//	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
-//		if( super.accept( userType ) ) {
-//			org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructor();
-//			if( constructor != null ) {
-//				org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
-//				if( constructorInvocationStatement instanceof org.lgna.project.ast.SuperConstructorInvocationStatement ) {
-//					if( constructorInvocationStatement.requiredArguments.size() == 1 ) {
-//						org.lgna.project.ast.Expression argumentExpression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
-//						if( argumentExpression instanceof org.lgna.project.ast.FieldAccess ) {
-//							org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)argumentExpression;
-//							return fieldAccess.field.getValue() == this.superArgumentField;
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return false;
-//	}
+
+	//	@Override
+	//	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+	//		if( super.accept( userType ) ) {
+	//			org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructor();
+	//			if( constructor != null ) {
+	//				org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
+	//				if( constructorInvocationStatement instanceof org.lgna.project.ast.SuperConstructorInvocationStatement ) {
+	//					if( constructorInvocationStatement.requiredArguments.size() == 1 ) {
+	//						org.lgna.project.ast.Expression argumentExpression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
+	//						if( argumentExpression instanceof org.lgna.project.ast.FieldAccess ) {
+	//							org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)argumentExpression;
+	//							return fieldAccess.field.getValue() == this.superArgumentField;
+	//						}
+	//					}
+	//				}
+	//			}
+	//		}
+	//		return false;
+	//	}
 	@Override
 	public int hashCode() {
 		int rv = super.hashCode();
-		rv = 37*rv + this.superArgumentField.hashCode();
+		rv = ( 37 * rv ) + this.superArgumentField.hashCode();
 		return rv;
 	}
+
 	@Override
 	protected boolean contentEquals( org.alice.ide.type.TypeKey other ) {
 		// super class's equals methods ensures this.getClass() == other.getClass()
-		return super.contentEquals( other ) && this.superArgumentField == ((ExtendsTypeWithSuperArgumentFieldKey)other).superArgumentField;
+		return super.contentEquals( other ) && ( this.superArgumentField == ( (ExtendsTypeWithSuperArgumentFieldKey)other ).superArgumentField );
 	}
 }

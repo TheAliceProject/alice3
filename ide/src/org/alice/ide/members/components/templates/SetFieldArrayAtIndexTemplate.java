@@ -45,8 +45,9 @@ package org.alice.ide.members.components.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SetFieldArrayAtIndexTemplate extends ExpressionStatementTemplate {
+/* package-private */class SetFieldArrayAtIndexTemplate extends ExpressionStatementTemplate {
 	private org.lgna.project.ast.AbstractField field;
+
 	public SetFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.ast.draganddrop.statement.FieldArrayAtIndexAssignmentTemplateDragModel.getInstance( field ) );
 		this.field = field;
@@ -55,17 +56,17 @@ package org.alice.ide.members.components.templates;
 			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.AssignmentExpression( 
-				this.field.getValueType().getComponentType(), 
-				new org.lgna.project.ast.ArrayAccess( 
-						field.getValueType(), 
-						org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( this.field ), 
-						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
-				), 
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
-				new org.alice.ide.ast.EmptyExpression( this.field.getValueType().getComponentType() )
-		);
+		return new org.lgna.project.ast.AssignmentExpression(
+				this.field.getValueType().getComponentType(),
+				new org.lgna.project.ast.ArrayAccess(
+						field.getValueType(),
+						org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( this.field ),
+						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE )
+				),
+				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
+				new org.alice.ide.ast.EmptyExpression( this.field.getValueType().getComponentType() ) );
 	}
 }

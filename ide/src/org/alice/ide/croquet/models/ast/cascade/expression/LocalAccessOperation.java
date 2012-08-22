@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class LocalAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized LocalAccessOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert local != null;
 		assert expressionProperty != null;
@@ -60,11 +61,14 @@ public class LocalAccessOperation extends org.alice.ide.croquet.models.ast.casca
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserLocal local;
+
 	private LocalAccessOperation( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "e3a514b8-1414-47a1-b9ec-82cd4678417c" ), expressionProperty );
 		this.local = local;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpression() {
 		return new org.lgna.project.ast.LocalAccess( this.local );

@@ -45,19 +45,19 @@ package org.alice.stageide.apis.story.event;
 import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.TimeEvent;
+import org.lgna.story.event.TimeListener;
 
 /**
  * @author Matt May
  */
 public class TimerEventAdapter extends AbstractAdapter implements TimeListener {
 
-	public TimerEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
-		super(context, lambda, userInstance);
+	public TimerEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
+		super( context, lambda, userInstance );
 	}
 
-	public void timeElapsed(TimeEvent e) {
+	public void timeElapsed( TimeEvent e ) {
 		invokeEntryPoint( e );
 	}
 

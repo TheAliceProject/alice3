@@ -50,6 +50,7 @@ public abstract class TransactionHistoryComposite extends org.lgna.croquet.Frame
 	public TransactionHistoryComposite( java.util.UUID id, org.lgna.croquet.Group booleanStateGroup ) {
 		super( id, booleanStateGroup );
 	}
+
 	@Override
 	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
 		return new org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView( this );

@@ -48,15 +48,18 @@ package org.alice.ide.video.components;
  */
 public class ProofOfConceptRecordVideoPanel extends RecordVideoPanel {
 	private final org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.BorderPanel();
+
 	public ProofOfConceptRecordVideoPanel() {
 		this.panel.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 		this.internalAddComponent( this.panel, java.awt.BorderLayout.CENTER );
 		this.internalAddComponent( org.alice.ide.video.IsRecordingState.getInstance().createPushButton(), java.awt.BorderLayout.PAGE_END );
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
 	}
+
 	@Override
 	public java.awt.Container getLookingGlassContainer() {
 		return this.panel.getAwtComponent();

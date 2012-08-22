@@ -46,7 +46,8 @@ package org.alice.ide.croquet.models.numberpad;
  * @author Dennis Cosgrove
  */
 public class NumeralOperation extends NumberPadOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< NumberModel<?>, Short, NumeralOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<NumberModel<?>, Short, NumeralOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized NumeralOperation getInstance( NumberModel<?> numberModel, short numeral ) {
 		NumeralOperation rv = map.get( numberModel, numeral );
 		if( rv != null ) {
@@ -64,15 +65,18 @@ public class NumeralOperation extends NumberPadOperation {
 	}
 
 	private short numeral;
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver< NumeralOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver< NumeralOperation >( this, this.numberModel, this.numeral );
+	protected org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver<NumeralOperation> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver<NumeralOperation>( this, this.numberModel, this.numeral );
 	}
+
 	@Override
 	protected void localize() {
 		//super.localize();
 		this.setName( Short.toString( this.numeral ) );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

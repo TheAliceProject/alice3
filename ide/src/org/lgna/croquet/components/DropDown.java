@@ -46,87 +46,99 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton,M> {
+public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton, M> {
 	private static final int DEFAULT_AFFORDANCE_WIDTH = 6;
 	private static final int DEFAULT_AFFORDANCE_HALF_HEIGHT = 5;
-	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(191);
+	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
 
 	private org.lgna.croquet.components.Component<?> prefixComponent;
 	private org.lgna.croquet.components.Component<?> mainComponent;
 	private org.lgna.croquet.components.Component<?> postfixComponent;
+
 	public DropDown( M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
-		super(model);
+		super( model );
 		this.prefixComponent = prefixComponent;
 		this.mainComponent = mainComponent;
 		this.postfixComponent = postfixComponent;
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
+
 	public DropDown( M model ) {
 		this( model, null, null, null );
 	}
 
-	public org.lgna.croquet.components.Component< ? > getPrefixComponent() {
+	public org.lgna.croquet.components.Component<?> getPrefixComponent() {
 		return this.prefixComponent;
 	}
-	public void setPrefixComponent( org.lgna.croquet.components.Component< ? > prefixComponent ) {
+
+	public void setPrefixComponent( org.lgna.croquet.components.Component<?> prefixComponent ) {
 		if( this.prefixComponent != prefixComponent ) {
 			this.prefixComponent = prefixComponent;
-//			this.revalidateAndRepaint();
+			//			this.revalidateAndRepaint();
 		}
 	}
+
 	public org.lgna.croquet.components.Component<?> getMainComponent() {
 		return this.mainComponent;
 	}
-	public void setMainComponent( org.lgna.croquet.components.Component< ? > mainComponent ) {
+
+	public void setMainComponent( org.lgna.croquet.components.Component<?> mainComponent ) {
 		if( this.mainComponent != mainComponent ) {
 			this.mainComponent = mainComponent;
-//			this.revalidateAndRepaint();
+			//			this.revalidateAndRepaint();
 		}
 	}
-	public org.lgna.croquet.components.Component< ? > getPostfixComponent() {
+
+	public org.lgna.croquet.components.Component<?> getPostfixComponent() {
 		return this.postfixComponent;
 	}
-	public void setPostfixComponent( org.lgna.croquet.components.Component< ? > postfixComponent ) {
+
+	public void setPostfixComponent( org.lgna.croquet.components.Component<?> postfixComponent ) {
 		if( this.postfixComponent != postfixComponent ) {
 			this.postfixComponent = postfixComponent;
-//			this.revalidateAndRepaint();
+			//			this.revalidateAndRepaint();
 		}
 	}
 
 	protected abstract javax.swing.Action getAction();
+
 	protected boolean isInactiveFeedbackDesired() {
 		return true;
 	}
-	
+
 	protected int getAffordanceWidth() {
 		return DEFAULT_AFFORDANCE_WIDTH;
 	}
+
 	protected int getAffordanceHalfHeight() {
 		return DEFAULT_AFFORDANCE_HALF_HEIGHT;
 	}
 
-//	@Override
-//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
-//		super.appendPrepStepsIfNecessary( transaction );
-//		if( transaction.containsPrepStep( transaction, this.getModel(), org.lgna.croquet.history.PopupPrepStep.class ) ) {
-//			//pass
-//		} else {
-//			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
-//		}
-//	}
+	//	@Override
+	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
+	//		super.appendPrepStepsIfNecessary( transaction );
+	//		if( transaction.containsPrepStep( transaction, this.getModel(), org.lgna.croquet.history.PopupPrepStep.class ) ) {
+	//			//pass
+	//		} else {
+	//			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+	//		}
+	//	}
 
 	private class JPopupMenuButton extends javax.swing.JButton {
 		public JPopupMenuButton() {
-			this.setRolloverEnabled(true);
+			this.setRolloverEnabled( true );
 		}
+
 		@Override
 		public void updateUI() {
-			this.setUI(new javax.swing.plaf.basic.BasicButtonUI());
+			this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
 		}
+
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 		}
+
 		@Override
 		public java.awt.Dimension getMaximumSize() {
 			if( DropDown.this.isMaximumSizeClampedToPreferredSize() ) {
@@ -135,42 +147,43 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 				return super.getMaximumSize();
 			}
 		}
+
 		@Override
-		public void paint(java.awt.Graphics g) {
+		public void paint( java.awt.Graphics g ) {
 			int x = 0;
 			int y = 0;
 			int width = this.getWidth();
 			int height = this.getHeight();
 			javax.swing.ButtonModel buttonModel = this.getModel();
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
 			java.awt.Paint prevPaint = g2.getPaint();
 			boolean isActive = buttonModel.isRollover();
-			if (isActive || DropDown.this.isInactiveFeedbackDesired()) {
-				if (isActive) {
+			if( isActive || DropDown.this.isInactiveFeedbackDesired() ) {
+				if( isActive ) {
 					g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
 				} else {
-					g2.setColor(this.getBackground());
+					g2.setColor( this.getBackground() );
 				}
-				g2.fillRect(x, y, width, height);
+				g2.fillRect( x, y, width, height );
 			}
 
 			super.paint( g );
-			
+
 			int AFFORDANCE_WIDTH = getAffordanceWidth();
 			int AFFORDANCE_HALF_HEIGHT = getAffordanceHalfHeight();
-			
-			float x0 = x + width - 4 - AFFORDANCE_WIDTH;
-			float x1 = x0 + AFFORDANCE_WIDTH;
-			float xC = (x0 + x1) / 2;
 
-			float yC = (y + height) / 2;
+			float x0 = ( x + width ) - 4 - AFFORDANCE_WIDTH;
+			float x1 = x0 + AFFORDANCE_WIDTH;
+			float xC = ( x0 + x1 ) / 2;
+
+			float yC = ( y + height ) / 2;
 			float y0 = yC - AFFORDANCE_HALF_HEIGHT;
 			float y1 = yC + AFFORDANCE_HALF_HEIGHT;
 
 			java.awt.Color triangleFill;
 			java.awt.Color triangleOutline;
-			if (isActive) {
+			if( isActive ) {
 				triangleFill = java.awt.Color.YELLOW;
 				triangleOutline = java.awt.Color.BLACK;
 			} else {
@@ -178,27 +191,27 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 				triangleOutline = null;
 			}
 
-			g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 			java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-			path.moveTo(x0, y0);
-			path.lineTo(xC, y1);
-			path.lineTo(x1, y0);
+			path.moveTo( x0, y0 );
+			path.lineTo( xC, y1 );
+			path.lineTo( x1, y0 );
 			path.closePath();
 
-			g2.setColor(triangleFill);
-			g2.fill(path);
-			if (triangleOutline != null) {
-				g2.setColor(triangleOutline);
-				g2.draw(path);
+			g2.setColor( triangleFill );
+			g2.fill( path );
+			if( triangleOutline != null ) {
+				g2.setColor( triangleOutline );
+				g2.draw( path );
 			}
 
-			if (isActive) {
-				g2.setStroke(new java.awt.BasicStroke(3.0f));
-//				g2.setColor(java.awt.Color.BLUE);
-//				g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
-				int xMax = x+width-1;
-				int yMax = y+height-1;
+			if( isActive ) {
+				g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
+				//				g2.setColor(java.awt.Color.BLUE);
+				//				g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
+				int xMax = ( x + width ) - 1;
+				int yMax = ( y + height ) - 1;
 				g2.setColor( java.awt.Color.WHITE );
 				g2.drawLine( x, yMax, x, y );
 				g2.drawLine( x, y, xMax, y );
@@ -206,45 +219,47 @@ public abstract class DropDown< M extends org.lgna.croquet.PopupPrepModel > exte
 				g2.drawLine( x, yMax, xMax, yMax );
 				g2.drawLine( xMax, yMax, xMax, y );
 			} else {
-				if (DropDown.this.isInactiveFeedbackDesired()) {
-					g2.setColor(java.awt.Color.WHITE);
+				if( DropDown.this.isInactiveFeedbackDesired() ) {
+					g2.setColor( java.awt.Color.WHITE );
 					//g2.drawRect( x, y, width-1, height-1 );
-					g2.drawLine(x, y, x + width, y);
-					g2.drawLine(x, y, x, y + height);
+					g2.drawLine( x, y, x + width, y );
+					g2.drawLine( x, y, x, y + height );
 				}
 			}
 
-			g2.setPaint(prevPaint);
+			g2.setPaint( prevPaint );
 		}
-	}; 
+	};
+
 	protected javax.swing.JButton createJButton() {
-		
+
 		javax.swing.JButton rv = new JPopupMenuButton();
-		rv.setRolloverEnabled(true);
-		rv.setOpaque(false);
-		rv.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.DEFAULT_CURSOR));
+		rv.setRolloverEnabled( true );
+		rv.setOpaque( false );
+		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 		//rv.setBackground(edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray(230));
 		rv.setBackground( new java.awt.Color( 230, 230, 230, 127 ) );
 		rv.setFocusable( false );
-		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 5 + getAffordanceWidth()));
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 5 + getAffordanceWidth() ) );
 		return rv;
 	}
+
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.AbstractButton rv = this.createJButton();
 		rv.setAction( DropDown.this.getAction() );
-		if (this.prefixComponent != null || this.mainComponent != null || this.postfixComponent != null) {
+		if( ( this.prefixComponent != null ) || ( this.mainComponent != null ) || ( this.postfixComponent != null ) ) {
 			//			rv.setModel( new javax.swing.DefaultButtonModel() );
 			//rv.setLayout(new javax.swing.BoxLayout(rv, javax.swing.BoxLayout.LINE_AXIS));
-			rv.setLayout(new java.awt.BorderLayout());
-			if (this.prefixComponent != null) {
-				rv.add(this.prefixComponent.getAwtComponent(), java.awt.BorderLayout.LINE_START);
+			rv.setLayout( new java.awt.BorderLayout() );
+			if( this.prefixComponent != null ) {
+				rv.add( this.prefixComponent.getAwtComponent(), java.awt.BorderLayout.LINE_START );
 			}
-			if (this.mainComponent != null) {
-				rv.add(this.mainComponent.getAwtComponent(), java.awt.BorderLayout.CENTER);
+			if( this.mainComponent != null ) {
+				rv.add( this.mainComponent.getAwtComponent(), java.awt.BorderLayout.CENTER );
 			}
-			if (this.postfixComponent != null) {
-				rv.add(this.postfixComponent.getAwtComponent(), java.awt.BorderLayout.LINE_END);
+			if( this.postfixComponent != null ) {
+				rv.add( this.postfixComponent.getAwtComponent(), java.awt.BorderLayout.LINE_END );
 			}
 		}
 		return rv;

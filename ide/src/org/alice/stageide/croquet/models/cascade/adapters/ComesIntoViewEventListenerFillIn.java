@@ -3,10 +3,11 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 import org.lgna.story.event.ViewEnterListener;
 
 public class ComesIntoViewEventListenerFillIn extends LambdaExpressionFillIn {
-	
+
 	private static class SingletonHolder {
 		private static ComesIntoViewEventListenerFillIn instance = new ComesIntoViewEventListenerFillIn();
 	}
+
 	public static ComesIntoViewEventListenerFillIn getInstance() {
 		return SingletonHolder.instance;
 	}

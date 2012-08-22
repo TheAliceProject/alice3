@@ -47,96 +47,98 @@ package org.lgna.project.ast;
  */
 public class ShiftInfixExpression extends Expression {
 	public enum Operator {
-		LEFT_SHIFT() { 
+		LEFT_SHIFT() {
 			@Override
 			public Object operate( Object leftOperand, Object rightOperand ) {
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return (Long)leftOperand << (Long)rightOperand;
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return (Integer)leftOperand << (Integer)rightOperand;
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return (Short)leftOperand << (Short)rightOperand;
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return (Byte)leftOperand << (Byte)rightOperand;
-				} else if( leftOperand instanceof Character || rightOperand instanceof Character ) {
+				} else if( ( leftOperand instanceof Character ) || ( rightOperand instanceof Character ) ) {
 					return (Character)leftOperand << (Character)rightOperand;
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		RIGHT_SHIFT_SIGNED() { 
+		RIGHT_SHIFT_SIGNED() {
 			@Override
 			public Object operate( Object leftOperand, Object rightOperand ) {
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return (Long)leftOperand >> (Long)rightOperand;
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return (Integer)leftOperand >> (Integer)rightOperand;
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return (Short)leftOperand >> (Short)rightOperand;
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return (Byte)leftOperand >> (Byte)rightOperand;
-				} else if( leftOperand instanceof Character || rightOperand instanceof Character ) {
+				} else if( ( leftOperand instanceof Character ) || ( rightOperand instanceof Character ) ) {
 					return (Character)leftOperand >> (Character)rightOperand;
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		RIGHT_SHIFT_UNSIGNED() { 
+		RIGHT_SHIFT_UNSIGNED() {
 			@Override
 			public Object operate( Object leftOperand, Object rightOperand ) {
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return (Long)leftOperand >>> (Long)rightOperand;
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return (Integer)leftOperand >>> (Integer)rightOperand;
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return (Short)leftOperand >>> (Short)rightOperand;
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return (Byte)leftOperand >>> (Byte)rightOperand;
-				} else if( leftOperand instanceof Character || rightOperand instanceof Character ) {
+				} else if( ( leftOperand instanceof Character ) || ( rightOperand instanceof Character ) ) {
 					return (Character)leftOperand >>> (Character)rightOperand;
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		};
 		public abstract Object operate( Object leftOperand, Object rightOperand );
 	}
-	public DeclarationProperty<AbstractType<?,?,?>> expressionType = new DeclarationProperty<AbstractType<?,?,?>>( this );
+
+	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return ShiftInfixExpression.this.expressionType.getValue();
 		}
 	};
-	public edu.cmu.cs.dennisc.property.InstanceProperty< Operator > operator = new edu.cmu.cs.dennisc.property.InstanceProperty< Operator >( this, null );
+	public edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return ShiftInfixExpression.this.expressionType.getValue();
 		}
 	};
+
 	public ShiftInfixExpression() {
 	}
-	public ShiftInfixExpression( AbstractType<?,?,?> expressionType, Expression leftOperand, Operator operator, Expression rightOperand ) {
-		assert 
-			JavaType.getInstance( Long.class ).isAssignableFrom( expressionType ) || 
-			JavaType.getInstance( Integer.class ).isAssignableFrom( expressionType ) || 
-			JavaType.getInstance( Short.class ).isAssignableFrom( expressionType ) || 
-			JavaType.getInstance( Byte.class ).isAssignableFrom( expressionType ) || 
-			JavaType.getInstance( Character.class ).isAssignableFrom( expressionType )
-		;
+
+	public ShiftInfixExpression( AbstractType<?, ?, ?> expressionType, Expression leftOperand, Operator operator, Expression rightOperand ) {
+		assert JavaType.getInstance( Long.class ).isAssignableFrom( expressionType ) ||
+				JavaType.getInstance( Integer.class ).isAssignableFrom( expressionType ) ||
+				JavaType.getInstance( Short.class ).isAssignableFrom( expressionType ) ||
+				JavaType.getInstance( Byte.class ).isAssignableFrom( expressionType ) ||
+				JavaType.getInstance( Character.class ).isAssignableFrom( expressionType );
 		this.expressionType.setValue( expressionType );
 		this.leftOperand.setValue( leftOperand );
 		this.operator.setValue( operator );
 		this.rightOperand.setValue( rightOperand );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
 	}
 }
