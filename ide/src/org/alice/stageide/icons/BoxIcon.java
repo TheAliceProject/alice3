@@ -73,6 +73,7 @@ public class BoxIcon extends ShapeIcon {
 	private static final java.awt.geom.Point2D.Float d2 = new java.awt.geom.Point2D.Float( x1, yC );
 
 	private static final java.awt.Color SHADOW_COLOR = FILL_PAINT.darker(); 
+	private final java.awt.Stroke STROKE = new java.awt.BasicStroke( 0.0f );
 	private static java.awt.Shape createFace( java.awt.geom.Point2D.Float a, java.awt.geom.Point2D.Float b, java.awt.geom.Point2D.Float c, java.awt.geom.Point2D.Float d, int width, int height ) {
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		path.moveTo( a.x*width, a.y*height );
@@ -87,23 +88,25 @@ public class BoxIcon extends ShapeIcon {
 	}
 	@Override
 	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-//		java.awt.geom.AffineTransform m = g2.getTransform();
-//		g2.scale( width, height );
+		java.awt.Stroke prevStroke = g2.getStroke();
+		try {
+			g2.setStroke( STROKE );
+			java.awt.Shape face0 = createFace( a0, b0, c0, d0, width, height );
+			java.awt.Shape face1 = createFace( a1, b1, c1, d1, width, height );
+			java.awt.Shape face2 = createFace( a2, b2, c2, d2, width, height );
 
-		java.awt.Shape face0 = createFace( a0, b0, c0, d0, width, height );
-		java.awt.Shape face1 = createFace( a1, b1, c1, d1, width, height );
-		java.awt.Shape face2 = createFace( a2, b2, c2, d2, width, height );
+			g2.setPaint( SHADOW_COLOR );
+			g2.fill( face0 );
+			g2.setPaint( fillPaint );
+			g2.fill( face1 );
+			g2.fill( face2 );
+			g2.setPaint( drawPaint );
+			g2.draw( face0 );
+			g2.draw( face1 );
+			g2.draw( face2 );
+		} finally {
+			g2.setStroke( prevStroke );
+		}
 
-		g2.setPaint( SHADOW_COLOR );
-		g2.fill( face0 );
-		g2.setPaint( fillPaint );
-		g2.fill( face1 );
-		g2.fill( face2 );
-		g2.setPaint( drawPaint );
-		g2.draw( face0 );
-		g2.draw( face1 );
-		g2.draw( face2 );
-
-//		g2.setTransform( m );
 	}
 }

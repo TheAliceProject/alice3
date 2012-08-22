@@ -40,86 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardComposite extends AbstractComposite< org.lgna.croquet.components.CardPanel > {
-	private final java.util.List< Composite< ? > > cards;
-	private Composite<?> showingCard;
-	public CardComposite( java.util.UUID id, Composite< ? >... cards ) {
-		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
+public class IterationTrigger extends Trigger {
+	public IterationTrigger( Origin origin ) {
+		super( origin );
 	}
-	public void addCard( Composite<?> card ) {
-		this.cards.add( card );
-		org.lgna.croquet.components.CardPanel view = this.peekView();
-		if( view != null ) {
-			view.addComposite( card );
-		}
-	}
-	public void removeCard( Composite<?> card ) {
-		this.cards.remove( card );
-	}
-	public Composite<?> getShowingCard() {
-		return this.showingCard;
-	}
-	
-	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
-		if( super.contains( model ) ) {
-			return true;
-		} else {
-			for( Composite< ? > card : this.cards ) {
-				//todo
-				if( card.contains( model ) ) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-	public java.util.List< Composite< ? >> getCards() {
-		return this.cards;
+	public IterationTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 	@Override
-	protected org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
+	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+		return null;
 	}
 	@Override
-	public void releaseView() {
-		for( Composite< ? > card : this.cards ) {
-			card.releaseView();
-		}
-		super.releaseView();
-	}
-	
-	public void showCard( Composite< ? > card ) {
-		synchronized( this.getView().getTreeLock() ) {
-			if( this.showingCard != null ) {
-				this.showingCard.handlePostDeactivation();
-			}
-			this.showingCard = card;
-			if( this.showingCard != null ) {
-				this.showingCard.handlePreActivation();
-			}
-			this.getView().showComposite( this.showingCard );
-		}
+	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new java.awt.Point() );
 	}
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-	@Override
-	public void handlePostDeactivation() {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDeactivation();
-		}
-		super.handlePostDeactivation();
+	public String getNoteText() {
+		return "iteration";
 	}
 }

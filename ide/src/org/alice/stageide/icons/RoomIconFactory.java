@@ -41,25 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.joint;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JointSubMenuManager {
-	private final java.util.Map<org.lgna.project.ast.AbstractType<?,?,?>,Class<JointSubMenu>[]> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	static {
-		addToMap( org.lgna.story.SBiped.class, LeftHandBipedSubMenu.class );
+public class RoomIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new RoomIcon( size );
 	}
-	private static void addToMap( Class<? extends org.lgna.story.SJointedModel> cls, Class<? extends JointSubMenu>... subMenuClses ) {
-		//todo
-	}
-	private JointSubMenuManager() {
-		throw new AssertionError();
-	}
-	
-	public static <FB> JointSubMenu<FB>[] getSubMenusForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		return null;
-	}
-
 }

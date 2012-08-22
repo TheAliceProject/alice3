@@ -115,7 +115,23 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 			try {
 				return cls.getDeclaredMethod( name, parameterTypes );
 			} catch( NoSuchMethodException nsme ) {
-				return findVarArgsVersion( cls, name, parameterTypes );
+				java.lang.reflect.Method rv = findVarArgsVersion( cls, name, parameterTypes );
+				if( rv != null ) {
+					//pass
+				} else {
+					if( parameterTypes.length > 0 ) {
+						Class<?> lastParameterType = parameterTypes[ parameterTypes.length-1 ];
+						if( lastParameterType.isArray() ) {
+							Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length-1 ];
+							System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
+							rv = findVarArgsVersion( cls, name, trimmedParameterTypes );
+							if( rv != null ) {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
+							}
+						}
+					}
+				}
+				return rv;
 			}
 		} else {
 			return null;

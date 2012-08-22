@@ -57,6 +57,7 @@ import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
 import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
+import org.lgna.story.SThing;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
@@ -345,6 +346,15 @@ class SnowScene extends SScene {
 				arr[ 1 ] = true;
 			}
 		} );
+//		SThing[] groupOne = {ogre};
+//		SThing[] groupTwo = {susan};
+//		this.addCollisionStartListener( new CollisionStartListener() {
+//			
+//			public void collisionStarted( StartCollisionEvent e ) {
+//				System.out.println(e.getModels()[0]);
+//				System.out.println(e.getModels()[1]);
+//			}
+//		}, groupOne , groupTwo );
 		this.addKeyPressListener( new KeyPressListener() {
 
 			public void keyPressed( KeyEvent e ) {

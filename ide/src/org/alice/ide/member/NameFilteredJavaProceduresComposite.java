@@ -53,7 +53,7 @@ public abstract class NameFilteredJavaProceduresComposite extends FilteredJavaPr
 			Integer valueA = map.get( methodA.getName() );
 			Integer valueB = map.get( methodB.getName() );
 			if( valueA != null && valueB != null ) {
-				int rv = Integer.compare( valueA, valueB );
+				int rv = (valueA < valueB) ? -1 : ((valueA == valueB) ? 0 : 1);
 				if( rv == 0 ) {
 					rv = compareMethodNames( methodA, methodB );
 				}

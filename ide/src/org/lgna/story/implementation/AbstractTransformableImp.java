@@ -467,21 +467,42 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		try {
 			standInA.setPositionOnly( subject );
 			edu.cmu.cs.dennisc.math.Point3 targetPos = target.getTransformation( standInA ).translation;
-			double targetTheta = Math.atan2( targetPos.z, targetPos.x );
-
-			StandInImp standInB = acquireStandIn( subject );
-			try {
-				standInB.applyTranslation( 0, 0, -1.0, standInB );
-
-				edu.cmu.cs.dennisc.math.Point3 forwardPos = standInB.getTransformation( standInA ).translation;
-				double forwardTheta = Math.atan2( forwardPos.z, forwardPos.x );
-
-				standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
-				standInB.applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3.accessNegativeYAxis(), targetTheta - forwardTheta, standInA );
-
-				return standInB.getTransformation( asSeenBy ).orientation;
-			} finally {
-				releaseStandIn( standInB );
+			if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( targetPos.x, 0.0 ) && edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( targetPos.z, 0.0 ) ) {
+				//todo
+				return subject.getAbsoluteTransformation().orientation;
+			} else {
+				double targetTheta = Math.atan2( targetPos.z, targetPos.x );
+				
+				StandInImp standInB = acquireStandIn( subject );
+				try {
+					standInB.applyTranslation( 0, 0, -1.0, standInB );
+		
+					edu.cmu.cs.dennisc.math.Point3 forwardPos = standInB.getTransformation( standInA ).translation;
+					
+					double y;
+					if( forwardPos.isWithinReasonableEpsilonOf( 0, 1, 0 ) ) {
+						y = -1.0;
+					} else if( forwardPos.isWithinReasonableEpsilonOf( 0, -1, 0 ) ) {
+						y = 1.0;
+					} else {
+						y = Double.NaN;
+					}
+					if( Double.isNaN( y ) ) {
+						//pass
+					} else {
+						standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
+						standInB.applyTranslation( 0, y, 0.0, standInB );
+						forwardPos = standInB.getTransformation( standInA ).translation;
+					}
+					double forwardTheta = Math.atan2( forwardPos.z, forwardPos.x );
+	
+					standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
+					standInB.applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3.accessNegativeYAxis(), targetTheta - forwardTheta, standInA );
+					
+					return standInB.getTransformation( asSeenBy ).orientation;
+				} finally {
+					releaseStandIn( standInB );
+				}
 			}
 		} finally {
 			releaseStandIn( standInA );

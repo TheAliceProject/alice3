@@ -58,6 +58,7 @@ public class ShowMeOperation extends org.alice.ide.operations.InconsequentialAct
 	}
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( org.alice.stageide.croquet.models.run.RunOperation.getInstance(), "You can run your program by pressing this button." );
+		//org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( org.alice.stageide.croquet.models.run.RunOperation.getInstance(), "You can run your program by pressing this button." );
+		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewControllerAndRenderWindow( org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel() );
 	}
 }

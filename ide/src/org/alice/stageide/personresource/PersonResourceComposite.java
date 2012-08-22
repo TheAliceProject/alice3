@@ -65,6 +65,10 @@ public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCrea
 		return null;
 	}
 	@Override
+	public boolean isStatusLineDesired() {
+		return false;
+	}
+	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}

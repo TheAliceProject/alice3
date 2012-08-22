@@ -431,9 +431,19 @@ public abstract class AbstractComposite< V extends org.lgna.croquet.components.V
 		}
 	}
 	
+	private java.util.UUID cardId;
 	public AbstractComposite( java.util.UUID id ) {
 		super( id );
 		Manager.registerComposite( this );
+	}
+	
+	public synchronized java.util.UUID getCardId() {
+		if( this.cardId != null ) {
+			
+		} else {
+			this.cardId = java.util.UUID.randomUUID();
+		}
+		return this.cardId;
 	}
 	private V view;
 	protected abstract V createView();

@@ -40,53 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
 
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
+package org.alice.stageide.joint;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class LogInOutCardComposite extends org.lgna.croquet.CardComposite {
-	private final LogInCard logInCard = new LogInCard();
-	private final LogOutCard logOutCard = new LogOutCard();
-	
-	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>(){
-
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			updateCard();
-		}
-		
-	};
-
-	public LogInOutCardComposite() {
-		super( java.util.UUID.fromString( "05bfed8e-d09d-4928-9b20-1c758600bfe0" ) );
-		this.addCard( this.logInCard );
-		this.addCard( this.logOutCard );
-		this.getView().setBackgroundColor( null );
-	}
-	
-	private void updateCard() {
-		if( this.logInCard.getLoginDialogComposite().getIsLoggedIn().getValue() ) {
-			logOutCard.updateWelcomeString();
-			this.showCard( this.logOutCard );
-		} else {
-			this.showCard( this.logInCard );
-		}
-	}
-	
-	@Override
-	public void handlePreActivation() {
-		this.logInCard.getLoginDialogComposite().getIsLoggedIn().addAndInvokeValueListener( this.isLoggedInAdapter );
-		super.handlePreActivation();
-	}
-	@Override
-	public void handlePostDeactivation() {
-		this.logInCard.getLoginDialogComposite().getIsLoggedIn().removeValueListener( this.isLoggedInAdapter );
-		super.handlePostDeactivation();
+public class OtherSFlyerJointsSubMenu<FB> extends JointsSubMenu<FB> {
+	public OtherSFlyerJointsSubMenu() {
+		super( java.util.UUID.fromString( "f1ee6351-f9d6-4cc3-b9b7-23d9bc3fcd44" ), org.lgna.story.SFlyer.class, "getNeck2", "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getLeftFoot", "getRightFoot" );
 	}
 }

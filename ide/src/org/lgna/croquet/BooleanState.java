@@ -309,6 +309,14 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+		if( this.trueOperation != null ) {
+			this.trueOperation.setName( this.trueText );
+			this.trueOperation.setSmallIcon( this.trueIcon );
+		}
+		if( this.falseOperation != null ) {
+			this.falseOperation.setName( this.falseText );
+			this.falseOperation.setSmallIcon( this.falseIcon );
+		}
 	}
 	
 	public org.lgna.croquet.components.RadioButton createRadioButton() {
@@ -329,4 +337,51 @@ public abstract class BooleanState extends State< Boolean > {
 	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.JComponent< ? > component ) {
 		return new org.lgna.croquet.components.ToolPalette( this, component );
 	}
+	
+	private static class InternalSelectValueOperation extends ActionOperation {
+		private final BooleanState state;
+		private final boolean value;
+		private InternalSelectValueOperation( BooleanState state, boolean value ) {
+			super( state.getGroup(), java.util.UUID.fromString( "ca23dcf0-e00d-439b-b8a2-6c691be8ab5f" ) );
+			assert state != null;
+			this.state = state;
+			this.value = value;
+		}
+		@Override
+		protected void initialize() {
+			this.state.initializeIfNecessary();
+			super.initialize();
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+			this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
+			this.setSmallIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
+		}
+		@Override
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			this.state.setValueTransactionlessly( this.value );
+			step.finish();
+		}
+	}
+	private InternalSelectValueOperation trueOperation;
+	private InternalSelectValueOperation falseOperation;
+	public synchronized Operation getSetToTrueOperation() {
+		if( this.trueOperation != null ) {
+			//pass
+		} else {
+			this.trueOperation = new InternalSelectValueOperation( this, true );
+		}
+		return this.trueOperation;
+	}
+	public synchronized Operation getSetToFalseOperation() {
+		if( this.falseOperation != null ) {
+			//pass
+		} else {
+			this.falseOperation = new InternalSelectValueOperation( this, false );
+		}
+		return this.falseOperation;
+	}
+	
 }

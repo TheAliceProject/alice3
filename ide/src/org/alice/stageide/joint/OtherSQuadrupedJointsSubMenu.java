@@ -40,57 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+
+package org.alice.stageide.joint;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeSaveAsOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
-
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, TypeSaveAsOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized TypeSaveAsOperation getInstance( org.lgna.project.ast.NamedUserType type ) {
-		TypeSaveAsOperation rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TypeSaveAsOperation( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
-
-	private org.lgna.project.ast.NamedUserType type;
-	private TypeSaveAsOperation( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( type );
-		this.type = type;
-		this.setName( "<html>Save <strong>" + this.type.getName() + "</strong> As...</html>" );
-		//this.setSmallIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
-	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< TypeSaveAsOperation >( this, org.lgna.project.ast.NamedUserType.class, this.type );
-	}
-
-	@Override
-	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
-	}
-	@Override
-	protected String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
-	}
-	@Override
-	protected String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
-	}
-	@Override
-	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
-		org.lgna.project.io.IoUtilities.writeType( file, this.type );
-	}
-	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
-		return true;
+public class OtherSQuadrupedJointsSubMenu<FB> extends JointsSubMenu<FB> {
+	public OtherSQuadrupedJointsSubMenu() {
+		super( java.util.UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), org.lgna.story.SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getFrontLeftFoot", "getFrontLeftToe", "getFrontRightFoot", "getFrontRightToe", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
 	}
 }
