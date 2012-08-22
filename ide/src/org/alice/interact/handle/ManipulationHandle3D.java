@@ -339,6 +339,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		setCurrentColorInternal();
 		sgVisual.setParent( this );
+		this.setName(this.getClass().getSimpleName());
 		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.PickType.THREE_D_HANDLE.pickHint() );
 		this.addAbsoluteTransformationListener(this.absoluteTransformationListener);
 	}

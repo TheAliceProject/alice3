@@ -70,6 +70,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		protected abstract void preJoint( org.lgna.story.implementation.JointImp joint );
 		protected abstract void preBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child );
 		public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
+			
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = joint.getTransformation( this.asSeenBy );
 			m.getAsColumnMajorArray16( array );
 			this.context.gl.glPushMatrix();

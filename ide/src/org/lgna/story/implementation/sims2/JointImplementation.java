@@ -3,7 +3,7 @@ package org.lgna.story.implementation.sims2;
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 
 public class JointImplementation extends org.lgna.story.implementation.JointImp {
-	private final NebulousJoint sgJoint;
+	private NebulousJoint sgJoint;
 	public JointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, NebulousJoint sgJoint ) {
 		super( jointedModelImplementation );
 		this.sgJoint = sgJoint;
@@ -49,4 +49,5 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 		rv.addBoundingBox(jointBBox, trans);
 		return rv;
 	}
+	
 }

@@ -222,7 +222,8 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 				AbstractField field = ((FieldGalleryNode)dragModel).getDeclaration();
 				org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
 				JavaType javaType = type.getFirstEncounteredJavaType();
-				box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(javaType.getClassReflectionProxy().getReification());
+				String name = field.getName();
+				box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(javaType.getClassReflectionProxy().getReification(), name);
 			}
 			if (box == null)
 			{

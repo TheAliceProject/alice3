@@ -263,15 +263,15 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
             }
         }
     }
+	
+	protected void updateGeometryAdapters() {
+		m_geometryAdapters = AdapterFactory.getAdaptersFor( m_element.geometries.getValue(), GeometryAdapter.class );
+	}
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.geometries ) {
-			
-
 			//todo: update scene observer skin vector
-
-			
-			m_geometryAdapters = AdapterFactory.getAdaptersFor( m_element.geometries.getValue(), GeometryAdapter.class );
+			updateGeometryAdapters();
 		} else if( property == m_element.frontFacingAppearance ) {
 			m_frontFacingAppearanceAdapter = AdapterFactory.getAdapterFor( m_element.frontFacingAppearance.getValue() );
 		} else if( property == m_element.backFacingAppearance ) {

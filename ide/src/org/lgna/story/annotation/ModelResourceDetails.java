@@ -1,6 +1,3 @@
-import java.net.URL;
-import java.net.URLClassLoader;
-
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
@@ -43,36 +40,18 @@ import java.net.URLClassLoader;
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.story.annotation;
 
 /**
  * @author dculyba
  *
  */
-public class GalleryWebpageGenerator {
-
-	
-	public static String getResourcePath(Class<?> cls, String resourceString) {
-		return cls.getPackage().getName().replace(".", "/")+"/"+resourceString;
+public enum ModelResourceDetails  implements org.lgna.project.annotations.PublicStaticFieldValueDetails< org.lgna.story.resources.JointedModelResource > {
+	SINGLETON;
+	public Class< org.lgna.story.resources.JointedModelResource  > getSupportedCls() {
+		return org.lgna.story.resources.JointedModelResource.class;
 	}
-	
-	public static void buildGalleryWebpage(java.io.File[] sourceJars, java.io.File[] resourceJars) {
-		
-		try {
-			URL[] urlArray = new URL[sourceJars.length + resourceJars.length];
-			for (int i=0; i<sourceJars.length; i++) {
-				urlArray[i] = sourceJars[i].toURI().toURL();
-			}
-			URLClassLoader sourceLoader = new URLClassLoader(urlArray);
-			org.lgna.story.resourceutilities.StorytellingResources.getInstance().initializeGalleryTreeWithJars(resourceJars);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+	public java.lang.reflect.Field[] getFlds() {
+		return org.lgna.story.resources.biped.OgreResource.class.getFields();
 	}
-	
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		
-	}
-
 }

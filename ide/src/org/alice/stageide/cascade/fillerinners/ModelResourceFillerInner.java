@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,50 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.cascade.fillerinners;
 
-package org.lgna.story.implementation.alice;
+import java.util.List;
 
-
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class JointImplementation extends org.lgna.story.implementation.JointImp {
-	private edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
-	private final org.lgna.story.resources.JointId jointId;
-	public JointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
-		super( jointedModelImplementation );
-		assert sgJoint != null;
-		this.jointId = jointId;
-		this.sgJoint = sgJoint;
-		putInstance( this.sgJoint );
-	}
-	@Override
-	public org.lgna.story.resources.JointId getJointId() {
-		return this.jointId;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Joint getSgComposite() {
-		return this.sgJoint;
+public class ModelResourceFillerInner extends ExpressionFillerInner {
+
+	public ModelResourceFillerInner() {
+		super( org.lgna.story.resources.JointedModelResource.class );
 	}
 	
 	@Override
-	public boolean isFreeInX() {
-		return this.sgJoint.isFreeInX.getValue();
-	}
-	@Override
-	public boolean isFreeInY() {
-		return this.sgJoint.isFreeInY.getValue();
-	}
-	@Override
-	public boolean isFreeInZ() {
-		return this.sgJoint.isFreeInZ.getValue();
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox(null, false);
-		rv.addBoundingBox(jointBBox, trans);
-		return rv;
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		if( details instanceof org.lgna.project.annotations.PublicStaticFieldValueDetails ) {
+			org.lgna.project.annotations.PublicStaticFieldValueDetails publicStaticFieldValueDetails = (org.lgna.project.annotations.PublicStaticFieldValueDetails)details;
+			java.lang.reflect.Field[] flds = publicStaticFieldValueDetails.getFlds();
+			for( java.lang.reflect.Field fld : flds ) {
+				items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( fld ) );
+			}
+		}
 	}
 }

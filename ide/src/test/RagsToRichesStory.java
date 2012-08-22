@@ -46,7 +46,6 @@ import java.awt.Component;
 
 import org.lgna.story.Color;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.RollDirection;
 import org.lgna.story.SBiped;
@@ -54,10 +53,10 @@ import org.lgna.story.SCamera;
 import org.lgna.story.SCone;
 import org.lgna.story.SGround;
 import org.lgna.story.SProgram;
+import org.lgna.story.SProp;
 import org.lgna.story.SScene;
 import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
-import org.lgna.story.SThing;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
@@ -126,17 +125,17 @@ class MyOgre extends MyBiped {
 	}
 }
 
-//class MyArmoire extends Prop {
-//	public MyArmoire() {
-//		super( org.lgna.story.resources.prop.Helicopter.VEHICLE_HELICOPTER );
-//	}
-//	public Joint getLeftDoor() {
-//		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
-//	}
-//	public Joint getRightDoor() {
-//		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
-//	}
-//}
+class MyArmoire extends SProp {
+	public MyArmoire() {
+		super( org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
+	}
+	public org.lgna.story.SJoint getLeftDoor() {
+		return this.getJoint( org.lgna.story.resources.prop.ArmoireResource.LEFT_DOOR );
+	}
+	public org.lgna.story.SJoint getRightDoor() {
+		return this.getJoint( org.lgna.story.resources.prop.ArmoireResource.RIGHT_DOOR );
+	}
+}
 
 class DesertScene extends SScene {
 	private final SSun sun = new SSun();
@@ -201,7 +200,7 @@ class SnowScene extends SScene {
 	private final SCone redCone = new SCone();
 	private final SCone greenCone = new SCone();
 	private final SCone blueCone = new SCone();
-	//	private final MyArmoire armoire = new MyArmoire();
+	private final MyArmoire armoire = new MyArmoire();
 	private final SCamera camera;
 	private final MyOgre ogre;
 	private final MyBiped susan;
@@ -216,14 +215,14 @@ class SnowScene extends SScene {
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
-		this.snow.setVehicle( this );
+//		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
-		this.redCone.setVehicle( this );
-		this.greenCone.setVehicle( this );
-		this.blueCone.setVehicle( this );
-		//		this.armoire.setVehicle( this );
+//		this.redCone.setVehicle( this );
+//		this.greenCone.setVehicle( this );
+//		this.blueCone.setVehicle( this );
+		this.armoire.setVehicle( this );
 		this.camera.setVehicle( this );
-		this.susan.setVehicle( this );
+//		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
 
 		this.redCone.setPaint( Color.RED );
@@ -243,7 +242,7 @@ class SnowScene extends SScene {
 		//		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
 
 		this.ogre.move( MoveDirection.LEFT, 2.0 );
-		this.susan.turn( TurnDirection.LEFT, 0.25 );
+//		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
@@ -566,12 +565,19 @@ class RagsToRichesStory extends SProgram {
 	public void playOutStory() {
 		//		this.setActiveScene( this.desertScene );
 		//		this.desertScene.turnBigRocksIntoLittleRocks();
+		org.lgna.story.implementation.JointedModelImp<?, ?> susanImp = ImplementationAccessor.getImplementation(susan);
+		susanImp.opacity.setValue( 0.25f );
+		susanImp.showVisualization();
+		org.lgna.story.implementation.JointedModelImp<?, ?> ogreImp = ImplementationAccessor.getImplementation(ogre);
+		ogreImp.opacity.setValue( 0.25f );
+		ogreImp.showVisualization();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}
 	public static void main( final String[] args ) {
 		final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
 		ragsToRichesStory.initializeInFrame( args );
+		
 		new Thread() {
 			@Override
 			public void run() {

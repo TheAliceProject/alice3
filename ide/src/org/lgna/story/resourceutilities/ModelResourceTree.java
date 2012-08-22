@@ -26,7 +26,6 @@ public class ModelResourceTree {
 	public ModelResourceTree(List<Class<? extends org.lgna.story.resources.ModelResource>> classes)
 	{
 		this.galleryTree = this.createClassTree(classes);
-		
 	}
 	
 	public ModelResourceTreeNode getTree()
@@ -168,6 +167,7 @@ public class ModelResourceTree {
 	private  ModelResourceTreeNode createClassTree(List<Class<? extends org.lgna.story.resources.ModelResource>> classes)
 	{
 		ModelResourceTreeNode topNode = new ModelResourceTreeNode(null, null);
+
 		for (Class<? extends org.lgna.story.resources.ModelResource> cls : classes)
 		{
 			Class<? extends org.lgna.story.resources.ModelResource> currentClass = cls;

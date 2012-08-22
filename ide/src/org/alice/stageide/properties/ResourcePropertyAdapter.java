@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,50 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.properties;
 
-package org.lgna.story.implementation.alice;
-
-
+import org.alice.ide.croquet.models.StandardExpressionState;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
+ *
  */
-public class JointImplementation extends org.lgna.story.implementation.JointImp {
-	private edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
-	private final org.lgna.story.resources.JointId jointId;
-	public JointImplementation( org.lgna.story.implementation.JointedModelImp<?,?> jointedModelImplementation, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
-		super( jointedModelImplementation );
-		assert sgJoint != null;
-		this.jointId = jointId;
-		this.sgJoint = sgJoint;
-		putInstance( this.sgJoint );
+public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.story.resources.JointedModelResource, org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource >> {
+	
+	public ResourcePropertyAdapter(org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource > instance, StandardExpressionState expressionState) 
+	{
+		super("Visual Resource", instance, expressionState);
 	}
+	
+
 	@Override
-	public org.lgna.story.resources.JointId getJointId() {
-		return this.jointId;
+	public void setValue(org.lgna.story.resources.JointedModelResource value) 
+	{
+		super.setValue(value);
+		if (this.instance != null)
+		{
+			this.instance.setNewResource(value);
+		}
 	}
+
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Joint getSgComposite() {
-		return this.sgJoint;
+	public Class<org.lgna.story.resources.JointedModelResource> getPropertyType() 
+	{
+		return org.lgna.story.resources.JointedModelResource.class;
+	}
+
+	@Override
+	public org.lgna.story.resources.JointedModelResource getValue() 
+	{
+		if (this.instance != null)
+		{
+			return this.instance.getResource();
+		}
+		return null;
 	}
 	
 	@Override
-	public boolean isFreeInX() {
-		return this.sgJoint.isFreeInX.getValue();
+	public org.lgna.story.resources.JointedModelResource getValueCopyIfMutable() 
+	{
+		return this.getValue();
 	}
-	@Override
-	public boolean isFreeInY() {
-		return this.sgJoint.isFreeInY.getValue();
-	}
-	@Override
-	public boolean isFreeInZ() {
-		return this.sgJoint.isFreeInZ.getValue();
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox(null, false);
-		rv.addBoundingBox(jointBBox, trans);
-		return rv;
-	}
+
 }
