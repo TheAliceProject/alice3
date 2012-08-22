@@ -94,6 +94,8 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
 public class ModelResourceExporter {
 
+	private static boolean REMOVE_ROOT_JOINTS = false;
+	
 	private static String COPYRIGHT_COMMENT = null;
 	private static final String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
 	
@@ -330,15 +332,21 @@ public class ModelResourceExporter {
 		return sourceList;
 	}
 	
+	private static boolean isRootJoint(String jointName) {
+		return jointName.equalsIgnoreCase("root");
+	}
+	
 	private List<Tuple2<String, String>> makeCodeReadyTree(List<Tuple2<String, String>> sourceList) {
 		if (sourceList != null) {
 			List<Tuple2<String, String>> cleaned = new ArrayList<Tuple2<String,String>>();
 			for (Tuple2<String, String> entry : sourceList) {
-				if (entry.getA().equalsIgnoreCase("root") && (entry.getB() == null || entry.getB().length() == 0) ){
-					continue;
-				}
-				else if (entry.getB() != null && entry.getB().equalsIgnoreCase("root")) {
-					entry.setB(null);
+				if (REMOVE_ROOT_JOINTS) {
+					if (isRootJoint(entry.getA())&& (entry.getB() == null || entry.getB().length() == 0) ){
+						continue;
+					}
+					else if (entry.getB() != null && isRootJoint(entry.getB())) {
+						entry.setB(null);
+					}
 				}
 				cleaned.add(entry);
 			}
@@ -750,6 +758,9 @@ public class ModelResourceExporter {
 	
 	private boolean shouldSuppressJoint(String jointString) {
 		if (this.jointIdsToSuppress.contains(jointString)) {
+			return true;
+		}
+		if (isRootJoint( jointString )) {
 			return true;
 		}
 		return false;
