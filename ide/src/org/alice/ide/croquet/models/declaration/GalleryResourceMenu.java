@@ -46,9 +46,10 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel< org.lgna.project.ast.Expression > {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, GalleryResourceMenu > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized GalleryResourceMenu getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, GalleryResourceMenu> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized GalleryResourceMenu getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		GalleryResourceMenu rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -58,17 +59,21 @@ public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel< org.
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.AbstractType<?,?,?> type;
-	private GalleryResourceMenu( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+
+	private GalleryResourceMenu( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( java.util.UUID.fromString( "10f4d191-6bdd-4333-a8c9-0d617fa8ea64" ) );
 		this.type = type;
 	}
+
 	@Override
 	protected String findDefaultLocalizedText() {
 		return this.type.getName();
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		GalleryResourceUtilities.updateChildren( rv, blankNode, this.type );
 		return rv;
 	}

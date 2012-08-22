@@ -46,16 +46,16 @@ import org.lgna.story.implementation.JointedModelImp;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class SProp extends SJointedModel {
 
 	private final org.lgna.story.implementation.JointedModelImp implementation;
-	
+
 	public SProp( org.lgna.story.resources.PropResource resource ) {
 		this.implementation = resource.createImplementation( this );
 	}
-	
+
 	@Override
 	JointedModelImp getImplementation() {
 		// TODO Auto-generated method stub

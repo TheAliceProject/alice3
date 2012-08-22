@@ -47,31 +47,31 @@ import edu.cmu.cs.dennisc.math.Point3;
 /**
  * @author David Culyba
  */
-public abstract class QuaternionAndTranslationTargetBasedAnimation extends TargetBasedFrameObserver< QuaternionAndTranslation > {
+public abstract class QuaternionAndTranslationTargetBasedAnimation extends TargetBasedFrameObserver<QuaternionAndTranslation> {
 
 	private static final double CUSTOM_SPEED = 5.0d;
-	
+
 	private boolean shouldAnimate = false;
-	
+
 	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue )
 	{
-		this(currentValue, currentValue, CUSTOM_SPEED);
+		this( currentValue, currentValue, CUSTOM_SPEED );
 	}
-	
+
 	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, double speed )
 	{
-		this(currentValue, currentValue, speed);
+		this( currentValue, currentValue, speed );
 	}
-	
+
 	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue )
 	{
-		this(currentValue, targetValue, CUSTOM_SPEED);
+		this( currentValue, targetValue, CUSTOM_SPEED );
 	}
-	
+
 	public QuaternionAndTranslationTargetBasedAnimation( QuaternionAndTranslation currentValue, QuaternionAndTranslation targetValue, double speed )
 	{
-		super(currentValue, targetValue, speed);
-		if (isCloseEnoughToBeDone())
+		super( currentValue, targetValue, speed );
+		if( isCloseEnoughToBeDone() )
 		{
 			this.shouldAnimate = true;
 		}
@@ -82,39 +82,39 @@ public abstract class QuaternionAndTranslationTargetBasedAnimation extends Targe
 	}
 
 	@Override
-	protected boolean isCloseEnoughToBeDone() 
+	protected boolean isCloseEnoughToBeDone()
 	{
 		edu.cmu.cs.dennisc.math.UnitQuaternion currentQ = this.currentValue.getQuaternion();
 		edu.cmu.cs.dennisc.math.UnitQuaternion targetQ = this.targetValue.getQuaternion();
-		
-		edu.cmu.cs.dennisc.math.UnitQuaternion targetQNegative = new edu.cmu.cs.dennisc.math.UnitQuaternion(targetQ);
-		targetQNegative.multiply(-1.0);
-		boolean quaternionDone = currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQ, MIN_DISTANCE_TO_DONE) || currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQNegative, MIN_DISTANCE_TO_DONE);
+
+		edu.cmu.cs.dennisc.math.UnitQuaternion targetQNegative = new edu.cmu.cs.dennisc.math.UnitQuaternion( targetQ );
+		targetQNegative.multiply( -1.0 );
+		boolean quaternionDone = currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon( targetQ, MIN_DISTANCE_TO_DONE ) || currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon( targetQNegative, MIN_DISTANCE_TO_DONE );
 		double translationDist = Point3.calculateDistanceBetween( this.currentValue.getTranslation(), this.targetValue.getTranslation() );
-		
+
 		boolean translationDone = translationDist < MIN_DISTANCE_TO_DONE;
-		
+
 		return quaternionDone && translationDone;
 	}
 
-//	@Override
-//	public void update( double current ) {
-//		if (this.shouldAnimate)
-//		{
-//			super.update( current );
-//		}
-//		if ()
-//	}
-	
+	//	@Override
+	//	public void update( double current ) {
+	//		if (this.shouldAnimate)
+	//		{
+	//			super.update( current );
+	//		}
+	//		if ()
+	//	}
+
 	@Override
-	protected QuaternionAndTranslation interpolate( QuaternionAndTranslation v0, QuaternionAndTranslation v1, double deltaSinceLastUpdate ) 
+	protected QuaternionAndTranslation interpolate( QuaternionAndTranslation v0, QuaternionAndTranslation v1, double deltaSinceLastUpdate )
 	{
-		float portion = (float)(deltaSinceLastUpdate*this.speed);
+		float portion = (float)( deltaSinceLastUpdate * this.speed );
 		portion = Math.min( portion, 1.0f );
 		portion = Math.max( -1.0f, portion );
-		
+
 		QuaternionAndTranslation rv = new QuaternionAndTranslation();
-		rv.setToInterpolation(v0, v1, portion);
+		rv.setToInterpolation( v0, v1, portion );
 		return rv;
 	}
 
@@ -125,6 +125,6 @@ public abstract class QuaternionAndTranslationTargetBasedAnimation extends Targe
 
 	@Override
 	protected QuaternionAndTranslation newE( QuaternionAndTranslation other ) {
-		return new QuaternionAndTranslation(other);
+		return new QuaternionAndTranslation( other );
 	}
 }

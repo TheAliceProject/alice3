@@ -50,26 +50,32 @@ public class AddListenerProceduresComposite extends org.alice.ide.member.Filtere
 	private static class SingletonHolder {
 		private static AddListenerProceduresComposite instance = new AddListenerProceduresComposite();
 	}
+
 	public static AddListenerProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final java.util.Collection<String> names = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "addDefaultModelManipulation", "addObjectMoverFor" ); 
+
+	private final java.util.Collection<String> names = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "addDefaultModelManipulation", "addObjectMoverFor" );
 	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
 		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
 			return compareMethodNames( methodA, methodB );
 		}
 	};
+
 	private AddListenerProceduresComposite() {
 		super( java.util.UUID.fromString( "cfb5bd39-c07b-4436-a4e9-031dd25ca3b5" ) );
 	}
+
 	@Override
-	public java.util.Comparator< org.lgna.project.ast.JavaMethod > getComparator() {
+	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
 		return this.comparator;
 	}
+
 	@Override
 	public boolean isShowingDesired() {
 		return false;
 	}
+
 	@Override
 	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
 		String name = method.getName();

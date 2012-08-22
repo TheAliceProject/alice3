@@ -42,10 +42,9 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.adorn;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Adornment extends edu.cmu.cs.dennisc.scenegraph.Component {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.scenegraph.Composite > adorningRoot = new edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.scenegraph.Composite >( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.scenegraph.Composite> adorningRoot = new edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.scenegraph.Composite>( this, null );
 }

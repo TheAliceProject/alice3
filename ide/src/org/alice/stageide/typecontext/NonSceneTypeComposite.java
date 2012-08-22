@@ -46,16 +46,19 @@ package org.alice.stageide.typecontext;
 /**
  * @author Dennis Cosgrove
  */
-public class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.typecontext.components.NonSceneTypeView > {
+public class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.typecontext.components.NonSceneTypeView> {
 	private static class SingletonHolder {
 		private static NonSceneTypeComposite instance = new NonSceneTypeComposite();
 	}
+
 	public static NonSceneTypeComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private NonSceneTypeComposite() {
 		super( java.util.UUID.fromString( "866337e5-9309-4f31-9214-c319056e705d" ) );
 	}
+
 	@Override
 	protected org.alice.stageide.typecontext.components.NonSceneTypeView createView() {
 		return new org.alice.stageide.typecontext.components.NonSceneTypeView( this );

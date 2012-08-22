@@ -56,10 +56,12 @@ public abstract class AbstractNode extends Element implements Node {
 	public boolean isAppropriatelyIdenitifiedById() {
 		return true;
 	}
+
 	public final java.util.UUID getId() {
 		return this.id;
 	}
-	/*package-private*/ final void setId( java.util.UUID id ) {
+
+	/* package-private */final void setId( java.util.UUID id ) {
 		this.id = id;
 	}
 
@@ -78,7 +80,6 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 	}
 
-
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		Node rv;
 		if( isThisIncludedInSearch ) {
@@ -94,6 +95,7 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 		return (N)rv;
 	}
+
 	public final <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls ) {
 		return getFirstAncestorAssignableTo( cls, false );
 	}
@@ -101,12 +103,12 @@ public abstract class AbstractNode extends Element implements Node {
 	@Override
 	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		super.firePropertyChanging( e );
-		edu.cmu.cs.dennisc.property.Property< ? > property = e.getTypedSource();
-		if( property instanceof NodeProperty< ? > ) {
-			NodeProperty< ? > nodeProperty = (NodeProperty< ? >)property;
+		edu.cmu.cs.dennisc.property.Property<?> property = e.getTypedSource();
+		if( property instanceof NodeProperty<?> ) {
+			NodeProperty<?> nodeProperty = (NodeProperty<?>)property;
 			boolean isReference;
-			if( nodeProperty instanceof DeclarationProperty< ? > ) {
-				isReference = ((DeclarationProperty< ? >)nodeProperty).isReference();
+			if( nodeProperty instanceof DeclarationProperty<?> ) {
+				isReference = ( (DeclarationProperty<?>)nodeProperty ).isReference();
 			} else {
 				isReference = false;
 			}
@@ -120,14 +122,15 @@ public abstract class AbstractNode extends Element implements Node {
 			}
 		}
 	}
+
 	@Override
 	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		edu.cmu.cs.dennisc.property.Property< ? > property = e.getTypedSource();
-		if( property instanceof NodeProperty< ? > ) {
-			NodeProperty< ? > nodeProperty = (NodeProperty< ? >)property;
+		edu.cmu.cs.dennisc.property.Property<?> property = e.getTypedSource();
+		if( property instanceof NodeProperty<?> ) {
+			NodeProperty<?> nodeProperty = (NodeProperty<?>)property;
 			boolean isReference;
-			if( nodeProperty instanceof DeclarationProperty< ? > ) {
-				isReference = ((DeclarationProperty< ? >)nodeProperty).isReference();
+			if( nodeProperty instanceof DeclarationProperty<?> ) {
+				isReference = ( (DeclarationProperty<?>)nodeProperty ).isReference();
 			} else {
 				isReference = false;
 			}
@@ -142,100 +145,106 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 		super.firePropertyChanged( e );
 	}
+
 	@Override
 	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
 		super.fireClearing( e );
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
-		if( listProperty instanceof NodeListProperty< ? > ) {
-			NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
+		if( listProperty instanceof NodeListProperty<?> ) {
+			NodeListProperty<?> nodeListProperty = (NodeListProperty<?>)listProperty;
 			for( Node node : nodeListProperty ) {
 				if( node instanceof AbstractNode ) {
-					((AbstractNode)node).setParent( null );
+					( (AbstractNode)node ).setParent( null );
 				}
 			}
 		}
 	}
+
 	@Override
 	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
 		super.fireRemoving( e );
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
-		if( listProperty instanceof NodeListProperty< ? > ) {
+		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
 				if( o instanceof AbstractNode ) {
-					((AbstractNode)o).setParent( null );
+					( (AbstractNode)o ).setParent( null );
 				}
 			}
 		}
 	}
+
 	@Override
 	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		super.fireSetting( e );
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
-		if( listProperty instanceof NodeListProperty< ? > ) {
+		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
 				if( o instanceof AbstractNode ) {
-					((AbstractNode)o).setParent( null );
+					( (AbstractNode)o ).setParent( null );
 				}
 			}
 		}
 	}
+
 	@Override
 	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
-		if( listProperty instanceof NodeListProperty< ? > ) {
+		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
 				if( o instanceof AbstractNode ) {
-					((AbstractNode)o).setParent( this );
+					( (AbstractNode)o ).setParent( this );
 				}
 			}
 		}
 		super.fireSet( e );
 	}
+
 	@Override
 	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		super.fireAdding( e );
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
-		if( listProperty instanceof NodeListProperty< ? > ) {
+		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
 				if( o instanceof AbstractNode ) {
-					((AbstractNode)o).setParent( null );
+					( (AbstractNode)o ).setParent( null );
 				}
 			}
 		}
 	}
+
 	@Override
 	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
-		if( listProperty instanceof NodeListProperty< ? > ) {
+		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
 				if( o instanceof AbstractNode ) {
-					((AbstractNode)o).setParent( this );
+					( (AbstractNode)o ).setParent( this );
 				}
 			}
 		}
 		super.fireAdded( e );
 	}
 
-	private static void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited, Object value, CrawlPolicy crawlPolicy ) {
-		if ( value instanceof AbstractNode ) {
+	private static void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, Object value, CrawlPolicy crawlPolicy ) {
+		if( value instanceof AbstractNode ) {
 			AbstractNode crawlable = (AbstractNode)value;
 			crawlable.accept( crawler, visited, crawlPolicy );
-		} else if ( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
+		} else if( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
 			edu.cmu.cs.dennisc.pattern.Crawlable crawlable = (edu.cmu.cs.dennisc.pattern.Crawlable)value;
 			crawlable.accept( crawler, visited );
 		}
 	}
 
-	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited ) {
+	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited ) {
 		accept( crawler, visited, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 	}
 
-	private void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > visited, CrawlPolicy crawlPolicy ) {
+	private void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, CrawlPolicy crawlPolicy ) {
 		if( visited.contains( this ) ) {
 			//pass
 		} else {
@@ -243,10 +252,10 @@ public abstract class AbstractNode extends Element implements Node {
 			crawler.visit( this );
 
 			// Look through this nodes properties to see if any have anything to crawl
-			for( edu.cmu.cs.dennisc.property.Property< ? > property : this.getProperties() ) {
+			for( edu.cmu.cs.dennisc.property.Property<?> property : this.getProperties() ) {
 				// Check if this is a reference
-				if ( property instanceof DeclarationProperty< ? > ) {
-					DeclarationProperty< ? > declarationProperty = (DeclarationProperty< ? >)property;
+				if( property instanceof DeclarationProperty<?> ) {
+					DeclarationProperty<?> declarationProperty = (DeclarationProperty<?>)property;
 					if( declarationProperty.isReference() ) {
 						if( crawlPolicy.isReferenceTunneledInto() ) {
 							//pass
@@ -262,7 +271,7 @@ public abstract class AbstractNode extends Element implements Node {
 							}
 							continue;
 						}
-					
+
 					}
 				}
 
@@ -285,15 +294,16 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy ) {
-		this.accept( crawler, new java.util.HashSet< edu.cmu.cs.dennisc.pattern.Crawlable >(), crawlPolicy );
+		this.accept( crawler, new java.util.HashSet<edu.cmu.cs.dennisc.pattern.Crawlable>(), crawlPolicy );
 	}
+
 	@Deprecated
 	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences ) {
 		CrawlPolicy crawlPolicy = followReferences ? CrawlPolicy.COMPLETE : CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY;
 		this.crawl( crawler, crawlPolicy );
 	}
 
-	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
+	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
 		org.w3c.dom.Element rv;
 		if( value instanceof AbstractNode ) {
 			AbstractNode node = (AbstractNode)value;
@@ -301,7 +311,7 @@ public abstract class AbstractNode extends Element implements Node {
 		} else if( value instanceof java.util.Collection ) {
 			rv = xmlDocument.createElement( "collection" );
 			rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
-			java.util.Collection< ? > collection = (java.util.Collection< ? >)value;
+			java.util.Collection<?> collection = (java.util.Collection<?>)value;
 			for( Object item : collection ) {
 				rv.appendChild( encodeValue( item, xmlDocument, set ) );
 			}
@@ -330,21 +340,24 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.Property property, java.util.Set< AbstractDeclaration > set ) {
+	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.Property property, java.util.Set<AbstractDeclaration> set ) {
 		org.w3c.dom.Element xmlProperty = xmlDocument.createElement( "property" );
 		xmlProperty.setAttribute( "name", property.getName() );
 		Object value = property.getValue( this );
 		xmlProperty.appendChild( encodeValue( value, xmlDocument, set ) );
 		return xmlProperty;
 	}
+
 	private static org.w3c.dom.Element encodeType( org.w3c.dom.Document xmlDocument, String nodeName, ClassReflectionProxy classReflectionProxy ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( nodeName );
 		rv.setAttribute( "name", classReflectionProxy.getName() );
 		return rv;
 	}
+
 	private static org.w3c.dom.Element encodeDeclaringClass( org.w3c.dom.Document xmlDocument, MemberReflectionProxy memberReflectionProxy ) {
 		return encodeType( xmlDocument, "declaringClass", memberReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
+
 	private static org.w3c.dom.Element encodeParameters( org.w3c.dom.Document xmlDocument, ClassReflectionProxy[] parameterClassReflectionProxies ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "parameters" );
 		for( ClassReflectionProxy parameterClassReflectionProxy : parameterClassReflectionProxies ) {
@@ -352,6 +365,7 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 		return rv;
 	}
+
 	private static org.w3c.dom.Element encodeMember( org.w3c.dom.Document xmlDocument, String nodeName, MemberReflectionProxy memberReflectionProxy ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( nodeName );
 		//		String name = mmbr.getName();
@@ -363,17 +377,20 @@ public abstract class AbstractNode extends Element implements Node {
 		rv.appendChild( encodeDeclaringClass( xmlDocument, memberReflectionProxy ) );
 		return rv;
 	}
+
 	private static org.w3c.dom.Element encodeField( org.w3c.dom.Document xmlDocument, String nodeName, FieldReflectionProxy fieldReflectionProxy ) {
 		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, fieldReflectionProxy );
 		rv.setAttribute( "name", fieldReflectionProxy.getName() );
 		return rv;
 	}
+
 	private static org.w3c.dom.Element encodeConstructor( org.w3c.dom.Document xmlDocument, String nodeName, ConstructorReflectionProxy constructorReflectionProxy ) {
 		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, constructorReflectionProxy );
 		rv.setAttribute( "isVarArgs", Boolean.toString( constructorReflectionProxy.isVarArgs() ) );
 		rv.appendChild( encodeParameters( xmlDocument, constructorReflectionProxy.getParameterClassReflectionProxies() ) );
 		return rv;
 	}
+
 	private static org.w3c.dom.Element encodeMethod( org.w3c.dom.Document xmlDocument, String nodeName, MethodReflectionProxy methodReflectionProxy ) {
 		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, methodReflectionProxy );
 		rv.setAttribute( "name", methodReflectionProxy.getName() );
@@ -383,7 +400,7 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	//todo: reduce visibility?
-	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
+	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
 		if( this instanceof AbstractDeclaration ) {
 			AbstractDeclaration abstractDeclaration = (AbstractDeclaration)this;
@@ -448,27 +465,27 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	public final org.w3c.dom.Document encode( java.util.Set< AbstractDeclaration > set ) {
+	public final org.w3c.dom.Document encode( java.util.Set<AbstractDeclaration> set ) {
 		org.w3c.dom.Document rv = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
 		org.w3c.dom.Element xmlElement = encode( rv, set );
 		xmlElement.setAttribute( "version", Double.toString( CURRENT_VERSION ) );
 		rv.appendChild( xmlElement );
 		return rv;
 	}
+
 	public final org.w3c.dom.Document encode() {
-		return encode( new java.util.HashSet< AbstractDeclaration >() );
+		return encode( new java.util.HashSet<AbstractDeclaration>() );
 	}
 
-
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< AbstractNode > nodes ) {
+	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
 		nodes.add( this );
-		for( edu.cmu.cs.dennisc.property.Property< ? > property : this.getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.Property<?> property : this.getProperties() ) {
 			Object value = property.getValue( this );
 			if( value instanceof AbstractNode ) {
 				if( nodes.contains( value ) ) {
 					//pass
 				} else {
-					((AbstractNode)value).fillInDeclarationSet( rv, nodes );
+					( (AbstractNode)value ).fillInDeclarationSet( rv, nodes );
 				}
 			} else if( value instanceof Iterable<?> ) {
 				for( Object item : (Iterable<?>)value ) {
@@ -476,7 +493,7 @@ public abstract class AbstractNode extends Element implements Node {
 						if( nodes.contains( item ) ) {
 							//pass
 						} else {
-							((AbstractNode)item).fillInDeclarationSet( rv, nodes );
+							( (AbstractNode)item ).fillInDeclarationSet( rv, nodes );
 						}
 					}
 				}
@@ -484,17 +501,19 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 		return rv;
 	}
-	public java.util.Set< AbstractDeclaration > createDeclarationSet() {
-		java.util.Set< AbstractDeclaration > rv = new java.util.HashSet< AbstractDeclaration >();
-		fillInDeclarationSet( rv, new java.util.HashSet< AbstractNode >() );
+
+	public java.util.Set<AbstractDeclaration> createDeclarationSet() {
+		java.util.Set<AbstractDeclaration> rv = new java.util.HashSet<AbstractDeclaration>();
+		fillInDeclarationSet( rv, new java.util.HashSet<AbstractNode>() );
 		return rv;
 	}
-	private java.util.Set< AbstractDeclaration > removeDeclarationsThatNeedToBeCopied( java.util.Set< AbstractDeclaration > rv, java.util.Set< AbstractNode > nodes ) {
+
+	private java.util.Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
 		nodes.add( this );
-		for( edu.cmu.cs.dennisc.property.Property< ? > property : this.getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.Property<?> property : this.getProperties() ) {
 			if( property instanceof DeclarationProperty ) {
-				DeclarationProperty< ? extends AbstractDeclaration > declarationProperty = (DeclarationProperty< ? extends AbstractDeclaration >)property;
-				if( declarationProperty.isReference() ) { 
+				DeclarationProperty<? extends AbstractDeclaration> declarationProperty = (DeclarationProperty<? extends AbstractDeclaration>)property;
+				if( declarationProperty.isReference() ) {
 					//pass
 				} else {
 					rv.remove( declarationProperty.getValue() );
@@ -505,7 +524,7 @@ public abstract class AbstractNode extends Element implements Node {
 				if( nodes.contains( value ) ) {
 					//pass
 				} else {
-					((AbstractNode)value).removeDeclarationsThatNeedToBeCopied( rv, nodes );
+					( (AbstractNode)value ).removeDeclarationsThatNeedToBeCopied( rv, nodes );
 				}
 			} else if( value instanceof Iterable<?> ) {
 				for( Object item : (Iterable<?>)value ) {
@@ -513,7 +532,7 @@ public abstract class AbstractNode extends Element implements Node {
 						if( nodes.contains( item ) ) {
 							//pass
 						} else {
-							((AbstractNode)item).removeDeclarationsThatNeedToBeCopied( rv, nodes );
+							( (AbstractNode)item ).removeDeclarationsThatNeedToBeCopied( rv, nodes );
 						}
 					}
 				}
@@ -521,11 +540,13 @@ public abstract class AbstractNode extends Element implements Node {
 		}
 		return rv;
 	}
-	public java.util.Set< AbstractDeclaration > removeDeclarationsThatNeedToBeCopied( java.util.Set< AbstractDeclaration > rv ) {
-		return removeDeclarationsThatNeedToBeCopied( rv, new java.util.HashSet< AbstractNode >() );
+
+	public java.util.Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( java.util.Set<AbstractDeclaration> rv ) {
+		return removeDeclarationsThatNeedToBeCopied( rv, new java.util.HashSet<AbstractNode>() );
 	}
-	public static java.util.Map< Integer, AbstractDeclaration > createMapOfDeclarationsThatShouldNotBeCopied( java.util.Set< AbstractDeclaration > set ) {
-		java.util.Map< Integer, AbstractDeclaration > rv = new java.util.HashMap< Integer, AbstractDeclaration >();
+
+	public static java.util.Map<Integer, AbstractDeclaration> createMapOfDeclarationsThatShouldNotBeCopied( java.util.Set<AbstractDeclaration> set ) {
+		java.util.Map<Integer, AbstractDeclaration> rv = new java.util.HashMap<Integer, AbstractDeclaration>();
 		for( AbstractDeclaration abstractDeclaration : set ) {
 			rv.put( abstractDeclaration.hashCode(), abstractDeclaration );
 		}
@@ -540,7 +561,7 @@ public abstract class AbstractNode extends Element implements Node {
 		return value;
 	}
 
-	protected final void decodeNode( Decoder decoder, org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+	protected final void decodeNode( Decoder decoder, org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 		for( int i = 0; i < nodeList.getLength(); i++ ) {
 			org.w3c.dom.Node xmlNode = nodeList.item( i );
@@ -564,7 +585,7 @@ public abstract class AbstractNode extends Element implements Node {
 	protected void postDecode() {
 	}
 
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map, boolean isIdDecodingDesired ) throws org.lgna.project.VersionNotSupportedException {
+	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map<Integer, AbstractDeclaration> map, boolean isIdDecodingDesired ) throws org.lgna.project.VersionNotSupportedException {
 		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
 		double astVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
 		if( astVersion >= MINIMUM_ACCEPTABLE_VERSION ) {
@@ -574,14 +595,16 @@ public abstract class AbstractNode extends Element implements Node {
 			throw new org.lgna.project.VersionNotSupportedException( MINIMUM_ACCEPTABLE_VERSION, astVersion );
 		}
 	}
-	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map ) throws org.lgna.project.VersionNotSupportedException {
+
+	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map<Integer, AbstractDeclaration> map ) throws org.lgna.project.VersionNotSupportedException {
 		return decode( xmlDocument, projectVersion, map, true );
 	}
+
 	public static AbstractNode decode( org.w3c.dom.Document xmlDocument, String projectVersion ) throws org.lgna.project.VersionNotSupportedException {
-		return decode( xmlDocument, projectVersion, new java.util.HashMap< Integer, AbstractDeclaration >() );
+		return decode( xmlDocument, projectVersion, new java.util.HashMap<Integer, AbstractDeclaration>() );
 	}
 
-	public void assignUUIDs( java.util.Map< Integer, AbstractDeclaration > map ) {
+	public void assignUUIDs( java.util.Map<Integer, AbstractDeclaration> map ) {
 	}
 
 	//	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
@@ -639,6 +662,7 @@ public abstract class AbstractNode extends Element implements Node {
 		rv.append( this.getClass().getSimpleName() );
 		return rv;
 	}
+
 	public final String getRepr( java.util.Locale locale ) {
 		StringBuilder sb = new StringBuilder();
 		this.appendRepr( sb, locale );
@@ -648,6 +672,7 @@ public abstract class AbstractNode extends Element implements Node {
 	protected StringBuilder appendStringDetails( StringBuilder rv ) {
 		return rv;
 	}
+
 	@Override
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();

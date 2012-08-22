@@ -49,20 +49,25 @@ public class HairState extends AbstractListSelectionState<org.lgna.story.resourc
 	private static class SingletonHolder {
 		private static HairState instance = new HairState();
 	}
+
 	public static HairState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private HairState() {
-		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec< org.lgna.story.resources.sims2.Hair >(){
-			public Class< org.lgna.story.resources.sims2.Hair > getValueClass() {
+		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.Hair>() {
+			public Class<org.lgna.story.resources.sims2.Hair> getValueClass() {
 				return org.lgna.story.resources.sims2.Hair.class;
 			}
+
 			public org.lgna.story.resources.sims2.Hair decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 				throw new RuntimeException( "todo" );
 			}
+
 			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.Hair t ) {
 				throw new RuntimeException( "todo" );
 			}
+
 			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.Hair value ) {
 				rv.append( value );
 				return rv;

@@ -55,7 +55,7 @@ import org.lgna.croquet.components.BorderPanel;
 public class MoviePlayerView extends BorderPanel {
 	public MoviePlayerView( MoviePlayerComposite composite ) {
 		super( composite );
-		this.setPreferredSize( new Dimension( 320+10, 180+30 ) );
+		this.setPreferredSize( new Dimension( 320 + 10, 180 + 30 ) );
 	}
 
 	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {

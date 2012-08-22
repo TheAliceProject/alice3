@@ -49,16 +49,19 @@ public class SceneIconFactory extends org.lgna.croquet.icon.ResolutionIndependan
 	private static class SingletonHolder {
 		private static SceneIconFactory instance = new SceneIconFactory();
 	}
+
 	public static SceneIconFactory getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SceneIconFactory() {
 	}
+
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new SceneIcon( size );
 	}
-	
+
 	public void markAllIconsDirty() {
 		for( javax.swing.Icon icon : this.getMap().values() ) {
 			if( icon instanceof SceneIcon ) {

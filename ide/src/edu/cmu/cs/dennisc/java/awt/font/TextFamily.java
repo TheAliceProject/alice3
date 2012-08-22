@@ -46,8 +46,10 @@ package edu.cmu.cs.dennisc.java.awt.font;
 /**
  * @author Dennis Cosgrove
  */
-public enum TextFamily implements TextAttribute< String > {
-	SERIF("Serif"), SANS_SERIF("SansSerif"), MONOSPACED("Monospaced");
+public enum TextFamily implements TextAttribute<String> {
+	SERIF( "Serif" ),
+	SANS_SERIF( "SansSerif" ),
+	MONOSPACED( "Monospaced" );
 	private String m_value;
 
 	private TextFamily( String value ) {
@@ -57,6 +59,7 @@ public enum TextFamily implements TextAttribute< String > {
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.FAMILY;
 	}
+
 	public String getValue() {
 		return m_value;
 	}

@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class ManipulationEvent {
-	
+
 	public enum EventType
 	{
 		Translate,
@@ -61,26 +61,26 @@ public class ManipulationEvent {
 		Rotate,
 		Zoom,
 	}
-	
+
 	private EventType type;
 	private MovementDescription movementDescription;
 	private AbstractTransformable target;
 	private InputState inputState;
-	
-	public ManipulationEvent( EventType type, MovementDescription movementDescription, AbstractTransformable target)
+
+	public ManipulationEvent( EventType type, MovementDescription movementDescription, AbstractTransformable target )
 	{
 		this.type = type;
 		this.movementDescription = movementDescription;
 		this.target = target;
 		this.inputState = null;
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		return this.type + ":["+this.movementDescription.toString()+"(" + this.target+")]";
+		return this.type + ":[" + this.movementDescription.toString() + "(" + this.target + ")]";
 	}
-	
+
 	/**
 	 * @return the target
 	 */
@@ -90,16 +90,16 @@ public class ManipulationEvent {
 
 	public PickHint getTargetPickHint()
 	{
-		if ( this.getTarget() != null )
+		if( this.getTarget() != null )
 		{
-			return PickUtilities.getPickType(this.getTarget()); 
+			return PickUtilities.getPickType( this.getTarget() );
 		}
 		else
 		{
 			return PickHint.PickType.NOTHING.pickHint();
 		}
 	}
-	
+
 	/**
 	 * @return the type
 	 */
@@ -120,10 +120,10 @@ public class ManipulationEvent {
 	public InputState getInputState() {
 		return inputState;
 	}
-	
+
 	public void setInputState( InputState inputState )
 	{
 		this.inputState = inputState;
 	}
-	
+
 }

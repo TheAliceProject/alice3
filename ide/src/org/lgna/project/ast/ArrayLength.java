@@ -49,28 +49,30 @@ package org.lgna.project.ast;
 public class ArrayLength extends Expression {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return JavaType.OBJECT_TYPE.getArrayType();
 		}
 	};
 
 	public ArrayLength() {
 	}
-	public ArrayLength( Expression array ){
+
+	public ArrayLength( Expression array ) {
 		this.array.setValue( array );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		//todo: 
 		//return TypeDeclaredInJava.INTEGER_PRIMITIVE_TYPE;
 		return JavaType.INTEGER_OBJECT_TYPE;
 	}
-	
+
 	@Override
 	public boolean isValid() {
 		Expression arrayExpression = this.array.getValue();
 		if( arrayExpression != null ) {
-			AbstractType< ?,?,? > type = arrayExpression.getType();
+			AbstractType<?, ?, ?> type = arrayExpression.getType();
 			if( type != null ) {
 				return type.isArray();
 			} else {

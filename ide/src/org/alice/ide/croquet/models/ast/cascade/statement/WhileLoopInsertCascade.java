@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class WhileLoopInsertCascade extends StatementInsertCascade {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, WhileLoopInsertCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized WhileLoopInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		WhileLoopInsertCascade rv = map.get( blockStatementIndexPair );
@@ -59,15 +60,18 @@ public class WhileLoopInsertCascade extends StatementInsertCascade {
 		}
 		return rv;
 	}
+
 	private WhileLoopInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
+
 	@Override
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.WhileLoop : statement;
 		org.lgna.project.ast.WhileLoop whileLoop = (org.lgna.project.ast.WhileLoop)statement;
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( whileLoop.conditional.getValue() );
 	}
+
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createWhileLoop( expressions[ 0 ] );

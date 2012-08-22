@@ -46,9 +46,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.alice.media.components.ImageRecordView;
-import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
-import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.State;
@@ -70,17 +68,18 @@ import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
  * @author Matt May
  */
 public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
-	
+
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
 	private ImagesToQuickTimeEncoder encoder;
 	private Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
 	private Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
-	
+
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
 		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
+
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			toggleRecording();
 		}
@@ -105,7 +104,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
 		public void update( double tCurrent ) {
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
-			if( lookingGlass.getWidth() > 0 && lookingGlass.getHeight() > 0 ) {
+			if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
 				if( image != null ) {
 					//pass
 				} else {
@@ -122,6 +121,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
 			}
 		}
+
 		public void complete() {
 		}
 	};
@@ -129,6 +129,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	public boolean isRecording() {
 		return this.isRecording;
 	}
+
 	public void setRecording( boolean isRecording ) {
 		if( this.isRecording != isRecording ) {
 			if( this.isRecording ) {
@@ -183,7 +184,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
 
 				getView().revalidateAndRepaint();
-				
+
 				EventScript script = owner.getScript();
 
 				UserInstance programInstance = programContext.getProgramInstance();
@@ -195,7 +196,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext.setActiveScene();
 			}
 		}.start();
-		
+
 		this.isRecordingState.addValueListener( this.isRecordingListener );
 	}
 
@@ -205,7 +206,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		this.setRecording( false );
 		programContext.cleanUpProgram();
-		if( encoder != null && encoder.getOutputFile() != null ) {
+		if( ( encoder != null ) && ( encoder.getOutputFile() != null ) ) {
 			owner.setFile( encoder.getOutputFile() );
 		}
 		super.handlePostDeactivation();
@@ -219,11 +220,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if(isRecording) {
-			System.out.println("isRecording: " + errorIsRecording.getText());
+		if( isRecording ) {
+			System.out.println( "isRecording: " + errorIsRecording.getText() );
 			return errorIsRecording;
-		} else if (encoder == null || encoder.getOutputFile() == null){
-			System.out.println( "no file found: " + errorHasNotYetRecorded.getText());
+		} else if( ( encoder == null ) || ( encoder.getOutputFile() == null ) ) {
+			System.out.println( "no file found: " + errorHasNotYetRecorded.getText() );
 			return errorHasNotYetRecorded;
 		}
 		return IS_GOOD_TO_GO_STATUS;

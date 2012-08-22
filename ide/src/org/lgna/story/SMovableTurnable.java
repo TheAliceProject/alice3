@@ -43,27 +43,28 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SMovableTurnable extends STurnable {
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Position getPositionRelativeToVehicle() {
 		return Position.createInstance( this.getImplementation().getLocalPosition() );
 	}
 
-	@MethodTemplate()
+	@MethodTemplate( )
 	public void move( MoveDirection direction, Number amount, Move.Detail... details ) {
-		this.getImplementation().animateApplyTranslation( 
-				direction.createTranslation( amount.doubleValue() ), 
-				AsSeenBy.getValue( details, this ).getImplementation(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ).getInternal() 
-		);
+		this.getImplementation().animateApplyTranslation(
+				direction.createTranslation( amount.doubleValue() ),
+				AsSeenBy.getValue( details, this ).getImplementation(),
+				Duration.getValue( details ),
+				AnimationStyle.getValue( details ).getInternal()
+				);
 	}
-	
+
 	private void internalMoveToward( SThing target, double amount, double duration, edu.cmu.cs.dennisc.animation.Style animationStyle ) {
 		edu.cmu.cs.dennisc.math.Point3 tThis = this.getImplementation().getAbsoluteTransformation().translation;
 		edu.cmu.cs.dennisc.math.Point3 tTarget = target.getImplementation().getAbsoluteTransformation().translation;
@@ -74,57 +75,61 @@ public abstract class SMovableTurnable extends STurnable {
 		} else {
 			v.set( 0, 0, amount );
 		}
-		this.getImplementation().animateApplyTranslation( 
-				v.x, v.y, v.z, 
-				org.lgna.story.implementation.AsSeenBy.SCENE, 
-				duration, 
-				animationStyle 
-		);
+		this.getImplementation().animateApplyTranslation(
+				v.x, v.y, v.z,
+				org.lgna.story.implementation.AsSeenBy.SCENE,
+				duration,
+				animationStyle
+				);
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void moveToward( SThing target, Number amount, MoveToward.Detail... details ) {
-		this.internalMoveToward( 
-				target, 
-				amount.doubleValue(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ).getInternal() 
-		);
+		this.internalMoveToward(
+				target,
+				amount.doubleValue(),
+				Duration.getValue( details ),
+				AnimationStyle.getValue( details ).getInternal()
+				);
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void moveAwayFrom( SThing target, Number amount, MoveAwayFrom.Detail... details ) {
-		this.internalMoveToward( 
-				target, 
-				-amount.doubleValue(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ).getInternal() 
-		);
+		this.internalMoveToward(
+				target,
+				-amount.doubleValue(),
+				Duration.getValue( details ),
+				AnimationStyle.getValue( details ).getInternal()
+				);
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void moveTo( SThing target, MoveTo.Detail... details ) {
 		this.getImplementation().animatePositionOnly( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void moveAndOrientTo( SThing target, MoveAndOrientTo.Detail... details ) {
 		this.getImplementation().animateTransformation( target.getImplementation(), null, PathStyle.getValue( details ).isSmooth(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void place( SpatialRelation spatialRelation, SThing target, Place.Detail... details ) {
 		org.lgna.story.implementation.EntityImp targetImp = target != null ? target.getImplementation() : null;
 		org.lgna.story.implementation.ReferenceFrame defaultAsSeenByImp = targetImp != null ? targetImp : org.lgna.story.implementation.AsSeenBy.SCENE;
-		
-		this.getImplementation().animatePlace( 
-				spatialRelation.getImp(), 
-				targetImp, 
-				AlongAxisOffset.getValue( details ), 
-				AsSeenBy.getImplementation( details, defaultAsSeenByImp ), 
-				PathStyle.getValue( details ).isSmooth(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ).getInternal() 
-		);
+
+		this.getImplementation().animatePlace(
+				spatialRelation.getImp(),
+				targetImp,
+				AlongAxisOffset.getValue( details ),
+				AsSeenBy.getImplementation( details, defaultAsSeenByImp ),
+				PathStyle.getValue( details ).isSmooth(),
+				Duration.getValue( details ),
+				AnimationStyle.getValue( details ).getInternal()
+				);
 	}
-	
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setPositionRelativeToVehicle( Position position, SetPositionRelativeToVehicle.Detail... details ) {
 		org.lgna.story.implementation.EntityImp vehicle = this.getImplementation().getVehicle();
 		if( vehicle != null ) {

@@ -45,6 +45,6 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
-public interface Criterion< E > {
-    public boolean accept( E e );
+public interface Criterion<E> {
+	public boolean accept( E e );
 }

@@ -50,6 +50,7 @@ public class InsertStatementView extends DeclarationLikeSubstanceView {
 		super( composite );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.Statement.class ) );
 	}
+
 	@Override
 	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.InsertStatementComposite<?> composite = (org.alice.ide.ast.declaration.InsertStatementComposite<?>)this.getComposite();

@@ -46,17 +46,20 @@ package org.lgna.common.event;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceContentEvent extends edu.cmu.cs.dennisc.pattern.event.Event< org.lgna.common.Resource > {
+public class ResourceContentEvent extends edu.cmu.cs.dennisc.pattern.event.Event<org.lgna.common.Resource> {
 	private String contentType;
 	private byte[] data;
+
 	public ResourceContentEvent( org.lgna.common.Resource source, String contentType, byte[] data ) {
 		super( source );
 		this.contentType = contentType;
 		this.data = data;
 	}
+
 	public String getContentType() {
 		return this.contentType;
 	}
+
 	public byte[] getData() {
 		return this.data;
 	}

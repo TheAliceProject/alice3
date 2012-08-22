@@ -47,7 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessFactory extends AbstractInstanceFactory {
-	private static java.util.Map< org.lgna.project.ast.UserParameter, ParameterAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessFactory> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ParameterAccessFactory getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		assert parameter != null;
 		ParameterAccessFactory rv = map.get( parameter );
@@ -59,38 +60,48 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserParameter parameter;
+
 	private ParameterAccessFactory( org.lgna.project.ast.UserParameter parameter ) {
 		super( parameter.name );
 		this.parameter = parameter;
 	}
+
 	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+	protected boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
 		if( code != null ) {
 			return this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code;
 		} else {
 			return false;
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver< ParameterAccessFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterAccessFactory >( this, org.lgna.project.ast.UserParameter.class, this.parameter );
+	protected org.lgna.croquet.resolvers.Resolver<ParameterAccessFactory> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterAccessFactory>( this, org.lgna.project.ast.UserParameter.class, this.parameter );
 	}
+
 	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}
+
 	private org.lgna.project.ast.ParameterAccess createParameterAccess( org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.ParameterAccess( this.parameter );
 	}
+
 	public org.lgna.project.ast.ParameterAccess createTransientExpression() {
 		return this.createParameterAccess( new org.alice.ide.ast.CurrentThisExpression() );
 	}
+
 	public org.lgna.project.ast.ParameterAccess createExpression() {
 		return this.createParameterAccess( new org.lgna.project.ast.ThisExpression() );
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.parameter.getValueType();
 	}
+
 	public String getRepr() {
 		return this.parameter.getName();
 	}

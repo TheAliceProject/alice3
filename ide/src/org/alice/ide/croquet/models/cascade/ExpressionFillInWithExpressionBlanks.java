@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillInWithExpressionBlanks< F extends org.lgna.project.ast.Expression > extends ExpressionFillInWithBlanks< F, org.lgna.project.ast.Expression > {
+public abstract class ExpressionFillInWithExpressionBlanks<F extends org.lgna.project.ast.Expression> extends ExpressionFillInWithBlanks<F, org.lgna.project.ast.Expression> {
 	public ExpressionFillInWithExpressionBlanks( java.util.UUID id ) {
 		super( id, org.lgna.project.ast.Expression.class );
 	}

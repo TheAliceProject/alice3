@@ -49,9 +49,11 @@ public class SystemUtilities {
 	private SystemUtilities() {
 		throw new AssertionError();
 	}
+
 	public static boolean isPropertyTrue( String propertyName ) {
 		return "true".equals( System.getProperty( propertyName ) );
 	}
+
 	public static boolean isPropertyFalse( String propertyName ) {
 		return "false".equals( System.getProperty( propertyName ) );
 	}
@@ -79,18 +81,19 @@ public class SystemUtilities {
 	public static byte[] getPropertiesAsXMLByteArray() {
 		return getPropertiesAsXMLByteArrayOutputStream().toByteArray();
 	}
+
 	public static String getPropertiesAsXMLString() {
 		return getPropertiesAsXMLByteArrayOutputStream().toString();
 	}
 
-	public static java.util.List< Property > getPropertyList() {
-		java.util.List< edu.cmu.cs.dennisc.java.lang.Property > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(); 
+	public static java.util.List<Property> getPropertyList() {
+		java.util.List<edu.cmu.cs.dennisc.java.lang.Property> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.Properties systemProperties = System.getProperties();
 		java.util.Enumeration<?> keys = systemProperties.propertyNames();
 		while( keys.hasMoreElements() ) {
 			Object key = keys.nextElement();
 			Object value = systemProperties.get( key );
-			if( key instanceof String && value instanceof String ) {
+			if( ( key instanceof String ) && ( value instanceof String ) ) {
 				rv.add( new edu.cmu.cs.dennisc.java.lang.Property( (String)key, (String)value ) );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( key, value );
@@ -98,9 +101,11 @@ public class SystemUtilities {
 		}
 		return rv;
 	}
-	
+
 	private enum Platform {
-		WINDOWS, OSX, LINUX
+		WINDOWS,
+		OSX,
+		LINUX
 	}
 
 	private static Platform platform;
@@ -121,9 +126,11 @@ public class SystemUtilities {
 	public static boolean isLinux() {
 		return SystemUtilities.platform == Platform.LINUX;
 	}
+
 	public static boolean isMac() {
 		return SystemUtilities.platform == Platform.OSX;
 	}
+
 	public static boolean isWindows() {
 		return SystemUtilities.platform == Platform.WINDOWS;
 	}
@@ -133,10 +140,11 @@ public class SystemUtilities {
 		return false;
 	}
 
-	public static <E> E[] returnArray( Class< E > componentType, E... rv ) {
+	public static <E> E[] returnArray( Class<E> componentType, E... rv ) {
 		return rv;
 	}
-	public static <E> E[] createArray( Class< E > componentType, E[]... arrays ) {
+
+	public static <E> E[] createArray( Class<E> componentType, E[]... arrays ) {
 		int n = 0;
 		for( E[] array : arrays ) {
 			if( array != null ) {
@@ -165,6 +173,7 @@ public class SystemUtilities {
 	public static String[] getClassPath() {
 		return parsePath( "java.class.path" );
 	}
+
 	public static String[] getLibraryPath() {
 		return parsePath( "java.library.path" );
 	}

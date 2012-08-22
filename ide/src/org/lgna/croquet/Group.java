@@ -46,7 +46,8 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class Group {
-	private static java.util.Map< java.util.UUID, Group > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<java.util.UUID, Group> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized Group getInstance( java.util.UUID id ) {
 		Group rv = map.get( id );
 		if( rv != null ) {
@@ -57,21 +58,25 @@ public final class Group {
 		}
 		return rv;
 	}
+
 	public static Group getInstance( java.util.UUID id, String description ) {
 		Group rv = getInstance( id );
 		assert rv.description == null;
 		rv.description = description;
 		return rv;
 	}
-	
+
 	private java.util.UUID id;
 	private String description;
+
 	private Group( java.util.UUID id ) {
 		this.id = id;
 	}
+
 	public java.util.UUID getId() {
 		return this.id;
 	}
+
 	@Override
 	public String toString() {
 		if( this.description != null ) {

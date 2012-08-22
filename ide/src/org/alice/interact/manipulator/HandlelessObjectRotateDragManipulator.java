@@ -45,10 +45,10 @@ package org.alice.interact.manipulator;
 import java.awt.Point;
 
 import org.alice.ide.IDE;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.PlaneUtilities;
-import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -70,55 +70,54 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public class HandlelessObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 	protected static final double MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER = .025d;
-	
+
 	protected Vector3 rotateAxis;
 	protected MovementDirection rotateAxisDirection;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
-	
+
 	protected Point initialPoint;
 	protected Vector3 absoluteRotationAxis;
 	protected Transformable standUpReference = new Transformable();
-	
-	
+
 	protected AbstractCamera camera = null;
-	
+
 	public HandlelessObjectRotateDragManipulator() {
 		super();
-		this.standUpReference.setName("Rotation StandUp Reference");
-		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		this.standUpReference.setName( "Rotation StandUp Reference" );
+		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
 		{
-			this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
+			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
-	
+
 	public AbstractCamera getCamera()
 	{
 		return this.camera;
 	}
-	
-	public void setCamera( AbstractCamera camera ) 
+
+	public void setCamera( AbstractCamera camera )
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) )
 		{
-			this.setManipulatedTransformable((edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent());
+			this.setManipulatedTransformable( (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)this.camera.getParent() );
 		}
 	}
-	
+
 	public void setDesiredCameraView( CameraView cameraView )
 	{
 		//this can only be ACTIVE_VIEW
 	}
-	
+
 	public CameraView getDesiredCameraView() {
 		return CameraView.ACTIVE_VIEW;
 	}
-	
+
 	public OnscreenLookingGlass getOnscreenLookingGlass()
 	{
 		return this.onscreenLookingGlass;
 	}
-	
+
 	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
 	{
 		this.onscreenLookingGlass = lookingGlass;
@@ -128,45 +127,45 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	public String getUndoRedoDescription() {
 		return "Object Rotate";
 	}
-	
+
 	public HandlelessObjectRotateDragManipulator( MovementDirection rotateAxisDirection )
 	{
 		this.rotateAxisDirection = rotateAxisDirection;
 		this.rotateAxis = this.rotateAxisDirection.getVector();
 	}
-	
+
 	protected Angle getRotationBasedOnMouse( Point mouseLocation )
 	{
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
-		if (pickRay != null)
+		if( pickRay != null )
 		{
 			int xDif = mouseLocation.x - this.initialPoint.x;
-			return new AngleInRadians(xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER);
+			return new AngleInRadians( xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER );
 		}
 		return null;
 	}
-	
+
 	protected void initManipulator( InputState startInput )
 	{
 		this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().createTransformed( this.rotateAxis );
-		this.initialPoint = new Point(startInput.getMouseLocation());
+		this.initialPoint = new Point( startInput.getMouseLocation() );
 	}
-	
+
 	@Override
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Rotate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
-		if (this.rotateAxisDirection != null) {
-			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription(this.rotateAxisDirection, org.alice.interact.MovementType.STOOD_UP), this.manipulatedTransformable ) );
+		if( this.rotateAxisDirection != null ) {
+			this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Rotate, new MovementDescription( this.rotateAxisDirection, org.alice.interact.MovementType.STOOD_UP ), this.manipulatedTransformable ) );
 		}
 	}
-	
+
 	@Override
-	public boolean doStartManipulator( InputState startInput ) 
+	public boolean doStartManipulator( InputState startInput )
 	{
-		this.setManipulatedTransformable(startInput.getClickPickTransformable());
-		if (this.manipulatedTransformable != null)
+		this.setManipulatedTransformable( startInput.getClickPickTransformable() );
+		if( this.manipulatedTransformable != null )
 		{
 			this.initManipulator( startInput );
 			return true;
@@ -176,14 +175,14 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
+		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
 		{
 			Angle currentAngle = getRotationBasedOnMouse( currentInput.getMouseLocation() );
 			Angle previousAngle = getRotationBasedOnMouse( previousInput.getMouseLocation() );
-			if (currentAngle != null && previousAngle != null)
+			if( ( currentAngle != null ) && ( previousAngle != null ) )
 			{
 				Angle angleDif = AngleUtilities.createSubtraction( currentAngle, previousAngle );
 				this.standUpReference.setParent( this.manipulatedTransformable );
@@ -194,17 +193,17 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 		}
 
 	}
-	
+
 	@Override
-	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
 		//Do nothing
 	}
-	
+
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput )
 	{
 	}
-	
+
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		// TODO Auto-generated method stub
@@ -213,6 +212,6 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 
 	@Override
 	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet(this.rotateAxisDirection.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ROTATION);
+		return new HandleSet( this.rotateAxisDirection.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ROTATION );
 	}
 }

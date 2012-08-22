@@ -67,77 +67,77 @@ package org.alice.media.encoder;
  * @author Matt May
  */
 public class AudioMixer {
-//
-//	private static final AudioFormat targetFormat = new AudioFormat( "linear", 44100, 16, 2 );
-//	private Vector<ScheduledAudioStream> scheduledStreams;
-//	private FileOutputStream out;
-//	private Map<org.lgna.common.resources.AudioResource,org.lgna.common.resources.AudioResource> convertedResourceMap;
-//
-//	public AudioMixer( int i ) {
-//		CaptureDeviceInfo di = null;
-//		Vector deviceList = CaptureDeviceManager.getDeviceList( targetFormat );
-//		if( deviceList.size() > 0 )
-//			di = (CaptureDeviceInfo)deviceList.firstElement();
-//		Processor p;
-//		try {
-//			p = Manager.createProcessor( di.getLocator() );
-//			DataSource source = p.getDataOutput();
-//			//	The source object returned from the Processor can then be turned into a Player object by calling Manager.createPlayer().
-//			//	To capture it to an audio file instead, a DataSink can take the data instead:
-//			DataSink sink;
-//			MediaLocator dest = new MediaLocator( "file://output.wav" );
-//			sink = Manager.createDataSink( source, dest );
-//			sink.open();
-//			sink.start();
-//		} catch( SecurityException e ) {
-//			e.printStackTrace();
-//		} catch( IOException e ) {
-//			e.printStackTrace();
-//		} catch( NoDataSinkException e ) {
-//			e.printStackTrace();
-//		} catch( NoProcessorException e ) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public AudioMixer( double movieLength, Vector<ScheduledAudioStream> audioStreams, File tempFile ) throws FileNotFoundException {
-//		out = new FileOutputStream( tempFile );
-//		this.scheduledStreams = audioStreams;
-//	}
-//
-//	public void addAudioResource( org.lgna.common.resources.AudioResource resource, double startTime, double entryPoint, double endPoint, double volume ) {
-//		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary( resource );
-//		ScheduledAudioStream scheduledStream = new ScheduledAudioStream( convertedResource, startTime, entryPoint, endPoint, volume );
-//		addScheduledStream( scheduledStream );
-//	}
-//
-//	public void addScheduledStream( ScheduledAudioStream scheduledStream ) {
-//		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary( scheduledStream.getAudioResource() );
-//		if( convertedResource != scheduledStream.getAudioResource() ) {
-//			scheduledStream.setAudioResource( convertedResource );
-//		}
-//		int index = scheduledStreams.size();
-//		for( int i = 0; i < scheduledStreams.size(); i++ ) {
-//			if( scheduledStreams.get( i ).compareTo( scheduledStream ) > 0 ) {
-//				index = i;
-//				break;
-//			}
-//		}
-//		scheduledStreams.add( index, scheduledStream );
-//	}
-//
-//	private org.lgna.common.resources.AudioResource convertResourceIfNecessary( org.lgna.common.resources.AudioResource resource ) {
-//		org.lgna.common.resources.AudioResource convertedResource = null;
-//		if( this.convertedResourceMap.containsKey( resource ) ) {
-//			convertedResource = this.convertedResourceMap.get( resource );
-//		} else {
-//			if( AudioResourceConverter.needsConverting( resource, this.targetFormat ) ) {
-//				convertedResource = AudioResourceConverter.convert( resource, this.targetFormat );
-//			} else {
-//				convertedResource = resource;
-//			}
-//			this.convertedResourceMap.put( resource, convertedResource );
-//		}
-//		return convertedResource;
-//	}
+	//
+	//	private static final AudioFormat targetFormat = new AudioFormat( "linear", 44100, 16, 2 );
+	//	private Vector<ScheduledAudioStream> scheduledStreams;
+	//	private FileOutputStream out;
+	//	private Map<org.lgna.common.resources.AudioResource,org.lgna.common.resources.AudioResource> convertedResourceMap;
+	//
+	//	public AudioMixer( int i ) {
+	//		CaptureDeviceInfo di = null;
+	//		Vector deviceList = CaptureDeviceManager.getDeviceList( targetFormat );
+	//		if( deviceList.size() > 0 )
+	//			di = (CaptureDeviceInfo)deviceList.firstElement();
+	//		Processor p;
+	//		try {
+	//			p = Manager.createProcessor( di.getLocator() );
+	//			DataSource source = p.getDataOutput();
+	//			//	The source object returned from the Processor can then be turned into a Player object by calling Manager.createPlayer().
+	//			//	To capture it to an audio file instead, a DataSink can take the data instead:
+	//			DataSink sink;
+	//			MediaLocator dest = new MediaLocator( "file://output.wav" );
+	//			sink = Manager.createDataSink( source, dest );
+	//			sink.open();
+	//			sink.start();
+	//		} catch( SecurityException e ) {
+	//			e.printStackTrace();
+	//		} catch( IOException e ) {
+	//			e.printStackTrace();
+	//		} catch( NoDataSinkException e ) {
+	//			e.printStackTrace();
+	//		} catch( NoProcessorException e ) {
+	//			e.printStackTrace();
+	//		}
+	//	}
+	//
+	//	public AudioMixer( double movieLength, Vector<ScheduledAudioStream> audioStreams, File tempFile ) throws FileNotFoundException {
+	//		out = new FileOutputStream( tempFile );
+	//		this.scheduledStreams = audioStreams;
+	//	}
+	//
+	//	public void addAudioResource( org.lgna.common.resources.AudioResource resource, double startTime, double entryPoint, double endPoint, double volume ) {
+	//		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary( resource );
+	//		ScheduledAudioStream scheduledStream = new ScheduledAudioStream( convertedResource, startTime, entryPoint, endPoint, volume );
+	//		addScheduledStream( scheduledStream );
+	//	}
+	//
+	//	public void addScheduledStream( ScheduledAudioStream scheduledStream ) {
+	//		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary( scheduledStream.getAudioResource() );
+	//		if( convertedResource != scheduledStream.getAudioResource() ) {
+	//			scheduledStream.setAudioResource( convertedResource );
+	//		}
+	//		int index = scheduledStreams.size();
+	//		for( int i = 0; i < scheduledStreams.size(); i++ ) {
+	//			if( scheduledStreams.get( i ).compareTo( scheduledStream ) > 0 ) {
+	//				index = i;
+	//				break;
+	//			}
+	//		}
+	//		scheduledStreams.add( index, scheduledStream );
+	//	}
+	//
+	//	private org.lgna.common.resources.AudioResource convertResourceIfNecessary( org.lgna.common.resources.AudioResource resource ) {
+	//		org.lgna.common.resources.AudioResource convertedResource = null;
+	//		if( this.convertedResourceMap.containsKey( resource ) ) {
+	//			convertedResource = this.convertedResourceMap.get( resource );
+	//		} else {
+	//			if( AudioResourceConverter.needsConverting( resource, this.targetFormat ) ) {
+	//				convertedResource = AudioResourceConverter.convert( resource, this.targetFormat );
+	//			} else {
+	//				convertedResource = resource;
+	//			}
+	//			this.convertedResourceMap.put( resource, convertedResource );
+	//		}
+	//		return convertedResource;
+	//	}
 }

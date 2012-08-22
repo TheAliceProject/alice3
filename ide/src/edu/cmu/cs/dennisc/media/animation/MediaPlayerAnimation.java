@@ -48,32 +48,35 @@ import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
  * @author Dennis Cosgrove
  */
 public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animation {
-//	private static final double CLOSE_ENOUGH_TO_ZERO = 0.0001;
+	//	private static final double CLOSE_ENOUGH_TO_ZERO = 0.0001;
 	private edu.cmu.cs.dennisc.media.Player player;
 	private boolean isStarted = false;
 
 	private double startTime = 0;
-	
+
 	private static MediaPlayerObserver EPIC_HACK_mediaPlayerObserver;
+
 	public static void EPIC_HACK_setAnimationObserver( MediaPlayerObserver mediaPlayerObserver ) {
 		EPIC_HACK_mediaPlayerObserver = mediaPlayerObserver;
 	}
-	
+
 	public MediaPlayerAnimation( edu.cmu.cs.dennisc.media.Player player ) {
 		this.player = player;
 		this.isStarted = false;
 	}
+
 	public void reset() {
 		this.isStarted = false;
 	}
+
 	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		if( this.isStarted ) {
 			//pass
 		} else {
 			//this.player.prefetch();
 			this.isStarted = true;
-			if (EPIC_HACK_mediaPlayerObserver != null) {
-				EPIC_HACK_mediaPlayerObserver.playerStarted(this, tCurrent);
+			if( EPIC_HACK_mediaPlayerObserver != null ) {
+				EPIC_HACK_mediaPlayerObserver.playerStarted( this, tCurrent );
 				this.player.start();
 				this.startTime = tCurrent;
 			}
@@ -82,18 +85,18 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 				this.player.start();
 			}
 		}
-		
+
 		double timeRemaining = 0;
-		if (EPIC_HACK_mediaPlayerObserver != null)
+		if( EPIC_HACK_mediaPlayerObserver != null )
 		{
-			if (this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player)
+			if( this.player instanceof edu.cmu.cs.dennisc.media.jmf.Player )
 			{
 				edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
-				double startTime = Double.isNaN(jmfPlayer.getStartTime()) ? 0 : jmfPlayer.getStartTime();
-				double endTime = Double.isNaN(jmfPlayer.getStopTime()) ? jmfPlayer.getDuration() : jmfPlayer.getStopTime();
+				double startTime = Double.isNaN( jmfPlayer.getStartTime() ) ? 0 : jmfPlayer.getStartTime();
+				double endTime = Double.isNaN( jmfPlayer.getStopTime() ) ? jmfPlayer.getDuration() : jmfPlayer.getStopTime();
 				double totalTime = endTime - startTime;
 				double timeElapsed = tCurrent - this.startTime;
-				if (timeElapsed >= totalTime)
+				if( timeElapsed >= totalTime )
 				{
 					timeRemaining = 0;
 				}
@@ -107,18 +110,19 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 		{
 			timeRemaining = this.player.getTimeRemaining();
 		}
-//		if( timeRemaining < CLOSE_ENOUGH_TO_ZERO ) {
-//			timeRemaining = 0.0;
-//		}
+		//		if( timeRemaining < CLOSE_ENOUGH_TO_ZERO ) {
+		//			timeRemaining = 0.0;
+		//		}
 		return timeRemaining;
 	}
+
 	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		this.player.stop();
 		if( animationObserver != null ) {
 			animationObserver.finished( this );
 		}
 	}
-	
+
 	public edu.cmu.cs.dennisc.media.Player getPlayer()
 	{
 		return this.player;

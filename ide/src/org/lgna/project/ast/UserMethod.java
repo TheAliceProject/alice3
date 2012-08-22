@@ -54,51 +54,57 @@ public class UserMethod extends AbstractUserMethod {
 
 	public UserMethod() {
 	}
-	public UserMethod( String name, AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
+
+	public UserMethod( String name, AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
 		super( returnType, requiredParameters, body );
 		this.name.setValue( name );
 	}
+
 	public UserMethod( String name, Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
 		this( name, JavaType.getInstance( returnCls ), requiredParameters, body );
 	}
-		
+
 	@Override
 	public String getName() {
 		return this.name.getValue();
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
+
 	@Override
 	public boolean isStatic() {
 		return this.isStatic.getValue();
 	}
+
 	@Override
 	public boolean isAbstract() {
 		return this.isAbstract.getValue();
 	}
+
 	@Override
 	public boolean isFinal() {
 		return this.isFinal.getValue();
 	}
-//	@Override
-//	public boolean isOverride() {
-//		//todo: this will need to be updated when you can inherit from other TypesDeclaredInAlice
-//		TypeDeclaredInJava typeDeclaredInJava = this.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
-//		Class<?> clsDeclaredInJava = typeDeclaredInJava.getCls();
-//		Class<?>[] parameterClses = new Class< ? >[ this.parameters.size() ];
-//		int i = 0;
-//		for( AbstractParameter parameter : this.parameters ) {
-//			if( parameter instanceof ParameterDeclaredInJava ) {
-//				ParameterDeclaredInJava parameterDeclaredInJava = (ParameterDeclaredInJava)parameter;
-//				parameterClses[ i ] = parameterDeclaredInJava.getValueTypeDeclaredInJava().getCls();
-//			} else {
-//				return false;
-//			}
-//			i++;
-//		}
-//		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( clsDeclaredInJava, this.getName(), parameterClses );
-//		return mthd != null;
-//	}
+	//	@Override
+	//	public boolean isOverride() {
+	//		//todo: this will need to be updated when you can inherit from other TypesDeclaredInAlice
+	//		TypeDeclaredInJava typeDeclaredInJava = this.getDeclaringType().getFirstTypeEncounteredDeclaredInJava();
+	//		Class<?> clsDeclaredInJava = typeDeclaredInJava.getCls();
+	//		Class<?>[] parameterClses = new Class< ? >[ this.parameters.size() ];
+	//		int i = 0;
+	//		for( AbstractParameter parameter : this.parameters ) {
+	//			if( parameter instanceof ParameterDeclaredInJava ) {
+	//				ParameterDeclaredInJava parameterDeclaredInJava = (ParameterDeclaredInJava)parameter;
+	//				parameterClses[ i ] = parameterDeclaredInJava.getValueTypeDeclaredInJava().getCls();
+	//			} else {
+	//				return false;
+	//			}
+	//			i++;
+	//		}
+	//		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( clsDeclaredInJava, this.getName(), parameterClses );
+	//		return mthd != null;
+	//	}
 }

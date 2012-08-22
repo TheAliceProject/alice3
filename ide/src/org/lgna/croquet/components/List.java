@@ -48,33 +48,40 @@ import org.lgna.croquet.ListSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionState<T> > {
+public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionState<T>> {
 	private long tModelChange;
+
 	private class ListUI extends javax.swing.plaf.basic.BasicListUI {
 		@Override
 		protected javax.swing.event.MouseInputListener createMouseInputListener() {
 			return new javax.swing.event.MouseInputListener() {
 				public void mouseClicked( java.awt.event.MouseEvent e ) {
 				}
+
 				public void mouseEntered( java.awt.event.MouseEvent e ) {
 				}
+
 				public void mouseExited( java.awt.event.MouseEvent e ) {
 				}
+
 				public void mousePressed( java.awt.event.MouseEvent e ) {
 					long tCurrent = e.getWhen();
 					long tDelta = tCurrent - List.this.tModelChange;
 					if( tDelta > 400 ) {
 						int row = ListUI.this.locationToIndex( list, e.getPoint() );
-		                list.setValueIsAdjusting( true );
-		                list.setSelectionInterval(row, row);
+						list.setValueIsAdjusting( true );
+						list.setSelectionInterval( row, row );
 					}
 				}
+
 				public void mouseReleased( java.awt.event.MouseEvent e ) {
-	                list.setValueIsAdjusting( false );
-	                list.repaint();
+					list.setValueIsAdjusting( false );
+					list.repaint();
 				}
+
 				public void mouseMoved( java.awt.event.MouseEvent e ) {
 				}
+
 				public void mouseDragged( java.awt.event.MouseEvent e ) {
 				}
 			};
@@ -82,22 +89,23 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 	}
 
 	public enum LayoutOrientation {
-		VERTICAL ( javax.swing.JList.VERTICAL ),
+		VERTICAL( javax.swing.JList.VERTICAL ),
 		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
 		HORIZONTAL_WRAP( javax.swing.JList.HORIZONTAL_WRAP );
 		private int internal;
+
 		private LayoutOrientation( int internal ) {
 			this.internal = internal;
 		}
-//		/*package-private*/ int getInternal() {
-//			return this.internal;
-//		}
+		//		/*package-private*/ int getInternal() {
+		//			return this.internal;
+		//		}
 	}
-	
+
 	public List( ListSelectionState<T> model ) {
 		super( model );
-		this.setSwingListModel(model.getSwingModel().getComboBoxModel());
-		this.setSelectionModel(model.getSwingModel().getListSelectionModel());
+		this.setSwingListModel( model.getSwingModel().getComboBoxModel() );
+		this.setSelectionModel( model.getSwingModel().getListSelectionModel() );
 	}
 
 	@Override
@@ -109,64 +117,69 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 			}
 		};
 	}
-	
+
 	@Override
 	public TrackableShape getTrackableShapeFor( T item ) {
 		//todo
 		return this;
 	}
-	
-	
-//	public enum DoubleClickBehavior {
-//		DO_NOTHING,
-//		DO_DEFAULT_BUTTON_CLICK,
-//	}
-//	private DoubleClickBehavior doubleClickBehavior = DoubleClickBehavior.DO_NOTHING;
-//	public DoubleClickBehavior getDoubleClickBehavior() {
-//		return this.doubleClickBehavior;
-//	}
-//	public void setDoubleClickBehavior( DoubleClickBehavior doubleClickBehavior ) {
-//		assert doubleClickBehavior != null;
-//		this.doubleClickBehavior = doubleClickBehavior;
-//	}
+
+	//	public enum DoubleClickBehavior {
+	//		DO_NOTHING,
+	//		DO_DEFAULT_BUTTON_CLICK,
+	//	}
+	//	private DoubleClickBehavior doubleClickBehavior = DoubleClickBehavior.DO_NOTHING;
+	//	public DoubleClickBehavior getDoubleClickBehavior() {
+	//		return this.doubleClickBehavior;
+	//	}
+	//	public void setDoubleClickBehavior( DoubleClickBehavior doubleClickBehavior ) {
+	//		assert doubleClickBehavior != null;
+	//		this.doubleClickBehavior = doubleClickBehavior;
+	//	}
 
 	public javax.swing.ListCellRenderer getCellRenderer() {
 		return this.getAwtComponent().getCellRenderer();
 	}
+
 	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
-
 	public int getVisibleRowCount() {
 		return this.getAwtComponent().getVisibleRowCount();
 	}
+
 	public void setVisibleRowCount( int visibleRowCount ) {
 		this.getAwtComponent().setVisibleRowCount( visibleRowCount );
 	}
-	
+
 	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
 		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
 	}
 
-	private class ListDataListener implements javax.swing.event.ListDataListener { 
+	private class ListDataListener implements javax.swing.event.ListDataListener {
 		private void handleChanged() {
 			List.this.tModelChange = System.currentTimeMillis();
 			List.this.revalidateAndRepaint();
 		}
+
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			this.handleChanged();
 		}
+
 		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
 			this.handleChanged();
 		}
+
 		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
 			this.handleChanged();
 		}
 	}
+
 	private ListDataListener listDataListener = new ListDataListener();
 	private javax.swing.ListModel model;
-	/*package-private*/ void setSwingListModel( javax.swing.ListModel model ) {
+
+	/* package-private */void setSwingListModel( javax.swing.ListModel model ) {
 		if( this.model != null ) {
 			this.model.removeListDataListener( this.listDataListener );
 		}
@@ -177,14 +190,16 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 			this.model.addListDataListener( this.listDataListener );
 		}
 	}
-	
-	/*package-private*/ void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
+
+	/* package-private */void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
 		this.getAwtComponent().setSelectionModel( listSelectionModel );
 	}
-	/*package-private*/ void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
+
+	/* package-private */void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getAwtComponent().addListSelectionListener( listSelectionListener );
 	}
-	/*package-private*/ void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
+
+	/* package-private */void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getAwtComponent().removeListSelectionListener( listSelectionListener );
 	}
 }

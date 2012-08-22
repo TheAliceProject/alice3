@@ -51,15 +51,17 @@ public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
 	public PickMouseAdapter() {
 		this( null );
 	}
+
 	public PickMouseAdapter( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		setOnscreenLookingGlass( onscreenLookingGlass );
 	}
 
 	protected abstract void handlePickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult );
-	
+
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return m_onscreenLookingGlass;
 	}
+
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		m_onscreenLookingGlass = onscreenLookingGlass;
 	}
@@ -68,12 +70,16 @@ public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
 		assert m_onscreenLookingGlass != null;
 		handlePickResult( m_onscreenLookingGlass.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED ) );
 	}
+
 	public void mouseReleased( java.awt.event.MouseEvent e ) {
 	}
+
 	public void mouseClicked( java.awt.event.MouseEvent arg0 ) {
 	}
+
 	public void mouseEntered( java.awt.event.MouseEvent e ) {
 	}
+
 	public void mouseExited( java.awt.event.MouseEvent e ) {
 	}
 }

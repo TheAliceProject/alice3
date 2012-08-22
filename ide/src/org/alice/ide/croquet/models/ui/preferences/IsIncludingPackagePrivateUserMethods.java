@@ -50,9 +50,11 @@ public class IsIncludingPackagePrivateUserMethods extends org.lgna.croquet.prefe
 	private static class SingletonHolder {
 		private static IsIncludingPackagePrivateUserMethods instance = new IsIncludingPackagePrivateUserMethods();
 	}
+
 	public static IsIncludingPackagePrivateUserMethods getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsIncludingPackagePrivateUserMethods() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "b0de4e8e-bacb-41d2-a5b2-554a7c64693d" ), true );
 	}

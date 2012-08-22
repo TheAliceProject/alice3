@@ -6,6 +6,7 @@ public abstract class ViewEvent extends AbstractEvent {
 	public ViewEvent( org.lgna.story.SModel model ) {
 		this.model = model;
 	}
+
 	public org.lgna.story.SModel getModel() {
 		return model;
 	}

@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.cascade.literals;
 /**
  * @author Dennis Cosgrove
  */
-public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.StringLiteral > {
-	private static java.util.Map< String, StringLiteralFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.StringLiteral> {
+	private static java.util.Map<String, StringLiteralFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static StringLiteralFillIn getInstance( String value ) {
 		synchronized( map ) {
 			StringLiteralFillIn rv = map.get( value );
@@ -60,20 +61,24 @@ public class StringLiteralFillIn extends org.alice.ide.croquet.models.cascade.Ex
 			return rv;
 		}
 	}
+
 	private final org.lgna.project.ast.StringLiteral transientValue;
+
 	private StringLiteralFillIn( String value ) {
 		super( java.util.UUID.fromString( "06ad5690-dccf-4e7d-bfff-fe9bf1fd5499" ) );
 		this.transientValue = new org.lgna.project.ast.StringLiteral( value );
 	}
+
 	@Override
-	public org.lgna.project.ast.StringLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.StringLiteral,Void > node ) {
+	public org.lgna.project.ast.StringLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.StringLiteral, Void> node ) {
 		return this.transientValue;
 	}
+
 	@Override
-	public org.lgna.project.ast.StringLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.StringLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.StringLiteral createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.StringLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.StringLiteral( this.transientValue.value.getValue() );
 	}
-	
+
 	@Override
 	protected org.alice.ide.croquet.resolvers.StringStaticGetInstanceKeyedResolver<StringLiteralFillIn> createResolver() {
 		return new org.alice.ide.croquet.resolvers.StringStaticGetInstanceKeyedResolver<StringLiteralFillIn>( this, this.transientValue.value.getValue() );

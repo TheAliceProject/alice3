@@ -49,7 +49,7 @@ import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class RecordWorldOperation extends org.alice.ide.video.RecordVideoOperation {
 	private static class SingletonHolder {
@@ -63,6 +63,7 @@ public class RecordWorldOperation extends org.alice.ide.video.RecordVideoOperati
 	private final org.lgna.croquet.State.ValueListener<Boolean> isRecordingListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
+
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			RecordWorldOperation.this.setRecording( nextValue );
 		}
@@ -73,6 +74,7 @@ public class RecordWorldOperation extends org.alice.ide.video.RecordVideoOperati
 	private RecordWorldOperation() {
 		super( java.util.UUID.fromString( "e01a8089-6de1-4e46-ba89-75606e01c7a3" ) );
 	}
+
 	@Override
 	public ExportToYoutubePanel createVideoExportPanel() {
 		ExportToYoutubePanel rv = new ExportToYoutubePanel();
@@ -86,11 +88,13 @@ public class RecordWorldOperation extends org.alice.ide.video.RecordVideoOperati
 		org.alice.ide.video.IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
+
 	@Override
 	protected void handleFinally( CompletionStep<?> step, Dialog dialog, Container<?> contentPane ) {
 		org.alice.ide.video.IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
 		super.handleFinally( step, dialog, contentPane );
 	}
+
 	@Override
 	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( image );

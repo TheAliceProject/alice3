@@ -47,17 +47,18 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class NamedUserConstructor extends UserConstructor implements UserCode {
-	public NodeListProperty< UserParameter > requiredParameters = new NodeListProperty< UserParameter >( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
-	public NodeProperty< ConstructorBlockStatement > body = new NodeProperty< ConstructorBlockStatement >( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
+	public NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
+	public edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public NodeProperty<ConstructorBlockStatement> body = new NodeProperty<ConstructorBlockStatement>( this );
+	public edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
-	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME; 
+	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
 
 	public NamedUserConstructor() {
 	}
+
 	public NamedUserConstructor( UserParameter[] parameters, ConstructorBlockStatement body ) {
 		this.requiredParameters.add( parameters );
 		this.body.setValue( body );
@@ -86,37 +87,42 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 		return this.managementLevel.getValue();
 	}
 
-	public NodeProperty< ConstructorBlockStatement > getBodyProperty() {
+	public NodeProperty<ConstructorBlockStatement> getBodyProperty() {
 		return this.body;
 	}
-	public NodeListProperty< UserParameter > getRequiredParamtersProperty() {
+
+	public NodeListProperty<UserParameter> getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
+
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
 		return m_visibility;
 	}
+
 	public void setVisibility( org.lgna.project.annotations.Visibility visibility ) {
 		m_visibility = visibility;
 	}
-	
+
 	@Override
 	public AbstractCode getNextLongerInChain() {
 		return null;
 	}
+
 	@Override
 	public AbstractCode getNextShorterInChain() {
 		return null;
 	}
-	
+
 	@Override
 	public boolean isSignatureLocked() {
 		return this.isSignatureLocked.getValue();
 	}
 
-	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
+	public java.util.ArrayList<? extends AbstractParameter> getRequiredParameters() {
 		return requiredParameters.getValue();
 	}
+
 	@Override
 	public AccessLevel getAccessLevel() {
 		return this.accessLevel.getValue();

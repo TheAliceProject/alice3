@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class AmbientLightAdapter extends LightAdapter< edu.cmu.cs.dennisc.scenegraph.AmbientLight > {
+public class AmbientLightAdapter extends LightAdapter<edu.cmu.cs.dennisc.scenegraph.AmbientLight> {
 }

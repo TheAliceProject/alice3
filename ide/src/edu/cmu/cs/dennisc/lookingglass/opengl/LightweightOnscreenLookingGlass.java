@@ -46,22 +46,23 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass{
-	class RenderPane extends /*edu.cmu.cs.dennisc.*/javax.media.opengl.GLJPanel {
-		
+class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass {
+	class RenderPane extends /* edu.cmu.cs.dennisc. */javax.media.opengl.GLJPanel {
+
 		private Throwable prevThrowable = null;
-		
+
 		public RenderPane() {
 			super( LookingGlassFactory.createDesiredGLCapabilities( LookingGlassFactory.getDesiredOnscreenSampleCount() ), LookingGlassFactory.getGLCapabilitiesChooser(), null );
-//			edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 1.5f );
+			//			edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 1.5f );
 		}
+
 		@Override
 		public void display() {
 			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
 				super.display();
 			}
 		}
-		
+
 		private void paintRenderingDisabledMessage( java.awt.Graphics g ) {
 			java.awt.Dimension size = this.getSize();
 			g.setColor( java.awt.Color.GRAY );
@@ -75,6 +76,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 			g.translate( 1, 1 );
 			g.dispose();
 		}
+
 		@Override
 		public void paint( java.awt.Graphics g ) {
 			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
@@ -83,6 +85,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 				this.paintRenderingDisabledMessage( g );
 			}
 		}
+
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
 			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
@@ -107,34 +110,39 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 					g.setColor( java.awt.Color.DARK_GRAY );
 					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 				}
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "paintComponent" );
-////					java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
-////					if( offscreenImage != null ) {
-////						g.drawImage( offscreenImage, 0, 0, this );
-////					}
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "paintComponent" );
+				////					java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
+				////					if( offscreenImage != null ) {
+				////						g.drawImage( offscreenImage, 0, 0, this );
+				////					}
 			}
 		}
 	}
+
 	private RenderPane glPanel = new RenderPane();
-//	private javax.media.opengl.GLJPanel glPanel = new javax.media.opengl.GLJPanel();
-	/*package-private*/ LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
+
+	//	private javax.media.opengl.GLJPanel glPanel = new javax.media.opengl.GLJPanel();
+	/* package-private */LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 		this.glPanel.setFocusable( true );
 	}
-	
+
 	public javax.swing.JPanel getJPanel() {
 		return this.glPanel;
 	}
+
 	public java.awt.Component getAWTComponent() {
 		return getJPanel();
 	}
+
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		return this.glPanel.getSize( rv );
 	}
+
 	public void repaint() {
 		this.glPanel.repaint();
 	}
-	
+
 	@Override
 	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return this.glPanel;

@@ -48,16 +48,21 @@ package org.alice.interact.operations;
 public abstract class AbstractSetLocalTransformationActionOperation extends org.lgna.croquet.ActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
+
 	public AbstractSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
 		super( group, individualId );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 	}
+
 	protected abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable();
+
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation();
+
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation();
+
 	protected abstract String getEditPresentationName();
-	
+
 	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
 		if( this.animator != null ) {
@@ -69,6 +74,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 			sgTransformable.setLocalTransformation( lt );
 		}
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -87,10 +93,12 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 					setLocalTransformation( nextLT );
 				}
 			}
+
 			@Override
 			protected final void undoInternal() {
 				setLocalTransformation( prevLT );
 			}
+
 			@Override
 			protected StringBuilder updatePresentation( StringBuilder rv ) {
 				rv.append( getEditPresentationName() );

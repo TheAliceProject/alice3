@@ -97,7 +97,7 @@ public class InputEventRecorder {
 	public EventScript getScript() {
 		return eventScript;
 	}
-	
+
 	public void setScene( SceneImp scene ) {
 		this.scene = scene;
 	}

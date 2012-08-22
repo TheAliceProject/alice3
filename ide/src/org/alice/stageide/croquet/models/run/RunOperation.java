@@ -49,33 +49,38 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 	private static class SingletonHolder {
 		private static RunOperation instance = new RunOperation();
 	}
+
 	public static RunOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RunOperation() {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
 		this.setSmallIcon( new RunIcon() );
 	}
-	
+
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		rv.append( " to preview your program." );
 		return rv;
 	}
-//	@Override
-//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
-//		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
-//	}
+
+	//	@Override
+	//	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.UserInformation userInformation ) {
+	//		return this.updateTutorialStepText( rv, step, step.getEdit(), userInformation );
+	//	}
 	private transient org.alice.stageide.program.RunProgramContext programContext;
 	public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
 	private static final int DEFAULT_WIDTH = 640;
-	private static final int DEFAULT_HEIGHT = (int)(DEFAULT_WIDTH/WIDTH_TO_HEIGHT_RATIO);
+	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / WIDTH_TO_HEIGHT_RATIO );
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
+
 	@Override
 	protected java.awt.Point getDesiredDialogLocation() {
 		return this.location;
 	}
+
 	@Override
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
 		if( this.size != null ) {
@@ -85,25 +90,29 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			dialog.pack();
 		}
 	}
-	
-	private class ProgramRunnable implements Runnable { 
+
+	private class ProgramRunnable implements Runnable {
 		private final java.awt.Container awtContainer;
+
 		public ProgramRunnable( java.awt.Container awtContainer ) {
 			this.awtContainer = awtContainer;
 			RunOperation.this.programContext = new org.alice.stageide.program.RunProgramContext();
 			RunOperation.this.programContext.getProgramImp().setRestartAction( RunOperation.this.restartAction );
 			RunOperation.this.programContext.initializeInContainer( this.awtContainer );
 		}
+
 		public void run() {
 			RunOperation.this.programContext.setActiveScene();
-		}		
+		}
 	}
+
 	private void startProgram( java.awt.Container awtContainer ) {
 		new org.lgna.common.ComponentThread( new ProgramRunnable( awtContainer ), RunOperation.this.getName() ).start();
 	}
+
 	private java.awt.Container stopProgram() {
 		if( this.programContext != null ) {
-			java.awt.Container rv = this.programContext.getContainer(); 
+			java.awt.Container rv = this.programContext.getContainer();
 			this.programContext.cleanUpProgram();
 			this.programContext = null;
 			return rv;
@@ -112,6 +121,7 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			return null;
 		}
 	}
+
 	private class RestartAction extends javax.swing.AbstractAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.awt.Container awtContainer = RunOperation.this.stopProgram();
@@ -125,15 +135,17 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			}
 		}
 	};
+
 	private final RestartAction restartAction = new RestartAction();
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.restartAction.putValue( javax.swing.Action.NAME, "restart" );
 	}
-	
+
 	@Override
-	protected org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Container<?> createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
 		if( ide.getProject() != null ) {
 			org.lgna.croquet.components.BorderPanel container = new org.lgna.croquet.components.BorderPanel();
@@ -146,17 +158,18 @@ public class RunOperation extends org.lgna.croquet.PlainDialogOperation {
 			return null;
 		}
 	}
+
 	@Override
-	protected void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
 		//todo: investigate		
 		this.location = dialog.getLocation();
 		this.size = dialog.getSize();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "releaseContentPane" );
 		step.finish();
 	}
-	
+
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
 		super.handleFinally( step, dialog, contentPane );
 		this.stopProgram();
 	}

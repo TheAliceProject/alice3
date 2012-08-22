@@ -18,25 +18,29 @@ public class AddEventListenerCascade extends CascadeWithInternalBlank<MethodInvo
 	private static class SingletonHolder {
 		private static AddEventListenerCascade instance = new AddEventListenerCascade();
 	}
+
 	public static AddEventListenerCascade getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AddEventListenerCascade() {
-		super(org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "dc90da69-a11f-4de4-8923-e410058762a3" ), MethodInvocation.class);
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "dc90da69-a11f-4de4-8923-e410058762a3" ), MethodInvocation.class );
 	}
+
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.MethodInvocation >> createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.MethodInvocation >> completionStep, org.lgna.project.ast.MethodInvocation[] values ) {
+	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.MethodInvocation>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.MethodInvocation>> completionStep, org.lgna.project.ast.MethodInvocation[] values ) {
 		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
 		UserMethod method = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 		BlockStatement body = method.body.getValue();
 		BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair(
 				body,
 				body.statements.size()
-		);
-		return new InsertStatementEdit(completionStep, blockStatementIndexPair, new ExpressionStatement(values[0]));
+				);
+		return new InsertStatementEdit( completionStep, blockStatementIndexPair, new ExpressionStatement( values[ 0 ] ) );
 	}
+
 	@Override
-	protected List<CascadeBlankChild> updateBlankChildren(List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode) {
+	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode ) {
 		rv.add( TimeEventListenerMenu.getInstance() );
 		rv.add( KeyboardEventListenerMenu.getInstance() );
 		rv.add( MouseEventListenerMenu.getInstance() );

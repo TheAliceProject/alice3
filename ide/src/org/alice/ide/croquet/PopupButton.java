@@ -45,13 +45,15 @@ package org.alice.ide.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton< M extends org.lgna.croquet.PopupPrepModel > extends org.lgna.croquet.components.DropDown< M > {
-	public PopupButton(M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent) {
-		super(model, prefixComponent, mainComponent, postfixComponent);
+public class PopupButton<M extends org.lgna.croquet.PopupPrepModel> extends org.lgna.croquet.components.DropDown<M> {
+	public PopupButton( M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
+		super( model, prefixComponent, mainComponent, postfixComponent );
 	}
-	public PopupButton(M model) {
-		this(model, null, null, null);
+
+	public PopupButton( M model ) {
+		this( model, null, null, null );
 	}
+
 	@Override
 	protected javax.swing.Action getAction() {
 		return this.getModel().getAction();

@@ -46,10 +46,11 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenu extends AbstractMenu< org.lgna.croquet.CascadeItem< ?,? > > {
-	public CascadeMenu( org.lgna.croquet.CascadeItem< ?,? > model ) {
+public class CascadeMenu extends AbstractMenu<org.lgna.croquet.CascadeItem<?, ?>> {
+	public CascadeMenu( org.lgna.croquet.CascadeItem<?, ?> model ) {
 		super( model );
 	}
+
 	@Override
 	protected boolean areIconsDisplayedInMenus() {
 		//note: much of the cascading menu system leverages icons

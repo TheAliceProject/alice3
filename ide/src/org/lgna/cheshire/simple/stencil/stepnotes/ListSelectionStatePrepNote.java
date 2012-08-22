@@ -46,12 +46,13 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public class ListSelectionStatePrepNote extends PrepNote< org.lgna.croquet.history.ListSelectionStatePrepStep<?> > {
+public class ListSelectionStatePrepNote extends PrepNote<org.lgna.croquet.history.ListSelectionStatePrepStep<?>> {
 	public ListSelectionStatePrepNote( org.lgna.croquet.history.ListSelectionStatePrepStep<?> step ) {
 		super( step );
 	}
+
 	@Override
-	protected void addFeatures( org.lgna.croquet.history.ListSelectionStatePrepStep< ? > step ) {
+	protected void addFeatures( org.lgna.croquet.history.ListSelectionStatePrepStep<?> step ) {
 		this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.EAST_WEST ) );
 	}
 }

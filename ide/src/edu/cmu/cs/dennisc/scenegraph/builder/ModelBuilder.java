@@ -2,8 +2,8 @@ package edu.cmu.cs.dennisc.scenegraph.builder;
 
 public class ModelBuilder {
 	private ModelPart root;
-	private java.util.Set< edu.cmu.cs.dennisc.scenegraph.Geometry > geometries;
-	private java.util.Set< edu.cmu.cs.dennisc.texture.BufferedImageTexture > textures;
+	private java.util.Set<edu.cmu.cs.dennisc.scenegraph.Geometry> geometries;
+	private java.util.Set<edu.cmu.cs.dennisc.texture.BufferedImageTexture> textures;
 
 	private static final String MAIN_ENTRY_PATH = "main.bin";
 	private static final String INDEXED_TRIANGLE_ARRAY_PREFIX = "indexedTriangleArrays/";
@@ -22,6 +22,7 @@ public class ModelBuilder {
 			encoder.encode( array );
 		}
 	}
+
 	private static short[] safeDecodeShortArray( edu.cmu.cs.dennisc.codec.BinaryDecoder decoder ) {
 		boolean isNotNull = decoder.decodeBoolean();
 		short[] rv;
@@ -33,19 +34,22 @@ public class ModelBuilder {
 		return rv;
 	}
 
-	private static java.util.Map< java.io.File, ModelBuilder > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<java.io.File, ModelBuilder> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public java.util.Set< edu.cmu.cs.dennisc.scenegraph.Geometry > getGeometries() {
+	public java.util.Set<edu.cmu.cs.dennisc.scenegraph.Geometry> getGeometries() {
 		return this.geometries;
 	}
-	public void replaceGeometries( java.util.Map< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry, ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > map ) {
+
+	public void replaceGeometries( java.util.Map<? extends edu.cmu.cs.dennisc.scenegraph.Geometry, ? extends edu.cmu.cs.dennisc.scenegraph.Geometry> map ) {
 		this.geometries.clear();
 		this.geometries.addAll( map.values() );
 		this.root.replaceGeometries( map );
 	}
+
 	public static void forget( java.io.File file ) {
 		map.remove( file );
 	}
+
 	public static ModelBuilder getInstance( java.io.File file ) {
 		ModelBuilder rv = map.get( file );
 		if( rv != null ) {
@@ -53,10 +57,10 @@ public class ModelBuilder {
 		} else {
 			rv = new ModelBuilder();
 			try {
-				java.util.Map< Integer, edu.cmu.cs.dennisc.scenegraph.Geometry > mapIdToGeometry = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-				java.util.Map< Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture > mapIdToTexture = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				java.util.Map<Integer, edu.cmu.cs.dennisc.scenegraph.Geometry> mapIdToGeometry = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				java.util.Map<Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture> mapIdToTexture = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 				java.io.FileInputStream fis = new java.io.FileInputStream( file );
-				java.util.Map< String, byte[] > map = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( fis );
+				java.util.Map<String, byte[]> map = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( fis );
 
 				java.io.InputStream isMainEntry = null;
 				for( String entryPath : map.keySet() ) {
@@ -114,7 +118,7 @@ public class ModelBuilder {
 		}
 		return rv;
 	}
-	
+
 	public void encode( java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 
@@ -125,6 +129,7 @@ public class ModelBuilder {
 				public String getName() {
 					return getEntryPath( geometry );
 				}
+
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
 					if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
@@ -154,6 +159,7 @@ public class ModelBuilder {
 				public String getName() {
 					return getEntryPath( texture );
 				}
+
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, texture.getBufferedImage() );
 				}
@@ -163,6 +169,7 @@ public class ModelBuilder {
 			public String getName() {
 				return MAIN_ENTRY_PATH;
 			}
+
 			public void write( java.io.OutputStream os ) throws java.io.IOException {
 				edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
 				encoder.encode( root );
@@ -180,6 +187,7 @@ public class ModelBuilder {
 		rv.root = ModelPart.newInstance( transformable, rv.geometries, rv.textures );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.Transformable buildTransformable() {
 		edu.cmu.cs.dennisc.scenegraph.Transformable rv = this.root.build();
 		return rv;
@@ -194,6 +202,7 @@ public class ModelBuilder {
 			return null;
 		}
 	}
+
 	private static String getEntryPath( edu.cmu.cs.dennisc.texture.Texture texture ) {
 		if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
 			edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture = (edu.cmu.cs.dennisc.texture.BufferedImageTexture)texture;

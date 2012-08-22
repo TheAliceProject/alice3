@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitMaternityComfy implements MaleAdultFullBodyOutfit {
-	GREENGREY ,
- 	PINK ,
- 	ALOHA ;
+	GREENGREY,
+	PINK,
+	ALOHA;
 }

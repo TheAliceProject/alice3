@@ -50,9 +50,11 @@ public class TimingProceduresComposite extends org.alice.ide.member.NameFiltered
 	private static class SingletonHolder {
 		private static TimingProceduresComposite instance = new TimingProceduresComposite();
 	}
+
 	public static TimingProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TimingProceduresComposite() {
 		super( java.util.UUID.fromString( "1b396495-c642-4831-8cc0-7f2e46c357fa" ), "delay" );
 	}

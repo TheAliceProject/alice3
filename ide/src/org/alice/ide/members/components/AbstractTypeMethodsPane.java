@@ -46,19 +46,22 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
-	public AbstractTypeMethodsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public AbstractTypeMethodsPane( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
-	protected abstract org.lgna.croquet.components.Component< ? > createProcedureTemplate( org.lgna.project.ast.AbstractMethod method );
-	protected abstract org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method );
+
+	protected abstract org.lgna.croquet.components.Component<?> createProcedureTemplate( org.lgna.project.ast.AbstractMethod method );
+
+	protected abstract org.lgna.croquet.components.Component<?> createFunctionTemplate( org.lgna.project.ast.AbstractMethod method );
 
 	@Override
-	protected Iterable< org.lgna.croquet.components.Component< ? >> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair ) {
+	protected Iterable<org.lgna.croquet.components.Component<?>> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair ) {
 		return null;
 	}
+
 	@Override
-	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member ) {
-		org.lgna.croquet.components.Component< ? > component;
+	protected Iterable<org.lgna.croquet.components.Component<?>> createTemplates( org.lgna.project.ast.AbstractMember member ) {
+		org.lgna.croquet.components.Component<?> component;
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
 			if( method.getNextShorterInChain() != null ) {
@@ -75,7 +78,7 @@ public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 		} else {
 			component = null;
 		}
-		java.util.List< org.lgna.croquet.components.Component< ? > > rv;
+		java.util.List<org.lgna.croquet.components.Component<?>> rv;
 		if( component != null ) {
 			//line.add( javax.swing.Box.createHorizontalStrut( INDENT ) );
 			//if( member.isDeclaredInAlice() ) {
@@ -92,7 +95,7 @@ public abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 					}
 				}
 			}
-			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new org.lgna.croquet.components.Component< ? >[] { component } );
+			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new org.lgna.croquet.components.Component<?>[] { component } );
 		} else {
 			rv = null;
 		}

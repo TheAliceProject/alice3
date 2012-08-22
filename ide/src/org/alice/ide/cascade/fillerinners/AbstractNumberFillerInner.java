@@ -46,15 +46,17 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
-	public AbstractNumberFillerInner( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public AbstractNumberFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
+
 	public AbstractNumberFillerInner( Class<?> cls ) {
 		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
 	}
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		if( isTop && prevExpression != null ) {
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		if( isTop && ( prevExpression != null ) ) {
 			if( prevExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
 				org.lgna.project.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (org.lgna.project.ast.ArithmeticInfixExpression)prevExpression;
 				org.lgna.project.ast.ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();

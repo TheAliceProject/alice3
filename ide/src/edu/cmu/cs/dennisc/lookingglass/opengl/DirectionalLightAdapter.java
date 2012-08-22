@@ -46,18 +46,18 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class DirectionalLightAdapter extends LightAdapter< edu.cmu.cs.dennisc.scenegraph.DirectionalLight > {
-    private double[] s_absoluteBufferForReuse = new double[ 16 ];
+public class DirectionalLightAdapter extends LightAdapter<edu.cmu.cs.dennisc.scenegraph.DirectionalLight> {
+	private double[] s_absoluteBufferForReuse = new double[ 16 ];
 
-    @Override
-    protected float[] getPosition( float[] rv ) {
-		synchronized(  s_absoluteBufferForReuse ) {
+	@Override
+	protected float[] getPosition( float[] rv ) {
+		synchronized( s_absoluteBufferForReuse ) {
 			getAbsoluteTransformation( s_absoluteBufferForReuse );
-	        rv[ 0 ] = (float)s_absoluteBufferForReuse[ 8 ];
-	        rv[ 1 ] = (float)s_absoluteBufferForReuse[ 9 ];
-	        rv[ 2 ] = (float)s_absoluteBufferForReuse[ 10 ];
-	        rv[ 3 ] = 0;
+			rv[ 0 ] = (float)s_absoluteBufferForReuse[ 8 ];
+			rv[ 1 ] = (float)s_absoluteBufferForReuse[ 9 ];
+			rv[ 2 ] = (float)s_absoluteBufferForReuse[ 10 ];
+			rv[ 3 ] = 0;
 		}
-        return rv;
-    }
+		return rv;
+	}
 }

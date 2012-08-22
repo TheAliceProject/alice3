@@ -47,12 +47,15 @@ package edu.cmu.cs.dennisc.javax.swing.event;
  */
 public abstract class SimplifiedDocumentAdapter implements javax.swing.event.DocumentListener {
 	protected abstract void updated( javax.swing.event.DocumentEvent e );
+
 	public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 		this.updated( e );
 	}
+
 	public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 		this.updated( e );
 	}
+
 	public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 		this.updated( e );
 	}

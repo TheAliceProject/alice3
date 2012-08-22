@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleChildFullBodyOutfitDressFormal implements FemaleChildFullBodyOutfit {
 	PINK,
- 	PINKWHITE,
- 	EMERALD,
- 	PEACH,
- 	PEACHWHITE;
+	PINKWHITE,
+	EMERALD,
+	PEACH,
+	PEACHWHITE;
 }

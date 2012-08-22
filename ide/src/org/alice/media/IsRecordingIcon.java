@@ -55,12 +55,15 @@ import javax.swing.Icon;
  */
 public class IsRecordingIcon implements Icon {
 	private static final int SIZE = 32;
+
 	public int getIconHeight() {
 		return SIZE;
 	}
+
 	public int getIconWidth() {
 		return SIZE;
 	}
+
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		if( c instanceof AbstractButton ) {
 			AbstractButton button = (AbstractButton)c;

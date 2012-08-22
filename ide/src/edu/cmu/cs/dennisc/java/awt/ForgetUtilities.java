@@ -55,19 +55,22 @@ public class ForgetUtilities {
 			container.removeAll();
 		}
 		if( c instanceof edu.cmu.cs.dennisc.pattern.Forgettable ) {
-			((edu.cmu.cs.dennisc.pattern.Forgettable)c).forget();
+			( (edu.cmu.cs.dennisc.pattern.Forgettable)c ).forget();
 		}
 		if( forgetObserver != null ) {
 			forgetObserver.forget( c.getParent(), c );
 		}
 	}
+
 	public interface ForgetObserver {
 		public void forget( java.awt.Container prevParent, java.awt.Component awtComponent );
 	}
+
 	public static void forgetAndRemoveComponent( java.awt.Container container, java.awt.Component component, ForgetObserver forgetObserver ) {
 		forgetTree( component, forgetObserver );
 		container.remove( component );
-	}	
+	}
+
 	public static void forgetAndRemoveAllComponents( java.awt.Container container, ForgetObserver forgetObserver ) {
 		java.awt.Component[] components = container.getComponents();
 		for( java.awt.Component component : components ) {

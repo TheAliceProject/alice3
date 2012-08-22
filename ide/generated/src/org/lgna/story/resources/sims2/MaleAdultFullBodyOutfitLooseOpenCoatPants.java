@@ -41,12 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitLooseOpenCoatPants implements MaleAdultFullBodyOutfit {
-	BLACKLEATHER ,
- 	BROWNLEATHER ,
- 	REDLEATHER ,
- 	BLACKLEATHERRED ,
- 	BLACKVSHIRT ,
- 	CAMELVSHIRT ,
- 	DKBROWNVSHIRT ;
+	BLACKLEATHER,
+	BROWNLEATHER,
+	REDLEATHER,
+	BLACKLEATHERRED,
+	BLACKVSHIRT,
+	CAMELVSHIRT,
+	DKBROWNVSHIRT;
 }

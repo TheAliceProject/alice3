@@ -46,15 +46,17 @@ import org.lgna.croquet.BoundedDoubleState;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class SnapAngleInDegreesState extends BoundedDoubleState {
 	private static class SingletonHolder {
 		private static SnapAngleInDegreesState instance = new SnapAngleInDegreesState();
 	}
+
 	public static SnapAngleInDegreesState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SnapAngleInDegreesState() {
 		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8427dc9c-2057-44c0-9cbd-0ea7d6283480" ) ).minimum( 15.0 ).maximum( 180.0 ).initialValue( 30.0 ).stepSize( 15.0 ) );
 	}

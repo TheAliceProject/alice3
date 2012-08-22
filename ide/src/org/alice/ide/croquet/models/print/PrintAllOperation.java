@@ -49,12 +49,15 @@ public class PrintAllOperation extends PrintOperation {
 	private static class SingletonHolder {
 		private static PrintAllOperation instance = new PrintAllOperation();
 	}
+
 	public static PrintAllOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private PrintAllOperation() {
 		super( java.util.UUID.fromString( "6a205070-e8e0-48a7-a059-fff15b7350a3" ) );
 	}
+
 	@Override
 	protected java.awt.print.Printable getPrintable() {
 		return new java.awt.print.Printable() {
@@ -66,10 +69,10 @@ public class PrintAllOperation extends PrintOperation {
 					org.lgna.croquet.components.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
 					int width = frame.getWidth();
 					int height = frame.getHeight();
-					double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
+					double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
 					g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 					if( scale > 1.0 ) {
-						g2.scale( 1.0/scale, 1.0/scale );
+						g2.scale( 1.0 / scale, 1.0 / scale );
 					}
 					frame.getAwtComponent().paintAll( g2 );
 					return PAGE_EXISTS;

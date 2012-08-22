@@ -47,14 +47,17 @@ package edu.cmu.cs.dennisc.issue;
  * @author Dennis Cosgrove
  */
 public class AbstractReport {
-	private java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.issue.Attachment >();
+	private java.util.List<edu.cmu.cs.dennisc.issue.Attachment> attachments = new java.util.LinkedList<edu.cmu.cs.dennisc.issue.Attachment>();
+
 	public void addAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
 		this.attachments.add( attachment );
 	}
+
 	public void removeAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
 		this.attachments.remove( attachment );
 	}
-	public java.util.List< edu.cmu.cs.dennisc.issue.Attachment > getAttachments() {
+
+	public java.util.List<edu.cmu.cs.dennisc.issue.Attachment> getAttachments() {
 		return this.attachments;
 	}
 }

@@ -48,48 +48,53 @@ package org.alice.ide.formatter;
 public abstract class Formatter {
 	private java.util.Locale locale;
 	private String repr;
+
 	public Formatter( java.util.Locale locale, String repr ) {
 		this.locale = locale;
 		this.repr = repr;
 	}
+
 	@Deprecated
 	public java.util.Locale getLocale() {
 		return this.locale;
 	}
-	
-	
+
 	protected abstract String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy );
+
 	protected abstract String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter );
+
 	public String getNameForDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if (declaration instanceof org.lgna.project.ast.JavaMethod) {
-			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod) declaration;
+		if( declaration instanceof org.lgna.project.ast.JavaMethod ) {
+			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)declaration;
 			return this.getTextForMethodReflectionProxy( javaMethod.getMethodReflectionProxy() );
 		} else if( declaration instanceof org.lgna.project.ast.JavaParameter ) {
 			org.lgna.project.ast.JavaParameter javaParameter = (org.lgna.project.ast.JavaParameter)declaration;
 			return this.getTextForJavaParameter( javaParameter );
-		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
-			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
+		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 			return this.getTextForType( type );
 		} else {
 			return declaration.getName();
 		}
 	}
-	
-	
+
 	public abstract String getNameForField( java.lang.reflect.Field fld );
-	
+
 	public abstract boolean isTypeExpressionDesired();
 
 	public abstract String getTextForThis();
+
 	public abstract String getTextForNull();
+
 	protected abstract String getTextForCls( Class<?> cls );
-	public String getTextForType(org.lgna.project.ast.AbstractType<?, ?, ?> type) {
+
+	public String getTextForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
 			if( type.isArray() ) {
 				return this.getTextForType( type.getComponentType() ) + "[]";
 			} else {
-				if (type instanceof org.lgna.project.ast.JavaType) {
-					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType) type;
+				if( type instanceof org.lgna.project.ast.JavaType ) {
+					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
 					Class<?> cls = javaType.getClassReflectionProxy().getReification();
 					return this.getTextForCls( cls );
 				} else {
@@ -100,6 +105,7 @@ public abstract class Formatter {
 			return this.getTextForNull();
 		}
 	}
+
 	@Override
 	public String toString() {
 		return this.repr;

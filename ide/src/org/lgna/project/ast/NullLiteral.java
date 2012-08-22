@@ -47,10 +47,11 @@ package org.lgna.project.ast;
  */
 public class NullLiteral extends AbstractLiteral {
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		//todo
 		return JavaType.OBJECT_TYPE;
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//todo
@@ -61,6 +62,7 @@ public class NullLiteral extends AbstractLiteral {
 		}
 		return rv;
 	}
+
 	@Override
 	public boolean isValid() {
 		return true;

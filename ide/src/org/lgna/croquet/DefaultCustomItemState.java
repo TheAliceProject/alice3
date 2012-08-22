@@ -46,19 +46,23 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomItemStateWithInternalBlank< T > {
+public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomItemStateWithInternalBlank<T> {
 	private T value;
-	public DefaultCustomItemState( Group group, java.util.UUID id, ItemCodec< T > itemCodec, T initialValue ) {
+
+	public DefaultCustomItemState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialValue ) {
 		super( group, id, itemCodec );
 		this.value = initialValue;
 	}
+
 	@Override
 	protected void localize() {
 	}
+
 	@Override
 	protected T getActualValue() {
 		return this.value;
 	}
+
 	@Override
 	protected void updateSwingModel( T value ) {
 		this.value = value;

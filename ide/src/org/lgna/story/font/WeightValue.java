@@ -52,9 +52,11 @@ public class WeightValue implements WeightAttribute {
 	public WeightValue( Float value ) {
 		m_value = value;
 	}
+
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.WEIGHT;
 	}
+
 	public Float getValue() {
 		return m_value;
 	}

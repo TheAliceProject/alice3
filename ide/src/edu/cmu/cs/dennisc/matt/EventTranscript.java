@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class EventTranscript {
 
-	private Map<Double,EventRecord> eventMap = Collections.newHashMap();
+	private Map<Double, EventRecord> eventMap = Collections.newHashMap();
 	private List<EventRecord> allRecordedEvents = Collections.newArrayList();
 	private List<EventRecord> unPoppedEvents = Collections.newArrayList();
 	private boolean virgin = true;

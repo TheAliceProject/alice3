@@ -74,13 +74,13 @@ import edu.cmu.cs.dennisc.movie.MovieEncoder;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserver {
 	//	private static AudioFormat QUICKTIME_AUDIO_FORMAT = new AudioFormat(22050f, 16, 1, true, false);
 	private static float RATE_22 = 22050f;
 	private static float RATE_44 = 44100f;
-//	public final static AudioFormat TARGET_FORMAT_ALAW = new AudioFormat(AudioFormat.Encoding.ULAW,8000f,8,1,1,8000f,false);
+	//	public final static AudioFormat TARGET_FORMAT_ALAW = new AudioFormat(AudioFormat.Encoding.ULAW,8000f,8,1,1,8000f,false);
 	private static AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 	private static VideoFormat QUICKTIME_VIDEO_FORMAT = VideoFormat.JPG;
 
@@ -101,15 +101,15 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 
 		temp = File.createTempFile( "temp", Long.toString( System.nanoTime() ) );
 
-		if( !(temp.delete()) ) {
+		if( !( temp.delete() ) ) {
 			throw new IOException( "Could not delete temp file: " + temp.getAbsolutePath() );
 		}
 
-		if( !(temp.mkdir()) ) {
+		if( !( temp.mkdir() ) ) {
 			throw new IOException( "Could not create temp directory: " + temp.getAbsolutePath() );
 		}
 
-		return (temp);
+		return ( temp );
 	}
 
 	public ImagesToQuickTimeEncoder( double framesPerSecond ) {
@@ -143,10 +143,10 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 					audioIn = AudioSystem.getAudioInputStream( audioFile );
 				}
 				audioFormat = audioIn.getFormat();
-				
-//				audioFormat = this.QUICKTIME_AUDIO_FORMAT_PCM;
+
+				//				audioFormat = this.QUICKTIME_AUDIO_FORMAT_PCM;
 				// Determine duration of a single audio sample
-				asDuration = (int)(audioFormat.getSampleRate() / audioFormat.getFrameRate());
+				asDuration = (int)( audioFormat.getSampleRate() / audioFormat.getFrameRate() );
 			}
 			boolean isVBR = false;
 
@@ -160,7 +160,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 				qtOut.addAudioTrack( audioFormat ); // audio in track 0
 				audioChannelIndex = 0;
 			}
-			qtOut.addVideoTrack( videoFormat, (int)(this.framesPerSecond * vsDuration), this.width, this.height ); // video in track 1
+			qtOut.addVideoTrack( videoFormat, (int)( this.framesPerSecond * vsDuration ), this.width, this.height ); // video in track 1
 
 			// Create audio buffer
 			int asSize = 0;
@@ -172,8 +172,8 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 					audioBuffer = new byte[ asSize ];
 				} else {
 					// => fixed bit rate: create audio buffer for half a second
-					asSize = audioFormat.getChannels() * audioFormat.getSampleSizeInBits() / 8;
-					audioBuffer = new byte[ (int)(qtOut.getMediaTimeScale( 0 ) / 2 * asSize) ];
+					asSize = ( audioFormat.getChannels() * audioFormat.getSampleSizeInBits() ) / 8;
+					audioBuffer = new byte[ (int)( ( qtOut.getMediaTimeScale( 0 ) / 2 ) * asSize ) ];
 				}
 			}
 
@@ -186,13 +186,13 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 			int movieTime = 0;
 			int imgIndex = 0;
 			boolean isAudioDone = !hasAudio;
-			while( (imgIndex < imgFiles.length || !isAudioDone) ) {
+			while( ( ( imgIndex < imgFiles.length ) || !isAudioDone ) ) {
 				// Advance movie time by half a second (we interleave twice per second)
 				movieTime += qtOut.getMovieTimeScale() / 2;
 
 				if( hasAudio ) {
 					// Advance audio to movie time + 1 second (audio must be ahead of video by 1 second)
-					while( !isAudioDone && qtOut.getTrackDuration( audioChannelIndex ) < movieTime + qtOut.getMovieTimeScale() ) {
+					while( !isAudioDone && ( qtOut.getTrackDuration( audioChannelIndex ) < ( movieTime + qtOut.getMovieTimeScale() ) ) ) {
 						int len = audioIn.read( audioBuffer );
 						if( len == -1 ) {
 							isAudioDone = true;
@@ -206,7 +206,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 								break;
 							}
 							asSize = audioFormat.getFrameSize();
-							asDuration = (int)(audioFormat.getSampleRate() / audioFormat.getFrameRate());
+							asDuration = (int)( audioFormat.getSampleRate() / audioFormat.getFrameRate() );
 							if( audioBuffer.length < asSize ) {
 								audioBuffer = new byte[ asSize ];
 							}
@@ -215,7 +215,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 				}
 
 				// Advance video to movie time
-				while( imgIndex < imgFiles.length && qtOut.getTrackDuration( videoChannelIndex ) < movieTime ) {
+				while( ( imgIndex < imgFiles.length ) && ( qtOut.getTrackDuration( videoChannelIndex ) < movieTime ) ) {
 					// catch up with video time
 					if( passThrough ) {
 						qtOut.writeSample( videoChannelIndex, imgFiles[ imgIndex ], vsDuration );
@@ -259,6 +259,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 			}
 		}
 	}
+
 	public ImagesToQuickTimeEncoder( float framesPerSecond, File out ) throws IOException {
 		this( framesPerSecond );
 		setOutput( out );
@@ -296,7 +297,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 
 	private void addImageToMovie( BufferedImage bufferedImage ) {
 		try {
-			if( this.width == -1 || this.height == -1 ) {
+			if( ( this.width == -1 ) || ( this.height == -1 ) ) {
 				this.width = bufferedImage.getWidth();
 				this.height = bufferedImage.getHeight();
 			}
@@ -368,7 +369,9 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.cmu.cs.dennisc.movie.MovieEncoder#start()
 	 */
 	public void start() {
@@ -384,7 +387,9 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see edu.cmu.cs.dennisc.movie.MovieEncoder#stop()
 	 */
 	public void stop() {
@@ -394,7 +399,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 		try {
 			audioFile = this.createAudioFile();
 			File[] imgFiles = this.frameDirectory.listFiles();
-			System.out.println( "length: " + imgFiles.length / framesPerSecond );
+			System.out.println( "length: " + ( imgFiles.length / framesPerSecond ) );
 			writeVideoAndAudio( imgFiles, audioFile, QUICKTIME_VIDEO_FORMAT, false, "none" );
 			success = true;
 		} catch( Exception e ) {
@@ -424,7 +429,7 @@ public class ImagesToQuickTimeEncoder implements MovieEncoder, MediaPlayerObserv
 			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
 			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
 			this.audioStreams.add( audioStream );
-			System.out.println(audioStreams.size());
+			System.out.println( audioStreams.size() );
 		}
 	}
 

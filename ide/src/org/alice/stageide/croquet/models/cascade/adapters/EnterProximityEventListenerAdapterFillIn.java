@@ -47,11 +47,12 @@ import org.lgna.story.event.ProximityEnterListener;
 /**
  * @author Matt May
  */
-public class EnterProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn{
-	
+public class EnterProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn {
+
 	private static class SingletonHolder {
 		private static EnterProximityEventListenerAdapterFillIn instance = new EnterProximityEventListenerAdapterFillIn();
 	}
+
 	public static EnterProximityEventListenerAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
@@ -60,4 +61,3 @@ public class EnterProximityEventListenerAdapterFillIn extends LambdaExpressionFi
 		super( java.util.UUID.fromString( "db25d316-7282-493f-9838-124d272db0ca" ), ProximityEnterListener.class );
 	}
 }
-

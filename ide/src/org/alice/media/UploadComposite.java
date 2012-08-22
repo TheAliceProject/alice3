@@ -48,16 +48,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import org.alice.media.YouTubeEvent.EventType;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.StringState;
 import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.project.Project;
 
@@ -70,9 +68,6 @@ import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
 import com.google.gdata.util.AuthenticationException;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 /**
  * @author Matt May
@@ -153,48 +148,63 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		uploader.addYouTubeListener( this );
 		videoCategoryState = this.createListSelectionState( this.createKey( "videoCategory" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, categoryStrings.toArray( new String[ 0 ] ) );
 	}
+
 	public StringState getIdState() {
 		return this.idState;
 	}
+
 	public PlainStringValue getUsername() {
 		return this.username;
 	}
+
 	public StringState getPasswordState() {
 		return this.passwordState;
 	}
+
 	public PlainStringValue getPasswordLabelValue() {
 		return this.passwordLabelValue;
 	}
+
 	public ActionOperation getLoginOperation() {
 		return this.loginOperation;
 	}
+
 	public PlainStringValue getTitleLabelValue() {
 		return this.titleLabelValue;
 	}
+
 	public StringState getTitleState() {
 		return this.titleState;
 	}
+
 	public BooleanState getIsPrivateState() {
 		return this.isPrivateState;
 	}
+
 	public PlainStringValue getCategoryValue() {
 		return this.categoryValue;
 	}
+
 	public ListSelectionState<String> getVideoCategoryState() {
 		return this.videoCategoryState;
 	}
+
 	public PlainStringValue getDescriptionValue() {
 		return this.descriptionValue;
 	}
+
 	public StringState getDescriptionState() {
 		return this.descriptionState;
 	}
+
 	public PlainStringValue getTagLabel() {
 		return this.tagLabel;
 	}
+
 	public StringState getTagState() {
 		return this.tagState;
 	}
+
 	public ActionOperation getUploadOperation() {
 		return this.uploadOperation;
 	}
@@ -203,18 +213,22 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	protected UploadView createView() {
 		return new UploadView( this );
 	}
+
 	public Project getProject() {
 		return owner.getProject();
 	}
+
 	public File getFile() {
 		return owner.getFile();
 	}
+
 	@Override
 	public void handlePreActivation() {
-		System.out.println("hi");
+		System.out.println( "hi" );
 		super.handlePreActivation();
 		getView().setMovie( owner.getFile() );
 	}
+
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		uploadOperation.setEnabled( false );
@@ -232,7 +246,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 				rv = noTags;
 			}
 		}
-		if( !(rv instanceof ErrorStatus) ) {
+		if( !( rv instanceof ErrorStatus ) ) {
 			uploadOperation.setEnabled( true );
 		}
 		return rv;
@@ -275,7 +289,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			InputStream is = categoryURL.openStream();
 			StringBuilder sb = new StringBuilder();
 			int readValue;
-			while( (readValue = is.read()) != -1 ) {
+			while( ( readValue = is.read() ) != -1 ) {
 				char charVal = (char)readValue;
 				sb.append( charVal );
 			}
@@ -288,7 +302,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			int categoryLength = categoryData.length();
 			String searchTerm = TERM_STRING;
 			int searchLength = TERM_LENGTH;
-			for( int i = 0; i < categoryLength - DEPRECATED_LENGTH; ) {
+			for( int i = 0; i < ( categoryLength - DEPRECATED_LENGTH ); ) {
 				if( categoryData.subSequence( i, i + searchLength ).equals( searchTerm ) ) {
 					int endIndex = categoryData.indexOf( "'", i + searchLength );
 					String foundString = categoryData.substring( i + searchLength, endIndex );

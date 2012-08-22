@@ -52,14 +52,17 @@ public enum DragStyle {
 	CONTROL_SHIFT( true, true );
 	private boolean m_isControlDown;
 	private boolean m_isShiftDown;
+
 	DragStyle( boolean isControlDown, boolean isShiftDown ) {
 		m_isControlDown = isControlDown;
 		m_isShiftDown = isShiftDown;
 	}
+
 	public boolean isControlDown() {
-		 return m_isControlDown;
+		return m_isControlDown;
 	}
+
 	public boolean isShiftDown() {
-		 return m_isShiftDown;
+		return m_isShiftDown;
 	}
 }

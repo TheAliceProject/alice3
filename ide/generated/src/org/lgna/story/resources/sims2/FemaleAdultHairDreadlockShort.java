@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultHairDreadlockShort implements FemaleAdultHair {
-	BROWN ,
- 	BLACK ,
- 	RED ,
- 	BLOND ,
- 	GREY ;
+	BROWN,
+	BLACK,
+	RED,
+	BLOND,
+	GREY;
 }

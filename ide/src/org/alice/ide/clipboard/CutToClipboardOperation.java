@@ -47,7 +47,8 @@ package org.alice.ide.clipboard;
  * @author Dennis Cosgrove
  */
 public class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.lgna.project.ast.Statement, CutToClipboardOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.Statement, CutToClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized CutToClipboardOperation getInstance( org.lgna.project.ast.Statement node ) {
 		assert node != null;
 		CutToClipboardOperation rv = map.get( node );
@@ -59,11 +60,14 @@ public class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.Statement statement;
+
 	private CutToClipboardOperation( org.lgna.project.ast.Statement statement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
 		this.statement = statement;
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

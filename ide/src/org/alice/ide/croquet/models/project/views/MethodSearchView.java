@@ -44,11 +44,7 @@ package org.alice.ide.croquet.models.project.views;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
-import java.util.Map;
 
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.TabComposite;
 import org.alice.ide.croquet.models.project.MethodSearchComposite;
 import org.alice.ide.croquet.models.project.MethodSearchComposite.SearchDialogManager;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchTreeNode;
@@ -62,7 +58,7 @@ import org.lgna.croquet.components.Tree;
  * @author Matt May
  */
 public class MethodSearchView extends BorderPanel {
-	
+
 	public MethodSearchView( MethodSearchComposite composite ) {
 		TextField textField = composite.getStringState().createTextField();
 		textField.getAwtComponent().setTextForBlankCondition( "search; *=wildcard" );

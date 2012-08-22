@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< org.lgna.project.ast.FieldAccess > {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, StaticFieldAccessFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.project.ast.FieldAccess> {
+	private static java.util.Map<org.lgna.project.ast.AbstractField, StaticFieldAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static StaticFieldAccessFillIn getInstance( org.lgna.project.ast.AbstractField value ) {
 		synchronized( map ) {
 			StaticFieldAccessFillIn rv = map.get( value );
@@ -60,42 +61,51 @@ public class StaticFieldAccessFillIn extends ExpressionFillInWithoutBlanks< org.
 			return rv;
 		}
 	}
+
 	public static StaticFieldAccessFillIn getInstance( org.lgna.project.ast.AbstractType type, String fieldName ) {
 		return getInstance( type.findField( fieldName ) );
 	}
+
 	public static StaticFieldAccessFillIn getInstance( java.lang.reflect.Field fld ) {
 		return getInstance( org.lgna.project.ast.JavaField.getInstance( fld ) );
 	}
+
 	public static StaticFieldAccessFillIn getInstance( Class<?> cls, String fieldName ) {
 		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ), fieldName );
 	}
+
 	private final org.lgna.project.ast.FieldAccess transientValue;
+
 	private StaticFieldAccessFillIn( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "dff6296d-9651-4c0a-98a1-57cd62ea2010" ) );
 		this.transientValue = this.createValue( field );
 	}
+
 	private org.lgna.project.ast.FieldAccess createValue( org.lgna.project.ast.AbstractField field ) {
 		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field );
 	}
+
 	@Override
-	public org.lgna.project.ast.FieldAccess createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.FieldAccess,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.FieldAccess createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.transientValue.field.getValue() );
 	}
+
 	@Override
-	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.FieldAccess,Void > node ) {
+	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node ) {
 		return this.transientValue;
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, org.lgna.project.ast.AbstractField.class, this.transientValue.field.getValue() );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<StaticFieldAccessFillIn> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<StaticFieldAccessFillIn>( this, org.lgna.project.ast.AbstractField.class, this.transientValue.field.getValue() );
 	}
-	
+
 	@Override
 	protected String getTutorialItemText() {
 		return this.transientValue.field.getValue().getName();
 	}
-//	@Override
-//	protected org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createResolver() {
-//		return new org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue() );
-//	}
+	//	@Override
+	//	protected org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn > createResolver() {
+	//		return new org.alice.ide.croquet.resolvers.FieldStaticGetInstanceKeyedResolver< StaticFieldAccessFillIn >( this, this.transientValue.field.getValue() );
+	//	}
 }

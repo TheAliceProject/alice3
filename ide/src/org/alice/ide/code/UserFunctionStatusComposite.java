@@ -51,35 +51,40 @@ public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeveri
 	private final ErrorStatus noReturnStatementError = this.createErrorStatus( this.createKey( "noReturnStatementError" ) );
 	private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus( this.createKey( "notAllPathsEndInReturnStatementError" ) );
 	private final ErrorStatus unreachableCodeError = this.createErrorStatus( this.createKey( "unreachableCodeError" ) );
-	
+
 	private final org.lgna.project.ast.UserMethod method;
 	private ErrorStatus errorStatus;
+
 	public UserFunctionStatusComposite( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "5247e4d2-1de0-45b0-88f4-5a8667cfb60d" ) );
 		this.method = method;
 		this.getView().setVisible( false );
 	}
+
 	public org.lgna.croquet.PlainStringValue getMetaStringValue() {
 		return this.metaStringValue;
 	}
-	
+
 	public ErrorStatus getNoReturnStatementError() {
 		return this.noReturnStatementError;
 	}
+
 	public ErrorStatus getNotAllPathsEndInReturnStatementError() {
 		return this.notAllPathsEndInReturnStatementError;
 	}
+
 	public ErrorStatus getUnreachableCodeError() {
 		return this.unreachableCodeError;
 	}
-	
+
 	public org.lgna.project.ast.UserMethod getMethod() {
 		return this.method;
 	}
-	
+
 	public ErrorStatus getErrorStatus() {
 		return this.errorStatus;
 	}
+
 	public void setErrorStatus( ErrorStatus errorStatus ) {
 		this.initializeIfNecessary();
 		if( this.errorStatus != errorStatus ) {
@@ -94,6 +99,7 @@ public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeveri
 			this.metaStringValue.setText( text );
 		}
 	}
+
 	@Override
 	protected org.alice.ide.code.views.UserFunctionStatusView createView() {
 		return new org.alice.ide.code.views.UserFunctionStatusView( this );

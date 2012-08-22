@@ -50,35 +50,42 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 	private static class SingletonHolder {
 		private static ProofOfConceptRecordVideoOperation instance = new ProofOfConceptRecordVideoOperation();
 	}
+
 	public static ProofOfConceptRecordVideoOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private final org.lgna.croquet.State.ValueListener< Boolean > isRecordingListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+	private final org.lgna.croquet.State.ValueListener<Boolean> isRecordingListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			ProofOfConceptRecordVideoOperation.this.setRecording( nextValue );
 		}
 	};
+
 	private ProofOfConceptRecordVideoOperation() {
 		super( java.util.UUID.fromString( "63876374-ce69-44f0-a454-2bedda151818" ) );
 	}
+
 	@Override
 	public org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel() {
 		return new org.alice.ide.video.components.ProofOfConceptRecordVideoPanel();
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+	protected org.lgna.croquet.components.Component<?> createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		IsRecordingState.getInstance().setValue( false );
 		IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
+
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
 		IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
 		super.handleFinally( step, dialog, contentPane );
 	}
+
 	@Override
 	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
 		java.io.File directory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "ProofOfConceptVideoExport" );

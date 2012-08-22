@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.InstanceCreation > {
-	private static java.util.Map< org.lgna.project.ast.JavaType, GalleryResourceTypeFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.InstanceCreation> {
+	private static java.util.Map<org.lgna.project.ast.JavaType, GalleryResourceTypeFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized GalleryResourceTypeFillIn getInstance( org.lgna.project.ast.JavaType type ) {
 		GalleryResourceTypeFillIn rv = map.get( type );
 		if( rv != null ) {
@@ -58,24 +59,30 @@ public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.casc
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.JavaType ancestorType;
+
 	private GalleryResourceTypeFillIn( org.lgna.project.ast.JavaType ancestorType ) {
 		super( java.util.UUID.fromString( "281ad60a-090e-4fd8-bb47-da03a2508a4a" ) );
 		this.ancestorType = ancestorType;
 		this.addBlank( GalleryResourceBlank.getInstance( org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( this.ancestorType ) ) );
 	}
+
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
 		return org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( this.ancestorType ).getName();
 	}
+
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
 		return null;
 	}
+
 	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
 		return null;
 	}
+
 	@Override
 	protected org.lgna.project.ast.InstanceCreation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		if( expressions.length == 1 ) {

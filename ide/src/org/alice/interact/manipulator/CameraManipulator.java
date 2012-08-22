@@ -42,7 +42,6 @@
  */
 package org.alice.interact.manipulator;
 
-
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
@@ -57,31 +56,31 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 
 	protected AbstractCamera camera = null;
 	protected CameraView desiredCameraView;
-	
+
 	public AbstractCamera getCamera()
 	{
 		return this.camera;
 	}
-	
+
 	public void setDesiredCameraView( CameraView cameraView )
 	{
 		this.desiredCameraView = cameraView;
 	}
-	
+
 	public CameraView getDesiredCameraView() {
 		return this.desiredCameraView;
 	}
-	
-	public void setCamera( AbstractCamera camera ) 
+
+	public void setCamera( AbstractCamera camera )
 	{
 		this.camera = camera;
-		this.setManipulatedTransformable(this.getManipulatedTransformableFromCamera());
+		this.setManipulatedTransformable( this.getManipulatedTransformableFromCamera() );
 	}
-	
+
 	public Transformable getManipulatedTransformableFromCamera()
 	{
 		AbstractCamera camera = this.getCamera();
-		if (camera != null && camera.getParent() instanceof Transformable)
+		if( ( camera != null ) && ( camera.getParent() instanceof Transformable ) )
 		{
 			return (Transformable)camera.getParent();
 		}
@@ -89,24 +88,20 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 	}
 
 	@Override
-	public boolean doStartManipulator( InputState startInput ) 
+	public boolean doStartManipulator( InputState startInput )
 	{
-		if (this.manipulatedTransformable != null)
+		if( this.manipulatedTransformable != null )
 		{
 			return true;
 		}
 		return false;
 	}
-	
-	
-	
+
 	@Override
 	//We don't want to change the handle set when moving the camera
 	protected HandleSet getHandleSetToEnable()
 	{
 		return null;
 	}
-	
-	
-	
+
 }

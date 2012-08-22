@@ -50,9 +50,11 @@ public class IsNullAllowedForLocalInitializers extends org.lgna.croquet.preferen
 	private static class SingletonHolder {
 		private static IsNullAllowedForLocalInitializers instance = new IsNullAllowedForLocalInitializers();
 	}
+
 	public static IsNullAllowedForLocalInitializers getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsNullAllowedForLocalInitializers() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "3e2789c0-202f-4272-a5e0-267ec0a6d33a" ), false );
 	}

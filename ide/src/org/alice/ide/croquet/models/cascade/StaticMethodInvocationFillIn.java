@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.MethodInvocation > {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, StaticMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, StaticMethodInvocationFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static StaticMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
 			StaticMethodInvocationFillIn rv = map.get( method );
@@ -60,15 +61,19 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 			return rv;
 		}
 	}
-	public static StaticMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+
+	public static StaticMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
 		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( method );
 	}
+
 	public static StaticMethodInvocationFillIn getInstance( Class<?> cls, String methodName, Class<?>... parameterClses ) {
 		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
+
 	private final org.lgna.project.ast.MethodInvocation transientValue;
+
 	private StaticMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteStaticMethodInvocation( method );
@@ -76,12 +81,14 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 			this.addBlank( ParameterBlank.getInstance( parameter ) );
 		}
 	}
+
 	@Override
 	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		return org.lgna.project.ast.AstUtilities.createStaticMethodInvocation( this.transientValue.method.getValue(), expressions );
 	}
+
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation,org.lgna.project.ast.Expression > step ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

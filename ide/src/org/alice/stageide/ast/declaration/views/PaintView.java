@@ -46,27 +46,32 @@ package org.alice.stageide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class PaintView extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > > {
-	private org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+public class PaintView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> {
+	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueObserver = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 			PaintView.this.repaint();
 		}
 	};
-	public PaintView( org.lgna.croquet.CustomItemState< org.lgna.project.ast.Expression > model ) {
+
+	public PaintView( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model ) {
 		super( model );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getModel().addValueListener( this.valueObserver );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.getModel().removeValueListener( this.valueObserver );
 		super.handleUndisplayable();
 	}
+
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		javax.swing.JComponent rv = new javax.swing.JComponent() {
@@ -74,18 +79,19 @@ public class PaintView extends org.lgna.croquet.components.ViewController< javax
 			public java.awt.Dimension getMinimumSize() {
 				return this.getPreferredSize();
 			}
+
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
 				org.lgna.project.ast.Expression expression = PaintView.this.getModel().getValue();
 				if( expression != null ) {
 					org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
-					
+
 					Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
 					assert values.length == 1;
 					if( values[ 0 ] instanceof org.lgna.story.Paint ) {
 						org.lgna.story.Paint paint = (org.lgna.story.Paint)values[ 0 ];
-						
+
 						edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( paint, null );
 						edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.ImplementationAccessor.getTexture( paint, null );
 

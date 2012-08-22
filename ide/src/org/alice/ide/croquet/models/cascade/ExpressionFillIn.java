@@ -46,33 +46,36 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillIn< F extends org.lgna.project.ast.Expression, B > extends org.lgna.croquet.CascadeFillIn< F, B > {
+public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression, B> extends org.lgna.croquet.CascadeFillIn<F, B> {
 	private String text;
+
 	public ExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.text = this.findDefaultLocalizedText();
 	}
+
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,B > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, B> step ) {
 		org.lgna.project.ast.Expression expression = this.getTransientValue( step );
 		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
-		if( this.text != null && this.text.length() > 0 ) {
+		if( ( this.text != null ) && ( this.text.length() > 0 ) ) {
 			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 			return new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( expressionPane, javax.swing.Box.createHorizontalStrut( 16 ), label );
 		} else {
 			return expressionPane;
 		}
 	}
-//	@Override
-//	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-//		return super.getMenuItemIcon( step );
-//	}
-//	@Override
-//	public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
-//		return super.getMenuItemText( step );
-//	}
+	//	@Override
+	//	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
+	//		return super.getMenuItemIcon( step );
+	//	}
+	//	@Override
+	//	public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F, B > step ) {
+	//		return super.getMenuItemText( step );
+	//	}
 }

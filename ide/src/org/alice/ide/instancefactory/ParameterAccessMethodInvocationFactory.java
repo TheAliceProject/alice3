@@ -47,7 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFactory> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized ParameterAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
 		assert parameter != null;
 		ParameterAccessMethodInvocationFactory rv = mapToMap.get( parameter, method );
@@ -59,15 +60,18 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserParameter parameter;
+
 	private ParameterAccessMethodInvocationFactory( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
 		super( method, parameter.name );
 		this.parameter = parameter;
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getValidInstanceType( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
 		if( code != null ) {
-			if( this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code ) { 
+			if( this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code ) {
 				return this.parameter.getValueType();
 			} else {
 				return null;
@@ -78,25 +82,28 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 	}
 
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver< ParameterAccessMethodInvocationFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterAccessMethodInvocationFactory >( 
+	protected org.lgna.croquet.resolvers.Resolver<ParameterAccessMethodInvocationFactory> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterAccessMethodInvocationFactory>(
 				this,
-				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class }, 
-				new Object[] { this.parameter, this.getMethod() } 
-		);
+				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class },
+				new Object[] { this.parameter, this.getMethod() } );
 	}
+
 	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
 		//todo?
 		return new org.lgna.project.ast.ParameterAccess( this.parameter );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
 		return new org.lgna.project.ast.ParameterAccess( this.parameter );
 	}
+
 	@Override
 	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
 		rv.append( "this." );

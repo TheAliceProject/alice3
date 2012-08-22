@@ -53,36 +53,47 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 
 	private UnitQuaternion() {
 	}
+
 	public UnitQuaternion( double x, double y, double z, double w ) {
 		set( x, y, z, w );
 	}
+
 	public UnitQuaternion( OrthogonalMatrix3x3 other ) {
 		setValue( other );
 	}
+
 	public UnitQuaternion( UnitQuaternion other ) {
 		setValue( other );
 	}
+
 	public UnitQuaternion( AxisRotation other ) {
 		setValue( other );
 	}
+
 	public UnitQuaternion( EulerAngles other ) {
 		setValue( other );
 	}
+
 	public UnitQuaternion( ForwardAndUpGuide other ) {
 		setValue( other );
 	}
+
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}
+
 	public UnitQuaternion createUnitQuaternion() {
 		return new UnitQuaternion( this );
 	}
+
 	public AxisRotation createAxisRotation() {
 		return new AxisRotation( this );
 	}
+
 	public EulerAngles createEulerAngles() {
 		return new EulerAngles( this );
 	}
+
 	public ForwardAndUpGuide createForwardAndUpGuide() {
 		return new ForwardAndUpGuide( this );
 	}
@@ -91,31 +102,35 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		rv.setValue( this );
 		return rv;
 	}
+
 	public UnitQuaternion getValue( UnitQuaternion rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public AxisRotation getValue( AxisRotation rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public EulerAngles getValue( EulerAngles rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public ForwardAndUpGuide getValue( ForwardAndUpGuide rv ) {
 		rv.setValue( this );
 		return rv;
 	}
-	
 
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		x = binaryDecoder.decodeDouble();
 		y = binaryDecoder.decodeDouble();
 		z = binaryDecoder.decodeDouble();
 		w = binaryDecoder.decodeDouble();
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( x );
 		binaryEncoder.encode( y );
 		binaryEncoder.encode( z );
@@ -161,20 +176,22 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		rv.x = rv.y = rv.z = rv.w = Double.NaN;
 		return rv;
 	}
+
 	public static UnitQuaternion createNaN() {
 		return setReturnValueToNaN( new UnitQuaternion() );
 	}
+
 	public void setNaN() {
 		setReturnValueToNaN( this );
 	}
+
 	public boolean isNaN() {
 		return Double.isNaN( x ) || Double.isNaN( y ) || Double.isNaN( z ) || Double.isNaN( w );
 	}
 
-	
-
 	//Identity
 	private static final UnitQuaternion IDENTITY = UnitQuaternion.createNaN();
+
 	public static UnitQuaternion accessIdentity() {
 		IDENTITY.setIdentity();
 		return IDENTITY;
@@ -185,17 +202,19 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		rv.w = 1.0;
 		return rv;
 	}
+
 	public static UnitQuaternion createIdentity() {
 		return setReturnValueToIdentity( UnitQuaternion.createNaN() );
 	}
+
 	public void setIdentity() {
 		setReturnValueToIdentity( this );
 	}
+
 	public boolean isIdentity() {
-		return x == 0.0 && y == 0.0 && z == 0.0 && w == 1.0;
+		return ( x == 0.0 ) && ( y == 0.0 ) && ( z == 0.0 ) && ( w == 1.0 );
 	}
 
-	
 	@Override
 	public boolean equals( Object obj ) {
 		if( super.equals( obj ) ) {
@@ -203,19 +222,21 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		} else {
 			if( obj instanceof UnitQuaternion ) {
 				UnitQuaternion q = (UnitQuaternion)obj;
-				return x == q.x && y == q.y && z == q.z && w == q.w;
+				return ( x == q.x ) && ( y == q.y ) && ( z == q.z ) && ( w == q.w );
 			} else {
 				return false;
 			}
 		}
 	}
-	
+
 	private static boolean isWithinEpsilon( double x, double y, double z, double w, UnitQuaternion q, double epsilon ) {
-		return Math.abs( x - q.x ) < epsilon && Math.abs( y - q.y ) < epsilon && Math.abs( z - q.z ) < epsilon && Math.abs( w - q.w ) < epsilon;
+		return ( Math.abs( x - q.x ) < epsilon ) && ( Math.abs( y - q.y ) < epsilon ) && ( Math.abs( z - q.z ) < epsilon ) && ( Math.abs( w - q.w ) < epsilon );
 	}
+
 	public boolean isWithinEpsilonOrIsNegativeWithinEpsilon( UnitQuaternion q, double epsilon ) {
 		return UnitQuaternion.isWithinEpsilon( this.x, this.y, this.z, this.w, q, epsilon ) || UnitQuaternion.isWithinEpsilon( -this.x, -this.y, -this.z, -this.w, q, epsilon );
 	}
+
 	public boolean isWithinReasonableEpsilonOrIsNegativeWithinReasonableEpsilon( UnitQuaternion q ) {
 		return UnitQuaternion.isWithinEpsilon( this.x, this.y, this.z, this.w, q, EpsilonUtilities.REASONABLE_EPSILON ) || UnitQuaternion.isWithinEpsilon( -this.x, -this.y, -this.z, -this.w, q, EpsilonUtilities.REASONABLE_EPSILON );
 	}
@@ -241,12 +262,14 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		}
 		setValue( new AxisRotation( m ) );
 	}
+
 	public void setValue( UnitQuaternion other ) {
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;
 		this.w = other.w;
 	}
+
 	public void setValue( AxisRotation aa ) {
 		double halfThetaInRadians = aa.angle.getAsRadians() * 0.5;
 		double c = Math.cos( halfThetaInRadians );
@@ -256,15 +279,17 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		y = aa.axis.y * s;
 		z = aa.axis.z * s;
 	}
+
 	public void setValue( EulerAngles ea ) {
 		//todo: convert directly
 		setValue( new AxisRotation( ea ) );
 	}
+
 	public void setValue( ForwardAndUpGuide faug ) {
 		//todo: convert directly
 		setValue( new AxisRotation( faug ) );
 	}
-	
+
 	//Add
 	public static UnitQuaternion setReturnValueToAddition( UnitQuaternion rv, UnitQuaternion a, UnitQuaternion b ) {
 		rv.x = a.x + b.x;
@@ -273,16 +298,19 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		rv.w = a.w + b.w;
 		return rv;
 	}
+
 	public static UnitQuaternion createAddition( UnitQuaternion a, UnitQuaternion b ) {
 		return setReturnValueToAddition( UnitQuaternion.createNaN(), a, b );
 	}
+
 	public void setToAddition( UnitQuaternion a, UnitQuaternion b ) {
 		setReturnValueToAddition( this, a, b );
 	}
+
 	public void add( UnitQuaternion b ) {
 		setToAddition( this, b );
 	}
-	
+
 	//Subtract
 	public static UnitQuaternion setReturnValueToSubtraction( UnitQuaternion rv, UnitQuaternion a, UnitQuaternion b ) {
 		rv.x = a.x - b.x;
@@ -291,12 +319,15 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		rv.w = a.w - b.w;
 		return rv;
 	}
+
 	public static UnitQuaternion createSubtraction( UnitQuaternion a, UnitQuaternion b ) {
 		return setReturnValueToSubtraction( UnitQuaternion.createNaN(), a, b );
 	}
+
 	public void setToSubtraction( UnitQuaternion a, UnitQuaternion b ) {
 		setReturnValueToSubtraction( this, a, b );
 	}
+
 	public void subtract( UnitQuaternion b ) {
 		setToSubtraction( this, b );
 	}
@@ -309,44 +340,49 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		rv.w = -a.w;
 		return rv;
 	}
+
 	public static UnitQuaternion createNegation( UnitQuaternion a ) {
 		return setReturnValueToNegation( UnitQuaternion.createNaN(), a );
 	}
+
 	public void setToNegation( UnitQuaternion a ) {
 		setReturnValueToNegation( this, a );
 	}
+
 	public void negate() {
 		setToNegation( this );
 	}
 
-
 	//Multiply
 	public static UnitQuaternion setReturnValueToMultiplication( UnitQuaternion rv, UnitQuaternion a, UnitQuaternion b ) {
 		throw new RuntimeException( "TODO" );
-		
-//		double w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z;
-//		double x = a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y;
-//		double y = a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x;
-//		double z = a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w;
-//		rv.x = x;
-//		rv.y = y;
-//		rv.z = z;
-//		rv.w = w;
+
+		//		double w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z;
+		//		double x = a.w * b.x + a.x * b.w + a.y * b.z - a.z * b.y;
+		//		double y = a.w * b.y - a.x * b.z + a.y * b.w + a.z * b.x;
+		//		double z = a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w;
+		//		rv.x = x;
+		//		rv.y = y;
+		//		rv.z = z;
+		//		rv.w = w;
 
 		//or
-		
-//		rv.x = a.x * b.x;
-//		rv.y = a.y * b.y;
-//		rv.z = a.z * b.z;
-//		rv.w = a.w * b.w;
-//		return rv;
+
+		//		rv.x = a.x * b.x;
+		//		rv.y = a.y * b.y;
+		//		rv.z = a.z * b.z;
+		//		rv.w = a.w * b.w;
+		//		return rv;
 	}
+
 	public static UnitQuaternion createMultiplication( UnitQuaternion a, UnitQuaternion b ) {
 		return setReturnValueToMultiplication( UnitQuaternion.createNaN(), a, b );
 	}
+
 	public void setToMultiplication( UnitQuaternion a, UnitQuaternion b ) {
 		setReturnValueToMultiplication( this, a, b );
 	}
+
 	public void multiply( UnitQuaternion b ) {
 		setToMultiplication( this, b );
 	}
@@ -358,34 +394,36 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		rv.w = a.w * b;
 		return rv;
 	}
+
 	public static UnitQuaternion createMultiplication( UnitQuaternion a, double b ) {
 		return setReturnValueToMultiplication( UnitQuaternion.createNaN(), a, b );
 	}
+
 	public void setToMultiplication( UnitQuaternion a, double b ) {
 		setReturnValueToMultiplication( this, a, b );
 	}
+
 	public void multiply( double b ) {
 		setToMultiplication( this, b );
 	}
 
-
 	//Divide
-//	public static UnitQuaternionD setReturnValueToDivision( UnitQuaternionD rv, UnitQuaternionD a, UnitQuaternionD b ) {
-//		rv.x = a.x / b.x;
-//		rv.y = a.y / b.y;
-//		rv.z = a.z / b.z;
-//		rv.w = a.w / b.w;
-//		return rv;
-//	}
-//	public static UnitQuaternionD createDivision( UnitQuaternionD a, UnitQuaternionD b ) {
-//		return setReturnValueToDivision( UnitQuaternionD.createNaN(), a, b );
-//	}
-//	public void setToDivision( UnitQuaternionD a, UnitQuaternionD b ) {
-//		setReturnValueToDivision( this, a, b );
-//	}
-//	public void divide( UnitQuaternionD b ) {
-//		setToDivision( this, b );
-//	}
+	//	public static UnitQuaternionD setReturnValueToDivision( UnitQuaternionD rv, UnitQuaternionD a, UnitQuaternionD b ) {
+	//		rv.x = a.x / b.x;
+	//		rv.y = a.y / b.y;
+	//		rv.z = a.z / b.z;
+	//		rv.w = a.w / b.w;
+	//		return rv;
+	//	}
+	//	public static UnitQuaternionD createDivision( UnitQuaternionD a, UnitQuaternionD b ) {
+	//		return setReturnValueToDivision( UnitQuaternionD.createNaN(), a, b );
+	//	}
+	//	public void setToDivision( UnitQuaternionD a, UnitQuaternionD b ) {
+	//		setReturnValueToDivision( this, a, b );
+	//	}
+	//	public void divide( UnitQuaternionD b ) {
+	//		setToDivision( this, b );
+	//	}
 	public static UnitQuaternion setReturnValueToDivision( UnitQuaternion rv, UnitQuaternion a, double b ) {
 		rv.x = a.x / b;
 		rv.y = a.y / b;
@@ -393,18 +431,19 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		rv.w = a.w / b;
 		return rv;
 	}
+
 	public static UnitQuaternion createDivision( UnitQuaternion a, double b ) {
 		return setReturnValueToDivision( UnitQuaternion.createNaN(), a, b );
 	}
+
 	public void setToDivision( UnitQuaternion a, double b ) {
 		setReturnValueToDivision( this, a, b );
 	}
+
 	public void divide( double b ) {
 		setToDivision( this, b );
 	}
 
-
-	
 	//Interpolate
 	public static UnitQuaternion setReturnValueToInterpolation( UnitQuaternion rv, UnitQuaternion a, UnitQuaternion b, double portion ) {
 		final double EPSILON = 0.0001;
@@ -417,7 +456,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		} else if( a.isWithinEpsilonOrIsNegativeWithinEpsilon( b, EPSILON ) ) {
 			rv.setValue( b );
 		} else {
-			double dotProduct = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+			double dotProduct = ( a.x * b.x ) + ( a.y * b.y ) + ( a.z * b.z ) + ( a.w * b.w );
 			double b_x;
 			double b_y;
 			double b_z;
@@ -437,41 +476,44 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 			double aPortion;
 			double bPortion;
 			final double THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION = 0.05;
-			if( 1 - dotProduct < THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION ) {
+			if( ( 1 - dotProduct ) < THRESHOLD_TO_PERFORM_SIMPLE_LINEAR_INTERPOLATION ) {
 				aPortion = 1 - portion;
 				bPortion = portion;
 			} else {
 				double halfAngle = Math.acos( dotProduct );
-//				double sineHalfAngle = Math.sin( halfAngle );
-				double sineHalfAngle = Math.sqrt( 1.0 - dotProduct * dotProduct );
-				aPortion = Math.sin( (1 - portion) * halfAngle ) / sineHalfAngle;
+				//				double sineHalfAngle = Math.sin( halfAngle );
+				double sineHalfAngle = Math.sqrt( 1.0 - ( dotProduct * dotProduct ) );
+				aPortion = Math.sin( ( 1 - portion ) * halfAngle ) / sineHalfAngle;
 				bPortion = Math.sin( portion * halfAngle ) / sineHalfAngle;
 			}
-			rv.x = a.x * aPortion + b_x * bPortion;
-			rv.y = a.y * aPortion + b_y * bPortion;
-			rv.z = a.z * aPortion + b_z * bPortion;
-			rv.w = a.w * aPortion + b_w * bPortion;
+			rv.x = ( a.x * aPortion ) + ( b_x * bPortion );
+			rv.y = ( a.y * aPortion ) + ( b_y * bPortion );
+			rv.z = ( a.z * aPortion ) + ( b_z * bPortion );
+			rv.w = ( a.w * aPortion ) + ( b_w * bPortion );
 			//normalizeIfNecessary( 0.001 );
 		}
 		assert rv.isNaN() == false;
 		return rv;
 	}
+
 	public static UnitQuaternion createInterpolation( UnitQuaternion a, UnitQuaternion b, double portion ) {
 		return setReturnValueToInterpolation( new UnitQuaternion(), a, b, portion );
 	}
+
 	public void setToInterpolation( UnitQuaternion a, UnitQuaternion b, double portion ) {
 		setReturnValueToInterpolation( this, a, b, portion );
 	}
-	
+
 	//Dot Product
 	public static double calculateDotProduct( UnitQuaternion a, UnitQuaternion b ) {
-		return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+		return ( a.x * b.x ) + ( a.y * b.y ) + ( a.z * b.z ) + ( a.w * b.w );
 	}
 
 	//Magnitude
 	public static double calculateMagnitudeSquared( double x, double y, double z, double w ) {
-		return x*x + y*y + z*z + w*w;
+		return ( x * x ) + ( y * y ) + ( z * z ) + ( w * w );
 	}
+
 	public static double calculateMagnitude( double x, double y, double z, double w ) {
 		double magnitudeSquared = calculateMagnitudeSquared( x, y, z, w );
 		if( magnitudeSquared == 1.0 ) {
@@ -484,6 +526,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 	public double calculateMagnitudeSquared() {
 		return UnitQuaternion.calculateMagnitudeSquared( x, y, z, w );
 	}
+
 	public double calculateMagnitude() {
 		return UnitQuaternion.calculateMagnitude( x, y, z, w );
 	}
@@ -496,16 +539,19 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		}
 		return rv;
 	}
+
 	public static UnitQuaternion createNormalized( UnitQuaternion a ) {
 		return setReturnValueToNormalized( UnitQuaternion.createNaN(), a );
 	}
+
 	public void setToNormalized( UnitQuaternion a ) {
 		setReturnValueToNormalized( this, a );
 	}
+
 	public void normalize() {
 		setToNormalized( this );
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

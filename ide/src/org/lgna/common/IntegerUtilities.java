@@ -49,18 +49,23 @@ public class IntegerUtilities {
 	public static Integer toFlooredInteger( Double d ) {
 		return (int)Math.floor( d );
 	}
+
 	public static Integer toRoundedInteger( Double d ) {
 		return (int)Math.round( d );
 	}
+
 	public static Integer toCeilingedInteger( Double d ) {
 		return (int)Math.ceil( d );
 	}
+
 	public static Integer toFlooredInteger( Float d ) {
 		return (int)Math.floor( d );
 	}
+
 	public static Integer toRoundedInteger( Float d ) {
 		return (int)Math.round( d );
 	}
+
 	public static Integer toCeilingedInteger( Float d ) {
 		return (int)Math.ceil( d );
 	}

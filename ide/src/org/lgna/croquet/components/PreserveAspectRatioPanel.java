@@ -48,20 +48,23 @@ import java.awt.Dimension;
  * @author Matt May
  */
 public class PreserveAspectRatioPanel extends Panel {
-	
+
 	private Dimension dimension;
 
 	public PreserveAspectRatioPanel( Component<?> centerPanel, Dimension dimension ) {
 		this.dimension = dimension;
 		this.internalAddComponent( centerPanel );
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.LayoutManager() {
 			public void addLayoutComponent( String name, java.awt.Component comp ) {
 			}
+
 			public void removeLayoutComponent( java.awt.Component comp ) {
 			}
+
 			private java.awt.Dimension layoutSize( java.awt.Container parent ) {
 				if( parent.getComponentCount() > 0 ) {
 					return parent.getComponent( 0 ).getPreferredSize();
@@ -69,34 +72,39 @@ public class PreserveAspectRatioPanel extends Panel {
 					return new java.awt.Dimension();
 				}
 			}
+
 			public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 				return this.layoutSize( parent );
 			}
+
 			public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 				return this.layoutSize( parent );
 			}
+
 			public void layoutContainer( java.awt.Container parent ) {
 				if( parent.getComponentCount() > 0 ) {
 					java.awt.Dimension parentSize = parent.getSize();
 					java.awt.Component component = parent.getComponent( 0 );
 					Dimension properSize = getProperSize();
 					component.setSize( properSize );
-					component.setLocation( (parentSize.width - properSize.width) / 2, (parentSize.height - properSize.height) / 2 );
-				} 
+					component.setLocation( ( parentSize.width - properSize.width ) / 2, ( parentSize.height - properSize.height ) / 2 );
+				}
 			}
+
 			private Dimension getProperSize() {
 				Dimension rv = new Dimension();
-				if(isTooFat()){
-					rv.width = (int)(getHeight()/dimension.getHeight()*dimension.getWidth());
+				if( isTooFat() ) {
+					rv.width = (int)( ( getHeight() / dimension.getHeight() ) * dimension.getWidth() );
 					rv.height = getHeight();
 				} else {
 					rv.width = getWidth();
-					rv.height = (int)(getWidth()/dimension.getWidth()*dimension.getHeight());
+					rv.height = (int)( ( getWidth() / dimension.getWidth() ) * dimension.getHeight() );
 				}
 				return rv;
 			}
+
 			private boolean isTooFat() {
-				return getWidth()/dimension.getWidth() > getHeight()/dimension.getHeight();
+				return ( getWidth() / dimension.getWidth() ) > ( getHeight() / dimension.getHeight() );
 			}
 		};
 	}

@@ -77,14 +77,16 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ToolPalette;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.MutableRider;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SModel;
 import org.lgna.story.SMovableTurnable;
-import org.lgna.story.MutableRider;
+import org.lgna.story.SThing;
 import org.lgna.story.implementation.BillboardImp;
 import org.lgna.story.implementation.ConeImp;
+import org.lgna.story.implementation.CylinderImp;
+import org.lgna.story.implementation.DiscImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.GroundImp;
 import org.lgna.story.implementation.JointedModelImp;
@@ -93,8 +95,6 @@ import org.lgna.story.implementation.RoomImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.implementation.TextModelImp;
-import org.lgna.story.implementation.CylinderImp;
-import org.lgna.story.implementation.DiscImp;
 import org.lgna.story.resources.JointedModelResource;
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel {
@@ -109,9 +109,10 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 	private org.lgna.croquet.State.ValueListener<Boolean> showJointsStateObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
+
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			assert (state instanceof ShowJointedModelJointAxesState);
-			SceneObjectPropertyManagerPanel.this.setShowJointsOfField( ((ShowJointedModelJointAxesState)state).getField(), nextValue );
+			assert ( state instanceof ShowJointedModelJointAxesState );
+			SceneObjectPropertyManagerPanel.this.setShowJointsOfField( ( (ShowJointedModelJointAxesState)state ).getField(), nextValue );
 		}
 	};
 
@@ -136,10 +137,11 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 		this.morePropertiesPanel = new GridBagPanel();
 		this.extraPropertiesPalette = AreExtraPropertiesShownState.getInstance().createToolPalette( this.morePropertiesPanel );
 	}
-	private void setShowJointsOfField(org.lgna.project.ast.AbstractField field, boolean showJoints) {
+
+	private void setShowJointsOfField( org.lgna.project.ast.AbstractField field, boolean showJoints ) {
 		JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
-		if (imp != null) {
-			imp.setAllJointPivotsVisibile(showJoints);
+		if( imp != null ) {
+			imp.setAllJointPivotsVisibile( showJoints );
 		}
 	}
 
@@ -159,40 +161,40 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
 	private void addNameAndControllerToPanel( Component<?> label, Component<?> controllerPanel, GridBagPanel panel, int index ) {
 		panel.addComponent( label, new GridBagConstraints( 0, //gridX
-				index, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
-				0, //ipadX
-				0 ) //ipadY
+		index, //gridY
+		1, //gridWidth
+		1, //gridHeight
+		0.0, //weightX
+		0.0, //weightY
+		GridBagConstraints.EAST, //anchor 
+		GridBagConstraints.NONE, //fill
+		new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
+		0, //ipadX
+		0 ) //ipadY
 		);
 		panel.addComponent( controllerPanel, new GridBagConstraints( 1, //gridX
-				index, //gridY 
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
-				0, //ipadX
-				0 ) //ipadY
+		index, //gridY 
+		1, //gridWidth
+		1, //gridHeight
+		0.0, //weightX
+		0.0, //weightY
+		GridBagConstraints.WEST, //anchor 
+		GridBagConstraints.NONE, //fill
+		new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
+		0, //ipadX
+		0 ) //ipadY
 		);
 		panel.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 2, //gridX
-				index, //gridY 
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-				0, //ipadX
-				0 ) //ipadY
+		index, //gridY 
+		1, //gridWidth
+		1, //gridHeight
+		1.0, //weightX
+		0.0, //weightY
+		GridBagConstraints.WEST, //anchor 
+		GridBagConstraints.HORIZONTAL, //fill
+		new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
+		0, //ipadX
+		0 ) //ipadY
 		);
 	}
 
@@ -200,11 +202,11 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 		this.addNameAndControllerToPanel( propertyPair.label, propertyPair.controller.getPanel(), panel, index );
 	}
 
-	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?> getPropertyAdapterForGetter( org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp ) {
+	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp ) {
 		org.lgna.project.ast.JavaMethod setter = org.lgna.project.ast.AstUtilities.getSetterForGetter( getter, declaringType );
 		org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForSetter( IDE.PROJECT_GROUP, setter );
-		boolean isVisible = setter == null || setter.getVisibility() == null || setter.getVisibility() == Visibility.PRIME_TIME;
-		if( setter != null && isVisible ) {
+		boolean isVisible = ( setter == null ) || ( setter.getVisibility() == null ) || ( setter.getVisibility() == Visibility.PRIME_TIME );
+		if( ( setter != null ) && isVisible ) {
 			if( setter.getName().equalsIgnoreCase( "setOpacity" ) ) {
 				if( entityImp instanceof ModelImp ) {
 					return new ModelOpacityAdapter( (ModelImp)entityImp, state );
@@ -217,33 +219,33 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 				}
 			} else if( setter.getName().equalsIgnoreCase( "setPaint" ) ) {
 				if( entityImp instanceof GroundImp ) {
-					return new PaintPropertyAdapter<GroundImp>( "Paint", (GroundImp)entityImp, ((GroundImp)entityImp).paint, state );
+					return new PaintPropertyAdapter<GroundImp>( "Paint", (GroundImp)entityImp, ( (GroundImp)entityImp ).paint, state );
 				} else if( entityImp instanceof ModelImp ) {
-					return new PaintPropertyAdapter<ModelImp>( "Paint", (ModelImp)entityImp, ((ModelImp)entityImp).paint, state );
+					return new PaintPropertyAdapter<ModelImp>( "Paint", (ModelImp)entityImp, ( (ModelImp)entityImp ).paint, state );
 				}
 			} else if( setter.getName().equalsIgnoreCase( "setVehicle" ) ) {
 				if( entityImp.getAbstraction() instanceof MutableRider ) {
 					return new MutableRiderVehicleAdapter( (MutableRider)entityImp.getAbstraction(), state, this.sceneInstance );
 				}
-			} else if (setter.getName().equalsIgnoreCase("setResource")) {
-				if (entityImp instanceof JointedModelImp<?, ?>) {
-					return new org.alice.stageide.properties.ResourcePropertyAdapter((JointedModelImp<?, ?>)entityImp, state);
+			} else if( setter.getName().equalsIgnoreCase( "setResource" ) ) {
+				if( entityImp instanceof JointedModelImp<?, ?> ) {
+					return new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)entityImp, state );
 				}
 			} else if( setter.getName().equalsIgnoreCase( "setFromAboveLightColor" ) ) {
 				if( entityImp instanceof SceneImp ) {
-					return new ColorPropertyAdapter<SceneImp>( "Above Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).fromAboveLightColor, state );
+					return new ColorPropertyAdapter<SceneImp>( "Above Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromAboveLightColor, state );
 				}
 			} else if( setter.getName().equalsIgnoreCase( "setFromBelowLightColor" ) ) {
 				if( entityImp instanceof SceneImp ) {
-					return new ColorPropertyAdapter<SceneImp>( "Below Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).fromBelowLightColor, state );
+					return new ColorPropertyAdapter<SceneImp>( "Below Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromBelowLightColor, state );
 				}
 			} else if( setter.getName().equalsIgnoreCase( "setAtmosphereColor" ) ) {
 				if( entityImp instanceof SceneImp ) {
-					return new ColorPropertyAdapter<SceneImp>( "Atmosphere Color", (SceneImp)entityImp, ((SceneImp)entityImp).atmosphereColor, state );
+					return new ColorPropertyAdapter<SceneImp>( "Atmosphere Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).atmosphereColor, state );
 				}
 			} else if( setter.getName().equalsIgnoreCase( "setAmbientLightColor" ) ) {
 				if( entityImp instanceof SceneImp ) {
-					return new ColorPropertyAdapter<SceneImp>( "Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).fromAboveLightColor, state );
+					return new ColorPropertyAdapter<SceneImp>( "Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromAboveLightColor, state );
 				}
 			} else if( setter.getName().equalsIgnoreCase( "setBackPaint" ) ) {
 				if( entityImp instanceof BillboardImp ) {
@@ -275,37 +277,37 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 				}
 			} else if( setter.getName().equalsIgnoreCase( "setRadius" ) ) {
 				if( entityImp instanceof SphereImp ) {
-					return new DoublePropertyAdapter<SphereImp>( "Opacity", (SphereImp)entityImp, ((SphereImp)entityImp).radius, state );
+					return new DoublePropertyAdapter<SphereImp>( "Opacity", (SphereImp)entityImp, ( (SphereImp)entityImp ).radius, state );
 				}
 			}
-			else if (setter.getName().equalsIgnoreCase("setRadius"))
+			else if( setter.getName().equalsIgnoreCase( "setRadius" ) )
 			{
-				if (entityImp instanceof CylinderImp) {
-					return new DoublePropertyAdapter<CylinderImp>("Radius", (CylinderImp)entityImp, ((CylinderImp)entityImp).radius, state);
+				if( entityImp instanceof CylinderImp ) {
+					return new DoublePropertyAdapter<CylinderImp>( "Radius", (CylinderImp)entityImp, ( (CylinderImp)entityImp ).radius, state );
 				}
-				else if (entityImp instanceof SphereImp)
+				else if( entityImp instanceof SphereImp )
 				{
-					return new DoublePropertyAdapter<SphereImp>("Radius", (SphereImp)entityImp, ((SphereImp)entityImp).radius, state);
+					return new DoublePropertyAdapter<SphereImp>( "Radius", (SphereImp)entityImp, ( (SphereImp)entityImp ).radius, state );
 				}
-				else if (entityImp instanceof DiscImp) {
-					return new DoublePropertyAdapter<DiscImp>("Radius", (DiscImp)entityImp, ((DiscImp)entityImp).outerRadius, state);
+				else if( entityImp instanceof DiscImp ) {
+					return new DoublePropertyAdapter<DiscImp>( "Radius", (DiscImp)entityImp, ( (DiscImp)entityImp ).outerRadius, state );
 				}
 			}
-			else if (setter.getName().equalsIgnoreCase("setBaseRadius"))
+			else if( setter.getName().equalsIgnoreCase( "setBaseRadius" ) )
 			{
-				if (entityImp instanceof ConeImp)
+				if( entityImp instanceof ConeImp )
 				{
-					return new DoublePropertyAdapter<ConeImp>("Radius", (ConeImp)entityImp, ((ConeImp)entityImp).baseRadius, state);
+					return new DoublePropertyAdapter<ConeImp>( "Radius", (ConeImp)entityImp, ( (ConeImp)entityImp ).baseRadius, state );
 				}
 			}
-			else if (setter.getName().equalsIgnoreCase("setLength"))
+			else if( setter.getName().equalsIgnoreCase( "setLength" ) )
 			{
-				if (entityImp instanceof CylinderImp) {
-					return new DoublePropertyAdapter<CylinderImp>("Length", (CylinderImp)entityImp, ((CylinderImp)entityImp).length, state);
+				if( entityImp instanceof CylinderImp ) {
+					return new DoublePropertyAdapter<CylinderImp>( "Length", (CylinderImp)entityImp, ( (CylinderImp)entityImp ).length, state );
 				}
-				else if (entityImp instanceof ConeImp)
+				else if( entityImp instanceof ConeImp )
 				{
-					return new DoublePropertyAdapter<ConeImp>("Length", (ConeImp)entityImp, ((ConeImp)entityImp).length, state);
+					return new DoublePropertyAdapter<ConeImp>( "Length", (ConeImp)entityImp, ( (ConeImp)entityImp ).length, state );
 				}
 			} else {
 				System.out.println( "Unknown setter: " + setter.getName() );
@@ -321,7 +323,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 		this.removeAllComponents();
 		this.morePropertiesPanel.removeAllComponents();
 		if( this.selectedInstance != null ) {
-			List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?>>();
+			List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?>>();
 
 			Iterable<org.lgna.project.ast.JavaMethod> getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( this.selectedInstance.getValueType() );
 			JavaType declaringType = this.selectedInstance.getValueType().getFirstEncounteredJavaType();
@@ -329,18 +331,18 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 			propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
 
 			for( org.lgna.project.ast.JavaMethod getter : getterMethods ) {
-				org.alice.ide.properties.adapter.AbstractPropertyAdapter<?,?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp );
+				org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp );
 				if( adapter != null ) {
 					propertyAdapters.add( adapter );
 				}
 			}
-			if (this.selectedEntity instanceof SMovableTurnable)
+			if( this.selectedEntity instanceof SMovableTurnable )
 			{
-				propertyAdapters.add( new MoveableTurnableTranslationAdapter((SMovableTurnable)this.selectedEntity, null));
+				propertyAdapters.add( new MoveableTurnableTranslationAdapter( (SMovableTurnable)this.selectedEntity, null ) );
 			}
-			if (this.selectedEntity instanceof SModel && this.selectedImp instanceof ModelImp)
+			if( ( this.selectedEntity instanceof SModel ) && ( this.selectedImp instanceof ModelImp ) )
 			{
-				propertyAdapters.add( new ModelSizeAdapter((ModelImp)this.selectedImp, null));
+				propertyAdapters.add( new ModelSizeAdapter( (ModelImp)this.selectedImp, null ) );
 			}
 
 			LabelValueControllerPair fieldNamePair = null;
@@ -367,7 +369,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 					this.activeControllers.add( matchingLabelController );
 				}
 
-				org.lgna.project.ast.AbstractType<?,?,?> valueType;
+				org.lgna.project.ast.AbstractType<?, ?, ?> valueType;
 				//Setup the primary properties
 				if( this.selectedInstance != null ) {
 					valueType = this.selectedInstance.getValueType();
@@ -382,7 +384,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 				//Add the object's class
 				this.addNameAndControllerToPanel( this.classNameLabel, org.alice.ide.common.TypeComponent.createInstance( valueType ), this, mainPropertyCount++ );
 
-				if( this.selectedImp instanceof JointedModelImp && this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+				if( ( this.selectedImp instanceof JointedModelImp ) && ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
 					org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
 					if( this.showJointsState != null ) {
 						this.showJointsState.removeValueListener( this.showJointsStateObserver );
@@ -396,29 +398,29 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 				//Lastly, add the extra palette if there are any extra properties
 				if( extraPropertyCount > 0 ) {
 					this.addComponent( this.extraPropertiesPalette, new GridBagConstraints( 0, //gridX
-							mainPropertyCount++, //gridY
-							2, //gridWidth
-							1, //gridHeight
-							1.0, //weightX
-							0.0, //weightY
-							GridBagConstraints.WEST, //anchor 
-							GridBagConstraints.HORIZONTAL, //fill
-							new Insets( 4, 0, 0, 0 ), // insets (top, left, bottom, right)
-							0, //ipadX
-							0 ) //ipadY
+					mainPropertyCount++, //gridY
+					2, //gridWidth
+					1, //gridHeight
+					1.0, //weightX
+					0.0, //weightY
+					GridBagConstraints.WEST, //anchor 
+					GridBagConstraints.HORIZONTAL, //fill
+					new Insets( 4, 0, 0, 0 ), // insets (top, left, bottom, right)
+					0, //ipadX
+					0 ) //ipadY
 					);
 				}
 				this.addComponent( BoxUtilities.createVerticalGlue(), new GridBagConstraints( 0, //gridX
-						mainPropertyCount++, //gridY
-						2, //gridWidth
-						1, //gridHeight
-						1.0, //weightX
-						1.0, //weightY
-						GridBagConstraints.CENTER, //anchor 
-						GridBagConstraints.VERTICAL, //fill
-						new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-						0, //ipadX
-						0 ) //ipadY
+				mainPropertyCount++, //gridY
+				2, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.VERTICAL, //fill
+				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
+				0, //ipadX
+				0 ) //ipadY
 				);
 			}
 		}
@@ -431,9 +433,9 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 			Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( this.selectedInstance.createExpression() );
 			if( instanceInJava instanceof org.lgna.story.SThing ) {
 				this.selectedEntity = (org.lgna.story.SThing)instanceInJava;
-				this.selectedImp = ImplementationAccessor.getImplementation(this.selectedEntity);
+				this.selectedImp = ImplementationAccessor.getImplementation( this.selectedEntity );
 			}
-			else if (instanceInJava instanceof org.lgna.story.implementation.EntityImp)
+			else if( instanceInJava instanceof org.lgna.story.implementation.EntityImp )
 			{
 				this.selectedImp = (org.lgna.story.implementation.EntityImp)instanceInJava;
 				this.selectedEntity = this.selectedImp.getAbstraction();

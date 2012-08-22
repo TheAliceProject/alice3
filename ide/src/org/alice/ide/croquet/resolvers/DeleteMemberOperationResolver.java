@@ -46,22 +46,23 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMemberOperationResolver< N extends org.lgna.project.ast.AbstractMember > extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.DeleteMemberOperation< N > > {
+public class DeleteMemberOperationResolver<N extends org.lgna.project.ast.AbstractMember> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<org.alice.ide.croquet.models.ast.DeleteMemberOperation<N>> {
 	public DeleteMemberOperationResolver( org.alice.ide.croquet.models.ast.DeleteMemberOperation<N> instance ) {
-		super( instance, 
+		super( instance,
 				new Class[] {
-					instance.getNodeParameterType(),
-					org.lgna.project.ast.UserType.class
-				}, 
+						instance.getNodeParameterType(),
+						org.lgna.project.ast.UserType.class
+				},
 				new Object[] {
-					instance.getMember(),
-					instance.getDeclaringType()
-				}
-		);
+						instance.getMember(),
+						instance.getDeclaringType()
+				} );
 	}
+
 	public DeleteMemberOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		java.util.UUID memberId = binaryDecoder.decodeId();
@@ -71,6 +72,7 @@ public class DeleteMemberOperationResolver< N extends org.lgna.project.ast.Abstr
 		org.lgna.project.ast.UserType<?> declaringType = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), declaringTypeId );
 		return new Object[] { member, declaringType };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		org.lgna.project.ast.AbstractMember member = (org.lgna.project.ast.AbstractMember)arguments[ 0 ];

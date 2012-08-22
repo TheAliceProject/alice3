@@ -3,10 +3,11 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 import org.lgna.story.event.CollisionEndListener;
 
 public class EndCollisionEventAdapterFillIn extends LambdaExpressionFillIn {
-	
+
 	private static class SingletonHolder {
 		private static EndCollisionEventAdapterFillIn instance = new EndCollisionEventAdapterFillIn();
 	}
+
 	public static EndCollisionEventAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}

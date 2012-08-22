@@ -50,9 +50,11 @@ public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
 	private static class SingletonHolder {
 		private static CodePerspectiveComposite instance = new CodePerspectiveComposite();
 	}
+
 	public static CodePerspectiveComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
 			if( ignoreDividerChangeCount > 0 ) {
@@ -61,7 +63,7 @@ public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
 				CodeContextSplitComposite otherComposite = CodeContextSplitComposite.getInstance();
 				org.lgna.croquet.components.SplitPane otherSplitPane = otherComposite.getView();
 				int prevValue = otherSplitPane.getDividerLocation();
-				int nextValue = (int)( (Integer)e.getNewValue()/org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
+				int nextValue = (int)( (Integer)e.getNewValue() / org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
 				if( prevValue != nextValue ) {
 					otherComposite.incrementIgnoreDividerLocationChangeCount();
 					try {
@@ -75,18 +77,21 @@ public class CodePerspectiveComposite extends org.lgna.croquet.SplitComposite {
 		}
 	};
 	private int ignoreDividerChangeCount = 0;
+
 	private CodePerspectiveComposite() {
 		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ),
 				CodeContextSplitComposite.getInstance(),
-				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance()
-		);
+				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance() );
 	}
+
 	public void incrementIgnoreDividerLocationChangeCount() {
-		this.ignoreDividerChangeCount ++;
+		this.ignoreDividerChangeCount++;
 	}
+
 	public void decrementIgnoreDividerLocationChangeCount() {
-		this.ignoreDividerChangeCount --;
+		this.ignoreDividerChangeCount--;
 	}
+
 	@Override
 	protected org.lgna.croquet.components.SplitPane createView() {
 		org.lgna.croquet.components.SplitPane rv = this.createHorizontalSplitPane();

@@ -44,11 +44,12 @@ package org.alice.ide.croquet.models.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
- *
+ * 
  */
-public class ResourceCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractType< ?,?,? >, org.lgna.croquet.DropSite, ResourceCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static ResourceCascade getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type, org.lgna.croquet.DropSite dropSite ) {
+public class ResourceCascade extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.croquet.DropSite, ResourceCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+	public static ResourceCascade getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.croquet.DropSite dropSite ) {
 		synchronized( mapToMap ) {
 			ResourceCascade rv = mapToMap.get( type, dropSite );
 			if( rv != null ) {
@@ -60,18 +61,21 @@ public class ResourceCascade extends org.lgna.croquet.Cascade< org.lgna.project.
 			return rv;
 		}
 	}
+
 	private final org.lgna.croquet.DropSite dropSite;
-	private ResourceCascade( org.lgna.project.ast.AbstractType< ?,?,? > type,  org.lgna.croquet.DropSite dropSite ) {
+
+	private ResourceCascade( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.croquet.DropSite dropSite ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "53db430a-0d90-47d2-ad03-487e1dffb47d" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.declaration.GalleryResourceBlank.getInstance( type ) );
 		this.dropSite = dropSite;
 	}
+
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> completionStep, org.lgna.project.ast.Expression[] values ) {
-		if (values[0] instanceof org.lgna.project.ast.FieldAccess) {
-			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess) values[0];
+	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+		if( values[ 0 ] instanceof org.lgna.project.ast.FieldAccess ) {
+			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)values[ 0 ];
 			org.lgna.project.ast.AbstractField argumentField = fieldAccess.field.getValue();
 			org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, this.dropSite ).fire();
-		} else if( values[ 0 ] instanceof org.lgna.project.ast.TypeExpression ){
+		} else if( values[ 0 ] instanceof org.lgna.project.ast.TypeExpression ) {
 			org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance().fire();
 		}
 		//todo

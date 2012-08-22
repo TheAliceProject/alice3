@@ -50,6 +50,7 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 	private final org.lgna.project.ast.UserType<?> declaringType;
 	private final int index;
 	private final M member;
+
 	public DeleteMemberEdit( org.lgna.croquet.history.CompletionStep completionStep, M member ) {
 		super( completionStep );
 		this.declaringType = member.getDeclaringType();
@@ -58,13 +59,16 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		assert this.index != -1 : member;
 		this.member = member;
 	}
+
 	public DeleteMemberEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
 		this.index = binaryDecoder.decodeInt();
 		this.member = (M)org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMember.class ).decodeValue( binaryDecoder );
 	}
+
 	protected abstract org.lgna.project.ast.NodeListProperty<M> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType );
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -72,6 +76,7 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		binaryEncoder.encode( this.index );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMember.class ).encodeValue( binaryEncoder, this.member );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
@@ -80,6 +85,7 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
+
 	@Override
 	protected final void undoInternal() {
 		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
@@ -87,10 +93,11 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member, org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, member, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 }

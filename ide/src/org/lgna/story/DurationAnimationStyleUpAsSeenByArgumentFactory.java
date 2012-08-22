@@ -50,6 +50,7 @@ public class DurationAnimationStyleUpAsSeenByArgumentFactory extends DurationAni
 	protected DurationAnimationStyleUpAsSeenByArgumentFactory() {
 		super();
 	}
+
 	public static UpAsSeenBy upAsSeenBy( SThing entity ) {
 		return new UpAsSeenBy( entity );
 	}

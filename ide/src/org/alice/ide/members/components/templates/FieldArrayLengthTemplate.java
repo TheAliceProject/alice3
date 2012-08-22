@@ -45,8 +45,9 @@ package org.alice.ide.members.components.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class FieldArrayLengthTemplate extends org.alice.ide.templates.ExpressionTemplate {
+/* package-private */class FieldArrayLengthTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
+
 	public FieldArrayLengthTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.ast.draganddrop.expression.FieldArrayLengthDragModel.getInstance( field ) );
 		this.field = field;
@@ -55,6 +56,7 @@ package org.alice.ide.members.components.templates;
 			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return new org.lgna.project.ast.ArrayLength( org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ) );

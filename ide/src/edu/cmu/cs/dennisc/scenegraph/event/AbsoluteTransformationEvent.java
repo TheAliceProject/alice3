@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.scenegraph.event;
 /**
  * @author Dennis Cosgrove
  */
-public class AbsoluteTransformationEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.scenegraph.Component > {
+public class AbsoluteTransformationEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.scenegraph.Component> {
 	public AbsoluteTransformationEvent( edu.cmu.cs.dennisc.scenegraph.Component source ) {
 		super( source );
 	}

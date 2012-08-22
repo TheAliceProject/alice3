@@ -45,7 +45,7 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> extends org.alice.ide.croquet.components.InputDialogPanelWithPreview< org.alice.ide.croquet.models.custom.CustomInputDialogOperation< E > > {
+public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> extends org.alice.ide.croquet.components.InputDialogPanelWithPreview<org.alice.ide.croquet.models.custom.CustomInputDialogOperation<E>> {
 	protected org.lgna.project.ast.Expression getPreviousExpression() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
@@ -54,8 +54,9 @@ public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> ex
 			return null;
 		}
 	}
+
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		org.lgna.project.ast.Expression expression;
 		try {
 			expression = this.getValue();
@@ -64,9 +65,11 @@ public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> ex
 			expression = new org.lgna.project.ast.NullLiteral();
 		}
 		return new org.lgna.croquet.components.BorderPanel.Builder()
-			.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
-		.build();
+				.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
+				.build();
 	}
+
 	public abstract E getValue();
+
 	public abstract String getExplanationIfOkButtonShouldBeDisabled();
 }

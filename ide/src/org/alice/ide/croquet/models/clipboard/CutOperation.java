@@ -49,16 +49,19 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 	private static class SingletonHolder {
 		private static CutOperation instance = new CutOperation();
 	}
+
 	public static CutOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private CutOperation() {
 		super( java.util.UUID.fromString( "48a0202c-8153-4772-89ca-08fe5a8f28b5" ) );
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String title = "Cut coming soon";
 		String message = "Selection is not yet implemented.  Cut is limited to dragging statements to the clipboard in the top right corner.";
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION ); 
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.INFORMATION );
 	}
 }

@@ -41,7 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitCoach implements FemaleAdultFullBodyOutfit {
-	REDBLUE ,
- 	BLUERED ;
+	REDBLUE,
+	BLUERED;
 }

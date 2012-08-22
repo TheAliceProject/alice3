@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author alice
- *
+ * 
  */
 public interface ForgettableBinding {
 	public void forget( RenderContext rc );

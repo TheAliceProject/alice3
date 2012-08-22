@@ -47,17 +47,19 @@ package org.alice.stageide;
  */
 class SplashIcon extends javax.swing.ImageIcon {
 	private String text;
+
 	SplashIcon( java.net.URL url, String text ) {
 		super( url );
 		this.text = text;
 	}
+
 	@Override
 	public synchronized void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		super.paintIcon( c, g, x, y );
 		int w = this.getIconWidth();
 		int h = this.getIconHeight();
 		g.setColor( new java.awt.Color( 0x379bd5 ) );
-		g.drawString( this.text, x + (int)(w*0.45), y + (int)(h*0.75) );
+		g.drawString( this.text, x + (int)( w * 0.45 ), y + (int)( h * 0.75 ) );
 	}
 }
 
@@ -66,7 +68,7 @@ class SplashIcon extends javax.swing.ImageIcon {
  */
 public class EntryPoint {
 	public static void main( final String[] args ) {
-		String text = org.lgna.project.Version.getCurrentVersionText()/* + " BETA"*/;
+		String text = org.lgna.project.Version.getCurrentVersionText()/* + " BETA" */;
 		System.out.println( "version: " + text );
 		javax.swing.Icon icon = new SplashIcon( EntryPoint.class.getResource( "images/SplashScreen.png" ), text );
 		java.awt.Window splashScreen = new edu.cmu.cs.dennisc.javax.swing.components.JSplashScreen( null, icon );

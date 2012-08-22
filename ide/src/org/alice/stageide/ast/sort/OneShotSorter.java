@@ -48,17 +48,17 @@ package org.alice.stageide.ast.sort;
  */
 public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	SINGLETON {
-		public <T extends org.lgna.project.ast.AbstractMember> java.util.List< T > createSortedList( java.util.List< T > src ) {
-			java.util.List< T > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( src );
-			java.util.Collections.sort( rv, new java.util.Comparator< T >() {
-				public int compare(T o1, T o2) {
+		public <T extends org.lgna.project.ast.AbstractMember> java.util.List<T> createSortedList( java.util.List<T> src ) {
+			java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( src );
+			java.util.Collections.sort( rv, new java.util.Comparator<T>() {
+				public int compare( T o1, T o2 ) {
 					return Double.compare( getValue( o1 ), getValue( o2 ) );
 				}
 			} );
 			return rv;
 		}
 	};
-	private static final java.util.Map< org.lgna.project.ast.JavaMethod, Double > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<org.lgna.project.ast.JavaMethod, Double> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static final org.lgna.project.ast.JavaMethod TURN_METHOD;
 	public static final org.lgna.project.ast.JavaMethod ROLL_METHOD;
@@ -73,7 +73,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	public static final org.lgna.project.ast.JavaMethod MOVE_TO_METHOD;
 	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_METHOD;
 	public static final org.lgna.project.ast.JavaMethod PLACE_METHOD;
-	
+
 	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD;
 
 	public static final org.lgna.project.ast.JavaMethod STRAIGHTEN_OUT_JOINTS_METHOD;
@@ -115,7 +115,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 
 		MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD = cameraType.getDeclaredMethod( "moveAndOrientToAGoodVantagePointOf", org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientToAGoodVantagePointOf.Detail[].class );
 		assert MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD != null;
-		
+
 		double value = 1.0;
 		final double INCREMENT = 0.01;
 		map.put( MOVE_METHOD, value += INCREMENT );
@@ -123,7 +123,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		map.put( MOVE_AWAY_FROM_METHOD, value += INCREMENT );
 		map.put( TURN_METHOD, value += INCREMENT );
 		map.put( ROLL_METHOD, value += INCREMENT );
-		
+
 		value = 2.0;
 		map.put( MOVE_TO_METHOD, value += INCREMENT );
 		map.put( MOVE_AND_ORIENT_TO_METHOD, value += INCREMENT );
@@ -133,10 +133,11 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		map.put( POINT_AT_METHOD, value += INCREMENT );
 		map.put( ORIENT_TO_UPRIGHT_METHOD, value += INCREMENT );
 		map.put( ORIENT_TO_METHOD, value += INCREMENT );
-		
+
 		value = 3.0;
 		map.put( STRAIGHTEN_OUT_JOINTS_METHOD, value += INCREMENT );
 	}
+
 	private static double getValue( org.lgna.project.ast.AbstractMember method ) {
 		Double rv = map.get( method );
 		if( rv != null ) {

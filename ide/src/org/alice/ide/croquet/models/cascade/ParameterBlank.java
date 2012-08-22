@@ -47,7 +47,7 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ParameterBlank extends ExpressionBlank {
-	private static java.util.Map< org.lgna.project.ast.AbstractParameter, ParameterBlank > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractParameter, ParameterBlank> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized ParameterBlank getInstance( org.lgna.project.ast.AbstractParameter parameter ) {
 		assert parameter != null;
@@ -67,12 +67,13 @@ public class ParameterBlank extends ExpressionBlank {
 		super( java.util.UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getValueType(), parameter.getDetails() );
 		this.parameter = parameter;
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > valueType = this.parameter.getValueType();
-		org.lgna.project.ast.AbstractType< ?,?,? > keywordFactoryType = valueType.getKeywordFactoryType();
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = this.parameter.getValueType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {
-			Class<?> cls = ((org.lgna.project.ast.JavaType)keywordFactoryType).getClassReflectionProxy().getReification();
+			Class<?> cls = ( (org.lgna.project.ast.JavaType)keywordFactoryType ).getClassReflectionProxy().getReification();
 			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
 				org.lgna.project.ast.JavaType returnType = org.lgna.project.ast.JavaType.getInstance( mthd.getReturnType() );
 				if( returnType == valueType ) {

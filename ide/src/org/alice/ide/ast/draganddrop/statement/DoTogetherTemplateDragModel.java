@@ -50,12 +50,15 @@ public class DoTogetherTemplateDragModel extends StatementTemplateDragModel {
 	private static class SingletonHolder {
 		private static DoTogetherTemplateDragModel instance = new DoTogetherTemplateDragModel();
 	}
+
 	public static DoTogetherTemplateDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private DoTogetherTemplateDragModel() {
 		super( java.util.UUID.fromString( "7d494762-cb12-4fd1-92d4-869a1b3e244a" ), org.lgna.project.ast.DoTogether.class, org.lgna.project.ast.AstUtilities.createDoTogether() );
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.DoTogetherInsertOperation.getInstance( blockStatementIndexPair );

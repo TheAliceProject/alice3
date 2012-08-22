@@ -53,13 +53,15 @@ public class Cell {
 	private boolean m_isOccupied;
 
 	private Cell m_parent = null;
-	
+
 	Cell() {
 	}
+
 	Cell( int row, int column ) {
 		setRow( row );
 		setColumn( column );
 	}
+
 	@Override
 	public boolean equals( Object other ) {
 		if( other instanceof Cell ) {
@@ -69,38 +71,44 @@ public class Cell {
 			return super.equals( other );
 		}
 	}
+
 	public boolean isLocatedAt( int row, int column ) {
-		return m_row == row && m_column == column;
+		return ( m_row == row ) && ( m_column == column );
 	}
-	
+
 	public int getRow() {
 		if( isOutOfBounds() ) {
 			throw new RuntimeException();
 		}
 		return m_row;
 	}
+
 	public int getColumn() {
 		if( isOutOfBounds() ) {
 			throw new RuntimeException();
 		}
 		return m_column;
 	}
+
 	private void setRow( int row ) {
 		m_row = row;
 	}
+
 	private void setColumn( int column ) {
 		m_column = column;
 	}
-	
+
 	public boolean isOutOfBounds() {
-		return m_row < 0 || m_column < 0;
+		return ( m_row < 0 ) || ( m_column < 0 );
 	}
+
 	public boolean isOccupied() {
 		if( isOutOfBounds() ) {
 			throw new RuntimeException();
 		}
 		return m_isOccupied;
 	}
+
 	public void setOccupied( boolean isOccupied ) {
 		if( isOutOfBounds() ) {
 			throw new RuntimeException();
@@ -114,6 +122,7 @@ public class Cell {
 		}
 		return m_parent;
 	}
+
 	public void setParent( Cell parent ) {
 		if( isOutOfBounds() ) {
 			throw new RuntimeException();
@@ -123,6 +132,7 @@ public class Cell {
 		}
 		m_parent = parent;
 	}
+
 	public int getGToNeighbor( Cell neighbor ) {
 		if( isOutOfBounds() ) {
 			throw new RuntimeException();
@@ -137,6 +147,7 @@ public class Cell {
 			}
 		}
 	}
+
 	public int getG() {
 		if( isOutOfBounds() ) {
 			throw new RuntimeException();
@@ -147,6 +158,7 @@ public class Cell {
 			return 0;
 		}
 	}
+
 	public int getH( Cell dst ) {
 		if( isOutOfBounds() ) {
 			throw new RuntimeException();
@@ -163,10 +175,11 @@ public class Cell {
 			} else {
 				int max = Math.max( rowCount, columnCount );
 				int min = Math.min( rowCount, columnCount );
-				return max*10 + min*4;
+				return ( max * 10 ) + ( min * 4 );
 			}
 		}
 	}
+
 	@Override
 	public String toString() {
 		return "[ " + m_row + ", " + m_column + " ]";

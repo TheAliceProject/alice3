@@ -46,25 +46,29 @@ package org.alice.ide.video;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogOperation< Void > {
+public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogOperation<Void> {
 	public RecordVideoOperation( java.util.UUID id ) {
 		super( org.alice.ide.IDE.EXPORT_GROUP, id );
 	}
 
 	private double frameRate = 24.0;
+
 	public double getFrameRate() {
 		return this.frameRate;
 	}
+
 	public void setFrameRate( double frameRate ) {
 		this.frameRate = frameRate;
 	}
 
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
+
 	protected abstract org.alice.ide.video.components.RecordVideoPanel createVideoExportPanel();
+
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
 		public void update( double tCurrent ) {
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
-			if( lookingGlass.getWidth() > 0 && lookingGlass.getHeight() > 0 ) {
+			if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
 				if( image != null ) {
 					//pass
 				} else {
@@ -81,18 +85,22 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
 			}
 		}
+
 		public void complete() {
 		}
 	};
-	
+
 	private java.awt.image.BufferedImage image;
 	private int imageCount;
+
 	protected abstract void handleImage( java.awt.image.BufferedImage image, int i );
-	
+
 	private boolean isRecording;
+
 	public boolean isRecording() {
 		return this.isRecording;
 	}
+
 	public void setRecording( boolean isRecording ) {
 		if( this.isRecording != isRecording ) {
 			if( this.isRecording ) {
@@ -104,9 +112,9 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 			}
 		}
 	}
-	
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.components.JComponent<?> prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		final org.alice.ide.video.components.RecordVideoPanel videoExportPanel = this.createVideoExportPanel();
 		new Thread() {
 			@Override
@@ -122,15 +130,16 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 		}.start();
 		return videoExportPanel;
 	}
+
 	@Override
 	protected void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit ) {
 		if( isCommit ) {
 			step.finish();
 		}
 	}
-	
+
 	@Override
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		this.setRecording( false );
 		programContext.cleanUpProgram();

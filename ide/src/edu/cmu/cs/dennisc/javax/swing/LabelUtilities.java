@@ -49,40 +49,48 @@ public class LabelUtilities {
 	private LabelUtilities() {
 		throw new AssertionError();
 	}
+
 	public static javax.swing.JLabel createLabel() {
 		return new javax.swing.JLabel();
 	}
+
 	public static javax.swing.JLabel createLabel( javax.swing.Icon icon ) {
 		javax.swing.JLabel rv = createLabel();
 		rv.setIcon( icon );
 		return rv;
 	}
+
 	public static javax.swing.JLabel createLabel( String text ) {
 		javax.swing.JLabel rv = createLabel();
 		rv.setText( text );
 		return rv;
 	}
-	public static javax.swing.JLabel createLabel( String text, java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
+
+	public static javax.swing.JLabel createLabel( String text, java.util.Map<? extends java.awt.font.TextAttribute, Object> map ) {
 		javax.swing.JLabel rv = createLabel( text );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, map );
 		return rv;
 	}
+
 	public static javax.swing.JLabel createLabel( String text, java.awt.font.TextAttribute attribute, Object value ) {
 		javax.swing.JLabel rv = createLabel( text );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, attribute, value );
 		return rv;
 	}
-	public static javax.swing.JLabel createLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+
+	public static javax.swing.JLabel createLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		javax.swing.JLabel rv = createLabel( text );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, textAttributes );
 		return rv;
 	}
+
 	public static javax.swing.JLabel createLabelWithScaledFont( String text, float scaleFactor ) {
 		javax.swing.JLabel rv = createLabel( text );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( rv, scaleFactor );
 		return rv;
 	}
-	public static javax.swing.JLabel createLabelWithScaledFont( String text, float scaleFactor, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+
+	public static javax.swing.JLabel createLabelWithScaledFont( String text, float scaleFactor, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		javax.swing.JLabel rv = createLabel( text, textAttributes );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( rv, scaleFactor );
 		return rv;

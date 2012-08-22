@@ -47,10 +47,10 @@ package edu.cmu.cs.dennisc.animation.affine;
  */
 public class PositionAnimation extends AffineAnimation {
 	public static final edu.cmu.cs.dennisc.math.Point3 USE_EXISTING_VALUE_AT_RUN_TIME = null;
-	
+
 	private edu.cmu.cs.dennisc.math.Point3 m_posBegin = new edu.cmu.cs.dennisc.math.Point3();
 	private edu.cmu.cs.dennisc.math.Point3 m_posEnd = new edu.cmu.cs.dennisc.math.Point3();
-	
+
 	private edu.cmu.cs.dennisc.math.Point3 m_posBeginUsedAtRuntime = new edu.cmu.cs.dennisc.math.Point3();
 
 	public PositionAnimation() {
@@ -58,6 +58,7 @@ public class PositionAnimation extends AffineAnimation {
 		m_posBegin.setNaN();
 		m_posEnd.setNaN();
 	}
+
 	public PositionAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Point3 posBegin, edu.cmu.cs.dennisc.math.Point3 posEnd ) {
 		super( sgSubject, sgAsSeenBy );
 		m_posBeginUsedAtRuntime.setNaN();
@@ -68,10 +69,12 @@ public class PositionAnimation extends AffineAnimation {
 	public edu.cmu.cs.dennisc.math.Point3 accessPositionBeginUsedAtRuntime() {
 		return m_posBeginUsedAtRuntime;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionBeginUsedAtRuntime( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		rv.set( m_posBeginUsedAtRuntime );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionBeginUsedAtRuntime() {
 		return getPositionBeginUsedAtRuntime( new edu.cmu.cs.dennisc.math.Point3() );
 	}
@@ -79,13 +82,16 @@ public class PositionAnimation extends AffineAnimation {
 	public edu.cmu.cs.dennisc.math.Point3 accessPositionBegin() {
 		return m_posBegin;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionBegin( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		rv.set( m_posBegin );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionBegin() {
 		return getPositionBegin( new edu.cmu.cs.dennisc.math.Point3() );
 	}
+
 	public void setPositionBegin( edu.cmu.cs.dennisc.math.Point3 posBegin ) {
 		if( posBegin != USE_EXISTING_VALUE_AT_RUN_TIME ) {
 			m_posBegin.set( posBegin );
@@ -97,17 +103,20 @@ public class PositionAnimation extends AffineAnimation {
 	public edu.cmu.cs.dennisc.math.Point3 accessPositionEnd() {
 		return m_posEnd;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionEnd( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		rv.set( m_posEnd );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionEnd() {
 		return getPositionEnd( new edu.cmu.cs.dennisc.math.Point3() );
 	}
+
 	public void setPositionEnd( edu.cmu.cs.dennisc.math.Point3 posEnd ) {
 		m_posEnd.set( posEnd );
 	}
-	
+
 	@Override
 	public void prologue() {
 		if( m_posBegin.isNaN() ) {
@@ -116,10 +125,12 @@ public class PositionAnimation extends AffineAnimation {
 			m_posBeginUsedAtRuntime.set( m_posBegin );
 		}
 	}
+
 	@Override
 	public void setPortion( double portion ) {
 		getSubject().setTranslationOnly( edu.cmu.cs.dennisc.math.InterpolationUtilities.interpolate( m_posBeginUsedAtRuntime, m_posEnd, portion ), getAsSeenBy() );
 	}
+
 	@Override
 	public void epilogue() {
 		getSubject().setTranslationOnly( m_posEnd, getAsSeenBy() );

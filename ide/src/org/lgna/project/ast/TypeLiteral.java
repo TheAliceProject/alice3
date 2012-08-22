@@ -46,25 +46,31 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class TypeLiteral extends AbstractValueLiteral {
-	public DeclarationProperty<AbstractType<?,?,?>> value = new DeclarationProperty<AbstractType<?,?,?>>( this );
+	public DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+
 	public TypeLiteral() {
 	}
-	public TypeLiteral( AbstractType<?,?,?> value ) {
+
+	public TypeLiteral( AbstractType<?, ?, ?> value ) {
 		this.value.setValue( value );
 	}
-	public TypeLiteral( Class< ? > cls ) {
+
+	public TypeLiteral( Class<?> cls ) {
 		this( JavaType.getInstance( cls ) );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		//todo
 		return JavaType.getInstance( value.getValue().getClass() );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
 		return this.value;

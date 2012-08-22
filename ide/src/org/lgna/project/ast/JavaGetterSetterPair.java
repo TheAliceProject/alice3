@@ -49,13 +49,16 @@ package org.lgna.project.ast;
 public class JavaGetterSetterPair {
 	private final AbstractMethod getter;
 	private final AbstractMethod setter;
+
 	public JavaGetterSetterPair( AbstractMethod getter, AbstractMethod setter ) {
 		this.getter = getter;
 		this.setter = setter;
 	}
+
 	public AbstractMethod getGetter() {
 		return this.getter;
 	}
+
 	public AbstractMethod getSetter() {
 		return this.setter;
 	}

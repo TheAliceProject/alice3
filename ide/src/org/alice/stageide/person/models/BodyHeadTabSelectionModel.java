@@ -50,16 +50,17 @@ public class BodyHeadTabSelectionModel extends org.lgna.croquet.SimpleTabSelecti
 	private static class SingletonHolder {
 		private static BodyHeadTabSelectionModel instance = new BodyHeadTabSelectionModel();
 	}
+
 	public static BodyHeadTabSelectionModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private BodyHeadTabSelectionModel() {
-		super( 
-				org.lgna.croquet.Application.INHERIT_GROUP, 
-				java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 
+		super(
+				org.lgna.croquet.Application.INHERIT_GROUP,
+				java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ),
 				ContentTab.class,
 				0,
-				BodyTab.getInstance(), HeadTab.getInstance()
-		);
+				BodyTab.getInstance(), HeadTab.getInstance() );
 	}
 }

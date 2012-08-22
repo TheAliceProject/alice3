@@ -50,6 +50,7 @@ public class DeleteStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.i
 	private final org.lgna.project.ast.BlockStatement blockStatement;
 	private final int index;
 	private final org.lgna.project.ast.Statement statement;
+
 	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
 		super( completionStep );
 		this.blockStatement = (org.lgna.project.ast.BlockStatement)statement.getParent();
@@ -58,12 +59,14 @@ public class DeleteStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.i
 		assert this.index != -1 : statement;
 		this.statement = statement;
 	}
+
 	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.blockStatement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
 		this.index = binaryDecoder.decodeInt();
 		this.statement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).decodeValue( binaryDecoder );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -71,6 +74,7 @@ public class DeleteStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.i
 		binaryEncoder.encode( this.index );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).encodeValue( binaryEncoder, this.statement );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		assert blockStatement.statements.indexOf( statement ) == this.index;
@@ -78,16 +82,18 @@ public class DeleteStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.i
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
+
 	@Override
 	protected final void undoInternal() {
 		blockStatement.statements.add( index, statement );
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, statement, org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 }

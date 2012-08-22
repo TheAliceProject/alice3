@@ -1,4 +1,5 @@
 package org.alice.media.audio;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
@@ -51,7 +52,7 @@ import javax.sound.sampled.AudioSystem;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 {
@@ -61,126 +62,120 @@ public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 	private double volume;
 	private double entryPoint;
 	private double endPoint;
-	
+
 	private double bytesPerSecond;
 	private long bytesRead = 0;
 	private boolean initialized = false;
-	
-	
-	public ScheduledAudioStream(org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint, double endPoint, double volume)
+
+	public ScheduledAudioStream( org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint, double endPoint, double volume )
 	{
 		this.startTime = startTime;
 		this.volume = volume;
 		this.entryPoint = entryPoint;
 		this.endPoint = endPoint;
-		this.setAudioResource(audioResource);
+		this.setAudioResource( audioResource );
 	}
-	
-	public void setAudioResource(org.lgna.common.resources.AudioResource resource)
+
+	public void setAudioResource( org.lgna.common.resources.AudioResource resource )
 	{
 		this.audioResource = resource;
 	}
-		
-		
-	
+
 	private void initializeIfNecessary()
 	{
-		if (!this.initialized)
+		if( !this.initialized )
 		{
-			ByteArrayInputStream dataStream = new ByteArrayInputStream(this.audioResource.getData());
-			
+			ByteArrayInputStream dataStream = new ByteArrayInputStream( this.audioResource.getData() );
+
 			try
 			{
-				this.audioStream = AudioSystem.getAudioInputStream(dataStream);
-			}
-			catch (Exception e)
+				this.audioStream = AudioSystem.getAudioInputStream( dataStream );
+			} catch( Exception e )
 			{
 				e.printStackTrace();
 			}
-			
+
 			AudioFormat af = this.audioStream.getFormat();
 			double frameRate = af.getFrameRate(); //frames per second
 			int frameSize = af.getFrameSize(); //bytes per frame
 			this.bytesPerSecond = frameRate * frameSize;
 			try
 			{
-				this.audioStream.skip((long)(this.bytesPerSecond*this.entryPoint));
-			}
-			catch (Exception e)
+				this.audioStream.skip( (long)( this.bytesPerSecond * this.entryPoint ) );
+			} catch( Exception e )
 			{
 				e.printStackTrace();
 			}
 			this.initialized = true;
 		}
 	}
-	
-	public ScheduledAudioStream(org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint, double endPoint)
+
+	public ScheduledAudioStream( org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint, double endPoint )
 	{
-		this(audioResource, startTime, entryPoint, endPoint, 1);
+		this( audioResource, startTime, entryPoint, endPoint, 1 );
 	}
-	
-	public ScheduledAudioStream(org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint)
+
+	public ScheduledAudioStream( org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint )
 	{
-		this(audioResource, startTime, entryPoint, -1, 1);
+		this( audioResource, startTime, entryPoint, -1, 1 );
 	}
-	
-	public ScheduledAudioStream(org.lgna.common.resources.AudioResource audioResource, double startTime)
+
+	public ScheduledAudioStream( org.lgna.common.resources.AudioResource audioResource, double startTime )
 	{
-		this(audioResource, startTime, 0);
+		this( audioResource, startTime, 0 );
 	}
-	
+
 	public org.lgna.common.resources.AudioResource getAudioResource()
 	{
 		return this.audioResource;
 	}
-		
+
 	public AudioInputStream getAudioStream()
 	{
 		this.initializeIfNecessary();
 		return this.audioStream;
 	}
-	
+
 	public double getStartTime()
 	{
 		return this.startTime;
 	}
-	
+
 	public double getVolume()
 	{
 		return this.volume;
 	}
-	
+
 	public double secondsRead()
 	{
 		return this.bytesRead / this.bytesPerSecond;
 	}
 
-	
-	public int read(byte[] buffer, int offset, int toRead) throws IOException
+	public int read( byte[] buffer, int offset, int toRead ) throws IOException
 	{
-		if (this.endPoint != -1)
+		if( this.endPoint != -1 )
 		{
 			double totalSecondsToRead = this.endPoint - this.entryPoint;
 			double secondsRead = this.secondsRead();
 			double secondsLeft = totalSecondsToRead - secondsRead;
-			if (secondsLeft <= 0)
+			if( secondsLeft <= 0 )
 			{
 				return -1;
 			}
-			double secondsToRead = toRead  / this.bytesPerSecond;
-			if (secondsToRead > secondsLeft)
+			double secondsToRead = toRead / this.bytesPerSecond;
+			if( secondsToRead > secondsLeft )
 			{
-				toRead = (int)(secondsLeft * this.bytesPerSecond);
+				toRead = (int)( secondsLeft * this.bytesPerSecond );
 			}
 		}
-		int read = this.audioStream.read(buffer, offset, toRead);
+		int read = this.audioStream.read( buffer, offset, toRead );
 		this.bytesRead += read;
 		return read;
 	}
 
-	public int compareTo(ScheduledAudioStream arg0) 
+	public int compareTo( ScheduledAudioStream arg0 )
 	{
-		return Double.compare(this.startTime, arg0.startTime);
+		return Double.compare( this.startTime, arg0.startTime );
 	}
 
 }

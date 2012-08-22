@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractElementAdapter< E extends edu.cmu.cs.dennisc.pattern.AbstractElement > {
+public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.pattern.AbstractElement> {
 	protected E m_element;
 
 	public void handleReleased() {

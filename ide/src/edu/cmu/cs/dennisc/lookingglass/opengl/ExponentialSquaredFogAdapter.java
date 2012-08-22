@@ -43,12 +43,14 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_EXP2;
+import static javax.media.opengl.GL.GL_FOG_DENSITY;
+import static javax.media.opengl.GL.GL_FOG_MODE;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExponentialSquaredFogAdapter extends FogAdapter< edu.cmu.cs.dennisc.scenegraph.ExponentialSquaredFog > {
+public class ExponentialSquaredFogAdapter extends FogAdapter<edu.cmu.cs.dennisc.scenegraph.ExponentialSquaredFog> {
 	private float m_density;
 
 	@Override
@@ -57,6 +59,7 @@ public class ExponentialSquaredFogAdapter extends FogAdapter< edu.cmu.cs.dennisc
 		rc.gl.glFogi( GL_FOG_MODE, GL_EXP2 );
 		rc.gl.glFogf( GL_FOG_DENSITY, m_density );
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.density ) {

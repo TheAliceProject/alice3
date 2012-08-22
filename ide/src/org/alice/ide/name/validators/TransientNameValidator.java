@@ -46,13 +46,15 @@ package org.alice.ide.name.validators;
 public abstract class TransientNameValidator extends NodeNameValidator {
 	private final org.lgna.project.ast.UserCode code;
 	private final org.lgna.project.ast.BlockStatement block;
+
 	public TransientNameValidator( org.lgna.project.ast.Node node, org.lgna.project.ast.UserCode code, org.lgna.project.ast.BlockStatement block ) {
 		super( node );
-//		assert code != null;
-//		assert block != null;
+		//		assert code != null;
+		//		assert block != null;
 		this.code = code;
 		this.block = block;
 	}
+
 	@Override
 	public boolean isNameAvailable( String name ) {
 		if( this.code != null ) {
@@ -66,11 +68,11 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 					}
 				}
 			}
-//			if( this.block != null ) {
-//				
-//			}
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.UserLocal > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserLocal.class );
-			((org.lgna.project.ast.AbstractCode)this.code).crawl( crawler, false );
+			//			if( this.block != null ) {
+			//				
+			//			}
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.UserLocal> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserLocal.class );
+			( (org.lgna.project.ast.AbstractCode)this.code ).crawl( crawler, false );
 			for( org.lgna.project.ast.UserLocal local : crawler.getList() ) {
 				if( local == node ) {
 					//pass

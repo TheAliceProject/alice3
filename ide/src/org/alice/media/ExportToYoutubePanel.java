@@ -56,14 +56,16 @@ public class ExportToYoutubePanel extends org.alice.ide.video.components.RecordV
 	public ExportToYoutubePanel() {
 		this.getAwtComponent().add( this.videoCapturePane );
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
 	}
-	
+
 	public org.alice.media.encoder.ImagesToQuickTimeEncoder getEncoder() {
 		return this.videoCapturePane.getEncoder();
 	}
+
 	@Override
 	public java.awt.Container getLookingGlassContainer() {
 		return this.videoCapturePane.getWorldPane();

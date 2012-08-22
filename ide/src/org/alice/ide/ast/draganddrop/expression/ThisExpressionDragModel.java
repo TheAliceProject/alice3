@@ -50,27 +50,32 @@ public class ThisExpressionDragModel extends AbstractExpressionDragModel {
 	private static class SingletonHolder {
 		private static ThisExpressionDragModel instance = new ThisExpressionDragModel();
 	}
+
 	public static ThisExpressionDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ThisExpressionDragModel() {
 		super( java.util.UUID.fromString( "f1ae6805-24ec-400b-9459-7101f0663356" ) );
 	}
+
 	@Override
 	public boolean isPotentialStatementCreator() {
 		return false;
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		throw new AssertionError();
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.ThisOperation.getInstance( expressionProperty );
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 	}
 }
-

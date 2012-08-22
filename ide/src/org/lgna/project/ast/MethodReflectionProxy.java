@@ -46,19 +46,22 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public final class MethodReflectionProxy extends InvocableReflectionProxy< java.lang.reflect.Method > {
+public final class MethodReflectionProxy extends InvocableReflectionProxy<java.lang.reflect.Method> {
 	private final String name;
-	private final boolean isVarArgs; 
+	private final boolean isVarArgs;
+
 	public MethodReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs ) {
 		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
 		this.name = name;
 		this.isVarArgs = isVarArgs;
 	}
+
 	public MethodReflectionProxy( java.lang.reflect.Method mthd ) {
 		super( mthd, mthd.getDeclaringClass(), mthd.getParameterTypes() );
 		this.name = mthd.getName();
 		this.isVarArgs = mthd.isVarArgs();
 	}
+
 	public boolean isVarArgs() {
 		return this.isVarArgs;
 	}
@@ -66,11 +69,12 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 	@Override
 	protected int hashCodeNonReifiable() {
 		int rv = super.hashCodeNonReifiable();
-		rv = 37*rv + this.name.hashCode();
+		rv = ( 37 * rv ) + this.name.hashCode();
 		return rv;
 	}
+
 	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy< ? > o ) {
+	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
 		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
 			MethodReflectionProxy other = (MethodReflectionProxy)o;
 			return this.name != null ? this.name.equals( other.name ) : other.name == null;
@@ -78,10 +82,11 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 			return false;
 		}
 	}
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	private static java.lang.reflect.Method findVarArgsVersion( Class<?> cls, String name, Class<?>[] desiredParameterTypes ) {
 		for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
 			if( mthd.isVarArgs() ) {
@@ -89,7 +94,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 					Class<?>[] candidateParameterTypes = mthd.getParameterTypes();
 					if( candidateParameterTypes.length == ( desiredParameterTypes.length + 1 ) ) {
 						java.lang.reflect.Method rv = mthd;
-						for( int i=0; i<desiredParameterTypes.length; i++ ) {
+						for( int i = 0; i < desiredParameterTypes.length; i++ ) {
 							if( candidateParameterTypes[ i ].equals( desiredParameterTypes[ i ] ) ) {
 								//pass
 							} else {
@@ -106,10 +111,10 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 		}
 		return null;
 	}
-	
+
 	@Override
 	protected java.lang.reflect.Method reify() {
-		Class< ? > cls = this.getDeclaringClassReflectionProxy().getReification();
+		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
 		if( cls != null ) {
 			Class<?>[] parameterTypes = ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies );
 			try {
@@ -120,9 +125,9 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 					//pass
 				} else {
 					if( parameterTypes.length > 0 ) {
-						Class<?> lastParameterType = parameterTypes[ parameterTypes.length-1 ];
+						Class<?> lastParameterType = parameterTypes[ parameterTypes.length - 1 ];
 						if( lastParameterType.isArray() ) {
-							Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length-1 ];
+							Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
 							System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
 							rv = findVarArgsVersion( cls, name, trimmedParameterTypes );
 							if( rv != null ) {
@@ -137,6 +142,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 			return null;
 		}
 	}
+
 	@Override
 	protected java.lang.annotation.Annotation[][] getReifiedParameterAnnotations() {
 		java.lang.reflect.Method mthd = this.getReification();
@@ -146,6 +152,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy< java.
 			return null;
 		}
 	}
+
 	@Override
 	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );

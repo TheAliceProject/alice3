@@ -46,9 +46,11 @@ package org.lgna.cheshire.simple;
  * @author Dennis Cosgrove
  */
 public interface Page {
-	/*package-private*/ static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
+	/* package-private */static final boolean IS_NOTE_OVERLAPPING_DESIRED = true;
 
-	public Iterable< ? extends org.lgna.cheshire.simple.Note > getNotes();
+	public Iterable<? extends org.lgna.cheshire.simple.Note> getNotes();
+
 	public boolean isStencilRenderingDesired();
+
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e );
 }

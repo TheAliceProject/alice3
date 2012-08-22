@@ -49,81 +49,92 @@ public class Collections {
 	private Collections() {
 		throw new AssertionError();
 	}
-	
-	public static <C extends java.util.Collection< E >, E> C addAll( C rv, E... values ) {
+
+	public static <C extends java.util.Collection<E>, E> C addAll( C rv, E... values ) {
 		for( E value : values ) {
 			rv.add( value );
 		}
 		return rv;
 	}
 
-	public static <E> java.util.LinkedList< E > newLinkedList() {
-		return new java.util.LinkedList< E >();
+	public static <E> java.util.LinkedList<E> newLinkedList() {
+		return new java.util.LinkedList<E>();
 	}
-	public static <E> java.util.LinkedList<E> newLinkedList( java.util.Collection< E > other ) {
-		java.util.LinkedList<E> rv = new java.util.LinkedList< E >();
+
+	public static <E> java.util.LinkedList<E> newLinkedList( java.util.Collection<E> other ) {
+		java.util.LinkedList<E> rv = new java.util.LinkedList<E>();
 		rv.addAll( other );
 		return rv;
 	}
+
 	public static <E> java.util.LinkedList<E> newLinkedList( E... array ) {
-		java.util.LinkedList<E> rv = new java.util.LinkedList< E >();
+		java.util.LinkedList<E> rv = new java.util.LinkedList<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
+
 	public static <E> java.util.ArrayList<E> newArrayListWithMinimumCapacity( int minCapacity ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
 		rv.ensureCapacity( minCapacity );
 		return rv;
 	}
+
 	public static <E> java.util.ArrayList<E> newArrayList() {
-		return new java.util.ArrayList< E >();
+		return new java.util.ArrayList<E>();
 	}
+
 	public static <E> java.util.ArrayList<E> newArrayList( E... array ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
-	public static <E> java.util.ArrayList<E> newArrayList( java.util.Collection< E > other ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+
+	public static <E> java.util.ArrayList<E> newArrayList( java.util.Collection<E> other ) {
+		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
 		rv.addAll( other );
 		return rv;
 	}
 
 	public static <E> java.util.Vector<E> newVector() {
-		return new java.util.Vector< E >();
+		return new java.util.Vector<E>();
 	}
+
 	public static <E> java.util.Vector<E> newVector( E... array ) {
-		java.util.Vector<E> rv = new java.util.Vector< E >();
+		java.util.Vector<E> rv = new java.util.Vector<E>();
 		if( array != null ) {
 			edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		}
 		return rv;
 	}
-	public static <E> java.util.Vector< E > newVector( java.util.Collection< E > other ) {
-		java.util.Vector<E> rv = new java.util.Vector< E >();
-		rv.addAll( other );
-		return rv;
-	}
-	
-	public static <E> java.util.Stack<E> newStack() {
-		return new java.util.Stack< E >();
-	}
-	public static <E> java.util.Stack<E> newStack( E... array ) {
-		java.util.Stack<E> rv = new java.util.Stack< E >();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
-		return rv;
-	}
-	public static <E> java.util.Stack< E > newStack( java.util.Collection< E > other ) {
-		java.util.Stack<E> rv = new java.util.Stack< E >();
+
+	public static <E> java.util.Vector<E> newVector( java.util.Collection<E> other ) {
+		java.util.Vector<E> rv = new java.util.Vector<E>();
 		rv.addAll( other );
 		return rv;
 	}
 
-	public static <E> java.util.HashSet< E > newHashSet() {
-		return new java.util.HashSet< E >();
+	public static <E> java.util.Stack<E> newStack() {
+		return new java.util.Stack<E>();
 	}
-	public static <E> java.util.HashSet< E > newHashSet( E... values ) {
-		java.util.HashSet<E> rv = new java.util.HashSet< E >();
+
+	public static <E> java.util.Stack<E> newStack( E... array ) {
+		java.util.Stack<E> rv = new java.util.Stack<E>();
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+		return rv;
+	}
+
+	public static <E> java.util.Stack<E> newStack( java.util.Collection<E> other ) {
+		java.util.Stack<E> rv = new java.util.Stack<E>();
+		rv.addAll( other );
+		return rv;
+	}
+
+	public static <E> java.util.HashSet<E> newHashSet() {
+		return new java.util.HashSet<E>();
+	}
+
+	public static <E> java.util.HashSet<E> newHashSet( E... values ) {
+		java.util.HashSet<E> rv = new java.util.HashSet<E>();
 		if( values != null ) {
 			for( E value : values ) {
 				rv.add( value );
@@ -131,21 +142,23 @@ public class Collections {
 		}
 		return rv;
 	}
-	public static <E> java.util.HashSet< E > newHashSet( java.util.Collection< E > other ) {
-		java.util.HashSet<E> rv = new java.util.HashSet< E >();
+
+	public static <E> java.util.HashSet<E> newHashSet( java.util.Collection<E> other ) {
+		java.util.HashSet<E> rv = new java.util.HashSet<E>();
 		rv.addAll( other );
 		return rv;
 	}
-	
-	public static <K,V> java.util.HashMap< K,V > newHashMap() {
-		return new java.util.HashMap< K,V >();
+
+	public static <K, V> java.util.HashMap<K, V> newHashMap() {
+		return new java.util.HashMap<K, V>();
 	}
-	public static <K,V> java.util.WeakHashMap< K,V > newWeakHashMap() {
-		return new java.util.WeakHashMap< K,V >();
+
+	public static <K, V> java.util.WeakHashMap<K, V> newWeakHashMap() {
+		return new java.util.WeakHashMap<K, V>();
 	}
-	
-	public static <A,B>	java.util.HashMap< B,A > newInverseHashMap( java.util.Map< A,B > map ) {
-		java.util.HashMap< B,A > rv = newHashMap();
+
+	public static <A, B> java.util.HashMap<B, A> newInverseHashMap( java.util.Map<A, B> map ) {
+		java.util.HashMap<B, A> rv = newHashMap();
 		for( A a : map.keySet() ) {
 			B b = map.get( a );
 			rv.put( b, a );

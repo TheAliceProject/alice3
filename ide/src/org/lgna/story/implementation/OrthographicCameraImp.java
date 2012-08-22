@@ -50,6 +50,7 @@ public class OrthographicCameraImp extends CameraImp<edu.cmu.cs.dennisc.scenegra
 	public OrthographicCameraImp() {
 		super( new edu.cmu.cs.dennisc.scenegraph.OrthographicCamera() );
 	}
+
 	@Override
 	public org.lgna.story.SThing getAbstraction() {
 		return null;

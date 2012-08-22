@@ -59,26 +59,31 @@ public abstract class Note extends org.lgna.cheshire.simple.Note {
 			return false;
 		}
 	}
+
 	@Override
 	protected org.lgna.croquet.Operation getNextOperation() {
 		return NextStepOperation.getInstance();
 	}
+
 	public abstract boolean isGoodToGo();
+
 	public boolean isEventInterceptable( java.awt.event.MouseEvent e ) {
 		return isMouseEventInterceptedInAllCasesEvenPopups( e );
 	}
 
 	public abstract boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event );
+
 	private boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.components.ScreenElement screenElement ) {
 		java.awt.Rectangle screenElementLocalBounds = screenElement.getLocalBounds();
 		java.awt.Rectangle bounds = this.getBounds( screenElement );
 		if( bounds.intersects( screenElementLocalBounds ) ) {
-			this.setLocation( (int)screenElementLocalBounds.getWidth()+32, (int)screenElementLocalBounds.getHeight()/2, screenElement );
+			this.setLocation( (int)screenElementLocalBounds.getWidth() + 32, (int)screenElementLocalBounds.getHeight() / 2, screenElement );
 			return true;
 		} else {
 			return false;
 		}
 	}
+
 	public boolean moveOutOfTheWayIfNecessary( org.lgna.croquet.history.event.Event<?> event ) {
 		org.lgna.croquet.components.ScreenElement screenElement;
 		if( event instanceof org.lgna.croquet.history.event.PopupMenuResizedEvent ) {
@@ -96,7 +101,7 @@ public abstract class Note extends org.lgna.cheshire.simple.Note {
 			return false;
 		}
 	}
-	
+
 	public void appendDetailedReport( StringBuilder sb ) {
 		sb.append( "\t" );
 		sb.append( this.getLabel() );

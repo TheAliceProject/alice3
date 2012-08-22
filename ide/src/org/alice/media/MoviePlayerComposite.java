@@ -66,7 +66,7 @@ public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<Movie
 	}
 
 	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
-		System.out.println("bye");
+		System.out.println( "bye" );
 		getView().handlePlayerRealized( visualComponent, controlComponent );
 		getView().revalidateAndRepaint();
 	}

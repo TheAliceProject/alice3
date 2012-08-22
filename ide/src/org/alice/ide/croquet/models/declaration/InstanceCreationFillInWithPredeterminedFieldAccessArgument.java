@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.InstanceCreation > {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractConstructor, org.lgna.project.ast.AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.InstanceCreation> {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractConstructor, org.lgna.project.ast.AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized InstanceCreationFillInWithPredeterminedFieldAccessArgument getInstance( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
 		InstanceCreationFillInWithPredeterminedFieldAccessArgument rv = map.get( constructor, field );
 		if( rv != null ) {
@@ -58,24 +59,29 @@ public class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends 
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.AbstractField field;
 	private final org.lgna.project.ast.InstanceCreation transientValue;
+
 	private static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.InstanceCreation rv = new org.lgna.project.ast.InstanceCreation( constructor );
 		rv.requiredArguments.add( new org.lgna.project.ast.SimpleArgument( constructor.getRequiredParameters().get( 0 ), new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field ) ) );
 		return rv;
 	}
+
 	private InstanceCreationFillInWithPredeterminedFieldAccessArgument( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "72f4ff66-0652-4682-8e2e-84298732128b" ) );
 		this.field = field;
 		this.transientValue = createInstanceCreation( constructor, field );
 	}
+
 	@Override
-	public org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.InstanceCreation createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return createInstanceCreation( this.transientValue.constructor.getValue(), this.field );
 	}
+
 	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, Void > node ) {
+	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, Void> node ) {
 		return this.transientValue;
 	}
 }

@@ -48,16 +48,22 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractField extends AbstractMember implements Accessible {
 	public abstract boolean isValid();
-	public abstract AbstractType<?,?,?> getValueType();
+
+	public abstract AbstractType<?, ?, ?> getValueType();
+
 	public abstract boolean isStatic();
+
 	//cannot be final and volatile
 	public abstract boolean isFinal();
+
 	public abstract boolean isVolatile();
+
 	public abstract boolean isTransient();
-	
+
 	public String getValidName( Node context ) {
 		return this.getName();
 	}
+
 	@Deprecated
 	public String getValidName() {
 		return this.getValidName( null );

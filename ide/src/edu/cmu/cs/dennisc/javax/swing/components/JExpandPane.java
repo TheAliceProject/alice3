@@ -60,12 +60,13 @@ public abstract class JExpandPane extends javax.swing.AbstractButton {
 				java.awt.FontMetrics fm = g.getFontMetrics( font );
 				for( String s : new String[] { JExpandPane.this.getExpandedButtonText(), JExpandPane.this.getCollapsedButtonText() } ) {
 					java.awt.geom.Rectangle2D bounds = fm.getStringBounds( s, g );
-					rv.width = Math.max( rv.width, (int)bounds.getWidth()+16 );
-					rv.height = Math.max( rv.height, (int)bounds.getHeight()+4 );
+					rv.width = Math.max( rv.width, (int)bounds.getWidth() + 16 );
+					rv.height = Math.max( rv.height, (int)bounds.getHeight() + 4 );
 				}
 			}
 			return rv;
 		}
+
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
 			super.paintComponent( g );
@@ -78,6 +79,7 @@ public abstract class JExpandPane extends javax.swing.AbstractButton {
 			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, this.getSize() );
 		}
 	}
+
 	private javax.swing.JLabel label = this.createLabel();
 	private ToggleButton toggle = new ToggleButton();
 	private javax.swing.JComponent center;
@@ -100,24 +102,28 @@ public abstract class JExpandPane extends javax.swing.AbstractButton {
 		this.add( this.createTopPane(), java.awt.BorderLayout.NORTH );
 		this.center = this.createCenterPane();
 	}
-	
+
 	//todo: rename
 	public javax.swing.JComponent getCenterComponent() {
 		return this.center;
 	}
-	
+
 	protected javax.swing.JLabel createLabel() {
 		return new javax.swing.JLabel();
 	}
-	
+
 	protected abstract String getExpandedLabelText();
+
 	protected abstract String getCollapsedLabelText();
+
 	protected String getExpandedButtonText() {
 		return "V";
 	}
+
 	protected String getCollapsedButtonText() {
 		return ">>>";
 	}
+
 	private void handleToggled( java.awt.event.ItemEvent e ) {
 		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 			this.add( this.center, java.awt.BorderLayout.CENTER );
@@ -135,6 +141,7 @@ public abstract class JExpandPane extends javax.swing.AbstractButton {
 			window.pack();
 		}
 	}
+
 	protected javax.swing.JComponent createTopPane() {
 		javax.swing.JPanel rv = new javax.swing.JPanel();
 		rv.setLayout( new java.awt.BorderLayout() );
@@ -142,5 +149,6 @@ public abstract class JExpandPane extends javax.swing.AbstractButton {
 		rv.add( this.toggle, java.awt.BorderLayout.EAST );
 		return rv;
 	}
+
 	protected abstract javax.swing.JComponent createCenterPane();
 }

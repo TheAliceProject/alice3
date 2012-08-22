@@ -59,12 +59,13 @@ public class MouseClickEvent extends AbstractEvent {
 	private double relativeY;
 	protected boolean isPickPerformed;
 	protected org.lgna.story.SModel modelAtMouseLocation;
+
 	public MouseClickEvent( java.awt.event.MouseEvent e, org.lgna.story.SScene scene ) {
 		this.e = e;
 		this.scene = scene;
 		this.isPickPerformed = false;
-		relativeX = new Double( e.getX() ) / ((SceneImp)ImplementationAccessor.getImplementation( scene )).getProgram().getOnscreenLookingGlass().getWidth();
-		relativeY = new Double( e.getY() ) / ((SceneImp)ImplementationAccessor.getImplementation( scene )).getProgram().getOnscreenLookingGlass().getHeight();
+		relativeX = new Double( e.getX() ) / ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).getProgram().getOnscreenLookingGlass().getWidth();
+		relativeY = new Double( e.getY() ) / ( (SceneImp)ImplementationAccessor.getImplementation( scene ) ).getProgram().getOnscreenLookingGlass().getHeight();
 	}
 
 	protected synchronized void pickIfNecessary() {
@@ -104,6 +105,7 @@ public class MouseClickEvent extends AbstractEvent {
 			this.isPickPerformed = true;
 		}
 	}
+
 	public org.lgna.story.SModel getModelAtMouseLocation() {
 		this.pickIfNecessary();
 		return this.modelAtMouseLocation;

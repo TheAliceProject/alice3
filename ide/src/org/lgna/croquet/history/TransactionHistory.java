@@ -45,12 +45,12 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistory extends TransactionNode< CompletionStep<?> > implements Iterable< Transaction > {
+public class TransactionHistory extends TransactionNode<CompletionStep<?>> implements Iterable<Transaction> {
 
 	// Project property for transaction history
-	public static final org.lgna.project.properties.CodablePropertyKey< org.lgna.croquet.history.TransactionHistory > INTERACTION_HISTORY_PROPERTY_KEY = org.lgna.project.properties.CodablePropertyKey.createInstance( java.util.UUID.fromString( "5c12ebea-6f6c-42b6-b1b3-e1fb96733fa5" ), "INTERACTION_HISTORY_PROPERTY_KEY" );
+	public static final org.lgna.project.properties.CodablePropertyKey<org.lgna.croquet.history.TransactionHistory> INTERACTION_HISTORY_PROPERTY_KEY = org.lgna.project.properties.CodablePropertyKey.createInstance( java.util.UUID.fromString( "5c12ebea-6f6c-42b6-b1b3-e1fb96733fa5" ), "INTERACTION_HISTORY_PROPERTY_KEY" );
 
-	private final java.util.List< Transaction > transactions;
+	private final java.util.List<Transaction> transactions;
 
 	public TransactionHistory() {
 		super( (CompletionStep<?>)null );
@@ -71,13 +71,13 @@ public class TransactionHistory extends TransactionNode< CompletionStep<?> > imp
 
 	public TransactionHistory getActiveTransactionHistory() {
 		Transaction transaction = getLastTransaction();
-		if ( (transaction != null) && transaction.isPending() ) {
+		if( ( transaction != null ) && transaction.isPending() ) {
 			CompletionStep<?> completionStep = transaction.getCompletionStep();
-			if (completionStep == null) {
+			if( completionStep == null ) {
 				return this;
 			}
 			TransactionHistory history = completionStep.getTransactionHistory();
-			if ( history == null ) {
+			if( history == null ) {
 				return this;
 			}
 			return history.getActiveTransactionHistory();
@@ -87,7 +87,7 @@ public class TransactionHistory extends TransactionNode< CompletionStep<?> > imp
 	}
 
 	@Override
-	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
 		for( Transaction transaction : this.transactions ) {
 			transaction.appendContexts( out );
 		}
@@ -107,6 +107,7 @@ public class TransactionHistory extends TransactionNode< CompletionStep<?> > imp
 		this.transactions.add( transaction );
 		this.fireChanged( e );
 	}
+
 	public void addTransaction( int index, Transaction transaction ) {
 		assert transaction != null;
 		assert index >= 0;
@@ -117,26 +118,30 @@ public class TransactionHistory extends TransactionNode< CompletionStep<?> > imp
 		this.fireChanged( e );
 	}
 
-	public java.util.Iterator< Transaction > iterator() {
+	public java.util.Iterator<Transaction> iterator() {
 		return this.transactions.iterator();
 	}
-	public java.util.ListIterator< Transaction > listIterator() {
+
+	public java.util.ListIterator<Transaction> listIterator() {
 		return this.transactions.listIterator();
 	}
+
 	public int getIndexOfTransaction( Transaction transaction ) {
 		return this.transactions.indexOf( transaction );
-	}	
+	}
+
 	public Transaction getTransactionAt( int i ) {
 		return this.transactions.get( i );
 	}
+
 	public int getTransactionCount() {
 		return this.transactions.size();
 	}
 
-	/*package-private*/ Transaction getLastTransaction() {
+	/* package-private */Transaction getLastTransaction() {
 		final int n = this.transactions.size();
 		if( n > 0 ) {
-			return this.transactions.get( n-1 );
+			return this.transactions.get( n - 1 );
 		} else {
 			return null;
 		}

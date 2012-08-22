@@ -46,10 +46,13 @@ package org.lgna.project.annotations;
  * @author Dennis Cosgrove
  */
 @java.lang.annotation.Documented
-@java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+@java.lang.annotation.Retention( java.lang.annotation.RetentionPolicy.RUNTIME )
 public @interface ClassTemplate {
 	public static final Class<?> VOID_ACTS_AS_NULL = Void.class;
+
 	boolean isFollowToSuperClassDesired() default true;
+
 	boolean isConsumptionBySubClassDesired() default false;
+
 	Class<?> keywordFactoryCls() default Void.class;
 }

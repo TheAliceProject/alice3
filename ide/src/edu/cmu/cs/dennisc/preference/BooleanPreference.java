@@ -45,16 +45,18 @@ package edu.cmu.cs.dennisc.preference;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanPreference extends Preference< Boolean > {
+public class BooleanPreference extends Preference<Boolean> {
 	public BooleanPreference( Boolean defaultValue ) {
 		super( defaultValue );
 	}
+
 	@Override
-	protected Boolean getValue(java.util.prefs.Preferences utilPrefs, String key, Boolean defaultValue) {
+	protected Boolean getValue( java.util.prefs.Preferences utilPrefs, String key, Boolean defaultValue ) {
 		return utilPrefs.getBoolean( key, defaultValue );
 	}
+
 	@Override
-	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, Boolean nextValue) {
-		utilPrefs.putBoolean(key, nextValue);
+	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, Boolean nextValue ) {
+		utilPrefs.putBoolean( key, nextValue );
 	}
 }

@@ -46,12 +46,14 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class TypeIcon implements javax.swing.Icon {
-	private org.lgna.project.ast.AbstractType<?,?,?> type;
+	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
 	private TypeBorder border;
-	public static TypeIcon getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	public static TypeIcon getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return new TypeIcon( type );
 	}
-	public TypeIcon( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
 	}
@@ -59,6 +61,7 @@ public class TypeIcon implements javax.swing.Icon {
 	protected java.awt.Font getFont() {
 		return javax.swing.UIManager.getFont( "defaultFont" );
 	}
+
 	protected java.awt.Color getTextColor( java.awt.Component c ) {
 		if( c.isEnabled() ) {
 			return java.awt.Color.BLACK;
@@ -66,16 +69,20 @@ public class TypeIcon implements javax.swing.Icon {
 			return java.awt.Color.GRAY;
 		}
 	}
+
 	private String getText() {
 		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
 		return formatter.getTextForType( this.type );
 	}
+
 	public int getIconWidth() {
 		return this.getBorderWidth();
 	}
+
 	public int getIconHeight() {
 		return this.getBorderHeight();
 	}
+
 	private java.awt.geom.Rectangle2D getTextBounds() {
 		String text = this.getText();
 		if( text != null ) {
@@ -89,25 +96,28 @@ public class TypeIcon implements javax.swing.Icon {
 			}
 			return fm.getStringBounds( text, g );
 		} else {
-			return new java.awt.geom.Rectangle2D.Float( 0,0,0,0 );
+			return new java.awt.geom.Rectangle2D.Float( 0, 0, 0, 0 );
 		}
 	}
+
 	private int getBorderWidth() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
 		java.awt.geom.Rectangle2D bounds = this.getTextBounds();
 		return insets.left + insets.right + (int)bounds.getWidth();
 	}
+
 	private int getBorderHeight() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
 		java.awt.geom.Rectangle2D bounds = this.getTextBounds();
 		return insets.top + insets.bottom + (int)bounds.getHeight();
 	}
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		int w = this.getBorderWidth();
 		int h = this.getBorderHeight();
 		this.border.paintBorder( c, g, x, y, w, h );
 		g.setColor( this.getTextColor( c ) );
-		
+
 		java.awt.Font font = g.getFont();
 		if( font.isItalic() ) {
 			g.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( font, edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR ) );
@@ -118,4 +128,3 @@ public class TypeIcon implements javax.swing.Icon {
 		}
 	}
 }
-

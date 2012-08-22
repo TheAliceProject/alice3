@@ -50,9 +50,11 @@ public class SayThinkProceduresComposite extends org.alice.ide.member.NameFilter
 	private static class SingletonHolder {
 		private static SayThinkProceduresComposite instance = new SayThinkProceduresComposite();
 	}
+
 	public static SayThinkProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SayThinkProceduresComposite() {
 		super( java.util.UUID.fromString( "b071a0b7-3d60-4888-9c3d-4ab8ff639887" ), "say", "think" );
 	}

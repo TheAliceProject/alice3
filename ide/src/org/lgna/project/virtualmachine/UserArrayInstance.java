@@ -50,34 +50,38 @@ public class UserArrayInstance {
 	private final org.lgna.project.ast.UserArrayType type;
 	private final int[] lengths;
 	private final Object[] values;
+
 	public UserArrayInstance( org.lgna.project.ast.UserArrayType type, int[] lengths, Object[] values ) {
 		assert lengths.length == 1;
 		this.type = type;
 		this.lengths = lengths;
-		
+
 		int length = this.lengths[ 0 ];
 		this.values = new Object[ length ];
 		if( values != null ) {
-			for( int i=0; i<values.length; i++ ) {
+			for( int i = 0; i < values.length; i++ ) {
 				this.values[ i ] = values[ i ];
 			}
 		}
 	}
+
 	public org.lgna.project.ast.UserArrayType getType() {
 		return this.type;
 	}
+
 	public Object get( int index ) {
 		return this.values[ index ];
 	}
+
 	public void set( int index, Object item ) {
 		this.values[ index ] = item;
 	}
-	
+
 	public int getLength() {
 		return this.lengths[ 0 ];
 	}
-	
-	/*package-private*/ Object[] getValues() {
+
+	/* package-private */Object[] getValues() {
 		return this.values;
 	}
 }

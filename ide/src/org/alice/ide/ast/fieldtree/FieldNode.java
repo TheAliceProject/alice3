@@ -52,6 +52,7 @@ public class FieldNode extends Node<org.lgna.project.ast.UserField> {
 		parent.getFieldNodes().add( rv );
 		return rv;
 	}
+
 	private FieldNode( TypeNode parent, org.lgna.project.ast.UserField field ) {
 		super( parent, field );
 	}

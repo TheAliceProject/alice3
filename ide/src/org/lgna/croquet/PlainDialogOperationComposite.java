@@ -45,44 +45,51 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
+public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
 	private final OwnedByCompositeOperation operation;
+
 	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId );
 		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
+
 	public OwnedByCompositeOperation getOperation() {
 		return this.operation;
 	}
+
 	@Override
 	protected String getName() {
 		return this.getOperation().getName();
 	}
+
 	@Override
-	protected org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.components.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return this.getView();
 	}
+
 	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?, ?> view ) {
 		super.releaseView();
 		//todo
 	}
-	
+
 	@Override
 	protected GoldenRatioPolicy getGoldenRatioPolicy() {
 		//todo
 		return null;
 	}
-	
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.handlePreActivation();
 	}
+
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.handlePostDeactivation();
 	}
+
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
 			@Override
@@ -92,10 +99,11 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 			}
 		}, completionStep );
 	}
-	
+
 	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: generate close transaction" );
 	}
+
 	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 }

@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.cascade.integer;
  * @author Dennis Cosgrove
  */
 public class IntegerArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
-	private static java.util.Map< org.lgna.project.ast.ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionRightOperandOnlyFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, IntegerArithmeticExpressionRightOperandOnlyFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static IntegerArithmeticExpressionRightOperandOnlyFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			IntegerArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
@@ -60,6 +61,7 @@ public class IntegerArithmeticExpressionRightOperandOnlyFillIn extends org.alice
 			return rv;
 		}
 	}
+
 	private IntegerArithmeticExpressionRightOperandOnlyFillIn( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "17a328e0-b763-4375-84f5-0a6a63e94964" ), Integer.class, Integer.class, operator, Integer.class );
 	}

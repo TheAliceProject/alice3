@@ -62,6 +62,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.video.Rec
 	private final org.lgna.croquet.State.ValueListener<Boolean> isRecordingListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
+
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			ExportVideoUploadToYouTubeOperation.this.setRecording( nextValue );
 		}
@@ -71,21 +72,25 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.video.Rec
 		super( java.util.UUID.fromString( "fd6ec0d7-add3-4061-a895-f085f45c0667" ) );
 		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
+
 	@Override
 	public org.alice.media.ExportToYoutubePanel createVideoExportPanel() {
 		return new org.alice.media.ExportToYoutubePanel();
 	}
+
 	@Override
 	protected Component<?> createControlsPanel( CompletionStep<?> step, Dialog dialog ) {
 		org.alice.ide.video.IsRecordingState.getInstance().setValue( false );
 		org.alice.ide.video.IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
+
 	@Override
 	protected void handleFinally( CompletionStep<?> step, Dialog dialog, Container<?> contentPane ) {
 		org.alice.ide.video.IsRecordingState.getInstance().removeValueListener( this.isRecordingListener );
 		super.handleFinally( step, dialog, contentPane );
 	}
+
 	@Override
 	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( image );

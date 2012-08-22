@@ -52,39 +52,41 @@ public enum TraditionalStyle implements Style {
 	BEGIN_AND_END_GENTLY( true, true );
 	private boolean isSlowInDesired;
 	private boolean isSlowOutDesired;
+
 	TraditionalStyle( boolean isSlowInDesired, boolean isSlowOutDesired ) {
 		this.isSlowInDesired = isSlowInDesired;
 		this.isSlowOutDesired = isSlowOutDesired;
 	}
-	
+
 	public boolean isSlowInDesired() {
 		return this.isSlowInDesired;
 	}
+
 	public boolean isSlowOutDesired() {
 		return this.isSlowOutDesired;
 	}
-	
-	private static double gently (double x, double A, double B) {
+
+	private static double gently( double x, double A, double B ) {
 		double y, a3, b3, c3, m, b2;
-		if (x < A) {
-			y = ((B - 1)/(A *  (B * B - A * B + A - 1))) * x * x;
-		} else if (x > B) {
-			a3 = 1 / (B * B - A * B +  A - 1);
+		if( x < A ) {
+			y = ( ( B - 1 ) / ( A * ( ( ( ( B * B ) - ( A * B ) ) + A ) - 1 ) ) ) * x * x;
+		} else if( x > B ) {
+			a3 = 1 / ( ( ( ( B * B ) - ( A * B ) ) + A ) - 1 );
 			b3 = -2 * a3;
 			c3 = 1 + a3;
-			y  = a3 * x * x + b3 * x + c3;
+			y = ( a3 * x * x ) + ( b3 * x ) + c3;
 		} else {
-			m  = 2 * (B - 1) / (B * B - A * B + A - 1);
-			b2 = -m * A / 2;
-			y  = m * x + b2;
+			m = ( 2 * ( B - 1 ) ) / ( ( ( ( B * B ) - ( A * B ) ) + A ) - 1 );
+			b2 = ( -m * A ) / 2;
+			y = ( m * x ) + b2;
 		}
 		return y;
 	}
 
 	//todo: this method really should account for how long the animation is
 	public double calculatePortion( double timeElapsed, double timeTotal ) {
-		if( timeTotal!=0 ) {
-			double portion = timeElapsed/timeTotal;
+		if( timeTotal != 0 ) {
+			double portion = timeElapsed / timeTotal;
 			if( this.isSlowInDesired ) {
 				if( this.isSlowOutDesired ) {
 					return gently( portion, 0.3, 0.8 );

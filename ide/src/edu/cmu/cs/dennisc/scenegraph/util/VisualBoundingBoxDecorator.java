@@ -51,6 +51,7 @@ public class VisualBoundingBoxDecorator extends BoundingBoxDecorator implements 
 	public edu.cmu.cs.dennisc.scenegraph.Visual getSubject() {
 		return m_sgSubject;
 	}
+
 	public void setSubject( edu.cmu.cs.dennisc.scenegraph.Visual sgSubject ) {
 		if( m_sgSubject != null ) {
 			setParent( null );

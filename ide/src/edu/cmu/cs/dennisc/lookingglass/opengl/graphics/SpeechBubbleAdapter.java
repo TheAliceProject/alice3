@@ -44,53 +44,52 @@ package edu.cmu.cs.dennisc.lookingglass.opengl.graphics;
 
 import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
 
-public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble > {
-//	protected abstract java.awt.Stroke getStroke();
-	
+public class SpeechBubbleAdapter extends BubbleAdapter<edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble> {
+	//	protected abstract java.awt.Stroke getStroke();
+
 	private static double sine( double t, double theta0, double theta1 ) {
-		double theta = theta0 + t * ( theta1 - theta0 ); 
+		double theta = theta0 + ( t * ( theta1 - theta0 ) );
 		return Math.sin( theta );
 	}
-	
+
 	private java.awt.geom.Area getPortionOfPath( java.awt.geom.GeneralPath path, double portion ) {
 		java.awt.geom.Area area = new java.awt.geom.Area( path );
 		java.awt.geom.Rectangle2D bounds = area.getBounds2D();
 		double maskBottom = bounds.getY() + bounds.getHeight();
 
-		double stylizedPathPortion = sine( portion, -Math.PI/2, 0 ) + 1;
+		double stylizedPathPortion = sine( portion, -Math.PI / 2, 0 ) + 1;
 		stylizedPathPortion *= stylizedPathPortion;
 		double maskHeight = bounds.getHeight() * stylizedPathPortion;
 
-		java.awt.geom.Rectangle2D mask = new java.awt.geom.Rectangle2D.Double( bounds.getX(), maskBottom-maskHeight, bounds.getWidth(), maskHeight );
-		area.intersect(  new java.awt.geom.Area( mask ) );
+		java.awt.geom.Rectangle2D mask = new java.awt.geom.Rectangle2D.Double( bounds.getX(), maskBottom - maskHeight, bounds.getWidth(), maskHeight );
+		area.intersect( new java.awt.geom.Area( mask ) );
 		return area;
 	}
-	
 
 	@Override
-	protected void render( 
-			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, 
-			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
-			java.awt.Rectangle actualViewport, 
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
-			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, 
-			java.awt.Font font, 
-			java.awt.Color textColor, 
+	protected void render(
+			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
+			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+			java.awt.Rectangle actualViewport,
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
+			java.awt.Font font,
+			java.awt.Color textColor,
 			float wrapWidth,
-			java.awt.Color fillColor, 
+			java.awt.Color fillColor,
 			java.awt.Color outlineColor,
 			OnscreenBubble bubble,
 			double portion ) {
 		assert bubble != null;
-		
+
 		g2.setFont( font );
-		
+
 		float targetX = bubble.getEndOfTail().x;
 		float targetY = bubble.getEndOfTail().y;
 
 		float originX = (float)bubble.getOriginOfTail().getX();
 		float originY = (float)bubble.getOriginOfTail().getY();
-		
+
 		float controlX = targetX;
 		float controlY = originY;
 		float tailWidth = 6f;
@@ -98,7 +97,7 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
 		path.moveTo( originX, originY );
-		path.quadTo( controlX, controlY, targetX  + tailWidth, targetY + topOffsetY );
+		path.quadTo( controlX, controlY, targetX + tailWidth, targetY + topOffsetY );
 		path.lineTo( targetX - tailWidth, targetY + topOffsetY );
 		path.quadTo( controlX, controlY, originX, originY );
 		path.closePath();
@@ -113,32 +112,32 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 
 		assert area != null;
 		g2.setTransform( new java.awt.geom.AffineTransform() );
-		
+
 		g2.setColor( fillColor );
 		g2.fill( area );
 		g2.setColor( outlineColor );
 		g2.draw( area );
-		
+
 		if( portion < 1.0 ) {
 			//pass
 		} else {
 			g2.setFont( font );
-			
+
 			//g2.translate( xT, yT );
-//			g2.setPaint( java.awt.Color.RED );
-//			g2.draw( textBounds );
-//			g2.setPaint( java.awt.Color.BLACK );
-//			g2.setColor(Color.RED);
-//			g2.drawRect((int)textBounds.getMinX(), (int)textBounds.getMinX(), (int)textBounds.getWidth(), (int)textBounds.getHeight());
+			//			g2.setPaint( java.awt.Color.RED );
+			//			g2.draw( textBounds );
+			//			g2.setPaint( java.awt.Color.BLACK );
+			//			g2.setColor(Color.RED);
+			//			g2.drawRect((int)textBounds.getMinX(), (int)textBounds.getMinX(), (int)textBounds.getWidth(), (int)textBounds.getHeight());
 			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.LEADING, bubble.getTextBounds() );
-			
+
 			//g2.translate( -xT, -yT );
-//			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
-//			int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );
-//			g2.setColor( textColor );
-//			g2.drawString( text, xPixel, yPixel );
+			//			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
+			//			int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );
+			//			g2.setColor( textColor );
+			//			g2.drawString( text, xPixel, yPixel );
 		}
 
-//		g2.setStroke( stroke );
+		//		g2.setStroke( stroke );
 	}
 }

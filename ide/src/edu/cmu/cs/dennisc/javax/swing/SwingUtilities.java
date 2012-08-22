@@ -56,6 +56,7 @@ public class SwingUtilities {
 		}
 		c.doLayout();
 	}
+
 	public static void setSizeToPreferredSizeTree( java.awt.Component c ) {
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
@@ -65,6 +66,7 @@ public class SwingUtilities {
 		}
 		c.setSize( c.getPreferredSize() );
 	}
+
 	public static void invalidateTree( java.awt.Component c ) {
 		c.invalidate();
 		if( c instanceof java.awt.Container ) {
@@ -74,6 +76,7 @@ public class SwingUtilities {
 			}
 		}
 	}
+
 	public static void validateTree( java.awt.Component c ) {
 		c.validate();
 		if( c instanceof java.awt.Container ) {
@@ -83,6 +86,7 @@ public class SwingUtilities {
 			}
 		}
 	}
+
 	public static void revalidateTree( java.awt.Component c ) {
 		if( c instanceof javax.swing.JComponent ) {
 			javax.swing.JComponent jc = (javax.swing.JComponent)c;
@@ -95,13 +99,14 @@ public class SwingUtilities {
 			}
 		}
 	}
-	
+
 	private static final boolean IS_PRINT_USED = true;
 	private static java.awt.Container privateContainer = new java.awt.Container();
+
 	public static javax.swing.Icon createIcon( java.awt.Component component ) {
 		javax.swing.Icon rv;
 		java.awt.Dimension size = component.getPreferredSize();
-		if( size.width > 0 && size.height > 0 ) {
+		if( ( size.width > 0 ) && ( size.height > 0 ) ) {
 			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( size.width, size.height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
 			java.awt.Graphics g = image.getGraphics();
 			if( IS_PRINT_USED ) {
@@ -116,9 +121,11 @@ public class SwingUtilities {
 				public int getIconWidth() {
 					return 24;
 				}
+
 				public int getIconHeight() {
 					return 12;
 				}
+
 				public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				}
 			};
@@ -134,6 +141,7 @@ public class SwingUtilities {
 			return null;
 		}
 	}
+
 	public static javax.swing.JFrame getRootJFrame( java.awt.Component c ) {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
 		if( root instanceof javax.swing.JFrame ) {
@@ -151,6 +159,7 @@ public class SwingUtilities {
 			return null;
 		}
 	}
+
 	public static javax.swing.JDialog getRootJDialog( java.awt.Component c ) {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( c );
 		if( root instanceof javax.swing.JDialog ) {
@@ -180,7 +189,7 @@ public class SwingUtilities {
 	}
 
 	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType, final int maxPreferredWidth, final int maxPreferredHeight ) {
-		assert messageType == javax.swing.JOptionPane.ERROR_MESSAGE || messageType == javax.swing.JOptionPane.INFORMATION_MESSAGE || messageType == javax.swing.JOptionPane.WARNING_MESSAGE || messageType == javax.swing.JOptionPane.PLAIN_MESSAGE;
+		assert ( messageType == javax.swing.JOptionPane.ERROR_MESSAGE ) || ( messageType == javax.swing.JOptionPane.INFORMATION_MESSAGE ) || ( messageType == javax.swing.JOptionPane.WARNING_MESSAGE ) || ( messageType == javax.swing.JOptionPane.PLAIN_MESSAGE );
 		javax.swing.JTextArea textArea = new javax.swing.JTextArea( text );
 		textArea.setEditable( false );
 		javax.swing.JOptionPane.showMessageDialog( owner, new javax.swing.JScrollPane( textArea ) {
@@ -193,11 +202,12 @@ public class SwingUtilities {
 			}
 		}, title, messageType );
 	}
+
 	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType ) {
 		showMessageDialogInScrollableUneditableTextArea( owner, text, title, messageType, 640, 480 );
 	}
-	
-	public static java.awt.event.MouseEvent convertMouseEvent(java.awt.Component source, java.awt.event.MouseEvent sourceEvent, java.awt.Component destination) {
+
+	public static java.awt.event.MouseEvent convertMouseEvent( java.awt.Component source, java.awt.event.MouseEvent sourceEvent, java.awt.Component destination ) {
 		int modifiers = sourceEvent.getModifiers();
 		int modifiersEx = sourceEvent.getModifiersEx();
 		int modifiersComplete = modifiers | modifiersEx;
@@ -205,7 +215,7 @@ public class SwingUtilities {
 		if( me instanceof java.awt.event.MouseWheelEvent ) {
 			java.awt.event.MouseWheelEvent mwe = (java.awt.event.MouseWheelEvent)me;
 			return new java.awt.event.MouseWheelEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mwe.getScrollType(), mwe.getScrollAmount(), mwe.getWheelRotation() );
-		} else if( me instanceof javax.swing.event.MenuDragMouseEvent ){
+		} else if( me instanceof javax.swing.event.MenuDragMouseEvent ) {
 			javax.swing.event.MenuDragMouseEvent mdme = (javax.swing.event.MenuDragMouseEvent)me;
 			return new javax.swing.event.MenuDragMouseEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mdme.getPath(), mdme.getMenuSelectionManager() );
 		} else {

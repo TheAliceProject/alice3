@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class StatementContextMenu extends org.lgna.croquet.MenuModel {
-	private static java.util.Map< org.lgna.project.ast.Statement, StatementContextMenu > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.Statement, StatementContextMenu> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized StatementContextMenu getInstance( org.lgna.project.ast.Statement statement ) {
 		StatementContextMenu rv = map.get( statement );
 		if( rv != null ) {
@@ -58,16 +59,19 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.Statement statement;
+
 	private StatementContextMenu( org.lgna.project.ast.Statement statement ) {
 		super( java.util.UUID.fromString( "6d152827-60e1-4d1c-b589-843ec554957c" ) );
 		this.statement = statement;
 	}
+
 	public org.lgna.project.ast.Statement getStatement() {
 		return this.statement;
 	}
 
-	private java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > updatePopupOperations( java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > rv, org.lgna.project.ast.Statement statement ) {
+	private java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> updatePopupOperations( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv, org.lgna.project.ast.Statement statement ) {
 		if( statement instanceof org.lgna.project.ast.Comment ) {
 			//pass
 		} else {
@@ -118,7 +122,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 	@Override
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updatePopupOperations( models, this.statement );
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 	}

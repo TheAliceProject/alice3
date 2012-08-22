@@ -47,6 +47,7 @@ public class LocalNameValidator extends TransientNameValidator {
 	private static org.lgna.project.ast.UserCode getCode( org.lgna.project.ast.UserLocal local ) {
 		return getCode( getBlock( local ) );
 	}
+
 	private static org.lgna.project.ast.UserCode getCode( org.lgna.project.ast.BlockStatement block ) {
 		if( block != null ) {
 			return (org.lgna.project.ast.UserCode)block.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
@@ -54,12 +55,15 @@ public class LocalNameValidator extends TransientNameValidator {
 			return null;
 		}
 	}
+
 	private static org.lgna.project.ast.BlockStatement getBlock( org.lgna.project.ast.UserLocal local ) {
 		return local.getFirstAncestorAssignableTo( org.lgna.project.ast.BlockStatement.class );
 	}
+
 	public LocalNameValidator( org.lgna.project.ast.UserLocal local ) {
 		super( local, getCode( local ), getBlock( local ) );
 	}
+
 	public LocalNameValidator( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( null, getCode( blockStatementIndexPair.getBlockStatement() ), blockStatementIndexPair.getBlockStatement() );
 	}

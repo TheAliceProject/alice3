@@ -41,12 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitSlickSuit implements MaleAdultFullBodyOutfit {
-	NAVY ,
- 	GATOR ,
- 	BLACK ,
- 	BGATOR ,
- 	RED ,
- 	GRAY ,
- 	WHITE ;
+	NAVY,
+	GATOR,
+	BLACK,
+	BGATOR,
+	RED,
+	GRAY,
+	WHITE;
 }

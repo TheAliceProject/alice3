@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultHairTopHat implements MaleAdultHair {
-	BLACK ,
- 	BLOND ,
- 	BROWN ,
- 	GREY ,
- 	RED ;
+	BLACK,
+	BLOND,
+	BROWN,
+	GREY,
+	RED;
 }

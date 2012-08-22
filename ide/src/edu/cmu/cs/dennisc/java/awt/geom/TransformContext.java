@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.java.awt.geom;
  * @author Dennis Cosgrove
  */
 public class TransformContext {
-	private java.util.Stack< java.awt.geom.AffineTransform > m_affineTransformStack = new java.util.Stack< java.awt.geom.AffineTransform >();
+	private java.util.Stack<java.awt.geom.AffineTransform> m_affineTransformStack = new java.util.Stack<java.awt.geom.AffineTransform>();
 	private java.awt.geom.AffineTransform m_affineTransform = new java.awt.geom.AffineTransform();
 
 	public void initialize() {
@@ -60,20 +60,25 @@ public class TransformContext {
 	public java.awt.geom.AffineTransform accessAffineTransform() {
 		return m_affineTransform;
 	}
+
 	public java.awt.geom.AffineTransform getAffineTransform() {
 		return new java.awt.geom.AffineTransform( m_affineTransform );
 	}
+
 	public void pushAffineTransform() {
 		m_affineTransformStack.push( new java.awt.geom.AffineTransform( m_affineTransform ) );
 	}
+
 	public void popAffineTransform() {
 		m_affineTransform.setTransform( m_affineTransformStack.pop() );
 		update( m_affineTransform );
 	}
+
 	public void setAffineTransform( java.awt.geom.AffineTransform affineTransform ) {
 		m_affineTransform.setTransform( affineTransform );
 		update( m_affineTransform );
 	}
+
 	public void multiplyAffineTransform( java.awt.geom.AffineTransform affineTransform ) {
 		m_affineTransform.concatenate( affineTransform );
 		update( m_affineTransform );

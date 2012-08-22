@@ -46,15 +46,16 @@ package org.lgna.project.properties;
  * @author Dennis Cosgrove
  */
 public abstract class PropertyKey<T> {
-	private static java.util.Map< java.util.UUID, PropertyKey > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<java.util.UUID, PropertyKey> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static <T> PropertyKey<T> lookupInstance( java.util.UUID id ) {
 		return map.get( id );
 	}
-	
+
 	public static void decodeIdAndValueAndPut( org.lgna.project.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder decoder, String version ) {
 		java.util.UUID id = decoder.decodeId();
 		byte[] buffer = decoder.decodeByteArray();
-		org.lgna.project.properties.PropertyKey< Object > propertyKey = org.lgna.project.properties.PropertyKey.lookupInstance( id );
+		org.lgna.project.properties.PropertyKey<Object> propertyKey = org.lgna.project.properties.PropertyKey.lookupInstance( id );
 		if( propertyKey != null ) {
 			java.io.ByteArrayInputStream bisProperty = new java.io.ByteArrayInputStream( buffer );
 			edu.cmu.cs.dennisc.codec.BinaryDecoder bdProperty = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bisProperty );
@@ -64,22 +65,26 @@ public abstract class PropertyKey<T> {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( id, buffer );
 		}
 	}
-	
+
 	private final java.util.UUID id;
 	private final String repr;
+
 	public PropertyKey( java.util.UUID id, String repr ) {
 		this.id = id;
 		this.repr = repr;
 		map.put( id, this );
 	}
+
 	public java.util.UUID getId() {
 		return this.id;
 	}
+
 	protected abstract T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+
 	protected abstract void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
-	
+
 	public void encodeIdAndValue( org.lgna.project.Project project, edu.cmu.cs.dennisc.codec.BinaryEncoder encoder ) {
-		T value = project.getValueFor( this ); 
+		T value = project.getValueFor( this );
 		java.io.ByteArrayOutputStream bos = new java.io.ByteArrayOutputStream();
 		edu.cmu.cs.dennisc.codec.BinaryEncoder internalEncoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( bos );
 		this.encodeValue( internalEncoder, value );
@@ -89,6 +94,7 @@ public abstract class PropertyKey<T> {
 		encoder.encode( buffer );
 		encoder.flush();
 	}
+
 	@Override
 	public String toString() {
 		return this.repr;

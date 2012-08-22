@@ -57,14 +57,15 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		this.index = index;
 		this.statement = statement;
 	}
-	
+
 	public Object[] getArguments() {
 		return new Object[] {
-			this.blockStatement,
-			this.index,
-			this.statement
+				this.blockStatement,
+				this.index,
+				this.statement
 		};
 	}
+
 	public void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
@@ -78,54 +79,56 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 			throw new javax.swing.undo.CannotUndoException();
 		}
 	}
-	
+
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return originalEdit;
 	}
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
+
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
 		InsertStatementActionOperation replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.blockStatement, replacement.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacement.statement );
-//		org.lgna.project.ast.AbstractMethod method = getMethod( this.statement );
-//		if( method != null ) {
-//			retargeter.addKeyValuePair( method, getMethod( replacement.statement ) );
-//		}
+		//		org.lgna.project.ast.AbstractMethod method = getMethod( this.statement );
+		//		if( method != null ) {
+		//			retargeter.addKeyValuePair( method, getMethod( replacement.statement ) );
+		//		}
 	}
+
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.blockStatement = retargeter.retarget( this.blockStatement );
 		org.lgna.project.ast.Statement originalStatement = this.statement;
 		this.statement = retargeter.retarget( originalStatement );
-//		org.lgna.project.ast.MethodInvocation methodInvocation = getMethodInvocation( this.statement );
-//		if( methodInvocation != null ) {
-//			methodInvocation.method.setValue( retargeter.retarget( getMethod( originalStatement ) ) );
-//		}
+		//		org.lgna.project.ast.MethodInvocation methodInvocation = getMethodInvocation( this.statement );
+		//		if( methodInvocation != null ) {
+		//			methodInvocation.method.setValue( retargeter.retarget( getMethod( originalStatement ) ) );
+		//		}
 	}
-	
-	
+
 	public StringBuilder updatePresentation( StringBuilder rv ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "create: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
-	
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
+
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
 		if( replacementCandidate instanceof org.alice.ide.croquet.edits.DependentEdit ) {
 			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		} else {
 			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "edit is not an instance of DependentEdit" );
 		}
 	}
-	
+
 	@Override
 	protected org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver( this );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< InsertStatementActionOperation >( step ) );
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>( step ) );
 	}
 }

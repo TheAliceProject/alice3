@@ -52,6 +52,7 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 		public Double getValue() {
 			return AbstractCylinderImp.this.sgCylinder.length.getValue();
 		}
+
 		@Override
 		protected void handleSetValue( Double value ) {
 			AbstractCylinderImp.this.sgCylinder.length.setValue( value );
@@ -61,20 +62,25 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 	public AbstractCylinderImp() {
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
 		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgCylinder.length, this.sgCylinder.bottomRadius };
 	}
-	
+
 	protected abstract void setXZ( double xz );
+
 	protected abstract double getXZ();
+
 	protected edu.cmu.cs.dennisc.scenegraph.Cylinder getSgCylinder() {
 		return this.sgCylinder;
 	}
+
 	@Override
 	public Resizer[] getResizers() {
 		return new Resizer[] { Resizer.Y_AXIS, Resizer.XZ_PLANE, Resizer.UNIFORM };
 	}
+
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
 		if( resizer == Resizer.Y_AXIS ) {
@@ -88,6 +94,7 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 			return Double.NaN;
 		}
 	}
+
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
 		assert value > 0.0 : value;
@@ -106,17 +113,17 @@ public abstract class AbstractCylinderImp extends ShapeImp {
 			assert false : resizer;
 		}
 	}
-	
+
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
-		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getScale shouldn't be called on " + this.getClass().getSimpleName() );
+		return new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
 	}
 
 	@Override
-	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
-		if (size.x != size.z) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Invalid size for "+this.getClass().getSimpleName()+": "+size);
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+		if( size.x != size.z ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
 		}
 		this.length.setValue( size.y );
 		this.setXZ( size.x * .5 );

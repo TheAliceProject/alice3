@@ -48,23 +48,26 @@ package edu.cmu.cs.dennisc.timing;
  */
 public class Timer {
 	private long tStart;
-	private java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2<Object, Long> > marks = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.Tuple2<Object,Long>>();
+	private java.util.List<edu.cmu.cs.dennisc.pattern.Tuple2<Object, Long>> marks = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.Tuple2<Object, Long>>();
+
 	public void start() {
 		this.tStart = System.currentTimeMillis();
 	}
+
 	public void mark( Object text ) {
 		long tMark = System.currentTimeMillis();
 		this.marks.add( edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( text, tMark ) );
 	}
+
 	public void stopAndPrintResults() {
 		long tPrev = this.tStart;
 		long tStop = System.currentTimeMillis();
 		for( edu.cmu.cs.dennisc.pattern.Tuple2<Object, Long> mark : this.marks ) {
 			long tMark = mark.getB();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "...", tMark-tPrev, mark.getA() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "...", tMark - tPrev, mark.getA() );
 			tPrev = tMark;
 		}
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "... ", tStop-tPrev, "end" );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "total:", tStop-this.tStart );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "... ", tStop - tPrev, "end" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "total:", tStop - this.tStart );
 	}
 }

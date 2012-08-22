@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDressLongLoose implements FemaleAdultFullBodyOutfit {
-	REDPAT ,
- 	PURPLEPAT ,
- 	GRAYLINE ,
- 	BLACKLINE ,
- 	GREENFANCY ,
- 	SANDFANCY ;
+	REDPAT,
+	PURPLEPAT,
+	GRAYLINE,
+	BLACKLINE,
+	GREENFANCY,
+	SANDFANCY;
 }

@@ -46,9 +46,10 @@ package edu.cmu.cs.dennisc.inputpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FileSelectionPane extends InputPane< java.io.File > {
+public abstract class FileSelectionPane extends InputPane<java.io.File> {
 	private javax.swing.JLabel feedback = new javax.swing.JLabel();
 	private javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+
 	public FileSelectionPane() {
 		this.fileChooser.setFileSelectionMode( this.getDesiredFileSelectionMode() );
 		this.fileChooser.setControlButtonsAreShown( false );
@@ -57,8 +58,8 @@ public abstract class FileSelectionPane extends InputPane< java.io.File > {
 				String propertyName = e.getPropertyName();
 				if( javax.swing.JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals( propertyName ) ) {
 					FileSelectionPane.this.updateOKButton();
-				//} else {
-				//	edu.cmu.cs.dennisc.print.PrintUtilities.println( propertyName );
+					//} else {
+					//	edu.cmu.cs.dennisc.print.PrintUtilities.println( propertyName );
 				}
 			}
 		} );
@@ -67,10 +68,13 @@ public abstract class FileSelectionPane extends InputPane< java.io.File > {
 		this.add( this.fileChooser, java.awt.BorderLayout.CENTER );
 		this.add( this.feedback, java.awt.BorderLayout.SOUTH );
 	}
+
 	protected javax.swing.JFileChooser getFileChooser() {
 		return this.fileChooser;
 	}
+
 	protected abstract String getFeedbackText();
+
 	@Override
 	public void updateOKButton() {
 		super.updateOKButton();
@@ -83,9 +87,11 @@ public abstract class FileSelectionPane extends InputPane< java.io.File > {
 		}
 		this.feedback.setForeground( color );
 	}
+
 	protected int getDesiredFileSelectionMode() {
 		return javax.swing.JFileChooser.FILES_ONLY;
 	}
+
 	@Override
 	protected java.io.File getActualInputValue() {
 		return this.fileChooser.getSelectedFile();

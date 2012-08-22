@@ -47,13 +47,12 @@ import java.awt.image.BufferedImage;
 import org.alice.ide.video.RecordVideoOperation;
 import org.alice.ide.video.components.RecordVideoPanel;
 
-
 /**
  * @author Matt May
  */
 public class YoutubeRecordVideoOperation extends RecordVideoOperation {
 
-	public YoutubeRecordVideoOperation(  ) {
+	public YoutubeRecordVideoOperation() {
 		super( java.util.UUID.fromString( "c487a9ee-3889-4d4d-b851-203d426974ea" ) );
 	}
 

@@ -48,5 +48,6 @@ package edu.cmu.cs.dennisc.java.awt.font;
  */
 public interface TextAttribute<E> {
 	public java.awt.font.TextAttribute getKey();
+
 	public E getValue();
 }

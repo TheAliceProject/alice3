@@ -47,38 +47,38 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.resources.ModelResource;
 
-
-
 /**
  * @author dculyba
- *
+ * 
  */
-public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType>, Comparable<ModelResourceTreeNode>  {
+public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType>, Comparable<ModelResourceTreeNode> {
 
 	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> parent;
-	private java.util.List< ModelResourceTreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List<ModelResourceTreeNode> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private NamedUserType userType;
 	private Class<? extends org.lgna.story.resources.ModelResource> resourceClass;
 	private JavaType resourceJavaType;
-	
+
 	private JavaField resourceJavaField = null;
 	private ModelResource modelResourceInstance = null;
 	private String name;
 	private boolean isSorted = false;
-	
+
 	public ModelResourceTreeNode( NamedUserType aliceClass, Class<? extends org.lgna.story.resources.ModelResource> resourceClass ) {
 		this.userType = aliceClass;
-		if (this.userType != null)
+		if( this.userType != null )
 		{
 			this.name = this.userType.getName();
 		}
 		this.resourceClass = resourceClass;
-		this.resourceJavaType = org.lgna.project.ast.JavaType.getInstance(this.resourceClass);
-		
+		this.resourceJavaType = org.lgna.project.ast.JavaType.getInstance( this.resourceClass );
+
 	}
+
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getParent() {
 		return this.parent;
 	}
+
 	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> parent ) {
 		if( this.parent instanceof ModelResourceTreeNode ) {
 			ModelResourceTreeNode parentNode = (ModelResourceTreeNode)this.parent;
@@ -90,11 +90,12 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 			parentNode.addChild( this );
 		}
 	}
-	
+
 	public boolean getAllowsChildren() {
 		return true;
 	}
-	private java.util.List< ? extends ModelResourceTreeNode > getSortedChildren() {
+
+	private java.util.List<? extends ModelResourceTreeNode> getSortedChildren() {
 		if( this.isSorted ) {
 			//pass
 		} else {
@@ -103,60 +104,65 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 		return this.children;
 	}
-	
-	public java.util.List< ? extends ModelResourceTreeNode > childrenList() {
+
+	public java.util.List<? extends ModelResourceTreeNode> childrenList() {
 		return this.getSortedChildren();
 	}
-	
-	public java.util.Enumeration< ? extends ModelResourceTreeNode > children() {
+
+	public java.util.Enumeration<? extends ModelResourceTreeNode> children() {
 		return java.util.Collections.enumeration( this.getSortedChildren() );
 	}
+
 	public java.util.Iterator iterator() {
 		return this.children.iterator();
 	}
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getChildAt(int childIndex) {
+
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getChildAt( int childIndex ) {
 		return this.getSortedChildren().get( childIndex );
 	}
+
 	public int getChildCount() {
 		return this.children.size();
 	}
+
 	public boolean isLeaf() {
 		return this.children.size() == 0;
 	}
-	public int getIndex(javax.swing.tree.TreeNode node) {
+
+	public int getIndex( javax.swing.tree.TreeNode node ) {
 		return this.getSortedChildren().indexOf( node );
 	}
-	
+
 	public void addChild( ModelResourceTreeNode node ) {
 		this.children.add( node );
 		this.isSorted = false;
 	}
-	
+
 	public void removeChild( ModelResourceTreeNode node ) {
 		this.children.remove( node );
 	}
-	
+
 	public ModelResourceTreeNode getChildWithValue( NamedUserType resourceClass ) {
 		for( ModelResourceTreeNode child : this.children ) {
-			if( resourceClass != null && resourceClass.equals( child.getValue() ) ) {
+			if( ( resourceClass != null ) && resourceClass.equals( child.getValue() ) ) {
 				return child;
 			}
 		}
 		return null;
 	}
-	
+
 	public ModelResourceTreeNode getDescendant( NamedUserType resourceClass ) {
-		ModelResourceTreeNode rv = this.getChildWithValue(resourceClass);
-		if (rv != null)
+		ModelResourceTreeNode rv = this.getChildWithValue( resourceClass );
+		if( rv != null )
 		{
 			return rv;
 		}
-		if (this.getChildCount() > 0)
+		if( this.getChildCount() > 0 )
 		{
-			for (ModelResourceTreeNode child : this.children)
+			for( ModelResourceTreeNode child : this.children )
 			{
-				ModelResourceTreeNode result = child.getDescendant(resourceClass);
-				if (result != null)
+				ModelResourceTreeNode result = child.getDescendant( resourceClass );
+				if( result != null )
 				{
 					return result;
 				}
@@ -164,28 +170,28 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 		return null;
 	}
-	
-	public ModelResourceTreeNode getChildWithJavaType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+
+	public ModelResourceTreeNode getChildWithJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		for( ModelResourceTreeNode child : this.children ) {
-			if( type != null && child.resourceJavaType != null && type.isAssignableFrom(child.resourceJavaType)) {
+			if( ( type != null ) && ( child.resourceJavaType != null ) && type.isAssignableFrom( child.resourceJavaType ) ) {
 				return child;
 			}
 		}
 		return null;
 	}
-	
-	public ModelResourceTreeNode getDescendantOfJavaType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		ModelResourceTreeNode rv = this.getChildWithJavaType(type);
-		if (rv != null)
+
+	public ModelResourceTreeNode getDescendantOfJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		ModelResourceTreeNode rv = this.getChildWithJavaType( type );
+		if( rv != null )
 		{
 			return rv;
 		}
-		if (this.getChildCount() > 0)
+		if( this.getChildCount() > 0 )
 		{
-			for (ModelResourceTreeNode child : this.children)
+			for( ModelResourceTreeNode child : this.children )
 			{
-				ModelResourceTreeNode result = child.getDescendantOfJavaType(type);
-				if (result != null)
+				ModelResourceTreeNode result = child.getDescendantOfJavaType( type );
+				if( result != null )
 				{
 					return result;
 				}
@@ -193,28 +199,28 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 		return null;
 	}
-	
-	public ModelResourceTreeNode getChildWithUserType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+
+	public ModelResourceTreeNode getChildWithUserType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		for( ModelResourceTreeNode child : this.children ) {
-			if( type != null && child.userType != null &&  child.userType.isAssignableTo(type)) {
+			if( ( type != null ) && ( child.userType != null ) && child.userType.isAssignableTo( type ) ) {
 				return child;
 			}
 		}
 		return null;
 	}
-	
-	public ModelResourceTreeNode getDescendantOfUserType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
-		ModelResourceTreeNode rv = this.getChildWithUserType(type);
-		if (rv != null)
+
+	public ModelResourceTreeNode getDescendantOfUserType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		ModelResourceTreeNode rv = this.getChildWithUserType( type );
+		if( rv != null )
 		{
 			return rv;
 		}
-		if (this.getChildCount() > 0)
+		if( this.getChildCount() > 0 )
 		{
-			for (ModelResourceTreeNode child : this.children)
+			for( ModelResourceTreeNode child : this.children )
 			{
-				ModelResourceTreeNode result = child.getDescendantOfUserType(type);
-				if (result != null)
+				ModelResourceTreeNode result = child.getDescendantOfUserType( type );
+				if( result != null )
 				{
 					return result;
 				}
@@ -222,55 +228,56 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 		return null;
 	}
-	
-	public void setUserType(NamedUserType type)
+
+	public void setUserType( NamedUserType type )
 	{
 		this.userType = type;
 	}
-	
+
 	public NamedUserType getUserType()
 	{
 		return this.userType;
 	}
-	
+
 	public JavaType getValue() {
 		return this.resourceJavaType;
 	}
+
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public Class<? extends org.lgna.story.resources.ModelResource> getResourceClass()
 	{
 		return this.resourceClass;
 	}
-	
+
 	public JavaType getResourceJavaType()
 	{
 		return this.resourceJavaType;
 	}
-	
-	public void setModelResourceInstance(ModelResource modelResource)
+
+	public void setModelResourceInstance( ModelResource modelResource )
 	{
 		this.modelResourceInstance = modelResource;
 	}
-	
+
 	public ModelResource getModelResourceInstance()
 	{
 		return this.modelResourceInstance;
 	}
-	
-	public void setJavaField(JavaField field)
+
+	public void setJavaField( JavaField field )
 	{
 		this.resourceJavaField = field;
 	}
-	
+
 	public JavaField getJavaField()
 	{
 		return this.resourceJavaField;
 	}
-	
-	public int compareTo(ModelResourceTreeNode other) {
+
+	public int compareTo( ModelResourceTreeNode other ) {
 		if( this.getAllowsChildren() ) {
 			if( other.getAllowsChildren() ) {
 				return this.getName().compareToIgnoreCase( other.getName() );
@@ -285,25 +292,26 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 			}
 		}
 	}
+
 	@Override
 	public String toString() {
 		JavaType value = this.getValue();
 		return value != null ? value.getName() : null;
 	}
-	
+
 	public void printTree()
 	{
-		this.printTree("");
+		this.printTree( "" );
 	}
-	
-	private void printTree(String indent)
+
+	private void printTree( String indent )
 	{
-		System.out.println(indent+"+"+this.name+" : "+this.userType);
+		System.out.println( indent + "+" + this.name + " : " + this.userType );
 		indent += "  ";
-		for (ModelResourceTreeNode child : this.children)
+		for( ModelResourceTreeNode child : this.children )
 		{
-			child.printTree(indent);
+			child.printTree( indent );
 		}
 	}
-	
+
 }

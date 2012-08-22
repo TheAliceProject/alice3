@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter< edu.cmu.cs.dennisc.scenegraph.TexturedAppearance > {
+public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter<edu.cmu.cs.dennisc.scenegraph.TexturedAppearance> {
 	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_diffuseColorTextureAdapter;
 	private boolean m_isDiffuseColorTextureAlphaBlended;
 	private boolean m_isDiffuseColorTextureClamped;
@@ -59,16 +59,16 @@ public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter< edu.cmu.
 
 	@Override
 	public void setPipelineState( RenderContext rc, int face ) {
-		super.setPipelineState(rc, face);
-		setTexturePipelineState(rc);
+		super.setPipelineState( rc, face );
+		setTexturePipelineState( rc );
 	}
 
-	public void setTexturePipelineState(RenderContext rc)
+	public void setTexturePipelineState( RenderContext rc )
 	{
 		rc.setDiffuseColorTextureAdapter( m_diffuseColorTextureAdapter, m_isDiffuseColorTextureClamped );
 		rc.setBumpTextureAdapter( m_bumpTextureAdapter );
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.diffuseColorTexture ) {

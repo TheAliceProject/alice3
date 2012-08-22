@@ -54,27 +54,33 @@ public class SphereImp extends ShapeImp {
 		public Double getValue() {
 			return SphereImp.this.sgSphere.radius.getValue();
 		}
+
 		@Override
 		protected void handleSetValue( Double value ) {
 			SphereImp.this.sgSphere.radius.setValue( value );
 		}
 	};
+
 	public SphereImp( org.lgna.story.SSphere abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
 	}
+
 	@Override
 	public org.lgna.story.SSphere getAbstraction() {
 		return this.abstraction;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
 		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgSphere.radius };
 	}
+
 	@Override
 	public Resizer[] getResizers() {
 		return new Resizer[] { Resizer.UNIFORM };
 	}
+
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
 		if( resizer == Resizer.UNIFORM ) {
@@ -84,6 +90,7 @@ public class SphereImp extends ShapeImp {
 			return Double.NaN;
 		}
 	}
+
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
 		if( resizer == Resizer.UNIFORM ) {
@@ -92,17 +99,17 @@ public class SphereImp extends ShapeImp {
 			assert false : resizer;
 		}
 	}
-	
+
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
-		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getScale shouldn't be called on " + this.getClass().getSimpleName() );
+		return new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
 	}
-	
+
 	@Override
-	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
-		if (size.x != size.y || size.y != size.z) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Invalid size for "+this.getClass().getSimpleName()+": "+size);
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+		if( ( size.x != size.y ) || ( size.y != size.z ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
 		}
 		this.radius.setValue( size.x * .5 );
 	}

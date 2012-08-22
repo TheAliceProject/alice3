@@ -1,4 +1,5 @@
 package org.alice.media.audio;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -9,7 +10,6 @@ import java.util.Map;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-
 
 /**
  * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
@@ -56,7 +56,7 @@ import javax.sound.sampled.AudioSystem;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class AudioTrackMixer {
 
@@ -64,74 +64,74 @@ public class AudioTrackMixer {
 	private List<ScheduledAudioStream> scheduledStreams;
 	private Map<org.lgna.common.resources.AudioResource, org.lgna.common.resources.AudioResource> convertedResourceMap;
 	private javax.sound.sampled.AudioFormat targetFormat;
-	
-	public AudioTrackMixer(javax.sound.sampled.AudioFormat targetFormat, double trackLength )
+
+	public AudioTrackMixer( javax.sound.sampled.AudioFormat targetFormat, double trackLength )
 	{
 		this.trackLength = trackLength;
 		this.scheduledStreams = new LinkedList<ScheduledAudioStream>();
 		this.targetFormat = targetFormat;
 		this.convertedResourceMap = new HashMap<org.lgna.common.resources.AudioResource, org.lgna.common.resources.AudioResource>();
 	}
-	
-	private org.lgna.common.resources.AudioResource convertResourceIfNecessary(org.lgna.common.resources.AudioResource resource)
+
+	private org.lgna.common.resources.AudioResource convertResourceIfNecessary( org.lgna.common.resources.AudioResource resource )
 	{
 		org.lgna.common.resources.AudioResource convertedResource = null;
-		if (this.convertedResourceMap.containsKey(resource))
+		if( this.convertedResourceMap.containsKey( resource ) )
 		{
-			convertedResource = this.convertedResourceMap.get(resource);
+			convertedResource = this.convertedResourceMap.get( resource );
 		}
 		else
 		{
-			if (AudioResourceConverter.needsConverting(resource, this.targetFormat))
+			if( AudioResourceConverter.needsConverting( resource, this.targetFormat ) )
 			{
-				convertedResource = AudioResourceConverter.convert(resource, this.targetFormat);
+				convertedResource = AudioResourceConverter.convert( resource, this.targetFormat );
 			}
 			else
 			{
 				convertedResource = resource;
 			}
-			this.convertedResourceMap.put(resource, convertedResource);
+			this.convertedResourceMap.put( resource, convertedResource );
 		}
 		return convertedResource;
 	}
-	
-	public void addAudioResource(org.lgna.common.resources.AudioResource resource, double startTime, double entryPoint, double endPoint, double volume)
+
+	public void addAudioResource( org.lgna.common.resources.AudioResource resource, double startTime, double entryPoint, double endPoint, double volume )
 	{
-		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary(resource);
-		ScheduledAudioStream scheduledStream = new ScheduledAudioStream(convertedResource, startTime, entryPoint, endPoint, volume);
-		addScheduledStream(scheduledStream);
+		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary( resource );
+		ScheduledAudioStream scheduledStream = new ScheduledAudioStream( convertedResource, startTime, entryPoint, endPoint, volume );
+		addScheduledStream( scheduledStream );
 	}
-	
-	public void addScheduledStream(ScheduledAudioStream scheduledStream)
+
+	public void addScheduledStream( ScheduledAudioStream scheduledStream )
 	{
-		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary(scheduledStream.getAudioResource());
-		if (convertedResource != scheduledStream.getAudioResource())
+		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary( scheduledStream.getAudioResource() );
+		if( convertedResource != scheduledStream.getAudioResource() )
 		{
-			scheduledStream.setAudioResource(convertedResource);
+			scheduledStream.setAudioResource( convertedResource );
 		}
 		int index = scheduledStreams.size();
-		for (int i=0; i<scheduledStreams.size(); i++)
+		for( int i = 0; i < scheduledStreams.size(); i++ )
 		{
-			if (scheduledStreams.get(i).compareTo(scheduledStream) > 0)
+			if( scheduledStreams.get( i ).compareTo( scheduledStream ) > 0 )
 			{
 				index = i;
 				break;
 			}
 		}
-		scheduledStreams.add(index, scheduledStream);
+		scheduledStreams.add( index, scheduledStream );
 	}
-	
+
 	public AudioInputStream createAudioStream()
 	{
-		AudioInputStream audioInputStream = new MixingFloatAudioInputStream(this.targetFormat, this.scheduledStreams, this.trackLength);
+		AudioInputStream audioInputStream = new MixingFloatAudioInputStream( this.targetFormat, this.scheduledStreams, this.trackLength );
 		return audioInputStream;
 	}
-	
-	public void write(OutputStream out) throws IOException
+
+	public void write( OutputStream out ) throws IOException
 	{
 		AudioInputStream audioInputStream = createAudioStream();
-		System.out.println(AudioSystem.isFileTypeSupported( AudioFileFormat.Type.WAVE ));
-		AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE, out);
+		System.out.println( AudioSystem.isFileTypeSupported( AudioFileFormat.Type.WAVE ) );
+		AudioSystem.write( audioInputStream, AudioFileFormat.Type.WAVE, out );
 	}
-	
+
 }

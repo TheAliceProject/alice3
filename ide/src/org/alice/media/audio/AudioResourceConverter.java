@@ -1,4 +1,5 @@
 package org.alice.media.audio;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -75,7 +76,7 @@ import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
  */
 public class AudioResourceConverter implements ControllerListener,
 		DataSinkListener {
-	
+
 	private org.lgna.common.resources.AudioResource audioResource;
 	private Processor processor = null;
 	private DataSink dataSink = null;
@@ -87,62 +88,64 @@ public class AudioResourceConverter implements ControllerListener,
 	Object waitLock = new Object();
 
 	class StateListener implements ControllerListener {
-		public void controllerUpdate(ControllerEvent ce) {
-			if (ce instanceof ControllerClosedEvent)
+		public void controllerUpdate( ControllerEvent ce ) {
+			if( ce instanceof ControllerClosedEvent ) {
 				stateFailed = true;
-			if (ce instanceof ControllerEvent)
-				synchronized (stateLock) {
+			}
+			if( ce instanceof ControllerEvent ) {
+				synchronized( stateLock ) {
 					stateLock.notifyAll();
 				}
+			}
 		}
 	}
 
-	public AudioResourceConverter(org.lgna.common.resources.AudioResource audioResource) {
+	public AudioResourceConverter( org.lgna.common.resources.AudioResource audioResource ) {
 		this.audioResource = audioResource;
 	}
-	
+
 	private static File createTempFile() throws IOException {
 		final File temp;
 
-		temp = File.createTempFile(Long.toString(System.nanoTime()), ".wav");
+		temp = File.createTempFile( Long.toString( System.nanoTime() ), ".wav" );
 
-		if (!(temp.delete())) {
-			throw new IOException("Could not delete temp file: "
-					+ temp.getAbsolutePath());
+		if( !( temp.delete() ) ) {
+			throw new IOException( "Could not delete temp file: "
+					+ temp.getAbsolutePath() );
 		}
 
-		if (!(temp.mkdir())) {
-			throw new IOException("Could not create temp directory: "
-					+ temp.getAbsolutePath());
+		if( !( temp.mkdir() ) ) {
+			throw new IOException( "Could not create temp directory: "
+					+ temp.getAbsolutePath() );
 		}
 
-		return (temp);
+		return ( temp );
 	}
 
-	private synchronized boolean waitForState(Processor p, int state) {
-		p.addControllerListener(new StateListener());
+	private synchronized boolean waitForState( Processor p, int state ) {
+		p.addControllerListener( new StateListener() );
 		stateFailed = false;
-		if (state == Processor.Configured) {
+		if( state == Processor.Configured ) {
 			p.configure();
-		} else if (state == Processor.Realized) {
+		} else if( state == Processor.Realized ) {
 			p.realize();
 		}
-		while (p.getState() < state && !stateFailed) {
-			synchronized (stateLock) {
+		while( ( p.getState() < state ) && !stateFailed ) {
+			synchronized( stateLock ) {
 				try {
 					stateLock.wait();
-				} catch (InterruptedException ie) {
+				} catch( InterruptedException ie ) {
 					return false;
 				}
 			}
 		}
-		return (!stateFailed);
+		return ( !stateFailed );
 	}
 
-	public void dataSinkUpdate(DataSinkEvent event) {
-		if (event instanceof EndOfStreamEvent) {
+	public void dataSinkUpdate( DataSinkEvent event ) {
+		if( event instanceof EndOfStreamEvent ) {
 			closeDataSink();
-		} else if (event instanceof DataSinkErrorEvent) {
+		} else if( event instanceof DataSinkErrorEvent ) {
 			stopSaving();
 		}
 	}
@@ -152,55 +155,57 @@ public class AudioResourceConverter implements ControllerListener,
 	 */
 	private void stopSaving() {
 		boolSaving = false;
-		if (processor != null) {
+		if( processor != null ) {
 			processor.stop();
 			processor.close();
 			processor = null;
-			if (dataSink == null) {
+			if( dataSink == null ) {
 				onDone();
 			}
 		}
 	}
 
 	private void closeDataSink() {
-		synchronized (this) {
-			if (dataSink != null)
+		synchronized( this ) {
+			if( dataSink != null ) {
 				dataSink.close();
+			}
 			dataSink = null;
-			if (processor == null) {
+			if( processor == null ) {
 				onDone();
 			}
 		}
 	}
 
-	public void controllerUpdate(ControllerEvent event) {
-		if (event instanceof ControllerErrorEvent) {
-			if (boolSaving == true) {
+	public void controllerUpdate( ControllerEvent event ) {
+		if( event instanceof ControllerErrorEvent ) {
+			if( boolSaving == true ) {
 				stopSaving();
 			}
-		} else if (event instanceof EndOfMediaEvent) {
-			if (boolSaving == true)
+		} else if( event instanceof EndOfMediaEvent ) {
+			if( boolSaving == true ) {
 				stopSaving();
+			}
 		}
 	}
 
 	private void onDone() {
 		long endTime = System.currentTimeMillis();
 		long dif = endTime - startTime;
-		System.out.println("Took: " + (dif * .001) + " seconds");
-		synchronized (waitLock) {
+		System.out.println( "Took: " + ( dif * .001 ) + " seconds" );
+		synchronized( waitLock ) {
 			isWaiting = false;
 		}
 
 	}
 
 	private boolean waitForFileDone() {
-		synchronized (waitLock) {
+		synchronized( waitLock ) {
 			try {
-				while (isWaiting) {
-					waitLock.wait(100);
+				while( isWaiting ) {
+					waitLock.wait( 100 );
 				}
-			} catch (Exception e) {
+			} catch( Exception e ) {
 				return false;
 			}
 		}
@@ -209,38 +214,38 @@ public class AudioResourceConverter implements ControllerListener,
 
 	private long startTime;
 
-	public org.lgna.common.resources.AudioResource convertTo(AudioFormat destFormat) {
-		javax.media.format.AudioFormat convertToFormat = JavaSoundOutput.convertFormat(destFormat);
-		return convertTo(convertToFormat);
+	public org.lgna.common.resources.AudioResource convertTo( AudioFormat destFormat ) {
+		javax.media.format.AudioFormat convertToFormat = JavaSoundOutput.convertFormat( destFormat );
+		return convertTo( convertToFormat );
 	}
-	
-	public org.lgna.common.resources.AudioResource convertTo(javax.media.format.AudioFormat destFormat) {
-		System.out.println("Converting "+this.audioResource.getOriginalFileName());
-		
+
+	public org.lgna.common.resources.AudioResource convertTo( javax.media.format.AudioFormat destFormat ) {
+		System.out.println( "Converting " + this.audioResource.getOriginalFileName() );
+
 		startTime = System.currentTimeMillis();
 		try {
 			javax.media.protocol.DataSource dataSource = new edu.cmu.cs.dennisc.javax.media.protocol.ByteArrayDataSource(
 					this.audioResource.getData(),
-					this.audioResource.getContentType());
-			this.processor = Manager.createProcessor(dataSource);
+					this.audioResource.getContentType() );
+			this.processor = Manager.createProcessor( dataSource );
 
-			processor.addControllerListener(this);
+			processor.addControllerListener( this );
 
-			if (!waitForState(processor, Processor.Configured)) {
+			if( !waitForState( processor, Processor.Configured ) ) {
 				return null;
 			}
 
 			TrackControl[] trackControls = processor.getTrackControls();
 			assert trackControls.length == 1;
-			TrackControl control = trackControls[0];
+			TrackControl control = trackControls[ 0 ];
 
-			processor.setContentDescriptor(new FileTypeDescriptor(
-					FileTypeDescriptor.WAVE));
+			processor.setContentDescriptor( new FileTypeDescriptor(
+					FileTypeDescriptor.WAVE ) );
 
-			control.setEnabled(true);
-			control.setFormat(destFormat);
+			control.setEnabled( true );
+			control.setFormat( destFormat );
 
-			if (!waitForState(processor, Processor.Realized)) {
+			if( !waitForState( processor, Processor.Realized ) ) {
 				return null;
 			}
 			boolSaving = true;
@@ -248,67 +253,65 @@ public class AudioResourceConverter implements ControllerListener,
 			dataSource = processor.getDataOutput();
 
 			File tempFile = createTempFile();
-			
-			MediaLocator mediaDest = new MediaLocator("file:"
-					+ tempFile.getAbsolutePath());
 
-			this.dataSink = Manager.createDataSink(dataSource, mediaDest);
-			dataSink.addDataSinkListener(this);
+			MediaLocator mediaDest = new MediaLocator( "file:"
+					+ tempFile.getAbsolutePath() );
+
+			this.dataSink = Manager.createDataSink( dataSource, mediaDest );
+			dataSink.addDataSinkListener( this );
 			dataSink.open();
 			dataSink.start();
 			processor.start();
 			isWaiting = true;
 			boolean success = waitForFileDone();
-			
-			org.lgna.common.resources.AudioResource ar = MediaFactory.getSingleton().createAudioResource(tempFile);
+
+			org.lgna.common.resources.AudioResource ar = MediaFactory.getSingleton().createAudioResource( tempFile );
 			tempFile.delete();
-			
 
 			return ar;
-		} catch (Exception e) {
+		} catch( Exception e ) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public static org.lgna.common.resources.AudioResource convert(org.lgna.common.resources.AudioResource resource, javax.media.format.AudioFormat destFormat)
+
+	public static org.lgna.common.resources.AudioResource convert( org.lgna.common.resources.AudioResource resource, javax.media.format.AudioFormat destFormat )
 	{
-		AudioResourceConverter converter = new AudioResourceConverter(resource);
-		return converter.convertTo(destFormat);
+		AudioResourceConverter converter = new AudioResourceConverter( resource );
+		return converter.convertTo( destFormat );
 	}
-	
-	public static org.lgna.common.resources.AudioResource convert(org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat)
+
+	public static org.lgna.common.resources.AudioResource convert( org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat )
 	{
-		AudioResourceConverter converter = new AudioResourceConverter(resource);
-		return converter.convertTo(destFormat);
+		AudioResourceConverter converter = new AudioResourceConverter( resource );
+		return converter.convertTo( destFormat );
 	}
-	
-	public static boolean needsConverting(org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat)
+
+	public static boolean needsConverting( org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat )
 	{
 		AudioInputStream audioStream = null;
-		ByteArrayInputStream dataStream = new ByteArrayInputStream(resource.getData());
-		
+		ByteArrayInputStream dataStream = new ByteArrayInputStream( resource.getData() );
+
 		try
 		{
-			audioStream = AudioSystem.getAudioInputStream(dataStream);
-		}
-		catch (Exception e)
+			audioStream = AudioSystem.getAudioInputStream( dataStream );
+		} catch( Exception e )
 		{
 			e.printStackTrace();
 			return false;
 		}
 		AudioFormat currentFormat = audioStream.getFormat();
-		
-		return needsConverting(currentFormat, destFormat);
+
+		return needsConverting( currentFormat, destFormat );
 	}
-	
-	public static boolean needsConverting(javax.sound.sampled.AudioFormat currentFormat, javax.sound.sampled.AudioFormat destFormat)
+
+	public static boolean needsConverting( javax.sound.sampled.AudioFormat currentFormat, javax.sound.sampled.AudioFormat destFormat )
 	{
-		if (currentFormat.getSampleRate() != destFormat.getSampleRate())
+		if( currentFormat.getSampleRate() != destFormat.getSampleRate() )
 		{
 			return true;
 		}
-		if (currentFormat.getEncoding() != destFormat.getEncoding())
+		if( currentFormat.getEncoding() != destFormat.getEncoding() )
 		{
 			return true;
 		}

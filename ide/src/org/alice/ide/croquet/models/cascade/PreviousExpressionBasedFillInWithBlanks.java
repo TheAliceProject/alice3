@@ -46,13 +46,15 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithBlanks< F extends org.lgna.project.ast.Expression, B > extends ExpressionFillInWithBlanks< F,B > {
+public abstract class PreviousExpressionBasedFillInWithBlanks<F extends org.lgna.project.ast.Expression, B> extends ExpressionFillInWithBlanks<F, B> {
 	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls ) {
 		super( id, cls );
 	}
+
 	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 	}
+
 	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
 		org.lgna.project.ast.Expression prevExpression = this.getPreviousExpression();
 		if( prevExpression != null ) {
@@ -61,24 +63,29 @@ public abstract class PreviousExpressionBasedFillInWithBlanks< F extends org.lgn
 			return null;
 		}
 	}
+
 	private org.lgna.project.ast.Expression cleanExpression;
+
 	@Override
 	protected void markClean() {
 		super.markClean();
 		this.cleanExpression = this.getPreviousExpression();
 	}
+
 	@Override
 	protected boolean isDirty() {
 		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
 		return super.isDirty() || isPrevExpressionChanged;
 	}
-//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,B> context, org.lgna.project.ast.Expression previousExpression );
-//	@Override
-//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> context ) {
-//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-//	}
-	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression, B[] expressions);
+
+	//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,B> context, org.lgna.project.ast.Expression previousExpression );
+	//	@Override
+	//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> context ) {
+	//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+	//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+	//	}
+	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression, B[] expressions );
+
 	@Override
 	protected final F createValue( B[] expressions ) {
 		return this.createValue( this.createCopyOfPreviousExpression(), expressions );

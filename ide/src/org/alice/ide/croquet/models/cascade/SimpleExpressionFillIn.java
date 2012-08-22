@@ -47,20 +47,24 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class SimpleExpressionFillIn< E extends org.lgna.project.ast.Expression > extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< E > {
+public class SimpleExpressionFillIn<E extends org.lgna.project.ast.Expression> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<E> {
 	private final E transientValue;
+
 	public SimpleExpressionFillIn( E value ) {
 		super( java.util.UUID.fromString( "7479f074-b5f1-4c72-96da-5ebc3c547db5" ) );
 		this.transientValue = value;
 	}
+
 	@Override
-	public E createValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public E createValue( org.lgna.croquet.cascade.ItemNode<? super E, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.transientValue;
 	}
+
 	@Override
-	public E getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super E,Void > node ) {
+	public E getTransientValue( org.lgna.croquet.cascade.ItemNode<? super E, Void> node ) {
 		return this.transientValue;
 	}
+
 	@Override
 	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );

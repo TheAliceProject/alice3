@@ -46,8 +46,9 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorState extends FilteredMemberState< org.lgna.project.ast.NamedUserConstructor > {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ConstructorState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class ConstructorState extends FilteredMemberState<org.lgna.project.ast.NamedUserConstructor> {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ConstructorState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ConstructorState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ConstructorState rv = map.get( type );
 		if( rv != null ) {
@@ -58,9 +59,11 @@ public class ConstructorState extends FilteredMemberState< org.lgna.project.ast.
 		}
 		return rv;
 	}
+
 	private ConstructorState( org.lgna.project.ast.NamedUserType type ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "53fca6d4-e24f-4662-844e-1e2be690dd45" ), org.lgna.project.ast.NamedUserConstructor.class, type.constructors );
 	}
+
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.NamedUserConstructor item ) {
 		return true;

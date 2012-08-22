@@ -47,10 +47,13 @@ package org.alice.ide.templates;
  */
 public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
 	private boolean isInitialized = false;
+
 	public ExpressionTemplate( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
 		super( model );
 	}
+
 	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -61,17 +64,20 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 			this.isInitialized = true;
 		}
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		//this.removeAllComponents();
 		super.handleUndisplayable();
 	}
+
 	protected void refresh() {
 		this.removeAllComponents();
 		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( incompleteExpression ) );
 		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createComponent( incompleteExpression ) );
 	}
+
 	@Override
 	protected boolean isPressed() {
 		return false;

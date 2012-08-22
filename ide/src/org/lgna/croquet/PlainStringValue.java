@@ -50,9 +50,11 @@ public abstract class PlainStringValue extends StringValue {
 	public PlainStringValue( java.util.UUID id ) {
 		super( id, new javax.swing.text.PlainDocument() );
 	}
+
 	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea() {
 		return new org.lgna.croquet.components.ImmutableTextArea( this );
 	}
+
 	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField() {
 		return new org.lgna.croquet.components.ImmutableTextField( this );
 	}

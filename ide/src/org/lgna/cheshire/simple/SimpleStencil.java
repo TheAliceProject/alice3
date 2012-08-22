@@ -1,43 +1,47 @@
 package org.lgna.cheshire.simple;
 
-
 /**
  * @author Kyle J. Harms
  */
 @Deprecated
 public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil {
 
-	public static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
-	public static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
+	public static final java.awt.Color STENCIL_BASE_COLOR = new java.awt.Color( 181, 140, 140, 150 );
+	public static final java.awt.Color STENCIL_LINE_COLOR = new java.awt.Color( 92, 48, 24, 63 );
 
 	private final java.awt.Paint stencilPaint;
 	private final org.lgna.cheshire.simple.ScrollRenderer scrollRenderer;
 	private Feature enteredFeature;
 
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
-		public void mouseClicked(java.awt.event.MouseEvent e) {
-			SimpleStencil.this.redispatchMouseEvent(e);
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+			SimpleStencil.this.redispatchMouseEvent( e );
 		}
-		public void mouseEntered(java.awt.event.MouseEvent e) {
-			SimpleStencil.this.redispatchMouseEvent(e);
+
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+			SimpleStencil.this.redispatchMouseEvent( e );
 		}
-		public void mouseExited(java.awt.event.MouseEvent e) {
-			SimpleStencil.this.redispatchMouseEvent(e);
+
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+			SimpleStencil.this.redispatchMouseEvent( e );
 		}
-		public void mousePressed(java.awt.event.MouseEvent e) {
-			SimpleStencil.this.redispatchMouseEvent(e);
+
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			SimpleStencil.this.redispatchMouseEvent( e );
 		}
-		public void mouseReleased(java.awt.event.MouseEvent e) {
-			SimpleStencil.this.redispatchMouseEvent(e);
+
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+			SimpleStencil.this.redispatchMouseEvent( e );
 		}
 	};
 
 	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
-		public void mouseMoved(java.awt.event.MouseEvent e) {
-			SimpleStencil.this.redispatchMouseEvent(e);
+		public void mouseMoved( java.awt.event.MouseEvent e ) {
+			SimpleStencil.this.redispatchMouseEvent( e );
 		}
-		public void mouseDragged(java.awt.event.MouseEvent e) {
-			SimpleStencil.this.redispatchMouseEvent(e);
+
+		public void mouseDragged( java.awt.event.MouseEvent e ) {
+			SimpleStencil.this.redispatchMouseEvent( e );
 		}
 	};
 
@@ -51,10 +55,10 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 
 	protected abstract Page getCurrentPage();
 
-	protected void redispatchMouseEvent(java.awt.event.MouseEvent e) {
+	protected void redispatchMouseEvent( java.awt.event.MouseEvent e ) {
 		Page page = this.getCurrentPage();
 
-		boolean isInterceptable = page == null || page.isEventInterceptable( e );
+		boolean isInterceptable = ( page == null ) || page.isEventInterceptable( e );
 		java.awt.Point pSrc = e.getPoint();
 		java.awt.Component componentSrc = e.getComponent();
 		if( isInterceptable && e.getComponent().contains( pSrc.x, pSrc.y ) ) {
@@ -69,17 +73,17 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 				}
 			} else {
 				javax.swing.JFrame jFrame = org.lgna.croquet.Application.getActiveInstance().getFrame().getAwtComponent();
-				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt(jFrame.getContentPane(), pSrc.x, pSrc.y);
-				if (component != null) {
-					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint(componentSrc, pSrc, component);
-					component.dispatchEvent(new java.awt.event.MouseEvent(component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger()));
+				java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt( jFrame.getContentPane(), pSrc.x, pSrc.y );
+				if( component != null ) {
+					java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint( componentSrc, pSrc, component );
+					component.dispatchEvent( new java.awt.event.MouseEvent( component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger() ) );
 				}
 			}
 		}
 	}
 
 	@Override
-	protected void handleMouseMoved(java.awt.event.MouseEvent e) {
+	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
 		Page page = this.getCurrentPage();
 		if( page != null ) {
 			for( Note note : page.getNotes() ) {
@@ -88,7 +92,7 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 						java.awt.Shape shape = feature.getShape( SimpleStencil.this, null );
 						if( shape != null ) {
 							if( shape.contains( e.getX(), e.getY() ) ) {
-								this.setEnteredFeature(feature);
+								this.setEnteredFeature( feature );
 								return;
 							}
 						}
@@ -105,7 +109,7 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 		if( this.isVisible() ) {
 			if( page != null ) {
 				if( page.isStencilRenderingDesired() ) {
-					java.awt.geom.Area area = new java.awt.geom.Area(g2.getClip());
+					java.awt.geom.Area area = new java.awt.geom.Area( g2.getClip() );
 					for( Note note : page.getNotes() ) {
 						if( note.isActive() ) {
 							for( Feature feature : note.getFeatures() ) {
@@ -121,7 +125,7 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 											org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 											if( scrollPane != null ) {
 												javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), SimpleStencil.this.getAwtComponent() );
+												java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle( scrollBar.getParent(), scrollBar.getBounds(), SimpleStencil.this.getAwtComponent() );
 												area.subtract( new java.awt.geom.Area( rect ) );
 											} else {
 												System.err.println( "cannot find scroll pane for: " + feature );
@@ -136,7 +140,7 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 						}
 					}
 					g2.setPaint( stencilPaint );
-					g2.fill(area);
+					g2.fill( area );
 				}
 			}
 		}
@@ -190,7 +194,7 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 	protected boolean contains( int x, int y, boolean superContains ) {
 		Page page = getCurrentPage();
 		if( page != null ) {
-			java.awt.geom.Area area = new java.awt.geom.Area(new java.awt.Rectangle(0, 0, this.getWidth(), this.getHeight()));
+			java.awt.geom.Area area = new java.awt.geom.Area( new java.awt.Rectangle( 0, 0, this.getWidth(), this.getHeight() ) );
 			for( Note note : page.getNotes() ) {
 				if( note.isActive() ) {
 					for( Feature feature : note.getFeatures() ) {
@@ -206,7 +210,7 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 									org.lgna.croquet.components.ScrollPane scrollPane = trackableShape.getScrollPaneAncestor();
 									if( scrollPane != null ) {
 										javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), SimpleStencil.this.getAwtComponent() );
+										java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle( scrollBar.getParent(), scrollBar.getBounds(), SimpleStencil.this.getAwtComponent() );
 										area.subtract( new java.awt.geom.Area( rect ) );
 									} else {
 										System.err.println( "cannot find scroll pane for: " + feature );
@@ -217,7 +221,7 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 					}
 				}
 			}
-			return area.contains(x, y);
+			return area.contains( x, y );
 		} else {
 			return superContains;
 		}
@@ -238,7 +242,7 @@ public abstract class SimpleStencil extends org.lgna.croquet.components.Stencil 
 		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 	}
 
-	public void setEnteredFeature(Feature enteredFeature) {
+	public void setEnteredFeature( Feature enteredFeature ) {
 		if( this.enteredFeature != enteredFeature ) {
 			if( this.enteredFeature != null ) {
 				this.enteredFeature.setEntered( false );

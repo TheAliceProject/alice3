@@ -48,7 +48,7 @@ package org.alice.ide.x.components;
 public class InstanceCreationView extends AbstractExpressionView<org.lgna.project.ast.InstanceCreation> {
 	public InstanceCreationView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		super( factory, instanceCreation );
-		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
+		org.lgna.croquet.components.Component<?> prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForInstanceCreationIfAppropriate( instanceCreation );
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}

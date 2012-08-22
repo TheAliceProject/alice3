@@ -49,19 +49,23 @@ public class AutomaticCompletionTrigger extends Trigger {
 	public AutomaticCompletionTrigger() {
 		super( Origin.USER ); //todo?
 	}
+
 	public AutomaticCompletionTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 		return null;
 	}
+
 	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		throw new RuntimeException( "todo" );
 	}
+
 	@Override
-	public String getNoteText( ) {
+	public String getNoteText() {
 		//todo
 		return "COMPLETE";
 	}

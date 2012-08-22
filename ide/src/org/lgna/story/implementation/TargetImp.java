@@ -48,13 +48,16 @@ package org.lgna.story.implementation;
  */
 public class TargetImp extends TransformableImp {
 	private final org.lgna.story.STarget abstraction;
+
 	public TargetImp( org.lgna.story.STarget abstraction ) {
 		this.abstraction = abstraction;
 	}
+
 	@Override
 	public org.lgna.story.STarget getAbstraction() {
 		return this.abstraction;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		return rv;

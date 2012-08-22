@@ -54,18 +54,22 @@ public class DefaultTreeSelectionState<T> extends TreeSelectionState<T> {
 		this.treeModel = treeModel;
 		this.setValueTransactionlessly( initialSelection );
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
 		return this.treeModel;
 	}
+
 	@Override
 	protected String getTextForNode( T node ) {
 		return node.toString();
 	}
+
 	@Override
 	protected javax.swing.Icon getIconForNode( T node ) {
 		return null;
 	}
+
 	@Override
 	public void refresh( T node ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );

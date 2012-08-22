@@ -47,7 +47,8 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class LocalAccessDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized LocalAccessDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
 		LocalAccessDragModel rv = map.get( local );
 		if( rv != null ) {
@@ -58,23 +59,29 @@ public class LocalAccessDragModel extends AbstractExpressionDragModel {
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.UserLocal local;
+
 	private LocalAccessDragModel( org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "57dbd70e-11e0-4311-905e-954a95403950" ) );
 		this.local = local;
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.local.getValueType();
 	}
+
 	@Override
 	public boolean isPotentialStatementCreator() {
 		return this.local.isFinal.getValue() == false;
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.statementfactory.LocalStatementCascade.getInstance( this.local, blockStatementIndexPair );
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.LocalAccessOperation.getInstance( this.local, expressionProperty );

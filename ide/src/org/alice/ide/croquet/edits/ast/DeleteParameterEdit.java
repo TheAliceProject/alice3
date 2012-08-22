@@ -48,12 +48,15 @@ package org.alice.ide.croquet.edits.ast;
  */
 public class DeleteParameterEdit extends ParameterEdit {
 	private transient int index;
+
 	public DeleteParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
 		super( completionStep, code, parameter );
 	}
+
 	public DeleteParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		if( isDo ) {
@@ -61,14 +64,16 @@ public class DeleteParameterEdit extends ParameterEdit {
 		}
 		this.removeParameter( this.index );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		this.addParameter( this.index );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, getParameter(), org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, getParameter(), org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 }

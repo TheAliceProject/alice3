@@ -47,7 +47,9 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface Code extends Member {
-	public java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters();
+	public java.util.ArrayList<? extends AbstractParameter> getRequiredParameters();
+
 	public AbstractParameter getVariableLengthParameter();
+
 	public AbstractParameter getKeyedParameter();
 }

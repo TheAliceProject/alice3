@@ -48,6 +48,7 @@ public abstract class SnapshotListCellRenderer implements javax.swing.ListCellRe
 	private final int LABEL_INSET = 8;
 	private javax.swing.JPanel panel = new javax.swing.JPanel();
 	private javax.swing.JLabel label = new javax.swing.JLabel();
+
 	public SnapshotListCellRenderer() {
 		this.panel.setOpaque( false );
 		this.label.setOpaque( true );
@@ -59,8 +60,9 @@ public abstract class SnapshotListCellRenderer implements javax.swing.ListCellRe
 		this.panel.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.panel.add( this.label );
 	}
-	
+
 	protected abstract javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value );
+
 	public final java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		this.updateLabel( this.label, value );
 		java.awt.Color background;

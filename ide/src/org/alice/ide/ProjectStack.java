@@ -50,8 +50,9 @@ public class ProjectStack {
 	private ProjectStack() {
 		throw new AssertionError();
 	}
+
 	private static final java.util.Stack<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	
+
 	public static org.lgna.project.Project peekProject() {
 		if( projectStack.size() > 0 ) {
 			return projectStack.peek();
@@ -59,12 +60,15 @@ public class ProjectStack {
 			return IDE.getActiveInstance().getProject();
 		}
 	}
+
 	public static void pushProject( org.lgna.project.Project project ) {
 		projectStack.push( project );
 	}
+
 	public static org.lgna.project.Project popProject() {
 		return projectStack.pop();
 	}
+
 	public static org.lgna.project.Project popAndCheckProject( org.lgna.project.Project expectedProject ) {
 		org.lgna.project.Project poppedProject = popProject();
 		if( poppedProject != expectedProject ) {

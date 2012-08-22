@@ -45,10 +45,11 @@ package org.lgna.croquet;
 /*package-private*/abstract class GatedCommitDialogContentPanel<CC extends GatedCommitDialogContentComposite> extends DialogContentPanel<CC> {
 	private final org.lgna.croquet.components.StatusLabel statusLabel = new org.lgna.croquet.components.StatusLabel();
 	private final org.lgna.croquet.components.LineAxisPanel controlLine = new org.lgna.croquet.components.LineAxisPanel();
+
 	public GatedCommitDialogContentPanel( CC composite ) {
 		super( composite );
-		controlLine.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		
+		controlLine.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+
 		org.lgna.croquet.components.GridBagPanel pageEndPanel = new org.lgna.croquet.components.GridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.anchor = java.awt.GridBagConstraints.NORTH;
@@ -63,20 +64,22 @@ package org.lgna.croquet;
 		pageEndPanel.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
 		pageEndPanel.addComponent( controlLine, gbc );
 		controlLine.setBackgroundColor( null );
-		
+
 		this.addPageEndComponent( pageEndPanel );
-		
+
 		this.statusLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
+
 	protected org.lgna.croquet.components.LineAxisPanel getControlLine() {
 		return this.controlLine;
 	}
+
 	public org.lgna.croquet.components.StatusLabel getStatusLabel() {
 		return this.statusLabel;
 	}
 }
 
-/*package-private*/abstract class GatedCommitDialogContentComposite<V extends GatedCommitDialogContentPanel> extends DialogContentComposite<V> {
+/* package-private */abstract class GatedCommitDialogContentComposite<V extends GatedCommitDialogContentPanel> extends DialogContentComposite<V> {
 	public GatedCommitDialogContentComposite( java.util.UUID migrationId, GatedCommitDialogCoreComposite coreComposite ) {
 		super( migrationId, coreComposite );
 	}
@@ -85,8 +88,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>, CC extends GatedCommitDialogContentComposite<? extends GatedCommitDialogContentPanel<?>>> extends DialogCoreComposite<V,CC> {
-	private final java.util.List< CommitRejector > commitRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
+public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.components.View<?, ?>, CC extends GatedCommitDialogContentComposite<? extends GatedCommitDialogContentPanel<?>>> extends DialogCoreComposite<V, CC> {
+	private final java.util.List<CommitRejector> commitRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
@@ -94,13 +98,17 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	public void addCommitRejector( CommitRejector commitRejector ) {
 		this.commitRejectors.add( commitRejector );
 	}
+
 	public void removeCommitRejector( CommitRejector commitRejector ) {
 		this.commitRejectors.remove( commitRejector );
 	}
+
 	public void clearCommitRejectors() {
 		this.commitRejectors.clear();
 	}
+
 	protected abstract Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step );
+
 	public final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Status status = this.getStatusPreRejectorCheck( step );
 		if( status == IS_GOOD_TO_GO_STATUS ) {
@@ -115,10 +123,11 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		}
 		return status;
 	}
-	
+
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
+
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			GatedCommitDialogCoreComposite.this.handleFiredEvent( e );
 		}
@@ -127,7 +136,9 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	public boolean isStatusLineDesired() {
 		return true;
 	}
+
 	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
+
 	private void updateStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		boolean isGoodToGo;
 		AbstractSeverityStatusComposite.Status status = this.getStatus( step );
@@ -150,22 +161,25 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		}
 		this.updateStatus( s );
 	}
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		completionStep.addListener( this.listener );
 		this.updateStatus( completionStep );
 		super.handlePreShowDialog( completionStep );
 	}
+
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		completionStep.removeListener( this.listener );
 		super.handlePostHideDialog( completionStep );
 	}
-	
+
 	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 		org.lgna.croquet.edits.Edit<?> commitEdit = null;
 		this.getCommitOperation().addGeneratedTransaction( subTransactionHistory, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), commitEdit );
 	}
+
 	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 }

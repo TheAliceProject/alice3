@@ -47,8 +47,8 @@ import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.State;
-import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.WizardPageComposite;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
@@ -58,18 +58,19 @@ import edu.cmu.cs.dennisc.matt.EventScript;
  * @author Matt May
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
-	
+
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private RunProgramContext programContext;
 	private EventScript script;
 	org.lgna.croquet.components.BorderPanel lookingGlassContainer;
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
-	
+
 	private BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
 		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
+
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			if( isRecordingState.getValue() ) {
 				programContext.getProgramImp().startAnimator();
@@ -78,7 +79,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			}
 		}
 	};
-	
+
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
 		this.owner = owner;
@@ -93,7 +94,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
 			programContext.getProgramImp().stopAnimator();
 			programContext.setActiveScene();
-			script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+			script = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
 			owner.setScript( script );
 			return null;
 		}
@@ -109,7 +110,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			programContext.getProgramImp().stopAnimator();
 			programContext.setActiveScene();
 		}
-		script = ((SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() )).getTranscript();
+		script = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
 		owner.setScript( script );
 	}
 
@@ -122,12 +123,15 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	public BooleanState getPlayRecordedOperation() {
 		return this.isRecordingState;
 	}
+
 	public ActionOperation getRestartRecording() {
 		return this.restartRecording;
 	}
+
 	public EventScript getScript() {
 		return this.script;
 	}
+
 	@Override
 	protected EventRecordView createView() {
 		return new EventRecordView( this );

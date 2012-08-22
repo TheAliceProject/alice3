@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitHiphopHood implements MaleAdultFullBodyOutfit {
-	ORANGE ,
- 	BLUE ,
- 	GREEN ;
+	ORANGE,
+	BLUE,
+	GREEN;
 }

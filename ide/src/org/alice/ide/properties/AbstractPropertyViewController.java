@@ -44,29 +44,33 @@ package org.alice.ide.properties;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public abstract class AbstractPropertyViewController extends org.lgna.croquet.components.ViewController< javax.swing.JComponent, org.alice.ide.croquet.models.StandardExpressionState > {
-	private org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+public abstract class AbstractPropertyViewController extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.alice.ide.croquet.models.StandardExpressionState> {
+	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueObserver = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 			AbstractPropertyViewController.this.valueChanged();
 		}
 	};
+
 	public AbstractPropertyViewController( org.alice.ide.croquet.models.StandardExpressionState model ) {
 		super( model );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getModel().addValueListener( this.valueObserver );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.getModel().removeValueListener( this.valueObserver );
 		super.handleUndisplayable();
 	}
-	
+
 	protected abstract void valueChanged();
 }

@@ -48,17 +48,17 @@ package org.lgna.project.ast;
  */
 public abstract class Statement extends AbstractNode {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
-//	protected java.util.List<MethodInvocation> addIfMethodInvocation( java.util.List<MethodInvocation> rv, AbstractMethod method, Expression expression ) {
-//		if( expression instanceof MethodInvocation ) {
-//			MethodInvocation methodInvocation = (MethodInvocation)expression;
-//			if( methodInvocation.method.getValue().equals( method ) ) {
-//				rv.add( methodInvocation );
-//			}
-//		}
-//		return rv;
-//	}
-//	protected abstract java.util.List<MethodInvocation> findAllMethodInvocations( java.util.List<MethodInvocation> rv, AbstractMethod method );
-//	public final java.util.List<MethodInvocation> findAllMethodInvocations( AbstractMethod method ) {
-//		return findAllMethodInvocations( new java.util.LinkedList< MethodInvocation >(), method );
-//	}
+	//	protected java.util.List<MethodInvocation> addIfMethodInvocation( java.util.List<MethodInvocation> rv, AbstractMethod method, Expression expression ) {
+	//		if( expression instanceof MethodInvocation ) {
+	//			MethodInvocation methodInvocation = (MethodInvocation)expression;
+	//			if( methodInvocation.method.getValue().equals( method ) ) {
+	//				rv.add( methodInvocation );
+	//			}
+	//		}
+	//		return rv;
+	//	}
+	//	protected abstract java.util.List<MethodInvocation> findAllMethodInvocations( java.util.List<MethodInvocation> rv, AbstractMethod method );
+	//	public final java.util.List<MethodInvocation> findAllMethodInvocations( AbstractMethod method ) {
+	//		return findAllMethodInvocations( new java.util.LinkedList< MethodInvocation >(), method );
+	//	}
 }

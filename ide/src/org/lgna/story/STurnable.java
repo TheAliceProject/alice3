@@ -43,65 +43,73 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.ValueTemplate;
+import org.lgna.project.annotations.Visibility;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class STurnable extends SThing {
 	@Override
-	/*package-private*/abstract org.lgna.story.implementation.AbstractTransformableImp getImplementation();
+	/* package-private */abstract org.lgna.story.implementation.AbstractTransformableImp getImplementation();
 
 	public Boolean isFacing( SThing other ) {
 		return this.getImplementation().isFacing( other.getImplementation() );
 	}
 
-	@MethodTemplate()
-	public void turn( TurnDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, Turn.Detail... details ) {
-		this.getImplementation().animateApplyRotationInRevolutions( 
-				direction.getAxis(), 
-				amount.doubleValue(), 
-				AsSeenBy.getValue( details, this ).getImplementation(), 
-				Duration.getValue( details ), 
-				AnimationStyle.getValue( details ).getInternal() 
-		);
-	}
-	@MethodTemplate()
-	public void roll( RollDirection direction, @ValueTemplate(detailsEnumCls = org.lgna.story.annotation.AngleDetails.class) Number amount, Roll.Detail... details ) {
-		this.getImplementation().animateApplyRotationInRevolutions( 
-				direction.getAxis(), 
-				amount.doubleValue(), 
-				AsSeenBy.getValue( details, this ).getImplementation(), 
-				Duration.getValue( details ), 
+	@MethodTemplate( )
+	public void turn( TurnDirection direction, @ValueTemplate( detailsEnumCls = org.lgna.story.annotation.AngleDetails.class )
+	Number amount, Turn.Detail... details ) {
+		this.getImplementation().animateApplyRotationInRevolutions(
+				direction.getAxis(),
+				amount.doubleValue(),
+				AsSeenBy.getValue( details, this ).getImplementation(),
+				Duration.getValue( details ),
 				AnimationStyle.getValue( details ).getInternal()
-		);
+				);
 	}
-	
-	@MethodTemplate()
+
+	@MethodTemplate( )
+	public void roll( RollDirection direction, @ValueTemplate( detailsEnumCls = org.lgna.story.annotation.AngleDetails.class )
+	Number amount, Roll.Detail... details ) {
+		this.getImplementation().animateApplyRotationInRevolutions(
+				direction.getAxis(),
+				amount.doubleValue(),
+				AsSeenBy.getValue( details, this ).getImplementation(),
+				Duration.getValue( details ),
+				AnimationStyle.getValue( details ).getInternal()
+				);
+	}
+
+	@MethodTemplate( )
 	public void turnToFace( SThing target, TurnToFace.Detail... details ) {
 		this.getImplementation().animateOrientationOnlyToFace( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void orientToUpright( OrientToUpright.Detail... details ) {
 		SThing upAsSeenBy = UpAsSeenBy.getValue( details, null );
 		this.getImplementation().animateOrientationToUpright( upAsSeenBy != null ? upAsSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void pointAt( SThing target, PointAt.Detail... details ) {
 		SThing upAsSeenBy = UpAsSeenBy.getValue( details, null );
 		this.getImplementation().animateOrientationToPointAt( target.getImplementation(), upAsSeenBy != null ? upAsSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@MethodTemplate()
+	@MethodTemplate( )
 	public void orientTo( SThing target, OrientTo.Detail... details ) {
 		this.getImplementation().animateOrientationOnly( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Orientation getOrientationRelativeToVehicle() {
 		return Orientation.createInstance( this.getImplementation().getLocalOrientation() );
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setOrientationRelativeToVehicle( Orientation orientation, SetOrientationRelativeToVehicle.Detail... details ) {
 		org.lgna.story.implementation.EntityImp vehicle = this.getImplementation().getVehicle();
 		if( vehicle != null ) {
@@ -114,8 +122,8 @@ public abstract class STurnable extends SThing {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		}
 	}
-	
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public Double getDistanceTo( STurnable other, GetDistanceTo.Detail... details ) {
 		return this.getImplementation().getDistanceTo( other.getImplementation() );
 	}

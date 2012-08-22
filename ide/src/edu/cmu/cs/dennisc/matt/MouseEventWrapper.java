@@ -67,11 +67,11 @@ public class MouseEventWrapper {
 
 	public void translatePoint( SceneImp scene ) {
 		int newWidth = scene.getProgram().getOnscreenLookingGlass().getWidth();
-		double finalX = event.getX() * newWidth / xVal;
+		double finalX = ( event.getX() * newWidth ) / xVal;
 		int newHeight = scene.getProgram().getOnscreenLookingGlass().getHeight();
-		double finalY = event.getY() * newHeight / yVal;
-		int deltaX = (int)(finalX - event.getX());
-		int deltaY = (int)(finalY - event.getY());
-		event.translatePoint(deltaX, deltaY);
+		double finalY = ( event.getY() * newHeight ) / yVal;
+		int deltaX = (int)( finalX - event.getX() );
+		int deltaY = (int)( finalY - event.getY() );
+		event.translatePoint( deltaX, deltaY );
 	}
 }

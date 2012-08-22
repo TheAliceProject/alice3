@@ -46,17 +46,20 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInNode<F,B> extends BlankOwnerNode< F, B, org.lgna.croquet.CascadeFillIn< F, B > > {
-	public static < F, B > FillInNode< F, B > createInstance( org.lgna.croquet.CascadeFillIn< F, B > model ) {
-		return new FillInNode< F,B >( model );
+public class FillInNode<F, B> extends BlankOwnerNode<F, B, org.lgna.croquet.CascadeFillIn<F, B>> {
+	public static <F, B> FillInNode<F, B> createInstance( org.lgna.croquet.CascadeFillIn<F, B> model ) {
+		return new FillInNode<F, B>( model );
 	}
-	private FillInNode( org.lgna.croquet.CascadeFillIn< F, B > model ) {
+
+	private FillInNode( org.lgna.croquet.CascadeFillIn<F, B> model ) {
 		super( model );
 	}
+
 	public FillInNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public org.lgna.croquet.CascadeFillIn< F, B > getCascadeFillIn() {
+
+	public org.lgna.croquet.CascadeFillIn<F, B> getCascadeFillIn() {
 		return this.getElement();
 	}
 }

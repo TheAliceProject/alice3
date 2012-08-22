@@ -45,14 +45,16 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyView< P extends org.lgna.project.ast.NodeProperty< N >, N extends org.lgna.project.ast.AbstractNode > extends org.alice.ide.croquet.components.AbstractPropertyPane< P, N > {
+public class NodePropertyView<P extends org.lgna.project.ast.NodeProperty<N>, N extends org.lgna.project.ast.AbstractNode> extends org.alice.ide.croquet.components.AbstractPropertyPane<P, N> {
 	public NodePropertyView( org.alice.ide.x.AstI18nFactory factory, P property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 		this.refreshLater();
 	}
-	protected org.lgna.croquet.components.JComponent< ? > createComponent( N node ) {
+
+	protected org.lgna.croquet.components.JComponent<?> createComponent( N node ) {
 		return this.getFactory().createComponent( node );
 	}
+
 	@Override
 	protected final void internalRefresh() {
 		super.internalRefresh();

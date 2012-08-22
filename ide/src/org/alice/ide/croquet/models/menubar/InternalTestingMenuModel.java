@@ -53,6 +53,7 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 	public static InternalTestingMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private InternalTestingMenuModel() {
 		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
 				org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
@@ -66,7 +67,6 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation.getInstance().getMenuItemPrepModel(),
 				new org.lgna.cheshire.test.IsShowingHackTutorialState().getMenuItemPrepModel(),
-				new org.alice.ide.highlight.ShowMeOperation().getMenuItemPrepModel()
-		);
+				new org.alice.ide.highlight.ShowMeOperation().getMenuItemPrepModel() );
 	}
 }

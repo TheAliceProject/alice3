@@ -42,31 +42,37 @@
  */
 package org.lgna.croquet.components;
 
-public abstract class Control< J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model > extends ViewController< J, M > {
+public abstract class Control<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model> extends ViewController<J, M> {
 	private class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			Control.this.handleMousePressed( e );
 		}
+
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			Control.this.handleMouseReleased( e );
 		}
+
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 			Control.this.handleMouseClicked( e );
 		}
+
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 			Control.this.handleMouseEntered( e );
 		}
+
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 			Control.this.handleMouseExited( e );
 		}
+
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 			Control.this.handleMouseMoved( e );
 		}
+
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			Control.this.handleMouseDragged( e );
 		}
 	}
-	
+
 	private ControlAdapter controlAdapter = null;
 	private org.lgna.croquet.Model leftButtonPressModel;
 	private org.lgna.croquet.Model leftButtonClickModel;
@@ -74,17 +80,19 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 
 	private boolean isActive = false;
 	private boolean isPressed = false;
+
 	//private boolean isSelected = false;
 
 	public Control( M model ) {
 		super( model );
 	}
-	protected boolean isMouseListeningDesired() { 
-		return this.leftButtonPressModel != null || this.leftButtonClickModel != null || this.leftButtonDoubleClickModel != null;
+
+	protected boolean isMouseListeningDesired() {
+		return ( this.leftButtonPressModel != null ) || ( this.leftButtonClickModel != null ) || ( this.leftButtonDoubleClickModel != null );
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 		super.handleAddedTo( parent );
 		if( isMouseListeningDesired() ) {
 			if( this.controlAdapter != null ) {
@@ -96,18 +104,19 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 			}
 		}
 	}
+
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
 		if( this.controlAdapter != null ) {
 			this.removeMouseListener( this.controlAdapter );
 			this.removeMouseMotionListener( this.controlAdapter );
 			this.controlAdapter = null;
-//			
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "REMOVE NOTIFY: ", this.getClass() );
+			//			
+			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "REMOVE NOTIFY: ", this.getClass() );
 		}
 		super.handleRemovedFrom( parent );
 	}
-	
+
 	private java.awt.event.MouseEvent mousePressedEvent = null;
 	private java.awt.event.MouseEvent leftButtonPressedEvent = null;
 
@@ -116,7 +125,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 	}
 
 	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
-//		java.awt.event.MouseEvent prevMousePressedEvent = this.mousePressedEvent;
+		//		java.awt.event.MouseEvent prevMousePressedEvent = this.mousePressedEvent;
 		this.isWithinClickThreshold = true;
 		this.mousePressedEvent = e;
 		this.leftButtonPressedEvent = null;
@@ -126,19 +135,21 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 			if( this.leftButtonPressModel != null ) {
 				this.leftButtonPressModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
-//		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-//			if( Application.getSingleton().isDragInProgress() ) {
-//				this.isWithinClickThreshold = false;
-//			} else {
-//				if( this.popupModel != null ) {
-//					this.popupModel.fire( e, this );
-//				}
-//			}
+			//		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+			//			if( Application.getSingleton().isDragInProgress() ) {
+			//				this.isWithinClickThreshold = false;
+			//			} else {
+			//				if( this.popupModel != null ) {
+			//					this.popupModel.fire( e, this );
+			//				}
+			//			}
 		}
 	}
+
 	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setPressed( false );
 	}
+
 	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
 		switch( e.getClickCount() ) {
 		case 1:
@@ -153,6 +164,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 			break;
 		}
 	}
+
 	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
 		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			//pass
@@ -160,6 +172,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 			this.setActive( true );
 		}
 	}
+
 	protected void handleMouseExited( java.awt.event.MouseEvent e ) {
 		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			//pass
@@ -172,24 +185,30 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 	}
 
 	private float clickThreshold = 5.0f;
+
 	public float getClickThreshold() {
 		return this.clickThreshold;
 	}
+
 	public void setClickThreshold( float clickThreshold ) {
 		this.clickThreshold = clickThreshold;
 	}
+
 	private boolean isWithinClickThreshold = false;
+
 	protected boolean isWithinClickThreshold() {
 		return this.isWithinClickThreshold;
 	}
+
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		this.isWithinClickThreshold = false;
 	}
+
 	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		if( this.isWithinClickThreshold ) {
 			int dx = e.getX() - this.mousePressedEvent.getX();
 			int dy = e.getY() - this.mousePressedEvent.getY();
-			if( dx * dx + dy * dy > this.clickThreshold * this.clickThreshold ) {
+			if( ( ( dx * dx ) + ( dy * dy ) ) > ( this.clickThreshold * this.clickThreshold ) ) {
 				handleMouseDraggedOutsideOfClickThreshold( e );
 			}
 		}
@@ -198,33 +217,42 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 	public org.lgna.croquet.Model getLeftButtonPressModel() {
 		return this.leftButtonPressModel;
 	}
+
 	public void setLeftButtonPressModel( org.lgna.croquet.Model leftButtonPressModel ) {
 		this.leftButtonPressModel = leftButtonPressModel;
 	}
+
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return this.leftButtonClickModel;
 	}
+
 	public void setLeftButtonClickModel( org.lgna.croquet.Model leftButtonClickModel ) {
 		this.leftButtonClickModel = leftButtonClickModel;
 	}
+
 	public org.lgna.croquet.Model getLeftButtonDoubleClickModel() {
 		return this.leftButtonDoubleClickModel;
 	}
+
 	public void setLeftButtonDoubleClickModel( org.lgna.croquet.Model leftButtonDoubleClickModel ) {
 		this.leftButtonDoubleClickModel = leftButtonDoubleClickModel;
 	}
+
 	public boolean isActive() {
 		return this.isActive;
 	}
+
 	public void setActive( boolean isActive ) {
 		if( this.isActive != isActive ) {
 			this.isActive = isActive;
 			this.repaint();
 		}
 	}
+
 	protected boolean isPressed() {
 		return this.isPressed;
 	}
+
 	public void setPressed( boolean isPressed ) {
 		if( this.isPressed != isPressed ) {
 			this.isPressed = isPressed;

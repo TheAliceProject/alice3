@@ -48,8 +48,9 @@ package org.alice.ide.croquet.models.ast;
 public class ExportTypeOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
 	@Deprecated
 	public static boolean IS_READY_FOR_PRIME_TIME = false;
-	
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ExportTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ExportTypeOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ExportTypeOperation getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ExportTypeOperation rv = map.get( type );
 		if( rv != null ) {
@@ -62,6 +63,7 @@ public class ExportTypeOperation extends org.alice.ide.croquet.models.projecturi
 	}
 
 	private org.lgna.project.ast.NamedUserType type;
+
 	private ExportTypeOperation( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( type );
@@ -70,26 +72,30 @@ public class ExportTypeOperation extends org.alice.ide.croquet.models.projecturi
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ExportTypeOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ExportTypeOperation >( this, org.lgna.project.ast.NamedUserType.class, this.type );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ExportTypeOperation> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ExportTypeOperation>( this, org.lgna.project.ast.NamedUserType.class, this.type );
 	}
 
 	@Override
 	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
 		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
+
 	@Override
 	protected String getExtension() {
 		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
 	}
+
 	@Override
 	protected String getInitialFilename() {
 		return this.type.name.getValue() + "." + this.getExtension();
 	}
+
 	@Override
 	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
 		org.lgna.project.io.IoUtilities.writeType( file, this.type );
 	}
+
 	@Override
 	protected boolean isPromptNecessary( java.io.File file ) {
 		return true;

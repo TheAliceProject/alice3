@@ -49,12 +49,15 @@ public class SystemExitOperation extends UriActionOperation {
 	private static class SingletonHolder {
 		private static SystemExitOperation instance = new SystemExitOperation();
 	}
+
 	public static SystemExitOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SystemExitOperation() {
 		super( java.util.UUID.fromString( "ea33dc98-e41d-4a7a-850e-cc4e612efbe8" ) );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

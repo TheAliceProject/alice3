@@ -46,13 +46,15 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementActionOperationNewInstanceResolver extends org.lgna.croquet.resolvers.NewInstanceKeyedResolver< org.alice.ide.croquet.models.ast.InsertStatementActionOperation > {
+public class InsertStatementActionOperationNewInstanceResolver extends org.lgna.croquet.resolvers.NewInstanceKeyedResolver<org.alice.ide.croquet.models.ast.InsertStatementActionOperation> {
 	public InsertStatementActionOperationNewInstanceResolver( org.alice.ide.croquet.models.ast.InsertStatementActionOperation instance ) {
 		super( instance, org.alice.ide.croquet.models.ast.InsertStatementActionOperation.CONSTRUCTOR_PARAMETER_TYPES, instance.getArguments() );
 	}
+
 	public InsertStatementActionOperationNewInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
@@ -63,6 +65,7 @@ public class InsertStatementActionOperationNewInstanceResolver extends org.lgna.
 		org.lgna.project.ast.Statement statement = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
 		return new Object[] { blockStatement, index, statement };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)arguments[ 0 ];

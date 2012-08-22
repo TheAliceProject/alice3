@@ -57,53 +57,70 @@ public class Tuple7<A, B, C, D, E, F, G> {
 	private E m_e = null;
 	private F m_f = null;
 	private G m_g = null;
+
 	private Tuple7() {
 	}
+
 	private Tuple7( A a, B b, C c, D d, E e, F f, G g ) {
 		set( a, b, c, d, e, f, g );
 	}
+
 	public A getA() {
 		return m_a;
 	}
+
 	public void setA( A a ) {
 		m_a = a;
 	}
+
 	public B getB() {
 		return m_b;
 	}
+
 	public void setB( B b ) {
 		m_b = b;
 	}
+
 	public C getC() {
 		return m_c;
 	}
+
 	public void setC( C c ) {
 		m_c = c;
 	}
+
 	public D getD() {
 		return m_d;
 	}
+
 	public void setD( D d ) {
 		m_d = d;
 	}
+
 	public E getE() {
 		return m_e;
 	}
+
 	public void setE( E e ) {
 		m_e = e;
 	}
+
 	public F getF() {
 		return m_f;
 	}
+
 	public void setF( F f ) {
 		m_f = f;
 	}
+
 	public G getG() {
 		return m_g;
 	}
+
 	public void setG( G g ) {
 		m_g = g;
 	}
+
 	public void set( A a, B b, C c, D d, E e, F f, G g ) {
 		m_a = a;
 		m_b = b;
@@ -113,19 +130,21 @@ public class Tuple7<A, B, C, D, E, F, G> {
 		m_f = f;
 		m_g = g;
 	}
+
 	@Override
 	public boolean equals( Object other ) {
 		if( super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof Tuple7<?,?,?,?,?,?,?> ) {
-				Tuple7<?,?,?,?,?,?,?> otherT = (Tuple7<?,?,?,?,?,?,?>)other;
+			if( other instanceof Tuple7<?, ?, ?, ?, ?, ?, ?> ) {
+				Tuple7<?, ?, ?, ?, ?, ?, ?> otherT = (Tuple7<?, ?, ?, ?, ?, ?, ?>)other;
 				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_d, otherT.m_d ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_e, otherT.m_e ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_f, otherT.m_f ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_g, otherT.m_g );
 			} else {
 				return false;
 			}
 		}
 	}
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

@@ -50,7 +50,7 @@ import org.lgna.croquet.components.GridPanel;
  * @author Matt May
  */
 public class ImageRecordView extends BorderPanel {
-	
+
 	private final BorderPanel lookingGlassContainer = new BorderPanel();
 
 	public ImageRecordView( ImageRecordComposite recordComposite ) {
@@ -60,10 +60,11 @@ public class ImageRecordView extends BorderPanel {
 		this.addComponent( panel, Constraint.CENTER );
 		GridPanel bottomPanel = GridPanel.createGridPane( 1, 3 );
 		bottomPanel.addComponent( recordComposite.getIsRecordingState().createToggleButton() );
-//		bottomPanel.addComponent( recordComposite.getRecordOperation().createButton() );
+		//		bottomPanel.addComponent( recordComposite.getRecordOperation().createButton() );
 		bottomPanel.addComponent( recordComposite.getFrameRate().createSpinner() );
 		addComponent( bottomPanel, Constraint.PAGE_END );
 	}
+
 	public BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}

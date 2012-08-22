@@ -44,9 +44,9 @@ package edu.cmu.cs.dennisc.nebulous;
 
 /**
  * @author alice
- *
+ * 
  */
-public interface NebulousPaint extends org.lgna.story.Paint{
+public interface NebulousPaint extends org.lgna.story.Paint {
 
 	public NebulousTexture getTexture();
 

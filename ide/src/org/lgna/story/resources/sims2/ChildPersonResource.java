@@ -50,6 +50,7 @@ public class ChildPersonResource extends PersonResource {
 	public ChildPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
 	}
+
 	@Override
 	public LifeStage getLifeStage() {
 		return LifeStage.CHILD;

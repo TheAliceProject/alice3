@@ -46,11 +46,16 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface Composite< V extends org.lgna.croquet.components.View< ?, ? > > extends Element {
+public interface Composite<V extends org.lgna.croquet.components.View<?, ?>> extends Element {
 	public java.util.UUID getCardId();
+
 	public V getView();
+
 	public void releaseView();
+
 	public void handlePreActivation();
+
 	public void handlePostDeactivation();
+
 	public boolean contains( Model model );
 }

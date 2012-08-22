@@ -42,7 +42,6 @@
  */
 package org.alice.ide.codeeditor;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -50,6 +49,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	public ArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
 		super( factory, property );
 	}
+
 	protected boolean isNameDesired( org.lgna.project.ast.AbstractParameter parameter ) {
 		boolean rv;
 		if( parameter.getName() != null ) {
@@ -60,10 +60,10 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 			} else if( parameter instanceof org.lgna.project.ast.JavaConstructorParameter ) {
 				//todo
 
-//				org.lgna.project.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (org.lgna.project.ast.ParameterDeclaredInJavaConstructor)parameter;
-//				org.lgna.project.ast.ConstructorDeclaredInJava constructorDeclaredInJava = parameterDeclaredInJavaConstructor.getConstructor();
-//				rv = constructorDeclaredInJava.isParameterInShortestChainedConstructor( parameterDeclaredInJavaConstructor ) == false;
-				
+				//				org.lgna.project.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (org.lgna.project.ast.ParameterDeclaredInJavaConstructor)parameter;
+				//				org.lgna.project.ast.ConstructorDeclaredInJava constructorDeclaredInJava = parameterDeclaredInJavaConstructor.getConstructor();
+				//				rv = constructorDeclaredInJava.isParameterInShortestChainedConstructor( parameterDeclaredInJavaConstructor ) == false;
+
 				rv = true;
 			} else {
 				rv = true;
@@ -73,9 +73,10 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		}
 		return rv;
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.components.Component< ? > prefixPane;
+	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
+		org.lgna.croquet.components.Component<?> prefixPane;
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 			prefixPane = null;
 		} else {

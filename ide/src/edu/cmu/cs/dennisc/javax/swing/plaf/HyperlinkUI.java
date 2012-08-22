@@ -48,35 +48,36 @@ package edu.cmu.cs.dennisc.javax.swing.plaf;
 public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 	private static java.awt.Color DISABLED_COLOR = java.awt.Color.LIGHT_GRAY;
 	private static HyperlinkUI hyperlinkUI = new HyperlinkUI();
-	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) { 
+
+	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) {
 		return hyperlinkUI;
 	}
+
 	@Override
 	protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, String text ) {
 		javax.swing.ButtonModel model = b.getModel();
-		
+
 		java.awt.Color backgroundColor = b.getBackground();
 		java.awt.Color foregroundColor = b.getForeground();
-		
-		
+
 		java.awt.Color color;
 		if( b.isEnabled() ) {
-//			if( model.isArmed() ) {
-//				color = ARMED_COLOR;
-//			} else {
-				if( model.isRollover() ) {
-					float foregroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( foregroundColor );
-					float backgroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( backgroundColor );
-					boolean isForegroundBrighter = foregroundBrightness > backgroundBrightness;
-					if( model.isPressed() ) {
-						color = isForegroundBrighter ? foregroundColor.darker() : foregroundColor.brighter();
-					} else {
-						color = isForegroundBrighter ? foregroundColor.brighter() : foregroundColor.darker();
-					}
+			//			if( model.isArmed() ) {
+			//				color = ARMED_COLOR;
+			//			} else {
+			if( model.isRollover() ) {
+				float foregroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( foregroundColor );
+				float backgroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( backgroundColor );
+				boolean isForegroundBrighter = foregroundBrightness > backgroundBrightness;
+				if( model.isPressed() ) {
+					color = isForegroundBrighter ? foregroundColor.darker() : foregroundColor.brighter();
 				} else {
-					color = foregroundColor;
+					color = isForegroundBrighter ? foregroundColor.brighter() : foregroundColor.darker();
 				}
-//			}
+			} else {
+				color = foregroundColor;
+			}
+			//			}
 		} else {
 			color = DISABLED_COLOR;
 		}

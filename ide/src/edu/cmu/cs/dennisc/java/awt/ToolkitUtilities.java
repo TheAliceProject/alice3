@@ -50,6 +50,7 @@ public class ToolkitUtilities {
 	private ToolkitUtilities() {
 		throw new AssertionError();
 	}
+
 	public static boolean isDynamicLayoutSupported() {
 		return "true".equals( java.awt.Toolkit.getDefaultToolkit().getDesktopProperty( "awt.dynamicLayoutSupported" ) );
 	}

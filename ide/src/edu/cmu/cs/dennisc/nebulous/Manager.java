@@ -9,16 +9,20 @@ package edu.cmu.cs.dennisc.nebulous;
  */
 public class Manager {
 	public static final double NEBULOUS_VERSION = 1.7;
-	
+
 	static boolean s_isInitialized = false;
 	static boolean s_isLicensePromptDesired = true;
-	static java.util.List< java.io.File > s_pendingBundles;
+	static java.util.List<java.io.File> s_pendingBundles;
 
-	private static native void setVersion(double version);
-//	private static native void setDebugDraw(boolean debugDraw);
+	private static native void setVersion( double version );
+
+	//	private static native void setDebugDraw(boolean debugDraw);
 	private static native void addBundlePath( String bundlePath );
+
 	private static native void removeBundlePath( String bundlePath );
+
 	private static native void setRawResourceDirectory( String rourcePath );
+
 	private static native void unloadActiveModelData();
 
 	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
@@ -34,29 +38,29 @@ public class Manager {
 			t.printStackTrace();
 		}
 	}
-	
-	private static java.util.List< java.io.File > getPendingBundles() {
+
+	private static java.util.List<java.io.File> getPendingBundles() {
 		if( s_pendingBundles != null ) {
 			//pass
 		} else {
-			s_pendingBundles = new java.util.LinkedList< java.io.File >();
+			s_pendingBundles = new java.util.LinkedList<java.io.File>();
 		}
 		return s_pendingBundles;
 	}
-	
+
 	public static void unloadNebulousModelData() {
-		if (isInitialized()) {
+		if( isInitialized() ) {
 			unloadActiveModelData();
 		}
 	}
-	
+
 	public static void initializeIfNecessary() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		if( isInitialized() ) {
 			//pass
 		} else {
-			
-			System.out.println(System.getProperty("java.library.path"));
-			
+
+			System.out.println( System.getProperty( "java.library.path" ) );
+
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 				try {
@@ -95,17 +99,19 @@ public class Manager {
 				for( java.io.File directory : Manager.getPendingBundles() ) {
 					Manager.addBundlePath( directory.getAbsolutePath() );
 				}
-				Manager.setVersion(NEBULOUS_VERSION);
-				
+				Manager.setVersion( NEBULOUS_VERSION );
+
 				s_isInitialized = true;
 			} else {
 				throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
 			}
 		}
 	}
+
 	public static boolean isInitialized() {
 		return s_isInitialized;
 	}
+
 	public static void resetLicensePromptDesiredToTrue() {
 		s_isLicensePromptDesired = true;
 	}
@@ -123,6 +129,7 @@ public class Manager {
 			Manager.getPendingBundles().add( file );
 		}
 	}
+
 	public static void removeBundle( java.io.File file ) {
 		doInitializationIfNecessary();
 		if( isInitialized() ) {

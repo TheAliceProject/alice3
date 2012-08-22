@@ -13,13 +13,13 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler< L, E > implements AbsoluteTransformationListener {
+public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L, E> implements AbsoluteTransformationListener {
 
 	HashMap<Visual, LinkedList<Object>> eventMap = new HashMap<Visual, LinkedList<Object>>();
-	List< L > listenerList = Collections.newLinkedList();
-	List< SThing > modelList = Collections.newLinkedList();
+	List<L> listenerList = Collections.newLinkedList();
+	List<SThing> modelList = Collections.newLinkedList();
 
-	public final void fireAllTargeted( SThing changedEntity ){
+	public final void fireAllTargeted( SThing changedEntity ) {
 		if( shouldFire ) {
 			check( changedEntity );
 		}
@@ -30,10 +30,10 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 	public final void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
 		SThing source = EntityImp.getAbstractionFromSgElement( absoluteTransformationEvent.getTypedSource() );
 		fireAllTargeted( source );
-//		if( source instanceof Turnable ) {
-//			fireAllTargeted( (Turnable)source );
-//		} else {
-//			Logger.severe( source );
-//		}
+		//		if( source instanceof Turnable ) {
+		//			fireAllTargeted( (Turnable)source );
+		//		} else {
+		//			Logger.severe( source );
+		//		}
 	}
 }

@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class ResizeHeight extends DurationAnimationStyleIsVolumePreservedArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=ResizeHeight.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = ResizeHeight.class )
 	public static interface Detail {
 	}
+
 	private ResizeHeight() {
 		super();
 	}

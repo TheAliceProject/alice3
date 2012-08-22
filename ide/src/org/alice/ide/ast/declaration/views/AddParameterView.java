@@ -48,6 +48,7 @@ package org.alice.ide.ast.declaration.views;
 public class AddParameterView extends AddDeclarationView<org.lgna.project.ast.UserParameter> {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.BorderPanel warningPanel;
+
 	public AddParameterView( org.alice.ide.ast.declaration.AddParameterComposite composite ) {
 		super( composite );
 		org.lgna.croquet.components.PageAxisPanel pane = new org.lgna.croquet.components.PageAxisPanel();
@@ -60,35 +61,36 @@ public class AddParameterView extends AddDeclarationView<org.lgna.project.ast.Us
 		org.lgna.croquet.components.Label warningLabel = new org.lgna.croquet.components.Label();
 		warningLabel.setIcon( javax.swing.UIManager.getIcon( "OptionPane.warningIcon" ) );
 		this.warningPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-			.hgap( 32 )
-			.lineStart( warningLabel )
-			.center( pane )
-		.build();
-		
+				.hgap( 32 )
+				.lineStart( warningLabel )
+				.center( pane )
+				.build();
+
 		this.warningPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 32, 8, 32, 8 ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getParameterColor() );
 	}
+
 	@Override
 	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.AddParameterComposite composite = (org.alice.ide.ast.declaration.AddParameterComposite)this.getComposite();
 		org.lgna.project.ast.UserParameter parameter = composite.getPreviewValue();
 		return new org.alice.ide.codeeditor.TypedParameterPane( null, parameter );
 	}
-	
+
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
 		org.lgna.croquet.components.BorderPanel rv = super.createMainComponent();
 		rv.addPageEndComponent( this.warningPanel );
 		return rv;
 	}
-	
+
 	@Override
 	protected void handleDisplayable() {
 		org.alice.ide.ast.declaration.AddParameterComposite composite = (org.alice.ide.ast.declaration.AddParameterComposite)this.getComposite();
 		org.lgna.project.ast.UserCode code = composite.getCode();
-		java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
 		final int N = argumentLists.size();
-		this.warningPanel.setVisible( N>0 );
+		this.warningPanel.setVisible( N > 0 );
 		if( this.warningPanel.isVisible() ) {
 			String codeText;
 			if( code instanceof org.lgna.project.ast.AbstractMethod ) {
@@ -101,7 +103,7 @@ public class AddParameterView extends AddDeclarationView<org.lgna.project.ast.Us
 			} else {
 				codeText = "constructor";
 			}
-			
+
 			StringBuffer sb = new StringBuffer();
 			sb.append( "<html><body>There " );
 			if( N == 1 ) {

@@ -48,48 +48,54 @@ package org.lgna.croquet.edits;
 public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.croquet.State<T>> {
 	private T prevValue;
 	private T nextValue;
-	public StateEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.State<T> > completionStep, T prevValue, T nextValue ) {
+
+	public StateEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<T>> completionStep, T prevValue, T nextValue ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
+
 	public StateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.lgna.croquet.State< T > state = this.getModel();
+		org.lgna.croquet.State<T> state = this.getModel();
 		this.prevValue = state.decodeValue( binaryDecoder );
 		this.nextValue = state.decodeValue( binaryDecoder );
 	}
+
 	@Override
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.lgna.croquet.State< T > state = this.getModel();
+		org.lgna.croquet.State<T> state = this.getModel();
 		state.encodeValue( binaryEncoder, this.prevValue );
 		state.encodeValue( binaryEncoder, this.nextValue );
 	}
+
 	public final T getPreviousValue() {
 		return this.prevValue;
 	}
+
 	public final T getNextValue() {
 		return this.nextValue;
 	}
-	
+
 	@Override
 	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.prevValue = retargeter.retarget( this.prevValue );
 		this.nextValue = retargeter.retarget( this.nextValue );
 	}
-	
+
 	@Override
 	public final StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		rv.append( "select " );
 		this.getModel().appendRepresentation( rv, this.nextValue );
 		return rv;
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "select " );
-		org.lgna.croquet.State< T > state = this.getModel();
+		org.lgna.croquet.State<T> state = this.getModel();
 		if( state != null ) {
 			state.appendRepresentation( rv, this.prevValue );
 		} else {
@@ -108,14 +114,17 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.cro
 	public final boolean canRedo() {
 		return this.getModel() != null;
 	}
+
 	@Override
 	public final boolean canUndo() {
 		return this.getModel() != null;
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.getModel().setValueTransactionlessly( this.getNextValue() );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		this.getModel().setValueTransactionlessly( this.getPreviousValue() );

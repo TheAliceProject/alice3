@@ -47,8 +47,9 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class JSuggestivePasswordField extends javax.swing.JPasswordField {
 	private String textForBlankCondition;
+
 	public JSuggestivePasswordField( String text, String textForBlankCondition ) {
-//		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
+		//		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
 		if( text != null ) {
 			this.setText( text );
@@ -57,18 +58,23 @@ public class JSuggestivePasswordField extends javax.swing.JPasswordField {
 			this.setTextForBlankCondition( textForBlankCondition );
 		}
 	}
+
 	public JSuggestivePasswordField( String text ) {
 		this( text, null );
 	}
+
 	public JSuggestivePasswordField() {
 		this( null, null );
 	}
+
 	public String getTextForBlankCondition() {
 		return this.textForBlankCondition;
 	}
-	public void setTextForBlankCondition(String textForBlankCondition) {
+
+	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
 	}
+
 	@Override
 	public java.awt.Dimension getMaximumSize() {
 		java.awt.Dimension rv = super.getMaximumSize();
@@ -76,6 +82,7 @@ public class JSuggestivePasswordField extends javax.swing.JPasswordField {
 		rv.height = preferred.height;
 		return rv;
 	}
+
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );

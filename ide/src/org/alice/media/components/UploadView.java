@@ -95,6 +95,7 @@ public class UploadView extends BorderPanel {
 			this.addComponent( top, Constraint.CENTER );
 		}
 	}
+
 	private LinkedList<ViewController> disableable = new LinkedList<ViewController>();
 
 	private class VideoInfoComponent extends BorderPanel {
@@ -104,25 +105,25 @@ public class UploadView extends BorderPanel {
 			titlePanel.addComponent( composite.getTitleLabelValue().createImmutableTextArea() );
 			TextField titleField = composite.getTitleState().createTextField();
 			titlePanel.addComponent( titleField );
-			disableable.add(titleField);
+			disableable.add( titleField );
 			this.addComponent( titlePanel, Constraint.PAGE_START );
 			GridPanel detailPanel = GridPanel.createGridPane( 3, 1 );
 			detailPanel.addComponent( composite.getCategoryValue().createImmutableTextArea() );
 			ComboBox<String> categories = composite.getVideoCategoryState().getPrepModel().createComboBox();
 			detailPanel.addComponent( categories );
-			disableable.add(categories);
+			disableable.add( categories );
 			CheckBox isPrivateBox = composite.getIsPrivateState().createCheckBox();
 			detailPanel.addComponent( isPrivateBox );
 			GridPanel middle = GridPanel.createGridPane( 2, 1 );
 			BorderPanel topBorder = new BorderPanel();
 			topBorder.addComponent( composite.getDescriptionValue().createImmutableTextArea(), Constraint.PAGE_START );
 			TextArea description = composite.getDescriptionState().createTextArea();
-			disableable.add(description);
+			disableable.add( description );
 			topBorder.addComponent( description, Constraint.CENTER );
 			BorderPanel bottomBorder = new BorderPanel();
 			bottomBorder.addComponent( composite.getTagLabel().createImmutableTextArea(), Constraint.PAGE_START );
 			TextArea tags = composite.getTagState().createTextArea();
-			disableable.add(tags);
+			disableable.add( tags );
 			bottomBorder.addComponent( tags, Constraint.CENTER );
 			middle.addComponent( topBorder );
 			middle.addComponent( bottomBorder );

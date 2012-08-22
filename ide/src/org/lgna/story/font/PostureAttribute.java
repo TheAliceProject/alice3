@@ -46,5 +46,5 @@ package org.lgna.story.font;
 /**
  * @author Dennis Cosgrove
  */
-public interface PostureAttribute extends Attribute< Float > {
+public interface PostureAttribute extends Attribute<Float> {
 }

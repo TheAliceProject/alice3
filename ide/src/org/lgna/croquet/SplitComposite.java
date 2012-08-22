@@ -47,25 +47,30 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class SplitComposite extends AbstractSplitComposite<org.lgna.croquet.components.SplitPane> {
-	private final Composite< ? > leadingComposite;
-	private final Composite< ? > trailingComposite;
-	public SplitComposite( java.util.UUID id, Composite< ? > leadingComposite, Composite< ? > trailingComposite ) {
+	private final Composite<?> leadingComposite;
+	private final Composite<?> trailingComposite;
+
+	public SplitComposite( java.util.UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite ) {
 		super( id );
 		this.leadingComposite = leadingComposite;
 		this.trailingComposite = trailingComposite;
 	}
+
 	@Override
-	public Composite< ? > getLeadingComposite() {
+	public Composite<?> getLeadingComposite() {
 		return this.leadingComposite;
 	}
+
 	@Override
-	public Composite< ? > getTrailingComposite() {
+	public Composite<?> getTrailingComposite() {
 		return this.trailingComposite;
 	}
+
 	@Override
 	protected org.lgna.croquet.components.HorizontalSplitPane createHorizontalSplitPane() {
 		return new org.lgna.croquet.components.HorizontalSplitPane( this );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.VerticalSplitPane createVerticalSplitPane() {
 		return new org.lgna.croquet.components.VerticalSplitPane( this );

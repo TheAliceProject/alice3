@@ -47,34 +47,41 @@ package org.alice.ide.perspectives;
  * @author Dennis Cosgrove
  */
 public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	private final org.lgna.croquet.Composite< ? > mainComposite;
-	public ProjectPerspective( java.util.UUID id, org.lgna.croquet.Composite< ? > mainComposite ) {
+	private final org.lgna.croquet.Composite<?> mainComposite;
+
+	public ProjectPerspective( java.util.UUID id, org.lgna.croquet.Composite<?> mainComposite ) {
 		super( id );
 		this.mainComposite = mainComposite;
 	}
-	public final org.lgna.croquet.Composite< ? > getMainComposite() {
+
+	public final org.lgna.croquet.Composite<?> getMainComposite() {
 		return this.mainComposite;
 	}
+
 	public org.alice.ide.croquet.models.MenuBarComposite getMenuBarComposite() {
 		return org.alice.ide.croquet.models.MenuBarComposite.getInstance();
 	}
-	
+
 	public abstract org.lgna.croquet.components.TrackableShape getRenderWindow();
-	
+
 	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus();
-	private java.util.Stack< org.alice.ide.ReasonToDisableSomeAmountOfRendering > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+
+	private java.util.Stack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+
 	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		this.stack.push( reasonToDisableSomeAmountOfRendering );
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
+
 	public void enableRendering() {
 		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
 	}
-	
-	protected abstract void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel );
-	public final java.util.List< org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+	protected abstract void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel );
+
+	public final java.util.List<org.lgna.croquet.DropReceptor> createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+		java.util.List<org.lgna.croquet.DropReceptor> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addPotentialDropReceptors( rv, dragModel );
 		org.lgna.croquet.DropReceptor dropReceptorComposite = org.alice.ide.clipboard.Clipboard.SINGLETON.getDropReceptor();
 		if( dropReceptorComposite.isPotentiallyAcceptingOf( dragModel ) ) {
@@ -82,6 +89,7 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 		}
 		return rv;
 	}
+
 	@Override
 	protected String createRepr() {
 		return this.getName();

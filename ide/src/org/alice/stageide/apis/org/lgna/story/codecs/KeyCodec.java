@@ -46,21 +46,23 @@ package org.alice.stageide.apis.org.lgna.story.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum KeyCodec implements org.lgna.croquet.ItemCodec< org.lgna.story.Key > {
+public enum KeyCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.Key> {
 	SINGLETON;
-	public Class< org.lgna.story.Key > getValueClass() {
+	public Class<org.lgna.story.Key> getValueClass() {
 		return org.lgna.story.Key.class;
 	}
+
 	public org.lgna.story.Key decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			int keyCode = binaryDecoder.decodeInt();
 			return org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( keyCode );
-		}else {
+		} else {
 			return null;
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.Key value ) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.Key value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( org.lgna.story.ImplementationAccessor.getKeyCodeFromKey( value ) );
@@ -68,7 +70,8 @@ public enum KeyCodec implements org.lgna.croquet.ItemCodec< org.lgna.story.Key >
 			binaryEncoder.encode( false );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.lgna.story.Key value) {
+
+	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.Key value ) {
 		rv.append( value );
 		return rv;
 	}

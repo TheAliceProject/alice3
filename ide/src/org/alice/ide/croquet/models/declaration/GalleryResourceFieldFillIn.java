@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceFieldFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.Expression > {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, GalleryResourceFieldFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class GalleryResourceFieldFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.Expression> {
+	private static java.util.Map<org.lgna.project.ast.AbstractField, GalleryResourceFieldFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized GalleryResourceFieldFillIn getInstance( org.lgna.project.ast.AbstractField field ) {
 		GalleryResourceFieldFillIn rv = map.get( field );
 		if( rv != null ) {
@@ -58,23 +59,27 @@ public class GalleryResourceFieldFillIn extends org.alice.ide.croquet.models.cas
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.FieldAccess transientValue;
+
 	private GalleryResourceFieldFillIn( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "a45b7262-4553-4b3f-ad1f-7be7871a1d86" ) );
 		this.transientValue = createValue( field );
 	}
+
 	private static org.lgna.project.ast.FieldAccess createValue( org.lgna.project.ast.AbstractField field ) {
 		return new org.lgna.project.ast.FieldAccess(
 				new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ),
-				field
-		);
+				field );
 	}
+
 	@Override
-	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return createValue( this.transientValue.field.getValue() );
 	}
+
 	@Override
-	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > node ) {
+	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node ) {
 		return this.transientValue;
 	}
 }

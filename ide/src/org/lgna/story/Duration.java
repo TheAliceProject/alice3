@@ -69,7 +69,7 @@ public class Duration implements
 		//Scene
 		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
 		//Sphere,Disc
-		SetRadius.Detail, 
+		SetRadius.Detail,
 		//Torus
 		SetInnerRadius.Detail, SetOuterRadius.Detail,
 		//Cone
@@ -77,9 +77,11 @@ public class Duration implements
 {
 	private static final double DEFAULT_VALUE = 1.0;
 	private final double value;
+
 	public Duration( Number value ) {
-		this.value = value.doubleValue(); 
+		this.value = value.doubleValue();
 	}
+
 	private static double getValue( Object[] details, double defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof Duration ) {
@@ -89,7 +91,8 @@ public class Duration implements
 		}
 		return defaultValue;
 	}
-	/*package-private*/ static double getValue( Object[] details ) {
+
+	/* package-private */static double getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

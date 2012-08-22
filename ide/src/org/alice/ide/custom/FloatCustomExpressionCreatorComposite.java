@@ -50,12 +50,15 @@ public class FloatCustomExpressionCreatorComposite extends NumberCustomExpressio
 	private static class SingletonHolder {
 		private static FloatCustomExpressionCreatorComposite instance = new FloatCustomExpressionCreatorComposite();
 	}
+
 	public static FloatCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private FloatCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "9fe48aa9-d9cc-4110-9ada-696406bfd727" ), org.alice.ide.croquet.models.numberpad.FloatModel.getInstance() );
 	}
+
 	@Override
 	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
 		String text;

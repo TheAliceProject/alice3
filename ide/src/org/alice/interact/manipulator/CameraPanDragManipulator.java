@@ -57,77 +57,74 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 public class CameraPanDragManipulator extends CameraManipulator {
 
 	protected static final double MOVEMENT_PER_PIXEL = .02d;
-	
+
 	protected Point originalMousePoint;
 	protected Vector3 xDirection;
 	protected Vector3 yDirection;
-	
+
 	public CameraPanDragManipulator()
 	{
 		super();
 	}
-	
-	
+
 	@Override
 	public String getUndoRedoDescription() {
 		return "Camera Move";
 	}
-	
+
 	@Override
-	public CameraView getDesiredCameraView() 
+	public CameraView getDesiredCameraView()
 	{
 		return CameraView.PICK_CAMERA;
 	}
-	
+
 	@Override
-	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) 
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput )
 	{
-		double yDif = -(currentInput.getMouseLocation().y - previousInput.getMouseLocation().y);
+		double yDif = -( currentInput.getMouseLocation().y - previousInput.getMouseLocation().y );
 		double xDif = currentInput.getMouseLocation().x - previousInput.getMouseLocation().x;
-		
-		Vector3 xMovement = Vector3.createMultiplication(this.xDirection, xDif*MOVEMENT_PER_PIXEL);
-		Vector3 yMovement = Vector3.createMultiplication(this.yDirection, yDif*MOVEMENT_PER_PIXEL);
-		
-		this.manipulatedTransformable.applyTranslation(xMovement, AsSeenBy.SCENE);
-		this.manipulatedTransformable.applyTranslation(yMovement, AsSeenBy.SCENE);
+
+		Vector3 xMovement = Vector3.createMultiplication( this.xDirection, xDif * MOVEMENT_PER_PIXEL );
+		Vector3 yMovement = Vector3.createMultiplication( this.yDirection, yDif * MOVEMENT_PER_PIXEL );
+
+		this.manipulatedTransformable.applyTranslation( xMovement, AsSeenBy.SCENE );
+		this.manipulatedTransformable.applyTranslation( yMovement, AsSeenBy.SCENE );
 	}
-	
+
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 	}
-	
+
 	@Override
-	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
 		//Do nothing
 	}
 
-
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		if (super.doStartManipulator( startInput ) && this.camera instanceof SymmetricPerspectiveCamera)
+		if( super.doStartManipulator( startInput ) && ( this.camera instanceof SymmetricPerspectiveCamera ) )
 		{
 			boolean success = false;
 			AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
-			this.yDirection = new Vector3(Vector3.accessPositiveYAxis());
-			this.xDirection = new Vector3(cameraTransform.orientation.right);
-			
-			double xDoty = Vector3.calculateDotProduct(this.yDirection, this.xDirection);
-			if (Math.abs(xDoty) > EpsilonUtilities.REASONABLE_EPSILON)
+			this.yDirection = new Vector3( Vector3.accessPositiveYAxis() );
+			this.xDirection = new Vector3( cameraTransform.orientation.right );
+
+			double xDoty = Vector3.calculateDotProduct( this.yDirection, this.xDirection );
+			if( Math.abs( xDoty ) > EpsilonUtilities.REASONABLE_EPSILON )
 			{
-//				System.out.println("Boom!");
+				//				System.out.println("Boom!");
 				return false;
 			}
 			return true;
 		}
 		return false;
-		
+
 	}
 
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
 
 }

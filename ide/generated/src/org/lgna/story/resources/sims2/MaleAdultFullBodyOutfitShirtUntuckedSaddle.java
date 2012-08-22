@@ -41,12 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitShirtUntuckedSaddle implements MaleAdultFullBodyOutfit {
-	CHANDLE ,
- 	BLACKNBLUE ,
- 	GREEN ,
- 	WHITESTRIP ,
- 	BLUE ,
- 	ALMOND ,
- 	GREY ;
+	CHANDLE,
+	BLACKNBLUE,
+	GREEN,
+	WHITESTRIP,
+	BLUE,
+	ALMOND,
+	GREY;
 }

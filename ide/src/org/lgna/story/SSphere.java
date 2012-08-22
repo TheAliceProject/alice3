@@ -43,23 +43,26 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.MethodTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SSphere extends SShape {
 	private final org.lgna.story.implementation.SphereImp implementation = new org.lgna.story.implementation.SphereImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SphereImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.SphereImp getImplementation() {
 		return this.implementation;
 	}
-	
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate()
+
+	@org.lgna.project.annotations.GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Double getRadius() {
 		return this.implementation.radius.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setRadius( Number radius, SetRadius.Detail... details ) {
 		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

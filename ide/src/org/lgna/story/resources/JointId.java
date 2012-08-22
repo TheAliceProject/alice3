@@ -47,58 +47,57 @@ package org.lgna.story.resources;
  * @author Dennis Cosgrove
  */
 public class JointId {
-	
-	
+
 	private final JointId parent;
-	private final Class< ? extends JointedModelResource > containingClass;
-	private final java.util.List< JointId > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	
-	private static final java.util.Map< Class< ? extends JointedModelResource >, java.util.Map<JointId, java.util.List<JointId>> > externalChildrenMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
-	private static void addExternalChild(JointId parent, JointId child)
+	private final Class<? extends JointedModelResource> containingClass;
+	private final java.util.List<JointId> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+	private static final java.util.Map<Class<? extends JointedModelResource>, java.util.Map<JointId, java.util.List<JointId>>> externalChildrenMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private static void addExternalChild( JointId parent, JointId child )
 	{
-		Class< ? extends JointedModelResource > childClass = child.getContainingClass();
+		Class<? extends JointedModelResource> childClass = child.getContainingClass();
 		java.util.Map<JointId, java.util.List<JointId>> childClassMap = null;
-		if (externalChildrenMap.containsKey(childClass))
+		if( externalChildrenMap.containsKey( childClass ) )
 		{
-			childClassMap = externalChildrenMap.get(childClass);
+			childClassMap = externalChildrenMap.get( childClass );
 		}
 		else
 		{
 			childClassMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			externalChildrenMap.put(childClass, childClassMap);
+			externalChildrenMap.put( childClass, childClassMap );
 		}
 		java.util.List<JointId> externalChildList = null;
-		if (childClassMap.containsKey(parent))
+		if( childClassMap.containsKey( parent ) )
 		{
-			externalChildList = childClassMap.get(parent);
+			externalChildList = childClassMap.get( parent );
 		}
 		else
 		{
 			externalChildList = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			childClassMap.put(parent, externalChildList);
+			childClassMap.put( parent, externalChildList );
 		}
-		externalChildList.add(child);
+		externalChildList.add( child );
 	}
-	
-	private static java.util.List< JointId > getChildList( Class< ? extends JointedModelResource > forClass, JointId forJoint )
+
+	private static java.util.List<JointId> getChildList( Class<? extends JointedModelResource> forClass, JointId forJoint )
 	{
-		if (forClass == null || forJoint == null)
+		if( ( forClass == null ) || ( forJoint == null ) )
 		{
 			return null;
 		}
-		if (externalChildrenMap.containsKey(forClass))
+		if( externalChildrenMap.containsKey( forClass ) )
 		{
-			java.util.Map<JointId, java.util.List<JointId>> classMap = externalChildrenMap.get(forClass);
-			if (classMap.containsKey(forJoint))
+			java.util.Map<JointId, java.util.List<JointId>> classMap = externalChildrenMap.get( forClass );
+			if( classMap.containsKey( forJoint ) )
 			{
-				return classMap.get(forJoint);
+				return classMap.get( forJoint );
 			}
 		}
 		return null;
 	}
-	
-	public JointId(JointId parent, Class<? extends JointedModelResource> containingClass){
+
+	public JointId( JointId parent, Class<? extends JointedModelResource> containingClass ) {
 		this.parent = parent;
 		this.containingClass = containingClass;
 		if( this.parent != null ) {
@@ -109,34 +108,34 @@ public class JointId {
 			}
 		}
 	}
-	
+
 	public JointId getParent()
 	{
 		return this.parent;
 	}
-	
+
 	protected Class<? extends JointedModelResource> getContainingClass()
 	{
 		return this.containingClass;
 	}
-	
-	public Iterable< JointId > getDeclaredChildren()
+
+	public Iterable<JointId> getDeclaredChildren()
 	{
 		return this.children;
 	}
-	
+
 	private static class ExternalChildrenIterator implements java.util.Iterator<JointId>
 	{
 		private final JointId forJoint;
-		private Class< ? extends JointedModelResource > currentClass;
+		private Class<? extends JointedModelResource> currentClass;
 		private java.util.Iterator<JointId> currentIterator;
-		
-		public ExternalChildrenIterator(Class< ? extends JointedModelResource > forClass, JointId forJoint)
+
+		public ExternalChildrenIterator( Class<? extends JointedModelResource> forClass, JointId forJoint )
 		{
 			this.forJoint = forJoint;
 			this.currentClass = forClass;
 			this.currentIterator = this.forJoint.getDeclaredChildren().iterator();
-			if (!this.currentIterator.hasNext())
+			if( !this.currentIterator.hasNext() )
 			{
 				this.currentIterator = getIteratorForExternalChildren();
 			}
@@ -145,23 +144,23 @@ public class JointId {
 		private java.util.Iterator<JointId> getIteratorForExternalChildren()
 		{
 			java.util.Iterator<JointId> externalIterator = null;
-			while (currentClass != null && externalIterator == null)
+			while( ( currentClass != null ) && ( externalIterator == null ) )
 			{
-				java.util.List<JointId> jointList = JointId.getChildList(currentClass, forJoint);
-				if (jointList != null)
+				java.util.List<JointId> jointList = JointId.getChildList( currentClass, forJoint );
+				if( jointList != null )
 				{
 					externalIterator = jointList.iterator();
 				}
-				
+
 				Class<?>[] interfaces = currentClass.getInterfaces();
 				Class<?> superClass = null;
-				if (interfaces.length > 0) {
-					superClass = interfaces[0];
-				}	
+				if( interfaces.length > 0 ) {
+					superClass = interfaces[ 0 ];
+				}
 				else {
 					superClass = currentClass.getSuperclass();
 				}
-				if (JointedModelResource.class.isAssignableFrom(superClass)) {
+				if( JointedModelResource.class.isAssignableFrom( superClass ) ) {
 					currentClass = (Class<? extends JointedModelResource>)superClass;
 				}
 				else {
@@ -170,24 +169,24 @@ public class JointId {
 			}
 			return externalIterator;
 		}
-		
+
 		public boolean hasNext() {
-			if (currentIterator != null)
+			if( currentIterator != null )
 			{
 				return currentIterator.hasNext();
 			}
 			return false;
 		}
-		
+
 		public JointId next() {
-			if (currentIterator != null)
+			if( currentIterator != null )
 			{
 				JointId next = currentIterator.next();
-				if (!currentIterator.hasNext())
+				if( !currentIterator.hasNext() )
 				{
 					currentIterator = getIteratorForExternalChildren();
 				}
-				
+
 				return next;
 			}
 			return null;
@@ -197,32 +196,32 @@ public class JointId {
 			//Not implemented
 		}
 	}
-	
+
 	private static class ExternalChildrenIterable implements java.lang.Iterable<JointId>
 	{
-		private final Class< ? extends JointedModelResource > forClass;
+		private final Class<? extends JointedModelResource> forClass;
 		private final JointId forJoint;
-		
-		public ExternalChildrenIterable(Class< ? extends JointedModelResource > forClass, JointId forJoint)
+
+		public ExternalChildrenIterable( Class<? extends JointedModelResource> forClass, JointId forJoint )
 		{
 			this.forClass = forClass;
 			this.forJoint = forJoint;
 		}
-		
+
 		public java.util.Iterator<JointId> iterator() {
-			return new ExternalChildrenIterator(this.forClass, this.forJoint);
+			return new ExternalChildrenIterator( this.forClass, this.forJoint );
 		}
-		
+
 	}
-	
-	public Iterable< JointId > getChildren( JointedModelResource resource ) {
+
+	public Iterable<JointId> getChildren( JointedModelResource resource ) {
 		return new ExternalChildrenIterable( resource.getClass(), this );
 	}
-	
-	public Iterable< JointId > getChildren( Class<? extends JointedModelResource> resourceClass ) {
+
+	public Iterable<JointId> getChildren( Class<? extends JointedModelResource> resourceClass ) {
 		return new ExternalChildrenIterable( resourceClass, this );
 	}
-	
+
 	@Override
 	public String toString() {
 		for( java.lang.reflect.Field fld : this.containingClass.getFields() ) {

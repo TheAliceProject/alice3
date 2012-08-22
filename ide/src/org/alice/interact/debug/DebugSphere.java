@@ -52,29 +52,28 @@ import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
-public class DebugSphere extends Transformable{
+public class DebugSphere extends Transformable {
 	private Sphere sgPickPointSphere = new Sphere();
 	private Visual sgPickPointSphereVisual = new Visual();
-	
-	
-	public DebugSphere( )
+
+	public DebugSphere()
 	{
 		SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 		sgFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
-		sgFrontFacingAppearance.opacity.setValue( new Float(1.0) );
-		
+		sgFrontFacingAppearance.opacity.setValue( new Float( 1.0 ) );
+
 		this.sgPickPointSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
-		this.sgPickPointSphere.radius.setValue(.1d);
+		this.sgPickPointSphere.radius.setValue( .1d );
 		this.sgPickPointSphereVisual.geometries.setValue( new Geometry[] { this.sgPickPointSphere } );
 		this.sgPickPointSphereVisual.setParent( this );
-		
+
 	}
-	
-	public void setLocalTranslation(Tuple3 position)
+
+	public void setLocalTranslation( Tuple3 position )
 	{
 		AffineMatrix4x4 transform = this.localTransformation.getValue();
-		transform.translation.set(position);
-		this.localTransformation.setValue(transform);
+		transform.translation.set( position );
+		this.localTransformation.setValue( transform );
 	}
-	
+
 }

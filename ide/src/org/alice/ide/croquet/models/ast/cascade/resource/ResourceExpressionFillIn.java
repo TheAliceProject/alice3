@@ -46,18 +46,21 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceExpressionFillIn<T extends org.lgna.common.Resource> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.ResourceExpression > {
+public abstract class ResourceExpressionFillIn<T extends org.lgna.common.Resource> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.ResourceExpression> {
 	private final org.lgna.project.ast.ResourceExpression transientValue;
+
 	public ResourceExpressionFillIn( java.util.UUID id, Class<T> resourceCls, T resource ) {
 		super( java.util.UUID.fromString( "5e4bec2b-83f7-4702-832f-ec38f0b61828" ) );
 		this.transientValue = new org.lgna.project.ast.ResourceExpression( resourceCls, resource );
 	}
+
 	@Override
-	public final org.lgna.project.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final org.lgna.project.ast.ResourceExpression createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ResourceExpression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.ResourceExpression( this.transientValue.getType(), this.transientValue.resource.getValue() );
 	}
+
 	@Override
-	public final org.lgna.project.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ResourceExpression,Void > node ) {
+	public final org.lgna.project.ast.ResourceExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ResourceExpression, Void> node ) {
 		return this.transientValue;
 	}
 }

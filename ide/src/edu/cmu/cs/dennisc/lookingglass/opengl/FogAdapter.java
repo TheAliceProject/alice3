@@ -46,13 +46,15 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FogAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Fog > extends AffectorAdapter< E > {
+public abstract class FogAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Fog> extends AffectorAdapter<E> {
 	private float[] m_color = new float[ 4 ];
+
 	@Override
 	public void setup( RenderContext rc ) {
 		rc.setIsFogEnabled( true );
 		rc.setFogColor( m_color );
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.color ) {

@@ -47,7 +47,8 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, ReturnStatementTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserMethod, ReturnStatementTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ReturnStatementTemplateDragModel getInstance( org.lgna.project.ast.UserMethod method ) {
 		ReturnStatementTemplateDragModel rv = map.get( method );
 		if( rv != null ) {
@@ -60,17 +61,18 @@ public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel
 	}
 
 	private final org.lgna.project.ast.UserMethod method;
+
 	private ReturnStatementTemplateDragModel( org.lgna.project.ast.UserMethod method ) {
-		super( 
-				java.util.UUID.fromString( "7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2" ), 
-				org.lgna.project.ast.ReturnStatement.class, 
+		super(
+				java.util.UUID.fromString( "7c9b66c3-9cb9-4fbc-bce1-d8dbf33808b2" ),
+				org.lgna.project.ast.ReturnStatement.class,
 				org.alice.ide.ast.IncompleteAstUtilities.createIncompleteReturnStatement(
 						//todo
-						method != null ? method.getReturnType() : org.lgna.project.ast.JavaType.OBJECT_TYPE 
-				) 
-		);
+						method != null ? method.getReturnType() : org.lgna.project.ast.JavaType.OBJECT_TYPE
+						) );
 		this.method = method;
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertCascade.getInstance( blockStatementIndexPair );

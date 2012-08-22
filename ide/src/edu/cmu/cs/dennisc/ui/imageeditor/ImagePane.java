@@ -71,6 +71,7 @@ public class ImagePane extends javax.swing.JPanel {
 			return m_desiredWidth;
 		}
 	}
+
 	private int getDesiredImageHeight() {
 		if( m_desiredHeight == UNSPECIFIED ) {
 			if( m_image != null ) {
@@ -99,8 +100,8 @@ public class ImagePane extends javax.swing.JPanel {
 
 		int imageWidth = getDesiredImageWidth();
 		int imageHeight = getDesiredImageHeight();
-		int imageX = (componentWidth - imageWidth) / 2;
-		int imageY = (componentHeight - imageHeight) / 2;
+		int imageX = ( componentWidth - imageWidth ) / 2;
+		int imageY = ( componentHeight - imageHeight ) / 2;
 
 		paintImage( g, imageX, imageY, imageWidth, imageHeight );
 	}

@@ -7,11 +7,11 @@ import java.util.List;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.GlobalDragAdapter;
-import org.lgna.story.SThing;
 import org.lgna.story.HeldKeyPolicy;
+import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
 import org.lgna.story.SMovableTurnable;
-import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SThing;
 import org.lgna.story.Visual;
 import org.lgna.story.event.ArrowKeyEvent;
 import org.lgna.story.event.ArrowKeyPressListener;
@@ -81,11 +81,11 @@ public class EventManager {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			inputRecorder.record( createWrapper( e ) );
-			EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote( e, /*quoteClickCountUnquote,*/EventManager.this.scene.getAbstraction() );
+			EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote( e, /* quoteClickCountUnquote, */EventManager.this.scene.getAbstraction() );
 		}
 
 		public void handleReplayedEvent( MouseEventWrapper e ) {
-			e.translatePoint(scene);
+			e.translatePoint( scene );
 			MouseClickEvent event = new MouseClickEvent( e.getEvent(), scene.getAbstraction() );
 			System.out.println( event.getModelAtMouseLocation() );
 			mouseQuoteClickedUnquote( e.getEvent(), 0 );
@@ -98,11 +98,13 @@ public class EventManager {
 			inputRecorder.record( e );
 			keyHandler.handleKeyPress( event );
 		}
+
 		public void keyReleased( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
 			inputRecorder.record( e );
 			keyHandler.handleKeyRelease( event );
 		}
+
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};
@@ -141,6 +143,7 @@ public class EventManager {
 		component.addMouseMotionListener( this.mouseAdapter );
 		component.addKeyListener( this.keyAdapter );
 	}
+
 	public void removeListenersFrom( OnscreenLookingGlass onscreenLookingGlass ) {
 		java.awt.Component component = onscreenLookingGlass.getAWTComponent();
 		component.removeMouseListener( this.mouseAdapter );
@@ -171,9 +174,11 @@ public class EventManager {
 			handler.restoreListeners();
 		}
 	}
+
 	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
 		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
 	}
+
 	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Double dist ) {
 		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist );
 	}
@@ -185,12 +190,15 @@ public class EventManager {
 	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy, HeldKeyPolicy heldKeyPolicy ) {
 		this.keyHandler.addListener( keyListener, eventPolicy, null, heldKeyPolicy );
 	}
+
 	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
 		keyHandler.addListener( keyPressListener, policy, NumberKeyEvent.NUMBERS, heldKeyPolicy );
 	}
+
 	public void addArrowKeyListener( ArrowKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {
 		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS, heldKeyPolicy );
 	}
+
 	public void moveWithArrows( SMovableTurnable entity ) {
 		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS, HeldKeyPolicy.FIRE_MULTIPLE );
 	}
@@ -198,9 +206,11 @@ public class EventManager {
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
 		mouseHandler.addListener( listener, policy, null );
 	}
+
 	public void addMouseClickOnObjectListener( MouseClickOnObjectListener listener, MultipleEventPolicy policy, Visual[] targets ) {
 		this.mouseHandler.addListener( listener, policy, targets );
 	}
+
 	public void addMouseButtonListener( Object listener, MultipleEventPolicy policy, Visual[] targets ) {
 		this.mouseHandler.addListener( listener, policy, targets );
 	}
@@ -216,9 +226,11 @@ public class EventManager {
 	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
+
 	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities ) {
 		this.viewHandler.addViewEventListener( listener, entities );
 	}
+
 	public void sceneActivated() {
 		this.sceneActivationHandler.handleEventFire( new SceneActivationEvent() );
 	}
@@ -252,12 +264,15 @@ public class EventManager {
 	public void addWhileCollisionListener( WhileCollisionListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
+
 	public void addWhileProximityListener( WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, dist, frequency, policy );
 	}
+
 	public void addWhileOcclusionListener( WhileOcclusionListener listener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, groupOne, groupTwo, frequency, policy );
 	}
+
 	public void addWhileInViewListener( WhileInViewListener listener, ArrayList<SModel> group, Double frequency, MultipleEventPolicy policy ) {
 		contingent.register( listener, group, frequency, policy );
 	}
@@ -273,6 +288,7 @@ public class EventManager {
 	public void addSceneActivationListener( SceneActivationListener listener ) {
 		sceneActivationHandler.addListener( listener );
 	}
+
 	public void removeSceneActivationListener( SceneActivationListener listener ) {
 		sceneActivationHandler.removeListener( listener );
 	}

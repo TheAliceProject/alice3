@@ -57,6 +57,7 @@ public class MouseEventUtilities {
 			return false;
 		}
 	}
+
 	public static boolean isQuoteRightUnquoteMouseButton( java.awt.event.MouseEvent e ) {
 		if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
 			return true;
@@ -72,7 +73,7 @@ public class MouseEventUtilities {
 			}
 		}
 	}
-	
+
 	public static java.awt.event.MouseEvent performPlatformFilter( java.awt.event.MouseEvent original ) {
 		java.awt.event.MouseEvent rv;
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
@@ -83,9 +84,8 @@ public class MouseEventUtilities {
 			} else {
 				//todo:
 				boolean isPopupTrigger = original.isPopupTrigger();
-				
-				
-				rv = new java.awt.event.MouseEvent(original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getX(), original.getY(), original.getClickCount(), isPopupTrigger );
+
+				rv = new java.awt.event.MouseEvent( original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getX(), original.getY(), original.getClickCount(), isPopupTrigger );
 			}
 		} else {
 			rv = original;

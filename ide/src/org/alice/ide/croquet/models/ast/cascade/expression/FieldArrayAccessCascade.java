@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class FieldArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayAccessCascade> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized FieldArrayAccessCascade getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
@@ -60,20 +61,24 @@ public class FieldArrayAccessCascade extends ArrayAccessCascade {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.AbstractField field;
+
 	private FieldArrayAccessCascade( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ), expressionProperty );
 		this.field = field;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return org.lgna.project.ast.AstUtilities.createFieldAccess( 
-				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), 
+		return org.lgna.project.ast.AstUtilities.createFieldAccess(
+				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(),
 				this.field
-		);
+				);
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getArrayType() {
 		return this.field.getValueType();
 	}
 }

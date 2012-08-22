@@ -46,6 +46,6 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface ValueCreatorOwningComposite<V extends org.lgna.croquet.components.View<?,?>,T> extends Composite<V> {
+public interface ValueCreatorOwningComposite<V extends org.lgna.croquet.components.View<?, ?>, T> extends Composite<V> {
 	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep );
 }

@@ -64,9 +64,9 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 		}
 
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
-			if( e instanceof org.lgna.croquet.history.event.AddStepEvent || e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) {
+			if( ( e instanceof org.lgna.croquet.history.event.AddStepEvent ) || ( e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) ) {
 				this.reload();
-			} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+			} else if( ( e instanceof org.lgna.croquet.history.event.FinishedEvent ) || ( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) ) {
 				tree.repaint();
 			}
 		}
@@ -89,7 +89,7 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 	private void collapseDesiredRows() {
 		int childCount = treeModel.getChildCount( treeModel.getRoot() );
 		for( int i = 0; i < tree.getRowCount(); i++ ) {
-			if( isCollapsingDesired() && i < childCount - 1 ) {
+			if( isCollapsingDesired() && ( i < ( childCount - 1 ) ) ) {
 				tree.collapseRow( i );
 			} else {
 				tree.expandRow( i );
@@ -114,7 +114,7 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 		this.removeTransactionListener();
 		this.transactionHistory = transactionHistory;
 
-		if ( this.isShowing() ) {
+		if( this.isShowing() ) {
 			this.addTransactionListener();
 		}
 	}
@@ -142,7 +142,7 @@ public class TransactionHistoryView extends org.lgna.croquet.components.BorderPa
 	}
 
 	private void removeTransactionListener() {
-		if ( (this.transactionHistory != null) && (this.transactionHistory.isListening( this.historyListener )) ) {
+		if( ( this.transactionHistory != null ) && ( this.transactionHistory.isListening( this.historyListener ) ) ) {
 			this.transactionHistory.removeListener( this.historyListener );
 		}
 	}

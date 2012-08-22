@@ -56,75 +56,75 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class StoodUpRotationRingHandle extends RotationRingHandle implements PropertyListener{
+public class StoodUpRotationRingHandle extends RotationRingHandle implements PropertyListener {
 
 	protected Transformable standUpReference = new Transformable();
-	
+
 	public StoodUpRotationRingHandle()
 	{
 		super();
-		this.standUpReference.setName("Rotation StandUp Reference");
-		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		this.standUpReference.setName( "Rotation StandUp Reference" );
+		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
 		{
-			this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
+			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
-	
+
 	public StoodUpRotationRingHandle( StoodUpRotationRingHandle handle )
 	{
-		this(handle.rotationAxisDirection, handle.handlePosition);
+		this( handle.rotationAxisDirection, handle.handlePosition );
 		this.initFromHandle( handle );
 		this.handleOffset.set( handle.handleOffset );
 	}
-	
+
 	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection )
 	{
 		super( rotationAxisDirection );
-		this.standUpReference.setName("Rotation StandUp Reference");
-		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		this.standUpReference.setName( "Rotation StandUp Reference" );
+		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
 		{
-			this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
+			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
-	
+
 	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
 	{
-		super(rotationAxisDirection, handlePosition);
-		this.standUpReference.setName("Rotation StandUp Reference");
-		if (SystemUtilities.isPropertyTrue(IDE.DEBUG_PROPERTY_KEY))
+		super( rotationAxisDirection, handlePosition );
+		this.standUpReference.setName( "Rotation StandUp Reference" );
+		if( SystemUtilities.isPropertyTrue( IDE.DEBUG_PROPERTY_KEY ) )
 		{
-			this.standUpReference.putBonusDataFor(ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this);
+			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
-	
+
 	@Override
 	public StoodUpRotationRingHandle clone()
 	{
-		StoodUpRotationRingHandle newHandle = new StoodUpRotationRingHandle(this);
+		StoodUpRotationRingHandle newHandle = new StoodUpRotationRingHandle( this );
 		return newHandle;
 	}
-	
+
 	@Override
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
-		if (this.manipulatedObject != manipulatedObject)
+		if( this.manipulatedObject != manipulatedObject )
 		{
-			if (this.manipulatedObject instanceof Transformable)
+			if( this.manipulatedObject instanceof Transformable )
 			{
-				((Transformable)this.manipulatedObject).localTransformation.removePropertyListener( this );
+				( (Transformable)this.manipulatedObject ).localTransformation.removePropertyListener( this );
 			}
 			super.setManipulatedObject( manipulatedObject );
-			if (this.manipulatedObject != null)
+			if( this.manipulatedObject != null )
 			{
-				((Transformable)this.manipulatedObject).localTransformation.addPropertyListener( this );
+				( (Transformable)this.manipulatedObject ).localTransformation.addPropertyListener( this );
 			}
 			positionRelativeToObject();
 		}
 	}
-	
+
 	@Override
 	public ReferenceFrame getReferenceFrame()
 	{
-		if (this.manipulatedObject != null)
+		if( this.manipulatedObject != null )
 		{
 			this.standUpReference.setParent( this.manipulatedObject );
 			this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
@@ -133,7 +133,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 		}
 		return this;
 	}
-	
+
 	@Override
 	public void positionRelativeToObject() {
 		this.setTransformation( this.getTransformationForAxis( this.rotationAxis ), this.getReferenceFrame() );
@@ -141,11 +141,11 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	}
 
 	public void propertyChanged( PropertyEvent e ) {
-		this.positionRelativeToObject();		
+		this.positionRelativeToObject();
 	}
 
 	public void propertyChanging( PropertyEvent e ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

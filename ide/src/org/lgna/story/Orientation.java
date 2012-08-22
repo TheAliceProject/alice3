@@ -48,22 +48,27 @@ package org.lgna.story;
 public final class Orientation {
 	public static final Orientation IDENTITY = new Orientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createIdentity() );
 	private final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal;
+
 	private Orientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal ) {
 		this.internal = internal;
 	}
+
 	public Orientation( Number x, Number y, Number z, Number w ) {
 		this( new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( new edu.cmu.cs.dennisc.math.UnitQuaternion( x.doubleValue(), y.doubleValue(), z.doubleValue(), w.doubleValue() ) ) );
 	}
-	/*package-private*/ static Orientation createInstance( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal ) {
+
+	/* package-private */static Orientation createInstance( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 internal ) {
 		return internal != null ? new Orientation( internal ) : null;
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getInternal() {
+
+	/* package-private */edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getInternal() {
 		return this.internal;
 	}
-	/*package-private*/ static edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getInternal( Orientation orientation ) {
+
+	/* package-private */static edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getInternal( Orientation orientation ) {
 		return orientation != null ? orientation.internal : null;
 	}
-	
+
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof Orientation ) {
@@ -73,6 +78,7 @@ public final class Orientation {
 			return false;
 		}
 	}
+
 	@Override
 	public int hashCode() {
 		return this.internal.hashCode();

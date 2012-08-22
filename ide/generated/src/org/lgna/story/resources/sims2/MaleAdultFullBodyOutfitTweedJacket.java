@@ -41,7 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitTweedJacket implements MaleAdultFullBodyOutfit {
-	BROWN ,
- 	BLUE ;
+	BROWN,
+	BLUE;
 }

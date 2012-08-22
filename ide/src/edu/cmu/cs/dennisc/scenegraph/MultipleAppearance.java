@@ -47,11 +47,12 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class MultipleAppearance extends Appearance {
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< SimpleAppearance > singleAppearances = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< SimpleAppearance >( this ) {
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<SimpleAppearance> singleAppearances = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<SimpleAppearance>( this ) {
 		@Override
 		protected SimpleAppearance[] createArray( int length ) {
 			return new SimpleAppearance[ length ];
 		}
+
 		@Override
 		protected SimpleAppearance createCopy( SimpleAppearance src ) {
 			//todo?
@@ -67,7 +68,6 @@ public class MultipleAppearance extends Appearance {
 		}
 	}
 
-
 	@Override
 	public void setAmbientColor( edu.cmu.cs.dennisc.color.Color4f ambientColor ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
@@ -81,30 +81,35 @@ public class MultipleAppearance extends Appearance {
 			singleAppearance.setDiffuseColor( diffuseColor );
 		}
 	}
+
 	@Override
 	public void setOpacity( float opacity ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setOpacity( opacity );
 		}
 	}
+
 	@Override
 	public void setSpecularHighlightExponent( float specularHighlightExponent ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setSpecularHighlightExponent( specularHighlightExponent );
 		}
 	}
+
 	@Override
 	public void setSpecularHighlightColor( edu.cmu.cs.dennisc.color.Color4f specularHighlightColor ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setSpecularHighlightColor( specularHighlightColor );
 		}
 	}
+
 	@Override
 	public void setEmissiveColor( edu.cmu.cs.dennisc.color.Color4f emissiveColor ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setEmissiveColor( emissiveColor );
 		}
 	}
+
 	@Override
 	public void setShadingStyle( ShadingStyle shadingStyle ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
@@ -118,6 +123,7 @@ public class MultipleAppearance extends Appearance {
 			singleAppearance.setFillingStyle( fillingStyle );
 		}
 	}
+
 	@Override
 	public void setEthereal( boolean isEthereal ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {

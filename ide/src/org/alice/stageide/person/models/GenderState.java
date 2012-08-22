@@ -45,13 +45,15 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class GenderState extends AbstractListSelectionState< org.lgna.story.resources.sims2.Gender > {
+public class GenderState extends AbstractListSelectionState<org.lgna.story.resources.sims2.Gender> {
 	private static class SingletonHolder {
 		private static GenderState instance = new GenderState();
 	}
+
 	public static GenderState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private GenderState() {
 		super( java.util.UUID.fromString( "0a4c1622-e482-46bb-bb00-be3916f5549c" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.Gender.class ), org.lgna.story.resources.sims2.Gender.values() );
 	}

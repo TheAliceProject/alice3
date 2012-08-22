@@ -47,7 +47,8 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public class LocalArrayAtIndexAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized LocalArrayAtIndexAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
 		LocalArrayAtIndexAssignmentTemplateDragModel rv = map.get( local );
 		if( rv != null ) {
@@ -58,15 +59,19 @@ public class LocalArrayAtIndexAssignmentTemplateDragModel extends StatementTempl
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.UserLocal local;
+
 	private LocalArrayAtIndexAssignmentTemplateDragModel( org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "634df8b1-e171-4121-9405-533c4c4d78ed" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalArrayAssignmentStatement( local ) );
 		this.local = local;
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalArrayAtIndexAssignmentTemplateDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalArrayAtIndexAssignmentTemplateDragModel >( this, org.lgna.project.ast.UserLocal.class, this.local );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalArrayAtIndexAssignmentTemplateDragModel> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalArrayAtIndexAssignmentTemplateDragModel>( this, org.lgna.project.ast.UserLocal.class, this.local );
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return new org.alice.ide.croquet.models.ast.cascade.statement.LocalArrayAtIndexAssignmentInsertCascade( blockStatementIndexPair, this.local );

@@ -51,7 +51,7 @@ import org.lgna.croquet.components.Label;
  * @author Matt May
  */
 public class EventRecordView extends BorderPanel {
-	
+
 	private final BorderPanel lookingGlassContainer = new BorderPanel();
 
 	public EventRecordView( EventRecordComposite eventRecordComposite ) {
@@ -65,6 +65,7 @@ public class EventRecordView extends BorderPanel {
 		bottom.addComponent( eventRecordComposite.getRestartRecording().createButton() );
 		this.addComponent( bottom, Constraint.PAGE_END );
 	}
+
 	public BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}

@@ -49,14 +49,18 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public abstract class ShiftParameterOperation extends AbstractCodeParameterOperation {
-	public ShiftParameterOperation( java.util.UUID individualId, NodeListProperty< UserParameter > parametersProperty, UserParameter parameter ) {
+	public ShiftParameterOperation( java.util.UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
 		super( individualId, parametersProperty, parameter );
 	}
+
 	protected abstract boolean isAppropriate( int index, int n );
+
 	protected abstract int getIndexA();
+
 	public boolean isIndexAppropriate() {
 		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -64,28 +68,31 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		final int aIndex = this.getIndexA();
 		final int bIndex = aIndex + 1;
 		if( method != null ) {
-			step.commitAndInvokeDo(new org.alice.ide.ToDoEdit( step ) {
+			step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 				@Override
 				protected final void doOrRedoInternal( boolean isDo ) {
 					swap( method, aIndex, bIndex );
 				}
+
 				@Override
 				protected final void undoInternal() {
 					swap( method, bIndex, aIndex );
 				}
+
 				@Override
 				protected StringBuilder updatePresentation( StringBuilder rv ) {
 					rv.append( "Parameter" );
 					rv.append( ShiftParameterOperation.this.getName() );
 					return rv;
 				}
-			});
+			} );
 		} else {
 			throw new RuntimeException();
 		}
 	}
+
 	private void swap( org.lgna.project.ast.UserMethod method, int aIndex, int bIndex ) {
-		java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
+		java.util.List<org.lgna.project.ast.MethodInvocation> methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
 		org.lgna.project.ast.UserParameter aParam = method.requiredParameters.get( aIndex );
 		org.lgna.project.ast.UserParameter bParam = method.requiredParameters.get( bIndex );
 		method.requiredParameters.set( aIndex, bParam, aParam );

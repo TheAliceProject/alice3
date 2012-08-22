@@ -49,6 +49,7 @@ public final class HelpBrowserOperation extends org.alice.ide.browser.BrowserOpe
 	public HelpBrowserOperation() {
 		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ) );
 	}
+
 	@Override
 	protected java.net.URL getUrl() {
 		String path = "http://help.alice.org/";

@@ -49,8 +49,10 @@ public class Reference<E> {
 	public static <E> Reference<E> newInstance( E value ) {
 		return new Reference( value );
 	}
+
 	private Reference( E value ) {
 		this.value = value;
 	}
+
 	public E value;
 }

@@ -49,7 +49,9 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 	public TransformableFieldTileActionOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
 		super( individualId, field );
 	}
+
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lgna.story.implementation.TransformableImp transformableImp );
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -69,10 +71,12 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 					protected final void doOrRedoInternal( boolean isDo ) {
 						transformableImp.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, nextPOV );
 					}
+
 					@Override
 					protected final void undoInternal() {
 						transformableImp.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, prevPOV );
 					}
+
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv ) {
 						//todo

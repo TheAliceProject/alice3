@@ -47,6 +47,7 @@ package org.alice.ide.member;
  */
 public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.member.views.MemberTabView> {
 	public static org.alice.ide.member.MethodsSubComposite SEPARATOR = null;
+
 	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
@@ -61,15 +62,17 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 		}
 		if( member.isPublicAccess() || member.isUserAuthored() ) {
 			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
-			return visibility == null || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
+			return ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
 		} else {
 			return false;
 		}
 	}
+
 	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 			if( isAdjusting ) {
 				//pass
 			} else {
@@ -77,12 +80,13 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 			}
 		}
 	};
+
 	public MemberTabComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handlePreActivation tab composites" );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 	}
-	
+
 	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
 		for( MethodsSubComposite subComposite : this.getSubComposites() ) {
 			if( subComposite != null ) {
@@ -91,9 +95,11 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 		}
 		this.getView().refreshLater();
 	}
+
 	@Override
 	public boolean isCloseable() {
 		return false;
 	}
+
 	public abstract java.util.List<MethodsSubComposite> getSubComposites();
 }

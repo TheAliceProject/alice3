@@ -49,30 +49,36 @@ public abstract class Chapter {
 	private java.util.UUID id = java.util.UUID.randomUUID();
 	private int[] historyIndices = null;
 	private org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability;
+
 	public java.util.UUID getId() {
 		return id;
 	}
-	/*package-private*/ int[] getHistoryIndices() {
+
+	/* package-private */int[] getHistoryIndices() {
 		return this.historyIndices;
 	}
-	/*package-private*/ void setHistoryIndices( int[] historyIndices ) {
+
+	/* package-private */void setHistoryIndices( int[] historyIndices ) {
 		this.historyIndices = historyIndices;
 	}
+
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
 		return this.replacementAcceptability;
 	}
+
 	public void setReplacementAcceptability( org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability ) {
 		this.replacementAcceptability = replacementAcceptability;
 	}
 
 	public abstract boolean isAutoAdvanceDesired();
+
 	public abstract boolean isAlreadyInTheDesiredState();
-	
-	public abstract void retarget( org.lgna.croquet.Retargeter retargeter ); 
+
+	public abstract void retarget( org.lgna.croquet.Retargeter retargeter );
 
 	public abstract void complete( org.lgna.croquet.Group completionGroup );
-	
+
 	public abstract String getTitle();
-	
-	public abstract Iterable< org.lgna.croquet.Context > getAllContexts();
+
+	public abstract Iterable<org.lgna.croquet.Context> getAllContexts();
 }

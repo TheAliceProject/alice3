@@ -48,24 +48,29 @@ package org.lgna.croquet.triggers;
  */
 public class CascadeAutomaticDeterminationTrigger extends Trigger {
 	private final transient org.lgna.croquet.triggers.Trigger previousTrigger;
+
 	public CascadeAutomaticDeterminationTrigger( org.lgna.croquet.triggers.Trigger previousTrigger ) {
 		super( Origin.USER );
 		this.previousTrigger = previousTrigger;
 	}
+
 	public CascadeAutomaticDeterminationTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.previousTrigger = null;
 	}
+
 	@Override
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 		return this.previousTrigger.getViewController();
 	}
+
 	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		this.previousTrigger.showPopupMenu( popupMenu );
 	}
+
 	@Override
-	public String getNoteText( ) {
+	public String getNoteText() {
 		//todo
 		return "COMPLETE";
 	}

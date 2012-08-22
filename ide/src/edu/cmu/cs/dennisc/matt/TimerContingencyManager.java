@@ -2,17 +2,16 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.util.ArrayList;
 
-import org.lgna.story.SThing;
-import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SModel;
 import org.lgna.story.SScene;
+import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.ExitProximityEvent;
-import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.LeavesViewEvent;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionStartListener;
@@ -21,6 +20,7 @@ import org.lgna.story.event.ProximityExitListener;
 import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.event.StartOcclusionEvent;
 import org.lgna.story.event.ViewEnterListener;
+import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.WhileCollisionListener;
 import org.lgna.story.event.WhileInViewListener;
 import org.lgna.story.event.WhileOcclusionListener;
@@ -42,12 +42,14 @@ public class TimerContingencyManager {
 		scene.addCollisionStartListener( newStartCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 		scene.addCollisionEndListener( newEndCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 	}
+
 	public void register( WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 		scene.addProximityExitListener( newExitProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 	}
+
 	public void register( WhileOcclusionListener listener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );

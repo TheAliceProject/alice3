@@ -49,9 +49,11 @@ public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static WindowMenuModel instance = new WindowMenuModel();
 	}
+
 	public static WindowMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels() {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		rv.add( org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getMenuModel() );
@@ -66,6 +68,7 @@ public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		}
 		return rv;
 	}
+
 	private WindowMenuModel() {
 		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), createModels() );
 	}

@@ -51,12 +51,12 @@ public class InfixExpressionView extends AbstractExpressionView<org.lgna.project
 		super( factory, infixExpression );
 		String clsName = infixExpression.getClass().getName();
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( clsName, javax.swing.JComponent.getDefaultLocale() );
-		
+
 		Enum<?> e = infixExpression.operator.getValue();
-		
+
 		String value = resourceBundle.getString( e.name() );
 		org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
-		org.lgna.croquet.components.JComponent< ? > component = factory.createComponent( page, infixExpression );
+		org.lgna.croquet.components.JComponent<?> component = factory.createComponent( page, infixExpression );
 		for( java.awt.Component child : component.getAwtComponent().getComponents() ) {
 			if( child instanceof javax.swing.JLabel ) {
 				javax.swing.JLabel label = (javax.swing.JLabel)child;
@@ -67,7 +67,7 @@ public class InfixExpressionView extends AbstractExpressionView<org.lgna.project
 					char c0 = text.charAt( 0 );
 					char c1 = text.charAt( 1 );
 					char c2 = text.charAt( 2 );
-					if( c0==' ' && c2 == ' ' ) {
+					if( ( c0 == ' ' ) && ( c2 == ' ' ) ) {
 						if( Character.isLetterOrDigit( c1 ) ) {
 							//pass
 						} else {

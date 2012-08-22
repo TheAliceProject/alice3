@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDressKorean implements FemaleAdultFullBodyOutfit {
-	BLUERED ,
- 	CREAMNAVY ,
- 	GREENRED ;
+	BLUERED,
+	CREAMNAVY,
+	GREENRED;
 }

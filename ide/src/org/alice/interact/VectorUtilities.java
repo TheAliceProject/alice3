@@ -42,33 +42,37 @@
  */
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
  * @author David Culyba
  */
 public class VectorUtilities {
-	
-	public static AngleInRadians getAngleBetweenVectors(Vector3 a, Vector3 b )
+
+	public static AngleInRadians getAngleBetweenVectors( Vector3 a, Vector3 b )
 	{
 		double angleDot = Vector3.calculateDotProduct( a, b );
-		if (angleDot < -1.0d) angleDot = -1.0d;
-		if (angleDot > 1.0d) angleDot = 1.0d;
-		
-		return new edu.cmu.cs.dennisc.math.AngleInRadians(Math.acos(angleDot));
+		if( angleDot < -1.0d ) {
+			angleDot = -1.0d;
+		}
+		if( angleDot > 1.0d ) {
+			angleDot = 1.0d;
+		}
+
+		return new edu.cmu.cs.dennisc.math.AngleInRadians( Math.acos( angleDot ) );
 	}
-	
+
 	/*
 	 * Projects the projector onto the projectee
 	 */
-	public static Vector3 projectOntoVector( Vector3 projector, Vector3 projectee)
+	public static Vector3 projectOntoVector( Vector3 projector, Vector3 projectee )
 	{
-		Vector3 normalizedProjectee = new Vector3(projectee);
+		Vector3 normalizedProjectee = new Vector3( projectee );
 		normalizedProjectee.normalize();
 		double dotProduct = Vector3.calculateDotProduct( projector, normalizedProjectee );
 		normalizedProjectee.multiply( dotProduct );
 		return normalizedProjectee;
 	}
-	
+
 }

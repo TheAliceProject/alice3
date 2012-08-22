@@ -48,10 +48,10 @@ package org.alice.ide.codeeditor;
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
 	public MethodHeaderPane( org.lgna.project.ast.UserMethod userMethod, ParametersPane parametersPane, boolean isPreview, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( userMethod, parametersPane, isPreview );
-//		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
+		//		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
-//			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+			//			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		} else {
 			this.addComponent( new org.lgna.croquet.components.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
@@ -63,23 +63,24 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			}
 			this.addComponent( new org.lgna.croquet.components.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
-		
-		
-//		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+
+		//		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
 		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( userMethod );
 		nameLabel.scaleFont( NAME_SCALE );
-		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,4,0,4 ) );
+		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 
 		if( userMethod.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );
 		} else {
 			class PopupPanel extends org.lgna.croquet.components.ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
 				private org.lgna.croquet.components.Component<?> centerComponent;
+
 				public PopupPanel( org.lgna.croquet.components.Component<?> centerComponent, org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation ) {
 					super( null );
 					this.centerComponent = centerComponent;
 					this.setPopupPrepModel( popupMenuOperation );
 				}
+
 				@Override
 				protected javax.swing.JPanel createAwtComponent() {
 					javax.swing.JPanel rv = new javax.swing.JPanel() {
@@ -95,12 +96,12 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 					return rv;
 				}
 			}
-			this.addComponent( 
-					new PopupPanel( 
-							nameLabel, 
+			this.addComponent(
+					new PopupPanel(
+							nameLabel,
 							org.alice.ide.croquet.models.ast.MethodHeaderMenuModel.getInstance( userMethod ).getPopupPrepModel()
-					) 
-			);
+					)
+					);
 		}
 		this.addParametersPaneAndInstanceLineIfDesired();
 		if( declaringType != null ) {
@@ -117,6 +118,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			}
 		}
 	}
+
 	public MethodHeaderPane( org.lgna.project.ast.UserMethod userMethod, ParametersPane parametersPane, boolean isPreview ) {
 		this( userMethod, parametersPane, isPreview, null );
 	}

@@ -53,61 +53,72 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	private static class SingletonHolder {
 		private static ExportToYouTubeWizardDialogComposite instance = new ExportToYouTubeWizardDialogComposite();
 	}
+
 	public static ExportToYouTubeWizardDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	
+
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
 	private final VideoEditorComposite videoEditorComposite = new VideoEditorComposite( this );
 	private final UploadComposite uploadComposite = new UploadComposite( this );
-	
+
 	private org.lgna.project.Project project;
 	private EventScript script;
 	private File file;
-	
+
 	private ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
 		this.addPage( this.eventRecordComposite );
 		this.addPage( this.imageRecordComposite );
-//		this.addPage( this.videoEditorComposite );
+		//		this.addPage( this.videoEditorComposite );
 		this.addPage( this.uploadComposite );
 	}
+
 	public org.lgna.project.Project getProject() {
 		return this.project;
 	}
+
 	public void setProject( org.lgna.project.Project project ) {
 		this.project = project;
 	}
+
 	public EventScript getScript() {
 		return this.script;
 	}
+
 	public void setScript( EventScript script ) {
 		this.script = script;
 	}
+
 	public File getFile() {
 		return this.file;
 	}
+
 	public void setFile( File file ) {
 		this.file = file;
 		if( this.file != null ) {
 			edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( this.file );
 		}
 	}
+
 	@Override
 	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		super.modifyPackedWindowSizeIfDesired( window );
 		final int WIDTH = 1000;
 		window.setSize( WIDTH, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH ) );
 	}
+
 	@Override
 	protected org.lgna.croquet.DialogCoreComposite.GoldenRatioPolicy getGoldenRatioPolicy() {
 		return null;
 	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}
+
 	public static void main( final String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {

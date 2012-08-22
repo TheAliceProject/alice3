@@ -44,6 +44,7 @@ package edu.cmu.cs.dennisc.media.jmf;
 
 abstract class BarrierControllerListener implements javax.media.ControllerListener {
 	private java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+
 	public void await() {
 		try {
 			barrier.await();
@@ -84,6 +85,7 @@ class PrefetchControllerListener extends BarrierControllerListener {
 		}
 	}
 }
+
 class RealizeControllerListener extends BarrierControllerListener {
 	public void controllerUpdate( javax.media.ControllerEvent e ) {
 		if( e instanceof javax.media.RealizeCompleteEvent ) {
@@ -91,6 +93,7 @@ class RealizeControllerListener extends BarrierControllerListener {
 		}
 	}
 }
+
 class StopControllerListener extends BarrierControllerListener {
 	public void controllerUpdate( javax.media.ControllerEvent e ) {
 		//todo?
@@ -125,8 +128,8 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	private double startTime;
 	private double stopTime;
 	private org.lgna.common.resources.AudioResource audioResource;
-	
-	/*package private*/ Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime, org.lgna.common.resources.AudioResource resourceReference) {
+
+	/* package private */Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime, org.lgna.common.resources.AudioResource resourceReference ) {
 		//assert player.getState() >= javax.media.Controller.Realized;
 		this.player = player;
 		this.volumeLevel = volumeLevel;
@@ -134,6 +137,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		this.stopTime = stopTime;
 		this.audioResource = resourceReference;
 	}
+
 	@Override
 	public void realize() {
 		if( this.player.getState() < javax.media.Controller.Realized ) {
@@ -145,6 +149,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 			this.player.removeControllerListener( controllerListener );
 		}
 	}
+
 	@Override
 	public void prefetch() {
 		if( this.player.getState() < javax.media.Controller.Prefetched ) {
@@ -155,6 +160,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 			this.player.removeControllerListener( controllerListener );
 		}
 	}
+
 	@Override
 	public void start() {
 		this.realize();
@@ -173,7 +179,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		} else {
 			javax.media.GainControl gainControl = this.player.getGainControl();
 			float defaultVolumeLevel = gainControl.getLevel();
-			
+
 			float v = (float)( this.volumeLevel * defaultVolumeLevel );
 			v = Math.max( v, 0.0f );
 			v = Math.min( v, 1.0f );
@@ -181,27 +187,29 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		}
 		this.player.start();
 	}
+
 	@Override
 	public void stop() {
 		this.player.stop();
 	}
-	
+
 	@Override
 	public double getDuration() {
 		return this.player.getDuration().getSeconds();
 	}
-	
+
 	private static final double CONSIDERED_TO_BE_STARTED_THRESHOLD = 0.1;
+
 	@Override
 	public double getTimeRemaining() {
 		javax.media.Time duration = this.player.getDuration();
 		javax.media.Time stop = this.player.getStopTime();
 		javax.media.Time curr = this.player.getMediaTime();
-		
+
 		double endSeconds = Math.min( duration.getSeconds(), stop.getSeconds() );
 		double currSeconds = curr.getSeconds();
 		double rv = endSeconds - currSeconds;
-		
+
 		int state = this.player.getState();
 		if( state >= javax.media.Controller.Started ) {
 			//pass
@@ -212,6 +220,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		}
 		return rv;
 	}
+
 	@Override
 	public void playUntilStop() {
 		StopControllerListener controllerListener = new StopControllerListener();
@@ -226,12 +235,13 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		this.realize();
 		return this.player.getControlPanelComponent();
 	}
+
 	@Override
 	public java.awt.Component getVisualComponent() {
 		this.realize();
 		return this.player.getVisualComponent();
 	}
-	
+
 	@Override
 	public void test( java.awt.Component owner ) {
 		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane content = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane() {
@@ -240,10 +250,10 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 			}
 		};
-		
+
 		final javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createJDialog( owner, "test", true );
 		dialog.getContentPane().add( content, java.awt.BorderLayout.CENTER );
-		
+
 		java.awt.Component controlPanelComponent = this.getControlPanelComponent();
 		if( controlPanelComponent != null ) {
 			content.add( controlPanelComponent, java.awt.BorderLayout.SOUTH );
@@ -266,25 +276,25 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		dialog.setVisible( true );
 		this.stop();
 	}
-	
+
 	public double getVolumeLevel()
 	{
 		return this.volumeLevel;
 	}
-	
+
 	public double getStartTime()
 	{
 		return this.startTime;
 	}
-	
+
 	public double getStopTime()
 	{
 		return this.stopTime;
 	}
-	
+
 	public org.lgna.common.resources.AudioResource getAudioResource()
 	{
 		return this.audioResource;
 	}
-	
+
 }

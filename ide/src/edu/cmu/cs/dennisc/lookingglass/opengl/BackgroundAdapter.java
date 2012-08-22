@@ -46,12 +46,13 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class BackgroundAdapter extends ElementAdapter< edu.cmu.cs.dennisc.scenegraph.Background > {
+public class BackgroundAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegraph.Background> {
 	private float[] m_color = new float[ 4 ];
 
 	public void setup( RenderContext rc ) {
 		rc.setClearColor( m_color );
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.color ) {

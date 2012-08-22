@@ -47,19 +47,19 @@ package org.lgna.croquet.dialog;
  * @author Dennis Cosgrove
  */
 public class DialogUtilities {
-	public static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Dialog > DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogUtilities.DIALOG_KEY" );
+	public static final org.lgna.croquet.history.Step.Key<org.lgna.croquet.components.Dialog> DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogUtilities.DIALOG_KEY" );
 
 	public static <V extends org.lgna.croquet.components.JComponent<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-		
+
 		org.lgna.croquet.components.AbstractWindow<?> window = application.peekWindow();
-		
+
 		org.lgna.croquet.components.ScreenElement owner;
 		if( window != null ) {
 			owner = window;
 		} else {
 			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			org.lgna.croquet.components.ViewController< ?, ? > viewController = trigger.getViewController();	
+			org.lgna.croquet.components.ViewController<?, ?> viewController = trigger.getViewController();
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
@@ -72,20 +72,26 @@ public class DialogUtilities {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 				dialogOwner.handleDialogOpened( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
+
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				if( dialogOwner.isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) ) ) {
 					dialog.setVisible( false );
 				}
 			}
+
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 				dialogOwner.handleDialogClosed( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 			}
+
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowDeactivated( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowDeiconified( java.awt.event.WindowEvent e ) {
 			}
+
 			public void windowIconified( java.awt.event.WindowEvent e ) {
 			}
 		}
@@ -121,6 +127,6 @@ public class DialogUtilities {
 			application.popWindow();
 			dialogOwner.handleFinally( step, dialog );
 		}
-		
+
 	}
 }

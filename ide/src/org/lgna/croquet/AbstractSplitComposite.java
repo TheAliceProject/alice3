@@ -45,24 +45,27 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSplitComposite<SP extends org.lgna.croquet.components.AbstractSplitPane> extends AbstractComposite< SP >{
+public abstract class AbstractSplitComposite<SP extends org.lgna.croquet.components.AbstractSplitPane> extends AbstractComposite<SP> {
 	public AbstractSplitComposite( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract Composite< ? > getLeadingComposite();
-	public abstract Composite< ? > getTrailingComposite();
+
+	public abstract Composite<?> getLeadingComposite();
+
+	public abstract Composite<?> getTrailingComposite();
+
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
 		if( super.contains( model ) ) {
 			return true;
 		} else {
-			Composite< ? > leadingComposite = this.getLeadingComposite();
+			Composite<?> leadingComposite = this.getLeadingComposite();
 			if( leadingComposite != null ) {
 				if( leadingComposite.contains( model ) ) {
 					return true;
 				}
 			}
-			Composite< ? > trailingComposite = this.getTrailingComposite();
+			Composite<?> trailingComposite = this.getTrailingComposite();
 			if( trailingComposite != null ) {
 				if( trailingComposite.contains( model ) ) {
 					return true;
@@ -71,42 +74,47 @@ public abstract class AbstractSplitComposite<SP extends org.lgna.croquet.compone
 			return false;
 		}
 	}
+
 	@Override
 	public void releaseView() {
-		Composite< ? > leadingComposite = this.getLeadingComposite();
+		Composite<?> leadingComposite = this.getLeadingComposite();
 		if( leadingComposite != null ) {
 			leadingComposite.releaseView();
 		}
-		Composite< ? > trailingComposite = this.getTrailingComposite();
+		Composite<?> trailingComposite = this.getTrailingComposite();
 		if( trailingComposite != null ) {
 			trailingComposite.releaseView();
 		}
 		super.releaseView();
 	}
+
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		Composite< ? > leadingComposite = this.getLeadingComposite();
+		Composite<?> leadingComposite = this.getLeadingComposite();
 		if( leadingComposite != null ) {
 			leadingComposite.handlePreActivation();
 		}
-		Composite< ? > trailingComposite = this.getTrailingComposite();
+		Composite<?> trailingComposite = this.getTrailingComposite();
 		if( trailingComposite != null ) {
 			trailingComposite.handlePreActivation();
 		}
 	}
+
 	@Override
 	public void handlePostDeactivation() {
-		Composite< ? > leadingComposite = this.getLeadingComposite();
+		Composite<?> leadingComposite = this.getLeadingComposite();
 		if( leadingComposite != null ) {
 			leadingComposite.handlePostDeactivation();
 		}
-		Composite< ? > trailingComposite = this.getTrailingComposite();
+		Composite<?> trailingComposite = this.getTrailingComposite();
 		if( trailingComposite != null ) {
 			trailingComposite.handlePostDeactivation();
 		}
 		super.handlePostDeactivation();
 	}
+
 	protected abstract SP createHorizontalSplitPane();
+
 	protected abstract SP createVerticalSplitPane();
 }

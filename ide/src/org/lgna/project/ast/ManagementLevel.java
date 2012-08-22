@@ -50,18 +50,19 @@ public enum ManagementLevel {
 	NONE( false, false ),
 	GENERATED( true, false ),
 	MANAGED( true, true );
-	
+
 	private final boolean isGenerated;
 	private final boolean isManaged;
-	
+
 	private ManagementLevel( boolean isGenerated, boolean isManaged ) {
 		this.isGenerated = isGenerated;
 		this.isManaged = isManaged;
 	}
-	
+
 	public boolean isGenerated() {
 		return this.isGenerated;
 	}
+
 	public boolean isManaged() {
 		return this.isManaged;
 	}

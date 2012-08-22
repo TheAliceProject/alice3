@@ -55,8 +55,8 @@ import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
+//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -69,31 +69,31 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 	protected HandleSet handleSet = new HandleSet();
 	protected AbstractManipulator manipulation = null;
 	protected AbstractDragAdapter dragAdapter = null;
-	
+
 	public ManipulationHandle2D()
 	{
 		super();
 	}
-	
+
 	@Override
 	public ManipulationHandle2D clone()
 	{
 		return null;
 	}
-	
+
 	public Vector2 getCenter()
 	{
 		java.awt.Rectangle ourSize = this.getBounds();
-		return new Vector2(ourSize.width*.5d, ourSize.height*.5d);
+		return new Vector2( ourSize.width * .5d, ourSize.height * .5d );
 	}
-	
+
 	@Override
 	public void setVisible( boolean flag ) {
 		boolean wasVisible = this.isVisible();
 		super.setVisible( flag );
-		if (wasVisible != flag && this.dragAdapter != null)
+		if( ( wasVisible != flag ) && ( this.dragAdapter != null ) )
 		{
-			if (this.isVisible())
+			if( this.isVisible() )
 			{
 				this.dragAdapter.addListeners( this.getAwtComponent() );
 				this.dragAdapter.addManipulationListener( this );
@@ -105,20 +105,20 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 			}
 		}
 	}
-	
-	public void setVisualsShowing(boolean showing)
+
+	public void setVisualsShowing( boolean showing )
 	{
 		//Do nothing
 	}
-	
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) 
+
+	public void setDragAdapter( AbstractDragAdapter dragAdapter )
 	{
 		this.dragAdapter = dragAdapter;
 	}
-	
+
 	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
-		this.setDragAdapter(dragAdapter);
-		if (this.dragAdapter != null)
+		this.setDragAdapter( dragAdapter );
+		if( this.dragAdapter != null )
 		{
 			this.dragAdapter.addHandle( this );
 			this.dragAdapter.addListeners( this.getAwtComponent() );
@@ -129,73 +129,71 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 	{
 		this.handleSet.addSet( set );
 	}
-	
+
 	public HandleSet getHandleSet()
 	{
 		return this.handleSet;
 	}
-	
+
 	public boolean isAlwaysVisible()
 	{
 		return false;
 	}
-	
+
 	public void addToGroup( HandleSet.HandleGroup group )
 	{
 		this.handleSet.addGroup( group );
 	}
-	
-	public void addToGroups( HandleSet.HandleGroup...groups )
+
+	public void addToGroups( HandleSet.HandleGroup... groups )
 	{
 		this.handleSet.addGroups( groups );
 	}
-	
-	public boolean isMemberOf( HandleSet set)
+
+	public boolean isMemberOf( HandleSet set )
 	{
 		return this.handleSet.intersects( set );
 	}
-	
+
 	public boolean isPickable()
 	{
 		return true;
 	}
-	
-	public boolean isMemberOf( HandleSet.HandleGroup group)
+
+	public boolean isMemberOf( HandleSet.HandleGroup group )
 	{
 		return this.handleSet.get( group.ordinal() );
 	}
-
 
 	public AbstractTransformable getManipulatedObject() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public PickHint getPickHint() {
 		return PickHint.PickType.TWO_D_HANDLE.pickHint();
 	}
 
-	public void setManipulation(AbstractManipulator manipulation)
+	public void setManipulation( AbstractManipulator manipulation )
 	{
 		this.manipulation = manipulation;
 	}
-	
+
 	public AbstractManipulator getManipulation( InputState input )
 	{
 		return this.manipulation;
 	}
 
-	public void setHandleManager(HandleManager handleManager)
+	public void setHandleManager( HandleManager handleManager )
 	{
 		this.handleManager = handleManager;
 	}
-	
+
 	public HandleManager getHandleManager()
 	{
 		return this.handleManager;
@@ -203,33 +201,32 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 
 	public HandleState getHandleStateCopy()
 	{
-		return new HandleState(this.state);
+		return new HandleState( this.state );
 	}
-	
+
 	public boolean isRenderable() {
-		if (this.isAlwaysVisible())
+		if( this.isAlwaysVisible() )
 		{
 			return true;
 		}
 		return this.state.shouldRender();
 	}
-	
+
 	protected void updateVisibleState( HandleRenderState renderState )
 	{
-		
+
 	}
-	
+
 	public void activate( ManipulationEvent event ) {
 		this.setHandleActive( true );
 	}
 
 	public void deactivate( ManipulationEvent event ) {
-		this.setHandleActive(false);
+		this.setHandleActive( false );
 	}
-	
 
 	public void setHandleRollover( boolean rollover ) {
-		this.state.setRollover(rollover);
+		this.state.setRollover( rollover );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
@@ -237,33 +234,33 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 	{
 		return this.state.isVisible() || this.isAlwaysVisible();
 	}
-	
+
 	public void setHandleVisible( boolean visible ) {
-		this.state.setVisible(visible);
+		this.state.setVisible( visible );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
-	
+
 	public void setHandleActive( boolean active ) {
-		this.state.setActive(active);
+		this.state.setActive( active );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
 	public void setSelectedObject( AbstractTransformable manipulatedObject ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	public boolean matches(ManipulationEvent event)
+	public boolean matches( ManipulationEvent event )
 	{
 		return this.criteriaManager.matches( event );
 	}
-	
-	public void addCondition(ManipulationEventCriteria condition)
+
+	public void addCondition( ManipulationEventCriteria condition )
 	{
 		this.criteriaManager.addCondition( condition );
 	}
-	
-	public void removeCondition(ManipulationEventCriteria condition)
+
+	public void removeCondition( ManipulationEventCriteria condition )
 	{
 		this.criteriaManager.removeCondition( condition );
 	}
@@ -271,8 +268,8 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 	public void setAnimator( Animator animator ) {
 		this.animator = animator;
 	}
-	
-	public void setCameraPosition(Point3 cameraPosition) 
+
+	public void setCameraPosition( Point3 cameraPosition )
 	{
 		//Do Nothing
 	}

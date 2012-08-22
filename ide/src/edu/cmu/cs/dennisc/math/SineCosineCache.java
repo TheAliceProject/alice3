@@ -56,7 +56,7 @@ public class SineCosineCache {
 		sines = new double[ length ];
 		angles = new double[ length ];
 		double theta = 0;
-		double dtheta = (Math.PI / 2.0) / cosines.length;
+		double dtheta = ( Math.PI / 2.0 ) / cosines.length;
 		for( int i = 0; i < length; i++ ) {
 			angles[ i ] = theta;
 			cosines[ i ] = Math.cos( theta );
@@ -64,7 +64,7 @@ public class SineCosineCache {
 			theta += dtheta;
 		}
 	}
-	
+
 	public double getSine( int quadrant, int i ) {
 		int max = sines.length - 1;
 		switch( quadrant ) {
@@ -96,8 +96,8 @@ public class SineCosineCache {
 			throw new IllegalArgumentException();
 		}
 	}
-	
+
 	public double getAngle( int quadrant, int i ) {
-		return Math.PI*0.5*quadrant + angles[ i ];
+		return ( Math.PI * 0.5 * quadrant ) + angles[ i ];
 	}
 }

@@ -49,9 +49,11 @@ public class SystemPropertiesAttachment implements edu.cmu.cs.dennisc.issue.Atta
 	public byte[] getBytes() {
 		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLByteArray();
 	}
+
 	public String getMIMEType() {
 		return "application/xml";
 	}
+
 	public String getFileName() {
 		return "systemProperties.xml";
 	}

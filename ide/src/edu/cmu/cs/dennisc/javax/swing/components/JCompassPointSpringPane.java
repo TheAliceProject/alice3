@@ -50,10 +50,11 @@ public class JCompassPointSpringPane extends JCornerSpringPane {
 	private java.awt.Component eastComponent;
 	private java.awt.Component southComponent;
 	private java.awt.Component westComponent;
-	
+
 	public java.awt.Component getNorthComponent() {
 		return this.northComponent;
 	}
+
 	public void setNorthComponent( java.awt.Component northComponent ) {
 		javax.swing.SpringLayout springLayout = this.getSpringLayout();
 		if( this.northComponent != null ) {
@@ -67,9 +68,11 @@ public class JCompassPointSpringPane extends JCornerSpringPane {
 			this.add( this.northComponent );
 		}
 	}
+
 	public java.awt.Component getEastComponent() {
 		return this.eastComponent;
 	}
+
 	public void setEastComponent( java.awt.Component eastComponent ) {
 		javax.swing.SpringLayout springLayout = this.getSpringLayout();
 		if( this.eastComponent != null ) {
@@ -83,9 +86,11 @@ public class JCompassPointSpringPane extends JCornerSpringPane {
 			this.add( this.eastComponent );
 		}
 	}
+
 	public java.awt.Component getSouthComponent() {
 		return this.southComponent;
 	}
+
 	public void setSouthComponent( java.awt.Component southComponent ) {
 		javax.swing.SpringLayout springLayout = this.getSpringLayout();
 		if( this.southComponent != null ) {
@@ -99,9 +104,11 @@ public class JCompassPointSpringPane extends JCornerSpringPane {
 			this.add( this.southComponent );
 		}
 	}
+
 	public java.awt.Component getWestComponent() {
 		return this.westComponent;
 	}
+
 	public void setWestComponent( java.awt.Component westComponent ) {
 		javax.swing.SpringLayout springLayout = this.getSpringLayout();
 		if( this.westComponent != null ) {

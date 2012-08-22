@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener,SceneActivationEvent> {
+public class SceneActivationHandler extends AbstractEventHandler<SceneActivationListener, SceneActivationEvent> {
 
 	List<SceneActivationListener> listeners = Collections.newLinkedList();
 
@@ -73,6 +73,7 @@ public class SceneActivationHandler extends AbstractEventHandler<SceneActivation
 		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
 		listeners.add( listener );
 	}
+
 	public void removeListener( SceneActivationListener listener ) {
 		listeners.remove( listener );
 	}

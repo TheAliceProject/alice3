@@ -47,13 +47,14 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public 
-class SwingAdapter extends JComponent< javax.swing.JComponent > {
+public class SwingAdapter extends JComponent<javax.swing.JComponent> {
 	private javax.swing.JComponent jComponent;
+
 	public SwingAdapter( javax.swing.JComponent jComponent ) {
 		this.jComponent = jComponent;
 		//edu.cmu.cs.dennisc.java.awt.ComponentUtilities.makeStandOut( this.jComponent );
 	}
+
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		return this.jComponent;

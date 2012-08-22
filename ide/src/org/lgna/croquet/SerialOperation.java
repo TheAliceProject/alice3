@@ -51,14 +51,16 @@ public abstract class SerialOperation extends SingleThreadOperation {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		for( Operation operation : this.getOperations() ) {
 			//todo?
-			org.lgna.croquet.history.CompletionStep< ? > subStep = operation.handleFire(step.getTrigger());
+			org.lgna.croquet.history.CompletionStep<?> subStep = operation.handleFire( step.getTrigger() );
 			if( subStep.isCanceled() ) {
 				break;
 			}
 		}
 	}
+
 	public SerialOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	protected abstract java.util.List< SingleThreadOperation > getOperations();
+
+	protected abstract java.util.List<SingleThreadOperation> getOperations();
 }

@@ -50,8 +50,9 @@ public class NameableUtilities {
 	private NameableUtilities() {
 		throw new AssertionError();
 	}
+
 	public static String safeGetName( Nameable nameable ) {
-		if( nameable != null ) { 
+		if( nameable != null ) {
 			return nameable.getName();
 		} else {
 			return null;

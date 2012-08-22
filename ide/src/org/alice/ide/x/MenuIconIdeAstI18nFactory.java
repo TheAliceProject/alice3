@@ -49,20 +49,24 @@ public class MenuIconIdeAstI18nFactory extends ImmutableAstI18nFactory {
 	private static class SingletonHolder {
 		private static MenuIconIdeAstI18nFactory instance = new MenuIconIdeAstI18nFactory();
 	}
+
 	public static MenuIconIdeAstI18nFactory getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private MenuIconIdeAstI18nFactory() {
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
 		return null;
 	}
+
 	// todo: investigate
 	// this epic hack was inserted to account for menu item icons returning a size of 0,0
 	// dennisc
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent< ? > component ) {
+	protected org.lgna.croquet.components.JComponent<?> EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( org.lgna.croquet.components.JComponent<?> component ) {
 		return new org.lgna.croquet.components.LineAxisPanel( component );
 	}
 }

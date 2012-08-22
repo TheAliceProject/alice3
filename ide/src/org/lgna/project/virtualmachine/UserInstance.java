@@ -43,7 +43,16 @@
 
 package org.lgna.project.virtualmachine;
 
-import org.lgna.project.ast.*;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.ConstructorBlockStatement;
+import org.lgna.project.ast.ConstructorInvocationStatement;
+import org.lgna.project.ast.ConstructorReflectionProxy;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaConstructor;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
 
 /**
  * @author Dennis Cosgrove
@@ -51,40 +60,44 @@ import org.lgna.project.ast.*;
 public class UserInstance {
 	public static Object getJavaInstanceIfNecessary( Object instance ) {
 		if( instance instanceof UserInstance ) {
-			return ((UserInstance)instance).getJavaInstance();
+			return ( (UserInstance)instance ).getJavaInstance();
 		} else {
 			return instance;
 		}
 	}
+
 	public static Object[] updateArrayWithInstancesInJavaIfNecessary( Object[] rv ) {
-		for( int i=0; i<rv.length; i++ ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = getJavaInstanceIfNecessary( rv[ i ] );
 		}
 		return rv;
 	}
+
 	public static UserInstance createInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), null );
+		return new UserInstance( vm, constructor, arguments, new java.util.HashMap<UserField, Object>(), null );
 	}
+
 	public static UserInstance createInstanceWithInverseMap( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, new java.util.HashMap< UserField, Object >(), new java.util.HashMap< Object, UserField >() );
+		return new UserInstance( vm, constructor, arguments, new java.util.HashMap<UserField, Object>(), new java.util.HashMap<Object, UserField>() );
 	}
-	
+
 	private final VirtualMachine vm;
 	private final Object nextInstance;
 	private final UserType<?> type;
-	private final java.util.Map< UserField, Object > fieldMap;
-	private java.util.Map< Object, UserField > inverseFieldMap;
-	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map< UserField, Object > fieldMap, java.util.Map< Object, UserField > inverseFieldMap ) {
+	private final java.util.Map<UserField, Object> fieldMap;
+	private java.util.Map<Object, UserField> inverseFieldMap;
+
+	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map<UserField, Object> fieldMap, java.util.Map<Object, UserField> inverseFieldMap ) {
 		this.vm = vm;
 		this.type = constructor.getDeclaringType();
 		this.fieldMap = fieldMap;
 		this.inverseFieldMap = inverseFieldMap;
-		
+
 		ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
 		ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
 		AbstractConstructor nextConstructor = constructorInvocationStatement.constructor.getValue();
-		java.util.Map<org.lgna.project.ast.AbstractParameter,Object> stackMap = new java.util.HashMap< org.lgna.project.ast.AbstractParameter, Object >();
-		for( int i=0; i<arguments.length; i++ ) {
+		java.util.Map<org.lgna.project.ast.AbstractParameter, Object> stackMap = new java.util.HashMap<org.lgna.project.ast.AbstractParameter, Object>();
+		for( int i = 0; i < arguments.length; i++ ) {
 			stackMap.put( constructor.requiredParameters.get( i ), arguments[ i ] );
 		}
 		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)constructor.getDeclaringType();
@@ -95,7 +108,7 @@ public class UserInstance {
 				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
 			} else {
 				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
-				ConstructorReflectionProxy constructorReflectionProxy =  nextConstructorDeclaredInJava.getConstructorReflectionProxy();
+				ConstructorReflectionProxy constructorReflectionProxy = nextConstructorDeclaredInJava.getConstructorReflectionProxy();
 				java.lang.reflect.Constructor<?> cnstrctr = constructorReflectionProxy.getReification();
 				assert cnstrctr != null : constructorReflectionProxy.getDeclaringClassReflectionProxy().getName();
 				this.nextInstance = vm.createInstance( this.type, this, cnstrctr, nextArguments );
@@ -119,6 +132,7 @@ public class UserInstance {
 	public VirtualMachine getVM() {
 		return this.vm;
 	}
+
 	public void ensureInverseMapExists() {
 		if( this.inverseFieldMap != null ) {
 			//pass
@@ -130,6 +144,7 @@ public class UserInstance {
 			}
 		}
 	}
+
 	public Object createAndSetFieldInstance( VirtualMachine vm, UserField field ) {
 		Expression expression = field.initializer.getValue();
 		assert expression != null;
@@ -137,32 +152,38 @@ public class UserInstance {
 		this.setFieldValue( field, rv );
 		return rv;
 	}
+
 	public UserType<?> getType() {
 		return this.type;
 	}
+
 	public Object getJavaInstance() {
 		return getJavaInstanceIfNecessary( this.nextInstance );
 	}
+
 	public <E> E getJavaInstance( Class<E> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getJavaInstance(), cls );
 	}
-	
+
 	public Object getFieldValue( UserField field ) {
 		return this.fieldMap.get( field );
 	}
+
 	public Object getFieldValueInstanceInJava( UserField field ) {
 		return getJavaInstanceIfNecessary( this.getFieldValue( field ) );
 	}
+
 	public <E> E getFieldValueInstanceInJava( UserField field, Class<E> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getFieldValueInstanceInJava( field ), cls );
 	}
+
 	public void setFieldValue( UserField field, Object value ) {
 		this.fieldMap.put( field, value );
 		if( this.inverseFieldMap != null ) {
 			this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );
 		}
 	}
-	
+
 	public UserField ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( Object key ) {
 		assert this.inverseFieldMap != null;
 		return this.inverseFieldMap.get( key );

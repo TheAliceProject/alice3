@@ -49,17 +49,18 @@ package org.lgna.cheshire.simple;
 public class Recoverer implements org.lgna.cheshire.Recoverer {
 	public Recoverer() {
 	}
+
 	public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction ) {
 		// TODO: Make sure the origin is RECOVERY!!!
-//		edu.cmu.cs.dennisc.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
-//		if( model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation ) {
-//			org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
-//			org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );
-//			org.lgna.croquet.steps.ListSelectionStateChangeStep completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, membersTabSelectionState );
-//			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( membersTabSelectionState.getValue(), membersTabSelectionState.getItemAt( 0 ) );
-//			completionStep.commit( edit );
-//			return rv;
-//		}
+		//		edu.cmu.cs.dennisc.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
+		//		if( model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertOperation ) {
+		//			org.alice.ide.croquet.models.members.MembersTabSelectionState membersTabSelectionState = org.alice.ide.croquet.models.members.MembersTabSelectionState.getInstance();
+		//			org.lgna.croquet.steps.Transaction rv = new org.lgna.croquet.steps.Transaction( transaction.getParent() );
+		//			org.lgna.croquet.steps.ListSelectionStateChangeStep completionStep = org.lgna.croquet.steps.ListSelectionStateChangeStep.createAndAddToTransaction( rv, membersTabSelectionState );
+		//			edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit edit = new edu.cmu.cs.dennisc.croquet.ListSelectionStateEdit( membersTabSelectionState.getValue(), membersTabSelectionState.getItemAt( 0 ) );
+		//			completionStep.commit( edit );
+		//			return rv;
+		//		}
 		return null;
 	}
 }

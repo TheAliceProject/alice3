@@ -49,7 +49,8 @@ public abstract class JFormPane extends edu.cmu.cs.dennisc.javax.swing.component
 	public JFormPane( int xPad, int yPad ) {
 		super( xPad, yPad );
 	}
+
 	public JFormPane() {
-		this(8, 8);
+		this( 8, 8 );
 	}
 }

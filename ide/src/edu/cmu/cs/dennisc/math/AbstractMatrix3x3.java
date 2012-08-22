@@ -51,12 +51,13 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 	public final Vector3 backward = Vector3.createPositiveZAxis();
 
 	@Deprecated
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		right.decode( binaryDecoder );
 		up.decode( binaryDecoder );
 		backward.decode( binaryDecoder );
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		right.encode( binaryEncoder );
 		up.encode( binaryEncoder );
 		backward.encode( binaryEncoder );
@@ -134,14 +135,15 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		}
 		return rv;
 	}
-	
+
 	public boolean isWithinEpsilonOfUnitLengthSquared( double epsilon ) {
 		return right.isWithinEpsilonOfUnitLengthSquared( epsilon ) && up.isWithinEpsilonOfUnitLengthSquared( epsilon ) && backward.isWithinEpsilonOfUnitLengthSquared( epsilon );
 	}
+
 	public boolean isWithinReasonableEpsilonOfUnitLengthSquared() {
 		return isWithinEpsilonOfUnitLengthSquared( EpsilonUtilities.REASONABLE_EPSILON );
 	}
-	
+
 	protected void setValue( AbstractMatrix3x3 other ) {
 		this.right.set( other.right );
 		this.up.set( other.up );
@@ -155,9 +157,11 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		rv.backward.setNaN();
 		return rv;
 	}
+
 	public void setNaN() {
 		setReturnValueToNaN( this );
 	}
+
 	public boolean isNaN() {
 		return right.isNaN() || up.isNaN() || backward.isNaN();
 	}
@@ -168,13 +172,15 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		rv.backward.set( 0, 0, 1 );
 		return rv;
 	}
+
 	public void setIdentity() {
 		setReturnValueToIdentity( this );
 	}
+
 	public boolean isIdentity() {
 		return right.isPositiveXAxis() && up.isPositiveYAxis() && backward.isPositiveZAxis();
 	}
-	
+
 	public double[] getAsColumnMajorArray16( double[] rv ) {
 		assert rv.length == 16;
 		rv[ 0 ] = right.x;
@@ -195,11 +201,10 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		rv[ 15 ] = 1.0;
 		return rv;
 	}
+
 	public double[] getAsColumnMajorArray16() {
 		return getAsColumnMajorArray16( new double[ 16 ] );
 	}
-	
-
 
 	private void set( double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22 ) {
 		this.right.x = m00;
@@ -212,43 +217,44 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		this.up.z = m21;
 		this.backward.z = m22;
 	}
-	
+
 	public void set( Vector3 right, Vector3 up, Vector3 backward ) {
 		this.right.set( right );
 		this.up.set( up );
 		this.backward.set( backward );
 	}
-	
+
 	private void scale( double d ) {
 		right.multiply( d );
 		up.multiply( d );
 		backward.multiply( d );
 	}
-	
+
 	public double determinate() {
-		return right.x * up.y * backward.z + right.y * up.z * backward.x + right.z * up.x * backward.y - right.x * up.z * backward.y - right.z * up.y * backward.x - right.y * up.x * backward.z;
+		return ( ( right.x * up.y * backward.z ) + ( right.y * up.z * backward.x ) + ( right.z * up.x * backward.y ) ) - ( right.x * up.z * backward.y ) - ( right.z * up.y * backward.x ) - ( right.y * up.x * backward.z );
 	}
+
 	public void invert() {
 		double d = determinate();
-		set( 
-				up.y * backward.z - backward.y * up.z, backward.x * up.z - up.x * backward.z, up.x * backward.y - backward.x * up.y, 
-				backward.y * right.z - right.y * backward.z, right.x * backward.z - backward.x * right.z, backward.x * right.y - right.x * backward.y, 
-				right.y * up.z - up.y * right.z, up.x * right.z - right.x * up.z, right.x * up.y - up.x * right.y 
-		);
+		set(
+				( up.y * backward.z ) - ( backward.y * up.z ), ( backward.x * up.z ) - ( up.x * backward.z ), ( up.x * backward.y ) - ( backward.x * up.y ),
+				( backward.y * right.z ) - ( right.y * backward.z ), ( right.x * backward.z ) - ( backward.x * right.z ), ( backward.x * right.y ) - ( right.x * backward.y ),
+				( right.y * up.z ) - ( up.y * right.z ), ( up.x * right.z ) - ( right.x * up.z ), ( right.x * up.y ) - ( up.x * right.y ) );
 		scale( 1.0 / d );
 	}
+
 	protected void setToMultiplication( AbstractMatrix3x3 a, AbstractMatrix3x3 b ) {
-		double m00 = a.right.x * b.right.x + a.up.x * b.right.y + a.backward.x * b.right.z;
-		double m01 = a.right.x * b.up.x + a.up.x * b.up.y + a.backward.x * b.up.z;
-		double m02 = a.right.x * b.backward.x + a.up.x * b.backward.y + a.backward.x * b.backward.z;
+		double m00 = ( a.right.x * b.right.x ) + ( a.up.x * b.right.y ) + ( a.backward.x * b.right.z );
+		double m01 = ( a.right.x * b.up.x ) + ( a.up.x * b.up.y ) + ( a.backward.x * b.up.z );
+		double m02 = ( a.right.x * b.backward.x ) + ( a.up.x * b.backward.y ) + ( a.backward.x * b.backward.z );
 
-		double m10 = a.right.y * b.right.x + a.up.y * b.right.y + a.backward.y * b.right.z;
-		double m11 = a.right.y * b.up.x + a.up.y * b.up.y + a.backward.y * b.up.z;
-		double m12 = a.right.y * b.backward.x + a.up.y * b.backward.y + a.backward.y * b.backward.z;
+		double m10 = ( a.right.y * b.right.x ) + ( a.up.y * b.right.y ) + ( a.backward.y * b.right.z );
+		double m11 = ( a.right.y * b.up.x ) + ( a.up.y * b.up.y ) + ( a.backward.y * b.up.z );
+		double m12 = ( a.right.y * b.backward.x ) + ( a.up.y * b.backward.y ) + ( a.backward.y * b.backward.z );
 
-		double m20 = a.right.z * b.right.x + a.up.z * b.right.y + a.backward.z * b.right.z;
-		double m21 = a.right.z * b.up.x + a.up.z * b.up.y + a.backward.z * b.up.z;
-		double m22 = a.right.z * b.backward.x + a.up.z * b.backward.y + a.backward.z * b.backward.z;
+		double m20 = ( a.right.z * b.right.x ) + ( a.up.z * b.right.y ) + ( a.backward.z * b.right.z );
+		double m21 = ( a.right.z * b.up.x ) + ( a.up.z * b.up.y ) + ( a.backward.z * b.up.z );
+		double m22 = ( a.right.z * b.backward.x ) + ( a.up.z * b.backward.y ) + ( a.backward.z * b.backward.z );
 
 		this.right.x = m00;
 		this.up.x = m01;
@@ -262,14 +268,15 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		this.up.z = m21;
 		this.backward.z = m22;
 	}
+
 	protected void applyMultiplication( AbstractMatrix3x3 b ) {
 		setToMultiplication( this, b );
 	}
-	
+
 	public <E extends Tuple3> E transform( E rv ) {
-		double x = right.x * rv.x + up.x * rv.y + backward.x * rv.z;
-		double y = right.y * rv.x + up.y * rv.y + backward.y * rv.z;
-		double z = right.z * rv.x + up.z * rv.y + backward.z * rv.z;
+		double x = ( right.x * rv.x ) + ( up.x * rv.y ) + ( backward.x * rv.z );
+		double y = ( right.y * rv.x ) + ( up.y * rv.y ) + ( backward.y * rv.z );
+		double z = ( right.z * rv.x ) + ( up.z * rv.y ) + ( backward.z * rv.z );
 		rv.x = x;
 		rv.y = y;
 		rv.z = z;
@@ -277,15 +284,15 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 	}
 
 	public <E extends Tuple3f> E transform( E rv ) {
-		float x = (float)(right.x * rv.x + up.x * rv.y + backward.x * rv.z);
-		float y = (float)(right.y * rv.x + up.y * rv.y + backward.y * rv.z);
-		float z = (float)(right.z * rv.x + up.z * rv.y + backward.z * rv.z);
+		float x = (float)( ( right.x * rv.x ) + ( up.x * rv.y ) + ( backward.x * rv.z ) );
+		float y = (float)( ( right.y * rv.x ) + ( up.y * rv.y ) + ( backward.y * rv.z ) );
+		float z = (float)( ( right.z * rv.x ) + ( up.z * rv.y ) + ( backward.z * rv.z ) );
 		rv.x = x;
 		rv.y = y;
 		rv.z = z;
 		return rv;
 	}
-	
+
 	public Vector3 createForward() {
 		return Vector3.createNegation( backward );
 	}
@@ -297,45 +304,46 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		} else {
 			if( o instanceof Matrix3x3 ) {
 				Matrix3x3 other = (Matrix3x3)o;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.right, other.right ) 
-					&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.up, other.up )
-					&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.backward, other.backward );
+				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.right, other.right )
+						&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.up, other.up )
+						&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.backward, other.backward );
 			} else {
 				return false;
 			}
 		}
 	}
+
 	@Override
 	public int hashCode() {
 		int rv = 17;
 		if( this.right != null ) {
-			rv = 37*rv + this.right.hashCode();
+			rv = ( 37 * rv ) + this.right.hashCode();
 		}
 		if( this.up != null ) {
-			rv = 37*rv + this.up.hashCode();
+			rv = ( 37 * rv ) + this.up.hashCode();
 		}
 		if( this.backward != null ) {
-			rv = 37*rv + this.backward.hashCode();
+			rv = ( 37 * rv ) + this.backward.hashCode();
 		}
 		return rv;
 	}
-	
+
 	public boolean isWithinEpsilonOfIdentity( double epsilon ) {
-		return 
-			this.right.isWithinEpsilonOf   ( 1.0, 0.0, 0.0, epsilon ) && 
-			this.up.isWithinEpsilonOf      ( 0.0, 1.0, 0.0, epsilon ) && 
-			this.backward.isWithinEpsilonOf( 0.0, 0.0, 1.0, epsilon );
+		return this.right.isWithinEpsilonOf( 1.0, 0.0, 0.0, epsilon ) &&
+				this.up.isWithinEpsilonOf( 0.0, 1.0, 0.0, epsilon ) &&
+				this.backward.isWithinEpsilonOf( 0.0, 0.0, 1.0, epsilon );
 	}
+
 	public boolean isWithinReasonableEpsilonOfIdentity() {
 		return this.isWithinEpsilonOfIdentity( EpsilonUtilities.REASONABLE_EPSILON );
 	}
-	
+
 	public boolean isWithinEpsilonOf( AbstractMatrix3x3 other, double epsilon ) {
-		return 
-			this.right.isWithinEpsilonOf   ( other.right,    epsilon ) && 
-			this.up.isWithinEpsilonOf      ( other.up,       epsilon ) && 
-			this.backward.isWithinEpsilonOf( other.backward, epsilon );
+		return this.right.isWithinEpsilonOf( other.right, epsilon ) &&
+				this.up.isWithinEpsilonOf( other.up, epsilon ) &&
+				this.backward.isWithinEpsilonOf( other.backward, epsilon );
 	}
+
 	public boolean isWithinReasonableEpsilonOf( AbstractMatrix3x3 other ) {
 		return this.isWithinEpsilonOf( other, EpsilonUtilities.REASONABLE_EPSILON );
 	}

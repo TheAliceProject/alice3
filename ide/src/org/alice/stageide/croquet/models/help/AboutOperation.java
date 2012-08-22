@@ -49,12 +49,15 @@ public class AboutOperation extends org.alice.ide.operations.InconsequentialActi
 	private static class SingletonHolder {
 		private static AboutOperation instance = new AboutOperation();
 	}
+
 	public static AboutOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AboutOperation() {
 		super( java.util.UUID.fromString( "175834c9-b8f4-4714-a212-e7d346d77835" ) );
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();

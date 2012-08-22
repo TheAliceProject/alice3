@@ -49,30 +49,34 @@ public class ScaledIcon implements javax.swing.Icon {
 	private final javax.swing.Icon icon;
 	private final int width;
 	private final int height;
+
 	public ScaledIcon( javax.swing.Icon icon, int width, int height ) {
 		assert icon != null;
 		this.icon = icon;
 		this.width = width;
 		this.height = height;
 	}
+
 	public int getIconWidth() {
 		return this.width;
 	}
+
 	public int getIconHeight() {
 		return this.height;
 	}
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		double xScale = this.width/(double)this.icon.getIconWidth();
-		double yScale = this.height/(double)this.icon.getIconHeight();
+		double xScale = this.width / (double)this.icon.getIconWidth();
+		double yScale = this.height / (double)this.icon.getIconHeight();
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
-//		java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();
-//		transform.translate( x, y );
-//		transform.scale( xScale, yScale );
-//		g2.setTransform( transform );
+		//		java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();
+		//		transform.translate( x, y );
+		//		transform.scale( xScale, yScale );
+		//		g2.setTransform( transform );
 		g2.translate( x, y );
 		g2.scale( xScale, yScale );
-		this.icon.paintIcon(c, g2, 0, 0);
+		this.icon.paintIcon( c, g2, 0, 0 );
 		g2.setTransform( prevTransform );
 	}
 }

@@ -49,13 +49,18 @@ public abstract class UriProducer<T> extends org.lgna.croquet.ValueProducer<T> {
 	public UriProducer( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+
 	protected abstract java.io.File getInitialDirectory();
+
 	protected abstract String getExtension();
+
 	@Override
 	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
 		return new org.lgna.croquet.history.TransactionHistory();
 	}
+
 	protected abstract T internalGetValueFrom( java.io.File file );
+
 	@Override
 	protected T internalGetValue( org.lgna.croquet.history.CompletionStep step ) throws org.lgna.croquet.CancelException {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();

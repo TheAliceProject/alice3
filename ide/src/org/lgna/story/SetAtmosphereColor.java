@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class SetAtmosphereColor extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetAtmosphereColor.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetAtmosphereColor.class )
 	public static interface Detail {
 	}
+
 	private SetAtmosphereColor() {
 		super();
 	}
