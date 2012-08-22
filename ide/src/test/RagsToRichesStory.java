@@ -257,11 +257,11 @@ class SnowScene extends SScene {
 //			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 //			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 			this.ogre.delay(1);
-			this.armoire.setResource(org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
-			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-			this.ogre.setResource(org.lgna.story.resources.biped.AlienResource.ALIEN);
-			this.ogre.delay(1);
-			this.armoire.setResource(org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
+//			this.armoire.setResource(org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
+//			this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+//			this.ogre.setResource(org.lgna.story.resources.biped.AlienResource.ALIEN);
+//			this.ogre.delay(1);
+//			this.armoire.setResource(org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
 			org.lgna.common.ThreadUtilities.doTogether( new Runnable() {
 				public void run() {
