@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.sims2;
 
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 
 /**
@@ -68,6 +70,11 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	private JointImplementationAndVisualDataFactory( org.lgna.story.resources.JointedModelResource resource ) {
 		this.resource = resource;
 	}
+	
+	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory getFactoryForResource(org.lgna.story.resources.JointedModelResource resource) {
+		return JointImplementationAndVisualDataFactory.getInstance(resource);
+	}
+	
 	public org.lgna.story.resources.JointedModelResource getResource() {
 		return this.resource;
 	}
@@ -82,6 +89,10 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.resource;			
 				return NebulousPersonVisualData.createInstance( personResource );
 			} else {
+				String modelResourceName = AliceResourceUtilties.getVisualResourceName(this.resource);
+				modelResourceName = AliceResourceUtilties.camelCaseToEnum(modelResourceName);
+				String textureResourceName = AliceResourceUtilties.getTextureResourceName(this.resource);
+//				return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Thing( this.resource, modelResourceName+"__"+textureResourceName ) );
 				return new NebulousVisualData< edu.cmu.cs.dennisc.nebulous.Model >( new edu.cmu.cs.dennisc.nebulous.Thing( this.resource, this.resource ) );
 			}
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {

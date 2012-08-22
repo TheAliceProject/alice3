@@ -117,6 +117,10 @@ public class WeightedMeshControl
         InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
         if (iatwp != null)
         {
+//        	System.out.println("\n  Processing mesh "+this.weightedMesh.hashCode());
+//        	System.out.println("  On Joint "+joint.hashCode());
+//        	System.out.println("  Weight Info "+this.weightedMesh.weightInfo.getValue().hashCode());
+//        	System.out.println("  iatwp "+iatwp.hashCode());
             AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication( oTransformation, iatwp.getInverseAbsoluteTransformation());
             iatwp.reset();
             while (!iatwp.isDone())

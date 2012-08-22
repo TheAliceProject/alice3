@@ -240,6 +240,12 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					return new SceneFogDensityAdapter((SceneImp)entityImp, state);
 				}
 			}
+			else if (setter.getName().equalsIgnoreCase("setResource")) {
+				if (entityImp instanceof JointedModelImp<?, ?>)
+				{
+					return new org.alice.stageide.properties.ResourcePropertyAdapter((JointedModelImp<?, ?>)entityImp, state);
+				}
+			}
 			else if (setter.getName().equalsIgnoreCase("setPaint"))
 			{
 				if (entityImp instanceof GroundImp)

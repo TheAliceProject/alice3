@@ -68,8 +68,9 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     
     private boolean skeletonIsDirty = true;
     private Joint currentSkeleton = null;
-    protected Map<TexturedAppearanceAdapter, WeightedMeshControl[]> appearanceToMeshControllersMap = new HashMap<TexturedAppearanceAdapter, WeightedMeshControl[]>();
-    protected Map<TexturedAppearanceAdapter, MeshAdapter<Mesh>[]> appearanceToGeometryAdapaters = new HashMap<TexturedAppearanceAdapter, MeshAdapter<Mesh>[]>();
+    protected Map<Integer, TexturedAppearanceAdapter> appearanceIdToAdapterMap = new HashMap<Integer, TexturedAppearanceAdapter>();
+    protected Map<Integer, WeightedMeshControl[]> appearanceIdToMeshControllersMap = new HashMap<Integer, WeightedMeshControl[]>();
+    protected Map<Integer, MeshAdapter<Mesh>[]> appearanceIdToGeometryAdapaters = new HashMap<Integer, MeshAdapter<Mesh>[]>();
     private boolean isDataDirty = true;
     
     public SkeletonVisualAdapter()
@@ -99,6 +100,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
             if (this.currentSkeleton != null)
             {
                 this.setListeningOnSkeleton(this.currentSkeleton, false);
+                System.out.println("SWITCHING SKELETON FROM "+this.currentSkeleton.hashCode()+" TO "+m_element.skeleton.getValue().hashCode());
             }
             this.currentSkeleton = m_element.skeleton.getValue();
             if (this.currentSkeleton != null)
@@ -106,35 +108,8 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                 this.setListeningOnSkeleton(this.currentSkeleton, true);
                 this.skeletonIsDirty = true;
             }
-            appearanceToGeometryAdapaters.clear();
-            appearanceToMeshControllersMap.clear();
-            for (TexturedAppearance ta : this.m_element.textures.getValue())
-            {
-            	List<WeightedMeshControl> controls = new LinkedList<WeightedMeshControl>();
-	            for (WeightedMesh weightedMesh : this.m_element.weightedMeshes.getValue())
-	            {
-	            	if (weightedMesh.textureId.getValue() == ta.textureId.getValue())
-	            	{
-	            		WeightedMeshControl control = new WeightedMeshControl();
-	            		control.initialize(weightedMesh);
-	            		controls.add(control);
-	            	}
-	            }
-	            appearanceToMeshControllersMap.put(AdapterFactory.getAdapterFor(ta), controls.toArray(new WeightedMeshControl[controls.size()]));
-	            List<MeshAdapter<Mesh>> meshAdapters = new LinkedList<MeshAdapter<Mesh>>();
-	            for (GeometryAdapter adapter : this.m_geometryAdapters)
-	            {
-	            	if (adapter instanceof MeshAdapter<?>)
-	            	{
-	            		MeshAdapter<Mesh> ma = (MeshAdapter<Mesh>)adapter;
-		            	if (ma.m_element.textureId.getValue() == ta.textureId.getValue())
-		            	{
-		            		meshAdapters.add(ma);
-		            	}
-	            	}
-	            }
-	            appearanceToGeometryAdapaters.put(AdapterFactory.getAdapterFor(ta), meshAdapters.toArray(new MeshAdapter[meshAdapters.size()]));
-            }
+            updateAppearanceToGeometryAdapterMap();
+            updateAppearanceToMeshControllersMap();
         }
         this.isDataDirty = false;
     }
@@ -150,7 +125,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         super.pickGeometry(pc, isSubElementActuallyRequired);
         
         int i = this.m_element.geometries.getLength();
-        for (Entry<TexturedAppearanceAdapter, WeightedMeshControl[]> controlEntry : this.appearanceToMeshControllersMap.entrySet())
+        for (Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet())
         {
         	for (WeightedMeshControl wmc : controlEntry.getValue())
             {
@@ -170,24 +145,28 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         {
             this.processWeightedMesh();
         }
-        for (Entry<TexturedAppearanceAdapter, WeightedMeshControl[]> controlEntry : this.appearanceToMeshControllersMap.entrySet())
+        for (Entry<Integer, TexturedAppearanceAdapter> appearanceEntry : this.appearanceIdToAdapterMap.entrySet())
         {
-        	controlEntry.getKey().setTexturePipelineState(rc);
-        	for (WeightedMeshControl wmc : controlEntry.getValue())
-            {
-        		if (!wmc.weightedMesh.cullBackfaces.getValue())
-        		{
-        			rc.gl.glDisable( GL_CULL_FACE );
-        		}
-        		else
-        		{
-        			rc.gl.glEnable( GL_CULL_FACE );
-        			rc.gl.glCullFace( GL_BACK );
-        		}
-                wmc.renderGeometry(rc);
-                rc.gl.glEnable( GL_CULL_FACE );
-            }
-        	MeshAdapter[] meshAdapters = this.appearanceToGeometryAdapaters.get(controlEntry.getKey());
+        	appearanceEntry.getValue().setTexturePipelineState(rc);
+        	
+        	WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get(appearanceEntry.getKey());
+        	if (weightedMeshControls != null) {
+	        	for (WeightedMeshControl wmc : weightedMeshControls)
+	            {
+	        		if (!wmc.weightedMesh.cullBackfaces.getValue())
+	        		{
+	        			rc.gl.glDisable( GL_CULL_FACE );
+	        		}
+	        		else
+	        		{
+	        			rc.gl.glEnable( GL_CULL_FACE );
+	        			rc.gl.glCullFace( GL_BACK );
+	        		}
+	                wmc.renderGeometry(rc);
+	                rc.gl.glEnable( GL_CULL_FACE );
+	            }
+        	}
+        	MeshAdapter[] meshAdapters = this.appearanceIdToGeometryAdapaters.get(appearanceEntry.getKey());
         	if (meshAdapters != null)
         	{
         		for (MeshAdapter ma : meshAdapters)
@@ -215,7 +194,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         {
             return true;
         }
-        if (m_isShowing && appearanceToMeshControllersMap != null && appearanceToMeshControllersMap.size() > 0)
+        if (m_isShowing && appearanceIdToMeshControllersMap != null && appearanceIdToMeshControllersMap.size() > 0)
         {
             if( m_frontFacingAppearanceAdapter != null ) {
                 if( m_frontFacingAppearanceAdapter.isActuallyShowing() ) {
@@ -240,7 +219,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
             return true;
         }
         
-        if (appearanceToMeshControllersMap != null && appearanceToMeshControllersMap.size() > 0)
+        if (appearanceIdToMeshControllersMap != null && appearanceIdToMeshControllersMap.size() > 0)
         {
             if( m_frontFacingAppearanceAdapter != null ) {
                 if( m_frontFacingAppearanceAdapter.isAlphaBlended() ) {
@@ -252,9 +231,10 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
                     return true;
                 }
             }
-            for (Entry<TexturedAppearanceAdapter, WeightedMeshControl[]> controlEntry : this.appearanceToMeshControllersMap.entrySet())
+            for (Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet())
             {
-            	if (controlEntry.getKey().isActuallyShowing())
+            	TexturedAppearanceAdapter ta = appearanceIdToAdapterMap.get(controlEntry.getKey());
+            	if (ta != null && ta.isActuallyShowing())
             	{
             		return true;
             	}
@@ -300,6 +280,10 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         handleSkeletonTransformationChange();
     }
     
+    private void handleNewSkeleton() {
+	    this.isDataDirty = true;
+    }
+    
     private void handleSkeletonTransformationChange()
     {
         this.skeletonIsDirty = true;
@@ -309,20 +293,19 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
     {
         if (this.currentSkeleton != null)
         {
-            synchronized( appearanceToMeshControllersMap ) {
-                for (Entry<TexturedAppearanceAdapter, WeightedMeshControl[]> controlEntry : this.appearanceToMeshControllersMap.entrySet())
+            synchronized( appearanceIdToMeshControllersMap ) {
+                for (Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet())
                 {
                 	for (WeightedMeshControl wmc : controlEntry.getValue())
                     {
                 		wmc.preProcess();
                     }
                 }
-                
-                AffineMatrix4x4 oTransformationPre = new AffineMatrix4x4();
-                edu.cmu.cs.dennisc.math.Matrix3x3 inverseScale = new edu.cmu.cs.dennisc.math.Matrix3x3(m_element.scale.getValue());
-                inverseScale.invert();
-                processWeightedMesh(this.currentSkeleton, oTransformationPre, inverseScale);
-                for (Entry<TexturedAppearanceAdapter, WeightedMeshControl[]> controlEntry : this.appearanceToMeshControllersMap.entrySet())
+	            AffineMatrix4x4 oTransformationPre = new AffineMatrix4x4();
+	            synchronized (this.currentSkeleton) {
+	            	processWeightedMesh(this.currentSkeleton, oTransformationPre);
+	            }
+                for (Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet())
                 {
                 	for (WeightedMeshControl wmc : controlEntry.getValue())
                     {
@@ -334,7 +317,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         this.skeletonIsDirty = false;
     }
     
-    private void processWeightedMesh( Composite currentNode, AffineMatrix4x4 oTransformationPre, edu.cmu.cs.dennisc.math.Matrix3x3 inverseScale )
+    private void processWeightedMesh( Composite currentNode, AffineMatrix4x4 oTransformationPre)
     {
         if (currentNode == null)
         {
@@ -344,19 +327,13 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         if (currentNode instanceof Transformable)
         {
             oTransformationPost = AffineMatrix4x4.createMultiplication(oTransformationPre, ((Transformable)currentNode).localTransformation.getValue());
-
-            AffineMatrix4x4 unscaledTransform = new AffineMatrix4x4(oTransformationPost);
-            unscaledTransform.translation.x *= inverseScale.right.x;
-            unscaledTransform.translation.y *= inverseScale.up.y;
-            unscaledTransform.translation.z *= inverseScale.backward.z;
-            
             if (currentNode instanceof Joint)
             {
-            	for (Entry<TexturedAppearanceAdapter, WeightedMeshControl[]> controlEntry : this.appearanceToMeshControllersMap.entrySet())
+            	for (Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet())
                 {
                 	for (WeightedMeshControl wmc : controlEntry.getValue())
                     {
-                		wmc.process( (Joint)currentNode, unscaledTransform );
+                		wmc.process( (Joint)currentNode, oTransformationPost );
                     }
                 }
             }
@@ -364,20 +341,88 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
         for (int i=0; i<currentNode.getComponentCount(); i++)
         {
             Component comp = currentNode.getComponentAt(i);
-            if (comp instanceof Joint)
+            if (comp instanceof Composite)
             {
                 Composite jointChild = (Composite)comp;
-                processWeightedMesh( jointChild, oTransformationPost, inverseScale );
+                processWeightedMesh( jointChild, oTransformationPost );
             }
         }
     }
     
+    protected void updateAppearanceIdToAdapterMap() {
+    	synchronized( appearanceIdToAdapterMap ) {
+	    	appearanceIdToAdapterMap.clear();
+	        for (TexturedAppearance ta : this.m_element.textures.getValue())
+	        {
+	        	appearanceIdToAdapterMap.put(ta.textureId.getValue(), AdapterFactory.getAdapterFor(ta));
+	        }
+    	}
+    }
+    
+    protected void updateAppearanceToGeometryAdapterMap() {
+    	synchronized( appearanceIdToGeometryAdapaters ) {
+	    	appearanceIdToGeometryAdapaters.clear();
+	        for (TexturedAppearance ta : this.m_element.textures.getValue())
+	        {
+	            List<MeshAdapter<Mesh>> meshAdapters = new LinkedList<MeshAdapter<Mesh>>();
+	            for (GeometryAdapter adapter : this.m_geometryAdapters)
+	            {
+	            	if (adapter instanceof MeshAdapter<?>)
+	            	{
+	            		MeshAdapter<Mesh> ma = (MeshAdapter<Mesh>)adapter;
+		            	if (ma.m_element.textureId.getValue() == ta.textureId.getValue())
+		            	{
+		            		meshAdapters.add(ma);
+		            	}
+	            	}
+	            }
+	            appearanceIdToGeometryAdapaters.put(ta.textureId.getValue(), meshAdapters.toArray(new MeshAdapter[meshAdapters.size()]));
+	        }
+    	}
+    }
+    	
+    
+    protected void updateAppearanceToMeshControllersMap() {
+    	synchronized( appearanceIdToMeshControllersMap ) {
+	    	appearanceIdToMeshControllersMap.clear();
+	        for (TexturedAppearance ta : this.m_element.textures.getValue())
+	        {
+	        	List<WeightedMeshControl> controls = new LinkedList<WeightedMeshControl>();
+	            for (WeightedMesh weightedMesh : this.m_element.weightedMeshes.getValue())
+	            {
+	            	if (weightedMesh.textureId.getValue() == ta.textureId.getValue())
+	            	{
+	            		WeightedMeshControl control = new WeightedMeshControl();
+	            		control.initialize(weightedMesh);
+	            		controls.add(control);
+	            	}
+	            }
+	            appearanceIdToMeshControllersMap.put(ta.textureId.getValue(), controls.toArray(new WeightedMeshControl[controls.size()]));
+	        }
+    	}
+    }
+    
+    @Override
+    protected void updateGeometryAdapters() {
+    	super.updateGeometryAdapters();
+    	updateAppearanceToGeometryAdapterMap();
+    }
+    
     @Override
     protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-        if( property == m_element.skeleton ||
-            property == m_element.weightedMeshes ||
-            property == m_element.textures ) {
-            this.isDataDirty = true;
+        if( property == m_element.skeleton)
+        {
+        	handleNewSkeleton();
+        }
+        else if (property == m_element.weightedMeshes)
+        {
+        	updateAppearanceToMeshControllersMap();
+        }
+        else if (property == m_element.textures ) {
+        	updateAppearanceIdToAdapterMap();
+        }
+        else if ( property == m_element.baseBoundingBox) {
+        	//pass
         }
         else {
             super.propertyChanged( property );

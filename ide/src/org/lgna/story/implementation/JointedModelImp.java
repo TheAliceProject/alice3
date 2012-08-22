@@ -43,21 +43,29 @@
 
 package org.lgna.story.implementation;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.lgna.ik.solver.Bone.Direction;
+import org.lgna.story.SJoint;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R extends org.lgna.story.resources.JointedModelResource > extends ModelImp {
-	public static interface VisualData { 
+	public static interface VisualData< R extends org.lgna.story.resources.JointedModelResource > { 
 		public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances();
 		public double getBoundingSphereRadius();
 		public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent);
+		public edu.cmu.cs.dennisc.scenegraph.Composite getSGParent();
 	}
 	public static interface JointImplementationAndVisualDataFactory< R extends org.lgna.story.resources.JointedModelResource > {
 		public R getResource();
@@ -65,20 +73,118 @@ public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R
 		public VisualData createVisualData();
 		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId );
 		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId );
+		public JointImplementationAndVisualDataFactory< R > getFactoryForResource(R resource);
 	}
 	
-	private final JointImplementationAndVisualDataFactory<R> factory;
+	private class JointImpWrapper extends JointImp {
+		private JointImp internalJointImp;
+		public JointImpWrapper(JointedModelImp<?,?> jointedModelImp, JointImp joint) {
+			super(jointedModelImp);
+			this.internalJointImp = joint;
+		}
+		
+		@Override
+		public final void setAbstraction(SJoint abstraction) {
+			super.setAbstraction(abstraction);
+			if (this.internalJointImp != null) {
+				this.internalJointImp.setAbstraction(abstraction);
+			}
+		}
+		@Override
+		public org.lgna.story.implementation.SceneImp getScene() {
+			return this.internalJointImp.getScene();
+		}
+		@Override
+		public JointId getJointId() {
+			return internalJointImp.getJointId();
+		}
+		@Override
+		public boolean isFreeInX() {
+			return internalJointImp.isFreeInX();
+		}
+		@Override
+		public boolean isFreeInY() {
+			return internalJointImp.isFreeInY();
+		}
+		@Override
+		public boolean isFreeInZ() {
+			return internalJointImp.isFreeInZ();
+		}
+		public void replaceWithJoint(JointImp newJoint, edu.cmu.cs.dennisc.math.UnitQuaternion originalRotation) {
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 currentRotation = this.getLocalOrientation();
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 invertedOriginal = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
+			invertedOriginal.setValue(originalRotation);
+			invertedOriginal.invert();
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 dif = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
+			dif.setToMultiplication(invertedOriginal, currentRotation);
+			if (!dif.isWithinReasonableEpsilonOfIdentity()) {
+				edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 newRotation = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3();
+				newRotation.setToMultiplication(newJoint.getLocalOrientation(), dif);
+				newJoint.setLocalOrientation(newRotation);
+			}
+			if (this.getAbstraction() != null) {
+				newJoint.setAbstraction(this.getAbstraction());
+			}
+			for (edu.cmu.cs.dennisc.scenegraph.Component child : this.internalJointImp.getSgComposite().getComponents()) {
+				if (!(child instanceof edu.cmu.cs.dennisc.scenegraph.ModelJoint)) {
+					child.setParent(newJoint.getSgComposite());
+					
+				}
+			}
+			this.internalJointImp = newJoint;
+		}
+		@Override
+		public AbstractTransformable getSgComposite() {
+			return internalJointImp.getSgComposite();
+		}
+
+		@Override
+		protected CumulativeBound updateCumulativeBound(CumulativeBound rv,AffineMatrix4x4 trans) {
+			return internalJointImp.updateCumulativeBound(rv, trans);
+		}
+		
+		@Override
+		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
+			return internalJointImp.getOriginalOrientation();
+		}
+		
+		@Override
+		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
+			return internalJointImp.getOriginalTransformation();
+		}
+		@Override
+		public void setVehicle(EntityImp vehicle) {
+			this.internalJointImp.setVehicle(vehicle);
+		}
+		
+	}
+	
+	private JointImplementationAndVisualDataFactory<R> factory;
 	private final A abstraction;
-	private final VisualData visualData;
+	private VisualData visualData;
 
 	private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable; 
 	
-	private final java.util.Map< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > mapIdToJoint = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map< org.lgna.story.resources.JointId, JointImpWrapper > mapIdToJoint = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public JointedModelImp( A abstraction, JointImplementationAndVisualDataFactory< R > factory ) {
 		this.abstraction = abstraction;
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData( );
 
+		
+		List<JointId> missingJoints = this.getMissingJoints();
+		if (!missingJoints.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			String resourceName = this.getResource().getClass().getSimpleName();
+			sb.append(resourceName+" missing joints: ");
+			boolean first = true;
+			for (JointId id : missingJoints) {
+				sb.append((!first ? ", ": "")+ id.toString());
+				first = false;
+			}
+			throw new RuntimeException(sb.toString());
+		}
+		
 		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
 		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
 		if( rootIds.length == 0 ) {
@@ -96,15 +202,81 @@ public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R
 				sgComposite = this.getSgComposite();
 			}
 			for( org.lgna.story.resources.JointId root : rootIds ) {
-				this.createJointTree( root, this );
+				this.createWrapperJointTree( root, this, this.mapIdToJoint );
 			}
 		}
 		
 		this.visualData.setSGParent( sgComposite );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
-			sgVisual.setParent( sgComposite );
+	}
+	
+	private List<org.lgna.story.resources.JointId> getMissingJoints() {
+		List<JointId> missingJoints = new ArrayList<JointId>();
+		List<JointId> jointsToCheck = new ArrayList<JointId>();
+		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
+		for (JointId id : rootIds ) {
+			jointsToCheck.add(id);
+		}
+		while (!jointsToCheck.isEmpty()) {
+			JointId joint = jointsToCheck.remove(0);
+			if (this.createJointImplementation(joint) == null) {
+				missingJoints.add(joint);
+			}
+			for (JointId child : joint.getChildren(this.getResource()) ) {
+				jointsToCheck.add(child);
+			}
+		}
+		return missingJoints;
+	}
+	
+//	public void setNewJointedModelFactory(JointImplementationAndVisualDataFactory< R > factory) {
+//		if (factory != this.factory) {
+//			java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > mapIdToOriginalTransform = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//			for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
+//				mapIdToOriginalTransform.put(jointEntry.getKey(), jointEntry.getValue().getOriginalTransformation());
+//			}
+//			edu.cmu.cs.dennisc.scenegraph.Composite originalParent = this.visualData.getSGParent();
+//			this.visualData.setSGParent(null);
+//			this.factory = factory;
+//			this.visualData = this.factory.createVisualData( this );
+//			this.visualData.setSGParent(originalParent);
+//			matchNewDataToExistingJoints(mapIdToOriginalTransform);
+//		}
+//	}
+	
+	public void setNewResource(JointedModelResource resource) {
+		if (resource != this.getResource()) {
+			java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.UnitQuaternion > mapIdToOriginalRotation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			for (java.util.Map.Entry< org.lgna.story.resources.JointId, JointImpWrapper > jointEntry : this.mapIdToJoint.entrySet()) {
+				mapIdToOriginalRotation.put(jointEntry.getKey(), jointEntry.getValue().getOriginalOrientation());
+			}
+			edu.cmu.cs.dennisc.scenegraph.Composite originalParent = this.visualData.getSGParent();
+			VisualData<?> oldVisualData = this.visualData;
+			this.factory = (JointImplementationAndVisualDataFactory<R>)resource.getImplementationAndVisualFactory();
+			float originalOpacity = this.opacity.getValue();
+			org.lgna.story.Paint originalPaint = this.paint.getValue();
+			this.visualData = this.factory.createVisualData( );
+			org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
+			java.util.Map< org.lgna.story.resources.JointId, JointImp > newJoints = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			if( rootIds.length == 0 ) {
+				//pass
+			} else {
+				for( org.lgna.story.resources.JointId root : rootIds ) {
+					this.createRegularJointTree( root, this, newJoints );
+				}
+			}
+			matchNewDataToExistingJoints(mapIdToOriginalRotation, newJoints);
+			
+			this.visualData.setSGParent(oldVisualData.getSGParent());
+			oldVisualData.setSGParent(null);
+			this.opacity.setValue(originalOpacity);
+			this.paint.setValue(originalPaint);
 		}
 	}
+	
+	public org.lgna.story.resources.JointedModelResource getVisualResource() {
+		return this.factory.getResource();
+	}
+	
 	
 	public Iterable< JointImp > getJoints() {
 		final java.util.List< JointImp > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -122,20 +294,77 @@ public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R
 		} );
 		return rv;
 	}
-	private JointImp createJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
+	
+	private boolean findJoint(org.lgna.story.resources.JointId jointId, org.lgna.story.resources.JointId toFind) {
+		if (jointId.toString().equals(toFind.toString())) {
+			return true;
+		}
+		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
+			if (findJoint(childId, toFind))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean hasJointId(JointId jointId) {
+		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
+		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
+		if( rootIds.length == 0 ) {
+			return false;
+		} else {
+			for( org.lgna.story.resources.JointId root : rootIds ) {
+				if (findJoint(root, jointId)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private void matchNewDataToExistingJoints(java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.UnitQuaternion > mapIdToOriginalRotation, java.util.Map< org.lgna.story.resources.JointId, JointImp > newJoints) {
+		java.util.List< org.lgna.story.resources.JointId> toRemove = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for (java.util.Map.Entry< org.lgna.story.resources.JointId, JointImpWrapper > jointEntry : this.mapIdToJoint.entrySet()) {
+			if (newJoints.containsKey(jointEntry.getKey())) {
+				JointImp newJoint = newJoints.get( jointEntry.getKey() );
+				jointEntry.getValue().replaceWithJoint(newJoint, mapIdToOriginalRotation.get(jointEntry.getKey()));
+			}
+			else {
+				toRemove.add(jointEntry.getKey());
+			}
+		}
+		for (org.lgna.story.resources.JointId id : toRemove) {
+			this.mapIdToJoint.remove(id);
+		}
+	}
+	
+	private JointImp createRegularJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent, java.util.Map< org.lgna.story.resources.JointId, JointImp > jointMap ) {
 		JointImp joint = this.createJointImplementation( jointId );
 		if (joint.getSgVehicle() == null) {
 			joint.setVehicle(parent);
 		}
-		this.mapIdToJoint.put( jointId, joint );
+		jointMap.put( jointId, joint );
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			JointImp childTree = createJointTree(childId, joint);
+			JointImp childTree = createRegularJointTree(childId, joint, jointMap);
+		}
+		return joint;
+	}
+	
+	private JointImp createWrapperJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent, java.util.Map< org.lgna.story.resources.JointId, JointImpWrapper > jointMap ) {
+		JointImpWrapper joint = new JointImpWrapper(this, this.createJointImplementation( jointId ));
+		jointMap.put( jointId, joint );
+		if (joint.getSgVehicle() == null) {
+			joint.setVehicle(parent);
+		}
+		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
+			createWrapperJointTree(childId, joint, jointMap);
 		}
 		return joint;
 	}
 	
 	public void setAllJointPivotsVisibile(boolean isPivotVisible) {
-		for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
+		for (java.util.Map.Entry< org.lgna.story.resources.JointId, JointImpWrapper > jointEntry : this.mapIdToJoint.entrySet()) {
 			jointEntry.getValue().setPivotVisible( isPivotVisible );
 		}
 	}
@@ -164,7 +393,11 @@ public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R
 	}
 	
 	public org.lgna.story.implementation.JointImp getJointImplementation( org.lgna.story.resources.JointId jointId ) {
-		return this.mapIdToJoint.get( jointId );
+		JointImpWrapper wrapper = this.mapIdToJoint.get( jointId );
+		if (wrapper != null) {
+			return wrapper;
+		}
+		return null;
 	}
 	
 	protected edu.cmu.cs.dennisc.math.Vector4 getFrontOffsetForJoint(org.lgna.story.implementation.JointImp jointImp) {
@@ -561,4 +794,5 @@ public abstract class JointedModelImp< A extends org.lgna.story.SJointedModel, R
 //		}
 		return super.updateCumulativeBound( rv, trans );
 	}
+
 }

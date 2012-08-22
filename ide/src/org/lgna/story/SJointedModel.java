@@ -43,7 +43,9 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.ValueTemplate;
 /**
  * @author Dennis Cosgrove
  */
@@ -79,6 +81,20 @@ public abstract class SJointedModel extends SModel {
 				BubbleFillColor.getValue(details, Color.WHITE).getInternal(),
 				BubbleOutlineColor.getValue(details, Color.BLACK).getInternal());
 	}
+	
+//	@MethodTemplate()
+//	@GetterTemplate(isPersistent = true)
+//	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.ModelResourceDetails.class)
+//	public org.lgna.story.resources.JointedModelResource getResource() {
+//		return this.getImplementation().getResource();
+//	}
+//	
+//	@MethodTemplate()
+//	public void setResource(org.lgna.story.resources.JointedModelResource resource) {
+//		this.getImplementation().setNewResource(resource);
+//	}
+	
+	
 	
 	//TODO: Get this to work
 //	@MethodTemplate()

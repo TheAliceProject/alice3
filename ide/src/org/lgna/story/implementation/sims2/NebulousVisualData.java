@@ -43,6 +43,10 @@
 
 package org.lgna.story.implementation.sims2;
 
+import org.lgna.story.resources.JointedModelResource;
+
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 
 /**
  * @author Dennis Cosgrove
@@ -72,5 +76,14 @@ public class NebulousVisualData< M extends edu.cmu.cs.dennisc.nebulous.Model> im
 	
 	public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
 		nebModel.setSGParent(parent);
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			sgVisual.setParent( parent );
+		}
 	}
+
+	public Composite getSGParent() {
+		return nebModel.getSGParent();
+	}
+
+	
 }
