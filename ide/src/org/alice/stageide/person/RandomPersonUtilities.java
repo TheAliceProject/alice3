@@ -50,8 +50,9 @@ public class RandomPersonUtilities {
 	private RandomPersonUtilities() {
 		throw new AssertionError();
 	}
+
 	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
-//		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
+		//		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
 		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT };
 		org.lgna.story.resources.sims2.LifeStage lifeStage = org.lgna.common.RandomUtilities.getRandomValueFrom( potentialLifeStages );
 		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();

@@ -47,7 +47,8 @@ package org.alice.stageide.cascade;
  * @author Dennis Cosgrove
  */
 public class JointExpressionFillIn extends org.alice.ide.croquet.models.cascade.MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static JointExpressionFillIn getInstance( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
 			JointExpressionFillIn rv = map.get( expression, method );
@@ -64,6 +65,7 @@ public class JointExpressionFillIn extends org.alice.ide.croquet.models.cascade.
 	private JointExpressionFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "0a118b23-0dde-4a8e-a769-9f967d16f2e9" ), expression, method );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression ) {
 		return org.alice.ide.IDE.getActiveInstance().createCopy( transientValueExpression );

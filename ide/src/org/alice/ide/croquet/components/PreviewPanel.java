@@ -48,14 +48,16 @@ package org.alice.ide.croquet.components;
  */
 public class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
 	private final org.alice.ide.preview.components.PanelWithPreview panelWithPreview;
+
 	public PreviewPanel( org.alice.ide.preview.components.PanelWithPreview panelWithPreview ) {
 		this.panelWithPreview = panelWithPreview;
 	}
+
 	@Override
 	protected javax.swing.JPanel createJPanel() {
 		class PreviewJPanel extends DefaultJPanel {
 			@Override
-			public boolean contains(int x, int y) {
+			public boolean contains( int x, int y ) {
 				return false;
 			}
 		}
@@ -63,6 +65,7 @@ public class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
 		rv.setOpaque( false );
 		return rv;
 	}
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();

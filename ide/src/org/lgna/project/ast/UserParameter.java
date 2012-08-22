@@ -48,41 +48,50 @@ package org.lgna.project.ast;
  */
 public class UserParameter extends AbstractParameter {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
+	public DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+
 	public UserParameter() {
 	}
-	public UserParameter( String name, AbstractType<?,?,?> valueType ) {
+
+	public UserParameter( String name, AbstractType<?, ?, ?> valueType ) {
 		this.name.setValue( name );
 		this.valueType.setValue( valueType );
 	}
-	public UserParameter( String name, Class< ? > valueCls ) {
+
+	public UserParameter( String name, Class<?> valueCls ) {
 		this( name, JavaType.getInstance( valueCls ) );
 	}
-	
+
 	@Override
 	public UserCode getCode() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getParent(), UserCode.class );
 	}
+
 	@Override
 	public boolean isUserAuthored() {
 		return true;
 	}
+
 	@Override
 	public String getName() {
 		return name.getValue();
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
+
 	@Override
-	public AbstractType<?,?,?> getValueType() {
+	public AbstractType<?, ?, ?> getValueType() {
 		return valueType.getValue();
 	}
+
 	@Override
 	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
 		return null;
 	}
+
 	@Override
 	public boolean isVariableLength() {
 		return false;

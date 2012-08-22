@@ -46,13 +46,15 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardOwnerComposite extends AbstractComposite< org.lgna.croquet.components.CardPanel > {
-	private final java.util.List< Composite< ? > > cards;
+public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croquet.components.CardPanel> {
+	private final java.util.List<Composite<?>> cards;
 	private Composite<?> showingCard;
-	public CardOwnerComposite( java.util.UUID id, Composite< ? >... cards ) {
+
+	public CardOwnerComposite( java.util.UUID id, Composite<?>... cards ) {
 		super( id );
 		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
 	}
+
 	public void addCard( Composite<?> card ) {
 		this.cards.add( card );
 		org.lgna.croquet.components.CardPanel view = this.peekView();
@@ -60,19 +62,21 @@ public abstract class CardOwnerComposite extends AbstractComposite< org.lgna.cro
 			view.addComposite( card );
 		}
 	}
+
 	public void removeCard( Composite<?> card ) {
 		this.cards.remove( card );
 	}
+
 	public Composite<?> getShowingCard() {
 		return this.showingCard;
 	}
-	
+
 	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
 		if( super.contains( model ) ) {
 			return true;
 		} else {
-			for( Composite< ? > card : this.cards ) {
+			for( Composite<?> card : this.cards ) {
 				//todo
 				if( card.contains( model ) ) {
 					return true;
@@ -81,22 +85,25 @@ public abstract class CardOwnerComposite extends AbstractComposite< org.lgna.cro
 			return false;
 		}
 	}
-	public java.util.List< Composite< ? >> getCards() {
+
+	public java.util.List<Composite<?>> getCards() {
 		return this.cards;
 	}
+
 	@Override
 	protected org.lgna.croquet.components.CardPanel createView() {
 		return new org.lgna.croquet.components.CardPanel( this );
 	}
+
 	@Override
 	public void releaseView() {
-		for( Composite< ? > card : this.cards ) {
+		for( Composite<?> card : this.cards ) {
 			card.releaseView();
 		}
 		super.releaseView();
 	}
-	
-	public void showCard( Composite< ? > card ) {
+
+	public void showCard( Composite<?> card ) {
 		synchronized( this.getView().getTreeLock() ) {
 			if( this.showingCard != null ) {
 				this.showingCard.handlePostDeactivation();
@@ -108,6 +115,7 @@ public abstract class CardOwnerComposite extends AbstractComposite< org.lgna.cro
 			this.getView().showComposite( this.showingCard );
 		}
 	}
+
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
@@ -115,6 +123,7 @@ public abstract class CardOwnerComposite extends AbstractComposite< org.lgna.cro
 			this.showingCard.handlePreActivation();
 		}
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		if( this.showingCard != null ) {

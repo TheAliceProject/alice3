@@ -50,21 +50,26 @@ public class AstEventManager {
 	public static interface TypeHierarchyListener {
 		public void typeHierarchyHasPotentiallyChanged();
 	}
-	private static final java.util.List< TypeHierarchyListener > typeHierarchyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private static final java.util.List<TypeHierarchyListener> typeHierarchyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	private AstEventManager() {
 		throw new AssertionError();
 	}
-	
+
 	public static void addTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
 		typeHierarchyListeners.add( typeHierarchyListener );
 	}
+
 	public static void addAndInvokeTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
 		addTypeHierarchyListener( typeHierarchyListener );
 		typeHierarchyListener.typeHierarchyHasPotentiallyChanged();
 	}
+
 	public static void removeTypeHierarchyListener( TypeHierarchyListener typeHierarchyListener ) {
 		typeHierarchyListeners.remove( typeHierarchyListener );
 	}
+
 	public static void fireTypeHierarchyListeners() {
 		for( TypeHierarchyListener typeHierarchyListener : typeHierarchyListeners ) {
 			typeHierarchyListener.typeHierarchyHasPotentiallyChanged();

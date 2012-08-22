@@ -44,8 +44,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author alice
- *
+ * 
  */
-public class HorizontalSurfaceAdapter< E extends edu.cmu.cs.dennisc.scenegraph.HorizontalSurface > extends TexturedVisualAdapter< E >{
+public class HorizontalSurfaceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.HorizontalSurface> extends TexturedVisualAdapter<E> {
 
 }

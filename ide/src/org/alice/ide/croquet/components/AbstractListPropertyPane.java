@@ -42,65 +42,74 @@
  */
 package org.alice.ide.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractListPropertyPane< P extends edu.cmu.cs.dennisc.property.ListProperty< T >, T > extends AbstractPropertyPane< P, java.util.ArrayList< T > > {
-	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener< T > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< T >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< T > e ) {
+public abstract class AbstractListPropertyPane<P extends edu.cmu.cs.dennisc.property.ListProperty<T>, T> extends AbstractPropertyPane<P, java.util.ArrayList<T>> {
+	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<T> listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<T>() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<T> e ) {
 		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< T > e ) {
+
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< T > e ) {
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<T> e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< T > e ) {
+
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< T > e ) {
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<T> e ) {
 		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< T > e ) {
+
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< T > e ) {
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<T> e ) {
 		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< T > e ) {
+
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
-		
-	}; 
+
+	};
+
 	public AbstractListPropertyPane( org.alice.ide.x.AstI18nFactory factory, P property, int axis ) {
 		super( factory, property, axis );
 		this.refreshLater();
 	}
+
 	protected boolean isComponentDesiredFor( T instance, int i, final int N ) {
 		return true;
 	}
-	protected abstract org.lgna.croquet.components.Component< ? > createComponent( T instance );
+
+	protected abstract org.lgna.croquet.components.Component<?> createComponent( T instance );
+
 	protected void addPrefixComponents() {
 	}
+
 	protected void addPostfixComponents() {
 	}
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getProperty().addListPropertyListener( this.listPropertyAdapter );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.getProperty().removeListPropertyListener( this.listPropertyAdapter );
 		super.handleUndisplayable();
 	}
-	protected org.lgna.croquet.components.Component< ? > createInterstitial( int i, final int N ) {
+
+	protected org.lgna.croquet.components.Component<?> createInterstitial( int i, final int N ) {
 		return null;
 	}
-	
-	
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
@@ -110,7 +119,7 @@ public abstract class AbstractListPropertyPane< P extends edu.cmu.cs.dennisc.pro
 		int i = 0;
 		for( T o : getProperty() ) {
 			if( this.isComponentDesiredFor( o, i, N ) ) {
-				org.lgna.croquet.components.Component< ? > component;
+				org.lgna.croquet.components.Component<?> component;
 				if( o != null ) {
 					component = this.createComponent( o );
 				} else {
@@ -118,7 +127,7 @@ public abstract class AbstractListPropertyPane< P extends edu.cmu.cs.dennisc.pro
 				}
 				if( component != null ) {
 					this.addComponent( component );
-					org.lgna.croquet.components.Component< ? > interstitial = this.createInterstitial( i, N );
+					org.lgna.croquet.components.Component<?> interstitial = this.createInterstitial( i, N );
 					if( interstitial != null ) {
 						this.addComponent( interstitial );
 					}
@@ -127,13 +136,12 @@ public abstract class AbstractListPropertyPane< P extends edu.cmu.cs.dennisc.pro
 			i++;
 		}
 		this.addPostfixComponents();
-//		
-//		
-//		//todo: investigate on 1.5
-//		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
-//		
-//		
-//		this.revalidateAndRepaint();
+		//		
+		//		
+		//		//todo: investigate on 1.5
+		//		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
+		//		
+		//		
+		//		this.revalidateAndRepaint();
 	}
 }
-

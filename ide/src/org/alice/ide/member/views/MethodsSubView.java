@@ -52,13 +52,14 @@ public class MethodsSubView extends org.lgna.croquet.components.PageAxisPanel {
 		this.setMaximumSizeClampedToPreferredSize( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 8, 12, 0 ) );
 	}
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
 		org.alice.ide.member.MethodsSubComposite composite = (org.alice.ide.member.MethodsSubComposite)this.getComposite();
 		this.removeAllComponents();
 		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			org.lgna.croquet.components.DragComponent<?,?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
+			org.lgna.croquet.components.DragComponent<?, ?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
 			org.lgna.croquet.components.JComponent<?> component;
 			if( method.isUserAuthored() ) {
 				org.alice.ide.declarationseditor.CodeComposite codeComposite = org.alice.ide.declarationseditor.CodeComposite.getInstance( method );

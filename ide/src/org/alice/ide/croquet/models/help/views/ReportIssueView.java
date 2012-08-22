@@ -50,12 +50,11 @@ import javax.swing.Icon;
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
 import org.alice.ide.issue.HeaderPane;
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.FlowPanel;
 import org.lgna.croquet.components.Hyperlink;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LabeledSpringRow;
-import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.PageAxisPanel;
-import org.lgna.croquet.components.FlowPanel;
 import org.lgna.croquet.components.RowSpringPanel;
 import org.lgna.croquet.components.SpringRow;
 import org.lgna.croquet.components.VerticalAlignment;
@@ -67,6 +66,7 @@ import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
  */
 public class ReportIssueView extends BorderPanel {
 	private final static Icon headerIcon = IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) );
+
 	private static org.lgna.croquet.components.JComponent<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
 		org.lgna.croquet.components.TextArea textArea = stringState.createTextArea();
 		textArea.getAwtComponent().setLineWrap( true );
@@ -76,6 +76,7 @@ public class ReportIssueView extends BorderPanel {
 		rv.setMinimumPreferredHeight( 128 );
 		return rv;
 	}
+
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
 		final org.lgna.croquet.components.TextArea environmentTextArea = reportIssueComposite.getEnvironmentState().createTextArea();
 		environmentTextArea.getAwtComponent().setEditable( false );
@@ -100,28 +101,28 @@ public class ReportIssueView extends BorderPanel {
 		link.setForegroundColor( Color.LIGHT_GRAY );
 		link.getAwtComponent().setBackground( backgroundColor );
 		link.setAlignmentX( 0.5f );
-		
+
 		PageAxisPanel lineStartPanel = new PageAxisPanel( headerLabel, link );
-				
+
 		BorderPanel header = new BorderPanel.Builder()
-			.lineStart( lineStartPanel )
-			.lineEnd( reportIssueComposite.getLogInOutCardComposite().getView() )
-		.build();
+				.lineStart( lineStartPanel )
+				.lineEnd( reportIssueComposite.getLogInOutCardComposite().getView() )
+				.build();
 		header.setBackgroundColor( backgroundColor );
-		
-		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
-		centerComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
-		
+
+		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		centerComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+
 		org.lgna.croquet.components.Button submitButton = reportIssueComposite.getSubmitBugOperation().createButton();
 		submitButton.scaleFont( 1.6f );
 		submitButton.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		
+
 		FlowPanel submitPanel = new FlowPanel( FlowPanel.Alignment.CENTER );
 		submitPanel.addComponent( submitButton );
 
 		PageAxisPanel pageEndPanel = new PageAxisPanel( new org.lgna.croquet.components.HorizontalSeparator(), org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
 		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		
+
 		this.addPageStartComponent( header );
 		this.addCenterComponent( centerComponent );
 		this.addPageEndComponent( pageEndPanel );

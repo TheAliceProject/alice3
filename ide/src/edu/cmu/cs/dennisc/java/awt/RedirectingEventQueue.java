@@ -55,10 +55,11 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 		this.dst = dst;
 		this.last = null;
 	}
+
 	private static java.awt.Component getDeepestMouseListener( java.awt.Component dst, java.awt.Component descendant ) {
 		java.awt.Component rv = descendant;
 		while( rv != null ) {
-			if( rv.getMouseListeners().length > 0 || rv.getMouseMotionListeners().length > 0 ) {
+			if( ( rv.getMouseListeners().length > 0 ) || ( rv.getMouseMotionListeners().length > 0 ) ) {
 				break;
 			}
 			if( rv == dst ) {
@@ -69,6 +70,7 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 		}
 		return rv;
 	}
+
 	@Override
 	protected void dispatchEvent( java.awt.AWTEvent e ) {
 		if( e instanceof java.awt.event.MouseEvent ) {
@@ -76,7 +78,7 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 			java.awt.Component curr = me.getComponent();
 			int id = me.getID();
 			if( curr == this.src ) {
-				if( id == java.awt.event.MouseEvent.MOUSE_ENTERED || id == java.awt.event.MouseEvent.MOUSE_EXITED ) {
+				if( ( id == java.awt.event.MouseEvent.MOUSE_ENTERED ) || ( id == java.awt.event.MouseEvent.MOUSE_EXITED ) ) {
 					e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.src, me, this.dst );
 				} else if( id == java.awt.event.MouseEvent.MOUSE_MOVED ) {
 					me = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.src, me, dst );
@@ -110,7 +112,7 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 						super.dispatchEvent( enterEvent );
 						this.last = descendant;
 					}
-				} else if( id == java.awt.event.MouseEvent.MOUSE_PRESSED || id == java.awt.event.MouseEvent.MOUSE_CLICKED || id == java.awt.event.MouseEvent.MOUSE_RELEASED || id == java.awt.event.MouseEvent.MOUSE_DRAGGED ) {
+				} else if( ( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) || ( id == java.awt.event.MouseEvent.MOUSE_CLICKED ) || ( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) || ( id == java.awt.event.MouseEvent.MOUSE_DRAGGED ) ) {
 					if( this.last != null ) {
 						e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.src, me, this.last );
 					}

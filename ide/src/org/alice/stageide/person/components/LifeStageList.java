@@ -46,7 +46,7 @@ package org.alice.stageide.person.components;
 /**
  * @author Dennis Cosgrove
  */
-public class LifeStageList extends HorizontalWrapList< org.lgna.story.resources.sims2.LifeStage > {
+public class LifeStageList extends HorizontalWrapList<org.lgna.story.resources.sims2.LifeStage> {
 	public LifeStageList() {
 		super( org.alice.stageide.person.models.LifeStageState.getInstance(), 1 );
 		this.setCellRenderer( org.alice.stageide.person.components.renderers.SimpleListCellRenderer.SINGLETON );

@@ -46,15 +46,17 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentArrayAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.ComponentArray > {
+public abstract class ComponentArrayAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.ComponentArray> {
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
 		throw new RuntimeException( "todo" );
-    }
+	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		throw new RuntimeException( "todo" );
-	}    
+	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.component ) {

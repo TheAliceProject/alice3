@@ -49,13 +49,16 @@ public class RandomizeOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static RandomizeOperation instance = new RandomizeOperation();
 	}
+
 	public static RandomizeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RandomizeOperation() {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "9ea00a57-0ea7-4c53-ac53-1e07220e76b9" ) );
 		this.setName( "Generate Random Selection" );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

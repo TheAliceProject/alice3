@@ -49,9 +49,11 @@ public class IsRotationSnapEnabledState extends BooleanState {
 	private static class SingletonHolder {
 		private static IsRotationSnapEnabledState instance = new IsRotationSnapEnabledState();
 	}
+
 	public static IsRotationSnapEnabledState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsRotationSnapEnabledState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6933d462-d5c5-4ff6-9918-240511d2c731" ), true );
 	}

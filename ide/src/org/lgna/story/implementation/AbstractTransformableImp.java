@@ -58,25 +58,31 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
 		return this.getSgComposite().getLocalTransformation();
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getLocalPosition() {
 		return this.getLocalTransformation().translation;
 	}
+
 	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getLocalOrientation() {
 		return this.getLocalTransformation().orientation;
 	}
+
 	public void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
 		this.getSgComposite().setLocalTransformation( transformation );
 	}
+
 	public void setLocalPosition( edu.cmu.cs.dennisc.math.Point3 translation ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getLocalTransformation();
 		m.translation.set( translation );
 		this.setLocalTransformation( m );
 	}
+
 	public void setLocalOrientation( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getLocalTransformation();
 		m.orientation.setValue( orientation );
 		this.setLocalTransformation( m );
 	}
+
 	@Override
 	public void setVehicle( EntityImp vehicle ) {
 		assert vehicle != this;
@@ -86,7 +92,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		SceneImp scene = this.getScene();
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 absTransform = scene != null ? this.getTransformation( scene ) : null;
 		super.setVehicle( vehicle );
-		if( vehicle != null && scene != null ) {
+		if( ( vehicle != null ) && ( scene != null ) ) {
 			this.setTransformation( scene, absTransform );
 		}
 	}
@@ -94,9 +100,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void applyTranslation( double x, double y, double z, ReferenceFrame asSeenBy ) {
 		this.getSgComposite().applyTranslation( x, y, z, asSeenBy.getSgReferenceFrame() );
 	}
+
 	public void applyTranslation( edu.cmu.cs.dennisc.math.Point3 translation, ReferenceFrame asSeenBy ) {
 		this.applyTranslation( translation.x, translation.y, translation.z, asSeenBy );
 	}
+
 	public void animateApplyTranslation( edu.cmu.cs.dennisc.math.Point3 translation, ReferenceFrame asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		assert translation.isNaN() == false;
 		assert duration >= 0 : "Invalid argument: duration " + duration + " must be >= 0";
@@ -132,9 +140,9 @@ public abstract class AbstractTransformableImp extends EntityImp {
 
 				@Override
 				protected void setPortion( double portion ) {
-					double xPortion = (this.x * portion) - this.xSum;
-					double yPortion = (this.y * portion) - this.ySum;
-					double zPortion = (this.z * portion) - this.zSum;
+					double xPortion = ( this.x * portion ) - this.xSum;
+					double yPortion = ( this.y * portion ) - this.ySum;
+					double zPortion = ( this.z * portion ) - this.zSum;
 
 					AbstractTransformableImp.this.applyTranslation( xPortion, yPortion, zPortion, this.asSeenBy );
 
@@ -151,12 +159,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.perform( new TranslateAnimation( duration, style, translation, asSeenBy ) );
 		}
 	}
+
 	public void animateApplyTranslation( edu.cmu.cs.dennisc.math.Point3 translation, ReferenceFrame asSeenBy, double duration ) {
 		this.animateApplyTranslation( translation, asSeenBy, duration, DEFAULT_STYLE );
 	}
+
 	public void animateApplyTranslation( edu.cmu.cs.dennisc.math.Point3 translation, ReferenceFrame asSeenBy ) {
 		this.animateApplyTranslation( translation, asSeenBy, DEFAULT_DURATION );
 	}
+
 	public void animateApplyTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
 		this.animateApplyTranslation( translation, this );
 	}
@@ -164,12 +175,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void animateApplyTranslation( double x, double y, double z, ReferenceFrame asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.animateApplyTranslation( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), asSeenBy, duration, style );
 	}
+
 	public void animateApplyTranslation( double x, double y, double z, ReferenceFrame asSeenBy, double duration ) {
 		this.animateApplyTranslation( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), asSeenBy, duration, DEFAULT_STYLE );
 	}
+
 	public void animateApplyTranslation( double x, double y, double z, ReferenceFrame asSeenBy ) {
 		this.animateApplyTranslation( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), asSeenBy, DEFAULT_DURATION );
 	}
+
 	public void animateApplyTranslation( double x, double y, double z ) {
 		this.animateApplyTranslation( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), this );
 	}
@@ -177,18 +191,23 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, ReferenceFrame asSeenBy ) {
 		this.getSgComposite().applyRotationAboutArbitraryAxisInRadians( axis, angleInRadians, asSeenBy.getSgReferenceFrame() );
 	}
+
 	public void applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
 		this.applyRotationInRadians( axis, angleInRadians, this );
 	}
+
 	public void applyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, ReferenceFrame asSeenBy ) {
 		this.applyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.degreesToRadians( angleInDegrees ), asSeenBy );
 	}
+
 	public void applyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
 		this.applyRotationInDegrees( axis, angleInRadians, this );
 	}
+
 	public void applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, ReferenceFrame asSeenBy ) {
 		this.applyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( angleInRevolutions ), asSeenBy );
 	}
+
 	public void applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
 		this.applyRotationInRevolutions( axis, angleInRadians, this );
 	}
@@ -212,18 +231,21 @@ public abstract class AbstractTransformableImp extends EntityImp {
 					this.angleInRadians = angleInRadians;
 					this.asSeenBy = asSeenBy;
 				}
+
 				@Override
 				protected void prologue() {
 					this.angleSumInRadians = 0;
 				}
+
 				@Override
 				protected void setPortion( double portion ) {
-					double anglePortionInRadians = (this.angleInRadians * portion) - this.angleSumInRadians;
+					double anglePortionInRadians = ( this.angleInRadians * portion ) - this.angleSumInRadians;
 
 					AbstractTransformableImp.this.applyRotationInRadians( this.axis, anglePortionInRadians, this.asSeenBy );
 
 					this.angleSumInRadians += anglePortionInRadians;
 				}
+
 				@Override
 				protected void epilogue() {
 					AbstractTransformableImp.this.applyRotationInRadians( this.axis, this.angleInRadians - this.angleSumInRadians, this.asSeenBy );
@@ -232,12 +254,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.perform( new RotateAnimation( duration, style, axis, angleInRadians, asSeenBy ) );
 		}
 	}
+
 	public void animateApplyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, ReferenceFrame asSeenBy, double duration ) {
 		this.animateApplyRotationInRadians( axis, angleInRadians, asSeenBy, duration, DEFAULT_STYLE );
 	}
+
 	public void animateApplyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, ReferenceFrame asSeenBy ) {
 		this.animateApplyRotationInRadians( axis, angleInRadians, asSeenBy, DEFAULT_DURATION );
 	}
+
 	public void animateApplyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
 		this.animateApplyRotationInRadians( axis, angleInRadians, this );
 	}
@@ -245,12 +270,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void animateApplyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, ReferenceFrame asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.animateApplyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.degreesToRadians( angleInDegrees ), asSeenBy, duration, style );
 	}
+
 	public void animateApplyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, ReferenceFrame asSeenBy, double duration ) {
 		this.animateApplyRotationInDegrees( axis, angleInDegrees, asSeenBy, duration, DEFAULT_STYLE );
 	}
+
 	public void animateApplyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees, ReferenceFrame asSeenBy ) {
 		this.animateApplyRotationInDegrees( axis, angleInDegrees, asSeenBy, DEFAULT_DURATION );
 	}
+
 	public void animateApplyRotationInDegrees( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInDegrees ) {
 		this.animateApplyRotationInDegrees( axis, angleInDegrees, this );
 	}
@@ -258,12 +286,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void animateApplyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, ReferenceFrame asSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.animateApplyRotationInRadians( axis, edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( angleInRevolutions ), asSeenBy, duration, style );
 	}
+
 	public void animateApplyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, ReferenceFrame asSeenBy, double duration ) {
 		this.animateApplyRotationInRevolutions( axis, angleInRevolutions, asSeenBy, duration, DEFAULT_STYLE );
 	}
+
 	public void animateApplyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, ReferenceFrame asSeenBy ) {
 		this.animateApplyRotationInRevolutions( axis, angleInRevolutions, asSeenBy, DEFAULT_DURATION );
 	}
+
 	public void animateApplyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions ) {
 		this.animateApplyRotationInRevolutions( axis, angleInRevolutions, this );
 	}
@@ -274,15 +305,23 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		public VantagePointData( AbstractTransformableImp subject ) {
 			this.subject = subject;
 		}
+
 		public AbstractTransformableImp getSubject() {
 			return this.subject;
 		}
+
 		protected abstract void setM( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m );
+
 		protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM0();
+
 		protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM1();
+
 		protected abstract edu.cmu.cs.dennisc.math.Point3 getT0();
+
 		protected abstract edu.cmu.cs.dennisc.math.Point3 getT1();
+
 		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ0();
+
 		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ1();
 
 		public void setPortion( double portion ) {
@@ -294,6 +333,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			edu.cmu.cs.dennisc.math.UnitQuaternion q = edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( q0, q1, portion );
 			this.setM( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( q, t ) );
 		}
+
 		public void epilogue() {
 			this.setM( this.getM1() );
 		}
@@ -314,30 +354,37 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.q0 = this.m0.orientation.createUnitQuaternion();
 			this.q1 = this.m1.orientation.createUnitQuaternion();
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM0() {
 			return this.m0;
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getM1() {
 			return this.m1;
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ0() {
 			return this.q0;
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ1() {
 			return this.q1;
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.Point3 getT0() {
 			return this.m0.translation;
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.Point3 getT1() {
 			return this.m1.translation;
 		}
+
 		@Override
 		protected void setM( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 			this.getSubject().getSgComposite().setTransformation( m, other.getSgReferenceFrame() );
@@ -347,6 +394,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	protected void setVantagePoint( VantagePointData data ) {
 		data.epilogue();
 	}
+
 	protected void animateVantagePoint( final VantagePointData data, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
@@ -356,10 +404,12 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				@Override
 				protected void prologue() {
 				}
+
 				@Override
 				protected void setPortion( double portion ) {
 					data.setPortion( portion );
 				}
+
 				@Override
 				protected void epilogue() {
 					data.epilogue();
@@ -374,17 +424,23 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		public OrientationData( AbstractTransformableImp subject ) {
 			this.subject = subject;
 		}
+
 		public AbstractTransformableImp getSubject() {
 			return this.subject;
 		}
 
 		protected abstract void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m );
+
 		protected final void setQ( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
 			this.setM( q.createOrthogonalMatrix3x3() );
 		}
+
 		protected abstract edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getM0();
+
 		protected abstract edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getM1();
+
 		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ0();
+
 		protected abstract edu.cmu.cs.dennisc.math.UnitQuaternion getQ1();
 
 		public void setPortion( double portion ) {
@@ -392,6 +448,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			edu.cmu.cs.dennisc.math.UnitQuaternion q1 = this.getQ1();
 			this.setQ( edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( q0, q1, portion ) );
 		}
+
 		public void epilogue() {
 			this.setM( this.getM1() );
 		}
@@ -408,14 +465,17 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.m0 = m0;
 			this.m1 = m1;
 		}
+
 		@Override
 		protected final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getM0() {
 			return this.m0;
 		}
+
 		@Override
 		protected final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getM1() {
 			return this.m1;
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ0() {
 			if( this.q0 != null ) {
@@ -425,6 +485,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			}
 			return this.q0;
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.UnitQuaternion getQ1() {
 			if( this.q1 != null ) {
@@ -440,6 +501,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		public LocalOrientationData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m1 ) {
 			super( subject, subject.getSgComposite().getLocalTransformation().orientation, m1 );
 		}
+
 		@Override
 		protected void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevM = this.getSubject().getSgComposite().getLocalTransformation();
@@ -456,6 +518,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		rv.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
 		return rv;
 	}
+
 	protected static void releaseStandIn( StandInImp standIn ) {
 		s_standInPool.release( standIn );
 	}
@@ -472,13 +535,13 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				return subject.getAbsoluteTransformation().orientation;
 			} else {
 				double targetTheta = Math.atan2( targetPos.z, targetPos.x );
-				
+
 				StandInImp standInB = acquireStandIn( subject );
 				try {
 					standInB.applyTranslation( 0, 0, -1.0, standInB );
-		
+
 					edu.cmu.cs.dennisc.math.Point3 forwardPos = standInB.getTransformation( standInA ).translation;
-					
+
 					double y;
 					if( forwardPos.isWithinReasonableEpsilonOf( 0, 1, 0 ) ) {
 						y = -1.0;
@@ -495,10 +558,10 @@ public abstract class AbstractTransformableImp extends EntityImp {
 						forwardPos = standInB.getTransformation( standInA ).translation;
 					}
 					double forwardTheta = Math.atan2( forwardPos.z, forwardPos.x );
-	
+
 					standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
 					standInB.applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3.accessNegativeYAxis(), targetTheta - forwardTheta, standInA );
-					
+
 					return standInB.getTransformation( asSeenBy ).orientation;
 				} finally {
 					releaseStandIn( standInB );
@@ -523,10 +586,12 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1 = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createFromStandUp( orientation0 );
 			return new OrientToUprightData( subject, orientation0, orientation1, upAsSeenBy );
 		}
+
 		private OrientToUprightData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1, ReferenceFrame upAsSeenBy ) {
 			super( subject, orientation0, orientation1 );
 			this.upAsSeenBy = upAsSeenBy;
 		}
+
 		@Override
 		protected void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m ) {
 			this.getSubject().getSgComposite().setAxesOnly( m, this.upAsSeenBy.getSgReferenceFrame() );
@@ -544,10 +609,12 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			edu.cmu.cs.dennisc.math.ForwardAndUpGuide fowardAndUpGuide = new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, null );
 			return new OrientToPointAtData( subject, m0.orientation, fowardAndUpGuide.createOrthogonalMatrix3x3(), upAsSeenBy );
 		}
+
 		private OrientToPointAtData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1, ReferenceFrame upAsSeenBy ) {
 			super( subject, orientation0, orientation1 );
 			this.upAsSeenBy = upAsSeenBy;
 		}
+
 		@Override
 		protected void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 m ) {
 			this.getSubject().getSgComposite().setAxesOnly( m, this.upAsSeenBy.getSgReferenceFrame() );
@@ -557,6 +624,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	private void setOrientationOnly( OrientationData data ) {
 		data.epilogue();
 	}
+
 	private void animateOrientationOnly( final OrientationData data, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
@@ -566,10 +634,12 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				@Override
 				protected void prologue() {
 				}
+
 				@Override
 				protected void setPortion( double portion ) {
 					data.setPortion( portion );
 				}
+
 				@Override
 				protected void epilogue() {
 					data.epilogue();
@@ -577,9 +647,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			} );
 		}
 	}
+
 	public void setLocalOrientationOnly( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 localOrientation ) {
 		this.setOrientationOnly( new LocalOrientationData( this, localOrientation ) );
 	}
+
 	public void animateLocalOrientationOnly( final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 localOrientation, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.animateOrientationOnly( new LocalOrientationData( this, localOrientation ), duration, style );
 	}
@@ -594,9 +666,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void setOrientationOnly( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
 		this.getSgComposite().setAxesOnly( offset != null ? offset : edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.accessIdentity(), target.getSgComposite() );
 	}
+
 	public void setOrientationOnly( EntityImp target ) {
 		this.setOrientationOnly( target, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.accessIdentity() );
 	}
+
 	public void animateOrientationOnly( final EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
@@ -619,12 +693,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			} );
 		}
 	}
+
 	public void animateOrientationOnly( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset, double duration ) {
 		this.animateOrientationOnly( target, offset, duration, DEFAULT_STYLE );
 	}
+
 	public void animateOrientationOnly( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
 		this.animateOrientationOnly( target, offset, DEFAULT_DURATION );
 	}
+
 	public void animateOrientationOnly( EntityImp target ) {
 		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
 	}
@@ -632,15 +709,19 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void setOrientationOnlyToFace( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
 		this.setOrientationOnly( new TurnToFaceOrientationData( this, target, offset ) );
 	}
+
 	public void animateOrientationOnlyToFace( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.animateOrientationOnly( new TurnToFaceOrientationData( this, target, offset ), duration, style );
 	}
+
 	public void animateOrientationOnlyToFace( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset, double duration ) {
 		this.animateOrientationOnly( target, offset, duration, DEFAULT_STYLE );
 	}
+
 	public void animateOrientationOnlyToFace( EntityImp target, edu.cmu.cs.dennisc.math.Orientation offset ) {
 		this.animateOrientationOnly( target, offset, DEFAULT_DURATION );
 	}
+
 	public void animateOrientationOnlyToFace( EntityImp target ) {
 		this.animateOrientationOnly( target, edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity() );
 	}
@@ -648,18 +729,23 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void setOrientationToUpright( ReferenceFrame upAsSeenBy ) {
 		this.setOrientationOnly( OrientToUprightData.createInstance( this, upAsSeenBy ) );
 	}
+
 	public void setOrientationToUpright() {
 		this.setOrientationToUpright( AsSeenBy.SCENE );
 	}
+
 	public void animateOrientationToUpright( ReferenceFrame upAsSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.animateOrientationOnly( OrientToUprightData.createInstance( this, upAsSeenBy ), duration, style );
 	}
+
 	public void animateOrientationToUpright( ReferenceFrame upAsSeenBy, double duration ) {
 		this.animateOrientationToUpright( upAsSeenBy, duration, DEFAULT_STYLE );
 	}
+
 	public void animateOrientationToUpright( ReferenceFrame upAsSeenBy ) {
 		this.animateOrientationToUpright( upAsSeenBy, DEFAULT_DURATION );
 	}
+
 	public void animateOrientationToUpright() {
 		this.animateOrientationToUpright( AsSeenBy.SCENE );
 	}
@@ -667,18 +753,23 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void setOrientationToPointAt( EntityImp target, ReferenceFrame upAsSeenBy ) {
 		this.setOrientationOnly( OrientToPointAtData.createInstance( this, target, upAsSeenBy ) );
 	}
+
 	public void setOrientationToPointAt( EntityImp target ) {
 		this.setOrientationToPointAt( target, AsSeenBy.SCENE );
 	}
+
 	public void animateOrientationToPointAt( EntityImp target, ReferenceFrame upAsSeenBy, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.animateOrientationOnly( OrientToPointAtData.createInstance( this, target, upAsSeenBy ), duration, style );
 	}
+
 	public void animateOrientationToPointAt( EntityImp target, ReferenceFrame upAsSeenBy, double duration ) {
 		this.animateOrientationToPointAt( target, upAsSeenBy, duration, DEFAULT_STYLE );
 	}
+
 	public void animateOrientationToPointAt( EntityImp target, ReferenceFrame upAsSeenBy ) {
 		this.animateOrientationToPointAt( target, upAsSeenBy, DEFAULT_DURATION );
 	}
+
 	public void animateOrientationToPointAt( EntityImp target ) {
 		this.animateOrientationToPointAt( target, AsSeenBy.SCENE );
 	}
@@ -715,6 +806,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.yHermite = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( m0.translation.y, m1.translation.y, s * m0.orientation.backward.y, s * m1.orientation.backward.y );
 			this.zHermite = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( m0.translation.z, m1.translation.z, s * m0.orientation.backward.z, s * m1.orientation.backward.z );
 		}
+
 		@Override
 		protected void prologue() {
 		}
@@ -729,6 +821,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.subject = subject;
 			this.asSeenBy = asSeenBy;
 		}
+
 		@Override
 		protected void setPortion( double portion ) {
 			double x = this.xHermite.evaluate( portion );
@@ -741,6 +834,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 
 			this.subject.getSgComposite().setTranslationOnly( x, y, z, this.asSeenBy.getSgReferenceFrame() );
 		}
+
 		@Override
 		protected void epilogue() {
 			this.subject.getSgComposite().setTranslationOnly( this.m1.translation, this.asSeenBy.getSgReferenceFrame() );
@@ -766,6 +860,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.alongAxisOffset = alongAxisOffset;
 			this.asSeenBy = asSeenBy;
 		}
+
 		//		public AbstractTransformableImp getSubject() {
 		//			return this.subject;
 		//		}
@@ -779,6 +874,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation0() {
 			return this.subject.getTransformation( this.asSeenBy ).translation;
 		}
+
 		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation1( edu.cmu.cs.dennisc.math.Point3 t0 ) {
 			edu.cmu.cs.dennisc.math.AxisAlignedBox bbSubject = this.subject.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
 			if( this.target != null ) {
@@ -798,6 +894,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				return new edu.cmu.cs.dennisc.math.Point3( t0.x, -bbSubject.getMinimum().y, t0.z );
 			}
 		}
+
 		public void setTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
 			this.subject.getSgComposite().setTranslationOnly( translation, this.asSeenBy.getSgReferenceFrame() );
 		}
@@ -812,16 +909,19 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			super( duration, style );
 			this.placeData = placeData;
 		}
+
 		@Override
 		protected void prologue() {
 			this.t0 = this.placeData.calculateTranslation0();
 			this.t1 = this.placeData.calculateTranslation1( this.t0 );
 		}
+
 		@Override
 		protected void setPortion( double portion ) {
 			edu.cmu.cs.dennisc.math.Point3 t = edu.cmu.cs.dennisc.math.Point3.createInterpolation( this.t0, this.t1, portion );
 			this.placeData.setTranslation( t );
 		}
+
 		@Override
 		protected void epilogue() {
 			this.placeData.setTranslation( this.t1 );
@@ -831,9 +931,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public void setPositionOnly( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
 		this.getSgComposite().setTranslationOnly( offset != null ? offset : edu.cmu.cs.dennisc.math.Point3.ORIGIN, target.getSgComposite() );
 	}
+
 	public void setPositionOnly( EntityImp target ) {
 		this.setPositionOnly( target, edu.cmu.cs.dennisc.math.Point3.ORIGIN );
 	}
+
 	public void animatePositionOnly( final EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset, boolean isSmooth, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
@@ -852,15 +954,19 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			}
 		}
 	}
+
 	public void animatePositionOnly( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset, boolean isSmooth, double duration ) {
 		this.animatePositionOnly( target, offset, isSmooth, duration, DEFAULT_STYLE );
 	}
+
 	public void animatePositionOnly( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset, boolean isSmooth ) {
 		this.animatePositionOnly( target, offset, isSmooth, DEFAULT_DURATION );
 	}
+
 	public void animatePositionOnly( EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
 		this.animatePositionOnly( target, offset, DEFAULT_IS_SMOOTH );
 	}
+
 	public void animatePositionOnly( EntityImp target ) {
 		this.animatePositionOnly( target, edu.cmu.cs.dennisc.math.Point3.ORIGIN );
 	}
@@ -869,12 +975,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
 		placeData.setTranslation( placeData.calculateTranslation1( placeData.calculateTranslation0() ) );
 	}
+
 	public void place( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
 		this.place( spatialRelation, target, alongAxisOffset, target );
 	}
+
 	public void place( SpatialRelationImp spatialRelation, EntityImp target ) {
 		this.place( spatialRelation, target, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
 	}
+
 	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
 		duration = adjustDurationIfNecessary( duration );
@@ -884,19 +993,24 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.perform( new PlaceAnimation( placeData, duration, style ) );
 		}
 	}
+
 	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth, double duration ) {
 		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, isSmooth, duration, DEFAULT_STYLE );
 	}
+
 	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy, boolean isSmooth ) {
 		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, isSmooth, DEFAULT_DURATION );
 	}
+
 	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset, ReferenceFrame asSeenBy ) {
 		this.animatePlace( spatialRelation, target, alongAxisOffset, asSeenBy, DEFAULT_IS_SMOOTH );
 	}
+
 	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target, double alongAxisOffset ) {
 		final ReferenceFrame DEFAULT_AS_SEEN_BY = target;
 		this.animatePlace( spatialRelation, target, alongAxisOffset, DEFAULT_AS_SEEN_BY );
 	}
+
 	public void animatePlace( SpatialRelationImp spatialRelation, EntityImp target ) {
 		this.animatePlace( spatialRelation, target, DEFAULT_PLACE_ALONG_AXIS_OFFSET );
 	}
@@ -911,13 +1025,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		}
 		this.getSgComposite().setTransformation( offset, target.getSgReferenceFrame() );
 	}
+
 	public void setTransformation( ReferenceFrame target ) {
 		this.setTransformation( target, edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
 	}
+
 	public void animateTransformation( final ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, boolean isSmooth, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			if( offset != null && offset.isNaN() ) {
+			if( ( offset != null ) && offset.isNaN() ) {
 				//pass
 			} else {
 				this.setTransformation( target, offset );
@@ -942,15 +1058,19 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			//			}
 		}
 	}
+
 	public void animateTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, boolean isSmooth, double duration ) {
 		this.animateTransformation( target, offset, isSmooth, duration, DEFAULT_STYLE );
 	}
+
 	public void animateTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset, boolean isSmooth ) {
 		this.animateTransformation( target, offset, isSmooth, DEFAULT_DURATION );
 	}
+
 	public void animateTransformation( ReferenceFrame target, edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
 		this.animateTransformation( target, offset, DEFAULT_IS_SMOOTH );
 	}
+
 	public void animateTransformation( ReferenceFrame target ) {
 		this.animateTransformation( target, edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
 	}

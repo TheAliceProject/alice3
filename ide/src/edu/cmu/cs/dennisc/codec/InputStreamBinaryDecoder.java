@@ -47,9 +47,11 @@ package edu.cmu.cs.dennisc.codec;
  */
 public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	private java.io.ObjectInputStream m_ois;
+
 	public InputStreamBinaryDecoder( java.io.InputStream is ) {
 		initialize( is );
 	}
+
 	public InputStreamBinaryDecoder( java.io.File file ) {
 		try {
 			initialize( new java.io.FileInputStream( file ) );
@@ -57,9 +59,11 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public InputStreamBinaryDecoder( String path ) {
 		this( new java.io.File( path ) );
 	}
+
 	private void initialize( java.io.InputStream is ) {
 		try {
 			m_ois = new java.io.ObjectInputStream( is );
@@ -68,7 +72,6 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
-	
 	public byte[] readFully( byte[] rv ) {
 		try {
 			m_ois.readFully( rv );
@@ -77,6 +80,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public byte[] readFully( byte[] rv, int offset, int length ) {
 		try {
 			m_ois.readFully( rv, offset, length );
@@ -85,8 +89,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
-	
-	
+
 	public boolean decodeBoolean() {
 		try {
 			return m_ois.readBoolean();
@@ -94,6 +97,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public byte decodeByte() {
 		try {
 			return m_ois.readByte();
@@ -101,6 +105,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public char decodeChar() {
 		try {
 			return m_ois.readChar();
@@ -108,6 +113,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public double decodeDouble() {
 		try {
 			return m_ois.readDouble();
@@ -115,6 +121,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public float decodeFloat() {
 		try {
 			return m_ois.readFloat();
@@ -122,6 +129,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public int decodeInt() {
 		try {
 			return m_ois.readInt();
@@ -129,6 +137,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public long decodeLong() {
 		try {
 			return m_ois.readLong();
@@ -136,6 +145,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public short decodeShort() {
 		try {
 			return m_ois.readShort();
@@ -143,6 +153,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public String decodeString() {
 		try {
 			// todo?

@@ -55,44 +55,44 @@ public class SelectedObjectCondition extends InputCondition {
 		END_ON_SWITCH,
 		IGNORE_SWITCH,
 	}
-	
+
 	PickHint acceptableType = PickHint.ANYTHING;
-	
+
 	protected boolean isNot = false;
 	private ObjectSwitchBehavior switchBehavior = ObjectSwitchBehavior.END_ON_SWITCH;
-	
+
 	public SelectedObjectCondition( PickHint acceptableType )
 	{
-		this(acceptableType, ObjectSwitchBehavior.END_ON_SWITCH);
+		this( acceptableType, ObjectSwitchBehavior.END_ON_SWITCH );
 	}
-	
+
 	public SelectedObjectCondition( PickHint acceptableType, ObjectSwitchBehavior switchBehavior )
 	{
 		this.acceptableType = acceptableType;
 		this.switchBehavior = switchBehavior;
 	}
-	
+
 	@Override
 	protected boolean testState( InputState state )
 	{
-		if (state.getIsDragEvent())
+		if( state.getIsDragEvent() )
 		{
 			return false;
 		}
 		boolean isValid = this.acceptableType.intersects( state.getCurrentlySelectedObjectPickHint() );
-		if (isNot)
+		if( isNot )
 		{
 			return !isValid;
 		}
-		else 
+		else
 		{
-			return isValid; 
+			return isValid;
 		}
 	}
-	
+
 	protected boolean selectedObjectSwitched( InputState currentState, InputState previousState )
 	{
-		if (this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH)
+		if( this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH )
 		{
 			return currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject();
 		}
@@ -101,7 +101,7 @@ public class SelectedObjectCondition extends InputCondition {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public boolean isRunning( InputState currentState, InputState previousState ) {
 		return ( super.isRunning( currentState, previousState ) && !selectedObjectSwitched( currentState, previousState ) );
@@ -109,11 +109,11 @@ public class SelectedObjectCondition extends InputCondition {
 
 	@Override
 	public boolean justEnded( InputState currentState, InputState previousState ) {
-		if ( super.justEnded( currentState, previousState ))
+		if( super.justEnded( currentState, previousState ) )
 		{
 			return true;
 		}
-		else if ( testState(previousState) )
+		else if( testState( previousState ) )
 		{
 			return selectedObjectSwitched( currentState, previousState );
 		}
@@ -125,11 +125,11 @@ public class SelectedObjectCondition extends InputCondition {
 
 	@Override
 	public boolean justStarted( InputState currentState, InputState previousState ) {
-		if ( super.justStarted( currentState, previousState ) )
+		if( super.justStarted( currentState, previousState ) )
 		{
 			return true;
 		}
-		else if ( testState(currentState) )
+		else if( testState( currentState ) )
 		{
 			return selectedObjectSwitched( currentState, previousState );
 		}
@@ -141,12 +141,12 @@ public class SelectedObjectCondition extends InputCondition {
 
 	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
-		if ( (this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH) && currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject() )
+		if( ( this.switchBehavior == ObjectSwitchBehavior.END_ON_SWITCH ) && ( currentState.getCurrentlySelectedObject() != previousState.getCurrentlySelectedObject() ) )
 		{
 			return true;
+		} else {
+			return ( testState( currentState ) != testState( previousState ) );
 		}
-		else return ( testState( currentState ) != testState( previousState ));
 	}
-
 
 }

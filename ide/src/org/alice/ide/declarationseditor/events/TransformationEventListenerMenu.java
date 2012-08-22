@@ -42,6 +42,7 @@ public class TransformationEventListenerMenu extends EventListenerMenuModel {
 	public static TransformationEventListenerMenu getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TransformationEventListenerMenu() {
 		super( java.util.UUID.fromString( "67822611-4013-4fce-97b0-3c9e4d6440a1" ) );
 	}

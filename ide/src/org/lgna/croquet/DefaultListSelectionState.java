@@ -46,29 +46,35 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultListSelectionState< E > extends ListSelectionState< E > {
-	private final java.util.concurrent.CopyOnWriteArrayList< E > data = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex ) {
+public class DefaultListSelectionState<E> extends ListSelectionState<E> {
+	private final java.util.concurrent.CopyOnWriteArrayList<E> data = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex ) {
 		super( group, id, codec, selectionIndex );
 	}
-	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec ) {
+
+	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec ) {
 		this( group, id, codec, -1 );
 	}
-	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex, java.util.Collection<E> data ) {
+
+	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex, java.util.Collection<E> data ) {
 		this( group, id, codec, selectionIndex );
 		this.data.addAll( data );
 	}
-	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec< E > codec, int selectionIndex, E... data ) {
+
+	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex, E... data ) {
 		this( group, id, codec, selectionIndex, java.util.Arrays.asList( data ) );
 	}
 
-	public java.util.Iterator< E > iterator() {
+	public java.util.Iterator<E> iterator() {
 		return this.data.iterator();
 	}
+
 	@Override
 	public int indexOf( E item ) {
 		return this.data.indexOf( item );
 	}
+
 	@Override
 	public E getItemAt( int index ) {
 		if( index >= 0 ) {
@@ -77,31 +83,34 @@ public class DefaultListSelectionState< E > extends ListSelectionState< E > {
 			return null;
 		}
 	}
+
 	@Override
 	public int getItemCount() {
 		return this.data.size();
 	}
+
 	@Override
-	public E[] toArray( Class< E > componentType ) {
+	public E[] toArray( Class<E> componentType ) {
 		E[] rv = (E[])java.lang.reflect.Array.newInstance( componentType, this.getItemCount() );
 		this.data.toArray( rv );
-//		for( int i = 0; i < rv.length; i++ ) {
-//			rv[ i ] = this.getItemAt( i );
-//		}
+		//		for( int i = 0; i < rv.length; i++ ) {
+		//			rv[ i ] = this.getItemAt( i );
+		//		}
 		return rv;
-	}	
-	
+	}
+
 	@Override
 	protected void internalAddItem( E item ) {
 		this.data.add( item );
 	}
+
 	@Override
 	protected void internalRemoveItem( E item ) {
 		this.data.remove( item );
 	}
-	
+
 	@Override
-	protected void internalSetItems( java.util.Collection< E > items ) {
+	protected void internalSetItems( java.util.Collection<E> items ) {
 		this.data.clear();
 		this.data.addAll( items );
 	}

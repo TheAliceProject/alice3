@@ -49,7 +49,9 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 	public PostIssueOperation( java.util.UUID individualId ) {
 		super( individualId );
 	}
+
 	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType();
+
 	@Override
 	protected final void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
@@ -65,7 +67,7 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 						//pass
 					} else {
 						if( pane.isSubmitSuccessful() ) {
-							
+
 							java.net.URL urlResult = pane.getURLResult();
 							final String MESSAGE = "Your issue report has been successfully submitted.  Thank you.";
 							Object message;

@@ -45,9 +45,9 @@ package org.alice.ide.croquet.models.numberpad;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /* extends edu.cmu.cs.dennisc.croquet.StringState */ {
+public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* extends edu.cmu.cs.dennisc.croquet.StringState */{
 	@Deprecated
-	/*package-private*/ final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
+	/* package-private */final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
 
 	private final javax.swing.text.PlainDocument document = new javax.swing.text.PlainDocument();
 	private final javax.swing.JTextField textField = new javax.swing.JTextField();
@@ -55,33 +55,41 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 		private void update( javax.swing.event.DocumentEvent e ) {
 			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
 		}
+
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );
 		}
+
 		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );
 		}
+
 		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );
 		}
 	};
+
 	public NumberModel( org.lgna.croquet.Group group, java.util.UUID id ) {
 		this.textField.setDocument( this.document );
 		this.document.addDocumentListener( this.documentListener );
 	}
-	
+
 	public javax.swing.JTextField getTextField() {
 		return this.textField;
 	}
+
 	private void replaceSelection( String s ) {
 		this.textField.replaceSelection( s );
 	}
+
 	public void replaceSelection( short numeral ) {
 		this.replaceSelection( Short.toString( numeral ) );
 	}
+
 	public void replaceSelectionWithDecimalPoint() {
 		this.replaceSelection( DecimalPointOperation.getInstance( this ).getName() );
 	}
+
 	public void negate() {
 		final int N = document.getLength();
 		try {
@@ -101,6 +109,7 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 			throw new RuntimeException( ble );
 		}
 	}
+
 	public void delete() {
 		javax.swing.text.Caret caret = this.textField.getCaret();
 		int dot = caret.getDot();
@@ -110,13 +119,14 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 		} else {
 			if( dot > 0 ) {
 				try {
-					document.remove( dot-1, 1 );
+					document.remove( dot - 1, 1 );
 				} catch( javax.swing.text.BadLocationException ble ) {
 					throw new RuntimeException( ble );
 				}
 			}
 		}
 	}
+
 	public void setText( String text ) {
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );
@@ -124,13 +134,16 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 			throw new RuntimeException( ble );
 		}
 	}
+
 	public void selectAll() {
 		this.textField.selectAll();
 	}
-	
+
 	public abstract boolean isDecimalPointSupported();
+
 	protected abstract N valueOf( String s );
-//	protected abstract String getEmptyTextExplanation();
+
+	//	protected abstract String getEmptyTextExplanation();
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		try {
 			final int N = document.getLength();
@@ -153,6 +166,7 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 			throw new RuntimeException( ble );
 		}
 	}
+
 	public N getExpressionValue() {
 		try {
 			final int N = document.getLength();

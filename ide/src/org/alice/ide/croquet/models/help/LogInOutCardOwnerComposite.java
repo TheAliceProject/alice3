@@ -51,8 +51,8 @@ import org.lgna.croquet.State.ValueListener;
 public final class LogInOutCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
 	private final LogInCard logInCard = new LogInCard();
 	private final LogOutCard logOutCard = new LogOutCard();
-	
-	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>(){
+
+	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
 
 		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
@@ -60,7 +60,7 @@ public final class LogInOutCardOwnerComposite extends org.lgna.croquet.CardOwner
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			updateCard();
 		}
-		
+
 	};
 
 	public LogInOutCardOwnerComposite() {
@@ -69,7 +69,7 @@ public final class LogInOutCardOwnerComposite extends org.lgna.croquet.CardOwner
 		this.addCard( this.logOutCard );
 		this.getView().setBackgroundColor( null );
 	}
-	
+
 	private void updateCard() {
 		if( this.logInCard.getLoginDialogComposite().getIsLoggedIn().getValue() ) {
 			logOutCard.updateWelcomeString();
@@ -78,12 +78,13 @@ public final class LogInOutCardOwnerComposite extends org.lgna.croquet.CardOwner
 			this.showCard( this.logInCard );
 		}
 	}
-	
+
 	@Override
 	public void handlePreActivation() {
 		this.logInCard.getLoginDialogComposite().getIsLoggedIn().addAndInvokeValueListener( this.isLoggedInAdapter );
 		super.handlePreActivation();
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		this.logInCard.getLoginDialogComposite().getIsLoggedIn().removeValueListener( this.isLoggedInAdapter );

@@ -47,6 +47,7 @@ package org.lgna.common;
  */
 public class ThreadUtilities {
 	private static int threadCountForDescription = 0;
+
 	public static void doTogether( Runnable... runnables ) {
 		switch( runnables.length ) {
 		case 0:
@@ -55,57 +56,61 @@ public class ThreadUtilities {
 			runnables[ 0 ].run();
 			break;
 		default:
-			final java.util.List< RuntimeException > runtimeExceptions = new java.util.LinkedList< RuntimeException >();
+			final java.util.List<RuntimeException> runtimeExceptions = new java.util.LinkedList<RuntimeException>();
 			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
-	    	for( final Runnable runnable : runnables ) {
-	    		new ComponentThread( new Runnable() {
-	                public void run() {
-	            		try {
-		            		runnable.run();
-	            		} catch( RuntimeException re ) {
-	            			synchronized( runtimeExceptions ) {
-		            			runtimeExceptions.add( re );
+			for( final Runnable runnable : runnables ) {
+				new ComponentThread( new Runnable() {
+					public void run() {
+						try {
+							runnable.run();
+						} catch( RuntimeException re ) {
+							synchronized( runtimeExceptions ) {
+								runtimeExceptions.add( re );
 							}
-	            		} finally {
-	            			try {
-            					barrier.await();
-	            			} catch( InterruptedException ie ) {
-	            				throw new RuntimeException( ie );
-	            			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-	            				throw new RuntimeException( bbe );
-	            			}
-	            		}
-	    	        }
-	    		}, "DoTogether-"+(ThreadUtilities.threadCountForDescription++ ) ).start();
-	    	}
+						} finally {
+							try {
+								barrier.await();
+							} catch( InterruptedException ie ) {
+								throw new RuntimeException( ie );
+							} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+								throw new RuntimeException( bbe );
+							}
+						}
+					}
+				}, "DoTogether-" + ( ThreadUtilities.threadCountForDescription++ ) ).start();
+			}
 			try {
-    			barrier.await();
+				barrier.await();
 			} catch( InterruptedException ie ) {
 				throw new RuntimeException( ie );
 			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
 				throw new RuntimeException( bbe );
 			}
 			synchronized( runtimeExceptions ) {
-		        if( runtimeExceptions.isEmpty() ) {
-		        	//pass
-		        } else {
-		        	//todo:
-		        	throw runtimeExceptions.get( 0 );
-		        }
+				if( runtimeExceptions.isEmpty() ) {
+					//pass
+				} else {
+					//todo:
+					throw runtimeExceptions.get( 0 );
+				}
 			}
 		}
 	}
+
 	private static class ForEachRunnableAdapter<T> implements Runnable {
 		private final EachInTogetherRunnable<T> eachInTogetherRunnable;
 		private final T item;
+
 		public ForEachRunnableAdapter( EachInTogetherRunnable<T> eachInTogetherRunnable, T item ) {
 			this.eachInTogetherRunnable = eachInTogetherRunnable;
 			this.item = item;
 		}
+
 		public void run() {
 			this.eachInTogetherRunnable.run( this.item );
 		}
 	}
+
 	public static <T extends Object> void eachInTogether( EachInTogetherRunnable<T> eachInTogetherRunnable, T... items ) {
 		switch( items.length ) {
 		case 0:

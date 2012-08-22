@@ -45,11 +45,11 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ParametersPane extends org.alice.ide.croquet.components.AbstractListPropertyPane< org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter >, org.lgna.project.ast.UserParameter > {
+public class ParametersPane extends org.alice.ide.croquet.components.AbstractListPropertyPane<org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserParameter>, org.lgna.project.ast.UserParameter> {
 	public ParametersPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserCode code ) {
 		super( factory, code.getRequiredParamtersProperty(), javax.swing.BoxLayout.LINE_AXIS );
 	}
-	
+
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getActiveInstance();
 	}
@@ -59,9 +59,10 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.UserParameter parameter ) {
+	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.UserParameter parameter ) {
 		return new TypedParameterPane( getProperty(), parameter );
 	}
+
 	@Override
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
@@ -85,14 +86,16 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 			}
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createInterstitial( int i, int N ) {
-		if( i<N-1 ) {
+	protected org.lgna.croquet.components.Component<?> createInterstitial( int i, int N ) {
+		if( i < ( N - 1 ) ) {
 			return new org.lgna.croquet.components.Label( ", " );
 		} else {
 			return org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 );
 		}
 	}
+
 	@Override
 	protected void addPostfixComponents() {
 		super.addPostfixComponents();

@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.cascade.array;
  * @author Dennis Cosgrove
  */
 public class LocalArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayLengthFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized LocalArrayLengthFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
 		assert local != null;
 		LocalArrayLengthFillIn rv = map.get( local );
@@ -59,11 +60,14 @@ public class LocalArrayLengthFillIn extends ArrayLengthFillIn {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserLocal local;
+
 	private LocalArrayLengthFillIn( org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "007ec992-c623-4a2b-afcc-5642dfd7be75" ) );
 		this.local = local;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return new org.lgna.project.ast.LocalAccess( this.local );

@@ -56,6 +56,7 @@ public abstract class AbstractCode extends AbstractMember implements Code {
 			return this;
 		}
 	}
+
 	public AbstractCode getLongestInChain() {
 		AbstractCode next = this.getNextLongerInChain();
 		if( next != null ) {
@@ -64,10 +65,14 @@ public abstract class AbstractCode extends AbstractMember implements Code {
 			return this;
 		}
 	}
+
 	public final boolean isValid() {
 		return this.getDeclaringType() != null;
 	}
+
 	public abstract AbstractCode getNextLongerInChain();
+
 	public abstract AbstractCode getNextShorterInChain();
+
 	public abstract boolean isSignatureLocked();
 }

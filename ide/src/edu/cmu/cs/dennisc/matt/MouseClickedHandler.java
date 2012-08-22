@@ -3,8 +3,8 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.MouseClickEvent;
@@ -14,11 +14,11 @@ import org.lgna.story.event.MouseClickOnScreenListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickEvent> {
+public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClickEvent> {
 
-	HashMap<Object,LinkedList<Object>> map = new HashMap<Object,LinkedList<Object>>();
+	HashMap<Object, LinkedList<Object>> map = new HashMap<Object, LinkedList<Object>>();
 	Object empty = new Object();
-	private HashMap<Object,Class<?>> classMap = Collections.newHashMap();
+	private HashMap<Object, Class<?>> classMap = Collections.newHashMap();
 
 	private boolean isMouseButtonListenerInExistence() {
 		//		if( this.mouseButtonListeners.size() > 0 ) {
@@ -54,6 +54,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 	public MouseClickedHandler() {
 		map.put( empty, new LinkedList<Object>() );
 	}
+
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, SScene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
 			final org.lgna.story.event.MouseClickEvent mbe = new org.lgna.story.event.MouseClickEvent( e, scene );
@@ -104,19 +105,21 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 					}
 					if( listeners != null ) {
 						for( Object listener : listeners ) {
-							if( classMap.get( listener ) == null || classMap.get( listener ).isAssignableFrom( checkEvent.getObjectAtMouseLocation().getClass() ) )
+							if( ( classMap.get( listener ) == null ) || classMap.get( listener ).isAssignableFrom( checkEvent.getObjectAtMouseLocation().getClass() ) ) {
 								fireEvent( listener, event, modelAtMouseLocation );
+							}
 						}
 					}
 				}
 			}
 		}
 	}
+
 	public <T> void addListener( Object listener, Class<T> cls, MultipleEventPolicy eventPolicy, Visual[] targets ) {
 		registerIsFiringMap( listener, targets );
 		registerPolicyMap( listener, eventPolicy );
 		classMap.put( listener, cls );
-		if( targets != null && targets.length > 0 ) {
+		if( ( targets != null ) && ( targets.length > 0 ) ) {
 			for( Visual target : targets ) {
 				if( map.get( target ) != null ) {
 					map.get( target ).add( listener );

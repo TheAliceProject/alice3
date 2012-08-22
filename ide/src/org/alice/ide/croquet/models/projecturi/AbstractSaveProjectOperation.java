@@ -49,18 +49,22 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 	public AbstractSaveProjectOperation( java.util.UUID individualUUID ) {
 		super( individualUUID );
 	}
+
 	@Override
 	protected java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application ) {
 		return application.getMyProjectsDirectory();
 	}
+
 	@Override
 	protected String getExtension() {
 		return org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
 	}
+
 	@Override
 	protected String getInitialFilename() {
 		return null;
 	}
+
 	@Override
 	protected void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException {
 		application.saveProjectTo( file );

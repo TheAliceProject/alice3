@@ -6,5 +6,5 @@ package edu.cmu.cs.dennisc.nebulous;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonAdapter extends GenericModelAdapter< Person > {
+public class PersonAdapter extends GenericModelAdapter<Person> {
 }

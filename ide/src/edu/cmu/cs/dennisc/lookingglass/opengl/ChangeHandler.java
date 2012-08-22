@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  */
 public abstract class ChangeHandler {
 	//private static java.util.concurrent.Semaphore s_semaphore = new java.util.concurrent.Semaphore( 1 );
-	private static java.util.List< edu.cmu.cs.dennisc.pattern.event.Event< ? > > s_events = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.event.Event< ? >>();
+	private static java.util.List<edu.cmu.cs.dennisc.pattern.event.Event<?>> s_events = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.event.Event<?>>();
 
 	private static Object s_object = new Object();
 	private static int s_count;
@@ -77,15 +77,16 @@ public abstract class ChangeHandler {
 	}
 
 	private static int eventCount = 0;
-	
+
 	public static int getEventCountSinceLastReset() {
 		return ChangeHandler.eventCount;
 	}
+
 	public static void resetEventCount() {
 		ChangeHandler.eventCount = 0;
 	}
-	
-	private static void handleEvent( edu.cmu.cs.dennisc.pattern.event.Event< ? > event ) {
+
+	private static void handleEvent( edu.cmu.cs.dennisc.pattern.event.Event<?> event ) {
 		if( event instanceof edu.cmu.cs.dennisc.property.event.PropertyEvent ) {
 			edu.cmu.cs.dennisc.property.event.PropertyEvent propertyEvent = (edu.cmu.cs.dennisc.property.event.PropertyEvent)event;
 			ElementAdapter.handlePropertyChanged( (edu.cmu.cs.dennisc.property.InstanceProperty<?>)propertyEvent.getTypedSource() );
@@ -110,7 +111,8 @@ public abstract class ChangeHandler {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "UNHANDLED EVENT:", event );
 		}
 	}
-	private static void handleOrBufferEvent( edu.cmu.cs.dennisc.pattern.event.Event< ? > event ) {
+
+	private static void handleOrBufferEvent( edu.cmu.cs.dennisc.pattern.event.Event<?> event ) {
 		if( isInRenderingMode() ) {
 			synchronized( s_events ) {
 				s_events.add( event );
@@ -121,7 +123,7 @@ public abstract class ChangeHandler {
 			}
 			//			fireRepaint();			
 		}
-		ChangeHandler.eventCount ++;
+		ChangeHandler.eventCount++;
 	}
 
 	public static void handleBufferedChanges() {
@@ -135,6 +137,7 @@ public abstract class ChangeHandler {
 	private static edu.cmu.cs.dennisc.property.event.PropertyListener s_propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
+
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			handleOrBufferEvent( e );
 		}
@@ -144,6 +147,7 @@ public abstract class ChangeHandler {
 		public void componentAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
 			handleOrBufferEvent( e );
 		}
+
 		public void componentRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
 			handleOrBufferEvent( e );
 		}
@@ -152,6 +156,7 @@ public abstract class ChangeHandler {
 		public void graphicAdded( edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e ) {
 			handleOrBufferEvent( e );
 		}
+
 		public void graphicRemoved( edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e ) {
 			handleOrBufferEvent( e );
 		}
@@ -174,6 +179,7 @@ public abstract class ChangeHandler {
 	private static edu.cmu.cs.dennisc.pattern.event.ReleaseListener s_releaseListener = new edu.cmu.cs.dennisc.pattern.event.ReleaseListener() {
 		public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 		}
+
 		public void released( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 			handleOrBufferEvent( e );
 		}
@@ -182,35 +188,36 @@ public abstract class ChangeHandler {
 	public static void addListenersAndObservers( edu.cmu.cs.dennisc.pattern.AbstractElement element ) {
 		element.addReleaseListener( s_releaseListener );
 		if( element instanceof edu.cmu.cs.dennisc.scenegraph.Element ) {
-			((edu.cmu.cs.dennisc.scenegraph.Element)element).addPropertyListener( s_propertyListener );
+			( (edu.cmu.cs.dennisc.scenegraph.Element)element ).addPropertyListener( s_propertyListener );
 			if( element instanceof edu.cmu.cs.dennisc.scenegraph.Component ) {
-				((edu.cmu.cs.dennisc.scenegraph.Component)element).addAbsoluteTransformationListener( s_absoluteTransformationListener );
-				((edu.cmu.cs.dennisc.scenegraph.Component)element).addHierarchyListener( s_hierarchyListener );
+				( (edu.cmu.cs.dennisc.scenegraph.Component)element ).addAbsoluteTransformationListener( s_absoluteTransformationListener );
+				( (edu.cmu.cs.dennisc.scenegraph.Component)element ).addHierarchyListener( s_hierarchyListener );
 				if( element instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-					((edu.cmu.cs.dennisc.scenegraph.Composite)element).addChildrenListener( s_childrenListener );
+					( (edu.cmu.cs.dennisc.scenegraph.Composite)element ).addChildrenListener( s_childrenListener );
 				}
 			} else if( element instanceof edu.cmu.cs.dennisc.scenegraph.Layer ) {
-				((edu.cmu.cs.dennisc.scenegraph.Layer)element).addGraphicsListener( s_graphicsListener );
+				( (edu.cmu.cs.dennisc.scenegraph.Layer)element ).addGraphicsListener( s_graphicsListener );
 			}
 		} else if( element instanceof edu.cmu.cs.dennisc.texture.Texture ) {
-			((edu.cmu.cs.dennisc.texture.Texture)element).addTextureListener( s_textureListener );
+			( (edu.cmu.cs.dennisc.texture.Texture)element ).addTextureListener( s_textureListener );
 		}
 	}
+
 	public static void removeListenersAndObservers( edu.cmu.cs.dennisc.pattern.AbstractElement element ) {
 		element.removeReleaseListener( s_releaseListener );
 		if( element instanceof edu.cmu.cs.dennisc.scenegraph.Element ) {
-			((edu.cmu.cs.dennisc.scenegraph.Element)element).removePropertyListener( s_propertyListener );
+			( (edu.cmu.cs.dennisc.scenegraph.Element)element ).removePropertyListener( s_propertyListener );
 			if( element instanceof edu.cmu.cs.dennisc.scenegraph.Component ) {
-				((edu.cmu.cs.dennisc.scenegraph.Component)element).removeAbsoluteTransformationListener( s_absoluteTransformationListener );
-				((edu.cmu.cs.dennisc.scenegraph.Component)element).removeHierarchyListener( s_hierarchyListener );
+				( (edu.cmu.cs.dennisc.scenegraph.Component)element ).removeAbsoluteTransformationListener( s_absoluteTransformationListener );
+				( (edu.cmu.cs.dennisc.scenegraph.Component)element ).removeHierarchyListener( s_hierarchyListener );
 				if( element instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-					((edu.cmu.cs.dennisc.scenegraph.Composite)element).removeChildrenListener( s_childrenListener );
+					( (edu.cmu.cs.dennisc.scenegraph.Composite)element ).removeChildrenListener( s_childrenListener );
 				}
 			} else if( element instanceof edu.cmu.cs.dennisc.scenegraph.Layer ) {
-				((edu.cmu.cs.dennisc.scenegraph.Layer)element).removeGraphicsListener( s_graphicsListener );
+				( (edu.cmu.cs.dennisc.scenegraph.Layer)element ).removeGraphicsListener( s_graphicsListener );
 			}
 		} else if( element instanceof edu.cmu.cs.dennisc.texture.Texture ) {
-			((edu.cmu.cs.dennisc.texture.Texture)element).removeTextureListener( s_textureListener );
+			( (edu.cmu.cs.dennisc.texture.Texture)element ).removeTextureListener( s_textureListener );
 		}
 	}
 }

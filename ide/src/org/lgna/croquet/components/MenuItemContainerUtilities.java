@@ -50,24 +50,24 @@ public class MenuItemContainerUtilities {
 	private MenuItemContainerUtilities() {
 		throw new AssertionError();
 	}
-	
-//	public static java.util.List< Model > getMenuPath( MenuItem menuItem ) {
-//		java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//		rv.add( menuItem.getModel() );
-//
-//		Container< ? > parent = menuItem.getParent();
-//		while( parent != null ) {
-//			if( parent instanceof MenuItemContainer ) {
-//				MenuItemContainer menuItemContainer = (MenuItemContainer)parent;
-//				rv.add( menuItemContainer.getViewController().getModel() );
-//			} else {
-//				break;
-//			}
-//			parent = parent.getParent();
-//		}
-//		return rv;
-//	}
-	
+
+	//	public static java.util.List< Model > getMenuPath( MenuItem menuItem ) {
+	//		java.util.List< Model > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//		rv.add( menuItem.getModel() );
+	//
+	//		Container< ? > parent = menuItem.getParent();
+	//		while( parent != null ) {
+	//			if( parent instanceof MenuItemContainer ) {
+	//				MenuItemContainer menuItemContainer = (MenuItemContainer)parent;
+	//				rv.add( menuItemContainer.getViewController().getModel() );
+	//			} else {
+	//				break;
+	//			}
+	//			parent = parent.getParent();
+	//		}
+	//		return rv;
+	//	}
+
 	public static MenuItemContainer addMenuElement( MenuItemContainer rv, org.lgna.croquet.StandardMenuItemPrepModel model ) {
 		if( model != null ) {
 			model.createMenuItemAndAddTo( rv );
@@ -76,12 +76,14 @@ public class MenuItemContainerUtilities {
 		}
 		return rv;
 	}
+
 	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
 		for( org.lgna.croquet.StandardMenuItemPrepModel model : models ) {
 			addMenuElement( rv, model );
 		}
 		return rv;
 	}
+
 	public static MenuItemContainer addMenuElements( MenuItemContainer rv, org.lgna.croquet.StandardMenuItemPrepModel[] models ) {
 		for( org.lgna.croquet.StandardMenuItemPrepModel model : models ) {
 			addMenuElement( rv, model );

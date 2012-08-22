@@ -50,12 +50,15 @@ public class DeclareLocalDragModel extends StatementTemplateDragModel {
 	private static class SingletonHolder {
 		private static DeclareLocalDragModel instance = new DeclareLocalDragModel();
 	}
+
 	public static DeclareLocalDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private DeclareLocalDragModel() {
 		super( java.util.UUID.fromString( "8a72ad5f-8273-4de9-a1c4-60bedda45b9e" ), org.lgna.project.ast.LocalDeclarationStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalDeclarationStatement() );
 	}
+
 	@Override
 	public org.lgna.croquet.Operation getDropModel( org.lgna.croquet.history.DragStep context, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.ast.declaration.InsertLocalDeclarationStatementComposite.getInstance( blockStatementIndexPair ).getOperation();

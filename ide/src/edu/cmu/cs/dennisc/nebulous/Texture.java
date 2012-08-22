@@ -44,18 +44,18 @@ package edu.cmu.cs.dennisc.nebulous;
 
 /**
  * @author alice
- *
+ * 
  */
-public enum Texture implements NebulousPaint{
+public enum Texture implements NebulousPaint {
 	COOL_WALL,
 	COOL_WOOD_FLOOR,
 	CHECKERS_CEILING;
-	
+
 	private NebulousTexture nebulousTexture;
-	
+
 	public NebulousTexture getTexture() {
-		if (this.nebulousTexture == null) {
-			this.nebulousTexture = new NebulousTexture(this.toString());
+		if( this.nebulousTexture == null ) {
+			this.nebulousTexture = new NebulousTexture( this.toString() );
 		}
 		return this.nebulousTexture;
 	}

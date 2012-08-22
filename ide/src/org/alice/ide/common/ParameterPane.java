@@ -46,9 +46,9 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class ParameterPane extends TransientPane {
-	private org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty;
+	private org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserParameter> parametersProperty;
 
-	public ParameterPane( org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty, final org.lgna.project.ast.UserParameter parameter ) {
+	public ParameterPane( org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserParameter> parametersProperty, final org.lgna.project.ast.UserParameter parameter ) {
 		super( org.alice.ide.ast.draganddrop.expression.ParameterAccessDragModel.getInstance( parameter ) );
 		this.parametersProperty = parametersProperty;
 		this.addComponent( new org.alice.ide.ast.components.DeclarationNameLabel( parameter ) );
@@ -59,9 +59,9 @@ public class ParameterPane extends TransientPane {
 			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, parameter );
 			this.setPopupPrepModel( new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
-				public void handlePopupMenuPrologue(org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+				public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
 					super.handlePopupMenuPrologue( popupMenu, context );
-					java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+					java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 					models.add( org.alice.ide.ast.rename.RenameParameterComposite.getInstance( parameter ).getOperation().getMenuItemPrepModel() );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						models.add( forwardShiftCodeParameterOperation.getMenuItemPrepModel() );

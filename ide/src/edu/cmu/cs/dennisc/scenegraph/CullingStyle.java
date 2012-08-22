@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * none, flat, or smooth.
- *
+ * 
  * @see Visual#setCullingStyle
  * @author Dennis Cosgrove
  */

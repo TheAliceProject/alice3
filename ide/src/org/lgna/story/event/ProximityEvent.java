@@ -53,9 +53,11 @@ public class ProximityEvent<A extends org.lgna.story.SMovableTurnable, B extends
 		this.closeFromA = closeFromA;
 		this.closeFromB = closeFromB;
 	}
+
 	public A getCollidingFromGroupA() {
 		return this.closeFromA;
 	}
+
 	public B getCollidingFromGroupB() {
 		return this.closeFromB;
 	}

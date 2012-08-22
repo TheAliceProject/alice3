@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.renderers;
  */
 public abstract class ListCellRenderer<E> extends javax.swing.DefaultListCellRenderer {
 	protected abstract javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus );
+
 	@Override
 	public final java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		java.awt.Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );

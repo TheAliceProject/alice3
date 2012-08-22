@@ -51,6 +51,7 @@ public abstract class UnitQuaternionAnimation extends InterpolationAnimation<edu
 	public UnitQuaternionAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.UnitQuaternion q0, edu.cmu.cs.dennisc.math.UnitQuaternion q1 ) {
 		super( duration, style, q0, q1 );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.math.UnitQuaternion newE( edu.cmu.cs.dennisc.math.UnitQuaternion other ) {
 		edu.cmu.cs.dennisc.math.UnitQuaternion rv;
@@ -61,6 +62,7 @@ public abstract class UnitQuaternionAnimation extends InterpolationAnimation<edu
 		}
 		return rv;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.math.UnitQuaternion interpolate( edu.cmu.cs.dennisc.math.UnitQuaternion rv, edu.cmu.cs.dennisc.math.UnitQuaternion v0, edu.cmu.cs.dennisc.math.UnitQuaternion v1, double portion ) {
 		assert v0.isNaN() == false;

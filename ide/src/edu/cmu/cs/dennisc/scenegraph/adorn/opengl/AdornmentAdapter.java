@@ -48,9 +48,9 @@ import edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults;
  * @author Dennis Cosgrove
  */
 public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter<edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> {
-	protected edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Composite > m_adornmentRootAdapter = null;
-	
-	protected abstract void actuallyRender( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Composite > adornmentRootAdapter );
+	protected edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> m_adornmentRootAdapter = null;
+
+	protected abstract void actuallyRender( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> adornmentRootAdapter );
 
 	@Override
 	public void setup( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
@@ -66,7 +66,7 @@ public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.lookingglass.o
 			rc.gl.glPopMatrix();
 		}
 	}
-	
+
 	@Override
 	public void renderGhost( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.GhostAdapter root ) {
 		//todo?
@@ -78,7 +78,7 @@ public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.lookingglass.o
 		//todo?
 		//pass
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.adorningRoot ) {

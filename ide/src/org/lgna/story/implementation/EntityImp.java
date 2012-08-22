@@ -56,12 +56,15 @@ public abstract class EntityImp implements ReferenceFrame {
 	public static EntityImp getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		return sgElement != null ? sgElement.getBonusDataFor( ENTITY_IMP_KEY ) : null;
 	}
+
 	protected void putInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		sgElement.putBonusDataFor( ENTITY_IMP_KEY, this );
 	}
+
 	public static <T extends EntityImp> T getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstance( sgElement ), cls );
 	}
+
 	public static org.lgna.story.SThing getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		EntityImp imp = getInstance( sgElement );
 		if( imp != null ) {
@@ -70,6 +73,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			return null;
 		}
 	}
+
 	public static <T extends org.lgna.story.SThing> T getAbstractionFromSgElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement, Class<T> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getAbstractionFromSgElement( sgElement ), cls );
 	}
@@ -79,10 +83,12 @@ public abstract class EntityImp implements ReferenceFrame {
 	public String getName() {
 		return this.name;
 	}
+
 	public void setName( String name ) {
 		this.name = name;
 		this.getSgComposite().setName( name + ".sgComposite" );
 	}
+
 	public Property<?> getPropertyForAbstractionGetter( java.lang.reflect.Method getterMthd ) {
 		String propertyName = edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( getterMthd );
 		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( this.getClass(), propertyName );
@@ -90,12 +96,14 @@ public abstract class EntityImp implements ReferenceFrame {
 	}
 
 	protected abstract edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans );
+
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans = this.getTransformation( asSeenBy );
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
 		this.updateCumulativeBound( cumulativeBound, trans );
 		return cumulativeBound.getBoundingBox();
 	}
+
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
 		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	}
@@ -129,10 +137,13 @@ public abstract class EntityImp implements ReferenceFrame {
 	//	}
 
 	public abstract org.lgna.story.SThing getAbstraction();
+
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
+
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 		return this.getSgComposite();
 	}
+
 	public EntityImp getActualEntityImplementation( EntityImp ths ) {
 		return this;
 	}
@@ -140,6 +151,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
 		return this.getSgComposite().getParent();
 	}
+
 	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
 		this.getSgComposite().setParent( sgVehicle );
 	}
@@ -175,6 +187,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			return null;
 		}
 	}
+
 	public void setVehicle( EntityImp vehicle ) {
 		assert vehicle != this;
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
@@ -198,10 +211,12 @@ public abstract class EntityImp implements ReferenceFrame {
 		EntityImp vehicle = this.getVehicle();
 		return vehicle != null ? vehicle.getScene() : null;
 	}
+
 	protected ProgramImp getProgram() {
 		SceneImp scene = this.getScene();
 		return scene != null ? scene.getProgram() : null;
 	}
+
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		ProgramImp program = this.getProgram();
 		return program != null ? program.getOnscreenLookingGlass() : null;
@@ -210,6 +225,7 @@ public abstract class EntityImp implements ReferenceFrame {
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
 		return this.getSgComposite().getAbsoluteTransformation();
 	}
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( ReferenceFrame asSeenBy ) {
 		return this.getSgComposite().getTransformation( asSeenBy.getSgReferenceFrame() );
 	}
@@ -219,6 +235,7 @@ public abstract class EntityImp implements ReferenceFrame {
 		rv.setVehicle( this );
 		return rv;
 	}
+
 	public StandInImp createOffsetStandIn( double x, double y, double z ) {
 		StandInImp rv = this.createStandIn();
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
@@ -246,6 +263,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			return Double.NaN;
 		}
 	}
+
 	protected double adjustDurationIfNecessary( double duration ) {
 		if( duration == RIGHT_NOW ) {
 			//pass
@@ -261,6 +279,7 @@ public abstract class EntityImp implements ReferenceFrame {
 		}
 		return duration;
 	}
+
 	public void alreadyAdjustedDelay( double duration ) {
 		if( duration == RIGHT_NOW ) {
 			//pass;
@@ -269,15 +288,18 @@ public abstract class EntityImp implements ReferenceFrame {
 				@Override
 				protected void prologue() {
 				}
+
 				@Override
 				protected void setPortion( double portion ) {
 				}
+
 				@Override
 				protected void epilogue() {
 				}
 			} );
 		}
 	}
+
 	public void delay( double duration ) {
 		this.alreadyAdjustedDelay( this.adjustDurationIfNecessary( duration ) );
 	}
@@ -296,6 +318,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			animation.complete( animationObserver );
 		}
 	}
+
 	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
 		this.perform( animation, null );
 	}
@@ -317,13 +340,16 @@ public abstract class EntityImp implements ReferenceFrame {
 		private final NumeralAction[] numeralActions = new NumeralAction[ 10 ];
 		private final NegateAction negateAction = new NegateAction( this );
 		private final BackspaceAction backspaceAction = new BackspaceAction( this );
+
 		public NumberModel( String message ) {
 			this.message = message;
-			for( int i=0; i<numeralActions.length; i++ ) {
+			for( int i = 0; i < numeralActions.length; i++ ) {
 				numeralActions[ i ] = new NumeralAction( this, (short)i );
 			}
 		}
+
 		protected abstract DecimalPointAction getDecimalPointAction();
+
 		private void append( String s ) {
 			try {
 				this.document.insertString( this.document.getLength(), s, null );
@@ -331,15 +357,18 @@ public abstract class EntityImp implements ReferenceFrame {
 				throw new RuntimeException( ble );
 			}
 		}
+
 		public void appendDigit( short numeral ) {
 			this.append( Short.toString( numeral ) );
 		}
+
 		public void appendDecimalPoint() {
 			javax.swing.Action action = this.getDecimalPointAction();
 			if( action != null ) {
 				this.append( (String)action.getValue( javax.swing.Action.NAME ) );
 			}
 		}
+
 		public void negate() {
 			final int N = this.document.getLength();
 			try {
@@ -359,18 +388,20 @@ public abstract class EntityImp implements ReferenceFrame {
 				throw new RuntimeException( ble );
 			}
 		}
+
 		public void deleteLastCharacter() {
 			final int N = this.document.getLength();
 			if( this.document.getLength() > 0 ) {
 				try {
-					this.document.remove( N-1, 1 );
+					this.document.remove( N - 1, 1 );
 				} catch( javax.swing.text.BadLocationException ble ) {
 					throw new RuntimeException( ble );
 				}
 			}
 		}
-		
+
 		protected abstract N getValue( String text );
+
 		public N getValue() {
 			try {
 				final int N = this.document.getLength();
@@ -385,7 +416,7 @@ public abstract class EntityImp implements ReferenceFrame {
 				throw new RuntimeException( ble );
 			}
 		}
-		
+
 		public javax.swing.JComponent createComponent() {
 			javax.swing.JPanel gridBagPanel = new javax.swing.JPanel();
 			gridBagPanel.setLayout( new java.awt.GridBagLayout() );
@@ -409,7 +440,6 @@ public abstract class EntityImp implements ReferenceFrame {
 			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 2 ] ), gbc );
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 			gridBagPanel.add( new javax.swing.JButton( this.numeralActions[ 3 ] ), gbc );
-
 
 			DecimalPointAction decimalPointAction = this.getDecimalPointAction();
 			if( decimalPointAction != null ) {
@@ -441,11 +471,14 @@ public abstract class EntityImp implements ReferenceFrame {
 			return rv;
 		}
 	}
+
 	private static class DoubleNumberModel extends NumberModel<Double> {
 		private final DecimalPointAction decimalPointAction = new DecimalPointAction( this );
+
 		public DoubleNumberModel( String message ) {
 			super( message );
 		}
+
 		@Override
 		protected Double getValue( String text ) {
 			double d = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
@@ -455,30 +488,37 @@ public abstract class EntityImp implements ReferenceFrame {
 				return d;
 			}
 		}
+
 		@Override
 		public DecimalPointAction getDecimalPointAction() {
 			return this.decimalPointAction;
 		}
 	}
+
 	private static class IntegerNumberModel extends NumberModel<Integer> {
 		public IntegerNumberModel( String message ) {
 			super( message );
 		}
+
 		@Override
 		protected Integer getValue( String text ) {
 			return Integer.valueOf( text );
 		}
+
 		@Override
 		public DecimalPointAction getDecimalPointAction() {
 			return null;
 		}
 	}
+
 	private static class BackspaceAction extends javax.swing.AbstractAction {
 		private final NumberModel<?> numberModel;
+
 		public BackspaceAction( NumberModel<?> numberModel ) {
 			this.numberModel = numberModel;
 			this.putValue( NAME, "\u2190" );
 		}
+
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.deleteLastCharacter();
 		}
@@ -487,37 +527,45 @@ public abstract class EntityImp implements ReferenceFrame {
 	private static class NumeralAction extends javax.swing.AbstractAction {
 		private final NumberModel<?> numberModel;
 		private final short digit;
+
 		public NumeralAction( NumberModel<?> numberModel, short digit ) {
 			this.numberModel = numberModel;
 			this.digit = digit;
 			this.putValue( NAME, Short.toString( this.digit ) );
 		}
+
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.appendDigit( digit );
 		}
 	}
+
 	private static class NegateAction extends javax.swing.AbstractAction {
 		private final NumberModel<?> numberModel;
+
 		public NegateAction( NumberModel<?> numberModel ) {
 			this.numberModel = numberModel;
 			this.putValue( NAME, "\u00B1" );
 		}
+
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.negate();
 		}
 	}
+
 	private static class DecimalPointAction extends javax.swing.AbstractAction {
 		private final NumberModel<?> numberModel;
+
 		public DecimalPointAction( NumberModel<?> numberModel ) {
 			this.numberModel = numberModel;
 			java.text.DecimalFormatSymbols decimalFormatSymbols = new java.text.DecimalFormatSymbols();
 			this.putValue( NAME, "" + decimalFormatSymbols.getDecimalSeparator() );
 		}
+
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.appendDecimalPoint();
 		}
 	}
-	
+
 	public double getDoubleFromUser( String message ) {
 		String title = null;
 		DoubleNumberModel model = new DoubleNumberModel( message );
@@ -529,6 +577,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			}
 		}
 	}
+
 	public int getIntegerFromUser( String message ) {
 		String title = null;
 		IntegerNumberModel model = new IntegerNumberModel( message );
@@ -540,6 +589,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			}
 		}
 	}
+
 	public boolean getBooleanFromUser( String message ) {
 		java.awt.Component parentComponent = this.getParentComponent();
 		String title = null;
@@ -556,24 +606,25 @@ public abstract class EntityImp implements ReferenceFrame {
 			}
 		}
 	}
+
 	public String getStringFromUser( String message ) {
 		java.awt.Component parentComponent = this.getParentComponent();
 		String title = null;
-		
+
 		javax.swing.JOptionPane optionPane = new javax.swing.JOptionPane( message, javax.swing.JOptionPane.QUESTION_MESSAGE, javax.swing.JOptionPane.DEFAULT_OPTION );
 		optionPane.setWantsInput( true );
-		
+
 		javax.swing.JDialog dialog = optionPane.createDialog( parentComponent, title );
 
-//		dialog.setResizable( true );
+		//		dialog.setResizable( true );
 
-//		if( javax.swing.JDialog.isDefaultLookAndFeelDecorated() ) {
-//			if( javax.swing.UIManager.getLookAndFeel().getSupportsWindowDecorations() ) {
-//				dialog.setUndecorated( true );
-//				dialog.getRootPane().setWindowDecorationStyle( javax.swing.JRootPane.QUESTION_DIALOG );
-//			}
-//		}
-		
+		//		if( javax.swing.JDialog.isDefaultLookAndFeelDecorated() ) {
+		//			if( javax.swing.UIManager.getLookAndFeel().getSupportsWindowDecorations() ) {
+		//				dialog.setUndecorated( true );
+		//				dialog.getRootPane().setWindowDecorationStyle( javax.swing.JRootPane.QUESTION_DIALOG );
+		//			}
+		//		}
+
 		while( true ) {
 			dialog.setVisible( true );
 			Object value = optionPane.getInputValue();
@@ -585,9 +636,10 @@ public abstract class EntityImp implements ReferenceFrame {
 			}
 		}
 	}
-	
+
 	protected void appendRepr( StringBuilder sb ) {
 	}
+
 	@Override
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -597,15 +649,16 @@ public abstract class EntityImp implements ReferenceFrame {
 		sb.append( "]" );
 		return sb.toString();
 	}
+
 	public boolean isCollidingWith( org.lgna.story.SThing other ) {
 		return AabbCollisionDetector.doTheseCollide( this.getAbstraction(), other );
 	}
-	
-//	public static void main( String[] args ) {
-//		org.lgna.story.Entity entity = new org.lgna.story.Cone();
-//		System.err.println( entity.getStringFromUser( "who are you?" ) );
-//		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
-//		System.err.println( entity.getDoubleFromUser( "how much?" ) );
-//		System.err.println( entity.getBooleanFromUser( "to be or not to be?" ) );
-//	}
+
+	//	public static void main( String[] args ) {
+	//		org.lgna.story.Entity entity = new org.lgna.story.Cone();
+	//		System.err.println( entity.getStringFromUser( "who are you?" ) );
+	//		System.err.println( entity.getIntegerFromUser( "four score and seven years ago is how many days?" ) );
+	//		System.err.println( entity.getDoubleFromUser( "how much?" ) );
+	//		System.err.println( entity.getBooleanFromUser( "to be or not to be?" ) );
+	//	}
 }

@@ -49,6 +49,7 @@ public class ClassInfoUtilities {
 	private ClassInfoUtilities() {
 		throw new AssertionError();
 	}
+
 	public static void loadClassInfos() {
 		final boolean IS_CLASSINFO_VALID = false;
 		if( IS_CLASSINFO_VALID ) {

@@ -45,27 +45,31 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InfixExpression< E extends Enum<E> > extends Expression {
+public abstract class InfixExpression<E extends Enum<E>> extends Expression {
 	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return InfixExpression.this.getLeftOperandType();
 		}
 	};
-	public edu.cmu.cs.dennisc.property.EnumProperty< E > operator = new edu.cmu.cs.dennisc.property.EnumProperty< E >( this, null );
+	public edu.cmu.cs.dennisc.property.EnumProperty<E> operator = new edu.cmu.cs.dennisc.property.EnumProperty<E>( this, null );
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return InfixExpression.this.getRightOperandType();
 		}
 	};
+
 	public InfixExpression() {
 	}
+
 	public InfixExpression( Expression leftOperand, E operator, Expression rightOperand ) {
 		this.leftOperand.setValue( leftOperand );
 		this.operator.setValue( operator );
 		this.rightOperand.setValue( rightOperand );
 	}
-	protected abstract AbstractType<?,?,?> getLeftOperandType();
-	protected abstract AbstractType<?,?,?> getRightOperandType();
+
+	protected abstract AbstractType<?, ?, ?> getLeftOperandType();
+
+	protected abstract AbstractType<?, ?, ?> getRightOperandType();
 }

@@ -46,19 +46,19 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade > {
+public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade> {
 	public BlockStatementIndexPairAndFieldStaticGetInstanceResolver( org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade instance ) {
-		super( instance, 
-				new Class[] { 
-					org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, 
-					org.lgna.project.ast.AbstractField.class 
-				}, 
+		super( instance,
+				new Class[] {
+						org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class,
+						org.lgna.project.ast.AbstractField.class
+				},
 				new Object[] {
-					instance.getBlockStatementIndexPair(),
-					instance.getField()
-				}
-		);
+						instance.getBlockStatementIndexPair(),
+						instance.getField()
+				} );
 	}
+
 	public BlockStatementIndexPairAndFieldStaticGetInstanceResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
@@ -71,6 +71,7 @@ public class BlockStatementIndexPairAndFieldStaticGetInstanceResolver extends or
 		org.lgna.project.ast.AbstractField field = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), statementId );
 		return new Object[] { blockStatementIndexPair, field };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];

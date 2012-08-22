@@ -46,9 +46,10 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.Expression > {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, GalleryPersonResourceFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized GalleryPersonResourceFillIn getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.Expression> {
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, GalleryPersonResourceFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized GalleryPersonResourceFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		GalleryPersonResourceFillIn rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -58,41 +59,46 @@ public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.ca
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.AbstractType<?,?,?> type;
-	private GalleryPersonResourceFillIn( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+
+	private GalleryPersonResourceFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( java.util.UUID.fromString( "4daa3e85-ee3a-4610-b9a1-2e8ba018e33b" ) );
 		this.type = type;
 	}
+
 	@Override
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node ) {
 		return org.alice.ide.common.TypeIcon.getInstance( type );
 	}
+
 	@Override
-	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.TypeExpression( this.type );
-//		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
-//		if( subStep.isValueCommitted() ) {
-//			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
-//			try {
-//				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
-//				
-//				org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource(personResource);
-//				
-//				org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation( 
-//						type.getDeclaredConstructors().get(0), 
-////						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
-//						argumentExpression 
-//				);
-//				return expression;
-//			} catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {
-//				throw new RuntimeException( ccee );
-//			}
-//		} else {
-//			return null;
-//		}
+		//		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
+		//		if( subStep.isValueCommitted() ) {
+		//			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
+		//			try {
+		//				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
+		//				
+		//				org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource(personResource);
+		//				
+		//				org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation( 
+		//						type.getDeclaredConstructors().get(0), 
+		////						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
+		//						argumentExpression 
+		//				);
+		//				return expression;
+		//			} catch (org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee) {
+		//				throw new RuntimeException( ccee );
+		//			}
+		//		} else {
+		//			return null;
+		//		}
 	}
+
 	@Override
-	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.Expression, Void > step ) {
+	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> step ) {
 		return null;
 	}
 }

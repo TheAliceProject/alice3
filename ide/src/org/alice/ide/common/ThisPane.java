@@ -47,11 +47,12 @@ package org.alice.ide.common;
  */
 public class ThisPane extends AccessiblePane {
 	private static final org.lgna.project.ast.JavaType TYPE_FOR_NULL = org.lgna.project.ast.JavaType.getInstance( Void.class );
-	private org.lgna.project.ast.AbstractType<?,?,?> type = TYPE_FOR_NULL;
-	private org.lgna.croquet.ListSelectionState.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite > codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	private org.lgna.project.ast.AbstractType<?, ?, ?> type = TYPE_FOR_NULL;
+	private org.lgna.croquet.ListSelectionState.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> codeSelectionObserver = new org.lgna.croquet.ListSelectionState.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			ThisPane.this.updateBasedOnFocusedDeclaration( nextValue != null ? nextValue.getDeclaration() : null );
 		}
 	};
@@ -61,23 +62,26 @@ public class ThisPane extends AccessiblePane {
 		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ThisExpression.class ) );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.updateBasedOnFocusedDeclaration( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueListener( this.codeSelectionObserver );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().removeValueListener( this.codeSelectionObserver );
 		super.handleUndisplayable();
 	}
+
 	private void updateBasedOnFocusedDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration != null ) {
 			if( declaration instanceof org.lgna.project.ast.AbstractMember ) {
-				this.type = ((org.lgna.project.ast.AbstractMember)declaration).getDeclaringType();
-			} else if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ){
-				this.type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+				this.type = ( (org.lgna.project.ast.AbstractMember)declaration ).getDeclaringType();
+			} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+				this.type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 			} else {
 				this.type = null;
 			}
@@ -93,12 +97,12 @@ public class ThisPane extends AccessiblePane {
 	}
 
 	@Override
-	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		super.paintEpilogue(g2, x, y, width, height);
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		super.paintEpilogue( g2, x, y, width, height );
 		if( this.type == TYPE_FOR_NULL ) {
 			g2.setPaint( org.lgna.croquet.components.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}
-	
+
 }

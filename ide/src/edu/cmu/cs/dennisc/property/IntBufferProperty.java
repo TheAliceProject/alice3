@@ -46,16 +46,19 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class IntBufferProperty extends PrimitiveBufferProperty< java.nio.IntBuffer > {
+public class IntBufferProperty extends PrimitiveBufferProperty<java.nio.IntBuffer> {
 	public IntBufferProperty( InstancePropertyOwner owner, java.nio.IntBuffer value ) {
 		super( owner, value );
 	}
+
 	public IntBufferProperty( InstancePropertyOwner owner, int[] value ) {
 		super( owner, java.nio.IntBuffer.wrap( value ) );
 	}
+
 	public void setValue( int[] value ) {
 		this.setValue( java.nio.IntBuffer.wrap( value ) );
 	}
+
 	@Deprecated
 	public int[] getValueAsArray() {
 		return this.getValue().array();

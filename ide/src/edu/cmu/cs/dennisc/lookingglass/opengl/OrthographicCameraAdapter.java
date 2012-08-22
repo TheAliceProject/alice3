@@ -46,9 +46,10 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCameraAdapter< edu.cmu.cs.dennisc.scenegraph.OrthographicCamera > {
+public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCameraAdapter<edu.cmu.cs.dennisc.scenegraph.OrthographicCamera> {
 	private static edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN();
-//	private edu.cmu.cs.dennisc.scenegraph.ClippedPlane m_picturePlane = new edu.cmu.cs.dennisc.scenegraph.ClippedPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
+
+	//	private edu.cmu.cs.dennisc.scenegraph.ClippedPlane m_picturePlane = new edu.cmu.cs.dennisc.scenegraph.ClippedPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
@@ -60,18 +61,18 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 			double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
 			double near = m_element.nearClippingPlaneDistance.getValue();
 			//double far = m_element.farClippingPlaneDistance.getValue();
-			
+
 			//Pixels are relative to the top of the screen, but the "up" vector is bottom relative. Make the yPixel value bottom relative
-			yPixel = actualViewport.height - yPixel; 
-			
-			double xPortion = ( xPixel - actualViewport.x ) / (double) actualViewport.width;
-			double yPortion = ( yPixel - actualViewport.y ) / (double) actualViewport.height;
-			
-			double x = left + (right-left)*xPortion;
-			double y = bottom + (top-bottom)*yPortion;
+			yPixel = actualViewport.height - yPixel;
+
+			double xPortion = ( xPixel - actualViewport.x ) / (double)actualViewport.width;
+			double yPortion = ( yPixel - actualViewport.y ) / (double)actualViewport.height;
+
+			double x = left + ( ( right - left ) * xPortion );
+			double y = bottom + ( ( top - bottom ) * yPortion );
 			double z = near;
 			rv.setOrigin( x, y, z );
-			
+
 			rv.setDirection( 0, 0, 1 );
 		}
 		return rv;
@@ -90,13 +91,13 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 
 			rv.setIdentity();
 
-			rv.right.x = 2 / (right - left);
-			rv.up.y = 2 / (top - bottom);
-			rv.backward.z = - 2 / (far - near);
+			rv.right.x = 2 / ( right - left );
+			rv.up.y = 2 / ( top - bottom );
+			rv.backward.z = -2 / ( far - near );
 
-			rv.translation.x = - (right + left) / (right - left);
-			rv.translation.y = - (top + bottom) / (top - bottom);
-			rv.translation.z = - (far + near) / (far - near);
+			rv.translation.x = -( right + left ) / ( right - left );
+			rv.translation.y = -( top + bottom ) / ( top - bottom );
+			rv.translation.z = -( far + near ) / ( far - near );
 		}
 		return rv;
 	}
@@ -108,7 +109,7 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 	}
 
 	protected edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, java.awt.Rectangle actualViewport ) {
-//		rv.set( m_picturePlane, actualViewport );
+		//		rv.set( m_picturePlane, actualViewport );
 		rv.set( m_element.picturePlane.getValue(), actualViewport );
 		return rv;
 	}
@@ -119,7 +120,7 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
 			context.gl.glOrtho( s_actualPicturePlaneBufferForReuse.getXMinimum(), s_actualPicturePlaneBufferForReuse.getXMaximum(), s_actualPicturePlaneBufferForReuse.getYMinimum(), s_actualPicturePlaneBufferForReuse.getYMaximum(), near, far );
 		}
-	}	
+	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {

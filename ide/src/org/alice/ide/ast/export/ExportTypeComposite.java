@@ -49,21 +49,23 @@ public class ExportTypeComposite extends ExportDeclarationComposite<org.alice.id
 	public ExportTypeComposite() {
 		super( java.util.UUID.fromString( "c71a02ae-ab84-4564-a4c3-ff69432019c1" ) );
 	}
+
 	@Override
 	protected org.alice.ide.ast.export.views.ExportTypeView createView() {
 		return new org.alice.ide.ast.export.views.ExportTypeView( this );
 	}
-//	@Override
-//	public void handlePreActivation() {
-//		super.handlePreActivation();
-//		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-//		ProjectInfo projectInfo = new ProjectInfo( project );
-//		this.getView().HACK_setProjectInfo( projectInfo );
-//	}
-//	@Override
-//	public void handlePostDeactivation() {
-//		super.handlePostDeactivation();
-//	}
+
+	//	@Override
+	//	public void handlePreActivation() {
+	//		super.handlePreActivation();
+	//		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
+	//		ProjectInfo projectInfo = new ProjectInfo( project );
+	//		this.getView().HACK_setProjectInfo( projectInfo );
+	//	}
+	//	@Override
+	//	public void handlePostDeactivation() {
+	//		super.handlePostDeactivation();
+	//	}
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -72,7 +74,7 @@ public class ExportTypeComposite extends ExportDeclarationComposite<org.alice.id
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		//ide.loadProjectFrom( new java.io.File( args[ 0 ] ) );
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
-		
+
 		ExportTypeComposite composite = new ExportTypeComposite();
 		composite.getView().HACK_setProjectInfo( new ProjectInfo( project ) );
 

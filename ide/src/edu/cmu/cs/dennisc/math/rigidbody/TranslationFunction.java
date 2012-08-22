@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math.rigidbody;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TranslationFunction< E extends TranslationDerivative > implements edu.cmu.cs.dennisc.math.rungekutta.Function< E > {
+public abstract class TranslationFunction<E extends TranslationDerivative> implements edu.cmu.cs.dennisc.math.rungekutta.Function<E> {
 	private edu.cmu.cs.dennisc.math.Point3 m_translation = new edu.cmu.cs.dennisc.math.Point3();
 	private edu.cmu.cs.dennisc.math.Vector3 m_momentum = new edu.cmu.cs.dennisc.math.Vector3();
 
@@ -53,7 +53,6 @@ public abstract class TranslationFunction< E extends TranslationDerivative > imp
 
 	private double m_mass = 1.0;
 	private double m_inverseMass = 1.0;
-	
 
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
@@ -67,16 +66,20 @@ public abstract class TranslationFunction< E extends TranslationDerivative > imp
 	public edu.cmu.cs.dennisc.math.Point3 accessTranslation() {
 		return m_translation;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getTranslation( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		rv.set( m_translation );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getTranslation() {
 		return getTranslation( new edu.cmu.cs.dennisc.math.Point3() );
 	}
+
 	public void setTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
 		m_translation.set( translation );
 	}
+
 	public void setTranslation( double x, double y, double z ) {
 		m_translation.set( x, y, z );
 	}
@@ -84,16 +87,20 @@ public abstract class TranslationFunction< E extends TranslationDerivative > imp
 	public edu.cmu.cs.dennisc.math.Vector3 accessMomentum() {
 		return m_momentum;
 	}
+
 	public edu.cmu.cs.dennisc.math.Vector3 getMomentum( edu.cmu.cs.dennisc.math.Vector3 rv ) {
 		rv.set( m_momentum );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Vector3 getMomentum() {
 		return getMomentum( new edu.cmu.cs.dennisc.math.Vector3() );
 	}
+
 	public void setMomentum( edu.cmu.cs.dennisc.math.Vector3 momentum ) {
 		m_momentum.set( momentum );
 	}
+
 	public void setMomentum( double x, double y, double z ) {
 		m_momentum.set( x, y, z );
 	}
@@ -101,39 +108,45 @@ public abstract class TranslationFunction< E extends TranslationDerivative > imp
 	public edu.cmu.cs.dennisc.math.Vector3 accessVelocity() {
 		return m_velocity;
 	}
+
 	public edu.cmu.cs.dennisc.math.Vector3 getVelocity( edu.cmu.cs.dennisc.math.Vector3 rv ) {
 		rv.set( m_velocity );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Vector3 getVelocity() {
 		return getVelocity( new edu.cmu.cs.dennisc.math.Vector3() );
 	}
+
 	public void setVelocity( edu.cmu.cs.dennisc.math.Vector3 velocity ) {
 		m_velocity.set( velocity );
 	}
+
 	public void setVelocity( double x, double y, double z ) {
 		m_velocity.set( x, y, z );
 	}
-	
 
 	public double getMass() {
 		return m_mass;
 	}
+
 	public void setMass( double mass ) {
 		m_mass = mass;
-		m_inverseMass = 1/m_mass;
+		m_inverseMass = 1 / m_mass;
 	}
 
 	protected abstract edu.cmu.cs.dennisc.math.Vector3 getForce( edu.cmu.cs.dennisc.math.Vector3 rv, double t );
-	
+
 	protected E newDerivative() {
 		return (E)new TranslationDerivative();
 	}
+
 	protected E evaluate( E rv, double t ) {
 		rv.velocity.set( m_velocity );
 		getForce( rv.force, t );
 		return rv;
 	}
+
 	//todo: better name
 	protected void update( double t, double dt, E derivative ) {
 		//todo?
@@ -142,58 +155,61 @@ public abstract class TranslationFunction< E extends TranslationDerivative > imp
 
 		m_momentum.add( edu.cmu.cs.dennisc.math.Vector3.createMultiplication( derivative.force, dt ) );
 	}
+
 	protected E evaluate( E rv, double t, double dt, E derivative ) {
 		try {
 			TranslationFunction<E> pf = (TranslationFunction<E>)this.clone();
 			pf.update( t, dt, derivative );
 			pf.update();
-			return pf.evaluate( t+dt );
+			return pf.evaluate( t + dt );
 		} catch( CloneNotSupportedException cnse ) {
 			throw new RuntimeException( cnse );
 		}
 	}
-	
+
 	public final E evaluate( double t ) {
 		return evaluate( newDerivative(), t );
 	}
+
 	public final E evaluate( double t, double dt, E derivative ) {
 		return evaluate( newDerivative(), t, dt, derivative );
 	}
+
 	public void update( E a, E b, E c, E d, double dt ) {
 		//todo?
 		//m_translation.add( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( dt / 6, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( a.velocity, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( edu.cmu.cs.dennisc.math.PointD3.createFromProduct( 2.0, edu.cmu.cs.dennisc.math.PointD3.createFromAdd( b.velocity, c.velocity ) ), d.velocity ) ) ) );
-		m_translation.add( edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
-				edu.cmu.cs.dennisc.math.Vector3.createAddition( 
-						a.velocity, 
-						edu.cmu.cs.dennisc.math.Vector3.createAddition( 
-								edu.cmu.cs.dennisc.math.Vector3.createMultiplication( 
-										edu.cmu.cs.dennisc.math.Vector3.createAddition( 
-												b.velocity, 
-												c.velocity 
+		m_translation.add( edu.cmu.cs.dennisc.math.Vector3.createMultiplication(
+				edu.cmu.cs.dennisc.math.Vector3.createAddition(
+						a.velocity,
+						edu.cmu.cs.dennisc.math.Vector3.createAddition(
+								edu.cmu.cs.dennisc.math.Vector3.createMultiplication(
+										edu.cmu.cs.dennisc.math.Vector3.createAddition(
+												b.velocity,
+												c.velocity
+												),
+										2.0
 										),
-										2.0 
-								), 
-								d.velocity 
-						) 
-				), 
-				dt / 6 
-		) );
-		m_momentum.add( edu.cmu.cs.dennisc.math.Vector3.createMultiplication( 
-				edu.cmu.cs.dennisc.math.Vector3.createAddition( 
-						a.force, 
-						edu.cmu.cs.dennisc.math.Vector3.createAddition( 
-								edu.cmu.cs.dennisc.math.Vector3.createMultiplication( 
-										edu.cmu.cs.dennisc.math.Vector3.createAddition( 
-												b.force, 
-												c.force 
+								d.velocity
+								)
+						),
+				dt / 6
+				) );
+		m_momentum.add( edu.cmu.cs.dennisc.math.Vector3.createMultiplication(
+				edu.cmu.cs.dennisc.math.Vector3.createAddition(
+						a.force,
+						edu.cmu.cs.dennisc.math.Vector3.createAddition(
+								edu.cmu.cs.dennisc.math.Vector3.createMultiplication(
+										edu.cmu.cs.dennisc.math.Vector3.createAddition(
+												b.force,
+												c.force
+												),
+										2.0
 										),
-										2.0 
-								), 
-								d.force 
-						)
-				),
-				dt / 6 
-		) );
+								d.force
+								)
+						),
+				dt / 6
+				) );
 	}
 
 	public void update() {

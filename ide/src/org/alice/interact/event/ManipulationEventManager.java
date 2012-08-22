@@ -49,45 +49,43 @@ import java.util.List;
  */
 public class ManipulationEventManager {
 
-	
-	private List< ManipulationListener > manipulationListeners = new java.util.LinkedList< ManipulationListener >();
+	private List<ManipulationListener> manipulationListeners = new java.util.LinkedList<ManipulationListener>();
 
 	public void addManipulationListener( ManipulationListener listener )
 	{
 		synchronized( this.manipulationListeners ) {
-			if ( !this.manipulationListeners.contains( listener ) )
+			if( !this.manipulationListeners.contains( listener ) )
 			{
 				this.manipulationListeners.add( listener );
 			}
 			else
 			{
-				System.out.println("REJECTED!");
+				System.out.println( "REJECTED!" );
 			}
 		}
 	}
-	
+
 	public void removeManipulationListener( ManipulationListener listener )
 	{
 		synchronized( this.manipulationListeners ) {
 			this.manipulationListeners.remove( listener );
 		}
 	}
-	
-	
+
 	public void triggerEvent( ManipulationEvent event, boolean isActivate )
 	{
-		for (int i=0; i<this.manipulationListeners.size(); i++)
+		for( int i = 0; i < this.manipulationListeners.size(); i++ )
 		{
 			ManipulationListener currentListener = this.manipulationListeners.get( i );
-			if (currentListener.matches( event ))
+			if( currentListener.matches( event ) )
 			{
-				if (isActivate)
+				if( isActivate )
 				{
-					currentListener.activate(event);
+					currentListener.activate( event );
 				}
 				else
 				{
-					currentListener.deactivate(event);
+					currentListener.deactivate( event );
 				}
 			}
 		}

@@ -50,12 +50,15 @@ public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static ExportToPovRayOperation instance = new ExportToPovRayOperation();
 	}
+
 	public static ExportToPovRayOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ExportToPovRayOperation() {
 		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

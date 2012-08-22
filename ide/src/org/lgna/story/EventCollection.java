@@ -59,6 +59,7 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddWhi
 		this.internalClass = cls;
 		this.collection = Collections.newArrayList( groupMembers );
 	}
+
 	private <A extends SMovableTurnable> EventCollection( Class<A> cls, ArrayList groupMembers ) {
 		this.internalClass = cls;
 		this.collection = groupMembers;
@@ -71,6 +72,7 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddWhi
 	ArrayList getValue() {
 		return this.collection;
 	}
+
 	public static <T extends SMovableTurnable> ArrayList<T> getGroupOne( Object[] details, Class<T> cls ) {
 		for( Object detail : details ) {
 			if( detail instanceof EventCollection ) {
@@ -82,12 +84,13 @@ public class EventCollection implements AddStartCollisionListener.Detail, AddWhi
 		}
 		return null;
 	}
+
 	public static <T extends SMovableTurnable> ArrayList<T> getGroupTwo( Object[] details, Class<T> cls ) {
 		EventCollection firstCollection = null;
 		for( Object detail : details ) {
 			if( detail instanceof EventCollection ) {
 				EventCollection eCollection = (EventCollection)detail;
-				if( eCollection.getInternalClass().equals( cls ) && firstCollection != null ) {
+				if( eCollection.getInternalClass().equals( cls ) && ( firstCollection != null ) ) {
 					return eCollection.getValue();
 				} else {
 					firstCollection = eCollection;

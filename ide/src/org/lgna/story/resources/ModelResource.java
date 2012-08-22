@@ -44,8 +44,8 @@ package org.lgna.story.resources;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public interface ModelResource {
-	
+
 }

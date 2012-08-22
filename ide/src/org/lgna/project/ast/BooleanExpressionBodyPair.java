@@ -48,13 +48,15 @@ package org.lgna.project.ast;
 public class BooleanExpressionBodyPair extends AbstractNode {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return JavaType.getInstance( Boolean.class );
 		}
 	};
-	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
+	public NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
+
 	public BooleanExpressionBodyPair() {
 	}
+
 	public BooleanExpressionBodyPair( Expression expression, BlockStatement body ) {
 		this.expression.setValue( expression );
 		this.body.setValue( body );

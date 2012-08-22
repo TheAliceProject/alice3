@@ -48,9 +48,11 @@ package org.lgna.story.implementation;
  */
 public abstract class TransformableImp extends AbstractTransformableImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+
 	public TransformableImp() {
 		this.putInstance( this.sgTransformable );
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
 		return this.sgTransformable;

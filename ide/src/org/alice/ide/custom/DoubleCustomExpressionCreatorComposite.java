@@ -50,12 +50,15 @@ public final class DoubleCustomExpressionCreatorComposite extends NumberCustomEx
 	private static class SingletonHolder {
 		private static DoubleCustomExpressionCreatorComposite instance = new DoubleCustomExpressionCreatorComposite();
 	}
+
 	public static DoubleCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private DoubleCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "5e7703fe-6a51-4be0-b828-9eae3d8d8999" ), org.alice.ide.croquet.models.numberpad.DoubleModel.getInstance() );
 	}
+
 	@Override
 	protected String getTextForPreviousExpression( org.lgna.project.ast.Expression expression ) {
 		String text;

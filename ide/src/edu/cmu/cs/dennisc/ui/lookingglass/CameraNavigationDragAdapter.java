@@ -43,7 +43,9 @@
 package edu.cmu.cs.dennisc.ui.lookingglass;
 
 enum CameraNavigationMode {
-	TRANSLATE_XZ, TRANSLATE_Y, ORBIT
+	TRANSLATE_XZ,
+	TRANSLATE_Y,
+	ORBIT
 };
 
 /**
@@ -59,6 +61,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	public CameraNavigationDragAdapter() {
 		m_metersPerMouseWheelTick = 1.0;
 	}
+
 	@Override
 	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
 		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e );
@@ -89,11 +92,12 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 	private int m_sgCameraIndex = 0;
 	private boolean isMultipleCameraWarningAlreadyDelivered = false;
+
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = getOnscreenLookingGlass();
 		if( onscreenLookingGlass != null ) {
 			int cameraCount = onscreenLookingGlass.getCameraCount();
-			if( cameraCount > 1 && this.isMultipleCameraWarningAlreadyDelivered == false ) {
+			if( ( cameraCount > 1 ) && ( this.isMultipleCameraWarningAlreadyDelivered == false ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "onscreenLookingGlass camera count:", onscreenLookingGlass.getCameraCount() );
 				this.isMultipleCameraWarningAlreadyDelivered = true;
 			}
@@ -106,6 +110,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 			return null;
 		}
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.Transformable getSGCameraTransformable() {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
@@ -132,6 +137,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		m_xPixelPrev = m_xPixel0;
 		m_yPixelPrev = m_yPixel0;
 	}
+
 	public void stopCameraNavigationMode() {
 		m_function.stopImmediately();
 		m_cameraNavigationMode = null;
@@ -148,9 +154,9 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 				int yPixelDelta = yPixel - m_yPixelPrev;
 				m_function.requestOrbit( xPixelDelta * ORBIT_YAW_FACTOR, -yPixelDelta * ORBIT_PITCH_FACTOR );
 			} else if( m_cameraNavigationMode == CameraNavigationMode.TRANSLATE_XZ ) {
-				m_function.requestVelocity( (xPixel - m_xPixel0) * TRANSLATION_XZ_FACTOR, 0, (yPixel - m_yPixel0) * TRANSLATION_XZ_FACTOR );
+				m_function.requestVelocity( ( xPixel - m_xPixel0 ) * TRANSLATION_XZ_FACTOR, 0, ( yPixel - m_yPixel0 ) * TRANSLATION_XZ_FACTOR );
 			} else if( m_cameraNavigationMode == CameraNavigationMode.TRANSLATE_Y ) {
-				m_function.requestVelocity( 0, -((yPixel - m_yPixel0) * TRANSLATION_Y_FACTOR), 0 );
+				m_function.requestVelocity( 0, -( ( yPixel - m_yPixel0 ) * TRANSLATION_Y_FACTOR ), 0 );
 			}
 			m_xPixelPrev = xPixel;
 			m_yPixelPrev = yPixel;
@@ -160,12 +166,15 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	public void requestTarget( double x, double y, double z ) {
 		m_function.requestTarget( x, y, z );
 	}
+
 	public void requestTarget( edu.cmu.cs.dennisc.math.Point3 target ) {
 		m_function.requestTarget( target.x, target.y, target.z );
 	}
+
 	public void requestYaw( edu.cmu.cs.dennisc.math.Angle yaw ) {
 		m_function.requestYaw( yaw );
 	}
+
 	public void requestDistance( double distance ) {
 		m_function.requestDistance( distance );
 	}
@@ -173,29 +182,37 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	public edu.cmu.cs.dennisc.math.Angle getYawRequested() {
 		return m_function.getYawRequested();
 	}
+
 	public edu.cmu.cs.dennisc.math.Angle getPitchRequested() {
 		return m_function.getPitchRequested();
 	}
+
 	public double getDistanceRequested() {
 		return m_function.getDistanceRequested();
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 accessTargetRequested() {
 		return m_function.accessTargetRequested();
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getTargetRequested( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		return m_function.getTargetRequested( rv );
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getTargetRequested() {
 		return m_function.getTargetRequested();
 	}
 
 	private boolean m_isEnabled = true;
+
 	public boolean isEnabled() {
 		return m_isEnabled;
 	}
+
 	public void setEnabled( boolean isEnabled ) {
 		m_isEnabled = isEnabled;
 	}
+
 	public void update( double tDelta ) {
 		if( m_isEnabled ) {
 			edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities.rk4( m_function, 0, tDelta );
@@ -215,10 +232,12 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		g.drawLine( m_xPixel0, m_yPixel0 - BOX_HALF_SIZE, m_xPixel0, m_yPixel0 - BOX_HALF_SIZE - DASH_SIZE );
 		g.drawLine( m_xPixel0, m_yPixel0 + BOX_HALF_SIZE + 1, m_xPixel0, m_yPixel0 + BOX_HALF_SIZE + DASH_SIZE + 1 );
 	}
+
 	private void paintDash( java.awt.Graphics2D g ) {
 		g.setColor( java.awt.Color.BLUE );
 		g.drawLine( m_xPixel0 - BOX_HALF_SIZE - DASH_SIZE, m_yPixel0, m_xPixel0 + BOX_HALF_SIZE + DASH_SIZE, m_yPixel0 );
 	}
+
 	private void paintArrow( java.awt.Graphics2D g, int xPixelDelta, int yPixelDelta ) {
 		int[] xPoints = { 0, 8, 8, 20, 20, 8, 8 };
 		int[] yPoints = { 0, 10, 5, 5, -5, -5, -10 };
@@ -251,12 +270,16 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 	public void initialized( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent e ) {
 	}
+
 	public void resized( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent e ) {
 	}
+
 	public void displayChanged( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent e ) {
 	}
+
 	public void cleared( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent e ) {
 	}
+
 	public void rendered( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent e ) {
 		paint( e.getGraphics2D() );
 	}
@@ -267,21 +290,18 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	protected void addListeners( java.awt.Component component ) {
 		super.addListeners( component );
 
-		
 		//todo
-		
-		
+
 		this.getOnscreenLookingGlass().getAWTComponent().addMouseWheelListener( this );
 		//component.addMouseWheelListener( this );
 	}
+
 	@Override
 	protected void removeListeners( java.awt.Component component ) {
 		super.removeListeners( component );
 
-		
 		//todo
-		
-		
+
 		this.getOnscreenLookingGlass().getAWTComponent().addMouseWheelListener( this );
 		//component.removeMouseWheelListener( this );
 	}
@@ -330,6 +350,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
 		m_function.requestDistanceChange( e.getWheelRotation() * m_metersPerMouseWheelTick );
 	}
+
 	@Override
 	public void keyPressed( java.awt.event.KeyEvent e ) {
 		super.keyPressed( e );

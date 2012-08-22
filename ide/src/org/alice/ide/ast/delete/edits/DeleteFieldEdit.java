@@ -50,9 +50,11 @@ public class DeleteFieldEdit extends DeleteMemberEdit<org.lgna.project.ast.UserF
 	public DeleteFieldEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserField field ) {
 		super( completionStep, field );
 	}
+
 	public DeleteFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
+
 	@Override
 	protected org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserField> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType ) {
 		return declaringType.fields;

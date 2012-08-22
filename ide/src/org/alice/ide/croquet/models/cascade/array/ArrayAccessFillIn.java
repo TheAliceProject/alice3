@@ -46,23 +46,26 @@ package org.alice.ide.croquet.models.cascade.array;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayAccessFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.ArrayAccess > {
+public class ArrayAccessFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.ArrayAccess> {
 	private final org.lgna.project.ast.ArrayAccess transientValue;
+
 	public ArrayAccessFillIn( org.lgna.project.ast.Expression arrayExpression ) {
 		super( java.util.UUID.fromString( "a626aca1-094f-4618-af7b-2dcb4f63fa96" ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ) );
 		this.transientValue = new org.lgna.project.ast.ArrayAccess();
-		org.lgna.project.ast.AbstractType<?,?,?> arrayType = arrayExpression.getType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> arrayType = arrayExpression.getType();
 		this.transientValue.arrayType.setValue( arrayType );
 		this.transientValue.array.setValue( arrayExpression );
 		this.transientValue.index.setValue( new org.alice.ide.ast.EmptyExpression( Integer.class ) );
 	}
+
 	@Override
 	protected org.lgna.project.ast.ArrayAccess createValue( org.lgna.project.ast.Expression[] expressions ) {
 		return new org.lgna.project.ast.ArrayAccess( this.transientValue.arrayType.getValue(), this.transientValue.array.getValue(), expressions[ 0 ] );
 	}
+
 	@Override
-	public org.lgna.project.ast.ArrayAccess getTransientValue(org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ArrayAccess, org.lgna.project.ast.Expression> step) {
+	public org.lgna.project.ast.ArrayAccess getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ArrayAccess, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

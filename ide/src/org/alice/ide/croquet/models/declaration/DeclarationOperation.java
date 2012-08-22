@@ -46,12 +46,12 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationOperation< T extends org.lgna.project.ast.AbstractDeclaration > extends DeclarationLikeSubstanceOperation< T > {
-	public DeclarationOperation( 
-			java.util.UUID id, 
+public abstract class DeclarationOperation<T extends org.lgna.project.ast.AbstractDeclaration> extends DeclarationLikeSubstanceOperation<T> {
+	public DeclarationOperation(
+			java.util.UUID id,
 			org.lgna.project.ast.UserType<?> initialDeclaringType,
 			boolean isDeclaringTypeEditable,
-			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType,
+			org.lgna.project.ast.AbstractType<?, ?, ?> initialValueComponentType,
 			boolean isValueComponentTypeEditable,
 			boolean initialIsArrayValueType,
 			boolean isIsArrayValueTypeEditable,
@@ -59,10 +59,10 @@ public abstract class DeclarationOperation< T extends org.lgna.project.ast.Abstr
 			boolean isNameEditable,
 			org.lgna.project.ast.Expression initialExpression,
 			boolean isInitializerEditable,
-			org.alice.ide.name.NameValidator nameValidator
-	) {
+			org.alice.ide.name.NameValidator nameValidator ) {
 		super( id, initialDeclaringType, isDeclaringTypeEditable, initialValueComponentType, isValueComponentTypeEditable, initialIsArrayValueType, isIsArrayValueTypeEditable, initialName, isNameEditable, initialExpression, isInitializerEditable, nameValidator );
 	}
+
 	@Override
 	protected void appendRepr( StringBuilder rv ) {
 		super.appendRepr( rv );

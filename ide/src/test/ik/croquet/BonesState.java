@@ -46,16 +46,19 @@ package test.ik.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BonesState extends org.lgna.croquet.DefaultListSelectionState< org.lgna.ik.Bone > {
+public class BonesState extends org.lgna.croquet.DefaultListSelectionState<org.lgna.ik.Bone> {
 	private static class SingletonHolder {
 		private static BonesState instance = new BonesState();
 	}
+
 	public static BonesState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private BonesState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "32660ce0-bf86-4472-8f12-6aa2bc0a39b5" ), test.ik.croquet.codecs.BoneCodec.SINGLETON, -1 );
 	}
+
 	public void setChain( org.lgna.ik.Chain chain ) {
 		org.lgna.ik.Bone prevBone = this.getSelectedItem();
 		org.lgna.ik.Bone[] bones = chain.getBones();
@@ -67,7 +70,7 @@ public class BonesState extends org.lgna.croquet.DefaultListSelectionState< org.
 					selectionIndex = index;
 					break;
 				}
-				index ++;
+				index++;
 			}
 		}
 		this.setListData( selectionIndex, bones );

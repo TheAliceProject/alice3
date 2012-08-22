@@ -43,14 +43,14 @@
 
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Separator extends JComponent< javax.swing.JSeparator > {
+public abstract class Separator extends JComponent<javax.swing.JSeparator> {
 	protected Separator( int orientation ) {
 		this.getAwtComponent().setOrientation( orientation );
 	}
+
 	@Override
 	protected javax.swing.JSeparator createAwtComponent() {
 		return new javax.swing.JSeparator() {

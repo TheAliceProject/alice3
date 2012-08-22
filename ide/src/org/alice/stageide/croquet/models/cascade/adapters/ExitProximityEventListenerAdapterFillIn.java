@@ -2,11 +2,12 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.ProximityEnterListener;
 
-public class ExitProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn{
-	
+public class ExitProximityEventListenerAdapterFillIn extends LambdaExpressionFillIn {
+
 	private static class SingletonHolder {
 		private static ExitProximityEventListenerAdapterFillIn instance = new ExitProximityEventListenerAdapterFillIn();
 	}
+
 	public static ExitProximityEventListenerAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}

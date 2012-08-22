@@ -45,11 +45,13 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBarComposite extends AbstractComposite< org.lgna.croquet.components.MenuBar > {
-	private final java.util.List< StandardMenuItemPrepModel > items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+public class MenuBarComposite extends AbstractComposite<org.lgna.croquet.components.MenuBar> {
+	private final java.util.List<StandardMenuItemPrepModel> items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public MenuBarComposite( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		if( super.contains( model ) ) {
@@ -58,13 +60,16 @@ public class MenuBarComposite extends AbstractComposite< org.lgna.croquet.compon
 			return this.items.contains( model );
 		}
 	}
+
 	public void addItem( StandardMenuItemPrepModel item ) {
 		this.items.add( item );
 	}
+
 	public void removeItem( StandardMenuItemPrepModel item ) {
 		this.items.remove( item );
 	}
-	public Iterable< StandardMenuItemPrepModel > getChildren() {
+
+	public Iterable<StandardMenuItemPrepModel> getChildren() {
 		return this.items;
 	}
 
@@ -72,5 +77,5 @@ public class MenuBarComposite extends AbstractComposite< org.lgna.croquet.compon
 	protected org.lgna.croquet.components.MenuBar createView() {
 		return new org.lgna.croquet.components.MenuBar( this );
 	}
-	
+
 }

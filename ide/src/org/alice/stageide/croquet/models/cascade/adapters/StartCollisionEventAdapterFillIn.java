@@ -2,11 +2,12 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.CollisionStartListener;
 
-public class StartCollisionEventAdapterFillIn extends LambdaExpressionFillIn{
-	
+public class StartCollisionEventAdapterFillIn extends LambdaExpressionFillIn {
+
 	private static class SingletonHolder {
 		private static StartCollisionEventAdapterFillIn instance = new StartCollisionEventAdapterFillIn();
 	}
+
 	public static StartCollisionEventAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}

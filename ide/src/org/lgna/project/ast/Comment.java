@@ -48,8 +48,10 @@ package org.lgna.project.ast;
  */
 public class Comment extends Statement {
 	public edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
+
 	public Comment() {
 	}
+
 	public Comment( String text ) {
 		this.text.setValue( text );
 	}

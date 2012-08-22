@@ -54,9 +54,11 @@ public class HistoryInsertionIndexEvent extends HistoryEvent {
 		this.prevIndex = prevIndex;
 		this.nextIndex = nextIndex;
 	}
+
 	public int getPrevIndex() {
 		return prevIndex;
 	}
+
 	public int getNextIndex() {
 		return nextIndex;
 	}

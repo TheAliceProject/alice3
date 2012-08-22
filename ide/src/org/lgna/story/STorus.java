@@ -42,32 +42,37 @@
  */
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.MethodTemplate;
 
 /**
  * @author Dennis Cosgrove
  */
 public class STorus extends SShape {
 	private final org.lgna.story.implementation.TorusImp implementation = new org.lgna.story.implementation.TorusImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.TorusImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.TorusImp getImplementation() {
 		return this.implementation;
 	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate()
+
+	@org.lgna.project.annotations.GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Double getInnerRadius() {
 		return this.implementation.innerRadius.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setInnerRadius( Number innerRadius, SetInnerRadius.Detail... details ) {
 		this.implementation.innerRadius.animateValue( innerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@org.lgna.project.annotations.GetterTemplate(isPersistent=true)
-	@MethodTemplate()
+
+	@org.lgna.project.annotations.GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Double getOuterRadius() {
 		return this.implementation.outerRadius.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setOuterRadius( Number outerRadius, SetOuterRadius.Detail... details ) {
 		this.implementation.outerRadius.animateValue( outerRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

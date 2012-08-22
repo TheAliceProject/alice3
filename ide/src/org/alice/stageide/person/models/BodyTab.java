@@ -50,37 +50,40 @@ public class BodyTab extends ContentTab<org.lgna.croquet.components.BorderPanel>
 	private static class SingletonHolder {
 		private static BodyTab instance = new BodyTab();
 	}
+
 	public static BodyTab getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private BodyTab() {
 		super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ) );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		java.awt.Color backgroundColor = org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR;
-		org.lgna.croquet.components.List< ? > list = new org.alice.stageide.person.components.FullBodyOutfitList();
+		org.lgna.croquet.components.List<?> list = new org.alice.stageide.person.components.FullBodyOutfitList();
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
-        scrollPane.setBothScrollBarIncrements( 66, 66 );
+		scrollPane.setBothScrollBarIncrements( 66, 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
 		org.lgna.croquet.components.Slider slider = ObesityLevelState.getInstance().createSlider();
 		slider.setBackgroundColor( backgroundColor );
-		
+
 		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel.Builder()
 				.lineStart( SetObesityToInShapeOperation.getInstance().createButton() )
 				.center( slider )
 				.lineEnd( SetObesityToOutOfShapeOperation.getInstance().createButton() )
-		.build();
-		
+				.build();
+
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
-			.hgap( 8 )
-			.vgap( 8 )
-			.center( scrollPane )
-			.pageEnd( obesityLevelPane )
-		.build();
+				.hgap( 8 )
+				.vgap( 8 )
+				.center( scrollPane )
+				.pageEnd( obesityLevelPane )
+				.build();
 		rv.setBackgroundColor( backgroundColor );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		return rv;
 	}
 }

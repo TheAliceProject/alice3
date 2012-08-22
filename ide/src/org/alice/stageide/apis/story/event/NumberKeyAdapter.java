@@ -6,11 +6,11 @@ import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.NumberKeyEvent;
 
 public class NumberKeyAdapter extends AbstractAdapter implements org.lgna.story.event.NumberKeyPressListener {
-	public NumberKeyAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
-		super(context, lambda, userInstance);
+	public NumberKeyAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
+		super( context, lambda, userInstance );
 	}
 
-	public void numberKeyPressed(NumberKeyEvent e) {
+	public void numberKeyPressed( NumberKeyEvent e ) {
 		invokeEntryPoint( e );
 	}
 }

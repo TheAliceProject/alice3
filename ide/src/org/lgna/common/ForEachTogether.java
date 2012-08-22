@@ -46,13 +46,14 @@ package org.lgna.common;
  * @author Dennis Cosgrove
  */
 class ForEachRunnableAdapter<E> implements Runnable {
-	private ForEachRunnable< E > forEachRunnable;
+	private ForEachRunnable<E> forEachRunnable;
 	private E value;
 
-	public ForEachRunnableAdapter( ForEachRunnable< E > forEachRunnable, E value ) {
+	public ForEachRunnableAdapter( ForEachRunnable<E> forEachRunnable, E value ) {
 		this.forEachRunnable = forEachRunnable;
 		this.value = value;
 	}
+
 	public void run() {
 		this.forEachRunnable.run( this.value );
 	}
@@ -63,7 +64,7 @@ class ForEachRunnableAdapter<E> implements Runnable {
  */
 @Deprecated
 public class ForEachTogether {
-	public static < E extends Object> void invokeAndWait( E[] array, ForEachRunnable< E > forEachRunnable ) {
+	public static <E extends Object> void invokeAndWait( E[] array, ForEachRunnable<E> forEachRunnable ) {
 		switch( array.length ) {
 		case 0:
 			break;
@@ -78,12 +79,13 @@ public class ForEachTogether {
 			org.lgna.common.DoTogether.invokeAndWait( runnables );
 		}
 	}
-	public static <E extends Object> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable< E > forEachRunnable ) {
-		java.util.Collection< E > collection;
-		if( iterable instanceof java.util.Collection< ? > ) {
-			collection = (java.util.Collection< E >)iterable;
+
+	public static <E extends Object> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable<E> forEachRunnable ) {
+		java.util.Collection<E> collection;
+		if( iterable instanceof java.util.Collection<?> ) {
+			collection = (java.util.Collection<E>)iterable;
 		} else {
-			collection = new java.util.Vector< E >();
+			collection = new java.util.Vector<E>();
 			for( E item : iterable ) {
 				collection.add( item );
 			}

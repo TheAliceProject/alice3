@@ -51,45 +51,45 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 
 		private static final double FORCE_FOR_ACCELERATION = +4.0;
 		private static final double FORCE_FOR_DECELERATION = -6.0;
-		
+
 		//todo: base on FORCE_FOR_DECELERATION
 		private static final double THRESHOLD_AT_WHICH_TO_BEGIN_DECELERATING = 1.0;
 
-		
 		private double m_tRemainingEstimate = Double.POSITIVE_INFINITY;
-		
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.Vector3 getForce( edu.cmu.cs.dennisc.math.Vector3 rv, double t ) {
 			edu.cmu.cs.dennisc.math.Point3 translation = accessTranslation();
 			edu.cmu.cs.dennisc.math.Vector3 velocity = accessVelocity();
-			
+
 			double dx = m_translation1.x - translation.x;
 			double dy = m_translation1.y - translation.y;
 			double dz = m_translation1.z - translation.z;
-			
+
 			double velocityMagnitude = velocity.calculateMagnitude();
-			
-			double distanceSquared = dx*dx + dy*dy + dz*dz;
+
+			double distanceSquared = ( dx * dx ) + ( dy * dy ) + ( dz * dz );
 			double distance = Math.sqrt( distanceSquared );
 
 			m_tRemainingEstimate = velocityMagnitude / distance;
-			
+
 			if( m_tRemainingEstimate < THRESHOLD_AT_WHICH_TO_BEGIN_DECELERATING ) {
-				rv.x = FORCE_FOR_DECELERATION * dx / distance; 
-				rv.y = FORCE_FOR_DECELERATION * dy / distance; 
-				rv.z = FORCE_FOR_DECELERATION * dz / distance; 
+				rv.x = ( FORCE_FOR_DECELERATION * dx ) / distance;
+				rv.y = ( FORCE_FOR_DECELERATION * dy ) / distance;
+				rv.z = ( FORCE_FOR_DECELERATION * dz ) / distance;
 			} else {
 				if( velocityMagnitude < TARGET_VELOCITY_MAGINITUDE ) {
-					rv.x = FORCE_FOR_ACCELERATION * dx / distance; 
-					rv.y = FORCE_FOR_ACCELERATION * dy / distance; 
-					rv.z = FORCE_FOR_ACCELERATION * dz / distance; 
+					rv.x = ( FORCE_FOR_ACCELERATION * dx ) / distance;
+					rv.y = ( FORCE_FOR_ACCELERATION * dy ) / distance;
+					rv.z = ( FORCE_FOR_ACCELERATION * dz ) / distance;
 				} else {
-					rv.set( 0,0,0 );
+					rv.set( 0, 0, 0 );
 				}
 			}
-			
+
 			return rv;
 		}
+
 		@Override
 		protected edu.cmu.cs.dennisc.math.Vector3 getTorque( edu.cmu.cs.dennisc.math.Vector3 rv, double t ) {
 			return rv;
@@ -103,7 +103,7 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 			setSpin( 0, 0, 0, 0 );
 			setAngularVelocity( 0, 0, 0 );
 		}
-		
+
 		public double getEstimatedTimeRemaining() {
 			//return m_tRemainingEstimate;
 			return 1.0;
@@ -122,11 +122,12 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 		m_orientation1.setValue( m1.orientation );
 		this.reset();
 	}
+
 	private double m_tPrev;
+
 	public void reset() {
 		m_tPrev = Double.NaN;
 	}
-
 
 	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		if( Double.isNaN( m_tPrev ) ) {
@@ -139,6 +140,7 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 		m_tPrev = tCurrent;
 		return m_function.getEstimatedTimeRemaining();
 	}
+
 	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		m_sgTransformable.setLocalTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( m_orientation1, m_translation1 ) );
 	}

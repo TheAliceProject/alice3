@@ -43,22 +43,24 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_QUADS;
 
 /**
  * @author Dennis Cosgrove
  */
-public class QuadArrayAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.QuadArray > {
+public class QuadArrayAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.QuadArray> {
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
-    	renderPrimative( rc, GL_QUADS );
-    }
+		renderPrimative( rc, GL_QUADS );
+	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-    	pickPrimative( pc, GL_QUADS );
-	}    
+		pickPrimative( pc, GL_QUADS );
+	}
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		//todo
 		rv.setNaN();
 		return rv;

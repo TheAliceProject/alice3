@@ -46,10 +46,11 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel> extends StepNote<org.lgna.croquet.history.CompletionStep<M> > {
+public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel> extends StepNote<org.lgna.croquet.history.CompletionStep<M>> {
 	public CompletionNote( org.lgna.croquet.history.CompletionStep<M> step ) {
 		super( step );
 	}
+
 	@Override
 	public void setActive( boolean isActive ) {
 		super.setActive( isActive );
@@ -60,7 +61,7 @@ public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel>
 			org.lgna.croquet.OperationOwningComposite operationOwningComposite = ownedByCompositeOperation.getComposite();
 			if( operationOwningComposite instanceof org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite ) {
 				final org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite forEachInArrayLoopComposite = (org.alice.ide.ast.declaration.InsertForEachInArrayLoopComposite)operationOwningComposite;
-				
+
 				org.lgna.croquet.edits.Edit edit = step.getEdit();
 				if( edit instanceof org.alice.ide.croquet.edits.ast.InsertStatementEdit ) {
 					org.alice.ide.croquet.edits.ast.InsertStatementEdit insertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)edit;
@@ -69,12 +70,12 @@ public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel>
 						final org.lgna.project.ast.ForEachInArrayLoop forEachInArrayLoop = (org.lgna.project.ast.ForEachInArrayLoop)statement;
 						forEachInArrayLoopComposite.clearCommitRejectors();
 						forEachInArrayLoopComposite.addCommitRejector( new org.lgna.croquet.CommitRejector() {
-							public org.lgna.croquet.AbstractSeverityStatusComposite.Status getRejectionStatus(org.lgna.croquet.history.CompletionStep<?> step) {
+							public org.lgna.croquet.AbstractSeverityStatusComposite.Status getRejectionStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 								StringBuilder sb = new StringBuilder();
-								org.lgna.project.ast.AbstractType<?,?,?> requiredType = forEachInArrayLoop.item.getValue().getValueType();
-								org.lgna.project.ast.AbstractType<?,?,?> candidateType = forEachInArrayLoopComposite.getValueComponentType();
+								org.lgna.project.ast.AbstractType<?, ?, ?> requiredType = forEachInArrayLoop.item.getValue().getValueType();
+								org.lgna.project.ast.AbstractType<?, ?, ?> candidateType = forEachInArrayLoopComposite.getValueComponentType();
 								//todo: should be able to compare types directly if retargeting correctly 
-								if( candidateType != null && candidateType.getName().contentEquals( requiredType.getName() ) ) {
+								if( ( candidateType != null ) && candidateType.getName().contentEquals( requiredType.getName() ) ) {
 									//pass
 								} else {
 									sb.append( "item type must be " );
@@ -93,6 +94,7 @@ public abstract class CompletionNote<M extends org.lgna.croquet.CompletionModel>
 			}
 		}
 	}
+
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
 		org.lgna.croquet.history.CompletionStep<?> completionStep = this.getStep();

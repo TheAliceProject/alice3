@@ -50,25 +50,27 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
  */
 public class Square extends TriangleFan {
 	private Vertex[] m_vertices = new Vertex[ 4 ];
+
 	public Square() {
-        m_vertices[ 0 ] = Vertex.createXYZIJKUV( 0,0,0, 0,0,1, 0,1 );
-        m_vertices[ 1 ] = Vertex.createXYZIJKUV( 0,0,0, 0,0,1, 1,1 );
-        m_vertices[ 2 ] = Vertex.createXYZIJKUV( 0,0,0, 0,0,1, 1,0 );
-        m_vertices[ 3 ] = Vertex.createXYZIJKUV( 0,0,0, 0,0,1, 0,0 );
-        setHalfSize( 0.5 );
+		m_vertices[ 0 ] = Vertex.createXYZIJKUV( 0, 0, 0, 0, 0, 1, 0, 1 );
+		m_vertices[ 1 ] = Vertex.createXYZIJKUV( 0, 0, 0, 0, 0, 1, 1, 1 );
+		m_vertices[ 2 ] = Vertex.createXYZIJKUV( 0, 0, 0, 0, 0, 1, 1, 0 );
+		m_vertices[ 3 ] = Vertex.createXYZIJKUV( 0, 0, 0, 0, 0, 1, 0, 0 );
+		setHalfSize( 0.5 );
 	}
+
 	public void setHalfSize( double halfSize ) {
-		m_vertices[ 0 ].position.x = -halfSize; 
-		m_vertices[ 0 ].position.y = -halfSize;  
+		m_vertices[ 0 ].position.x = -halfSize;
+		m_vertices[ 0 ].position.y = -halfSize;
 
-		m_vertices[ 1 ].position.x = +halfSize; 
-		m_vertices[ 1 ].position.y = -halfSize;  
+		m_vertices[ 1 ].position.x = +halfSize;
+		m_vertices[ 1 ].position.y = -halfSize;
 
-		m_vertices[ 2 ].position.x = +halfSize; 
-		m_vertices[ 2 ].position.y = +halfSize;  
+		m_vertices[ 2 ].position.x = +halfSize;
+		m_vertices[ 2 ].position.y = +halfSize;
 
-		m_vertices[ 3 ].position.x = -halfSize; 
-		m_vertices[ 3 ].position.y = +halfSize;  
+		m_vertices[ 3 ].position.x = -halfSize;
+		m_vertices[ 3 ].position.y = +halfSize;
 		vertices.setValue( m_vertices );
 	}
 }

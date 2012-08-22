@@ -42,7 +42,6 @@
  */
 package org.lgna.story.resources.sims2;
 
-
 public abstract class IngredientManager<E extends Ingredient> {
 	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
@@ -51,7 +50,9 @@ public abstract class IngredientManager<E extends Ingredient> {
 	}
 
 	protected abstract Class<Class<? extends E>> getImplementingClassesComponentType();
+
 	protected abstract Class<? extends E> getUnisexIntefaceClass( LifeStage lifeStage );
+
 	protected abstract Class<? extends E> getGenderedIntefaceClass( LifeStage lifeStage, Gender gender );
 
 	public Class<? extends E>[] getImplementingClasses( LifeStage lifeStage, Gender gender ) {
@@ -63,13 +64,15 @@ public abstract class IngredientManager<E extends Ingredient> {
 
 		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered, enumClsesUnisex );
 	}
+
 	public Class<? extends E> getRandomClass( LifeStage lifeStage, Gender gender ) {
 		assert lifeStage != null;
 		assert gender != null;
-		Class< ? extends E >[] clses = getImplementingClasses( lifeStage, gender );
+		Class<? extends E>[] clses = getImplementingClasses( lifeStage, gender );
 		assert clses.length > 0 : lifeStage.toString() + gender.toString();
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( clses );
 	}
+
 	public E getRandomEnumConstant( LifeStage lifeStage, Gender gender ) {
 		while( true ) {
 			Class enumCls = getRandomClass( lifeStage, gender );

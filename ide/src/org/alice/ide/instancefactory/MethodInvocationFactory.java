@@ -48,15 +48,18 @@ package org.alice.ide.instancefactory;
  */
 public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
 	private final org.lgna.project.ast.AbstractMethod method;
-	public MethodInvocationFactory( org.lgna.project.ast.AbstractMethod method, edu.cmu.cs.dennisc.property.InstanceProperty< ? >... mutablePropertiesOfInterest ) { 
+
+	public MethodInvocationFactory( org.lgna.project.ast.AbstractMethod method, edu.cmu.cs.dennisc.property.InstanceProperty<?>... mutablePropertiesOfInterest ) {
 		super( mutablePropertiesOfInterest );
 		this.method = method;
 	}
-	protected abstract org.lgna.project.ast.AbstractType< ?,?,? > getValidInstanceType( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code );
+
+	protected abstract org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code );
+
 	@Override
-	protected final boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > methodDeclarationType = this.method.getDeclaringType();
-		return methodDeclarationType != null && methodDeclarationType.isAssignableFrom( this.getValidInstanceType( type, code ) );
+	protected final boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+		org.lgna.project.ast.AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
+		return ( methodDeclarationType != null ) && methodDeclarationType.isAssignableFrom( this.getValidInstanceType( type, code ) );
 	}
 
 	public org.lgna.project.ast.AbstractMethod getMethod() {
@@ -64,33 +67,38 @@ public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
 	}
 
 	protected abstract org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation();
+
 	protected abstract org.lgna.project.ast.Expression createExpressionForMethodInvocation();
+
 	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression access ) {
-		return new org.lgna.project.ast.MethodInvocation( 
+		return new org.lgna.project.ast.MethodInvocation(
 				access,
-				this.method
-		);
+				this.method );
 	}
+
 	public final org.lgna.project.ast.MethodInvocation createTransientExpression() {
 		return this.createMethodInvocation( this.createTransientExpressionForMethodInvocation() );
 	}
+
 	public final org.lgna.project.ast.MethodInvocation createExpression() {
 		return this.createMethodInvocation( this.createExpressionForMethodInvocation() );
 	}
-	public final org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+
+	public final org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.method.getReturnType();
 	}
 
 	protected abstract StringBuilder addAccessRepr( StringBuilder rv );
+
 	public final String getRepr() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
-//		sb.append( "</strong>" );
+		//		sb.append( "</strong>" );
 		this.addAccessRepr( sb );
 		sb.append( "'s " );
-//		sb.append( "<strong>" );
+		//		sb.append( "<strong>" );
 		sb.append( this.method.getName().substring( 3 ) );
-//		sb.append( "</strong>" );
+		//		sb.append( "</strong>" );
 		sb.append( "</html>" );
 		return sb.toString();
 	}

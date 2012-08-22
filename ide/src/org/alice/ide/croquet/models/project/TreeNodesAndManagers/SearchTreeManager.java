@@ -69,7 +69,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	protected int SHOULD_BE_EXPANDED = 2;
 	protected SearchTreeNode root;
 	protected LinkedList<SearchTreeNode> hiddenList = Collections.newLinkedList();
-	protected Map<UserMethod,LinkedList<MethodInvocation>> methodParentMap = Collections.newHashMap();
+	protected Map<UserMethod, LinkedList<MethodInvocation>> methodParentMap = Collections.newHashMap();
 	protected Tree<SearchTreeNode> owner;
 
 	public SearchTreeManager( UUID id ) {
@@ -83,38 +83,37 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	public void refresh() {
 		methodParentMap = Collections.newHashMap();
 		root.removeChildren();
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
-			if( programType != null ) {
-				class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
+		if( programType != null ) {
+			class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 
-					public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-						if( crawlable instanceof MethodInvocation ) {
-							MethodInvocation methodInvocation = (MethodInvocation)crawlable;
-							UserMethod method = methodInvocation.getFirstAncestorAssignableTo( UserMethod.class );
-							if( methodParentMap.get( method ) == null ) {
-								methodParentMap.put( method, new LinkedList<MethodInvocation>() );
-							}
-							methodParentMap.get( method ).add( methodInvocation );
+				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+					if( crawlable instanceof MethodInvocation ) {
+						MethodInvocation methodInvocation = (MethodInvocation)crawlable;
+						UserMethod method = methodInvocation.getFirstAncestorAssignableTo( UserMethod.class );
+						if( methodParentMap.get( method ) == null ) {
+							methodParentMap.put( method, new LinkedList<MethodInvocation>() );
 						}
+						methodParentMap.get( method ).add( methodInvocation );
 					}
-				}
-				StatementCountCrawler crawler = new StatementCountCrawler();
-				programType.crawl( crawler, true );
-
-
-				for( UserMethod method : methodParentMap.keySet() ) {
-					SearchTreeNode parent = addParentNode( root, method );
-					addTunnelling( parent );
-					List<SearchTreeNode> children = Collections.newLinkedList();
-					for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
-						AbstractMethod abstractMethod = methodInvocation.method.getValue();
-						SearchTreeNode child = new SearchTreeNode( parent, methodInvocation );
-						children.add( child );
-					}
-					java.util.Collections.sort( children );
 				}
 			}
+			StatementCountCrawler crawler = new StatementCountCrawler();
+			programType.crawl( crawler, true );
+
+			for( UserMethod method : methodParentMap.keySet() ) {
+				SearchTreeNode parent = addParentNode( root, method );
+				addTunnelling( parent );
+				List<SearchTreeNode> children = Collections.newLinkedList();
+				for( MethodInvocation methodInvocation : methodParentMap.get( method ) ) {
+					AbstractMethod abstractMethod = methodInvocation.method.getValue();
+					SearchTreeNode child = new SearchTreeNode( parent, methodInvocation );
+					children.add( child );
+				}
+				java.util.Collections.sort( children );
+			}
+		}
 		refreshAll();
 	}
 
@@ -167,6 +166,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 		}
 		return rv;
 	}
+
 	private SearchTreeNode addParentNode( SearchTreeNode parent, UserMethod method ) {
 		SearchTreeNode rv;
 		if( parent != null ) {
@@ -185,7 +185,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 		AbstractMethod parentMethod = parent.getContent();
 		if( methodParentMap.get( parentMethod ) != null ) {
 			for( MethodInvocation methodInvocation : methodParentMap.get( parentMethod ) ) {
-//				AbstractMethod childMethod = (AbstractMethod)methodInvocation.method.getValue();
+				//				AbstractMethod childMethod = (AbstractMethod)methodInvocation.method.getValue();
 				SearchTreeNode node = addNode( parent, methodInvocation );
 				addTunnelling( node );
 			}
@@ -230,6 +230,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 			node.removeSelf();
 		}
 	}
+
 	protected void hideAll() {
 		List<SearchTreeNode> children = Collections.newArrayList( root.getChildren() );
 		for( SearchTreeNode node : children ) {

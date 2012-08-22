@@ -49,19 +49,23 @@ package org.lgna.project.ast;
 public abstract class ForEachInIterableLoop extends AbstractForEachLoop implements EachInIterableStatement {
 	public ExpressionProperty iterable = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			throw new RuntimeException( "todo" );
 		}
 	};
+
 	public ForEachInIterableLoop() {
 	}
+
 	public ForEachInIterableLoop( UserLocal item, Expression iterable, BlockStatement body ) {
 		super( item, body );
 		this.iterable.setValue( iterable );
 	}
+
 	public ExpressionProperty getIterableProperty() {
 		return this.iterable;
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "for each in " );

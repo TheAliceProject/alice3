@@ -51,18 +51,22 @@ public abstract class RowSpringPanel extends SpringPanel {
 	private final int yPad;
 
 	protected abstract void appendRows( java.util.List<SpringRow> rows );
+
 	public RowSpringPanel( org.lgna.croquet.Composite<?> composite ) {
 		this( composite, 12, 12 );
 	}
+
 	public RowSpringPanel( org.lgna.croquet.Composite<?> composite, int xPad, int yPad ) {
 		super( composite );
 		this.xPad = xPad;
 		this.yPad = yPad;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
+
 	public RowSpringPanel() {
 		this( null );
 	}
+
 	public RowSpringPanel( int xPad, int yPad ) {
 		this( null, xPad, yPad );
 	}
@@ -82,6 +86,7 @@ public abstract class RowSpringPanel extends SpringPanel {
 			SpringUtilities.springItUpANotch( this, components, this.xPad, this.yPad );
 		}
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		//todo?

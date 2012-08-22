@@ -46,10 +46,11 @@ package edu.cmu.cs.dennisc.texture;
  * @author Dennis Cosgrove
  */
 public final class TextureFactory {
-	private static java.util.Map< org.lgna.common.resources.ImageResource, BufferedImageTexture > resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.common.resources.ImageResource, BufferedImageTexture> resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
 		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
+
 		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
 			org.lgna.common.Resource resource = e.getTypedSource();
 			if( resource instanceof org.lgna.common.resources.ImageResource ) {
@@ -71,17 +72,18 @@ public final class TextureFactory {
 			}
 		}
 	};
+
 	private TextureFactory() {
 	}
-	
+
 	private static void updateBufferedImageTexture( BufferedImageTexture bufferedImageTexture, java.awt.image.BufferedImage bufferedImage ) {
 		bufferedImageTexture.setBufferedImage( bufferedImage );
-		
+
 		//todo: handle java.awt.image.BufferedImage.BITMASK? 
-		boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency()==java.awt.image.BufferedImage.TRANSLUCENT;
+		boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency() == java.awt.image.BufferedImage.TRANSLUCENT;
 		bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
 	}
-	
+
 	public static BufferedImageTexture getTexture( org.lgna.common.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
 		assert imageResource != null;
 		BufferedImageTexture rv = TextureFactory.resourceToTextureMap.get( imageResource );
@@ -94,10 +96,10 @@ public final class TextureFactory {
 				bufferedImageTexture.setMipMappingDesired( isMipMappingDesired );
 				TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
 				rv = bufferedImageTexture;
-				
+
 				//todo: address order dependency w/ ImageFactory 
 				imageResource.addContentListener( TextureFactory.resourceContentListener );
-				
+
 				TextureFactory.resourceToTextureMap.put( imageResource, rv );
 			} else {
 				//todo: warning texture

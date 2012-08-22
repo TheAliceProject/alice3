@@ -52,16 +52,17 @@ public class ArrowsKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	private static class SingletonHolder {
 		private static ArrowsKeyCascadeMenu instance = new ArrowsKeyCascadeMenu();
 	}
+
 	public static ArrowsKeyCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ArrowsKeyCascadeMenu() {
-		super( java.util.UUID.fromString( "36e94163-93e7-4817-a650-4201ce70c47a" ), 
+		super( java.util.UUID.fromString( "36e94163-93e7-4817-a650-4201ce70c47a" ),
 				Key.LEFT,
 				Key.UP,
 				Key.RIGHT,
-				Key.DOWN
-		);
+				Key.DOWN );
 	}
 
 }

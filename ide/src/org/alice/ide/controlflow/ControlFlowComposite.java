@@ -46,9 +46,10 @@ package org.alice.ide.controlflow;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowComposite extends org.alice.ide.members.TemplateComposite< org.alice.ide.controlflow.components.ControlFlowPanel > {
+public class ControlFlowComposite extends org.alice.ide.members.TemplateComposite<org.alice.ide.controlflow.components.ControlFlowPanel> {
 
-	private static java.util.Map< org.lgna.project.ast.AbstractCode, ControlFlowComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractCode, ControlFlowComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ControlFlowComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
 		ControlFlowComposite rv = map.get( code );
 		if( rv != null ) {
@@ -60,7 +61,7 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 		return rv;
 	}
 
-	private final java.util.List< org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private final org.lgna.project.ast.AbstractCode code;
 
 	private ControlFlowComposite( org.lgna.project.ast.AbstractCode code ) {
@@ -77,7 +78,7 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 		}
 	}
 
-	public java.util.List< org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel > getModels() {
+	public java.util.List<org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel> getModels() {
 		return this.models;
 	}
 
@@ -95,7 +96,7 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 	protected void initialize() {
 		super.initialize();
 
-		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.models,  
+		edu.cmu.cs.dennisc.java.util.Collections.addAll( this.models,
 				org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
 				null,
 				org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),
@@ -110,13 +111,13 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 				org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
 				null,
 				org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance()
-		);
+				);
 		if( code instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
 			if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
 				//pass
 			} else {
-				this.models.add( null ); 
+				this.models.add( null );
 				this.models.add( org.alice.ide.ast.draganddrop.statement.ReturnStatementTemplateDragModel.getInstance( method ) );
 			}
 		}

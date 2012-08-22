@@ -42,17 +42,18 @@
  */
 package org.lgna.croquet.resolvers;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StaticGetInstanceKeyedResolver<T> extends KeyedResolver< T > {
+public abstract class StaticGetInstanceKeyedResolver<T> extends KeyedResolver<T> {
 	public StaticGetInstanceKeyedResolver( T instance, Class<?>[] parameterTypes, Object[] arguments ) {
 		super( instance, parameterTypes, arguments );
 	}
+
 	public StaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected T resolve( Class<T> cls, Class<?>[] parameterTypes, Object[] arguments ) {
 		try {

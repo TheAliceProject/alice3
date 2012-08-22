@@ -49,6 +49,7 @@ public class GroundIcon extends ShapeIcon {
 	public GroundIcon( java.awt.Dimension size ) {
 		super( size );
 	}
+
 	@Override
 	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( 0, 0, width, height );

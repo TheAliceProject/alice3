@@ -45,19 +45,22 @@ package edu.cmu.cs.dennisc.math.property;
 /**
  * @author Dennis Cosgrove
  */
-public class AngleProperty extends edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.math.Angle > {
+public class AngleProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.math.Angle> {
 	private boolean m_isNaNAcceptable;
+
 	public AngleProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Angle value, boolean isNaNAcceptable ) {
 		super( owner, value );
 		m_isNaNAcceptable = isNaNAcceptable;
 	}
+
 	public AngleProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Angle value ) {
 		this( owner, value, false );
 	}
+
 	@Override
 	public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Angle value ) {
 		assert value != null;
-		assert value.isNaN() == false || m_isNaNAcceptable;  
+		assert ( value.isNaN() == false ) || m_isNaNAcceptable;
 		super.setValue( owner, value );
 	}
 }

@@ -49,9 +49,11 @@ public class IsPromptingUserForFieldNamesState extends org.lgna.croquet.preferen
 	private static class SingletonHolder {
 		private static IsPromptingUserForFieldNamesState instance = new IsPromptingUserForFieldNamesState();
 	}
+
 	public static IsPromptingUserForFieldNamesState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsPromptingUserForFieldNamesState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ed88aee1-3edf-42b7-bb2d-9424769a075b" ), true );
 	}

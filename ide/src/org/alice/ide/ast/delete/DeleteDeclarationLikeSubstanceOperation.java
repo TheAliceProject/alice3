@@ -48,16 +48,22 @@ package org.alice.ide.ast.delete;
  */
 public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna.project.ast.Node> extends org.lgna.croquet.ActionOperation {
 	private final N node;
+
 	public DeleteDeclarationLikeSubstanceOperation( java.util.UUID migrationId, N node ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, migrationId );
 		this.node = node;
 	}
+
 	public N getNode() {
 		return this.node;
 	}
+
 	protected abstract org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete();
+
 	protected abstract org.lgna.croquet.BooleanState getFindModel();
+
 	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.createAndSetCompletionStep( this, trigger );

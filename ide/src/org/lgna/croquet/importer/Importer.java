@@ -51,7 +51,8 @@ public abstract class Importer<T> {
 	private final java.io.File initialDirectory;
 	private final String initialFileText;
 	private final java.io.FilenameFilter filenameFilter;
-	private final java.util.Set< String > lowerCaseExtensions;
+	private final java.util.Set<String> lowerCaseExtensions;
+
 	public Importer( java.util.UUID sharingId, java.io.File initialDirectory, String initialFileText, java.io.FilenameFilter filenameFilter, String... lowerCaseExtensions ) {
 		this.sharingId = sharingId;
 		this.initialDirectory = initialDirectory;
@@ -59,12 +60,14 @@ public abstract class Importer<T> {
 		this.filenameFilter = filenameFilter;
 		this.lowerCaseExtensions = java.util.Collections.unmodifiableSet( edu.cmu.cs.dennisc.java.util.Collections.newHashSet( lowerCaseExtensions ) );
 	}
+
 	protected abstract T createFromFile( java.io.File file ) throws java.io.IOException;
+
 	public T createValue( String dialogTitle ) {
 		java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog( this.sharingId, dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
 		if( file != null ) {
 			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
-			if( extension != null && this.lowerCaseExtensions.contains( extension.toLowerCase() ) ) {
+			if( ( extension != null ) && this.lowerCaseExtensions.contains( extension.toLowerCase() ) ) {
 				try {
 					return this.createFromFile( file );
 				} catch( java.io.IOException ioe ) {

@@ -50,24 +50,28 @@ public abstract class AbstractExpressionDragModel extends org.alice.ide.ast.drag
 	public AbstractExpressionDragModel( java.util.UUID id ) {
 		super( id );
 	}
-//	@Override
-//	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-//		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-//		if( ide != null ) {
-//			org.alice.ide.codedrop.CodeDropReceptor codeEditor = ide.getCodeEditorInFocus();
-//			if( codeEditor != null ) {
-//				codeEditor.addPotentialDropReceptors( rv, this.getExpressionType() );
-//				//codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
-//			} else {
-//				//todo: investigate
-//			}
-//		}
-//		return rv;
-//	}
+
+	//	@Override
+	//	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
+	//		java.util.List< org.lgna.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	//		if( ide != null ) {
+	//			org.alice.ide.codedrop.CodeDropReceptor codeEditor = ide.getCodeEditorInFocus();
+	//			if( codeEditor != null ) {
+	//				codeEditor.addPotentialDropReceptors( rv, this.getExpressionType() );
+	//				//codeEditor.addPotentialDropReceptors( rv, org.lgna.project.ast.JavaType.VOID_TYPE );
+	//			} else {
+	//				//todo: investigate
+	//			}
+	//		}
+	//		return rv;
+	//	}
 	public abstract boolean isPotentialStatementCreator();
+
 	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty );
+
 	protected abstract org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair );
+
 	@Override
 	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		if( dropSite instanceof org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite ) {

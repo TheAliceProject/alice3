@@ -51,8 +51,9 @@ public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineA
 			this.addComponentsForParameter( parameter );
 		}
 	}
+
 	private void addComponentsForParameter( org.lgna.project.ast.AbstractParameter parameter ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = parameter.getValueType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = parameter.getValueType();
 		while( type != null ) {
 			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 				if( method.isFunction() ) {

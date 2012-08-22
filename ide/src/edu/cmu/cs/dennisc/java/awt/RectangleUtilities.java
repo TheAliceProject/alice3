@@ -42,26 +42,26 @@
  */
 package edu.cmu.cs.dennisc.java.awt;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class RectangleUtilities {
 	public static java.awt.Rectangle createCenteredRectangle( java.awt.Rectangle bound, int width, int height ) {
 		int x0 = bound.x;
-		int x1 = bound.x + bound.width-1;
+		int x1 = ( bound.x + bound.width ) - 1;
 		int xC = ( x0 + x1 ) / 2;
 
 		int y0 = bound.y;
-		int y1 = bound.y + bound.height-1;
+		int y1 = ( bound.y + bound.height ) - 1;
 		int yC = ( y0 + y1 ) / 2;
 
-		return new java.awt.Rectangle( xC-width/2, yC-height/2, width, height );
+		return new java.awt.Rectangle( xC - ( width / 2 ), yC - ( height / 2 ), width, height );
 	}
+
 	public static java.awt.Rectangle createCenteredRectangle( java.awt.Rectangle bound, java.awt.Dimension size ) {
 		return createCenteredRectangle( bound, size.width, size.height );
 	}
-	
+
 	public static java.awt.Rectangle grow( java.awt.Rectangle rv, int xPad, int yPad ) {
 		rv.x -= xPad;
 		rv.y -= yPad;
@@ -69,9 +69,11 @@ public class RectangleUtilities {
 		rv.height += yPad + yPad;
 		return rv;
 	}
+
 	public static java.awt.Rectangle grow( java.awt.Rectangle rv, int pad ) {
 		return grow( rv, pad, pad );
 	}
+
 	public static java.awt.Point getPoint( java.awt.Rectangle rect, int xConstraint, int yConstraint ) {
 		java.awt.Point rv = new java.awt.Point();
 		switch( xConstraint ) {
@@ -82,7 +84,7 @@ public class RectangleUtilities {
 			rv.x = rect.x + rect.width;
 			break;
 		case javax.swing.SwingConstants.CENTER:
-			rv.x = rect.x + rect.width / 2;
+			rv.x = rect.x + ( rect.width / 2 );
 			break;
 		default:
 			assert false : xConstraint;
@@ -95,7 +97,7 @@ public class RectangleUtilities {
 			rv.y = rect.y + rect.height;
 			break;
 		case javax.swing.SwingConstants.CENTER:
-			rv.y = rect.y + rect.height / 2;
+			rv.y = rect.y + ( rect.height / 2 );
 			break;
 		default:
 			assert false : xConstraint;
@@ -112,10 +114,10 @@ public class RectangleUtilities {
 				rv.height += insets.top + insets.bottom;
 			} else {
 				//todo?
-//				throw new NullPointerException();
+				//				throw new NullPointerException();
 			}
 		}
 		return rv;
 	}
-	
+
 }

@@ -50,6 +50,7 @@ public class LgnaNoReturnException extends LgnaException {
 	public LgnaNoReturnException( VirtualMachine vm ) {
 		super( vm );
 	}
+
 	@Override
 	protected void appendDescription( StringBuilder sb ) {
 		sb.append( "return statement required" );

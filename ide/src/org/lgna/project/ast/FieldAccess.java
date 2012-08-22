@@ -49,7 +49,7 @@ package org.lgna.project.ast;
 public class FieldAccess extends Expression {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			AbstractField f = field.getValue();
 			if( f != null ) {
 				return f.getDeclaringType();
@@ -59,36 +59,39 @@ public class FieldAccess extends Expression {
 			}
 		}
 	};
-	public DeclarationProperty< AbstractField > field = new DeclarationProperty< AbstractField >( this );
+	public DeclarationProperty<AbstractField> field = new DeclarationProperty<AbstractField>( this );
 
 	public FieldAccess() {
 	}
-	public FieldAccess( Expression expression, AbstractField field ){
+
+	public FieldAccess( Expression expression, AbstractField field ) {
 		this.expression.setValue( expression );
 		this.field.setValue( field );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return field.getValue().getValueType();
 	}
+
 	@Override
 	public boolean isValid() {
 		boolean rv;
 		Expression e = expression.getValue();
 		AbstractField f = field.getValue();
-		if( e != null && f != null ) {
+		if( ( e != null ) && ( f != null ) ) {
 			if( f.isValid() ) {
 				if( f.isStatic() ) {
 					//todo
 					rv = true;
 				} else {
-					AbstractType<?,?,?> declaringType = f.getDeclaringType();
-					AbstractType<?,?,?> expressionType = e.getType();
+					AbstractType<?, ?, ?> declaringType = f.getDeclaringType();
+					AbstractType<?, ?, ?> expressionType = e.getType();
 					if( expressionType instanceof AnonymousUserType ) {
 						//todo
 						rv = true;
 					} else {
-						if( declaringType != null && expressionType != null ) {
+						if( ( declaringType != null ) && ( expressionType != null ) ) {
 							rv = declaringType.isAssignableFrom( expressionType );
 						} else {
 							rv = false;
@@ -103,7 +106,7 @@ public class FieldAccess extends Expression {
 		}
 		return rv;
 	}
-	
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//return super.appendRepr( rv, locale );

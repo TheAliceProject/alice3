@@ -49,33 +49,41 @@ package org.lgna.cheshire.simple;
 public class MessageChapter extends Chapter {
 	private final String title;
 	private final String text;
+
 	public MessageChapter( String title, String text ) {
 		this.title = title;
 		this.text = text;
 	}
+
 	@Override
 	public String getTitle() {
 		return "<em>" + this.title + "</em>";
 	}
+
 	public String getText() {
 		return this.text;
 	}
+
 	@Override
 	public void complete( org.lgna.croquet.Group completionGroup ) {
 	}
+
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
+
 	@Override
 	public boolean isAutoAdvanceDesired() {
 		return false;
 	}
+
 	@Override
 	public boolean isAlreadyInTheDesiredState() {
 		return true;
 	}
+
 	@Override
-	public Iterable< org.lgna.croquet.Context > getAllContexts() {
+	public Iterable<org.lgna.croquet.Context> getAllContexts() {
 		return java.util.Collections.emptyList();
 	}
 }

@@ -46,15 +46,18 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class SelectedInstanceFactoryExpression extends IdeExpression {
-	private org.lgna.project.ast.AbstractType<?,?,?> requiredType;
-	public SelectedInstanceFactoryExpression( org.lgna.project.ast.AbstractType<?,?,?> requiredType ) {
+	private org.lgna.project.ast.AbstractType<?, ?, ?> requiredType;
+
+	public SelectedInstanceFactoryExpression( org.lgna.project.ast.AbstractType<?, ?, ?> requiredType ) {
 		this.requiredType = requiredType;
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getRequiredType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getRequiredType() {
 		return this.requiredType;
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		//todo?
 		//org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.InstanceFactoryState.getInstance().getValue();
 		//return instanceFactory.getValueType();

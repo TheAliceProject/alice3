@@ -50,9 +50,11 @@ public final class AudioResourceImportValueCreator extends ResourceImportValueCr
 	private static class SingletonHolder {
 		private static AudioResourceImportValueCreator instance = new AudioResourceImportValueCreator();
 	}
+
 	public static AudioResourceImportValueCreator getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AudioResourceImportValueCreator() {
 		super( java.util.UUID.fromString( "218690dc-9792-43ff-857c-1d51cd29d2ea" ), org.alice.ide.ast.importers.AudioResourceImporter.getInstance(), org.lgna.common.resources.AudioResource.class );
 	}

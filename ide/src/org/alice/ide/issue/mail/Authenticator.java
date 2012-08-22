@@ -11,17 +11,18 @@ public class Authenticator extends edu.cmu.cs.dennisc.mail.AbstractAuthenticator
 	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
 		return new javax.mail.PasswordAuthentication( "anonymous-alice-user", "silkySmooth123" );
 	}
+
 	@Override
 	public String getAnonymousFrom() {
 		return "anonymous-alice-user@haru.pc.cc.cmu.edu";
 	}
-//	@Override
-//	public String getAnonymousFrom() {
-//		return "anonymous.alice.bugs.3.beta.xxxx@gmail.com";
-//	}
-//	@Override
-//	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-//		String anonymousPassword = "pleaseDoNotStealThisAccount";
-//		return new javax.mail.PasswordAuthentication( getAnonymousFrom(), anonymousPassword );
-//	}
+	//	@Override
+	//	public String getAnonymousFrom() {
+	//		return "anonymous.alice.bugs.3.beta.xxxx@gmail.com";
+	//	}
+	//	@Override
+	//	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+	//		String anonymousPassword = "pleaseDoNotStealThisAccount";
+	//		return new javax.mail.PasswordAuthentication( getAnonymousFrom(), anonymousPassword );
+	//	}
 }

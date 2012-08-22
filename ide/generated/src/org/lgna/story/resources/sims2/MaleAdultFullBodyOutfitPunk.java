@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitPunk implements MaleAdultFullBodyOutfit {
-	PLAIN ,
- 	RED ,
- 	GREEN ,
- 	DENIM ;
+	PLAIN,
+	RED,
+	GREEN,
+	DENIM;
 }

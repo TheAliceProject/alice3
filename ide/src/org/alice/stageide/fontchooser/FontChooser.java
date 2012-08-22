@@ -50,11 +50,12 @@ public class FontChooser extends javax.swing.JPanel {
 		private javax.swing.JLabel m_title = new javax.swing.JLabel();
 		//private javax.swing.JTextField m_field = new javax.swing.JTextField();
 		protected javax.swing.JList m_list = new javax.swing.JList();
+
 		public Pane( String titleText ) {
 			m_title.setText( titleText );
 			setLayout( new java.awt.GridBagLayout() );
 			addComponents( new java.awt.GridBagConstraints() );
-			
+
 			m_list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
 				public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 					if( e.getValueIsAdjusting() ) {
@@ -65,6 +66,7 @@ public class FontChooser extends javax.swing.JPanel {
 				}
 			} );
 		}
+
 		protected void addComponents( java.awt.GridBagConstraints gbc ) {
 			gbc.fill = java.awt.GridBagConstraints.BOTH;
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -76,11 +78,13 @@ public class FontChooser extends javax.swing.JPanel {
 			add( new javax.swing.JScrollPane( m_list ), gbc );
 		}
 	}
+
 	private class FamilyPane extends Pane {
 		public FamilyPane() {
 			super( "Family:" );
 			m_list.setListData( new String[] { "Serif", "SansSerif" } );
 		}
+
 		public org.lgna.story.font.FamilyAttribute getFamilyAttribute() {
 			Object value = m_list.getSelectedValue();
 			org.lgna.story.font.FamilyAttribute rv;
@@ -91,6 +95,7 @@ public class FontChooser extends javax.swing.JPanel {
 			}
 			return rv;
 		}
+
 		public void setFamilyAttribute( org.lgna.story.font.FamilyAttribute familyAttribute ) {
 			if( familyAttribute == org.lgna.story.font.FamilyConstant.SERIF ) {
 				m_list.setSelectedValue( "Serif", true );
@@ -99,32 +104,36 @@ public class FontChooser extends javax.swing.JPanel {
 			}
 		}
 	}
+
 	private class StylePane extends Pane {
 		public StylePane() {
 			super( "Style:" );
 			m_list.setListData( new String[] { "Regular", "Bold", "Italic", "Bold Italic" } );
 		}
+
 		public org.lgna.story.font.WeightAttribute getWeightAttribute() {
 			Object value = m_list.getSelectedValue();
 			org.lgna.story.font.WeightAttribute rv;
-			if( value != null && ( value.equals( "Bold" ) || value.equals( "Bold Italic" ) ) ) {
+			if( ( value != null ) && ( value.equals( "Bold" ) || value.equals( "Bold Italic" ) ) ) {
 				rv = org.lgna.story.font.WeightConstant.BOLD;
 			} else {
 				rv = org.lgna.story.font.WeightConstant.REGULAR;
 			}
 			return rv;
 		}
+
 		public org.lgna.story.font.PostureAttribute getPostureAttribute() {
 			Object value = m_list.getSelectedValue();
 			org.lgna.story.font.PostureAttribute rv;
-			if( value != null && ( value.equals( "Italic" ) || value.equals( "Bold Italic" ) ) ) {
+			if( ( value != null ) && ( value.equals( "Italic" ) || value.equals( "Bold Italic" ) ) ) {
 				rv = org.lgna.story.font.PostureConstant.OBLIQUE;
 			} else {
 				rv = org.lgna.story.font.PostureConstant.REGULAR;
 			}
 			return rv;
 		}
-		public void setStyleAttributes(  org.lgna.story.font.WeightAttribute weight, org.lgna.story.font.PostureAttribute posture ) {
+
+		public void setStyleAttributes( org.lgna.story.font.WeightAttribute weight, org.lgna.story.font.PostureAttribute posture ) {
 			boolean isBold = ( weight == org.lgna.story.font.WeightConstant.BOLD );
 			boolean isItalic = ( posture == org.lgna.story.font.PostureConstant.OBLIQUE );
 			Object selectedValue;
@@ -144,36 +153,41 @@ public class FontChooser extends javax.swing.JPanel {
 			m_list.setSelectedValue( selectedValue, true );
 		}
 	}
+
 	private class SizePane extends Pane {
 		public SizePane() {
 			super( "Size:" );
 			m_list.setListData( new String[] { "8", "9", "10", "12", "14", "18", "24", "32", "48", "64", "96" } );
 		}
-		
+
 		public org.lgna.story.font.SizeAttribute getSizeAttribute() {
 			Object value = m_list.getSelectedValue();
 			if( value instanceof String ) {
-				return new org.lgna.story.font.SizeValue( Float.valueOf( (String) value ) );
+				return new org.lgna.story.font.SizeValue( Float.valueOf( (String)value ) );
 			} else {
 				return null;
 			}
 		}
+
 		public void setSizeAttribute( org.lgna.story.font.SizeAttribute sizeAttribute ) {
 			int size = sizeAttribute.getValue().intValue();
 			m_list.setSelectedValue( Integer.toString( size ), true );
 		}
-//		@Override
-//		protected void addComponents( java.awt.GridBagConstraints gbc ) {
-//			super.addComponents( gbc );
-//		}
+		//		@Override
+		//		protected void addComponents( java.awt.GridBagConstraints gbc ) {
+		//			super.addComponents( gbc );
+		//		}
 	}
+
 	private FamilyPane m_familyPane = new FamilyPane();
 	private StylePane m_stylePane = new StylePane();
 	private SizePane m_sizePane = new SizePane();
 	private javax.swing.JLabel m_sample = new javax.swing.JLabel();
+
 	public FontChooser() {
 		this( new org.lgna.story.Font() );
 	}
+
 	public FontChooser( org.lgna.story.Font font ) {
 		setSampleText( null );
 		m_sample.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
@@ -184,7 +198,7 @@ public class FontChooser extends javax.swing.JPanel {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		
+
 		gbc.gridy = 0;
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
@@ -193,8 +207,7 @@ public class FontChooser extends javax.swing.JPanel {
 		add( m_stylePane, gbc );
 		gbc.insets.left = 0;
 		//add( m_sizePane, gbc );
-		
-		
+
 		gbc.gridy = 1;
 		gbc.anchor = java.awt.GridBagConstraints.CENTER;
 		gbc.gridwidth = 2;
@@ -204,10 +217,10 @@ public class FontChooser extends javax.swing.JPanel {
 		gbc.gridy = 2;
 		gbc.weighty = 1.0;
 		add( new javax.swing.JPanel(), gbc );
-		
+
 		setValue( font );
 	}
-	
+
 	public org.lgna.story.Font getValue() {
 		org.lgna.story.font.FamilyAttribute family = m_familyPane.getFamilyAttribute();
 		org.lgna.story.font.WeightAttribute weight = m_stylePane.getWeightAttribute();
@@ -219,22 +232,23 @@ public class FontChooser extends javax.swing.JPanel {
 			return null;
 		}
 	}
+
 	public void setValue( org.lgna.story.Font font ) {
 		m_familyPane.setFamilyAttribute( font.getFamily() );
 		m_stylePane.setStyleAttributes( font.getWeight(), font.getPosture() );
 		m_sizePane.setSizeAttribute( font.getSize() );
 	}
-	
+
 	public void setSampleText( String sampleText ) {
-		if( sampleText != null && sampleText.length() > 0 ) {
+		if( ( sampleText != null ) && ( sampleText.length() > 0 ) ) {
 			//pass
 		} else {
 			sampleText = "AaBbYyZz";
 		}
 		m_sample.setText( sampleText );
 	}
-	
-	private void updateSample() { 
+
+	private void updateSample() {
 		org.lgna.story.Font font = getValue();
 		if( font != null ) {
 			m_sample.setFont( font.getAsAWTFont() );

@@ -51,10 +51,12 @@ public enum VerticalAlignment {
 	CENTER( javax.swing.SwingConstants.CENTER ),
 	BOTTOM( javax.swing.SwingConstants.BOTTOM );
 	private int internal;
+
 	private VerticalAlignment( int internal ) {
 		this.internal = internal;
 	}
-	/*package-private*/ int getInternal() {
+
+	/* package-private */int getInternal() {
 		return this.internal;
 	}
 }

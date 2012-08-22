@@ -63,12 +63,13 @@ public class AddWhileCollisionListener {
 		}
 		return null;
 	}
+
 	public static <T extends SMovableTurnable> ArrayList<T> getGroupTwo( Detail[] details, Class<T> cls ) {
 		EventCollection firstCollection = null;
 		for( Detail detail : details ) {
 			if( detail instanceof EventCollection ) {
 				EventCollection eCollection = (EventCollection)detail;
-				if( eCollection.getInternalClass().equals( cls ) && firstCollection != null ) {
+				if( eCollection.getInternalClass().equals( cls ) && ( firstCollection != null ) ) {
 					return eCollection.getValue();
 				} else {
 					firstCollection = eCollection;

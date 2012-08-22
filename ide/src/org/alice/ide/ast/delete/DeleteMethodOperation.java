@@ -47,7 +47,8 @@ package org.alice.ide.ast.delete;
  * @author Dennis Cosgrove
  */
 public class DeleteMethodOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.UserMethod> {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, DeleteMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserMethod, DeleteMethodOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
 		DeleteMethodOperation rv = map.get( method );
 		if( rv != null ) {
@@ -58,19 +59,23 @@ public class DeleteMethodOperation extends DeleteDeclarationLikeSubstanceOperati
 		}
 		return rv;
 	}
+
 	private DeleteMethodOperation( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "2b3dc326-34b3-4fae-b6a0-b47a2e0730e1" ), method );
 	}
+
 	@Override
 	protected org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete() {
 		//todo
 		return null;
 	}
+
 	@Override
 	protected org.lgna.croquet.BooleanState getFindModel() {
 		//todo
 		return null;
 	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.alice.ide.ast.delete.edits.DeleteMethodEdit( completionStep, this.getNode() );

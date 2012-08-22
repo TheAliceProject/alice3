@@ -50,13 +50,15 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
 	public DropDownArrowIcon( int size ) {
 		super( size );
 	}
+
 	protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
 		javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
 		return button.getModel();
 	}
-	public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		javax.swing.ButtonModel buttonModel = this.getButtonModel( c );
-		java.awt.geom.GeneralPath path = this.createPath(x, y, Heading.SOUTH);
+		java.awt.geom.GeneralPath path = this.createPath( x, y, Heading.SOUTH );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
 		java.awt.Paint fillPaint;

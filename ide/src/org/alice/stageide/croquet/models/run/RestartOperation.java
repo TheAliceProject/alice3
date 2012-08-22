@@ -49,12 +49,15 @@ public class RestartOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static RestartOperation instance = new RestartOperation();
 	}
+
 	public static RestartOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RestartOperation() {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "f8acb9c4-f4d8-4c6e-84ae-6555cc0da4e0" ) );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

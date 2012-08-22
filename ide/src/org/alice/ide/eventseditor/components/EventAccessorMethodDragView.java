@@ -50,6 +50,7 @@ public class EventAccessorMethodDragView extends org.alice.ide.templates.Express
 		super( dragModel );
 		this.addComponent( new org.lgna.croquet.components.Label( dragModel.getMethod().getName() ) );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		org.alice.ide.eventseditor.ParameterAccessorMethodDragModel dragModel = (org.alice.ide.eventseditor.ParameterAccessorMethodDragModel)this.getModel();

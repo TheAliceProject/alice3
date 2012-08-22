@@ -45,7 +45,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public enum AnimationStyle implements 
+public enum AnimationStyle implements
 		//Turnable
 		Turn.Detail, Roll.Detail,
 		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail, SetOrientationRelativeToVehicle.Detail,
@@ -68,7 +68,7 @@ public enum AnimationStyle implements
 		//Scene
 		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
 		//Sphere,Disc
-		SetRadius.Detail, 
+		SetRadius.Detail,
 		//Torus
 		SetInnerRadius.Detail, SetOuterRadius.Detail,
 		//Cone
@@ -81,10 +81,12 @@ public enum AnimationStyle implements
 
 	private static final AnimationStyle DEFAULT_VALUE = AnimationStyle.BEGIN_AND_END_GENTLY;
 	private edu.cmu.cs.dennisc.animation.Style internal;
+
 	AnimationStyle( edu.cmu.cs.dennisc.animation.Style internal ) {
 		this.internal = internal;
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.animation.Style getInternal() {
+
+	/* package-private */edu.cmu.cs.dennisc.animation.Style getInternal() {
 		return this.internal;
 	}
 
@@ -97,7 +99,8 @@ public enum AnimationStyle implements
 		}
 		return defaultValue;
 	}
-	/*package-private*/ static AnimationStyle getValue( Object[] details ) {
+
+	/* package-private */static AnimationStyle getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

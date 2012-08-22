@@ -47,24 +47,26 @@ package org.alice.stageide.joint;
  * @author Dennis Cosgrove
  */
 public class JointsSubMenuManager {
-	private static final java.util.Map<org.lgna.project.ast.JavaType,Class<? extends JointsSubMenu>[]> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static final java.util.Map<org.lgna.project.ast.JavaType, Class<? extends JointsSubMenu>[]> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		addToMap( org.lgna.story.SBiped.class, OtherSBipedJointsSubMenu.class );
 		addToMap( org.lgna.story.SQuadruped.class, OtherSQuadrupedJointsSubMenu.class );
 		addToMap( org.lgna.story.SFlyer.class, OtherSFlyerJointsSubMenu.class );
 	}
+
 	private static void addToMap( Class<? extends org.lgna.story.SJointedModel> cls, Class<? extends JointsSubMenu>... subMenuClses ) {
 		map.put( org.lgna.project.ast.JavaType.getInstance( cls ), subMenuClses );
 	}
+
 	private JointsSubMenuManager() {
 		throw new AssertionError();
 	}
-	
-	public static <FB> JointsSubMenu<FB>[] getSubMenusForType( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	public static <FB> JointsSubMenu<FB>[] getSubMenusForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		Class<? extends JointsSubMenu>[] subMenuClses = map.get( type );
 		if( subMenuClses != null ) {
 			JointsSubMenu[] rv = new JointsSubMenu[ subMenuClses.length ];
-			for( int i=0; i<rv.length; i++ ) {
+			for( int i = 0; i < rv.length; i++ ) {
 				try {
 					rv[ i ] = subMenuClses[ i ].newInstance();
 				} catch( InstantiationException ie ) {

@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class JSuggestiveTextField extends javax.swing.JTextField {
 	private String textForBlankCondition;
+
 	public JSuggestiveTextField( String text, String textForBlankCondition ) {
 		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
@@ -57,18 +58,23 @@ public class JSuggestiveTextField extends javax.swing.JTextField {
 			this.setTextForBlankCondition( textForBlankCondition );
 		}
 	}
+
 	public JSuggestiveTextField( String text ) {
 		this( text, null );
 	}
+
 	public JSuggestiveTextField() {
 		this( null, null );
 	}
+
 	public String getTextForBlankCondition() {
 		return this.textForBlankCondition;
 	}
-	public void setTextForBlankCondition(String textForBlankCondition) {
+
+	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
 	}
+
 	@Override
 	public java.awt.Dimension getMaximumSize() {
 		java.awt.Dimension rv = super.getMaximumSize();
@@ -76,6 +82,7 @@ public class JSuggestiveTextField extends javax.swing.JTextField {
 		rv.height = preferred.height;
 		return rv;
 	}
+
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );

@@ -53,13 +53,14 @@ public class MailUtilities {
 			uee.printStackTrace();
 		}
 	}
+
 	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, edu.cmu.cs.dennisc.issue.Attachment... attachments )
 			throws javax.mail.MessagingException {
 		java.util.Properties props = new java.util.Properties();
 		props.put( "mail.transport.protocol", "smtp" );
 		props.put( "mail.smtp.host", host );
 		String tlsValue;
-		
+
 		int port;
 		if( portOverride != null ) {
 			port = portOverride;
@@ -75,12 +76,11 @@ public class MailUtilities {
 			props.put( "mail.smtp.auth", "true" );
 			props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
 			props.put( "mail.smtp.socketFactory.fallback", "false" );
-//			props.put( "mail.smtp.ssl.protocols", "SSLv3 TLSv1" );
+			//			props.put( "mail.smtp.ssl.protocols", "SSLv3 TLSv1" );
 			tlsValue = "true";
 		} else {
 			tlsValue = "false";
 		}
-		
 
 		props.put( "mail.smtp.starttls.enable", tlsValue );
 
@@ -106,17 +106,17 @@ public class MailUtilities {
 		} else {
 			fromAddress = new javax.mail.internet.InternetAddress( replyTo );
 		}
-		if( replyToPresonal != null && replyToPresonal.length() > 0 ) {
+		if( ( replyToPresonal != null ) && ( replyToPresonal.length() > 0 ) ) {
 			setPersonal( fromAddress, replyToPresonal );
 		} else {
-			if( replyTo != null && replyTo.length() > 0 ) {
+			if( ( replyTo != null ) && ( replyTo.length() > 0 ) ) {
 				setPersonal( fromAddress, replyTo );
 			}
 		}
 		message.setFrom( fromAddress );
-		if( replyTo != null && replyTo.length() > 0 ) {
+		if( ( replyTo != null ) && ( replyTo.length() > 0 ) ) {
 			javax.mail.internet.InternetAddress replyToAddress = new javax.mail.internet.InternetAddress( replyTo );
-			if( replyToPresonal != null && replyToPresonal.length() > 0 ) {
+			if( ( replyToPresonal != null ) && ( replyToPresonal.length() > 0 ) ) {
 				setPersonal( replyToAddress, replyToPresonal );
 			}
 			message.setReplyTo( new javax.mail.Address[] { replyToAddress } );
@@ -142,7 +142,7 @@ public class MailUtilities {
 		javax.mail.Transport.send( message );
 	}
 
-	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments ) throws javax.mail.MessagingException {
+	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, java.util.List<edu.cmu.cs.dennisc.issue.Attachment> attachments ) throws javax.mail.MessagingException {
 		edu.cmu.cs.dennisc.issue.Attachment[] array = new edu.cmu.cs.dennisc.issue.Attachment[ attachments.size() ];
 		attachments.toArray( array );
 		sendMail( isTransportLayerSecurityDesired, portOverride, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );

@@ -54,6 +54,7 @@ public class DimensionUtilities {
 		}
 		return rv;
 	}
+
 	public static java.awt.Dimension constrainToMinimumHeight( java.awt.Dimension rv, int minimumHeight ) {
 		if( rv != null ) {
 			rv.height = Math.max( rv.height, minimumHeight );
@@ -62,38 +63,47 @@ public class DimensionUtilities {
 		}
 		return rv;
 	}
+
 	public static java.awt.Dimension constrainToMinimumSize( java.awt.Dimension rv, int minimumWidth, int minimumHeight ) {
 		rv = constrainToMinimumWidth( rv, minimumWidth );
 		rv = constrainToMinimumHeight( rv, minimumHeight );
 		return rv;
 	}
+
 	public static java.awt.Dimension constrainToMaximumWidth( java.awt.Dimension rv, int maximumWidth ) {
 		rv.width = Math.min( rv.width, maximumWidth );
 		return rv;
 	}
+
 	public static java.awt.Dimension constrainToMaximumHeight( java.awt.Dimension rv, int maximumHeight ) {
 		rv.height = Math.min( rv.height, maximumHeight );
 		return rv;
 	}
+
 	public static java.awt.Dimension constrainToMaximumSize( java.awt.Dimension rv, int maximumWidth, int maximumHeight ) {
 		rv = constrainToMaximumWidth( rv, maximumWidth );
 		rv = constrainToMaximumHeight( rv, maximumHeight );
 		return rv;
 	}
+
 	public static java.awt.Dimension constrainToWidth( java.awt.Dimension rv, int width ) {
 		rv.width = width;
 		return rv;
 	}
+
 	public static java.awt.Dimension constrainToHeight( java.awt.Dimension rv, int height ) {
 		rv.height = height;
 		return rv;
 	}
+
 	private static java.awt.Dimension calculateWidthBasedSize( java.awt.Dimension size, double widthToHeightAspectRatio ) {
-		return new java.awt.Dimension( size.width, (int)(size.width/widthToHeightAspectRatio) );
+		return new java.awt.Dimension( size.width, (int)( size.width / widthToHeightAspectRatio ) );
 	}
+
 	private static java.awt.Dimension calculateHeightBasedSize( java.awt.Dimension size, double widthToHeightAspectRatio ) {
-		return new java.awt.Dimension( (int)(size.height*widthToHeightAspectRatio), size.height );
+		return new java.awt.Dimension( (int)( size.height * widthToHeightAspectRatio ), size.height );
 	}
+
 	public static java.awt.Dimension calculateBestFittingSize( java.awt.Dimension size, double widthToHeightAspectRatio ) {
 		java.awt.Dimension widthBasedSize = calculateWidthBasedSize( size, widthToHeightAspectRatio );
 		java.awt.Dimension heightBasedSize = calculateHeightBasedSize( size, widthToHeightAspectRatio );
@@ -102,7 +112,7 @@ public class DimensionUtilities {
 		} else if( heightBasedSize.width > size.width ) {
 			return widthBasedSize;
 		} else {
-			if( widthBasedSize.width*widthBasedSize.height > heightBasedSize.width*heightBasedSize.height ) {
+			if( ( widthBasedSize.width * widthBasedSize.height ) > ( heightBasedSize.width * heightBasedSize.height ) ) {
 				return widthBasedSize;
 			} else {
 				return heightBasedSize;

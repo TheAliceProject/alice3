@@ -49,11 +49,15 @@ public abstract class IteratingOperation extends Operation {
 	public IteratingOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+
 	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
 		return new org.lgna.croquet.history.TransactionHistory();
 	}
+
 	protected abstract boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step );
+
 	protected abstract Model getNext( org.lgna.croquet.history.CompletionStep<?> step );
+
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );

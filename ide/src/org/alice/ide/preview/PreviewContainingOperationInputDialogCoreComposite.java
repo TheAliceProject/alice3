@@ -49,12 +49,15 @@ public abstract class PreviewContainingOperationInputDialogCoreComposite<V exten
 	public PreviewContainingOperationInputDialogCoreComposite( java.util.UUID id, org.lgna.croquet.Group operationMigrationId ) {
 		super( id, operationMigrationId );
 	}
+
 	public abstract T getPreviewValue();
+
 	@Override
 	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		super.handleFiredEvent( event );
 		this.getView().updatePreview();
 	}
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getView().updatePreview();

@@ -42,7 +42,11 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.LineArray;
+import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
  * @author Dennis Cosgrove
@@ -52,23 +56,24 @@ public class ModestAxes extends Visual {
 	static {
 		s_sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
 	}
-	
+
 	public ModestAxes( double unitLength, double forwardFactor ) {
-	    Vertex[] vertices = new Vertex[ 8 ];
-	    vertices[ 0 ] = Vertex.createXYZRGB( 0,          0,          0,                         1,0,0 );
-	    vertices[ 1 ] = Vertex.createXYZRGB( unitLength, 0,          0,                         1,0,0 );
-	    vertices[ 2 ] = Vertex.createXYZRGB( 0,          0,          0,                         0,1,0 );
-	    vertices[ 3 ] = Vertex.createXYZRGB( 0,          unitLength, 0,                         0,1,0 );
-	    vertices[ 4 ] = Vertex.createXYZRGB( 0,          0,          0,                         0,0,1 );
-	    vertices[ 5 ] = Vertex.createXYZRGB( 0,          0,          unitLength,                0,0,1 );
-	    vertices[ 6 ] = Vertex.createXYZRGB( 0,          0,          0,                         1,1,1 );
-	    vertices[ 7 ] = Vertex.createXYZRGB( 0,          0,          -unitLength*forwardFactor, 1,1,1 );
-	    
-	    LineArray sgLineArray = new LineArray();
-	    sgLineArray.vertices.setValue( vertices );
-	    geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgLineArray } );
+		Vertex[] vertices = new Vertex[ 8 ];
+		vertices[ 0 ] = Vertex.createXYZRGB( 0, 0, 0, 1, 0, 0 );
+		vertices[ 1 ] = Vertex.createXYZRGB( unitLength, 0, 0, 1, 0, 0 );
+		vertices[ 2 ] = Vertex.createXYZRGB( 0, 0, 0, 0, 1, 0 );
+		vertices[ 3 ] = Vertex.createXYZRGB( 0, unitLength, 0, 0, 1, 0 );
+		vertices[ 4 ] = Vertex.createXYZRGB( 0, 0, 0, 0, 0, 1 );
+		vertices[ 5 ] = Vertex.createXYZRGB( 0, 0, unitLength, 0, 0, 1 );
+		vertices[ 6 ] = Vertex.createXYZRGB( 0, 0, 0, 1, 1, 1 );
+		vertices[ 7 ] = Vertex.createXYZRGB( 0, 0, -unitLength * forwardFactor, 1, 1, 1 );
+
+		LineArray sgLineArray = new LineArray();
+		sgLineArray.vertices.setValue( vertices );
+		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgLineArray } );
 		frontFacingAppearance.setValue( s_sgFrontFacingAppearance );
 	}
+
 	public ModestAxes( double unitLength ) {
 		this( unitLength, 2.0 );
 	}

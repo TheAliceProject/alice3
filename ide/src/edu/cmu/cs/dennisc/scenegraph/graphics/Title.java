@@ -51,6 +51,7 @@ public abstract class Title extends ShapeEnclosedText {
 	private static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 24 );
 	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
 	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_OUTLINE_COLOR = edu.cmu.cs.dennisc.color.Color4f.createNaN();
+
 	public Title() {
 		super( DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR );
 	}

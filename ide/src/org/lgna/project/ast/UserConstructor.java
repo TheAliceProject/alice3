@@ -48,12 +48,14 @@ package org.lgna.project.ast;
  */
 public abstract class UserConstructor extends AbstractConstructor {
 	@Override
-	public UserType< ? > getDeclaringType() {
-		return (UserType< ? >)super.getDeclaringType();
+	public UserType<?> getDeclaringType() {
+		return (UserType<?>)super.getDeclaringType();
 	}
+
 	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
+
 	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		return null;
 	}

@@ -72,8 +72,8 @@ public abstract class JGridPane extends JPane {
 				}
 			}
 		} else {
-			for( int r=0; r<rows; r++ ) {
-				for( int c=0; c<cols; c++ ) {
+			for( int r = 0; r < rows; r++ ) {
+				for( int c = 0; c < cols; c++ ) {
 					this.add( componentArrays[ c ][ r ] );
 				}
 			}

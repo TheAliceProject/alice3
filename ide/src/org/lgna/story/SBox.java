@@ -47,8 +47,9 @@ package org.lgna.story;
  */
 public class SBox extends SShape {
 	private final org.lgna.story.implementation.BoxImp implementation = new org.lgna.story.implementation.BoxImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.BoxImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.BoxImp getImplementation() {
 		return this.implementation;
 	}
 }

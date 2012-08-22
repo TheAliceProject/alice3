@@ -46,18 +46,20 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputDialogOperationWithPreview<T> extends org.lgna.croquet.InputDialogOperation< T > {
+public abstract class InputDialogOperationWithPreview<T> extends org.lgna.croquet.InputDialogOperation<T> {
 	public InputDialogOperationWithPreview( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+
 	@Override
 	protected void updateExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		super.updateExplanation( step );
-		org.alice.ide.croquet.components.InputDialogPanelWithPreview< ? > panelWithPreview = (org.alice.ide.croquet.components.InputDialogPanelWithPreview< ? >)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
+		org.alice.ide.croquet.components.InputDialogPanelWithPreview<?> panelWithPreview = (org.alice.ide.croquet.components.InputDialogPanelWithPreview<?>)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 		if( panelWithPreview != null ) {
 			panelWithPreview.updatePreview();
 		}
 	}
+
 	@Override
-	protected abstract org.alice.ide.croquet.components.InputDialogPanelWithPreview< ? > prologue( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract org.alice.ide.croquet.components.InputDialogPanelWithPreview<?> prologue( org.lgna.croquet.history.CompletionStep<?> step );
 }

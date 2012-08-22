@@ -47,22 +47,20 @@ import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
 
 public class MouseCondition extends MousePickBasedCondition {
-	
-	
+
 	public MouseCondition( int mouseButton, PickCondition pickCondition )
 	{
-		this(mouseButton, pickCondition, null);
+		this( mouseButton, pickCondition, null );
 	}
-	
+
 	public MouseCondition( int mouseButton, PickCondition pickCondition, ModifierMask modifierMask )
 	{
-		super(mouseButton, pickCondition, modifierMask);
+		super( mouseButton, pickCondition, modifierMask );
 	}
-	
+
 	@Override
 	public boolean clicked( InputState currentState, InputState previousState ) {
 		return false;
 	}
-	
 
 }

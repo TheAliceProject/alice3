@@ -48,17 +48,22 @@ package org.alice.ide.croquet.models.ast.cascade;
  */
 public abstract class ProjectExpressionPropertyOperation extends org.lgna.croquet.ActionOperation {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+
 	public ProjectExpressionPropertyOperation( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		this.expressionProperty = expressionProperty;
 	}
+
 	public final org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
+
 	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return this.expressionProperty.getValue();
 	}
+
 	protected abstract org.lgna.project.ast.Expression createExpression();
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

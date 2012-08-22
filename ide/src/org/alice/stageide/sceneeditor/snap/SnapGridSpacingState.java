@@ -46,15 +46,17 @@ import org.lgna.croquet.BoundedDoubleState;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class SnapGridSpacingState extends BoundedDoubleState {
 	private static class SingletonHolder {
 		private static SnapGridSpacingState instance = new SnapGridSpacingState();
 	}
+
 	public static SnapGridSpacingState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SnapGridSpacingState() {
 		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "f8a1a56f-70da-41c7-9fb0-8d874a37ec27" ) ).minimum( 0.05 ).maximum( 10.0 ).initialValue( 0.5 ).stepSize( 0.05 ) );
 	}

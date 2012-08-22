@@ -54,5 +54,6 @@ public abstract class IndexedPolygonArray extends VertexGeometry {
 			super.setValue( owner, value );
 		}
 	};
+
 	public abstract int getIndicesPerPolygon();
 }

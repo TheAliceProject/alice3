@@ -26,14 +26,14 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 	public SearchTreeNode( SearchTreeNode parent, AbstractMethod content ) {
 		this.parent = parent;
 		this.method = content;
-		this.isGenerated = (content instanceof UserMethod) && ((UserMethod)content).getManagementLevel().isGenerated();
+		this.isGenerated = ( content instanceof UserMethod ) && ( (UserMethod)content ).getManagementLevel().isGenerated();
 	}
-	
+
 	public SearchTreeNode( SearchTreeNode parent, MethodInvocation invocation ) {
 		this.parent = parent;
 		this.methodInvocation = invocation;
 		this.method = methodInvocation.method.getValue();
-		this.isGenerated = (invocation.method.getValue() instanceof UserMethod) && ((UserMethod)invocation.method.getValue()).getManagementLevel().isGenerated();
+		this.isGenerated = ( invocation.method.getValue() instanceof UserMethod ) && ( (UserMethod)invocation.method.getValue() ).getManagementLevel().isGenerated();
 	}
 
 	public boolean getIsGenerated() {
@@ -70,6 +70,7 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 		}
 		return "ERROR: (mmay) unhandledtype in tree: " + method.getClass();
 	}
+
 	public Icon getIcon() {
 		return null;
 	}
@@ -101,7 +102,7 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 	}
 
 	public void invokeOperation() {
-		if( parent != null && parent.getParent() == null ) {// && content instanceof UserMethod ) {//node is not root AND node's parent is root
+		if( ( parent != null ) && ( parent.getParent() == null ) ) {// && content instanceof UserMethod ) {//node is not root AND node's parent is root
 			assert methodInvocation == null;
 			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( (UserMethod)method ) );
 		} else if( parent != null ) {
@@ -146,7 +147,7 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 	}
 
 	public static ItemCodec<SearchTreeNode> getNewItemCodec() {
-		return new ItemCodec<SearchTreeNode>(){
+		return new ItemCodec<SearchTreeNode>() {
 
 			public Class<SearchTreeNode> getValueClass() {
 				return null;
@@ -162,7 +163,7 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 			public StringBuilder appendRepresentation( StringBuilder rv, SearchTreeNode value ) {
 				return null;
 			}
-			
+
 		};
 	}
 }

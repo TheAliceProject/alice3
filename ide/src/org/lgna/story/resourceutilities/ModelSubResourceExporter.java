@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
  * @author alice
- *
+ * 
  */
 public class ModelSubResourceExporter {
 	private final String textureName;
@@ -57,36 +57,35 @@ public class ModelSubResourceExporter {
 	private AxisAlignedBox bbox = null;
 	List<String> tags = new LinkedList<String>();
 
-	public ModelSubResourceExporter(String modelName, String textureName) {
+	public ModelSubResourceExporter( String modelName, String textureName ) {
 		this.modelName = modelName;
 		this.textureName = textureName;
 	}
-	
+
 	public AxisAlignedBox getBbox() {
 		return bbox;
 	}
 
-	public void setBbox(AxisAlignedBox bbox) {
+	public void setBbox( AxisAlignedBox bbox ) {
 		this.bbox = bbox;
 	}
 
 	public String getModelName() {
 		return modelName;
 	}
-	
+
 	public String getTextureName() {
 		return textureName;
 	}
 
 	public List<String> getTags() {
 		return tags;
-	} 
-	
-	public void addTags(String... tags) {
-		for (String tag : tags) {
-			this.tags.add(tag);
+	}
+
+	public void addTags( String... tags ) {
+		for( String tag : tags ) {
+			this.tags.add( tag );
 		}
 	}
-	
-	
+
 }

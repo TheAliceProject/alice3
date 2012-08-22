@@ -41,13 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDressLongTwo implements FemaleAdultFullBodyOutfit {
-	GREEN ,
- 	RED ,
- 	CREAM ,
- 	BLACK ,
- 	BLUE ,
- 	REDHOLE ,
- 	BLACKHOLE ,
- 	LEOPARD ;
+	GREEN,
+	RED,
+	CREAM,
+	BLACK,
+	BLUE,
+	REDHOLE,
+	BLACKHOLE,
+	LEOPARD;
 }

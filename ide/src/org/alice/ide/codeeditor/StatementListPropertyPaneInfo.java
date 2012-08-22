@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.TrackableShape */ {
+public class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croquet.TrackableShape */{
 	private org.alice.ide.x.components.StatementListPropertyView statementListPropertyPane;
 	private java.awt.Rectangle bounds;
 
@@ -53,18 +53,23 @@ public class StatementListPropertyPaneInfo /* implements edu.cmu.cs.dennisc.croq
 		this.statementListPropertyPane = statementListPropertyPane;
 		this.bounds = bounds;
 	}
+
 	public boolean contains( java.awt.event.MouseEvent e ) {
 		return this.bounds.contains( e.getPoint() );
 	}
+
 	public org.alice.ide.x.components.StatementListPropertyView getStatementListPropertyPane() {
 		return this.statementListPropertyPane;
 	}
+
 	public void setStatementListPropertyPane( org.alice.ide.x.components.StatementListPropertyView statementListPropertyPane ) {
 		this.statementListPropertyPane = statementListPropertyPane;
 	}
+
 	public java.awt.Rectangle getBounds() {
 		return this.bounds;
 	}
+
 	public void setBounds( java.awt.Rectangle bounds ) {
 		this.bounds = bounds;
 	}

@@ -45,21 +45,24 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceFillerInner< R extends org.lgna.common.Resource > extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public ResourceFillerInner( Class< R> cls ) {
+public abstract class ResourceFillerInner<R extends org.lgna.common.Resource> extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public ResourceFillerInner( Class<R> cls ) {
 		super( cls );
 	}
-	protected abstract org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getResourceExpressionFillIn( R resource );
-	protected abstract org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getImportNewResourceFillIn();
+
+	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getResourceExpressionFillIn( R resource );
+
+	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getImportNewResourceFillIn();
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.util.Set< org.lgna.common.Resource > resources = ide.getResources();
-		if( resources != null && resources.isEmpty() == false ) {
+		java.util.Set<org.lgna.common.Resource> resources = ide.getResources();
+		if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
 			synchronized( resources ) {
 				for( org.lgna.common.Resource resource : resources ) {
 					if( this.getType().isAssignableFrom( resource.getClass() ) ) {
-						items.add( this.getResourceExpressionFillIn( (R)resource ) ); 
+						items.add( this.getResourceExpressionFillIn( (R)resource ) );
 					}
 				}
 			}

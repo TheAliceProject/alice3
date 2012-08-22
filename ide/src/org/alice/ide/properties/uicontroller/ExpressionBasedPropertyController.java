@@ -48,45 +48,43 @@ import org.lgna.croquet.components.Panel;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ExpressionBasedPropertyController<P> extends BorderPanel implements PropertyAdapterController<P>
 {
 	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
-	
-	public ExpressionBasedPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter)
+
+	public ExpressionBasedPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
 	{
 		super();
 		this.initializeComponents();
-		this.setPropertyAdapter(propertyAdapter);
+		this.setPropertyAdapter( propertyAdapter );
 	}
-	
+
 	public Class<?> getPropertyType()
 	{
 		return this.propertyAdapter.getPropertyType();
 	}
-	
-	protected void setValueOnUI(P value)
+
+	protected void setValueOnUI( P value )
 	{
-		
+
 	}
-    
-    protected void setValueOnData(P value)
-    {
-        this.propertyAdapter.setValue(value);
-    }
-    
-	
-    protected void initializeComponents()
-    {
-    }
-    
-    public Panel getPanel()
-    {
-        return this;
-    }
-    
-    
+
+	protected void setValueOnData( P value )
+	{
+		this.propertyAdapter.setValue( value );
+	}
+
+	protected void initializeComponents()
+	{
+	}
+
+	public Panel getPanel()
+	{
+		return this;
+	}
+
 	public AbstractPropertyAdapter<P, ?> getPropertyAdapter()
 	{
 		return this.propertyAdapter;
@@ -96,13 +94,13 @@ public class ExpressionBasedPropertyController<P> extends BorderPanel implements
 	protected void internalRefresh() {
 		super.internalRefresh();
 		this.removeAllComponents();
-		if (propertyAdapter != null)
+		if( propertyAdapter != null )
 		{
-			this.addCenterComponent(this.propertyAdapter.getExpressionState().createEditor(org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance()));
+			this.addCenterComponent( this.propertyAdapter.getExpressionState().createEditor( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance() ) );
 		}
 	}
-	
-	public void setPropertyAdapter(AbstractPropertyAdapter<P, ?> propertyAdapter)
+
+	public void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter )
 	{
 		this.propertyAdapter = propertyAdapter;
 		this.refreshLater();

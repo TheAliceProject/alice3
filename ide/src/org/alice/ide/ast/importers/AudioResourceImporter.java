@@ -46,22 +46,24 @@ package org.alice.ide.ast.importers;
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceImporter extends org.lgna.croquet.importer.Importer< org.lgna.common.resources.AudioResource > { 
+public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<org.lgna.common.resources.AudioResource> {
 	private static class SingletonHolder {
 		private static AudioResourceImporter instance = new AudioResourceImporter();
 	}
+
 	public static AudioResourceImporter getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AudioResourceImporter() {
 		super(
-				java.util.UUID.randomUUID(), 
-				edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), 
+				java.util.UUID.randomUUID(),
+				edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(),
 				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
 				org.lgna.common.resources.AudioResource.createFilenameFilter( true ),
-				"mp3", "wav", "au"
-		);
+				"mp3", "wav", "au" );
 	}
+
 	@Override
 	protected org.lgna.common.resources.AudioResource createFromFile( java.io.File file ) throws java.io.IOException {
 		return edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createAudioResource( file );

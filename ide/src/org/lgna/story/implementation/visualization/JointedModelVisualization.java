@@ -51,9 +51,11 @@ public class JointedModelVisualization extends edu.cmu.cs.dennisc.scenegraph.Lea
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( JointedModelVisualization.class, JointedModelVisualizationAdapter.class );
 	}
 	private final org.lgna.story.implementation.JointedModelImp implementation;
+
 	public JointedModelVisualization( org.lgna.story.implementation.JointedModelImp implementation ) {
 		this.implementation = implementation;
 	}
+
 	public org.lgna.story.implementation.JointedModelImp getImplementation() {
 		return this.implementation;
 	}

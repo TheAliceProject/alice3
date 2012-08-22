@@ -81,24 +81,31 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
 		this.programInstance = this.createProgramInstance( programType );
 	}
+
 	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance( org.lgna.project.ast.NamedUserType programType ) {
 		return this.vm.ENTRY_POINT_createInstance( programType );
 	}
+
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachine() {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	}
+
 	public org.lgna.project.virtualmachine.UserInstance getProgramInstance() {
 		return this.programInstance;
 	}
+
 	public org.lgna.story.SProgram getProgram() {
 		return this.programInstance.getJavaInstance( org.lgna.story.SProgram.class );
 	}
+
 	public org.lgna.story.implementation.ProgramImp getProgramImp() {
 		return org.lgna.story.ImplementationAccessor.getImplementation( this.getProgram() );
 	}
+
 	public org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
 		return this.vm;
 	}
+
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		org.lgna.story.implementation.ProgramImp programImp = this.getProgramImp();
 		return programImp != null ? programImp.getOnscreenLookingGlass() : null;
@@ -129,6 +136,7 @@ public abstract class ProgramContext {
 			}
 		} );
 	}
+
 	public void cleanUpProgram() {
 		this.getProgramImp().shutDown();
 		if( this.rendering != null ) {

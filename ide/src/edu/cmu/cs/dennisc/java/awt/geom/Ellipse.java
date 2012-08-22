@@ -45,16 +45,18 @@ package edu.cmu.cs.dennisc.java.awt.geom;
 /**
  * @author Dennis Cosgrove
  */
-public class Ellipse extends Shape{
+public class Ellipse extends Shape {
 	private java.awt.geom.Ellipse2D m_ellipse;
 
 	public Ellipse( double xHalfLength, double yHalfLength ) {
 		m_ellipse = new java.awt.geom.Ellipse2D.Double( -xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength );
 	}
+
 	@Override
 	protected java.awt.Shape getDrawShape() {
 		return m_ellipse;
 	}
+
 	@Override
 	protected java.awt.Shape getFillShape() {
 		return m_ellipse;

@@ -41,7 +41,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
@@ -50,7 +49,6 @@ import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
 
 import edu.cmu.cs.dennisc.nebulous.NebulousTexture;
-
 
 public class SRoom extends SThing implements MutableRider, Visual {
 	public static enum WallAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
@@ -85,16 +83,17 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		BLUE_WITH_BEAD,
 		SALMON,
 		SALMON_WITH_BEAD;
-		
+
 		private NebulousTexture nebulousTexture;
+
 		public NebulousTexture getTexture() {
-			if (this.nebulousTexture == null) {
-				this.nebulousTexture = new NebulousTexture(this.toString());
+			if( this.nebulousTexture == null ) {
+				this.nebulousTexture = new NebulousTexture( this.toString() );
 			}
 			return this.nebulousTexture;
 		}
 	}
-	
+
 	public static enum FloorAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
 		BLACK_CHECKER,
 		BLUE_CHECKER,
@@ -116,16 +115,17 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		WOOD_SQUARES,
 		MOROCCAN_TILES,
 		WOOD_DIAMOND;
-		
+
 		private NebulousTexture nebulousTexture;
+
 		public NebulousTexture getTexture() {
-			if (this.nebulousTexture == null) {
-				this.nebulousTexture = new NebulousTexture(this.toString());
+			if( this.nebulousTexture == null ) {
+				this.nebulousTexture = new NebulousTexture( this.toString() );
 			}
 			return this.nebulousTexture;
 		}
 	}
-	
+
 	public static enum CeilingAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
 		BLACK_CHECKER,
 		BLUE_CHECKER,
@@ -147,94 +147,101 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		WOOD_SQUARES,
 		MOROCCAN_TILES,
 		WOOD_DIAMOND;
-		
+
 		private NebulousTexture nebulousTexture;
+
 		public NebulousTexture getTexture() {
-			if (this.nebulousTexture == null) {
-				this.nebulousTexture = new NebulousTexture(this.toString());
+			if( this.nebulousTexture == null ) {
+				this.nebulousTexture = new NebulousTexture( this.toString() );
 			}
 			return this.nebulousTexture;
 		}
 	}
 
-	private final org.lgna.story.implementation.RoomImp implementation = new org.lgna.story.implementation.RoomImp(this);
-	
+	private final org.lgna.story.implementation.RoomImp implementation = new org.lgna.story.implementation.RoomImp( this );
+
 	@Override
-	/*package-private*/org.lgna.story.implementation.RoomImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.RoomImp getImplementation() {
 		return this.implementation;
 	}
+
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	
-	@GetterTemplate(isPersistent = false)
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+
+	@GetterTemplate( isPersistent = false )
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Paint getPaint() {
 		return this.getImplementation().wallPaint.getValue();
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+		this.getImplementation().wallPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.RoomFloorAppearanceDetails.class)
+
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
+	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.RoomFloorAppearanceDetails.class )
 	public Paint getFloorPaint() {
 		return this.getImplementation().floorPaint.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setFloorPaint( Paint paint, SetFloorPaint.Detail... details ) {
-		this.getImplementation().floorPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+		this.getImplementation().floorPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	
-//	@MethodTemplate()
-//	@Deprecated
-//	public void setFloorPaint( Paint paint, SetPaint.Detail... details ) {
-//		this.getImplementation().floorPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
-//	}
-	
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.RoomWallAppearanceDetails.class)
+
+	//	@MethodTemplate()
+	//	@Deprecated
+	//	public void setFloorPaint( Paint paint, SetPaint.Detail... details ) {
+	//		this.getImplementation().floorPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+	//	}
+
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
+	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.RoomWallAppearanceDetails.class )
 	public Paint getWallPaint() {
 		return this.getImplementation().wallPaint.getValue();
 	}
-	@MethodTemplate()
-	public void setWallPaint( Paint paint, SetWallPaint.Detail... details ) {
-		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
-	}
-	
-//	@MethodTemplate()
-//	@Deprecated
-//	public void setWallPaint( Paint paint, SetPaint.Detail... details ) {
-//		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
-//	}
 
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.RoomCeilingAppearanceDetails.class)
+	@MethodTemplate( )
+	public void setWallPaint( Paint paint, SetWallPaint.Detail... details ) {
+		this.getImplementation().wallPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	}
+
+	//	@MethodTemplate()
+	//	@Deprecated
+	//	public void setWallPaint( Paint paint, SetPaint.Detail... details ) {
+	//		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+	//	}
+
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
+	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.RoomCeilingAppearanceDetails.class )
 	public Paint getCeilingPaint() {
 		return this.getImplementation().ceilingPaint.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setCeilingPaint( Paint paint, SetCeilingPaint.Detail... details ) {
-		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+		this.getImplementation().ceilingPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	
-//	@MethodTemplate()
-//	@Deprecated
-//	public void setCeilingPaint( Paint paint, SetPaint.Detail... details ) {
-//		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
-//	}
-	
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+
+	//	@MethodTemplate()
+	//	@Deprecated
+	//	public void setCeilingPaint( Paint paint, SetPaint.Detail... details ) {
+	//		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+	//	}
+
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
+	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

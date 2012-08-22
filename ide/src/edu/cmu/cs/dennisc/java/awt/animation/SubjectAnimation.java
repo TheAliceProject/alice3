@@ -47,15 +47,18 @@ package edu.cmu.cs.dennisc.java.awt.animation;
  */
 public abstract class SubjectAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
 	private java.awt.Component m_awtSubject = null;
+
 	public SubjectAnimation() {
 	}
+
 	public SubjectAnimation( java.awt.Component awtSubject ) {
 		setSubject( awtSubject );
 	}
-	
+
 	public java.awt.Component getSubject() {
 		return m_awtSubject;
 	}
+
 	public void setSubject( java.awt.Component awtSubject ) {
 		assert awtSubject != null;
 		m_awtSubject = awtSubject;

@@ -31,8 +31,8 @@ public class TransactionHistoryGeneratorTest {
 		this.fieldName = fieldName;
 
 		try {
-			this.testPath = new java.io.File(this.getClass().getResource( this.testName ).toURI());
-		} catch (java.net.URISyntaxException e) {
+			this.testPath = new java.io.File( this.getClass().getResource( this.testName ).toURI() );
+		} catch( java.net.URISyntaxException e ) {
 			e.printStackTrace();
 		}
 
@@ -40,38 +40,38 @@ public class TransactionHistoryGeneratorTest {
 
 		// We need to "convert" lgp to a3p... this hack will suffice
 		org.lgna.project.Version VERSION_INDEPENDENT = null;
-		org.lgna.project.migration.MigrationManager.addVersionIndependentMigration( new org.lgna.project.migration.TextMigration( 
-				VERSION_INDEPENDENT, 
-				VERSION_INDEPENDENT, 
-				"edu.wustl.cse.lookingglass.ast.ThisInstanceExpression", 
+		org.lgna.project.migration.MigrationManager.addVersionIndependentMigration( new org.lgna.project.migration.TextMigration(
+				VERSION_INDEPENDENT,
+				VERSION_INDEPENDENT,
+				"edu.wustl.cse.lookingglass.ast.ThisInstanceExpression",
 				"org.lgna.project.ast.ThisExpression" ) );
 
 		try {
-			if ( this.reuseType.equals("lgp") ) {
+			if( this.reuseType.equals( "lgp" ) ) {
 				this.reuseFile = new java.io.File( this.testPath, LGP_REUSE_FILENAME );
 				this.reuseMethod = loadReuseLgp( this.reuseFile );
-			} else if ( this.reuseType.equals("a3p") ) {
+			} else if( this.reuseType.equals( "a3p" ) ) {
 				this.reuseFile = new java.io.File( this.testPath, A3P_REUSE_FILENAME );
 				this.reuseMethod = loadReuseA3p( this.reuseFile, fieldName, methodName );
 			} else {
 				throw new RuntimeException( "um. i dunno" );
 			}
-		} catch (java.io.IOException e) {
+		} catch( java.io.IOException e ) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public org.lgna.project.Project getReuseProject() {
 		return this.reuseProject;
 	}
-	
+
 	private org.lgna.project.ast.AbstractNode loadReuseLgp( java.io.File file ) throws java.io.IOException {
 		org.lgna.project.Version BAD_BAD_BAD_madeUpVersion = new org.lgna.project.Version( "3.1" );
 		java.io.FileInputStream fis = new java.io.FileInputStream( file );
-		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, BAD_BAD_BAD_madeUpVersion  );
+		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, BAD_BAD_BAD_madeUpVersion );
 		try {
 			return org.lgna.project.ast.AbstractNode.decode( xmlDocument, BAD_BAD_BAD_madeUpVersion.toString() );
-		} catch (org.lgna.project.VersionNotSupportedException e ) {
+		} catch( org.lgna.project.VersionNotSupportedException e ) {
 			e.printStackTrace();
 			return null;
 		}
@@ -86,18 +86,16 @@ public class TransactionHistoryGeneratorTest {
 			org.lgna.project.ast.AbstractField alienField = sceneType.findField( fieldName );
 
 			method = alienField.getValueType().findMethod( methodName );
-		} catch (org.lgna.project.VersionNotSupportedException e) {
+		} catch( org.lgna.project.VersionNotSupportedException e ) {
 			e.printStackTrace();
 		}
 		return method;
 	}
-	
-
 
 	private static final boolean TEMPORARY_HACK_isStoringDesired = false;
 	public static final java.io.File TEMPORARY_HACK_lastGeneratedTransactionHistoryFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "lastGeneratedTransactionHistory.bin" );
 	public static final java.io.File TEMPORARY_HACK_lastGeneratedProjectFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "lastGeneratedProject.a3p" );
-	
+
 	public void generate( org.lgna.project.Project project ) {
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)programType.fields.get( 0 ).getValueType();
@@ -105,7 +103,7 @@ public class TransactionHistoryGeneratorTest {
 
 		org.lgna.project.ast.UserType<?> type;
 		org.lgna.project.ast.UserField field;
-		if ( this.fieldName != null ) {
+		if( this.fieldName != null ) {
 			field = sceneType.getDeclaredField( this.fieldName );
 			type = (org.lgna.project.ast.UserType<?>)field.getValueType();
 		} else {
@@ -141,7 +139,7 @@ public class TransactionHistoryGeneratorTest {
 	public org.lgna.project.Project getProject() {
 		try {
 			return org.lgna.project.io.IoUtilities.readProject( this.projectFile );
-		} catch ( Exception e ) {
+		} catch( Exception e ) {
 			e.printStackTrace();
 		}
 		return null;
@@ -160,7 +158,7 @@ public class TransactionHistoryGeneratorTest {
 		frame.getContentPane().add( transactionHistoryPanel.getAwtComponent() );
 		frame.setSize( 300, 800 );
 		frame.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
-		frame.setVisible(true);
+		frame.setVisible( true );
 	}
 
 	public static TransactionHistoryGeneratorTest getSpinCrazyGenerator() {
@@ -175,7 +173,7 @@ public class TransactionHistoryGeneratorTest {
 		return new TransactionHistoryGeneratorTest( "Color Crazy", "a3p", "alien", "color_crazy" );
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main( String[] args ) throws Exception {
 		TransactionHistoryGeneratorTest test;
 		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
 		ide.initialize( args );

@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPerspectiveCameraAdapter< E extends edu.cmu.cs.dennisc.scenegraph.AbstractPerspectiveCamera > extends AbstractNearPlaneAndFarPlaneCameraAdapter< E > {
+public abstract class AbstractPerspectiveCameraAdapter<E extends edu.cmu.cs.dennisc.scenegraph.AbstractPerspectiveCamera> extends AbstractNearPlaneAndFarPlaneCameraAdapter<E> {
 }

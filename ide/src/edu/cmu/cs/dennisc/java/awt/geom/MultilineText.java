@@ -51,6 +51,7 @@ public class MultilineText extends Transformable {
 	private edu.cmu.cs.dennisc.java.awt.TextAlignment alignment;
 	private java.awt.Paint paint;
 	private float wrapWidth;
+
 	public MultilineText( String text, java.awt.Font font, edu.cmu.cs.dennisc.java.awt.TextAlignment alignment, java.awt.Paint paint ) {
 		this.multilineText = new edu.cmu.cs.dennisc.java.awt.MultilineText( text );
 		this.font = font;
@@ -58,39 +59,46 @@ public class MultilineText extends Transformable {
 		this.paint = paint;
 		this.wrapWidth = Float.NaN;
 	}
+
 	public java.awt.Font getFont() {
 		return this.font;
 	}
+
 	public void setFont( java.awt.Font font ) {
 		this.font = font;
 	}
+
 	public edu.cmu.cs.dennisc.java.awt.TextAlignment getAlignment() {
 		return this.alignment;
 	}
+
 	public void setAlignment( edu.cmu.cs.dennisc.java.awt.TextAlignment alignment ) {
 		this.alignment = alignment;
 	}
+
 	public java.awt.Paint getPaint() {
 		return this.paint;
 	}
+
 	public void setPaint( java.awt.Paint paint ) {
 		this.paint = paint;
 	}
-	
+
 	public float getWrapWidth() {
 		return this.wrapWidth;
 	}
+
 	public void setWrapWidth( float wrapWidth ) {
 		this.wrapWidth = wrapWidth;
 	}
-	
+
 	public java.awt.geom.Rectangle2D getBounds( java.awt.Graphics g ) {
 		java.awt.geom.Dimension2D size = this.multilineText.getDimension( g, this.wrapWidth );
 		double width = size.getWidth();
 		double height = size.getHeight();
-		return new java.awt.geom.Rectangle2D.Double( -width*0.5, -height*0.5, width, height );
+		return new java.awt.geom.Rectangle2D.Double( -width * 0.5, -height * 0.5, width, height );
 	}
-	
+
 	@Override
 	protected void paintComponent( edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext gc ) {
 		java.awt.Graphics2D g2 = gc.getAWTGraphics2D();

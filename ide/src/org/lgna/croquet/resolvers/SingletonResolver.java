@@ -42,15 +42,16 @@
  */
 package org.lgna.croquet.resolvers;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public final class SingletonResolver<T> implements Resolver< T > {
+public final class SingletonResolver<T> implements Resolver<T> {
 	private final T instance;
+
 	public SingletonResolver( T instance ) {
 		this.instance = instance;
 	}
+
 	public SingletonResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		String clsName = binaryDecoder.decodeString();
 		try {
@@ -71,14 +72,17 @@ public final class SingletonResolver<T> implements Resolver< T > {
 			throw new RuntimeException( cnfe );
 		}
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		Class<T> cls = (Class<T>)this.instance.getClass();
 		String clsName = cls.getName();
 		binaryEncoder.encode( clsName );
 	}
+
 	public T getResolved() {
 		return this.instance;
 	}
+
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
 }

@@ -62,36 +62,45 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		this.obesityLevel = obesityLevel.doubleValue();
 		this.outfit = outfit;
 	}
+
 	public abstract LifeStage getLifeStage();
+
 	public Gender getGender() {
 		return this.gender;
 	}
+
 	public SkinTone getSkinTone() {
 		return this.skinTone;
 	}
+
 	public EyeColor getEyeColor() {
 		return this.eyeColor;
 	}
+
 	public Hair getHair() {
 		return this.hair;
 	}
+
 	public Double getObesityLevel() {
 		return this.obesityLevel;
 	}
+
 	public Outfit getOutfit() {
 		return this.outfit;
 	}
+
 	public org.lgna.story.resources.JointId[] getRootJointIds() {
 		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 	}
-	
+
 	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {
 		return org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this );
 	}
-	
+
 	public final org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction ) {
 		return new org.lgna.story.implementation.BipedImp( abstraction, org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( this ) );
 	}
+
 	@Override
 	public boolean equals( Object obj ) {
 		if( this == obj ) {
@@ -115,26 +124,27 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		}
 		return false;
 	}
+
 	@Override
 	public int hashCode() {
 		int rv = 17;
 		if( this.gender != null ) {
-			rv = 37*rv + this.gender.hashCode();
+			rv = ( 37 * rv ) + this.gender.hashCode();
 		}
 		if( this.skinTone != null ) {
-			rv = 37*rv + this.skinTone.hashCode();
+			rv = ( 37 * rv ) + this.skinTone.hashCode();
 		}
 		if( this.eyeColor != null ) {
-			rv = 37*rv + this.eyeColor.hashCode();
+			rv = ( 37 * rv ) + this.eyeColor.hashCode();
 		}
 		if( this.hair != null ) {
-			rv = 37*rv + this.hair.hashCode();
+			rv = ( 37 * rv ) + this.hair.hashCode();
 		}
 		if( this.outfit != null ) {
-			rv = 37*rv + this.outfit.hashCode();
+			rv = ( 37 * rv ) + this.outfit.hashCode();
 		}
 		long lng = Double.doubleToLongBits( this.obesityLevel );
-		rv = 37*rv + (int)( lng ^(lng >>>32) );
+		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
 		return rv;
 	}
 }

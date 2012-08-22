@@ -57,9 +57,10 @@ public class StaticAnalysisUtilities {
 			}
 		}
 	}
+
 	private static int getIndexOfLastEnabledNonComment( BlockStatement blockStatement ) {
 		final int N = blockStatement.statements.size();
-		for( int i=N-1; i>=0; i-- ) {
+		for( int i = N - 1; i >= 0; i-- ) {
 			org.lgna.project.ast.Statement statement = blockStatement.statements.get( i );
 			if( isEnabledNonCommment( statement ) ) {
 				return i;
@@ -67,14 +68,14 @@ public class StaticAnalysisUtilities {
 		}
 		return -1;
 	}
-	
+
 	private static boolean containsUnreachableCode( BlockStatement blockStatement ) {
 		//todo: a lot more work could go into this function
 		//is a while loop false?
 		//is a count loop 0?
 		//is a for each loop empty?
 		final int lastIndex = getIndexOfLastEnabledNonComment( blockStatement );
-		for( int i=0; i<=lastIndex; i++ ) {
+		for( int i = 0; i <= lastIndex; i++ ) {
 			boolean isLastIndex = i == lastIndex;
 			org.lgna.project.ast.Statement statement = blockStatement.statements.get( i );
 			if( isEnabledNonCommment( statement ) ) {
@@ -104,10 +105,11 @@ public class StaticAnalysisUtilities {
 		}
 		return false;
 	}
+
 	public static boolean containsUnreachableCode( UserMethod method ) {
 		return containsUnreachableCode( method.body.getValue() );
 	}
-	
+
 	private static boolean containsAtLeastOneEnabledReturnStatement( BlockStatement blockStatement ) {
 		for( Statement statement : blockStatement.statements ) {
 			if( statement.isEnabled.getValue() ) {
@@ -133,10 +135,11 @@ public class StaticAnalysisUtilities {
 		}
 		return false;
 	}
+
 	public static boolean containsAtLeastOneEnabledReturnStatement( UserMethod method ) {
 		return containsAtLeastOneEnabledReturnStatement( method.body.getValue() );
 	}
-	
+
 	private static boolean containsAReturnForEveryPath( BlockStatement blockStatement ) {
 		final int lastIndex = getIndexOfLastEnabledNonComment( blockStatement );
 		if( lastIndex >= 0 ) {
@@ -157,20 +160,20 @@ public class StaticAnalysisUtilities {
 		}
 		return false;
 	}
+
 	public static boolean containsAReturnForEveryPath( UserMethod method ) {
 		return containsAReturnForEveryPath( method.body.getValue() );
 	}
 
-	
 	public static boolean isValidIdentifier( String identifier ) {
 		if( identifier != null ) {
 			final int N = identifier.length();
 			if( N > 0 ) {
 				char c0 = identifier.charAt( 0 );
-				if( Character.isLetter( c0 ) || c0 == '_' ) {
-					for( int i=1; i<N; i++ ) {
+				if( Character.isLetter( c0 ) || ( c0 == '_' ) ) {
+					for( int i = 1; i < N; i++ ) {
 						char cI = identifier.charAt( i );
-						if( Character.isLetterOrDigit( cI ) || cI== '_' ) {
+						if( Character.isLetterOrDigit( cI ) || ( cI == '_' ) ) {
 							//pass
 						} else {
 							return false;
@@ -182,13 +185,13 @@ public class StaticAnalysisUtilities {
 		}
 		return false;
 	}
-	
+
 	public static boolean isAvailableResourceName( org.lgna.project.Project project, String name, org.lgna.common.Resource self ) {
 		if( project != null ) {
-			java.util.Set< org.lgna.common.Resource > resources = project.getResources();
+			java.util.Set<org.lgna.common.Resource> resources = project.getResources();
 			if( resources != null ) {
 				for( org.lgna.common.Resource resource : resources ) {
-					if( resource != null && resource != self ) {
+					if( ( resource != null ) && ( resource != self ) ) {
 						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( name, resource.getName(), edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE ) ) {
 							return false;
 						}
@@ -200,6 +203,7 @@ public class StaticAnalysisUtilities {
 		}
 		return true;
 	}
+
 	public static boolean isAvailableResourceName( org.lgna.project.Project project, String name ) {
 		return isAvailableResourceName( project, name, null );
 	}
@@ -221,9 +225,11 @@ public class StaticAnalysisUtilities {
 		}
 		return true;
 	}
+
 	public static boolean isAvailableFieldName( String name, UserType<?> declaringType ) {
 		return isAvailableFieldName( name, declaringType, null );
 	}
+
 	public static boolean isAvailableFieldName( String name, UserField self ) {
 		return isAvailableFieldName( name, self.getDeclaringType(), self );
 	}
@@ -244,9 +250,11 @@ public class StaticAnalysisUtilities {
 		}
 		return true;
 	}
+
 	public static boolean isAvailableMethodName( String name, UserType<?> declaringType ) {
 		return isAvailableMethodName( name, declaringType, null );
 	}
+
 	public static boolean isAvailableMethodName( String name, UserMethod self ) {
 		return isAvailableMethodName( name, self.getDeclaringType(), self );
 	}

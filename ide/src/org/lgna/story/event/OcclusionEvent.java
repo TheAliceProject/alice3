@@ -24,6 +24,7 @@ public class OcclusionEvent<A extends org.lgna.story.SModel, B extends org.lgna.
 	public org.lgna.story.SModel getForeground() {
 		return foreground;
 	}
+
 	public org.lgna.story.SModel getBackground() {
 		return background;
 	}
@@ -31,6 +32,7 @@ public class OcclusionEvent<A extends org.lgna.story.SModel, B extends org.lgna.
 	public A getFromA() {
 		return a;
 	}
+
 	public B getFromB() {
 		return b;
 	}

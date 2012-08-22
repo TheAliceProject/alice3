@@ -50,9 +50,11 @@ public class SimsArtAssetsEulaComposite extends EulaComposite {
 	private static class SingletonHolder {
 		private static SimsArtAssetsEulaComposite instance = new SimsArtAssetsEulaComposite();
 	}
+
 	public static SimsArtAssetsEulaComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SimsArtAssetsEulaComposite() {
 		super( java.util.UUID.fromString( "9eb18cfd-0a2f-40e1-b521-15ffa5921ac9" ), edu.cmu.cs.dennisc.nebulous.License.TEXT );
 	}

@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.lgna.project.ast.AbstractStatementWithBody, DissolveStatementWithBodyOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractStatementWithBody, DissolveStatementWithBodyOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized DissolveStatementWithBodyOperation getInstance( org.lgna.project.ast.AbstractStatementWithBody statementWithBody ) {
 		DissolveStatementWithBodyOperation rv = map.get( statementWithBody );
 		if( rv != null ) {
@@ -58,20 +59,25 @@ public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionO
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.AbstractStatementWithBody statementWithBody;
+
 	private DissolveStatementWithBodyOperation( org.lgna.project.ast.AbstractStatementWithBody statementWithBody ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ) );
 		this.statementWithBody = statementWithBody;
 	}
+
 	public org.lgna.project.ast.AbstractStatementWithBody getStatementWithBody() {
 		return this.statementWithBody;
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		//todo
 		this.setName( "Dissolve " + this.statementWithBody.getClass().getSimpleName() );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

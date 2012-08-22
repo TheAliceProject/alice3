@@ -52,6 +52,7 @@ public class CylinderImp extends AbstractCylinderImp {
 		public Double getValue() {
 			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
 		}
+
 		@Override
 		protected void handleSetValue( Double value ) {
 			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
@@ -59,18 +60,21 @@ public class CylinderImp extends AbstractCylinderImp {
 			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
 		}
 	};
+
 	public CylinderImp( org.lgna.story.SCylinder abstraction ) {
 		this.abstraction = abstraction;
 	}
+
 	@Override
 	public org.lgna.story.SCylinder getAbstraction() {
 		return this.abstraction;
 	}
+
 	@Override
 	protected void setXZ( double xz ) {
 		this.radius.setValue( xz );
 	}
-	
+
 	@Override
 	protected double getXZ() {
 		return this.radius.getValue();

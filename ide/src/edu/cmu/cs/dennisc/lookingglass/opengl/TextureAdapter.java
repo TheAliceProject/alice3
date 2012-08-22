@@ -46,14 +46,16 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Texture> extends AbstractElementAdapter< E > {
+public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Texture> extends AbstractElementAdapter<E> {
 	public static void handleTextureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent e ) {
 		TextureAdapter<?> textureAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		textureAdapter.handleTextureChanged();
 	}
+
 	public boolean isPotentiallyAlphaBlended() {
 		return m_element.isPotentiallyAlphaBlended();
 	}
+
 	public boolean isValid() {
 		if( m_element != null ) {
 			return m_element.isValid();
@@ -63,13 +65,14 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 	}
 
 	private final TextureBinding textureBinding = new TextureBinding();
-	private final java.util.List< RenderContext > renderContexts = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private com.sun.opengl.util.texture.TextureData textureData;
 	private boolean isTextureDataDirty = true;
 
 	public void addRenderContext( RenderContext rc ) {
 		this.renderContexts.add( rc );
 	}
+
 	public void removeRenderContext( RenderContext rc ) {
 		this.renderContexts.remove( rc );
 	}
@@ -92,6 +95,7 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 	protected boolean isDirty() {
 		return this.isTextureDataDirty;
 	}
+
 	protected void setDirty( boolean isDirty ) {
 		this.isTextureDataDirty = isDirty;
 	}
@@ -100,6 +104,7 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 	public float mapU( float u ) {
 		return u;
 	}
+
 	public float mapV( float v ) {
 		return v;
 	}
@@ -108,13 +113,15 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		//com.jogamp.opengl.util.texture.TextureData textureData = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
 		return com.sun.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
 	}
+
 	protected abstract com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTexture );
+
 	public ForgettableBinding bindTexture( RenderContext rc ) {
 		if( this.isDirty() ) {
 			if( this.textureData != null ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "new texture data", this );
 			}
-			this.textureData = this.newTextureData( rc.gl, this.textureData ); 
+			this.textureData = this.newTextureData( rc.gl, this.textureData );
 			this.setDirty( false );
 		}
 		this.textureBinding.ensureUpToDate( rc, this.textureData );
@@ -122,6 +129,8 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 	}
 
 	public abstract java.awt.Graphics2D createGraphics();
+
 	public abstract void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height );
+
 	public abstract java.awt.Image getImage();
 }

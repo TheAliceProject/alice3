@@ -47,6 +47,6 @@ package edu.cmu.cs.dennisc.pattern;
  */
 public interface Action extends Runnable {
 	public void undo();
+
 	public void redo();
 }
-

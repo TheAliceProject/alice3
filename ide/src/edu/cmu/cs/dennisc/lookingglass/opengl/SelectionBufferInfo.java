@@ -50,9 +50,9 @@ class SelectionBufferInfo {
 	private float zFront;
 	private float zBack;
 	private VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter;
-//	private edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
+	//	private edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
 	private boolean isFrontFacing;
-//	private edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry;
+	//	private edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry;
 	private int geometryIndex;
 	private int subElement;
 
@@ -71,12 +71,12 @@ class SelectionBufferInfo {
 
 		long zBackAsLong = zBackAsInt;
 		zBackAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
-		
-//		int[] atDepth = { -1 };
-//		pc.gl.glGetIntegerv( GL_DEPTH_BITS, atDepth, 0 );
-//		int[] atClearValue = { -1 };
-//		pc.gl.glGetIntegerv( GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
+
+		//		int[] atDepth = { -1 };
+		//		pc.gl.glGetIntegerv( GL_DEPTH_BITS, atDepth, 0 );
+		//		int[] atClearValue = { -1 };
+		//		pc.gl.glGetIntegerv( GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
 
 		this.zBack = (float)zBackAsLong;
 		this.zBack /= (float)PickContext.MAX_UNSIGNED_INTEGER;
@@ -84,19 +84,20 @@ class SelectionBufferInfo {
 		if( nameCount == 4 ) {
 			int key = intBuffer.get( offset + 3 );
 			this.visualAdapter = pc.getPickVisualAdapterForName( key );
-//			if( visualAdapter != null ) {
-//				this.sgVisual = visualAdapter.m_element;
-				this.isFrontFacing = intBuffer.get( offset + 4 ) == 1;
-//				this.sgGeometry = this.sgVisual.geometries.getValue()[ intBuffer.get( offset + 5 ) ];
-				this.geometryIndex = intBuffer.get( offset + 5 );
-				this.subElement = intBuffer.get( offset + 6 );
-//			}
+			//			if( visualAdapter != null ) {
+			//				this.sgVisual = visualAdapter.m_element;
+			this.isFrontFacing = intBuffer.get( offset + 4 ) == 1;
+			//				this.sgGeometry = this.sgVisual.geometries.getValue()[ intBuffer.get( offset + 5 ) ];
+			this.geometryIndex = intBuffer.get( offset + 5 );
+			this.subElement = intBuffer.get( offset + 6 );
+			//			}
 		}
 	}
 
 	public float getZFront() {
 		return this.zFront;
 	}
+
 	public float getZBack() {
 		return this.zBack;
 	}
@@ -108,16 +109,19 @@ class SelectionBufferInfo {
 			return null;
 		}
 	}
+
 	public boolean isFrontFacing() {
 		return this.isFrontFacing;
 	}
+
 	public int getGeometryIndex() {
 		return this.geometryIndex;
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSGVisual();
 		if( sgVisual != null ) {
-			if( 0 <= this.geometryIndex && this.geometryIndex < sgVisual.getGeometryCount() ) {
+			if( ( 0 <= this.geometryIndex ) && ( this.geometryIndex < sgVisual.getGeometryCount() ) ) {
 				return sgVisual.getGeometryAt( this.geometryIndex );
 			} else {
 				return null;
@@ -127,10 +131,11 @@ class SelectionBufferInfo {
 		}
 		//return this.sgGeometry;
 	}
+
 	public int getSubElement() {
 		return this.subElement;
 	}
-	
+
 	public void updatePointInSource( edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformationOfSource ) {
 		if( this.visualAdapter != null ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePointInSource:" );
@@ -141,6 +146,7 @@ class SelectionBufferInfo {
 			this.pointInSource.setNaN();
 		}
 	}
+
 	public void updatePointInSource( edu.cmu.cs.dennisc.math.Matrix4x4 m ) {
 		double z = this.zFront;
 		z *= 2;
@@ -149,8 +155,9 @@ class SelectionBufferInfo {
 		edu.cmu.cs.dennisc.math.Vector4 v = new edu.cmu.cs.dennisc.math.Vector4( 0, 0, z, 1 );
 		m.transform( v );
 
-		this.pointInSource.set( v.x/v.w, v.y/v.w, v.z/v.w );
+		this.pointInSource.set( v.x / v.w, v.y / v.w, v.z / v.w );
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPointInSource() {
 		return this.pointInSource;
 	}

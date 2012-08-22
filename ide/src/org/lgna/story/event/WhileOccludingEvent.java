@@ -12,16 +12,19 @@ public class WhileOccludingEvent<A extends org.lgna.story.SModel, B extends org.
 		this.occludingFromA = a;
 		this.occludingFromB = b;
 	}
-	
+
 	public A getOccludingFromA() {
 		return occludingFromA;
 	}
+
 	public B getOccludingFromB() {
 		return occludingFromB;
 	}
+
 	public org.lgna.story.SModel getForeground() {
 		return foreground;
 	}
+
 	public org.lgna.story.SModel getBackground() {
 		return background;
 	}

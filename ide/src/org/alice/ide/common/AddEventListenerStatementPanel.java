@@ -49,29 +49,32 @@ import org.lgna.project.ast.ExpressionStatement;
  */
 public class AddEventListenerStatementPanel extends StatementLikeSubstance {
 	private final ExpressionStatement statement;
+
 	public AddEventListenerStatementPanel( org.lgna.project.ast.ExpressionStatement statement ) {
 		super(
 				org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ),
 				org.lgna.project.ast.ExpressionStatement.class,
-				javax.swing.BoxLayout.PAGE_AXIS
-		);
+				javax.swing.BoxLayout.PAGE_AXIS );
 		this.statement = statement;
 		this.setPopupPrepModel( org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
 	}
+
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getEventColor();
 		java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
 		java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
-		return new java.awt.GradientPaint( x, y, colorA, x, y+150, colorB );
+		return new java.awt.GradientPaint( x, y, colorA, x, y + 150, colorB );
 	}
+
 	@Override
 	public boolean isMaximumSizeClampedToPreferredSize() {
 		return false;
 	}
+
 	@Override
-	protected void paintEpilogue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		super.paintEpilogue(g2, x, y, width, height);
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		super.paintEpilogue( g2, x, y, width, height );
 		if( this.statement.isEnabled.getValue() ) {
 			//pass
 		} else {

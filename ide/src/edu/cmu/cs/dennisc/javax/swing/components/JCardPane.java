@@ -49,7 +49,8 @@ public class JCardPane extends JPane {
 	public JCardPane() {
 		setLayout( new java.awt.CardLayout() );
 	}
+
 	public void show( String key ) {
-		((java.awt.CardLayout)this.getLayout()).show( this, key );
+		( (java.awt.CardLayout)this.getLayout() ).show( this, key );
 	}
 }

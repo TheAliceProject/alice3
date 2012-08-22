@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class DiscAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Disc > {
+public class DiscAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Disc> {
 	//todo: add scenegraph hint
 	private static final int SLICE_COUNT = 50;
 	private static final int LOOP_COUNT = 1;
@@ -73,10 +73,12 @@ public class DiscAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Dis
 			c.gl.glPopMatrix();
 		}
 	}
+
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
 		glDisc( rc );
 	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		int name;
@@ -89,12 +91,12 @@ public class DiscAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Dis
 		glDisc( pc );
 		pc.gl.glPopName();
 	}
-	
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
-		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0,0,0, 0,1,0);
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, 0, 1, 0 );
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.innerRadius ) {

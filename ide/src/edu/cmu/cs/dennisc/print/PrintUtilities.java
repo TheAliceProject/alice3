@@ -47,19 +47,19 @@ package edu.cmu.cs.dennisc.print;
  * @author Dennis Cosgrove
  */
 public abstract class PrintUtilities {
-	private static boolean s_isDumpStackDesired;	
-	
-	private static java.util.Stack< java.io.PrintStream > s_printStreamStack = new java.util.Stack< java.io.PrintStream >();
+	private static boolean s_isDumpStackDesired;
+
+	private static java.util.Stack<java.io.PrintStream> s_printStreamStack = new java.util.Stack<java.io.PrintStream>();
 	private static java.io.PrintStream s_printStream = System.out;
-	private static java.util.Stack< java.text.DecimalFormat > s_decimalFormatStack = new java.util.Stack< java.text.DecimalFormat >();
+	private static java.util.Stack<java.text.DecimalFormat> s_decimalFormatStack = new java.util.Stack<java.text.DecimalFormat>();
 	private static java.text.DecimalFormat s_decimalFormat;
-	private static java.util.Stack< String > s_indentTextStack = new java.util.Stack< String >();
+	private static java.util.Stack<String> s_indentTextStack = new java.util.Stack<String>();
 	private static String s_indentText;
-	private static java.util.Stack< String > s_separatorTextStack = new java.util.Stack< String >();
+	private static java.util.Stack<String> s_separatorTextStack = new java.util.Stack<String>();
 	private static String s_separatorText;
 
-	private static java.util.Map< Class<?>, java.lang.reflect.Method > s_classToAppendMethod;
-	private static java.util.Map< Class<?>, java.lang.reflect.Method > s_classToAppendLinesMethod;
+	private static java.util.Map<Class<?>, java.lang.reflect.Method> s_classToAppendMethod;
+	private static java.util.Map<Class<?>, java.lang.reflect.Method> s_classToAppendLinesMethod;
 
 	private static java.lang.reflect.Method getMethod( String name, Class<?> cls ) {
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( PrintUtilities.class, name, new Class[] { StringBuilder.class, cls } );
@@ -68,23 +68,23 @@ public abstract class PrintUtilities {
 	static {
 		s_isDumpStackDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.print.PrintUtilities.isDumpStackDesired" );
 		//s_isDumpStackDesired = true;
-		
-		s_classToAppendMethod = new java.util.HashMap< Class<?>, java.lang.reflect.Method >();
-		s_classToAppendLinesMethod = new java.util.HashMap< Class<?>, java.lang.reflect.Method >();
 
-		s_classToAppendMethod.put( Float.class, getMethod( "append", Float.class  ) );
-		s_classToAppendMethod.put( Double.class, getMethod( "append", Double.class  ) );
-		Class<?>[] classes = { 
-				int[].class, 
-				float[].class, 
-				double[].class, 
-				java.nio.IntBuffer.class, 
-				java.nio.FloatBuffer.class, 
+		s_classToAppendMethod = new java.util.HashMap<Class<?>, java.lang.reflect.Method>();
+		s_classToAppendLinesMethod = new java.util.HashMap<Class<?>, java.lang.reflect.Method>();
+
+		s_classToAppendMethod.put( Float.class, getMethod( "append", Float.class ) );
+		s_classToAppendMethod.put( Double.class, getMethod( "append", Double.class ) );
+		Class<?>[] classes = {
+				int[].class,
+				float[].class,
+				double[].class,
+				java.nio.IntBuffer.class,
+				java.nio.FloatBuffer.class,
 				java.nio.DoubleBuffer.class
 		};
 		for( Class<?> cls : classes ) {
-			s_classToAppendMethod.put( cls, getMethod( "append", cls  ) );
-			s_classToAppendLinesMethod.put( cls, getMethod( "appendLines", cls  ) );
+			s_classToAppendMethod.put( cls, getMethod( "append", cls ) );
+			s_classToAppendLinesMethod.put( cls, getMethod( "appendLines", cls ) );
 		}
 		s_decimalFormat = new java.text.DecimalFormat( "0.0000" );
 		s_decimalFormat.setPositivePrefix( "+" );
@@ -95,16 +95,20 @@ public abstract class PrintUtilities {
 	private PrintUtilities() {
 		throw new AssertionError();
 	}
+
 	public static void pushPrintStream() {
 		s_printStreamStack.push( s_printStream );
 	}
+
 	public static java.io.PrintStream accessPrintStream() {
 		return s_printStream;
 	}
+
 	//todo: add getDecimalFormat
 	public static void setPrintStream( java.io.PrintStream printStream ) {
 		s_printStream = printStream;
 	}
+
 	public static void popPrintStream() {
 		s_printStream = s_printStreamStack.pop();
 	}
@@ -112,13 +116,16 @@ public abstract class PrintUtilities {
 	public static void pushDecimalFormat() {
 		s_decimalFormatStack.push( s_decimalFormat );
 	}
+
 	public static java.text.DecimalFormat accessDecimalFormat() {
 		return s_decimalFormat;
 	}
+
 	//todo: add getDecimalFormat
 	public static void setDecimalFormat( java.text.DecimalFormat decimalFormat ) {
 		s_decimalFormat = decimalFormat;
 	}
+
 	public static void popDecimalFormat() {
 		s_decimalFormat = s_decimalFormatStack.pop();
 	}
@@ -126,12 +133,15 @@ public abstract class PrintUtilities {
 	public static void pushIndentText() {
 		s_indentTextStack.push( s_indentText );
 	}
+
 	public static String getIndentText() {
 		return s_indentText;
 	}
+
 	public static void setIndentText( String indentText ) {
 		s_indentText = indentText;
 	}
+
 	public static void popIndentText() {
 		s_indentText = s_indentTextStack.pop();
 	}
@@ -139,29 +149,35 @@ public abstract class PrintUtilities {
 	public static void pushSeparatorText() {
 		s_separatorTextStack.push( s_separatorText );
 	}
+
 	public static String getSeparatorText() {
 		return s_separatorText;
 	}
+
 	public static void setSeparatorText( String separatorText ) {
 		s_separatorText = separatorText;
 	}
+
 	public static void popSeparatorText() {
 		s_separatorText = s_separatorTextStack.pop();
 	}
 
 	public static final void printlns( java.io.PrintStream ps, int count ) {
-		for( int i=0; i<count; i++ ) {
+		for( int i = 0; i < count; i++ ) {
 			ps.println();
 		}
 	}
+
 	public static final void println( java.io.PrintStream ps ) {
 		printlns( ps, 1 );
 	}
+
 	public static final void printlns( int count ) {
 		printlns( s_printStream, count );
 	}
+
 	public static final void println() {
-		printlns(1);
+		printlns( 1 );
 	}
 
 	//Object...
@@ -174,12 +190,12 @@ public abstract class PrintUtilities {
 				if( value instanceof Printable ) {
 					Printable printable = (Printable)value;
 					try {
-						printable.append( rv, s_decimalFormat, isSingleLine==false );
+						printable.append( rv, s_decimalFormat, isSingleLine == false );
 					} catch( java.io.IOException ioe ) {
 						throw new RuntimeException( ioe );
 					}
 				} else {
-					java.util.Map< Class< ? >, java.lang.reflect.Method > map;
+					java.util.Map<Class<?>, java.lang.reflect.Method> map;
 					if( isSingleLine ) {
 						map = s_classToAppendMethod;
 					} else {
@@ -198,12 +214,12 @@ public abstract class PrintUtilities {
 							rv.append( "length=" );
 							rv.append( array.length );
 							rv.append( "; values=[ " );
-							for( int i = 0; i < array.length; i++ ) {
+							for( Object element : array ) {
 								if( isSingleLine ) {
-									append( rv, array[ i ] );
+									append( rv, element );
 									rv.append( " " );
 								} else {
-									appendLines( rv, array[ i ] );
+									appendLines( rv, element );
 									rv.append( "\n" );
 								}
 							}
@@ -224,30 +240,39 @@ public abstract class PrintUtilities {
 	public static StringBuilder append( StringBuilder rv, Object... values ) {
 		return append( rv, values, true );
 	}
+
 	public static StringBuilder appendLines( StringBuilder rv, Object... values ) {
 		return append( rv, values, false );
 	}
+
 	public static String toString( Object... value ) {
 		return append( new StringBuilder(), value ).toString();
 	}
+
 	public static String toStringLines( Object... value ) {
 		return appendLines( new StringBuilder(), value ).toString();
 	}
+
 	public static void print( java.io.PrintStream ps, Object... value ) {
 		ps.print( toString( value ) );
 	}
+
 	public static void println( java.io.PrintStream ps, Object... value ) {
 		ps.println( toString( value ) );
 	}
+
 	public static void printlns( java.io.PrintStream ps, Object... value ) {
 		ps.println( toStringLines( value ) );
 	}
+
 	public static void print( Object... value ) {
 		print( s_printStream, value );
 	}
+
 	public static void println( Object... value ) {
 		println( s_printStream, value );
 	}
+
 	public static void printlns( Object... value ) {
 		printlns( s_printStream, value );
 	}
@@ -328,8 +353,8 @@ public abstract class PrintUtilities {
 			rv.append( "length=" );
 			rv.append( value.length );
 			rv.append( "; values=[ " );
-			for( int i = 0; i < value.length; i++ ) {
-				rv.append( value[ i ] );
+			for( int element : value ) {
+				rv.append( element );
 				rv.append( " " );
 			}
 			rv.append( "]" );
@@ -352,8 +377,8 @@ public abstract class PrintUtilities {
 			rv.append( "length=" );
 			rv.append( value.length );
 			rv.append( "; values=[ " );
-			for( int i = 0; i < value.length; i++ ) {
-				append( rv, value[ i ] );
+			for( float element : value ) {
+				append( rv, element );
 				rv.append( " " );
 			}
 			rv.append( "]" );
@@ -376,8 +401,8 @@ public abstract class PrintUtilities {
 			rv.append( "length=" );
 			rv.append( value.length );
 			rv.append( "; values=[ " );
-			for( int i = 0; i < value.length; i++ ) {
-				append( rv, value[ i ] );
+			for( double element : value ) {
+				append( rv, element );
 				rv.append( " " );
 			}
 			rv.append( "]" );

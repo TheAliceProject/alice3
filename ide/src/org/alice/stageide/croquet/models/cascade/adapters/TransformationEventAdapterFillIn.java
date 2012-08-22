@@ -3,10 +3,11 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 import org.lgna.story.event.PointOfViewChangeListener;
 
 public class TransformationEventAdapterFillIn extends LambdaExpressionFillIn {
-	
+
 	private static class SingletonHolder {
 		private static TransformationEventAdapterFillIn instance = new TransformationEventAdapterFillIn();
 	}
+
 	public static TransformationEventAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}

@@ -42,13 +42,13 @@
  */
 package org.alice.ide.croquet.models.ast;
 
-
 /**
  * @author dculyba
- *
+ * 
  */
 public class RevertFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.lgna.project.ast.UserField, RevertFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, RevertFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized RevertFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
 		RevertFieldOperation rv = map.get( field );
 		if( rv != null ) {
@@ -59,15 +59,18 @@ public class RevertFieldOperation extends org.lgna.croquet.ActionOperation {
 		}
 		return rv;
 	}
-	
+
 	private org.lgna.project.ast.UserField field;
+
 	public RevertFieldOperation( org.lgna.project.ast.UserField field ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "84645a6e-e17f-4d64-b4a1-8182fdc1a546" ) );
 		this.field = field;
 	}
+
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

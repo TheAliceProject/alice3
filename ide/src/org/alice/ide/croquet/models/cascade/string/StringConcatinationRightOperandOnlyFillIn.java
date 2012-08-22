@@ -46,28 +46,33 @@ package org.alice.ide.croquet.models.cascade.string;
 /**
  * @author Dennis Cosgrove
  */
-public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks< org.lgna.project.ast.StringConcatenation > {
+public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithExpressionBlanks<org.lgna.project.ast.StringConcatenation> {
 	private static class SingletonHolder {
 		private static StringConcatinationRightOperandOnlyFillIn instance = new StringConcatinationRightOperandOnlyFillIn();
 	}
+
 	public static StringConcatinationRightOperandOnlyFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.project.ast.StringConcatenation transientValue;
+
 	private StringConcatinationRightOperandOnlyFillIn() {
 		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
-		this.transientValue = new org.lgna.project.ast.StringConcatenation( 
+		this.transientValue = new org.lgna.project.ast.StringConcatenation(
 				new org.alice.ide.ast.PreviousValueExpression( Object.class ),
 				new org.alice.ide.ast.EmptyExpression( Object.class )
-		);
+				);
 	}
+
 	@Override
 	protected org.lgna.project.ast.StringConcatenation createValue( org.lgna.project.ast.Expression previousExpression, org.lgna.project.ast.Expression[] expressions ) {
 		return new org.lgna.project.ast.StringConcatenation( previousExpression, expressions[ 0 ] );
 	}
+
 	@Override
-	public org.lgna.project.ast.StringConcatenation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.StringConcatenation,org.lgna.project.ast.Expression > step ) {
+	public org.lgna.project.ast.StringConcatenation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.StringConcatenation, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

@@ -47,15 +47,18 @@ package org.lgna.story.font;
  * @author Dennis Cosgrove
  */
 public enum PostureConstant implements PostureAttribute {
-	REGULAR(java.awt.font.TextAttribute.POSTURE_REGULAR), OBLIQUE(java.awt.font.TextAttribute.POSTURE_OBLIQUE);
+	REGULAR( java.awt.font.TextAttribute.POSTURE_REGULAR ),
+	OBLIQUE( java.awt.font.TextAttribute.POSTURE_OBLIQUE );
 	private Float m_value;
 
 	private PostureConstant( Float value ) {
 		m_value = value;
 	}
+
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.POSTURE;
 	}
+
 	public Float getValue() {
 		return m_value;
 	}

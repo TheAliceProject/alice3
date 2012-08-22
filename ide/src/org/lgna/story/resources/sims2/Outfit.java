@@ -41,5 +41,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public interface Outfit extends Ingredient {
 }

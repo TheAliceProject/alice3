@@ -46,27 +46,29 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState< ContentTab > {
+public class ProjectTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<ContentTab> {
 	private static class SingletonHolder {
 		private static ProjectTabSelectionState instance = new ProjectTabSelectionState();
 	}
+
 	public static ProjectTabSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ProjectTabSelectionState() {
-		super( 
+		super(
 				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ), 
-				ContentTab.class, 
-				-1, 
-				TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance()
-		);
+				java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ),
+				ContentTab.class,
+				-1,
+				TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance() );
 	}
+
 	public void refresh() {
 		//todo
 		org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().refresh();
 	}
-	
+
 	public java.net.URI getSelectedURI() {
 		ContentTab contentTab = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedItem();
 		if( contentTab != null ) {
@@ -75,6 +77,7 @@ public class ProjectTabSelectionState extends org.lgna.croquet.SimpleTabSelectio
 			return null;
 		}
 	}
+
 	public void selectAppropriateTab( boolean isNew ) {
 		ContentTab tab;
 		if( isNew ) {

@@ -45,5 +45,5 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author alice
  */
-public class TexturedVisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual > extends VisualAdapter< E >{
+public class TexturedVisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual> extends VisualAdapter<E> {
 }

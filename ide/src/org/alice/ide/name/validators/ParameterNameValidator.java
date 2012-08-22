@@ -47,11 +47,13 @@ public class ParameterNameValidator extends TransientNameValidator {
 	private static org.lgna.project.ast.UserCode getCode( org.lgna.project.ast.UserParameter parameter ) {
 		return (org.lgna.project.ast.UserCode)parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 	}
+
 	public ParameterNameValidator( org.lgna.project.ast.UserParameter parameter ) {
 		super( parameter, getCode( parameter ), null );
 	}
+
 	public ParameterNameValidator( org.lgna.project.ast.UserCode code ) {
 		super( null, code, null );
 	}
-	
+
 }

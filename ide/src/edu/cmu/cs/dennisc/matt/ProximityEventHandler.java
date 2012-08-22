@@ -49,10 +49,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
 import org.lgna.story.event.EnterProximityEvent;
 import org.lgna.story.event.ExitProximityEvent;
 import org.lgna.story.event.ProximityEnterListener;
@@ -64,7 +64,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class ProximityEventHandler extends TransformationChangedHandler<Object,ProximityEvent> {
+public class ProximityEventHandler extends TransformationChangedHandler<Object, ProximityEvent> {
 
 	private ProximityEventManager proximityEventManager = new ProximityEventManager();
 
@@ -97,11 +97,11 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 
 	protected class ProximityEventManager {
 
-		Map<SThing,CopyOnWriteArrayList<SThing>> checkMap = new HashMap<SThing,CopyOnWriteArrayList<SThing>>();
-		Map<SThing,HashMap<SThing,CopyOnWriteArrayList<Object>>> internalEventMap = new HashMap<SThing,HashMap<SThing,CopyOnWriteArrayList<Object>>>();
-		Map<Object,HashMap<SThing,HashMap<SThing,Boolean>>> wereClose = new HashMap<Object,HashMap<SThing,HashMap<SThing,Boolean>>>();
-		Map<Object,Double> distMap = new HashMap<Object,Double>();
-		HashMap<Object,List<List<SThing>>> listenerToGroupMap = Collections.newHashMap();
+		Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = new HashMap<SThing, CopyOnWriteArrayList<SThing>>();
+		Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> internalEventMap = new HashMap<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>>();
+		Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = new HashMap<Object, HashMap<SThing, HashMap<SThing, Boolean>>>();
+		Map<Object, Double> distMap = new HashMap<Object, Double>();
+		HashMap<Object, List<List<SThing>>> listenerToGroupMap = Collections.newHashMap();
 
 		public void check( SThing changedThing ) {
 			for( SThing m : checkMap.get( changedThing ) ) {
@@ -131,11 +131,11 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 				checkMap.put( newObject, new CopyOnWriteArrayList<SThing>() );
 			}
 			if( internalEventMap.get( newObject ) == null ) {
-				internalEventMap.put( newObject, new HashMap<SThing,CopyOnWriteArrayList<Object>>() );
+				internalEventMap.put( newObject, new HashMap<SThing, CopyOnWriteArrayList<Object>>() );
 			}
 			if( wereClose.get( key ) == null ) {
-				wereClose.put( key, new HashMap<SThing,HashMap<SThing,Boolean>>() );
-				wereClose.get( key ).put( newObject, new HashMap<SThing,Boolean>() );
+				wereClose.put( key, new HashMap<SThing, HashMap<SThing, Boolean>>() );
+				wereClose.get( key ).put( newObject, new HashMap<SThing, Boolean>() );
 			}
 			for( int i = 0; i != listenerToGroupMap.get( key ).size(); ++i ) {
 				if( i == group ) {
@@ -173,13 +173,13 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 
 		public void register( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Double dist ) {
 			distMap.put( proximityEventListener, dist );
-			wereClose.put( proximityEventListener, new HashMap<SThing,HashMap<SThing,Boolean>>() );
+			wereClose.put( proximityEventListener, new HashMap<SThing, HashMap<SThing, Boolean>>() );
 			for( SThing m : groupOne ) {
 				if( internalEventMap.get( m ) == null ) {
-					internalEventMap.put( m, new HashMap<SThing,CopyOnWriteArrayList<Object>>() );
+					internalEventMap.put( m, new HashMap<SThing, CopyOnWriteArrayList<Object>>() );
 					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
 				}
-				wereClose.get( proximityEventListener ).put( m, new HashMap<SThing,Boolean>() );
+				wereClose.get( proximityEventListener ).put( m, new HashMap<SThing, Boolean>() );
 				for( SThing t : groupTwo ) {
 					if( internalEventMap.get( m ).get( t ) == null ) {
 						internalEventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
@@ -193,10 +193,10 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object,P
 			}
 			for( SThing m : groupTwo ) {
 				if( internalEventMap.get( m ) == null ) {
-					internalEventMap.put( m, new HashMap<SThing,CopyOnWriteArrayList<Object>>() );
+					internalEventMap.put( m, new HashMap<SThing, CopyOnWriteArrayList<Object>>() );
 					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
 				}
-				wereClose.get( proximityEventListener ).put( m, new HashMap<SThing,Boolean>() );
+				wereClose.get( proximityEventListener ).put( m, new HashMap<SThing, Boolean>() );
 				for( SThing t : groupOne ) {
 					if( internalEventMap.get( m ).get( t ) == null ) {
 						internalEventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );

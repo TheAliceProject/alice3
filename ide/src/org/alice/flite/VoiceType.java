@@ -44,20 +44,21 @@ package org.alice.flite;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public enum VoiceType {
 
-	MALE    ( TextToSpeech.MALE_VOICE ),
-	FEMALE   ( TextToSpeech.FEMALE_VOICE );
-	
+	MALE( TextToSpeech.MALE_VOICE ),
+	FEMALE( TextToSpeech.FEMALE_VOICE );
+
 	private String voiceString;
-	
+
 	private VoiceType( String voiceString ) {
 		this.voiceString = voiceString;
 	}
+
 	public String getVoiceString() {
 		return voiceString;
 	}
-	
+
 }

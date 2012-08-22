@@ -44,15 +44,17 @@ package org.alice.ide.sceneeditor;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class SceneFieldListSelectionState extends org.lgna.croquet.DefaultListSelectionState< org.lgna.project.ast.UserField > {
+public class SceneFieldListSelectionState extends org.lgna.croquet.DefaultListSelectionState<org.lgna.project.ast.UserField> {
 	private static class SingletonHolder {
 		private static SceneFieldListSelectionState instance = new SceneFieldListSelectionState();
 	}
+
 	public static SceneFieldListSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SceneFieldListSelectionState() {
 		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7ae55863-9782-4cd5-9cb4-710327fb5a69" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
 	}

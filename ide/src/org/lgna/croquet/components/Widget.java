@@ -42,18 +42,24 @@
  */
 package org.lgna.croquet.components;
 
-public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.croquet.Model> {
+public abstract class Widget extends ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
 	protected abstract int getInsetTop();
+
 	protected abstract int getInsetLeft();
+
 	protected abstract int getInsetBottom();
+
 	protected abstract int getInsetRight();
 
 	protected abstract void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );
+
 	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 
 	private boolean isBorderInitialized = false;
 	private static boolean isWarningAlreadyPrinted = false;
+
 	public Widget() {
 		super( null );
 		this.setMaximumSizeClampedToPreferredSize( true );
@@ -64,7 +70,7 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.
 			isWarningAlreadyPrinted = true;
 		}
 	}
-	
+
 	private void updateBorderIfNecessary() {
 		if( this.isBorderInitialized ) {
 			//pass
@@ -72,37 +78,44 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
 		}
 	}
-//	@Override
-//	public void revalidateAndRepaint() {
-//		super.revalidateAndRepaint();
-//		//todo: this line has been added for preview components that do not get added to the interface, but rather are used as the source of an icon
-//		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
-//	}
-	
+
+	//	@Override
+	//	public void revalidateAndRepaint() {
+	//		super.revalidateAndRepaint();
+	//		//todo: this line has been added for preview components that do not get added to the interface, but rather are used as the source of an icon
+	//		edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( this.getAwtComponent() );
+	//	}
+
 	protected java.awt.Paint getForegroundPaint( int x, int y, int width, int height ) {
 		return this.getForegroundColor();
 	}
+
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return this.getBackgroundColor();
 	}
 
-	public void addComponent(Component<?> component) {
-		this.internalAddComponent(component);
+	public void addComponent( Component<?> component ) {
+		this.internalAddComponent( component );
 	}
-	public void addComponent(Component<?> component, Object constraints) {
-		this.internalAddComponent(component, constraints);
+
+	public void addComponent( Component<?> component, Object constraints ) {
+		this.internalAddComponent( component, constraints );
 	}
-	public void forgetAndRemoveComponent( Component< ? > component ) {
+
+	public void forgetAndRemoveComponent( Component<?> component ) {
 		this.internalForgetAndRemoveComponent( component );
 	}
+
 	public void removeAllComponents() {
 		this.internalRemoveAllComponents();
 	}
+
 	public void forgetAndRemoveAllComponents() {
 		this.internalForgetAndRemoveAllComponents();
 	}
 
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
+
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = new javax.swing.JPanel() {
@@ -111,29 +124,35 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.
 				super.addNotify();
 				Widget.this.addNotify();
 			}
+
 			@Override
 			public void removeNotify() {
 				Widget.this.removeNotify();
 				super.removeNotify();
 			}
+
 			@Override
 			public void invalidate() {
 				Widget.this.invalidate();
 				super.invalidate();
 			}
+
 			@Override
 			public void doLayout() {
 				Widget.this.doLayout();
 				super.doLayout();
 			}
+
 			@Override
-			public boolean contains(int x, int y) {
-				return Widget.this.contains(x, y, super.contains(x, y) );
+			public boolean contains( int x, int y ) {
+				return Widget.this.contains( x, y, super.contains( x, y ) );
 			}
+
 			@Override
 			public javax.swing.JToolTip createToolTip() {
 				return Widget.this.createToolTip( super.createToolTip() );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				if( Widget.this.isMaximumSizeClampedToPreferredSize() ) {
@@ -142,12 +161,14 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.
 					return super.getMaximumSize();
 				}
 			}
+
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return Widget.this.getPreferredSize( super.getPreferredSize() );
 			}
+
 			@Override
-			public void paint(java.awt.Graphics g) {
+			public void paint( java.awt.Graphics g ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				int x = 0;
 				int y = 0;
@@ -162,7 +183,7 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.
 				} finally {
 					g2.setPaint( prevPaint );
 				}
-				super.paint(g);
+				super.paint( g );
 				prevPaint = g2.getPaint();
 				g2.setPaint( Widget.this.getForegroundPaint( x, y, width, height ) );
 				try {
@@ -174,45 +195,47 @@ public abstract class Widget extends ViewController<javax.swing.JPanel,org.lgna.
 		};
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
-		
+
 		//rv.setOpaque( false );
 		rv.setBackground( null );
 		rv.setOpaque( false );
-		
+
 		//rv.setDoubleBuffered( false );
 		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-		
-//		rv.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.GARISH_COLOR );
-//		rv.setOpaque( true );
+
+		//		rv.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.GARISH_COLOR );
+		//		rv.setOpaque( true );
 		return rv;
 	}
-	
+
 	protected boolean contains( int x, int y, boolean jContains ) {
 		return jContains;
 	}
+
 	protected java.awt.Dimension getPreferredSize( java.awt.Dimension size ) {
 		return size;
 	}
 
-	
 	protected void invalidate() {
 		this.isBorderInitialized = false;
 		this.updateBorderIfNecessary();
 	}
+
 	protected void doLayout() {
 		this.isBorderInitialized = false;
 		this.updateBorderIfNecessary();
 	}
-	
+
 	protected void addNotify() {
 		this.updateBorderIfNecessary();
 	}
+
 	protected void removeNotify() {
 	}
-	
-	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
+
+	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
 		return jToolTip;
 	}
-	
+
 }

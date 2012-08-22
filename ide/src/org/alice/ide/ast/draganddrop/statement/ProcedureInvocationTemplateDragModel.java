@@ -47,7 +47,8 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ProcedureInvocationTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, ProcedureInvocationTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ProcedureInvocationTemplateDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		ProcedureInvocationTemplateDragModel rv = map.get( method );
 		if( rv != null ) {
@@ -58,6 +59,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.AbstractMethod method;
 
 	private ProcedureInvocationTemplateDragModel( org.lgna.project.ast.AbstractMethod method ) {
@@ -83,13 +85,16 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 			return false;
 		}
 	}
+
 	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ProcedureInvocationTemplateDragModel >( this, org.lgna.project.ast.AbstractMethod.class, this.method );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ProcedureInvocationTemplateDragModel> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ProcedureInvocationTemplateDragModel>( this, org.lgna.project.ast.AbstractMethod.class, this.method );
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );

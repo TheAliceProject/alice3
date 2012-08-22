@@ -46,26 +46,30 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression > {
-	private final org.lgna.project.ast.AbstractType< ?, ?, ? > valueType;
-	private final org.lgna.project.annotations.ValueDetails< ? > details;
+public abstract class ExpressionBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression> {
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> valueType;
+	private final org.lgna.project.annotations.ValueDetails<?> details;
 
-	public ExpressionBlank( java.util.UUID id, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, org.lgna.project.annotations.ValueDetails< ? > details ) {
+	public ExpressionBlank( java.util.UUID id, org.lgna.project.ast.AbstractType<?, ?, ?> valueType, org.lgna.project.annotations.ValueDetails<?> details ) {
 		super( id );
 		this.valueType = valueType;
 		this.details = details;
 	}
-	public <T> ExpressionBlank( java.util.UUID id, Class< T > cls, org.lgna.project.annotations.ValueDetails< T > details ) {
+
+	public <T> ExpressionBlank( java.util.UUID id, Class<T> cls, org.lgna.project.annotations.ValueDetails<T> details ) {
 		this( id, org.lgna.project.ast.JavaType.getInstance( cls ), details );
 	}
-	public <T> ExpressionBlank( java.util.UUID id, Class< T > cls ) {
+
+	public <T> ExpressionBlank( java.util.UUID id, Class<T> cls ) {
 		this( id, cls, null );
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.valueType;
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		ide.getExpressionCascadeManager().appendItems( rv, blankNode, this.valueType, this.details );
 		return rv;

@@ -47,11 +47,11 @@ package edu.cmu.cs.dennisc.java.lang;
  */
 public class IterableUtilities {
 	public static <E> E[] toArray( Iterable<E> iterable, Class<E> cls ) {
-		java.util.Collection< Object > collection;
-		if( iterable instanceof java.util.Collection< ? > ) {
-			collection = (java.util.Collection< Object >)iterable;
+		java.util.Collection<Object> collection;
+		if( iterable instanceof java.util.Collection<?> ) {
+			collection = (java.util.Collection<Object>)iterable;
 		} else {
-			collection = new java.util.Vector< Object >();
+			collection = new java.util.Vector<Object>();
 			for( Object item : iterable ) {
 				collection.add( item );
 			}
@@ -59,6 +59,7 @@ public class IterableUtilities {
 		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, collection.size() );
 		return collection.toArray( rv );
 	}
+
 	public static Object[] toArray( Iterable iterable ) {
 		return toArray( iterable, Object.class );
 	}

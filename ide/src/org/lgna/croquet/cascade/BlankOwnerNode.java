@@ -43,27 +43,31 @@
 
 package org.lgna.croquet.cascade;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BlankOwnerNode< F, B, M extends org.lgna.croquet.CascadeBlankOwner< F, B >  > extends AbstractItemNode< F, B, M > {
+public abstract class BlankOwnerNode<F, B, M extends org.lgna.croquet.CascadeBlankOwner<F, B>> extends AbstractItemNode<F, B, M> {
 	public BlankOwnerNode( M model ) {
 		super( model );
 	}
+
 	public BlankOwnerNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	private RtBlankOwner<F,B,M,?> rtBlankOwner;
-	/*private-private*/ void setRtBlankOwner( RtBlankOwner<F,B,M,?> rtBlankOwner ) {
+
+	private RtBlankOwner<F, B, M, ?> rtBlankOwner;
+
+	/* private-private */void setRtBlankOwner( RtBlankOwner<F, B, M, ?> rtBlankOwner ) {
 		this.rtBlankOwner = rtBlankOwner;
 	}
+
 	@Override
 	public int getBlankStepCount() {
 		return this.rtBlankOwner.getBlankStepCount();
 	}
+
 	@Override
-	public BlankNode< B > getBlankStepAt( int i ) {	
+	public BlankNode<B> getBlankStepAt( int i ) {
 		return this.rtBlankOwner.getBlankStepAt( i );
 	}
 }

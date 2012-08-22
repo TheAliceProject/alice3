@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ConditionalStatementInsertCascade extends StatementInsertCascade {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ConditionalStatementInsertCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ConditionalStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		ConditionalStatementInsertCascade rv = map.get( blockStatementIndexPair );
@@ -59,15 +60,18 @@ public class ConditionalStatementInsertCascade extends StatementInsertCascade {
 		}
 		return rv;
 	}
+
 	private ConditionalStatementInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
+
 	@Override
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ConditionalStatement : statement;
 		org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression.getValue() );
 	}
+
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createConditionalStatement( expressions[ 0 ] );

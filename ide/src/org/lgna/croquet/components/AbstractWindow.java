@@ -48,8 +48,9 @@ package org.lgna.croquet.components;
  */
 //todo: better name
 public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenElement {
-	private static java.util.Map< java.awt.Component, AbstractWindow<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
-	/*package-private*/ static AbstractWindow<?> lookup( java.awt.Component component ) {
+	private static java.util.Map<java.awt.Component, AbstractWindow<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+
+	/* package-private */static AbstractWindow<?> lookup( java.awt.Component component ) {
 		if( component != null ) {
 			return AbstractWindow.map.get( component );
 		} else {
@@ -59,11 +60,11 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 
 	private final W window;
 
-	private final java.util.Map<Integer,Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<Integer, Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	//<kjh/>
 	private final LayeredPane layeredPane;
-	
+
 	public AbstractWindow( W window ) {
 		this.window = window;
 		this.layeredPane = new LayeredPane( getJLayeredPane() );
@@ -88,12 +89,14 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 			return rv;
 		}
 	}
+
 	@Override
-	public org.lgna.croquet.components.AbstractWindow< ? > getRoot() {
+	public org.lgna.croquet.components.AbstractWindow<?> getRoot() {
 		return this;
 	}
 
 	protected abstract javax.swing.JRootPane getRootPane();
+
 	protected final javax.swing.JLayeredPane getJLayeredPane() {
 		return this.getRootPane().getLayeredPane();
 	}
@@ -102,7 +105,8 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		return this.layeredPane;
 	}
 
-	private BorderPanel contentPanel = new BorderPanel(); 
+	private BorderPanel contentPanel = new BorderPanel();
+
 	public BorderPanel getContentPanel() {
 		return this.contentPanel;
 	}
@@ -110,12 +114,15 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public void addWindowListener( java.awt.event.WindowListener listener ) {
 		this.window.addWindowListener( listener );
 	}
+
 	public void removeWindowListener( java.awt.event.WindowListener listener ) {
 		this.window.removeWindowListener( listener );
 	}
+
 	public void addWindowStateListener( java.awt.event.WindowStateListener listener ) {
 		this.window.addWindowStateListener( listener );
 	}
+
 	public void removeWindowStateListener( java.awt.event.WindowStateListener listener ) {
 		this.window.removeWindowStateListener( listener );
 	}
@@ -123,6 +130,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public boolean isVisible() {
 		return this.window.isVisible();
 	}
+
 	public void setVisible( boolean isVisible ) {
 		this.window.setVisible( isVisible );
 	}
@@ -130,17 +138,20 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public int getX() {
 		return this.window.getX();
 	}
+
 	public int getY() {
 		return this.window.getY();
 	}
+
 	public java.awt.Point getLocation() {
 		return this.window.getLocation();
 	}
+
 	public java.awt.Point getLocation( ScreenElement asSeenBy ) {
 		if( asSeenBy.getAwtComponent().isVisible() && this.isVisible() ) {
 			java.awt.Point ptAsSeenBy = asSeenBy.getAwtComponent().getLocationOnScreen();
 			java.awt.Point ptThis = this.getAwtComponent().getLocationOnScreen();
-			return new java.awt.Point( ptThis.x-ptAsSeenBy.x, ptThis.y-ptAsSeenBy.y );
+			return new java.awt.Point( ptThis.x - ptAsSeenBy.x, ptThis.y - ptAsSeenBy.y );
 		} else {
 			return null;
 		}
@@ -149,6 +160,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public void setLocation( java.awt.Point location ) {
 		this.window.setLocation( location );
 	}
+
 	public void setLocation( int x, int y ) {
 		this.window.setLocation( x, y );
 	}
@@ -156,15 +168,19 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public int getWidth() {
 		return this.window.getWidth();
 	}
+
 	public int getHeight() {
 		return this.window.getHeight();
 	}
+
 	public java.awt.Dimension getSize() {
 		return this.window.getSize();
 	}
+
 	public void setSize( java.awt.Dimension size ) {
 		this.window.setSize( size );
 	}
+
 	public void setSize( int width, int height ) {
 		this.window.setSize( width, height );
 	}
@@ -187,12 +203,15 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( this.getBounds( asSeenBy ), insets );
 	}
+
 	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		return this.getShape( asSeenBy, insets );
 	}
+
 	public ScrollPane getScrollPaneAncestor() {
 		return null;
 	}
+
 	public boolean isInView() {
 		return this.isVisible();
 	}
@@ -209,25 +228,32 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 					return null;
 				}
 			}
+
 			public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 				return this.getShape( asSeenBy, insets );
 			}
+
 			public ScrollPane getScrollPaneAncestor() {
 				return null;
 			}
+
 			public boolean isInView() {
 				return AbstractWindow.this.isInView();
 			}
-			public void addComponentListener(java.awt.event.ComponentListener listener) {
+
+			public void addComponentListener( java.awt.event.ComponentListener listener ) {
 				AbstractWindow.this.addComponentListener( listener );
 			}
-			public void removeComponentListener(java.awt.event.ComponentListener listener) {
+
+			public void removeComponentListener( java.awt.event.ComponentListener listener ) {
 				AbstractWindow.this.removeComponentListener( listener );
 			}
-			public void addHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+
+			public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 				AbstractWindow.this.addHierarchyBoundsListener( listener );
 			}
-			public void removeHierarchyBoundsListener(java.awt.event.HierarchyBoundsListener listener) {
+
+			public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 				AbstractWindow.this.removeHierarchyBoundsListener( listener );
 			}
 		};
@@ -238,7 +264,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	}
 
 	private static Button lookupButton( javax.swing.JButton jButton ) {
-		Component< ? > component = Component.lookup( jButton );
+		Component<?> component = Component.lookup( jButton );
 		if( component instanceof Button ) {
 			Button button = (Button)component;
 			return button;
@@ -250,11 +276,13 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public Button getDefaultButton() {
 		return lookupButton( this.getRootPane().getDefaultButton() );
 	}
+
 	public void setDefaultButton( Button button ) {
 		this.getRootPane().setDefaultButton( button.getAwtComponent() );
 	}
 
-	private java.util.Stack< javax.swing.JButton > defaultJButtonStack;
+	private java.util.Stack<javax.swing.JButton> defaultJButtonStack;
+
 	public void pushDefaultButton( Button button ) {
 		if( this.defaultJButtonStack != null ) {
 			//pass
@@ -264,6 +292,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		this.defaultJButtonStack.push( this.getRootPane().getDefaultButton() );
 		this.setDefaultButton( button );
 	}
+
 	public Button popDefaultButton() {
 		Button rv;
 		if( this.defaultJButtonStack != null ) {
@@ -288,6 +317,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	public org.lgna.croquet.Composite<?> getMainComposite() {
 		return this.mainComposite;
 	}
+
 	public void setMainComposite( org.lgna.croquet.Composite<?> mainComposite ) {
 		if( this.mainComposite != mainComposite ) {
 			synchronized( this.getAwtComponent().getTreeLock() ) {

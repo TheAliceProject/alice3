@@ -101,6 +101,7 @@ public class MouseClickEvent extends AbstractEvent {
 			this.isPickPerformed = true;
 		}
 	}
+
 	protected org.lgna.story.SModel getModelAtMouseLocation() {
 		this.pickIfNecessary();
 		return this.modelAtMouseLocation;

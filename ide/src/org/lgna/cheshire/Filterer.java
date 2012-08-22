@@ -43,11 +43,9 @@
 
 package org.lgna.cheshire;
 
-import org.lgna.cheshire.simple.Chapter;
-
 /**
  * @author Dennis Cosgrove
  */
 public interface Filterer {
-	public void filter( java.util.ListIterator< org.lgna.cheshire.simple.Chapter > chapterIterator );
+	public void filter( java.util.ListIterator<org.lgna.cheshire.simple.Chapter> chapterIterator );
 }

@@ -46,10 +46,11 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArgumentListProperty< N extends AbstractArgument > extends NodeListProperty< N > {
+public abstract class ArgumentListProperty<N extends AbstractArgument> extends NodeListProperty<N> {
 	public ArgumentListProperty( ArgumentOwner owner ) {
 		super( owner );
 	}
+
 	@Override
 	public ArgumentOwner getOwner() {
 		return (ArgumentOwner)super.getOwner();

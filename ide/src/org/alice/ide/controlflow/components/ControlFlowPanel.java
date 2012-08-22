@@ -57,8 +57,9 @@ public class ControlFlowPanel extends org.lgna.croquet.components.Panel {
 			}
 		}
 		this.setBackgroundColor( null );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,0,0,0 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {

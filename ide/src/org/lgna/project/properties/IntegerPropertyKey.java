@@ -45,10 +45,11 @@ package org.lgna.project.properties;
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerPropertyKey extends PropertyKey< Integer > {
+public class IntegerPropertyKey extends PropertyKey<Integer> {
 	public IntegerPropertyKey( java.util.UUID id, String repr ) {
 		super( id, repr );
 	}
+
 	@Override
 	protected Integer decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
@@ -58,6 +59,7 @@ public class IntegerPropertyKey extends PropertyKey< Integer > {
 			return null;
 		}
 	}
+
 	@Override
 	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
 		binaryEncoder.encode( value != null );

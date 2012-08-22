@@ -46,52 +46,59 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class StatementLikeSubstance extends NodeLikeSubstance {
-	private final Class< ? extends org.lgna.project.ast.Statement > statementCls;
+	private final Class<? extends org.lgna.project.ast.Statement> statementCls;
 	private final int axis;
-	protected static Class< ? extends org.lgna.project.ast.Statement > getClassFor( org.lgna.project.ast.Statement statement ) {
+
+	protected static Class<? extends org.lgna.project.ast.Statement> getClassFor( org.lgna.project.ast.Statement statement ) {
 		if( statement != null ) {
 			return statement.getClass();
 		} else {
 			return org.lgna.project.ast.Statement.class;
 		}
 	}
-	public StatementLikeSubstance( org.lgna.croquet.DragModel model, Class< ? extends org.lgna.project.ast.Statement > statementCls, int axis ) {
+
+	public StatementLikeSubstance( org.lgna.croquet.DragModel model, Class<? extends org.lgna.project.ast.Statement> statementCls, int axis ) {
 		super( model );
 		this.statementCls = statementCls;
 		this.axis = axis;
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
 		return new javax.swing.BoxLayout( jComponent, this.axis );
 	}
-	public Class< ? extends org.lgna.project.ast.Statement > getStatementCls() {
+
+	public Class<? extends org.lgna.project.ast.Statement> getStatementCls() {
 		return this.statementCls;
 	}
+
 	private static final int INSET = 1;
+
 	@Override
 	protected int getInsetTop() {
 		return StatementLikeSubstance.INSET;
 	}
-	
+
 	@Override
 	protected int getDockInsetLeft() {
 		return 1;
 	}
+
 	@Override
 	protected int getInternalInsetLeft() {
 		return StatementLikeSubstance.INSET + 2;
 	}
-	
-	
+
 	@Override
 	protected int getInsetBottom() {
 		return StatementLikeSubstance.INSET + 2;
 	}
+
 	@Override
 	protected int getInsetRight() {
 		return StatementLikeSubstance.INSET + 4;
 	}
-	
+
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return org.alice.ide.IDE.getActiveInstance().getTheme().getPaintFor( this.statementCls, x, y, width, height );
@@ -99,34 +106,35 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 
 	@Override
 	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
-		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
+		return new java.awt.geom.RoundRectangle2D.Float( x, y, width - 1, height - 1, 8, 8 );
 	}
+
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.fill( this.createShape(x, y, width, height) );
+		g2.fill( this.createShape( x, y, width, height ) );
 	}
-	
+
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		this.fillBounds( g2, x, y, width, height );
 	}
-		
-//	@Override
-//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
-//		return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );
-//	}
 
-////	//todo: remove
-//	@Override
-//	protected void paintBorder( java.awt.Graphics g ) {
-//		super.paintBorder( g );
-//		if( this.isKnurlDesired() ) {
-//			this.getBorder().paintBorder( this, g, 0, 0, getWidth(), getHeight() );
-//		}
-////		super.paintBorder( g );
-////		if( this.isKnurlDesired() ) {
-////			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-////			edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, 3, 2, 8, getHeight()-2 );
-////		}
-//	}
+	//	@Override
+	//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
+	//		return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );
+	//	}
+
+	////	//todo: remove
+	//	@Override
+	//	protected void paintBorder( java.awt.Graphics g ) {
+	//		super.paintBorder( g );
+	//		if( this.isKnurlDesired() ) {
+	//			this.getBorder().paintBorder( this, g, 0, 0, getWidth(), getHeight() );
+	//		}
+	////		super.paintBorder( g );
+	////		if( this.isKnurlDesired() ) {
+	////			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	////			edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, 3, 2, 8, getHeight()-2 );
+	////		}
+	//	}
 }

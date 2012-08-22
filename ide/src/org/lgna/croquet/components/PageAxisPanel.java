@@ -50,6 +50,7 @@ public class PageAxisPanel extends AxisPanel {
 	public PageAxisPanel( org.lgna.croquet.Composite composite, Component<?>... components ) {
 		super( composite, javax.swing.BoxLayout.PAGE_AXIS, components );
 	}
+
 	public PageAxisPanel( Component<?>... components ) {
 		this( null, components );
 	}

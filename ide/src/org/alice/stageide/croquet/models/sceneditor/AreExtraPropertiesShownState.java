@@ -45,13 +45,15 @@ package org.alice.stageide.croquet.models.sceneditor;
 
 public class AreExtraPropertiesShownState extends org.lgna.croquet.BooleanState
 {
-    private static class SingletonHolder {
-        private static AreExtraPropertiesShownState instance = new AreExtraPropertiesShownState();
-    }
-    public static AreExtraPropertiesShownState getInstance() {
-        return SingletonHolder.instance;
-    }
-    private AreExtraPropertiesShownState() {
-        super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "10e11734-71f3-4e0e-8469-72bfa7ff575d" ), true );
-    }
+	private static class SingletonHolder {
+		private static AreExtraPropertiesShownState instance = new AreExtraPropertiesShownState();
+	}
+
+	public static AreExtraPropertiesShownState getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private AreExtraPropertiesShownState() {
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "10e11734-71f3-4e0e-8469-72bfa7ff575d" ), true );
+	}
 }

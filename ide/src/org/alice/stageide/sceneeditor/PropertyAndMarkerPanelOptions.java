@@ -45,6 +45,6 @@ package org.alice.stageide.sceneeditor;
 
 public enum PropertyAndMarkerPanelOptions
 {
-    PROPERTIES,
-    MARKERS,
+	PROPERTIES,
+	MARKERS,
 }

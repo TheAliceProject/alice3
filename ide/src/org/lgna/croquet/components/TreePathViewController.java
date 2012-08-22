@@ -43,12 +43,13 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.*;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.TreeSelectionState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TreePathViewController<T> extends PanelViewController< TreeSelectionState<T> > {
+public class TreePathViewController<T> extends PanelViewController<TreeSelectionState<T>> {
 	private static class SelectDirectoryPanel<T> extends BorderPanel {
 		public static <T> SelectDirectoryPanel<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
 			return new SelectDirectoryPanel<T>( treeSelectionState, treeNode );
@@ -65,27 +66,29 @@ public class TreePathViewController<T> extends PanelViewController< TreeSelectio
 			ActionOperation operation = treeSelectionState.getSelectionOperationFor( treeNode );
 			//initializer.configure( operation, treeNode );
 			Button button = operation.createButton();
-//			selectChildButton.getAwtComponent().putClientProperty("JComponent.sizeVariant", "small");
+			//			selectChildButton.getAwtComponent().putClientProperty("JComponent.sizeVariant", "small");
 			this.addCenterComponent( button );
 			this.addLineEndComponent( selectChildButton );
 			this.setMaximumSizeClampedToPreferredSize( true );
 		}
 	}
+
 	private static class InternalPanel<T> extends LineAxisPanel {
 		public InternalPanel() {
 			this.setBackgroundColor( null );
 		}
+
 		@Override
 		protected void internalRefresh() {
 			this.internalRemoveAllComponents();
 			//todo
-			TreePathViewController< T > owner = (TreePathViewController<T>)this.getParent();
+			TreePathViewController<T> owner = (TreePathViewController<T>)this.getParent();
 
-			edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = owner.getModel().getTreeModel();
+			edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = owner.getModel().getTreeModel();
 			javax.swing.tree.TreePath treePath = owner.treeSelectionModel.getSelectionPath();
 			if( treePath != null ) {
 				final int N = treePath.getPathCount();
-				for( int i=0; i<N; i++ ) {
+				for( int i = 0; i < N; i++ ) {
 					//todo: remove when look and feel magic is performed   
 					if( i > 0 ) {
 						this.internalAddComponent( BoxUtilities.createHorizontalSliver( 4 ) );
@@ -105,12 +108,13 @@ public class TreePathViewController<T> extends PanelViewController< TreeSelectio
 
 	private javax.swing.tree.TreeSelectionModel treeSelectionModel;
 	private javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
-		public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
+		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			TreePathViewController.this.getInternalPanel().refreshLater();
 		}
 	};
+
 	public TreePathViewController( TreeSelectionState<T> model ) {
-		super( model, new InternalPanel< T >() );
+		super( model, new InternalPanel<T>() );
 		this.setBackgroundColor( null );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}

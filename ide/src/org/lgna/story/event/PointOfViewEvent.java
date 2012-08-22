@@ -6,6 +6,7 @@ public class PointOfViewEvent<A extends org.lgna.story.SMovableTurnable> extends
 	public PointOfViewEvent( A entity ) {
 		this.entity = entity;
 	}
+
 	public A getMoved() {
 		return entity;
 	}

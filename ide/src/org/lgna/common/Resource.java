@@ -48,12 +48,13 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	private String originalFileName;
 	private String contentType;
 	private byte[] data;
-	private java.util.List< edu.cmu.cs.dennisc.pattern.event.NameListener > nameListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List< org.lgna.common.event.ResourceContentListener > contentListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List<edu.cmu.cs.dennisc.pattern.event.NameListener> nameListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List<org.lgna.common.event.ResourceContentListener> contentListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	protected Resource( java.util.UUID uuid ) {
 		this.uuid = uuid;
 	}
+
 	protected Resource( Class<?> cls, String resourceName, String contentType ) {
 		this( java.util.UUID.randomUUID() );
 		try {
@@ -65,6 +66,7 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 			throw new RuntimeException( resourceName, ioe );
 		}
 	}
+
 	protected Resource( java.io.File file, String contentType ) throws java.io.IOException {
 		this( java.util.UUID.randomUUID() );
 		String resourceName = file.getName();
@@ -73,10 +75,11 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 		this.setName( resourceName );
 		this.setContent( contentType, data );
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
+
 	public void setName( String name ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.name, name ) ) {
 			edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
@@ -89,40 +92,47 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 			}
 		}
 	}
+
 	public void addNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		assert nameListener != null;
 		this.nameListeners.add( nameListener );
 	}
+
 	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		assert nameListener != null;
 		this.nameListeners.remove( nameListener );
 	}
-	public Iterable< edu.cmu.cs.dennisc.pattern.event.NameListener > getNameListeners() {
+
+	public Iterable<edu.cmu.cs.dennisc.pattern.event.NameListener> getNameListeners() {
 		return this.nameListeners;
 	}
-	
+
 	public void addContentListener( org.lgna.common.event.ResourceContentListener contentListener ) {
 		assert contentListener != null;
 		this.contentListeners.add( contentListener );
 	}
+
 	public void removeContentListener( org.lgna.common.event.ResourceContentListener contentListener ) {
 		assert contentListener != null;
 		this.contentListeners.remove( contentListener );
 	}
-	public Iterable< org.lgna.common.event.ResourceContentListener > getContentListeners() {
+
+	public Iterable<org.lgna.common.event.ResourceContentListener> getContentListeners() {
 		return this.contentListeners;
 	}
-	
-	
+
 	public java.util.UUID getId() {
 		return this.uuid;
 	}
+
 	public String getContentType() {
 		return this.contentType;
 	}
+
 	public byte[] getData() {
 		return this.data;
 	}
+
 	public void setContent( String contentType, byte[] data ) {
 		org.lgna.common.event.ResourceContentEvent e = new org.lgna.common.event.ResourceContentEvent( this, contentType, data );
 		for( org.lgna.common.event.ResourceContentListener contentListener : this.contentListeners ) {
@@ -134,25 +144,31 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 			contentListener.contentChanged( e );
 		}
 	}
+
 	public String getOriginalFileName() {
 		return this.originalFileName;
 	}
+
 	public void setOriginalFileName( String originalFileName ) {
 		this.originalFileName = originalFileName;
 	}
+
 	private static String XML_NAME_ATTRIBUTE = "name";
 	private static String XML_ORIGINAL_FILE_NAME_ATTRIBUTE = "originalFileName";
 	private static String XML_CONTENT_TYPE_ATTRIBUTE = "contentType";
+
 	public void decodeAttributes( org.w3c.dom.Element xmlElement, byte[] data ) {
 		this.setName( xmlElement.getAttribute( XML_NAME_ATTRIBUTE ) );
 		this.setOriginalFileName( xmlElement.getAttribute( XML_ORIGINAL_FILE_NAME_ATTRIBUTE ) );
 		this.setContent( xmlElement.getAttribute( XML_CONTENT_TYPE_ATTRIBUTE ), data );
 	}
+
 	public void encodeAttributes( org.w3c.dom.Element xmlElement ) {
 		xmlElement.setAttribute( XML_NAME_ATTRIBUTE, this.getName() );
 		xmlElement.setAttribute( XML_ORIGINAL_FILE_NAME_ATTRIBUTE, this.getOriginalFileName() );
 		xmlElement.setAttribute( XML_CONTENT_TYPE_ATTRIBUTE, this.getContentType() );
 	}
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

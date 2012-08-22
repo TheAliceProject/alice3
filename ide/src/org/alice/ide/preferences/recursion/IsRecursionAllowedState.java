@@ -49,9 +49,11 @@ public class IsRecursionAllowedState extends org.lgna.croquet.preferences.Prefer
 	private static class SingletonHolder {
 		private static IsRecursionAllowedState instance = new IsRecursionAllowedState();
 	}
+
 	public static IsRecursionAllowedState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsRecursionAllowedState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "d3bbfe60-166d-4fa0-a98b-5992998dfca9" ), false );
 	}

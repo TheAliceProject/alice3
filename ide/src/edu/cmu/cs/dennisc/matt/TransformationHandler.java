@@ -5,23 +5,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.PointOfViewEvent;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener,PointOfViewEvent> {
+public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener, PointOfViewEvent> {
 
-	private Map<SThing,List<PointOfViewChangeListener>> checkMap = Collections.newHashMap();
+	private Map<SThing, List<PointOfViewChangeListener>> checkMap = Collections.newHashMap();
 
 	public <A extends SMovableTurnable> void addTransformationListener( PointOfViewChangeListener transformationlistener, Class<A> a, ArrayList<A> shouldListenTo, MultipleEventPolicy policy ) {
 		ArrayList<A> models = super.addSoloListener( transformationlistener, shouldListenTo, a, policy );
-		for(SThing o : models) {
-			if(checkMap.get( o ) == null) {
+		for( SThing o : models ) {
+			if( checkMap.get( o ) == null ) {
 				checkMap.put( o, new LinkedList<PointOfViewChangeListener>() );
 			}
 			checkMap.get( o ).add( transformationlistener );

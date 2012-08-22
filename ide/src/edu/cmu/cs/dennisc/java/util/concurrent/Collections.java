@@ -49,48 +49,56 @@ public class Collections {
 	private Collections() {
 		throw new AssertionError();
 	}
+
 	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
-		return new java.util.concurrent.CopyOnWriteArrayList< E >();
+		return new java.util.concurrent.CopyOnWriteArrayList<E>();
 	}
+
 	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( E... array ) {
-		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList< E >();
+		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
-	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( java.util.Collection< E > other ) {
-		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList< E >();
+
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( java.util.Collection<E> other ) {
+		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
 		rv.addAll( other );
 		return rv;
 	}
+
 	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet() {
-		return new java.util.concurrent.CopyOnWriteArraySet< E >();
+		return new java.util.concurrent.CopyOnWriteArraySet<E>();
 	}
+
 	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( E... array ) {
-		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet< E >();
+		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
-	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( java.util.Collection< E > other ) {
-		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet< E >();
+
+	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( java.util.Collection<E> other ) {
+		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet<E>();
 		rv.addAll( other );
 		return rv;
 	}
-	
+
 	public static <E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue() {
-		return new java.util.concurrent.ConcurrentLinkedQueue< E >();
+		return new java.util.concurrent.ConcurrentLinkedQueue<E>();
 	}
+
 	public static <E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( E... array ) {
-		java.util.concurrent.ConcurrentLinkedQueue<E> rv = new java.util.concurrent.ConcurrentLinkedQueue< E >();
+		java.util.concurrent.ConcurrentLinkedQueue<E> rv = new java.util.concurrent.ConcurrentLinkedQueue<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
 	}
-	public static <E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( java.util.Collection< E > other ) {
-		java.util.concurrent.ConcurrentLinkedQueue<E> rv = new java.util.concurrent.ConcurrentLinkedQueue< E >();
+
+	public static <E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( java.util.Collection<E> other ) {
+		java.util.concurrent.ConcurrentLinkedQueue<E> rv = new java.util.concurrent.ConcurrentLinkedQueue<E>();
 		rv.addAll( other );
 		return rv;
 	}
-	
-	public static <K,V> java.util.concurrent.ConcurrentHashMap<K,V> newConcurrentHashMap() {
-		return new java.util.concurrent.ConcurrentHashMap< K,V >();
+
+	public static <K, V> java.util.concurrent.ConcurrentHashMap<K, V> newConcurrentHashMap() {
+		return new java.util.concurrent.ConcurrentHashMap<K, V>();
 	}
 }

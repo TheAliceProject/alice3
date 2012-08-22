@@ -45,18 +45,21 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum StringCodec implements org.lgna.croquet.ItemCodec< String > {
+public enum StringCodec implements org.lgna.croquet.ItemCodec<String> {
 	SINGLETON;
-	public Class< String > getValueClass() {
+	public Class<String> getValueClass() {
 		return String.class;
 	}
+
 	public String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeString();
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
 		binaryEncoder.encode( value );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, String value) {
+
+	public StringBuilder appendRepresentation( StringBuilder rv, String value ) {
 		rv.append( value );
 		return rv;
 	}

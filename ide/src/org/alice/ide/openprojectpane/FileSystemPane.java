@@ -47,43 +47,46 @@ package org.alice.ide.openprojectpane;
  * @author Dennis Cosgrove
  */
 public class FileSystemPane extends TabContentPanel {
-	private org.lgna.croquet.StringState textState = new org.lgna.croquet.StringState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" ) {};
+	private org.lgna.croquet.StringState textState = new org.lgna.croquet.StringState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" ) {
+	};
+
 	public FileSystemPane( org.alice.ide.croquet.models.openproject.FileSystemTab composite ) {
 		super( composite );
-//		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-//			private void handleUpdate(javax.swing.event.DocumentEvent e) {
-//				FileSystemPane.this.updateOKButton();
-//			}
-//
-//			public void changedUpdate(javax.swing.event.DocumentEvent e) {
-//				this.handleUpdate(e);
-//			}
-//
-//			public void insertUpdate(javax.swing.event.DocumentEvent e) {
-//				this.handleUpdate(e);
-//			}
-//
-//			public void removeUpdate(javax.swing.event.DocumentEvent e) {
-//				this.handleUpdate(e);
-//			}
-//		});
+		//		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+		//			private void handleUpdate(javax.swing.event.DocumentEvent e) {
+		//				FileSystemPane.this.updateOKButton();
+		//			}
+		//
+		//			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+		//				this.handleUpdate(e);
+		//			}
+		//
+		//			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		//				this.handleUpdate(e);
+		//			}
+		//
+		//			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		//				this.handleUpdate(e);
+		//			}
+		//		});
 
 		class BrowseOperation extends org.lgna.croquet.ActionOperation {
 			public BrowseOperation() {
-				super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("67936a64-be55-44d5-9441-4cc3cce5cc75"));
+				super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "67936a64-be55-44d5-9441-4cc3cce5cc75" ) );
 			}
+
 			@Override
 			protected void localize() {
 				super.localize();
-				this.setName("browse...");
+				this.setName( "browse..." );
 			}
 
 			@Override
 			protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-				java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog(org.alice.ide.ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, org.lgna.project.io.IoUtilities.PROJECT_EXTENSION, true);
-				if (file != null) {
-					FileSystemPane.this.textState.setValueTransactionlessly(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
+				java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog( org.alice.ide.ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, org.lgna.project.io.IoUtilities.PROJECT_EXTENSION, true );
+				if( file != null ) {
+					FileSystemPane.this.textState.setValueTransactionlessly( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 				}
 				step.finish();
 			}
@@ -91,10 +94,10 @@ public class FileSystemPane extends TabContentPanel {
 
 		BrowseOperation browseOperation = new BrowseOperation();
 		org.lgna.croquet.components.BorderPanel pane = new org.lgna.croquet.components.BorderPanel.Builder()
-				.lineStart( new org.lgna.croquet.components.Label("file:") )
+				.lineStart( new org.lgna.croquet.components.Label( "file:" ) )
 				.center( this.textState.createTextField() )
 				.lineEnd( browseOperation.createButton() )
-		.build();
+				.build();
 
 		this.addPageStartComponent( pane );
 	}
@@ -102,8 +105,8 @@ public class FileSystemPane extends TabContentPanel {
 	@Override
 	public java.net.URI getSelectedUri() {
 		String path = this.textState.getValue();
-		java.io.File file = new java.io.File(path);
-		if (file.exists()) {
+		java.io.File file = new java.io.File( path );
+		if( file.exists() ) {
 			return file.toURI();
 		} else {
 			return null;

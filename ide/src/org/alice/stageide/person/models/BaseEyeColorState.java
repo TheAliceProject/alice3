@@ -49,10 +49,12 @@ public class BaseEyeColorState extends AbstractListSelectionState<org.lgna.story
 	private static class SingletonHolder {
 		private static BaseEyeColorState instance = new BaseEyeColorState();
 	}
+
 	public static BaseEyeColorState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private BaseEyeColorState() {
-		super( java.util.UUID.fromString("04672192-417f-4446-abbc-16c3ee015802"), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class ), org.lgna.story.resources.sims2.BaseEyeColor.values() );
+		super( java.util.UUID.fromString( "04672192-417f-4446-abbc-16c3ee015802" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class ), org.lgna.story.resources.sims2.BaseEyeColor.values() );
 	}
 }

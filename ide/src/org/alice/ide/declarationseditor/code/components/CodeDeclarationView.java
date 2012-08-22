@@ -48,12 +48,14 @@ package org.alice.ide.declarationseditor.code.components;
  */
 public class CodeDeclarationView extends AbstractCodeDeclarationView {
 	private final org.alice.ide.codeeditor.CodeEditor codeEditor;
+
 	public CodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
 		super( composite );
 		this.codeEditor = new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() );
 		this.setBackgroundColor( this.codeEditor.getBackgroundColor() );
 		this.addCenterComponent( this.codeEditor );
 	}
+
 	@Deprecated
 	@Override
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {

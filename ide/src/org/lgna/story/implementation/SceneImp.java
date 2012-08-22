@@ -66,10 +66,12 @@ public class SceneImp extends EntityImp {
 		public Capsule( TransformableImp transformable ) {
 			this.transformable = transformable;
 		}
+
 		public void preserve() {
 			this.vehicle = this.transformable.getVehicle();
 			this.localTransformation = this.transformable.getSgComposite().getLocalTransformation();
 		}
+
 		public void restore() {
 			this.transformable.setVehicle( this.vehicle );
 			this.transformable.getSgComposite().setLocalTransformation( this.localTransformation );
@@ -102,6 +104,7 @@ public class SceneImp extends EntityImp {
 		public org.lgna.story.Color getValue() {
 			return org.lgna.story.ImplementationAccessor.createColor( SceneImp.this.sgBackground.color.getValue() );
 		}
+
 		@Override
 		protected void handleSetValue( org.lgna.story.Color value ) {
 			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( value );
@@ -114,6 +117,7 @@ public class SceneImp extends EntityImp {
 		public org.lgna.story.Color getValue() {
 			return org.lgna.story.ImplementationAccessor.createColor( SceneImp.this.sgAmbientLight.color.getValue() );
 		}
+
 		@Override
 		protected void handleSetValue( org.lgna.story.Color value ) {
 			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( value );
@@ -128,6 +132,7 @@ public class SceneImp extends EntityImp {
 		public org.lgna.story.Color getValue() {
 			return org.lgna.story.ImplementationAccessor.createColor( SceneImp.this.sgFromBelowDirectionalLight.color.getValue() );
 		}
+
 		@Override
 		protected void handleSetValue( org.lgna.story.Color value ) {
 			edu.cmu.cs.dennisc.color.Color4f color = org.lgna.story.ImplementationAccessor.getColor4f( value );
@@ -139,6 +144,7 @@ public class SceneImp extends EntityImp {
 		public Float getValue() {
 			return SceneImp.this.sgScene.globalBrightness.getValue();
 		}
+
 		@Override
 		protected void handleSetValue( Float value ) {
 			SceneImp.this.sgScene.globalBrightness.setValue( value );
@@ -150,6 +156,7 @@ public class SceneImp extends EntityImp {
 		public Float getValue() {
 			return SceneImp.this.fogDensityValue;
 		}
+
 		@Override
 		protected void handleSetValue( Float value ) {
 			SceneImp.this.setFogDensity( value );
@@ -193,6 +200,7 @@ public class SceneImp extends EntityImp {
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.sceneActivationListeners.add( sceneActivationListener );
 	}
+
 	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.sceneActivationListeners.remove( sceneActivationListener );
 	}
@@ -202,6 +210,7 @@ public class SceneImp extends EntityImp {
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization() {
 		ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount++;
 	}
+
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_popPerformMinimalInitialization() {
 		ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount--;
 	}
@@ -247,6 +256,7 @@ public class SceneImp extends EntityImp {
 		this.changeActiveStatus( program, true, activeCount );
 		this.animateGlobalBrightness( 1.0f, 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 	}
+
 	public void deactivate( ProgramImp programImp ) {
 		deactiveCount++;
 		assert deactiveCount == activeCount;
@@ -257,18 +267,19 @@ public class SceneImp extends EntityImp {
 
 	private void setFogDensity( float densityValue ) {
 		this.fogDensityValue = densityValue;
-		if( densityValue == 0 && this.sgFog.getParent() == this.sgScene ) {
+		if( ( densityValue == 0 ) && ( this.sgFog.getParent() == this.sgScene ) ) {
 			this.sgScene.removeComponent( this.sgFog );
-		} else if( densityValue > 0 && this.sgFog.getParent() != this.sgScene ) {
+		} else if( ( densityValue > 0 ) && ( this.sgFog.getParent() != this.sgScene ) ) {
 			this.sgScene.addComponent( this.sgFog );
 		}
-		this.sgFog.density.setValue( (double)(densityValue * densityValue * densityValue) );
+		this.sgFog.density.setValue( (double)( densityValue * densityValue * densityValue ) );
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Scene getSgComposite() {
 		return this.sgScene;
 	}
+
 	@Override
 	public org.lgna.story.SScene getAbstraction() {
 		return this.abstraction;
@@ -278,10 +289,12 @@ public class SceneImp extends EntityImp {
 	public SceneImp getScene() {
 		return this;
 	}
+
 	@Override
 	public org.lgna.story.implementation.ProgramImp getProgram() {
 		return this.program;
 	}
+
 	public void setProgram( ProgramImp program ) {
 		if( this.program != program ) {
 			if( program != null ) {
@@ -303,12 +316,14 @@ public class SceneImp extends EntityImp {
 		//			this.pointOfViewMap.put( entity, null );
 		//		}
 	}
+
 	public void restoreStateAndEventListeners() {
 		//		for( Entity entity : this.entities ) {
 		//			this.pointOfViewMap.put( entity, null );
 		//		}
 		this.eventManager.restoreAllListeners();
 	}
+
 	public void addCamerasTo( ProgramImp program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class ) ) {
 			EntityImp entityImp = EntityImp.getInstance( sgCamera );
@@ -318,6 +333,7 @@ public class SceneImp extends EntityImp {
 			}
 		}
 	}
+
 	public void removeCamerasFrom( ProgramImp program ) {
 		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class ) ) {
 			EntityImp entityImp = EntityImp.getInstance( sgCamera );
@@ -336,9 +352,11 @@ public class SceneImp extends EntityImp {
 	public float getGlobalBrightness() {
 		return this.sgScene.globalBrightness.getValue();
 	}
+
 	public void setGlobalBrightness( float globalBrightness ) {
 		this.sgScene.globalBrightness.setValue( globalBrightness );
 	}
+
 	public void animateGlobalBrightness( float globalBrightness, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
@@ -352,6 +370,7 @@ public class SceneImp extends EntityImp {
 			} );
 		}
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		//todo

@@ -72,13 +72,16 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, Graphics2D g ) {
 			super( lookingGlass, g );
 		}
+
 		@Override
 		public boolean isReservedForReuse() {
 			return true;
 		}
+
 		private void prologue() {
-			((Graphics2D)getGraphics2D()).initialize( getTypedSource().getWidth(), getTypedSource().getHeight() );
+			( (Graphics2D)getGraphics2D() ).initialize( getTypedSource().getWidth(), getTypedSource().getHeight() );
 		}
+
 		private void epilogue() {
 			getGraphics2D().dispose();
 		}
@@ -101,6 +104,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	public boolean isListening() {
 		return this.isListening;
 	}
+
 	public void startListening( javax.media.opengl.GLAutoDrawable drawable ) {
 		if( this.isListening ) {
 			if( drawable == this.drawable ) {
@@ -115,6 +119,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			this.drawable.addGLEventListener( this );
 		}
 	}
+
 	public void stopListening( javax.media.opengl.GLAutoDrawable drawable ) {
 		if( drawable == this.drawable ) {
 			//pass
@@ -167,7 +172,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			this.renderContext.actuallyForgetDisplayListsIfNecessary();
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
-			} else if( this.width == 0 || this.height == 0 ) {
+			} else if( ( this.width == 0 ) || ( this.height == 0 ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, this.lookingGlass.getSize() );
 			} else {
 				try {
@@ -204,7 +209,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 					} finally {
 						this.reusableLookingGlassRenderEvent.epilogue();
 					}
-					if( this.rvColorBuffer != null || this.rvDepthBuffer != null ) {
+					if( ( this.rvColorBuffer != null ) || ( this.rvDepthBuffer != null ) ) {
 						this.renderContext.captureBuffers( this.rvColorBuffer, this.rvDepthBuffer );
 					}
 
@@ -277,7 +282,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				double y = this.pickParameters.getFlippedY( actualViewport );
 
 				edu.cmu.cs.dennisc.math.Matrix4x4 m = new edu.cmu.cs.dennisc.math.Matrix4x4();
-				m.translation.set( actualViewport.width - 2 * (x - actualViewport.x), actualViewport.height - 2 * (y - actualViewport.y), 0, 1 );
+				m.translation.set( actualViewport.width - ( 2 * ( x - actualViewport.x ) ), actualViewport.height - ( 2 * ( y - actualViewport.y ) ), 0, 1 );
 				edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( m, actualViewport.width, actualViewport.height, 1.0 );
 
 				edu.cmu.cs.dennisc.math.Matrix4x4 p = new edu.cmu.cs.dennisc.math.Matrix4x4();
@@ -366,7 +371,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( this.width != LookingGlassFactory.getGLPbufferWidth( this.drawable ) || this.height != LookingGlassFactory.getGLPbufferHeight( this.drawable ) ) {
+			if( ( this.width != LookingGlassFactory.getGLPbufferWidth( this.drawable ) ) || ( this.height != LookingGlassFactory.getGLPbufferHeight( this.drawable ) ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
 				this.width = LookingGlassFactory.getGLPbufferWidth( this.drawable );
 				this.height = LookingGlassFactory.getGLPbufferHeight( this.drawable );
@@ -375,12 +380,13 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
 		}
 
-		if( this.width > 0 && this.height > 0 ) {
+		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
 			return new java.awt.image.BufferedImage( this.width, this.height, type );
 		} else {
 			return null;
 		}
 	}
+
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
 		//		boolean isClearedToCreateImage;
 		//		if( this.this.renderContext.gl != null ) {
@@ -423,15 +429,19 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		int type = java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
 		return createBufferedImageForUseAsColorBuffer( type );
 	}
+
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
 		return this.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, null );
 	}
+
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
 		return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
 	}
+
 	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
 		return java.nio.FloatBuffer.allocate( this.width * this.height );
 	}
+
 	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
 		this.rvDepthBuffer = rv;
 		this.drawable.setAutoSwapBufferMode( false );
@@ -479,7 +489,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				drawable.setGL( gl );
 			}
 		}
-		
+
 		this.width = drawable.getWidth();
 		this.height = drawable.getHeight();
 
@@ -493,6 +503,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
 		initialize( drawable );
 	}
+
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == this.drawable;
@@ -500,18 +511,18 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		//this.lookingGlass.commitAnyPendingChanges();
 		//todo?
 		javax.media.opengl.GL gl = drawable.getGL();
-		if( this.renderContext.gl != null || this.pickContext.gl != null ) {
+		if( ( this.renderContext.gl != null ) || ( this.pickContext.gl != null ) ) {
 			//pass
 		} else {
 			initialize( drawable );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: initialize necessary from display" );
 		}
-		if( this.width > 0 && this.height > 0 ) {
+		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
 			//pass
 		} else {
 			int nextWidth = drawable.getWidth();
 			int nextHeight = drawable.getHeight();
-			if( this.width != nextWidth || this.height != nextHeight ) {
+			if( ( this.width != nextWidth ) || ( this.height != nextHeight ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
 				this.width = nextWidth;
 				this.height = nextHeight;
@@ -528,6 +539,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			//this.lookingGlass.fireDisplayed( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassEvent( this.lookingGlass, width, height ) );
 		}
 	}
+
 	public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == this.drawable;
@@ -535,11 +547,13 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		this.height = height;
 		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( this.lookingGlass, width, height ) );
 	}
+
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "displayChanged", drawable, modeChanged, deviceChanged );
 		assert drawable == this.drawable;
 		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
 	}
+
 	public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( drawable );
 	}

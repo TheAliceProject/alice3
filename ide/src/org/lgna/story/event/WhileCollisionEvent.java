@@ -10,10 +10,11 @@ public class WhileCollisionEvent<A extends org.lgna.story.SMovableTurnable, B ex
 		this.collidingFromA = a;
 		this.collidingFromB = b;
 	}
-	
+
 	public A getCollidingFromA() {
 		return collidingFromA;
 	}
+
 	public B getCollidingFromB() {
 		return collidingFromB;
 	}

@@ -47,10 +47,10 @@ package org.lgna.ik;
  * @author Dennis Cosgrove
  */
 public class Bone {
-	/*package-private*/ static edu.cmu.cs.dennisc.math.Vector3[] createAxes( boolean b, final int N ) {
+	/* package-private */static edu.cmu.cs.dennisc.math.Vector3[] createAxes( boolean b, final int N ) {
 		if( b ) {
 			edu.cmu.cs.dennisc.math.Vector3[] rv = new edu.cmu.cs.dennisc.math.Vector3[ N ];
-			for( int i=0; i<N; i++ ) {
+			for( int i = 0; i < N; i++ ) {
 				rv[ i ] = edu.cmu.cs.dennisc.math.Vector3.createZero();
 			}
 			return rv;
@@ -58,19 +58,21 @@ public class Bone {
 			return null;
 		}
 	}
-	/*package-private*/ static double[] createVelocities( boolean isNotToBeNull, final int N ) {
+
+	/* package-private */static double[] createVelocities( boolean isNotToBeNull, final int N ) {
 		if( isNotToBeNull ) {
 			return new double[ N ];
 		} else {
 			return null;
 		}
 	}
-	
+
 	private static class Axis {
 		private final edu.cmu.cs.dennisc.math.Vector3 axis;
 		private double angularVelocity;
-		private final edu.cmu.cs.dennisc.math.Vector3 linearContribution; 
-		private final edu.cmu.cs.dennisc.math.Vector3 angularContribution; 
+		private final edu.cmu.cs.dennisc.math.Vector3 linearContribution;
+		private final edu.cmu.cs.dennisc.math.Vector3 angularContribution;
+
 		public Axis( boolean isLinearEnabled, boolean isAngularEnabled ) {
 			this.axis = edu.cmu.cs.dennisc.math.Vector3.createZero();
 			if( isLinearEnabled ) {
@@ -86,21 +88,24 @@ public class Bone {
 				this.angularVelocity = Double.NaN;
 			}
 		}
+
 		public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 v ) {
 			if( this.linearContribution != null ) {
 				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToCrossProduct( this.linearContribution, this.axis, v );
 			}
 		}
+
 		public void updateAngularContributions() {
 			if( this.angularContribution != null ) {
 				this.angularContribution.set( this.axis );
 			}
 		}
 	}
-	
+
 	private final Chain chain;
 	private final int index;
 	private final Axis[] axes = new Axis[ 3 ];
+
 	public Bone( Chain chain, int index, boolean isLinearEnabled, boolean isAngularEnabled ) {
 		this.chain = chain;
 		this.index = index;
@@ -116,22 +121,25 @@ public class Bone {
 			this.axes[ 2 ] = new Axis( isLinearEnabled, isAngularEnabled );
 		}
 	}
+
 	public org.lgna.story.implementation.JointImp getA() {
 		return this.chain.getJointImpAt( this.index );
 	}
+
 	public org.lgna.story.implementation.JointImp getB() {
-		return this.chain.getJointImpAt( this.index+1 );
+		return this.chain.getJointImpAt( this.index + 1 );
 	}
 
 	public int getDegreesOfFreedom() {
 		int rv = 0;
 		for( Axis axis : axes ) {
 			if( axis != null ) {
-				rv ++;
+				rv++;
 			}
 		}
 		return rv;
 	}
+
 	public void updateLinearContributions( edu.cmu.cs.dennisc.math.Vector3 v ) {
 		for( Axis axis : axes ) {
 			if( axis != null ) {
@@ -139,6 +147,7 @@ public class Bone {
 			}
 		}
 	}
+
 	public void updateAngularContributions() {
 		for( Axis axis : axes ) {
 			if( axis != null ) {
@@ -146,7 +155,7 @@ public class Bone {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		org.lgna.story.implementation.JointImp a = this.getA();
@@ -159,5 +168,5 @@ public class Bone {
 		sb.append( "]" );
 		return sb.toString();
 	}
-	
+
 }

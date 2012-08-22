@@ -45,11 +45,12 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegraph.Scalable > {
+public class ScalableAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph.Scalable> {
 	private double x;
 	private double y;
 	private double z;
 	private boolean isIdentity = true;
+
 	@Override
 	public void renderOpaque( RenderContext rc ) {
 		if( this.isIdentity ) {
@@ -66,6 +67,7 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 			}
 		}
 	}
+
 	@Override
 	public void renderGhost( RenderContext rc, GhostAdapter root ) {
 		if( this.isIdentity ) {
@@ -82,6 +84,7 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 			}
 		}
 	}
+
 	@Override
 	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 		if( this.isIdentity ) {
@@ -98,12 +101,12 @@ public class ScalableAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.sceneg
 			}
 		}
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.scale ) {
 			edu.cmu.cs.dennisc.math.Dimension3 scale = m_element.scale.getValue();
-			this.isIdentity = scale.x == 1.0 && scale.y == 1.0 && scale.z == 1.0;
+			this.isIdentity = ( scale.x == 1.0 ) && ( scale.y == 1.0 ) && ( scale.z == 1.0 );
 			this.x = scale.x;
 			this.y = scale.y;
 			this.z = scale.z;

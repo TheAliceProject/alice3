@@ -50,9 +50,9 @@ public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom
 	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
-	
+
 	@Override
-	protected void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
 		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
 		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getResourceSidekickLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ), false ) );
 		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getVolumeState().getSidekickLabel(), new VolumeLevelSlider( composite.getVolumeState() ), false ) );

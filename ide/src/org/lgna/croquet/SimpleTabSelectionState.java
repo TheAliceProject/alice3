@@ -47,16 +47,19 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleTabSelectionState<C extends SimpleTabComposite<?>> extends TabSelectionState<C> {
-	public SimpleTabSelectionState( Group group, java.util.UUID id, Class< C > cls, int selectionIndex ) {
+	public SimpleTabSelectionState( Group group, java.util.UUID id, Class<C> cls, int selectionIndex ) {
 		super( group, id, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), selectionIndex );
 	}
-	public SimpleTabSelectionState( Group group, java.util.UUID id, Class< C > cls ) {
+
+	public SimpleTabSelectionState( Group group, java.util.UUID id, Class<C> cls ) {
 		super( group, id, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ) );
 	}
-	public SimpleTabSelectionState( Group group, java.util.UUID id, Class< C > cls, int selectionIndex, java.util.Collection<C> data ) {
+
+	public SimpleTabSelectionState( Group group, java.util.UUID id, Class<C> cls, int selectionIndex, java.util.Collection<C> data ) {
 		super( group, id, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), selectionIndex, data );
 	}
-	public SimpleTabSelectionState( Group group, java.util.UUID id, Class< C > cls, int selectionIndex, C... data ) {
+
+	public SimpleTabSelectionState( Group group, java.util.UUID id, Class<C> cls, int selectionIndex, C... data ) {
 		super( group, id, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), selectionIndex, data );
 	}
 }

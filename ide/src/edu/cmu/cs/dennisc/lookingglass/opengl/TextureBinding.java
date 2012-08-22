@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public final class TextureBinding implements ForgettableBinding{
+public final class TextureBinding implements ForgettableBinding {
 	//todo: investigate shared drawables
 	private static class Data {
 		private com.sun.opengl.util.texture.Texture texture;
 		private com.sun.opengl.util.texture.TextureData textureData;
 		private javax.media.opengl.GL gl;
-		
+
 		private void disposeTextureIdIfAppropriate( javax.media.opengl.GL gl ) {
 			if( this.texture != null ) {
 				if( this.gl != gl ) {
@@ -63,6 +63,7 @@ public final class TextureBinding implements ForgettableBinding{
 				}
 			}
 		}
+
 		private boolean isUpdateNecessary( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData textureData ) {
 			if( this.texture != null ) {
 				if( this.textureData != textureData ) {
@@ -86,6 +87,7 @@ public final class TextureBinding implements ForgettableBinding{
 				return true;
 			}
 		}
+
 		public void updateIfNecessary( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData textureData ) {
 			if( this.isUpdateNecessary( gl, textureData ) ) {
 				this.disposeTextureIdIfAppropriate( gl );
@@ -93,18 +95,21 @@ public final class TextureBinding implements ForgettableBinding{
 				this.gl = gl;
 				this.texture = com.sun.opengl.util.texture.TextureIO.newTexture( this.textureData );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "allocated texture id", this.texture.getTextureObject(), "gl", gl.hashCode() );
-//				for( RenderContextData value : map.values() ) {
-//					System.err.print( value.gl.hashCode() + " " );
-//				}
-//				System.err.println();
+				//				for( RenderContextData value : map.values() ) {
+				//					System.err.print( value.gl.hashCode() + " " );
+				//				}
+				//				System.err.println();
 			}
 		}
+
 		public void bind() {
 			this.texture.bind();
 		}
+
 		public void enable() {
 			this.texture.enable();
 		}
+
 		public void forget( javax.media.opengl.GL gl ) {
 			if( this.texture != null ) {
 				this.disposeTextureIdIfAppropriate( gl );
@@ -116,7 +121,8 @@ public final class TextureBinding implements ForgettableBinding{
 		}
 	}
 
-	private final java.util.Map< RenderContext, Data > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<RenderContext, Data> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	private Data getData( RenderContext rc ) {
 		Data rv = this.map.get( rc );
 		if( rv != null ) {
@@ -127,12 +133,14 @@ public final class TextureBinding implements ForgettableBinding{
 		}
 		return rv;
 	}
+
 	public void ensureUpToDate( RenderContext rc, com.sun.opengl.util.texture.TextureData textureData ) {
 		Data data = this.getData( rc );
 		data.updateIfNecessary( rc.gl, textureData );
 		data.bind();
 		data.enable();
 	}
+
 	public void forget( RenderContext rc ) {
 		synchronized( this.map ) {
 			Data data = this.map.get( rc );

@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public enum HowMuch {
-	COMPONENT_ONLY(true, false, false), 
-	COMPONENT_AND_CHILDREN_ONLY(true, true, false), 
-	CHILDREN_ONLY(false, true, false), 
-	DESCENDANTS_ONLY(false, true, true), 
-	COMPONENT_AND_DESCENDANTS(true, true, true);
+	COMPONENT_ONLY( true, false, false ),
+	COMPONENT_AND_CHILDREN_ONLY( true, true, false ),
+	CHILDREN_ONLY( false, true, false ),
+	DESCENDANTS_ONLY( false, true, true ),
+	COMPONENT_AND_DESCENDANTS( true, true, true );
 	private boolean m_isComponentACandidate;
 	private boolean m_isChildACandidate;
 	private boolean m_isGrandchildAndBeyondACandidate;
@@ -60,12 +60,15 @@ public enum HowMuch {
 		m_isChildACandidate = isChildACandidate;
 		m_isGrandchildAndBeyondACandidate = isGrandchildAndBeyondACandidate;
 	}
+
 	public boolean isComponentACandidate() {
 		return m_isComponentACandidate;
 	}
+
 	public boolean isChildACandidate() {
 		return m_isChildACandidate;
 	}
+
 	public boolean isGrandchildAndBeyondACandidate() {
 		return m_isGrandchildAndBeyondACandidate;
 	}

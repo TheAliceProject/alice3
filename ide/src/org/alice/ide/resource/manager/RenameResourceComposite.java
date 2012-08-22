@@ -50,26 +50,32 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 	private static class SingletonHolder {
 		private static RenameResourceComposite instance = new RenameResourceComposite();
 	}
+
 	public static RenameResourceComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RenameResourceComposite() {
 		super( java.util.UUID.fromString( "52410415-1293-4857-9e35-4d52bc4f2a9d" ), new org.alice.ide.name.validators.ResourceNameValidator() );
 	}
+
 	private org.lgna.common.Resource getResource() {
 		return ResourceTableRowSelectionState.getInstance().getValue();
 	}
+
 	@Override
 	protected String getInitialValue() {
 		org.lgna.common.Resource resource = this.getResource();
 		return resource != null ? resource.getName() : null;
 	}
+
 	@Override
 	protected org.alice.ide.resource.manager.views.ResourceRenamePanel createView() {
 		return new org.alice.ide.resource.manager.views.ResourceRenamePanel( this );
 	}
+
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.common.Resource resource = this.getResource();
 		if( resource != null ) {
 			return new org.alice.ide.resource.manager.edits.RenameResourceEdit( completionStep, resource, resource.getName(), this.getNameState().getValue() );
@@ -77,10 +83,11 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 			return null;
 		}
 	}
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.common.Resource resource = ResourceTableRowSelectionState.getInstance().getValue(); 
-		((org.alice.ide.name.validators.ResourceNameValidator)this.getNameValidator()).setResource( resource );
+		org.lgna.common.Resource resource = ResourceTableRowSelectionState.getInstance().getValue();
+		( (org.alice.ide.name.validators.ResourceNameValidator)this.getNameValidator() ).setResource( resource );
 		this.getView().setResource( resource );
 		super.handlePreShowDialog( step );
 	}

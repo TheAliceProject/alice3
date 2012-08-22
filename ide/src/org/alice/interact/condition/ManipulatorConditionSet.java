@@ -57,108 +57,108 @@ public class ManipulatorConditionSet {
 		CHANGED,
 		CLICKED,
 	}
-	
+
 	private String name = "NO NAME";
 	private AbstractManipulator manipulator;
-	private java.util.Vector< InputCondition > inputConditions = new java.util.Vector< InputCondition >();
+	private java.util.Vector<InputCondition> inputConditions = new java.util.Vector<InputCondition>();
 	private boolean enabled = true;
-	
+
 	public ManipulatorConditionSet( AbstractManipulator manipulator, String name )
 	{
 		this.name = name;
 		this.manipulator = manipulator;
 	}
-	
+
 	public ManipulatorConditionSet( AbstractManipulator manipulator )
 	{
-		this(manipulator, "NO NAME");
+		this( manipulator, "NO NAME" );
 	}
-	
+
 	public boolean isEnabled()
 	{
 		return this.enabled;
 	}
-	
-	public void setEnabled(boolean enabled)
+
+	public void setEnabled( boolean enabled )
 	{
 		this.enabled = enabled;
 	}
-	
+
 	public void addCondition( InputCondition inputCondition )
 	{
 		this.inputConditions.add( inputCondition );
 	}
-	
-	public InputCondition getCondition(int index)
+
+	public InputCondition getCondition( int index )
 	{
-		if (index > 0 && index < this.inputConditions.size())
+		if( ( index > 0 ) && ( index < this.inputConditions.size() ) )
 		{
-			return this.inputConditions.get(index);
+			return this.inputConditions.get( index );
 		}
 		return null;
 	}
-	
+
 	public AbstractManipulator getManipulator()
 	{
 		return this.manipulator;
 	}
-	
+
 	public void update( InputState current, InputState previous )
 	{
-		for (int i=0; i<this.inputConditions.size(); i++)
+		for( int i = 0; i < this.inputConditions.size(); i++ )
 		{
-			this.inputConditions.get(i).update(current, previous);
+			this.inputConditions.get( i ).update( current, previous );
 		}
 	}
-	
+
 	private boolean checkCondition( RunningState state, InputState current, InputState previous )
 	{
-//		if (previous.isAnyMouseButtonDown() && !current.isAnyMouseButtonDown())
-//		{
-//			System.out.println("stopping? "+this.hashCode());
-//		}
-		switch (state)
+		//		if (previous.isAnyMouseButtonDown() && !current.isAnyMouseButtonDown())
+		//		{
+		//			System.out.println("stopping? "+this.hashCode());
+		//		}
+		switch( state )
 		{
 		case CHANGED:
-			for (int i=0; i<this.inputConditions.size(); i++)
+			for( int i = 0; i < this.inputConditions.size(); i++ )
 			{
-				if (this.inputConditions.get( i ).stateChanged( current, previous ))
+				if( this.inputConditions.get( i ).stateChanged( current, previous ) )
 				{
 					return true;
 				}
 			}
 			break;
 		case JUST_STARTED:
-			for (int i=0; i<this.inputConditions.size(); i++)
+			for( int i = 0; i < this.inputConditions.size(); i++ )
 			{
-				if (this.inputConditions.get( i ).justStarted( current, previous ))
+				if( this.inputConditions.get( i ).justStarted( current, previous ) )
 				{
 					return true;
 				}
 			}
 			break;
 		case IS_RUNNING:
-			for (int i=0; i<this.inputConditions.size(); i++)
+			for( int i = 0; i < this.inputConditions.size(); i++ )
 			{
-				if (this.inputConditions.get( i ).isRunning( current, previous ))
+				if( this.inputConditions.get( i ).isRunning( current, previous ) )
 				{
 					return true;
 				}
 			}
 			break;
 		case JUST_ENDED:
-			for (int i=0; i<this.inputConditions.size(); i++)
+			for( int i = 0; i < this.inputConditions.size(); i++ )
 			{
-				if (this.inputConditions.get( i ).justEnded( current, previous ))
+				if( this.inputConditions.get( i ).justEnded( current, previous ) )
 				{
 					return true;
 				}
 			}
 			break;
 		case CLICKED:
-			for (int i=0; i<this.inputConditions.size(); i++)
+			for( int i = 0; i < this.inputConditions.size(); i++ )
 			{
-				if (this.inputConditions.get( i ).clicked( current, previous ))
+				if( this.inputConditions.get( i ).clicked( current, previous ) )
 				{
 					return true;
 				}
@@ -166,52 +166,52 @@ public class ManipulatorConditionSet {
 			break;
 		}
 		return false;
-		
+
 	}
-	
+
 	public boolean stateChanged( InputState current, InputState previous )
 	{
-		return this.checkCondition(RunningState.CHANGED, current, previous);
+		return this.checkCondition( RunningState.CHANGED, current, previous );
 	}
-	
-	public boolean shouldContinue(InputState current, InputState previous)
+
+	public boolean shouldContinue( InputState current, InputState previous )
 	{
-		return this.checkCondition(RunningState.IS_RUNNING, current, previous);
+		return this.checkCondition( RunningState.IS_RUNNING, current, previous );
 	}
-	
-	public boolean justStarted(InputState current, InputState previous)
+
+	public boolean justStarted( InputState current, InputState previous )
 	{
-//		System.out.println("Checking justStarted for "+this.getName());
-		boolean someoneIsRunning = this.checkCondition(RunningState.IS_RUNNING, current, previous);
-		boolean someoneJustStarted = this.checkCondition(RunningState.JUST_STARTED, current, previous);
-		return (!someoneIsRunning && someoneJustStarted);
+		//		System.out.println("Checking justStarted for "+this.getName());
+		boolean someoneIsRunning = this.checkCondition( RunningState.IS_RUNNING, current, previous );
+		boolean someoneJustStarted = this.checkCondition( RunningState.JUST_STARTED, current, previous );
+		return ( !someoneIsRunning && someoneJustStarted );
 	}
-	
-	public boolean justEnded(InputState current, InputState previous)
+
+	public boolean justEnded( InputState current, InputState previous )
 	{
-		boolean someoneIsRunning = this.checkCondition(RunningState.IS_RUNNING, current, previous);
-		boolean someoneJustStarted = this.checkCondition(RunningState.JUST_STARTED, current, previous);
-		boolean someoneJustEnded = this.checkCondition(RunningState.JUST_ENDED, current, previous);
-		return (!someoneIsRunning && !someoneJustStarted && someoneJustEnded);
+		boolean someoneIsRunning = this.checkCondition( RunningState.IS_RUNNING, current, previous );
+		boolean someoneJustStarted = this.checkCondition( RunningState.JUST_STARTED, current, previous );
+		boolean someoneJustEnded = this.checkCondition( RunningState.JUST_ENDED, current, previous );
+		return ( !someoneIsRunning && !someoneJustStarted && someoneJustEnded );
 	}
-	
-	public boolean clicked(InputState current, InputState previous)
+
+	public boolean clicked( InputState current, InputState previous )
 	{
-//		boolean someoneIsRunning = this.checkCondition(RunningState.IS_RUNNING, current, previous);
-//		boolean someoneJustStarted = this.checkCondition(RunningState.JUST_STARTED, current, previous);
-//		boolean someoneJustEnded = this.checkCondition(RunningState.JUST_ENDED, current, previous);
-		boolean clicked = this.checkCondition(RunningState.CLICKED, current, previous);
-		return (clicked);
+		//		boolean someoneIsRunning = this.checkCondition(RunningState.IS_RUNNING, current, previous);
+		//		boolean someoneJustStarted = this.checkCondition(RunningState.JUST_STARTED, current, previous);
+		//		boolean someoneJustEnded = this.checkCondition(RunningState.JUST_ENDED, current, previous);
+		boolean clicked = this.checkCondition( RunningState.CLICKED, current, previous );
+		return ( clicked );
 	}
-	
+
 	public String getName()
 	{
 		return this.name;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "ManipulatorConditionSet:"+this.name;
+		return "ManipulatorConditionSet:" + this.name;
 	}
-	
+
 }

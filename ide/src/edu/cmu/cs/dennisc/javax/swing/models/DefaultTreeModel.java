@@ -45,19 +45,22 @@ package edu.cmu.cs.dennisc.javax.swing.models;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultTreeModel<E> extends javax.swing.tree.DefaultTreeModel implements TreeModel< TreeNode< E > > {
+public class DefaultTreeModel<E> extends javax.swing.tree.DefaultTreeModel implements TreeModel<TreeNode<E>> {
 	public DefaultTreeModel( TreeNode<E> root ) {
 		super( root );
 	}
+
 	@Override
-	public TreeNode< E > getChild(Object parent, int index) {
-		return (TreeNode< E >)super.getChild(parent, index);
+	public TreeNode<E> getChild( Object parent, int index ) {
+		return (TreeNode<E>)super.getChild( parent, index );
 	}
+
 	@Override
-	public TreeNode< E > getRoot() {
-		return (TreeNode< E >)super.getRoot();
+	public TreeNode<E> getRoot() {
+		return (TreeNode<E>)super.getRoot();
 	}
-	public javax.swing.tree.TreePath getTreePath( TreeNode< E > e ) {
+
+	public javax.swing.tree.TreePath getTreePath( TreeNode<E> e ) {
 		Object[] nodes = this.getPathToRoot( e );
 		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
 		return path;

@@ -48,33 +48,38 @@ package org.alice.ide.common;
 public class DropDownListItemExpressionPane extends AbstractDropDownPane {
 	private int index;
 	private org.lgna.project.ast.ExpressionListProperty expressionListProperty;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.Expression > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.Expression >() {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.Expression> listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.Expression>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.Expression > e ) {
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.Expression> e ) {
 		}
+
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.Expression > e ) {
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.Expression> e ) {
 			DropDownListItemExpressionPane.this.refresh();
 		}
 	};
 	private final org.alice.ide.x.AstI18nFactory factory;
-	public DropDownListItemExpressionPane( org.alice.ide.x.AstI18nFactory factory, int index, org.lgna.project.ast.ExpressionListProperty expressionListProperty, org.lgna.project.ast.AbstractType<?,?,?> fillInType ) {
+
+	public DropDownListItemExpressionPane( org.alice.ide.x.AstI18nFactory factory, int index, org.lgna.project.ast.ExpressionListProperty expressionListProperty, org.lgna.project.ast.AbstractType<?, ?, ?> fillInType ) {
 		super( new org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "dec13fc9-4b3f-4e4e-8b1f-21956e789b32" ), index, expressionListProperty, fillInType ).getRoot().getPopupPrepModel() );
 		this.factory = factory;
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
 		this.refresh();
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
 		super.handleUndisplayable();
 	}
+
 	//protected abstract org.lgna.project.ast.AbstractType<?,?,?> getFillInType();
 	public void refresh() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "refreshLater" );
@@ -84,4 +89,3 @@ public class DropDownListItemExpressionPane extends AbstractDropDownPane {
 		}
 	}
 }
-

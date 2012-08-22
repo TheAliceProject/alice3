@@ -46,13 +46,15 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState< GalleryNode > {
+public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState<GalleryNode> {
 	private static class SingletonHolder {
 		private static GalleryResourceTreeSelectionState instance = new GalleryResourceTreeSelectionState();
 	}
+
 	public static GalleryResourceTreeSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private GalleryResourceTreeSelectionState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "78e41376-f478-4cba-823a-26f949314702" ), GalleryNodeCodec.SINGLETON, RootGalleryNode.getInstance() );
 	}
@@ -61,51 +63,57 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 	protected javax.swing.Icon getIconForNode( GalleryNode node ) {
 		return node.getSmallIcon();
 	}
+
 	@Override
 	protected String getTextForNode( GalleryNode node ) {
 		return node.getText();
 	}
-	
-//	@Override
-//	protected boolean isComboDesired( org.alice.ide.croquet.models.gallerybrowser.GalleryNode childNode ) {
-//		for( GalleryNode grandchildNode : childNode ) {
-//			if( this.isLeaf( grandchildNode ) ) {
-//				//pass
-//			} else {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//	@Override
-//	protected org.lgna.croquet.CascadeBlankChild< GalleryNode > getBlankChildFor( GalleryNode childNode ) {
-//		if( childNode instanceof FieldGalleryNode ) {
-//			FieldGalleryNode fieldGalleryNode = (FieldGalleryNode)childNode;
-//			return fieldGalleryNode.getBlankChild();
-//		} else {
-//			return super.getBlankChildFor( childNode );
-//		}
-//	}
+
+	//	@Override
+	//	protected boolean isComboDesired( org.alice.ide.croquet.models.gallerybrowser.GalleryNode childNode ) {
+	//		for( GalleryNode grandchildNode : childNode ) {
+	//			if( this.isLeaf( grandchildNode ) ) {
+	//				//pass
+	//			} else {
+	//				return true;
+	//			}
+	//		}
+	//		return false;
+	//	}
+	//	@Override
+	//	protected org.lgna.croquet.CascadeBlankChild< GalleryNode > getBlankChildFor( GalleryNode childNode ) {
+	//		if( childNode instanceof FieldGalleryNode ) {
+	//			FieldGalleryNode fieldGalleryNode = (FieldGalleryNode)childNode;
+	//			return fieldGalleryNode.getBlankChild();
+	//		} else {
+	//			return super.getBlankChildFor( childNode );
+	//		}
+	//	}
 	@Override
 	protected int getChildCount( GalleryNode parent ) {
 		return parent.getChildCount();
 	}
+
 	@Override
 	protected GalleryNode getChild( GalleryNode parent, int index ) {
 		return parent.getChild( index );
 	}
+
 	@Override
 	protected int getIndexOfChild( GalleryNode parent, GalleryNode child ) {
 		return parent.getIndexOfChild( child );
 	}
+
 	@Override
 	protected GalleryNode getParent( GalleryNode node ) {
 		return node.getParent();
 	}
+
 	@Override
 	protected GalleryNode getRoot() {
 		return RootGalleryNode.getInstance();
 	}
+
 	@Override
 	public boolean isLeaf( GalleryNode node ) {
 		return node.isLeaf();

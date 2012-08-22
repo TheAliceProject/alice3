@@ -49,7 +49,7 @@ public class LazySusanDragAdapter extends edu.cmu.cs.dennisc.ui.DragAdapter {
 	private edu.cmu.cs.dennisc.scenegraph.Transformable m_lazySusan;
 	private double m_radiansPerPixel;
 
-	private static final boolean USE_EULER_ANGLES = true; 
+	private static final boolean USE_EULER_ANGLES = true;
 	private edu.cmu.cs.dennisc.math.EulerAngles m_ea0 = null;
 	private double m_yaw0 = Double.NaN;
 
@@ -57,6 +57,7 @@ public class LazySusanDragAdapter extends edu.cmu.cs.dennisc.ui.DragAdapter {
 		m_lazySusan = lazySusan;
 		m_radiansPerPixel = radiansPerPixel;
 	}
+
 	@Override
 	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
 		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
@@ -64,7 +65,7 @@ public class LazySusanDragAdapter extends edu.cmu.cs.dennisc.ui.DragAdapter {
 
 	//todo: add get/set m_lazySusan
 	//todo: add get/set m_radiansPerPixel
-	
+
 	@Override
 	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		edu.cmu.cs.dennisc.math.EulerAngles ea = new edu.cmu.cs.dennisc.math.EulerAngles( m_lazySusan.getLocalTransformation().orientation );
@@ -82,7 +83,7 @@ public class LazySusanDragAdapter extends edu.cmu.cs.dennisc.ui.DragAdapter {
 		if( USE_EULER_ANGLES ) {
 			edu.cmu.cs.dennisc.math.EulerAngles ea = new edu.cmu.cs.dennisc.math.EulerAngles( m_ea0 );
 			double yawInRadians = ea.yaw.getAsRadians();
-			
+
 			boolean isUpsideDownAndBackwardsSoToSpeak = false;
 			final double EPSILON = 0.01;
 			if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( ea.pitch.getAsRadians(), Math.PI, EPSILON ) ) {
@@ -96,7 +97,7 @@ public class LazySusanDragAdapter extends edu.cmu.cs.dennisc.ui.DragAdapter {
 			} else {
 				yawInRadians += deltaYaw;
 			}
-			
+
 			ea.yaw.setAsRadians( yawInRadians );
 			m = new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( ea );
 		} else {

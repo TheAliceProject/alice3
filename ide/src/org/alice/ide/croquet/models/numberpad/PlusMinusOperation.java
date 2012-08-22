@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.numberpad;
  */
 public class PlusMinusOperation extends NumberPadOperation {
 
-	private static java.util.Map< NumberModel<?>, PlusMinusOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<NumberModel<?>, PlusMinusOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized PlusMinusOperation getInstance( NumberModel<?> model ) {
 		PlusMinusOperation rv = map.get( model );
 		if( rv != null ) {
@@ -63,10 +64,12 @@ public class PlusMinusOperation extends NumberPadOperation {
 		super( java.util.UUID.fromString( "6845e168-dfce-4f9e-b94f-d5674613f38c" ), model );
 		this.setName( "\u00B1" );
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
+	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver<NumberPadOperation> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver<NumberPadOperation>( this, this.numberModel );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

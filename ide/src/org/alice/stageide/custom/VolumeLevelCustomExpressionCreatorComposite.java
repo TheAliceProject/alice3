@@ -50,38 +50,47 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 	private static class SingletonHolder {
 		private static VolumeLevelCustomExpressionCreatorComposite instance = new VolumeLevelCustomExpressionCreatorComposite();
 	}
+
 	public static VolumeLevelCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), VolumeLevelUtilities.createDetails() );
-	private final org.lgna.croquet.StringValue silentLabel = this.createStringValue( this.createKey( "silentLabel" ) ); 
-	private final org.lgna.croquet.StringValue normalLabel = this.createStringValue( this.createKey( "normalLabel" ) ); 
-	private final org.lgna.croquet.StringValue louderLabel = this.createStringValue( this.createKey( "louderLabel" ) ); 
-	
+	private final org.lgna.croquet.StringValue silentLabel = this.createStringValue( this.createKey( "silentLabel" ) );
+	private final org.lgna.croquet.StringValue normalLabel = this.createStringValue( this.createKey( "normalLabel" ) );
+	private final org.lgna.croquet.StringValue louderLabel = this.createStringValue( this.createKey( "louderLabel" ) );
+
 	private VolumeLevelCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "1c80a46b-6ff8-4fbd-8003-5bbab71a3fca" ) );
 	}
+
 	@Override
 	protected org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView createView() {
 		return new org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView( this );
 	}
+
 	public org.lgna.croquet.BoundedIntegerState getValueState() {
 		return this.valueState;
 	}
+
 	public org.lgna.croquet.StringValue getLouderLabel() {
 		return this.louderLabel;
 	}
+
 	public org.lgna.croquet.StringValue getNormalLabel() {
 		return this.normalLabel;
 	}
+
 	public org.lgna.croquet.StringValue getSilentLabel() {
 		return this.silentLabel;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
 		double actualVolume = VolumeLevelUtilities.toDouble( this.valueState.getValue() );
 		return new org.lgna.project.ast.DoubleLiteral( actualVolume );
 	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;

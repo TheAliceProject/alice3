@@ -45,8 +45,9 @@ package org.alice.ide.members.components.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class SetFieldTemplate extends ExpressionStatementTemplate {
+/* package-private */class SetFieldTemplate extends ExpressionStatementTemplate {
 	private org.lgna.project.ast.AbstractField field;
+
 	public SetFieldTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.ast.draganddrop.statement.FieldAssignmentTemplateDragModel.getInstance( field ) );
 		this.field = field;
@@ -55,6 +56,7 @@ package org.alice.ide.members.components.templates;
 			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
 		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpression( this.field );

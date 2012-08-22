@@ -42,22 +42,27 @@
  */
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SBillboard extends SModel {
 	private final org.lgna.story.implementation.BillboardImp implementation = new org.lgna.story.implementation.BillboardImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.BillboardImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.BillboardImp getImplementation() {
 		return this.implementation;
 	}
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
+
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
 	public Paint getBackPaint() {
 		return this.getImplementation().backPaint.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setBackPaint( Paint paint, SetBackPaint.Detail... details ) {
 		this.getImplementation().backPaint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

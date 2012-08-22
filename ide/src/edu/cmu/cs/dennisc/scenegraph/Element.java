@@ -51,19 +51,23 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 		public static <T> Key<T> createInstance( String repr ) {
 			return new Key<T>( repr );
 		}
+
 		private final String repr;
+
 		private Key( String repr ) {
 			this.repr = repr;
 		}
+
 		@Override
 		public java.lang.String toString() {
 			return this.repr;
 		}
 	}
-	public static final Key< StackTraceElement[] > DEBUG_CONSTRUCTION_STACK_TRACE_KEY = Key.createInstance( "DEBUG_CONSTRUCTION_STACK_TRACE_KEY" );
+
+	public static final Key<StackTraceElement[]> DEBUG_CONSTRUCTION_STACK_TRACE_KEY = Key.createInstance( "DEBUG_CONSTRUCTION_STACK_TRACE_KEY" );
 	private static boolean isCreationStackTraceDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired" );
 
-	private final java.util.Map/*< Key<T>, T >*/ dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map/* < Key<T>, T > */dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public Element() {
 		if( isCreationStackTraceDesired ) {
@@ -80,12 +84,15 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 	public <T> boolean containsBonusDataFor( Key<T> key ) {
 		return this.dataMap.containsKey( key );
 	}
+
 	public <T> T getBonusDataFor( Key<T> key ) {
 		return (T)this.dataMap.get( key );
 	}
+
 	public <T> void putBonusDataFor( Key<T> key, T value ) {
 		this.dataMap.put( key, value );
 	}
+
 	public <T> void removeBonusDataFor( Key<T> key ) {
 		this.dataMap.remove( key );
 	}
@@ -98,7 +105,7 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 		for( edu.cmu.cs.dennisc.property.Property property : this.getProperties() ) {
 			Object value;
 			if( property instanceof edu.cmu.cs.dennisc.property.CopyableProperty ) {
-				value = ((edu.cmu.cs.dennisc.property.CopyableProperty)property).getCopy( this );
+				value = ( (edu.cmu.cs.dennisc.property.CopyableProperty)property ).getCopy( this );
 			} else {
 				value = property.getValue( this );
 			}
@@ -107,10 +114,11 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 		}
 		return rv;
 	}
-	
+
 	protected void appendRepr( StringBuilder sb ) {
-		sb.append("name=\"" + getName() + "\"");
+		sb.append( "name=\"" + getName() + "\"" );
 	}
+
 	@Override
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();

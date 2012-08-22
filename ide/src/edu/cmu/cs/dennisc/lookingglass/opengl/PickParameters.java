@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class PickParameters {
-	private final java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickResults = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> pickResults = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
 	private final int x;
 	private final int y;
@@ -63,12 +63,13 @@ public class PickParameters {
 	}
 
 	public void addPickResult( edu.cmu.cs.dennisc.scenegraph.Component source, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
-		this.pickResults.add(  new edu.cmu.cs.dennisc.lookingglass.PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
+		this.pickResults.add( new edu.cmu.cs.dennisc.lookingglass.PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
 	}
-	
-	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > accessAllPickResults() {
+
+	public java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> accessAllPickResults() {
 		return this.pickResults;
 	}
+
 	public edu.cmu.cs.dennisc.lookingglass.PickResult accessFrontMostPickResult() {
 		edu.cmu.cs.dennisc.lookingglass.PickResult rv;
 		if( this.pickResults.isEmpty() ) {
@@ -78,22 +79,27 @@ public class PickParameters {
 		}
 		return rv;
 	}
-	
+
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
 		return this.sgCamera;
 	}
+
 	public int getX() {
 		return this.x;
 	}
+
 	public int getY() {
 		return this.y;
 	}
+
 	public int getFlippedY( java.awt.Rectangle actualViewport ) {
 		return actualViewport.height - this.y;
 	}
+
 	public boolean isSubElementRequired() {
 		return this.isSubElementRequired;
 	}
+
 	public edu.cmu.cs.dennisc.lookingglass.PickObserver getPickObserver() {
 		return this.pickObserver;
 	}

@@ -8,11 +8,11 @@ import org.lgna.story.event.ViewEnterListener;
 
 public class ComesIntoViewEventAdapter extends AbstractAdapter implements ViewEnterListener {
 
-	public ComesIntoViewEventAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
-		super(context, lambda, userInstance);
+	public ComesIntoViewEventAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
+		super( context, lambda, userInstance );
 	}
 
-	public void viewEntered(ComesIntoViewEvent e) {
+	public void viewEntered( ComesIntoViewEvent e ) {
 		invokeEntryPoint( e );
 	}
 }

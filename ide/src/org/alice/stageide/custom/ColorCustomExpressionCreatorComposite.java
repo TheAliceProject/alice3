@@ -50,10 +50,11 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 	private static class SingletonHolder {
 		private static ColorCustomExpressionCreatorComposite instance = new ColorCustomExpressionCreatorComposite();
 	}
+
 	public static ColorCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	
+
 	private final javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
@@ -64,12 +65,14 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 	private ColorCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "6a187cbd-d41f-4513-aa5e-e8750d1d921f" ) );
 	}
+
 	@Override
 	protected org.alice.ide.custom.components.CustomExpressionCreatorView createView() {
 		class ColorCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
 			public ColorCustomExpressionCreatorView( ColorCustomExpressionCreatorComposite composite ) {
 				super( composite );
 			}
+
 			@Override
 			protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
 				return new org.lgna.croquet.components.SwingAdapter( jColorChooser );
@@ -77,6 +80,7 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 		}
 		return new ColorCustomExpressionCreatorView( this );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
 		java.awt.Color awtColor = this.jColorChooser.getColor();
@@ -90,10 +94,12 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 			return null;
 		}
 	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
+
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
 		if( expression != null ) {
@@ -108,12 +114,13 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 			}
 		}
 	}
-	
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		super.handlePreShowDialog( step );
 		this.jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
 	}
+
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		this.jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );

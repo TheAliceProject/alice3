@@ -52,17 +52,19 @@ package org.lgna.croquet;
 		DialogCoreComposite coreComposite = composite.getCoreComposite();
 		this.commitButton = coreComposite.getCommitOperation().createButton();
 		this.cancelButton = coreComposite.getCancelOperation().createButton();
-		org.lgna.croquet.components.View<?,?> coreView = coreComposite.getView();
+		org.lgna.croquet.components.View<?, ?> coreView = coreComposite.getView();
 		this.setBackgroundColor( coreView.getBackgroundColor() );
 		this.addCenterComponent( coreView );
 	}
+
 	public org.lgna.croquet.components.Button getCommitButton() {
 		return this.commitButton;
 	}
+
 	public org.lgna.croquet.components.Button getCancelButton() {
 		return this.cancelButton;
 	}
-	
+
 	protected org.lgna.croquet.components.Button getLeadingCommitCancelButton() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			return this.commitButton;
@@ -70,29 +72,34 @@ package org.lgna.croquet;
 			return this.cancelButton;
 		}
 	}
+
 	protected org.lgna.croquet.components.Button getTrailingCommitCancelButton() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			return this.cancelButton;
 		} else {
 			return this.commitButton;
 		}
-	}	
+	}
 }
 
-/*package-private*/abstract class DialogContentComposite<V extends GatedCommitDialogContentPanel> extends SimpleComposite<V> {
+/* package-private */abstract class DialogContentComposite<V extends GatedCommitDialogContentPanel> extends SimpleComposite<V> {
 	private final DialogCoreComposite coreComposite;
+
 	public DialogContentComposite( java.util.UUID migrationId, DialogCoreComposite coreComposite ) {
 		super( migrationId );
 		this.coreComposite = coreComposite;
 	}
+
 	public DialogCoreComposite getCoreComposite() {
 		return this.coreComposite;
 	}
+
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		this.coreComposite.handlePreActivation();
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		this.coreComposite.handlePostDeactivation();
@@ -103,57 +110,69 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>,CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends AbstractDialogComposite<V> {
+public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.View<?, ?>, CC extends DialogContentComposite<? extends DialogContentPanel<?>>> extends AbstractDialogComposite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
-	protected static final org.lgna.croquet.history.Step.Key< Boolean > IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
-	public static final class InternalCommitOperationResolver extends IndirectResolver< InternalCommitOperation, DialogCoreComposite > {
+	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
+
+	public static final class InternalCommitOperationResolver extends IndirectResolver<InternalCommitOperation, DialogCoreComposite> {
 		private InternalCommitOperationResolver( DialogCoreComposite indirect ) {
 			super( indirect );
 		}
+
 		public InternalCommitOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalCommitOperation getDirect( DialogCoreComposite indirect ) {
 			return indirect.commitOperation;
 		}
 	}
-	public static final class InternalCancelOperationResolver extends IndirectResolver< InternalCancelOperation, DialogCoreComposite > {
+
+	public static final class InternalCancelOperationResolver extends IndirectResolver<InternalCancelOperation, DialogCoreComposite> {
 		private InternalCancelOperationResolver( DialogCoreComposite indirect ) {
 			super( indirect );
 		}
+
 		public InternalCancelOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalCancelOperation getDirect( DialogCoreComposite indirect ) {
 			return indirect.cancelOperation;
 		}
 	}
+
 	protected static abstract class InternalDialogOperation extends ActionOperation {
 		private final DialogCoreComposite coreComposite;
+
 		public InternalDialogOperation( java.util.UUID id, DialogCoreComposite coreComposite ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 			this.coreComposite = coreComposite;
 		}
+
 		public DialogCoreComposite getDialogCoreComposite() {
 			return this.coreComposite;
 		}
+
 		@Override
 		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return this.coreComposite.getClassUsedForLocalization();
 		}
 	}
-	
+
 	private static abstract class InternalFinishOperation extends InternalDialogOperation {
 		private final boolean isCommit;
+
 		public InternalFinishOperation( java.util.UUID id, DialogCoreComposite coreComposite, boolean isCommit ) {
 			super( id, coreComposite );
 			this.isCommit = isCommit;
 		}
+
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			if( this.isCommit == false || this.getDialogCoreComposite().isClearedForCommit() ) {
+			if( ( this.isCommit == false ) || this.getDialogCoreComposite().isClearedForCommit() ) {
 				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 				DialogCoreComposite coreComposite = this.getDialogCoreComposite();
 				assert coreComposite != null : this;
@@ -168,21 +187,24 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this );
 			}
 		}
-		
+
 	}
-	
+
 	private static final class InternalCommitOperation extends InternalFinishOperation {
 		private InternalCommitOperation( DialogCoreComposite coreComposite ) {
 			super( java.util.UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite, true );
 		}
+
 		@Override
 		protected InternalCommitOperationResolver createResolver() {
 			return new InternalCommitOperationResolver( this.getDialogCoreComposite() );
 		}
+
 		@Override
 		protected String getSubKeyForLocalization() {
 			return "commit";
 		}
+
 		@Override
 		protected String findDefaultLocalizedText() {
 			String rv = super.findDefaultLocalizedText();
@@ -203,18 +225,22 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			return rv;
 		}
 	}
+
 	private static final class InternalCancelOperation extends InternalFinishOperation {
 		private InternalCancelOperation( DialogCoreComposite coreComposite ) {
 			super( java.util.UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
 		}
+
 		@Override
 		protected InternalCancelOperationResolver createResolver() {
 			return new InternalCancelOperationResolver( this.getDialogCoreComposite() );
 		}
+
 		@Override
 		protected String getSubKeyForLocalization() {
 			return "cancel";
 		}
+
 		@Override
 		protected String findDefaultLocalizedText() {
 			String rv = super.findDefaultLocalizedText();
@@ -232,24 +258,32 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			return rv;
 		}
 	}
+
 	private final InternalCommitOperation commitOperation = new InternalCommitOperation( this );
 	private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
 
 	public DialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
+
 	protected abstract CC getDialogContentComposite();
+
 	public final Operation getCommitOperation() {
 		return this.commitOperation;
 	}
+
 	public final Operation getCancelOperation() {
 		return this.cancelOperation;
 	}
+
 	protected abstract String getDefaultCommitText();
+
 	protected abstract String getCommitUiKey();
+
 	protected String getCancelUiKey() {
 		return "OptionPane.cancelButtonText";
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
@@ -283,21 +317,22 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 		}
 		this.getCancelOperation().setName( cancelText );
 	}
-	
 
 	@Override
-	protected org.lgna.croquet.components.View<?,?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.lgna.croquet.components.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
 		return this.getDialogContentComposite().getView();
 	}
+
 	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?,?> view ) {
+	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.View<?, ?> view ) {
 		//todo
 	}
 
 	protected boolean isClearedForCommit() {
 		return true;
 	}
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePreActivation();
@@ -309,6 +344,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 			}
 		}
 	}
+
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePostDeactivation();

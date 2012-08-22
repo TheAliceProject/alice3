@@ -50,14 +50,17 @@ public class PrimitiveDoubleStaticGetInstanceKeyedResolver<T> extends org.lgna.c
 	public PrimitiveDoubleStaticGetInstanceKeyedResolver( T instance, double value ) {
 		super( instance, new Class[] { Double.TYPE }, new Object[] { value } );
 	}
+
 	public PrimitiveDoubleStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		double value = binaryDecoder.decodeDouble();
 		return new Object[] { value };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		double value = (Double)arguments[ 0 ];

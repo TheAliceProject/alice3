@@ -51,8 +51,9 @@ import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
  */
 public abstract class IssueReportPane extends javax.swing.JPanel implements ReportGenerator {
 	protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
-	public Iterable< String > getSystemPropertiesForEnvironmentField() {
-		java.util.List< String > rv = new java.util.LinkedList< String >();
+
+	public Iterable<String> getSystemPropertiesForEnvironmentField() {
+		java.util.List<String> rv = new java.util.LinkedList<String>();
 		rv.add( "java.version" );
 		rv.add( "os.name" );
 		rv.add( "os.arch" );
@@ -65,6 +66,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		public SubmitAction() {
 			super( "submit bug report" );
 		}
+
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			if( IssueReportPane.this.isClearedToSubmit() ) {
 				IssueReportPane.this.isSubmitAttempted = true;
@@ -81,6 +83,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	private javax.swing.JButton submitButton = new javax.swing.JButton( new SubmitAction() );
 
 	protected abstract int getPreferredDescriptionHeight();
+
 	protected abstract int getPreferredStepsHeight();
 
 	private static final String SUMMARY_SUGGESTIVE_TEXT = "please fill in a one line synopsis";
@@ -88,6 +91,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	private static final String STEPS_SUGGESTIVE_TEXT = "please fill in the steps required to reproduce the bug";
 
 	protected abstract boolean isSummaryRequired();
+
 	private String getSummarySuggestiveText() {
 		String rv = SUMMARY_SUGGESTIVE_TEXT;
 		if( this.isSummaryRequired() ) {
@@ -99,6 +103,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	protected static javax.swing.JLabel createLabelForSingleLine( String text ) {
 		return new javax.swing.JLabel( text, javax.swing.SwingConstants.TRAILING );
 	}
+
 	protected static javax.swing.JLabel createLabelForMultiLine( String text ) {
 		javax.swing.JLabel rv = createLabelForSingleLine( text );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
@@ -137,7 +142,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		this.labelSummary.setToolTipText( textSummary.getTextForBlankCondition() );
 		this.labelDescription.setToolTipText( textDescription.getTextForBlankCondition() );
 		this.labelSteps.setToolTipText( textSteps.getTextForBlankCondition() );
-		
+
 		this.scrollDescription.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.scrollSteps.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
@@ -151,20 +156,27 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		southPane.add( this.getSubmitButton() );
 		this.add( southPane, java.awt.BorderLayout.SOUTH );
 	}
-	
+
 	protected abstract String getJIRAProjectKey();
+
 	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getJIRAType();
+
 	protected String getSummaryText() {
 		return this.textSummary.getText();
 	}
+
 	protected String getDescriptionText() {
 		return this.textDescription.getText();
 	}
+
 	protected abstract String getEnvironmentText();
+
 	protected String getStepsText() {
 		return this.textSteps.getText();
 	}
+
 	protected abstract Throwable getThrowable();
+
 	protected abstract String[] getAffectsVersions();
 
 	private String getExceptionText() {
@@ -179,6 +191,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	protected String getSMTPSubject() {
 		return this.getSummaryText();
 	}
+
 	protected String getSMTPBody() {
 		StringBuffer sb = new StringBuffer();
 		sb.append( "affects versions: " );
@@ -198,11 +211,13 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		sb.append( "\n" );
 		return sb.toString();
 	}
+
 	protected abstract String getSMTPReplyTo();
+
 	protected abstract String getSMTPReplyToPersonal();
-	
+
 	protected abstract boolean isInclusionOfCompleteSystemPropertiesDesired();
-	
+
 	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
 		Throwable throwable = this.getThrowable();
 		if( throwable != null ) {
@@ -213,6 +228,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		}
 		return rv;
 	}
+
 	private edu.cmu.cs.dennisc.jira.JIRAReport generateIssue() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport();
 		rv.setProjectKey( this.getJIRAProjectKey() );
@@ -230,11 +246,13 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
 		this.addAttachments( rv );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.mail.MailReport generateIssueForSMTP() {
 		edu.cmu.cs.dennisc.mail.MailReport rv = new edu.cmu.cs.dennisc.mail.MailReport();
 		rv.setSubject( this.getSMTPSubject() );
@@ -253,28 +271,28 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	//		this.window = window;
 	//	}
 
-//	protected String getSummary() {
-//		return this.textSummary.getText();
-//	}
-//	protected String getDescription() {
-//		return this.textDescription.getText();
-//	}
-//	protected String getStepsToReproduce() {
-//		return this.vcSteps.getText();
-//	}
+	//	protected String getSummary() {
+	//		return this.textSummary.getText();
+	//	}
+	//	protected String getDescription() {
+	//		return this.textDescription.getText();
+	//	}
+	//	protected String getStepsToReproduce() {
+	//		return this.vcSteps.getText();
+	//	}
 
 	public javax.swing.JButton getSubmitButton() {
 		return this.submitButton;
 	}
 
-//	protected abstract int getPreferredWidth();
-//
-//	@Override
-//	public final java.awt.Dimension getPreferredSize() {
-//		java.awt.Dimension rv = super.getPreferredSize();
-//		rv.width = this.getPreferredWidth();
-//		return rv;
-//	}
+	//	protected abstract int getPreferredWidth();
+	//
+	//	@Override
+	//	public final java.awt.Dimension getPreferredSize() {
+	//		java.awt.Dimension rv = super.getPreferredSize();
+	//		rv.width = this.getPreferredWidth();
+	//		return rv;
+	//	}
 
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
@@ -284,15 +302,19 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	public boolean isSubmitAttempted() {
 		return this.isSubmitAttempted;
 	}
+
 	public boolean isSubmitBackgrounded() {
 		return this.isSubmitBackgrounded;
 	}
+
 	public boolean isSubmitSuccessful() {
 		return this.isSubmitSuccessful;
 	}
+
 	public java.net.URL getURLResult() {
 		return this.urlResult;
 	}
+
 	protected abstract boolean isClearedToSubmit();
 
 	protected boolean submit() {
@@ -321,7 +343,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		}
 
 		this.urlResult = progressPane.getURLResult();
-		
+
 		return progressPane.isSuccessful();
 	}
 }

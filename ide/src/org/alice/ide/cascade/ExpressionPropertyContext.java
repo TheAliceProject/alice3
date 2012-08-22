@@ -47,12 +47,15 @@ package org.alice.ide.cascade;
  */
 public class ExpressionPropertyContext implements ExpressionCascadeContext {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+
 	public ExpressionPropertyContext( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		this.expressionProperty = expressionProperty;
 	}
+
 	public org.lgna.project.ast.Expression getPreviousExpression() {
 		return this.expressionProperty.getValue();
 	}
+
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
 		if( owner instanceof org.lgna.project.ast.Node ) {

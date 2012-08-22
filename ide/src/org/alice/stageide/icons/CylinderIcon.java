@@ -49,14 +49,15 @@ public class CylinderIcon extends ShapeIcon {
 	public CylinderIcon( java.awt.Dimension size ) {
 		super( size );
 	}
+
 	@Override
 	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		float capHeight = height * 0.2f;
-		float x = 0.1f*width;
-		float w = 0.8f*width;
-		java.awt.geom.Ellipse2D topCap = new java.awt.geom.Ellipse2D.Float( x, 0, w, capHeight);
-		java.awt.geom.Ellipse2D bottomCap = new java.awt.geom.Ellipse2D.Float( x, height-capHeight, w, capHeight);
-		java.awt.geom.Rectangle2D core = new java.awt.geom.Rectangle2D.Float( x, capHeight*0.5f, w, height-capHeight );
+		float x = 0.1f * width;
+		float w = 0.8f * width;
+		java.awt.geom.Ellipse2D topCap = new java.awt.geom.Ellipse2D.Float( x, 0, w, capHeight );
+		java.awt.geom.Ellipse2D bottomCap = new java.awt.geom.Ellipse2D.Float( x, height - capHeight, w, capHeight );
+		java.awt.geom.Rectangle2D core = new java.awt.geom.Rectangle2D.Float( x, capHeight * 0.5f, w, height - capHeight );
 		java.awt.geom.Area area = new java.awt.geom.Area( core );
 		area.add( new java.awt.geom.Area( bottomCap ) );
 
@@ -64,7 +65,7 @@ public class CylinderIcon extends ShapeIcon {
 		g2.fill( area );
 		g2.setPaint( drawPaint );
 		g2.draw( area );
-		
+
 		g2.setPaint( fillPaint );
 		g2.fill( topCap );
 		g2.setPaint( drawPaint );

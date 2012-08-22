@@ -46,28 +46,33 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyOfNodeCodec< T extends edu.cmu.cs.dennisc.property.InstanceProperty< ? > > implements org.lgna.croquet.ItemCodec< T > {
-	private static java.util.Map< Class<?>, PropertyOfNodeCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends edu.cmu.cs.dennisc.property.InstanceProperty<?> > PropertyOfNodeCodec< T > getInstance( Class< T > cls ) {
-		PropertyOfNodeCodec< ? > rv = map.get( cls );
+public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceProperty<?>> implements org.lgna.croquet.ItemCodec<T> {
+	private static java.util.Map<Class<?>, PropertyOfNodeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized <T extends edu.cmu.cs.dennisc.property.InstanceProperty<?>> PropertyOfNodeCodec<T> getInstance( Class<T> cls ) {
+		PropertyOfNodeCodec<?> rv = map.get( cls );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new PropertyOfNodeCodec< T >( cls );
+			rv = new PropertyOfNodeCodec<T>( cls );
 		}
-		return (PropertyOfNodeCodec< T >)rv;
+		return (PropertyOfNodeCodec<T>)rv;
 	}
+
 	private Class<T> valueCls;
+
 	private PropertyOfNodeCodec( Class<T> valueCls ) {
 		this.valueCls = valueCls;
 	}
-	public Class< T > getValueClass() {
+
+	public Class<T> getValueClass() {
 		return this.valueCls;
 	}
+
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
-			org.alice.ide.croquet.codecs.NodeCodec< org.lgna.project.ast.Node > nodeCodec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Node.class );
+			org.alice.ide.croquet.codecs.NodeCodec<org.lgna.project.ast.Node> nodeCodec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Node.class );
 			org.lgna.project.ast.Node node = nodeCodec.decodeValue( binaryDecoder );
 			String name = binaryDecoder.decodeString();
 			if( node != null ) {
@@ -79,18 +84,20 @@ public class PropertyOfNodeCodec< T extends edu.cmu.cs.dennisc.property.Instance
 			return null;
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
-			org.alice.ide.croquet.codecs.NodeCodec< org.lgna.project.ast.Node > nodeCodec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Node.class );
+			org.alice.ide.croquet.codecs.NodeCodec<org.lgna.project.ast.Node> nodeCodec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Node.class );
 			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)value.getOwner();
 			nodeCodec.encodeValue( binaryEncoder, node );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate value.getName() or node.getName()" );
 			binaryEncoder.encode( node != null ? value.getName() : null );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
+
+	public StringBuilder appendRepresentation( StringBuilder rv, T value ) {
 		//todo
 		return rv;
 	}

@@ -46,19 +46,21 @@ package edu.cmu.cs.dennisc.math.polynomial;
 /**
  * @author Dennis Cosgrove
  */
-public class BezierQuadratic extends BasisMatrixQuadratic  {
-	private static final edu.cmu.cs.dennisc.math.Matrix3x3 s_h = new edu.cmu.cs.dennisc.math.Matrix3x3( 1,-2,1,  -2,2,0,  1,0,0 );
+public class BezierQuadratic extends BasisMatrixQuadratic {
+	private static final edu.cmu.cs.dennisc.math.Matrix3x3 s_h = new edu.cmu.cs.dennisc.math.Matrix3x3( 1, -2, 1, -2, 2, 0, 1, 0, 0 );
+
 	public BezierQuadratic( edu.cmu.cs.dennisc.math.Vector3 g ) {
 		super( s_h, g );
 	}
+
 	public BezierQuadratic( double g0, double g1, double g2 ) {
 		this( new edu.cmu.cs.dennisc.math.Vector3( g0, g1, g2 ) );
 	}
-    //todo: optimize?
-    //public double evaluate( double t ) {
-    //    double b = m_g.z - 2*m_g.y + m_g.x;
-    //    double c = 2*m_g.y - 2*m_g.x;
-    //    double d = m_g.x;
-    //    return b*t*t + c*t + d;
+	//todo: optimize?
+	//public double evaluate( double t ) {
+	//    double b = m_g.z - 2*m_g.y + m_g.x;
+	//    double c = 2*m_g.y - 2*m_g.x;
+	//    double d = m_g.x;
+	//    return b*t*t + c*t + d;
 	//}
 }

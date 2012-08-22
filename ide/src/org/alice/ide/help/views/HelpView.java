@@ -51,7 +51,7 @@ public class HelpView extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
 		org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( HelpView.class.getResource( "images/help.png" ) ) );
 		org.lgna.croquet.components.ImmutableTextField textLabel = composite.getWhereToFindHelpText().createImmutableTextField();
-		
+
 		textLabel.scaleFont( 2.0f );
 		textLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		hyperlink.scaleFont( 2.0f );
@@ -62,10 +62,10 @@ public class HelpView extends org.lgna.croquet.components.BorderPanel {
 				textLabel,
 				hyperlink,
 				org.lgna.croquet.components.BoxUtilities.createVerticalGlue()
-		);
+				);
 		pageAxisPanel.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		this.addLineStartComponent( iconLabel );
 		this.addLineEndComponent( pageAxisPanel );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 }

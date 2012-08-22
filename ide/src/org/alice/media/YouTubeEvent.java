@@ -46,41 +46,42 @@ package org.alice.media;
  * @author David Culyba
  */
 public class YouTubeEvent {
-	
+
 	public enum EventType
 	{
-		UPLOAD_SUCCESS("Upload Succeeded"),
-		UPLOAD_FAILED("Upload Failed"),
-		UPLOAD_STARTED("Upload Started"),
-		UPLOAD_CANCELLED_SUCCESS("Upload Successfully Cancelled"),
-		UPLOAD_CANCELLED_FAILED("Failed to Cancel Upload"),
-		LOGIN_STARTED("Login Started"),
-		LOGIN_FAILED("Login Failed"),
-		LOGIN_SUCCESS("Login Succeeded"),
-		LINK_RETRIEVED("Link Retrieved");
-		
+		UPLOAD_SUCCESS( "Upload Succeeded" ),
+		UPLOAD_FAILED( "Upload Failed" ),
+		UPLOAD_STARTED( "Upload Started" ),
+		UPLOAD_CANCELLED_SUCCESS( "Upload Successfully Cancelled" ),
+		UPLOAD_CANCELLED_FAILED( "Failed to Cancel Upload" ),
+		LOGIN_STARTED( "Login Started" ),
+		LOGIN_FAILED( "Login Failed" ),
+		LOGIN_SUCCESS( "Login Succeeded" ),
+		LINK_RETRIEVED( "Link Retrieved" );
+
 		private String description;
-		private EventType(String description)
+
+		private EventType( String description )
 		{
 			this.description = description;
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return this.description;
 		}
 	}
-	
+
 	private EventType type;
 	private Object moreInfo;
-	
-	public YouTubeEvent(EventType type)
+
+	public YouTubeEvent( EventType type )
 	{
-		this(type, null);
+		this( type, null );
 	}
-	
-	public YouTubeEvent(EventType type, Object moreInfo)
+
+	public YouTubeEvent( EventType type, Object moreInfo )
 	{
 		this.type = type;
 		this.moreInfo = moreInfo;
@@ -90,15 +91,15 @@ public class YouTubeEvent {
 	{
 		return this.type;
 	}
-	
+
 	public Object getMoreInfo()
 	{
 		return this.moreInfo;
 	}
-	
+
 	public boolean hasMoreInfo()
 	{
 		return this.moreInfo != null;
 	}
-	
+
 }

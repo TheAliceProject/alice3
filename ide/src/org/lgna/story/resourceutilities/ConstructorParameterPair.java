@@ -47,23 +47,23 @@ import org.lgna.project.ast.AbstractParameter;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ConstructorParameterPair {
 	private org.lgna.project.ast.AbstractConstructor constructor;
 	private org.lgna.project.ast.AbstractParameter parameter;
-	
-	public ConstructorParameterPair(AbstractConstructor constructor, AbstractParameter parameter)
+
+	public ConstructorParameterPair( AbstractConstructor constructor, AbstractParameter parameter )
 	{
 		this.constructor = constructor;
 		this.parameter = parameter;
 	}
-	
+
 	public AbstractParameter getParameter()
 	{
 		return this.parameter;
 	}
-	
+
 	public AbstractConstructor getConstructor()
 	{
 		return this.constructor;

@@ -46,19 +46,19 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class DoublePropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Double, O> 
+public class DoublePropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Double, O>
 {
-	
-	public DoublePropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<Double> property, StandardExpressionState expressionState )
+
+	public DoublePropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<Double> property, StandardExpressionState expressionState )
 	{
-		super(repr, instance, property, expressionState);
+		super( repr, instance, property, expressionState );
 	}
-	
+
 	@Override
-	public Double getValueCopyIfMutable() 
+	public Double getValueCopyIfMutable()
 	{
-		return new Double(this.getValue());
+		return new Double( this.getValue() );
 	}
 }

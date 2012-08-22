@@ -46,40 +46,48 @@ package org.alice.ide.croquet.edits.ast.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade > {
+public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade> {
 	private org.lgna.project.ast.JavaKeyedArgument keyedArgument;
+
 	public AddKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
 		super( completionStep );
 		this.keyedArgument = keyedArgument;
 	}
+
 	public AddKeyedArgumentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.keyedArgument = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).decodeValue( binaryDecoder );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.JavaKeyedArgument.class ).encodeValue( binaryEncoder, this.keyedArgument );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.getModel().getArgumentListProperty().add( this.keyedArgument );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		int index = this.getModel().getArgumentListProperty().indexOf( this.keyedArgument );
 		this.getModel().getArgumentListProperty().remove( index );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "add detail " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.keyedArgument, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
+
 	@Override
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		return this.updatePresentation( rv );
 	}
+
 	@Override
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
 		super.addKeyValuePairs( retargeter, edit );
@@ -87,17 +95,18 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice
 		org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.keyedArgument, replacementEdit.keyedArgument );
 	}
+
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.keyedArgument = retargeter.retarget( this.keyedArgument );
 	}
-//	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
-//		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;
-//		KeyedMoreCascade replacement = replacementEdit.getModel();
-//		retargeter.addKeyValuePair( this.argumentOwner, replacement.argumentOwner );
-//	}
-//	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-//		this.argumentOwner = retargeter.retarget( this.argumentOwner );
-//	}
+	//	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
+	//		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;
+	//		KeyedMoreCascade replacement = replacementEdit.getModel();
+	//		retargeter.addKeyValuePair( this.argumentOwner, replacement.argumentOwner );
+	//	}
+	//	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+	//		this.argumentOwner = retargeter.retarget( this.argumentOwner );
+	//	}
 }

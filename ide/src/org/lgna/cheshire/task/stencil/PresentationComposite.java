@@ -52,40 +52,46 @@ public final class PresentationComposite extends org.lgna.croquet.SimpleComposit
 			return null;
 		}
 	}
+
 	private static final class NextAction implements Action {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			return null;
 		}
 	}
+
 	private final org.lgna.croquet.Operation previousOperation = this.createActionOperation( this.createKey( "previous" ), new PreviousAction() );
 	private final org.lgna.croquet.Operation nextOperation = this.createActionOperation( this.createKey( "next" ), new NextAction() );
-	
+
 	private final org.lgna.croquet.components.AbstractWindow<?> window;
 	private final org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel;
+
 	public PresentationComposite( org.lgna.croquet.components.AbstractWindow<?> window, org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel ) {
 		super( java.util.UUID.fromString( "a6693107-d6fc-447e-9a45-465154d8c9fe" ) );
 		this.window = window;
 		this.taskComboBoxModel = taskComboBoxModel;
 	}
-	
+
 	public org.lgna.croquet.components.AbstractWindow<?> getWindow() {
 		return this.window;
 	}
+
 	public org.lgna.cheshire.task.TaskComboBoxModel getTaskComboBoxModel() {
 		return this.taskComboBoxModel;
 	}
+
 	public org.lgna.croquet.Operation getPreviousOperation() {
 		return this.previousOperation;
 	}
+
 	public org.lgna.croquet.Operation getNextOperation() {
 		return this.nextOperation;
 	}
+
 	@Override
 	protected org.lgna.cheshire.task.stencil.views.PresentationView createView() {
 		return new org.lgna.cheshire.task.stencil.views.PresentationView( this );
 	}
-	
-	
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -94,7 +100,7 @@ public final class PresentationComposite extends org.lgna.croquet.SimpleComposit
 
 		final org.alice.stageide.StageIDE app = new org.alice.stageide.StageIDE();
 		app.initialize( args );
-		
+
 		app.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p" ) );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -103,8 +109,8 @@ public final class PresentationComposite extends org.lgna.croquet.SimpleComposit
 				frame.setSize( 1280, 800 );
 				org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel = new org.lgna.cheshire.task.TaskComboBoxModel();
 				PresentationComposite composite = new PresentationComposite( frame, taskComboBoxModel );
-				frame.getLayer( javax.swing.JLayeredPane.POPUP_LAYER-1 ).setComponent( composite.getView() );
-				
+				frame.getLayer( javax.swing.JLayeredPane.POPUP_LAYER - 1 ).setComponent( composite.getView() );
+
 				//frame.setMainComposite( composite );
 				frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 				frame.setVisible( true );

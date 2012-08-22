@@ -47,13 +47,14 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCamera extends Leaf {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< Background > background = new edu.cmu.cs.dennisc.property.InstanceProperty< Background >( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Background> background = new edu.cmu.cs.dennisc.property.InstanceProperty<Background>( this, null );
 	//public final edu.cmu.cs.dennisc.property.ListProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< Layer >( this );
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< Layer >( this, new Layer[ 0 ] ) {
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<Layer> postRenderLayers = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<Layer>( this, new Layer[ 0 ] ) {
 		@Override
 		protected Layer[] createArray( int length ) {
 			return new Layer[ length ];
 		}
+
 		@Override
 		protected Layer createCopy( Layer src ) {
 			//todo?
@@ -64,18 +65,23 @@ public abstract class AbstractCamera extends Leaf {
 	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
 		return transformToAWT( rv, xyzw, lookingGlass, this );
 	}
+
 	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
 		return transformFromAWT( rv, p, z, lookingGlass, this );
 	}
+
 	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
 		return transformToAWT_New( xyzw, lookingGlass, this );
 	}
+
 	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
 		return transformToAWT_New( xyz, lookingGlass, this );
 	}
+
 	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
 		return transformFromAWT_NewVectorD4( p, z, lookingGlass, this );
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
 		return transformFromAWT_NewPointD3( p, z, lookingGlass, this );
 	}

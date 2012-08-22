@@ -45,16 +45,18 @@ package org.alice.ide.croquet.models.ui.locale;
 /**
  * @author Dennis Cosgrove
  */
-public class LocaleSelectionState extends org.lgna.croquet.preferences.PreferenceListSelectionState< java.util.Locale > {
+public class LocaleSelectionState extends org.lgna.croquet.preferences.PreferenceListSelectionState<java.util.Locale> {
 	private static class SingletonHolder {
 		private static LocaleSelectionState instance = new LocaleSelectionState();
 	}
+
 	public static LocaleSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private LocaleSelectionState() {
-		super( 
-				org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ), 
+		super(
+				org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ),
 				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
 				0,
 				new java.util.Locale( "en", "US" ),
@@ -79,23 +81,24 @@ public class LocaleSelectionState extends org.lgna.croquet.preferences.Preferenc
 				new java.util.Locale( "in" ),
 				//new java.util.Locale( "zh", "CN" ),
 				new java.util.Locale( "zh", "TW" ),
-				new java.util.Locale( "ko" )
-		);
+				new java.util.Locale( "ko" ) );
 		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
-		this.addValueListener( new ValueListener< java.util.Locale >() {
-			public void changing( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
+		this.addValueListener( new ValueListener<java.util.Locale>() {
+			public void changing( org.lgna.croquet.State<java.util.Locale> state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< java.util.Locale > state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
+
+			public void changed( org.lgna.croquet.State<java.util.Locale> state, java.util.Locale prevValue, java.util.Locale nextValue, boolean isAdjusting ) {
 				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
 			}
 		} );
 	}
+
 	@Override
-	protected String getMenuText(java.util.Locale item) {
+	protected String getMenuText( java.util.Locale item ) {
 		if( item != null ) {
 			return item.getDisplayName( item ) + " / " + item.getDisplayName();
 		} else {
-			return super.getMenuText(item);
+			return super.getMenuText( item );
 		}
 	}
 }

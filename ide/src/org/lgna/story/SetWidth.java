@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class SetWidth extends DurationAnimationStyleSetDimensionPolicyArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetWidth.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetWidth.class )
 	public static interface Detail {
 	}
+
 	private SetWidth() {
 		super();
 	}

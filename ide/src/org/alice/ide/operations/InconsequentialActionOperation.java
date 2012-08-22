@@ -48,14 +48,17 @@ package org.alice.ide.operations;
  */
 public abstract class InconsequentialActionOperation extends org.lgna.croquet.ActionOperation {
 	private static final org.lgna.croquet.Group INCONSEQUENTIAL_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "a3a6ebb5-e942-48df-b091-9aa461d68240" ), "INCONSEQUENTIAL_GROUP" );
+
 	public InconsequentialActionOperation( java.util.UUID id ) {
 		super( INCONSEQUENTIAL_GROUP, id );
 	}
+
 	protected abstract void performInternal( org.lgna.croquet.history.CompletionStep<?> step );
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		this.performInternal(step);
+		this.performInternal( step );
 		step.finish();
 	}
 }

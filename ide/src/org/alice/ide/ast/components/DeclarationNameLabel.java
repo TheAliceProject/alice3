@@ -51,6 +51,7 @@ public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
+
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			DeclarationNameLabel.this.updateText();
 		}
@@ -63,10 +64,12 @@ public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
 		this.updateText();
 		this.setForegroundColor( java.awt.Color.BLACK );
 	}
+
 	public DeclarationNameLabel( org.lgna.project.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
 		this( declaration );
 		this.scaleFont( fontScaleFactor );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -77,7 +80,7 @@ public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void handleUndisplayable() {
 		if( this.declaration != null ) {
@@ -88,21 +91,24 @@ public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
 		}
 		super.handleUndisplayable();
 	}
+
 	protected org.lgna.project.ast.AbstractDeclaration getDeclaration() {
 		return this.declaration;
 	}
-	
+
 	protected String getNameText() {
 		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
 		return formatter.getNameForDeclaration( this.declaration );
 	}
-	
+
 	protected String getTextForNullName() {
 		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull();
 	}
+
 	protected final String getTextForBlankName() {
 		return "<unset>";
 	}
+
 	private void updateText() {
 		String text;
 		if( this.declaration != null ) {

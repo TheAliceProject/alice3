@@ -50,58 +50,57 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
 
-
 public abstract class BasicPropertyController<P> extends AbstractAdapterController<P>
 {
-    protected static final String BLANK_STRING = "NO VALUE";
-    
-    protected Component<?> propertyComponent;
-    
-    public BasicPropertyController(AbstractPropertyAdapter<P, ?> propertyAdapter)
-    {
-        super(propertyAdapter);
-    }
-    
-    protected abstract Component<?> createPropertyComponent();
-    
-    @Override
-    protected void initializeComponents() 
-    {
-        super.initializeComponents();
-        this.propertyComponent = createPropertyComponent();
-        this.setMinimumPreferredHeight(PropertyAdapterController.MIN_ADAPTER_HEIGHT);
-    }
-    
-    @Override
-    protected void updateUIFromNewAdapter() 
-    {
-        this.removeAllComponents();
-        int xIndex = 0;
-        this.addComponent(this.propertyComponent, new GridBagConstraints(
-                xIndex++, // gridX
-                0, // gridY
-                1, // gridWidth
-                1, // gridHeight
-                0.0, // weightX
-                0.0, // weightY
-                GridBagConstraints.WEST, // anchor
-                GridBagConstraints.HORIZONTAL, // fill
-                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
-                0, // ipadX
-                0) // ipadY
-                );
-        this.addComponent(BoxUtilities.createHorizontalGlue(), new GridBagConstraints( 
-                xIndex++, //gridX
-                0, //gridY
-                1, //gridWidth
-                1, //gridHeight
-                1.0, //weightX
-                0.0, //weightY
-                GridBagConstraints.WEST, //anchor 
-                GridBagConstraints.HORIZONTAL, //fill
-                new Insets(0,0,0,0), //insets
-                0, //ipadX
-                0 ) //ipadY
-        );
-    }
+	protected static final String BLANK_STRING = "NO VALUE";
+
+	protected Component<?> propertyComponent;
+
+	public BasicPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
+	{
+		super( propertyAdapter );
+	}
+
+	protected abstract Component<?> createPropertyComponent();
+
+	@Override
+	protected void initializeComponents()
+	{
+		super.initializeComponents();
+		this.propertyComponent = createPropertyComponent();
+		this.setMinimumPreferredHeight( PropertyAdapterController.MIN_ADAPTER_HEIGHT );
+	}
+
+	@Override
+	protected void updateUIFromNewAdapter()
+	{
+		this.removeAllComponents();
+		int xIndex = 0;
+		this.addComponent( this.propertyComponent, new GridBagConstraints(
+				xIndex++, // gridX
+				0, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				0.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.WEST, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
+				0, // ipadX
+				0 ) // ipadY
+		);
+		this.addComponent( BoxUtilities.createHorizontalGlue(), new GridBagConstraints(
+				xIndex++, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.HORIZONTAL, //fill
+				new Insets( 0, 0, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+	}
 }

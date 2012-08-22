@@ -52,6 +52,7 @@ public class CryptographyUtilities {
 	private CryptographyUtilities() {
 		throw new AssertionError();
 	}
+
 	public static byte[] encrypt( byte[] clear, char[] password ) {
 		try {
 			javax.crypto.spec.PBEParameterSpec pbeParamSpec = new javax.crypto.spec.PBEParameterSpec( SALT, ITERATION_COUNT );

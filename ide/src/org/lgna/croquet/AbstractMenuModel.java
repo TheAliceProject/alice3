@@ -50,111 +50,131 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	public static final StandardMenuItemPrepModel SEPARATOR = null;
 	private Class<? extends org.lgna.croquet.Model> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
+
 	public AbstractMenuModel( java.util.UUID individualId, Class<? extends org.lgna.croquet.Model> clsForI18N ) {
 		super( individualId );
 		this.clsForI18N = clsForI18N;
 	}
+
 	@Override
-	protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
 		if( this.clsForI18N != null ) {
 			return this.clsForI18N;
 		} else {
 			return this.getClass();
 		}
 	}
+
 	@Override
 	protected void localize() {
 		this.setName( this.findDefaultLocalizedText() );
 		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, this.getLocalizedMnemonicKey() );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
 	}
+
 	@Override
-	public Iterable< ? extends MenuItemPrepModel > getChildren() {
+	public Iterable<? extends MenuItemPrepModel> getChildren() {
 		return null;
 	}
 
 	public javax.swing.Action getAction() {
 		return this.action;
 	}
+
 	private String getName() {
 		return (String)this.action.getValue( javax.swing.Action.NAME );
 	}
+
 	public void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
 	}
+
 	private javax.swing.Icon getSmallIcon() {
 		return (javax.swing.Icon)this.action.getValue( javax.swing.Action.SMALL_ICON );
 	}
+
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
+
 	@Override
 	public boolean isEnabled() {
 		return this.action.isEnabled();
 	}
+
 	@Override
 	public void setEnabled( boolean isEnabled ) {
 		this.action.setEnabled( isEnabled );
 	}
-	
+
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
 	}
+
 	public void handlePopupMenuEpilogue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
 	}
-	
+
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 	}
+
 	protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 	}
+
 	protected void handleCanceled( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 	}
-	
+
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {
 		private org.lgna.croquet.components.MenuItemContainer menuItemContainer;
+
 		public PopupMenuListener( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
 			this.menuItemContainer = menuItemContainer;
 		}
+
 		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleShowing( this.menuItemContainer, e );
 		}
+
 		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleHiding( this.menuItemContainer, e );
 		}
+
 		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleCanceled( this.menuItemContainer, e );
 		}
 	}
 
 	private PopupMenuListener popupMenuListener;
+
 	public final void addPopupMenuListener( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
 		assert this.popupMenuListener == null;
 		this.popupMenuListener = new PopupMenuListener( menuItemContainer );
 		menuItemContainer.addPopupMenuListener( this.popupMenuListener );
 	}
+
 	public final void removePopupMenuListener( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
 		assert this.popupMenuListener != null;
 		menuItemContainer.removePopupMenuListener( this.popupMenuListener );
 		this.popupMenuListener = null;
 	}
-	
-	
+
 	public org.lgna.croquet.components.Menu createMenu() {
 		return new org.lgna.croquet.components.Menu( this );
 	};
-	
+
 	@Override
 	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 		rv.addMenu( this.createMenu() );
 		return rv;
 	}
+
 	protected String getTutorialNoteName() {
 		return this.getName();
 	}
+
 	@Override
-	protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		rv.append( " <strong>" + this.getTutorialNoteName() + "</strong>" );
 		return rv;
 	}

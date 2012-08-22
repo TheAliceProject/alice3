@@ -48,22 +48,24 @@ package org.lgna.project.ast;
  */
 public class ThisExpression extends Expression {
 	@Override
-	public AbstractType<?,?,?> getType() {
-		AbstractType<?,?,?> rv = this.getFirstAncestorAssignableTo( AbstractType.class );
+	public AbstractType<?, ?, ?> getType() {
+		AbstractType<?, ?, ?> rv = this.getFirstAncestorAssignableTo( AbstractType.class );
 		if( rv != null ) {
 			//pass
 		} else {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		}
 		return rv;
-//		//todo
-//		return TypeDeclaredInJava.OBJECT_TYPE;
+		//		//todo
+		//		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "this" );
 		return rv;
 	}
+
 	@Override
 	public boolean isValid() {
 		//todo

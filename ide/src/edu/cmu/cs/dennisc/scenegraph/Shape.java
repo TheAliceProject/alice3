@@ -51,6 +51,7 @@ public abstract class Shape extends Geometry {
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
 		throw new RuntimeException( "TODO" );
 	}
+
 	@Override
 	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		throw new RuntimeException( "TODO" );

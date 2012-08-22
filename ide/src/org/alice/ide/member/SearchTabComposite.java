@@ -49,10 +49,11 @@ public final class SearchTabComposite extends MemberTabComposite {
 	private static class SingletonHolder {
 		private static SearchTabComposite instance = new SearchTabComposite();
 	}
+
 	public static SearchTabComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	
+
 	private final org.lgna.croquet.StringState queryState = this.createStringState( this.createKey( "queryState" ) );
 	private final org.lgna.croquet.Operation clearQueryOperation = this.createActionOperation( this.createKey( "clearQueryOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
@@ -60,19 +61,24 @@ public final class SearchTabComposite extends MemberTabComposite {
 			return null;
 		}
 	} );
+
 	private SearchTabComposite() {
 		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
 	}
+
 	public org.lgna.croquet.StringState getQueryState() {
 		return this.queryState;
 	}
+
 	public org.lgna.croquet.Operation getClearQueryOperation() {
 		return this.clearQueryOperation;
 	}
+
 	@Override
 	protected org.alice.ide.member.views.MemberTabView createView() {
 		return new org.alice.ide.member.views.SearchMemberTabView( this );
 	}
+
 	@Override
 	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
 		return java.util.Collections.emptyList();

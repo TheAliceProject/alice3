@@ -50,64 +50,65 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+
 //import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
 public interface ManipulationHandle extends Cloneable {
-	
-	public void setHandleManager(HandleManager handleManager);
-	
+
+	public void setHandleManager( HandleManager handleManager );
+
 	public HandleManager getHandleManager();
-	
+
 	public HandleSet getHandleSet();
-	
+
 	public boolean isAlwaysVisible();
-	
+
 	public void addToSet( HandleSet handleSet );
-	
+
 	public void addToGroup( HandleSet.HandleGroup group );
-	
-	public void addToGroups( HandleSet.HandleGroup...groups);
-	
+
+	public void addToGroups( HandleSet.HandleGroup... groups );
+
 	public boolean isMemberOf( HandleSet set );
-	
+
 	public boolean isMemberOf( HandleSet.HandleGroup group );
-	
+
 	public AbstractTransformable getManipulatedObject();
 
 	public void setSelectedObject( AbstractTransformable manipulatedObject );
-	
+
 	public void setAnimator( Animator animator );
-	
-	public void setHandleRollover(boolean rollover);
-	
-	public void setHandleVisible(boolean visible);
-	
+
+	public void setHandleRollover( boolean rollover );
+
+	public void setHandleVisible( boolean visible );
+
 	public boolean isHandleVisible();
-	
-	public void setHandleActive(boolean active);
-	
-	public void setVisualsShowing(boolean showing);
-	
+
+	public void setHandleActive( boolean active );
+
+	public void setVisualsShowing( boolean showing );
+
 	public boolean isRenderable();
-	
+
 	public boolean isPickable();
-	
+
 	public HandleState getHandleStateCopy();
-	
+
 	public ManipulationHandle clone();
-	
+
 	public AbstractManipulator getManipulation( InputState input );
-	
+
 	public void setManipulation( AbstractManipulator manipulation );
-	
+
 	public PickHint getPickHint();
-	
-	public void setDragAdapterAndAddHandle(AbstractDragAdapter dragAdapter);
-	
-	public void setDragAdapter(AbstractDragAdapter dragAdapter);
-	
-	public void setCameraPosition(Point3 cameraPosition);
+
+	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter );
+
+	public void setDragAdapter( AbstractDragAdapter dragAdapter );
+
+	public void setCameraPosition( Point3 cameraPosition );
 }

@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitSweats implements MaleAdultFullBodyOutfit {
-	REDRUN ,
- 	BLACKSPRINT ,
- 	HEATHERJOG ,
- 	BLUEWALK ;
+	REDRUN,
+	BLACKSPRINT,
+	HEATHERJOG,
+	BLUEWALK;
 }

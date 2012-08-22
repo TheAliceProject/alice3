@@ -46,6 +46,6 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface ContextFactory< C extends Context > {
+public interface ContextFactory<C extends Context> {
 	public C createContext( org.lgna.croquet.triggers.Trigger.Origin origin );
 }

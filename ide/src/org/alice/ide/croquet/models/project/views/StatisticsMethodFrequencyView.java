@@ -55,8 +55,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import org.alice.ide.croquet.models.project.StatisticsMethodFrequencyTabComposite;
 import org.alice.ide.croquet.models.project.StatisticsFrameComposite;
+import org.alice.ide.croquet.models.project.StatisticsMethodFrequencyTabComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -129,7 +129,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 	public class ControlDisplay implements ValueListener<UserMethod> {
 
 		private GridPanel gridPanel;
-		private Map<Integer,Map<Integer,Component>> componentMap = Collections.newHashMap();
+		private Map<Integer, Map<Integer, Component>> componentMap = Collections.newHashMap();
 		private boolean showFunctions;
 		private boolean showProcedures;
 		private int numRows = 6;
@@ -158,10 +158,10 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		private void initGridPanel() {
 			this.gridPanel = GridPanel.createGridPane( minSize, numCols, 5, 5 );
 			for( int i = 0; i != minSize; ++i ) {
-				componentMap.put( i, new HashMap<Integer,Component>() );
+				componentMap.put( i, new HashMap<Integer, Component>() );
 				for( int j = 0; j != numCols; ++j ) {
 					Label label;
-					if( j == 1 && i != 0 ) {
+					if( ( j == 1 ) && ( i != 0 ) ) {
 						label = new BarLabel();
 					} else {
 						label = new Label();
@@ -171,17 +171,17 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 					componentMap.get( i ).put( j, label );
 				}
 			}
-			((StatisticsMethodFrequencyTabComposite)getComposite()).getShowFunctionsState().addValueListener( booleanListener );
-			((StatisticsMethodFrequencyTabComposite)getComposite()).getShowProceduresState().addValueListener( booleanListener );
+			( (StatisticsMethodFrequencyTabComposite)getComposite() ).getShowFunctionsState().addValueListener( booleanListener );
+			( (StatisticsMethodFrequencyTabComposite)getComposite() ).getShowProceduresState().addValueListener( booleanListener );
 			scroll.setViewportView( gridPanel );
-			CheckBox hideFunctionsBox = ((StatisticsMethodFrequencyTabComposite)getComposite()).getShowFunctionsState().createCheckBox();
-			LineAxisPanel child = new LineAxisPanel( hideFunctionsBox, ((StatisticsMethodFrequencyTabComposite)getComposite()).getShowProceduresState().createCheckBox() );
+			CheckBox hideFunctionsBox = ( (StatisticsMethodFrequencyTabComposite)getComposite() ).getShowFunctionsState().createCheckBox();
+			LineAxisPanel child = new LineAxisPanel( hideFunctionsBox, ( (StatisticsMethodFrequencyTabComposite)getComposite() ).getShowProceduresState().createCheckBox() );
 
 			StatisticsMethodFrequencyView.this.addComponent( child, Constraint.PAGE_START );
 		}
 
 		public void setMaximum() {
-			((StatisticsMethodFrequencyTabComposite)getComposite()).getMaximum();
+			( (StatisticsMethodFrequencyTabComposite)getComposite() ).getMaximum();
 		}
 
 		private class BarLabel extends Label {
@@ -192,13 +192,16 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 				this.setBackgroundColor( null );
 				this.setForegroundColor( Color.BLACK );
 			}
+
 			public int getCount() {
 				return this.count;
 			}
+
 			public void setCount( int count ) {
 				this.count = count;
 				this.setText( "" + this.count );
 			}
+
 			@Override
 			protected JLabel createAwtComponent() {
 				return new JLabel() {
@@ -208,11 +211,12 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 						//g2.setPaint( this.getBackground() );
 						g2.setPaint( new Color( 150, 255, 150 ) );
 
-						int w = (int)(this.getWidth() * (count / (double)maximum)) + 1;
+						int w = (int)( this.getWidth() * ( count / (double)maximum ) ) + 1;
 						g2.fillRect( 0, 0, w, this.getHeight() );
 						g2.setPaint( this.getForeground() );
 						super.paintComponent( g );
 					}
+
 					@Override
 					public Dimension getPreferredSize() {
 						return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
@@ -227,10 +231,10 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 			}
 			this.gridPanel = GridPanel.createGridPane( numRows, numCols, 5, 5 );
 			for( int i = 0; i != numRows; ++i ) {
-				componentMap.put( i, new HashMap<Integer,Component>() );
+				componentMap.put( i, new HashMap<Integer, Component>() );
 				for( int j = 0; j != numCols; ++j ) {
 					Label label;
-					if( j == 1 && i != 0 ) {
+					if( ( j == 1 ) && ( i != 0 ) ) {
 						label = new BarLabel();
 					} else {
 						label = new Label();
@@ -249,7 +253,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		}
 
 		private void update( UserMethod selected ) {
-			setHeight( ((StatisticsMethodFrequencyTabComposite)getComposite()).getSize( selected ) );
+			setHeight( ( (StatisticsMethodFrequencyTabComposite)getComposite() ).getSize( selected ) );
 			populateLeftCol( selected );
 			populateRightCol( selected );
 		}
@@ -260,8 +264,8 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		}
 
 		private void populateRightCol( UserMethod selected ) {
-			((Label)getCell( 0, 0 )).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
-			List<Integer> rightColVals = ((StatisticsMethodFrequencyTabComposite)getComposite()).getRightColVals( selected );
+			( (Label)getCell( 0, 0 ) ).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
+			List<Integer> rightColVals = ( (StatisticsMethodFrequencyTabComposite)getComposite() ).getRightColVals( selected );
 			int index = 1;
 			for( Integer i : rightColVals ) {
 				setCell( 1, index, i );
@@ -271,8 +275,8 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 
 		private void populateLeftCol( UserMethod selected ) {
 			int index = 1;
-			LinkedList<String> leftColVals = ((StatisticsMethodFrequencyTabComposite)getComposite()).getLeftColVals( selected );
-			for( String str : leftColVals ){
+			LinkedList<String> leftColVals = ( (StatisticsMethodFrequencyTabComposite)getComposite() ).getLeftColVals( selected );
+			for( String str : leftColVals ) {
 				setCell( 0, index, str );
 				++index;
 			}
@@ -285,6 +289,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 				label.setCount( count );
 			}
 		}
+
 		private void setCell( int col, int row, String name ) {
 			Component component = getCell( col, row );
 			if( component instanceof Label ) {
@@ -292,12 +297,13 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 				label.setText( name );
 			}
 		}
+
 		private Component getCell( int col, int row ) {
 			return componentMap.get( row ).get( col );
 		}
 
 		public int getCount( AbstractMethod method, AbstractMethod methodTwo ) {
-			return ((StatisticsMethodFrequencyTabComposite)getComposite()).getCount(method, methodTwo);
+			return ( (StatisticsMethodFrequencyTabComposite)getComposite() ).getCount( method, methodTwo );
 		}
 
 		public void changing( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {

@@ -48,20 +48,25 @@ package org.lgna.story.implementation;
  */
 public abstract class JointImp extends AbstractTransformableImp {
 	private org.lgna.story.SJoint abstraction;
-	private final JointedModelImp<?,?> jointedModelImplementation;
+	private final JointedModelImp<?, ?> jointedModelImplementation;
 	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
-	public JointImp( JointedModelImp<?,?> jointedModelImplementation ) {
+
+	public JointImp( JointedModelImp<?, ?> jointedModelImplementation ) {
 		this.jointedModelImplementation = jointedModelImplementation;
 	}
+
 	@Override
 	public org.lgna.story.implementation.SceneImp getScene() {
 		return this.jointedModelImplementation.getScene();
 	}
+
 	public abstract org.lgna.story.resources.JointId getJointId();
+
 	@Override
 	public final org.lgna.story.SJoint getAbstraction() {
 		return this.abstraction;
 	}
+
 	public void setAbstraction( org.lgna.story.SJoint abstraction ) {
 		assert abstraction != null;
 		assert this.abstraction == null : this.abstraction;
@@ -69,21 +74,25 @@ public abstract class JointImp extends AbstractTransformableImp {
 	}
 
 	public abstract boolean isFreeInX();
+
 	public abstract boolean isFreeInY();
+
 	public abstract boolean isFreeInZ();
+
 	@Override
-	public void setVehicle(EntityImp vehicle) {
+	public void setVehicle( EntityImp vehicle ) {
 		assert vehicle != this;
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
-	
+
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
 		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
 	}
-	
+
 	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes getPivot() {
 		if( this.axes != null ) {
 			//pass
@@ -93,6 +102,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 		}
 		return this.axes;
 	}
+
 	public boolean isPivotVisible() {
 		if( this.axes != null ) {
 			return this.axes.getParent() == this.getSgComposite();
@@ -100,6 +110,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 			return false;
 		}
 	}
+
 	public void setPivotVisible( boolean isPivotVisible ) {
 		if( isPivotVisible ) {
 			this.getPivot().setParent( this.getSgComposite() );
@@ -109,7 +120,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );

@@ -72,11 +72,11 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 			root.removeAllChildren();
 			IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
 			programType.crawl( crawler, true );
-			FieldReferenceSearchTreeNode.initFields(ide.getSceneField());
+			FieldReferenceSearchTreeNode.initFields( ide.getSceneField() );
 			List<FieldAccess> fieldAccesses = crawler.getList();
 			for( FieldAccess access : fieldAccesses ) {
 				if( access.field.getValue() instanceof UserField ) {
-					root.find( (UserField) access.field.getValue() ).addReference( access );
+					root.find( (UserField)access.field.getValue() ).addReference( access );
 				}
 			}
 		}

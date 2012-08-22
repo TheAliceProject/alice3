@@ -46,10 +46,11 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodState extends FilteredMemberState< org.lgna.project.ast.UserMethod > {
+public abstract class MethodState extends FilteredMemberState<org.lgna.project.ast.UserMethod> {
 	public MethodState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id, org.lgna.project.ast.UserMethod.class, type.methods );
 	}
+
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
 		org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();

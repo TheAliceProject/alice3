@@ -45,7 +45,7 @@ package org.lgna.croquet.undo.event;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event< org.lgna.croquet.undo.UndoHistory > {
+public abstract class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event<org.lgna.croquet.undo.UndoHistory> {
 	public HistoryEvent( org.lgna.croquet.undo.UndoHistory source ) {
 		super( source );
 	}

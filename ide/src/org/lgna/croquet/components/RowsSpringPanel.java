@@ -48,19 +48,24 @@ package org.lgna.croquet.components;
  */
 @Deprecated
 public abstract class RowsSpringPanel extends SpringPanel {
-	private java.util.List< Component< ? >[] > componentRows;
+	private java.util.List<Component<?>[]> componentRows;
 	private int xPad;
 	private int yPad;
-	protected abstract java.util.List< Component< ? >[] > updateComponentRows( java.util.List< Component< ? >[] > rv );
+
+	protected abstract java.util.List<Component<?>[]> updateComponentRows( java.util.List<Component<?>[]> rv );
+
 	public RowsSpringPanel() {
 		this( null );
 	}
+
 	public RowsSpringPanel( int xPad, int yPad ) {
 		this( null, xPad, yPad );
 	}
+
 	public RowsSpringPanel( org.lgna.croquet.Composite composite ) {
 		this( composite, 12, 12 );
 	}
+
 	public RowsSpringPanel( org.lgna.croquet.Composite composite, int xPad, int yPad ) {
 		super( composite );
 		this.xPad = xPad;
@@ -79,6 +84,7 @@ public abstract class RowsSpringPanel extends SpringPanel {
 			SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
 		}
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		//todo?

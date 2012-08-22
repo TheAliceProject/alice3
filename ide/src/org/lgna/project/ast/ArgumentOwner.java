@@ -47,8 +47,11 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface ArgumentOwner extends Node {
-	public DeclarationProperty< ? extends AbstractCode > getParameterOwnerProperty();
+	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty();
+
 	public SimpleArgumentListProperty getRequiredArgumentsProperty();
+
 	public SimpleArgumentListProperty getVariableArgumentsProperty();
+
 	public KeyedArgumentListProperty getKeyedArgumentsProperty();
 }

@@ -46,16 +46,18 @@ import org.lgna.croquet.BooleanState;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class IsYZScaleLinkedState extends BooleanState 
+public class IsYZScaleLinkedState extends BooleanState
 {
 	private static class SingletonHolder {
 		private static IsYZScaleLinkedState instance = new IsYZScaleLinkedState();
 	}
+
 	public static IsYZScaleLinkedState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsYZScaleLinkedState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c24bc5c2-dcdb-4c4f-b759-79256d9921ce" ), true );
 	}

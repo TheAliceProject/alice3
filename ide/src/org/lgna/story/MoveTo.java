@@ -47,12 +47,14 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class MoveTo extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=MoveTo.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = MoveTo.class )
 	public static interface Detail {
 	}
+
 	private MoveTo() {
 		super();
 	}
+
 	public static PathStyle pathStyle( PathStyle pathStyle ) {
 		return pathStyle;
 	}

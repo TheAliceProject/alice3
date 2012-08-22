@@ -50,7 +50,7 @@ import org.alice.interact.handle.ManipulationHandle2D;
 public abstract class CameraManipulator2D extends CameraManipulator {
 
 	protected ManipulationHandle2D handle;
-	
+
 	public CameraManipulator2D( ManipulationHandle2D handle )
 	{
 		this.handle = handle;

@@ -50,6 +50,7 @@ public class SelectAndLoadExistingProjectOperation extends SelectAndLoadProjectO
 	public SelectAndLoadExistingProjectOperation() {
 		super( java.util.UUID.fromString( "ef47cf71-0dc3-4ff6-9fe3-756abfd524de" ) );
 	}
+
 	@Override
 	public boolean isNew() {
 		return false;

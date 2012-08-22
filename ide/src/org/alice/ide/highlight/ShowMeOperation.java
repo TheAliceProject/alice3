@@ -50,12 +50,14 @@ public class ShowMeOperation extends org.alice.ide.operations.InconsequentialAct
 	public ShowMeOperation() {
 		super( java.util.UUID.fromString( "68e88159-a879-4f2b-ae0b-93288732929e" ) );
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setName( "Show me" );
 		this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, 0 ) );
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( org.alice.stageide.croquet.models.run.RunOperation.getInstance(), "You can run your program by pressing this button." );

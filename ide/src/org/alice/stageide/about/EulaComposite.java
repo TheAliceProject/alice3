@@ -48,13 +48,16 @@ package org.alice.stageide.about;
  */
 public abstract class EulaComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.stageide.about.views.EulaView> {
 	private final org.lgna.croquet.PlainStringValue eulaLabel;
+
 	public EulaComposite( java.util.UUID migrationId, String text ) {
 		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
 		this.eulaLabel = this.createUnlocalizedPlainStringValue( text );
 	}
+
 	public org.lgna.croquet.PlainStringValue getEulaLabel() {
 		return this.eulaLabel;
 	}
+
 	@Override
 	protected org.alice.stageide.about.views.EulaView createView() {
 		return new org.alice.stageide.about.views.EulaView( this );

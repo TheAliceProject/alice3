@@ -50,9 +50,11 @@ public class IsIncludingProtectedUserMethods extends org.lgna.croquet.preference
 	private static class SingletonHolder {
 		private static IsIncludingProtectedUserMethods instance = new IsIncludingProtectedUserMethods();
 	}
+
 	public static IsIncludingProtectedUserMethods getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsIncludingProtectedUserMethods() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "07fcbb04-a1f1-4e6a-8bd4-7489a8c6dcfc" ), true );
 	}

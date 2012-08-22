@@ -51,12 +51,13 @@ package org.alice.ide.croquet.models.ui.debug.components;
 public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderPanel {
 
 	private final org.lgna.croquet.history.event.Listener transactionListener = new org.lgna.croquet.history.event.Listener() {
-		public void changing(org.lgna.croquet.history.event.Event<?> e) {
+		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
-		public void changed(org.lgna.croquet.history.event.Event<?> e) {
-			if( e instanceof org.lgna.croquet.history.event.AddStepEvent || e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) {
+
+		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
+			if( ( e instanceof org.lgna.croquet.history.event.AddStepEvent ) || ( e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) ) {
 				TransactionHistoryPanel.this.reload();
-			} else if( e instanceof org.lgna.croquet.history.event.FinishedEvent || e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
+			} else if( ( e instanceof org.lgna.croquet.history.event.FinishedEvent ) || ( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) ) {
 				tree.repaint();
 			}
 		}
@@ -66,7 +67,7 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 	private final javax.swing.JTree tree = new javax.swing.JTree();
 	private org.lgna.croquet.history.TransactionHistory transactionHistory;
 	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			TransactionHistoryPanel.this.reload();
 		}
 	};
@@ -74,7 +75,7 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 	public TransactionHistoryPanel() {
 		this.tree.setCellRenderer( new TransactionHistoryCellRenderer() );
 		this.scrollPane.getAwtComponent().setViewportView( this.tree );
-		this.scrollPane.setBothScrollBarIncrements( 12,  24 );
+		this.scrollPane.setBothScrollBarIncrements( 12, 24 );
 		this.addCenterComponent( scrollPane );
 		this.tree.setRootVisible( false );
 		this.tree.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
@@ -86,15 +87,15 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 				TransactionHistoryTreeModel treeModel = (TransactionHistoryTreeModel)tree.getModel();
 				treeModel.reload();
 				int childCount = treeModel.getChildCount( treeModel.getRoot() );
-				for( int i=0; i<tree.getRowCount(); i++ ) {
-					if( i<childCount-1 ) {
+				for( int i = 0; i < tree.getRowCount(); i++ ) {
+					if( i < ( childCount - 1 ) ) {
 						tree.collapseRow( i );
 					} else {
 						tree.expandRow( i );
 					}
 				}
-				tree.scrollRowToVisible( tree.getRowCount()-1 );
-				if ( scrollPane != null ) {
+				tree.scrollRowToVisible( tree.getRowCount() - 1 );
+				if( scrollPane != null ) {
 					scrollPane.getAwtComponent().getHorizontalScrollBar().setValue( 0 );
 				}
 			}
@@ -105,7 +106,7 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 		this.removeTransactionListener();
 		this.transactionHistory = transactionHistory;
 
-		if ( this.isShowing() ) {
+		if( this.isShowing() ) {
 			this.addTransactionListener();
 		}
 	}
@@ -135,7 +136,7 @@ public class TransactionHistoryPanel extends org.lgna.croquet.components.BorderP
 	}
 
 	private void removeTransactionListener() {
-		if ( (this.transactionHistory != null) && (this.transactionHistory.isListening( this.transactionListener )) ) {
+		if( ( this.transactionHistory != null ) && ( this.transactionHistory.isListening( this.transactionListener ) ) ) {
 			this.transactionHistory.removeListener( this.transactionListener );
 		}
 	}

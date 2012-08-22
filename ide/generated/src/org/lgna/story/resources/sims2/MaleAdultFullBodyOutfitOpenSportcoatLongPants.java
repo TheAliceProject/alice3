@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitOpenSportcoatLongPants implements MaleAdultFullBodyOutfit {
-	BLACKLEATHERGREYSLACKS ,
- 	GREENSHIRTBLUEJEANS ,
- 	REDSHIRTBLUEJEANS ;
+	BLACKLEATHERGREYSLACKS,
+	GREENSHIRTBLUEJEANS,
+	REDSHIRTBLUEJEANS;
 }
