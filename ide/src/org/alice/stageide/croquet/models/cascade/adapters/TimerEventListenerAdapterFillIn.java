@@ -47,11 +47,12 @@ import org.lgna.story.event.TimeListener;
 /**
  * @author Matt May
  */
-public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn{
-	
+public class TimerEventListenerAdapterFillIn extends LambdaExpressionFillIn {
+
 	private static class SingletonHolder {
 		private static TimerEventListenerAdapterFillIn instance = new TimerEventListenerAdapterFillIn();
 	}
+
 	public static TimerEventListenerAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}

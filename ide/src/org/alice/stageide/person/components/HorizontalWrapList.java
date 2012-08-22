@@ -46,8 +46,8 @@ package org.alice.stageide.person.components;
 /**
  * @author Dennis Cosgrove
  */
-public class HorizontalWrapList< T > extends org.lgna.croquet.components.List< T > {
-	public HorizontalWrapList( org.lgna.croquet.ListSelectionState< T > model, int visibleRowCount ) {
+public class HorizontalWrapList<T> extends org.lgna.croquet.components.List<T> {
+	public HorizontalWrapList( org.lgna.croquet.ListSelectionState<T> model, int visibleRowCount ) {
 		super( model );
 		this.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.setVisibleRowCount( visibleRowCount );

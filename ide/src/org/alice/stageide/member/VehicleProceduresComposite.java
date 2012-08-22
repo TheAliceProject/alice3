@@ -50,9 +50,11 @@ public class VehicleProceduresComposite extends org.alice.ide.member.NameFiltere
 	private static class SingletonHolder {
 		private static VehicleProceduresComposite instance = new VehicleProceduresComposite();
 	}
+
 	public static VehicleProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private VehicleProceduresComposite() {
 		super( java.util.UUID.fromString( "27feec4a-33a9-4bd9-a635-2b1f7e4e6c86" ), "setVehicle" );
 	}

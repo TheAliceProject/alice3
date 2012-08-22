@@ -49,6 +49,7 @@ package org.lgna.project.ast;
 public abstract class JavaParameter extends AbstractParameter {
 	private final java.lang.annotation.Annotation[] annotations;
 	private org.lgna.project.annotations.ValueDetails<?> details;
+
 	public JavaParameter( java.lang.annotation.Annotation[] annotations ) {
 		this.annotations = annotations;
 		if( this.annotations != null ) {
@@ -59,14 +60,17 @@ public abstract class JavaParameter extends AbstractParameter {
 			}
 		}
 	}
+
 	@Override
 	public boolean isUserAuthored() {
 		return false;
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
+
 	@Override
 	public boolean isVariableLength() {
 		for( java.lang.annotation.Annotation annotation : this.annotations ) {
@@ -77,17 +81,19 @@ public abstract class JavaParameter extends AbstractParameter {
 		}
 		return false;
 	}
-	
+
 	public JavaType getValueTypeDeclaredInJava() {
 		return (JavaType)getValueType();
 	}
+
 	@Override
 	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
 		return this.details;
 	}
-	/*package-private*/ void setValueTemplate( org.lgna.project.annotations.ValueTemplate valueTemplate ) {
-		Class< ? extends Enum< ? extends org.lgna.project.annotations.ValueDetails<?> > > detailsEnumCls = valueTemplate.detailsEnumCls();
-		Enum< ? extends org.lgna.project.annotations.ValueDetails<?> >[] details = detailsEnumCls.getEnumConstants();
+
+	/* package-private */void setValueTemplate( org.lgna.project.annotations.ValueTemplate valueTemplate ) {
+		Class<? extends Enum<? extends org.lgna.project.annotations.ValueDetails<?>>> detailsEnumCls = valueTemplate.detailsEnumCls();
+		Enum<? extends org.lgna.project.annotations.ValueDetails<?>>[] details = detailsEnumCls.getEnumConstants();
 		assert details.length == 1;
 		this.details = (org.lgna.project.annotations.ValueDetails<?>)details[ 0 ];
 	}

@@ -46,10 +46,11 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Table<T> extends ViewController< javax.swing.JTable, org.lgna.croquet.TableRowSelectionState<T> > {
+public class Table<T> extends ViewController<javax.swing.JTable, org.lgna.croquet.TableRowSelectionState<T>> {
 	public Table( org.lgna.croquet.TableRowSelectionState<T> model ) {
 		super( model );
 	}
+
 	@Override
 	protected javax.swing.JTable createAwtComponent() {
 		org.lgna.croquet.TableRowSelectionState<T>.SwingModel swingModel = this.getModel().getSwingModel();

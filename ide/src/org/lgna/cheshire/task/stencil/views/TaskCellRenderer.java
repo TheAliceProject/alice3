@@ -51,9 +51,11 @@ public class TaskCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.L
 		public int getIconWidth() {
 			return 32;
 		}
+
 		public int getIconHeight() {
 			return 32;
 		}
+
 		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		}
 	};
@@ -73,6 +75,7 @@ public class TaskCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.L
 		this.disabledForeground = java.awt.Color.LIGHT_GRAY;
 		this.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
 	}
+
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.cheshire.task.Task value, int index, boolean isSelected, boolean cellHasFocus ) {
 		assert list != null;
@@ -109,7 +112,7 @@ public class TaskCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.L
 		if( index != -1 ) {
 			if( index <= this.taskComboBoxModel.getSelectedIndex() ) {
 				if( replacementAcceptability != null ) {
-					if( replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH || replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) {
+					if( ( replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH ) || ( replacementAcceptability == org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK ) ) {
 						icon = PERFECT_MATCH_ICON;
 					} else {
 						if( replacementAcceptability.isDeviation() ) {

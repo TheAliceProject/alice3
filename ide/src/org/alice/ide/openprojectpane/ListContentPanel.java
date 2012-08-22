@@ -46,7 +46,7 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.models.UriSelectionState > extends TabContentPanel {
+public abstract class ListContentPanel<M extends org.alice.ide.openprojectpane.models.UriSelectionState> extends TabContentPanel {
 	private final M state;
 	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -55,7 +55,7 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 	};
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
-		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {
 				org.lgna.croquet.components.Button defaultButton = ListContentPanel.this.getRoot().getDefaultButton();
 				if( defaultButton != null ) {
@@ -64,11 +64,13 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 			}
 		}
 	};
+
 	private void refreshState() {
 		this.state.refresh();
 		this.revalidateAndRepaint();
 	}
-	public ListContentPanel( org.lgna.croquet.TabComposite< ? > composite, M state ) {
+
+	public ListContentPanel( org.lgna.croquet.TabComposite<?> composite, M state ) {
 		super( composite );
 		this.state = state;
 		org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
@@ -81,19 +83,19 @@ public abstract class ListContentPanel< M extends org.alice.ide.openprojectpane.
 		list.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
 		this.addCenterComponent( list );
 	}
+
 	protected M getState() {
 		return this.state;
 	}
+
 	protected javax.swing.ListCellRenderer createListCellRenderer() {
 		return new ProjectSnapshotListCellRenderer();
 	}
+
 	protected abstract String getTextForZeroProjects();
+
 	@Override
 	public java.net.URI getSelectedUri() {
 		return this.state.getSelectedItem();
 	}
 }
-
-
-
-

@@ -46,27 +46,29 @@ package org.alice.ide.resource.manager;
 /**
  * @author Dennis Cosgrove
  */
-public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialogOperationComposite< org.alice.ide.resource.manager.views.ResourceManagerView > {
+public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
 	private static class SingletonHolder {
 		private static ResourceManagerComposite instance = new ResourceManagerComposite();
 	}
+
 	public static ResourceManagerComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	
 	private final org.lgna.project.event.ResourceListener resourceListener = new org.lgna.project.event.ResourceListener() {
-		public void resourceAdded(org.lgna.project.event.ResourceEvent e) {
+		public void resourceAdded( org.lgna.project.event.ResourceEvent e ) {
 			reloadTableModel();
 		}
-		public void resourceRemoved(org.lgna.project.event.ResourceEvent e) {
+
+		public void resourceRemoved( org.lgna.project.event.ResourceEvent e ) {
 			reloadTableModel();
 		}
 	};
-	
+
 	private final org.lgna.croquet.State.ValueListener<org.lgna.common.Resource> rowListener = new org.lgna.croquet.State.ValueListener<org.lgna.common.Resource>() {
 		public void changing( org.lgna.croquet.State<org.lgna.common.Resource> state, org.lgna.common.Resource prevValue, org.lgna.common.Resource nextValue, boolean isAdjusting ) {
 		}
+
 		public void changed( org.lgna.croquet.State<org.lgna.common.Resource> state, org.lgna.common.Resource prevValue, org.lgna.common.Resource nextValue, boolean isAdjusting ) {
 			handleSelection( nextValue );
 		}
@@ -75,17 +77,20 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 	private ResourceManagerComposite() {
 		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
-	public ResourceTableRowSelectionState getResourceState() { 
+
+	public ResourceTableRowSelectionState getResourceState() {
 		return ResourceTableRowSelectionState.getInstance();
 	}
+
 	@Override
 	protected org.alice.ide.resource.manager.views.ResourceManagerView createView() {
 		return new org.alice.ide.resource.manager.views.ResourceManagerView( this );
 	}
-	
+
 	private void reloadTableModel( org.lgna.project.Project project ) {
 		this.getResourceState().reloadTableModel( project );
 	}
+
 	private void reloadTableModel() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project;
@@ -96,7 +101,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 		}
 		this.reloadTableModel( project );
 	}
-	
+
 	@Override
 	public void handlePreActivation() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -113,6 +118,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 		this.getResourceState().addAndInvokeValueListener( this.rowListener );
 		super.handlePreActivation();
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -133,10 +139,10 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 		String removeToolTipText;
 		boolean isReferenced;
 		if( isSelected ) {
-			
+
 			javax.swing.table.TableModel resourceTableModel = this.getResourceState().getSwingModel().getTableModel();
 			javax.swing.ListSelectionModel listSelectionModel = this.getResourceState().getSwingModel().getListSelectionModel();
-			
+
 			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceTableRowSelectionState.IS_REFERENCED_COLUMN_INDEX );
 			renameAndReplaceToolTipText = null;
 			if( isReferenced ) {
@@ -154,10 +160,10 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 		ReloadContentResourceOperation.getInstance().setEnabled( isSelected );
 		ReloadContentResourceOperation.getInstance().setToolTipText( renameAndReplaceToolTipText );
 
-		RemoveResourceOperation.getInstance().setEnabled( isSelected && isReferenced==false );
+		RemoveResourceOperation.getInstance().setEnabled( isSelected && ( isReferenced == false ) );
 		RemoveResourceOperation.getInstance().setToolTipText( removeToolTipText );
 	}
-	
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {

@@ -50,22 +50,26 @@ public class TemplateAstI18nFactory extends IdeAstI18nFactory {
 	private static class SingletonHolder {
 		private static TemplateAstI18nFactory instance = new TemplateAstI18nFactory();
 	}
+
 	public static TemplateAstI18nFactory getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TemplateAstI18nFactory() {
 	}
-	
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
 		return org.alice.ide.MetaDeclarationFauxState.getInstance().getType();
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.components.JComponent<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
 		return new org.alice.ide.members.components.ArgumentListPropertyPane( this, argumentListProperty );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
+	protected org.lgna.croquet.components.JComponent<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
 		return new org.lgna.croquet.components.Label();
 	}
 }

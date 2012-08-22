@@ -46,7 +46,8 @@ package org.alice.ide.recentprojects;
  * @author Dennis Cosgrove
  */
 public class OpenFileOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< java.net.URI, OpenFileOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<java.net.URI, OpenFileOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static OpenFileOperation getInstance( java.net.URI uri ) {
 		synchronized( map ) {
 			OpenFileOperation rv = map.get( uri );
@@ -59,16 +60,20 @@ public class OpenFileOperation extends org.lgna.croquet.ActionOperation {
 			return rv;
 		}
 	}
+
 	private final java.net.URI uri;
+
 	private OpenFileOperation( java.net.URI uri ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, java.util.UUID.fromString( "f0c3069a-62d8-4b33-84ac-49dcb2109c93" ) );
 		this.uri = uri;
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setName( this.uri.toString() );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

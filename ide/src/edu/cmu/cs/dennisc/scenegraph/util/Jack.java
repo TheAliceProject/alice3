@@ -52,11 +52,12 @@ public class Jack extends edu.cmu.cs.dennisc.scenegraph.Transformable {
 	public Jack() {
 		m_sgAxesModest.setParent( this );
 	}
-	
+
 	//todo: rename
 	public boolean isModest() {
 		return m_sgAxesModest.getParent() == this;
 	}
+
 	public void setModest( boolean isModest ) {
 		if( isModest != isModest() ) {
 			if( isModest ) {
@@ -68,5 +69,5 @@ public class Jack extends edu.cmu.cs.dennisc.scenegraph.Transformable {
 			}
 		}
 	}
-	
+
 }

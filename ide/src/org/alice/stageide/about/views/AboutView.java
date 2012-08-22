@@ -48,20 +48,23 @@ package org.alice.stageide.about.views;
  */
 public class AboutView extends org.lgna.croquet.components.BorderPanel {
 	private static final javax.swing.ImageIcon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( AboutView.class.getResource( "images/about.png" ) );
+
 	private static class IconBorder extends javax.swing.border.AbstractBorder {
 		@Override
-	    public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) {
-	        insets.top = 200;
-	        insets.left = 150;
-	        insets.bottom = 16;
-	        insets.right = 16;
-	        return insets;
-	    }
+		public java.awt.Insets getBorderInsets( java.awt.Component c, java.awt.Insets insets ) {
+			insets.top = 200;
+			insets.left = 150;
+			insets.bottom = 16;
+			insets.right = 16;
+			return insets;
+		}
+
 		@Override
 		public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 			g.drawImage( ICON.getImage(), x, y, c );
 		}
 	}
+
 	public AboutView( org.alice.stageide.about.AboutComposite composite ) {
 		super( composite );
 		org.lgna.croquet.components.ImmutableEditorPane supportedByLabel = composite.getSupportedByLabel().createImmutableEditorPane();
@@ -69,30 +72,30 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 		this.addPageStartComponent( supportedByLabel );
 
 		org.lgna.croquet.components.PageAxisPanel otherPanel = new org.lgna.croquet.components.PageAxisPanel();
-		
+
 		org.lgna.croquet.components.RowSpringPanel rowSpringPanel = new org.lgna.croquet.components.RowSpringPanel() {
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
-				for( org.alice.stageide.about.EulaComposite eulaComposite : new org.alice.stageide.about.EulaComposite[] { org.alice.stageide.about.SystemEulaComposite.getInstance(), org.alice.stageide.about.SimsArtAssetsEulaComposite.getInstance() } ) { 
+				for( org.alice.stageide.about.EulaComposite eulaComposite : new org.alice.stageide.about.EulaComposite[] { org.alice.stageide.about.SystemEulaComposite.getInstance(), org.alice.stageide.about.SimsArtAssetsEulaComposite.getInstance() } ) {
 					rows.add( new org.lgna.croquet.components.LabeledSpringRow( eulaComposite.getOperation().getSidekickLabel(), eulaComposite.getOperation().createButton() ) );
 				}
 			}
 		};
 		otherPanel.addComponent( rowSpringPanel );
 		otherPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
-		
-//		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel( 
-//				org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink(),
-//				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 24 ),
-//				composite.getVersionLabel().createImmutableEditorPane()
-//		);
-//		otherPanel.addComponent( lineAxisPanel );
+
+		//		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel( 
+		//				org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink(),
+		//				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 24 ),
+		//				composite.getVersionLabel().createImmutableEditorPane()
+		//		);
+		//		otherPanel.addComponent( lineAxisPanel );
 		otherPanel.addComponent( org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink() );
 		otherPanel.addComponent( org.alice.stageide.about.CreditsComposite.getInstance().getOperation().createHyperlink() );
 		otherPanel.addComponent( composite.getVersionLabel().createImmutableEditorPane() );
 		otherPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 		otherPanel.addComponent( composite.getDedicationLabel().createImmutableEditorPane() );
-		
+
 		otherPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
 		this.addCenterComponent( otherPanel );
 	}

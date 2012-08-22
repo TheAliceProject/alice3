@@ -43,7 +43,6 @@
 
 package org.lgna.story.implementation;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -55,24 +54,27 @@ public class TextModelImp extends SimpleModelImp {
 	public TextModelImp( org.lgna.story.STextModel abstraction ) {
 		this.abstraction = abstraction;
 		this.sgText.text.setValue( "" );
-		
+
 		final int height = 12;
-		final double scale = 1.0/height;
+		final double scale = 1.0 / height;
 		this.sgText.font.setValue( new java.awt.Font( null, 0, height ) );
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgText } );
 		this.getSgVisuals()[ 0 ].scale.setValue( edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( scale, scale, scale ) );
 	}
+
 	@Override
 	public org.lgna.story.STextModel getAbstraction() {
 		return this.abstraction;
 	}
+
 	private void updateSGText() {
 		this.sgText.text.setValue( this.sb.toString() );
 	}
-	
+
 	public String getValue() {
 		return this.sb.toString();
 	}
+
 	public void setValue( String text ) {
 		this.sb = new StringBuffer( text );
 		updateSGText();
@@ -81,6 +83,7 @@ public class TextModelImp extends SimpleModelImp {
 	public java.awt.Font getFont() {
 		return this.sgText.font.getValue();
 	}
+
 	public void setFont( java.awt.Font font ) {
 		this.sgText.font.setValue( font );
 	}
@@ -89,7 +92,7 @@ public class TextModelImp extends SimpleModelImp {
 		this.sb.append( value );
 		this.updateSGText();
 	}
-	
+
 	public char charAt( int index ) {
 		return this.sb.charAt( index );
 	}
@@ -98,6 +101,7 @@ public class TextModelImp extends SimpleModelImp {
 		this.sb.delete( start, end );
 		this.updateSGText();
 	}
+
 	public void deleteCharAt( int index ) {
 		this.sb.deleteCharAt( index );
 		this.updateSGText();
@@ -106,6 +110,7 @@ public class TextModelImp extends SimpleModelImp {
 	public int indexOf( String s ) {
 		return this.sb.indexOf( s );
 	}
+
 	public int indexOf( String s, int fromIndex ) {
 		return this.sb.indexOf( s, fromIndex );
 	}
@@ -118,10 +123,11 @@ public class TextModelImp extends SimpleModelImp {
 	public int lastIndexOf( String s ) {
 		return this.sb.lastIndexOf( s );
 	}
+
 	public int lastIndexOf( String s, int fromIndex ) {
 		return this.sb.lastIndexOf( s, fromIndex );
 	}
-	
+
 	//todo: rename length?
 	public int getLength() {
 		return this.sb.length();
@@ -138,8 +144,8 @@ public class TextModelImp extends SimpleModelImp {
 	}
 
 	@Override
-	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
-		this.setScale(getScaleForSize(size));
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+		this.setScale( getScaleForSize( size ) );
 	}
-	
+
 }

@@ -58,13 +58,13 @@ public class IngredientsView extends org.lgna.croquet.components.BorderPanel {
 				}
 			}
 		};
-		
+
 		java.awt.Color backgroundColor = org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR;
-		
+
 		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( backgroundColor );
 		org.lgna.croquet.components.BorderPanel centerPanel = new org.lgna.croquet.components.BorderPanel.Builder().pageStart( rowSpringPanel ).center( tabbedPane ).build();
-		
+
 		this.addPageStartComponent( composite.getRandomize().createButton() );
 		this.addCenterComponent( centerPanel );
 		this.setBackgroundColor( backgroundColor );

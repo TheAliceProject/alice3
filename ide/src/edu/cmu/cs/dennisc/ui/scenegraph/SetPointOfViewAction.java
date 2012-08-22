@@ -59,19 +59,23 @@ public class SetPointOfViewAction implements edu.cmu.cs.dennisc.pattern.Action {
 		m_undoPOV = undoPOV;
 		m_redoPOV = redoPOV;
 	}
+
 	public void run() {
 		assert m_undoPOV == null;
 		m_undoPOV = m_sgSubject.getTransformation( m_sgAsSeenBy );
 		redo();
 	}
+
 	private void animate( edu.cmu.cs.dennisc.math.AffineMatrix4x4 pov ) {
 		if( m_animator != null ) {
 			m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( m_sgSubject, m_sgAsSeenBy, edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation.USE_EXISTING_VALUE_AT_RUN_TIME, pov ), null );
 		}
 	}
+
 	public void undo() {
 		animate( m_undoPOV );
 	}
+
 	public void redo() {
 		animate( m_redoPOV );
 	}

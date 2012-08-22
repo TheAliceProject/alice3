@@ -43,10 +43,11 @@
 package org.alice.ide.croquet.models.ast;
 
 /**
-* @author Dennis Cosgrove
-*/
-public class EditConstructorOperation extends EditCodeOperation< org.lgna.project.ast.NamedUserConstructor > {
-	private static java.util.Map< org.lgna.project.ast.NamedUserConstructor, EditConstructorOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+ * @author Dennis Cosgrove
+ */
+public class EditConstructorOperation extends EditCodeOperation<org.lgna.project.ast.NamedUserConstructor> {
+	private static java.util.Map<org.lgna.project.ast.NamedUserConstructor, EditConstructorOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized EditConstructorOperation getInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		EditConstructorOperation rv = map.get( constructor );
 		if( rv != null ) {
@@ -57,12 +58,14 @@ public class EditConstructorOperation extends EditCodeOperation< org.lgna.projec
 		}
 		return rv;
 	}
+
 	private EditConstructorOperation( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		super( java.util.UUID.fromString( "4dce50a6-c637-490c-b1ff-3cd3028dd8ac" ), constructor );
-//		this.setName( "<html>Edit <strong>constructor</strong></html>" );
+		//		this.setName( "<html>Edit <strong>constructor</strong></html>" );
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditConstructorOperation >( this, org.lgna.project.ast.NamedUserConstructor.class, this.getCode() );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<EditConstructorOperation> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<EditConstructorOperation>( this, org.lgna.project.ast.NamedUserConstructor.class, this.getCode() );
 	}
 }

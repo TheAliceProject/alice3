@@ -45,29 +45,35 @@ package edu.cmu.cs.dennisc.animation.interpolation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InterpolationAnimation< E > extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
+public abstract class InterpolationAnimation<E> extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
 	private E m_v0;
 	private E m_v1;
 	private E m_v;
+
 	public InterpolationAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, E v0, E v1 ) {
 		super( duration, style );
 		m_v0 = newE( v0 );
 		m_v1 = newE( v1 );
 		m_v = newE( null );
 	}
+
 	protected abstract E newE( E other );
+
 	protected abstract E interpolate( E rv, E v0, E v1, double portion );
+
 	protected abstract void updateValue( E v );
+
 	@Override
 	protected final void prologue() {
 	}
+
 	@Override
 	protected final void setPortion( double portion ) {
 		updateValue( interpolate( m_v, m_v0, m_v1, portion ) );
 	}
+
 	@Override
 	protected void epilogue() {
 		updateValue( m_v1 );
 	}
 }
-

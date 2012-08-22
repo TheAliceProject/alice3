@@ -52,10 +52,12 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 			super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, selectionIndex, items );
 		}
 	}
+
 	private static class FamilySelectionOperation extends TextAttributeSelectionOperation {
 		public FamilySelectionOperation() {
 			super( java.util.UUID.fromString( "592061c5-2b39-4e03-87b4-3832473ffca2" ), 0, "Serif", "SansSerif" );
 		}
+
 		public org.lgna.story.font.FamilyAttribute getFamilyAttribute() {
 			Object value = this.getSelectedItem();
 			org.lgna.story.font.FamilyAttribute rv;
@@ -66,6 +68,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 			}
 			return rv;
 		}
+
 		public void setFamilyAttribute( org.lgna.story.font.FamilyAttribute familyAttribute ) {
 			if( familyAttribute == org.lgna.story.font.FamilyConstant.SERIF ) {
 				this.setSelectedItem( "Serif" );
@@ -79,29 +82,32 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		public StyleSelectionOperation() {
 			super( java.util.UUID.fromString( "a7fa1996-526d-4599-bca8-84fd198fa823" ), 0, "Regular", "Bold", "Italic", "Bold Italic" );
 		}
+
 		public org.lgna.story.font.WeightAttribute getWeightAttribute() {
 			Object value = this.getSelectedItem();
 			org.lgna.story.font.WeightAttribute rv;
-			if( value != null && (value.equals( "Bold" ) || value.equals( "Bold Italic" )) ) {
+			if( ( value != null ) && ( value.equals( "Bold" ) || value.equals( "Bold Italic" ) ) ) {
 				rv = org.lgna.story.font.WeightConstant.BOLD;
 			} else {
 				rv = org.lgna.story.font.WeightConstant.REGULAR;
 			}
 			return rv;
 		}
+
 		public org.lgna.story.font.PostureAttribute getPostureAttribute() {
 			Object value = this.getSelectedItem();
 			org.lgna.story.font.PostureAttribute rv;
-			if( value != null && (value.equals( "Italic" ) || value.equals( "Bold Italic" )) ) {
+			if( ( value != null ) && ( value.equals( "Italic" ) || value.equals( "Bold Italic" ) ) ) {
 				rv = org.lgna.story.font.PostureConstant.OBLIQUE;
 			} else {
 				rv = org.lgna.story.font.PostureConstant.REGULAR;
 			}
 			return rv;
 		}
+
 		public void setStyleAttributes( org.lgna.story.font.WeightAttribute weight, org.lgna.story.font.PostureAttribute posture ) {
-			boolean isBold = (weight == org.lgna.story.font.WeightConstant.BOLD);
-			boolean isItalic = (posture == org.lgna.story.font.PostureConstant.OBLIQUE);
+			boolean isBold = ( weight == org.lgna.story.font.WeightConstant.BOLD );
+			boolean isItalic = ( posture == org.lgna.story.font.PostureConstant.OBLIQUE );
 			String selectedValue;
 			if( isBold ) {
 				if( isItalic ) {
@@ -120,8 +126,8 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		}
 	}
 
-//	private org.lgna.croquet.StringStateOperation textState = new org.lgna.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "e1f5fa35-6ddb-4d9a-8a76-8ff9421cf4b4" ), "" );
-//	private org.lgna.croquet.StringStateOperation instanceNameState = new org.lgna.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1c29999d-003b-4f90-83da-67d21f93789a" ), "" );
+	//	private org.lgna.croquet.StringStateOperation textState = new org.lgna.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "e1f5fa35-6ddb-4d9a-8a76-8ff9421cf4b4" ), "" );
+	//	private org.lgna.croquet.StringStateOperation instanceNameState = new org.lgna.croquet.StringStateOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1c29999d-003b-4f90-83da-67d21f93789a" ), "" );
 
 	private javax.swing.JTextField textVC;
 	private javax.swing.JTextField instanceNameVC;
@@ -133,8 +139,8 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 
 	private org.lgna.croquet.components.Label sample;
 
-//	public CreateTextPane( org.lgna.project.ast.TypeDeclaredInAlice declaringType ) {
-//		super( declaringType, org.lookingglassandalice.storytelling.Billboard.class, null );
+	//	public CreateTextPane( org.lgna.project.ast.TypeDeclaredInAlice declaringType ) {
+	//		super( declaringType, org.lookingglassandalice.storytelling.Billboard.class, null );
 	public CreateTextPane( final Create3dTextOperation operation ) {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
@@ -144,10 +150,12 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 				this.setText( text );
 				this.setTextForBlankCondition( textForBlankCondition );
 			}
+
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 160 );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				java.awt.Dimension rv = super.getMaximumSize();
@@ -164,67 +172,68 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		} );
 		//this.textVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleTextChange ) );
 		this.instanceNameVC = new TextField( "", " enter instance name here" );
-//		this.instanceNameVC.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
-//			@Override
-//			protected void updated( javax.swing.event.DocumentEvent e ) {
-//				operation.handleFiredEvent( null );
-//			}
-//		} );
+		//		this.instanceNameVC.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
+		//			@Override
+		//			protected void updated( javax.swing.event.DocumentEvent e ) {
+		//				operation.handleFiredEvent( null );
+		//			}
+		//		} );
 		//this.instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleInstanceNameChange ) );
 
 		this.constrainInstanceNameToTextVC = new ConstrainInstanceNameToTextBooleanStateOperation().createCheckBox();
 		this.constrainInstanceNameToTextVC.getAwtComponent().setSelected( true );
 		this.constrainInstanceNameToTextVC.setBackgroundColor( null );
 		this.heightTextField = new TextField( "1.0", " enter height in meters here" );
-//		this.heightTextField.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
-//			@Override
-//			protected void updated( javax.swing.event.DocumentEvent e ) {
-//				CreateTextPane.this.updateOKButton();
-//			}
-//		} );
+		//		this.heightTextField.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
+		//			@Override
+		//			protected void updated( javax.swing.event.DocumentEvent e ) {
+		//				CreateTextPane.this.updateOKButton();
+		//			}
+		//		} );
 		this.familySelection = new FamilySelectionOperation();
 		this.styleSelection = new StyleSelectionOperation();
 
 		this.sample = new org.lgna.croquet.components.Label( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
-		org.lgna.croquet.ListSelectionState.ValueListener< String > valueObserver = new org.lgna.croquet.ListSelectionState.ValueListener< String >() {
-			public void changing( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
+		org.lgna.croquet.ListSelectionState.ValueListener<String> valueObserver = new org.lgna.croquet.ListSelectionState.ValueListener<String>() {
+			public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< String > state, String prevValue, String nextValue, boolean isAdjusting ) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-					CreateTextPane.this.updateSample();
-//				}
+
+			public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+				//				if( e.getValueIsAdjusting() ) {
+				//					//pass
+				//				} else {
+				CreateTextPane.this.updateSample();
+				//				}
 			}
 		};
-		
+
 		this.familySelection.addValueListener( valueObserver );
 		this.styleSelection.addValueListener( valueObserver );
-//		class ListSelectionAdapter implements javax.swing.event.ListSelectionListener {
-//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-//				if( e.getValueIsAdjusting() ) {
-//					//pass
-//				} else {
-//					CreateTextPane.this.updateSample();
-//				}
-//			}
-//		}
-//		ListSelectionAdapter listSelectionAdapter = new ListSelectionAdapter();
-//
-//		this.familySelection.addListSelectionListener( listSelectionAdapter );
-//		this.styleSelection.addListSelectionListener( listSelectionAdapter );
+		//		class ListSelectionAdapter implements javax.swing.event.ListSelectionListener {
+		//			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+		//				if( e.getValueIsAdjusting() ) {
+		//					//pass
+		//				} else {
+		//					CreateTextPane.this.updateSample();
+		//				}
+		//			}
+		//		}
+		//		ListSelectionAdapter listSelectionAdapter = new ListSelectionAdapter();
+		//
+		//		this.familySelection.addListSelectionListener( listSelectionAdapter );
+		//		this.styleSelection.addListSelectionListener( listSelectionAdapter );
 
-//		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 16, 4 ) {
-//			@Override
-//			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-//				CreateTextPane.this.updateRows( rv );
-//				return rv;
-//			}
-//		};
-//
-//		this.addComponent( pane, java.awt.BorderLayout.CENTER );
+		//		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 16, 4 ) {
+		//			@Override
+		//			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+		//				CreateTextPane.this.updateRows( rv );
+		//				return rv;
+		//			}
+		//		};
+		//
+		//		this.addComponent( pane, java.awt.BorderLayout.CENTER );
 	}
 
 	class ConstrainInstanceNameToTextBooleanStateOperation extends org.lgna.croquet.BooleanState {
@@ -232,56 +241,58 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 			super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false );
 			this.setTextForBothTrueAndFalse( "constrain to text" );
 			this.addValueListener( new ValueListener<Boolean>() {
-				public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				}
-				public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+				public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 					CreateTextPane.this.instanceNameVC.setEditable( nextValue == false );
 				}
 			} );
 		}
 	}
+
 	@Override
-	protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
-		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
-				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "text:" ), 
-				new org.lgna.croquet.components.SwingAdapter( this.textVC ), 
-				null 
-		) );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
-				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "instance:" ), 
-				new org.lgna.croquet.components.SwingAdapter( this.instanceNameVC ), 
-				this.constrainInstanceNameToTextVC 
-		) );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
+	protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows( java.util.List<org.lgna.croquet.components.Component<?>[]> rv ) {
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "text:" ),
+				new org.lgna.croquet.components.SwingAdapter( this.textVC ),
+				null
+				) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "instance:" ),
+				new org.lgna.croquet.components.SwingAdapter( this.instanceNameVC ),
+				this.constrainInstanceNameToTextVC
+				) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
 				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ),
 				null,
-				null 
-		) );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
-				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "letter height:" ), 
-				new org.lgna.croquet.components.SwingAdapter( this.heightTextField ), 
-				new org.lgna.croquet.components.Label( "(meters)" ) 
-		) );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
-				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ), 
-				null, 
-				null 
-		) );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
-				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "family:" ), 
-				this.familySelection.getPrepModel().createComboBox(), 
-				null 
-		) );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
-				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "style:" ), 
-				this.styleSelection.getPrepModel().createComboBox(), 
-				null 
-		) );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
-				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "sample:" ), 
-				this.sample, 
-				null 
-		) );
+				null
+				) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "letter height:" ),
+				new org.lgna.croquet.components.SwingAdapter( this.heightTextField ),
+				new org.lgna.croquet.components.Label( "(meters)" )
+				) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ),
+				null,
+				null
+				) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "family:" ),
+				this.familySelection.getPrepModel().createComboBox(),
+				null
+				) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "style:" ),
+				this.styleSelection.getPrepModel().createComboBox(),
+				null
+				) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
+				org.lgna.croquet.components.SpringUtilities.createTrailingTopLabel( "sample:" ),
+				this.sample,
+				null
+				) );
 		rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, null, null ) );
 
 		return rv;
@@ -293,16 +304,17 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		org.lgna.story.font.PostureAttribute postureAttribute = this.styleSelection.getPostureAttribute();
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.sample.getAwtComponent(), familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
 	}
-//	@Override
-//	public boolean isOKButtonValid() {
-//		try {
-//			Double.parseDouble( this.heightTextField.getText() );
-//		} catch( NumberFormatException nfe ) {
-//			return false;
-//		}
-//		boolean isInstanceNameValid = org.lgna.project.ast.IdentifierUtilities.isValidIdentifier( this.instanceNameVC.getText() );
-//		return super.isOKButtonValid() && isInstanceNameValid;
-//	}
+
+	//	@Override
+	//	public boolean isOKButtonValid() {
+	//		try {
+	//			Double.parseDouble( this.heightTextField.getText() );
+	//		} catch( NumberFormatException nfe ) {
+	//			return false;
+	//		}
+	//		boolean isInstanceNameValid = org.lgna.project.ast.IdentifierUtilities.isValidIdentifier( this.instanceNameVC.getText() );
+	//		return super.isOKButtonValid() && isInstanceNameValid;
+	//	}
 	private void handleTextChange( javax.swing.event.DocumentEvent e ) {
 		if( this.constrainInstanceNameToTextVC.getAwtComponent().isSelected() ) {
 			String text = this.textVC.getText();
@@ -311,9 +323,9 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		}
 	}
 
-//	/*package-private*/ String getInstanceNameText() {
-//		return this.textVC.getText();
-//	}
+	//	/*package-private*/ String getInstanceNameText() {
+	//		return this.textVC.getText();
+	//	}
 	protected org.lgna.story.STextModel createText() {
 		org.lgna.story.STextModel rv = new org.lgna.story.STextModel();
 		org.lgna.story.font.FamilyAttribute familyAttribute = this.familySelection.getFamilyAttribute();
@@ -327,7 +339,7 @@ class CreateTextPane extends org.lgna.croquet.components.RowsSpringPanel {
 		rv.setHeight( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.heightTextField.getText() ) );
 		return rv;
 	}
-	
+
 }
 
 /**
@@ -337,37 +349,39 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 	private static class SingletonHolder {
 		private static Create3dTextOperation instance = new Create3dTextOperation();
 	}
+
 	public static Create3dTextOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private Create3dTextOperation() {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "extend AbstractGalleryDeclareFieldOperation" );
 	}
-	
-//	@Override
-//	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
-//		CreateTextPane pane = step.getMainPanel();
-//		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = new org.alice.ide.name.validators.FieldNameValidator( org.alice.ide.IDE.getActiveInstance().getSceneType() );
-//		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( pane.getInstanceNameText() );
-//		if( rv != null ) {
-//			return rv;
-//		} else {
-//			return super.getInternalExplanation( step );
-//		}
-//	}
+
+	//	@Override
+	//	protected String getInternalExplanation( org.lgna.croquet.history.InputDialogOperationStep step ) {
+	//		CreateTextPane pane = step.getMainPanel();
+	//		org.alice.ide.name.validators.NodeNameValidator nodeNameValidator = new org.alice.ide.name.validators.FieldNameValidator( org.alice.ide.IDE.getActiveInstance().getSceneType() );
+	//		String rv = nodeNameValidator.getExplanationIfOkButtonShouldBeDisabled( pane.getInstanceNameText() );
+	//		if( rv != null ) {
+	//			return rv;
+	//		} else {
+	//			return super.getInternalExplanation( step );
+	//		}
+	//	}
 
 	@Override
 	protected org.alice.stageide.croquet.models.gallerybrowser.CreateTextPane prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return new CreateTextPane( this ); 
+		return new CreateTextPane( this );
 	}
-	
-	private edu.cmu.cs.dennisc.pattern.Tuple2< org.lgna.project.ast.UserField, org.lgna.story.STextModel > createFieldAndInstance( org.lgna.croquet.history.CompletionStep<?> step ) {
+
+	private edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.STextModel> createFieldAndInstance( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//"Create Text"
 		CreateTextPane createTextPane = (CreateTextPane)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 		org.lgna.story.STextModel text = createTextPane.createText();
 		if( text != null ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeFor( org.lgna.story.STextModel.class );
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeFor( org.lgna.story.STextModel.class );
 			org.lgna.project.ast.Expression initializer = org.lgna.project.ast.AstUtilities.createInstanceCreation( type );
 			org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField( text.getName(), type, initializer );
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
@@ -377,16 +391,17 @@ public class Create3dTextOperation extends org.lgna.croquet.InputDialogOperation
 			return null;
 		}
 	}
-	
+
 	private final org.lgna.project.ast.NamedUserType getOwnerType() {
 		return org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
 	}
+
 	private boolean isInstanceValid() {
 		return true;
 	}
-	
+
 	@Override
-	protected final void epilogue(org.lgna.croquet.history.CompletionStep<?> step, boolean isOk) {
+	protected final void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isOk ) {
 		if( isOk ) {
 			edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.UserField, org.lgna.story.STextModel> tuple = this.createFieldAndInstance( step );
 			if( tuple != null ) {

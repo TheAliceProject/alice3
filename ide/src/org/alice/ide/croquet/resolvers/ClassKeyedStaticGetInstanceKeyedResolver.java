@@ -46,18 +46,21 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class ClassKeyedStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
+public class ClassKeyedStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
 	public ClassKeyedStaticGetInstanceKeyedResolver( T instance, Class<?> cls ) {
 		super( instance, new Class[] { Class.class }, new Object[] { cls } );
 	}
+
 	public ClassKeyedStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		Class<?> cls = this.decodeClass( binaryDecoder );
 		return new Object[] { cls };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Object[] arguments ) {
 		Class<?> cls = (Class<?>)arguments[ 0 ];

@@ -46,19 +46,23 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class ResourceExpression extends Expression {
-	public DeclarationProperty< AbstractType<?,?,?> > type = new DeclarationProperty< AbstractType<?,?,?> >( this );
+	public DeclarationProperty<AbstractType<?, ?, ?>> type = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
+
 	public ResourceExpression() {
 	}
-	public ResourceExpression( AbstractType<?,?,?> type, org.lgna.common.Resource resource ) {
+
+	public ResourceExpression( AbstractType<?, ?, ?> type, org.lgna.common.Resource resource ) {
 		this.type.setValue( type );
 		this.resource.setValue( resource );
 	}
+
 	public <T extends org.lgna.common.Resource> ResourceExpression( Class<T> cls, T resource ) {
 		this( JavaType.getInstance( cls ), resource );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return type.getValue();
 	}
 }

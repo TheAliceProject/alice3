@@ -53,12 +53,15 @@ public class ClippedZPlane {
 
 	public ClippedZPlane() {
 	}
+
 	public ClippedZPlane( ClippedZPlane other ) {
 		set( other );
 	}
+
 	public ClippedZPlane( ClippedZPlane other, java.awt.Rectangle viewport ) {
 		set( other, viewport );
 	}
+
 	public static ClippedZPlane createNaN() {
 		ClippedZPlane rv = new ClippedZPlane();
 		rv.center.setNaN();
@@ -66,50 +69,58 @@ public class ClippedZPlane {
 		rv.halfHeight = Double.NaN;
 		return rv;
 	}
+
 	public void set( ClippedZPlane other ) {
 		this.center.set( other.center );
 		this.halfWidth = other.halfWidth;
 		this.halfHeight = other.halfHeight;
 	}
+
 	public void set( ClippedZPlane other, java.awt.Rectangle viewport ) {
 		this.set( other );
 		if( Double.isNaN( this.halfWidth ) ) {
 			if( Double.isNaN( this.halfHeight ) ) {
 				this.halfHeight = DEFAULT_HALF_HEIGHT;
 			}
-			double factor = viewport.width / (double) viewport.height;
+			double factor = viewport.width / (double)viewport.height;
 			this.halfWidth = factor * this.halfHeight;
 		} else {
 			if( Double.isNaN( this.halfHeight ) ) {
-				double factor = viewport.height / (double) viewport.width;
+				double factor = viewport.height / (double)viewport.width;
 				this.halfHeight = factor * this.halfWidth;
 			}
 		}
 	}
-	
+
 	public Point2 getCenter( Point2 rv ) {
 		rv.set( this.center );
 		return rv;
 	}
+
 	public Point2 getCenter() {
 		return this.getCenter( Point2.createNaN() );
 	}
+
 	public void setCenter( double x, double y ) {
 		this.center.set( x, y );
 	}
+
 	public void setCenter( Point2 center ) {
 		this.center.set( center );
 	}
-	
+
 	public double getWidth() {
 		return this.halfWidth * 2.0;
 	}
+
 	public void setWidth( double width ) {
 		this.halfWidth = width * 0.5;
 	}
+
 	public double getHeight() {
 		return this.halfHeight * 2.0;
 	}
+
 	public void setHeight( double height ) {
 		this.halfHeight = height * 0.5;
 	}
@@ -117,12 +128,15 @@ public class ClippedZPlane {
 	public double getXMinimum() {
 		return this.center.x - this.halfWidth;
 	}
+
 	public double getXMaximum() {
 		return this.center.x + this.halfWidth;
 	}
+
 	public double getYMinimum() {
 		return this.center.y - this.halfHeight;
 	}
+
 	public double getYMaximum() {
 		return this.center.y + this.halfHeight;
 	}

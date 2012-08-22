@@ -46,28 +46,33 @@ package org.alice.stageide.typecontext;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneTypeComposite extends org.lgna.croquet.SimpleComposite< org.alice.stageide.typecontext.components.SceneTypeView > {
+public class SceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.typecontext.components.SceneTypeView> {
 	private static class SingletonHolder {
 		private static SceneTypeComposite instance = new SceneTypeComposite();
 	}
+
 	public static SceneTypeComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SceneTypeComposite() {
 		super( java.util.UUID.fromString( "d0484679-2f78-4cc5-9ac5-0de8bcf31db1" ) );
 	}
+
 	@Override
 	protected org.alice.stageide.typecontext.components.SceneTypeView createView() {
 		return new org.alice.stageide.typecontext.components.SceneTypeView( this );
 	}
+
 	@Override
 	public void handlePreActivation() {
-		super.handlePreActivation();		
+		super.handlePreActivation();
 		this.getView().addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		this.getView().removeComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
-		super.handlePostDeactivation();		
+		super.handlePostDeactivation();
 	}
 }

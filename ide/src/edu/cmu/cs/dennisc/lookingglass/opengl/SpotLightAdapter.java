@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class SpotLightAdapter extends PointLightAdapter< edu.cmu.cs.dennisc.scenegraph.SpotLight > {
+public class SpotLightAdapter extends PointLightAdapter<edu.cmu.cs.dennisc.scenegraph.SpotLight> {
 	private float m_outerBeamAngleInDegrees;
+
 	@Override
 	protected float[] getSpotDirection( float[] rv ) {
 		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
@@ -56,6 +57,7 @@ public class SpotLightAdapter extends PointLightAdapter< edu.cmu.cs.dennisc.scen
 		rv[ 2 ] = (float)db.get( 10 );
 		return rv;
 	}
+
 	//todo?
 	//protected float getSpotExponent() {
 	//    return ???;

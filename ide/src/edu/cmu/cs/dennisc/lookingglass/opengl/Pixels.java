@@ -47,14 +47,14 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
-	private static final java.awt.image.ComponentColorModel RGBA_COLOR_MODEL = new java.awt.image.ComponentColorModel( 
-		java.awt.color.ColorSpace.getInstance( java.awt.color.ColorSpace.CS_sRGB ), 
-		new int[] { 8, 8, 8, 8 }, 
-		true, 
-		false,
-		java.awt.image.ComponentColorModel.TRANSLUCENT, 
-		java.awt.image.DataBuffer.TYPE_BYTE 
-	);
+	private static final java.awt.image.ComponentColorModel RGBA_COLOR_MODEL = new java.awt.image.ComponentColorModel(
+			java.awt.color.ColorSpace.getInstance( java.awt.color.ColorSpace.CS_sRGB ),
+			new int[] { 8, 8, 8, 8 },
+			true,
+			false,
+			java.awt.image.ComponentColorModel.TRANSLUCENT,
+			java.awt.image.DataBuffer.TYPE_BYTE
+			);
 
 	private edu.cmu.cs.dennisc.texture.Texture m_texture;
 
@@ -68,16 +68,17 @@ class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
 	}
 
 	public void textureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent textureEvent ) {
-		if( m_texture != null && m_writableRaster != null && m_bufferedImage != null ) {
-			if( m_texture.getWidth() != m_bufferedImage.getWidth() || m_texture.getHeight() != m_bufferedImage.getHeight() ) {  
+		if( ( m_texture != null ) && ( m_writableRaster != null ) && ( m_bufferedImage != null ) ) {
+			if( ( m_texture.getWidth() != m_bufferedImage.getWidth() ) || ( m_texture.getHeight() != m_bufferedImage.getHeight() ) ) {
 				touchImage();
 			}
 		}
 	}
+
 	public void touchImage() {
 		m_data = null;
 		if( m_writableRaster != null ) {
-			if( m_texture.getWidth() != m_writableRaster.getWidth() || m_texture.getHeight() != m_writableRaster.getHeight() ) {
+			if( ( m_texture.getWidth() != m_writableRaster.getWidth() ) || ( m_texture.getHeight() != m_writableRaster.getHeight() ) ) {
 				m_writableRaster = null;
 				m_bufferedImage = null;
 			}
@@ -97,6 +98,7 @@ class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
 	public int getWidth() {
 		return m_texture.getWidth();
 	}
+
 	public int getHeight() {
 		return m_texture.getHeight();
 	}

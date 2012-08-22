@@ -48,5 +48,6 @@ package edu.cmu.cs.dennisc.pattern.event;
  */
 public interface NameListener {
 	public void nameChanging( NameEvent nameEvent );
+
 	public void nameChanged( NameEvent nameEvent );
 }

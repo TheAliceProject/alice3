@@ -42,7 +42,6 @@
  */
 package edu.cmu.cs.dennisc.java.awt;
 
-
 //todo: subtract border
 
 /**
@@ -56,6 +55,7 @@ public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
 			component.setSize( size );
 		}
 	}
+
 	public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 		java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
 		for( java.awt.Component component : parent.getComponents() ) {
@@ -65,6 +65,7 @@ public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
 		}
 		return rv;
 	}
+
 	public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 		java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
 		for( java.awt.Component component : parent.getComponents() ) {
@@ -74,8 +75,10 @@ public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
 		}
 		return rv;
 	}
+
 	public void addLayoutComponent( String name, java.awt.Component comp ) {
 	}
+
 	public void removeLayoutComponent( java.awt.Component comp ) {
 	}
 }

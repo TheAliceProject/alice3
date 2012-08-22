@@ -47,7 +47,8 @@ package org.alice.ide.ast.code;
  * @author dennisc
  */
 public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap< org.alice.ide.ast.draganddrop.BlockStatementIndexPair,org.lgna.project.ast.Statement,org.alice.ide.ast.draganddrop.BlockStatementIndexPair,MoveStatementOperation > map = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> map = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+
 	public static synchronized MoveStatementOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
 		MoveStatementOperation rv = map.get( fromLocation, statement, toLocation );
 		if( rv != null ) {
@@ -62,31 +63,36 @@ public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
 	private final org.lgna.project.ast.Statement statement;
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
-	
+
 	private MoveStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
 		this.fromLocation = fromLocation;
 		this.statement = statement;
 		this.toLocation = toLocation;
 	}
+
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getFromLocation() {
 		return this.fromLocation;
 	}
+
 	public org.lgna.project.ast.Statement getStatement() {
 		return this.statement;
 	}
+
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getToLocation() {
 		return this.toLocation;
 	}
-	
+
 	@Override
 	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return originalEdit;
 	}
+
 	@Override
 	protected org.lgna.croquet.resolvers.Resolver<MoveStatementOperation> createResolver() {
 		return new org.alice.ide.ast.code.resolvers.MoveStatementOperationResolver( this );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<MoveStatementOperation> completionStep = transaction.createAndSetCompletionStep( this, trigger );

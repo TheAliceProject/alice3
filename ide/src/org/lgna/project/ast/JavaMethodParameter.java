@@ -71,7 +71,8 @@ public class JavaMethodParameter extends JavaParameter {
 	private int m_index;
 	private String m_name;
 	private JavaType m_valueType;
-	/*package-private*/ JavaMethodParameter( JavaMethod method, int index, java.lang.annotation.Annotation[] annotations ) {
+
+	/* package-private */JavaMethodParameter( JavaMethod method, int index, java.lang.annotation.Annotation[] annotations ) {
 		super( annotations );
 		m_method = method;
 		m_index = index;
@@ -79,21 +80,23 @@ public class JavaMethodParameter extends JavaParameter {
 		m_name = getParameterNameFor( methodReflectionProxy, m_index );
 		m_valueType = JavaType.getInstance( methodReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
 	}
-	
+
 	@Override
 	public JavaMethod getCode() {
 		return m_method;
 	}
+
 	public int getIndex() {
 		return m_index;
 	}
-	
+
 	@Override
 	public String getName() {
 		return m_name;
 	}
+
 	@Override
-	public AbstractType<?,?,?> getValueType() {
+	public AbstractType<?, ?, ?> getValueType() {
 		return m_valueType;
 	}
 
@@ -101,12 +104,12 @@ public class JavaMethodParameter extends JavaParameter {
 	public boolean isVariableLength() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaMethodParameter ) {
 			JavaMethodParameter otherPDIJM = (JavaMethodParameter)other;
-			return m_method.equals( otherPDIJM.m_method ) && m_index == otherPDIJM.m_index && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJM.m_name ) && m_valueType.equals( otherPDIJM.m_valueType );
+			return m_method.equals( otherPDIJM.m_method ) && ( m_index == otherPDIJM.m_index ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJM.m_name ) && m_valueType.equals( otherPDIJM.m_valueType );
 		} else {
 			return false;
 		}

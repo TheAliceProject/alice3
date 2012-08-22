@@ -49,14 +49,13 @@ import edu.cmu.cs.dennisc.matt.ProximityDistance;
  */
 public class AddEnterProximityEventListener {
 
-
 	public static interface Detail {
 	}
-	
-	public static Double getDist(Detail[] details){
-		for(Detail detail: details){
-			if(detail instanceof ProximityDistance){
-				return ((ProximityDistance)detail).getDist();
+
+	public static Double getDist( Detail[] details ) {
+		for( Detail detail : details ) {
+			if( detail instanceof ProximityDistance ) {
+				return ( (ProximityDistance)detail ).getDist();
 			}
 		}
 		return 0.0;

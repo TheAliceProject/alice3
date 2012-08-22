@@ -49,6 +49,7 @@ public abstract class UriSerialOperation extends org.lgna.croquet.SerialOperatio
 	public UriSerialOperation( java.util.UUID individualUUID ) {
 		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
 	}
+
 	protected org.alice.ide.ProjectApplication getProjectApplication() {
 		return org.alice.ide.ProjectApplication.getActiveInstance();
 	}

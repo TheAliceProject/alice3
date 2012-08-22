@@ -46,24 +46,29 @@ package org.alice.ide.croquet.models.cascade.literals;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.DoubleLiteral > {
+public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.DoubleLiteral> {
 	private final org.lgna.project.ast.DoubleLiteral transientValue;
+
 	public AbstractDoubleLiteralFillIn( java.util.UUID id, double value ) {
 		super( id );
 		this.transientValue = new org.lgna.project.ast.DoubleLiteral( value );
 	}
+
 	@Override
-	public org.lgna.project.ast.DoubleLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.DoubleLiteral,Void > node ) {
+	public org.lgna.project.ast.DoubleLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.DoubleLiteral, Void> node ) {
 		return this.transientValue;
 	}
+
 	@Override
-	public org.lgna.project.ast.DoubleLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.DoubleLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.DoubleLiteral createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.DoubleLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.DoubleLiteral( this.transientValue.value.getValue() );
 	}
+
 	@Override
 	protected org.alice.ide.croquet.resolvers.PrimitiveDoubleStaticGetInstanceKeyedResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.PrimitiveDoubleStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
 	}
+
 	@Override
 	protected String getTutorialItemText() {
 		return this.transientValue.value.getValue().toString();

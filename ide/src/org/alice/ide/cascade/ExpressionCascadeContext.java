@@ -47,5 +47,6 @@ package org.alice.ide.cascade;
  */
 public interface ExpressionCascadeContext {
 	public org.lgna.project.ast.Expression getPreviousExpression();
+
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair();
 }

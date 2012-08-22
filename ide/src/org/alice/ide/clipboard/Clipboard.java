@@ -52,23 +52,29 @@ public enum Clipboard {
 	private static class ClipboardDropSite implements org.lgna.croquet.DropSite {
 		public ClipboardDropSite() {
 		}
+
 		public ClipboardDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			//todo
 		}
+
 		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 			//todo
 		}
+
 		@Override
 		public int hashCode() {
 			return 0;
 		}
+
 		@Override
 		public boolean equals( Object obj ) {
 			return obj instanceof ClipboardDropSite;
 		}
+
 		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 			return Clipboard.SINGLETON.dragComponent.getDropReceptor();
 		}
+
 		public ClipboardDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 			return this;
 		}
@@ -78,6 +84,7 @@ public enum Clipboard {
 		public ClipboardDragModel() {
 			super( java.util.UUID.fromString( "d6c25f14-7ed2-4cb8-90dd-f621af830060" ) );
 		}
+
 		@Override
 		public boolean isAddEventListenerLikeSubstance() {
 			org.lgna.project.ast.Node node = Clipboard.SINGLETON.peek();
@@ -88,6 +95,7 @@ public enum Clipboard {
 				return false;
 			}
 		}
+
 		@Override
 		public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 			org.lgna.croquet.DragModel dragModel = step.getModel();
@@ -107,7 +115,7 @@ public enum Clipboard {
 		}
 	}
 
-	private final java.util.Stack< org.lgna.project.ast.AbstractNode > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<org.lgna.project.ast.AbstractNode> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private final ClipboardDropSite dropSite = new ClipboardDropSite();
 	private final ClipboardDragModel dragModel = new ClipboardDragModel();
 	private final org.alice.ide.clipboard.components.ClipboardDragComponent dragComponent = new org.alice.ide.clipboard.components.ClipboardDragComponent( dragModel );
@@ -115,33 +123,40 @@ public enum Clipboard {
 	public org.lgna.croquet.components.DragComponent getDragComponent() {
 		return this.dragComponent;
 	}
+
 	public org.lgna.croquet.DropReceptor getDropReceptor() {
 		return this.dragComponent.getDropReceptor();
 	}
+
 	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
 	}
+
 	public org.lgna.croquet.DragModel getDragModel() {
 		return this.dragModel;
 	}
 
 	public boolean isStackEmpty() {
-		return ( this.stack != null && this.stack.size() > 0 ) == false;
+		return ( ( this.stack != null ) && ( this.stack.size() > 0 ) ) == false;
 	}
+
 	public int getStackSize() {
 		return this.stack.size();
 	}
+
 	public org.lgna.project.ast.AbstractNode peek() {
-		if( this.stack.size() > 0  ) {
+		if( this.stack.size() > 0 ) {
 			return this.stack.peek();
 		} else {
 			return null;
 		}
 	}
+
 	public void push( org.lgna.project.ast.AbstractNode node ) {
 		this.stack.push( node );
 		this.dragComponent.refresh();
 	}
+
 	public org.lgna.project.ast.AbstractNode pop() {
 		org.lgna.project.ast.AbstractNode rv = this.stack.pop();
 		this.dragComponent.refresh();

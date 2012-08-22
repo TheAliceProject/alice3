@@ -49,12 +49,15 @@ public class ImportTypeOperation extends org.lgna.croquet.ActionOperation { //to
 	private static class SingletonHolder {
 		private static ImportTypeOperation instance = new ImportTypeOperation();
 	}
+
 	public static ImportTypeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ImportTypeOperation() {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7f07e40b-8ec6-4273-a79b-bffb28a013a5" ) );
 	}
+
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep step = TypeFromUriProducer.getInstance().fire( new org.lgna.croquet.triggers.IterationTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );

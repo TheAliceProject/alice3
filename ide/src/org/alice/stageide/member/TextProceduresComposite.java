@@ -50,9 +50,11 @@ public class TextProceduresComposite extends org.alice.ide.member.NameFilteredJa
 	private static class SingletonHolder {
 		private static TextProceduresComposite instance = new TextProceduresComposite();
 	}
+
 	public static TextProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TextProceduresComposite() {
 		super( java.util.UUID.fromString( "171718b6-5bfe-48b8-b90c-4c651bd4bd6f" ), "setValue", "append", "delete", "deleteCharAt", "insert", "replace", "setCharAt" );
 	}

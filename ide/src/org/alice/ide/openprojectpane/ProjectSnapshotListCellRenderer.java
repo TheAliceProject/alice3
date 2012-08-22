@@ -50,10 +50,13 @@ abstract class AbstractNotAvailableIcon implements javax.swing.Icon {
 	public int getIconWidth() {
 		return 160;
 	}
+
 	public int getIconHeight() {
 		return 120;
 	}
+
 	protected abstract String getText();
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		int width = this.getIconWidth();
 		int height = this.getIconHeight();
@@ -80,6 +83,7 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 			return "snapshot does not exist";
 		}
 	};
+
 	@Override
 	protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
 		java.net.URI uri = (java.net.URI)value;
@@ -93,7 +97,7 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 					//todo: remove
 					String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
 					if( path != null ) {
-						String snapshotPath = path.substring( 0, path.length()-3 ) + "png";
+						String snapshotPath = path.substring( 0, path.length() - 3 ) + "png";
 						if( edu.cmu.cs.dennisc.java.io.FileUtilities.existsAndHasLengthGreaterThanZero( snapshotPath ) ) {
 							icon = new javax.swing.ImageIcon( snapshotPath );
 						} else {
@@ -102,9 +106,7 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 					} else {
 						icon = null;
 					}
-					
-					
-					
+
 					if( icon != null ) {
 						//pass
 					} else {
@@ -113,7 +115,7 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 							java.util.zip.ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
 							if( zipEntry != null ) {
 								java.io.InputStream is = zipFile.getInputStream( zipEntry );
-								java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
+								java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
 								icon = new javax.swing.ImageIcon( image );
 							} else {
 								icon = SNAPSHOT_NOT_AVAILABLE_ICON;
@@ -134,7 +136,7 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 			text = null;
 			icon = FILE_DOES_NOT_EXIST_ICON;
 		}
-		
+
 		rv.setText( text );
 		rv.setIcon( icon );
 		return rv;

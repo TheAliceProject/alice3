@@ -50,21 +50,26 @@ public class ItemEventTrigger extends EventObjectTrigger<java.awt.event.ItemEven
 	public static ItemEventTrigger createUserInstance( java.awt.event.ItemEvent itemEvent ) {
 		return new ItemEventTrigger( Origin.USER, null, itemEvent );
 	}
+
 	public static ItemEventTrigger createGeneratorInstance() {
 		return new ItemEventTrigger( Origin.GENERATOR, null, null );
 	}
-	private ItemEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?,?> viewController, java.awt.event.ItemEvent itemEvent ) {
+
+	private ItemEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.ItemEvent itemEvent ) {
 		super( origin, viewController, itemEvent );
 	}
+
 	public ItemEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+
 	@Override
-	public String getNoteText( ) {
+	public String getNoteText() {
 		return "Select";
 	}
 }

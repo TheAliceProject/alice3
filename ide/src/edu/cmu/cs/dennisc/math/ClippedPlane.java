@@ -47,16 +47,18 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public final class ClippedPlane {
-	private final Point3[] points = { 
-			new Point3(), 
-			new Point3(), 
+	private final Point3[] points = {
 			new Point3(),
-			new Point3() 
+			new Point3(),
+			new Point3(),
+			new Point3()
 	};
-	private final Vector3 normal = new Vector3(); 
+	private final Vector3 normal = new Vector3();
+
 	public ClippedPlane( Point3[] points, Vector3 normal ) {
 		set( points, normal );
 	}
+
 	private boolean isEqual( ClippedPlane other ) {
 		for( int i = 0; i < this.points.length; i++ ) {
 			if( this.points[ i ].equals( other.points[ i ] ) ) {
@@ -77,9 +79,9 @@ public final class ClippedPlane {
 	public final int hashCode() {
 		int rv = 17;
 		for( Point3 point : this.points ) {
-			rv = 37*rv + point.hashCode();
+			rv = ( 37 * rv ) + point.hashCode();
 		}
-		rv = 37*rv + this.normal.hashCode();
+		rv = ( 37 * rv ) + this.normal.hashCode();
 		return rv;
 	}
 
@@ -108,6 +110,7 @@ public final class ClippedPlane {
 		}
 		this.normal.setNaN();
 	}
+
 	public boolean isNaN() {
 		for( Point3 point : this.points ) {
 			if( point.isNaN() ) {
@@ -119,13 +122,14 @@ public final class ClippedPlane {
 		}
 		return false;
 	}
+
 	public void transform( AbstractMatrix4x4 m ) {
 		for( Point3 point : this.points ) {
 			m.transform( point );
 		}
 		m.transform( this.normal );
 	}
-	
+
 	public Plane getPlane() {
 		return Plane.createInstance( this.points[ 0 ], this.normal );
 	}

@@ -47,5 +47,6 @@ package edu.cmu.cs.dennisc.java.util.zip;
  */
 public interface DataSource {
 	public String getName();
+
 	public void write( java.io.OutputStream os ) throws java.io.IOException;
 }

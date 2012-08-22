@@ -48,28 +48,35 @@ package org.lgna.story.implementation;
  */
 public class StandInImp extends AbstractTransformableImp implements edu.cmu.cs.dennisc.pattern.Reusable {
 	private final edu.cmu.cs.dennisc.scenegraph.StandIn sgStandIn = new edu.cmu.cs.dennisc.scenegraph.StandIn();
+
 	public StandInImp() {
 		this.putInstance( this.sgStandIn );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
 		return this.sgStandIn.getVehicle();
 	}
+
 	@Override
 	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
 		this.sgStandIn.setVehicle( sgVehicle );
 	}
+
 	@Override
 	public org.lgna.story.SThing getAbstraction() {
 		return null;
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.StandIn getSgComposite() {
 		return this.sgStandIn;
 	}
+
 	public void release() {
 		this.setVehicle( null );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		return rv;

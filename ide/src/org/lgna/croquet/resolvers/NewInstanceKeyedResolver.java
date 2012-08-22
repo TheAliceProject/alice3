@@ -42,11 +42,10 @@
  */
 package org.lgna.croquet.resolvers;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NewInstanceKeyedResolver<T> extends KeyedResolver< T > {
+public abstract class NewInstanceKeyedResolver<T> extends KeyedResolver<T> {
 	private static <T> String buildExceptionMessage( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "\n" );
@@ -58,16 +57,19 @@ public abstract class NewInstanceKeyedResolver<T> extends KeyedResolver< T > {
 		sb.append( "\n" );
 		return sb.toString();
 	}
+
 	public NewInstanceKeyedResolver( T instance, Class<?>[] parameterTypes, Object[] arguments ) {
 		super( instance, parameterTypes, arguments );
 	}
+
 	public NewInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
-	protected T resolve(Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments) {
+	protected T resolve( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments ) {
 		try {
-			java.lang.reflect.Constructor< T > cstrctr = instanceCls.getConstructor( parameterTypes );
+			java.lang.reflect.Constructor<T> cstrctr = instanceCls.getConstructor( parameterTypes );
 			return cstrctr.newInstance( arguments );
 		} catch( InstantiationException ie ) {
 			throw new RuntimeException( buildExceptionMessage( instanceCls, parameterTypes, arguments ), ie );

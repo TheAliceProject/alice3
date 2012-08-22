@@ -49,13 +49,15 @@ package org.alice.ide.ast.declaration;
 public abstract class InsertEachInComposite<S extends org.lgna.project.ast.Statement> extends InsertStatementComposite<S> {
 	public InsertEachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( migrationId, new Details()
-			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-			.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
-			.name( ApplicabilityStatus.EDITABLE )
-			.initializer( ApplicabilityStatus.EDITABLE, null ),
-		blockStatementIndexPair );
+				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
+				.name( ApplicabilityStatus.EDITABLE )
+				.initializer( ApplicabilityStatus.EDITABLE, null ),
+				blockStatementIndexPair );
 	}
+
 	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
+
 	@Override
 	protected final S createStatement() {
 		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );

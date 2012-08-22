@@ -46,19 +46,21 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class NumberModelShortStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
+public class NumberModelShortStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
 	public NumberModelShortStaticGetInstanceKeyedResolver( T instance, org.alice.ide.croquet.models.numberpad.NumberModel numberModel, short numeral ) {
 		super( instance, new Class[] { org.alice.ide.croquet.models.numberpad.NumberModel.class, Short.TYPE }, new Object[] { numberModel, numeral } );
 	}
+
 	public NumberModelShortStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		final String METHOD_NAME = "getInstance";
 		String clsName = binaryDecoder.decodeString();
 		try {
-			Class< ? > cls = edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( clsName );
+			Class<?> cls = edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( clsName );
 			java.lang.reflect.Method mthd = cls.getMethod( METHOD_NAME );
 			Object instance = mthd.invoke( null );
 			short numeral = binaryDecoder.decodeShort();
@@ -73,6 +75,7 @@ public class NumberModelShortStaticGetInstanceKeyedResolver<T> extends org.lgna.
 			throw new RuntimeException( clsName + " " + METHOD_NAME, ite );
 		}
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		org.alice.ide.croquet.models.numberpad.NumberModel numberModel = (org.alice.ide.croquet.models.numberpad.NumberModel)arguments[ 0 ];

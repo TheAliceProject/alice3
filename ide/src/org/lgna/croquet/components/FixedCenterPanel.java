@@ -50,6 +50,7 @@ public class FixedCenterPanel extends SingleComponentPanel {
 	public FixedCenterPanel( Component<?> centerPanel ) {
 		super( centerPanel );
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new SingleComponentLayoutManager() {
@@ -62,16 +63,16 @@ public class FixedCenterPanel extends SingleComponentPanel {
 			}
 		};
 	}
-//	public static void main( String[] args ) {
-//		final java.awt.Dimension size = new java.awt.Dimension( 640, 360 ); 
-//		BorderPanel centerComponent = new BorderPanel();
-//		centerComponent.setPreferredSize( size );
-//		centerComponent.setBackgroundColor( java.awt.Color.RED );
-//		FixedCenterPanel panel = new FixedCenterPanel( centerComponent );
-//		
-//		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-//		application.getFrame().getContentPanel().addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-//		application.getFrame().pack();
-//		application.getFrame().setVisible( true );
-//	}
+	//	public static void main( String[] args ) {
+	//		final java.awt.Dimension size = new java.awt.Dimension( 640, 360 ); 
+	//		BorderPanel centerComponent = new BorderPanel();
+	//		centerComponent.setPreferredSize( size );
+	//		centerComponent.setBackgroundColor( java.awt.Color.RED );
+	//		FixedCenterPanel panel = new FixedCenterPanel( centerComponent );
+	//		
+	//		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
+	//		application.getFrame().getContentPanel().addComponent( panel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+	//		application.getFrame().pack();
+	//		application.getFrame().setVisible( true );
+	//	}
 }

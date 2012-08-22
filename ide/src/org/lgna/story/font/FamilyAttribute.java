@@ -46,5 +46,5 @@ package org.lgna.story.font;
 /**
  * @author Dennis Cosgrove
  */
-public interface FamilyAttribute extends Attribute< String > {
+public interface FamilyAttribute extends Attribute<String> {
 }

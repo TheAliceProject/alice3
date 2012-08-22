@@ -51,9 +51,11 @@ public enum YesNoCancelOption {
 	NO( javax.swing.JOptionPane.NO_OPTION ),
 	CANCEL( javax.swing.JOptionPane.CANCEL_OPTION );
 	private final int internal;
+
 	YesNoCancelOption( int internal ) {
 		this.internal = internal;
 	}
+
 	public static YesNoCancelOption getInstance( int internal ) {
 		for( YesNoCancelOption value : YesNoCancelOption.values() ) {
 			if( value.internal == internal ) {

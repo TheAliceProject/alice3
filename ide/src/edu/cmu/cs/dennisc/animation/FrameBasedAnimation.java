@@ -50,10 +50,13 @@ public abstract class FrameBasedAnimation extends AbstractAnimation {
 	private int m_iCurrent;
 
 	public abstract int getFrameCount();
+
 	public abstract double getFramesPerSecond();
+
 	protected double getDurationPerFrame() {
 		return 1.0 / getFramesPerSecond();
 	}
+
 	protected double getDuration() {
 		return getFrameCount() * getDurationPerFrame();
 	}
@@ -65,7 +68,7 @@ public abstract class FrameBasedAnimation extends AbstractAnimation {
 		double tDuration = getDuration();
 		double tRemaining = tDuration - deltaSincePrologue;
 		double tDurationPerFrame = getDurationPerFrame();
-		m_iCurrent = (int)((deltaSincePrologue + 0.5 * tDurationPerFrame) / tDurationPerFrame);
+		m_iCurrent = (int)( ( deltaSincePrologue + ( 0.5 * tDurationPerFrame ) ) / tDurationPerFrame );
 		m_iCurrent = Math.min( m_iCurrent, getFrameCount() - 1 );
 		if( m_iPrevious == m_iCurrent ) {
 			//pass
@@ -85,7 +88,7 @@ public abstract class FrameBasedAnimation extends AbstractAnimation {
 			}
 			if( animationObserver instanceof FrameBasedAnimationObserver ) {
 				try {
-					((FrameBasedAnimationObserver)animationObserver).updated( this, m_iCurrent );
+					( (FrameBasedAnimationObserver)animationObserver ).updated( this, m_iCurrent );
 				} catch( BreakException be ) {
 					tRemaining = 0.0;
 				}
@@ -94,10 +97,12 @@ public abstract class FrameBasedAnimation extends AbstractAnimation {
 		}
 		return tRemaining;
 	}
+
 	@Override
 	protected final void preEpilogue() {
 		this.setFrameIndex( getFrameCount() - 1 );
 	}
+
 	protected abstract void setFrameIndex( int frameIndex );
 }
 //public abstract class FrameBasedAnimation implements Animation {

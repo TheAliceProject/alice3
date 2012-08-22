@@ -49,15 +49,18 @@ package org.lgna.project.ast;
 public class ExpressionStatement extends Statement {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			throw new RuntimeException( "todo" );
 		}
 	};
+
 	public ExpressionStatement() {
 	}
+
 	public ExpressionStatement( Expression expression ) {
 		this.expression.setValue( expression );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );

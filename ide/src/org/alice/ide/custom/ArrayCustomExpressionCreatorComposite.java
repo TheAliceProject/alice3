@@ -46,8 +46,9 @@ package org.alice.ide.custom;
  * @author Dennis Cosgrove
  */
 public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.ArrayCustomExpressionCreatorView> {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, ArrayCustomExpressionCreatorComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ArrayCustomExpressionCreatorComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> arrayType ) {
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ArrayCustomExpressionCreatorComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static ArrayCustomExpressionCreatorComposite getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> arrayType ) {
 		synchronized( map ) {
 			ArrayCustomExpressionCreatorComposite rv = map.get( arrayType );
 			if( rv != null ) {
@@ -59,20 +60,22 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 			return rv;
 		}
 	}
-	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) ); 
-	private final org.lgna.project.ast.AbstractType<?,?,?> arrayType;
-	
-	private final org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > valueState = this.createListSelectionState( 
-			this.createKey( "valueState" ), 
-			org.lgna.project.ast.Expression.class, 
-			org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), 
+
+	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) );
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
+
+	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Expression> valueState = this.createListSelectionState(
+			this.createKey( "valueState" ),
+			org.lgna.project.ast.Expression.class,
+			org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ),
 			-1
-	);
-	private final org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > addItemCascade = this.createCascadeWithInternalBlank( this.createKey( "addItemCascade" ), org.lgna.project.ast.Expression.class, new CascadeCustomizer< org.lgna.project.ast.Expression >() {
-		public void appendBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+			);
+	private final org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> addItemCascade = this.createCascadeWithInternalBlank( this.createKey( "addItemCascade" ), org.lgna.project.ast.Expression.class, new CascadeCustomizer<org.lgna.project.ast.Expression>() {
+		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			ide.getExpressionCascadeManager().appendItems( rv, blankNode, arrayType.getComponentType(), null );
 		}
+
 		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
 			assert values.length == 1;
 			valueState.addItem( values[ 0 ] );
@@ -80,37 +83,44 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 			return null;
 		}
 	} );
-	
-	private ArrayCustomExpressionCreatorComposite( org.lgna.project.ast.AbstractType<?,?,?> arrayType ) {
+
+	private ArrayCustomExpressionCreatorComposite( org.lgna.project.ast.AbstractType<?, ?, ?> arrayType ) {
 		super( java.util.UUID.fromString( "187d56c4-cc05-4157-a5fc-55943ca5b099" ) );
 		assert arrayType.isArray() : arrayType;
 		this.arrayType = arrayType;
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getArrayType() {
 		return this.arrayType;
 	}
+
 	public org.lgna.croquet.PlainStringValue getArrayTypeLabel() {
 		return this.arrayTypeLabel;
 	}
-	public org.lgna.croquet.ListSelectionState< org.lgna.project.ast.Expression > getValueState() {
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Expression> getValueState() {
 		return this.valueState;
 	}
-	public org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > getAddItemCascade() {
+
+	public org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> getAddItemCascade() {
 		return this.addItemCascade;
 	}
-	
+
 	@Override
 	protected org.alice.ide.custom.components.ArrayCustomExpressionCreatorView createView() {
 		return new org.alice.ide.custom.components.ArrayCustomExpressionCreatorView( this );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
 		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.arrayType, this.valueState.toArray() );
 	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
+
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
 		org.lgna.project.ast.Expression[] items = {};
@@ -124,6 +134,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		//todo: transactionlessly
 		this.valueState.setListData( selectedIndex, items );
 	}
+
 	@Override
 	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		super.modifyPackedWindowSizeIfDesired( window );
@@ -131,7 +142,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( WIDTH );
 		window.setSize( WIDTH, HEIGHT );
 	}
-	
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {

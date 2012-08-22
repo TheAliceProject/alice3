@@ -46,44 +46,43 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.story.resources.JointedModelResource, org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource >> {
-	
-	public ResourcePropertyAdapter(org.lgna.story.implementation.JointedModelImp< ? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource > instance, StandardExpressionState expressionState) 
+public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.story.resources.JointedModelResource, org.lgna.story.implementation.JointedModelImp<? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource>> {
+
+	public ResourcePropertyAdapter( org.lgna.story.implementation.JointedModelImp<? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource> instance, StandardExpressionState expressionState )
 	{
-		super("Visual Resource", instance, expressionState);
+		super( "Visual Resource", instance, expressionState );
 	}
-	
 
 	@Override
-	public void setValue(org.lgna.story.resources.JointedModelResource value) 
+	public void setValue( org.lgna.story.resources.JointedModelResource value )
 	{
-		super.setValue(value);
-		if (this.instance != null)
+		super.setValue( value );
+		if( this.instance != null )
 		{
-			this.instance.setNewResource(value);
+			this.instance.setNewResource( value );
 		}
 	}
 
 	@Override
-	public Class<org.lgna.story.resources.JointedModelResource> getPropertyType() 
+	public Class<org.lgna.story.resources.JointedModelResource> getPropertyType()
 	{
 		return org.lgna.story.resources.JointedModelResource.class;
 	}
 
 	@Override
-	public org.lgna.story.resources.JointedModelResource getValue() 
+	public org.lgna.story.resources.JointedModelResource getValue()
 	{
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			return this.instance.getResource();
 		}
 		return null;
 	}
-	
+
 	@Override
-	public org.lgna.story.resources.JointedModelResource getValueCopyIfMutable() 
+	public org.lgna.story.resources.JointedModelResource getValueCopyIfMutable()
 	{
 		return this.getValue();
 	}

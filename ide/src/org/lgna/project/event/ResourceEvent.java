@@ -48,10 +48,12 @@ package org.lgna.project.event;
  */
 public class ResourceEvent extends java.util.EventObject {
 	private final org.lgna.common.Resource resource;
+
 	public ResourceEvent( org.lgna.project.Project project, org.lgna.common.Resource resource ) {
 		super( project );
 		this.resource = resource;
 	}
+
 	public org.lgna.common.Resource getResource() {
 		return this.resource;
 	}

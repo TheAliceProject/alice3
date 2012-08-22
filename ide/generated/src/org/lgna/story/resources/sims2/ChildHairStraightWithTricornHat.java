@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum ChildHairStraightWithTricornHat implements UnisexChildHair {
 	BLACK,
- 	BLOND,
- 	BROWN,
- 	RED;
+	BLOND,
+	BROWN,
+	RED;
 }

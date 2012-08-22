@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleChildHairPompodore implements MaleChildHair {
 	BROWN,
- 	BLACK,
- 	RED,
- 	BLOND;
+	BLACK,
+	RED,
+	BLOND;
 }

@@ -52,21 +52,25 @@ public class SoundUtilities {
 		clip.open( audioInputStream );
 		return clip;
 	}
+
 	public static javax.sound.sampled.Clip createOpenedClip( byte[] array ) throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
 		return createOpenedClip( new java.io.ByteArrayInputStream( array ) );
 	}
-	public static javax.sound.sampled.Clip createOpenedClip( Class< ? > cls, String resourceName ) throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
+
+	public static javax.sound.sampled.Clip createOpenedClip( Class<?> cls, String resourceName ) throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
 		java.io.InputStream is = cls.getResourceAsStream( resourceName );
 		byte[] buffer = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( is );
 		return createOpenedClip( buffer );
 	}
-	public static javax.sound.sampled.Clip createOpenedClip( java.io.File file )  throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
+
+	public static javax.sound.sampled.Clip createOpenedClip( java.io.File file ) throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
 		return createOpenedClip( new java.io.FileInputStream( file ) );
 	}
-	public static javax.sound.sampled.Clip createOpenedClip( String path )  throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
+
+	public static javax.sound.sampled.Clip createOpenedClip( String path ) throws javax.sound.sampled.LineUnavailableException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException {
 		return createOpenedClip( new java.io.File( path ) );
 	}
-	
+
 	public static void playAndDrainClip( javax.sound.sampled.Clip clip ) {
 		clip.setFramePosition( 0 );
 		clip.start();

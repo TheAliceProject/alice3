@@ -49,6 +49,7 @@ public abstract class SelectedResourceOperation extends ResourceOperation {
 	public SelectedResourceOperation( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
+
 	@Override
 	protected final org.lgna.common.Resource getResource() {
 		return ResourceTableRowSelectionState.getInstance().getValue();

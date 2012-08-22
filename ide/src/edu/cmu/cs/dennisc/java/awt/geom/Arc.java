@@ -47,13 +47,16 @@ package edu.cmu.cs.dennisc.java.awt.geom;
  */
 public class Arc extends Shape {
 	private java.awt.geom.Arc2D m_arc;
+
 	public Arc( double xHalfLength, double yHalfLength, edu.cmu.cs.dennisc.math.Angle angleStart, edu.cmu.cs.dennisc.math.Angle angleExtent ) {
-		m_arc = new java.awt.geom.Arc2D.Double( -xHalfLength, -yHalfLength, xHalfLength*2, yHalfLength*2, angleStart.getAsDegrees(), angleExtent.getAsDegrees(), java.awt.geom.Arc2D.OPEN );
+		m_arc = new java.awt.geom.Arc2D.Double( -xHalfLength, -yHalfLength, xHalfLength * 2, yHalfLength * 2, angleStart.getAsDegrees(), angleExtent.getAsDegrees(), java.awt.geom.Arc2D.OPEN );
 	}
+
 	@Override
 	protected java.awt.Shape getDrawShape() {
 		return m_arc;
 	}
+
 	@Override
 	protected java.awt.Shape getFillShape() {
 		return m_arc;

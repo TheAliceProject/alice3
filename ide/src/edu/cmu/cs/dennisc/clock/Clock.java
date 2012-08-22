@@ -47,7 +47,8 @@ package edu.cmu.cs.dennisc.clock;
  */
 public abstract class Clock {
 	private static long s_t0 = System.currentTimeMillis();
+
 	public static double getCurrentTime() {
-		return (System.currentTimeMillis() - s_t0) * 0.001;
+		return ( System.currentTimeMillis() - s_t0 ) * 0.001;
 	}
 }

@@ -95,13 +95,14 @@ public abstract class DurationBasedAnimation extends AbstractAnimation {
 		setPortion( portion );
 		if( animationObserver instanceof DurationBasedAnimationObserver ) {
 			try {
-				((DurationBasedAnimationObserver)animationObserver).updated( this, portion );
+				( (DurationBasedAnimationObserver)animationObserver ).updated( this, portion );
 			} catch( BreakException be ) {
 				tRemaining = 0.0;
 			}
 		}
 		return tRemaining;
 	}
+
 	@Override
 	protected final void preEpilogue() {
 		this.setPortion( 1.0 );

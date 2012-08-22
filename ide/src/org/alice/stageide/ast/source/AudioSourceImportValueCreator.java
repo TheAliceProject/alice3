@@ -46,13 +46,15 @@ package org.alice.stageide.ast.source;
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceImportValueCreator extends SourceImportValueCreator<org.lgna.story.AudioSource,org.lgna.common.resources.AudioResource> {
+public class AudioSourceImportValueCreator extends SourceImportValueCreator<org.lgna.story.AudioSource, org.lgna.common.resources.AudioResource> {
 	private static class SingletonHolder {
 		private static AudioSourceImportValueCreator instance = new AudioSourceImportValueCreator();
 	}
+
 	public static AudioSourceImportValueCreator getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AudioSourceImportValueCreator() {
 		super( java.util.UUID.fromString( "96a6722d-6394-4be2-adba-f096067f09e1" ), org.alice.ide.ast.importers.AudioResourceImporter.getInstance(), org.lgna.story.AudioSource.class, org.lgna.common.resources.AudioResource.class );
 	}

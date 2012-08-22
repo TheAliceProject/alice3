@@ -47,7 +47,8 @@ package edu.cmu.cs.dennisc.toolkit.issue;
  */
 public abstract class AbstractPostIssuePane extends IssueReportPane {
 	public static final org.lgna.croquet.Group POST_ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "b010ccc1-b127-494d-9cc0-18c378fe0800" ), "POST_ISSUE_GROUP" );
-	class TypeSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState< edu.cmu.cs.dennisc.jira.JIRAReport.Type > {
+
+	class TypeSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> {
 		public TypeSelectionState() {
 			super( POST_ISSUE_GROUP, java.util.UUID.fromString( "8998dd3a-4ccc-4f75-8699-5d6d5e468259" ), -1, edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
 		}
@@ -57,10 +58,10 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	private javax.swing.JLabel labelType = createLabelForMultiLine( "type:" );
 	private javax.swing.JComboBox comboType = typeSelectionState.getPrepModel().createComboBox().getAwtComponent();
 	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelType, new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
-	
+
 	private javax.swing.JLabel labelEnvironment = createLabelForMultiLine( "environment:" );
 	private javax.swing.JTextArea textEnvironment = new javax.swing.JTextArea();
-	private javax.swing.JScrollPane scrollEnvironment = new javax.swing.JScrollPane( this.textEnvironment ){
+	private javax.swing.JScrollPane scrollEnvironment = new javax.swing.JScrollPane( this.textEnvironment ) {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 80 );
@@ -68,8 +69,8 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	};
 	private java.awt.Component[] rowEnvironment = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelEnvironment, scrollEnvironment );
 
-
 	private javax.swing.JPanel centerPane = new javax.swing.JPanel();
+
 	private static class TextComponentBorder extends javax.swing.border.CompoundBorder {
 		public TextComponentBorder() {
 			super( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
@@ -79,11 +80,11 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	public AbstractPostIssuePane() {
 		this.textEnvironment.setBorder( new TextComponentBorder() );
 		StringBuffer sb = new StringBuffer();
-		
+
 		String intersticial = "";
 		for( String propertyName : this.getSystemPropertiesForEnvironmentField() ) {
 			sb.append( intersticial );
-			sb.append(propertyName );
+			sb.append( propertyName );
 			sb.append( ": " );
 			sb.append( System.getProperty( propertyName ) );
 			intersticial = "\n";
@@ -92,7 +93,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		this.scrollEnvironment.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
 		this.centerPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 12, 12, 12 ) );
-		
+
 		this.add( this.centerPane, java.awt.BorderLayout.CENTER );
 
 		this.scrollEnvironment.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
@@ -101,26 +102,28 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	public void setIssueType( edu.cmu.cs.dennisc.jira.JIRAReport.Type issueType ) {
 		this.typeSelectionState.setSelectedItem( issueType );
 	}
+
 	@Override
 	protected String getSMTPReplyTo() {
 		return null;
 	}
+
 	@Override
 	protected String getSMTPReplyToPersonal() {
 		return null;
 	}
-	
+
 	@Override
 	protected String getEnvironmentText() {
 		return this.textEnvironment.getText();
 	}
-	
+
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getJIRAType() {
 		return this.typeSelectionState.getSelectedItem();
 	}
-	
-	protected java.util.ArrayList< java.awt.Component[] > addRows( java.util.ArrayList< java.awt.Component[] > rows ) {
+
+	protected java.util.ArrayList<java.awt.Component[]> addRows( java.util.ArrayList<java.awt.Component[]> rows ) {
 		rows.add( this.rowType );
 		rows.add( this.rowSummary );
 		rows.add( this.rowDescription );
@@ -130,48 +133,55 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		rows.add( this.rowEnvironment );
 		return rows;
 	}
-	private org.lgna.croquet.ListSelectionState.ValueListener< edu.cmu.cs.dennisc.jira.JIRAReport.Type > typeSelectionListener = new org.lgna.croquet.ListSelectionState.ValueListener< edu.cmu.cs.dennisc.jira.JIRAReport.Type >() {
-		public void changing( org.lgna.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
+
+	private org.lgna.croquet.ListSelectionState.ValueListener<edu.cmu.cs.dennisc.jira.JIRAReport.Type> typeSelectionListener = new org.lgna.croquet.ListSelectionState.ValueListener<edu.cmu.cs.dennisc.jira.JIRAReport.Type>() {
+		public void changing( org.lgna.croquet.State<edu.cmu.cs.dennisc.jira.JIRAReport.Type> state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< edu.cmu.cs.dennisc.jira.JIRAReport.Type > state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<edu.cmu.cs.dennisc.jira.JIRAReport.Type> state, edu.cmu.cs.dennisc.jira.JIRAReport.Type prevValue, edu.cmu.cs.dennisc.jira.JIRAReport.Type nextValue, boolean isAdjusting ) {
 			AbstractPostIssuePane.this.refreshRows();
 		}
 	};
+
 	@Override
 	public void addNotify() {
 		super.addNotify();
 		this.typeSelectionState.addAndInvokeValueListener( this.typeSelectionListener );
 	}
+
 	@Override
 	public void removeNotify() {
 		this.typeSelectionState.removeValueListener( this.typeSelectionListener );
 		super.removeNotify();
 	}
+
 	protected final void refreshRows() {
 		this.centerPane.removeAll();
 
-		java.util.ArrayList< java.awt.Component[] > rows = this.addRows( new java.util.ArrayList< java.awt.Component[] >() );
+		java.util.ArrayList<java.awt.Component[]> rows = this.addRows( new java.util.ArrayList<java.awt.Component[]>() );
 		edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( this.centerPane, rows, 8, 4 );
 		this.centerPane.revalidate();
 	}
-	
+
 	@Override
 	protected Throwable getThrowable() {
 		return null;
 	}
 
-//	@Override
-//	protected int getPreferredWidth() {
-//		return 700;
-//	}
+	//	@Override
+	//	protected int getPreferredWidth() {
+	//		return 700;
+	//	}
 	@Override
 	protected int getPreferredDescriptionHeight() {
 		return 128;
 	}
+
 	@Override
 	protected int getPreferredStepsHeight() {
 		return 128;
 	}
+
 	@Override
 	protected boolean isSummaryRequired() {
 		return true;
@@ -181,22 +191,22 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 	protected boolean isInclusionOfCompleteSystemPropertiesDesired() {
 		return false;
 	}
-	
+
 	@Override
 	protected boolean isClearedToSubmit() {
 		String summary = this.getSummaryText();
-		if( summary != null && summary.length() > 0 ) {
+		if( ( summary != null ) && ( summary.length() > 0 ) ) {
 			return true;
 		} else {
 			javax.swing.JOptionPane.showMessageDialog( this, "You must fill in the summary field in order to submit." );
 			return false;
 		}
 	}
-	
-//	@Override
-//	protected Issue updateIssue( edu.cmu.cs.dennisc.issue.Issue rv ) {
-//		super.updateIssue( rv );
-//		rv.setType( this.issueType );
-//		return rv;
-//	}
+
+	//	@Override
+	//	protected Issue updateIssue( edu.cmu.cs.dennisc.issue.Issue rv ) {
+	//		super.updateIssue( rv );
+	//		rv.setType( this.issueType );
+	//		return rv;
+	//	}
 }

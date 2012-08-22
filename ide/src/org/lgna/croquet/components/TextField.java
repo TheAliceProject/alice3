@@ -46,11 +46,11 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField > {
+public class TextField extends TextComponent<edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField> {
 	public TextField( org.lgna.croquet.StringState model ) {
 		super( model );
 	}
-	
+
 	@Override
 	public void updateTextForBlankCondition( String textForBlankCondition ) {
 		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
@@ -63,6 +63,7 @@ public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.com
 			public java.awt.Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				if( TextField.this.isMaximumSizeClampedToPreferredSize() ) {

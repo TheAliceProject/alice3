@@ -41,12 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum ChildFullBodyOutfitPuffyPJ implements UnisexChildFullBodyOutfit {
 	GREENTEDDYBEAR,
- 	PINKTEDDYBEAR,
- 	CREAMTEDDYBEAR,
- 	DUCKIE,
- 	UFO,
- 	GIRLIEPINK,
- 	CAMO;
+	PINKTEDDYBEAR,
+	CREAMTEDDYBEAR,
+	DUCKIE,
+	UFO,
+	GIRLIEPINK,
+	CAMO;
 }

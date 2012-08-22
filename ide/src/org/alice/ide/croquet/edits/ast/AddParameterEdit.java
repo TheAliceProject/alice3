@@ -47,12 +47,15 @@ package org.alice.ide.croquet.edits.ast;
  */
 public class AddParameterEdit extends ParameterEdit {
 	private transient int index;
+
 	public AddParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
 		super( completionStep, code, parameter );
 	}
+
 	public AddParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		if( isDo ) {
@@ -60,14 +63,16 @@ public class AddParameterEdit extends ParameterEdit {
 		}
 		this.addParameter( this.index );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		this.removeParameter( this.index );
 	}
+
 	@Override
-	protected StringBuilder updatePresentation(StringBuilder rv) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getParameter(), org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getParameter(), org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 }

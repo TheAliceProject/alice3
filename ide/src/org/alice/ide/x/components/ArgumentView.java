@@ -46,18 +46,22 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArgumentView< N extends org.lgna.project.ast.AbstractArgument > extends org.lgna.croquet.components.LineAxisPanel {
+public abstract class ArgumentView<N extends org.lgna.project.ast.AbstractArgument> extends org.lgna.croquet.components.LineAxisPanel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final N argument;
+
 	public ArgumentView( org.alice.ide.x.AstI18nFactory factory, N argument ) {
 		this.factory = factory;
 		this.argument = argument;
 		this.refreshLater();
 	}
+
 	public N getArgument() {
 		return this.argument;
 	}
+
 	protected abstract String getName();
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();

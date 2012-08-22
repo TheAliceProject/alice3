@@ -46,8 +46,8 @@ package org.lgna.croquet.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class PreferenceListSelectionState< T > extends org.lgna.croquet.DefaultListSelectionState< T > {
-	public PreferenceListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec< T > codec, int selectionIndex, T... data ) {
+public class PreferenceListSelectionState<T> extends org.lgna.croquet.DefaultListSelectionState<T> {
+	public PreferenceListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... data ) {
 		super( group, id, codec, selectionIndex, data );
 		PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
 	}

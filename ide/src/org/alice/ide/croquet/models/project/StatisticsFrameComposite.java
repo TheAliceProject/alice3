@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.project;
 
-
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.croquet.models.project.views.StatisticsFrameView;
 import org.lgna.croquet.FrameComposite;

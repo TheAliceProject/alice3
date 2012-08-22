@@ -50,14 +50,17 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 	private static class SingletonHolder {
 		private static ActiveTransactionHistoryComposite instance = new ActiveTransactionHistoryComposite();
 	}
+
 	public static ActiveTransactionHistoryComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ActiveTransactionHistoryComposite() {
 		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
 		//todo: investigate
 		this.initializeIfNecessary();
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
@@ -65,6 +68,7 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 		this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
 		this.getBooleanState().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 ) );
 	}
+
 	@Override
 	protected org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView createView() {
 		org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView rv = super.createView();

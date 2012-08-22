@@ -46,9 +46,9 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class AlongAxisOffset implements 
-	//MoveableTurnable
-	Place.Detail
+public class AlongAxisOffset implements
+		//MoveableTurnable
+		Place.Detail
 {
 	private static final double DEFAULT_VALUE = 0.0;
 	private final double value;
@@ -56,6 +56,7 @@ public class AlongAxisOffset implements
 	public AlongAxisOffset( Number value ) {
 		this.value = value.doubleValue();
 	}
+
 	private static double getValue( Object[] details, double defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof AlongAxisOffset ) {
@@ -65,7 +66,8 @@ public class AlongAxisOffset implements
 		}
 		return defaultValue;
 	}
-	/*package-private*/static double getValue( Object[] details ) {
+
+	/* package-private */static double getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

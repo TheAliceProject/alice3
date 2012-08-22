@@ -47,14 +47,15 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class AnonymousUserConstructor extends UserConstructor {
-	private static java.util.Map< AnonymousUserType, AnonymousUserConstructor > s_map;
+	private static java.util.Map<AnonymousUserType, AnonymousUserConstructor> s_map;
 	private AnonymousUserType type;
+
 	public static AnonymousUserConstructor get( AnonymousUserType type ) {
 		if( type != null ) {
 			if( s_map != null ) {
 				//pass
 			} else {
-				s_map = new java.util.HashMap< AnonymousUserType, AnonymousUserConstructor >();
+				s_map = new java.util.HashMap<AnonymousUserType, AnonymousUserConstructor>();
 			}
 			AnonymousUserConstructor rv = s_map.get( type );
 			if( rv != null ) {
@@ -67,33 +68,42 @@ public class AnonymousUserConstructor extends UserConstructor {
 			return null;
 		}
 	}
-	private java.util.ArrayList< AbstractParameter > parameters = new java.util.ArrayList< AbstractParameter >();
+
+	private java.util.ArrayList<AbstractParameter> parameters = new java.util.ArrayList<AbstractParameter>();
+
 	private AnonymousUserConstructor( AnonymousUserType type ) {
 		this.type = type;
 	}
+
 	@Override
 	public boolean isSignatureLocked() {
 		return true;
 	}
+
 	@Override
 	public org.lgna.project.ast.AccessLevel getAccessLevel() {
 		return null;
 	}
+
 	@Override
 	public AnonymousUserType getDeclaringType() {
 		return this.type;
 	}
+
 	@Override
 	public org.lgna.project.ast.AbstractCode getNextLongerInChain() {
 		return null;
 	}
+
 	@Override
 	public org.lgna.project.ast.AbstractCode getNextShorterInChain() {
 		return null;
 	}
-	public java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > getRequiredParameters() {
+
+	public java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> getRequiredParameters() {
 		return this.parameters;
 	}
+
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
 		return null;

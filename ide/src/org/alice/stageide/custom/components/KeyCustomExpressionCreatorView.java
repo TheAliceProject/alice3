@@ -49,17 +49,18 @@ public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.compone
 	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
 		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
-		
+
 		org.lgna.croquet.components.ImmutableTextField pressAnyKeyLabel = composite.getPressAnyKeyLabel().createImmutableTextField();
 		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
 		pressAnyKeyLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 
 		return new org.lgna.croquet.components.BorderPanel.Builder()
-			.pageStart( pressAnyKeyLabel )
-			.center( composite.getValueState().createViewController() )
-		.build();
+				.pageStart( pressAnyKeyLabel )
+				.center( composite.getValueState().createViewController() )
+				.build();
 	}
 }

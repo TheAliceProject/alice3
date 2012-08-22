@@ -49,16 +49,20 @@ public class TypeFromUriProducer extends UriProducer<org.lgna.project.ast.NamedU
 	private static class SingletonHolder {
 		private static TypeFromUriProducer instance = new TypeFromUriProducer();
 	}
+
 	public static TypeFromUriProducer getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TypeFromUriProducer() {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4ab159a0-7fee-4c0f-8b71-25591fda2b0d" ) );
 	}
+
 	@Override
 	protected String getExtension() {
 		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
 	}
+
 	private static void showMessageDialog( java.io.File file, boolean isValidZip ) {
 		String applicationName = org.alice.ide.IDE.getApplicationName();
 		StringBuffer sb = new StringBuffer();
@@ -73,21 +77,22 @@ public class TypeFromUriProducer extends UriProducer<org.lgna.project.ast.NamedU
 		sb.append( " extension." );
 		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 	}
+
 	@Override
 	protected org.lgna.project.ast.NamedUserType internalGetValueFrom( java.io.File file ) {
 		String lcName = file.getName().toLowerCase();
 		if( lcName.endsWith( ".a2c" ) ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( 
-					"Alice3 does not load Alice2 characters", 
-					"Incorrect File Type", 
-					org.lgna.croquet.MessageType.ERROR 
-			);
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog(
+					"Alice3 does not load Alice2 characters",
+					"Incorrect File Type",
+					org.lgna.croquet.MessageType.ERROR
+					);
 		} else if( lcName.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( 
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog(
 					file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.TYPE_EXTENSION + " extension.",
-					"Incorrect File Type", 
-					org.lgna.croquet.MessageType.INFORMATION 
-			);
+					"Incorrect File Type",
+					org.lgna.croquet.MessageType.INFORMATION
+					);
 		} else {
 			boolean isWorthyOfException = lcName.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() );
 			java.util.zip.ZipFile zipFile;
@@ -104,7 +109,7 @@ public class TypeFromUriProducer extends UriProducer<org.lgna.project.ast.NamedU
 			if( zipFile != null ) {
 				org.lgna.project.ast.NamedUserType type;
 				try {
-					edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.NamedUserType, java.util.Set< org.lgna.common.Resource > > tuple = org.lgna.project.io.IoUtilities.readType( zipFile );
+					edu.cmu.cs.dennisc.pattern.Tuple2<? extends org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple = org.lgna.project.io.IoUtilities.readType( zipFile );
 					type = tuple.getA();
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
@@ -123,6 +128,7 @@ public class TypeFromUriProducer extends UriProducer<org.lgna.project.ast.NamedU
 		}
 		return null;
 	}
+
 	@Override
 	protected java.io.File getInitialDirectory() {
 		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();

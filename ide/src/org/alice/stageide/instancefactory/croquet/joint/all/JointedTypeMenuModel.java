@@ -49,29 +49,33 @@ package org.alice.stageide.instancefactory.croquet.joint.all;
 public abstract class JointedTypeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
 	private final java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos;
 	private final int index;
+
 	public JointedTypeMenuModel( java.util.UUID id, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
 		super( id );
 		this.jointedTypeInfos = jointedTypeInfos;
 		this.index = index;
 	}
-	protected abstract org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method );
+
+	protected abstract org.lgna.croquet.CascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, ?> getFillIn( org.lgna.project.ast.AbstractMethod method );
+
 	protected abstract JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index );
+
 	@Override
-	protected final java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.alice.ide.instancefactory.InstanceFactory > blankNode ) {
+	protected final java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
 		org.alice.stageide.ast.JointedTypeInfo info = jointedTypeInfos.get( this.index );
-		org.alice.stageide.cascade.JointedModelTypeSeparator separator = org.alice.stageide.cascade.JointedModelTypeSeparator.getInstance( info.getType() ); 
+		org.alice.stageide.cascade.JointedModelTypeSeparator separator = org.alice.stageide.cascade.JointedModelTypeSeparator.getInstance( info.getType() );
 		org.lgna.croquet.CascadeBlankChild child;
-		if( jointedTypeInfos.size() > this.index+1 ) {
-			child = new org.lgna.croquet.CascadeItemMenuCombo( separator, this.getInstance( this.jointedTypeInfos, this.index+1 ) );
+		if( jointedTypeInfos.size() > ( this.index + 1 ) ) {
+			child = new org.lgna.croquet.CascadeItemMenuCombo( separator, this.getInstance( this.jointedTypeInfos, this.index + 1 ) );
 		} else {
 			child = separator;
 		}
 		rv.add( child );
-		
-		org.alice.stageide.joint.JointsSubMenu<org.alice.ide.instancefactory.InstanceFactory>[] subMenus = org.alice.stageide.joint.JointsSubMenuManager.getSubMenusForType( info.getType() ); 
-		
+
+		org.alice.stageide.joint.JointsSubMenu<org.alice.ide.instancefactory.InstanceFactory>[] subMenus = org.alice.stageide.joint.JointsSubMenuManager.getSubMenusForType( info.getType() );
+
 		for( org.lgna.project.ast.AbstractMethod method : info.getJointGetters() ) {
-			org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > fillIn = this.getFillIn( method );
+			org.lgna.croquet.CascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, ?> fillIn = this.getFillIn( method );
 			if( fillIn != null ) {
 				boolean isConsumed = false;
 				for( org.alice.stageide.joint.JointsSubMenu<org.alice.ide.instancefactory.InstanceFactory> subMenu : subMenus ) {

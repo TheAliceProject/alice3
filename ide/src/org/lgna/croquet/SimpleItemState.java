@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleItemState<T> extends ItemState<T> {
-	public SimpleItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
+	public SimpleItemState( Group group, java.util.UUID id, T initialValue, ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue, itemCodec );
 	}
 }

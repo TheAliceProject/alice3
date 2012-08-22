@@ -43,7 +43,6 @@
 
 package org.alice.stageide.person;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,11 +50,14 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 	public PersonImp() {
 		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
 	}
+
 	@Override
 	public org.lgna.story.SThing getAbstraction() {
 		return null;
 	}
-	private final java.util.Map< org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person > mapLifeStageToNebPerson = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private final java.util.Map<org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person> mapLifeStageToNebPerson = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	private edu.cmu.cs.dennisc.scenegraph.Geometry getSgGeometry() {
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		final int N = sgVisual.getGeometryCount();
@@ -65,12 +67,13 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 			return null;
 		}
 	}
+
 	private void setSgGeometry( edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry ) {
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		sgVisual.setGeometry( sgGeometry );
 	}
-	
-	/*package-private*/ void updateNebPerson() {
+
+	/* package-private */void updateNebPerson() {
 		org.lgna.story.resources.sims2.LifeStage lifeStage = PersonResourceManager.SINGLETON.getLifeStage();
 		edu.cmu.cs.dennisc.nebulous.Person nebPerson = this.mapLifeStageToNebPerson.get( lifeStage );
 		if( nebPerson != null ) {
@@ -90,21 +93,21 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		double obesityLevel = PersonResourceManager.SINGLETON.getObesityLevel();
 		org.lgna.story.resources.sims2.Hair hair = PersonResourceManager.SINGLETON.getHair();
 		org.lgna.story.resources.sims2.Outfit outfit = PersonResourceManager.SINGLETON.getOutfit();
-		if (gender == null || outfit == null || skinTone == null || eyeColor == null || hair == null) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("NOT SETTNG ATTRIBUTES ON PERSON: gender="+gender+", outfit="+outfit+", skintTone="+skinTone+", eyeColor="+eyeColor+", obesityLevel="+obesityLevel+", hair="+hair);
+		if( ( gender == null ) || ( outfit == null ) || ( skinTone == null ) || ( eyeColor == null ) || ( hair == null ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skintTone=" + skinTone + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair );
 		}
 		else {
 			nebPerson.setAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair );
 		}
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {
-//			Thread.dumpStack();
+			//			Thread.dumpStack();
 			this.setSgGeometry( nebPerson );
 		}
 	}
-	
+
 	@Override
-	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
-		this.setScale(getScaleForSize(size));
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+		this.setScale( getScaleForSize( size ) );
 	}
 }

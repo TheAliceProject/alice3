@@ -49,6 +49,7 @@ public class IntegerProperty extends InstanceProperty<Integer> {
 	public IntegerProperty( InstancePropertyOwner owner, Integer value ) {
 		super( owner, value );
 	}
+
 	@Override
 	public void setValue( PropertyOwner owner, Integer value ) {
 		assert value != null;

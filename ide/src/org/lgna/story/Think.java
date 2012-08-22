@@ -44,12 +44,13 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class Think extends DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=Think.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = Think.class )
 	public static interface Detail {
 	}
+
 	private Think() {
 		super();
 	}

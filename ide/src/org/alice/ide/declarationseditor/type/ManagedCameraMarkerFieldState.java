@@ -46,10 +46,11 @@ import org.lgna.story.CameraMarker;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedCameraMarkerFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedCameraMarkerFieldState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ManagedCameraMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ManagedCameraMarkerFieldState rv = map.get( type );
 		if( rv != null ) {
@@ -60,12 +61,13 @@ public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
 		}
 		return rv;
 	}
+
 	private ManagedCameraMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "47af4b71-b8db-458f-a698-e3550c921c14" ), type );
 	}
-	
+
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo(CameraMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+		return value.valueType.getValue().isAssignableTo( CameraMarker.class ) && ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED );
 	}
 }

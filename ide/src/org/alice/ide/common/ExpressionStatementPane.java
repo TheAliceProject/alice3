@@ -49,14 +49,16 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	private edu.cmu.cs.dennisc.property.event.PropertyListener refreshAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
+
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					ExpressionStatementPane.this.refresh();
 				}
 			} );
 		}
 	};
+
 	public ExpressionStatementPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.ast.StatementListProperty owner ) {
 		super( model, factory, expressionStatement, owner );
 		this.refresh();
@@ -76,12 +78,13 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		}
 		return super.getBackgroundPaint( x, y, width, height );
 	}
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getExpressionStatement().expression.addPropertyListener( this.refreshAdapter );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.getExpressionStatement().expression.removePropertyListener( this.refreshAdapter );
@@ -95,62 +98,61 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
 			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (org.lgna.project.ast.AssignmentExpression)expression ) );
 		} else {
-			org.lgna.croquet.components.JComponent< ? > expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
+			org.lgna.croquet.components.JComponent<?> expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
 			this.addComponent( expressionPane );
-			if( expression instanceof org.lgna.project.ast.MethodInvocation ) { 
+			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
 				final org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 				assert methodInvocation.getParent() == expressionStatement;
-				
-				if( this.getFactory() == org.alice.ide.x.PreviewAstI18nFactory.getInstance() || methodInvocation.isValid() ) {
+
+				if( ( this.getFactory() == org.alice.ide.x.PreviewAstI18nFactory.getInstance() ) || methodInvocation.isValid() ) {
 					//pass
 				} else {
 					this.setBackgroundColor( java.awt.Color.RED );
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( methodInvocation );
 				}
-				
-//				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-//				//todo:
-//				if( this.getFactory() == org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance() ) {
-//					org.lgna.project.ast.AbstractCode nextLonger = method.getNextLongerInChain();
-//					if( nextLonger != null ) {
-//						java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLonger.getRequiredParameters();
-//						org.lgna.project.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-//						org.lgna.croquet.Cascade< ? > cascade;
-//						if( lastParameter.isKeyworded() ) {
-//							cascade = org.alice.ide.croquet.models.ast.cascade.keyed.KeyedMoreCascade.getInstance( methodInvocation );
-//						} else {
-//							cascade = org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
-//						}
-//						this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-//						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel >( cascade.getRoot().getPopupPrepModel() );
-//						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-//						button.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
-//						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-//						this.addComponent( button );
-//					}
-//				}
 
+				//				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+				//				//todo:
+				//				if( this.getFactory() == org.alice.ide.x.EditableAstI18Factory.getProjectGroupInstance() ) {
+				//					org.lgna.project.ast.AbstractCode nextLonger = method.getNextLongerInChain();
+				//					if( nextLonger != null ) {
+				//						java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > parameters = nextLonger.getRequiredParameters();
+				//						org.lgna.project.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+				//						org.lgna.croquet.Cascade< ? > cascade;
+				//						if( lastParameter.isKeyworded() ) {
+				//							cascade = org.alice.ide.croquet.models.ast.cascade.keyed.KeyedMoreCascade.getInstance( methodInvocation );
+				//						} else {
+				//							cascade = org.alice.ide.croquet.models.ast.cascade.MoreCascade.getInstance( methodInvocation );
+				//						}
+				//						this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+				//						org.lgna.croquet.components.AbstractButton< ?, ? > button = new org.alice.ide.croquet.PopupButton< org.lgna.croquet.PopupPrepModel >( cascade.getRoot().getPopupPrepModel() );
+				//						button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+				//						button.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.CENTER );
+				//						button.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+				//						this.addComponent( button );
+				//					}
+				//				}
 
-//			not worth while since instance creations are not normally (ever) the expression of an expression statements 				
-//			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) { 
-//				final org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
-//				
-//				if( instanceCreation.isValid() ) {
-//					//pass
-//				} else {
-//					this.setBackground( java.awt.Color.RED );
-//				}
-//				
-//				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-//				//todo:
-//				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
-//					org.lgna.project.ast.AbstractMember nextLonger = constructor.getNextLongerInChain();
-//					if( nextLonger != null ) {
-//						final org.lgna.project.ast.AbstractConstructor nextLongerAbstractConstructor = (org.lgna.project.ast.AbstractConstructor)nextLonger;
-//						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-//						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
-//					}
-//				}
+				//			not worth while since instance creations are not normally (ever) the expression of an expression statements 				
+				//			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) { 
+				//				final org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+				//				
+				//				if( instanceCreation.isValid() ) {
+				//					//pass
+				//				} else {
+				//					this.setBackground( java.awt.Color.RED );
+				//				}
+				//				
+				//				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				//				//todo:
+				//				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
+				//					org.lgna.project.ast.AbstractMember nextLonger = constructor.getNextLongerInChain();
+				//					if( nextLonger != null ) {
+				//						final org.lgna.project.ast.AbstractConstructor nextLongerAbstractConstructor = (org.lgna.project.ast.AbstractConstructor)nextLonger;
+				//						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+				//						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
+				//					}
+				//				}
 			}
 		}
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
@@ -159,15 +161,16 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.revalidateAndRepaint();
 	}
-//	@Override
-//	protected void handleControlClick( java.awt.event.MouseEvent e) {
-//		//super.handleControlClick();
-//		org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
-//		if( methodDeclaredInAlice != null ) {
-//			getIDE().performIfAppropriate( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ), e, true );
-//		}
-//	}
-	
+
+	//	@Override
+	//	protected void handleControlClick( java.awt.event.MouseEvent e) {
+	//		//super.handleControlClick();
+	//		org.lgna.project.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
+	//		if( methodDeclaredInAlice != null ) {
+	//			getIDE().performIfAppropriate( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ), e, true );
+	//		}
+	//	}
+
 	protected org.lgna.project.ast.ExpressionStatement getExpressionStatement() {
 		return (org.lgna.project.ast.ExpressionStatement)this.getStatement();
 	}

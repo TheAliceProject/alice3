@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitJacketHighCollar implements FemaleAdultFullBodyOutfit {
-	BLUE ,
- 	BROWN ,
- 	ORANGE ,
- 	PINK ,
- 	WHITE ;
+	BLUE,
+	BROWN,
+	ORANGE,
+	PINK,
+	WHITE;
 }

@@ -46,15 +46,17 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< org.lgna.project.ast.Expression > {
+public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.Expression> {
 	public ReduceToOperandInPreviousConditionalExpressionFillIn( java.util.UUID id ) {
 		super( id );
 	}
-//	@Override
-//	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.Expression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
-//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
-//	}
+
+	//	@Override
+	//	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.Expression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+	//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
+	//	}
 	protected abstract org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ConditionalInfixExpression previousConditional );
+
 	@Override
 	protected final org.lgna.project.ast.Expression createValue( org.lgna.project.ast.Expression previousExpression ) {
 		assert previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;

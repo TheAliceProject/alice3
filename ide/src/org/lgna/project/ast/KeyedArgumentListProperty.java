@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedArgumentListProperty extends ArgumentListProperty< JavaKeyedArgument > {
+public class KeyedArgumentListProperty extends ArgumentListProperty<JavaKeyedArgument> {
 	public KeyedArgumentListProperty( ArgumentOwner owner ) {
 		super( owner );
 	}

@@ -50,17 +50,20 @@ public class HeadTab extends ContentTab<org.lgna.croquet.components.RowsSpringPa
 	private static class SingletonHolder {
 		private static HeadTab instance = new HeadTab();
 	}
+
 	public static HeadTab getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private HeadTab() {
 		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.RowsSpringPanel createView() {
 		org.lgna.croquet.components.RowsSpringPanel rv = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows( java.util.List<org.lgna.croquet.components.Component<?>[]> rv ) {
 				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "hair:", new org.alice.stageide.person.components.HairColorList() ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, new org.alice.stageide.person.components.HairList() ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( "eye color:", new org.alice.stageide.person.components.BaseEyeColorList() ) );
@@ -69,7 +72,7 @@ public class HeadTab extends ContentTab<org.lgna.croquet.components.RowsSpringPa
 			}
 		};
 		rv.setBackgroundColor( org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		return rv;
 	}
 };

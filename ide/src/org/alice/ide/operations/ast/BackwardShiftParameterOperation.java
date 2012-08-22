@@ -49,14 +49,16 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class BackwardShiftParameterOperation extends ShiftParameterOperation {
-	public BackwardShiftParameterOperation( NodeListProperty< UserParameter > parametersProperty, UserParameter parameter ) {
+	public BackwardShiftParameterOperation( NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
 		super( java.util.UUID.fromString( "d318d441-f58e-49b1-b01e-d16f15259c95" ), parametersProperty, parameter );
 		this.setName( "Shift Backward" );
 	}
+
 	@Override
 	protected boolean isAppropriate( int index, int n ) {
-		return index < n-1;
+		return index < ( n - 1 );
 	}
+
 	@Override
 	protected int getIndexA() {
 		return this.getIndex();

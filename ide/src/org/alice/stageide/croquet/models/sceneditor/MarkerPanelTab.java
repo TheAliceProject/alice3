@@ -43,23 +43,27 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-public class MarkerPanelTab extends org.lgna.croquet.SimpleTabComposite< org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel >
+public class MarkerPanelTab extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel>
 {
-    private static class SingletonHolder {
-        private static MarkerPanelTab instance = new MarkerPanelTab();
-    }
-    public static MarkerPanelTab getInstance() {
-        return SingletonHolder.instance;
-    }
-    private MarkerPanelTab() {
-        super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
-    }
-    @Override
-    protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
-    	return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
-    }
-    @Override
-    public boolean isCloseable() {
-    	return false;
-    }
+	private static class SingletonHolder {
+		private static MarkerPanelTab instance = new MarkerPanelTab();
+	}
+
+	public static MarkerPanelTab getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private MarkerPanelTab() {
+		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
+		return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
+	}
+
+	@Override
+	public boolean isCloseable() {
+		return false;
+	}
 }

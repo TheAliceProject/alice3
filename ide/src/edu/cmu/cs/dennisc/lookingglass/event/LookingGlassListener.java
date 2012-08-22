@@ -49,14 +49,16 @@ public interface LookingGlassListener {
 	public void initialized( LookingGlassInitializeEvent e );
 
 	public void cleared( LookingGlassRenderEvent e );
+
 	public void rendered( LookingGlassRenderEvent e );
 
 	//todo: add
-//	public void displaying( LookingGlassEvent e );
-//	public void displayed( LookingGlassEvent e );
-//	public void picking( LookingGlassEvent e );
-//	public void pickeded( LookingGlassEvent e );
-	
+	//	public void displaying( LookingGlassEvent e );
+	//	public void displayed( LookingGlassEvent e );
+	//	public void picking( LookingGlassEvent e );
+	//	public void pickeded( LookingGlassEvent e );
+
 	public void resized( LookingGlassResizeEvent e );
+
 	public void displayChanged( LookingGlassDisplayChangeEvent e );
 }

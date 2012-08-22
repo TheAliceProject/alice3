@@ -47,10 +47,16 @@ package edu.cmu.cs.dennisc.image;
  */
 public interface ImageGenerator {
 	public int getWidth();
+
 	public int getHeight();
+
 	public boolean isPotentiallyAlphaBlended();
+
 	public boolean isMipMappingDesired();
+
 	public boolean isAnimated();
+
 	public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy();
+
 	public void paint( java.awt.Graphics2D g, int width, int height );
 }

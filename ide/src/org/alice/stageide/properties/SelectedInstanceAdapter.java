@@ -46,13 +46,11 @@ package org.alice.stageide.properties;
 import org.alice.ide.croquet.models.StandardExpressionState;
 
 public class SelectedInstanceAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory> {
-	
-	
-	public SelectedInstanceAdapter(org.alice.ide.instancefactory.InstanceFactory instance, StandardExpressionState expressionState)
+
+	public SelectedInstanceAdapter( org.alice.ide.instancefactory.InstanceFactory instance, StandardExpressionState expressionState )
 	{
-		super("Selected", instance, expressionState);
+		super( "Selected", instance, expressionState );
 	}
-	
 
 	@Override
 	public org.alice.ide.instancefactory.InstanceFactory getValue() {

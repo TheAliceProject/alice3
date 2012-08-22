@@ -52,10 +52,11 @@ public class KeyAdapterFillIn extends LambdaExpressionFillIn {
 	private static class SingletonHolder {
 		private static KeyAdapterFillIn instance = new KeyAdapterFillIn();
 	}
+
 	public static KeyAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
-	
+
 	private KeyAdapterFillIn() {
 		super( java.util.UUID.fromString( "58f52823-5d1d-4de2-ae5f-d62f2f6d5dde" ), KeyPressListener.class );
 	}

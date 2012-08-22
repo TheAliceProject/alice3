@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitManMaid implements MaleAdultFullBodyOutfit {
-	WHITE ,
- 	PINK ,
- 	BLUE ;
+	WHITE,
+	PINK,
+	BLUE;
 }

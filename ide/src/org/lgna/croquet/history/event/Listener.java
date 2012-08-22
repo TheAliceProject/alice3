@@ -48,5 +48,6 @@ package org.lgna.croquet.history.event;
  */
 public interface Listener {
 	public void changing( Event<?> e );
+
 	public void changed( Event<?> e );
 }

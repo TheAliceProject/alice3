@@ -45,8 +45,9 @@ package org.alice.ide.members.components.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.ExpressionTemplate {
+/* package-private */class AccessFieldArrayAtIndexTemplate extends org.alice.ide.templates.ExpressionTemplate {
 	private org.lgna.project.ast.AbstractField field;
+
 	public AccessFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.ast.draganddrop.expression.FieldArrayAtIndexDragModel.getInstance( field ) );
 		this.field = field;
@@ -55,12 +56,12 @@ package org.alice.ide.members.components.templates;
 			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
 		}
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.ArrayAccess( 
-				field.getValueType(), 
-				org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ), 
-				new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) 
-		);
+		return new org.lgna.project.ast.ArrayAccess(
+				field.getValueType(),
+				org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( field ),
+				new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) );
 	}
 }

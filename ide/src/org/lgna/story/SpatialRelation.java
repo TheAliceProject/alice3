@@ -54,10 +54,12 @@ public enum SpatialRelation {
 	IN_FRONT_OF( org.lgna.story.implementation.SpatialRelationImp.IN_FRONT_OF ),
 	BEHIND( org.lgna.story.implementation.SpatialRelationImp.BEHIND );
 	private final org.lgna.story.implementation.SpatialRelationImp imp;
+
 	SpatialRelation( org.lgna.story.implementation.SpatialRelationImp imp ) {
 		this.imp = imp;
 	}
-	/*package-private*/ org.lgna.story.implementation.SpatialRelationImp getImp() {
+
+	/* package-private */org.lgna.story.implementation.SpatialRelationImp getImp() {
 		return this.imp;
 	}
 }

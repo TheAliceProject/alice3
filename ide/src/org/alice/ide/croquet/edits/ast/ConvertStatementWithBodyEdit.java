@@ -46,20 +46,24 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.ide.croquet.models.ast.ConvertStatementWithBodyOperation > {
+public class ConvertStatementWithBodyEdit extends BlockStatementEdit<org.alice.ide.croquet.models.ast.ConvertStatementWithBodyOperation> {
 	//todo:
 	private static org.alice.ide.croquet.models.ast.ConvertStatementWithBodyOperation getModel( org.lgna.croquet.history.CompletionStep<org.alice.ide.croquet.models.ast.ConvertStatementWithBodyOperation> completionStep ) {
 		return completionStep.getModel();
 	}
+
 	private final org.lgna.project.ast.AbstractStatementWithBody replacement;
+
 	public ConvertStatementWithBodyEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractStatementWithBody replacement ) {
-		super( completionStep, (org.lgna.project.ast.BlockStatement)(getModel( completionStep ).getOriginal().getParent()) );
+		super( completionStep, (org.lgna.project.ast.BlockStatement)( getModel( completionStep ).getOriginal().getParent() ) );
 		this.replacement = replacement;
 	}
+
 	public ConvertStatementWithBodyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.replacement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractStatementWithBody.class ).decodeValue( binaryDecoder );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -72,7 +76,7 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.
 		org.lgna.project.ast.AbstractStatementWithBody original = this.getModel().getOriginal();
 		org.lgna.project.ast.BlockStatement body = original.body.getValue();
 		int index = property.indexOf( original );
-		
+
 		property.remove( index );
 		original.body.setValue( null );
 		replacement.body.setValue( body );
@@ -80,6 +84,7 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
+
 	@Override
 	protected final void undoInternal() {
 		org.lgna.project.ast.StatementListProperty property = this.getBlockStatement().statements;
@@ -94,13 +99,14 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit< org.alice.
 		//todo: remove
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		org.lgna.project.ast.AbstractStatementWithBody original = this.getModel().getOriginal();
 		rv.append( "convert:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, original, org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, original, org.lgna.croquet.Application.getLocale() );
 		rv.append( " --> " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, replacement, org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, replacement, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 }

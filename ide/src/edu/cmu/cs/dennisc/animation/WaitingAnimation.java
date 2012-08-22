@@ -56,22 +56,27 @@ public class WaitingAnimation {
 		m_animationObserver = animationObserver;
 		m_thread = thread;
 	}
+
 	public Animation getAnimation() {
 		return m_animation;
 	}
+
 	public AnimationObserver getAnimationObserver() {
 		return m_animationObserver;
 	}
+
 	public Thread getThread() {
 		return m_thread;
 	}
+
 	public Exception getException() {
 		return m_exception;
 	}
+
 	public void setException( Exception exception ) {
 		m_exception = exception;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

@@ -45,13 +45,15 @@ package org.lgna.cheshire.simple.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class BookComboBox extends org.lgna.croquet.components.JComponent< javax.swing.JComboBox > {
+public class BookComboBox extends org.lgna.croquet.components.JComponent<javax.swing.JComboBox> {
 	private BookComboBoxModel comboBoxModel;
 	private boolean isLightWeightPopupEnabled;
+
 	public BookComboBox( BookComboBoxModel comboBoxModel, boolean isLightWeightPopupEnabled ) {
 		this.comboBoxModel = comboBoxModel;
 		this.isLightWeightPopupEnabled = isLightWeightPopupEnabled;
 	}
+
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
 		javax.swing.JComboBox rv = new javax.swing.JComboBox( this.comboBoxModel ) {
@@ -82,8 +84,10 @@ public class BookComboBox extends org.lgna.croquet.components.JComponent< javax.
 					}
 				}
 			}
+
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 			}
+
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 			}
 		} );

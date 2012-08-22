@@ -44,12 +44,13 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class SetCeilingPaint extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetCeilingPaint.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetCeilingPaint.class )
 	public static interface Detail {
 	}
+
 	private SetCeilingPaint() {
 		super();
 	}

@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,11 +53,11 @@ public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	public static ProjectMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ), 
-				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.FindMethodsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.project.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel()
-		);
+		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
+				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.project.FindMethodsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.project.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
 	}
 }

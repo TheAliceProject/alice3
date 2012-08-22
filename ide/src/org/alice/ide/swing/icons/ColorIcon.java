@@ -42,9 +42,10 @@
  */
 
 package org.alice.ide.swing.icons;
+
 import javax.swing.Icon;
 
-public class ColorIcon implements Icon 
+public class ColorIcon implements Icon
 {
 
 	private static final int DEFAULT_SIZE = 15;
@@ -52,16 +53,16 @@ public class ColorIcon implements Icon
 	private java.awt.Color outlineColor;
 	private int width;
 	private int height;
-	
+
 	public ColorIcon( java.awt.Color color ) {
-		this(color, DEFAULT_SIZE);
+		this( color, DEFAULT_SIZE );
 	}
-	
-	public ColorIcon( java.awt.Color color, int size) {
-		this(color, size, size);
+
+	public ColorIcon( java.awt.Color color, int size ) {
+		this( color, size, size );
 	}
-	
-	public ColorIcon( java.awt.Color color, int width, int height) {
+
+	public ColorIcon( java.awt.Color color, int width, int height ) {
 		this.fillColor = color;
 		this.width = width;
 		this.height = height;
@@ -78,15 +79,15 @@ public class ColorIcon implements Icon
 	public ColorIcon( java.awt.Color color, java.awt.Dimension size ) {
 		this( color, size.width, size.height );
 	}
-	
+
 	public int getIconWidth() {
 		return this.width + 3 + 2;
 	}
-	
+
 	public int getIconHeight() {
 		return this.height + 3;
 	}
-	
+
 	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
 		g.setColor( this.fillColor );
 		g.fillRect( x + 1 + 2, y + 1, this.width, this.height );

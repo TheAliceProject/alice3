@@ -46,9 +46,10 @@ package edu.cmu.cs.dennisc.map;
  * @author Dennis Cosgrove
  */
 public class ClassLookupMap<E> {
-	private java.util.Map< Class< ? >, E > m_map = new java.util.HashMap< Class< ? >, E >();
-	public E get( Class< ? > key ) {
-		Class< ? > k;
+	private java.util.Map<Class<?>, E> m_map = new java.util.HashMap<Class<?>, E>();
+
+	public E get( Class<?> key ) {
+		Class<?> k;
 		k = key;
 		while( k != null ) {
 			E value = m_map.get( k );
@@ -60,7 +61,7 @@ public class ClassLookupMap<E> {
 
 		k = key;
 		while( k != null ) {
-			for( Class< ? > i : k.getInterfaces() ) {
+			for( Class<?> i : k.getInterfaces() ) {
 				E value = m_map.get( i );
 				if( value != null ) {
 					return value;
@@ -68,10 +69,11 @@ public class ClassLookupMap<E> {
 			}
 			key = key.getSuperclass();
 		}
-		
+
 		return null;
 	}
-	public void put( Class< ? > key, E value ) {
+
+	public void put( Class<?> key, E value ) {
 		m_map.put( key, value );
 	}
 }

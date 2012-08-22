@@ -51,15 +51,15 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, org.lgna.story.implementation.ModelImp>
 {
-	public ModelSizeAdapter(org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState)
+	public ModelSizeAdapter( org.lgna.story.implementation.ModelImp instance, StandardExpressionState expressionState )
 	{
-		super("Size", instance, null, expressionState);
+		super( "Size", instance, null, expressionState );
 	}
 
 	@Override
-	public Dimension3 getValue() 
+	public Dimension3 getValue()
 	{
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			Dimension3 size = this.instance.getSize();
 			size = this.instance.getSize();
@@ -67,43 +67,41 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 		}
 		return null;
 	}
-	
+
 	@Override
-	public void setValue(Dimension3 value) 
+	public void setValue( Dimension3 value )
 	{
 		Dimension3 currentValue = getValue();
-		super.setValue(value);
-		if (this.instance != null){
-			double dist = Point3.calculateDistanceBetween(currentValue, value);
+		super.setValue( value );
+		if( this.instance != null ) {
+			double dist = Point3.calculateDistanceBetween( currentValue, value );
 			double duration = 1;
-			if (dist < .02)
+			if( dist < .02 )
 			{
 				duration = 0;
 			}
-			else if (dist < .5)
+			else if( dist < .5 )
 			{
-				duration = (dist - .02) / (.5 - .02);
+				duration = ( dist - .02 ) / ( .5 - .02 );
 			}
-			
-			
-			this.instance.animateSetSize(value, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+
+			this.instance.animateSetSize( value, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 		}
 	}
 
 	@Override
-	protected void addPropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.addScaleListener(propertyListener);
-		}	
+	protected void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+		if( this.instance != null ) {
+			this.instance.addScaleListener( propertyListener );
+		}
 	}
 
 	@Override
-	protected void removePropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.instance != null){
-			this.instance.removeScaleListener(propertyListener);
-		}	
+	protected void removePropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+		if( this.instance != null ) {
+			this.instance.removeScaleListener( propertyListener );
+		}
 	}
-
 
 	@Override
 	public Class<Dimension3> getPropertyType() {
@@ -112,6 +110,6 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 
 	@Override
 	public Dimension3 getValueCopyIfMutable() {
-		return new Dimension3(this.getValue());
+		return new Dimension3( this.getValue() );
 	}
 }

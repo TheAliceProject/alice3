@@ -49,53 +49,57 @@ public class ShowSystemPropertiesOperation extends org.alice.ide.operations.Inco
 	private static class SingletonHolder {
 		private static ShowSystemPropertiesOperation instance = new ShowSystemPropertiesOperation();
 	}
+
 	public static ShowSystemPropertiesOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ShowSystemPropertiesOperation() {
 		super( java.util.UUID.fromString( "1f1ea35c-0d52-48c3-92fd-fa9f163e48a9" ) );
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.components.RowsSpringPanel formPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 2 ) {
-			private org.lgna.croquet.components.Component< ? >[] createComponentRowForSystemProperty( String name ) {
+			private org.lgna.croquet.components.Component<?>[] createComponentRowForSystemProperty( String name ) {
 				String value = System.getProperty( name );
 				assert value != null;
-				return org.lgna.croquet.components.SpringUtilities.createRow( 
-						org.lgna.croquet.components.SpringUtilities.createTrailingLabel( name+":" ),
-						new org.lgna.croquet.components.Label( value ) 
-				);
+				return org.lgna.croquet.components.SpringUtilities.createRow(
+						org.lgna.croquet.components.SpringUtilities.createTrailingLabel( name + ":" ),
+						new org.lgna.croquet.components.Label( value )
+						);
 			}
+
 			@Override
-			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows( java.util.List<org.lgna.croquet.components.Component<?>[]> rv ) {
 				rv.add( createComponentRowForSystemProperty( "java.version" ) );
 				rv.add( createComponentRowForSystemProperty( "os.name" ) );
 				rv.add( createComponentRowForSystemProperty( "os.version" ) );
 				rv.add( createComponentRowForSystemProperty( "os.arch" ) );
 				rv.add( createComponentRowForSystemProperty( "sun.arch.data.model" ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), null ) );
-				ShowPathPropertyOperation[] showPathPropertyOperations = { 
+				ShowPathPropertyOperation[] showPathPropertyOperations = {
 						ShowClassPathPropertyOperation.getInstance(),
 						ShowLibraryPathPropertyOperation.getInstance(),
 				};
 				for( ShowPathPropertyOperation showPathPropertyOperation : showPathPropertyOperations ) {
-					String propertyName = showPathPropertyOperation.getPropertyName();				
-					rv.add( org.lgna.croquet.components.SpringUtilities.createRow( 
-							org.lgna.croquet.components.SpringUtilities.createTrailingLabel( propertyName+":" ), 
-							showPathPropertyOperation.createHyperlink() 
-					) );
+					String propertyName = showPathPropertyOperation.getPropertyName();
+					rv.add( org.lgna.croquet.components.SpringUtilities.createRow(
+							org.lgna.croquet.components.SpringUtilities.createTrailingLabel( propertyName + ":" ),
+							showPathPropertyOperation.createHyperlink()
+							) );
 				}
 				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), null ) );
 				rv.add( org.lgna.croquet.components.SpringUtilities.createRow( null, ShowAllSystemPropertiesOperation.getInstance().createHyperlink() ) );
 				return rv;
 			}
 		};
-//		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane pane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane(
-//			formPane,
-//			javax.swing.Box.createVerticalStrut( 16 ),
-//			new javax.swing.JButton( new AllSystemPropertiesOperation() ),
-//			javax.swing.Box.createVerticalStrut( 8 )
-//		);
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( formPane, "System Properties", org.lgna.croquet.MessageType.INFORMATION ); 
+		//		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane pane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane(
+		//			formPane,
+		//			javax.swing.Box.createVerticalStrut( 16 ),
+		//			new javax.swing.JButton( new AllSystemPropertiesOperation() ),
+		//			javax.swing.Box.createVerticalStrut( 8 )
+		//		);
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( formPane, "System Properties", org.lgna.croquet.MessageType.INFORMATION );
 	}
 }

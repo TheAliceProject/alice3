@@ -61,10 +61,10 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_undoPOV;
 	private Runnable onClickRunnable;
 
-	public void setOnClickRunnable(Runnable runnable) {
+	public void setOnClickRunnable( Runnable runnable ) {
 		onClickRunnable = runnable;
 	}
-	
+
 	public edu.cmu.cs.dennisc.math.Point3 getXyzInAbsoluteAtPress() {
 		return m_xyzInAbsoluteAtPress;
 	}
@@ -73,16 +73,17 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
 		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
 	}
+
 	protected edu.cmu.cs.dennisc.lookingglass.PickObserver getPickObserver() {
 		return null;
 	}
-	
+
 	protected void updateTranslation( edu.cmu.cs.dennisc.scenegraph.Transformable sgDragAcceptor, edu.cmu.cs.dennisc.math.Tuple3 xyz, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		if( sgDragAcceptor != null ) {
 			sgDragAcceptor.setTranslationOnly( xyz, asSeenBy );
 		}
 	}
-	
+
 	protected edu.cmu.cs.dennisc.scenegraph.Transformable lookupDragAcceptor( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
 		edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgVisual.getParent();
 		if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
@@ -91,10 +92,11 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 			return null;
 		}
 	}
+
 	protected edu.cmu.cs.dennisc.scenegraph.Transformable getDragAcceptor() {
 		return m_sgDragAcceptor;
 	}
-	
+
 	private edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, int xPixel, int yPixel ) {
 		edu.cmu.cs.dennisc.math.Ray ray = getOnscreenLookingGlass().getRayAtPixel( xPixel, yPixel, m_sgCamera );
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = m_sgCamera.getAbsoluteTransformation();
@@ -102,9 +104,9 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 		double t = plane.intersect( ray );
 		return ray.getPointAlong( t );
 	}
-	
 
 	private double yDelta = 0.0;
+
 	@Override
 	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		if( isOriginalAsOpposedToStyleChange ) {
@@ -128,11 +130,11 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 				//m_xyzInAbsoluteAtPress.y += this.yDelta;
 			}
 		}
-		
+
 		if( m_sgDragAcceptor != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation();
 			m_offset = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( m_xyzInAbsoluteAtPress, m.translation );
-			m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo_New( m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/*todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE*/ );
+			m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo_New( m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/* todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE */);
 			if( !dragStyle.isShiftDown() ) {
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
 				edu.cmu.cs.dennisc.math.Vector3 axis = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( cameraAbsolute.translation, m_xyzInAbsoluteAtPress );
@@ -146,24 +148,25 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 			m_xyzInAbsoluteAtPress = edu.cmu.cs.dennisc.math.Point3.createNaN();
 			m_xyzInDragAcceptorAtPress = null;
 		}
-		
-		if(onClickRunnable != null) {
+
+		if( onClickRunnable != null ) {
 			onClickRunnable.run();
 		}
 	}
+
 	@Override
 	protected void handleMouseDrag( java.awt.Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, edu.cmu.cs.dennisc.ui.DragStyle dragStyle ) {
-		if( m_sgDragAcceptor == null || m_planeInAbsolute.isNaN() || m_xyzInDragAcceptorAtPress.isNaN() ) {
+		if( ( m_sgDragAcceptor == null ) || m_planeInAbsolute.isNaN() || m_xyzInDragAcceptorAtPress.isNaN() ) {
 			//pass
 		} else {
-			if(dragStyle.isShiftDown()) {
+			if( dragStyle.isShiftDown() ) {
 				//angular drag
-				AffineMatrix4x4 cameraMatrixWrtDragged = m_sgCamera.getTransformation(m_sgDragAcceptor);
-				if(dragStyle.isControlDown()) {
-					m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.up, new edu.cmu.cs.dennisc.math.AngleInRadians( xDeltaSincePrevious * 0.01 ) );
+				AffineMatrix4x4 cameraMatrixWrtDragged = m_sgCamera.getTransformation( m_sgDragAcceptor );
+				if( dragStyle.isControlDown() ) {
+					m_sgDragAcceptor.applyRotationAboutArbitraryAxis( cameraMatrixWrtDragged.orientation.up, new edu.cmu.cs.dennisc.math.AngleInRadians( xDeltaSincePrevious * 0.01 ) );
 				} else {
-					m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.backward, new edu.cmu.cs.dennisc.math.AngleInRadians( xDeltaSincePrevious * 0.01 ) );
-					m_sgDragAcceptor.applyRotationAboutArbitraryAxis(cameraMatrixWrtDragged.orientation.right, new edu.cmu.cs.dennisc.math.AngleInRadians( yDeltaSincePrevious * 0.01 ) );
+					m_sgDragAcceptor.applyRotationAboutArbitraryAxis( cameraMatrixWrtDragged.orientation.backward, new edu.cmu.cs.dennisc.math.AngleInRadians( xDeltaSincePrevious * 0.01 ) );
+					m_sgDragAcceptor.applyRotationAboutArbitraryAxis( cameraMatrixWrtDragged.orientation.right, new edu.cmu.cs.dennisc.math.AngleInRadians( yDeltaSincePrevious * 0.01 ) );
 				}
 			} else {
 				//linear drag
@@ -177,15 +180,16 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 			}
 		}
 	}
+
 	@Override
 	protected java.awt.Point handleMouseRelease( java.awt.Point rv, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
-		if( m_sgCamera != null && m_sgDragAcceptor != null ) {
-//			if( dragStyle.isControlDown() ) {
-//				java.awt.Point p = m_sgDragAcceptor.transformToAWT_New( m_xyzInDragAcceptorAtPress, getOnscreenLookingGlass(), m_sgCamera );
-//				warpCursor( p );
-//				showCursor();
-//				rv.setLocation( p );
-//			}
+		if( ( m_sgCamera != null ) && ( m_sgDragAcceptor != null ) ) {
+			//			if( dragStyle.isControlDown() ) {
+			//				java.awt.Point p = m_sgDragAcceptor.transformToAWT_New( m_xyzInDragAcceptorAtPress, getOnscreenLookingGlass(), m_sgCamera );
+			//				warpCursor( p );
+			//				showCursor();
+			//				rv.setLocation( p );
+			//			}
 		}
 		if( isOriginalAsOpposedToStyleChange ) {
 			if( m_sgDragAcceptor != null ) {
@@ -199,5 +203,5 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 		}
 		return rv;
 	}
-	
+
 }

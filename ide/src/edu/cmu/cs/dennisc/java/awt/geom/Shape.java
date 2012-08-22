@@ -54,12 +54,15 @@ public abstract class Shape extends Transformable {
 	public boolean isFilled() {
 		return m_isFilled;
 	}
+
 	public void setFilled( boolean isFilled ) {
 		m_isFilled = isFilled;
 	}
+
 	public boolean isDrawn() {
 		return m_isDrawn;
 	}
+
 	public void setDrawn( boolean isDrawn ) {
 		m_isDrawn = isDrawn;
 	}
@@ -67,17 +70,21 @@ public abstract class Shape extends Transformable {
 	public java.awt.Paint getDrawPaint() {
 		return m_drawPaint;
 	}
+
 	public void setDrawPaint( java.awt.Paint drawPaint ) {
 		m_drawPaint = drawPaint;
 	}
+
 	public java.awt.Paint getFillPaint() {
 		return m_fillPaint;
 	}
+
 	public void setFillPaint( java.awt.Paint fillPaint ) {
 		m_fillPaint = fillPaint;
 	}
 
 	protected abstract java.awt.Shape getFillShape();
+
 	protected abstract java.awt.Shape getDrawShape();
 
 	@Override
@@ -111,5 +118,5 @@ public abstract class Shape extends Transformable {
 			}
 		}
 		return rv;
-	}	
+	}
 }

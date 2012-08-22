@@ -43,32 +43,38 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SCone extends SShape {
 	private final org.lgna.story.implementation.ConeImp implementation = new org.lgna.story.implementation.ConeImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.ConeImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.ConeImp getImplementation() {
 		return this.implementation;
 	}
-	
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
+
+	@GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Double getBaseRadius() {
 		return this.implementation.baseRadius.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setBaseRadius( Number baseRadius, SetBaseRadius.Detail... details ) {
 		this.implementation.baseRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
+
+	@GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Double getLength() {
 		return this.implementation.length.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setLength( Number length, SetLength.Detail... details ) {
 		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

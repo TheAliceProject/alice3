@@ -53,48 +53,58 @@ public class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 		this.data = data;
 		this.contentType = contentType;
 	}
+
 	public byte[] getData() {
 		return this.data;
 	}
+
 	@Override
 	public String getContentType() {
 		return this.contentType;
 	}
+
 	@Override
 	public javax.media.Time getDuration() {
 		return javax.media.Duration.DURATION_UNKNOWN;
 	}
+
 	@Override
 	public void connect() throws java.io.IOException {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource connect" );
 	}
+
 	@Override
 	public void disconnect() {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource disconnect" );
 	}
+
 	@Override
 	public void start() throws java.io.IOException {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource start" );
 	}
+
 	@Override
 	public void stop() throws java.io.IOException {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource stop" );
 	}
+
 	@Override
 	public Object getControl( String parm1 ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource getControl", parm1 );
 		return null;
 	}
+
 	@Override
 	public Object[] getControls() {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource getControls" );
 		return null;
 	}
+
 	@Override
 	public javax.media.protocol.PullSourceStream[] getStreams() {
 		return new javax.media.protocol.PullSourceStream[] { new ByteArraySeekablePullSourceStream( this.data ) };
 	}
-	
+
 	@Override
 	public String toString() {
 		return ByteArrayDataSource.class.getName() + "[contentType=" + this.contentType + "]";

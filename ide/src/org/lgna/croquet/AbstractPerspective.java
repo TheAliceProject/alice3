@@ -48,17 +48,21 @@ package org.lgna.croquet;
  */
 public abstract class AbstractPerspective extends AbstractElement implements Perspective {
 	private String name;
+
 	public AbstractPerspective( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
 	protected void localize() {
 		this.name = this.findDefaultLocalizedText();
 	}
+
 	public String getName() {
 		this.initializeIfNecessary();
 		return this.name;
 	}
+
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );

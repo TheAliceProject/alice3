@@ -46,29 +46,35 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberReflectionProxy< E > extends ReflectionProxy< E > {
+public abstract class MemberReflectionProxy<E> extends ReflectionProxy<E> {
 	private ClassReflectionProxy declaringClassReflectionProxy;
+
 	public MemberReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy ) {
 		this.declaringClassReflectionProxy = declaringClassReflectionProxy;
 	}
+
 	public MemberReflectionProxy( E e, Class<?> declaringCls ) {
 		super( e );
 		this.declaringClassReflectionProxy = new ClassReflectionProxy( declaringCls );
 	}
+
 	@Override
 	protected int hashCodeNonReifiable() {
 		int rv = 17;
-		rv = 37*rv + this.declaringClassReflectionProxy.hashCode();
+		rv = ( 37 * rv ) + this.declaringClassReflectionProxy.hashCode();
 		return rv;
 	}
+
 	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy< ? > o ) {
+	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
 		MemberReflectionProxy<?> other = (MemberReflectionProxy<?>)o;
 		return this.declaringClassReflectionProxy != null ? this.declaringClassReflectionProxy.equals( other.declaringClassReflectionProxy ) : other.declaringClassReflectionProxy == null;
 	}
+
 	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
 		return this.declaringClassReflectionProxy;
 	}
+
 	@Override
 	protected void appendRepr( StringBuilder sb ) {
 		sb.append( "declaringClassName=" );

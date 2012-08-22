@@ -45,15 +45,18 @@ package org.alice.stageide.person.components.renderers;
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer< org.lgna.story.resources.sims2.Hair > {
+public class HairListCellRenderer extends IngredientListCellRenderer<org.lgna.story.resources.sims2.Hair> {
 	private static class SingletonHolder {
 		private static HairListCellRenderer instance = new HairListCellRenderer();
 	}
+
 	public static HairListCellRenderer getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private HairListCellRenderer() {
 	}
+
 	@Override
 	protected String getSubPath() {
 		return "hair_pictures";

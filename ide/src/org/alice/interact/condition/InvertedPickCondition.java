@@ -51,8 +51,8 @@ public class InvertedPickCondition extends PickCondition {
 
 	public InvertedPickCondition( PickHint pickType )
 	{
-		super(pickType);
+		super( pickType );
 		isNot = true;
 	}
-	
+
 }

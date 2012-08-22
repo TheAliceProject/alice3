@@ -51,7 +51,7 @@ class CameraNavigationDerivative extends edu.cmu.cs.dennisc.math.rigidbody.Trans
 /**
  * @author Dennis Cosgrove
  */
-public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.TranslationFunction< CameraNavigationDerivative > {
+public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.TranslationFunction<CameraNavigationDerivative> {
 	private static final double DISTANCE_MINIMUM = 4.0;
 	private static final double DISTANCE_MAXIMUM = 100.0;
 
@@ -99,9 +99,11 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	public void requestVelocity( edu.cmu.cs.dennisc.math.Vector3 velocityRequested ) {
 		m_velocityRequested.set( velocityRequested );
 	}
+
 	public void requestVelocity( double x, double y, double z ) {
 		m_velocityRequested.set( x, y, z );
 	}
+
 	public void stopImmediately() {
 		requestVelocity( 0, 0, 0 );
 		setVelocity( 0, 0, 0 );
@@ -110,6 +112,7 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	public void requestDistance( double distance ) {
 		m_distanceRequested = Math.max( Math.min( distance, DISTANCE_MAXIMUM ), DISTANCE_MINIMUM );
 	}
+
 	public void requestYaw( edu.cmu.cs.dennisc.math.Angle yaw ) {
 		m_yawRequested = yaw.getAsRadians();
 	}
@@ -117,40 +120,47 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	public void requestDistanceChange( double delta ) {
 		requestDistance( m_distanceRequested + delta );
 	}
+
 	public void requestTarget( double x, double y, double z ) {
 		edu.cmu.cs.dennisc.math.Point3 translation = accessTranslation();
 		translation.set( x, y, z );
 	}
+
 	public void requestOrbit( double yawDelta, double pitchDelta ) {
 		m_yawRequested += yawDelta;
 		m_pitchRequested += pitchDelta;
 	}
-	
+
 	public edu.cmu.cs.dennisc.math.Angle getYawRequested() {
 		return new edu.cmu.cs.dennisc.math.AngleInRadians( m_yawRequested );
 	}
+
 	public edu.cmu.cs.dennisc.math.Angle getPitchRequested() {
 		return new edu.cmu.cs.dennisc.math.AngleInRadians( m_pitchRequested );
 	}
+
 	public double getDistanceRequested() {
 		return m_distanceRequested;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 accessTargetRequested() {
 		return accessTranslation();
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getTargetRequested( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		rv.set( accessTargetRequested() );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getTargetRequested() {
 		return getTargetRequested( new edu.cmu.cs.dennisc.math.Point3() );
 	}
-	
 
 	private static double getHeight( double distance ) {
 		double d = distance * 0.1;
 		return d * d;
 	}
+
 	private static double getPitchMinimum( double height, double distance ) {
 		return Math.atan2( height, distance );
 	}
@@ -159,7 +169,7 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	protected edu.cmu.cs.dennisc.math.Vector3 getForce( edu.cmu.cs.dennisc.math.Vector3 rv, double t ) {
 		final double LENGTH_SQUARED_THRESHOLD = 0.25;
 		edu.cmu.cs.dennisc.math.Vector3 velocity = accessVelocity();
-		if( m_velocityRequested.isZero() && (velocity.calculateMagnitudeSquared() < LENGTH_SQUARED_THRESHOLD) ) {
+		if( m_velocityRequested.isZero() && ( velocity.calculateMagnitudeSquared() < LENGTH_SQUARED_THRESHOLD ) ) {
 			setMomentum( 0, 0, 0 );
 			rv.set( 0, 0, 0 );
 		} else {
@@ -205,14 +215,17 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		}
 		return rv;
 	}
+
 	@Override
 	protected CameraNavigationDerivative evaluate( CameraNavigationDerivative rv, double t ) {
 		return super.evaluate( rv, t );
 	}
+
 	@Override
 	protected CameraNavigationDerivative evaluate( CameraNavigationDerivative rv, double t, double dt, CameraNavigationDerivative derivative ) {
 		return super.evaluate( rv, t, dt, derivative );
 	}
+
 	@Override
 	public void update( CameraNavigationDerivative a, CameraNavigationDerivative b, CameraNavigationDerivative c, CameraNavigationDerivative d, double dt ) {
 		super.update( a, b, c, d, dt );
@@ -235,29 +248,31 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		}
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "update:", a );
 	}
+
 	@Override
 	public void update() {
 		super.update();
 	}
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
-//		m_distance = m_distanceRequested;
-//		double height = getHeight( m_distance );
-//		m_pitch = Math.max( m_pitchRequested, getPitchMinimum( height, m_distance ) );
-//		m_yaw = m_yawRequested;
-//
-//		rv.setIdentity();
-//		LinearAlgebra.applyRotationAboutYAxis( rv, m_yaw, UnitOfAngle.RADIANS );
-//		LinearAlgebra.applyTranslation( rv, 0, height, m_distance );
-//		LinearAlgebra.applyTranslation( rv, accessTranslation() );
-//		LinearAlgebra.applyRotationAboutXAxis( rv, -m_pitch, UnitOfAngle.RADIANS );
+		//		m_distance = m_distanceRequested;
+		//		double height = getHeight( m_distance );
+		//		m_pitch = Math.max( m_pitchRequested, getPitchMinimum( height, m_distance ) );
+		//		m_yaw = m_yawRequested;
+		//
+		//		rv.setIdentity();
+		//		LinearAlgebra.applyRotationAboutYAxis( rv, m_yaw, UnitOfAngle.RADIANS );
+		//		LinearAlgebra.applyTranslation( rv, 0, height, m_distance );
+		//		LinearAlgebra.applyTranslation( rv, accessTranslation() );
+		//		LinearAlgebra.applyRotationAboutXAxis( rv, -m_pitch, UnitOfAngle.RADIANS );
 		CameraNavigationFunction.getTransformation( rv, m_yawRequested, m_pitchRequested, m_distanceRequested, accessTranslation() );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation() {
 		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
 	}
-	
+
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, double yaw, double pitch, double distance, double xTranslation, double yTranslation, double zTranslation ) {
 		double height = getHeight( distance );
 		pitch = Math.max( pitch, getPitchMinimum( height, distance ) );
@@ -269,14 +284,17 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		rv.applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -pitch ) );
 		return rv;
 	}
+
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( double yaw, double pitch, double distance, double xTranslation, double yTranslation, double zTranslation ) {
 		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), yaw, pitch, distance, xTranslation, yTranslation, zTranslation );
 	}
+
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, double yaw, double pitch, double distance, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		return getTransformation( rv, yaw, pitch, distance, translation.x, translation.y, translation.z );
 	}
+
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( double yaw, double pitch, double distance, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), yaw, pitch, distance, translation );
 	}
-	
+
 }

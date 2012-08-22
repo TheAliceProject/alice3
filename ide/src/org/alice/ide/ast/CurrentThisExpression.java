@@ -49,8 +49,9 @@ package org.alice.ide.ast;
 public class CurrentThisExpression extends IdeExpression {
 	public CurrentThisExpression() {
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 	}
 }

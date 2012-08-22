@@ -46,14 +46,16 @@ package org.alice.ide.member.views;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabView extends org.lgna.croquet.components.BorderPanel {
-	private final java.util.Map<org.lgna.project.ast.Member,org.lgna.croquet.components.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.components.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public MemberTabView( org.alice.ide.member.MemberTabComposite composite ) {
 		super( composite );
 	}
-	
+
 	private static org.lgna.croquet.components.JComponent<?> createDragView( org.lgna.project.ast.Member member ) {
 		return new org.lgna.croquet.components.Label( member.getName() );
 	}
+
 	protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.lgna.project.ast.Member member ) {
 		synchronized( this.map ) {
 			org.lgna.croquet.components.JComponent<?> rv = this.map.get( member );
@@ -66,6 +68,7 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 			return rv;
 		}
 	}
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
@@ -78,7 +81,7 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 					org.lgna.croquet.components.ExpandableCollapsibleView view = subComposite.getOuterComposite().getView();
 					if( subComposite instanceof org.alice.ide.member.FunctionsOfReturnTypeSubComposite ) {
 						//view.getPageStartComponent().setForegroundColor( java.awt.Color.GRAY );
-						((org.lgna.croquet.components.AbstractButton)view.getPageStartComponent()).setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+						( (org.lgna.croquet.components.AbstractButton)view.getPageStartComponent() ).setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 					}
 					view.getPageStartComponent().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 					pageAxisPanel.addComponent( view );

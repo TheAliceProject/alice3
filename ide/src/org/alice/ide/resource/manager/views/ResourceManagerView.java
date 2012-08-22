@@ -43,13 +43,14 @@
 
 package org.alice.ide.resource.manager.views;
 
-abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.TableCellRenderer< E > {
+abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.TableCellRenderer<E> {
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
 		rv.setBorder( null );
 		return rv;
 	}
+
 	protected java.awt.Color getForegroundColor( boolean isGoodToGo, boolean isSelected ) {
 		if( isGoodToGo ) {
 			if( isSelected ) {
@@ -67,7 +68,7 @@ abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swi
 	}
 }
 
-class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer< Boolean > {
+class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer<Boolean> {
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
@@ -83,9 +84,9 @@ class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer< B
 	}
 }
 
-class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? extends org.lgna.common.Resource >> {
+class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer<Class<? extends org.lgna.common.Resource>> {
 	@Override
-	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class< ? extends org.lgna.common.Resource > value, boolean isSelected, boolean hasFocus, int row, int column ) {
+	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class<? extends org.lgna.common.Resource> value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
 		String text;
 		if( value != null ) {
@@ -101,12 +102,12 @@ class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? 
 			text = "ERROR";
 		}
 		rv.setText( text );
-		rv.setForeground( this.getForegroundColor( value!=null, isSelected ) );
+		rv.setForeground( this.getForegroundColor( value != null, isSelected ) );
 		return rv;
 	}
 }
 
-class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.lgna.common.Resource > {
+class ResourceNameTableCellRenderer extends ResourceTableCellRenderer<org.lgna.common.Resource> {
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, org.lgna.common.Resource value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
@@ -117,7 +118,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.lgna.
 			text = "ERROR";
 		}
 		rv.setText( text );
-		rv.setForeground( this.getForegroundColor( value!=null, isSelected ) );
+		rv.setForeground( this.getForegroundColor( value != null, isSelected ) );
 		return rv;
 	}
 }
@@ -138,6 +139,7 @@ public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel
 	};
 
 	private final org.lgna.croquet.components.Table<org.lgna.common.Resource> table;
+
 	public ResourceManagerView( org.alice.ide.resource.manager.ResourceManagerComposite composite ) {
 		super( composite, 8, 8 );
 
@@ -153,26 +155,28 @@ public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.addCenterComponent( scrollPane );
 
-		org.lgna.croquet.components.Panel lineEndPanel = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(  
+		org.lgna.croquet.components.Panel lineEndPanel = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(
 				org.alice.ide.resource.manager.ImportAudioResourceOperation.getInstance().createButton(),
 				org.alice.ide.resource.manager.ImportImageResourceOperation.getInstance().createButton(),
-				org.alice.ide.resource.manager.RemoveResourceOperation.getInstance().createButton(), 
+				org.alice.ide.resource.manager.RemoveResourceOperation.getInstance().createButton(),
 				new org.lgna.croquet.components.Label(),
 				org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getOperation().createButton(),
 				org.alice.ide.resource.manager.ReloadContentResourceOperation.getInstance().createButton()
-		);
+				);
 		this.addLineEndComponent( new org.lgna.croquet.components.BorderPanel.Builder()
 				.pageStart( lineEndPanel )
-		.build() );
-		
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+				.build() );
+
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.table.addMouseListener( this.mouseAdapter );
 		this.table.addMouseMotionListener( this.mouseAdapter );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.table.removeMouseMotionListener( this.mouseAdapter );

@@ -43,23 +43,27 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SDisc extends SShape {
 	private final org.lgna.story.implementation.DiscImp implementation = new org.lgna.story.implementation.DiscImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.DiscImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.DiscImp getImplementation() {
 		return this.implementation;
 	}
-	
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
+
+	@GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Double getRadius() {
 		return this.implementation.outerRadius.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setRadius( Number baseRadius, SetRadius.Detail... details ) {
 		this.implementation.outerRadius.animateValue( baseRadius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

@@ -46,26 +46,28 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.texture.CustomTexture > {
+public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.texture.CustomTexture> {
 	private com.sun.opengl.util.j2d.TextureRenderer m_textureRenderer = null;
+
 	@Override
 	protected boolean isDirty() {
 		return m_element.isAnimated() || super.isDirty();
 	}
-	
+
 	@Override
 	public java.awt.Graphics2D createGraphics() {
-//		edu.cmu.cs.dennisc.scenegraph.CustomTexture sgCustomTexture = m_sgE;
-//		if( m_textureRenderer != null ) {
-//			m_textureRenderer.dispose();
-//		}
-//		m_textureRenderer = new com.sun.opengl.util.awt.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
+		//		edu.cmu.cs.dennisc.scenegraph.CustomTexture sgCustomTexture = m_sgE;
+		//		if( m_textureRenderer != null ) {
+		//			m_textureRenderer.dispose();
+		//		}
+		//		m_textureRenderer = new com.sun.opengl.util.awt.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
 		java.awt.Graphics2D g = m_textureRenderer.createGraphics();
-//		sgCustomTexture.paint( g );
+		//		sgCustomTexture.paint( g );
 		//m_textureRenderer.beginOrthoRendering( m_textureRenderer.getWidth(), m_textureRenderer.getHeight() );
 		return g;
-		
+
 	}
+
 	@Override
 	public void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height ) {
 		//m_textureRenderer.drawOrthoRect( width, height );
@@ -73,18 +75,19 @@ public class CustomTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.tex
 		m_textureRenderer.markDirty( x, y, width, height );
 		//m_textureRenderer.endOrthoRendering();
 	}
+
 	@Override
 	public java.awt.Image getImage() {
 		return m_textureRenderer.getImage();
 	}
-		
+
 	@Override
 	protected com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTextureData ) {
 		boolean isNewTextureRendererRequired;
 		if( currentTextureData != null ) {
 			if( m_textureRenderer != null ) {
 				//todo: check mip mapping
-				isNewTextureRendererRequired = currentTextureData.getWidth() != m_textureRenderer.getWidth() || currentTextureData.getHeight() != m_textureRenderer.getHeight();
+				isNewTextureRendererRequired = ( currentTextureData.getWidth() != m_textureRenderer.getWidth() ) || ( currentTextureData.getHeight() != m_textureRenderer.getHeight() );
 			} else {
 				isNewTextureRendererRequired = true;
 			}

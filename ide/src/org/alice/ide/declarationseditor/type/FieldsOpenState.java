@@ -47,7 +47,8 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class FieldsOpenState extends org.lgna.croquet.BooleanState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, FieldsOpenState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, FieldsOpenState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized FieldsOpenState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		FieldsOpenState rv = map.get( type );
 		if( rv != null ) {
@@ -58,6 +59,7 @@ public class FieldsOpenState extends org.lgna.croquet.BooleanState {
 		}
 		return rv;
 	}
+
 	private FieldsOpenState( org.lgna.project.ast.NamedUserType type ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7305f3de-0651-4050-9a7d-710708174832" ), true );
 	}

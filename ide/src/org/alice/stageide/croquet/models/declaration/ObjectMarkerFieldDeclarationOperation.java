@@ -50,36 +50,37 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ObjectMarkerFieldDeclarationOperation extends MarkerFieldDeclarationOperation {
 
 	private static class SingletonHolder {
 		private static ObjectMarkerFieldDeclarationOperation instance = new ObjectMarkerFieldDeclarationOperation();
 	}
+
 	public static ObjectMarkerFieldDeclarationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 
 	public ObjectMarkerFieldDeclarationOperation() {
-		super( java.util.UUID.fromString( "830f80f7-da68-43cc-be8a-bbd64da78c24" ),  org.lgna.story.SThingMarker.class );
+		super( java.util.UUID.fromString( "830f80f7-da68-43cc-be8a-bbd64da78c24" ), org.lgna.story.SThingMarker.class );
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
 		String unformattedName = this.getName();
-		MessageFormat formatter = new MessageFormat("");
-		formatter.setLocale(javax.swing.JComponent.getDefaultLocale());
-		formatter.applyPattern(unformattedName);
+		MessageFormat formatter = new MessageFormat( "" );
+		formatter.setLocale( javax.swing.JComponent.getDefaultLocale() );
+		formatter.applyPattern( unformattedName );
 		String defaultName = this.findLocalizedText( "defaultObjectName" );
 		String fieldNameParam = this.getSelectedField() == null ? defaultName : this.getSelectedField().getName();
-		String formattedName = formatter.format(new Object[]{fieldNameParam});
-		this.setName(formattedName);
+		String formattedName = formatter.format( new Object[] { fieldNameParam } );
+		this.setName( formattedName );
 	}
-	
+
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<ObjectMarkerFieldDeclarationOperation> createMainComponent( ) {
+	protected org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<ObjectMarkerFieldDeclarationOperation> createMainComponent() {
 		return new org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<ObjectMarkerFieldDeclarationOperation>( this );
 	}
 
@@ -89,14 +90,13 @@ public class ObjectMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 	}
 
 	@Override
-	protected String getInitialMarkerName(Color color) {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getSuggestedNameForNewObjectMarker(color);
+	protected String getInitialMarkerName( Color color ) {
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getSuggestedNameForNewObjectMarker( color );
 	}
 
 	@Override
 	protected AffineMatrix4x4 getInitialMarkerTransform() {
 		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getTransformForNewObjectMarker();
 	}
-
 
 }

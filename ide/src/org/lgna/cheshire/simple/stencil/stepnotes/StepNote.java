@@ -48,11 +48,14 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
  */
 public abstract class StepNote<S extends org.lgna.croquet.history.Step<?>> extends org.lgna.cheshire.simple.stencil.Note {
 	private final S step;
+
 	public StepNote( S step ) {
 		this.step = step;
 		this.addFeatures( this.step );
 	}
+
 	protected abstract void addFeatures( S step );
+
 	@Override
 	public final boolean isGoodToGo() {
 		boolean rv = false;
@@ -69,19 +72,23 @@ public abstract class StepNote<S extends org.lgna.croquet.history.Step<?>> exten
 		}
 		return rv;
 	}
+
 	public S getStep() {
 		return this.step;
 	}
+
 	@Override
 	protected String getText() {
 		org.lgna.croquet.history.Transaction transaction = this.step.getOwner();
-		org.lgna.croquet.edits.Edit< ? > edit = transaction.getEdit();
+		org.lgna.croquet.edits.Edit<?> edit = transaction.getEdit();
 		return this.step.getTutorialNoteText( edit );
 	}
+
 	protected boolean isCorrectModel( org.lgna.croquet.Model candidateModel ) {
 		org.lgna.croquet.Model correctModel = this.getStep().getModel();
 		return correctModel == candidateModel;
 	}
+
 	protected boolean isCorrectModelClass( org.lgna.croquet.Model candidateModel ) {
 		org.lgna.croquet.Model correctModel = this.getStep().getModel();
 		if( correctModel != null ) {
@@ -100,6 +107,7 @@ public abstract class StepNote<S extends org.lgna.croquet.history.Step<?>> exten
 			}
 		}
 	}
+
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
 		if( event instanceof org.lgna.croquet.history.event.AddStepEvent ) {

@@ -47,7 +47,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ButtonWithRightClickCascade extends Button {
-	private final org.lgna.croquet.Cascade< ? > cascade;
+	private final org.lgna.croquet.Cascade<?> cascade;
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseClickListener = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
@@ -56,16 +56,19 @@ public class ButtonWithRightClickCascade extends Button {
 			}
 		}
 	};
-	public ButtonWithRightClickCascade( org.lgna.croquet.Operation model, org.lgna.croquet.Cascade< ? > cascade ) {
+
+	public ButtonWithRightClickCascade( org.lgna.croquet.Operation model, org.lgna.croquet.Cascade<?> cascade ) {
 		super( model );
 		this.cascade = cascade;
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.addMouseListener( this.mouseClickListener );
 		this.addMouseMotionListener( this.mouseClickListener );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.removeMouseMotionListener( this.mouseClickListener );

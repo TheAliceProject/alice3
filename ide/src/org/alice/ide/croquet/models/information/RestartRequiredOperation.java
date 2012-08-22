@@ -49,6 +49,7 @@ public class RestartRequiredOperation extends org.alice.ide.operations.Inconsequ
 	private static class SingletonHolder {
 		private static RestartRequiredOperation instance = new RestartRequiredOperation();
 	}
+
 	public static RestartRequiredOperation getInstance() {
 		return SingletonHolder.instance;
 	}

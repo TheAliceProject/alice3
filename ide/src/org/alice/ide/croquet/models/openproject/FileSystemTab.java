@@ -46,16 +46,19 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class FileSystemTab extends ContentTab< org.alice.ide.openprojectpane.FileSystemPane > {
+public class FileSystemTab extends ContentTab<org.alice.ide.openprojectpane.FileSystemPane> {
 	private static class SingletonHolder {
 		private static FileSystemTab instance = new FileSystemTab();
 	}
+
 	public static FileSystemTab getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private FileSystemTab() {
 		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
 	}
+
 	@Override
 	protected org.alice.ide.openprojectpane.FileSystemPane createView() {
 		return new org.alice.ide.openprojectpane.FileSystemPane( this );

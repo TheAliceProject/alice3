@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultHairCornRowsLong implements FemaleAdultHair {
-	BLACK ,
- 	BROWN ,
- 	RED ,
- 	BLOND ,
- 	GREY ;
+	BLACK,
+	BROWN,
+	RED,
+	BLOND,
+	GREY;
 }

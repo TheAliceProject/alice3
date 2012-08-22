@@ -44,28 +44,33 @@ package org.lgna.croquet.undo;
 
 class HistoryStackModel extends javax.swing.AbstractListModel {
 	private UndoHistory projectHistory;
+
 	public HistoryStackModel( UndoHistory historyManager ) {
 		this.projectHistory = historyManager;
 	}
+
 	public int getSize() {
 		return projectHistory.getStack().size() + 1;
 	}
+
 	public Object getElementAt( int index ) {
 		if( index == 0 ) {
 			return null;
 		} else {
-			return projectHistory.getStack().elementAt( index-1 );
+			return projectHistory.getStack().elementAt( index - 1 );
 		}
 	}
+
 	public UndoHistory getHistoryManager() {
 		return this.projectHistory;
 	}
+
 	public void refresh() {
 		this.fireContentsChanged( this, 0, this.getSize() );
 	}
 };
 
-class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.croquet.edits.Edit<?> > {
+class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.croquet.edits.Edit<?>> {
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.edits.Edit<?> value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( index == 0 ) {
@@ -75,7 +80,7 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListC
 			rv.setText( text );
 
 			int selectedIndex = list.getSelectedIndex();
-			if( selectedIndex >= 0 && index > selectedIndex ) {
+			if( ( selectedIndex >= 0 ) && ( index > selectedIndex ) ) {
 				rv.setEnabled( false );
 			} else {
 				rv.setEnabled( true );
@@ -89,17 +94,22 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 	private org.lgna.croquet.undo.event.HistoryListener historyListener = new org.lgna.croquet.undo.event.HistoryListener() {
 		public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
+
 		public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
+
 		public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		}
+
 		public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( e.getNextIndex() );
 			HistoryPane.this.list.repaint();
 		}
+
 		public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		}
+
 		public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( 0 );
@@ -111,20 +121,21 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 	private HistoryStackModel historyStackModel;
 	private UndoHistory projectHistory;
 	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			if( e.getValueIsAdjusting() ) {
 				//pass
 			} else {
-				projectHistory.setInsertionIndex(list.getSelectedIndex());
+				projectHistory.setInsertionIndex( list.getSelectedIndex() );
 				HistoryPane.this.list.repaint();
 			}
 		}
 	};
 
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.ProjectDocument > projectListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.ProjectDocument >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 			HistoryPane.this.initializeProjectHistory( nextValue != null ? nextValue : null );
 		}
 	};

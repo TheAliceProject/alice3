@@ -48,27 +48,31 @@ package org.lgna.project.ast;
 public class StringConcatenation extends Expression {
 	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			//todo: allow both objects?
 			return JavaType.OBJECT_TYPE;
 		}
 	};
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return JavaType.OBJECT_TYPE;
 		}
 	};
+
 	public StringConcatenation() {
 	}
+
 	public StringConcatenation( Expression leftOperand, Expression rightOperand ) {
 		this.leftOperand.setValue( leftOperand );
 		this.rightOperand.setValue( rightOperand );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return JavaType.getInstance( String.class );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		NodeUtilities.safeAppendRepr( rv, this.leftOperand.getValue(), locale );

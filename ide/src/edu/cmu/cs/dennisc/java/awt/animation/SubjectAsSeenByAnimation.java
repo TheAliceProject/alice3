@@ -47,15 +47,19 @@ package edu.cmu.cs.dennisc.java.awt.animation;
  */
 public abstract class SubjectAsSeenByAnimation extends SubjectAnimation {
 	private java.awt.Component m_awtAsSeenBy = null;
+
 	public SubjectAsSeenByAnimation() {
 	}
+
 	public SubjectAsSeenByAnimation( java.awt.Component awtSubject, java.awt.Component awtAsSeenBy ) {
 		super( awtSubject );
 		setAsSeenBy( awtAsSeenBy );
-	}	
+	}
+
 	public java.awt.Component getAsSeenBy() {
 		return m_awtAsSeenBy;
 	}
+
 	public void setAsSeenBy( java.awt.Component awtAsSeenBy ) {
 		assert awtAsSeenBy != null;
 		m_awtAsSeenBy = awtAsSeenBy;

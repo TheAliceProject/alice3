@@ -49,6 +49,7 @@ public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 	SINGLETON;
 	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
 	private javax.swing.JLabel label = new javax.swing.JLabel();
+
 	private SimpleListCellRenderer() {
 		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
 		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
@@ -57,6 +58,7 @@ public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 		pane.setOpaque( false );
 		pane.add( label, java.awt.BorderLayout.CENTER );
 	}
+
 	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		this.label.setText( value.toString() );
 		if( isSelected ) {

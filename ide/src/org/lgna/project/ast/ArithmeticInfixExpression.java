@@ -45,200 +45,204 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixExpression.Operator > {
-	public DeclarationProperty<AbstractType<?,?,?>> expressionType = new DeclarationProperty<AbstractType<?,?,?>>( this );
+public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixExpression.Operator> {
+	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+
 	public enum Operator {
-		PLUS() { 
+		PLUS() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
 				assert leftOperand != null : this;
 				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
+				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
 					return leftOperand.doubleValue() + rightOperand.doubleValue();
-				} else if( leftOperand instanceof Float || rightOperand instanceof Float ) {
+				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
 					return leftOperand.floatValue() + rightOperand.floatValue();
-				} else if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return leftOperand.longValue() + rightOperand.longValue();
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return leftOperand.intValue() + rightOperand.intValue();
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return leftOperand.shortValue() + rightOperand.shortValue();
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return leftOperand.byteValue() + rightOperand.byteValue();
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		MINUS() { 
+		MINUS() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
 				assert leftOperand != null : this;
 				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
+				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
 					return leftOperand.doubleValue() - rightOperand.doubleValue();
-				} else if( leftOperand instanceof Float || rightOperand instanceof Float ) {
+				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
 					return leftOperand.floatValue() - rightOperand.floatValue();
-				} else if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return leftOperand.longValue() - rightOperand.longValue();
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return leftOperand.intValue() - rightOperand.intValue();
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return leftOperand.shortValue() - rightOperand.shortValue();
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return leftOperand.byteValue() - rightOperand.byteValue();
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		TIMES() { 
+		TIMES() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
 				assert leftOperand != null : this;
 				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
+				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
 					return leftOperand.doubleValue() * rightOperand.doubleValue();
-				} else if( leftOperand instanceof Float || rightOperand instanceof Float ) {
+				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
 					return leftOperand.floatValue() * rightOperand.floatValue();
-				} else if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return leftOperand.longValue() * rightOperand.longValue();
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return leftOperand.intValue() * rightOperand.intValue();
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return leftOperand.shortValue() * rightOperand.shortValue();
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return leftOperand.byteValue() * rightOperand.byteValue();
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		REAL_DIVIDE() { 
+		REAL_DIVIDE() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
 				assert leftOperand != null : this;
 				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
+				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
 					return leftOperand.doubleValue() / rightOperand.doubleValue();
-				} else if( leftOperand instanceof Float || rightOperand instanceof Float ) {
+				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
 					return leftOperand.floatValue() / rightOperand.floatValue();
-				} else if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return leftOperand.longValue() / (double)rightOperand.longValue();
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return leftOperand.intValue() / (double)rightOperand.intValue();
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return leftOperand.shortValue() / (double)rightOperand.shortValue();
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return leftOperand.byteValue() / (double)rightOperand.byteValue();
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		INTEGER_DIVIDE() { 
+		INTEGER_DIVIDE() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
 				assert leftOperand != null : this;
 				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
-					return ((int)leftOperand.doubleValue()) / (int)rightOperand.doubleValue();
-				} else if( leftOperand instanceof Float || rightOperand instanceof Float ) {
-					return ((int)leftOperand.floatValue()) / (int)rightOperand.floatValue();
-				} else if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
+					return ( (int)leftOperand.doubleValue() ) / (int)rightOperand.doubleValue();
+				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
+					return ( (int)leftOperand.floatValue() ) / (int)rightOperand.floatValue();
+				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return leftOperand.longValue() / rightOperand.longValue();
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return leftOperand.intValue() / rightOperand.intValue();
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return leftOperand.shortValue() / rightOperand.shortValue();
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return leftOperand.byteValue() / rightOperand.byteValue();
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		REAL_REMAINDER() { 
+		REAL_REMAINDER() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
 				assert leftOperand != null : this;
 				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
+				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
 					return leftOperand.doubleValue() % rightOperand.doubleValue();
-				} else if( leftOperand instanceof Float || rightOperand instanceof Float ) {
+				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
 					return leftOperand.floatValue() % rightOperand.floatValue();
-				} else if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return leftOperand.longValue() % (double)rightOperand.longValue();
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return leftOperand.intValue() % (double)rightOperand.intValue();
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return leftOperand.shortValue() % (double)rightOperand.shortValue();
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return leftOperand.byteValue() % (double)rightOperand.byteValue();
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		INTEGER_REMAINDER() { 
+		INTEGER_REMAINDER() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
 				assert leftOperand != null : this;
 				assert rightOperand != null : this;
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
-				if( leftOperand instanceof Double || rightOperand instanceof Double ) {
-					return ((int)leftOperand.doubleValue()) % (int)rightOperand.doubleValue();
-				} else if( leftOperand instanceof Float || rightOperand instanceof Float ) {
-					return ((int)leftOperand.floatValue()) % (int)rightOperand.floatValue();
-				} else if( leftOperand instanceof Long || rightOperand instanceof Long ) {
+				if( ( leftOperand instanceof Double ) || ( rightOperand instanceof Double ) ) {
+					return ( (int)leftOperand.doubleValue() ) % (int)rightOperand.doubleValue();
+				} else if( ( leftOperand instanceof Float ) || ( rightOperand instanceof Float ) ) {
+					return ( (int)leftOperand.floatValue() ) % (int)rightOperand.floatValue();
+				} else if( ( leftOperand instanceof Long ) || ( rightOperand instanceof Long ) ) {
 					return leftOperand.longValue() % rightOperand.longValue();
-				} else if( leftOperand instanceof Integer || rightOperand instanceof Integer ) {
+				} else if( ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer ) ) {
 					return leftOperand.intValue() % rightOperand.intValue();
-				} else if( leftOperand instanceof Short || rightOperand instanceof Short ) {
+				} else if( ( leftOperand instanceof Short ) || ( rightOperand instanceof Short ) ) {
 					return leftOperand.shortValue() % rightOperand.shortValue();
-				} else if( leftOperand instanceof Byte || rightOperand instanceof Byte ) {
+				} else if( ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte ) ) {
 					return leftOperand.byteValue() % rightOperand.byteValue();
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		};
 		public abstract Number operate( Number leftOperand, Number rightOperand );
 	}
+
 	public ArithmeticInfixExpression() {
 	}
-	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?,?,?> expressionType ) {
+
+	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?, ?, ?> expressionType ) {
 		super( leftOperand, operator, rightOperand );
 		//todo
-		assert 
-			JavaType.getInstance( Number.class ).isAssignableFrom( expressionType ) 
-			|| 
-			JavaType.getInstance( Double.TYPE ).isAssignableFrom( expressionType ) 
-			|| 
-			JavaType.getInstance( Integer.TYPE ).isAssignableFrom( expressionType )
-			:
-			expressionType;
+		assert JavaType.getInstance( Number.class ).isAssignableFrom( expressionType )
+				||
+				JavaType.getInstance( Double.TYPE ).isAssignableFrom( expressionType )
+				||
+				JavaType.getInstance( Integer.TYPE ).isAssignableFrom( expressionType ) : expressionType;
 		this.expressionType.setValue( expressionType );
 	}
+
 	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> expressionCls ) {
 		this( leftOperand, operator, rightOperand, JavaType.getInstance( expressionCls ) );
 	}
+
 	@Override
-	protected AbstractType<?,?,?> getLeftOperandType() {
+	protected AbstractType<?, ?, ?> getLeftOperandType() {
 		return this.expressionType.getValue();
 	}
+
 	@Override
-	protected AbstractType<?,?,?> getRightOperandType() {
+	protected AbstractType<?, ?, ?> getRightOperandType() {
 		return this.expressionType.getValue();
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
 	}
 }

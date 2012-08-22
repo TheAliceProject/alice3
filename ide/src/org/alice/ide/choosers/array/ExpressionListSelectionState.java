@@ -46,19 +46,20 @@ package org.alice.ide.choosers.array;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListSelectionState extends org.lgna.croquet.DefaultListSelectionState< org.lgna.project.ast.Expression > {
+public class ExpressionListSelectionState extends org.lgna.croquet.DefaultListSelectionState<org.lgna.project.ast.Expression> {
 	private static class SingletonHolder {
 		private static ExpressionListSelectionState instance = new ExpressionListSelectionState();
 	}
+
 	public static ExpressionListSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ExpressionListSelectionState() {
-		super( 
-				org.lgna.croquet.Application.INHERIT_GROUP, 
-				java.util.UUID.fromString( "2fd11e8b-729f-4b99-a2bd-0bbabd915ee8" ), 
-				org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), 
-				-1 
-		);
+		super(
+				org.lgna.croquet.Application.INHERIT_GROUP,
+				java.util.UUID.fromString( "2fd11e8b-729f-4b99-a2bd-0bbabd915ee8" ),
+				org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ),
+				-1 );
 	}
 }

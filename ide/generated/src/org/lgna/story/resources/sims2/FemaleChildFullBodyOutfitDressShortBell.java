@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleChildFullBodyOutfitDressShortBell implements FemaleChildFullBodyOutfit {
 	BANDWSTRIPEGOTH,
- 	BANDWSTRIPEGOTHBOOTS,
- 	PINKPINKBOOTS,
- 	REDWHITE,
- 	BURGANDYWHITE;
+	BANDWSTRIPEGOTHBOOTS,
+	PINKPINKBOOTS,
+	REDWHITE,
+	BURGANDYWHITE;
 }

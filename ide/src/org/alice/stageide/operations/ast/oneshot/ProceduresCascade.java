@@ -46,8 +46,9 @@ package org.alice.stageide.operations.ast.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class ProceduresCascade extends org.lgna.croquet.Cascade< MethodInvocationEditFactory > {
-	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, ProceduresCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class ProceduresCascade extends org.lgna.croquet.Cascade<MethodInvocationEditFactory> {
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, ProceduresCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static ProceduresCascade getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 		synchronized( map ) {
 			ProceduresCascade rv = map.get( instanceFactory );
@@ -60,11 +61,13 @@ public class ProceduresCascade extends org.lgna.croquet.Cascade< MethodInvocatio
 			return rv;
 		}
 	}
+
 	private ProceduresCascade( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
 	}
+
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< MethodInvocationEditFactory >> step, MethodInvocationEditFactory[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step, MethodInvocationEditFactory[] values ) {
 		assert values.length == 1;
 		return values[ 0 ].createEdit( step );
 	}

@@ -46,32 +46,39 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel,org.lgna.story.resources.sims2.PersonResource> {
+public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.story.resources.sims2.PersonResource> {
 	private final PreviewComposite previewComposite = new PreviewComposite();
 	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
 	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.ingredientsComposite, 0.0f );
+
 	public PersonResourceComposite() {
 		super( java.util.UUID.fromString( "9527895d-ee3f-43ed-86fe-b94538b1ff23" ) );
 	}
+
 	public org.lgna.croquet.SplitComposite getSplitComposite() {
 		return this.splitComposite;
 	}
+
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
 		return new org.lgna.croquet.components.BorderPanel.Builder().center( this.splitComposite.getView() ).build();
 	}
+
 	@Override
 	protected org.lgna.story.resources.sims2.PersonResource createValue() {
 		return null;
 	}
+
 	@Override
 	public boolean isStatusLineDesired() {
 		return false;
 	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -80,7 +87,8 @@ public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCrea
 		new org.alice.stageide.StageIDE();
 		try {
 			org.lgna.croquet.triggers.Trigger trigger = null;
-			new PersonResourceComposite() {}.getValueCreator().fire( trigger );
+			new PersonResourceComposite() {
+			}.getValueCreator().fire( trigger );
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}

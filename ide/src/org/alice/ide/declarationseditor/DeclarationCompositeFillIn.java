@@ -45,8 +45,9 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationCompositeFillIn extends org.lgna.croquet.CascadeFillIn< DeclarationComposite, Void > {
-	private static final java.util.Map< DeclarationComposite, DeclarationCompositeFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class DeclarationCompositeFillIn extends org.lgna.croquet.CascadeFillIn<DeclarationComposite, Void> {
+	private static final java.util.Map<DeclarationComposite, DeclarationCompositeFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized DeclarationCompositeFillIn getInstance( DeclarationComposite declarationComposite ) {
 		DeclarationCompositeFillIn rv = map.get( declarationComposite );
 		if( rv != null ) {
@@ -57,28 +58,34 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.CascadeFillIn< 
 		}
 		return rv;
 	}
+
 	private final DeclarationComposite declarationComposite;
+
 	public DeclarationCompositeFillIn( DeclarationComposite declarationComposite ) {
 		super( java.util.UUID.fromString( "7d731332-2dd6-4861-b08e-386c50c7a580" ) );
 		this.declarationComposite = declarationComposite;
 	}
+
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.declarationComposite;
 	}
+
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node ) {
+	public org.alice.ide.declarationseditor.DeclarationComposite getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node ) {
 		return this.declarationComposite;
 	}
+
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void > node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node ) {
 		throw new AssertionError();
 	}
+
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super DeclarationComposite, Void > node ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super DeclarationComposite, Void> node ) {
 		org.lgna.project.ast.AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-		if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+		if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 			return null;
 		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
@@ -87,11 +94,12 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.CascadeFillIn< 
 			return null;
 		}
 	}
+
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super DeclarationComposite, Void > node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super DeclarationComposite, Void> node ) {
 		org.lgna.project.ast.AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
-		if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+		if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 			return org.alice.ide.common.TypeIcon.getInstance( type );
 		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;

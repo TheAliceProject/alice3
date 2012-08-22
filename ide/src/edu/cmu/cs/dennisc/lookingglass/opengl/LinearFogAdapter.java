@@ -43,12 +43,15 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_FOG_END;
+import static javax.media.opengl.GL.GL_FOG_MODE;
+import static javax.media.opengl.GL.GL_FOG_START;
+import static javax.media.opengl.GL.GL_LINEAR;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LinearFogAdapter extends FogAdapter< edu.cmu.cs.dennisc.scenegraph.LinearFog > {
+public class LinearFogAdapter extends FogAdapter<edu.cmu.cs.dennisc.scenegraph.LinearFog> {
 	private float m_near;
 	private float m_far;
 
@@ -59,6 +62,7 @@ public class LinearFogAdapter extends FogAdapter< edu.cmu.cs.dennisc.scenegraph.
 		rc.gl.glFogf( GL_FOG_START, m_near );
 		rc.gl.glFogf( GL_FOG_END, m_far );
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.nearDistance ) {

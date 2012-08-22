@@ -68,9 +68,11 @@ public enum IdentifierNameGenerator {
 		}
 		return sb.toString();
 	}
+
 	public String convertConstantNameToMethodName( String constantName ) {
 		return convertConstantNameToMethodName( constantName, null );
 	}
+
 	public String convertFirstCharacterToLowerCase( String name ) {
 		if( name != null ) {
 			if( name.length() > 0 ) {

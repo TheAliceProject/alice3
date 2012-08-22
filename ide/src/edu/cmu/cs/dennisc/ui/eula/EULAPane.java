@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.ui.eula;
 /**
  * @author Dennis Cosgrove
  */
-public class EULAPane extends edu.cmu.cs.dennisc.inputpane.InputPane< Boolean > {
+public class EULAPane extends edu.cmu.cs.dennisc.inputpane.InputPane<Boolean> {
 	private javax.swing.JCheckBox accept = new javax.swing.JCheckBox();
 	private javax.swing.JCheckBox reject = new javax.swing.JCheckBox();
 
@@ -109,6 +109,7 @@ public class EULAPane extends edu.cmu.cs.dennisc.inputpane.InputPane< Boolean > 
 			}
 		} );
 	}
+
 	@Override
 	protected Boolean getActualInputValue() {
 		return accept.isSelected();

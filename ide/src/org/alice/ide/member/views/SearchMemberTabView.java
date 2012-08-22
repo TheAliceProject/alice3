@@ -47,17 +47,19 @@ package org.alice.ide.member.views;
  */
 public class SearchMemberTabView extends MemberTabView {
 	private final org.lgna.croquet.components.TextField queryTextField;
+
 	public SearchMemberTabView( org.alice.ide.member.SearchTabComposite composite ) {
 		super( composite );
-		
+
 		this.queryTextField = composite.getQueryState().createTextField();
 		org.lgna.croquet.components.BorderPanel searchPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-			.center( this.queryTextField )
-			.lineEnd( composite.getClearQueryOperation().createButton() )
-		.build();
+				.center( this.queryTextField )
+				.lineEnd( composite.getClearQueryOperation().createButton() )
+				.build();
 		this.addPageStartComponent( searchPanel );
 		this.setBackgroundColor( new java.awt.Color( 255, 224, 159 ) );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {

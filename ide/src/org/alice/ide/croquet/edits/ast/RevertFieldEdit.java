@@ -44,26 +44,28 @@ package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class RevertFieldEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.project.ast.UserField field;
 	private final org.lgna.project.ast.Statement redoStateCode;
+
 	public RevertFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserField field ) {
 		super( step );
 		this.field = field;
-		this.redoStateCode = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField(this.field);
+		this.redoStateCode = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
 	}
+
 	public RevertFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
-		this.redoStateCode = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField(this.field);
+		this.redoStateCode = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
 	}
-	
+
 	protected org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
-	
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -72,23 +74,24 @@ public class RevertFieldEdit extends org.lgna.croquet.edits.Edit {
 
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
-		rv.append("declare:");
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, field, org.lgna.croquet.Application.getLocale());
+		rv.append( "declare:" );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, field, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
-	
+
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.UserField field = this.getField();
 		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().revertFieldToInitialState(field);
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().revertFieldToInitialState( field );
 		}
 	}
+
 	@Override
 	public void undoInternal() {
 		org.lgna.project.ast.UserField field = this.getField();
 		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().setFieldToState(field, redoStateCode);
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().setFieldToState( field, redoStateCode );
 		}
 	}
 }

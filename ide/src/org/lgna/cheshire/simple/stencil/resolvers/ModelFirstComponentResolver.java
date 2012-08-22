@@ -47,10 +47,12 @@ package org.lgna.cheshire.simple.stencil.resolvers;
  * @author Dennis Cosgrove
  */
 public class ModelFirstComponentResolver extends TrackableShapeResolver {
-	private final org.lgna.croquet.history.Step< ? > step;
-	public ModelFirstComponentResolver( org.lgna.croquet.history.Step< ? > step ) {
+	private final org.lgna.croquet.history.Step<?> step;
+
+	public ModelFirstComponentResolver( org.lgna.croquet.history.Step<?> step ) {
 		this.step = step;
 	}
+
 	public org.lgna.croquet.components.Component<?> getResolved() {
 		org.lgna.croquet.Model model = this.step.getModel();
 		if( model != null ) {
@@ -66,6 +68,7 @@ public class ModelFirstComponentResolver extends TrackableShapeResolver {
 			return null;
 		}
 	}
+
 	@Override
 	protected void appendRepr( StringBuilder sb ) {
 		sb.append( this.step.getModel() );

@@ -50,10 +50,13 @@ public abstract class MethodsSubComposite extends org.lgna.croquet.ExpandableCol
 	public MethodsSubComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
 		super( migrationId, isExpandedInitialValue );
 	}
+
 	public abstract java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods();
+
 	public boolean isShowingDesired() {
 		return true;
 	}
+
 	@Override
 	protected org.alice.ide.member.views.MethodsSubView createView() {
 		return new org.alice.ide.member.views.MethodsSubView( this );

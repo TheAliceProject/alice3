@@ -49,12 +49,12 @@ import org.lgna.story.AddExitProximityEventListener;
  * @author Matt May
  */
 public class ProximityDistance implements
-	AddEnterProximityEventListener.Detail,
-	AddExitProximityEventListener.Detail {
-	
+		AddEnterProximityEventListener.Detail,
+		AddExitProximityEventListener.Detail {
+
 	private Double dist;
 
-	public ProximityDistance(Double dist){
+	public ProximityDistance( Double dist ) {
 		this.dist = dist;
 	}
 

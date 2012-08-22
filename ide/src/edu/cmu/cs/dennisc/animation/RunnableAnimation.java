@@ -47,28 +47,30 @@ package edu.cmu.cs.dennisc.animation;
  */
 public class RunnableAnimation implements Animation {
 	private Runnable m_runnable;
-	
+
 	public RunnableAnimation() {
 	}
+
 	public RunnableAnimation( Runnable runnable ) {
 		setRunnable( runnable );
 	}
-	
+
 	public Runnable getRunnable() {
 		return m_runnable;
 	}
+
 	public void setRunnable( Runnable runnable ) {
 		m_runnable = runnable;
 	}
 
 	public void reset() {
 	}
-	
+
 	public double update( double tCurrent, AnimationObserver animationObserver ) {
 		m_runnable.run();
 		return 0.0;
 	}
-	
+
 	public void complete( AnimationObserver animationObserver ) {
 		//todo?
 	}

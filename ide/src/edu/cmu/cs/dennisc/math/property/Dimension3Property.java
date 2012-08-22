@@ -45,22 +45,26 @@ package edu.cmu.cs.dennisc.math.property;
 /**
  * @author Dennis Cosgrove
  */
-public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.math.Dimension3 > implements edu.cmu.cs.dennisc.property.CopyableProperty< edu.cmu.cs.dennisc.math.Dimension3 >{
+public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.math.Dimension3> implements edu.cmu.cs.dennisc.property.CopyableProperty<edu.cmu.cs.dennisc.math.Dimension3> {
 	public Dimension3Property( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
 		super( owner, value );
 	}
+
 	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
 		assert value != null;
-		assert value.isNaN() == false;  
+		assert value.isNaN() == false;
 		super.setValue( owner, value );
 	}
+
 	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.math.Dimension3 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		rv.set( getValue( owner ) );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( edu.cmu.cs.dennisc.math.Dimension3.createNaN(), owner );
 	}
+
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.Dimension3( value ) );

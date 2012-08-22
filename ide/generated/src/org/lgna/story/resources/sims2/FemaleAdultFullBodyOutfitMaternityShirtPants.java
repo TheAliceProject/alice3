@@ -41,14 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitMaternityShirtPants implements FemaleAdultFullBodyOutfit {
-	WINTER ,
- 	SPRING ,
- 	FALL ,
- 	BLACKVIOLET ,
- 	GRAPEVINE ,
- 	NAVYRUST ,
- 	BRIGHTGREEN ,
- 	BRIGHTPURPLE ,
- 	BRIGHTRED ;
+	WINTER,
+	SPRING,
+	FALL,
+	BLACKVIOLET,
+	GRAPEVINE,
+	NAVYRUST,
+	BRIGHTGREEN,
+	BRIGHTPURPLE,
+	BRIGHTRED;
 }

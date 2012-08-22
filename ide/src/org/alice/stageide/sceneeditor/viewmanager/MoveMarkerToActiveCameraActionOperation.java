@@ -53,31 +53,29 @@ public class MoveMarkerToActiveCameraActionOperation extends CameraMoveActionOpe
 	private static class SingletonHolder {
 		private static MoveMarkerToActiveCameraActionOperation instance = new MoveMarkerToActiveCameraActionOperation();
 	}
-	
+
 	public static MoveMarkerToActiveCameraActionOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	
 
 	private MoveMarkerToActiveCameraActionOperation() {
-		super(java.util.UUID.fromString( "a95908d8-0161-4a03-8a38-61eebea0c58c" ));
+		super( java.util.UUID.fromString( "a95908d8-0161-4a03-8a38-61eebea0c58c" ) );
 	}
 
 	@Override
-	protected void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp) {
-		TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation(markerField);
+	protected void updateMoveFields( UserField markerField, CameraMarkerImp cameraMarkerImp ) {
+		TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation( markerField );
 		String markerName = markerField != null ? markerField.getName() : "";
-		
-		org.lgna.croquet.icon.IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarker(markerField);
-		javax.swing.Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
-		
-		org.lgna.croquet.icon.IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp(cameraMarkerImp);
-		javax.swing.Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
-		
-		this.setToMoveImp(markerImp, toMoveIcon, markerName);
-		this.setToMoveToImp(this.getCamera(), moveToIcon, MarkerUtilities.getNameForCameraImp(cameraMarkerImp));
-		
-	}
 
+		org.lgna.croquet.icon.IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarker( markerField );
+		javax.swing.Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+
+		org.lgna.croquet.icon.IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp( cameraMarkerImp );
+		javax.swing.Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+
+		this.setToMoveImp( markerImp, toMoveIcon, markerName );
+		this.setToMoveToImp( this.getCamera(), moveToIcon, MarkerUtilities.getNameForCameraImp( cameraMarkerImp ) );
+
+	}
 
 }

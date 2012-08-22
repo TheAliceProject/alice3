@@ -43,45 +43,47 @@
 
 package org.alice.ide.properties.adapter;
 
-public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation 
+public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation
 {
-	protected AbstractPropertyAdapter <P, ?> propertyAdapter;
+	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
 	protected P value;
 	protected P originalValue;
-	
-	public SetValueOperation( AbstractPropertyAdapter <P, ?> propertyAdapter, P value, String name, java.util.UUID individualUUID) {
+
+	public SetValueOperation( AbstractPropertyAdapter<P, ?> propertyAdapter, P value, String name, java.util.UUID individualUUID ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualUUID );
 		this.propertyAdapter = propertyAdapter;
 		this.value = value;
 		this.setName( name );
 	}
-	
-	public void setValue(P value)
+
+	public void setValue( P value )
 	{
 		this.value = value;
 	}
-	
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		this.originalValue = this.propertyAdapter.getValueCopyIfMutable();
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
-			protected final void doOrRedoInternal( boolean isDo ) 
+			protected final void doOrRedoInternal( boolean isDo )
 			{
 				SetValueOperation.this.propertyAdapter.setValue( SetValueOperation.this.value );
 			}
+
 			@Override
-			protected final void undoInternal() 
+			protected final void undoInternal()
 			{
 				SetValueOperation.this.propertyAdapter.setValue( SetValueOperation.this.originalValue );
 			}
+
 			@Override
 			protected StringBuilder updatePresentation( StringBuilder rv ) {
 				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription() );
 				return rv;
 			}
-		} );	
+		} );
 	}
-	
+
 }

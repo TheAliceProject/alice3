@@ -50,16 +50,21 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 	protected static org.lgna.project.ast.Expression createTransientThisExpression() {
 		return new org.alice.ide.ast.CurrentThisExpression();
 	}
+
 	protected static org.lgna.project.ast.Expression createThisExpression() {
 		return new org.lgna.project.ast.ThisExpression();
 	}
-	private final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] mutablePropertiesOfInterest;
+
+	private final edu.cmu.cs.dennisc.property.InstanceProperty<?>[] mutablePropertiesOfInterest;
 	private org.lgna.croquet.resolvers.Resolver resolver;
-	public AbstractInstanceFactory( edu.cmu.cs.dennisc.property.InstanceProperty< ? >... mutablePropertiesOfInterest ) { 
+
+	public AbstractInstanceFactory( edu.cmu.cs.dennisc.property.InstanceProperty<?>... mutablePropertiesOfInterest ) {
 		this.mutablePropertiesOfInterest = mutablePropertiesOfInterest;
 	}
-	protected abstract < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > createResolver();
-	public final < F extends org.alice.ide.instancefactory.InstanceFactory > org.lgna.croquet.resolvers.Resolver< F > getResolver() {
+
+	protected abstract <F extends org.alice.ide.instancefactory.InstanceFactory> org.lgna.croquet.resolvers.Resolver<F> createResolver();
+
+	public final <F extends org.alice.ide.instancefactory.InstanceFactory> org.lgna.croquet.resolvers.Resolver<F> getResolver() {
 		if( this.resolver != null ) {
 			//pass
 		} else {
@@ -67,17 +72,19 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 		}
 		return this.resolver;
 	}
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< ? >[] getMutablePropertiesOfInterest() {
+
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<?>[] getMutablePropertiesOfInterest() {
 		return this.mutablePropertiesOfInterest;
 	}
-	
-	protected abstract boolean isValid( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.AbstractCode code );
+
+	protected abstract boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code );
+
 	public final boolean isValid() {
-		org.lgna.project.ast.AbstractType<?,?,?> type;
+		org.lgna.project.ast.AbstractType<?, ?, ?> type;
 		org.lgna.project.ast.AbstractCode code;
 		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationFauxState.getInstance().getValue();
-		if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
-			type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
+		if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+			type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 			code = null;
 		} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
 			code = (org.lgna.project.ast.AbstractCode)declaration;
@@ -88,11 +95,11 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 		}
 		return this.isValid( type, code );
 	}
-	
+
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
 		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( this.getValueType() );
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

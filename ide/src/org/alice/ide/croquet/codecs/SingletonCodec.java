@@ -45,24 +45,29 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
-	private static java.util.Map< Class<?>, SingletonCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T > SingletonCodec< T > getInstance( Class< T > cls ) {
-		SingletonCodec< ? > rv = map.get( cls );
+public class SingletonCodec<T> implements org.lgna.croquet.ItemCodec<T> {
+	private static java.util.Map<Class<?>, SingletonCodec<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized <T> SingletonCodec<T> getInstance( Class<T> cls ) {
+		SingletonCodec<?> rv = map.get( cls );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new SingletonCodec< T >( cls );
+			rv = new SingletonCodec<T>( cls );
 		}
-		return (SingletonCodec< T >)rv;
+		return (SingletonCodec<T>)rv;
 	}
+
 	private Class<T> valueCls;
+
 	private SingletonCodec( Class<T> valueCls ) {
 		this.valueCls = valueCls;
 	}
-	public Class< T > getValueClass() {
+
+	public Class<T> getValueClass() {
 		return this.valueCls;
 	}
+
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
@@ -78,7 +83,8 @@ public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
 			return null;
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( value.getClass().getName() );
@@ -86,7 +92,8 @@ public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
 			binaryEncoder.encode( false );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
+
+	public StringBuilder appendRepresentation( StringBuilder rv, T value ) {
 		rv.append( value );
 		return rv;
 	}

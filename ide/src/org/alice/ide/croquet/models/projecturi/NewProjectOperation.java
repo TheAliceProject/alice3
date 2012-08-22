@@ -49,9 +49,11 @@ public class NewProjectOperation extends ClearanceRequiringUriSerialOperation {
 	private static class SingletonHolder {
 		private static NewProjectOperation instance = new NewProjectOperation();
 	}
+
 	public static NewProjectOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private NewProjectOperation() {
 		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), new org.alice.ide.croquet.models.projecturi.SelectAndLoadTemplateProjectOperation() );
 	}

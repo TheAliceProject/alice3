@@ -67,6 +67,7 @@ public class SpaceChangeUtilities {
 		rv.backward.z = m22;
 		return rv;
 	}
+
 	public static Matrix4x4 swapXAndY( Matrix4x4 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -102,6 +103,7 @@ public class SpaceChangeUtilities {
 		rv.translation.w = m33;
 		return rv;
 	}
+
 	public static AffineMatrix4x4 swapXAndY( AffineMatrix4x4 rv ) {
 		double m00 = rv.orientation.right.x;
 		double m01 = rv.orientation.up.x;
@@ -129,6 +131,7 @@ public class SpaceChangeUtilities {
 		rv.translation.z = m23;
 		return rv;
 	}
+
 	public static Matrix3x3 swapXAndZ( Matrix3x3 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -150,6 +153,7 @@ public class SpaceChangeUtilities {
 		rv.backward.z = m00;
 		return rv;
 	}
+
 	public static Matrix4x4 swapXAndZ( Matrix4x4 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -185,6 +189,7 @@ public class SpaceChangeUtilities {
 		rv.translation.w = m33;
 		return rv;
 	}
+
 	public static AffineMatrix4x4 swapXAndZ( AffineMatrix4x4 rv ) {
 		double m00 = rv.orientation.right.x;
 		double m01 = rv.orientation.up.x;
@@ -212,6 +217,7 @@ public class SpaceChangeUtilities {
 		rv.translation.z = m03;
 		return rv;
 	}
+
 	public static Matrix3x3 swapYAndZ( Matrix3x3 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -233,6 +239,7 @@ public class SpaceChangeUtilities {
 		rv.backward.z = m11;
 		return rv;
 	}
+
 	public static AffineMatrix4x4 swapYAndZ( AffineMatrix4x4 rv ) {
 		double m00 = rv.orientation.right.x;
 		double m01 = rv.orientation.up.x;
@@ -260,6 +267,7 @@ public class SpaceChangeUtilities {
 		rv.translation.z = m13;
 		return rv;
 	}
+
 	public static Matrix4x4 swapYAndZ( Matrix4x4 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -317,6 +325,7 @@ public class SpaceChangeUtilities {
 		rv.backward.z = +m22;
 		return rv;
 	}
+
 	public static Matrix4x4 negateX( Matrix4x4 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -352,6 +361,7 @@ public class SpaceChangeUtilities {
 		rv.translation.w = +m33;
 		return rv;
 	}
+
 	public static Matrix3x3 negateY( Matrix3x3 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -373,6 +383,7 @@ public class SpaceChangeUtilities {
 		rv.backward.z = +m22;
 		return rv;
 	}
+
 	public static Matrix4x4 negateY( Matrix4x4 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -408,6 +419,7 @@ public class SpaceChangeUtilities {
 		rv.translation.w = +m33;
 		return rv;
 	}
+
 	public static Matrix3x3 negateZ( Matrix3x3 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -429,6 +441,7 @@ public class SpaceChangeUtilities {
 		rv.backward.z = +m22;
 		return rv;
 	}
+
 	public static Matrix4x4 negateZ( Matrix4x4 rv ) {
 		double m00 = rv.right.x;
 		double m01 = rv.up.x;
@@ -464,6 +477,7 @@ public class SpaceChangeUtilities {
 		rv.translation.w = +m33;
 		return rv;
 	}
+
 	public static AffineMatrix4x4 negateZ( AffineMatrix4x4 rv ) {
 		double m00 = rv.orientation.right.x;
 		double m01 = rv.orientation.up.x;

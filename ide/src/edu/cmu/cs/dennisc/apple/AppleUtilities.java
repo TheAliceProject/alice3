@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.apple;
  * @author Dennis Cosgrove
  */
 public class AppleUtilities {
-	public static void addApplicationListener( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) { 
+	public static void addApplicationListener( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			//jython's class loader necessitates this reflection
-			java.lang.reflect.Constructor< ? > constructor = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( edu.cmu.cs.dennisc.apple.Adapter.class, edu.cmu.cs.dennisc.apple.event.ApplicationListener.class );
+			java.lang.reflect.Constructor<?> constructor = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( edu.cmu.cs.dennisc.apple.Adapter.class, edu.cmu.cs.dennisc.apple.event.ApplicationListener.class );
 			com.apple.eawt.ApplicationListener adapter = (com.apple.eawt.ApplicationListener)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( constructor, listener );
 
 			com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();

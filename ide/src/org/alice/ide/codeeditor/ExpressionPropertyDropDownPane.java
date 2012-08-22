@@ -45,19 +45,23 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton< org.lgna.croquet.CascadeRoot.InternalPopupPrepModel< org.lgna.project.ast.Expression > > {
+public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression>> {
 	private class ExpressionPropertyDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
 		}
+
 		public void dragStarted( org.lgna.croquet.history.DragStep dragStep ) {
 		}
+
 		public void dragEntered( org.lgna.croquet.history.DragStep dragStep ) {
 			dragStep.getDragSource().setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), ExpressionPropertyDropDownPane.this.getMainComponent(), ExpressionPropertyDropDownPane.this.getBounds().height, -1 );
 		}
+
 		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep dragStep ) {
 			return null;
 		}
+
 		@Override
 		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep dragStep ) {
 			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
@@ -71,21 +75,24 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 			if( rv != null ) {
 				//pass
 			} else {
-//				source.hideDropProxyIfNecessary();
+				//				source.hideDropProxyIfNecessary();
 				dragStep.cancelTransaction( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
 			}
 			return rv;
 		}
+
 		public void dragExited( org.lgna.croquet.history.DragStep dragStep, boolean isDropRecipient ) {
-//			edu.cmu.cs.dennisc.croquet.DragComponent source = dragStep.getDragSource();
-//			source.hideDropProxyIfNecessary();
+			//			edu.cmu.cs.dennisc.croquet.DragComponent source = dragStep.getDragSource();
+			//			source.hideDropProxyIfNecessary();
 		}
+
 		public void dragStopped( org.lgna.croquet.history.DragStep dragStep ) {
 		}
-		
-		public org.lgna.croquet.components.ViewController<?,?> getViewController() {
+
+		public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 			return ExpressionPropertyDropDownPane.this;
 		}
+
 		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return ExpressionPropertyDropDownPane.this;
 		}
@@ -93,13 +100,16 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 
 	private final ExpressionPropertyDropReceptor dropReceptor = new ExpressionPropertyDropReceptor();
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel< org.lgna.project.ast.Expression > model, org.lgna.croquet.components.Component< ? > prefixPane, org.lgna.croquet.components.Component< ? > component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+
+	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression> model, org.lgna.croquet.components.Component<?> prefixPane, org.lgna.croquet.components.Component<?> component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}
+
 	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
+
 	public ExpressionPropertyDropReceptor getDropReceptor() {
 		return this.dropReceptor;
 	}
@@ -109,9 +119,9 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 		org.lgna.project.ast.Expression expression = this.expressionProperty.getValue();
 		if( expression != null ) {
 			org.lgna.project.ast.Node parent = expression.getParent();
-			if( parent instanceof org.lgna.project.ast.InfixExpression || parent instanceof org.lgna.project.ast.LogicalComplement ) { 
+			if( ( parent instanceof org.lgna.project.ast.InfixExpression ) || ( parent instanceof org.lgna.project.ast.LogicalComplement ) ) {
 				org.lgna.project.ast.Node grandparent = parent.getParent();
-				return grandparent instanceof org.lgna.project.ast.MethodInvocation || grandparent instanceof org.lgna.project.ast.AssignmentExpression || grandparent instanceof org.lgna.project.ast.ArrayAccess; 
+				return ( grandparent instanceof org.lgna.project.ast.MethodInvocation ) || ( grandparent instanceof org.lgna.project.ast.AssignmentExpression ) || ( grandparent instanceof org.lgna.project.ast.ArrayAccess );
 			}
 		}
 		return super.isInactiveFeedbackDesired();

@@ -53,40 +53,39 @@ public abstract class AbstractPropertyAdapter<P, O>
 {
 	public static interface ValueChangeObserver<P>
 	{
-		public void valueChanged(P newValue);
+		public void valueChanged( P newValue );
 	}
-	
+
 	protected O instance;
 	protected String repr;
 	protected P lastSetValue;
 	private boolean isExpressionSet = false;
 	protected StandardExpressionState expressionState;
-	
 
-	private org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression > valueObserver = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueObserver = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 			AbstractPropertyAdapter.this.onExpressionStateUpdate();
 		}
 	};
-	
-	
+
 	protected String getCurrentValueLabelString()
 	{
-		return  " (current value)";
+		return " (current value)";
 	}
-	
+
 	protected List<ValueChangeObserver<P>> valueChangeObservers = new LinkedList<ValueChangeObserver<P>>();
-	
-	public AbstractPropertyAdapter(String repr, O instance, StandardExpressionState expressionState)
+
+	public AbstractPropertyAdapter( String repr, O instance, StandardExpressionState expressionState )
 	{
 		this.repr = repr;
 		this.expressionState = expressionState;
-		this.setInstance(instance);
+		this.setInstance( instance );
 		this.initializeExpressionState();
 	}
-	
+
 	public String getRepr()
 	{
 		return this.repr;
@@ -96,158 +95,158 @@ public abstract class AbstractPropertyAdapter<P, O>
 	{
 		return getRepr();
 	}
-	
-	public void setInstance(O instance)
+
+	public void setInstance( O instance )
 	{
-		if (this.instance != null) {
+		if( this.instance != null ) {
 			this.stopListening();
 		}
 		this.instance = instance;
 		this.startListening();
 	}
-	
+
 	public O getInstance()
 	{
 		return this.instance;
 	}
-	
-	public void setValue(P newValue)
+
+	public void setValue( P newValue )
 	{
 		this.lastSetValue = newValue;
 	}
-	
+
 	public P getLastSetValue()
 	{
 		return this.lastSetValue;
 	}
-	
+
 	public abstract P getValue();
+
 	public abstract Class<P> getPropertyType();
+
 	public abstract P getValueCopyIfMutable();
-	
-	public void addValueChangeObserver(ValueChangeObserver<P> observer)
+
+	public void addValueChangeObserver( ValueChangeObserver<P> observer )
 	{
-		if (!this.valueChangeObservers.contains(observer))
+		if( !this.valueChangeObservers.contains( observer ) )
 		{
-			this.valueChangeObservers.add(observer);
+			this.valueChangeObservers.add( observer );
 		}
 	}
-	
-	public void addAndInvokeValueChangeObserver(ValueChangeObserver<P> observer)
+
+	public void addAndInvokeValueChangeObserver( ValueChangeObserver<P> observer )
 	{
-		this.addValueChangeObserver(observer);
-		observer.valueChanged(this.getValue());
+		this.addValueChangeObserver( observer );
+		observer.valueChanged( this.getValue() );
 	}
-	
-	public void removeValueChangeObserver(ValueChangeObserver<P> observer)
+
+	public void removeValueChangeObserver( ValueChangeObserver<P> observer )
 	{
-		this.valueChangeObservers.remove(observer);
+		this.valueChangeObservers.remove( observer );
 	}
-	
+
 	public void setExpressionState( StandardExpressionState expressionState )
 	{
 		this.expressionState = expressionState;
-		this.setExpressionValue(this.getValue());
+		this.setExpressionValue( this.getValue() );
 	}
-	
+
 	public void clearListeners()
 	{
 		this.valueChangeObservers.clear();
 	}
-	
+
 	public StandardExpressionState getExpressionState()
 	{
 		return this.expressionState;
 	}
-	
+
 	public void startListening() {
 		startPropertyListening();
 		startExpressionListening();
 	}
-	
+
 	public void stopListening() {
 		stopPropertyListening();
 		stopExpressionListening();
 	}
-	
+
 	protected void startExpressionListening() {
-		if (this.expressionState != null)
+		if( this.expressionState != null )
 		{
 			this.expressionState.addValueListener( this.valueObserver );
 		}
 	}
-	
+
 	protected void stopExpressionListening() {
-		if (this.expressionState != null)
+		if( this.expressionState != null )
 		{
 			this.expressionState.removeValueListener( this.valueObserver );
 		}
 	}
-	
+
 	protected void startPropertyListening() {
 	}
-	
+
 	protected void stopPropertyListening() {
 	}
-	
+
 	protected void initializeExpressionState()
 	{
 		stopExpressionListening();
-		this.setExpressionValue(this.getValue());
+		this.setExpressionValue( this.getValue() );
 		startExpressionListening();
 	}
-	
-	protected void setExpressionValue(P value)
+
+	protected void setExpressionValue( P value )
 	{
-		if (this.expressionState != null)
+		if( this.expressionState != null )
 		{
 			try
 			{
-				org.lgna.project.ast.Expression expressionValue = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression(this.getValue());
-				this.expressionState.setValueTransactionlessly(expressionValue);
-			}
-			catch (CannotCreateExpressionException e)
+				org.lgna.project.ast.Expression expressionValue = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( this.getValue() );
+				this.expressionState.setValueTransactionlessly( expressionValue );
+			} catch( CannotCreateExpressionException e )
 			{
 				this.expressionState = null;
 			}
 		}
 	}
-	
-	protected void intermediateSetValue(Object value)
+
+	protected void intermediateSetValue( Object value )
 	{
-		this.setValue((P)value);
+		this.setValue( (P)value );
 	}
-	
-	protected Object evaluateExpression(org.lgna.project.ast.Expression expression)
+
+	protected Object evaluateExpression( org.lgna.project.ast.Expression expression )
 	{
 		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
 		Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
 		assert values.length == 1;
-		return values[0];
+		return values[ 0 ];
 	}
-	
+
 	protected void onExpressionStateUpdate()
 	{
 		org.lgna.project.ast.Expression expression = expressionState.getValue();
 		if( expression != null ) {
-			Object value = evaluateExpression(expression);
+			Object value = evaluateExpression( expression );
 			isExpressionSet = true;
-			this.intermediateSetValue(value);
+			this.intermediateSetValue( value );
 			isExpressionSet = false;
 		}
 	}
-	
-	protected void notifyValueObservers(P newValue)
+
+	protected void notifyValueObservers( P newValue )
 	{
-		if (!isExpressionSet)
+		if( !isExpressionSet )
 		{
-			this.setExpressionValue(newValue);
+			this.setExpressionValue( newValue );
 		}
-		for (ValueChangeObserver<P> observer : this.valueChangeObservers)
+		for( ValueChangeObserver<P> observer : this.valueChangeObservers )
 		{
-			observer.valueChanged(newValue);
+			observer.valueChanged( newValue );
 		}
 	}
-	
-	
+
 }

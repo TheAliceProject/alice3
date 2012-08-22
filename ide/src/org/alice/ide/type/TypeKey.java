@@ -52,9 +52,12 @@ public abstract class TypeKey {
 		//todo
 		return rv;
 	}
+
 	@Override
 	public abstract int hashCode();
+
 	protected abstract boolean contentEquals( TypeKey other );
+
 	@Override
 	public final boolean equals( Object other ) {
 		if( other != null ) {

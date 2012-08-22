@@ -57,6 +57,7 @@ public class MouseClickEvent extends AbstractEvent {
 	protected org.lgna.story.SScene scene;
 	protected boolean isPickPerformed;
 	protected org.lgna.story.SModel modelAtMouseLocation;
+
 	public MouseClickEvent( java.awt.event.MouseEvent e, org.lgna.story.SScene scene ) {
 		this.e = e;
 		this.scene = scene;
@@ -67,8 +68,8 @@ public class MouseClickEvent extends AbstractEvent {
 		if( this.isPickPerformed ) {
 			//pass
 		} else {
-			if( this.scene != null )  {
-				SceneImp sceneImp = ImplementationAccessor.getImplementation(this.scene);
+			if( this.scene != null ) {
+				SceneImp sceneImp = ImplementationAccessor.getImplementation( this.scene );
 				ProgramImp programImp = sceneImp.getProgram();
 				if( programImp != null ) {
 					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = programImp.getOnscreenLookingGlass();
@@ -100,60 +101,59 @@ public class MouseClickEvent extends AbstractEvent {
 			this.isPickPerformed = true;
 		}
 	}
+
 	public org.lgna.story.SModel getModelAtMouseLocation() {
 		this.pickIfNecessary();
 		return this.modelAtMouseLocation;
 	}
-	
-	
 
-//	private synchronized void pickIfNecessary() {
-//		if( this.isPickPerformed ) {
-//			//pass
-//		} else {
-//			if( this.scene != null )  {
-//				SceneImplementation sceneImplementation = ImplementationAccessor.getImplementation(this.scene);
-//				org.lookingglassandalice.storytelling.SceneOwner owner = this.scene.getOwner();
-//				if( owner != null ) {
-//					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
-//					if( lg != null ) {
-//						edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.pickFrontMost( e.getX(), e.getY(), false );
-//						if( pickResult != null ) {
-//							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
-//							if( sgVisual != null ) {
-//								org.lookingglassandalice.storytelling.Entity element = org.lookingglassandalice.storytelling.Entity.getElement( sgVisual );
-//								if( element instanceof org.lookingglassandalice.storytelling.Model ) {
-//									this.partAtMouseLocation = (org.lookingglassandalice.storytelling.Model)element;
-//								}
-//								edu.cmu.cs.dennisc.scenegraph.Component sgComponent = sgVisual;
-//								while( true ) {
-//									edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgComponent.getParent();
-//									if( sgParent == null ) {
-//										break;
-//									}
-//									if( sgParent == this.scene.getSgComposite() ) {
-//										org.lookingglassandalice.storytelling.Entity e = org.lookingglassandalice.storytelling.Entity.getElement( sgComponent );
-//										if( e instanceof org.lookingglassandalice.storytelling.Model ) {
-//											this.modelAtMouseLocation = (org.lookingglassandalice.storytelling.Model)e;
-//										}
-//										break;
-//									}
-//									sgComponent = sgParent;
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//			this.isPickPerformed = true;
-//		}
-//	}
-//	public org.lookingglassandalice.storytelling.Model getPartAtMouseLocation() {
-//		this.pickIfNecessary();
-//		return this.partAtMouseLocation;
-//	}
-//	public org.lookingglassandalice.storytelling.Model getModelAtMouseLocation() {
-//		this.pickIfNecessary();
-//		return this.modelAtMouseLocation;
-//	}
+	//	private synchronized void pickIfNecessary() {
+	//		if( this.isPickPerformed ) {
+	//			//pass
+	//		} else {
+	//			if( this.scene != null )  {
+	//				SceneImplementation sceneImplementation = ImplementationAccessor.getImplementation(this.scene);
+	//				org.lookingglassandalice.storytelling.SceneOwner owner = this.scene.getOwner();
+	//				if( owner != null ) {
+	//					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
+	//					if( lg != null ) {
+	//						edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.pickFrontMost( e.getX(), e.getY(), false );
+	//						if( pickResult != null ) {
+	//							edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
+	//							if( sgVisual != null ) {
+	//								org.lookingglassandalice.storytelling.Entity element = org.lookingglassandalice.storytelling.Entity.getElement( sgVisual );
+	//								if( element instanceof org.lookingglassandalice.storytelling.Model ) {
+	//									this.partAtMouseLocation = (org.lookingglassandalice.storytelling.Model)element;
+	//								}
+	//								edu.cmu.cs.dennisc.scenegraph.Component sgComponent = sgVisual;
+	//								while( true ) {
+	//									edu.cmu.cs.dennisc.scenegraph.Composite sgParent = sgComponent.getParent();
+	//									if( sgParent == null ) {
+	//										break;
+	//									}
+	//									if( sgParent == this.scene.getSgComposite() ) {
+	//										org.lookingglassandalice.storytelling.Entity e = org.lookingglassandalice.storytelling.Entity.getElement( sgComponent );
+	//										if( e instanceof org.lookingglassandalice.storytelling.Model ) {
+	//											this.modelAtMouseLocation = (org.lookingglassandalice.storytelling.Model)e;
+	//										}
+	//										break;
+	//									}
+	//									sgComponent = sgParent;
+	//								}
+	//							}
+	//						}
+	//					}
+	//				}
+	//			}
+	//			this.isPickPerformed = true;
+	//		}
+	//	}
+	//	public org.lookingglassandalice.storytelling.Model getPartAtMouseLocation() {
+	//		this.pickIfNecessary();
+	//		return this.partAtMouseLocation;
+	//	}
+	//	public org.lookingglassandalice.storytelling.Model getModelAtMouseLocation() {
+	//		this.pickIfNecessary();
+	//		return this.modelAtMouseLocation;
+	//	}
 }

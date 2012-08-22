@@ -46,16 +46,19 @@ package org.alice.ide.members;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldTemplateComposite extends MemberTemplateComposite< org.alice.ide.members.components.FieldsContentPanel >  {
+public class FieldTemplateComposite extends MemberTemplateComposite<org.alice.ide.members.components.FieldsContentPanel> {
 	private static class SingletonHolder {
 		private static FieldTemplateComposite instance = new FieldTemplateComposite();
 	}
+
 	public static FieldTemplateComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private FieldTemplateComposite() {
 		super( java.util.UUID.fromString( "be6a1945-fb77-4d07-9c11-351f4119099c" ) );
 	}
+
 	@Override
 	protected org.alice.ide.members.components.FieldsContentPanel createView() {
 		return new org.alice.ide.members.components.FieldsContentPanel( this );

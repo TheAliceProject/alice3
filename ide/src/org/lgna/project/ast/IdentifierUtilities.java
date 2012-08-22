@@ -51,10 +51,10 @@ public class IdentifierUtilities {
 		final int N = name != null ? name.length() : 0;
 		if( N > 0 ) {
 			char name0 = name.charAt( 0 );
-			if( Character.isLetter( name0 ) || name0 == '_' ) {
-				for( int i=1; i<N; i++ ) {
+			if( Character.isLetter( name0 ) || ( name0 == '_' ) ) {
+				for( int i = 1; i < N; i++ ) {
 					char c = name.charAt( i );
-					if( Character.isLetterOrDigit( c ) || c == '_' ) {
+					if( Character.isLetterOrDigit( c ) || ( c == '_' ) ) {
 						//pass
 					} else {
 						return false;
@@ -68,12 +68,12 @@ public class IdentifierUtilities {
 			return false;
 		}
 	}
-	
-	private static String getConventionalIdentifierName( String name, boolean cap ) {	
+
+	private static String getConventionalIdentifierName( String name, boolean cap ) {
 		String rv = "";
 		boolean isAlphaEncountered = false;
 		final int N = name.length();
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			char c = name.charAt( i );
 			if( Character.isLetterOrDigit( c ) ) {
 				if( Character.isDigit( c ) ) {
@@ -84,7 +84,7 @@ public class IdentifierUtilities {
 						rv += c;
 						isAlphaEncountered = true;
 						continue;
-				}
+					}
 				} else {
 					isAlphaEncountered = true;
 				}
@@ -100,7 +100,6 @@ public class IdentifierUtilities {
 		return rv;
 	}
 
-	
 	public static String getConventionalInstanceName( String text ) {
 		return getConventionalIdentifierName( text, false );
 	}

@@ -48,15 +48,19 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractAccessibleDeclaration extends AbstractDeclaration {
 	public abstract AccessLevel getAccessLevel();
+
 	public boolean isPublicAccess() {
 		return getAccessLevel() == AccessLevel.PUBLIC;
 	}
+
 	public boolean isProtectedAccess() {
 		return getAccessLevel() == AccessLevel.PROTECTED;
 	}
+
 	public boolean isPrivateAccess() {
 		return getAccessLevel() == AccessLevel.PRIVATE;
 	}
+
 	public boolean isPackageAccess() {
 		return getAccessLevel() == AccessLevel.PACKAGE;
 	}

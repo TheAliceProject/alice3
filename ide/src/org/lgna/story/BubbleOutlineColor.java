@@ -44,15 +44,16 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class BubbleOutlineColor implements Say.Detail, Think.Detail {	
+public class BubbleOutlineColor implements Say.Detail, Think.Detail {
 	private final Color value;
-	
+
 	public BubbleOutlineColor( Color value ) {
 		this.value = value;
 	}
-	/*package-private*/static Color getValue( Object[] details, Color defaultValue ) {
+
+	/* package-private */static Color getValue( Object[] details, Color defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof BubbleOutlineColor ) {
 				BubbleOutlineColor bubbleOutlineColor = (BubbleOutlineColor)detail;

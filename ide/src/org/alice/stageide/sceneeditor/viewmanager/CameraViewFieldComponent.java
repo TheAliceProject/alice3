@@ -47,25 +47,24 @@ import org.alice.ide.members.components.templates.GetterTemplate;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.ThisExpression;
 
-
 //todo
 public class CameraViewFieldComponent extends GetterTemplate {
-	
+
 	protected AbstractField field;
-	
-	public CameraViewFieldComponent(org.lgna.project.ast.AbstractField field) {
-		super(field);
+
+	public CameraViewFieldComponent( org.lgna.project.ast.AbstractField field ) {
+		super( field );
 		this.field = field;
 	}
-	
+
 	public AbstractField getField()
 	{
 		return field;
 	}
-	
+
 	@Override
 	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.lgna.project.ast.AstUtilities.createFieldAccess(new ThisExpression(), this.field );
+		return org.lgna.project.ast.AstUtilities.createFieldAccess( new ThisExpression(), this.field );
 	}
 
 }

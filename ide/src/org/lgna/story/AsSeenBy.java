@@ -46,7 +46,7 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public class AsSeenBy implements 
+public class AsSeenBy implements
 		//Turnable
 		Turn.Detail, Roll.Detail,
 		//MoveableTurnable
@@ -54,10 +54,12 @@ public class AsSeenBy implements
 		Place.Detail
 {
 	private final SThing value;
+
 	public AsSeenBy( SThing value ) {
-		this.value = value; 
+		this.value = value;
 	}
-	/*package-private*/ static SThing getValue( Object[] details, SThing defaultValue ) {
+
+	/* package-private */static SThing getValue( Object[] details, SThing defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof AsSeenBy ) {
 				AsSeenBy asSeenBy = (AsSeenBy)detail;
@@ -67,9 +69,9 @@ public class AsSeenBy implements
 		return defaultValue;
 	}
 
-	/*package-private*/ static org.lgna.story.implementation.ReferenceFrame getImplementation( Object[] details, org.lgna.story.implementation.ReferenceFrame defaultValue ) {
+	/* package-private */static org.lgna.story.implementation.ReferenceFrame getImplementation( Object[] details, org.lgna.story.implementation.ReferenceFrame defaultValue ) {
 		SThing entity = getValue( details, null );
 		return entity != null ? entity.getImplementation() : defaultValue;
 	}
-	
+
 }

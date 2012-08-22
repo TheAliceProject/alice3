@@ -45,6 +45,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * defined by a regular pyramidal frustum
+ * 
  * @author Dennis Cosgrove
  */
 public class FrustumPerspectiveCamera extends AbstractPerspectiveCamera {

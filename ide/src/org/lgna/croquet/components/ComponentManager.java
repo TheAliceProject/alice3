@@ -53,10 +53,12 @@ public class ComponentManager {
 	private ComponentManager() {
 		throw new AssertionError();
 	}
-	public static final java.util.Map< Model, java.util.Queue< org.lgna.croquet.components.JComponent<?> > > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static java.util.Queue< org.lgna.croquet.components.JComponent<?> > getComponents( Model model ) {
+
+	public static final java.util.Map<Model, java.util.Queue<org.lgna.croquet.components.JComponent<?>>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static java.util.Queue<org.lgna.croquet.components.JComponent<?>> getComponents( Model model ) {
 		synchronized( map ) {
-			java.util.Queue< org.lgna.croquet.components.JComponent<?> > rv = map.get( model );
+			java.util.Queue<org.lgna.croquet.components.JComponent<?>> rv = map.get( model );
 			if( rv != null ) {
 				//pass
 			} else {
@@ -69,18 +71,19 @@ public class ComponentManager {
 
 	public static void addComponent( Model model, org.lgna.croquet.components.JComponent<?> component ) {
 		synchronized( map ) {
-			java.util.Queue< org.lgna.croquet.components.JComponent<?> > components = getComponents( model );
+			java.util.Queue<org.lgna.croquet.components.JComponent<?>> components = getComponents( model );
 			if( components.size() == 0 ) {
 				Manager.registerModel( model );
 			}
 			components.add( component );
-	//		component.getAwtComponent().setEnabled( this.isEnabled );
+			//		component.getAwtComponent().setEnabled( this.isEnabled );
 			component.setToolTipText( model.getToolTipText() );
 		}
 	}
+
 	public static void removeComponent( Model model, org.lgna.croquet.components.JComponent<?> component ) {
 		synchronized( map ) {
-			java.util.Queue< org.lgna.croquet.components.JComponent<?> > components = getComponents( model );
+			java.util.Queue<org.lgna.croquet.components.JComponent<?>> components = getComponents( model );
 			components.remove( component );
 			if( components.size() == 0 ) {
 				Manager.unregisterModel( model );
@@ -90,13 +93,14 @@ public class ComponentManager {
 		}
 	}
 
-	/*package-private*/ static void repaintAllComponents( Model model ) {
+	/* package-private */static void repaintAllComponents( Model model ) {
 		synchronized( map ) {
 			for( org.lgna.croquet.components.JComponent<?> component : getComponents( model ) ) {
 				component.repaint();
 			}
 		}
 	}
+
 	public static void revalidateAndRepaintAllComponents( Model model ) {
 		synchronized( map ) {
 			for( org.lgna.croquet.components.JComponent<?> component : getComponents( model ) ) {
@@ -104,16 +108,17 @@ public class ComponentManager {
 			}
 		}
 	}
+
 	@Deprecated
-	public static <J extends org.lgna.croquet.components.JComponent< ? > > J getFirstComponent( Model model, Class<J> cls, boolean isVisibleAcceptable ) {
-		Iterable< org.lgna.croquet.components.JComponent<?> > components = getComponents( model );
-		
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
-		for( org.lgna.croquet.components.JComponent< ? > component : components ) {
+	public static <J extends org.lgna.croquet.components.JComponent<?>> J getFirstComponent( Model model, Class<J> cls, boolean isVisibleAcceptable ) {
+		Iterable<org.lgna.croquet.components.JComponent<?>> components = getComponents( model );
+
+		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
+		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
+		for( org.lgna.croquet.components.JComponent<?> component : components ) {
 			if( cls.isAssignableFrom( component.getClass() ) ) {
 				if( component.getAwtComponent().isShowing() ) {
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+					//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
 					return cls.cast( component );
 				} else {
 					//pass
@@ -121,10 +126,10 @@ public class ComponentManager {
 			}
 		}
 		if( isVisibleAcceptable ) {
-			for( org.lgna.croquet.components.JComponent< ? > component : components ) {
+			for( org.lgna.croquet.components.JComponent<?> component : components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
 					if( component.getAwtComponent().isVisible() ) {
-//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
+						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
 						return cls.cast( component );
 					} else {
 						//pass
@@ -134,26 +139,29 @@ public class ComponentManager {
 		}
 		return null;
 	}
-//	public JComponent getFirstNotNecessarilyShowingComponent() {
-//		for( JComponent< ? > component : this.components ) {
-//			if( component.getAwtComponent().isVisible() ) {
-//				return component;
-//			} else {
-//				//pass
-//			}
-//		}
-//		return null;
-//	}
+
+	//	public JComponent getFirstNotNecessarilyShowingComponent() {
+	//		for( JComponent< ? > component : this.components ) {
+	//			if( component.getAwtComponent().isVisible() ) {
+	//				return component;
+	//			} else {
+	//				//pass
+	//			}
+	//		}
+	//		return null;
+	//	}
 	@Deprecated
-	public static <J extends org.lgna.croquet.components.JComponent< ? > > J getFirstComponent( Model model, Class<J> cls ) {
+	public static <J extends org.lgna.croquet.components.JComponent<?>> J getFirstComponent( Model model, Class<J> cls ) {
 		return getFirstComponent( model, cls, false );
 	}
+
 	@Deprecated
-	public static org.lgna.croquet.components.JComponent< ? > getFirstComponent( Model model, boolean isVisibleAcceptable ) {
+	public static org.lgna.croquet.components.JComponent<?> getFirstComponent( Model model, boolean isVisibleAcceptable ) {
 		return getFirstComponent( model, org.lgna.croquet.components.JComponent.class, isVisibleAcceptable );
 	}
+
 	@Deprecated
-	public static org.lgna.croquet.components.JComponent< ? > getFirstComponent( Model model ) {
+	public static org.lgna.croquet.components.JComponent<?> getFirstComponent( Model model ) {
 		return getFirstComponent( model, false );
 	}
 }

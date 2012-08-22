@@ -50,12 +50,15 @@ public class CommentTemplateDragModel extends StatementTemplateDragModel {
 	private static class SingletonHolder {
 		private static CommentTemplateDragModel instance = new CommentTemplateDragModel();
 	}
+
 	public static CommentTemplateDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private CommentTemplateDragModel() {
 		super( java.util.UUID.fromString( "6ef0a017-c3e7-4c4b-85c9-348ca34641fa" ), org.lgna.project.ast.Comment.class, org.lgna.project.ast.AstUtilities.createComment() );
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.CommentInsertOperation.getInstance( blockStatementIndexPair );

@@ -55,46 +55,50 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 	private org.lgna.story.implementation.ModelImp.Resizer resizer;
 	private double redoScale;
 	private double undoScale;
-	private edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion;
-	
+	private edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion;
+
 	private String editPresentationKey;
-	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, Scalable scalable, org.lgna.story.implementation.ModelImp.Resizer resizer, double previousScale, double currentScale, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > criterion, String editPresentationKey ) {
+
+	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, Scalable scalable, org.lgna.story.implementation.ModelImp.Resizer resizer, double previousScale, double currentScale, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion, String editPresentationKey ) {
 		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ) );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 		this.scalable = scalable;
 		this.resizer = resizer;
-	
+
 		this.redoScale = currentScale;
 		this.undoScale = previousScale;
-		
+
 		assert redoScale != 0.0;
 		assert undoScale != 0.0;
-		
+
 		this.criterion = criterion;
 		this.editPresentationKey = editPresentationKey;
 	}
+
 	private void scale( final double startScale, final double endScale ) {
 		if( this.animator != null ) {
 			class ScaleAnimation extends edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation {
 				public ScaleAnimation() {
-					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, startScale , endScale );
+					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, startScale, endScale );
 				}
+
 				@Override
-				protected void updateValue(Double v) {
+				protected void updateValue( Double v ) {
 					if( scalable != null ) {
-						scalable.setValueForResizer(resizer, v);
+						scalable.setValueForResizer( resizer, v );
 					}
 				}
 			}
 			this.animator.invokeLater( new ScaleAnimation(), null );
 		} else {
 			if( scalable != null ) {
-				scalable.setValueForResizer(resizer, endScale);
+				scalable.setValueForResizer( resizer, endScale );
 			}
 		}
-		
+
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -107,10 +111,12 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 					scale( undoScale, redoScale );
 				}
 			}
+
 			@Override
 			protected final void undoInternal() {
 				scale( redoScale, undoScale );
 			}
+
 			@Override
 			protected StringBuilder updatePresentation( StringBuilder rv ) {
 				rv.append( editPresentationKey );

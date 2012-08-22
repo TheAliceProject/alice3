@@ -46,17 +46,18 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
-	public OrganizedByTypeMembersContentPanel( org.lgna.croquet.TabComposite< ? > composite ) {
+	public OrganizedByTypeMembersContentPanel( org.lgna.croquet.TabComposite<?> composite ) {
 		super( composite );
 	}
+
 	@Override
-	protected void refresh( java.util.List< org.lgna.project.ast.AbstractType<?,?,?> > types ) {
+	protected void refresh( java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types ) {
 		this.removeAllComponents();
 		boolean isNonConsumedJavaTypeAlreadyEncountered = false;
 
 		if( types.size() > 0 ) {
 			boolean isSeparatorDesired = types.get( 0 ) instanceof org.lgna.project.ast.NamedUserType;
-			for( org.lgna.project.ast.AbstractType<?,?,?> type : types ) {
+			for( org.lgna.project.ast.AbstractType<?, ?, ?> type : types ) {
 				boolean isFirstNonConsumedJavaTypeEncountered = false;
 				if( type instanceof org.lgna.project.ast.JavaType ) {
 					if( isSeparatorDesired ) {
@@ -78,7 +79,7 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 				if( type.isConsumptionBySubClassDesired() ) {
 					//pass
 				} else {
-					if( /*org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() ||*/ type instanceof org.lgna.project.ast.NamedUserType || isFirstNonConsumedJavaTypeEncountered ) {
+					if( /* org.alice.ide.IDE.getActiveInstance().isEmphasizingClasses() || */( type instanceof org.lgna.project.ast.NamedUserType ) || isFirstNonConsumedJavaTypeEncountered ) {
 						this.addComponent( MembersView.getComponentFor( this.getClass(), type ) );
 					}
 				}
@@ -88,9 +89,11 @@ abstract class OrganizedByTypeMembersContentPanel extends MembersContentPanel {
 		this.revalidateAndRepaint();
 	}
 
-	private java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, AbstractTypeMembersPane > mapTypeToPane = new java.util.HashMap< org.lgna.project.ast.AbstractType<?,?,?>, AbstractTypeMembersPane >();
-	protected abstract AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type );
-	protected AbstractTypeMembersPane getTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, AbstractTypeMembersPane> mapTypeToPane = new java.util.HashMap<org.lgna.project.ast.AbstractType<?, ?, ?>, AbstractTypeMembersPane>();
+
+	protected abstract AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?, ?, ?> type );
+
+	protected AbstractTypeMembersPane getTypeMembersPane( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
 		if( rv != null ) {
 			//todo?

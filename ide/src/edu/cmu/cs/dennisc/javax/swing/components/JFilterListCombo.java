@@ -42,18 +42,18 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class JFilterListCombo extends javax.swing.JPanel {
 	class Model extends javax.swing.AbstractListModel {
 		private String[] m_data = {};
-		private java.util.List< String > m_filteredData = new java.util.LinkedList< String >();
+		private java.util.List<String> m_filteredData = new java.util.LinkedList<String>();
 
 		public Object getElementAt( int index ) {
 			return m_filteredData.get( index );
 		}
+
 		public int getSize() {
 			return m_filteredData.size();
 		}
@@ -61,10 +61,11 @@ public class JFilterListCombo extends javax.swing.JPanel {
 		public void setData( String[] data ) {
 			m_data = data;
 		}
+
 		public void handleFilterChange( String filter ) {
 			//todo: allow sensitive and insensitive filtering
 			String filterLower = filter.toLowerCase();
-			m_filteredData = new java.util.LinkedList< String >();
+			m_filteredData = new java.util.LinkedList<String>();
 			for( String s : m_data ) {
 				String sLower = s.toLowerCase();
 				if( sLower.contains( filterLower ) ) {
@@ -78,7 +79,7 @@ public class JFilterListCombo extends javax.swing.JPanel {
 	private Model m_model = new Model();
 
 	private javax.swing.JTextField m_filter = new javax.swing.JTextField();
-	private JList< String > m_list = new JList< String >();
+	private JList<String> m_list = new JList<String>();
 
 	public JFilterListCombo() {
 		m_list.setModel( m_model );
@@ -86,9 +87,11 @@ public class JFilterListCombo extends javax.swing.JPanel {
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}
+
 			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}
+
 			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}
@@ -103,7 +106,8 @@ public class JFilterListCombo extends javax.swing.JPanel {
 	public javax.swing.JTextField getTextField() {
 		return m_filter;
 	}
-	public JList< String > getList() {
+
+	public JList<String> getList() {
 		return m_list;
 	}
 

@@ -70,9 +70,11 @@ public class TextFileUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public static String read( java.io.InputStream is ) {
 		return read( new java.io.InputStreamReader( is ) );
 	}
+
 	public static String read( java.io.File file ) {
 		try {
 			return read( new java.io.FileReader( file ) );
@@ -80,6 +82,7 @@ public class TextFileUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public static String read( String path ) {
 		return read( new java.io.File( path ) );
 	}
@@ -97,6 +100,7 @@ public class TextFileUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public static void write( java.io.File file, String contents ) {
 		file.getParentFile().mkdirs();
 		try {

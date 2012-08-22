@@ -44,27 +44,28 @@ package org.alice.interact.operations;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class GetAGoodLookAtActionOperation extends org.lgna.croquet.ActionOperation {
-	
+
 	private final org.lgna.story.SCamera camera;
 	private final org.lgna.story.SThing toLookAt;
-	public GetAGoodLookAtActionOperation( org.lgna.croquet.Group group, org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt)
+
+	public GetAGoodLookAtActionOperation( org.lgna.croquet.Group group, org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt )
 	{
-		super(group, java.util.UUID.fromString( "566dedf3-e612-4eed-8025-a49763feeeb4" ));
+		super( group, java.util.UUID.fromString( "566dedf3-e612-4eed-8025-a49763feeeb4" ) );
 		this.camera = camera;
 		this.toLookAt = toLookAt;
 	}
-	
+
 	@Override
-	protected void perform(org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger) {
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.lgna.project.ast.UserField cameraField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(this.camera);
-		org.lgna.project.ast.UserField toLookAtField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM(this.toLookAt);
-		org.alice.ide.instancefactory.ThisFieldAccessFactory cameraInstanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance(cameraField);
+		org.lgna.project.ast.UserField cameraField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.camera );
+		org.lgna.project.ast.UserField toLookAtField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.toLookAt );
+		org.alice.ide.instancefactory.ThisFieldAccessFactory cameraInstanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( cameraField );
 		org.lgna.project.ast.Expression[] toLookAtExpressions = { new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), toLookAtField ) };
-		GetAGoodLookAtEdit edit = new GetAGoodLookAtEdit(step, cameraInstanceFactory, org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, toLookAtExpressions, camera, toLookAt );
+		GetAGoodLookAtEdit edit = new GetAGoodLookAtEdit( step, cameraInstanceFactory, org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, toLookAtExpressions, camera, toLookAt );
 		step.commitAndInvokeDo( edit );
 	}
 }

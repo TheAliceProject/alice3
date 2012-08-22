@@ -47,7 +47,8 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameParameterComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserParameter> {
-	private static java.util.Map< org.lgna.project.ast.UserParameter, RenameParameterComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserParameter, RenameParameterComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized RenameParameterComposite getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		assert parameter != null;
 		RenameParameterComposite rv = map.get( parameter );
@@ -59,6 +60,7 @@ public class RenameParameterComposite extends RenameDeclarationComposite<org.lgn
 		}
 		return rv;
 	}
+
 	private RenameParameterComposite( org.lgna.project.ast.UserParameter parameter ) {
 		super( java.util.UUID.fromString( "bab60447-570c-49ac-aadb-9cba8d01bb13" ), new org.alice.ide.name.validators.ParameterNameValidator( parameter ), parameter );
 	}

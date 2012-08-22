@@ -45,17 +45,21 @@ package org.lgna.cheshire.simple.stencil;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class BookComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+/* package-private */class BookComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private org.lgna.cheshire.simple.Book book;
+
 	public BookComboBoxModel( org.lgna.cheshire.simple.Book book ) {
 		this.book = book;
 	}
-	/*package-private*/ org.lgna.cheshire.simple.Book getTransactionsModel() {
+
+	/* package-private */org.lgna.cheshire.simple.Book getTransactionsModel() {
 		return this.book;
 	}
-	public org.lgna.cheshire.simple.Chapter getElementAt(int index) {
+
+	public org.lgna.cheshire.simple.Chapter getElementAt( int index ) {
 		return this.book.getChapterAt( index );
 	}
+
 	public int getSize() {
 		return this.book.getChapterCount();
 	}
@@ -63,7 +67,8 @@ package org.lgna.cheshire.simple.stencil;
 	public org.lgna.cheshire.simple.Chapter getSelectedItem() {
 		return this.book.getSelectedChapter();
 	}
-	public void setSelectedItem(Object item) {
+
+	public void setSelectedItem( Object item ) {
 		this.book.setSelectedChapter( (org.lgna.cheshire.simple.Chapter)item );
 	}
 }

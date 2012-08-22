@@ -50,12 +50,13 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 	private org.lgna.common.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
+
 	public ResourcePropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ResourceProperty property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 		this.addComponent( this.label );
 		this.refreshLater();
 	}
-	
+
 	private edu.cmu.cs.dennisc.pattern.event.NameListener getNameListener() {
 		if( this.nameListener != null ) {
 			//pass
@@ -63,6 +64,7 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 			this.nameListener = new edu.cmu.cs.dennisc.pattern.event.NameListener() {
 				public void nameChanging( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
 				}
+
 				public void nameChanged( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
 					ResourcePropertyView.this.refreshLater();
 				}
@@ -70,11 +72,13 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 		}
 		return this.nameListener;
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		//refresh takes care of name listener
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		if( this.prevResource != null ) {
@@ -110,7 +114,7 @@ public class ResourcePropertyView extends org.alice.ide.croquet.components.Abstr
 				org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)nextResource;
 				int width = imageResource.getWidth();
 				int height = imageResource.getHeight();
-				if( width >= 0 && height >= 0 ) {
+				if( ( width >= 0 ) && ( height >= 0 ) ) {
 					sb.append( "<font color=\"gray\">" );
 					sb.append( "<i>" );
 					sb.append( " (" + width + "x" + height + ") " );

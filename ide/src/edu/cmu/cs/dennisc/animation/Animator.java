@@ -47,19 +47,30 @@ package edu.cmu.cs.dennisc.animation;
  */
 public interface Animator {
 	public double getCurrentTime();
+
 	public double getSpeedFactor();
+
 	public void setSpeedFactor( double speedFactor );
+
 	public boolean isUpdateRequired();
+
 	public void update();
+
 	public void invokeLater( Animation animation, AnimationObserver animationObserver );
+
 	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
+
 	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Animation animation, AnimationObserver animationObserver );
 
 	public void addFrameObserver( FrameObserver runnable );
+
 	public void removeFrameObserver( FrameObserver runnable );
-	public Iterable< FrameObserver > getFrameObservers();
+
+	public Iterable<FrameObserver> getFrameObservers();
 
 	public void completeAnimations( AnimationObserver animationObserver );
+
 	public void completeFrameObservers();
+
 	public void completeAll( AnimationObserver animationObserver );
 }

@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.transfer;
  */
 public abstract class FileTransferHandler extends javax.swing.TransferHandler {
 	protected abstract void handleFiles( java.util.List<java.io.File> files );
+
 	@Override
 	public boolean canImport( javax.swing.JComponent component, java.awt.datatransfer.DataFlavor[] dataFlavors ) {
 		for( java.awt.datatransfer.DataFlavor dataFlavor : dataFlavors ) {
@@ -56,6 +57,7 @@ public abstract class FileTransferHandler extends javax.swing.TransferHandler {
 		}
 		return false;
 	}
+
 	@Override
 	public boolean importData( javax.swing.JComponent comp, java.awt.datatransfer.Transferable t ) {
 		for( java.awt.datatransfer.DataFlavor dataFlavor : t.getTransferDataFlavors() ) {

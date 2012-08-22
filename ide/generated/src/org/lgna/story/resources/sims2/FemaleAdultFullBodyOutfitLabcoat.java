@@ -41,7 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitLabcoat implements FemaleAdultFullBodyOutfit {
-	POLOTENNIES ,
- 	POLOROSE ;
+	POLOTENNIES,
+	POLOROSE;
 }

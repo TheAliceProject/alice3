@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitExterminator implements FemaleAdultFullBodyOutfit {
-	BLACKCOVERALLS ,
- 	BEIGECOVERALLS ,
- 	REPOMANBEIGE ,
- 	REPOMANBLACK ;
+	BLACKCOVERALLS,
+	BEIGECOVERALLS,
+	REPOMANBEIGE,
+	REPOMANBLACK;
 }

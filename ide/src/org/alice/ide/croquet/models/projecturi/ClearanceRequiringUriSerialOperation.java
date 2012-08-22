@@ -47,13 +47,15 @@ package org.alice.ide.croquet.models.projecturi;
  */
 public abstract class ClearanceRequiringUriSerialOperation extends UriSerialOperation {
 	private final org.lgna.croquet.SingleThreadOperation otherOperation;
+
 	public ClearanceRequiringUriSerialOperation( java.util.UUID individualUUID, org.lgna.croquet.SingleThreadOperation otherOperation ) {
 		super( individualUUID );
 		this.otherOperation = otherOperation;
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.SingleThreadOperation > getOperations() {
-		java.util.List< org.lgna.croquet.SingleThreadOperation > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	protected java.util.List<org.lgna.croquet.SingleThreadOperation> getOperations() {
+		java.util.List<org.lgna.croquet.SingleThreadOperation> operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.ide.ProjectApplication application = this.getProjectApplication();
 		if( application.isProjectUpToDateWithFile() ) {
 			operations.add( this.otherOperation );
@@ -62,12 +64,12 @@ public abstract class ClearanceRequiringUriSerialOperation extends UriSerialOper
 			if( option == org.lgna.croquet.YesNoCancelOption.YES ) {
 				operations.add( SaveProjectOperation.getInstance() );
 				operations.add( this.otherOperation );
-//				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
-//				if( saveContext.isCommitted() ) {
-//					//pass;
-//				} else {
-//					compositeContext.cancel();
-//				}
+				//				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
+				//				if( saveContext.isCommitted() ) {
+				//					//pass;
+				//				} else {
+				//					compositeContext.cancel();
+				//				}
 			} else if( option == org.lgna.croquet.YesNoCancelOption.NO ) {
 				operations.add( this.otherOperation );
 			} else {
@@ -76,32 +78,32 @@ public abstract class ClearanceRequiringUriSerialOperation extends UriSerialOper
 		}
 		return operations;
 	}
-//	protected abstract void performPostCleared( edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext );
-//	@Override
-//	public final void perform(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-//		org.alice.app.ProjectApplication application = this.getProjectApplication();
-//		if( application.isProjectUpToDateWithFile() ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
-//			if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ClearToProcedeWithChangedProjectOperation event" );
-//				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
-//				if( saveContext.isCommitted() ) {
-//					//pass;
-//				} else {
-//					compositeContext.cancel();
-//				}
-//			} else if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.NO ) {
-//				//pass
-//			} else {
-//				compositeContext.cancel();
-//			}
-//		}
-//		if( compositeContext.isCanceled() ) {
-//			//pass
-//		} else {
-//			this.performPostCleared( compositeContext );
-//		}
-//	}
+	//	protected abstract void performPostCleared( edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext );
+	//	@Override
+	//	public final void perform(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
+	//		org.alice.app.ProjectApplication application = this.getProjectApplication();
+	//		if( application.isProjectUpToDateWithFile() ) {
+	//			//pass
+	//		} else {
+	//			edu.cmu.cs.dennisc.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
+	//			if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
+	//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ClearToProcedeWithChangedProjectOperation event" );
+	//				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
+	//				if( saveContext.isCommitted() ) {
+	//					//pass;
+	//				} else {
+	//					compositeContext.cancel();
+	//				}
+	//			} else if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.NO ) {
+	//				//pass
+	//			} else {
+	//				compositeContext.cancel();
+	//			}
+	//		}
+	//		if( compositeContext.isCanceled() ) {
+	//			//pass
+	//		} else {
+	//			this.performPostCleared( compositeContext );
+	//		}
+	//	}
 }

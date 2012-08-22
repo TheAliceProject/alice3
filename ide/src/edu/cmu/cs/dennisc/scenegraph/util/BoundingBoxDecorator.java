@@ -61,11 +61,11 @@ public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		backFacingAppearance.setValue( m_sgBackAppearance );
 		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { m_sgBox } );
 	}
-	
+
 	public void setBox( edu.cmu.cs.dennisc.math.AxisAlignedBox box ) {
 		m_sgBox.set( box );
 	}
-	
+
 	@Override
 	public void setName( String name ) {
 		super.setName( name );

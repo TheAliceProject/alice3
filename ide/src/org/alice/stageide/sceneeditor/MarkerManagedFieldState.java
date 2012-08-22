@@ -47,7 +47,8 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public class MarkerManagedFieldState extends org.alice.ide.declarationseditor.type.AbstractManagedFieldState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, MarkerManagedFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, MarkerManagedFieldState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized MarkerManagedFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		MarkerManagedFieldState rv = map.get( type );
 		if( rv != null ) {
@@ -58,9 +59,11 @@ public class MarkerManagedFieldState extends org.alice.ide.declarationseditor.ty
 		}
 		return rv;
 	}
+
 	private MarkerManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "5546e1c2-4786-4fbd-a245-1154894d2dab" ), type );
 	}
+
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
 		if( super.isAcceptableItem( value ) ) {

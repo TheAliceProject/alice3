@@ -46,21 +46,26 @@ package org.alice.ide.croquet.models.cascade.array;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks< org.lgna.project.ast.ArrayLength  > {
+public abstract class ArrayLengthFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.ArrayLength> {
 	private org.lgna.project.ast.ArrayLength transientValue;
+
 	public ArrayLengthFillIn( java.util.UUID id ) {
 		super( id );
 	}
+
 	protected abstract org.lgna.project.ast.Expression createAccessExpression();
+
 	private org.lgna.project.ast.ArrayLength createValue() {
 		return new org.lgna.project.ast.ArrayLength( this.createAccessExpression() );
 	}
+
 	@Override
-	public org.lgna.project.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ArrayLength, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.ArrayLength createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ArrayLength, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue();
 	}
+
 	@Override
-	public org.lgna.project.ast.ArrayLength getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.ArrayLength, Void > node ) {
+	public org.lgna.project.ast.ArrayLength getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.ArrayLength, Void> node ) {
 		if( this.transientValue != null ) {
 			//pass
 		} else {

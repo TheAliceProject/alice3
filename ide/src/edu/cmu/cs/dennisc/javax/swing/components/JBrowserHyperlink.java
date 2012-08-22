@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class JBrowserHyperlink extends AbstractHyperlink {
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed(java.awt.event.ActionEvent event) {
+		public void actionPerformed( java.awt.event.ActionEvent event ) {
 			String uri = JBrowserHyperlink.this.getURI();
 			try {
 				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( uri );
@@ -58,19 +58,24 @@ public class JBrowserHyperlink extends AbstractHyperlink {
 			}
 		}
 	};
+
 	public JBrowserHyperlink( String uri ) {
 		this.setURI( uri );
 		this.setAction( action );
 	}
+
 	public JBrowserHyperlink( java.net.URI uri ) {
 		this( uri.getRawPath() );
 	}
+
 	public String getURI() {
 		return (String)this.action.getValue( javax.swing.Action.NAME );
 	}
+
 	public void setURI( String uri ) {
 		this.action.putValue( javax.swing.Action.NAME, uri );
 	}
+
 	public void setURI( java.net.URI uri ) {
 		setURI( uri.getRawPath() );
 	}

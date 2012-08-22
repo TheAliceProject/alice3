@@ -49,29 +49,29 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class OrthographicCameraMarkerImp extends CameraMarkerImp{
+public class OrthographicCameraMarkerImp extends CameraMarkerImp {
 
 	private ClippedZPlane picturePlane = new ClippedZPlane();
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = {};
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
-	
-	public OrthographicCameraMarkerImp(OrthographicCameraMarker abstraction) {
-		super(abstraction);
+
+	public OrthographicCameraMarkerImp( OrthographicCameraMarker abstraction ) {
+		super( abstraction );
 	}
-	
+
 	@Override
 	protected void createVisuals()
 	{
 		//Do nothing
 	}
-	
-	public void setPicturePlane(ClippedZPlane picturePlane)
+
+	public void setPicturePlane( ClippedZPlane picturePlane )
 	{
-		this.picturePlane.set(picturePlane);
+		this.picturePlane.set( picturePlane );
 	}
-	
+
 	public ClippedZPlane getPicturePlane()
 	{
 		return this.picturePlane;
@@ -81,6 +81,7 @@ public class OrthographicCameraMarkerImp extends CameraMarkerImp{
 	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
 	}
+
 	@Override
 	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgOpacityAppearances() {
 		return this.getSgPaintAppearances();

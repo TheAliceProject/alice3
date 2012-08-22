@@ -49,9 +49,11 @@ public class RequestNewFeatureComposite extends ReportIssueComposite {
 	private static class SingletonHolder {
 		private static RequestNewFeatureComposite instance = new RequestNewFeatureComposite();
 	}
+
 	public static RequestNewFeatureComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RequestNewFeatureComposite() {
 		super( java.util.UUID.fromString( "8350a8c3-e791-47e1-bbc7-d73d1cd76ce9" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEATURE );
 	}

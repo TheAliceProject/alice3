@@ -50,6 +50,7 @@ public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialog
 	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?>... wizardPages ) {
 		super( migrationId, wizardPages );
 	}
+
 	@Override
 	protected String getName() {
 		return null;

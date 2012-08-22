@@ -50,9 +50,11 @@ public class DeleteMethodEdit extends DeleteMemberEdit<org.lgna.project.ast.User
 	public DeleteMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserMethod method ) {
 		super( completionStep, method );
 	}
+
 	public DeleteMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
+
 	@Override
 	protected org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserMethod> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType ) {
 		return declaringType.methods;

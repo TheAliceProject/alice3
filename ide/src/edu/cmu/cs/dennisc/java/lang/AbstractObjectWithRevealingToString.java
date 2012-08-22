@@ -46,7 +46,8 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractObjectWithRevealingToString {
-	protected abstract StringBuilder updateRepr( StringBuilder rv ); 
+	protected abstract StringBuilder updateRepr( StringBuilder rv );
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

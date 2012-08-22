@@ -59,27 +59,32 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 			this.minimum = minimum;
 			return this;
 		}
+
 		public AtomicChange<N> maximum( N maximum ) {
 			this.maximum = maximum;
 			return this;
 		}
+
 		public AtomicChange<N> stepSize( N stepSize ) {
 			this.stepSize = stepSize;
 			return this;
 		}
+
 		public AtomicChange<N> extent( N extent ) {
 			this.extent = extent;
 			return this;
 		}
+
 		public AtomicChange<N> value( N value ) {
 			this.value = value;
 			return this;
 		}
+
 		public AtomicChange<N> isAdjusting( boolean isAdjusting ) {
 			this.isAdjusting = isAdjusting;
 			return this;
 		}
-		
+
 		private void updateSwingModel( SwingModel<N> swingModel ) {
 			swingModel.setAll( this.value, this.minimum, this.maximum, this.stepSize, this.extent, this.isAdjusting );
 		}
@@ -87,9 +92,11 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 
 	public static interface SwingModel<N extends Number> {
 		public javax.swing.BoundedRangeModel getBoundedRangeModel();
+
 		public javax.swing.SpinnerNumberModel getSpinnerModel();
 
 		public void setValue( N value );
+
 		public void setAll( N value, N minimum, N maximum, N stepSize, N extent, boolean isAdjusting );
 	}
 
@@ -126,23 +133,31 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 		N nextValue = this.getValue();
 		this.changeValue( nextValue, this.swingModel.getBoundedRangeModel().getValueIsAdjusting(), org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
 	}
+
 	@Override
 	protected void localize() {
 	}
+
 	public abstract N getMinimum();
+
 	public abstract void setMinimum( N minimum );
+
 	public abstract N getMaximum();
+
 	public abstract void setMaximum( N maximum );
+
 	public N getStepSize() {
 		return (N)this.getSwingModel().getSpinnerModel().getStepSize();
 	}
+
 	public void setStepSize( N stepSize ) {
 		this.getSwingModel().getSpinnerModel().setStepSize( stepSize );
 	}
-	
+
 	public void setAll( AtomicChange<N> atomicChange ) {
 		atomicChange.updateSwingModel( this.swingModel );
 	}
+
 	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {
 		this.pushIgnore();
 		try {
@@ -160,6 +175,7 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 	public org.lgna.croquet.components.Slider createSlider() {
 		return new org.lgna.croquet.components.Slider( this );
 	}
+
 	public org.lgna.croquet.components.Spinner createSpinner() {
 		return new org.lgna.croquet.components.Spinner( this );
 	}

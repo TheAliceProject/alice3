@@ -48,9 +48,10 @@ package org.lgna.croquet.components;
  */
 public class StatusLabel extends JComponent<javax.swing.JLabel> {
 	private static final String TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS = "good to go";
-	
+
 	public StatusLabel() {
 	}
+
 	public void setStatus( org.lgna.croquet.AbstractSeverityStatusComposite.Status status ) {
 		String text;
 		if( org.lgna.croquet.AbstractSeverityStatusComposite.IS_GOOD_TO_GO_STATUS == status ) {
@@ -60,6 +61,7 @@ public class StatusLabel extends JComponent<javax.swing.JLabel> {
 		}
 		this.getAwtComponent().setText( text );
 	}
+
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
 		javax.swing.JLabel rv = new javax.swing.JLabel( TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS ) {
@@ -100,9 +102,11 @@ public class StatusLabel extends JComponent<javax.swing.JLabel> {
 			public int getIconWidth() {
 				return SCALE + OFFSET + OFFSET;
 			}
+
 			public int getIconHeight() {
 				return SCALE + OFFSET + OFFSET;
 			}
+
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				java.awt.geom.AffineTransform m = g2.getTransform();

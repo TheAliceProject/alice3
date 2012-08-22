@@ -48,6 +48,8 @@ package edu.cmu.cs.dennisc.math.polynomial;
  */
 public interface Polynomial {
 	public boolean isNaN();
+
 	public double evaluate( double t );
-    public double evaluateDerivative( double t );
+
+	public double evaluateDerivative( double t );
 }

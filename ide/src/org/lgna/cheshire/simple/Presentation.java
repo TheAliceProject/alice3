@@ -62,6 +62,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
+
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			Presentation.this.handleEvent( e );
 		}
@@ -70,18 +71,20 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	private org.lgna.cheshire.simple.Book.SelectionObserver selectionObserver = new org.lgna.cheshire.simple.Book.SelectionObserver() {
 		public void selectionChanging( Book source, int fromIndex, int toIndex ) {
 		}
+
 		public void selectionChanged( Book source, int fromIndex, int toIndex ) {
 			Chapter chapter = source.getChapterAt( toIndex );
 			Presentation.this.handleChapterChanged( chapter );
 		}
 	};
 
-	public Presentation( ) {
+	public Presentation() {
 		super( org.lgna.cheshire.simple.Presentation.PRESENTATION_GROUP, java.util.UUID.fromString( "1303fdcf-6ba4-4933-9754-5b7933f8c01f" ), false );
 		this.addValueListener( new org.lgna.croquet.State.ValueListener<Boolean>() {
-			public void changing(org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
+			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			}
-			public void changed(org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting) {
+
+			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				Presentation.this.handleStateChange( state.getValue() );
 			}
 		} );
@@ -93,14 +96,14 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 
 		this.recoverer = recoverer;
 		this.book = this.generateDraft( accessPolicy, originalTransactionHistory );
-		if ( filterer != null ) {
+		if( filterer != null ) {
 			filterer.filter( this.book.listIterator() );
 		}
-		this.book.setSelectedIndex(0);
+		this.book.setSelectedIndex( 0 );
 
 		final int N = groupsTrackedForRandomAccess.length;
-		this.historyManagers = new org.lgna.croquet.undo.UndoHistory[ N+1 ];
-		for( int i=0; i<N; i++ ) {
+		this.historyManagers = new org.lgna.croquet.undo.UndoHistory[ N + 1 ];
+		for( int i = 0; i < N; i++ ) {
 			this.historyManagers[ i ] = org.alice.ide.IDE.getActiveInstance().getDocument().getUndoHistory( groupsTrackedForRandomAccess[ i ] );
 		}
 		this.historyManagers[ N ] = org.alice.ide.IDE.getActiveInstance().getDocument().getUndoHistory( COMPLETION_GROUP );
@@ -113,6 +116,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	protected void startListening() {
 		this.getBook().addSelectionObserver( this.selectionObserver );
 	}
+
 	protected void stopListening() {
 		this.getBook().removeSelectionObserver( this.selectionObserver );
 	}
@@ -133,17 +137,19 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	}
 
 	private final boolean IS_PRESERVE_AND_RESTORE_INDICES_WORKING = false;
+
 	private void preserveHistoryIndices( int transactionIndex ) {
 		if( IS_PRESERVE_AND_RESTORE_INDICES_WORKING ) {
 			Chapter chapter = this.book.getChapterAt( transactionIndex );
 			final int N = this.historyManagers.length;
 			int[] indices = new int[ N ];
-			for( int i=0; i<N; i++ ) {
+			for( int i = 0; i < N; i++ ) {
 				indices[ i ] = this.historyManagers[ i ].getInsertionIndex();
 			}
 			chapter.setHistoryIndices( indices );
 		}
 	}
+
 	private void restoreHistoryIndices( int transactionIndex ) {
 		if( IS_PRESERVE_AND_RESTORE_INDICES_WORKING ) {
 			Chapter chapter = this.book.getChapterAt( transactionIndex );
@@ -151,7 +157,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 			int[] indices = chapter.getHistoryIndices();
 			assert indices != null : transactionIndex;
 			assert this.historyManagers != null : transactionIndex;
-			for( int i=0; i<N; i++ ) {
+			for( int i = 0; i < N; i++ ) {
 				assert this.historyManagers[ i ] != null : i;
 				this.historyManagers[ i ].setInsertionIndex( indices[ i ] );
 			}
@@ -163,6 +169,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	}
 
 	private int prevSelectedIndex = -1;
+
 	private void completeOrUndoIfNecessary() {
 		int nextSelectedIndex = this.book.getSelectedIndex();
 		int undoIndex = Math.max( nextSelectedIndex, 0 );
@@ -170,15 +177,15 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 			this.restoreHistoryIndices( undoIndex );
 		} else {
 			int index0 = Math.max( this.prevSelectedIndex, 0 );
-			int i=index0;
-			while( i<=nextSelectedIndex ) {
+			int i = index0;
+			while( i <= nextSelectedIndex ) {
 				if( i != this.prevSelectedIndex ) {
 					preserveHistoryIndices( i );
 				}
 				if( i == nextSelectedIndex ) {
 					//pass
 				} else {
-					if( i==this.prevSelectedIndex && isResultOfNextOperation ) {
+					if( ( i == this.prevSelectedIndex ) && isResultOfNextOperation ) {
 						//pass
 					} else {
 						Chapter iChapter = this.book.getChapterAt( i );
@@ -191,7 +198,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		this.prevSelectedIndex = nextSelectedIndex;
 	}
 
-	protected void handleChapterChanged(Chapter chapter) {
+	protected void handleChapterChanged( Chapter chapter ) {
 		this.completeOrUndoIfNecessary();
 	}
 
@@ -200,7 +207,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	}
 
 	protected void validateTransactionHistory( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		java.util.ListIterator< org.lgna.croquet.history.Transaction > transactionListIterator = transactionHistory.listIterator();
+		java.util.ListIterator<org.lgna.croquet.history.Transaction> transactionListIterator = transactionHistory.listIterator();
 		while( transactionListIterator.hasNext() ) {
 			org.lgna.croquet.history.Transaction transaction = transactionListIterator.next();
 			if( transaction.isValid() ) {
@@ -211,7 +218,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		}
 	}
 
-	private org.lgna.croquet.CompletionModel huntForInMenus( java.util.List< org.lgna.croquet.MenuItemPrepModel > list, org.lgna.croquet.MenuItemPrepModel menuModel, org.lgna.croquet.CompletionModel model ) {
+	private org.lgna.croquet.CompletionModel huntForInMenus( java.util.List<org.lgna.croquet.MenuItemPrepModel> list, org.lgna.croquet.MenuItemPrepModel menuModel, org.lgna.croquet.CompletionModel model ) {
 		if( menuModel instanceof org.lgna.croquet.PredeterminedMenuModel ) {
 			org.lgna.croquet.PredeterminedMenuModel defaultMenuModel = (org.lgna.croquet.PredeterminedMenuModel)menuModel;
 			for( org.lgna.croquet.Model child : defaultMenuModel.getModels() ) {
@@ -231,10 +238,11 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		}
 		return null;
 	}
-	protected java.util.List< org.lgna.croquet.MenuItemPrepModel > huntForInMenus( org.lgna.croquet.CompletionModel model ) {
+
+	protected java.util.List<org.lgna.croquet.MenuItemPrepModel> huntForInMenus( org.lgna.croquet.CompletionModel model ) {
 		org.lgna.croquet.MenuBarComposite menuBarComposite = org.lgna.croquet.Application.getActiveInstance().getFrame().getMenuBarComposite();
 		if( menuBarComposite != null ) {
-			java.util.List< org.lgna.croquet.MenuItemPrepModel > rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+			java.util.List<org.lgna.croquet.MenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 			for( org.lgna.croquet.MenuItemPrepModel child : menuBarComposite.getChildren() ) {
 				org.lgna.croquet.Model found = this.huntForInMenus( rv, child, model );
 				if( found != null ) {
@@ -249,7 +257,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 
 	protected org.lgna.croquet.history.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.history.Transaction transaction ) {
 		org.lgna.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
-		for( org.lgna.croquet.TabSelectionState< org.lgna.croquet.TabComposite > tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
+		for( org.lgna.croquet.TabSelectionState<org.lgna.croquet.TabComposite> tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
 			for( org.lgna.croquet.TabComposite item : tabSelectionState ) {
 				if( tabSelectionState.getValue() == item ) {
 					//pass
@@ -263,10 +271,10 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		return null;
 	}
 
-	private <T> org.lgna.croquet.history.Transaction createRecoveryTransaction( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.State< T > state, T prevValue, T nextValue ) {
+	private <T> org.lgna.croquet.history.Transaction createRecoveryTransaction( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.State<T> state, T prevValue, T nextValue ) {
 		org.lgna.croquet.history.Transaction rv = new org.lgna.croquet.history.Transaction( transactionHistory );
-		org.lgna.croquet.history.CompletionStep< org.lgna.croquet.State<T> > completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance(), null );
-		org.lgna.croquet.edits.StateEdit< T > edit = new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
+		org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( rv, state, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance(), null );
+		org.lgna.croquet.edits.StateEdit<T> edit = new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
 		completionStep.setEdit( edit );
 		return rv;
 	}
@@ -275,6 +283,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 		assert this.retargeter != null;
 		return this.retargeter;
 	}
+
 	public void setRetargeter( org.lgna.croquet.Retargeter retargeter ) {
 		this.retargeter = retargeter;
 	}
@@ -282,6 +291,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	public void retargetAll( org.lgna.croquet.Retargeter retargeter ) {
 		this.book.retargetAll( retargeter );
 	}
+
 	public void retargetForward() {
 		if( this.book != null ) {
 			this.book.retargetForward( this.retargeter );
@@ -293,7 +303,7 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	}
 
 	public void incrementSelectedIndex() {
-		if( this.book.getSelectedIndex() < this.book.getChapterCount() - 1 ) {
+		if( this.book.getSelectedIndex() < ( this.book.getChapterCount() - 1 ) ) {
 			try {
 				this.isResultOfNextOperation = true;
 				this.book.incrementSelectedIndex();
@@ -304,16 +314,17 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "end of tutorial" );
 		}
 	}
+
 	public void decrementSelectedIndex() {
 		this.book.decrementSelectedIndex();
 	}
 
 	public void showStencilsPresentation() {
-		this.setValue(true);
+		this.setValue( true );
 	}
 
 	public void hideStencilsPresentation() {
-		this.setValue(false);
+		this.setValue( false );
 	}
 
 	protected abstract void handleStateChange( boolean isVisible );

@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.property;
  * @author Dennis Cosgrove
  */
 public interface InstancePropertyOwner extends PropertyOwner {
-	public InstanceProperty< ? > getInstancePropertyNamed( String name );
+	public InstanceProperty<?> getInstancePropertyNamed( String name );
+
 	//todo:
 	//public Iterable< InstanceProperty< ? > > getInstanceProperties();
-	public String lookupNameFor( InstanceProperty< ? > instanceProperty );
+	public String lookupNameFor( InstanceProperty<?> instanceProperty );
 }

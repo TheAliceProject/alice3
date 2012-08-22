@@ -134,65 +134,66 @@ package org.alice.ide.members;
 //	}
 //}
 
-public abstract class TemplatesTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState< TemplateComposite > {
+public abstract class TemplatesTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<TemplateComposite> {
 	public TemplatesTabSelectionState( java.util.UUID id, TemplateComposite... composites ) {
-		super( 
-				org.alice.ide.IDE.DOCUMENT_UI_GROUP, 
-				id, 
-				TemplateComposite.class, 
+		super(
+				org.alice.ide.IDE.DOCUMENT_UI_GROUP,
+				id,
+				TemplateComposite.class,
 				0,
-				composites
-		);
+				composites );
 	}
-	public abstract org.lgna.croquet.components.AbstractTabbedPane<?,?> createTabbedPane();
-//	public final org.lgna.croquet.components.AbstractTabbedPane< ?,?,? > createTabbedPane() {
-//		return this.createTabbedPane( new TabCreator< TemplateComposite >() {
-//			public org.lgna.croquet.components.JComponent< ? > createMainComponent( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
-//				return item.createMainComponent();
-//			}
-//			public org.lgna.croquet.components.ScrollPane createScrollPane( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
-//				org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
-//				rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-//				rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-//				return rv;
-//			}
-//			public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
-//				item.customizeTitleComponent( booleanState, button );
-//			}
-//			public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
-//				item.releaseTitleComponent( booleanState, button );
-//			}
-//			public java.util.UUID getId( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
-//				return java.util.UUID.randomUUID();
-//			}
-//			public boolean isCloseable( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
-//				return false;
-//			}
-//		} );
-//	}
+
+	public abstract org.lgna.croquet.components.AbstractTabbedPane<?, ?> createTabbedPane();
+
+	//	public final org.lgna.croquet.components.AbstractTabbedPane< ?,?,? > createTabbedPane() {
+	//		return this.createTabbedPane( new TabCreator< TemplateComposite >() {
+	//			public org.lgna.croquet.components.JComponent< ? > createMainComponent( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+	//				return item.createMainComponent();
+	//			}
+	//			public org.lgna.croquet.components.ScrollPane createScrollPane( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+	//				org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
+	//				rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+	//				rv.getAwtComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+	//				return rv;
+	//			}
+	//			public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+	//				item.customizeTitleComponent( booleanState, button );
+	//			}
+	//			public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton< ?, org.lgna.croquet.BooleanState > button, org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+	//				item.releaseTitleComponent( booleanState, button );
+	//			}
+	//			public java.util.UUID getId( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+	//				return java.util.UUID.randomUUID();
+	//			}
+	//			public boolean isCloseable( org.alice.ide.croquet.models.templates.TemplateComposite item ) {
+	//				return false;
+	//			}
+	//		} );
+	//	}
 	@Override
 	protected void localize() {
 		super.localize();
-//		ProceduresTab proceduresTab = ProceduresTab.getInstance();
-//		proceduresTab.setTitleIcon( ICON );
-//		proceduresTab.setTitleText( this.getLocalizedText( "procedures" ) );
-//		FunctionsTab functionsTab = FunctionsTab.getInstance();
-//		functionsTab.setTitleIcon( ICON );
-//		functionsTab.setTitleText( this.getLocalizedText( "functions" ) );
-//		FieldsTab fieldsTab = FieldsTab.getInstance();
-//		fieldsTab.setTitleIcon( ICON );
-//		fieldsTab.setTitleText( this.getLocalizedText( "fields" ) );
-//		BlocksTab blocksTab = BlocksTab.getInstance();
-//		blocksTab.setTitleIcon( new javax.swing.Icon() {
-//			public int getIconHeight() {
-//				return 24;
-//			}
-//			public int getIconWidth() {
-//				return 0;//32;
-//			}
-//			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-//			}
-//		} );
-//		blocksTab.setTitleText( this.getLocalizedText( "blocks" ) );
+		//		ProceduresTab proceduresTab = ProceduresTab.getInstance();
+		//		proceduresTab.setTitleIcon( ICON );
+		//		proceduresTab.setTitleText( this.getLocalizedText( "procedures" ) );
+		//		FunctionsTab functionsTab = FunctionsTab.getInstance();
+		//		functionsTab.setTitleIcon( ICON );
+		//		functionsTab.setTitleText( this.getLocalizedText( "functions" ) );
+		//		FieldsTab fieldsTab = FieldsTab.getInstance();
+		//		fieldsTab.setTitleIcon( ICON );
+		//		fieldsTab.setTitleText( this.getLocalizedText( "fields" ) );
+		//		BlocksTab blocksTab = BlocksTab.getInstance();
+		//		blocksTab.setTitleIcon( new javax.swing.Icon() {
+		//			public int getIconHeight() {
+		//				return 24;
+		//			}
+		//			public int getIconWidth() {
+		//				return 0;//32;
+		//			}
+		//			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		//			}
+		//		} );
+		//		blocksTab.setTitleText( this.getLocalizedText( "blocks" ) );
 	}
 }

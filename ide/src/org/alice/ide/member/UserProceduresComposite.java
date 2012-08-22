@@ -47,7 +47,8 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public class UserProceduresComposite extends ProceduresSubComposite {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, UserProceduresComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserProceduresComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized UserProceduresComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		assert type != null;
 		UserProceduresComposite rv = map.get( type );
@@ -59,13 +60,16 @@ public class UserProceduresComposite extends ProceduresSubComposite {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.NamedUserType type;
+
 	private UserProceduresComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "55b386bf-a97b-452e-94c7-13160c27ac8c" ) );
 		this.type = type;
 		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.type ) );
 		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Procedures" );
 	}
+
 	@Override
 	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
 		java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

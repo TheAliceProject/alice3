@@ -47,16 +47,20 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class LocalAccess extends Expression {
-	public DeclarationProperty< UserLocal > local = new DeclarationProperty< UserLocal >( this );
+	public DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this );
+
 	public LocalAccess() {
 	}
-	public LocalAccess( UserLocal local ){
+
+	public LocalAccess( UserLocal local ) {
 		this.local.setValue( local );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.local.getValue().valueType.getValue();
 	}
+
 	@Override
 	public boolean isValid() {
 		UserLocal local = this.local.getValue();
@@ -64,9 +68,9 @@ public class LocalAccess extends Expression {
 			Code localCode = local.getFirstAncestorAssignableTo( Code.class );
 			if( localCode != null ) {
 				Code code = this.getFirstAncestorAssignableTo( Code.class );
-				
+
 				//todo: check location
-				
+
 				return code == localCode;
 			} else {
 				return false;

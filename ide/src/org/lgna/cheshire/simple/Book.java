@@ -48,20 +48,23 @@ package org.lgna.cheshire.simple;
 public class Book {
 	public static interface SelectionObserver {
 		public void selectionChanging( Book source, int fromIndex, int toIndex );
+
 		public void selectionChanged( Book source, int fromIndex, int toIndex );
 	}
 
-	private final java.util.List< Chapter > chapters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<Chapter> chapters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int selectedIndex = -1;
 	private int furthestCompletedIndex = -1;
 	private ChapterAccessPolicy accessPolicy = ChapterAccessPolicy.ALLOW_ACCESS_UP_TO_AND_INCLUDING_FURTHEST_COMPLETED_CHAPTER;
-	private java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List<SelectionObserver> selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public Book() {
 	}
+
 	public ChapterAccessPolicy getAccessPolicy() {
 		return this.accessPolicy;
 	}
+
 	public void setAccessPolicy( ChapterAccessPolicy transactionAccessPolicy ) {
 		this.accessPolicy = transactionAccessPolicy;
 	}
@@ -69,23 +72,27 @@ public class Book {
 	public void addSelectionObserver( SelectionObserver selectionObserver ) {
 		this.selectionObservers.add( selectionObserver );
 	}
+
 	public void removeSelectionObserver( SelectionObserver selectionObserver ) {
 		this.selectionObservers.add( selectionObserver );
 	}
+
 	public boolean isIndexAccessible( int nextIndex ) {
 		return this.accessPolicy.isIndexAccessible( nextIndex, this.furthestCompletedIndex );
 	}
-	
-	public java.util.ListIterator< Chapter > listIterator() {
+
+	public java.util.ListIterator<Chapter> listIterator() {
 		return this.chapters.listIterator();
 	}
+
 	public Chapter getChapterAt( int index ) {
 		return this.chapters.get( index );
 	}
+
 	public int getChapterCount() {
 		return this.chapters.size();
 	}
-	
+
 	public void addChapter( int index, Chapter chapter ) {
 		this.chapters.add( index, chapter );
 	}
@@ -93,6 +100,7 @@ public class Book {
 	public int getSelectedIndex() {
 		return this.selectedIndex;
 	}
+
 	public void setSelectedIndex( int nextSelectedIndex ) {
 		int prevSelectedIndex = this.selectedIndex;
 		if( this.selectedIndex != nextSelectedIndex ) {
@@ -107,11 +115,11 @@ public class Book {
 		this.furthestCompletedIndex = Math.max( this.furthestCompletedIndex, nextSelectedIndex );
 	}
 
-	/*package-private*/void decrementSelectedIndex() {
+	/* package-private */void decrementSelectedIndex() {
 		this.setSelectedIndex( this.selectedIndex - 1 );
 	}
 
-	/*package-private*/void incrementSelectedIndex() {
+	/* package-private */void incrementSelectedIndex() {
 		this.setSelectedIndex( this.selectedIndex + 1 );
 	}
 
@@ -122,6 +130,7 @@ public class Book {
 			return null;
 		}
 	}
+
 	public void setSelectedChapter( Chapter item ) {
 		int prevSelectedIndex = this.selectedIndex;
 		int nextSelectedIndex = -1;
@@ -133,18 +142,18 @@ public class Book {
 			}
 		}
 
-		if( this.accessPolicy.isIndexAccessible( nextSelectedIndex, this.furthestCompletedIndex ) || nextSelectedIndex < prevSelectedIndex ) {
+		if( this.accessPolicy.isIndexAccessible( nextSelectedIndex, this.furthestCompletedIndex ) || ( nextSelectedIndex < prevSelectedIndex ) ) {
 			this.setSelectedIndex( nextSelectedIndex );
 		}
 	}
 
-	public void handleEditCommitted( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
+	public void handleEditCommitted( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "edit commited: " + replacementCandidate );
 		Chapter chapter = this.getSelectedChapter();
 		if( chapter instanceof TransactionChapter ) {
 			TransactionChapter transactionChapter = (TransactionChapter)chapter;
 			org.lgna.croquet.history.Transaction transaction = transactionChapter.getTransaction();
-			org.lgna.croquet.edits.Edit< ? > originalEdit = transaction.getEdit();
+			org.lgna.croquet.edits.Edit<?> originalEdit = transaction.getEdit();
 			if( originalEdit != null ) {
 				org.lgna.croquet.edits.ReplacementAcceptability replacementAcceptability = originalEdit.getReplacementAcceptability( replacementCandidate );
 				if( replacementAcceptability.isAcceptable() ) {
@@ -158,7 +167,7 @@ public class Book {
 			} else {
 				System.err.println( "originalEdit is null.  original canceled?" );
 			}
-		} else if ( chapter instanceof MessageChapter ) {
+		} else if( chapter instanceof MessageChapter ) {
 			assert replacementCandidate == null : replacementCandidate;
 		} else {
 			assert chapter == null : chapter;
@@ -171,17 +180,20 @@ public class Book {
 			this.getChapterAt( i ).retarget( retargeter );
 		}
 	}
-	/*package-private*/void retargetAll( org.lgna.croquet.Retargeter retargeter ) {
+
+	/* package-private */void retargetAll( org.lgna.croquet.Retargeter retargeter ) {
 		this.retarget( 0, retargeter );
 	}
-	/*package-private*/void retargetForward( org.lgna.croquet.Retargeter retargeter ) {
+
+	/* package-private */void retargetForward( org.lgna.croquet.Retargeter retargeter ) {
 		this.retarget( this.selectedIndex + 1, retargeter );
 	}
 
-	/*package-private*/void addChapter( Chapter item ) {
+	/* package-private */void addChapter( Chapter item ) {
 		this.chapters.add( item );
 	}
-	/*package-private*/void addChapterAtSelectedIndex( Chapter item ) {
+
+	/* package-private */void addChapterAtSelectedIndex( Chapter item ) {
 		this.chapters.add( this.selectedIndex, item );
 	}
 }

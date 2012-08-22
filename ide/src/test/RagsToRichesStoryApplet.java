@@ -48,11 +48,13 @@ package test;
  */
 public class RagsToRichesStoryApplet extends javax.swing.JApplet {
 	private final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
+
 	@Override
 	public void init() {
 		super.init();
 		ragsToRichesStory.initializeInApplet( this );
 	}
+
 	@Override
 	public void start() {
 		super.start();

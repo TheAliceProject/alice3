@@ -49,6 +49,7 @@ public abstract class AddDeclarationComposite<N extends org.lgna.project.ast.Dec
 	public AddDeclarationComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
+
 	@Override
 	protected boolean isNameValid( String name ) {
 		return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );

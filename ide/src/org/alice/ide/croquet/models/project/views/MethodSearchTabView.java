@@ -55,6 +55,4 @@ public class MethodSearchTabView extends BorderPanel {
 		this.addCenterComponent( composite.getSplitComposite().getView() );
 	}
 
-	
-	
 }

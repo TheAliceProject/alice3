@@ -48,14 +48,17 @@ package edu.cmu.cs.dennisc.lookingglass.event;
 public class LookingGlassDisplayChangeEvent extends LookingGlassEvent {
 	private boolean m_isModeChanged;
 	private boolean m_isDeviceChanged;
+
 	public LookingGlassDisplayChangeEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, boolean isModeChanged, boolean isDeviceChanged ) {
 		super( lookingGlass );
 		m_isModeChanged = isModeChanged;
 		m_isDeviceChanged = isDeviceChanged;
 	}
+
 	public boolean isModeChanged() {
 		return m_isModeChanged;
 	}
+
 	public boolean isDeviceChanged() {
 		return m_isDeviceChanged;
 	}

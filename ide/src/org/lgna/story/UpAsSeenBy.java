@@ -54,7 +54,8 @@ public class UpAsSeenBy implements
 	public UpAsSeenBy( SThing value ) {
 		this.value = value;
 	}
-	/*package-private*/static SThing getValue( Object[] details, SThing defaultValue ) {
+
+	/* package-private */static SThing getValue( Object[] details, SThing defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof UpAsSeenBy ) {
 				UpAsSeenBy upAsSeenBy = (UpAsSeenBy)detail;

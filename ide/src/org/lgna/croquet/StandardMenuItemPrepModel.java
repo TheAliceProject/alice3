@@ -50,5 +50,6 @@ public abstract class StandardMenuItemPrepModel extends MenuItemPrepModel {
 	public StandardMenuItemPrepModel( java.util.UUID id ) {
 		super( id );
 	}
+
 	public abstract org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv );
 }

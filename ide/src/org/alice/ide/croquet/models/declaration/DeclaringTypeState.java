@@ -46,22 +46,24 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.UserType > {
+public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<org.lgna.project.ast.UserType> {
 	public DeclaringTypeState( org.lgna.project.ast.UserType<?> initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "20e50e4f-b627-4f5c-9851-5cbc18b5a5ee" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ), initialValue );
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.UserType > blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.UserType> blankNode ) {
 		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-		Iterable< org.lgna.project.ast.NamedUserType > types = project.getNamedUserTypes();
+		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
 		for( org.lgna.project.ast.NamedUserType type : types ) {
-			if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || type != programType ) {
+			if( org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue() || ( type != programType ) ) {
 				rv.add( org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) );
 			}
 		}
 		return rv;
 	}
+
 	public org.lgna.croquet.components.PopupButton createComponent() {
 		final org.lgna.croquet.components.PopupButton rv = this.getCascadeRoot().getPopupPrepModel().createPopupButton();
 		javax.swing.JButton awtButton = rv.getAwtComponent();
@@ -70,17 +72,21 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 			public TypeDropDownIcon() {
 				super( 14 );
 			}
+
 			private org.alice.ide.common.TypeIcon getTypeIcon() {
 				return org.alice.ide.common.TypeIcon.getInstance( DeclaringTypeState.this.getValue() );
 			}
+
 			@Override
 			public int getIconWidth() {
 				return super.getIconWidth() + PAD + this.getTypeIcon().getIconWidth();
 			}
+
 			@Override
 			public int getIconHeight() {
 				return Math.max( super.getIconHeight(), this.getTypeIcon().getIconHeight() );
 			}
+
 			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				org.alice.ide.common.TypeIcon typeIcon = this.getTypeIcon();
@@ -89,10 +95,11 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 			}
 		}
 		awtButton.setIcon( new TypeDropDownIcon() );
-		this.addValueListener( new ValueListener< org.lgna.project.ast.UserType >() {
-			public void changing( org.lgna.croquet.State< org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
+		this.addValueListener( new ValueListener<org.lgna.project.ast.UserType>() {
+			public void changing( org.lgna.croquet.State<org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
 			}
-			public void changed( org.lgna.croquet.State< org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
+
+			public void changed( org.lgna.croquet.State<org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
 				rv.revalidateAndRepaint();
 			}
 		} );

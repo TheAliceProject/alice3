@@ -48,9 +48,11 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public abstract class Graphic extends edu.cmu.cs.dennisc.scenegraph.Element {
 	private Layer layer;
+
 	public Layer getParent() {
 		return this.layer;
 	}
+
 	public void setParent( Layer parent ) {
 		if( this.layer != parent ) {
 			if( this.layer != null ) {

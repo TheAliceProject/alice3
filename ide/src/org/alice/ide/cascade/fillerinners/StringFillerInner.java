@@ -49,8 +49,9 @@ public class StringFillerInner extends ConcatenationFillerInner {
 	public StringFillerInner() {
 		super( String.class );
 	}
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		items.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
 		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		//rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );

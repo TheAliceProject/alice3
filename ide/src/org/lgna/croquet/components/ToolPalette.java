@@ -47,8 +47,9 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ToolPalette extends BorderPanel {
-	private final AbstractButton<?,org.lgna.croquet.BooleanState> title;
-	private final JComponent< ? > mainComponent;
+	private final AbstractButton<?, org.lgna.croquet.BooleanState> title;
+	private final JComponent<?> mainComponent;
+
 	//todo: convert to composite
 	public ToolPalette( org.lgna.croquet.BooleanState booleanState, JComponent<?> mainComponent ) {
 		this.title = new ToolPaletteTitle( booleanState );
@@ -56,18 +57,21 @@ public class ToolPalette extends BorderPanel {
 		this.addPageStartComponent( this.title );
 		this.addCenterComponent( this.mainComponent );
 	}
-	private org.lgna.croquet.State.ValueListener<Boolean> valueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+	private org.lgna.croquet.State.ValueListener<Boolean> valueObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			mainComponent.setVisible( nextValue );
 		}
 	};
-	
-	public AbstractButton< ?, org.lgna.croquet.BooleanState > getTitle() {
+
+	public AbstractButton<?, org.lgna.croquet.BooleanState> getTitle() {
 		return this.title;
 	}
-	public JComponent< ? > getMainComponent() {
+
+	public JComponent<?> getMainComponent() {
 		return this.mainComponent;
 	}
 
@@ -76,16 +80,17 @@ public class ToolPalette extends BorderPanel {
 		super.handleDisplayable();
 		this.title.getModel().addAndInvokeValueListener( this.valueObserver );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.title.getModel().removeValueListener( this.valueObserver );
 		super.handleUndisplayable();
 	}
-	
+
 	@Override
 	public void setBackgroundColor( java.awt.Color color ) {
 		super.setBackgroundColor( color );
 		this.title.setBackgroundColor( color );
 	}
-	
+
 }

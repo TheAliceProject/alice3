@@ -45,27 +45,33 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 /**
  * @author Dennis Cosgrove
  */
-public class JList< E extends Object > extends javax.swing.JList {
-	private java.util.List< java.awt.event.ActionListener > m_actionListeners = new java.util.LinkedList< java.awt.event.ActionListener >();
+public class JList<E extends Object> extends javax.swing.JList {
+	private java.util.List<java.awt.event.ActionListener> m_actionListeners = new java.util.LinkedList<java.awt.event.ActionListener>();
+
 	public JList() {
 		initialize();
 	}
+
 	public JList( javax.swing.ListModel model ) {
 		super( model );
 		initialize();
 	}
-	
+
 	private void initialize() {
 		addMouseListener( new java.awt.event.MouseListener() {
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 				fireActionListeners( e.getWhen(), e.getModifiers(), true );
 			}
+
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 			}
+
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
 			}
+
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
 			}
+
 			public void mouseExited( java.awt.event.MouseEvent e ) {
 			}
 		} );
@@ -84,15 +90,17 @@ public class JList< E extends Object > extends javax.swing.JList {
 	public void addActionListener( java.awt.event.ActionListener l ) {
 		m_actionListeners.add( l );
 	}
+
 	public void removeActionListener( java.awt.event.ActionListener l ) {
 		m_actionListeners.remove( l );
 	}
-	
+
 	private int m_selectedIndexPrev = -1;
 	private boolean m_isActionEventPrev = false;
+
 	private void fireActionListeners( long when, int modifiers, boolean isActionEvent ) {
 		int selectedIndex = getSelectedIndex();
-		if( selectedIndex != m_selectedIndexPrev || m_isActionEventPrev == isActionEvent ) {
+		if( ( selectedIndex != m_selectedIndexPrev ) || ( m_isActionEventPrev == isActionEvent ) ) {
 			String command;
 			Object value = getSelectedValue();
 			if( value != null ) {
@@ -109,7 +117,7 @@ public class JList< E extends Object > extends javax.swing.JList {
 			m_isActionEventPrev = isActionEvent;
 		}
 	}
-	
+
 	public E getSelectedTypedValue() {
 		return (E)getSelectedValue();
 	}

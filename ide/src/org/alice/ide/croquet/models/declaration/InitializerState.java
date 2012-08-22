@@ -48,16 +48,19 @@ package org.alice.ide.croquet.models.declaration;
  */
 public class InitializerState extends org.alice.ide.croquet.models.StandardExpressionState {
 	private final InitializerStateOwner owner;
+
 	public InitializerState( InitializerStateOwner owner, org.lgna.project.ast.Expression initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), initialValue );
 		this.owner = owner;
 	}
+
 	@Override
-	protected org.lgna.project.annotations.ValueDetails< ? > getValueDetails() {
+	protected org.lgna.project.annotations.ValueDetails<?> getValueDetails() {
 		return null;
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.owner.getValueType();
 	}
 }

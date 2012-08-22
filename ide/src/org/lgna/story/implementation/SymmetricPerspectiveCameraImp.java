@@ -46,17 +46,19 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class SymmetricPerspectiveCameraImp extends CameraImp< edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera > {
+public class SymmetricPerspectiveCameraImp extends CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> {
 	private final org.lgna.story.SCamera abstraction;
+
 	public SymmetricPerspectiveCameraImp( org.lgna.story.SCamera abstraction ) {
 		super( new edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera() );
 		this.abstraction = abstraction;
 	}
+
 	@Override
 	public org.lgna.story.SCamera getAbstraction() {
 		return this.abstraction;
 	}
-	
+
 	private static class GoodVantagePointData extends PreSetVantagePointData {
 		public GoodVantagePointData( SymmetricPerspectiveCameraImp subject, EntityImp other ) {
 			super( subject, subject.createGoodVantagePointStandIn( other ) );
@@ -65,14 +67,16 @@ public class SymmetricPerspectiveCameraImp extends CameraImp< edu.cmu.cs.dennisc
 
 	public StandInImp createGoodVantagePointStandIn( EntityImp other ) {
 		StandInImp standIn = other.createStandIn();
-		standIn.getSgComposite().setTranslationOnly( 2,4,-8, other.getSgReferenceFrame() );
+		standIn.getSgComposite().setTranslationOnly( 2, 4, -8, other.getSgReferenceFrame() );
 		standIn.setOrientationOnlyToPointAt( other );
 		return standIn;
 	}
+
 	public void setTransformationToAGoodVantagePointOf( EntityImp other ) {
 		GoodVantagePointData data = new GoodVantagePointData( this, other );
 		data.epilogue();
 	}
+
 	public void animateSetTransformationToAGoodVantagePointOf( EntityImp other, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		GoodVantagePointData data = new GoodVantagePointData( this, other );
 		this.animateVantagePoint( data, duration, style );

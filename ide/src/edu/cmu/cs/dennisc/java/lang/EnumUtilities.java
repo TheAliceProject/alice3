@@ -50,7 +50,8 @@ public class EnumUtilities {
 	private EnumUtilities() {
 		throw new AssertionError();
 	}
-	public static java.lang.reflect.Field getFld( Enum< ? > e ) {
+
+	public static java.lang.reflect.Field getFld( Enum<?> e ) {
 		if( e != null ) {
 			try {
 				return e.getDeclaringClass().getDeclaredField( e.name() );
@@ -61,18 +62,19 @@ public class EnumUtilities {
 			return null;
 		}
 	}
-	public static <E> java.util.List< E > getEnumConstants( Class<? extends E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion ) {
-		java.util.List< E > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+	public static <E> java.util.List<E> getEnumConstants( Class<? extends E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion ) {
+		java.util.List<E> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( Class<?> cls : clses ) {
 			for( E e : (E[])cls.getEnumConstants() ) {
-				if( criterion == null || criterion.accept( e ) ) {
+				if( ( criterion == null ) || criterion.accept( e ) ) {
 					rv.add( e );
 				}
 			}
 		}
 		return rv;
 	}
-//	public static <E> E[] getEnumConstants( Class<E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion, Class<E> componentCls ) {
-//		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( getEnumConstants( clses, criterion ), componentCls );
-//	}
+	//	public static <E> E[] getEnumConstants( Class<E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion, Class<E> componentCls ) {
+	//		return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( getEnumConstants( clses, criterion ), componentCls );
+	//	}
 }

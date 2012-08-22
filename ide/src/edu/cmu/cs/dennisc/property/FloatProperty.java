@@ -47,17 +47,20 @@ package edu.cmu.cs.dennisc.property;
  */
 public class FloatProperty extends InstanceProperty<Float> {
 	private boolean m_isNaNAcceptable;
+
 	public FloatProperty( InstancePropertyOwner owner, Float value, boolean isNaNAcceptable ) {
 		super( owner, value );
 		m_isNaNAcceptable = isNaNAcceptable;
 	}
+
 	public FloatProperty( InstancePropertyOwner owner, Float value ) {
 		this( owner, value, false );
 	}
+
 	@Override
 	public void setValue( PropertyOwner owner, Float value ) {
 		assert value != null;
-		assert Float.isNaN( value ) == false || m_isNaNAcceptable;  
+		assert ( Float.isNaN( value ) == false ) || m_isNaNAcceptable;
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
 			super.setValue( owner, value );
 		}

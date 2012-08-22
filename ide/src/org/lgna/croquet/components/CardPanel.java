@@ -48,13 +48,14 @@ package org.lgna.croquet.components;
  */
 public class CardPanel extends Panel {
 	private final java.awt.CardLayout cardLayout;
+
 	public CardPanel( org.lgna.croquet.CardOwnerComposite composite, int hgap, int vgap ) {
 		super( composite );
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
 		java.awt.Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
 		if( composite != null ) {
 			java.util.List<org.lgna.croquet.Composite<?>> cards = composite.getCards();
-			for( org.lgna.croquet.Composite< ? > card : cards ) {
+			for( org.lgna.croquet.Composite<?> card : cards ) {
 				this.addComposite( card );
 			}
 			if( cards.size() > 0 ) {
@@ -63,13 +64,16 @@ public class CardPanel extends Panel {
 		}
 		this.setBackgroundColor( color );
 	}
+
 	public CardPanel( org.lgna.croquet.CardOwnerComposite composite ) {
 		this( composite, 0, 0 );
 	}
+
 	@Deprecated
 	public CardPanel() {
 		this( null );
 	}
+
 	@Deprecated
 	public CardPanel( int hgap, int vgap ) {
 		this( null, hgap, vgap );
@@ -79,25 +83,30 @@ public class CardPanel extends Panel {
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return this.cardLayout;
 	}
-	
+
 	public static final class Key {
-		private final JComponent< ? > view;
+		private final JComponent<?> view;
 		private final java.util.UUID id;
-		private Key( JComponent< ? > view, java.util.UUID id ) {
+
+		private Key( JComponent<?> view, java.util.UUID id ) {
 			this.view = view;
 			this.id = id;
 		}
+
 		public java.util.UUID getId() {
 			return this.id;
-		}	
-		public JComponent< ? > getView() {
+		}
+
+		public JComponent<?> getView() {
 			return this.view;
 		}
 	}
-	private java.util.Map< java.util.UUID, Key > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private java.util.Map<java.util.UUID, Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private Key nullKey;
+
 	@Deprecated
-	public Key createKey( JComponent< ? > child, java.util.UUID id ) {
+	public Key createKey( JComponent<?> child, java.util.UUID id ) {
 		if( map.containsKey( id ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "CardPanel replacing key", id );
 		}
@@ -105,18 +114,22 @@ public class CardPanel extends Panel {
 		this.map.put( id, rv );
 		return rv;
 	}
+
 	@Deprecated
 	public Key getKey( java.util.UUID id ) {
 		return this.map.get( id );
 	}
+
 	@Deprecated
 	public void addComponent( Key key ) {
 		this.internalAddComponent( key.view, key.id.toString() );
 	}
+
 	@Deprecated
 	public void removeComponent( Key key ) {
 		this.internalRemoveComponent( key.view );
 	}
+
 	@Deprecated
 	public void showKey( Key key ) {
 		if( key != null ) {
@@ -137,7 +150,7 @@ public class CardPanel extends Panel {
 		this.cardLayout.show( this.getAwtComponent(), key.id.toString() );
 	}
 
-	private Key getKey( org.lgna.croquet.Composite< ? > composite ) {
+	private Key getKey( org.lgna.croquet.Composite<?> composite ) {
 		if( composite != null ) {
 			java.util.UUID id = composite.getCardId();
 			Key key = this.getKey( id );
@@ -151,16 +164,19 @@ public class CardPanel extends Panel {
 			return null;
 		}
 	}
-	public void addComposite( org.lgna.croquet.Composite< ? > composite ) {
+
+	public void addComposite( org.lgna.croquet.Composite<?> composite ) {
 		assert composite != null;
 		this.addComponent( this.getKey( composite ) );
 	}
-	public void removeComposite( org.lgna.croquet.Composite< ? > composite ) {
+
+	public void removeComposite( org.lgna.croquet.Composite<?> composite ) {
 		assert composite != null;
 		this.removeComponent( this.getKey( composite ) );
 	}
-	public void showComposite( org.lgna.croquet.Composite< ? > composite ) {
+
+	public void showComposite( org.lgna.croquet.Composite<?> composite ) {
 		this.showKey( this.getKey( composite ) );
 	}
-	
+
 }

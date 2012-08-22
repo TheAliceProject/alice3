@@ -43,8 +43,9 @@
 package edu.cmu.cs.dennisc.javax.swing.event;
 
 public abstract class TreeSelectionAdapter<E> implements javax.swing.event.TreeSelectionListener {
-	protected abstract void valueChanged(javax.swing.event.TreeSelectionEvent e, E oldLeadValue, E newLeadValue );
-	public final void valueChanged(javax.swing.event.TreeSelectionEvent e) {
+	protected abstract void valueChanged( javax.swing.event.TreeSelectionEvent e, E oldLeadValue, E newLeadValue );
+
+	public final void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 		//javax.swing.JTree tree = (javax.swing.JTree)e.getSource();
 		javax.swing.tree.TreePath oldLeadPath = e.getOldLeadSelectionPath();
 		javax.swing.tree.TreePath newLeadPath = e.getNewLeadSelectionPath();

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.scenegraph.event;
 /**
  * @author Dennis Cosgrove
  */
-public class BoundEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.scenegraph.Geometry > {
+public class BoundEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.scenegraph.Geometry> {
 	public BoundEvent( edu.cmu.cs.dennisc.scenegraph.Geometry source ) {
 		super( source );
 	}

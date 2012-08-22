@@ -50,6 +50,8 @@ public abstract class DeclarationView extends org.lgna.croquet.components.Border
 	public DeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
 		super( composite );
 	}
+
 	public abstract boolean isPrintSupported();
-	public abstract void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel );
+
+	public abstract void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel );
 }

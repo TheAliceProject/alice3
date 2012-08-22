@@ -45,12 +45,13 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.InsertStatementCompletionModel > extends org.lgna.croquet.edits.Edit< M > {
+public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.InsertStatementCompletionModel> extends org.lgna.croquet.edits.Edit<M> {
 	public static final int AT_END = Short.MAX_VALUE;
 	private org.lgna.project.ast.BlockStatement blockStatement;
 	private org.lgna.project.ast.Statement statement;
 	private int specifiedIndex;
 	private org.lgna.project.ast.Expression[] initialExpressions;
+
 	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
 		super( completionStep );
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
@@ -64,9 +65,11 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
+
 	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement ) {
 		this( completionStep, blockStatementIndexPair, statement, new org.lgna.project.ast.Expression[] {} );
 	}
+
 	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -79,10 +82,11 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 		java.util.UUID[] ids = binaryDecoder.decodeIdArray();
 		final int N = ids.length;
 		this.initialExpressions = new org.lgna.project.ast.Expression[ N ];
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			this.initialExpressions[ i ] = org.lgna.project.ProgramTypeUtilities.lookupNode( project, ids[ i ] );
 		}
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -91,7 +95,7 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 		binaryEncoder.encode( this.statement.getId() );
 		final int N = this.initialExpressions.length;
 		java.util.UUID[] ids = new java.util.UUID[ N ];
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			ids[ i ] = this.initialExpressions[ i ].getId();
 		}
 		binaryEncoder.encode( ids );
@@ -100,10 +104,11 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 	public org.lgna.project.ast.Expression[] getInitialExpressions() {
 		return this.initialExpressions;
 	}
-	
+
 	private int getActualIndex() {
 		return Math.min( this.specifiedIndex, this.blockStatement.statements.size() );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		int actualIndex = this.getActualIndex();
@@ -123,18 +128,18 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 			throw new javax.swing.undo.CannotUndoException();
 		}
 	}
-	
+
 	public org.lgna.project.ast.Statement getStatement() {
 		return this.statement;
 	}
 
-//	@Override
-//	public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-//		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-//		org.lgna.project.ast.Statement replacementStatement = retargeter.retarget( this.statement );
-//		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement );
-//	}
-	
+	//	@Override
+	//	public edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > getAcceptableReplacement( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	//		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+	//		org.lgna.project.ast.Statement replacementStatement = retargeter.retarget( this.statement );
+	//		return new InsertStatementEdit( replacementBlockStatement, this.index, replacementStatement );
+	//	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		//super.updatePresentation( rv, locale );
@@ -142,6 +147,7 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
+
 	@Override
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
 		if( replacementCandidate instanceof InsertStatementEdit ) {
@@ -151,13 +157,13 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 				org.lgna.croquet.edits.ReplacementAcceptability rv = org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 				//todo
 				if( N == 1 ) {
-					for( int i=0; i<N; i++ ) {
+					for( int i = 0; i < N; i++ ) {
 						org.lgna.project.ast.Expression originalI = this.initialExpressions[ i ];
 						org.lgna.project.ast.Expression replacementI = insertStatementEdit.initialExpressions[ i ];
 						if( originalI instanceof org.lgna.project.ast.AbstractValueLiteral ) {
 							if( replacementI instanceof org.lgna.project.ast.AbstractValueLiteral ) {
-								Object originalValue = ((org.lgna.project.ast.AbstractValueLiteral)originalI).getValueProperty().getValue();
-								Object replacementValue = ((org.lgna.project.ast.AbstractValueLiteral)replacementI).getValueProperty().getValue();
+								Object originalValue = ( (org.lgna.project.ast.AbstractValueLiteral)originalI ).getValueProperty().getValue();
+								Object replacementValue = ( (org.lgna.project.ast.AbstractValueLiteral)replacementI ).getValueProperty().getValue();
 								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalValue, replacementValue ) ) {
 									rv = org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
 								} else {
@@ -178,10 +184,10 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "initial expressions count not the same" );
 			}
 		} else {
-			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" ); 
+			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" );
 		}
 	}
-	
+
 	@Override
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		rv.append( "insert " );
@@ -189,16 +195,15 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 		return rv;
 	}
 
-	
-//	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, org.lgna.project.ast.Statement replacementStatement ) {
-//		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-//		retargeter.addKeyValuePair( this.statement, replacementStatement );
-//		final int N = this.initialExpressions.length;
-//
-//		org.lgna.project.ast.Expression[] replacementExpressions = this.initialExpressions;
-//		
-//		return new InsertStatementEdit( replacementBlockStatement, this.specifiedIndex, replacementStatement, replacementExpressions );
-//	}
+	//	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, org.lgna.project.ast.Statement replacementStatement ) {
+	//		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+	//		retargeter.addKeyValuePair( this.statement, replacementStatement );
+	//		final int N = this.initialExpressions.length;
+	//
+	//		org.lgna.project.ast.Expression[] replacementExpressions = this.initialExpressions;
+	//		
+	//		return new InsertStatementEdit( replacementBlockStatement, this.specifiedIndex, replacementStatement, replacementExpressions );
+	//	}
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
@@ -213,6 +218,7 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 			}
 		}
 	}
+
 	@Override
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
@@ -222,7 +228,7 @@ public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.Ins
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 		final int N = this.initialExpressions.length;
 		assert N == replacementEdit.initialExpressions.length;
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			retargeter.addKeyValuePair( this.initialExpressions[ i ], replacementEdit.initialExpressions[ i ] );
 		}
 	}

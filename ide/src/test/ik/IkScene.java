@@ -43,7 +43,16 @@
 
 package test.ik;
 
-import org.lgna.story.*;
+import org.lgna.story.Color;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
+import org.lgna.story.SGround;
+import org.lgna.story.SModel;
+import org.lgna.story.SScene;
+import org.lgna.story.SSphere;
+import org.lgna.story.SSun;
+import org.lgna.story.SpatialRelation;
 
 /**
  * @author Dennis Cosgrove
@@ -54,50 +63,49 @@ public class IkScene extends SScene {
 	private final SCamera camera;
 	public final SBiped ogre;
 	private final SModel target;
-	
+
 	public SSphere anchor = new SSphere();
 	public SSphere ee = new SSphere();
-	
+
 	public IkScene( SCamera camera, SBiped ogre, SModel target ) {
 		this.camera = camera;
 		this.ogre = ogre;
 		this.target = target;
 	}
-	
+
 	private void performGeneratedSetup() {
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.ogre.setVehicle( this );
 		this.target.setVehicle( this );
-		anchor.setVehicle(this);
-		ee.setVehicle(this);
-		
-		anchor.setRadius(.15);
-		anchor.setPaint(Color.GREEN);
-		anchor.setOpacity(0.5);
-		
-		ee.setRadius(.1);
-		ee.setPaint(Color.BLUE);
-		
+		anchor.setVehicle( this );
+		ee.setVehicle( this );
+
+		anchor.setRadius( .15 );
+		anchor.setPaint( Color.GREEN );
+		anchor.setOpacity( 0.5 );
+
+		ee.setRadius( .1 );
+		ee.setPaint( Color.BLUE );
+
 		this.ogre.place( SpatialRelation.ABOVE, this.snow );
 		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 
-//		target.setPositionRelativeToVehicle(new Position(1, 0, 0));
-		
-		
+		//		target.setPositionRelativeToVehicle(new Position(1, 0, 0));
+
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 
 	private void performCustomSetup() {
 		//if you want the skeleton visualization to be co-located
-//		this.ogre.setOpacity( 0.25 );
-		
+		//		this.ogre.setOpacity( 0.25 );
+
 		org.lgna.story.implementation.JointedModelImp impl = ImplementationAccessor.getImplementation( this.ogre );
 		impl.showVisualization();
 	}
-	
+
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {

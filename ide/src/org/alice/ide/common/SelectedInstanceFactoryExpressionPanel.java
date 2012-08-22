@@ -48,17 +48,20 @@ package org.alice.ide.common;
  */
 public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.components.LineAxisPanel {
 	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 			SelectedInstanceFactoryExpressionPanel.this.refreshLater();
 		}
 	};
 	private final org.alice.ide.x.AstI18nFactory factory;
+
 	public SelectedInstanceFactoryExpressionPanel( org.alice.ide.x.AstI18nFactory factory ) {
 		this.factory = factory;
 		this.refreshLater();
 	}
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
@@ -67,11 +70,13 @@ public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.com
 		this.forgetAndRemoveAllComponents();
 		this.internalAddComponent( this.factory.createExpressionPane( expression ) );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );

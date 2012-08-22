@@ -47,29 +47,33 @@ package org.alice.ide.perspectives.noproject;
  */
 public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
+				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance()
-		);
+				);
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			//pass
 		} else {
-			list.add(org.lgna.croquet.MenuModel.SEPARATOR);
-			list.add(org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel());
+			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
+			list.add( org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel() );
 		}
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
+
 	private static class SingletonHolder {
 		private static FileMenuModel instance = new FileMenuModel();
 	}
+
 	public static FileMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private FileMenuModel() {
 		super( java.util.UUID.fromString( "f35b5ea2-315e-487d-af62-52f99f1c6306" ), createMenuItemPrepModels() );
 	}
+
 	@Override
 	protected java.lang.Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
 		return org.alice.ide.croquet.models.menubar.FileMenuModel.class;

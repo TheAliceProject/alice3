@@ -45,12 +45,15 @@ package org.alice.ide.name.validators;
 
 public abstract class NodeNameValidator extends org.alice.ide.name.NameValidator {
 	private org.lgna.project.ast.Node node;
+
 	public NodeNameValidator( org.lgna.project.ast.Node node ) {
 		this.node = node;
 	}
+
 	public org.lgna.project.ast.Node getNode() {
 		return this.node;
 	}
+
 	@Override
 	public final boolean isNameValid( String name ) {
 		return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );

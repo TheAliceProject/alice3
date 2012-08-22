@@ -48,7 +48,9 @@ package edu.cmu.cs.dennisc.pattern;
 public abstract class LazilyInitialized<E> {
 	private boolean isInitialized = false;
 	private E value;
+
 	protected abstract E initialize();
+
 	public E get() {
 		if( this.isInitialized ) {
 			//pass

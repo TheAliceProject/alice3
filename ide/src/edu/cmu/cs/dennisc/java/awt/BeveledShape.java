@@ -50,7 +50,7 @@ public class BeveledShape {
 	private final static java.awt.Paint HIGHLIGHT_PAINT = java.awt.Color.LIGHT_GRAY;
 	private final static java.awt.Paint NEUTRAL_PAINT = java.awt.Color.GRAY;
 	private final static java.awt.Paint SHADOW_PAINT = java.awt.Color.BLACK;
-	
+
 	private final static int CAP = java.awt.BasicStroke.CAP_ROUND;
 	private final static int JOIN = java.awt.BasicStroke.JOIN_ROUND;
 
@@ -65,31 +65,39 @@ public class BeveledShape {
 
 	public BeveledShape() {
 	}
+
 	public BeveledShape( java.awt.Shape base, java.awt.geom.GeneralPath highlightForRaised, java.awt.geom.GeneralPath neutralForRaised, java.awt.geom.GeneralPath shadowForRaised, java.awt.geom.GeneralPath highlightForSunken, java.awt.geom.GeneralPath neutralForSunken, java.awt.geom.GeneralPath shadowForSunken ) {
 		initialize( base, highlightForRaised, neutralForRaised, shadowForRaised, highlightForSunken, neutralForSunken, shadowForSunken );
 	}
+
 	public BeveledShape( java.awt.Shape base, java.awt.geom.GeneralPath highlightForRaised, java.awt.geom.GeneralPath neutralForRaised, java.awt.geom.GeneralPath shadowForRaised ) {
 		initialize( base, highlightForRaised, neutralForRaised, shadowForRaised );
 	}
-	
+
 	public java.awt.Shape getBaseShape() {
 		return m_base;
 	}
+
 	protected java.awt.geom.GeneralPath getPathForRaisedHighlight() {
 		return m_highlightForRaised;
 	}
+
 	protected java.awt.geom.GeneralPath getPathForRaisedNeutral() {
 		return m_neutralForRaised;
 	}
+
 	protected java.awt.geom.GeneralPath getPathForRaisedShadow() {
 		return m_shadowForRaised;
 	}
+
 	protected java.awt.geom.GeneralPath getPathForSunkenHighlight() {
 		return m_highlightForSunken;
 	}
+
 	protected java.awt.geom.GeneralPath getPathForSunkenNeutral() {
 		return m_neutralForSunken;
 	}
+
 	protected java.awt.geom.GeneralPath getPathForSunkenShadow() {
 		return m_shadowForSunken;
 	}
@@ -103,6 +111,7 @@ public class BeveledShape {
 		m_neutralForSunken = neutralForSunken;
 		m_shadowForSunken = shadowForSunken;
 	}
+
 	protected void initialize( java.awt.Shape base, java.awt.geom.GeneralPath highlightForRaised, java.awt.geom.GeneralPath neutralForRaised, java.awt.geom.GeneralPath shadowForRaised ) {
 		initialize( base, highlightForRaised, neutralForRaised, shadowForRaised, shadowForRaised, neutralForRaised, highlightForRaised );
 	}
@@ -115,15 +124,15 @@ public class BeveledShape {
 				g2.setStroke( new java.awt.BasicStroke( flushStrokeWidth, CAP, JOIN ) );
 				g2.setPaint( NEUTRAL_PAINT );
 				g2.draw( m_base );
-//				if( m_shadowForRaised != null ) {
-//					g2.draw( m_shadowForRaised );
-//				}
-//				if( m_neutralForRaised != null ) {
-//					g2.draw( m_neutralForRaised );
-//				}
-//				if( m_highlightForRaised != null ) {
-//					g2.draw( m_highlightForRaised );
-//				}
+				//				if( m_shadowForRaised != null ) {
+				//					g2.draw( m_shadowForRaised );
+				//				}
+				//				if( m_neutralForRaised != null ) {
+				//					g2.draw( m_neutralForRaised );
+				//				}
+				//				if( m_highlightForRaised != null ) {
+				//					g2.draw( m_highlightForRaised );
+				//				}
 			} else {
 				java.awt.Shape highlight;
 				java.awt.Shape neutral;
@@ -161,9 +170,11 @@ public class BeveledShape {
 			g2.setStroke( prevStroke );
 		}
 	}
+
 	public void fill( java.awt.Graphics2D g2 ) {
 		g2.fill( m_base );
 	}
+
 	public void paint( java.awt.Graphics2D g2, BevelState bevelState, float raisedStrokeWidth, float flushStrokeWidth, float sunkenStrokeWidth ) {
 		this.fill( g2 );
 		this.draw( g2, bevelState, raisedStrokeWidth, flushStrokeWidth, sunkenStrokeWidth );

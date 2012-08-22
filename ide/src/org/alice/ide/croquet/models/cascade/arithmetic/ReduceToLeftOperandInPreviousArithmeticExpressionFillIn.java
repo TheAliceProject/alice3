@@ -50,12 +50,15 @@ public class ReduceToLeftOperandInPreviousArithmeticExpressionFillIn extends Red
 	private static class SingletonHolder {
 		private static ReduceToLeftOperandInPreviousArithmeticExpressionFillIn instance = new ReduceToLeftOperandInPreviousArithmeticExpressionFillIn();
 	}
+
 	public static ReduceToLeftOperandInPreviousArithmeticExpressionFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ReduceToLeftOperandInPreviousArithmeticExpressionFillIn() {
 		super( java.util.UUID.fromString( "3bfcb639-6737-4b8d-9261-d670957ec095" ) );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic ) {
 		return previousArithmetic.leftOperand.getValue();

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Component > extends ElementAdapter< E > implements edu.cmu.cs.dennisc.pattern.Visitable {
+public abstract class ComponentAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Component> extends ElementAdapter<E> implements edu.cmu.cs.dennisc.pattern.Visitable {
 	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_buffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
 	private double[] m_absolute = new double[ 16 ];
 	private double[] m_inverseAbsolute = new double[ 16 ];
@@ -62,14 +62,15 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
 		visitor.visit( this );
 	}
-//	@Override
-//	protected void propertyChanged( String propertyName ) {
-//		if( propertyName == edu.cmu.cs.dennisc.scenegraph.Component.VEHICLE_PROPERTY_NAME ) {
-//			//pass
-//		} else {
-//			super.propertyChanged( propertyName );
-//		}
-//	}
+
+	//	@Override
+	//	protected void propertyChanged( String propertyName ) {
+	//		if( propertyName == edu.cmu.cs.dennisc.scenegraph.Component.VEHICLE_PROPERTY_NAME ) {
+	//			//pass
+	//		} else {
+	//			super.propertyChanged( propertyName );
+	//		}
+	//	}
 	protected void handleAbsoluteTransformationChanged() {
 		synchronized( m_absolute ) {
 			m_absolute[ 0 ] = Double.NaN;
@@ -78,6 +79,7 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 			m_inverseAbsolute[ 0 ] = Double.NaN;
 		}
 	}
+
 	protected void handleHierarchyChanged() {
 		SceneAdapter sceneAdapter;
 		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = m_element.getRoot();
@@ -87,7 +89,7 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 		} else {
 			sceneAdapter = null;
 		}
-		
+
 		if( m_sceneAdapter != sceneAdapter ) {
 			if( m_sceneAdapter != null ) {
 				m_sceneAdapter.removeDescendant( this );
@@ -101,12 +103,12 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 	}
 
 	public static void handleAbsoluteTransformationChanged( edu.cmu.cs.dennisc.scenegraph.Component component ) {
-		ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > componentAdapter = AdapterFactory.getAdapterFor( component );
+		ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter = AdapterFactory.getAdapterFor( component );
 		componentAdapter.handleAbsoluteTransformationChanged();
 	}
 
 	public static void handleHierarchyChanged( edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent e ) {
-		ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > componentAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
+		ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		componentAdapter.handleHierarchyChanged();
 	}
 
@@ -130,6 +132,7 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 			}
 		}
 	}
+
 	private void updateInverseAbsoluteTransformationIfNecessary() {
 		synchronized( s_buffer ) {
 			synchronized( m_inverseAbsolute ) {
@@ -141,6 +144,7 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 			}
 		}
 	}
+
 	protected double[] getAbsoluteTransformation( double[] rv ) {
 		updateAbsoluteTransformationIfNecessary();
 		synchronized( m_absolute ) {
@@ -148,6 +152,7 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 		}
 		return rv;
 	}
+
 	protected double[] getInverseAbsoluteTransformation( double[] rv ) {
 		updateInverseAbsoluteTransformationIfNecessary();
 		synchronized( m_inverseAbsolute ) {
@@ -155,17 +160,23 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 		}
 		return rv;
 	}
+
 	public java.nio.DoubleBuffer accessAbsoluteTransformationAsBuffer() {
 		updateAbsoluteTransformationIfNecessary();
 		return m_absoluteBuffer;
 	}
+
 	public java.nio.DoubleBuffer accessInverseAbsoluteTransformationAsBuffer() {
 		updateInverseAbsoluteTransformationIfNecessary();
 		return m_inverseAbsoluteBuffer;
 	}
+
 	public abstract void renderGhost( RenderContext rc, GhostAdapter root );
+
 	public abstract void renderOpaque( RenderContext rc );
+
 	public abstract void setup( RenderContext rc );
+
 	public abstract void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults );
 
 }

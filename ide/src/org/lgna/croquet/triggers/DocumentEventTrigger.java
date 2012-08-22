@@ -50,31 +50,39 @@ public class DocumentEventTrigger extends Trigger {
 	public static DocumentEventTrigger createUserInstance( javax.swing.event.DocumentEvent documentEvent ) {
 		return new DocumentEventTrigger( Origin.USER, documentEvent );
 	}
+
 	public static DocumentEventTrigger createGeneratorInstance() {
 		return new DocumentEventTrigger( Origin.GENERATOR, null );
 	}
+
 	public static DocumentEventTrigger createRecoveryInstance() {
 		return new DocumentEventTrigger( Origin.RECOVERY, null );
 	}
+
 	private final transient javax.swing.event.DocumentEvent documentEvent;
+
 	private DocumentEventTrigger( Origin origin, javax.swing.event.DocumentEvent documentEvent ) {
 		super( origin );
 		this.documentEvent = documentEvent;
 	}
+
 	public DocumentEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.documentEvent = null;
 	}
+
 	@Override
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 		return null;
 	}
+
 	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		throw new RuntimeException( "todo" );
 	}
+
 	@Override
-	public String getNoteText( ) {
+	public String getNoteText() {
 		return "Type";
 	}
 }

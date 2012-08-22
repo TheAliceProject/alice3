@@ -48,24 +48,29 @@ package org.lgna.story.implementation;
 public class BoxImp extends ShapeImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
 	private final org.lgna.story.SBox abstraction;
+
 	public BoxImp( org.lgna.story.SBox abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgBox } );
 		this.sgBox.yMinimum.setValue( 0.0 );
 		this.sgBox.yMaximum.setValue( 1.0 );
 	}
+
 	@Override
 	public org.lgna.story.SBox getAbstraction() {
 		return this.abstraction;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
 		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgBox.xMaximum, this.sgBox.yMaximum, this.sgBox.zMaximum };
 	}
+
 	@Override
 	public Resizer[] getResizers() {
 		return new Resizer[] { Resizer.UNIFORM, Resizer.X_AXIS, Resizer.Y_AXIS, Resizer.Z_AXIS };
 	}
+
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
 		if( resizer == Resizer.UNIFORM ) {
@@ -81,6 +86,7 @@ public class BoxImp extends ShapeImp {
 			return Double.NaN;
 		}
 	}
+
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
 		if( value > 0.0 ) {
@@ -89,13 +95,13 @@ public class BoxImp extends ShapeImp {
 				double ratio = value / prevValue;
 				double x = this.sgBox.xMaximum.getValue() * ratio;
 				double z = this.sgBox.zMaximum.getValue() * ratio;
-				
+
 				this.sgBox.yMaximum.setValue( value );
 				this.sgBox.xMaximum.setValue( x );
 				this.sgBox.xMinimum.setValue( -x );
 				this.sgBox.zMaximum.setValue( z );
 				this.sgBox.zMinimum.setValue( -z );
-				
+
 			} else if( resizer == Resizer.X_AXIS ) {
 				this.sgBox.xMaximum.setValue( value );
 				this.sgBox.xMinimum.setValue( -value );
@@ -111,15 +117,15 @@ public class BoxImp extends ShapeImp {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, value );
 		}
 	}
-	
+
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
-		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getScale shouldn't be called on " + this.getClass().getSimpleName() );
+		return new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
 	}
-	
+
 	@Override
-	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
 		double x = size.x * 0.5;
 		double z = size.z * 0.5;
 		this.sgBox.xMinimum.setValue( -x );

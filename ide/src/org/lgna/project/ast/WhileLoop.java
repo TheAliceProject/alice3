@@ -49,16 +49,19 @@ package org.lgna.project.ast;
 public class WhileLoop extends AbstractLoop {
 	public ExpressionProperty conditional = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return JavaType.getInstance( Boolean.class );
 		}
 	};
+
 	public WhileLoop() {
 	}
+
 	public WhileLoop( Expression conditional, BlockStatement body ) {
 		super( body );
 		this.conditional.setValue( conditional );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "while " );

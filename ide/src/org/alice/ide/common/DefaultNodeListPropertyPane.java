@@ -42,17 +42,16 @@
  */
 package org.alice.ide.common;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane< org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.AbstractNode>, org.lgna.project.ast.AbstractNode > {
+public class DefaultNodeListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane<org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.AbstractNode>, org.lgna.project.ast.AbstractNode> {
 	public DefaultNodeListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.AbstractNode> property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.AbstractNode node ) {
+	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.AbstractNode node ) {
 		return this.getFactory().createComponent( node );
 	}
 }
-

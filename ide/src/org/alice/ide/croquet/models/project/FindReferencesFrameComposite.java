@@ -55,7 +55,7 @@ public class FindReferencesFrameComposite extends FindFrameComposite {
 
 	private UserMethod targeted;
 
-	private FindReferencesFrameComposite(UserMethod method) {
+	private FindReferencesFrameComposite( UserMethod method ) {
 		super( java.util.UUID.fromString( "69aa64a2-4faa-407d-b6e8-b0fa99b2a5df" ) );
 		this.targeted = method;
 	}
@@ -66,9 +66,9 @@ public class FindReferencesFrameComposite extends FindFrameComposite {
 
 	@Override
 	public void handlePreActivation() {
-		methodSearchComposite.searchComposite.setJumpDesired(false);
+		methodSearchComposite.searchComposite.setJumpDesired( false );
 		methodSearchComposite.searchComposite.setSelected( getTarget() );
-		methodSearchComposite.searchComposite.setJumpDesired(true);
+		methodSearchComposite.searchComposite.setJumpDesired( true );
 		super.handlePreActivation();
 	}
 }

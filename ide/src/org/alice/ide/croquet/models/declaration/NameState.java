@@ -48,6 +48,7 @@ package org.alice.ide.croquet.models.declaration;
  */
 public class NameState extends org.lgna.croquet.StringState {
 	private final DeclarationLikeSubstanceOperation<?> owner;
+
 	public NameState( DeclarationLikeSubstanceOperation<?> owner, String initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "cc8de0c1-261f-431e-a62c-60346a8fedff" ), initialValue );
 		this.owner = owner;

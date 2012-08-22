@@ -51,13 +51,16 @@ public enum CrawlPolicy {
 	EXCLUDE_REFERENCES_ENTIRELY( false, false );
 	private final boolean isReferenceIncluded;
 	private final boolean isReferenceTunneledInto;
+
 	private CrawlPolicy( boolean isReferenceIncluded, boolean isReferenceTunneledInto ) {
 		this.isReferenceIncluded = isReferenceIncluded;
 		this.isReferenceTunneledInto = isReferenceTunneledInto;
 	}
+
 	public boolean isReferenceIncluded() {
 		return this.isReferenceIncluded;
 	}
+
 	public boolean isReferenceTunneledInto() {
 		return this.isReferenceTunneledInto;
 	}

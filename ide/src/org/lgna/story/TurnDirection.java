@@ -47,17 +47,18 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public enum TurnDirection {
-	LEFT    ( edu.cmu.cs.dennisc.math.Vector3.createPositiveYAxis() ),
-	RIGHT   ( edu.cmu.cs.dennisc.math.Vector3.createNegativeYAxis() ),
-	FORWARD ( edu.cmu.cs.dennisc.math.Vector3.createNegativeXAxis() ),
+	LEFT( edu.cmu.cs.dennisc.math.Vector3.createPositiveYAxis() ),
+	RIGHT( edu.cmu.cs.dennisc.math.Vector3.createNegativeYAxis() ),
+	FORWARD( edu.cmu.cs.dennisc.math.Vector3.createNegativeXAxis() ),
 	BACKWARD( edu.cmu.cs.dennisc.math.Vector3.createPositiveXAxis() );
-	
+
 	private final edu.cmu.cs.dennisc.math.Vector3 axis;
-	
+
 	private TurnDirection( edu.cmu.cs.dennisc.math.Vector3 axis ) {
 		this.axis = axis;
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.math.Vector3 getAxis() {
+
+	/* package-private */edu.cmu.cs.dennisc.math.Vector3 getAxis() {
 		return this.axis;
 	}
 }
