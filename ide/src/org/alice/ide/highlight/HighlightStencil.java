@@ -196,7 +196,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		org.lgna.stencil.Hole hole = new org.lgna.stencil.Hole( trackableShapeResolverA, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH, painter ) {
 			@Override
 			protected boolean isPathRenderingDesired() {
-				return noteText.length() > 0;
+				return noteText != null && noteText.length() > 0;
 			}
 		};
 		this.note.addFeature( hole );
