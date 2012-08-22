@@ -64,6 +64,10 @@ public class VideoEncodeWizardComposite extends org.lgna.croquet.OperationWizard
 		this.addPage( this.uploadPage );
 	}
 	@Override
+	protected boolean isAdornmentDesired() {
+		return false;
+	}
+	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}

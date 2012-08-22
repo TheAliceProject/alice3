@@ -56,7 +56,6 @@ public abstract class LayerStencil extends Panel {
 	public Layer getLayer() {
 		return this.layer;
 	}
-	protected abstract void processMouseEvent( java.awt.event.MouseEvent e );
 	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
@@ -93,11 +92,6 @@ public abstract class LayerStencil extends Panel {
 			@Override
 			public boolean contains(int x, int y) {
 				return LayerStencil.this.contains( x, y, super.contains( x, y ) );
-			}
-			@Override
-			protected void processMouseEvent( java.awt.event.MouseEvent e ) {
-				super.processMouseEvent( e );
-				LayerStencil.this.processMouseEvent( e );
 			}
 		}
 		JStencil rv = new JStencil();

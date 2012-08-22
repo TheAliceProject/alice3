@@ -118,6 +118,60 @@ public class IdeHighlightStencil extends HighlightStencil {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
 		}
 	}
+	public void showHighlightOverStatement( final org.lgna.project.ast.Statement statement, String message ) {
+		if( statement != null ) {
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
+					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					if( composite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
+						for( javax.swing.AbstractButton jButton : jButtons ) {
+							org.lgna.project.ast.Statement candidate = null;
+							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jButton );
+							if( component instanceof org.alice.ide.common.AbstractStatementPane ) {
+								org.alice.ide.common.AbstractStatementPane statementPane = (org.alice.ide.common.AbstractStatementPane)component;
+								candidate = statementPane.getStatement();
+							}
+							if( candidate == statement ) {
+								return component;
+//							} else {
+//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+							}
+						}
+					}
+					return null;
+				}
+			}, null, message );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
+		}
+	}
+	public void showHighlightOverCroquetViewController( final org.lgna.croquet.Model model, String noteText ) {
+		if( model != null ) {
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
+					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+					if( component != null ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
+					}
+					return component;
+				}
+			}, null, noteText );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
+		}
+	}
+	private org.lgna.croquet.components.TrackableShape getRenderWindow() {
+		org.alice.ide.perspectives.ProjectPerspective perspective = org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue();
+		if( perspective != null ) {
+			return perspective.getRenderWindow();
+		} else {
+			return null;
+		}
+	}
 	public void showHighlightOverStatementAndRenderWindow( final org.lgna.project.ast.Statement statement ) {
 		if( statement != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
@@ -144,28 +198,28 @@ public class IdeHighlightStencil extends HighlightStencil {
 				}
 			}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					return org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView();
+					return getRenderWindow();
 				}
 			}, "" );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	}
-	public void showHighlightOverCroquetViewController( final org.lgna.croquet.Model model, String noteText ) {
-		if( model != null ) {
-			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
-					if( component != null ) {
-						//pass
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
-					}
-					return component;
+	public void showHighlightOverCroquetViewControllerAndRenderWindow( final org.lgna.croquet.Model model ) {
+		this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+				if( component != null ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
 				}
-			}, null, noteText );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
-		}
+				return component;
+			}
+		}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				return getRenderWindow();
+			}
+		}, "" );
 	}
 }

@@ -52,39 +52,52 @@ public final class FunctionTabComposite extends MemberTabComposite {
 	public static FunctionTabComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-			if( isAdjusting ) {
-				//pass
-			} else {
-				FunctionTabComposite.this.handleInstanceFactoryChanged( prevValue, nextValue );
+	private FunctionTabComposite() {
+		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ) );
+	}
+	
+	@Override
+	public java.util.List<MethodsSubComposite> getSubComposites() {
+		java.util.Map<org.lgna.project.ast.AbstractType<?,?,?>,java.util.List<org.lgna.project.ast.AbstractMethod>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		if( instanceFactory != null ) {
+			org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
+			while( type != null ) {
+				for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
+					org.lgna.project.ast.AbstractType<?,?,?> returnType = method.getReturnType();
+					if( returnType == org.lgna.project.ast.JavaType.VOID_TYPE ) {
+						//pass
+					} else {
+						if( isInclusionDesired( method ) ) {
+							java.util.List<org.lgna.project.ast.AbstractMethod> list = map.get( returnType );
+							if( list != null ) {
+								//pass
+							} else {
+								list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+								map.put( returnType, list );
+							}
+							list.add( method );
+						}
+					}
+				}
+				if( type.isFollowToSuperClassDesired() ) {
+					type = type.getSuperType();
+				} else {
+					break;
+				}
 			}
 		}
-	};
-	
-	private FunctionTabComposite() {
-		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), new org.alice.ide.members.filters.FunctionFilter() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handlePreActivation tab composites" );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
-	}
-	
-	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
-		for( ReturnTypeFilteredComposite returnTypeFilteredComposite : this.getReturnTypeFilteredComposites() ) {
-			returnTypeFilteredComposite.getView().refreshLater();
+		
+		java.util.List<org.lgna.project.ast.AbstractType<?,?,?>> types = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( map.keySet() );
+		java.util.Collections.sort( types, org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator() );
+		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( types.size() );
+		for( org.lgna.project.ast.AbstractType<?,?,?> type : types ) {
+			FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance( type );
+			subComposite.setMethods( map.get( type ) );
+			rv.add( subComposite );
 		}
-		this.getView().refreshLater();
-	}
-	
-	public java.util.List<ReturnTypeFilteredComposite> getReturnTypeFilteredComposites() {
-		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( 
-				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ), 
-				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE ),
-				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), 
-				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.getInstance( String.class ) ), 
-				ReturnTypeFilteredComposite.getInstance( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) ) 
-		);
+		return rv;
 	}
 	@Override
 	protected org.alice.ide.member.views.MemberTabView createView() {

@@ -101,13 +101,13 @@ public class ResourceTab extends GalleryTab {
 				
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation().createButton() );
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddAxesManagedFieldComposite.getInstance().getOperation().createButton() );
-				
+
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation().createButton() );
 
 				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getOperation().createButton() );
 				//gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
-				
+
 				for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
 					if( awtComponent instanceof javax.swing.JButton ) {
 						javax.swing.JButton jButton = (javax.swing.JButton)awtComponent;
@@ -119,6 +119,10 @@ public class ResourceTab extends GalleryTab {
 		        	.pageStart( gridPanel )
 		        .build();
 
+				if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
+					lineEndPanel.addPageEndComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton() );
+				}
+		        
 		        org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
 		        	.vgap( PAD )
 		        	.pageStart( topPanel )

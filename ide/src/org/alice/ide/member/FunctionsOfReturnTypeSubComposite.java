@@ -40,20 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnTypeFilteredComposite extends FilteredComposite<org.alice.ide.member.views.ReturnTypeFilteredView> {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, ReturnTypeFilteredComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ReturnTypeFilteredComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
+	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, FunctionsOfReturnTypeSubComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized FunctionsOfReturnTypeSubComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
 		if( type != null ) {
-			ReturnTypeFilteredComposite rv = map.get( type );
+			FunctionsOfReturnTypeSubComposite rv = map.get( type );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ReturnTypeFilteredComposite( type );
+				rv = new FunctionsOfReturnTypeSubComposite( type );
 				map.put( type, rv );
 			}
 			return rv;
@@ -61,22 +62,25 @@ public class ReturnTypeFilteredComposite extends FilteredComposite<org.alice.ide
 			return null;
 		}
 	}
+	private java.util.List<org.lgna.project.ast.AbstractMethod> methods = java.util.Collections.emptyList();
 	private final org.lgna.project.ast.AbstractType<?,?,?> returnType;
-	private ReturnTypeFilteredComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
-		super( java.util.UUID.fromString( "39743af8-b64e-4688-8a2b-032ad78cec92" ), returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
+	private FunctionsOfReturnTypeSubComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
+		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), true /*returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class )*/);
 		this.returnType = returnType;
-		//this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( this.returnType.getName() );
+		
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
+		//this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( this.returnType ) );
+		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "Functions returning" );
 	}
 	public org.lgna.project.ast.AbstractType<?,?,?> getReturnType() {
 		return this.returnType;
 	}
 	@Override
-	protected boolean isIncluded( org.lgna.project.ast.AbstractMethod method ) {
-		return method.getReturnType() == this.returnType;
+	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
+		return this.methods;
 	}
-	@Override
-	protected org.alice.ide.member.views.ReturnTypeFilteredView createView() {
-		return new org.alice.ide.member.views.ReturnTypeFilteredView( this );
+	public void setMethods( java.util.List<org.lgna.project.ast.AbstractMethod> methods ) {
+		this.methods = java.util.Collections.unmodifiableList( methods );
+		this.getView().refreshLater();
 	}
 }

@@ -40,32 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+
+package org.alice.stageide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredComposite<V extends org.lgna.croquet.components.View<?,?>> extends org.lgna.croquet.ExpandableCollapsibleCoreComposite<V> {
-	public FilteredComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, isExpandedInitialValue );
+public class SizeProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+	private static class SingletonHolder {
+		private static SizeProceduresComposite instance = new SizeProceduresComposite();
 	}
-	protected abstract boolean isIncluded( org.lgna.project.ast.AbstractMethod method );
-	public java.util.List<org.lgna.project.ast.AbstractMethod> getMethods() {
-		java.util.List<org.lgna.project.ast.AbstractMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		org.lgna.project.ast.AbstractType<?,?,?> type = instanceFactory.getValueType();
-		while( type != null ) {
-			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-				if( this.isIncluded( method ) ) {
-					list.add( method );
-				}
-			}
-			if( type.isFollowToSuperClassDesired() ) {
-				type = type.getSuperType();
-			} else {
-				break;
-			}
-		}
-		return list;
+	public static SizeProceduresComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private SizeProceduresComposite() {
+		super( java.util.UUID.fromString( "167f609c-43cb-40e8-8d6b-2f171e4d0e98" ), "setRadius", "setInnerRadius", "setOuterRadius", "setBaseRadius", "setLength", "setWidth", "setHeight", "setDepth", "resize", "resizeWidth", "resizeHeight", "resizeDepth" );
 	}
 }

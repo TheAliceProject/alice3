@@ -41,57 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives.code;
+package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
+public class UnclaimedJavaProceduresComposite extends FilteredJavaProceduresSubComposite {
 	private static class SingletonHolder {
-		private static TypeOrCodeCardComposite instance = new TypeOrCodeCardComposite();
+		private static UnclaimedJavaProceduresComposite instance = new UnclaimedJavaProceduresComposite();
 	}
-	public static TypeOrCodeCardComposite getInstance() {
+	public static UnclaimedJavaProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			TypeOrCodeCardComposite.this.handleDeclarationStateChanged( nextValue );
+	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+			return compareMethodNames( methodA, methodB );
 		}
 	};
-	private TypeOrCodeCardComposite() {
-		super( java.util.UUID.fromString( "698a5480-5af2-47af-8faa-9cc8d82f4fe8" ),
-				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
-				org.alice.ide.members.MembersComposite.getInstance() 
-		);
-	}
-	private void handleDeclarationStateChanged( org.alice.ide.declarationseditor.DeclarationComposite nextValue ) {
-		org.lgna.croquet.Composite< ? > composite;
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			if( nextValue != null ) {
-				if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
-					composite = org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance();
-				} else {
-					composite = org.alice.ide.members.MembersComposite.getInstance();
-				}
-			} else {
-				composite = null;
-			}
-		} else {
-			composite = org.alice.ide.members.MembersComposite.getInstance();
-		}
-		this.showCard( composite );
+	private UnclaimedJavaProceduresComposite() {
+		super( java.util.UUID.fromString( "1ecd0cc1-1336-4c89-b099-5d17cb381aed" ) );
 	}
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueListener( this.declarationListener );
+	public java.util.Comparator< org.lgna.project.ast.JavaMethod > getComparator() {
+		return this.comparator;
 	}
 	@Override
-	public void handlePostDeactivation() {
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().removeValueListener( this.declarationListener );
-		super.handlePostDeactivation();
+	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+		return true;
 	}
 }

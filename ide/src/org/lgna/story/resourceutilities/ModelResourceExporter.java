@@ -78,6 +78,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.lgna.project.License;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.BipedResource;
@@ -350,9 +352,9 @@ public class ModelResourceExporter {
 			}
 			
 			//Remove joints that are in the "to suppress" list
-			for (String toSuppress : this.jointIdsToSuppress) {
-				sorted = removeEntry(sorted, toSuppress);
-			}
+//			for (String toSuppress : this.jointIdsToSuppress) {
+//				sorted = removeEntry(sorted, toSuppress);
+//			}
 			
 			return sorted;
 		}
@@ -746,6 +748,13 @@ public class ModelResourceExporter {
 		return createResourceEnumName(parentExporter, resource.getModelName(), resource.getTextureName());
 	}
 	
+	private boolean shouldSuppressJoint(String jointString) {
+		if (this.jointIdsToSuppress.contains(jointString)) {
+			return true;
+		}
+		return false;
+	}
+	
 	public String createJavaCode()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -753,7 +762,7 @@ public class ModelResourceExporter {
 		sb.append(getCopyrightComment());
 		sb.append("\n");
 		sb.append("package "+this.classData.packageString+";\n\n");
-		
+		sb.append("import org.lgna.project.annotations.*;\n\n");
 		sb.append("public enum "+this.getJavaClassName()+" implements "+this.classData.superClass.getCanonicalName()+" {\n");
 		int numSubResources = this.subResources.size();
 		assert this.subResources.size() > 0;
@@ -791,6 +800,12 @@ public class ModelResourceExporter {
 					parentString = "null";
 					rootJoints.add(jointString);
 					addedRoots = true;
+				}
+				if (shouldSuppressJoint(jointString)) {
+					sb.append("@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)\n");
+				}
+				else {
+					sb.append("@FieldTemplate(visibility=Visibility.PRIME_TIME)\n");
 				}
 				sb.append("\tpublic static final org.lgna.story.resources.JointId "+jointString+" = new org.lgna.story.resources.JointId( "+parentString+", "+this.getJavaClassName()+".class );\n");
 			}

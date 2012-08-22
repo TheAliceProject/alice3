@@ -41,66 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.typecontext;
+package org.alice.stageide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite {
+public class SayThinkProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
 	private static class SingletonHolder {
-		private static SceneOrNonSceneCardComposite instance = new SceneOrNonSceneCardComposite();
+		private static SayThinkProceduresComposite instance = new SayThinkProceduresComposite();
 	}
-	public static SceneOrNonSceneCardComposite getInstance() {
+	public static SayThinkProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			SceneOrNonSceneCardComposite.this.handleTypeStateChanged( nextValue );
-		}
-	};
-
-	private SceneOrNonSceneCardComposite() {
-		super( java.util.UUID.fromString( "9d3525cd-c560-4a00-9de4-7c2b5a926ae9" ),
-				SceneTypeComposite.getInstance(), 
-				NonSceneTypeComposite.getInstance() 
-		);
-	}
-	@Override
-	public org.lgna.croquet.components.CardPanel createView() {
-		org.lgna.croquet.components.CardPanel rv = super.createView();
-		rv.showComposite( SceneTypeComposite.getInstance() );
-		return rv;
-	}
-
-	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
-		org.lgna.croquet.Composite< ? > composite;
-		if( nextValue != null ) {
-			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
-				composite = SceneTypeComposite.getInstance();
-			} else {
-				composite = NonSceneTypeComposite.getInstance();
-			}
-//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
-//			if( view instanceof NonSceneTypeView ) {
-//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
-//				nonSceneTypeView.handlePreShow();
-//			}
-		} else {
-			composite = null;
-		}
-		this.showCard( composite );
-	}
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
-	}
-	@Override
-	public void handlePostDeactivation() {
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
-		super.handlePostDeactivation();
+	private SayThinkProceduresComposite() {
+		super( java.util.UUID.fromString( "b071a0b7-3d60-4888-9c3d-4ab8ff639887" ), "say", "think" );
 	}
 }

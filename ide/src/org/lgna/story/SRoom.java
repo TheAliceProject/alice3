@@ -188,11 +188,11 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		this.getImplementation().floorPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
 	}
 	
-	@MethodTemplate()
-	@Deprecated
-	public void setFloorPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().floorPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
-	}
+//	@MethodTemplate()
+//	@Deprecated
+//	public void setFloorPaint( Paint paint, SetPaint.Detail... details ) {
+//		this.getImplementation().floorPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+//	}
 	
 	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
@@ -205,11 +205,11 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
 	}
 	
-	@MethodTemplate()
-	@Deprecated
-	public void setWallPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
-	}
+//	@MethodTemplate()
+//	@Deprecated
+//	public void setWallPaint( Paint paint, SetPaint.Detail... details ) {
+//		this.getImplementation().wallPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+//	}
 
 	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)
@@ -222,11 +222,11 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
 	}
 	
-	@MethodTemplate()
-	@Deprecated
-	public void setCeilingPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
-	}
+//	@MethodTemplate()
+//	@Deprecated
+//	public void setCeilingPaint( Paint paint, SetPaint.Detail... details ) {
+//		this.getImplementation().ceilingPaint.animateValue(paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal());
+//	}
 	
 	@MethodTemplate()
 	@GetterTemplate(isPersistent = true)

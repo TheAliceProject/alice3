@@ -94,7 +94,4 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
 	}
-	@Override
-	protected void processMouseEvent( java.awt.event.MouseEvent e ) {
-	}
 }

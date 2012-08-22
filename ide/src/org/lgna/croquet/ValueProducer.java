@@ -40,24 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member.views;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnTypeFilteredView extends org.lgna.croquet.components.PageAxisPanel {
-	public ReturnTypeFilteredView( org.alice.ide.member.ReturnTypeFilteredComposite composite ) {
-		super( composite );
-		this.setMaximumSizeClampedToPreferredSize( true );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 32, 4, 4 ) );
+@Deprecated
+public abstract class ValueProducer<T> extends AbstractCompletionModel { //todo: PrepModel?  w/ transaction history?
+	private static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueProducer.VALUE_KEY" );
+
+	public ValueProducer( Group group, java.util.UUID id ) {
+		super( group, id );
+	}
+	
+	protected abstract org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary();
+	protected abstract T internalGetValue( org.lgna.croquet.history.CompletionStep step ) throws CancelException;
+
+	@Override
+	public org.lgna.croquet.history.CompletionStep fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfNecessary() );
+		T value = this.internalGetValue( step );
+		step.putEphemeralDataFor( VALUE_KEY, value );
+		return step;
+	}
+	public T getValue( org.lgna.croquet.history.CompletionStep step ) {
+		if( step.containsEphemeralDataFor( VALUE_KEY ) ) {
+			return (T)step.getEphemeralDataFor( VALUE_KEY );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			return null;
+		}
+	}
+	
+	@Override
+	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
 	}
 	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.alice.ide.member.ReturnTypeFilteredComposite composite = (org.alice.ide.member.ReturnTypeFilteredComposite)this.getComposite();
-		this.removeAllComponents();
-		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			this.addComponent( org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method ) );
-		}
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
+		return false;
+	}
+	@Override
+	protected void localize() {
+	}
+	@Override
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		return rv;
 	}
 }

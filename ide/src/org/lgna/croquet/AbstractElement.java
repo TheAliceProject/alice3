@@ -99,6 +99,7 @@ public abstract class AbstractElement implements Element {
 	public java.util.UUID getMigrationId() {
 		return this.migrationId;
 	}
+	private boolean isInTheMidstOfInitialization = false;
 	private boolean isInitialized = false;
 	protected void initialize() {
 		this.localize();
@@ -107,8 +108,17 @@ public abstract class AbstractElement implements Element {
 		if( this.isInitialized ) {
 			//pass
 		} else {
-			this.initialize();
-			this.isInitialized = true;
+			if( this.isInTheMidstOfInitialization ) {
+				//pass
+			} else {
+				this.isInTheMidstOfInitialization = true;
+				try {
+					this.initialize();
+					this.isInitialized = true;
+				} finally {
+					this.isInTheMidstOfInitialization = false;
+				}
+			}
 		}
 	}
 	public final void relocalize() {

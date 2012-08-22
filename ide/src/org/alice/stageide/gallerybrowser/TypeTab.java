@@ -65,17 +65,16 @@ public class TypeTab extends GalleryTab {
 		scrollPane.setBorder( null );
         scrollPane.setBothScrollBarIncrements( 16, 160 );
 
-
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-			.pageEnd( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton() )
-		.build();
-
-		
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
 			.center( scrollPane )
-			.lineEnd( lineEndPanel )
 		.build();
 
+		if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
+			org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+				.pageEnd( org.alice.stageide.croquet.models.gallerybrowser.ImportTypeOperation.getInstance().createButton() )
+			.build();
+			rv.addLineEndComponent( lineEndPanel );
+		}
 		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );

@@ -61,7 +61,7 @@ public final class SearchTabComposite extends MemberTabComposite {
 		}
 	} );
 	private SearchTabComposite() {
-		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ), new org.alice.ide.members.filters.PublicOrUserMemberFilter() );
+		super( java.util.UUID.fromString( "60870a5a-4fa9-40ed-94f0-26eba3d72c6d" ) );
 	}
 	public org.lgna.croquet.StringState getQueryState() {
 		return this.queryState;
@@ -72,5 +72,9 @@ public final class SearchTabComposite extends MemberTabComposite {
 	@Override
 	protected org.alice.ide.member.views.MemberTabView createView() {
 		return new org.alice.ide.member.views.SearchMemberTabView( this );
+	}
+	@Override
+	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
+		return java.util.Collections.emptyList();
 	}
 }

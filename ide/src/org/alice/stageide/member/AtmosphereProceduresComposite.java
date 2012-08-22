@@ -41,17 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.member;
+package org.alice.stageide.member;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
-public abstract class MemberGroupComposite extends org.lgna.croquet.ExpandableCollapsibleCoreComposite<org.alice.ide.member.views.MemberGroupView> {
-	public MemberGroupComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, isExpandedInitialValue );
+public class AtmosphereProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+	private static class SingletonHolder {
+		private static AtmosphereProceduresComposite instance = new AtmosphereProceduresComposite();
 	}
-	@Override
-	protected org.alice.ide.member.views.MemberGroupView createView() {
-		return new org.alice.ide.member.views.MemberGroupView( this );
+	public static AtmosphereProceduresComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+	private AtmosphereProceduresComposite() {
+		super( java.util.UUID.fromString( "72eec6bf-660f-4e01-88e8-5f894164a999" ), "setAtmosphereColor", "setFromAboveLightColor", "setFromBelowLightColor", "setFogDensity" );
 	}
 }

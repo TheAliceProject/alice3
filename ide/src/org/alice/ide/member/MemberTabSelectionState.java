@@ -57,10 +57,9 @@ public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSel
 				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
 				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ), 
 				MemberTabComposite.class, 
-				1,
+				0,
 				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance(),
-				SearchTabComposite.getInstance()
+				FunctionTabComposite.getInstance()
 		);
 	}
 

@@ -78,8 +78,8 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 	private CodeContextSplitComposite() {
 		super( 
 				java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ), 
-				org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance(), 
-				TypeOrCodeCardComposite.getInstance()
+				org.alice.stageide.typecontext.SceneOrNonSceneCardOwnerComposite.getInstance(), 
+				TypeOrCodeCardOwnerComposite.getInstance()
 		);
 	}
 	public void incrementIgnoreDividerLocationChangeCount() {

@@ -101,6 +101,13 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	public static final String getVersionAdornment() {
 		return " 3.1";
 	}
+	public static final String getApplicationSubPath() {
+		String rv = getApplicationName();
+		if( "Alice".equals( rv ) ) {
+			rv = "Alice3";
+		}
+		return rv.replaceAll( " ", "" );
+	}
 
 	private void showUnableToOpenFileDialog( java.io.File file, String message ) {
 		StringBuilder sb = new StringBuilder();

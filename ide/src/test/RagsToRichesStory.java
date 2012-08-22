@@ -61,11 +61,14 @@ import org.lgna.story.RollDirection;
 import org.lgna.story.SScene;
 import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
+import org.lgna.story.SThing;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -232,12 +235,22 @@ class SnowScene extends SScene {
 			public void sceneActivated( SceneActivationEvent e ) {
 			}
 		} );
+		SThing[] groupOne = {ogre};
+		SThing[] groupTwo = {susan};
+		this.addCollisionStartListener( new CollisionStartListener() {
+			
+			public void collisionStarted( StartCollisionEvent e ) {
+				System.out.println(e.getModels()[0]);
+				System.out.println(e.getModels()[1]);
+			}
+		}, groupOne , groupTwo );
 		this.addKeyPressListener( new KeyPressListener() {
 
 			public void keyPressed( KeyEvent e ) {
 				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
 			}
 		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
+		addObjectMoverFor( ogre );
 	}
 	public void chillInSkiChalet() {
 		while( true ) {

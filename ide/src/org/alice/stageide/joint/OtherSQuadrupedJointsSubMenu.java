@@ -41,13 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.member.views;
+package org.alice.stageide.joint;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
-public class MemberGroupView extends org.lgna.croquet.components.BorderPanel {
-	public MemberGroupView( org.alice.ide.member.MemberGroupComposite composite ) {
-		this.addCenterComponent( new org.lgna.croquet.components.Label( "todo" ) );
+public class OtherSQuadrupedJointsSubMenu<FB> extends JointsSubMenu<FB> {
+	public OtherSQuadrupedJointsSubMenu() {
+		super( java.util.UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), org.lgna.story.SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getFrontLeftFoot", "getFrontLeftToe", "getFrontRightFoot", "getFrontRightToe", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
 	}
 }
