@@ -144,27 +144,29 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 		scrollPane.setBorder( null );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "type hierarchy", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getTypeColor() );
-		this.addComponent( label, Constraint.PAGE_START );
-		this.addComponent( scrollPane, Constraint.CENTER );
+		this.addPageStartComponent( label );
+		this.addCenterComponent( scrollPane );
 	}
 	
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		this.refreshLater();
 	}
-
+	
 	@Override
-	protected void handleAddedTo(org.lgna.croquet.components.Component<?> parent) {
+	protected void handleDisplayable() {
+		super.handleDisplayable();
 		org.alice.ide.ast.AstEventManager.addAndInvokeTypeHierarchyListener( this.typeHierarchyListener );
 		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 		this.jTree.addKeyListener( this.keyListener );
 		this.jTree.addTreeSelectionListener( this.treeSelectionListener );
 	}
 	@Override
-	protected void handleRemovedFrom(org.lgna.croquet.components.Component<?> parent) {
+	protected void handleUndisplayable() {
 		this.jTree.removeTreeSelectionListener( this.treeSelectionListener );
 		this.jTree.removeKeyListener( this.keyListener );
 		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
 		org.alice.ide.ast.AstEventManager.removeTypeHierarchyListener( this.typeHierarchyListener );
+		super.handleUndisplayable();
 	}
 	
 	@Override

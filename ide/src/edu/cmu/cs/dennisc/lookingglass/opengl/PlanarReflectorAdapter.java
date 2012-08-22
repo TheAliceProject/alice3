@@ -143,7 +143,7 @@ public class PlanarReflectorAdapter extends VisualAdapter< edu.cmu.cs.dennisc.sc
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = m_element.getAbsoluteTransformation();
 		m.multiply( m_geometryTransformation );
 
-		edu.cmu.cs.dennisc.math.Plane plane = new edu.cmu.cs.dennisc.math.Plane( m );
+		edu.cmu.cs.dennisc.math.Plane plane = edu.cmu.cs.dennisc.math.Plane.createInstance( m );
 		plane.getEquation( m_equation );
 		rc.gl.glClipPlane( GL_CLIP_PLANE0, m_equationBuffer );
 		

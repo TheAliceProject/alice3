@@ -65,7 +65,7 @@ public class ParameterArrayAtIndexAssignmentTemplateDragModel extends StatementT
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterArrayAtIndexAssignmentTemplateDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterArrayAtIndexAssignmentTemplateDragModel >( this, this.parameter, org.lgna.project.ast.UserParameter.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterArrayAtIndexAssignmentTemplateDragModel >( this, org.lgna.project.ast.UserParameter.class, this.parameter );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

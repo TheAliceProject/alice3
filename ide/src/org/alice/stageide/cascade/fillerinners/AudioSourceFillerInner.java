@@ -51,19 +51,19 @@ public class AudioSourceFillerInner extends SourceFillerInner< org.lgna.common.r
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getImportFillIn() {
-		return new org.alice.stageide.croquet.models.cascade.source.ImportNewAudioSourceFillIn();
+		return org.alice.stageide.ast.source.AudioSourceImportValueCreator.getInstance().getFillIn();
 	}
 	@Override
 	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.lgna.common.resources.AudioResource resource ) {
 		return new org.alice.stageide.croquet.models.cascade.source.AudioSourceFillIn( resource );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		super.addItems( rv, details, isTop, prevExpression );
-		if( org.alice.ide.IDE.getActiveInstance().getCascadeManager().isPreviousExpressionSet() ) {
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		super.appendItems( items, details, isTop, prevExpression );
+		if( prevExpression != null ) {
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+//			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
+			items.add( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		}
-		return rv;
 	}
 }

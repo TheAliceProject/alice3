@@ -48,10 +48,10 @@ import org.lgna.story.*;
 /**
  * @author Dennis Cosgrove
  */
-class IkProgram extends Program {
-	private final Camera camera = new Camera();
-	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final Sphere target = new Sphere();
+class IkProgram extends SProgram {
+	private final SCamera camera = new SCamera();
+	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
+	private final SSphere target = new SSphere();
 	private final IkScene scene = new IkScene( camera, ogre, target );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
@@ -160,7 +160,7 @@ class IkProgram extends Program {
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
-		app.setPerspective( new test.ik.croquet.IkPerspective() );
+		app.getFrame().setMainComposite( new test.ik.croquet.IkSplitComposite() );
 
 		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.LEFT_CLAVICLE; 
 		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.LEFT_WRIST; 

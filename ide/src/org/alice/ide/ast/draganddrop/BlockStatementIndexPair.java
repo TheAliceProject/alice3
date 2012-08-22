@@ -49,17 +49,27 @@ package org.alice.ide.ast.draganddrop;
 public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite {
 	private final org.lgna.project.ast.BlockStatement blockStatement;
 	private final int index;
+	
+	public static BlockStatementIndexPair createInstanceFromChildStatement( org.lgna.project.ast.Statement statement ) {
+		assert statement != null;
+		org.lgna.project.ast.Node parent = statement.getParent();
+		assert parent instanceof org.lgna.project.ast.BlockStatement : parent;
+		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+		int index = blockStatement.statements.indexOf( statement );
+		return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
+	}
+	
 	public BlockStatementIndexPair( org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+		assert blockStatement != null;
 		assert index >= 0 : index + " " + blockStatement;
-		assert index < (blockStatement.statements.size()+1) : index + " " + blockStatement.statements.size();
 		this.blockStatement = blockStatement;
 		this.index = index;
 	}
 	public BlockStatementIndexPair( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		java.util.UUID id = binaryDecoder.decodeId();
 		this.blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
+		assert this.blockStatement != null;
 		this.index = binaryDecoder.decodeInt(); 
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
@@ -75,10 +85,27 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	}
 	
 	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-		return new BlockStatementIndexPair( replacementBlockStatement, this.index );
+		BlockStatementIndexPair replacement = retargeter.retarget( this );
+		if( replacement != this ) {
+			return replacement;
+		} else {
+			org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
+			if( this.blockStatement != replacementBlockStatement ) {
+				BlockStatementIndexPair rv = new BlockStatementIndexPair( replacementBlockStatement, this.index );
+//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "original:", this, this.hashCode() );
+//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacement:", rv, rv.hashCode() );
+				return rv;
+			} else {
+				return this;
+			}
+		}
 	}
 
+	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
+		org.lgna.project.ast.AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
+		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
+	}
+	
 	@Override
 	public boolean equals( Object o ) {
 		if( o == this )
@@ -108,6 +135,8 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		sb.append( this.blockStatement );
 		sb.append( ";index=" );
 		sb.append( this.index );
+		sb.append( ";parent=" );
+		sb.append( this.blockStatement != null ? this.blockStatement.getParent() : null );
 		sb.append( "]" );
 		return sb.toString();
 	}

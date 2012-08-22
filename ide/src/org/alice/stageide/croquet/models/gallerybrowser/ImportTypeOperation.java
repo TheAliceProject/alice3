@@ -56,9 +56,10 @@ public class ImportTypeOperation extends org.lgna.croquet.ActionOperation { //to
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7f07e40b-8ec6-4273-a79b-bffb28a013a5" ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
-		org.lgna.croquet.history.ValueProducerStep<org.lgna.project.ast.NamedUserType> valueStep = TypeFromUriProducer.getInstance().fire( new org.lgna.croquet.triggers.IterationTrigger() );
-		org.lgna.project.ast.NamedUserType userType = valueStep.getModel().getValue( valueStep );
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep step = TypeFromUriProducer.getInstance().fire( new org.lgna.croquet.triggers.IterationTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
+		org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType> valueProducer = (org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType>)step.getModel();
+		org.lgna.project.ast.NamedUserType userType = valueProducer.getValue( step );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userType );
 		step.finish();
 	}

@@ -57,7 +57,7 @@ public abstract class UriProducer<T> extends org.lgna.croquet.ValueProducer<T> {
 	}
 	protected abstract T internalGetValueFrom( java.io.File file );
 	@Override
-	protected T internalGetValue( org.lgna.croquet.history.ValueProducerStep<T> step ) throws org.lgna.croquet.CancelException {
+	protected T internalGetValue( org.lgna.croquet.history.CompletionStep step ) throws org.lgna.croquet.CancelException {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		java.io.File directory = this.getInitialDirectory();
 		String extension = this.getExtension();

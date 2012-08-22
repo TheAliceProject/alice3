@@ -48,10 +48,10 @@ package org.lgna.story;
 public enum AnimationStyle implements 
 		//Turnable
 		Turn.Detail, Roll.Detail,
-		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail,
+		OrientTo.Detail, TurnToFace.Detail, OrientToUpright.Detail, PointAt.Detail, SetOrientationRelativeToVehicle.Detail,
 		//MoveableTurnable
 		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail,
-		MoveTo.Detail, MoveAndOrientTo.Detail,
+		MoveTo.Detail, MoveAndOrientTo.Detail, SetPositionRelativeToVehicle.Detail,
 		Place.Detail,
 		//Visual
 		SetPaint.Detail, SetOpacity.Detail,
@@ -59,14 +59,18 @@ public enum AnimationStyle implements
 		SetScale.Detail, SetSize.Detail, SetWidth.Detail, SetHeight.Detail, SetDepth.Detail, Resize.Detail, ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail,
 		//JointedModel
 		StraightenOutJoints.Detail,
+		//Room
+		SetFloorPaint.Detail, SetWallPaint.Detail, SetCeilingPaint.Detail,
 		//Billboard
 		SetBackPaint.Detail,
 		//Camera,
 		MoveAndOrientToAGoodVantagePointOf.Detail,
 		//Scene
 		SetAtmosphereColor.Detail, SetAmbientLightColor.Detail, SetFogDensity.Detail,
-		//Sphere
-		SetRadius.Detail,
+		//Sphere,Disc
+		SetRadius.Detail, 
+		//Torus
+		SetInnerRadius.Detail, SetOuterRadius.Detail,
 		//Cone
 		SetBaseRadius.Detail, SetLength.Detail
 {

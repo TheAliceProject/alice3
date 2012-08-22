@@ -59,7 +59,7 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 	}
 	private static final String MAC_LOOK_AND_FEEL_DESCRIPTION = "Aqua Look and Feel for Mac OS X";
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node ) {
 		if( MAC_LOOK_AND_FEEL_DESCRIPTION.equals( javax.swing.UIManager.getLookAndFeel().getDescription() ) ) {
 			return this.transientValue.method.getValue().getName();
 		} else {
@@ -67,11 +67,11 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 		}
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode node ) {
 		return null;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node ) {
 		throw new AssertionError();
 //		javax.swing.JLabel label = new javax.swing.JLabel( this.transientValue.method.getValue().getName() );
 //		javax.swing.JPanel panel = new javax.swing.JPanel();
@@ -85,11 +85,11 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( this.transientValue.expression.getValue(), this.transientValue.method.getValue(), expressions );
 	}
 	@Override
-	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
-		return this.createValue( this.createFromBlanks( step, org.lgna.project.ast.Expression.class ) );
+	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		return this.createValue( this.createFromBlanks( node, transactionHistory, org.lgna.project.ast.Expression.class ) );
 	}
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node ) {
 		return this.transientValue;
 	}
 }

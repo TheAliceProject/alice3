@@ -53,8 +53,8 @@ public class ToolPalette extends BorderPanel {
 	public ToolPalette( org.lgna.croquet.BooleanState booleanState, JComponent<?> mainComponent ) {
 		this.title = new ToolPaletteTitle( booleanState );
 		this.mainComponent = mainComponent;
-		this.addComponent( this.title, Constraint.PAGE_START );
-		this.addComponent( this.mainComponent, Constraint.CENTER );
+		this.addPageStartComponent( this.title );
+		this.addCenterComponent( this.mainComponent );
 	}
 	private org.lgna.croquet.State.ValueListener<Boolean> valueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {
 		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {

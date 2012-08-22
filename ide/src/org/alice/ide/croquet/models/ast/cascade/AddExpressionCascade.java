@@ -51,7 +51,7 @@ class AddExpressionBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project
 	@Override
 	protected java.util.List< org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		ide.getCascadeManager().updateChildren( rv, blankNode, this.componentTypeProperty.getValue(), null );
+		ide.getExpressionCascadeManager().appendItems( rv, blankNode, this.componentTypeProperty.getValue(), null );
 		return rv;
 	}
 }
@@ -67,7 +67,7 @@ public class AddExpressionCascade extends ExpressionsCascade {
     }
 	
 	@Override
-	protected org.alice.ide.croquet.edits.ast.AddExpressionEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > step, org.lgna.project.ast.Expression[] values ) {
+	protected org.alice.ide.croquet.edits.ast.AddExpressionEdit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> step, org.lgna.project.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.AddExpressionEdit( step, this.expressionListProperty, values[ 0 ] );
 	}
 

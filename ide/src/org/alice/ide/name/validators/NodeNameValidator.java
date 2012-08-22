@@ -53,23 +53,6 @@ public abstract class NodeNameValidator extends org.alice.ide.name.NameValidator
 	}
 	@Override
 	public final boolean isNameValid( String name ) {
-		if( name != null ) {
-			final int N = name.length();
-			if( N > 0 ) {
-				char c0 = name.charAt( 0 );
-				if( Character.isLetter( c0 ) || c0 == '_' ) {
-					for( int i=1; i<N; i++ ) {
-						char cI = name.charAt( i );
-						if( Character.isLetterOrDigit( cI ) || cI== '_' ) {
-							//pass
-						} else {
-							return false;
-						}
-					}
-					return true;
-				}
-			}
-		}
-		return false;
+		return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
 	}
 }

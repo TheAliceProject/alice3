@@ -14,7 +14,8 @@ public class EllipseModel extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( new ImageIcon(getClass().getResource("../resources/menu/ellipse.png") ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		// TODO Auto-generated method stub
 	}
 }

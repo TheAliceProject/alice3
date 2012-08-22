@@ -53,7 +53,7 @@ public class ForwardOperation extends org.lgna.croquet.ActionOperation {
 		return SingletonHolder.instance;
 	}
 	private ForwardOperation() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
 	}
 	@Override
 	protected void localize() {
@@ -61,7 +61,8 @@ public class ForwardOperation extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( org.alice.ide.icons.Icons.NEXT_SMALL );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		DeclarationCompositeHistory.getInstance().goForward();
 		step.finish();
 	}

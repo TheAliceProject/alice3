@@ -45,8 +45,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-
-public abstract class ValueProducer<T> extends CompletionModel { //todo: PrepModel?  w/ transaction history?
+@Deprecated
+public abstract class ValueProducer<T> extends AbstractCompletionModel { //todo: PrepModel?  w/ transaction history?
 	private static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueProducer.VALUE_KEY" );
 
 	public ValueProducer( Group group, java.util.UUID id ) {
@@ -54,16 +54,17 @@ public abstract class ValueProducer<T> extends CompletionModel { //todo: PrepMod
 	}
 	
 	protected abstract org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary();
-	protected abstract T internalGetValue( org.lgna.croquet.history.ValueProducerStep<T> step ) throws CancelException;
+	protected abstract T internalGetValue( org.lgna.croquet.history.CompletionStep step ) throws CancelException;
 
 	@Override
-	public org.lgna.croquet.history.ValueProducerStep<T> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.ValueProducerStep<T> step = org.lgna.croquet.history.TransactionManager.addValueProducerStep( this, trigger, this.createTransactionHistoryIfNecessary() );
+	public org.lgna.croquet.history.CompletionStep fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfNecessary() );
 		T value = this.internalGetValue( step );
 		step.putEphemeralDataFor( VALUE_KEY, value );
 		return step;
 	}
-	public T getValue( org.lgna.croquet.history.ValueProducerStep<T> step ) {
+	public T getValue( org.lgna.croquet.history.CompletionStep step ) {
 		if( step.containsEphemeralDataFor( VALUE_KEY ) ) {
 			return (T)step.getEphemeralDataFor( VALUE_KEY );
 		} else {
@@ -84,7 +85,7 @@ public abstract class ValueProducer<T> extends CompletionModel { //todo: PrepMod
 	protected void localize() {
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, UserInformation userInformation ) {
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		return rv;
 	}
 }

@@ -45,37 +45,34 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public class CylinderImp extends ShapeImp {
-	private final edu.cmu.cs.dennisc.scenegraph.Cylinder sgCylinder = new edu.cmu.cs.dennisc.scenegraph.Cylinder();
-	private final org.lgna.story.Cylinder abstraction;
+public class CylinderImp extends AbstractCylinderImp {
+	private final org.lgna.story.SCylinder abstraction;
 	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
 		@Override
 		public Double getValue() {
-			return CylinderImp.this.sgCylinder.bottomRadius.getValue();
+			return CylinderImp.this.getSgCylinder().bottomRadius.getValue();
 		}
 		@Override
 		protected void handleSetValue( Double value ) {
-			CylinderImp.this.sgCylinder.bottomRadius.setValue( value );
-			CylinderImp.this.sgCylinder.topRadius.setValue( value );
+			//Order matters big time here. We use the bottomRadius to trigger our change events, so we need to change it last.
+			CylinderImp.this.getSgCylinder().topRadius.setValue( value );
+			CylinderImp.this.getSgCylinder().bottomRadius.setValue( value );
 		}
 	};
-	public final DoubleProperty length = new DoubleProperty( CylinderImp.this ) {
-		@Override
-		public Double getValue() {
-			return CylinderImp.this.sgCylinder.length.getValue();
-		}
-		@Override
-		protected void handleSetValue( Double value ) {
-			CylinderImp.this.sgCylinder.length.setValue( value );
-		}
-	};
-
-	public CylinderImp( org.lgna.story.Cylinder abstraction ) {
+	public CylinderImp( org.lgna.story.SCylinder abstraction ) {
 		this.abstraction = abstraction;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgCylinder } );
 	}
 	@Override
-	public org.lgna.story.Cylinder getAbstraction() {
+	public org.lgna.story.SCylinder getAbstraction() {
 		return this.abstraction;
+	}
+	@Override
+	protected void setXZ( double xz ) {
+		this.radius.setValue( xz );
+	}
+	
+	@Override
+	protected double getXZ() {
+		return this.radius.getValue();
 	}
 }

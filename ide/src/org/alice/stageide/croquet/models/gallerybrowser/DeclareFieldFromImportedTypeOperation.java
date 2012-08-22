@@ -54,7 +54,7 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 				return DECLARING_FIELD;
 			}
 			@Override
-			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.OperationStep step ) {
+			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step ) {
 				return TypeFromUriProducer.getInstance();
 			}
 		},
@@ -64,11 +64,12 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 				return null;
 			}
 			@Override
-			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.OperationStep step ) {
+			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step ) {
 				org.lgna.croquet.history.TransactionHistory transactionHistory = step.getTransactionHistory();
 				org.lgna.croquet.history.Transaction transaction = transactionHistory.getTransactionAt( 0 );
-				org.lgna.croquet.history.ValueProducerStep<org.lgna.project.ast.NamedUserType> valueProducerStep = (org.lgna.croquet.history.ValueProducerStep<org.lgna.project.ast.NamedUserType>)transaction.getCompletionStep();
-				org.lgna.project.ast.NamedUserType type = valueProducerStep.getModel().getValue( valueProducerStep );
+				org.lgna.croquet.history.CompletionStep valueProducerStep = transaction.getCompletionStep();
+				org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType> valueProducer = (org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType>)valueProducerStep.getModel();
+				org.lgna.project.ast.NamedUserType type = valueProducer.getValue( valueProducerStep );
 				if( type != null ) {
 					org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
 					java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor.getRequiredParameters();
@@ -86,7 +87,7 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 			}
 		};
 		public abstract Stage getNextStage();
-		public abstract org.lgna.croquet.Model getModel( org.lgna.croquet.history.OperationStep step );
+		public abstract org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step );
 	}
 	
 	private static class SingletonHolder {
@@ -99,7 +100,7 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "d5578a1f-2d43-4d42-802f-62016d82e92b" ) );
 	}
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.OperationStep step ) {
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Stage nextStage;
 		if( step.containsEphemeralDataFor( STAGE_KEY ) ) {
 			Stage prevStage = step.getEphemeralDataFor( STAGE_KEY );
@@ -111,7 +112,7 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 		return nextStage != null;
 	}
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.OperationStep step ) {
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Stage stage = step.getEphemeralDataFor( STAGE_KEY );
 		if( stage != null ) {
 			return stage.getModel( step );

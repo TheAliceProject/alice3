@@ -77,7 +77,7 @@ public class FieldAccess extends Expression {
 		Expression e = expression.getValue();
 		AbstractField f = field.getValue();
 		if( e != null && f != null ) {
-			//if( f.isValid() ) {
+			if( f.isValid() ) {
 				if( f.isStatic() ) {
 					//todo
 					rv = true;
@@ -95,9 +95,9 @@ public class FieldAccess extends Expression {
 						}
 					}
 				}
-//			} else {
-//				rv = false;
-//			}
+			} else {
+				rv = false;
+			}
 		} else {
 			rv = false;
 		}

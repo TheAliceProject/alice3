@@ -57,6 +57,18 @@ public enum MovementDirection {
 	RIGHT(1.0d, 0.0d, 0.0d),
 	UP(0.0d, 1.0d, 0.0d),
 	DOWN(0.0d, -1.0d, 0.0d),
+	UP_RIGHT(1.0d, 1.0d, 0.0d),
+	UP_LEFT(-1.0d, 1.0d, 0.0d),
+	DOWN_RIGHT(1.0d, -1.0d, 0.0d),
+	DOWN_LEFT(-1.0d, -1.0d, 0.0d),
+	UP_BACKWARD(0.0d, 1.0d, 1.0d),
+	UP_FORWARD(0.0d, 1.0d, -1.0d),
+	DOWN_BACKWARD(0.0d, -1.0d, 1.0d),
+	DOWN_FORWARD(0.0d, -1.0d, -1.0d),
+	RIGHT_BACKWARD(1.0d, 0.0d, 1.0d),
+	RIGHT_FORWARD(1.0d, 0.0d, -1.0d),
+	LEFT_BACKWARD(-1.0d, 0.0d, 1.0d),
+	LEFT_FORWARD(-1.0d, 0.0d, -1.0d),
 	RESIZE(-1.0d, 1.0d, 0.0d),
 	;
 	
@@ -87,12 +99,24 @@ public enum MovementDirection {
 		{
 			return HandleSet.HandleGroup.X_AXIS;
 		}
+		else if (this == UP_BACKWARD || this == UP_FORWARD || this == DOWN_BACKWARD || this == DOWN_FORWARD)
+		{
+			return HandleSet.HandleGroup.Y_AND_Z_AXIS;
+		}
+		else if (this == UP_RIGHT || this == UP_LEFT || this == DOWN_RIGHT || this == DOWN_LEFT)
+		{
+			return HandleSet.HandleGroup.X_AND_Y_AXIS;
+		}
+		else if (this == RIGHT_BACKWARD || this == LEFT_BACKWARD || this == RIGHT_FORWARD || this == LEFT_FORWARD)
+		{
+			return HandleSet.HandleGroup.X_AND_Z_AXIS;
+		}
 		else if ( this == RESIZE )
 		{
 			return HandleSet.HandleGroup.RESIZE_AXIS;
 		}
+		assert false: "NO HANDLE GROUP DEFINED FOR "+this;
 		return null;
-
 	}
 	
 	public MovementDirection getOpposite()

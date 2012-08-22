@@ -71,10 +71,88 @@ public abstract class ItemState<T> extends State<T> {
 		this.itemCodec.encodeValue( binaryEncoder, value );
 	}
 	@Override
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
-		return this.itemCodec.appendRepresentation( rv, value, locale );
+	public final StringBuilder appendRepresentation(StringBuilder rv, T value) {
+		return this.itemCodec.appendRepresentation( rv, value );
 	}
 	public ItemCodec< T > getItemCodec() {
 		return this.itemCodec;
+	}
+	@Override
+	public void appendUserRepr( java.lang.StringBuilder sb ) {
+		this.appendRepresentation( sb, this.getValue() );
+	}
+
+	private static class InternalItemSelectedState<T> extends BooleanState {
+		private final ItemState< T > state;
+		private final T item;
+		private InternalItemSelectedState( ItemState< T > state, T item ) {
+			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == item );
+			assert state != null;
+			this.state = state;
+			this.item = item;
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+			StringBuilder sb = new StringBuilder();
+			this.state.getItemCodec().appendRepresentation( sb, this.item );
+			this.setTextForBothTrueAndFalse( sb.toString() );
+		}
+	}
+	private java.util.Map< T, InternalItemSelectedState<T> > mapItemToItemSelectedState;
+	public BooleanState getItemSelectedState( T item ) {
+		if( mapItemToItemSelectedState != null ) {
+			//pass
+		} else {
+			this.mapItemToItemSelectedState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		}
+		InternalItemSelectedState<T> rv = this.mapItemToItemSelectedState.get( item );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InternalItemSelectedState< T >( this, item );
+			this.mapItemToItemSelectedState.put( item, rv );
+		}
+		return rv;
+	}
+
+	private static class InternalSelectItemOperation<T> extends ActionOperation {
+		private final ItemState< T > state;
+		private final T item;
+		private InternalSelectItemOperation( ItemState< T > state, T item ) {
+			super( state.getGroup(), java.util.UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
+			assert state != null;
+			this.state = state;
+			this.item = item;
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+			StringBuilder sb = new StringBuilder();
+			this.state.getItemCodec().appendRepresentation( sb, this.item );
+			this.setName( sb.toString() );
+		}
+		@Override
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			this.state.setValueTransactionlessly( this.item );
+			step.finish();
+		}
+	}
+	private java.util.Map< T, InternalSelectItemOperation<T> > mapItemToSelectionOperation;
+	public ActionOperation getItemSelectionOperation( T item ) {
+		if( mapItemToSelectionOperation != null ) {
+			//pass
+		} else {
+			this.mapItemToSelectionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		}
+		InternalSelectItemOperation<T> rv = this.mapItemToSelectionOperation.get( item );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new InternalSelectItemOperation< T >( this, item );
+			this.mapItemToSelectionOperation.put( item, rv );
+		}
+		return rv;
 	}
 }

@@ -54,13 +54,13 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  */
 public abstract class MarkerImp extends VisualScaleModelImp {
 	
-	private final org.lgna.story.Marker abstraction;
+	private final org.lgna.story.SMarker abstraction;
 	
 	protected boolean isShowing = true;
 	protected boolean displayEnabled = true;
 	private AxisAlignedBox boundingBox;
 	
-	protected MarkerImp(org.lgna.story.Marker abstraction){
+	protected MarkerImp(org.lgna.story.SMarker abstraction){
 		super();
 		this.abstraction = abstraction;
 		createVisuals();
@@ -71,16 +71,34 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 	}
 	
 	@Override
-	public org.lgna.story.Marker getAbstraction() {
+	public org.lgna.story.SMarker getAbstraction() {
 		// TODO Auto-generated method stub
 		return this.abstraction;
 	}
 	
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] {};
+	}
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		assert false : resizer;
+		return Double.NaN;
+	}
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		assert false : resizer;
+	}
 	
 	protected abstract void createVisuals();
 	
 	public Boolean isShowing() {
 		return this.isShowing;
+	}
+	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		setScale(getScaleForSize(size));
 	}
 	
 	public void setShowing( Boolean isShowing ) {	

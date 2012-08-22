@@ -46,7 +46,9 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class ExportTypeOperation extends org.alice.ide.croquet.models.projecturi.AbstractSaveOperation {
-
+	@Deprecated
+	public static boolean IS_READY_FOR_PRIME_TIME = false;
+	
 	private static java.util.Map< org.lgna.project.ast.NamedUserType, ExportTypeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	public static synchronized ExportTypeOperation getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ExportTypeOperation rv = map.get( type );
@@ -69,7 +71,7 @@ public class ExportTypeOperation extends org.alice.ide.croquet.models.projecturi
 
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ExportTypeOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ExportTypeOperation >( this, this.type, org.lgna.project.ast.NamedUserType.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ExportTypeOperation >( this, org.lgna.project.ast.NamedUserType.class, this.type );
 	}
 
 	@Override

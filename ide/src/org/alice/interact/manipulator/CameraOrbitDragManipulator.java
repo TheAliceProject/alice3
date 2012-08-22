@@ -72,7 +72,6 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 public class CameraOrbitDragManipulator extends CameraManipulator {
 
 	
-	static final Plane GROUND_PLANE = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
 	static final double TURN_RATE = .2d;
 	
 	private Point originalMousePoint;
@@ -220,7 +219,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 					cameraForward.add(new Vector3(0, downwardShiftFactor, 0));
 					cameraForward.normalize();
 				}
-				Point3 pickPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
+				Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
 				if ( pickPoint != null)
 				{
 					this.setPivotPoint( pickPoint );

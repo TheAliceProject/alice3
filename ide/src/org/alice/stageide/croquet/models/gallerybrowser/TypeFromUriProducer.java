@@ -60,7 +60,7 @@ public class TypeFromUriProducer extends UriProducer<org.lgna.project.ast.NamedU
 		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
 	}
 	private static void showMessageDialog( java.io.File file, boolean isValidZip ) {
-		String applicationName = org.alice.ide.IDE.getActiveInstance().getApplicationName();
+		String applicationName = org.alice.ide.IDE.getApplicationName();
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Unable to create instance from file " );
 		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );

@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import org.alice.ide.browser.BrowserOperation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,8 +58,18 @@ public class BrowseReleaseNotesOperation extends org.alice.ide.operations.Incons
 		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
-		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ) ) {
+			@Override
+			protected java.net.URL getUrl() {
+				String path = "http://kenai.com/projects/alice/pages/ReleaseNotes";
+				try {
+					return new java.net.URL( path );
+				} catch( java.net.MalformedURLException murle ) {
+					throw new RuntimeException( path, murle );
+				}
+			}
+		};
 		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( browserOperation.createHyperlink(), this.getName(), org.lgna.croquet.MessageType.PLAIN );
 	}
 }

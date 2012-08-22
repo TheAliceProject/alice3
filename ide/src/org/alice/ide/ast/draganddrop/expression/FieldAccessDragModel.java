@@ -68,6 +68,14 @@ public class FieldAccessDragModel extends AbstractExpressionDragModel {
 		return this.field.getValueType();
 	}
 	@Override
+	public boolean isPotentialStatementCreator() {
+		return false;
+	}
+	@Override
+	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		throw new AssertionError();
+	}
+	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}

@@ -65,7 +65,7 @@ public class ExpressionListPropertyCascade extends ExpressionsCascade {
 		return this.expressionListProperty.get( this.index );
 	}
 	@Override
-	protected org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > step, org.lgna.project.ast.Expression[] values ) {
+	protected org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> step, org.lgna.project.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.FillInExpressionListPropertyEdit( step, this.getPreviousExpression(), values[ 0 ] );
 	}
 }

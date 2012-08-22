@@ -194,7 +194,6 @@ public class TypeManager {
 	}
 
 	private static void appendTypeName( StringBuilder sb, String name ) {
-		sb.append( "My" );
 		sb.append( name );
 	}
 	private static String createClassNameFromResourceType( org.lgna.project.ast.AbstractType< ?,?,? > resourceType ) {
@@ -225,11 +224,13 @@ public class TypeManager {
 		} else {
 			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
 		}
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
-			if( criterion.accept( existingType ) ) {
-				return existingType;
+		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+		if( project != null ) {
+			java.util.Set< org.lgna.project.ast.NamedUserType > existingTypes = project.getNamedUserTypes();
+			for( org.lgna.project.ast.NamedUserType existingType : existingTypes ) {
+				if( criterion.accept( existingType ) ) {
+					return existingType;
+				}
 			}
 		}
 		org.lgna.project.ast.Expression[] expressions;
@@ -269,7 +270,7 @@ public class TypeManager {
 	}
 	
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromPersonResource( org.lgna.story.resources.sims2.PersonResource personResource ) {
-		org.lgna.project.ast.JavaType bipedType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class );
+		org.lgna.project.ast.JavaType bipedType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class );
 		//org.lgna.project.ast.JavaType bipedResourceType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.BipedResource.class );
 		org.lgna.project.ast.AbstractType< ?,?,? >[] argumentTypes = getArgumentTypes( bipedType, org.lgna.project.ast.JavaType.getInstance( personResource.getClass() ) );
 		return getNamedUserTypeFor( bipedType, argumentTypes, 0, null );

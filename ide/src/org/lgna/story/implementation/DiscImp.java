@@ -48,7 +48,7 @@ package org.lgna.story.implementation;
  */
 public class DiscImp extends ShapeImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Disc sgDisc = new edu.cmu.cs.dennisc.scenegraph.Disc();
-	private final org.lgna.story.Disc abstraction;
+	private final org.lgna.story.SDisc abstraction;
 	public final DoubleProperty outerRadius = new DoubleProperty( DiscImp.this ) {
 		@Override
 		public Double getValue() {
@@ -59,13 +59,52 @@ public class DiscImp extends ShapeImp {
 			DiscImp.this.sgDisc.outerRadius.setValue( value );
 		}
 	};
-	public DiscImp( org.lgna.story.Disc abstraction ) {
+	public DiscImp( org.lgna.story.SDisc abstraction ) {
 		this.abstraction = abstraction;
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgDisc } );
 	}
 	@Override
-	public org.lgna.story.Disc getAbstraction() {
+	public org.lgna.story.SDisc getAbstraction() {
 		return this.abstraction;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
+		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgDisc.outerRadius };
+	}
+	@Override
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.XZ_PLANE };
+	}
+	@Override
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.XZ_PLANE ) {
+			return this.outerRadius.getValue();
+		} else {
+			assert false : resizer;
+			return Double.NaN;
+		}
+	}
+	@Override
+	public void setValueForResizer( Resizer resizer, double value ) {
+		if( resizer == Resizer.XZ_PLANE ) {
+			this.outerRadius.setValue( value );
+		} else {
+			assert false : resizer;
+		}
+	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
+		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+	}
+	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		if (size.x != size.z) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("Invalid size for "+this.getClass().getSimpleName()+": "+size);
+		}
+		this.outerRadius.setValue( size.x * .5 );
 	}
 }

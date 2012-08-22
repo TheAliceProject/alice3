@@ -49,8 +49,4 @@ public abstract class ActionOperation extends SingleThreadOperation {
 	public ActionOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	@Override
-	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
-		return null;
-	}
 }

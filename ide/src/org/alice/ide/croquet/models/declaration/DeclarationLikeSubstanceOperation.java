@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.project.ast.Node > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< Void > {
+public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.project.ast.Node > extends org.alice.ide.croquet.models.InputDialogOperationWithPreview< Void > implements InitializerStateOwner {
 	private final org.lgna.project.ast.UserType<?> initialDeclaringType;
 	private final org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType;
 	private final boolean initialIsArrayValueType;
@@ -92,12 +92,12 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		this.initialExpression = initialExpression;
 		
 		if( initialDeclaringType != null || isDeclaringTypeEditable ) {
-			this.declaringTypeState = new DeclaringTypeState( this, initialDeclaringType );
+			this.declaringTypeState = new DeclaringTypeState( initialDeclaringType );
 		} else {
 			this.declaringTypeState = null;
 		}
 		
-		this.valueComponentTypeState = new ValueComponentTypeState( this, initialValueComponentType );
+		this.valueComponentTypeState = new ValueComponentTypeState( initialValueComponentType );
 		this.isArrayValueTypeState = new IsArrayValueTypeState( this, initialIsArrayValueType );
 		
 		if( initialName != null || isNameEditable ) {
@@ -141,16 +141,16 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 	protected void localize() {
 		super.localize();
 		if( this.declaringTypeState != null ) {
-			this.declaringTypeLabelText = this.findLocalizedText( "declaringTypeLabel", DeclarationLikeSubstanceOperation.class );
+			this.declaringTypeLabelText = this.findLocalizedText( "declaringTypeLabel" );
 		}
 		if( this.valueComponentTypeState != null ) {
-			this.valueTypeLabelText = this.findLocalizedText( "valueTypeLabel", DeclarationLikeSubstanceOperation.class );
+			this.valueTypeLabelText = this.findLocalizedText( "valueTypeLabel" );
 		}
 		if( this.nameState != null ) {
-			this.nameLabelText = this.findLocalizedText( "nameLabel", DeclarationLikeSubstanceOperation.class );
+			this.nameLabelText = this.findLocalizedText( "nameLabel" );
 		}
 		if( this.initializerState != null ) {
-			this.initializerLabelText = this.findLocalizedText( "initializerLabel", DeclarationLikeSubstanceOperation.class );
+			this.initializerLabelText = this.findLocalizedText( "initializerLabel" );
 		}
 	}
 
@@ -267,7 +267,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		}
 	}
 	@Override
-	protected String getInternalExplanation( org.lgna.croquet.history.OperationStep step ) {
+	protected String getInternalExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		final String valueTypeText;
 		if( this.valueComponentTypeState != null ) {
 			valueTypeText = this.getValueTypeExplanation( this.getValueType() );
@@ -345,10 +345,10 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		this.initializerState.setValue( nextInitializer );
 	}
 	
-	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );
-	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.OperationStep step );
+	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType<?,?,?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );
+	protected abstract org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > createMainComponent( org.lgna.croquet.history.CompletionStep<?> step );
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel< ? > prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( this.declaringTypeState != null ) {
 			this.declaringTypeState.setValueTransactionlessly( this.initialDeclaringType );
 		}
@@ -377,7 +377,7 @@ public abstract class DeclarationLikeSubstanceOperation< T extends org.lgna.proj
 		return this.createMainComponent( step );
 	}
 	@Override
-	protected final void epilogue( org.lgna.croquet.history.OperationStep step, boolean isCommit ) {
+	protected final void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit ) {
 		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
 			if( this.isIsArrayValueTypeEditable ) {
 				this.isArrayValueTypeState.removeValueListener( this.isArrayValueTypeListener );

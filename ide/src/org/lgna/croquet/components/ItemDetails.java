@@ -46,52 +46,52 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ItemDetails<E,D extends ItemDetails<E,D,J>, J extends ItemSelectablePanel<E,D>>  {
-	private final J panel;
+public class ItemDetails<E> {
 	private final E item;
-	private final BooleanStateButton< ? extends javax.swing.AbstractButton > button;
-	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			if( ItemDetails.this.panel.getSwingComboBoxModel().getSelectedItem() != ItemDetails.this.item ) {
-				if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-					int index = ItemDetails.this.panel.getModel().indexOf( item );
-					ItemDetails.this.panel.getSwingListSelectionModel().setSelectionInterval( index, index );
-				}
-			}
+	private final org.lgna.croquet.ItemState<E> state;
+	private final BooleanStateButton<?> button;
+	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+			state.setValue( item );
 		}
 	};
-	public ItemDetails( J panel, E item, BooleanStateButton<? extends javax.swing.AbstractButton> button ) {
-		this.panel = panel;
+
+	public ItemDetails( org.lgna.croquet.ItemState<E> state, E item, ItemSelectablePanel<E,?> panel ) {
+		this.state = state;
 		this.item = item;
-		this.button = button;
-	}
-	public J getPanel() {
-		return this.panel;
+		this.button = panel.createButtonForItemSelectedState( this.item, this.state.getItemSelectedState( this.item ) );
 	}
 	public E getItem() {
 		return this.item;
 	}
-	public TrackableShape getTrackableShape() {
-		return this.getButton();
+	public org.lgna.croquet.ItemState<E> getState() {
+		return this.state;
 	}
-	public BooleanStateButton< ? extends javax.swing.AbstractButton > getButton() {
+	public BooleanStateButton<?> getButton() {
+		return this.button;
+	}
+	
+	public TrackableShape getTrackableShape() {
 		return this.button;
 	}
 	public void add( javax.swing.ButtonGroup buttonGroup ) {
-		this.button.getAwtComponent().addItemListener( this.itemListener );
-		buttonGroup.add( this.button.getAwtComponent() );
+		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
+		jButton.addItemListener( this.itemListener );
+		buttonGroup.add( jButton );
 	}
 
 	// note: does not seem to be called
 	public void remove( javax.swing.ButtonGroup buttonGroup ) {
+		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
 		//note: should already be removed by removeAllComponents()
-		assert this.button.getParent() == null;
-		this.button.getAwtComponent().removeItemListener( this.itemListener );
-		buttonGroup.remove( this.button.getAwtComponent() );
+		assert jButton.getParent() == null;
+		jButton.removeItemListener( this.itemListener );
+		buttonGroup.remove( jButton );
 	}
 	public void setSelected( boolean isSelected ) {
-		if( this.button.getAwtComponent().isSelected() != isSelected ) {
-			this.button.getAwtComponent().setSelected( isSelected );
+		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
+		if( jButton.isSelected() != isSelected ) {
+			jButton.setSelected( isSelected );
 		}
 	}
 }

@@ -57,7 +57,7 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 		}
 		@Override
 		protected InternalCompleteOperation getDirect( GatedCommitDialogOperation indirect ) {
-			return indirect.getCompleteOperation();
+			return indirect.completeOperation;
 		}
 	}
 	public static final class InternalCancelOperationResolver extends IndirectResolver< InternalCancelOperation, GatedCommitDialogOperation > {
@@ -69,7 +69,7 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 		}
 		@Override
 		protected InternalCancelOperation getDirect( GatedCommitDialogOperation indirect ) {
-			return indirect.getCancelOperation();
+			return indirect.cancelOperation;
 		}
 	}
 	private static abstract class InternalDialogOperation extends ActionOperation {
@@ -99,7 +99,8 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 			super( java.util.UUID.fromString( "fc908f6f-4b72-48b6-9b65-352dc9f2e18b" ), gatedCommitDialogOperation );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.history.OperationStep step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			if( this.getGatedCommitDialogOperation().isClearedToClose( this.getDialog(), true ) ) {
 				this.getGatedCommitDialogOperation().isCompleted = true;
 				step.finish();
@@ -116,7 +117,8 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 			super( java.util.UUID.fromString( "3363c6f0-c8a2-48f2-aefc-c53894ec8a99" ), gatedCommitDialogOperation );
 		}
 		@Override
-		protected void perform(org.lgna.croquet.history.OperationStep step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			if( this.getGatedCommitDialogOperation().isClearedToClose( this.getDialog(), false ) ) {
 				step.cancel();
 				this.getDialog().setVisible( false );
@@ -226,25 +228,25 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 	protected final boolean isClearedToClose( org.lgna.croquet.components.Dialog dialog ) {
 		return this.isClearedToClose( dialog, false ) && super.isClearedToClose( dialog );
 	}
-	protected final InternalCompleteOperation getCompleteOperation() {
+	public final Operation getCompleteOperation() {
 		return this.completeOperation;
 	}
-	protected final InternalCancelOperation getCancelOperation() {
+	public final Operation getCancelOperation() {
 		return this.cancelOperation;
 	}
 	
 	@Override
 	protected void localize() {
 		super.localize();
-		this.completeOperation.setName( this.findLocalizedText( "commit", GatedCommitDialogOperation.class ) );
-		this.cancelOperation.setName( this.findLocalizedText( "cancel", GatedCommitDialogOperation.class ) );
+		this.completeOperation.setName( this.findLocalizedText( "commit" ) );
+		this.cancelOperation.setName( this.findLocalizedText( "cancel" ) );
 	}
-	protected abstract org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.JComponent< javax.swing.JLabel > explanationLabel );
-	protected abstract org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog );
-	protected abstract void release( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted );
+	protected abstract org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.JComponent< javax.swing.JLabel > explanationLabel );
+	protected abstract org.lgna.croquet.components.Component< ? > createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog );
+	protected abstract void release( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted );
 
-	protected abstract String getExplanation( org.lgna.croquet.history.OperationStep step );
-	protected void updateExplanation( org.lgna.croquet.history.OperationStep step ) {
+	protected abstract String getExplanation( org.lgna.croquet.history.CompletionStep<?> step );
+	protected void updateExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String explanation;
 		if( step != null ) {
 			explanation = this.getExplanation( step );
@@ -262,17 +264,17 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 	}
 
 	public void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-		org.lgna.croquet.history.OperationStep s = null;
+		org.lgna.croquet.history.CompletionStep<?> s = null;
 		if( event != null ) {
-			org.lgna.croquet.history.Node< ? > node = event.getNode();
+			org.lgna.croquet.history.TransactionNode< ? > node = event.getNode();
 			if( node != null ) {
-				s = node.getFirstStepOfEquivalentModel( this, org.lgna.croquet.history.OperationStep.class );
+				s = node.getFirstStepOfEquivalentModel( this, org.lgna.croquet.history.CompletionStep.class );
 			}
 		}
 		this.updateExplanation( s );
 	}
 	@Override
-	protected final org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog ) {
+	protected final org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		org.lgna.croquet.components.Component< ? > mainPanel = this.createMainPanel( step, dialog, this.explanationLabel );
 		if( mainPanel != null ) {
 			org.lgna.croquet.components.Component< ? > controlPanel = this.createControlsPanel( step, dialog );
@@ -292,8 +294,8 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 			step.addListener( this.listener );
 			this.updateExplanation( step );
 
-			this.getCompleteOperation().setDialog( dialog );
-			this.getCancelOperation().setDialog( dialog );
+			this.completeOperation.setDialog( dialog );
+			this.cancelOperation.setDialog( dialog );
 			this.isCompleted = false;
 			return rv;
 		} else {
@@ -301,7 +303,7 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 		}
 	}
 	@Override
-	protected final void releaseContentPane( org.lgna.croquet.history.OperationStep step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected final void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
 		if( contentPane != null ) {
 			step.removeListener( this.listener );
 			this.release( step, dialog, this.isCompleted );

@@ -59,6 +59,6 @@ public class FunctionsOpenState extends org.lgna.croquet.BooleanState {
 		return rv;
 	}
 	private FunctionsOpenState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "a85d7e2d-d746-47c3-96f4-f832f97ae492" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "a85d7e2d-d746-47c3-96f4-f832f97ae492" ), true );
 	}
 }

@@ -47,58 +47,45 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Plane {
-	private double m_a;
-	private double m_b;
-	private double m_c;
-	private double m_d;
+public final class Plane {
+	public static final Plane NaN = new Plane( Double.NaN, Double.NaN, Double.NaN, Double.NaN ); 
+	public static final Plane XZ_PLANE = new Plane( 0, 1, 0, 0 ); 
 
-	public Plane() {
-		set( 0, 1, 0, 0 );
-	}
-	public Plane( double a, double b, double c, double d ) {
-		set( a, b, c, d );
-	}
-	public Plane( double[] array ) {
-		set( array );
-	}
-	public Plane( edu.cmu.cs.dennisc.math.Point3 position, edu.cmu.cs.dennisc.math.Vector3 normal ) {
-		set( position, normal );
-	}
-	public Plane( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
-		set( m );
-	}
-	public Plane( edu.cmu.cs.dennisc.math.Point3 a, edu.cmu.cs.dennisc.math.Point3 b, edu.cmu.cs.dennisc.math.Point3 c ) {
-		set( a, b, c );
+	private final double a;
+	private final double b;
+	private final double c;
+	private final double d;
+
+	private Plane( double a, double b, double c, double d ) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+		this.d = d;
 	}
 
-	public void set( double a, double b, double c, double d ) {
-		m_a = a;
-		m_b = b;
-		m_c = c;
-		m_d = d;
+	public static Plane createInstance( double a, double b, double c, double d ) {
+		return new Plane( a, b, c, d );
 	}
-	public void set( double[] array ) {
-		set( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
+	public static Plane createInstance( double[] array ) {
+		return createInstance( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
 	}
-	
 	//Kept private to avoid confusion on order
-	private void set( double xPosition, double yPosition, double zPosition, double xNormal, double yNormal, double zNormal ) {
+	private static Plane createInstance( double xPosition, double yPosition, double zPosition, double xNormal, double yNormal, double zNormal ) {
 		final double EPSILON = 0.01;
 		assert EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), EPSILON );
 		//assert EpsilonUtilities.isWithinEpsilon( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), 1.0, EPSILON );
-		set( xNormal, yNormal, zNormal, -(xNormal*xPosition + yNormal*yPosition + zNormal*zPosition) );
+		return createInstance( xNormal, yNormal, zNormal, -(xNormal*xPosition + yNormal*yPosition + zNormal*zPosition) );
 	}
-	public void set( edu.cmu.cs.dennisc.math.Point3 position, edu.cmu.cs.dennisc.math.Vector3 normal ) {
+	public static Plane createInstance( edu.cmu.cs.dennisc.math.Point3 position, edu.cmu.cs.dennisc.math.Vector3 normal ) {
 		assert position.isNaN() == false;
 		assert normal.isNaN() == false;
-		set( position.x, position.y, position.z, normal.x, normal.y, normal.z );
+		return createInstance( position.x, position.y, position.z, normal.x, normal.y, normal.z );
 	}
-	public void set( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+	public static Plane createInstance( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		assert m.isNaN() == false;
-		set( m.translation.x, m.translation.y, m.translation.z, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
+		return createInstance( m.translation.x, m.translation.y, m.translation.z, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
 	}
-	public void set( edu.cmu.cs.dennisc.math.Point3 a, edu.cmu.cs.dennisc.math.Point3 b, edu.cmu.cs.dennisc.math.Point3 c ) {
+	public static Plane createInstance( edu.cmu.cs.dennisc.math.Point3 a, edu.cmu.cs.dennisc.math.Point3 b, edu.cmu.cs.dennisc.math.Point3 c ) {
 		assert a.isNaN() == false;
 		assert b.isNaN() == false;
 		assert c.isNaN() == false;
@@ -107,59 +94,69 @@ public class Plane {
 		ac.normalize();
 		ab.normalize();
 		edu.cmu.cs.dennisc.math.Vector3 normal = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( ac, ab );
-		set( a, normal );
+		return createInstance( a, normal );
 	}
-	public boolean isNaN() {
-		return Double.isNaN( m_a ) || Double.isNaN( m_b ) || Double.isNaN( m_c ) || Double.isNaN( m_d );
-	}
-	public void setNaN() {
-		set( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
-	}
+
 	
-	public double[] getEquation( double[] rv ) {
-		rv[ 0 ] = m_a;
-		rv[ 1 ] = m_b;
-		rv[ 2 ] = m_c;
-		rv[ 3 ] = m_d;
-		return rv;
-	}
-	public double[] getEquation() {
-		return getEquation( new double[ 4 ] );
-	}
-//	@Override
-//	public synchronized Object clone() {
-//		try {
-//			return super.clone();
-//		} catch( CloneNotSupportedException e ) {
-//			throw new InternalError();
-//		}
-//	}
 	@Override
 	public boolean equals( Object o ) {
 		if( o == this )
 			return true;
 		if( o != null && o instanceof Plane ) {
 			Plane plane = (Plane)o;
-			return m_a == plane.m_a && m_b == plane.m_b && m_c == plane.m_c && m_d == plane.m_d;
+			return this.a == plane.a && this.b == plane.b && this.c == plane.c && this.d == plane.d;
 		} else {
 			return false;
 		}
 	}
+	@Override
+	public final int hashCode() {
+		int rv = 17;
+		long lng;
 
+		lng = Double.doubleToLongBits( this.a );
+		rv = 37*rv + (int)( lng ^(lng >>>32) );
+
+		lng = Double.doubleToLongBits( this.b );
+		rv = 37*rv + (int)( lng ^(lng >>>32) );
+
+		lng = Double.doubleToLongBits( this.c );
+		rv = 37*rv + (int)( lng ^(lng >>>32) );
+
+		lng = Double.doubleToLongBits( this.d );
+		rv = 37*rv + (int)( lng ^(lng >>>32) );
+
+		return rv;
+	}
+
+	public boolean isNaN() {
+		return Double.isNaN( this.a ) || Double.isNaN( this.b ) || Double.isNaN( this.c ) || Double.isNaN( this.d );
+	}
+
+	public double[] getEquation( double[] rv ) {
+		rv[ 0 ] = this.a;
+		rv[ 1 ] = this.b;
+		rv[ 2 ] = this.c;
+		rv[ 3 ] = this.d;
+		return rv;
+	}
+	public double[] getEquation() {
+		return getEquation( new double[ 4 ] );
+	}
 	public double intersect( Ray ray ) {
 		edu.cmu.cs.dennisc.math.Point3 p = ray.getOrigin();
 		edu.cmu.cs.dennisc.math.Vector3 d = ray.getDirection();
-		double denom = m_a * d.x + m_b * d.y + m_c * d.z;
+		double denom = this.a * d.x + this.b * d.y + this.c * d.z;
 		if( denom == 0 ) {
 			return Double.NaN;
 		} else {
-			double numer = m_a * p.x + m_b * p.y + m_c * p.z + m_d;
+			double numer = this.a * p.x + this.b * p.y + this.c * p.z + this.d;
 			return -numer / denom;
 		}
 	}
 	
 	public double evaluate( Point3 p ) {
-		return m_a*p.x + m_b*p.y + m_c*p.z + m_d;
+		return this.a*p.x + this.b*p.y + this.c*p.z + this.d;
 	}
 	
 //	public LineD intersect( LineD rv, PlaneD other ) {
@@ -170,10 +167,10 @@ public class Plane {
 //	}
 
 //	public edu.cmu.cs.dennisc.math.Matrix4d getReflection( edu.cmu.cs.dennisc.math.Matrix4d rv ) {
-//		rv.setRow( 0, -2 * m_a * m_a + 1,   -2 * m_b * m_a,       -2 * m_c * m_a,       0.0 );
-//		rv.setRow( 1, -2 * m_a * m_b,       -2 * m_b * m_b + 1,   -2 * m_c * m_b,       0.0 );
-//		rv.setRow( 2, -2 * m_a * m_c,       -2 * m_b * m_c,       -2 * m_c * m_c + 1,   0.0 );
-//		rv.setRow( 3, -2 * m_a * m_d,       -2 * m_b * m_d,       -2 * m_c * m_d,       1.0 );
+//		rv.setRow( 0, -2 * this.a * this.a + 1,   -2 * this.b * this.a,       -2 * this.c * this.a,       0.0 );
+//		rv.setRow( 1, -2 * this.a * this.b,       -2 * this.b * this.b + 1,   -2 * this.c * this.b,       0.0 );
+//		rv.setRow( 2, -2 * this.a * this.c,       -2 * this.b * this.c,       -2 * this.c * this.c + 1,   0.0 );
+//		rv.setRow( 3, -2 * this.a * this.d,       -2 * this.b * this.d,       -2 * this.c * this.d,       1.0 );
 //		return rv;
 //	}
 //	public edu.cmu.cs.dennisc.math.Matrix4d getReflection() {
@@ -181,7 +178,7 @@ public class Plane {
 //	}
 	@Override
 	public String toString() {
-		return "edu.cmu.cs.dennisc.math.Plane[a=" + m_a + ",b=" + m_b + ",c=" + m_c + ",d=" + m_d + "]";
+		return "edu.cmu.cs.dennisc.math.Plane[a=" + this.a + ",b=" + this.b + ",c=" + this.c + ",d=" + this.d + "]";
 	}
 	public static Plane valueOf( String s ) {
 		String[] markers = { "edu.cmu.cs.dennisc.math.Plane[a=", ",b=", ",c=", ",d=", "]" };
@@ -191,6 +188,6 @@ public class Plane {
 			int end = s.indexOf( markers[ i + 1 ] );
 			values[ i ] = Double.valueOf( s.substring( begin, end ) ).doubleValue();
 		}
-		return new Plane( values );
+		return createInstance( values );
 	}
 }

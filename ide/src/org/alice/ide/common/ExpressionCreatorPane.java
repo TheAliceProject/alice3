@@ -61,13 +61,9 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	public void setActive( boolean isActive ) {
 		super.setActive( isActive );
 		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showStencilOver( this, getExpressionType() );
+			org.alice.ide.IDE.getActiveInstance().showDropReceptorsStencilOver( this, getExpressionType() );
 		} else {
-			org.alice.ide.IDE.getActiveInstance().hideStencil();
+			org.alice.ide.IDE.getActiveInstance().hideDropReceptorsStencil();
 		}
 	}
-//	public abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.project.ast.ExpressionProperty expressionProperty );
-//	protected org.lgna.project.ast.AbstractType<?,?,?>[] getBlankExpressionTypes() {
-//		return null;
-//	}
 }

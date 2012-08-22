@@ -47,8 +47,9 @@ package org.alice.stageide.person.components;
  * @author Dennis Cosgrove
  */
 public class MainPanel extends org.lgna.croquet.components.BorderPanel {
+	public static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
 	private final org.lgna.croquet.components.FolderTabbedPane<?> tabbedPane;
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneObserver = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone>() {
@@ -69,10 +70,9 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 	public MainPanel( PersonViewer personViewer ) {
 		this.personViewer = personViewer;
 		this.tabbedPane = org.alice.stageide.person.models.BodyHeadTabSelectionModel.getInstance().createFolderTabbedPane();
+		this.tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
 		this.tabbedPane.scaleFont( 1.5f );
 
-		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel();
-		northPane.addComponent( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton(), Constraint.PAGE_START );
 		org.lgna.croquet.components.RowsSpringPanel ubiquitousPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 8 ) {
 			@Override
 			protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
@@ -82,17 +82,22 @@ public class MainPanel extends org.lgna.croquet.components.BorderPanel {
 				return rv;
 			}
 		};
-		ubiquitousPane.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		northPane.addComponent( ubiquitousPane, Constraint.CENTER );
+		ubiquitousPane.setBackgroundColor( BACKGROUND_COLOR );
 
-		org.lgna.croquet.components.BorderPanel ingredientsPanel = new org.lgna.croquet.components.BorderPanel();
-		ingredientsPanel.addComponent( northPane, Constraint.PAGE_START );
-		ingredientsPanel.addComponent( this.tabbedPane, Constraint.CENTER );
-		ingredientsPanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		org.lgna.croquet.components.BorderPanel northPane = new org.lgna.croquet.components.BorderPanel.Builder()
+			.pageStart( org.alice.stageide.person.models.RandomizeOperation.getInstance().createButton() )
+			.center( ubiquitousPane )
+		.build();
 
-		org.lgna.croquet.components.HorizontalSplitPane splitPane = new org.lgna.croquet.components.HorizontalSplitPane( personViewer, ingredientsPanel );
+		org.lgna.croquet.components.BorderPanel ingredientsPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+			.pageStart( northPane )
+			.center( this.tabbedPane )
+		.build();
+		ingredientsPanel.setBackgroundColor( BACKGROUND_COLOR );
+
+		javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, personViewer.getAwtComponent(), ingredientsPanel.getAwtComponent() );
 		splitPane.setDividerLocation( 400 );
-		this.addComponent( splitPane, Constraint.CENTER );
+		this.getAwtComponent().add( splitPane, java.awt.BorderLayout.CENTER );
 		org.alice.stageide.person.models.BaseSkinToneState.getInstance().addValueListener( this.baseSkinToneObserver );
 	}
 	public PersonViewer getPersonViewer() {

@@ -47,8 +47,14 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class WindowEventTrigger extends ComponentEventTrigger< java.awt.event.WindowEvent > {
-	public WindowEventTrigger( java.awt.event.WindowEvent windowEvent ) {
-		super( null, windowEvent );
+	public static WindowEventTrigger createUserInstance( java.awt.event.WindowEvent windowEvent ) {
+		return new WindowEventTrigger( Origin.USER, null, windowEvent );
+	}
+	public static WindowEventTrigger createGeneratorInstance() {
+		return new WindowEventTrigger( Origin.GENERATOR, null, null );
+	}
+	private WindowEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.WindowEvent windowEvent ) {
+		super( origin, viewController, windowEvent );
 	}
 	public WindowEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -57,7 +63,8 @@ public class WindowEventTrigger extends ComponentEventTrigger< java.awt.event.Wi
 	protected java.awt.Point getPoint() {
 		return null;
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	@Override
+	public String getNoteText( ) {
 		return "Window";
 	}
 }

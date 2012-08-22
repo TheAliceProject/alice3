@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives;
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspective {
+public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPerspective {
 	private static class SingletonHolder {
 		private static SetupScenePerspective instance = new SetupScenePerspective();
 	}
@@ -58,7 +58,11 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.IdePerspec
 	}
 	
 	@Override
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus() {
+	public org.lgna.croquet.components.TrackableShape getRenderWindow() {
+		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	}
+	@Override
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
 		return null;
 	}
 	@Override

@@ -58,19 +58,12 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 		}
 		return rv;
 	}
-	private final javax.swing.Icon largeIcon;
-	private final javax.swing.Icon smallIcon;
+	private final org.lgna.croquet.icon.IconFactory iconFactory;
 	private FieldGalleryNode( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "4c21c31c-49a5-46dd-82d6-28f0055c30b4" ), field );
-		Class<?> resourceClass = ((org.lgna.project.ast.JavaType)this.getDeclaration().getValueType()).getClassReflectionProxy().getReification();
-		java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(resourceClass, this.getDeclaration().getName());
-		if( thumbnail != null ) {
-			this.largeIcon = new javax.swing.ImageIcon(thumbnail);
-			this.smallIcon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( this.largeIcon, 24, 24 );
-		} else {
-			this.largeIcon = null;
-			this.smallIcon = null;
-		}
+		java.lang.reflect.Field fld = ((org.lgna.project.ast.JavaField)field).getFieldReflectionProxy().getReification();
+		org.lgna.story.resources.ModelResource modelResource = (org.lgna.story.resources.ModelResource)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null );
+		this.iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
 	}
 	@Override
 	public GalleryNode getParent() {
@@ -88,16 +81,15 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	public int getIndexOfChild( GalleryNode child ) {
 		return 0;
 	}
-	
+
 	@Override
 	public javax.swing.Icon getSmallIcon() {
-		return this.smallIcon;
+		return this.iconFactory.getIcon( new java.awt.Dimension( 24, 24 ) );
 	}
 	@Override
 	public javax.swing.Icon getLargeIcon() {
-		return this.largeIcon;
+		return this.iconFactory.getIcon( this.iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
 	}
-	
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( this.getDeclaration().getValueType() );
@@ -113,11 +105,17 @@ public class FieldGalleryNode extends DeclarationGalleryNode< org.lgna.project.a
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return this.getDropModel( null, null );
 	}
-	
-//	//todo
-//	public org.lgna.croquet.CascadeBlankChild< GalleryNode > getBlankChild() {
-//		return null;
-////		org.lgna.project.ast.AbstractField field = this.getDeclaration();
-////		return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( field, null ).getCascadeBlankChild();
-//	}
+
+	@Override
+	public String[] getTags() {
+		org.lgna.project.ast.AbstractField field = this.getDeclaration();
+		if( field instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+			java.lang.reflect.Field fld = javaField.getFieldReflectionProxy().getReification();
+			Class<?> fldCls = fld.getType();
+			return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( fldCls );
+		} else {
+			return null;
+		}
+	}
 }

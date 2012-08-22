@@ -71,14 +71,15 @@ public class ResourceTab extends GalleryTab {
 			public ResourceView() {
 				super( PAD, 0 );
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD,PAD,PAD,PAD ) );
-				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel();
-				topPanel.addComponent( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ), Constraint.LINE_START );
 				org.lgna.croquet.components.TextField filterTextField = FilterState.getInstance().createTextField();
 				filterTextField.setMinimumPreferredWidth( 320 );
 				filterTextField.setMaximumSizeClampedToPreferredSize( true );
 				filterTextField.scaleFont( 1.5f );
 
-				topPanel.addComponent( filterTextField, Constraint.LINE_END );
+				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+					.lineStart( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ) )
+					.lineEnd( filterTextField )
+				.build();
 
 				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new GalleryDirectoryViewController() ) {
 					@Override
@@ -92,29 +93,44 @@ public class ResourceTab extends GalleryTab {
 				
 				org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 0,  2 );
 				
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.DiscFieldDeclarationOperation.getInstance().createButton() );
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.TextModelFieldDeclarationOperation.getInstance().createButton() );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite.getInstance().getOperation().createButton() );
 				
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.ConeFieldDeclarationOperation.getInstance().createButton() );
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.BillboardFieldDeclarationOperation.getInstance().createButton() );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite.getInstance().getOperation().createButton() );
 				
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.CylinderFieldDeclarationOperation.getInstance().createButton() );
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.AxesFieldDeclarationOperation.getInstance().createButton() );
-				
-				gridPanel.addComponent( org.alice.stageide.croquet.models.declaration.SphereFieldDeclarationOperation.getInstance().createButton() );
-				gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
-				
-		        org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel();
-		        lineEndPanel.addComponent( gridPanel, Constraint.PAGE_START );
-				lineEndPanel.addComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton(), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddAxesManagedFieldComposite.getInstance().getOperation().createButton() );
 
-		        org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel( 0, PAD );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation().createButton() );
 
-				panel.addComponent( topPanel, Constraint.PAGE_START );
-				panel.addComponent( scrollPane, Constraint.CENTER );
+				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getOperation().createButton() );
+				//gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
 
-				this.addComponent( panel, Constraint.CENTER );
-				this.addComponent( lineEndPanel, Constraint.LINE_END );
+				for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
+					if( awtComponent instanceof javax.swing.JButton ) {
+						javax.swing.JButton jButton = (javax.swing.JButton)awtComponent;
+						jButton.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+					}
+				}
+				
+		        org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+		        	.pageStart( gridPanel )
+		        .build();
+
+				if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
+					lineEndPanel.addPageEndComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton() );
+				}
+		        
+		        org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
+		        	.vgap( PAD )
+		        	.pageStart( topPanel )
+		        	.center( scrollPane )
+		        .build();
+
+		        this.addCenterComponent( panel );
+				this.addLineEndComponent( lineEndPanel );
 
 				//todo
 				panel.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
@@ -123,10 +139,5 @@ public class ResourceTab extends GalleryTab {
 			}
 		}
 		return new ResourceView();
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
 	}
 }

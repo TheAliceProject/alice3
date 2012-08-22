@@ -67,8 +67,9 @@ public class BackspaceOperation extends NumberPadOperation {
 		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
-		this.numberModel.deleteLastCharacter();
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		this.numberModel.delete();
 		step.finish();
 	}
 }

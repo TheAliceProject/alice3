@@ -46,27 +46,30 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class DropTrigger extends MouseEventTrigger {
-	private final org.lgna.croquet.resolvers.Resolver< org.lgna.croquet.DropReceptor > dropReceptorResolver;
+public class DropTrigger extends AbstractMouseEventTrigger {
+	public static DropTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
+		return new DropTrigger( Origin.USER, viewController, mouseEvent, dropSite );
+	}
+	public static DropTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent, org.lgna.croquet.DropSite dropSite ) {
+		return createUserInstance( null, mouseEvent, dropSite );
+	}
+	public static DropTrigger createGeneratorInstance( org.lgna.croquet.DropSite dropSite ) {
+		return new DropTrigger( Origin.GENERATOR, null, null, dropSite );
+	}
+
 	private org.lgna.croquet.DropSite dropSite;
-	public DropTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropReceptor dropReceptor, org.lgna.croquet.DropSite dropSite ) {
-		super( viewController, e );
-		this.dropReceptorResolver = dropReceptor.getResolver();
+	private DropTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
+		super( origin, viewController, e );
 		this.dropSite = dropSite;
 	}
 	public DropTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-		this.dropReceptorResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 	@Override
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		super.encode(binaryEncoder);
-		binaryEncoder.encode( this.dropReceptorResolver );
 		binaryEncoder.encode( this.dropSite );
-	}
-	public org.lgna.croquet.DropReceptor getDropReceptor() {
-		return this.dropReceptorResolver.getResolved();
 	}
 	public org.lgna.croquet.DropSite getDropSite() {
 		return this.dropSite;
@@ -74,11 +77,16 @@ public class DropTrigger extends MouseEventTrigger {
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
-		this.dropReceptorResolver.retarget( retargeter );
 		this.dropSite = this.dropSite.createReplacement( retargeter );
 	}
 	@Override
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		return "Drop";
+	}
+	@Override
+	protected void appendReprInternal( StringBuilder repr ) {
+		super.appendReprInternal( repr );
+		repr.append( ";dropSite=" );
+		repr.append( this.dropSite );
 	}
 }

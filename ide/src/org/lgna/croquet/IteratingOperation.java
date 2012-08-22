@@ -49,18 +49,18 @@ public abstract class IteratingOperation extends Operation {
 	public IteratingOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	@Override
 	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
 		return new org.lgna.croquet.history.TransactionHistory();
 	}
-	protected abstract boolean hasNext( org.lgna.croquet.history.OperationStep step );
-	protected abstract Model getNext( org.lgna.croquet.history.OperationStep step );
+	protected abstract boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract Model getNext( org.lgna.croquet.history.CompletionStep<?> step );
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
 		while( this.hasNext( step ) ) {
 			Model model = this.getNext( step );
 			if( model != null ) {
-				model.fire( new org.lgna.croquet.triggers.IterationTrigger() );
+				model.fire( new org.lgna.croquet.triggers.IterationTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 				//throw new CancelException();

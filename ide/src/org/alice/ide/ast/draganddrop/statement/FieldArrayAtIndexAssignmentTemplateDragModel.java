@@ -78,7 +78,7 @@ public class FieldArrayAtIndexAssignmentTemplateDragModel extends StatementTempl
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldArrayAtIndexAssignmentTemplateDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldArrayAtIndexAssignmentTemplateDragModel >( this, this.field, org.lgna.project.ast.AbstractField.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldArrayAtIndexAssignmentTemplateDragModel >( this, org.lgna.project.ast.AbstractField.class, this.field );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

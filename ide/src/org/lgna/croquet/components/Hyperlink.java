@@ -58,9 +58,10 @@ public class Hyperlink extends OperationButton< javax.swing.JButton, org.lgna.cr
 				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
 			}
 		};
+		rv.setForeground( new java.awt.Color( 0, 0, 191 ) );
+		rv.setBackground( java.awt.Color.LIGHT_GRAY );
 		rv.setRolloverEnabled( true );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-//		javax.swing.JButton rv = new javax.swing.JButton();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );
 		return rv;

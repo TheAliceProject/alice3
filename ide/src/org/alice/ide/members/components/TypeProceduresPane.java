@@ -57,7 +57,7 @@ public class TypeProceduresPane extends AbstractTypeMethodsPane {
 
 	@Override
 	protected org.lgna.croquet.components.Button createDeclareMemberButton(org.lgna.project.ast.NamedUserType type) {
-		return org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance(type).createButton();
+		return org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( type ).getOperation().createButton();
 	}
 
 	@Override

@@ -51,8 +51,8 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
 		super( Double.class );
 	}
 	@Override
-	public final java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		super.addItems( rv, details, isTop, prevExpression );
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		super.appendItems( items, details, isTop, prevExpression );
 		double[] literals;
 		if( details instanceof org.lgna.project.annotations.NumberValueDetails ) {
 			literals = ((org.lgna.project.annotations.NumberValueDetails)details).getLiterals();
@@ -60,23 +60,22 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
 			literals = new double[] { 0.25, 0.5, 1.0, 2.0, 10.0 };
 		}
 		for( double d : literals ) {
-			rv.add( org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn.getInstance( d ) );
+			items.add( org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn.getInstance( d ) );
 		}
 		if( isTop && prevExpression != null ) {
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( org.alice.ide.croquet.models.cascade.number.RandomCascadeMenu.getInstance() );
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.number.RandomCascadeMenu.getInstance() );
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.number.MathCascadeMenu.getInstance() );
 		}
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
 		org.lgna.croquet.CascadeItem item = apiConfigurationManager.getCustomFillInFor( details );
 		if( item != null ) {
-			rv.add( item );
+			items.add( item );
 		} else {
-			rv.add( org.alice.ide.croquet.models.custom.CustomDoubleInputDialogOperation.getInstance().getFillIn() );
+			items.add( org.alice.ide.custom.DoubleCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		}
-		return rv;
 	}
 }

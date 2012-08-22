@@ -63,7 +63,7 @@ public class StringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<St
 	}
 	
 	@Override
-	public String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription() 
 	{
 		return "String";
 	}

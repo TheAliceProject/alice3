@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.ComponentManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -120,11 +122,11 @@ public abstract class MenuModel extends AbstractMenuModel {
 					//todo: investigate
 					super.handleDisplayable();
 					//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
-					InternalPopupPrepModel.this.addComponent( this );
+					ComponentManager.addComponent( InternalPopupPrepModel.this, this );
 				}
 				@Override
 				protected void handleUndisplayable() {
-					InternalPopupPrepModel.this.removeComponent( this );
+					ComponentManager.removeComponent( InternalPopupPrepModel.this, this );
 					InternalPopupPrepModel.this.menuModel.removePopupMenuListener( this );
 					super.handleUndisplayable();
 				}

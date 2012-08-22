@@ -57,11 +57,12 @@ public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
 		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
 		org.lgna.project.ast.UserField sceneField = sceneEditor.getActiveSceneField();
 		org.lgna.project.ast.AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
-		org.lgna.story.Camera camera = (org.lgna.story.Camera)sceneEditor.getInstanceInJavaVMForField( cameraField );
+		org.lgna.story.SCamera camera = (org.lgna.story.SCamera)sceneEditor.getInstanceInJavaVMForField( cameraField );
 		org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation( camera );
 		edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
 		edu.cmu.cs.dennisc.raytrace.POVRayUtilities.export( new java.io.PrintWriter( System.out ), sgCamera );

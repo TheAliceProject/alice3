@@ -55,8 +55,8 @@ public abstract class AbstractItemNode< F, B, M extends org.lgna.croquet.Cascade
 	}
 	public abstract int getBlankStepCount();
 	public abstract BlankNode< B > getBlankStepAt( int index );
-	public F createValue() {
-		return this.getElement().createValue( this );
+	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		return this.getElement().createValue( this, transactionHistory );
 	}
 	public F getTransientValue() {
 		return this.getElement().getTransientValue( this );

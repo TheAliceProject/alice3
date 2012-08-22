@@ -64,11 +64,6 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	@Override
-	public UserType< ? > getDeclaringType() {
-		return (UserType< ? >)super.getDeclaringType();
-	}
-
-	@Override
 	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.Property property, Object value ) {
 		value = super.convertPropertyValueIfNecessary( property, value );
 		if( property == this.body ) {

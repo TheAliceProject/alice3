@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation {
+public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ast.InsertStatementCompletionModel {
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 	public StatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, id );
@@ -61,8 +61,9 @@ public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOp
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
 	@Override
-	protected final void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<StatementInsertOperation> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.lgna.project.ast.Statement statement = this.createStatement();
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement ) );
+		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.InsertStatementEdit<StatementInsertOperation>( step, this.blockStatementIndexPair, statement ) );
 	}
 }

@@ -57,13 +57,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite< org.
 		super( java.util.UUID.fromString( "a782a11f-fd56-4f6f-b178-1116acbeb1e6" ) );
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
 	protected org.alice.stageide.person.components.IngredientsPanel createView() {
 		return new org.alice.stageide.person.components.IngredientsPanel( this );
 	}

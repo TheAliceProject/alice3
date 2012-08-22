@@ -54,7 +54,7 @@ public class PopupFactoryUtilities {
 			field.setAccessible( true );
 			rv.putClientProperty( field.get( null ), Boolean.TRUE );
 		} catch( Exception e ) {
-			e.printStackTrace();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "note: cannot forceHeavyWeightPopups" );
 		}
 		return rv;
 	}

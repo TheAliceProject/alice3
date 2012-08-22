@@ -52,6 +52,11 @@ public class TextField extends TextComponent< edu.cmu.cs.dennisc.javax.swing.com
 	}
 	
 	@Override
+	public void updateTextForBlankCondition( String textForBlankCondition ) {
+		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
+	}
+
+	@Override
 	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
 		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
 			@Override

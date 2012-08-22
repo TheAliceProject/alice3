@@ -63,6 +63,12 @@ public class WhileLoopInsertCascade extends StatementInsertCascade {
 		super( java.util.UUID.fromString( "e23920c4-97fa-47e8-9307-24153e3d56a6" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override
+	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
+		assert statement instanceof org.lgna.project.ast.WhileLoop : statement;
+		org.lgna.project.ast.WhileLoop whileLoop = (org.lgna.project.ast.WhileLoop)statement;
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( whileLoop.conditional.getValue() );
+	}
+	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createWhileLoop( expressions[ 0 ] );
 	}

@@ -46,81 +46,28 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitComposite extends Composite< org.lgna.croquet.components.SplitPane >{
-	private Composite< ? > leadingComposite;
-	private Composite< ? > trailingComposite;
+public abstract class SplitComposite extends AbstractSplitComposite<org.lgna.croquet.components.SplitPane> {
+	private final Composite< ? > leadingComposite;
+	private final Composite< ? > trailingComposite;
 	public SplitComposite( java.util.UUID id, Composite< ? > leadingComposite, Composite< ? > trailingComposite ) {
 		super( id );
 		this.leadingComposite = leadingComposite;
 		this.trailingComposite = trailingComposite;
 	}
+	@Override
 	public Composite< ? > getLeadingComposite() {
 		return this.leadingComposite;
 	}
-	public void setLeadingComposite(Composite<?> leadingComposite) {
-		this.leadingComposite = leadingComposite;
-		this.getView().setLeadingComponent( this.leadingComposite != null ? this.leadingComposite.getView() : null );
-		this.getView().revalidateAndRepaint();
-	}
+	@Override
 	public Composite< ? > getTrailingComposite() {
 		return this.trailingComposite;
 	}
-	public void setTrailingComposite(Composite<?> trailingComposite) {
-		this.trailingComposite = trailingComposite;
-		this.getView().setTrailingComponent( this.trailingComposite != null ? this.trailingComposite.getView() : null );
-		this.getView().revalidateAndRepaint();
-	}
 	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
-		if( this.leadingComposite != null ) {
-			if( this.leadingComposite.contains( model ) ) {
-				return true;
-			}
-		}
-		if( this.trailingComposite != null ) {
-			if( this.trailingComposite.contains( model ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-	@Override
-	protected void localize() {
-	}
-	@Override
-	public void releaseView() {
-		if( this.leadingComposite != null ) {
-			this.leadingComposite.releaseView();
-		}
-		if( this.trailingComposite != null ) {
-			this.trailingComposite.releaseView();
-		}
-		super.releaseView();
-	}
 	protected org.lgna.croquet.components.HorizontalSplitPane createHorizontalSplitPane() {
 		return new org.lgna.croquet.components.HorizontalSplitPane( this );
 	}
+	@Override
 	protected org.lgna.croquet.components.VerticalSplitPane createVerticalSplitPane() {
 		return new org.lgna.croquet.components.VerticalSplitPane( this );
-	}
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( this.leadingComposite != null ) {
-			this.leadingComposite.handlePreActivation();
-		}
-		if( this.trailingComposite != null ) {
-			this.trailingComposite.handlePreActivation();
-		}
-	}
-	@Override
-	public void handlePostDectivation() {
-		if( this.leadingComposite != null ) {
-			this.leadingComposite.handlePostDectivation();
-		}
-		if( this.trailingComposite != null ) {
-			this.trailingComposite.handlePostDectivation();
-		}
-		super.handlePostDectivation();
 	}
 }

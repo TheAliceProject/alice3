@@ -51,7 +51,7 @@ public class HorizontalWrapList< T > extends org.lgna.croquet.components.List< T
 		super( model );
 		this.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.setVisibleRowCount( visibleRowCount );
-		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBackgroundColor( MainPanel.BACKGROUND_COLOR );
 		//rv.getAwtComponent().setOpaque( false );
 	}
 }

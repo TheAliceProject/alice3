@@ -49,11 +49,10 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
 
 public class BoundingBoxUtilities {
 	
-	private static AxisAlignedBox getSGTransformableBBox( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, boolean scaled )
+	private static AxisAlignedBox getSGTransformableBBox( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable)
 	{
 		AxisAlignedBox boundingBox = null;
 		if ( sgTransformable != null)
@@ -67,45 +66,25 @@ public class BoundingBoxUtilities {
 				boundingBox = ((JointImp)entityImp).getAxisAlignedMinimumBoundingBox();
 			}
 		}
-		if (boundingBox != null && scaled)
-		{
-			boundingBox.scale(ScaleUtilities.getTransformableScale( sgTransformable ) );
-		}
 		return boundingBox;
 	}
 	
 	public static AxisAlignedBox getSGTransformableScaledBBox(edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable)
 	{
-		return getSGTransformableBBox(sgTransformable, true);
+		return getSGTransformableBBox(sgTransformable);
 	}
 	
-	public static AxisAlignedBox getSGTransformableUnscaledBBox(edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable)
-	{
-		return getSGTransformableBBox(sgTransformable, false);
-	}
 	
-	public static AxisAlignedBox getTransformableScaledBBox(org.lgna.story.Turnable transformable)
+	public static AxisAlignedBox getTransformableScaledBBox(org.lgna.story.STurnable transformable)
 	{
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)ImplementationAccessor.getImplementation(transformable).getSgComposite();
-		return getSGTransformableBBox(sgTransformable, true);
-	}
-	
-	public static AxisAlignedBox getTransformableUnscaledBBox(org.lgna.story.Turnable transformable)
-	{
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)ImplementationAccessor.getImplementation(transformable).getSgComposite();
-		return getSGTransformableBBox(sgTransformable, false);
+		return getSGTransformableBBox(sgTransformable);
 	}
 
 	public static AxisAlignedBox getTransformableScaledBBox(org.lgna.story.implementation.ModelImp modelImp)
 	{
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = modelImp.getSgComposite();
-		return getSGTransformableBBox(sgTransformable, true);
-	}
-	
-	public static AxisAlignedBox getTransformableUnscaledBBox(org.lgna.story.implementation.EntityImp entity)
-	{
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)entity.getSgComposite();
-		return getSGTransformableBBox(sgTransformable, false);
+		return getSGTransformableBBox(sgTransformable);
 	}
 	
 }

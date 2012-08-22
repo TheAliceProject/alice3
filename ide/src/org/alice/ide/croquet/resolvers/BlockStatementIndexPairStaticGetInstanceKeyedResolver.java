@@ -47,28 +47,19 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class BlockStatementIndexPairStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class };
-	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( T instance, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( instance );
-		this.blockStatementIndexPair = blockStatementIndexPair;
+		super( instance, new Class[] { org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class }, new Object[] { blockStatementIndexPair } );
 	}
 	public BlockStatementIndexPairStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}	
 	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return new Object[] { binaryDecoder.decodeBinaryEncodableAndDecodable() };
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.blockStatementIndexPair );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Object[] arguments ) {
+		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];
+		binaryEncoder.encode( blockStatementIndexPair );
 	}
 }

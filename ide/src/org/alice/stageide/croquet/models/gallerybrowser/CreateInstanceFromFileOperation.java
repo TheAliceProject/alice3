@@ -53,7 +53,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 	protected abstract java.io.File getInitialDirectory();
 
 	private void showMessageDialog( java.io.File file, boolean isValidZip ) {
-		String applicationName = org.alice.ide.IDE.getActiveInstance().getApplicationName();
+		String applicationName = org.alice.ide.IDE.getApplicationName();
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Unable to create instance from file " );
 		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
@@ -68,7 +68,7 @@ abstract class CreateInstanceFromFileOperation extends org.alice.ide.croquet.mod
 	}
 	
 	@Override
-	protected org.alice.ide.croquet.components.declaration.DeclarationPanel<?> prologue(org.lgna.croquet.history.OperationStep step) {
+	protected org.alice.ide.croquet.components.declaration.DeclarationPanel<?> prologue(org.lgna.croquet.history.CompletionStep<?> step) {
 		org.alice.ide.croquet.components.declaration.DeclarationPanel<?> rv = null;
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		java.io.File directory = this.getInitialDirectory();

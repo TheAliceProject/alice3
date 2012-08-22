@@ -114,7 +114,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			return null;
 		}
 	}
-		
+
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
 		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
 			Component.this.handleHierarchyChanged( e );
@@ -129,7 +129,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 	protected void handleUndisplayable() {
 	}
-	
+
 	private boolean isDisplayableState = false;
 	private void trackDisplayability() {
 		if( this.awtComponent.isDisplayable() ) {
@@ -148,12 +148,12 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			}
 		}
 	}
-	
+
 	protected void handleAddedTo( Component< ? > parent ) {
 	}
 	protected void handleRemovedFrom( Component< ? > parent ) {
 	}
-	
+
 	private java.awt.Container awtParent;
 	private void handleParentChange( java.awt.Container awtParent ) {
 		if( this.awtParent != null ) {
@@ -182,7 +182,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			this.handleAddedTo( parent );
 		}
 	}
-	
+
 	private static boolean isWarningAlreadyPrinted = false;
 	protected void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
 		//assert e.getComponent() == this.awtComponent : this;
@@ -220,7 +220,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 				}
 			}
 		}
-		
+
 	}
 
 	private J awtComponent;
@@ -264,11 +264,11 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	public void setFont( java.awt.Font font ) {
-//		if( font != null ) {
-			this.getAwtComponent().setFont( font );
-//		} else {
-//			throw new NullPointerException();
-//		}
+		//		if( font != null ) {
+		this.getAwtComponent().setFont( font );
+		//		} else {
+		//			throw new NullPointerException();
+		//		}
 	}
 
 	public final void scaleFont( float scaleFactor ) {
@@ -300,7 +300,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	private Integer maximumPreferredWidth = null;
 	private Integer minimumPreferredHeight = null;
 	private Integer maximumPreferredHeight = null;
-	
+
 	public final Integer getMaximumPreferredWidth() {
 		return this.maximumPreferredWidth;
 	}
@@ -325,7 +325,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	public final void setMinimumPreferredHeight( Integer minimumPreferredHeight ) {
 		this.minimumPreferredHeight = minimumPreferredHeight;
 	}
-	
+
 	private boolean isMaximumSizeClampedToPreferredSize = false;
 	public boolean isMaximumSizeClampedToPreferredSize() { 
 		return this.isMaximumSizeClampedToPreferredSize;
@@ -334,12 +334,12 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		this.isMaximumSizeClampedToPreferredSize = isMaximumSizeClampedToPreferredSize;
 	}
 
-//	/*package-private*/boolean isEnabled() {
-//		return this.getAwtComponent().isEnabled();
-//	}
-//	/*package-private*/void setEnabled( boolean isEnabled ) {
-//		this.getAwtComponent().setEnabled( isEnabled );
-//	}
+	//	/*package-private*/boolean isEnabled() {
+	//		return this.getAwtComponent().isEnabled();
+	//	}
+	//	/*package-private*/void setEnabled( boolean isEnabled ) {
+	//		this.getAwtComponent().setEnabled( isEnabled );
+	//	}
 
 	public java.awt.Color getForegroundColor() {
 		return this.getAwtComponent().getForeground();
@@ -355,6 +355,10 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 
 	public void setBackgroundColor( java.awt.Color color ) {
 		this.getAwtComponent().setBackground( color );
+	}
+
+	public boolean isShowing() {
+		return this.getAwtComponent().isShowing();
 	}
 
 	public boolean isVisible() {
@@ -410,7 +414,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	public final void setLocation( int x, int y, ScreenElement asSeenBy ) {
 		this.setLocation( new java.awt.Point( x, y ), asSeenBy );
 	}
-	
+
 	public java.awt.Point getLocationOnScreen() {
 		return this.getAwtComponent().getLocationOnScreen();
 	}
@@ -430,7 +434,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			return null;
 		}
 	}
-	
+
 	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets ) {
 		java.awt.Rectangle rv = this.getBounds( asSeenBy );
 		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( rv, insets );

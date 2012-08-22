@@ -145,13 +145,18 @@ public class AstUtilities {
 		java.util.List< JavaMethod > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		JavaType javaType = type.getFirstEncounteredJavaType();
 		while( true ) {
-			updatePersistentPropertyGetters( rv, javaType );
-			if( javaType.isFollowToSuperClassDesired() ) {
-				//pass
+			if( javaType != null ) {
+				updatePersistentPropertyGetters( rv, javaType );
+				if( javaType.isFollowToSuperClassDesired() ) {
+					//pass
+				} else {
+					break;
+				}
+				javaType = javaType.getSuperType();
 			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( type );
 				break;
 			}
-			javaType = javaType.getSuperType();
 		}
 		return rv;
 	}
@@ -368,7 +373,7 @@ public class AstUtilities {
 		return createReturnStatement( JavaType.getInstance( cls ), expression );
 	}
 	
-	public static Expression createLocalAssignment( UserLocal local, Expression valueExpression ) {
+	public static AssignmentExpression createLocalAssignment( UserLocal local, Expression valueExpression ) {
 		assert local.isFinal.getValue() == false;
 		Expression localAccess = new LocalAccess( local ); 
 		return new AssignmentExpression( local.valueType.getValue(), localAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
@@ -377,17 +382,22 @@ public class AstUtilities {
 		return new ExpressionStatement( createLocalAssignment( local, valueExpression) );
 	}
 
-	public static ExpressionStatement createLocalArrayAssignmentStatement( UserLocal local, Expression indexExpression, Expression valueExpression ) {
+	public static AssignmentExpression createLocalArrayAssignment( UserLocal local, Expression indexExpression, Expression valueExpression ) {
 		Expression localAccess = new LocalAccess( local ); 
 		ArrayAccess arrayAccess = new ArrayAccess( local.valueType.getValue(), localAccess, indexExpression ); 
-		Expression expression = new AssignmentExpression( local.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
-		return new ExpressionStatement( expression );
+		return new AssignmentExpression( local.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
 	}
-	public static ExpressionStatement createParameterArrayAssignmentStatement( UserParameter parameter, Expression indexExpression, Expression valueExpression ) {
+
+	public static ExpressionStatement createLocalArrayAssignmentStatement( UserLocal local, Expression indexExpression, Expression valueExpression ) {
+		return new ExpressionStatement( createLocalArrayAssignment( local, indexExpression, valueExpression ) );
+	}
+	public static AssignmentExpression createParameterArrayAssignment( UserParameter parameter, Expression indexExpression, Expression valueExpression ) {
 		Expression parameterAccess = new ParameterAccess( parameter ); 
 		ArrayAccess arrayAccess = new ArrayAccess( parameter.valueType.getValue(), parameterAccess, indexExpression ); 
-		Expression expression = new AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
-		return new ExpressionStatement( expression );
+		return new AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+	}
+	public static ExpressionStatement createParameterArrayAssignmentStatement( UserParameter parameter, Expression indexExpression, Expression valueExpression ) {
+		return new ExpressionStatement( createParameterArrayAssignment( parameter, indexExpression, valueExpression ) );
 	}
 
 	
@@ -479,6 +489,21 @@ public class AstUtilities {
 		return createLambdaExpression( JavaType.getInstance( cls ) );
 	}
 	
+	public static boolean isAddEventListenerMethodInvocationStatement( Statement statement ) {
+		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+				if( method instanceof org.lgna.project.ast.JavaMethod ) {
+					org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
+					return javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class );
+				}
+			}
+		}
+		return false;
+	}
 	public static AbstractType< ?,?,? > getKeywordFactoryType( JavaKeyedArgument argument ) {
 		AbstractParameter parameter = argument.parameter.getValue();
 		if( parameter.isKeyworded() ) {

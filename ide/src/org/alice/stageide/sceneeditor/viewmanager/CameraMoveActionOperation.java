@@ -108,7 +108,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 	{
 		if (this.toMoveImp != null && this.toMoveToImp != null)
 		{
-			String unformattedTooltipText = this.findLocalizedText("tooltip", this.getClassUsedForLocalization());
+			String unformattedTooltipText = this.findLocalizedText("tooltip");
 			MessageFormat formatter = new MessageFormat("");
 			formatter.setLocale(javax.swing.JComponent.getDefaultLocale());
 			formatter.applyPattern(unformattedTooltipText);
@@ -118,7 +118,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 		}
 		else
 		{
-			this.setToolTipText(this.findLocalizedText("disabledTooltip", CameraMoveActionOperation.class));
+			this.setToolTipText(this.findLocalizedText("disabledTooltip"));
 			this.setEnabled(false);
 		}
 		this.setSmallIcon(this.imageIcon);
@@ -161,13 +161,13 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 	}
 	
 	@Override
-	protected void perform(org.lgna.croquet.history.OperationStep step) 
-	{
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		if (this.toMoveImp != null && this.toMoveToImp != null && 
-			this.toMoveImp.getAbstraction() instanceof org.lgna.story.MovableTurnable &&
+			this.toMoveImp.getAbstraction() instanceof org.lgna.story.SMovableTurnable &&
 			this.toMoveToImp.getAbstraction() != null) {
 
-			MoveAndOrientToEdit edit = new MoveAndOrientToEdit(step, (org.lgna.story.MovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction());
+			MoveAndOrientToEdit edit = new MoveAndOrientToEdit(step, (org.lgna.story.SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction());
 			step.commitAndInvokeDo(edit);
 		} else {
 			step.cancel();

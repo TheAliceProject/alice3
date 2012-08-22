@@ -53,6 +53,6 @@ public class IsPromptIncludingTypeAndInitializerState extends org.lgna.croquet.p
 		return SingletonHolder.instance;
 	}
 	private IsPromptIncludingTypeAndInitializerState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "fc13ea25-fda8-4ba4-8a8e-3f287d711664" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "fc13ea25-fda8-4ba4-8a8e-3f287d711664" ), true );
 	}
 }

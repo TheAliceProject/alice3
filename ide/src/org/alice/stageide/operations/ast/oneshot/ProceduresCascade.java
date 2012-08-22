@@ -64,7 +64,7 @@ public class ProceduresCascade extends org.lgna.croquet.Cascade< MethodInvocatio
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadeCompletionStep< MethodInvocationEditFactory > step, MethodInvocationEditFactory[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< MethodInvocationEditFactory >> step, MethodInvocationEditFactory[] values ) {
 		assert values.length == 1;
 		return values[ 0 ].createEdit( step );
 	}

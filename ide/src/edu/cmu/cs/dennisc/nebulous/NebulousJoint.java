@@ -54,10 +54,12 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	}
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	private final org.lgna.story.resources.JointId jointId;
+	private edu.cmu.cs.dennisc.math.Point3 actualTranslation;
 
 	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lgna.story.resources.JointId jointId ) {
 		this.nebModel = nebModel;
 		this.jointId = jointId;
+		this.setName(this.jointId.toString());
 	}
 	public org.lgna.story.resources.JointId getJointId() {
 		return this.jointId;
@@ -69,11 +71,21 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation() {
-		return this.nebModel.getLocalTransformationForJoint( this.jointId );
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 aliceTransform = this.nebModel.getLocalTransformationForJoint( this.jointId );
+		if (this.actualTranslation != null) {
+			aliceTransform.translation.set(this.actualTranslation);
+		}
+		return aliceTransform;
 	}
 	@Override
 	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
-		this.nebModel.setLocalTransformationForJoint( this.jointId, m );
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 current = this.nebModel.getLocalTransformationForJoint( this.jointId );
+		current.orientation.setValue(m.orientation);
+		if (this.actualTranslation == null) {
+			this.actualTranslation = new edu.cmu.cs.dennisc.math.Point3();
+		}
+		this.actualTranslation.set(m.translation);
+		this.nebModel.setLocalTransformationForJoint( this.jointId, current );
 	}
 	
 	@Override

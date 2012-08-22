@@ -58,9 +58,15 @@ public abstract class CascadeMenuModel< FB > extends CascadeBlankOwner< FB, FB >
 		}
 	}
 	private final InternalBlank blank = new InternalBlank();
+	private String menuItemText;
 	public CascadeMenuModel( java.util.UUID id ) {
 		super( id );
 		this.addBlank( this.blank );
+	}
+	@Override
+	protected void localize() {
+		super.localize();
+		this.menuItemText = this.findDefaultLocalizedText();
 	}
 	protected abstract java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< FB > blankNode );
 	private org.lgna.croquet.cascade.AbstractItemNode< FB,FB,? > getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode< ? super FB,? > itemNode ) {
@@ -72,11 +78,30 @@ public abstract class CascadeMenuModel< FB > extends CascadeBlankOwner< FB, FB >
 		return this.getSelectedFillInContext( itemNode ).getTransientValue();
 	}
 	@Override
-	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode ) {
-		return this.getSelectedFillInContext( itemNode ).createValue();
+	public FB createValue( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		return this.getSelectedFillInContext( itemNode ).createValue( transactionHistory );
+	}
+	protected boolean isBackedByIconProxy() {
+		return true;
 	}
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super FB,FB > itemNode ) {
-		return new javax.swing.JLabel( this.getDefaultLocalizedText() );
+		return new javax.swing.JLabel( this.menuItemText );
+	}
+	@Override
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super FB,FB> node ) {
+		if( this.isBackedByIconProxy() ) {
+			return super.getMenuItemText( node );
+		} else {
+			return this.menuItemText;
+		}
+	}
+	@Override
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super FB,FB> node ) {
+		if( this.isBackedByIconProxy() ) {
+			return super.getMenuItemIcon( node );
+		} else {
+			return null;
+		}
 	}
 }

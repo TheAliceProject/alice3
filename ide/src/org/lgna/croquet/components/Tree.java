@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Tree<E> extends ViewController< javax.swing.JTree, org.lgna.croquet.TreeSelectionState< E > > {
-	public Tree( org.lgna.croquet.TreeSelectionState< E > model ) {
+public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.TreeSelectionState<E>> {
+	public Tree( org.lgna.croquet.TreeSelectionState<E> model ) {
 		super( model );
 		this.setSwingTreeModel( model.getTreeModel() );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
@@ -71,18 +71,45 @@ public class Tree<E> extends ViewController< javax.swing.JTree, org.lgna.croquet
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
+	public void expandEachRowOnce() {
+		java.util.Set<E> alreadyExpanded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		javax.swing.JTree jTree = this.getAwtComponent();
+		for( int i = 0; i < jTree.getRowCount(); i++ ) {
+			javax.swing.tree.TreePath treePath = jTree.getPathForRow( i );
+			Object item = treePath.getLastPathComponent();
+			if( alreadyExpanded.contains( item ) ) {
+				jTree.collapsePath( treePath );
+			} else {
+				alreadyExpanded.add( (E)item );
+				jTree.expandRow( i );
+			}
+		}
+	}
+	
 	public void expandAllRows() {
-		for( int i = 0; i < this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().expandRow( i );
+		javax.swing.JTree jTree = this.getAwtComponent();
+		for( int i = 0; i < jTree.getRowCount(); i++ ) {
+			jTree.expandRow( i );
 		}
 	}
 	public void collapseAllRows() {
-		for( int i = 0; i < this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().collapseRow( i );
+		javax.swing.JTree jTree = this.getAwtComponent();
+		for( int i = 0; i < jTree.getRowCount(); i++ ) {
+			jTree.collapseRow( i );
 		}
 	}
 
 	public void setRootVisible( boolean isRootVisible ) {
 		this.getAwtComponent().setRootVisible( isRootVisible );
+	}
+
+	public void collapseNode( E node ) {
+		javax.swing.tree.TreePath path = this.getModel().getTreeModel().getTreePath( node );
+		this.getAwtComponent().collapsePath( path );
+	}
+
+	public void expandNode( E node ) {
+		javax.swing.tree.TreePath path = this.getModel().getTreeModel().getTreePath( node );
+		this.getAwtComponent().expandPath( path );
 	}
 }

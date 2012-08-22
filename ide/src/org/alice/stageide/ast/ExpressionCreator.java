@@ -53,9 +53,9 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
 			return org.lgna.project.ast.AstUtilities.createInstanceCreation( 
 					constructor, 
-					this.createDoubleExpression( position.getRight(), MILLI_FORMAT ),
-					this.createDoubleExpression( position.getUp(), MILLI_FORMAT ), 
-					this.createDoubleExpression( position.getBackward(), MILLI_FORMAT ) 
+					this.createDoubleExpression( position.getRight(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( position.getUp(), MILLI_DECIMAL_PLACES ), 
+					this.createDoubleExpression( position.getBackward(), MILLI_DECIMAL_PLACES ) 
 			);
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
@@ -68,10 +68,10 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			Class< ? > cls = org.lgna.story.Orientation.class;
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class);
 			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, 
-					this.createDoubleExpression( q.x, MICRO_FORMAT ), 
-					this.createDoubleExpression( q.y, MICRO_FORMAT ), 
-					this.createDoubleExpression( q.z, MICRO_FORMAT ), 
-					this.createDoubleExpression( q.w, MICRO_FORMAT ) 
+					this.createDoubleExpression( q.x, MICRO_DECIMAL_PLACES ), 
+					this.createDoubleExpression( q.y, MICRO_DECIMAL_PLACES ), 
+					this.createDoubleExpression( q.z, MICRO_DECIMAL_PLACES ), 
+					this.createDoubleExpression( q.w, MICRO_DECIMAL_PLACES ) 
 			);
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
@@ -83,9 +83,24 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
 			return org.lgna.project.ast.AstUtilities.createInstanceCreation( 
 					constructor, 
-					this.createDoubleExpression( scale.getLeftToRight(), MILLI_FORMAT ), 
-					this.createDoubleExpression( scale.getBottomToTop(), MILLI_FORMAT ), 
-					this.createDoubleExpression( scale.getFrontToBack(), MILLI_FORMAT ) 
+					this.createDoubleExpression( scale.getLeftToRight(), MILLI_DECIMAL_PLACES ), 
+					this.createDoubleExpression( scale.getBottomToTop(), MILLI_DECIMAL_PLACES ), 
+					this.createDoubleExpression( scale.getFrontToBack(), MILLI_DECIMAL_PLACES ) 
+			);
+		} else {
+			return new org.lgna.project.ast.NullLiteral();
+		}
+	}
+	
+	private org.lgna.project.ast.Expression createSizeExpression( org.lgna.story.Size size ) {
+		if( size != null ) {
+			Class< ? > cls = org.lgna.story.Size.class;
+			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation( 
+					constructor, 
+					this.createDoubleExpression( size.getLeftToRight(), MILLI_DECIMAL_PLACES ), 
+					this.createDoubleExpression( size.getBottomToTop(), MILLI_DECIMAL_PLACES ), 
+					this.createDoubleExpression( size.getFrontToBack(), MILLI_DECIMAL_PLACES ) 
 			);
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
@@ -116,9 +131,9 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
 			rv = org.lgna.project.ast.AstUtilities.createInstanceCreation( 
 					constructor, 
-					this.createDoubleExpression( color.getRed(), MILLI_FORMAT ), 
-					this.createDoubleExpression( color.getGreen(), MILLI_FORMAT ), 
-					this.createDoubleExpression( color.getBlue(), MILLI_FORMAT ) 
+					this.createDoubleExpression( color.getRed(), MILLI_DECIMAL_PLACES ), 
+					this.createDoubleExpression( color.getGreen(), MILLI_DECIMAL_PLACES ), 
+					this.createDoubleExpression( color.getBlue(), MILLI_DECIMAL_PLACES ) 
 			);
 		}
 		return rv;
@@ -177,6 +192,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createOrientationExpression( (org.lgna.story.Orientation)value );
 		} else if( value instanceof org.lgna.story.Scale ) {
 			return this.createScaleExpression( (org.lgna.story.Scale)value );
+		} else if( value instanceof org.lgna.story.Size ) {
+			return this.createSizeExpression( (org.lgna.story.Size)value );
 		} else if( value instanceof org.lgna.story.Paint ) {
 			return this.createPaintExpression( (org.lgna.story.Paint)value );
 		} else if( value instanceof org.lgna.story.Font ) {

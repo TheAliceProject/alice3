@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< ? > > extends org.alice.ide.croquet.components.PanelWithPreview< M > {
+public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.declaration.DeclarationLikeSubstanceOperation< ? > > extends org.alice.ide.croquet.components.InputDialogPanelWithPreview< M > {
 //	private java.awt.Dimension isNotArraySize = null;
 //	private java.awt.Dimension isArraySize = null;
 	
@@ -146,10 +146,10 @@ public abstract class DeclarationPanel< M extends org.alice.ide.croquet.models.d
 			if( model.getComponentValueTypeState() != null ) {
 				org.lgna.croquet.components.Component< ? > component;
 				if( model.isValueComponentTypeEditable() ) {
-					org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel();
-					panel.addComponent( new org.alice.ide.croquet.components.TypeDropDown( model.getComponentValueTypeState() ), Constraint.CENTER );
-					panel.addComponent( model.getIsArrayState().createCheckBox(), Constraint.LINE_END );
-					component = panel;
+					component = new org.lgna.croquet.components.BorderPanel.Builder()
+						.center( new org.alice.ide.croquet.components.TypeDropDown( model.getComponentValueTypeState() ) )
+						.lineEnd( model.getIsArrayState().createCheckBox() )
+					.build();
 				} else {
 					if( model.isIsArrayEditable() ) {
 						//todo? this case is not currently supported

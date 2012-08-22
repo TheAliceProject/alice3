@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -42,7 +42,32 @@
  */
 package test;
 
-import org.lgna.story.*;
+import java.awt.Component;
+
+import org.lgna.story.AddKeyPressListener;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
+import org.lgna.story.Color;
+import org.lgna.story.SCone;
+import org.lgna.story.Duration;
+import org.lgna.story.SGround;
+import org.lgna.story.HeldKeyPolicy;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.Move;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.SProgram;
+import org.lgna.story.RollDirection;
+import org.lgna.story.SScene;
+import org.lgna.story.SSphere;
+import org.lgna.story.SSun;
+import org.lgna.story.SThing;
+import org.lgna.story.TurnDirection;
+import org.lgna.story.event.CollisionStartListener;
+import org.lgna.story.event.KeyEvent;
+import org.lgna.story.event.KeyPressListener;
+import org.lgna.story.event.SceneActivationEvent;
+import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -51,39 +76,43 @@ import org.lgna.story.resources.sims2.FemaleAdultFullBodyOutfitAmbulanceDriver;
 import org.lgna.story.resources.sims2.FemaleAdultHairBraids;
 import org.lgna.story.resources.sims2.Gender;
 
-class MyBiped extends Biped {
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+class MyBiped extends SBiped {
 	public MyBiped( BipedResource resource ) {
 		super( resource );
 	}
 }
 
 class MyOgre extends MyBiped {
-	public MyOgre( org.lgna.story.resources.biped.Ogre resource ) {
+	public MyOgre( org.lgna.story.resources.biped.OgreResource resource ) {
 		super( resource );
 	}
 }
 
-class MyArmoire extends Prop {
-	public MyArmoire() {
-		super( org.lgna.story.resources.prop.Helicopter.VEHICLE_HELICOPTER );
-	}
-	public Joint getLeftDoor() {
-		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
-	}
-	public Joint getRightDoor() {
-		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
-	}
-}
+//class MyArmoire extends Prop {
+//	public MyArmoire() {
+//		super( org.lgna.story.resources.prop.Helicopter.VEHICLE_HELICOPTER );
+//	}
+//	public Joint getLeftDoor() {
+//		return this.getJoint( org.lgna.story.resources.ArmoireResource.LEFT_DOOR );
+//	}
+//	public Joint getRightDoor() {
+//		return this.getJoint( org.lgna.story.resources.ArmoireResource.RIGHT_DOOR );
+//	}
+//}
 
-class DesertScene extends Scene {
-	private final Sun sun = new Sun();
-	private final Ground desert = new Ground();
-	private final Sphere sphere = new Sphere();
-	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final org.lgna.story.Billboard billboard = new org.lgna.story.Billboard();
-	private final Camera camera;
+class DesertScene extends SScene {
+	private final SSun sun = new SSun();
+	private final SGround desert = new SGround();
+	private final SSphere sphere = new SSphere();
+	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
+	private final org.lgna.story.SBillboard billboard = new org.lgna.story.SBillboard();
+	private final SCamera camera;
 	private final MyOgre ogre;
-	public DesertScene( Camera camera, MyOgre ogre ) {
+
+	public DesertScene( SCamera camera, MyOgre ogre ) {
 		this.camera = camera;
 		this.ogre = ogre;
 	}
@@ -96,15 +125,15 @@ class DesertScene extends Scene {
 		this.sphere.setVehicle( this );
 		this.ogre.setVehicle( this );
 		this.fellowLaborer.setVehicle( this );
-		
+
 		this.billboard.setVehicle( this );
 		this.billboard.setPaint( Color.RED );
 		this.billboard.setBackPaint( Color.BLUE );
 
 		this.ogre.move( MoveDirection.LEFT, 1.0 );
 		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
-		
-		this.desert.setPaint( Ground.SurfaceAppearance.SAND );
+
+		this.desert.setPaint( SGround.SurfaceAppearance.SAND );
 		this.sphere.setRadius( 0.1 );
 		this.sphere.setPaint( Color.RED );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.sphere );
@@ -124,29 +153,30 @@ class DesertScene extends Scene {
 			this.preserveStateAndEventListeners();
 		}
 	}
-		
+
 	public void turnBigRocksIntoLittleRocks() {
 		this.ogre.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 		this.ogre.getRightElbow().turn( TurnDirection.FORWARD, 0.25 );
 	}
 }
 
-class SnowScene extends Scene {
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private final Cone redCone = new Cone(); 
-	private final Cone greenCone = new Cone(); 
-	private final Cone blueCone = new Cone();
-	private final MyArmoire armoire = new MyArmoire();
-	private final Camera camera;
+class SnowScene extends SScene {
+	private final SSun sun = new SSun();
+	private final SGround snow = new SGround();
+	private final SCone redCone = new SCone();
+	private final SCone greenCone = new SCone();
+	private final SCone blueCone = new SCone();
+	//	private final MyArmoire armoire = new MyArmoire();
+	private final SCamera camera;
 	private final MyOgre ogre;
 	private final MyBiped susan;
-	public SnowScene( Camera camera, MyOgre ogre, MyBiped susan ) {
+
+	public SnowScene( SCamera camera, MyOgre ogre, MyBiped susan ) {
 		this.camera = camera;
 		this.susan = susan;
 		this.ogre = ogre;
 	}
-	
+
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
@@ -155,12 +185,11 @@ class SnowScene extends Scene {
 		this.redCone.setVehicle( this );
 		this.greenCone.setVehicle( this );
 		this.blueCone.setVehicle( this );
-		this.armoire.setVehicle( this );
+		//		this.armoire.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
-		
-	
+
 		this.redCone.setPaint( Color.RED );
 		this.greenCone.setPaint( Color.GREEN );
 		this.blueCone.setPaint( Color.BLUE );
@@ -174,23 +203,24 @@ class SnowScene extends Scene {
 		this.redCone.move( MoveDirection.LEFT, 0.5 );
 		this.greenCone.move( MoveDirection.LEFT, 1.0 );
 		this.blueCone.move( MoveDirection.LEFT, 1.5 );
-		
-		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
 
-		this.ogre.move( MoveDirection.LEFT, 1.5 );
+		//		this.armoire.move( MoveDirection.BACKWARD, 2.0 );
+
+		this.ogre.move( MoveDirection.LEFT, 2.0 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
-		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
+		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 	private void performCustomSetup() {
 	}
-	
+
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {
 			if( activeCount == 1 ) {
 				this.performGeneratedSetup();
 				this.performCustomSetup();
+				this.performInitializeEvents();
 			} else {
 				this.restoreStateAndEventListeners();
 			}
@@ -199,9 +229,29 @@ class SnowScene extends Scene {
 		}
 	}
 
+	private void performInitializeEvents() {
+		this.addSceneActivationListener( new SceneActivationListener() {
+			public void sceneActivated( SceneActivationEvent e ) {
+			}
+		} );
+		SThing[] groupOne = {ogre};
+		SThing[] groupTwo = {susan};
+		this.addCollisionStartListener( new CollisionStartListener() {
+			
+			public void collisionStarted( StartCollisionEvent e ) {
+				System.out.println(e.getModels()[0]);
+				System.out.println(e.getModels()[1]);
+			}
+		}, groupOne , groupTwo );
+		this.addKeyPressListener( new KeyPressListener() {
+
+			public void keyPressed( KeyEvent e ) {
+				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
+			}
+		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
+		addObjectMoverFor( ogre );
+	}
 	public void chillInSkiChalet() {
-		this.armoire.getLeftDoor().turn( TurnDirection.RIGHT, 0.375 );
-		this.armoire.getRightDoor().turn( TurnDirection.LEFT, 0.375 );
 		while( true ) {
 			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
@@ -209,7 +259,7 @@ class SnowScene extends Scene {
 			this.redCone.turn( TurnDirection.FORWARD, 1.0 );
 			this.blueCone.roll( RollDirection.LEFT, 1.0 );
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
-			org.lgna.common.DoTogether.invokeAndWait( new Runnable() {
+			org.lgna.common.ThreadUtilities.doTogether( new Runnable() {
 				public void run() {
 					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
 				}
@@ -232,29 +282,40 @@ class SnowScene extends Scene {
 /**
  * @author Dennis Cosgrove
  */
-class RagsToRichesStory extends Program {
-	private final Camera camera = new Camera();
-	private final MyBiped susan = new MyBiped( 
-			new AdultPersonResource(
-					Gender.FEMALE,
-					BaseSkinTone.getRandom(),
-					BaseEyeColor.getRandom(),
-					FemaleAdultHairBraids.BLACK,
-					0.5,
-					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
-	) );
-	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN_OGRE );
+class RagsToRichesStory extends SProgram {
+
+	private final SCamera camera = new SCamera();
+	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(),
+
+	BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ) );
+	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
+
 	public void playOutStory() {
-//		this.setActiveScene( this.desertScene );
-//		this.desertScene.turnBigRocksIntoLittleRocks();
+		//		this.setActiveScene( this.desertScene );
+		//		this.desertScene.turnBigRocksIntoLittleRocks();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}
-	public static void main( String[] args ) {
-		RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
+	public static void main( final String[] args ) {
+		final RagsToRichesStory ragsToRichesStory = new RagsToRichesStory();
 		ragsToRichesStory.initializeInFrame( args );
-		ragsToRichesStory.playOutStory();
+		new Thread() {
+			@Override
+			public void run() {
+				ragsToRichesStory.playOutStory();
+			}
+		}.start();
+		Logger.todo( "remove this EPIC HACK" );
+		new Thread() {
+			@Override
+			public void run() {
+				ThreadUtilities.sleep( 250 );
+				Component awtComponent = ImplementationAccessor.getImplementation( ragsToRichesStory ).getOnscreenLookingGlass().getAWTComponent();
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootFrame( awtComponent ).setSize( 1024, 768 );
+			}
+		}.start();
+
 	}
 }

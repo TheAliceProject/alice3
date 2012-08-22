@@ -47,16 +47,7 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public class Frustum extends Hexahedron {
-	public Frustum() {
-		super();
-	}
-	public Frustum( Point3[] points, Vector3[] normals ) {
-		super( points, normals );
-	}
-	public Frustum( Frustum other ) {
-		super( other );
-	}
-	public Frustum( Matrix4x4 projection ) {
+	public static Frustum createInstance( Matrix4x4 projection ) {
 		double xMin = -1.0;
 		double xMax = +1.0;
 		double yMin = -1.0;
@@ -83,7 +74,11 @@ public class Frustum extends Hexahedron {
 				new Vector3( 0, 0, -1 ) 
 		};
 		
-		set( points, normals );
-		transform( projection );
+		Frustum rv = new Frustum( points, normals );
+		rv.transform( projection );
+		return rv;
+	}
+	private Frustum( Point3[] points, Vector3[] normals ) {
+		super( points, normals );
 	}
 }

@@ -78,13 +78,13 @@ public class CameraViewCellRenderer extends ListCellRenderer< View > {
 			rv.setOpaque(true);
 			rv.setBackground(new Color(57, 105, 138));
 			rv.setForeground(Color.WHITE);
-			rv.setIcon(MarkerUtilities.getHighlightedIconForCameraImp(value));
+			rv.setIcon(MarkerUtilities.getHighlightedIconForCameraMarkerImp(value));
 		}
 		else
 		{
 			rv.setOpaque(false);
 			rv.setForeground(Color.BLACK);
-			rv.setIcon(MarkerUtilities.getIconForCameraImp(value));
+			rv.setIcon(MarkerUtilities.getIconForCameraMarkerImp(value));
 		}
 		return rv;
 	}

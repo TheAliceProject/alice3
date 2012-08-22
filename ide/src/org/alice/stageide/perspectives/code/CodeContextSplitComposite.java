@@ -53,16 +53,46 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 	public static CodeContextSplitComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
+		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+			if( ignoreDividerChangeCount > 0 ) {
+				//pass
+			} else {
+				CodePerspectiveComposite otherComposite = CodePerspectiveComposite.getInstance();
+				org.lgna.croquet.components.SplitPane otherSplitPane = otherComposite.getView();
+				int prevValue = otherSplitPane.getDividerLocation();
+				int nextValue = (int)( (Integer)e.getNewValue()*org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
+				if( prevValue != nextValue ) {
+					otherComposite.incrementIgnoreDividerLocationChangeCount();
+					try {
+						otherSplitPane.setDividerLocation( nextValue );
+					} finally {
+						otherComposite.decrementIgnoreDividerLocationChangeCount();
+					}
+				}
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "inner:", e.getOldValue(), e.getNewValue() );
+			}
+		}
+	};
+	private int ignoreDividerChangeCount = 0;
 	private CodeContextSplitComposite() {
 		super( 
 				java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ), 
-				org.alice.stageide.typecontext.SceneOrNonSceneCardComposite.getInstance(), 
-				TypeOrCodeCardComposite.getInstance()
+				org.alice.stageide.typecontext.SceneOrNonSceneCardOwnerComposite.getInstance(), 
+				TypeOrCodeCardOwnerComposite.getInstance()
 		);
 	}
+	public void incrementIgnoreDividerLocationChangeCount() {
+		this.ignoreDividerChangeCount ++;
+	}
+	public void decrementIgnoreDividerLocationChangeCount() {
+		this.ignoreDividerChangeCount --;
+	}
+	
 	@Override
 	protected org.lgna.croquet.components.SplitPane createView() {
 		org.lgna.croquet.components.SplitPane rv = this.createVerticalSplitPane();
+		rv.addDividerLocationChangeListener( this.dividerLocationListener );
 		rv.setResizeWeight( 0.0 );
 		return rv;
 	}

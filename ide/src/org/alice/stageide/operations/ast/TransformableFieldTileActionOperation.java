@@ -51,8 +51,9 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 	}
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lgna.story.implementation.TransformableImp transformableImp );
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
-		org.lgna.story.Turnable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lgna.story.Turnable.class );
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		org.lgna.story.STurnable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lgna.story.STurnable.class );
 		final org.lgna.story.implementation.TransformableImp transformableImp = org.lgna.story.ImplementationAccessor.getImplementation( transformable );
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV;
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV;
@@ -73,7 +74,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 						transformableImp.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, prevPOV );
 					}
 					@Override
-					protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+					protected StringBuilder updatePresentation( StringBuilder rv ) {
 						//todo
 						rv.append( TransformableFieldTileActionOperation.this.getName() );
 						return rv;

@@ -46,10 +46,16 @@ package org.lgna.project;
  * @author Dennis Cosgrove
  */
 public class Project {
+
 	private final org.lgna.project.ast.NamedUserType programType;
 	private final java.util.Set< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 	private final java.util.Map/*< org.lgna.project.properties.PropertyKey< T >, T >*/ propertyMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+
+	private final java.util.List< org.lgna.project.event.ResourceListener > resourceListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
+	private final Object lock = new Object();
+	
 	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.lgna.common.Resource > resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
@@ -58,8 +64,20 @@ public class Project {
 	public Project( org.lgna.project.ast.NamedUserType programType ) {
 		this.programType = programType;
 	}
+	
+	public Object getLock() {
+		return this.lock;
+	}
+
 	public org.lgna.project.ast.NamedUserType getProgramType() {
 		return this.programType;
+	}
+	
+	public void addResourceListener( org.lgna.project.event.ResourceListener resourceListener ) {
+		this.resourceListeners.add( resourceListener );
+	}
+	public void removeResourceListener( org.lgna.project.event.ResourceListener resourceListener ) {
+		this.resourceListeners.remove( resourceListener );
 	}
 	public void addResource( org.lgna.common.Resource resource ) {
 		if( this.resources.contains( resource ) ) {
@@ -67,16 +85,27 @@ public class Project {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
 		} else {
 			this.resources.add( resource );
+			if( this.resourceListeners.size() > 0 ) {
+				org.lgna.project.event.ResourceEvent e = new org.lgna.project.event.ResourceEvent( this, resource );
+				for( org.lgna.project.event.ResourceListener resourceListener : this.resourceListeners ) {
+					resourceListener.resourceAdded( e );
+				}
+			}
 		}
 	}
 	public void removeResource( org.lgna.common.Resource resource ) {
 		this.resources.remove( resource );
+		if( this.resourceListeners.size() > 0 ) {
+			org.lgna.project.event.ResourceEvent e = new org.lgna.project.event.ResourceEvent( this, resource );
+			for( org.lgna.project.event.ResourceListener resourceListener : this.resourceListeners ) {
+				resourceListener.resourceRemoved( e );
+			}
+		}
 	}
 	public java.util.Set< org.lgna.common.Resource > getResources() {
 		return this.resources;
 	}
 
-	
 	public java.util.Set< org.lgna.project.properties.PropertyKey<Object> > getPropertyKeys() {
 		return this.propertyMap.keySet();
 	}
@@ -92,7 +121,7 @@ public class Project {
 	public <T> void removeValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
 		this.propertyMap.remove( key );
 	}
-	
+
 	public void addNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
 		if( this.namedUserTypes.contains( namedUserType ) ) {
 			//todo
@@ -105,10 +134,12 @@ public class Project {
 		this.namedUserTypes.remove( namedUserType );
 	}
 	public java.util.Set< org.lgna.project.ast.NamedUserType > getNamedUserTypes() {
-		boolean isReferencedDeclarationPropertyInclusionDesired = true;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
-		this.programType.crawl( crawler, isReferencedDeclarationPropertyInclusionDesired );
-		this.namedUserTypes.addAll( crawler.getList() );
-		return this.namedUserTypes;
+		synchronized( this.getLock() ) {
+			boolean isReferencedDeclarationPropertyInclusionDesired = true;
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
+			this.programType.crawl( crawler, isReferencedDeclarationPropertyInclusionDesired );
+			this.namedUserTypes.addAll( crawler.getList() );
+			return this.namedUserTypes;
+		}
 	}
 }

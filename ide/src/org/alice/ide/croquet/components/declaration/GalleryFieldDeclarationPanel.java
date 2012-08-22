@@ -59,7 +59,7 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 	public GalleryFieldDeclarationPanel( org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation model ) {
 		super( model );
 		this.iconLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
-		this.addComponent( this.iconLabel, Constraint.LINE_END );
+		this.addLineEndComponent( this.iconLabel );
 	}
 	private void update() {
 		this.updateNameTextField();

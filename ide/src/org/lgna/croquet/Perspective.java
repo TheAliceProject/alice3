@@ -46,36 +46,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Perspective extends Element {
-	private final Composite< ? > composite;
-	private String name;
-	public Perspective( java.util.UUID id, Composite< ? > composite ) {
-		super( id );
-		this.composite = composite;
-	}
-	public Composite< ? > getComposite() {
-		return this.composite;
-	}
-	@Override
-	protected final void localize() {
-		this.name = this.getDefaultLocalizedText();
-	}
-	@Override
-	protected StringBuilder appendRepr( java.lang.StringBuilder rv ) {
-		//note: do not invoke super
-		//super.appendRepr( rv );
-		if( this.name != null ) {
-			//pass
-		} else {
-			this.localize();
-		}
-		rv.append( this.name );
-		return rv;
-	}
-	public final void handlePreActivation() {
-		this.composite.handlePreActivation();
-	}
-	public final void handlePostDeactivation() {
-		this.composite.handlePostDectivation();
-	}
+public interface Perspective extends Element {
+	public String getName();
+	public Composite< ? > getMainComposite();
+	public MenuBarComposite getMenuBarComposite();
 }

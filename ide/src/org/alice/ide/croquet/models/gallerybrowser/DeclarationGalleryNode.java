@@ -82,4 +82,8 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 		sb.append( "</strong></html>" );
 		return sb.toString();
 	}
+	@Override
+	public String getSearchText() {
+		return this.declaration.getName();
+	}
 }

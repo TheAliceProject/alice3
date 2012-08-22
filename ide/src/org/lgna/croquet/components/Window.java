@@ -47,6 +47,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public final class Window extends AbstractWindow<javax.swing.JWindow> {
+
 	private static javax.swing.JWindow createJWindow( Component<?> owner ) {
 		javax.swing.JWindow rv;
 		if( owner != null ) {
@@ -66,12 +67,14 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 		}
 		return rv;
 	}
+
 	public Window() {
 		this( null );
 	}
 	public Window( Component<?> owner ) {
 		super( Window.createJWindow( owner ) );
 	}
+
 	@Override
 	protected javax.swing.JRootPane getRootPane() {
 		return this.getAwtComponent().getRootPane();
@@ -79,5 +82,6 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 	@Override
 	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
 		assert jMenuBar == null;
+		// TODO: ???
 	}
 }

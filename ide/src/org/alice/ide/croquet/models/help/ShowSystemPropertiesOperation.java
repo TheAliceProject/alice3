@@ -56,7 +56,7 @@ public class ShowSystemPropertiesOperation extends org.alice.ide.operations.Inco
 		super( java.util.UUID.fromString( "1f1ea35c-0d52-48c3-92fd-fa9f163e48a9" ) );
 	}
 	@Override
-	protected void performInternal( org.lgna.croquet.history.OperationStep step ) {
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.components.RowsSpringPanel formPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 2 ) {
 			private org.lgna.croquet.components.Component< ? >[] createComponentRowForSystemProperty( String name ) {
 				String value = System.getProperty( name );

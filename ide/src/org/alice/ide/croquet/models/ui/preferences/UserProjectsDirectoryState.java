@@ -12,7 +12,7 @@ public class UserProjectsDirectoryState extends DirectoryState {
 	}
 	private UserProjectsDirectoryState() {
 		super( 
-				org.lgna.croquet.Application.UI_STATE_GROUP, 
+				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
 				java.util.UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ), 
 				UserApplicationDirectoryState.KEY + URI_SEPARATOR + "MyProjects"
 		);
