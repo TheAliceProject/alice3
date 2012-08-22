@@ -1,15 +1,7 @@
 package org.lgna.story.resourceutilities;
 import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode;
-import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
