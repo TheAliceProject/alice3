@@ -43,12 +43,16 @@
 
 package test.ik;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lgna.ik.IkConstants;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer.Constraint;
+import org.lgna.ik.enforcer.TightPositionalIkEnforcer.OrientationConstraint;
+import org.lgna.ik.enforcer.TightPositionalIkEnforcer.PositionConstraint;
+import org.lgna.ik.solver.Chain;
 import org.lgna.story.Biped;
 import org.lgna.story.Camera;
 import org.lgna.story.Color;
@@ -61,10 +65,12 @@ import org.lgna.story.Program;
 import org.lgna.story.Sphere;
 import org.lgna.story.Turn;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
  * @author Dennis Cosgrove
@@ -109,9 +115,17 @@ class IkProgram extends Program {
 //	private org.lgna.ik.solver.Solver solver;
 	private org.lgna.ik.enforcer.JointedModelIkEnforcer ikEnforcer;
 	private TightPositionalIkEnforcer tightIkEnforcer;
-	private List<Constraint> activeConstraints = new ArrayList<Constraint>();
 	
-	private boolean useTightIkEnforcer = false;
+//	class Constraints {
+////		List<Constraint> allActiveConstraints = new ArrayList<Constraint>();
+//		List<PositionConstraint> activePositionConstraints = new ArrayList<PositionConstraint>();
+//		List<OrientationConstraint> activeOrientationConstraints = new ArrayList<OrientationConstraint>();
+//	}
+////	private List<Constraint> activeConstraints = new ArrayList<Constraint>();
+//	Constraints constraints = new Constraints();
+	
+	private boolean useTightIkEnforcer = true;
+	private PositionConstraint myPositionConstraint;
 	
 //	protected java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> currentSpeeds;
 	
@@ -218,7 +232,13 @@ class IkProgram extends Program {
 		} else {
 			setDragAdornmentsVisible(false);
 		}
-		test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, endId) );
+		
+		if(useTightIkEnforcer) {
+			//TODO
+		} else {
+			test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, endId) );
+		}
+
 //		updateInfo();
 	}
 	
@@ -377,6 +397,7 @@ class IkProgram extends Program {
 		return calculateThread;
 	}
 	
+	//TODO need to populate constraints
 	
 	private Thread initializeTightIkEnforcer() {
 		tightIkEnforcer = new TightPositionalIkEnforcer(getSubjectImp());
@@ -384,6 +405,13 @@ class IkProgram extends Program {
 		Thread calculateThread = new Thread() {
 			@Override
 			public void run() {
+//				System.out.println("will start");
+//				try {
+//					System.in.read();
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 				while(!interrupted()) {
 					
 					//not bad concurrent programming practice
@@ -396,26 +424,36 @@ class IkProgram extends Program {
 					
 					double deltaTime = IkConstants.DESIRED_DELTA_TIME;
 					
-					for(Constraint constraint: activeConstraints) {
-						
-						edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
-						if(constraint.isLinear()) {
-							constraint.setEeDesiredPosition(targetTransformation.translation);
-						} else {
-							constraint.setEeDesiredOrientation(targetTransformation.orientation);
-						}
-						
-						tightIkEnforcer.enforceConstraints();
-						
-						//force bone reprint
-						//this should be fine even if the chain is not valid anymore.
-						//this would prevent me from selecting the list
-//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//							public void run() {
-//								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
-//							}
-//						});
-					}
+					edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
+					
+					myPositionConstraint.setEeDesiredPosition(targetTransformation.translation);
+					
+//					//this is a little weird. I'd better let the enforcer create and hold the constraint, and I should hold a pointer to it for myself.
+//					for(PositionConstraint positionConstraint: constraints.activePositionConstraints) {
+//						//should it be like this, or should constraints read them automatically?
+//							//IK system reads joint angles automatically anyway
+//							//but these desired position/orientations are not necessarily tied to scenegraph stuff. I should give them myself like this. 
+//						positionConstraint.setEeDesiredPosition(targetTransformation.translation);
+//						
+//						//force bone reprint
+//						//this should be fine even if the chain is not valid anymore.
+//						//this would prevent me from selecting the list
+////						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+////							public void run() {
+////								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
+////							}
+////						});
+//					}
+//					
+//					for(OrientationConstraint orientationConstraint: constraints.activeOrientationConstraints) {
+//						System.out.println("orientaiton constraint!");
+//						orientationConstraint.setEeDesiredOrientation(targetTransformation.orientation);
+//					} 
+					//perhaps better ways of setting constraint values?
+					
+					//this enforces the constraints immediately right now. so, there is no talk about deltatime or speed
+					//had I had a maximum rotational speed for joints, then having time would make sense
+					tightIkEnforcer.enforceConstraints();
 					
 					try {
 						sleep(10);
@@ -425,6 +463,15 @@ class IkProgram extends Program {
 				}
 			}
 		};
+		//TODO do what's below to complete it
+		// set its chain
+		
+		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
+		org.lgna.story.resources.JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
+
+		int level = 0;
+		myPositionConstraint = tightIkEnforcer.createPositionConstraint(level, anchorId, endId);
+		
 		return calculateThread;
 	}
 

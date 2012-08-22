@@ -66,7 +66,7 @@ public class Chain {
 	private final java.util.List< org.lgna.story.implementation.JointImp > jointImps;
 	private final Bone[] bones;
 	private final edu.cmu.cs.dennisc.math.Point3 endEffectorLocalPosition;
-	private final java.util.List< org.lgna.ik.solver.Bone.Direction > directions;
+	private final java.util.List< org.lgna.ik.solver.Bone.Direction > directions; //the order doesn't change but the directions do
 	
 //	private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > linearVelocityContributions;
 //	private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > angularVelocityContributions;
@@ -139,7 +139,7 @@ public class Chain {
 		}
 	}
 	
-	public void computeLinearVelocityContributions() {
+	public Map<Bone, Map<Axis, Vector3>> computeLinearVelocityContributions() {
 		for( Bone bone : this.bones ) {
 			Vector3 jointEeVector = Vector3.createSubtraction(this.getEndEffectorPosition(), bone.getAnchorPosition()); 
 			bone.updateLinearContributions( jointEeVector );
@@ -153,9 +153,11 @@ public class Chain {
 				contributionsForBone.put( axis, axis.getLinearContribution() );
 			}
 		}
+		
+		return linearVelocityContributions;
 	}
 	
-	public void computeAngularVelocityContributions() {
+	public Map<Bone, Map<Axis, Vector3>> computeAngularVelocityContributions() {
 		for( Bone bone : this.bones ) {
 			bone.updateAngularContributions();
 			
@@ -165,6 +167,8 @@ public class Chain {
 				contributionsForBone.put( axis, axis.getAngularContribution() );
 			}
 		}
+		
+		return angularVelocityContributions;
 	}
 
 	//these are axis->vel

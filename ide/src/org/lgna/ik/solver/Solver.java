@@ -217,7 +217,7 @@ public class Solver {
 			
 			OrthogonalMatrix3x3 m = new OrthogonalMatrix3x3(currentOrientation);
 			m.invert();
-			//tried the other way around, didn't matter. 
+			//tried the other way around, didn't matter. FIXME but it should be desired X current's inverse according to maths 
 			m.setToMultiplication(m, desiredOrientation);
 			OrthogonalMatrix3x3 rotation = m;
 			
