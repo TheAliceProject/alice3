@@ -41,7 +41,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 		LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
-	public void addListener( TimeListener timerEventListener, Long frequency, MultipleEventPolicy policy ) {
+	public synchronized void addListener( TimeListener timerEventListener, Long frequency, MultipleEventPolicy policy ) {
 		activationMap.put( timerEventListener, true );
 		if( !isEnabled ) {
 			enable();
@@ -54,7 +54,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 		timerList.add( timerEventListener );
 	}
 
-	private void update() {
+	private synchronized void update() {
 		for( TimeListener listener : timerList ) {
 			if( timeToFire( listener ) ) {
 				trigger( listener, new TimeEvent( (currentTime - mostRecentFire.get( listener )) * 0.001 ) );
@@ -83,11 +83,11 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener,TimeEve
 		this.isActivated = true;
 	}
 
-	public void deactivate( WhileContingencyListener listener ) {
+	public void deactivate( TimeListener listener ) {
 		activationMap.put( listener, false );
 	}
 
-	public void activate( WhileContingencyListener listener ) {
+	public void activate( TimeListener listener ) {
 		activationMap.put( listener, true );
 	}
 }

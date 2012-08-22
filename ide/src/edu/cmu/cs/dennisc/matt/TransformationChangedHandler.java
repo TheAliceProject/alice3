@@ -63,7 +63,7 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 		} else {// if( arrayList != null && arrayList2 != null ) {
 			firstList = groupOne;
 		}
-		if( checkClassArr[ 0 ] != null || checkClassArr[ 1 ] != null ) {
+		if( checkClassArr[ 0 ] != null ) {
 			checkNewMap.put( listener, checkClassArr );
 		}
 		EventBuilder.register( listener, clsArr, firstList );

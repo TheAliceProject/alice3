@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SModel;
+import org.lgna.story.SThing;
+import org.lgna.story.event.EndOcclusionEvent;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionEvent;
 import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.StartOcclusionEvent;
-import org.lgna.story.event.EndOcclusionEvent;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraImp;
 
@@ -26,20 +27,6 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 
 	public <A extends SModel, B extends SModel> void addOcclusionEvent( Object occlusionEventListener, ArrayList<A> groupOne, Class<A> a, ArrayList<B> groupTwo, Class<B> b, MultipleEventPolicy policy ) {
 		ArrayList[] listArr = super.addPairedListener( occlusionEventListener, groupOne, a, groupTwo, b, policy );
-		//		registerIsFiringMap( occlusionEventListener );
-		//		registerPolicyMap( occlusionEventListener, MultipleEventPolicy.IGNORE );
-		//		List<Model> allObserving = Collections.newArrayList( groupOne );
-		//		allObserving.addAll( groupTwo );
-		//		if( groupOne.get( 0 ) != null && camera == null ) {
-		//			camera = ImplementationAccessor.getImplementation( groupOne.get( 0 ) ).getScene().findFirstCamera();
-		//			camera.getSgComposite().addAbsoluteTransformationListener( this );
-		//		}
-		//		for( Entity m : allObserving ) {
-		//			if( !modelList.contains( m ) ) {
-		//				modelList.add( m );
-		//				ImplementationAccessor.getImplementation( m ).getSgComposite().addAbsoluteTransformationListener( this );
-		//			}
-		//		}
 		occlusionEventHandler.register( occlusionEventListener, listArr[ 0 ], listArr[ 1 ] );
 	}
 
@@ -58,15 +45,15 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 			OcclusionStartListener start = (OcclusionStartListener)listener;
 			start.occlusionStarted( (StartOcclusionEvent)event );
 		} else if( listener instanceof OcclusionEndListener ) {
-			OcclusionEndListener start = (OcclusionEndListener)listener;
-			start.occlusionEnded( (EndOcclusionEvent)event );
+			OcclusionEndListener end = (OcclusionEndListener)listener;
+			end.occlusionEnded( (EndOcclusionEvent)event );
 		}
 	}
 
 	private class OcclusionEventHandler {
 
-		private HashMap<SModel,LinkedList<SModel>> checkMap = new HashMap<SModel,LinkedList<SModel>>();
-		private HashMap<SModel,HashMap<SModel,LinkedList<Object>>> eventMap = new HashMap<SModel,HashMap<SModel,LinkedList<Object>>>();
+		private HashMap<SModel,CopyOnWriteArrayList<SModel>> checkMap = new HashMap<SModel,CopyOnWriteArrayList<SModel>>();
+		private HashMap<SModel,HashMap<SModel,CopyOnWriteArrayList<Object>>> eventMap = new HashMap<SModel,HashMap<SModel,CopyOnWriteArrayList<Object>>>();
 		private HashMap<SModel,HashMap<SModel,Boolean>> wereOccluded = new HashMap<SModel,HashMap<SModel,Boolean>>();
 
 		public void check( SThing changedEntity ) {
@@ -94,13 +81,13 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 									event.setForeground( models.getFirst() );
 									fireEvent( occList, event, event );
 								} else if( occList instanceof OcclusionEndListener ) {
-									StartOcclusionEvent event = EventBuilder.buildCollisionEvent( StartOcclusionEvent.class, occList, models.toArray( new SModel[ 0 ] ) );
+									EndOcclusionEvent event = EventBuilder.buildCollisionEvent( EndOcclusionEvent.class, occList, models.toArray( new SModel[ 0 ] ) );
 									event.setForeground( models.getFirst() );
 									fireEvent( occList, event, event );
 								}
 							}
 						}
-						boolean doTheseOcclude = AabbOcclusionDetector.doesTheseOcclude( camera, changedEntity, m );
+						boolean doTheseOcclude = AabbOcclusionDetector.doesTheseOcclude( camera, m, changedEntity );
 						wereOccluded.get( t ).put( m, doTheseOcclude );
 						wereOccluded.get( m ).put( t, doTheseOcclude );
 					}
@@ -118,17 +105,17 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 								models.add( (SModel)m );
 							}
 							if( occList instanceof OcclusionStartListener ) {
-								StartOcclusionEvent event = EventBuilder.buildOcclusionEvent( StartOcclusionEvent.class, (OcclusionStartListener) occList, models.toArray( new SModel[ 0 ] ) );
+								StartOcclusionEvent event = EventBuilder.buildOcclusionEvent( StartOcclusionEvent.class, (OcclusionStartListener)occList, models.toArray( new SModel[ 0 ] ) );
 								event.setForeground( models.getFirst() );
 								fireEvent( occList, event, event );
 							} else if( occList instanceof OcclusionEndListener ) {
-								EndOcclusionEvent event = EventBuilder.buildOcclusionEvent( EndOcclusionEvent.class, (OcclusionEndListener) occList, models.toArray( new SModel[ 0 ] ) );
+								EndOcclusionEvent event = EventBuilder.buildOcclusionEvent( EndOcclusionEvent.class, (OcclusionEndListener)occList, models.toArray( new SModel[ 0 ] ) );
 								event.setForeground( models.getFirst() );
 								fireEvent( occList, event, event );
 							}
 						}
 					}
-					boolean doTheseOcclude = AabbOcclusionDetector.doesTheseOcclude( camera, changedEntity, m );
+					boolean doTheseOcclude = AabbOcclusionDetector.doesTheseOcclude( camera, m, changedEntity );
 					wereOccluded.get( changedEntity ).put( m, doTheseOcclude );
 					wereOccluded.get( m ).put( (SModel)changedEntity, doTheseOcclude );
 				}
@@ -147,13 +134,13 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 		public void register( Object occlusionListener, List<SModel> groupOne, List<SModel> groupTwo ) {
 			for( SModel m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SModel,LinkedList<Object>>() );
+					eventMap.put( m, new HashMap<SModel,CopyOnWriteArrayList<Object>>() );
 					wereOccluded.put( m, new HashMap<SModel,Boolean>() );
-					checkMap.put( m, new LinkedList<SModel>() );
+					checkMap.put( m, new CopyOnWriteArrayList<SModel>() );
 				}
 				for( SModel t : groupTwo ) {
 					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new LinkedList<Object>() );
+						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( occlusionListener );
@@ -166,13 +153,13 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 			}
 			for( SModel m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SModel,LinkedList<Object>>() );
+					eventMap.put( m, new HashMap<SModel,CopyOnWriteArrayList<Object>>() );
 					wereOccluded.put( m, new HashMap<SModel,Boolean>() );
-					checkMap.put( m, new LinkedList<SModel>() );
+					checkMap.put( m, new CopyOnWriteArrayList<SModel>() );
 				}
 				for( SModel t : groupOne ) {
 					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new LinkedList<Object>() );
+						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( occlusionListener );
@@ -183,6 +170,7 @@ public class OcclusionHandler extends TransformationChangedHandler<Object,Occlus
 					}
 				}
 			}
+			System.out.println(eventMap);
 		}
 	}
 }

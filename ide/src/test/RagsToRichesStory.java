@@ -89,9 +89,13 @@ import org.lgna.story.event.TimeEvent;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewExitListener;
+import org.lgna.story.event.WhileCollisionEvent;
 import org.lgna.story.event.WhileCollisionListener;
+import org.lgna.story.event.WhileInViewEvent;
 import org.lgna.story.event.WhileInViewListener;
+import org.lgna.story.event.WhileOccludingEvent;
 import org.lgna.story.event.WhileOcclusionListener;
+import org.lgna.story.event.WhileProximityEvent;
 import org.lgna.story.event.WhileProximityListener;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
@@ -433,27 +437,27 @@ class SnowScene extends SScene {
 		}, MyOgre.class );
 		//^^transformationEvents
 		//whileEventsS
-		addWhileCollisionListener( new WhileCollisionListener() {
-
-			public void timeElapsed( TimeEvent e ) {
+		addWhileCollisionListener( new WhileCollisionListener<MyOgre, MyBiped>() {
+			public void whileColliding( WhileCollisionEvent<MyOgre,MyBiped> event ) {
+//				System.out.println("whileColliding");
 				arr[ 16 ] = true;
 			}
 		}, MyOgre.class, MyBiped.class );
-		addWhileInViewListener( new WhileInViewListener() {
-
-			public void timeElapsed( TimeEvent e ) {
+		addWhileInViewListener( new WhileInViewListener<MyOgre>() {
+			public void whileInView( WhileInViewEvent<MyOgre> e ) {
+//				System.out.println("whileInView");
 				arr[ 17 ] = true;
 			}
 		}, MyOgre.class );
-		addWhileOcclusionListener( new WhileOcclusionListener() {
+		addWhileOcclusionListener( new WhileOcclusionListener<MyOgre, MyBiped>() {
 
-			public void timeElapsed( TimeEvent e ) {
+			public void whileOccluding( WhileOccludingEvent<MyOgre,MyBiped> e ) {
 				arr[ 18 ] = true;
 			}
 		}, MyOgre.class, MyBiped.class );
-		addWhileProximityListener( new WhileProximityListener() {
-
-			public void timeElapsed( TimeEvent e ) {
+		addWhileProximityListener( new WhileProximityListener<MyOgre,MyBiped>() {
+			public void whileClose( WhileProximityEvent<MyOgre,MyBiped> e ) {
+//				System.out.println("whileProximity");
 				arr[ 19 ] = true;
 			}
 		}, MyOgre.class, MyBiped.class, 1.0 );
@@ -508,6 +512,7 @@ class SnowScene extends SScene {
 	public void chillInSkiChalet() {
 		ogre.move( MoveDirection.LEFT, 10 );
 		ogre.move( MoveDirection.RIGHT, 15 );
+		ogre.move( MoveDirection.LEFT, 15 );
 //		while( true ) {
 //			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 //			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
