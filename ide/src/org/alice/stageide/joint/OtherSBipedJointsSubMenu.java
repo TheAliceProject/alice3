@@ -46,16 +46,8 @@ package org.alice.stageide.joint;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointSubMenu<FB> extends org.lgna.croquet.CascadeMenuModel<FB> {
-	public JointSubMenu( java.util.UUID migrationId, Class<?> cls, String... methodNames ) {
-		super( migrationId );
-	}
-	
-	public boolean consumeIfAppropriate( org.lgna.project.ast.Method method, org.lgna.croquet.CascadeFillIn<FB,?> fillIn ) {
-		return false;
-	}
-	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<FB> blankNode ) {
-		return rv;
+public class OtherSBipedJointsSubMenu<FB> extends JointsSubMenu<FB> {
+	public OtherSBipedJointsSubMenu() {
+		super( java.util.UUID.fromString( "1928d655-ff70-4dd8-a346-c627b342141c" ), org.lgna.story.SBiped.class, "getSpineUpper", "getSpineMiddle", "getLeftHand", "getLeftThumb", "getLeftThumbKnuckle", "getLeftIndexFinger", "getLeftIndexFingerKnuckle", "getMiddleIndexFinger", "getLeftMiddleFingerKnuckle", "getLeftPinkyFinger", "getLeftPinkyFingerKnuckle", "getRightHand", "getRightThumb", "getRightThumbKnuckle", "getRightIndexFinger", "getRightIndexFingerKnuckle", "getMiddleIndexFinger", "getRightMiddleFingerKnuckle", "getRightPinkyFinger", "getRightPinkyFingerKnuckle", "getPelvisLowerBody", "getLeftFoot", "getLeftToes", "getRightFoot", "getRightToes" );
 	}
 }

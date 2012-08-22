@@ -53,7 +53,7 @@ import org.alice.stageide.typecontext.SceneTypeComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.CardComposite;
+import org.lgna.croquet.CardOwnerComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -157,7 +157,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 
 	private ReportSubmissionConfiguration reportSubmissionConfiguration;
 
-	private LogInOutCardComposite logInOutCardComposite = new LogInOutCardComposite();
+	private LogInOutCardOwnerComposite logInOutCardComposite = new LogInOutCardOwnerComposite();
 
 	public ListSelectionState<BugSubmitVisibility> getVisibilityState() {
 		return this.visibilityState;
@@ -180,7 +180,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
-	public LogInOutCardComposite getLogInOutCardComposite() {
+	public LogInOutCardOwnerComposite getLogInOutCardComposite() {
 		return this.logInOutCardComposite;
 	}
 	public ActionOperation getSubmitBugOperation() {

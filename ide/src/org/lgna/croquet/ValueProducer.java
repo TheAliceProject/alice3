@@ -40,67 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.typecontext;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneOrNonSceneCardComposite extends org.lgna.croquet.CardComposite {
-	private static class SingletonHolder {
-		private static SceneOrNonSceneCardComposite instance = new SceneOrNonSceneCardComposite();
-	}
-	public static SceneOrNonSceneCardComposite getInstance() {
-		return SingletonHolder.instance;
+@Deprecated
+public abstract class ValueProducer<T> extends AbstractCompletionModel { //todo: PrepModel?  w/ transaction history?
+	private static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueProducer.VALUE_KEY" );
+
+	public ValueProducer( Group group, java.util.UUID id ) {
+		super( group, id );
 	}
 	
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			SceneOrNonSceneCardComposite.this.handleTypeStateChanged( nextValue );
-		}
-	};
+	protected abstract org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary();
+	protected abstract T internalGetValue( org.lgna.croquet.history.CompletionStep step ) throws CancelException;
 
-	private SceneOrNonSceneCardComposite() {
-		super( java.util.UUID.fromString( "9d3525cd-c560-4a00-9de4-7c2b5a926ae9" ),
-				SceneTypeComposite.getInstance(), 
-				NonSceneTypeComposite.getInstance() 
-		);
-	}
 	@Override
-	public org.lgna.croquet.components.CardPanel createView() {
-		org.lgna.croquet.components.CardPanel rv = super.createView();
-		rv.showComposite( SceneTypeComposite.getInstance() );
-		return rv;
+	public org.lgna.croquet.history.CompletionStep fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfNecessary() );
+		T value = this.internalGetValue( step );
+		step.putEphemeralDataFor( VALUE_KEY, value );
+		return step;
 	}
-
-	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
-		org.lgna.croquet.Composite< ? > composite;
-		if( nextValue != null ) {
-			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
-				composite = SceneTypeComposite.getInstance();
-			} else {
-				composite = NonSceneTypeComposite.getInstance();
-			}
-//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
-//			if( view instanceof NonSceneTypeView ) {
-//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
-//				nonSceneTypeView.handlePreShow();
-//			}
+	public T getValue( org.lgna.croquet.history.CompletionStep step ) {
+		if( step.containsEphemeralDataFor( VALUE_KEY ) ) {
+			return (T)step.getEphemeralDataFor( VALUE_KEY );
 		} else {
-			composite = null;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			return null;
 		}
-		this.showCard( composite );
+	}
+	
+	@Override
+	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
 	}
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
+		return false;
 	}
 	@Override
-	public void handlePostDeactivation() {
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
-		super.handlePostDeactivation();
+	protected void localize() {
+	}
+	@Override
+	protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		return rv;
 	}
 }

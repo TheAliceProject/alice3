@@ -41,57 +41,85 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives.code;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeOrCodeCardComposite extends org.lgna.croquet.CardComposite {
-	private static class SingletonHolder {
-		private static TypeOrCodeCardComposite instance = new TypeOrCodeCardComposite();
+public abstract class CardOwnerComposite extends AbstractComposite< org.lgna.croquet.components.CardPanel > {
+	private final java.util.List< Composite< ? > > cards;
+	private Composite<?> showingCard;
+	public CardOwnerComposite( java.util.UUID id, Composite< ? >... cards ) {
+		super( id );
+		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
 	}
-	public static TypeOrCodeCardComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite > declarationListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	public void addCard( Composite<?> card ) {
+		this.cards.add( card );
+		org.lgna.croquet.components.CardPanel view = this.peekView();
+		if( view != null ) {
+			view.addComposite( card );
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
-			TypeOrCodeCardComposite.this.handleDeclarationStateChanged( nextValue );
-		}
-	};
-	private TypeOrCodeCardComposite() {
-		super( java.util.UUID.fromString( "698a5480-5af2-47af-8faa-9cc8d82f4fe8" ),
-				org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), 
-				org.alice.ide.members.MembersComposite.getInstance() 
-		);
 	}
-	private void handleDeclarationStateChanged( org.alice.ide.declarationseditor.DeclarationComposite nextValue ) {
-		org.lgna.croquet.Composite< ? > composite;
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			if( nextValue != null ) {
-				if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
-					composite = org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance();
-				} else {
-					composite = org.alice.ide.members.MembersComposite.getInstance();
-				}
-			} else {
-				composite = null;
-			}
+	public void removeCard( Composite<?> card ) {
+		this.cards.remove( card );
+	}
+	public Composite<?> getShowingCard() {
+		return this.showingCard;
+	}
+	
+	@Override
+	public final boolean contains( org.lgna.croquet.Model model ) {
+		if( super.contains( model ) ) {
+			return true;
 		} else {
-			composite = org.alice.ide.members.MembersComposite.getInstance();
+			for( Composite< ? > card : this.cards ) {
+				//todo
+				if( card.contains( model ) ) {
+					return true;
+				}
+			}
+			return false;
 		}
-		this.showCard( composite );
+	}
+	public java.util.List< Composite< ? >> getCards() {
+		return this.cards;
+	}
+	@Override
+	protected org.lgna.croquet.components.CardPanel createView() {
+		return new org.lgna.croquet.components.CardPanel( this );
+	}
+	@Override
+	public void releaseView() {
+		for( Composite< ? > card : this.cards ) {
+			card.releaseView();
+		}
+		super.releaseView();
+	}
+	
+	public void showCard( Composite< ? > card ) {
+		synchronized( this.getView().getTreeLock() ) {
+			if( this.showingCard != null ) {
+				this.showingCard.handlePostDeactivation();
+			}
+			this.showingCard = card;
+			if( this.showingCard != null ) {
+				this.showingCard.handlePreActivation();
+			}
+			this.getView().showComposite( this.showingCard );
+		}
 	}
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addAndInvokeValueListener( this.declarationListener );
+		if( this.showingCard != null ) {
+			this.showingCard.handlePreActivation();
+		}
 	}
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().removeValueListener( this.declarationListener );
+		if( this.showingCard != null ) {
+			this.showingCard.handlePostDeactivation();
+		}
 		super.handlePostDeactivation();
 	}
 }

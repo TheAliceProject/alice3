@@ -81,7 +81,6 @@ public class JointIcon extends ShapeIcon {
 		final float JOINT_C_Y = height - INSET_Y;
 
 		java.awt.Stroke prevStroke = g2.getStroke();
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		try {
 			g2.setStroke( boneStroke );
 			drawLine( g2, JOINT_A_X, JOINT_A_Y, JOINT_B_X, JOINT_B_Y );
