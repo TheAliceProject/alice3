@@ -43,6 +43,15 @@
 
 package org.lgna.story.implementation.alice;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resourceutilities.ThumbnailMaker;
+
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,8 +59,8 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	private static java.util.Map< org.lgna.story.resources.JointedModelResource, JointImplementationAndVisualDataFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private static class VisualData implements org.lgna.story.implementation.JointedModelImp.VisualData {
-		private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances;
-		private final edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual;
+		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances;
+		private edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual;
 
 		public VisualData( org.lgna.story.resources.JointedModelResource resource ) {
 			assert resource != null;
@@ -59,7 +68,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			//Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
 			this.sgSkeletonVisual = AliceResourceUtilties.getVisualCopy( resource );
 			//Set the texture data to be the texture info specified by the resource
-			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
+			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);			
 			if (this.sgSkeletonVisual.skeleton.getValue() != null) {
 				this.sgSkeletonVisual.skeleton.getValue().setParentVisual(this.sgSkeletonVisual);
 			}
@@ -76,6 +85,19 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		
 		public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
 			sgSkeletonVisual.setParent(parent);
+			for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+				sgVisual.setParent( parent );
+			}
+		}
+
+//		public void setResource(org.lgna.story.resources.JointedModelResource resource) {
+//			assert resource != null;
+//			this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances( resource );
+//			this.sgSkeletonVisual = AliceResourceUtilties.createReplaceVisualElements( this.sgSkeletonVisual, resource );
+//			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
+//		}
+		public Composite getSGParent() {
+			return this.sgSkeletonVisual.getParent();
 		}
 	}
 
@@ -97,6 +119,11 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	private JointImplementationAndVisualDataFactory( org.lgna.story.resources.JointedModelResource resource ) {
 		this.resource = resource;
 	}
+	
+	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory getFactoryForResource(org.lgna.story.resources.JointedModelResource resource) {
+		return JointImplementationAndVisualDataFactory.getInstance(resource);
+	}
+	
 	public org.lgna.story.resources.JointedModelResource getResource() {
 		return this.resource;
 	}
@@ -106,8 +133,8 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 			String key = jointId.toString();
 			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
 			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
-			sgJoint.setName(key);
 			if( sgJoint != null  ) {
+				sgJoint.setName(key);
 				return new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoint );
 			} else {
 				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();

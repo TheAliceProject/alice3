@@ -225,6 +225,10 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 				if( entityImp.getAbstraction() instanceof MutableRider ) {
 					return new MutableRiderVehicleAdapter( (MutableRider)entityImp.getAbstraction(), state, this.sceneInstance );
 				}
+			} else if (setter.getName().equalsIgnoreCase("setResource")) {
+				if (entityImp instanceof JointedModelImp<?, ?>) {
+					return new org.alice.stageide.properties.ResourcePropertyAdapter((JointedModelImp<?, ?>)entityImp, state);
+				}
 			} else if( setter.getName().equalsIgnoreCase( "setFromAboveLightColor" ) ) {
 				if( entityImp instanceof SceneImp ) {
 					return new ColorPropertyAdapter<SceneImp>( "Above Light Color", (SceneImp)entityImp, ((SceneImp)entityImp).fromAboveLightColor, state );

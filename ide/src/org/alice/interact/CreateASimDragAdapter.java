@@ -67,11 +67,11 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 	protected void setUpControls() {
 		MovementKey[] movementKeys = {
 				//Up
-				new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), .35d),
-				new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), .35d),
+				new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), .1d),
+				new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), .1d),
 				//Down
-				new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), .35d),
-				new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), .35d),
+				new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), .1d),
+				new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), .1d),
 		};
 		
 		MovementKey[] zoomKeys = {

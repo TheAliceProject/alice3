@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.math.property.EulerAnglesProperty;
 import edu.cmu.cs.dennisc.math.property.Vector3fProperty;
 
-public class Joint extends Transformable
+public class Joint extends Transformable implements ModelJoint
 {
     public final edu.cmu.cs.dennisc.property.StringProperty jointID = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
     public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInX = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
@@ -80,6 +80,15 @@ public class Joint extends Transformable
 //            }
 //        }
 //    }
+    
+    /* (non-Javadoc)
+     * @see edu.cmu.cs.dennisc.scenegraph.Transformable#touchLocalTransformation(edu.cmu.cs.dennisc.math.AffineMatrix4x4)
+     */
+    @Override
+    protected void touchLocalTransformation(
+    		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m) {
+    	super.touchLocalTransformation(m);
+    }
     
     private Joint getJoint(Composite c, String jointID)
     {

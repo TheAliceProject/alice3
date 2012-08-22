@@ -35,6 +35,7 @@ public class StorytellingResources {
 
 	private ModelResourceTree galleryTree;
 	private final List< File > simsPathsLoaded = new LinkedList< File >();
+	private List< Class< ? extends org.lgna.story.resources.ModelResource >> aliceClassesLoaded = null;
 	
 	private URLClassLoader classLoader;
 	private static final java.io.FileFilter DIR_FILE_FILTER = new java.io.FileFilter() {
@@ -339,50 +340,50 @@ public class StorytellingResources {
 		this.galleryTree = new ModelResourceTree( modelResourceClasses );
 	}
 	
-	private void buildGalleryTree() {
-		List< File > resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
-		if( resourcePaths.size() == 0 ) {
-			resourcePaths = findAliceResources();
-		}
-		List< Class< ? extends org.lgna.story.resources.ModelResource >> modelResourceClasses = this.getAndLoadModelResourceClasses( resourcePaths );
-		this.galleryTree = new ModelResourceTree( modelResourceClasses );
-		if( modelResourceClasses.size() == 0) {
-			if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
-				setGalleryResourceDir(FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath());
+	public void findAndLoadAliceResourcesIfNecessary() {
+		if (this.aliceClassesLoaded == null) {
+			List< File > resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
+			if( resourcePaths.size() == 0 ) {
+				resourcePaths = findAliceResources();
 			}
-			else 
-			{
-				getGalleryLocationFromUser();
-			}
-			//Try again
-			resourcePaths = findAliceResources();
-			modelResourceClasses = this.getAndLoadModelResourceClasses( resourcePaths );
-			this.galleryTree = new ModelResourceTree( modelResourceClasses );
-		}
-		if( modelResourceClasses.size() == 0) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("Cannot find the Alice gallery resources.");
-			if (resourcePaths == null || resourcePaths.size() == 0) {
-				sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
-			} else {
-				sb.append("\nFailed to locate the resources in:");
-				String separator = "\n   ";
-				for (File path : resourcePaths) {
-					sb.append(separator+"'"+path+"'");
+			this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+			if( aliceClassesLoaded.size() == 0) {
+				if (FindResourcesPanel.getInstance().getGalleryDir() != null) {
+					setGalleryResourceDir(FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath());
 				}
-				String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
-				sb.append("\nVerify that "+phrase+" and verify that Alice is properly installed.");
+				else 
+				{
+					getGalleryLocationFromUser();
+				}
+				//Try again
+				resourcePaths = findAliceResources();
+				this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
 			}
-			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
-		}
-		else {
-			File galleryFile = resourcePaths.get( 0 );
-			if (galleryFile.isDirectory()) {
-				setAliceResourceDir( galleryFile.getAbsolutePath() );
+			if( this.aliceClassesLoaded.size() == 0) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("Cannot find the Alice gallery resources.");
+				if (resourcePaths == null || resourcePaths.size() == 0) {
+					sb.append("\nNo gallery directories were detected. Make sure Alice is properly installed and has been run at least once.");
+				} else {
+					sb.append("\nFailed to locate the resources in:");
+					String separator = "\n   ";
+					for (File path : resourcePaths) {
+						sb.append(separator+"'"+path+"'");
+					}
+					String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
+					sb.append("\nVerify that "+phrase+" and verify that Alice is properly installed.");
+				}
+				javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
 			}
-			else
-			{
-				setAliceResourceDir( galleryFile.getParentFile().getAbsolutePath() );
+			else {
+				File galleryFile = resourcePaths.get( 0 );
+				if (galleryFile.isDirectory()) {
+					setAliceResourceDir( galleryFile.getAbsolutePath() );
+				}
+				else
+				{
+					setAliceResourceDir( galleryFile.getParentFile().getAbsolutePath() );
+				}
 			}
 		}
 	}
@@ -488,13 +489,13 @@ public class StorytellingResources {
 	}
 	
 	public URL getAliceResource(String resourceString) {
-		this.initializeAliceResourcesIfNecessary();
+		this.findAndLoadAliceResourcesIfNecessary();
 		assert this.classLoader != null;
 		return this.classLoader.findResource(resourceString);
 	}
 	
 	public InputStream getAliceResourceAsStream(String resourceString) {
-		this.initializeAliceResourcesIfNecessary();
+		this.findAndLoadAliceResourcesIfNecessary();
 		assert this.classLoader != null;
 		return this.classLoader.getResourceAsStream(resourceString);
 	}
@@ -521,13 +522,6 @@ public class StorytellingResources {
 			}
 		}
 		return toReturn;
-
-	}
-	
-	public void initializeAliceResourcesIfNecessary() {
-		if (this.galleryTree == null) {
-			this.buildGalleryTree();
-		}
 	}
 	
 	public void initializeGalleryTreeWithJars(File... resourceJars) {
@@ -536,7 +530,8 @@ public class StorytellingResources {
 	
 	private ModelResourceTree getGalleryTreeInternal() {
 		if (this.galleryTree == null) {
-			this.buildGalleryTree();
+			findAndLoadAliceResourcesIfNecessary();
+			this.galleryTree = new ModelResourceTree( this.aliceClassesLoaded );
 		}
 		return this.galleryTree;
 	}
